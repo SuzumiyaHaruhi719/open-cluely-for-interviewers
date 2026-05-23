@@ -12,7 +12,7 @@
 // See FINAL_REPORT.md in the Obsidian "Interview Copilot" folder for details.
 // ============================================================================
 
-const ITERATION_VERSION = 'champion_iter_007+verify';
+const ITERATION_VERSION = 'champion_iter_013';
 
 function safe(text, fallback = '(none)') {
   const s = typeof text === 'string' ? text.trim() : '';
@@ -81,7 +81,8 @@ function buildFollowUpQuestionPrompt({
   missingStar = 'none',
   recommendedDirection = 'technical-depth',
   candidateAnswer = '',
-  questionHistory = []
+  questionHistory = [],
+  resumeChunk = ''
 } = {}) {
   const hooks = Array.isArray(concreteHooks) ? concreteHooks.join('\n- ') : String(concreteHooks);
   const history = Array.isArray(questionHistory)
@@ -89,6 +90,9 @@ function buildFollowUpQuestionPrompt({
     : String(questionHistory || '');
 
   return `Generate 1-2 follow-up questions for the interviewer.
+
+[Resume excerpt covering this topic]
+${safe(resumeChunk, '(no resume)')}
 
 [Concrete hooks — the priority-1 question MUST quote at least 4 contiguous words from one of these spans, verbatim, in single quotes]
 - ${hooks || '(none)'}
@@ -113,19 +117,22 @@ Good (quotes hook span verbatim in single quotes):
 Good (pinning a vague phrase from the hooks):
   "You said 'a lot better than expected' — what was the actual percent change and over what time window?"
 
-Hard requirements:
-- Priority-1 question MUST contain a single-quoted span of >=4 contiguous words taken verbatim from one of the concrete_hooks.
-- Fill the missing STAR element. If candidate gave S + R, probe A.
-- Demand numbers, not adjectives. Demand specific actions, not generic.
-- One-sentence rationale TEACHES the interviewer the principle.
-- Max 2 questions, priority-ranked.
+Hard demand on priority-1 question — MUST ask for ONE of these and ONLY these:
+  (a) a specific NUMBER (count, percent, ms, dollar amount, queries-per-second, etc.) OR — if you anticipate the candidate may not have the exact number — an ORDER-OF-MAGNITUDE commitment ("was the latency in single-digit ms, tens, or hundreds?"). The fallback makes refusals less likely.
+  (b) a specific DATE / VERSION / commit / PR id
+  (c) a specific NAMED person / tool / library / dataset / decision
+Forbidden framings (these invite qualitative dodges): "what factors", "what signals", "what set them apart", "how did you decide", "what did you focus on", "what was your approach".
 
-FINAL VERIFICATION STEP — do this before you output:
-1. Read your priority-1 question text.
-2. Find the part in single quotes.
-3. Verify it contains at least 4 contiguous words.
-4. Verify those 4 words appear contiguously in one of the concrete_hooks above.
-5. If any check fails, REWRITE the question and re-verify. Do not output the JSON until all 4 checks pass.
+The rationale field MUST state which of (a)/(b)/(c) you demanded.
+
+RESUME-PIN RULE — if the candidate's verbal answer is vaguer than the resume bullet on the same topic, the priority-1 question MUST quote the RESUME claim (not a verbal hook) and demand the candidate confirm or refine it.
+  Example: candidate says "we improved latency a lot"; resume says "reduced p99 latency by 35%". Priority-1: "Your resume says 'reduced p99 latency by 35%' — over what measurement window, and what was the absolute p99 number before and after?"
+This converts the rare RESOLVED case into a systematic outcome — the candidate has to defend every numeric claim on their resume.
+
+General requirements:
+- Fill the missing STAR element. If candidate gave S + R, probe A.
+- One-sentence rationale TEACHES the interviewer the principle behind the question.
+- Max 2 questions, priority-ranked.
 
 Output strict JSON only. No prose. No markdown fences.
 {
