@@ -21,7 +21,7 @@ export function createTranscriptionManager({
     isAutoScrollEnabled = () => true,
     isChatNearBottom = () => true,
     getSelectedMicDeviceId = () => '',
-    getSelectedSystemSourceId = () => ''
+    getSelectedSystemSourceSelection = () => ({ type: 'default', id: null })
 }) {
     let micAudioContext = null;
     let micMediaStream = null;
@@ -119,13 +119,15 @@ export function createTranscriptionManager({
         };
 
         if (monitorStatusSystem) {
-            monitorStatusSystem.className = `monitor-status-badge ${sourceStatuses.system}`;
-            monitorStatusSystem.textContent = statusMap[sourceStatuses.system] || 'Off';
+            monitorStatusSystem.dataset.state = sourceStatuses.system;
+            monitorStatusSystem.setAttribute('aria-label', `Host: ${statusMap[sourceStatuses.system] || 'Off'}`);
+            monitorStatusSystem.setAttribute('title', `Host: ${statusMap[sourceStatuses.system] || 'Off'}`);
         }
 
         if (monitorStatusMic) {
-            monitorStatusMic.className = `monitor-status-badge ${sourceStatuses.mic}`;
-            monitorStatusMic.textContent = statusMap[sourceStatuses.mic] || 'Off';
+            monitorStatusMic.dataset.state = sourceStatuses.mic;
+            monitorStatusMic.setAttribute('aria-label', `Mic: ${statusMap[sourceStatuses.mic] || 'Off'}`);
+            monitorStatusMic.setAttribute('title', `Mic: ${statusMap[sourceStatuses.mic] || 'Off'}`);
         }
 
         if (monitorLiveSystem) {
@@ -289,6 +291,29 @@ export function createTranscriptionManager({
         return audioPipeline.getSystemAudioStream(sourceId);
     }
 
+    async function captureDefaultScreenLoopback(preferredSourceId) {
+        const sources = await window.electronAPI.getDesktopSources();
+        if (!sources || sources.length === 0) {
+            throw new Error('No desktop sources found');
+        }
+        let chosen = null;
+        if (preferredSourceId) {
+            chosen = sources.find((source) => source?.id === preferredSourceId) || null;
+            if (!chosen) {
+                addMonitorLog('warn', 'desktop-source-fallback', `Screen ${preferredSourceId} not found; using first available`, 'system');
+            }
+        }
+        if (!chosen) chosen = sources[0];
+        addMonitorLog('info', 'desktop-source', `Using desktop source: ${chosen.name || chosen.id}`, 'system');
+
+        const stream = await getSystemAudioStream(chosen.id);
+        const videoTrack = stream.getVideoTracks()[0];
+        if (videoTrack && isLikelyCameraTrack(videoTrack.label)) {
+            throw new Error(`Desktop capture fell back to camera source (${videoTrack.label || 'unknown'}).`);
+        }
+        return stream;
+    }
+
     function resetSourceSampleQueue(source) {
         audioPipeline.resetSourceSampleQueue(source);
     }
@@ -398,31 +423,35 @@ export function createTranscriptionManager({
         resetFinalTranscriptBuffer('system');
 
         try {
-            const sources = await window.electronAPI.getDesktopSources();
-            if (!sources || sources.length === 0) throw new Error('No desktop sources found');
-
-            const selectedSystemSourceId = String(getSelectedSystemSourceId() || '').trim();
-            let chosenSource = null;
-            if (selectedSystemSourceId) {
-                chosenSource = sources.find((source) => source?.id === selectedSystemSourceId) || null;
-                if (!chosenSource) {
-                    addMonitorLog('warn', 'desktop-source-fallback', `Saved screen ${selectedSystemSourceId} not found; falling back to first available`, 'system');
-                }
-            }
-            if (!chosenSource) {
-                chosenSource = sources[0];
-            }
-            const sourceId = chosenSource.id;
-            addMonitorLog('info', 'desktop-source', `Using desktop source: ${chosenSource.name || sourceId}`, 'system');
+            const selection = getSelectedSystemSourceSelection() || { type: 'default', id: null };
 
             const result = await window.electronAPI.startVoiceRecognition('system');
             if (result && result.error) throw new Error(result.error);
 
-            systemMediaStream = await getSystemAudioStream(sourceId);
-
-            const videoTrack = systemMediaStream.getVideoTracks()[0];
-            if (videoTrack && isLikelyCameraTrack(videoTrack.label)) {
-                throw new Error(`Desktop capture fell back to camera source (${videoTrack.label || 'unknown'}).`);
+            if (selection.type === 'input' && selection.id) {
+                // Capture directly from a virtual loopback input (Stereo Mix,
+                // VB-Cable, etc.). This is the most reliable way to pick a
+                // specific source on Windows.
+                addMonitorLog('info', 'system-source', `Using loopback input device ${String(selection.id).slice(0, 8)}…`, 'system');
+                try {
+                    systemMediaStream = await navigator.mediaDevices.getUserMedia({
+                        audio: {
+                            deviceId: { exact: selection.id },
+                            channelCount: 1,
+                            echoCancellation: false,
+                            noiseSuppression: false,
+                            autoGainControl: false
+                        }
+                    });
+                } catch (deviceError) {
+                    addMonitorLog('warn', 'system-source-fallback', `Loopback input unavailable (${deviceError.message}); falling back to default screen loopback`, 'system');
+                    systemMediaStream = await captureDefaultScreenLoopback(null);
+                }
+            } else if (selection.type === 'screen' && selection.id) {
+                addMonitorLog('info', 'system-source', `Using screen source ${selection.id}`, 'system');
+                systemMediaStream = await captureDefaultScreenLoopback(selection.id);
+            } else {
+                systemMediaStream = await captureDefaultScreenLoopback(null);
             }
 
             systemMediaStream.getVideoTracks().forEach((track) => track.stop());

@@ -1,3 +1,6 @@
+const { shell } = require('electron');
+const { execFile } = require('child_process');
+
 function registerSettingsIpc({
   ipcMain,
   app,
@@ -13,6 +16,22 @@ function registerSettingsIpc({
   windowController,
   keyboardShortcuts
 }) {
+  ipcMain.handle('open-sound-settings', async () => {
+    try {
+      if (process.platform === 'win32') {
+        await shell.openExternal('ms-settings:sound');
+      } else if (process.platform === 'darwin') {
+        execFile('open', ['/System/Library/PreferencePanes/Sound.prefPane']);
+      } else {
+        await shell.openExternal('pavucontrol://');
+      }
+      return { success: true };
+    } catch (error) {
+      console.error('Failed to open OS sound settings:', error);
+      return { success: false, error: error.message };
+    }
+  });
+
   ipcMain.handle('get-settings', () => {
     const appEnvironment = getAppEnvironment();
     const appState = getAppState();
@@ -27,7 +46,6 @@ function registerSettingsIpc({
     const asrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
 
     return {
-      aiProvider: geminiRuntime.getActiveAiProvider(),
       asrProvider,
       dashscopeApiKey,
       dashscopeAiModel,
@@ -39,10 +57,6 @@ function registerSettingsIpc({
       hasXfyunCredentials: xfyunAppId.length > 0 && xfyunApiKey.length > 0,
       dashscopeAiModels: geminiRuntime.getDashscopeAiModels(),
       defaultDashscopeAiModel: geminiRuntime.getDefaultDashscopeAiModel(),
-      ollamaBaseUrl: geminiRuntime.getActiveOllamaBaseUrl(),
-      ollamaModel: geminiRuntime.getActiveOllamaModel(),
-      defaultOllamaBaseUrl: geminiRuntime.getDefaultOllamaBaseUrl(),
-      defaultOllamaModel: geminiRuntime.getDefaultOllamaModel(),
       programmingLanguage: geminiRuntime.getActiveProgrammingLanguage(),
       programmingLanguages: geminiRuntime.getProgrammingLanguages(),
       defaultProgrammingLanguage: geminiRuntime.getDefaultProgrammingLanguage(),
@@ -83,7 +97,6 @@ function registerSettingsIpc({
         const current = getAppState();
         return current?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
       })();
-      const nextAiProvider = geminiRuntime.setActiveAiProvider(settings.aiProvider);
       const nextDashscopeApiKey = String(settings.dashscopeApiKey || '').trim();
       const nextDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(settings.dashscopeAiModel);
       const nextXfyunAppId = String(settings.xfyunAppId || '').trim();
@@ -92,8 +105,6 @@ function registerSettingsIpc({
       const nextAsrProvider = requestedAsrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
       const nextResumeText = String(settings.resumeText || '').trim();
       const nextJobDescription = String(settings.jobDescription || '').trim();
-      const nextOllamaBaseUrl = geminiRuntime.setActiveOllamaBaseUrl(settings.ollamaBaseUrl);
-      const nextOllamaModel = geminiRuntime.setActiveOllamaModel(settings.ollamaModel);
       const nextProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(settings.programmingLanguage);
       const nextWindowOpacityLevel = windowController.setWindowOpacityLevel(settings.windowOpacityLevel);
 
@@ -107,7 +118,6 @@ function registerSettingsIpc({
       });
 
       const updatedAppState = saveAppState(app, {
-        aiProvider: nextAiProvider,
         asrProvider: nextAsrProvider,
         dashscopeApiKey: nextDashscopeApiKey,
         dashscopeAiModel: nextDashscopeAiModel,
@@ -115,8 +125,6 @@ function registerSettingsIpc({
         xfyunApiKey: nextXfyunApiKey,
         resumeText: nextResumeText,
         jobDescription: nextJobDescription,
-        ollamaBaseUrl: nextOllamaBaseUrl,
-        ollamaModel: nextOllamaModel,
         programmingLanguage: nextProgrammingLanguage,
         windowOpacityLevel: nextWindowOpacityLevel
       });
@@ -131,17 +139,11 @@ function registerSettingsIpc({
 
       console.log('Saved app state to:', getAppStatePath(app));
       console.log('Settings saved to:', updatedEnvironment.envPath);
-      console.log('Applied AI provider:', nextAiProvider);
       console.log('Applied DashScope AI model:', nextDashscopeAiModel);
       console.log('Applied programming language:', nextProgrammingLanguage);
       console.log(`Applied window opacity level: ${nextWindowOpacityLevel}/10`);
 
-      if (nextAiProvider === 'ollama') {
-        console.log(`Applied Ollama model: ${nextOllamaModel} at ${nextOllamaBaseUrl}`);
-        geminiRuntime.initializeOllamaService(nextOllamaBaseUrl, nextOllamaModel, nextProgrammingLanguage);
-      } else {
-        geminiRuntime.initializeDashscopeService(nextDashscopeAiModel, nextProgrammingLanguage);
-      }
+      geminiRuntime.initializeDashscopeService(nextDashscopeAiModel, nextProgrammingLanguage);
 
       return { success: true };
     } catch (error) {

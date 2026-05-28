@@ -633,93 +633,133 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 5px 6px;
+  padding: 0;
   border-radius: 8px;
   border: 1px solid var(--glass-panel-border);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
+  overflow: hidden;
 }
 
-.monitor-header {
+.monitor-toggle {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 6px;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
 }
 
-.monitor-title {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+.monitor-toggle:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.monitor-master-state {
+.monitor-pill {
   font-size: 10px;
-  padding: 1px 6px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 2px 8px;
   border-radius: 999px;
   color: #fff;
-  background: rgba(107, 114, 128, 0.9);
+  background: rgba(107, 114, 128, 0.78);
 }
 
-.monitor-master-state.active {
-  background: rgba(34, 197, 94, 0.9);
+.monitor-pill.active {
+  background: rgba(34, 197, 94, 0.85);
 }
 
-.monitor-master-state.connecting {
+.monitor-pill.connecting {
+  background: rgba(59, 130, 246, 0.85);
+}
+
+.monitor-source-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.monitor-source-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(107, 114, 128, 0.78);
+  flex: 0 0 auto;
+}
+
+.monitor-source-dot[data-state="connecting"] {
   background: rgba(59, 130, 246, 0.9);
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.55);
+}
+
+.monitor-source-dot[data-state="listening"] {
+  background: rgba(34, 197, 94, 0.95);
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+}
+
+.monitor-source-dot[data-state="error"] {
+  background: rgba(239, 68, 68, 0.95);
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.55);
+}
+
+.monitor-source-mini-label {
+  letter-spacing: 0.02em;
+}
+
+.monitor-toggle-caret {
+  margin-left: auto;
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+  transition: transform 0.15s ease;
+}
+
+.transcription-monitor:not(.is-collapsed) .monitor-toggle-caret {
+  transform: rotate(90deg);
+}
+
+.monitor-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 10px 8px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.transcription-monitor.is-collapsed .monitor-details {
+  display: none;
 }
 
 .monitor-source-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 6px;
+  margin-top: 6px;
 }
 
 .monitor-source-row {
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   min-width: 0;
-  padding: 2px 5px;
+  padding: 4px 6px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .monitor-source-label {
   font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.monitor-status-badge {
-  font-size: 9px;
   font-weight: 700;
-  text-align: center;
-  padding: 2px 6px;
-  border-radius: 999px;
-  color: #fff;
-  background: rgba(107, 114, 128, 0.9);
-}
-
-.monitor-status-badge.off {
-  background: rgba(107, 114, 128, 0.9);
-}
-
-.monitor-status-badge.connecting {
-  background: rgba(59, 130, 246, 0.9);
-}
-
-.monitor-status-badge.listening {
-  background: rgba(34, 197, 94, 0.9);
-}
-
-.monitor-status-badge.error {
-  background: rgba(239, 68, 68, 0.92);
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .monitor-live-text {
@@ -2301,3 +2341,112 @@ body.theme-dark .monitor-log-list::-webkit-scrollbar-thumb:hover,
 body.theme-dark .settings-body::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.58);
 }
+
+/* ------------------------------------------------------------------ */
+/* More menu dropdown                                                 */
+/* ------------------------------------------------------------------ */
+.more-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.more-menu-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 156px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-panel-border);
+  background: rgba(20, 22, 28, 0.92);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+  z-index: 80;
+}
+
+.more-menu-panel.hidden {
+  display: none;
+}
+
+.more-menu-item {
+  display: block;
+  padding: 7px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(245, 245, 250, 0.92);
+  font: inherit;
+  font-size: 11.5px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
+.more-menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.more-menu-item:disabled {
+  color: rgba(245, 245, 250, 0.4);
+  cursor: not-allowed;
+}
+
+.more-menu-separator {
+  height: 1px;
+  margin: 3px 4px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body:not(.theme-dark) .more-menu-panel {
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(20, 22, 28, 0.9);
+}
+
+body:not(.theme-dark) .more-menu-item {
+  color: rgba(20, 22, 28, 0.88);
+}
+
+body:not(.theme-dark) .more-menu-item:hover {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+/* ------------------------------------------------------------------ */
+/* Settings — flat section layout                                     */
+/* ------------------------------------------------------------------ */
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0 4px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.settings-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.settings-section-title {
+  margin: 0 0 2px 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+body:not(.theme-dark) .settings-section-title {
+  color: rgba(20, 22, 28, 0.55);
+}
+
+body:not(.theme-dark) .settings-section {
+  border-top-color: rgba(15, 23, 42, 0.08);
+}
+
+.settings-helper-text {
+  margin: 0;
+}
+

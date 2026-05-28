@@ -156,26 +156,17 @@ async function startApplication() {
   function loadPersistedAppState() {
     appState = loadAppState(app);
 
-    const activeAiProvider = geminiRuntime.setActiveAiProvider(appState.aiProvider);
     const activeDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(appState.dashscopeAiModel);
-    const activeOllamaBaseUrl = geminiRuntime.setActiveOllamaBaseUrl(appState.ollamaBaseUrl);
-    const activeOllamaModel = geminiRuntime.setActiveOllamaModel(appState.ollamaModel);
     const activeProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(appState.programmingLanguage);
     const activeWindowOpacityLevel = windowController.setWindowOpacityLevel(appState.windowOpacityLevel);
 
     if (
-      appState.aiProvider !== activeAiProvider ||
       appState.dashscopeAiModel !== activeDashscopeAiModel ||
-      appState.ollamaBaseUrl !== activeOllamaBaseUrl ||
-      appState.ollamaModel !== activeOllamaModel ||
       appState.programmingLanguage !== activeProgrammingLanguage ||
       appState.windowOpacityLevel !== activeWindowOpacityLevel
     ) {
       appState = saveAppState(app, {
-        aiProvider: activeAiProvider,
         dashscopeAiModel: activeDashscopeAiModel,
-        ollamaBaseUrl: activeOllamaBaseUrl,
-        ollamaModel: activeOllamaModel,
         programmingLanguage: activeProgrammingLanguage,
         windowOpacityLevel: activeWindowOpacityLevel
       });
@@ -184,10 +175,8 @@ async function startApplication() {
     const restoredAsrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
 
     console.log('Loaded app state from:', getAppStatePath(app));
-    console.log('Restored AI provider:', activeAiProvider);
     console.log('Restored ASR provider:', restoredAsrProvider);
     console.log('Restored DashScope AI model:', activeDashscopeAiModel);
-    console.log('Restored Ollama config:', activeOllamaModel, 'at', activeOllamaBaseUrl);
     console.log('Restored programming language:', activeProgrammingLanguage);
     console.log(`Restored window opacity level: ${activeWindowOpacityLevel}/10`);
   }
@@ -279,19 +268,10 @@ async function startApplication() {
       defaultProgrammingLanguage: geminiRuntime.getDefaultProgrammingLanguage()
     });
 
-    const activeProvider = geminiRuntime.getActiveAiProvider();
-    if (activeProvider === 'ollama') {
-      geminiRuntime.initializeOllamaService(
-        geminiRuntime.getActiveOllamaBaseUrl(),
-        geminiRuntime.getActiveOllamaModel(),
-        geminiRuntime.getActiveProgrammingLanguage()
-      );
-    } else {
-      geminiRuntime.initializeDashscopeService(
-        geminiRuntime.getActiveDashscopeAiModel(),
-        geminiRuntime.getActiveProgrammingLanguage()
-      );
-    }
+    geminiRuntime.initializeDashscopeService(
+      geminiRuntime.getActiveDashscopeAiModel(),
+      geminiRuntime.getActiveProgrammingLanguage()
+    );
 
     app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder');
     app.commandLine.appendSwitch('ignore-certificate-errors');

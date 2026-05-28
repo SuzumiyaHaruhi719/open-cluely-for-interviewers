@@ -21,10 +21,6 @@ function registerAssistantIpc({
       return getAllKeysUnavailableMessage();
     }
 
-    if (normalizedMessage.includes('ollama service not available') || normalizedMessage.includes('econnrefused')) {
-      return 'Cannot connect to Ollama. Make sure Ollama is running locally.';
-    }
-
     if (normalizedMessage.includes('no api key configured') || normalizedMessage.includes('no gemini api key')) {
       return 'No AI API key configured. Add a DashScope key in Settings.';
     }

@@ -6,14 +6,11 @@ const APP_STATE_FILE_NAME = 'app-state.json';
 
 function getDefaultAppState() {
   return {
-    aiProvider: null,
     asrProvider: null,
     dashscopeApiKey: null,
     dashscopeAiModel: null,
     xfyunAppId: null,
     xfyunApiKey: null,
-    ollamaBaseUrl: null,
-    ollamaModel: null,
     programmingLanguage: null,
     windowOpacityLevel: 10,
     themePreference: null,
@@ -26,11 +23,6 @@ function sanitizeAppState(state) {
   const nextState = getDefaultAppState();
 
   if (state && typeof state === 'object' && !Array.isArray(state)) {
-    const aiProvider = String(state.aiProvider ?? '').trim().toLowerCase();
-    if (['dashscope', 'ollama'].includes(aiProvider)) {
-      nextState.aiProvider = aiProvider;
-    }
-
     const asrProvider = String(state.asrProvider ?? '').trim().toLowerCase();
     if (['paraformer', 'xfyun'].includes(asrProvider)) {
       nextState.asrProvider = asrProvider;
@@ -63,14 +55,6 @@ function sanitizeAppState(state) {
     if (typeof state.jobDescription === 'string') {
       const jobDescription = state.jobDescription.trim();
       nextState.jobDescription = jobDescription || null;
-    }
-
-    if (typeof state.ollamaBaseUrl === 'string' && state.ollamaBaseUrl.trim()) {
-      nextState.ollamaBaseUrl = state.ollamaBaseUrl.trim();
-    }
-
-    if (typeof state.ollamaModel === 'string' && state.ollamaModel.trim()) {
-      nextState.ollamaModel = state.ollamaModel.trim();
     }
 
     if (typeof state.programmingLanguage === 'string' && state.programmingLanguage.trim()) {

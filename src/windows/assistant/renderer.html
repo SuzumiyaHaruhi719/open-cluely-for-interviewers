@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Assistant</title>
+  <title>Interviewer Copilot</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,15 +16,16 @@
     <div class="window-resize-handle resize-handle-se" data-resize-handle="se" aria-hidden="true"></div>
     <div class="window-resize-handle resize-handle-sw" data-resize-handle="sw" aria-hidden="true"></div>
     <div class="window-resize-handle resize-handle-nw" data-resize-handle="nw" aria-hidden="true"></div>
-    <!-- Draggable Header with Close Button -->
+
+    <!-- Drag handle (top bar) -->
     <div class="drag-handle">
-      <button id="close-app-btn" class="close-app-btn">&times;</button>
+      <button id="close-app-btn" class="close-app-btn" aria-label="Close">&times;</button>
     </div>
-    <!-- Compact Interface - Horizontal Layout like Cluely -->
+
+    <!-- Main toolbar -->
     <div class="main-interface">
-      <!-- Status Section with Timer and Count -->
       <div class="status-section">
-        <div class="status-dot"></div>
+        <div class="status-dot" aria-hidden="true"></div>
         <span class="timer">00:00</span>
         <div class="screenshot-count" id="screenshot-count">0</div>
         <button id="mobile-server-pill" class="mobile-server-pill off" type="button" title="Mobile companion status">
@@ -35,8 +36,7 @@
           <span id="mobile-server-pill-label">Mobile</span>
         </button>
       </div>
-      
-      <!-- Action Buttons - Compact -->
+
       <div class="content-section">
         <div class="action-buttons">
           <div id="transcription-control" class="transcription-control">
@@ -50,62 +50,49 @@
               </svg>
             </button>
             <div id="transcription-sources" class="transcription-sources" role="group" aria-label="Transcription sources">
-              <button id="source-system-toggle" class="source-toggle source-system selected" type="button">
+              <button id="source-system-toggle" class="source-toggle source-system selected" type="button" aria-label="Toggle host audio">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
                 </svg>
               </button>
-              <button id="source-mic-toggle" class="source-toggle source-mic" type="button">
+              <button id="source-mic-toggle" class="source-toggle source-mic" type="button" aria-label="Toggle microphone">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
                   <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                  <path d="M12 19v4"/>
-                  <path d="M8 23h8"/>
                 </svg>
               </button>
             </div>
           </div>
 
-          <button id="screenshot-btn" class="action-btn screenshot-btn">
+          <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="Take screenshot">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
             </svg>
           </button>
 
-          <button id="analyze-btn" class="action-btn analyze-btn">
-            Ask AI
-          </button>
+          <button id="analyze-btn" class="action-btn primary-btn" type="button">Ask AI</button>
+          <button id="screen-ai-btn" class="action-btn primary-btn" type="button">Screen AI</button>
 
-          <button id="screen-ai-btn" class="action-btn screen-ai-btn">
-            Screen AI
-          </button>
-
-          <button id="suggest-btn" class="action-btn suggest-btn" type="button" aria-label="Generate suggestions">
-            Suggest
-          </button>
-
-          <button id="notes-btn" class="action-btn notes-btn" type="button" aria-label="Generate meeting notes">
-            Notes
-          </button>
-
-          <button id="insights-btn" class="action-btn insights-btn" type="button" aria-label="Generate conversation insights">
-            Insights
-          </button>
-
-          <button id="clear-btn" class="action-btn clear-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-            </svg>
-          </button>
+          <!-- Secondary actions tucked into a dropdown menu -->
+          <div class="more-menu" id="more-menu">
+            <button id="more-menu-btn" class="action-btn icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="5" cy="12" r="1.6"/>
+                <circle cx="12" cy="12" r="1.6"/>
+                <circle cx="19" cy="12" r="1.6"/>
+              </svg>
+            </button>
+            <div id="more-menu-panel" class="more-menu-panel hidden" role="menu">
+              <button id="suggest-btn" class="more-menu-item" type="button" role="menuitem">Suggest reply</button>
+              <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">Meeting notes</button>
+              <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">Insights</button>
+              <div class="more-menu-separator" role="separator"></div>
+              <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">Clear session</button>
+            </div>
+          </div>
 
           <div class="utility-buttons">
-            <button
-              id="theme-toggle-btn"
-              class="action-btn theme-toggle-btn"
-              type="button"
-              aria-label="Switch to dark mode"
-              aria-pressed="false"
-            >
+            <button id="theme-toggle-btn" class="action-btn icon-btn theme-toggle-btn" type="button" aria-label="Toggle theme" aria-pressed="false">
               <svg class="theme-toggle-icon theme-toggle-icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12.25 2.1a1 1 0 0 0-.92 1.34 8.5 8.5 0 0 1-9.88 11.22 1 1 0 0 0-1.08 1.52A11 11 0 1 0 12.25 2.1z" />
               </svg>
@@ -122,13 +109,13 @@
               </svg>
             </button>
 
-            <button id="settings-btn" class="action-btn settings-btn">
+            <button id="settings-btn" class="action-btn icon-btn" type="button" aria-label="Settings">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
               </svg>
             </button>
 
-            <button id="hide-btn" class="action-btn hide-btn">
+            <button id="hide-btn" class="action-btn icon-btn" type="button" aria-label="Hide">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/>
               </svg>
@@ -137,41 +124,48 @@
         </div>
       </div>
     </div>
-    
-    <div id="transcription-monitor" class="transcription-monitor">
-      <div class="monitor-header">
-        <span class="monitor-title">Transcription Monitor</span>
-        <span id="monitor-master-state" class="monitor-master-state">Idle</span>
-      </div>
-      <div class="monitor-source-grid">
-        <div class="monitor-source-row">
-          <span class="monitor-source-label">Host</span>
-          <span id="monitor-status-system" class="monitor-status-badge off">Off</span>
-          <span id="monitor-live-system" class="monitor-live-text">No transcript yet</span>
+
+    <!-- Transcription Monitor — collapsed by default -->
+    <div id="transcription-monitor" class="transcription-monitor is-collapsed">
+      <button id="monitor-toggle" class="monitor-toggle" type="button" aria-expanded="false" aria-controls="monitor-details">
+        <span class="monitor-pill" id="monitor-master-state">Idle</span>
+        <span class="monitor-source-inline">
+          <span class="monitor-source-dot" id="monitor-status-system" data-state="off" aria-label="Host"></span>
+          <span class="monitor-source-mini-label">Host</span>
+        </span>
+        <span class="monitor-source-inline">
+          <span class="monitor-source-dot" id="monitor-status-mic" data-state="off" aria-label="Mic"></span>
+          <span class="monitor-source-mini-label">Mic</span>
+        </span>
+        <span class="monitor-toggle-caret" aria-hidden="true">›</span>
+      </button>
+      <div id="monitor-details" class="monitor-details">
+        <div class="monitor-source-grid">
+          <div class="monitor-source-row">
+            <span class="monitor-source-label">Host</span>
+            <span id="monitor-live-system" class="monitor-live-text">No transcript yet</span>
+          </div>
+          <div class="monitor-source-row">
+            <span class="monitor-source-label">Mic</span>
+            <span id="monitor-live-mic" class="monitor-live-text">No transcript yet</span>
+          </div>
         </div>
-        <div class="monitor-source-row">
-          <span class="monitor-source-label">Mic</span>
-          <span id="monitor-status-mic" class="monitor-status-badge off">Off</span>
-          <span id="monitor-live-mic" class="monitor-live-text">No transcript yet</span>
-        </div>
+        <div id="monitor-log-list" class="monitor-log-list"></div>
       </div>
-      <div id="monitor-log-list" class="monitor-log-list"></div>
     </div>
 
-    <!-- Chat Interface -->
+    <!-- Chat -->
     <div id="chat-container" class="chat-container">
       <div class="chat-header">
-        <span class="chat-title">&#x1F916; AI Assistant</span>
+        <span class="chat-title">Interviewer Copilot</span>
       </div>
-      <div id="chat-messages" class="chat-messages">
-        <!-- Messages will be added here dynamically -->
-      </div>
+      <div id="chat-messages" class="chat-messages"></div>
       <div id="chat-composer" class="chat-composer">
         <textarea
           id="chat-manual-input"
           class="chat-manual-input"
           rows="1"
-          placeholder="Type context to add as You..."
+          placeholder="Add a note to the context..."
           aria-label="Manual context input"
         ></textarea>
         <button
@@ -185,11 +179,11 @@
       </div>
       <div id="chat-resize-handle" class="chat-resize-handle" aria-hidden="true"></div>
     </div>
-    
-    <!-- Hidden status text for feedback -->
-    <div id="status-text" class="status-text" style="display: none;">AI Assistant</div>
-    
-    <!-- Expandable Results Panel (Legacy - now using chat) -->
+
+    <!-- Status text for feedback -->
+    <div id="status-text" class="status-text" style="display: none;">Ready</div>
+
+    <!-- Legacy results panel (kept hidden) -->
     <div id="results-panel" class="results-panel hidden">
       <div class="results-header">
         <div class="results-title">
@@ -197,7 +191,7 @@
           <span>AI Response</span>
         </div>
         <div class="results-actions">
-          <button id="close-results" class="close-btn">
+          <button id="close-results" class="close-btn" aria-label="Close response">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/>
             </svg>
@@ -208,194 +202,159 @@
         <div id="result-text" class="result-text"></div>
       </div>
     </div>
-    
-    <!-- Settings Panel -->
+
+    <!-- Settings -->
     <div id="settings-panel" class="settings-panel hidden">
       <div class="settings-header">
         <span class="settings-title">Settings</span>
-        <button id="close-settings" class="close-btn">
+        <button id="close-settings" class="close-btn" aria-label="Close settings">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/>
           </svg>
         </button>
       </div>
       <div class="settings-body">
-        <div class="settings-section-divider">DashScope API key (powers everything)</div>
-        <div class="settings-group">
-          <label class="settings-label">DashScope API Key</label>
-          <div class="settings-input-row">
-            <input type="password" id="setting-dashscope-key" class="settings-input" placeholder="sk-... (https://dashscope.console.aliyun.com)" />
-            <button
-              type="button"
-              id="toggle-dashscope-key-visibility"
-              class="settings-input-toggle"
-              aria-label="Show DashScope API key"
-              aria-pressed="false"
-            >
-              Show
-            </button>
-          </div>
-          <div class="settings-helper-text">One key drives AI chat, screenshot analysis, Paraformer ASR, and the interviewer copilot — get it at <code>dashscope.console.aliyun.com</code>.</div>
-        </div>
-
-        <div class="settings-section-divider">AI model</div>
-        <div class="settings-group">
-          <label class="settings-label">AI Provider</label>
-          <select id="setting-ai-provider" class="settings-input">
-            <option value="dashscope">DashScope (Qwen + DeepSeek)</option>
-            <option value="ollama">Ollama (Local)</option>
-          </select>
-        </div>
-        <div id="dashscope-settings-group">
+        <!-- API key -->
+        <section class="settings-section">
+          <h3 class="settings-section-title">API key</h3>
           <div class="settings-group">
-            <label class="settings-label">DashScope Model</label>
-            <select id="setting-dashscope-ai-model" class="settings-input"></select>
-            <div class="settings-helper-text">
-              <code>deepseek-v4-pro</code> — strongest reasoning (recommended) ·
-              <code>deepseek-v4-flash</code> — fastest / cheapest ·
-              <code>qwen3.6-max-preview</code> — Alibaba closed-weights flagship ·
-              <code>qwen3.7-max</code> — Qwen latest ·
-              <code>qwen3-vl-*</code> — required for screenshot analysis.
-              All routed through DashScope's Anthropic-shape endpoint.
-            </div>
-          </div>
-        </div>
-        <div id="ollama-settings-group" class="hidden">
-          <div class="settings-group">
-            <label class="settings-label">Ollama Server URL</label>
-            <input type="text" id="setting-ollama-base-url" class="settings-input" placeholder="http://localhost:11434" />
-            <div class="settings-helper-text">URL of your running Ollama instance.</div>
-          </div>
-          <div class="settings-group">
-            <label class="settings-label">Ollama Model</label>
+            <label class="settings-label" for="setting-dashscope-key">DashScope key</label>
             <div class="settings-input-row">
-              <input type="text" id="setting-ollama-model" class="settings-input" placeholder="llama3.2" />
-              <button type="button" id="fetch-ollama-models" class="settings-input-toggle" aria-label="Fetch available Ollama models">
-                Fetch
-              </button>
-            </div>
-            <div class="settings-helper-text">Enter a model name or click Fetch to list installed models.</div>
-            <select id="setting-ollama-model-select" class="settings-input hidden"></select>
-          </div>
-        </div>
-        <div class="settings-group">
-          <label class="settings-label">Programming Language</label>
-          <select id="setting-programming-language" class="settings-input"></select>
-        </div>
-
-        <div class="settings-section-divider">Speech recognition</div>
-        <div class="settings-group">
-          <label class="settings-label">Speech Recognition Provider</label>
-          <select id="setting-asr-provider" class="settings-input">
-            <option value="paraformer">DashScope Paraformer (recommended)</option>
-            <option value="xfyun">Xunfei RTASR (科大讯飞)</option>
-          </select>
-          <div class="settings-helper-text">Paraformer reuses the DashScope key above. Switching takes effect on the next time you start transcription.</div>
-        </div>
-        <div id="paraformer-settings-group">
-          <div class="settings-group">
-            <div class="settings-helper-text">Streams via <code>paraformer-realtime-8k-v2</code> (Chinese-only, 8 kHz PCM with affect detection) using the DashScope key.</div>
-          </div>
-        </div>
-
-        <div class="settings-section-divider">Audio devices</div>
-        <div class="settings-group">
-          <div class="settings-label-row">
-            <label class="settings-label" for="setting-mic-device">Microphone Device</label>
-            <button type="button" id="refresh-audio-devices-btn" class="settings-input-toggle" aria-label="Refresh audio device list">Refresh</button>
-          </div>
-          <select id="setting-mic-device" class="settings-input">
-            <option value="">System default microphone</option>
-          </select>
-          <div class="settings-helper-text">Which physical mic captures the interviewer's voice. Defaults to the OS default; pick a specific one if you use a USB headset.</div>
-        </div>
-        <div class="settings-group">
-          <label class="settings-label" for="setting-system-source">System Audio Source</label>
-          <select id="setting-system-source" class="settings-input">
-            <option value="">First available screen (default)</option>
-          </select>
-          <div class="settings-helper-text">Which display's loopback audio captures the candidate's voice. Multi-monitor setups can pick a specific screen.</div>
-        </div>
-        <div id="xfyun-settings-group" class="hidden">
-          <div class="settings-group">
-            <label class="settings-label">Xunfei AppID</label>
-            <input type="text" id="setting-xfyun-appid" class="settings-input" placeholder="from console.xfyun.cn" />
-          </div>
-          <div class="settings-group">
-            <label class="settings-label">Xunfei API Key (RTASR)</label>
-            <div class="settings-input-row">
-              <input type="password" id="setting-xfyun-key" class="settings-input" placeholder="real-time ASR service key" />
+              <input type="password" id="setting-dashscope-key" class="settings-input" placeholder="sk-..." />
               <button
                 type="button"
-                id="toggle-xfyun-key-visibility"
+                id="toggle-dashscope-key-visibility"
                 class="settings-input-toggle"
-                aria-label="Show Xunfei API key"
+                aria-label="Show DashScope API key"
                 aria-pressed="false"
-              >
-                Show
-              </button>
+              >Show</button>
             </div>
-            <div class="settings-helper-text">Enable the "实时语音转写" service in the Xunfei console for these credentials.</div>
+            <p class="settings-helper-text">One key drives AI, Paraformer ASR, and the interviewer copilot. Get it at <code>dashscope.console.aliyun.com</code>.</p>
           </div>
-        </div>
+        </section>
 
-        <div class="settings-section-divider">Interviewer Copilot</div>
-        <div class="settings-group">
-          <div class="settings-helper-text">Uses the DashScope key above with <code>deepseek-v3</code> for Stage 1 hook detection + Stage 2 follow-up generation from candidate answers.</div>
-        </div>
-        <div class="settings-group">
-          <label class="settings-label" for="setting-resume-text">Candidate Resume</label>
-          <textarea id="setting-resume-text" class="settings-input settings-textarea" rows="8" placeholder="Paste the candidate's resume — bullets, projects, metrics. The copilot uses this to spot overclaims and unprobed hooks."></textarea>
-        </div>
-        <div class="settings-group">
-          <label class="settings-label" for="setting-job-description">Job Description</label>
-          <textarea id="setting-job-description" class="settings-input settings-textarea" rows="6" placeholder="Paste the JD so the copilot prioritises hooks relevant to the role."></textarea>
-        </div>
-        <div class="settings-group">
-          <div class="settings-label-row">
-            <label class="settings-label" for="setting-window-opacity">Window Opacity</label>
-            <span id="setting-window-opacity-value" class="settings-value-chip">10/10</span>
+        <!-- AI model -->
+        <section class="settings-section">
+          <h3 class="settings-section-title">AI model</h3>
+          <div class="settings-group">
+            <label class="settings-label" for="setting-dashscope-ai-model">Model</label>
+            <select id="setting-dashscope-ai-model" class="settings-input"></select>
+            <p class="settings-helper-text"><code>deepseek-v4-pro</code> deepest reasoning · <code>deepseek-v4-flash</code> fastest · <code>qwen3-vl-*</code> required for screenshots.</p>
           </div>
-          <input
-            type="range"
-            id="setting-window-opacity"
-            class="settings-range"
-            min="1"
-            max="10"
-            step="1"
-            value="10"
-          />
-        </div>
-        <div class="settings-group">
-          <label class="settings-label">Keyboard Shortcuts</label>
-          <div id="settings-shortcuts-list" class="settings-shortcuts-list"></div>
-          <div class="settings-helper-text">Shortcuts are read-only here. Edit <code>src/config.js</code> to customize.</div>
-        </div>
-        <button id="save-settings-btn" class="save-settings-btn">Save Settings</button>
+          <div class="settings-group">
+            <label class="settings-label" for="setting-programming-language">Programming language</label>
+            <select id="setting-programming-language" class="settings-input"></select>
+          </div>
+        </section>
+
+        <!-- Speech recognition -->
+        <section class="settings-section">
+          <h3 class="settings-section-title">Speech recognition</h3>
+          <div class="settings-group">
+            <label class="settings-label" for="setting-asr-provider">Provider</label>
+            <select id="setting-asr-provider" class="settings-input">
+              <option value="paraformer">DashScope Paraformer (recommended)</option>
+              <option value="xfyun">Xunfei RTASR (科大讯飞)</option>
+            </select>
+            <p class="settings-helper-text" id="paraformer-settings-group">Streams via <code>paraformer-realtime-8k-v2</code> using the DashScope key above.</p>
+          </div>
+          <div id="xfyun-settings-group" class="hidden">
+            <div class="settings-group">
+              <label class="settings-label" for="setting-xfyun-appid">Xunfei AppID</label>
+              <input type="text" id="setting-xfyun-appid" class="settings-input" placeholder="from console.xfyun.cn" />
+            </div>
+            <div class="settings-group">
+              <label class="settings-label" for="setting-xfyun-key">Xunfei API key</label>
+              <div class="settings-input-row">
+                <input type="password" id="setting-xfyun-key" class="settings-input" placeholder="real-time ASR service key" />
+                <button
+                  type="button"
+                  id="toggle-xfyun-key-visibility"
+                  class="settings-input-toggle"
+                  aria-label="Show Xunfei API key"
+                  aria-pressed="false"
+                >Show</button>
+              </div>
+              <p class="settings-helper-text">Enable "实时语音转写" in the Xunfei console.</p>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <div class="settings-label-row">
+              <label class="settings-label" for="setting-mic-device">Microphone (your voice)</label>
+              <button type="button" id="refresh-audio-devices-btn" class="settings-input-toggle" aria-label="Refresh audio device list">Refresh</button>
+            </div>
+            <select id="setting-mic-device" class="settings-input">
+              <option value="">System default microphone</option>
+            </select>
+          </div>
+          <div class="settings-group">
+            <div class="settings-label-row">
+              <label class="settings-label" for="setting-system-source">System audio (candidate's voice)</label>
+              <button type="button" id="open-sound-settings-btn" class="settings-input-toggle" aria-label="Open Windows sound settings">OS sound</button>
+            </div>
+            <select id="setting-system-source" class="settings-input">
+              <option value="">Windows default loopback (recommended)</option>
+            </select>
+            <p class="settings-helper-text">Loopback follows the Windows default playback device. To switch outputs, use <strong>OS sound</strong> above and set the desired output as default. If you have Stereo Mix / VB-Audio installed, it shows up here as a direct capture target.</p>
+          </div>
+        </section>
+
+        <!-- Interviewer context -->
+        <section class="settings-section">
+          <h3 class="settings-section-title">Interviewer context</h3>
+          <div class="settings-group">
+            <label class="settings-label" for="setting-resume-text">Candidate resume</label>
+            <textarea id="setting-resume-text" class="settings-input settings-textarea" rows="6" placeholder="Paste the candidate's resume — bullets, projects, metrics."></textarea>
+          </div>
+          <div class="settings-group">
+            <label class="settings-label" for="setting-job-description">Job description</label>
+            <textarea id="setting-job-description" class="settings-input settings-textarea" rows="5" placeholder="Paste the JD so the copilot prioritises relevant hooks."></textarea>
+          </div>
+        </section>
+
+        <!-- Appearance & shortcuts -->
+        <section class="settings-section">
+          <h3 class="settings-section-title">Window</h3>
+          <div class="settings-group">
+            <div class="settings-label-row">
+              <label class="settings-label" for="setting-window-opacity">Opacity</label>
+              <span id="setting-window-opacity-value" class="settings-value-chip">10/10</span>
+            </div>
+            <input type="range" id="setting-window-opacity" class="settings-range" min="1" max="10" step="1" value="10" />
+          </div>
+          <div class="settings-group">
+            <label class="settings-label">Keyboard shortcuts</label>
+            <div id="settings-shortcuts-list" class="settings-shortcuts-list"></div>
+            <p class="settings-helper-text">Read-only. Edit <code>src/config.js</code> to customize.</p>
+          </div>
+        </section>
+
+        <button id="save-settings-btn" class="save-settings-btn">Save settings</button>
       </div>
     </div>
 
-    <!-- Close Confirmation -->
+    <!-- Close confirmation -->
     <div id="close-confirmation-dialog" class="close-confirmation hidden" role="dialog" aria-modal="true" aria-labelledby="close-confirmation-title">
       <div class="close-confirmation-card">
-        <div id="close-confirmation-title" class="close-confirmation-title">Close App?</div>
+        <div id="close-confirmation-title" class="close-confirmation-title">Close app?</div>
         <div class="close-confirmation-text">This will stop voice capture and close the assistant.</div>
         <div class="close-confirmation-actions">
           <button id="cancel-close-btn" class="close-confirmation-btn close-confirmation-btn-secondary">Cancel</button>
-          <button id="confirm-close-btn" class="close-confirmation-btn close-confirmation-btn-danger">Close App</button>
+          <button id="confirm-close-btn" class="close-confirmation-btn close-confirmation-btn-danger">Close</button>
         </div>
       </div>
     </div>
 
-    <!-- Loading Overlay -->
+    <!-- Loading overlay -->
     <div id="loading-overlay" class="loading-overlay hidden">
       <div class="loading-content">
         <div class="analyzing-icon">&#x1F9E0;</div>
-        <div class="loading-text">Analyzing screen...</div>
+        <div class="loading-text">Analyzing...</div>
       </div>
     </div>
-    
-    <!-- Emergency Overlay -->
+
+    <!-- Emergency overlay -->
     <div id="emergency-overlay" class="emergency-overlay hidden">
       <div class="emergency-message">HIDDEN</div>
     </div>

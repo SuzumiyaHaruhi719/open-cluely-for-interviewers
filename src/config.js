@@ -1,9 +1,6 @@
 // AI provider configuration.
 // All hosted AI (Qwen + DeepSeek + Qwen-VL multimodal) flows through Aliyun
-// DashScope's OpenAI-compatible endpoint with one API key. Ollama stays as
-// an optional local provider.
-const AI_PROVIDERS = ['dashscope', 'ollama'];
-const DEFAULT_AI_PROVIDER = 'dashscope';
+// DashScope's Anthropic-shape endpoint with one API key.
 
 // DashScope publishes two API surfaces over the same key. We use the
 // Anthropic-shape one because that's where the latest hosted models
@@ -31,9 +28,6 @@ const DEFAULT_DASHSCOPE_AI_MODEL = DASHSCOPE_AI_MODELS[0];
 // pipeline; swap to deepseek-v4-pro if you want deeper reasoning at higher
 // latency.
 const DEFAULT_INTERVIEWER_MODEL = 'deepseek-v4-flash';
-
-const DEFAULT_OLLAMA_BASE_URL = 'http://localhost:11434';
-const DEFAULT_OLLAMA_MODEL = 'llama3.2';
 
 // Programming language configuration.
 // The first language in this list is treated as the default language everywhere.
@@ -162,22 +156,6 @@ const KEYBOARD_SHORTCUTS = [
   }
 ];
 
-function getAiProviders() {
-  return [...AI_PROVIDERS];
-}
-
-function getDefaultAiProvider() {
-  return DEFAULT_AI_PROVIDER;
-}
-
-function isConfiguredAiProvider(providerName) {
-  return AI_PROVIDERS.includes(providerName);
-}
-
-function resolveAiProvider(providerName) {
-  return isConfiguredAiProvider(providerName) ? providerName : DEFAULT_AI_PROVIDER;
-}
-
 function getDashscopeBaseUrl() {
   return DASHSCOPE_BASE_URL;
 }
@@ -202,14 +180,6 @@ function resolveDashscopeAiModel(modelName) {
 
 function getDefaultInterviewerModel() {
   return DEFAULT_INTERVIEWER_MODEL;
-}
-
-function getDefaultOllamaBaseUrl() {
-  return DEFAULT_OLLAMA_BASE_URL;
-}
-
-function getDefaultOllamaModel() {
-  return DEFAULT_OLLAMA_MODEL;
 }
 
 function getProgrammingLanguages() {
@@ -262,18 +232,12 @@ function getKeyboardShortcutAccelerator(shortcutId) {
 }
 
 module.exports = {
-  getAiProviders,
-  getDefaultAiProvider,
-  isConfiguredAiProvider,
-  resolveAiProvider,
   getDashscopeBaseUrl,
   getDashscopeAiModels,
   getDefaultDashscopeAiModel,
   isConfiguredDashscopeAiModel,
   resolveDashscopeAiModel,
   getDefaultInterviewerModel,
-  getDefaultOllamaBaseUrl,
-  getDefaultOllamaModel,
   getProgrammingLanguages,
   getDefaultProgrammingLanguage,
   isConfiguredProgrammingLanguage,

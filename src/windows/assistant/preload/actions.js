@@ -159,6 +159,12 @@ function createInvokeActions(ipcRenderer) {
       fallback: (error) => ({ success: false, error: error.message })
     }),
 
+    openSoundSettings: invokeWithFallback(ipcRenderer, {
+      channel: 'open-sound-settings',
+      label: 'openSoundSettings',
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
     setThemePreference: invokeWithFallback(ipcRenderer, {
       channel: 'set-theme-preference',
       label: 'setThemePreference',

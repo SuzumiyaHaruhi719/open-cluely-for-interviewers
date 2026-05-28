@@ -11,7 +11,8 @@ import { createShortcutManager } from './renderer/features/settings/shortcut-man
 import {
     createSettingsPanelManager,
     getSelectedMicDeviceId as readSelectedMicDeviceId,
-    getSelectedSystemSourceId as readSelectedSystemSourceId
+    getSelectedSystemSourceValue as readSelectedSystemSourceValue,
+    parseSystemSourceSelection
 } from './renderer/features/settings/settings-panel-manager.js';
 import { createTranscriptionManager } from './renderer/features/transcription/transcription-manager.js';
 
@@ -323,14 +324,7 @@ const settingsBtn = document.getElementById('settings-btn');
 const settingsPanel = document.getElementById('settings-panel');
 const closeSettingsBtn = document.getElementById('close-settings');
 const saveSettingsBtn = document.getElementById('save-settings-btn');
-const settingAiProvider = document.getElementById('setting-ai-provider');
-const dashscopeSettingsGroup = document.getElementById('dashscope-settings-group');
-const ollamaSettingsGroup = document.getElementById('ollama-settings-group');
 const settingDashscopeAiModel = document.getElementById('setting-dashscope-ai-model');
-const settingOllamaBaseUrl = document.getElementById('setting-ollama-base-url');
-const settingOllamaModel = document.getElementById('setting-ollama-model');
-const settingOllamaModelSelect = document.getElementById('setting-ollama-model-select');
-const fetchOllamaModelsBtn = document.getElementById('fetch-ollama-models');
 const settingProgrammingLanguage = document.getElementById('setting-programming-language');
 const settingAsrProvider = document.getElementById('setting-asr-provider');
 const paraformerSettingsGroup = document.getElementById('paraformer-settings-group');
@@ -347,7 +341,17 @@ const settingWindowOpacityValue = document.getElementById('setting-window-opacit
 const settingMicDevice = document.getElementById('setting-mic-device');
 const settingSystemSource = document.getElementById('setting-system-source');
 const refreshAudioDevicesBtn = document.getElementById('refresh-audio-devices-btn');
+const openSoundSettingsBtn = document.getElementById('open-sound-settings-btn');
 const settingsShortcutsList = document.getElementById('settings-shortcuts-list');
+
+// More dropdown
+const moreMenuBtn = document.getElementById('more-menu-btn');
+const moreMenuPanel = document.getElementById('more-menu-panel');
+
+// Collapsible monitor
+const monitorContainer = document.getElementById('transcription-monitor');
+const monitorToggleBtn = document.getElementById('monitor-toggle');
+const monitorDetails = document.getElementById('monitor-details');
 
 // Timer
 let startTime = Date.now();
@@ -357,9 +361,9 @@ const MIN_WINDOW_HEIGHT = 380;
 const MAX_CHAT_INPUT_HEIGHT = 88;
 
 let isCloseConfirmationOpen = false;
-// Cached availability flags from get-settings IPC. AI capability is gated
-// on DashScope key (or Ollama, which needs no key). ASR capability is gated
-// on having either the DashScope key (Paraformer) or Xunfei credentials.
+// Cached availability flags from get-settings IPC. AI capability is gated on
+// the DashScope key. ASR capability is gated on either the DashScope key
+// (Paraformer) or Xunfei credentials.
 let hasAiConfigured = false;
 let hasAsrConfigured = false;
 const aiActionInFlightState = {
@@ -398,15 +402,8 @@ const chatUiManager = createChatUiManager({
 });
 const settingsPanelManager = createSettingsPanelManager({
     settingsPanel,
-    settingAiProvider,
-    dashscopeSettingsGroup,
-    ollamaSettingsGroup,
     settingDashscopeAiModel,
     settingProgrammingLanguage,
-    settingOllamaBaseUrl,
-    settingOllamaModel,
-    settingOllamaModelSelect,
-    fetchOllamaModelsBtn,
     settingAsrProvider,
     paraformerSettingsGroup,
     xfyunSettingsGroup,
@@ -422,6 +419,7 @@ const settingsPanelManager = createSettingsPanelManager({
     settingMicDevice,
     settingSystemSource,
     refreshAudioDevicesBtn,
+    openSoundSettingsBtn,
     applySettingsShortcutConfig: (settings) => applySettingsShortcutConfig(settings),
     showFeedback: (message, type) => showFeedback(message, type),
     onSettingsSaved: (settings) => {
@@ -450,8 +448,58 @@ const transcriptionManager = createTranscriptionManager({
     isAutoScrollEnabled,
     isChatNearBottom: () => chatUiManager.isChatNearBottom(),
     getSelectedMicDeviceId: () => readSelectedMicDeviceId(),
-    getSelectedSystemSourceId: () => readSelectedSystemSourceId()
+    getSelectedSystemSourceSelection: () => parseSystemSourceSelection(readSelectedSystemSourceValue())
 });
+
+function setupMoreMenu() {
+    if (!moreMenuBtn || !moreMenuPanel) return;
+
+    function closeMenu() {
+        moreMenuPanel.classList.add('hidden');
+        moreMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+    function openMenu() {
+        moreMenuPanel.classList.remove('hidden');
+        moreMenuBtn.setAttribute('aria-expanded', 'true');
+    }
+    function toggleMenu() {
+        if (moreMenuPanel.classList.contains('hidden')) {
+            openMenu();
+        } else {
+            closeMenu();
+        }
+    }
+
+    moreMenuBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        toggleMenu();
+    });
+    moreMenuPanel.addEventListener('click', (event) => {
+        if (event.target.closest('.more-menu-item')) {
+            closeMenu();
+        }
+    });
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('#more-menu')) closeMenu();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeMenu();
+    });
+}
+
+function setupMonitorToggle() {
+    if (!monitorContainer || !monitorToggleBtn) return;
+    monitorToggleBtn.addEventListener('click', () => {
+        const collapsed = monitorContainer.classList.toggle('is-collapsed');
+        monitorToggleBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        if (monitorDetails) {
+            monitorDetails.hidden = collapsed;
+        }
+    });
+    if (monitorDetails) {
+        monitorDetails.hidden = monitorContainer.classList.contains('is-collapsed');
+    }
+}
 
 // Initialize
 async function init() {
@@ -500,6 +548,8 @@ async function init() {
             }).catch(() => {});
         }
     }
+    setupMoreMenu();
+    setupMonitorToggle();
     applyTheme(resolveInitialThemePreference(settings), { persist: false });
     updateUI();
     transcriptionManager.updateTranscriptionUI();
@@ -699,10 +749,7 @@ function applyApiKeyAvailabilityFromSettings(settings) {
         return;
     }
 
-    // Ollama needs no key; DashScope needs a key.
-    if (settings.aiProvider === 'ollama') {
-        hasAiConfigured = true;
-    } else if (typeof settings.hasDashscopeApiKey === 'boolean') {
+    if (typeof settings.hasDashscopeApiKey === 'boolean') {
         hasAiConfigured = settings.hasDashscopeApiKey;
     } else {
         hasAiConfigured = String(settings.dashscopeApiKey ?? '').trim().length > 0;

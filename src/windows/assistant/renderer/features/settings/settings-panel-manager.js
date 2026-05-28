@@ -5,6 +5,22 @@ function clamp(value, min, max) {
 export const MIC_DEVICE_STORAGE_KEY = 'open-cluely.audioDevice.mic';
 export const SYSTEM_SOURCE_STORAGE_KEY = 'open-cluely.audioDevice.system';
 
+const LOOPBACK_LABEL_PATTERNS = [
+    /stereo mix/i,
+    /what.{0,3}u.{0,3}hear/i,
+    /vb[ -_]?(audio|cable)/i,
+    /voicemeeter/i,
+    /loopback/i,
+    /blackhole/i,
+    /soundflower/i,
+    /\bmix\b/i
+];
+
+function isLikelyLoopbackInput(deviceLabel) {
+    const label = String(deviceLabel || '');
+    return LOOPBACK_LABEL_PATTERNS.some((pattern) => pattern.test(label));
+}
+
 export function getSelectedMicDeviceId() {
     try {
         return localStorage.getItem(MIC_DEVICE_STORAGE_KEY) || '';
@@ -13,12 +29,32 @@ export function getSelectedMicDeviceId() {
     }
 }
 
-export function getSelectedSystemSourceId() {
+export function getSelectedSystemSourceValue() {
     try {
         return localStorage.getItem(SYSTEM_SOURCE_STORAGE_KEY) || '';
     } catch (_) {
         return '';
     }
+}
+
+// Parse a stored system-source value into a structured selector.
+// Values:
+//   ""              → default Windows loopback (desktopCapturer, first screen)
+//   "input:<id>"    → audioinput device (Stereo Mix, VB-Cable, etc.)
+//   "screen:<id>"   → specific desktopCapturer screen
+// Anything else is treated as default.
+export function parseSystemSourceSelection(rawValue) {
+    const value = String(rawValue || '');
+    if (!value) {
+        return { type: 'default', id: null };
+    }
+    if (value.startsWith('input:')) {
+        return { type: 'input', id: value.slice('input:'.length) };
+    }
+    if (value.startsWith('screen:')) {
+        return { type: 'screen', id: value.slice('screen:'.length) };
+    }
+    return { type: 'default', id: null };
 }
 
 function setStoredValue(key, value) {
@@ -35,15 +71,8 @@ function setStoredValue(key, value) {
 
 export function createSettingsPanelManager({
     settingsPanel,
-    settingAiProvider,
-    dashscopeSettingsGroup,
-    ollamaSettingsGroup,
     settingDashscopeAiModel,
     settingProgrammingLanguage,
-    settingOllamaBaseUrl,
-    settingOllamaModel,
-    settingOllamaModelSelect,
-    fetchOllamaModelsBtn,
     settingAsrProvider,
     paraformerSettingsGroup,
     xfyunSettingsGroup,
@@ -59,34 +88,26 @@ export function createSettingsPanelManager({
     settingMicDevice,
     settingSystemSource,
     refreshAudioDevicesBtn,
+    openSoundSettingsBtn,
     applySettingsShortcutConfig,
     showFeedback,
     onSettingsSaved
 }) {
     function normalizeWindowOpacityLevel(value) {
         const parsedValue = Number.parseInt(String(value ?? ''), 10);
-
         if (!Number.isFinite(parsedValue)) {
             return 10;
         }
-
         return clamp(parsedValue, 1, 10);
     }
 
     function updateWindowOpacityValueLabel(value) {
-        if (!settingWindowOpacityValue) {
-            return;
-        }
-
-        const opacityLevel = normalizeWindowOpacityLevel(value);
-        settingWindowOpacityValue.textContent = `${opacityLevel}/10`;
+        if (!settingWindowOpacityValue) return;
+        settingWindowOpacityValue.textContent = `${normalizeWindowOpacityLevel(value)}/10`;
     }
 
     function setApiKeyFieldVisibility(inputElement, toggleButton, providerName, visible) {
-        if (!inputElement || !toggleButton) {
-            return;
-        }
-
+        if (!inputElement || !toggleButton) return;
         const shouldShow = Boolean(visible);
         inputElement.type = shouldShow ? 'text' : 'password';
         toggleButton.textContent = shouldShow ? 'Hide' : 'Show';
@@ -98,24 +119,11 @@ export function createSettingsPanelManager({
     }
 
     function bindApiKeyVisibilityToggle(inputElement, toggleButton, providerName) {
-        if (!inputElement || !toggleButton) {
-            return;
-        }
-
+        if (!inputElement || !toggleButton) return;
         setApiKeyFieldVisibility(inputElement, toggleButton, providerName, false);
         toggleButton.addEventListener('click', () => {
-            const nextVisible = inputElement.type !== 'text';
-            setApiKeyFieldVisibility(inputElement, toggleButton, providerName, nextVisible);
+            setApiKeyFieldVisibility(inputElement, toggleButton, providerName, inputElement.type !== 'text');
         });
-    }
-
-    function updateProviderVisibility(provider) {
-        if (dashscopeSettingsGroup) {
-            dashscopeSettingsGroup.classList.toggle('hidden', provider !== 'dashscope');
-        }
-        if (ollamaSettingsGroup) {
-            ollamaSettingsGroup.classList.toggle('hidden', provider !== 'ollama');
-        }
     }
 
     function updateAsrProviderVisibility(provider) {
@@ -127,118 +135,68 @@ export function createSettingsPanelManager({
         }
     }
 
-    function bindProviderToggle() {
-        if (settingAiProvider) {
-            settingAiProvider.addEventListener('change', () => {
-                updateProviderVisibility(settingAiProvider.value);
-            });
-        }
-
-        if (settingAsrProvider) {
-            settingAsrProvider.addEventListener('change', () => {
-                updateAsrProviderVisibility(settingAsrProvider.value);
-            });
-        }
-    }
-
-    async function fetchOllamaModels() {
-        if (!settingOllamaBaseUrl || !settingOllamaModelSelect) {
-            return;
-        }
-
-        const baseUrl = settingOllamaBaseUrl.value.trim() || 'http://localhost:11434';
-
-        try {
-            if (fetchOllamaModelsBtn) {
-                fetchOllamaModelsBtn.textContent = '...';
-                fetchOllamaModelsBtn.disabled = true;
-            }
-
-            const response = await fetch(`${baseUrl}/api/tags`);
-            if (!response.ok) {
-                throw new Error(`Ollama API returned ${response.status}`);
-            }
-
-            const data = await response.json();
-            const models = Array.isArray(data.models) ? data.models : [];
-
-            if (models.length === 0) {
-                showFeedback?.('No models found. Pull a model first with: ollama pull <model>', 'error');
-                return;
-            }
-
-            settingOllamaModelSelect.innerHTML = '';
-            models.forEach((model) => {
-                const option = document.createElement('option');
-                option.value = model.name;
-                option.textContent = model.name;
-                settingOllamaModelSelect.appendChild(option);
-            });
-
-            const currentModel = settingOllamaModel ? settingOllamaModel.value.trim() : '';
-            const modelNames = models.map((m) => m.name);
-            if (currentModel && modelNames.includes(currentModel)) {
-                settingOllamaModelSelect.value = currentModel;
-            }
-
-            settingOllamaModelSelect.classList.remove('hidden');
-
-            settingOllamaModelSelect.addEventListener('change', () => {
-                if (settingOllamaModel) {
-                    settingOllamaModel.value = settingOllamaModelSelect.value;
-                }
-            }, { once: false });
-
-            showFeedback?.(`Found ${models.length} model(s). Select one from the dropdown.`, 'success');
-        } catch (error) {
-            console.error('Failed to fetch Ollama models:', error);
-            showFeedback?.(`Could not reach Ollama at ${baseUrl}. Is it running?`, 'error');
-        } finally {
-            if (fetchOllamaModelsBtn) {
-                fetchOllamaModelsBtn.textContent = 'Fetch';
-                fetchOllamaModelsBtn.disabled = false;
-            }
-        }
-    }
-
-    function bindFetchOllamaModels() {
-        if (!fetchOllamaModelsBtn) {
-            return;
-        }
-
-        fetchOllamaModelsBtn.addEventListener('click', () => {
-            fetchOllamaModels();
+    function bindAsrProviderToggle() {
+        if (!settingAsrProvider) return;
+        settingAsrProvider.addEventListener('change', () => {
+            updateAsrProviderVisibility(settingAsrProvider.value);
         });
     }
 
     function populateDashscopeAiModelOptions(models, selectedModel) {
-        if (!settingDashscopeAiModel) {
-            return;
-        }
-
+        if (!settingDashscopeAiModel) return;
         settingDashscopeAiModel.innerHTML = '';
 
-        const configuredModels = Array.isArray(models) ? models : [];
-        if (configuredModels.length === 0) {
+        const configured = Array.isArray(models) ? models : [];
+        if (configured.length === 0) {
             throw new Error('DashScope AI models are not configured.');
         }
 
-        configuredModels.forEach((modelName) => {
+        configured.forEach((modelName) => {
             const option = document.createElement('option');
             option.value = modelName;
             option.textContent = modelName;
             settingDashscopeAiModel.appendChild(option);
         });
 
-        settingDashscopeAiModel.value = configuredModels.includes(selectedModel)
+        settingDashscopeAiModel.value = configured.includes(selectedModel)
             ? selectedModel
-            : configuredModels[0];
+            : configured[0];
     }
 
-    async function populateMicDeviceOptions() {
-        if (!settingMicDevice) {
-            return;
+    function populateProgrammingLanguageOptions(languages, selectedLanguage) {
+        if (!settingProgrammingLanguage) return;
+        settingProgrammingLanguage.innerHTML = '';
+
+        const configured = Array.isArray(languages) ? languages : [];
+        if (configured.length === 0) {
+            throw new Error('Programming languages are not configured.');
         }
+
+        configured.forEach((languageName) => {
+            const option = document.createElement('option');
+            option.value = languageName;
+            option.textContent = languageName;
+            settingProgrammingLanguage.appendChild(option);
+        });
+
+        settingProgrammingLanguage.value = configured.includes(selectedLanguage)
+            ? selectedLanguage
+            : configured[0];
+    }
+
+    async function enumerateAllDevices() {
+        try {
+            if (navigator.mediaDevices?.enumerateDevices) {
+                return await navigator.mediaDevices.enumerateDevices();
+            }
+        } catch (error) {
+            console.warn('Failed to enumerate audio devices:', error);
+        }
+        return [];
+    }
+
+    async function populateMicDeviceOptions(devices) {
+        if (!settingMicDevice) return;
 
         const savedDeviceId = getSelectedMicDeviceId();
         settingMicDevice.innerHTML = '';
@@ -248,29 +206,14 @@ export function createSettingsPanelManager({
         defaultOption.textContent = 'System default microphone';
         settingMicDevice.appendChild(defaultOption);
 
-        let devices = [];
-        try {
-            // enumerateDevices() only returns device labels after the page has
-            // been granted mic permission at least once. Without it, you'd see
-            // anonymous "Microphone" entries that aren't distinguishable.
-            if (navigator.mediaDevices?.enumerateDevices) {
-                devices = await navigator.mediaDevices.enumerateDevices();
-            }
-        } catch (error) {
-            console.warn('Failed to enumerate audio devices:', error);
-            showFeedback?.('Could not enumerate audio devices. Start a mic capture once to grant permission.', 'error');
-        }
-
-        const audioInputs = devices.filter((device) => device.kind === 'audioinput');
+        const audioInputs = (devices || []).filter((device) => device.kind === 'audioinput');
         const seenIds = new Set();
 
         audioInputs.forEach((device, index) => {
             if (!device.deviceId || device.deviceId === 'default' || device.deviceId === 'communications') {
                 return;
             }
-            if (seenIds.has(device.deviceId)) {
-                return;
-            }
+            if (seenIds.has(device.deviceId)) return;
             seenIds.add(device.deviceId);
 
             const option = document.createElement('option');
@@ -279,81 +222,115 @@ export function createSettingsPanelManager({
             settingMicDevice.appendChild(option);
         });
 
-        if (savedDeviceId && seenIds.has(savedDeviceId)) {
-            settingMicDevice.value = savedDeviceId;
-        } else {
-            settingMicDevice.value = '';
-        }
+        settingMicDevice.value = savedDeviceId && seenIds.has(savedDeviceId) ? savedDeviceId : '';
 
         if (audioInputs.length === 0) {
-            const helperOption = document.createElement('option');
-            helperOption.value = '';
-            helperOption.disabled = true;
-            helperOption.textContent = 'No microphones detected — check OS permissions';
-            settingMicDevice.appendChild(helperOption);
+            const helper = document.createElement('option');
+            helper.value = '';
+            helper.disabled = true;
+            helper.textContent = 'No microphones detected — check OS permissions';
+            settingMicDevice.appendChild(helper);
         } else if (audioInputs.some((device) => !device.label)) {
-            const helperOption = document.createElement('option');
-            helperOption.value = '';
-            helperOption.disabled = true;
-            helperOption.textContent = '(Start mic capture once to reveal device names)';
-            settingMicDevice.appendChild(helperOption);
+            const helper = document.createElement('option');
+            helper.value = '';
+            helper.disabled = true;
+            helper.textContent = '(Start mic capture once to reveal device names)';
+            settingMicDevice.appendChild(helper);
         }
     }
 
-    async function populateSystemSourceOptions() {
-        if (!settingSystemSource) {
-            return;
-        }
+    async function populateSystemSourceOptions(devices) {
+        if (!settingSystemSource) return;
 
-        const savedSourceId = getSelectedSystemSourceId();
+        const saved = getSelectedSystemSourceValue();
         settingSystemSource.innerHTML = '';
 
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
-        defaultOption.textContent = 'First available screen (default)';
+        defaultOption.textContent = 'Windows default loopback (recommended)';
         settingSystemSource.appendChild(defaultOption);
 
-        let sources = [];
+        const audioOutputs = (devices || []).filter((device) => device.kind === 'audiooutput');
+        const audioInputs = (devices || []).filter((device) => device.kind === 'audioinput');
+        const loopbackInputs = audioInputs.filter((device) => isLikelyLoopbackInput(device.label));
+
+        // Group 1: virtual loopback inputs — these CAN be directly captured via
+        // getUserMedia and are the most reliable way to pick a specific source.
+        if (loopbackInputs.length > 0) {
+            const group = document.createElement('optgroup');
+            group.label = 'Virtual loopback (capture-ready)';
+            loopbackInputs.forEach((device) => {
+                if (!device.deviceId) return;
+                const option = document.createElement('option');
+                option.value = `input:${device.deviceId}`;
+                option.textContent = device.label || 'Loopback input';
+                group.appendChild(option);
+            });
+            settingSystemSource.appendChild(group);
+        }
+
+        // Group 2: detected audio output devices — informational. Chromium's
+        // loopback follows the OS default playback device, so picking one here
+        // just hints which output the user wants captured; the underlying
+        // engine still records whatever the OS routes to the default sink.
+        if (audioOutputs.length > 0) {
+            const group = document.createElement('optgroup');
+            group.label = 'OS audio outputs (set as Windows default to capture)';
+            const labelledOutputs = audioOutputs.filter((device) => device.deviceId && device.deviceId !== 'default');
+            labelledOutputs.forEach((device, index) => {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = device.label || `Output ${index + 1}`;
+                option.disabled = true;
+                group.appendChild(option);
+            });
+            if (labelledOutputs.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = '(Start audio once to reveal output names)';
+                option.disabled = true;
+                group.appendChild(option);
+            }
+            settingSystemSource.appendChild(group);
+        }
+
+        // Group 3: per-screen desktopCapturer sources (advanced, multi-monitor).
+        let desktopSources = [];
         try {
             if (window.electronAPI?.getDesktopSources) {
-                sources = await window.electronAPI.getDesktopSources();
+                desktopSources = await window.electronAPI.getDesktopSources();
             }
         } catch (error) {
             console.warn('Failed to load desktop sources:', error);
         }
-
-        const seenIds = new Set();
-        (Array.isArray(sources) ? sources : []).forEach((source, index) => {
-            if (!source?.id || seenIds.has(source.id)) {
-                return;
-            }
-            seenIds.add(source.id);
-
-            const option = document.createElement('option');
-            option.value = source.id;
-            option.textContent = source.name || `Screen ${index + 1}`;
-            settingSystemSource.appendChild(option);
-        });
-
-        if (savedSourceId && seenIds.has(savedSourceId)) {
-            settingSystemSource.value = savedSourceId;
-        } else {
-            settingSystemSource.value = '';
+        if (Array.isArray(desktopSources) && desktopSources.length > 1) {
+            const group = document.createElement('optgroup');
+            group.label = 'Per-screen loopback (multi-monitor)';
+            desktopSources.forEach((source, index) => {
+                if (!source?.id) return;
+                const option = document.createElement('option');
+                option.value = `screen:${source.id}`;
+                option.textContent = source.name || `Screen ${index + 1}`;
+                group.appendChild(option);
+            });
+            settingSystemSource.appendChild(group);
         }
+
+        // Restore selection if the saved value still exists in the dropdown.
+        const allValues = Array.from(settingSystemSource.querySelectorAll('option')).map((opt) => opt.value);
+        settingSystemSource.value = allValues.includes(saved) ? saved : '';
     }
 
     async function refreshAudioDeviceOptions() {
+        const devices = await enumerateAllDevices();
         await Promise.all([
-            populateMicDeviceOptions(),
-            populateSystemSourceOptions()
+            populateMicDeviceOptions(devices),
+            populateSystemSourceOptions(devices)
         ]);
     }
 
     function bindRefreshAudioDevices() {
-        if (!refreshAudioDevicesBtn) {
-            return;
-        }
-
+        if (!refreshAudioDevicesBtn) return;
         refreshAudioDevicesBtn.addEventListener('click', async () => {
             refreshAudioDevicesBtn.disabled = true;
             const previousText = refreshAudioDevicesBtn.textContent;
@@ -371,54 +348,29 @@ export function createSettingsPanelManager({
         });
     }
 
-    function populateProgrammingLanguageOptions(languages, selectedLanguage) {
-        if (!settingProgrammingLanguage) {
-            return;
-        }
-
-        settingProgrammingLanguage.innerHTML = '';
-
-        const configuredLanguages = Array.isArray(languages) ? languages : [];
-        if (configuredLanguages.length === 0) {
-            throw new Error('Programming languages are not configured.');
-        }
-
-        configuredLanguages.forEach((languageName) => {
-            const option = document.createElement('option');
-            option.value = languageName;
-            option.textContent = languageName;
-            settingProgrammingLanguage.appendChild(option);
+    function bindOpenSoundSettings() {
+        if (!openSoundSettingsBtn) return;
+        openSoundSettingsBtn.addEventListener('click', () => {
+            if (window.electronAPI?.openSoundSettings) {
+                window.electronAPI.openSoundSettings().catch((error) => {
+                    console.warn('Failed to open sound settings:', error);
+                });
+            }
         });
-
-        settingProgrammingLanguage.value = configuredLanguages.includes(selectedLanguage)
-            ? selectedLanguage
-            : configuredLanguages[0];
     }
 
     async function openSettings() {
-        if (!settingsPanel) {
-            return;
-        }
+        if (!settingsPanel) return;
 
         try {
             const settings = await window.electronAPI.getSettings();
             if (settings && !settings.error) {
                 applySettingsShortcutConfig?.(settings);
 
-                const activeProvider = settings.aiProvider || 'dashscope';
-                if (settingAiProvider) {
-                    settingAiProvider.value = activeProvider;
-                }
-                updateProviderVisibility(activeProvider);
-
                 populateDashscopeAiModelOptions(
                     settings.dashscopeAiModels,
                     settings.dashscopeAiModel || settings.defaultDashscopeAiModel
                 );
-
-                if (settingOllamaBaseUrl) settingOllamaBaseUrl.value = settings.ollamaBaseUrl || 'http://localhost:11434';
-                if (settingOllamaModel) settingOllamaModel.value = settings.ollamaModel || 'llama3.2';
-                if (settingOllamaModelSelect) settingOllamaModelSelect.classList.add('hidden');
 
                 populateProgrammingLanguageOptions(
                     settings.programmingLanguages,
@@ -452,24 +404,18 @@ export function createSettingsPanelManager({
     }
 
     function closeSettings() {
-        if (settingsPanel) {
-            settingsPanel.classList.add('hidden');
-        }
-
+        if (settingsPanel) settingsPanel.classList.add('hidden');
         setApiKeyFieldVisibility(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope', false);
         setApiKeyFieldVisibility(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei', false);
     }
 
     async function saveSettings() {
         try {
-            const aiProvider = settingAiProvider ? settingAiProvider.value : 'dashscope';
-
             if (!settingProgrammingLanguage || settingProgrammingLanguage.options.length === 0) {
                 throw new Error('Programming languages are not configured.');
             }
 
             const settings = {
-                aiProvider,
                 asrProvider: settingAsrProvider ? settingAsrProvider.value : 'paraformer',
                 dashscopeApiKey: settingDashscopeKey ? settingDashscopeKey.value.trim() : '',
                 dashscopeAiModel: settingDashscopeAiModel ? settingDashscopeAiModel.value : '',
@@ -477,8 +423,6 @@ export function createSettingsPanelManager({
                 xfyunApiKey: settingXfyunKey ? settingXfyunKey.value.trim() : '',
                 resumeText: settingResumeText ? settingResumeText.value : '',
                 jobDescription: settingJobDescription ? settingJobDescription.value : '',
-                ollamaBaseUrl: settingOllamaBaseUrl ? settingOllamaBaseUrl.value.trim() : '',
-                ollamaModel: settingOllamaModel ? settingOllamaModel.value.trim() : '',
                 programmingLanguage: settingProgrammingLanguage.value,
                 windowOpacityLevel: normalizeWindowOpacityLevel(settingWindowOpacity?.value)
             };
@@ -487,14 +431,14 @@ export function createSettingsPanelManager({
 
             if (result.success) {
                 const micDeviceId = settingMicDevice ? settingMicDevice.value : '';
-                const systemSourceId = settingSystemSource ? settingSystemSource.value : '';
+                const systemSourceValue = settingSystemSource ? settingSystemSource.value : '';
                 setStoredValue(MIC_DEVICE_STORAGE_KEY, micDeviceId);
-                setStoredValue(SYSTEM_SOURCE_STORAGE_KEY, systemSourceId);
+                setStoredValue(SYSTEM_SOURCE_STORAGE_KEY, systemSourceValue);
 
-                showFeedback?.('Settings saved. AI changes apply now; ASR provider and audio devices apply on next start.', 'success');
-                onSettingsSaved?.({ ...settings, micDeviceId, systemSourceId });
+                showFeedback?.('Settings saved. ASR provider and audio devices apply on next start.', 'success');
+                onSettingsSaved?.({ ...settings, micDeviceId, systemSourceValue });
                 closeSettings();
-                return { success: true, settings: { ...settings, micDeviceId, systemSourceId } };
+                return { success: true, settings: { ...settings, micDeviceId, systemSourceValue } };
             }
 
             showFeedback?.(`Failed to save: ${result.error}`, 'error');
@@ -508,9 +452,9 @@ export function createSettingsPanelManager({
 
     bindApiKeyVisibilityToggle(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope');
     bindApiKeyVisibilityToggle(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei');
-    bindProviderToggle();
-    bindFetchOllamaModels();
+    bindAsrProviderToggle();
     bindRefreshAudioDevices();
+    bindOpenSoundSettings();
 
     return {
         normalizeWindowOpacityLevel,
@@ -520,6 +464,7 @@ export function createSettingsPanelManager({
         saveSettings,
         refreshAudioDeviceOptions,
         getSelectedMicDeviceId,
-        getSelectedSystemSourceId
+        getSelectedSystemSourceValue,
+        parseSystemSourceSelection
     };
 }
