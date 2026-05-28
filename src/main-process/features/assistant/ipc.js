@@ -1,19 +1,19 @@
-﻿function registerAssistantIpc({
+function registerAssistantIpc({
   ipcMain,
   screenshotManager,
   windowController,
   geminiRuntime,
-  assemblyAiService,
+  asrService,
   sendToRenderer,
   quitApplication
 }) {
   let chatContext = [];
 
   function getAllKeysUnavailableMessage() {
-    return 'All configured Gemini API keys are currently unavailable (quota exhausted or invalid). Please wait and try again later.';
+    return 'The configured DashScope API key is unavailable (quota exhausted or invalid). Please wait or update the key in Settings.';
   }
 
-  function mapGeminiErrorMessage(error, fallbackPrefix = 'Request failed') {
+  function mapAiErrorMessage(error, fallbackPrefix = 'Request failed') {
     const message = String(error?.message || '');
     const normalizedMessage = message.toLowerCase();
 
@@ -26,7 +26,7 @@
     }
 
     if (normalizedMessage.includes('no api key configured') || normalizedMessage.includes('no gemini api key')) {
-      return 'No Gemini API key configured. Add it in Settings.';
+      return 'No AI API key configured. Add a DashScope key in Settings.';
     }
 
     if (
@@ -40,7 +40,7 @@
       normalizedMessage.includes('401') ||
       normalizedMessage.includes('403')
     ) {
-      return 'Invalid Gemini API key. Please check the key values in Settings.';
+      return 'Invalid DashScope API key. Please check the key in Settings.';
     }
 
     if (
@@ -53,6 +53,15 @@
 
     if (normalizedMessage.includes('network') || normalizedMessage.includes('fetch')) {
       return 'Network error. Please check your internet connection.';
+    }
+
+    if (
+      normalizedMessage.includes('model not found') ||
+      normalizedMessage.includes('model does not exist') ||
+      normalizedMessage.includes('does not exist or you do not have access') ||
+      normalizedMessage.includes('invalidparameter.model')
+    ) {
+      return 'Selected DashScope model is not available. Open Settings and pick a different one (e.g. deepseek-v4-flash or qwen3.6-plus).';
     }
 
     if (normalizedMessage.includes('model')) {
@@ -73,13 +82,13 @@
     console.log('Starting context-aware analysis...');
     console.log('Context length:', contextString.length);
     console.log('API Keys configured:', geminiRuntime.getApiKeys().length);
-    console.log('Model initialized:', !!(geminiRuntime.getService() && geminiRuntime.getService().model));
+    console.log('Model initialized:', !!(geminiRuntime.getService() && geminiRuntime.getService().modelName));
     console.log('Programming language preference:', geminiRuntime.getActiveProgrammingLanguage());
     console.log('Screenshots count:', screenshotManager.getScreenshotsCount());
 
     if (!geminiRuntime.hasApiKeys()) {
       sendToRenderer('analysis-result', {
-        error: 'No Gemini API key configured. Add it in Settings.'
+        error: 'No AI API key configured. Add a DashScope key in Settings.'
       });
       return;
     }
@@ -112,7 +121,7 @@
       sendToRenderer('ai-stream-start', { actionId: 'screenAi' });
 
       const text = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-        if (!geminiService || !geminiService.model) {
+        if (!geminiService || !geminiService.modelName) {
           throw new Error('AI model not initialized. Please check your API key.');
         }
 
@@ -137,7 +146,7 @@
 
       sendToRenderer('ai-stream-end', { actionId: 'screenAi' });
       sendToRenderer('analysis-result', {
-        error: mapGeminiErrorMessage(error, 'Analysis failed')
+        error: mapAiErrorMessage(error, 'Analysis failed')
       });
     }
   }
@@ -187,10 +196,10 @@
     const mode = payload?.mode === 'best-next-answer' ? 'best-next-answer' : 'best-next-answer';
 
     try {
-      assemblyAiService.flushAllSttHistoryBuffers('pre-ask-ai');
+      asrService.flushAllSttHistoryBuffers('pre-ask-ai');
 
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No Gemini API key configured. Add it in Settings.');
+        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
       }
 
       const transcriptContext = typeof payload?.transcriptContext === 'string'
@@ -234,7 +243,7 @@
           usedScreenshots = true;
           usedScreenshotCount = imageParts.length;
           text = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-            if (!geminiService || !geminiService.model) {
+            if (!geminiService || !geminiService.modelName) {
               throw new Error('AI model not initialized. Please check your API key.');
             }
 
@@ -252,7 +261,7 @@
 
       if (!text) {
         text = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-          if (!geminiService || !geminiService.model) {
+          if (!geminiService || !geminiService.modelName) {
             throw new Error('AI model not initialized. Please check your API key.');
           }
 
@@ -281,7 +290,7 @@
       sendToRenderer('ai-stream-end', { actionId: 'askAi' });
       return {
         success: false,
-        error: mapGeminiErrorMessage(error, 'Ask AI failed'),
+        error: mapAiErrorMessage(error, 'Ask AI failed'),
         mode,
         usedScreenshots: false
       };
@@ -312,9 +321,9 @@
 
   ipcMain.handle('suggest-response', async (_event, context) => {
     try {
-      assemblyAiService.flushAllSttHistoryBuffers('pre-suggest');
+      asrService.flushAllSttHistoryBuffers('pre-suggest');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No Gemini API key configured. Add it in Settings.');
+        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
       }
 
       const payload = typeof context === 'object' && context !== null
@@ -333,8 +342,8 @@
       sendToRenderer('ai-stream-start', { actionId: 'suggest' });
 
       const suggestions = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-        if (!geminiService || !geminiService.model) {
-          throw new Error('Gemini service not initialized');
+        if (!geminiService || !geminiService.modelName) {
+          throw new Error('AI service not initialized');
         }
 
         return geminiService.suggestResponse(contextPrompt, {
@@ -348,15 +357,15 @@
     } catch (error) {
       console.error('Error generating suggestions:', error);
       sendToRenderer('ai-stream-end', { actionId: 'suggest' });
-      return { success: false, error: mapGeminiErrorMessage(error, 'Failed to generate suggestions') };
+      return { success: false, error: mapAiErrorMessage(error, 'Failed to generate suggestions') };
     }
   });
 
   ipcMain.handle('generate-meeting-notes', async (_event, payload = {}) => {
     try {
-      assemblyAiService.flushAllSttHistoryBuffers('pre-notes');
+      asrService.flushAllSttHistoryBuffers('pre-notes');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No Gemini API key configured. Add it in Settings.');
+        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
       }
 
       const contextStringOverride = typeof payload?.contextString === 'string'
@@ -369,8 +378,8 @@
       sendToRenderer('ai-stream-start', { actionId: 'notes' });
 
       const notes = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-        if (!geminiService || !geminiService.model) {
-          throw new Error('Gemini service not initialized');
+        if (!geminiService || !geminiService.modelName) {
+          throw new Error('AI service not initialized');
         }
 
         return geminiService.generateMeetingNotes({
@@ -384,20 +393,20 @@
     } catch (error) {
       console.error('Error generating meeting notes:', error);
       sendToRenderer('ai-stream-end', { actionId: 'notes' });
-      return { success: false, error: mapGeminiErrorMessage(error, 'Failed to generate meeting notes') };
+      return { success: false, error: mapAiErrorMessage(error, 'Failed to generate meeting notes') };
     }
   });
 
   ipcMain.handle('generate-follow-up-email', async () => {
     try {
-      assemblyAiService.flushAllSttHistoryBuffers('pre-followup');
+      asrService.flushAllSttHistoryBuffers('pre-followup');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No Gemini API key configured. Add it in Settings.');
+        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
       }
 
       const email = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-        if (!geminiService || !geminiService.model) {
-          throw new Error('Gemini service not initialized');
+        if (!geminiService || !geminiService.modelName) {
+          throw new Error('AI service not initialized');
         }
 
         return geminiService.generateFollowUpEmail();
@@ -406,20 +415,20 @@
       return { success: true, email };
     } catch (error) {
       console.error('Error generating email:', error);
-      return { success: false, error: mapGeminiErrorMessage(error, 'Failed to generate follow-up email') };
+      return { success: false, error: mapAiErrorMessage(error, 'Failed to generate follow-up email') };
     }
   });
 
   ipcMain.handle('answer-question', async (_event, question) => {
     try {
-      assemblyAiService.flushAllSttHistoryBuffers('pre-answer');
+      asrService.flushAllSttHistoryBuffers('pre-answer');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No Gemini API key configured. Add it in Settings.');
+        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
       }
 
       const answer = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-        if (!geminiService || !geminiService.model) {
-          throw new Error('Gemini service not initialized');
+        if (!geminiService || !geminiService.modelName) {
+          throw new Error('AI service not initialized');
         }
 
         return geminiService.answerQuestion(question);
@@ -428,15 +437,15 @@
       return { success: true, answer };
     } catch (error) {
       console.error('Error answering question:', error);
-      return { success: false, error: mapGeminiErrorMessage(error, 'Failed to answer question') };
+      return { success: false, error: mapAiErrorMessage(error, 'Failed to answer question') };
     }
   });
 
   ipcMain.handle('get-conversation-insights', async (_event, payload = {}) => {
     try {
-      assemblyAiService.flushAllSttHistoryBuffers('pre-insights');
+      asrService.flushAllSttHistoryBuffers('pre-insights');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No Gemini API key configured. Add it in Settings.');
+        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
       }
 
       const contextStringOverride = typeof payload?.contextString === 'string'
@@ -449,8 +458,8 @@
       sendToRenderer('ai-stream-start', { actionId: 'insights' });
 
       const insights = await geminiRuntime.executeWithKeyFailover((geminiService) => {
-        if (!geminiService || !geminiService.model) {
-          throw new Error('Gemini service not initialized');
+        if (!geminiService || !geminiService.modelName) {
+          throw new Error('AI service not initialized');
         }
 
         return geminiService.getConversationInsights({
@@ -464,7 +473,7 @@
     } catch (error) {
       console.error('Error getting insights:', error);
       sendToRenderer('ai-stream-end', { actionId: 'insights' });
-      return { success: false, error: mapGeminiErrorMessage(error, 'Failed to get conversation insights') };
+      return { success: false, error: mapAiErrorMessage(error, 'Failed to get conversation insights') };
     }
   });
 
@@ -472,7 +481,7 @@
     const geminiService = geminiRuntime.getService();
 
     try {
-      assemblyAiService.resetSttHistoryBuffers();
+      asrService.resetSttHistoryBuffers();
       if (geminiService) {
         geminiService.clearHistory();
       }

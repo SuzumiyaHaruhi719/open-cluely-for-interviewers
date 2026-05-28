@@ -14,7 +14,15 @@ export function createChatUiManager({
     isAutoScrollEnabled = () => true
 }) {
     function formatResponse(text) {
-        return String(text || '')
+        // SECURITY: escapeHtml FIRST, then apply markdown-style transforms.
+        // Previously this returned raw markdown→HTML, which let model-
+        // controlled content (or untrusted mobile-server inbound text)
+        // inject `<img src=x onerror=...>` and similar. Escaping first
+        // neutralises all HTML in the source string; Markdown patterns
+        // (asterisks, backticks, newlines) survive escaping since they
+        // are ASCII non-special characters. The transforms below then
+        // re-introduce HTML tags only at the known-safe positions.
+        return escapeHtml(String(text || ''))
             .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -84,6 +92,13 @@ export function createChatUiManager({
             case 'ai-response':
                 icon = '\u{1F916}';
                 contentClass = 'message-content ai-response';
+                safeContent = formatResponse(content);
+                break;
+
+            case 'interviewer-coach':
+                icon = '\u{1F3AF}';
+                label = 'Coach';
+                contentClass = 'message-content interviewer-coach';
                 safeContent = formatResponse(content);
                 break;
 

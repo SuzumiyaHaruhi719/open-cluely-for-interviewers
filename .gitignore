@@ -30,6 +30,9 @@ pids/
 .env.test.local
 .env.production.local
 
+# Personal Claude Code env-var bootstrap (contains DashScope key — do NOT commit)
+setup-claude-env.ps1
+
 # IDE-specific files
 .idea/
 .vscode/

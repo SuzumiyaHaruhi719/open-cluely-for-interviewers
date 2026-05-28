@@ -176,6 +176,18 @@ function createInvokeActions(ipcRenderer) {
       channel: 'mobile-server-get-status',
       label: 'getMobileServerStatus',
       fallback: () => ({ listening: false, port: 7823, urls: [], clientCount: 0, error: null })
+    }),
+
+    interviewerAnalyzeAnswer: invokeWithFallback(ipcRenderer, {
+      channel: 'interviewer-analyze-answer',
+      label: 'interviewerAnalyzeAnswer',
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
+    interviewerIsConfigured: invokeWithFallback(ipcRenderer, {
+      channel: 'interviewer-is-configured',
+      label: 'interviewerIsConfigured',
+      fallback: () => ({ configured: false })
     })
   };
 }

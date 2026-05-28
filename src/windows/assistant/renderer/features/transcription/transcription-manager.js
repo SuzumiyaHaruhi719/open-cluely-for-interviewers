@@ -19,7 +19,9 @@ export function createTranscriptionManager({
     addChatMessage,
     showFeedback,
     isAutoScrollEnabled = () => true,
-    isChatNearBottom = () => true
+    isChatNearBottom = () => true,
+    getSelectedMicDeviceId = () => '',
+    getSelectedSystemSourceId = () => ''
 }) {
     let micAudioContext = null;
     let micMediaStream = null;
@@ -204,8 +206,8 @@ export function createTranscriptionManager({
         transcriptBufferManager.flushFinalTranscript(source, reason);
     }
 
-    function queueFinalTranscript(source, text) {
-        transcriptBufferManager.queueFinalTranscript(source, text);
+    function queueFinalTranscript(source, text, emotion) {
+        transcriptBufferManager.queueFinalTranscript(source, text, emotion);
     }
 
     function flushAllFinalTranscripts(reason = 'flush-all') {
@@ -313,9 +315,28 @@ export function createTranscriptionManager({
             const result = await window.electronAPI.startVoiceRecognition('mic');
             if (result && result.error) throw new Error(result.error);
 
-            micMediaStream = await navigator.mediaDevices.getUserMedia({
-                audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true }
-            });
+            const selectedMicDeviceId = String(getSelectedMicDeviceId() || '').trim();
+            const audioConstraint = {
+                channelCount: 1,
+                echoCancellation: true,
+                noiseSuppression: true
+            };
+            if (selectedMicDeviceId) {
+                audioConstraint.deviceId = { exact: selectedMicDeviceId };
+                addMonitorLog('info', 'mic-device', `Using selected mic device ${selectedMicDeviceId.slice(0, 8)}…`, 'mic');
+            }
+
+            try {
+                micMediaStream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraint });
+            } catch (deviceError) {
+                if (selectedMicDeviceId) {
+                    addMonitorLog('warn', 'mic-device-fallback', `Selected mic unavailable (${deviceError.message}); falling back to default`, 'mic');
+                    delete audioConstraint.deviceId;
+                    micMediaStream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraint });
+                } else {
+                    throw deviceError;
+                }
+            }
             micAudioContext = new AudioContext();
             await micAudioContext.resume();
             resetSourceSampleQueue('mic');
@@ -379,8 +400,20 @@ export function createTranscriptionManager({
         try {
             const sources = await window.electronAPI.getDesktopSources();
             if (!sources || sources.length === 0) throw new Error('No desktop sources found');
-            const sourceId = sources[0].id;
-            addMonitorLog('info', 'desktop-source', `Using desktop source: ${sources[0].name || sourceId}`, 'system');
+
+            const selectedSystemSourceId = String(getSelectedSystemSourceId() || '').trim();
+            let chosenSource = null;
+            if (selectedSystemSourceId) {
+                chosenSource = sources.find((source) => source?.id === selectedSystemSourceId) || null;
+                if (!chosenSource) {
+                    addMonitorLog('warn', 'desktop-source-fallback', `Saved screen ${selectedSystemSourceId} not found; falling back to first available`, 'system');
+                }
+            }
+            if (!chosenSource) {
+                chosenSource = sources[0];
+            }
+            const sourceId = chosenSource.id;
+            addMonitorLog('info', 'desktop-source', `Using desktop source: ${chosenSource.name || sourceId}`, 'system');
 
             const result = await window.electronAPI.startVoiceRecognition('system');
             if (result && result.error) throw new Error(result.error);
@@ -500,10 +533,12 @@ export function createTranscriptionManager({
         if (!text || text.trim().length === 0) return;
 
         const finalText = text.trim();
+        const emotion = data?.emotion && data.emotion.tag ? data.emotion : null;
         monitorLastText[source] = `Final: ${finalText}`;
         renderMonitorState();
         addMonitorLog('info', 'final', 'Final transcript received', source, {
-            chars: finalText.length
+            chars: finalText.length,
+            emotion: emotion ? `${emotion.tag}/${emotion.confidence ?? '?'}` : null
         });
 
         if (source === 'mic') {
@@ -519,7 +554,7 @@ export function createTranscriptionManager({
             }
             systemPartialText = '';
         }
-        queueFinalTranscript(source, finalText);
+        queueFinalTranscript(source, finalText, emotion);
     }
 
     function handleVoskStatus(data) {

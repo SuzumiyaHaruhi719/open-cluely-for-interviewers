@@ -7,16 +7,18 @@ const APP_STATE_FILE_NAME = 'app-state.json';
 function getDefaultAppState() {
   return {
     aiProvider: null,
-    geminiApiKey: null,
-    assemblyAiApiKey: null,
-    geminiApiKeyIndex: 0,
-    geminiModel: null,
+    asrProvider: null,
+    dashscopeApiKey: null,
+    dashscopeAiModel: null,
+    xfyunAppId: null,
+    xfyunApiKey: null,
     ollamaBaseUrl: null,
     ollamaModel: null,
-    assemblyAiSpeechModel: null,
     programmingLanguage: null,
     windowOpacityLevel: 10,
-    themePreference: null
+    themePreference: null,
+    resumeText: null,
+    jobDescription: null
   };
 }
 
@@ -25,27 +27,42 @@ function sanitizeAppState(state) {
 
   if (state && typeof state === 'object' && !Array.isArray(state)) {
     const aiProvider = String(state.aiProvider ?? '').trim().toLowerCase();
-    if (aiProvider === 'gemini' || aiProvider === 'ollama') {
+    if (['dashscope', 'ollama'].includes(aiProvider)) {
       nextState.aiProvider = aiProvider;
     }
 
-    if (typeof state.geminiApiKey === 'string') {
-      const geminiApiKey = state.geminiApiKey.trim();
-      nextState.geminiApiKey = geminiApiKey || null;
+    const asrProvider = String(state.asrProvider ?? '').trim().toLowerCase();
+    if (['paraformer', 'xfyun'].includes(asrProvider)) {
+      nextState.asrProvider = asrProvider;
     }
 
-    if (typeof state.assemblyAiApiKey === 'string') {
-      const assemblyAiApiKey = state.assemblyAiApiKey.trim();
-      nextState.assemblyAiApiKey = assemblyAiApiKey || null;
+    if (typeof state.dashscopeApiKey === 'string') {
+      const dashscopeApiKey = state.dashscopeApiKey.trim();
+      nextState.dashscopeApiKey = dashscopeApiKey || null;
     }
 
-    const geminiApiKeyIndex = Number.parseInt(String(state.geminiApiKeyIndex ?? ''), 10);
-    if (Number.isFinite(geminiApiKeyIndex) && geminiApiKeyIndex >= 0) {
-      nextState.geminiApiKeyIndex = geminiApiKeyIndex;
+    if (typeof state.dashscopeAiModel === 'string' && state.dashscopeAiModel.trim()) {
+      nextState.dashscopeAiModel = state.dashscopeAiModel.trim();
     }
 
-    if (typeof state.geminiModel === 'string' && state.geminiModel.trim()) {
-      nextState.geminiModel = state.geminiModel.trim();
+    if (typeof state.xfyunAppId === 'string') {
+      const xfyunAppId = state.xfyunAppId.trim();
+      nextState.xfyunAppId = xfyunAppId || null;
+    }
+
+    if (typeof state.xfyunApiKey === 'string') {
+      const xfyunApiKey = state.xfyunApiKey.trim();
+      nextState.xfyunApiKey = xfyunApiKey || null;
+    }
+
+    if (typeof state.resumeText === 'string') {
+      const resumeText = state.resumeText.trim();
+      nextState.resumeText = resumeText || null;
+    }
+
+    if (typeof state.jobDescription === 'string') {
+      const jobDescription = state.jobDescription.trim();
+      nextState.jobDescription = jobDescription || null;
     }
 
     if (typeof state.ollamaBaseUrl === 'string' && state.ollamaBaseUrl.trim()) {
@@ -54,10 +71,6 @@ function sanitizeAppState(state) {
 
     if (typeof state.ollamaModel === 'string' && state.ollamaModel.trim()) {
       nextState.ollamaModel = state.ollamaModel.trim();
-    }
-
-    if (typeof state.assemblyAiSpeechModel === 'string' && state.assemblyAiSpeechModel.trim()) {
-      nextState.assemblyAiSpeechModel = state.assemblyAiSpeechModel.trim();
     }
 
     if (typeof state.programmingLanguage === 'string' && state.programmingLanguage.trim()) {

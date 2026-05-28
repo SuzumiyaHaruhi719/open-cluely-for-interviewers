@@ -2,24 +2,63 @@ function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 }
 
+export const MIC_DEVICE_STORAGE_KEY = 'open-cluely.audioDevice.mic';
+export const SYSTEM_SOURCE_STORAGE_KEY = 'open-cluely.audioDevice.system';
+
+export function getSelectedMicDeviceId() {
+    try {
+        return localStorage.getItem(MIC_DEVICE_STORAGE_KEY) || '';
+    } catch (_) {
+        return '';
+    }
+}
+
+export function getSelectedSystemSourceId() {
+    try {
+        return localStorage.getItem(SYSTEM_SOURCE_STORAGE_KEY) || '';
+    } catch (_) {
+        return '';
+    }
+}
+
+function setStoredValue(key, value) {
+    try {
+        if (value) {
+            localStorage.setItem(key, value);
+        } else {
+            localStorage.removeItem(key);
+        }
+    } catch (_) {
+        // localStorage may be unavailable; ignore.
+    }
+}
+
 export function createSettingsPanelManager({
     settingsPanel,
     settingAiProvider,
-    geminiSettingsGroup,
+    dashscopeSettingsGroup,
     ollamaSettingsGroup,
-    settingGeminiKey,
-    toggleGeminiKeyVisibilityBtn,
-    settingGeminiModel,
+    settingDashscopeAiModel,
     settingProgrammingLanguage,
     settingOllamaBaseUrl,
     settingOllamaModel,
     settingOllamaModelSelect,
     fetchOllamaModelsBtn,
-    settingAssemblyKey,
-    toggleAssemblyKeyVisibilityBtn,
-    settingAssemblyModel,
+    settingAsrProvider,
+    paraformerSettingsGroup,
+    xfyunSettingsGroup,
+    settingDashscopeKey,
+    toggleDashscopeKeyVisibilityBtn,
+    settingXfyunAppId,
+    settingXfyunKey,
+    toggleXfyunKeyVisibilityBtn,
+    settingResumeText,
+    settingJobDescription,
     settingWindowOpacity,
     settingWindowOpacityValue,
+    settingMicDevice,
+    settingSystemSource,
+    refreshAudioDevicesBtn,
     applySettingsShortcutConfig,
     showFeedback,
     onSettingsSaved
@@ -71,24 +110,35 @@ export function createSettingsPanelManager({
     }
 
     function updateProviderVisibility(provider) {
-        const isGemini = provider !== 'ollama';
-
-        if (geminiSettingsGroup) {
-            geminiSettingsGroup.classList.toggle('hidden', !isGemini);
+        if (dashscopeSettingsGroup) {
+            dashscopeSettingsGroup.classList.toggle('hidden', provider !== 'dashscope');
         }
         if (ollamaSettingsGroup) {
-            ollamaSettingsGroup.classList.toggle('hidden', isGemini);
+            ollamaSettingsGroup.classList.toggle('hidden', provider !== 'ollama');
+        }
+    }
+
+    function updateAsrProviderVisibility(provider) {
+        if (paraformerSettingsGroup) {
+            paraformerSettingsGroup.classList.toggle('hidden', provider !== 'paraformer');
+        }
+        if (xfyunSettingsGroup) {
+            xfyunSettingsGroup.classList.toggle('hidden', provider !== 'xfyun');
         }
     }
 
     function bindProviderToggle() {
-        if (!settingAiProvider) {
-            return;
+        if (settingAiProvider) {
+            settingAiProvider.addEventListener('change', () => {
+                updateProviderVisibility(settingAiProvider.value);
+            });
         }
 
-        settingAiProvider.addEventListener('change', () => {
-            updateProviderVisibility(settingAiProvider.value);
-        });
+        if (settingAsrProvider) {
+            settingAsrProvider.addEventListener('change', () => {
+                updateAsrProviderVisibility(settingAsrProvider.value);
+            });
+        }
     }
 
     async function fetchOllamaModels() {
@@ -125,7 +175,6 @@ export function createSettingsPanelManager({
                 settingOllamaModelSelect.appendChild(option);
             });
 
-            // Pre-select current model if it's in the list
             const currentModel = settingOllamaModel ? settingOllamaModel.value.trim() : '';
             const modelNames = models.map((m) => m.name);
             if (currentModel && modelNames.includes(currentModel)) {
@@ -134,7 +183,6 @@ export function createSettingsPanelManager({
 
             settingOllamaModelSelect.classList.remove('hidden');
 
-            // When user picks from dropdown, update the text input
             settingOllamaModelSelect.addEventListener('change', () => {
                 if (settingOllamaModel) {
                     settingOllamaModel.value = settingOllamaModelSelect.value;
@@ -163,28 +211,164 @@ export function createSettingsPanelManager({
         });
     }
 
-    function populateGeminiModelOptions(models, selectedModel) {
-        if (!settingGeminiModel) {
+    function populateDashscopeAiModelOptions(models, selectedModel) {
+        if (!settingDashscopeAiModel) {
             return;
         }
 
-        settingGeminiModel.innerHTML = '';
+        settingDashscopeAiModel.innerHTML = '';
 
         const configuredModels = Array.isArray(models) ? models : [];
         if (configuredModels.length === 0) {
-            throw new Error('Gemini models are not configured.');
+            throw new Error('DashScope AI models are not configured.');
         }
 
         configuredModels.forEach((modelName) => {
             const option = document.createElement('option');
             option.value = modelName;
             option.textContent = modelName;
-            settingGeminiModel.appendChild(option);
+            settingDashscopeAiModel.appendChild(option);
         });
 
-        settingGeminiModel.value = configuredModels.includes(selectedModel)
+        settingDashscopeAiModel.value = configuredModels.includes(selectedModel)
             ? selectedModel
             : configuredModels[0];
+    }
+
+    async function populateMicDeviceOptions() {
+        if (!settingMicDevice) {
+            return;
+        }
+
+        const savedDeviceId = getSelectedMicDeviceId();
+        settingMicDevice.innerHTML = '';
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'System default microphone';
+        settingMicDevice.appendChild(defaultOption);
+
+        let devices = [];
+        try {
+            // enumerateDevices() only returns device labels after the page has
+            // been granted mic permission at least once. Without it, you'd see
+            // anonymous "Microphone" entries that aren't distinguishable.
+            if (navigator.mediaDevices?.enumerateDevices) {
+                devices = await navigator.mediaDevices.enumerateDevices();
+            }
+        } catch (error) {
+            console.warn('Failed to enumerate audio devices:', error);
+            showFeedback?.('Could not enumerate audio devices. Start a mic capture once to grant permission.', 'error');
+        }
+
+        const audioInputs = devices.filter((device) => device.kind === 'audioinput');
+        const seenIds = new Set();
+
+        audioInputs.forEach((device, index) => {
+            if (!device.deviceId || device.deviceId === 'default' || device.deviceId === 'communications') {
+                return;
+            }
+            if (seenIds.has(device.deviceId)) {
+                return;
+            }
+            seenIds.add(device.deviceId);
+
+            const option = document.createElement('option');
+            option.value = device.deviceId;
+            option.textContent = device.label || `Microphone ${index + 1}`;
+            settingMicDevice.appendChild(option);
+        });
+
+        if (savedDeviceId && seenIds.has(savedDeviceId)) {
+            settingMicDevice.value = savedDeviceId;
+        } else {
+            settingMicDevice.value = '';
+        }
+
+        if (audioInputs.length === 0) {
+            const helperOption = document.createElement('option');
+            helperOption.value = '';
+            helperOption.disabled = true;
+            helperOption.textContent = 'No microphones detected — check OS permissions';
+            settingMicDevice.appendChild(helperOption);
+        } else if (audioInputs.some((device) => !device.label)) {
+            const helperOption = document.createElement('option');
+            helperOption.value = '';
+            helperOption.disabled = true;
+            helperOption.textContent = '(Start mic capture once to reveal device names)';
+            settingMicDevice.appendChild(helperOption);
+        }
+    }
+
+    async function populateSystemSourceOptions() {
+        if (!settingSystemSource) {
+            return;
+        }
+
+        const savedSourceId = getSelectedSystemSourceId();
+        settingSystemSource.innerHTML = '';
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'First available screen (default)';
+        settingSystemSource.appendChild(defaultOption);
+
+        let sources = [];
+        try {
+            if (window.electronAPI?.getDesktopSources) {
+                sources = await window.electronAPI.getDesktopSources();
+            }
+        } catch (error) {
+            console.warn('Failed to load desktop sources:', error);
+        }
+
+        const seenIds = new Set();
+        (Array.isArray(sources) ? sources : []).forEach((source, index) => {
+            if (!source?.id || seenIds.has(source.id)) {
+                return;
+            }
+            seenIds.add(source.id);
+
+            const option = document.createElement('option');
+            option.value = source.id;
+            option.textContent = source.name || `Screen ${index + 1}`;
+            settingSystemSource.appendChild(option);
+        });
+
+        if (savedSourceId && seenIds.has(savedSourceId)) {
+            settingSystemSource.value = savedSourceId;
+        } else {
+            settingSystemSource.value = '';
+        }
+    }
+
+    async function refreshAudioDeviceOptions() {
+        await Promise.all([
+            populateMicDeviceOptions(),
+            populateSystemSourceOptions()
+        ]);
+    }
+
+    function bindRefreshAudioDevices() {
+        if (!refreshAudioDevicesBtn) {
+            return;
+        }
+
+        refreshAudioDevicesBtn.addEventListener('click', async () => {
+            refreshAudioDevicesBtn.disabled = true;
+            const previousText = refreshAudioDevicesBtn.textContent;
+            refreshAudioDevicesBtn.textContent = '...';
+            try {
+                await refreshAudioDeviceOptions();
+                showFeedback?.('Audio devices refreshed', 'success');
+            } catch (error) {
+                console.error('Failed to refresh audio devices:', error);
+                showFeedback?.('Failed to refresh audio devices', 'error');
+            } finally {
+                refreshAudioDevicesBtn.textContent = previousText;
+                refreshAudioDevicesBtn.disabled = false;
+            }
+        });
     }
 
     function populateProgrammingLanguageOptions(languages, selectedLanguage) {
@@ -211,30 +395,6 @@ export function createSettingsPanelManager({
             : configuredLanguages[0];
     }
 
-    function populateAssemblyAiSpeechModelOptions(models, selectedModel) {
-        if (!settingAssemblyModel) {
-            return;
-        }
-
-        settingAssemblyModel.innerHTML = '';
-
-        const configuredModels = Array.isArray(models) ? models : [];
-        if (configuredModels.length === 0) {
-            throw new Error('AssemblyAI speech models are not configured.');
-        }
-
-        configuredModels.forEach((modelName) => {
-            const option = document.createElement('option');
-            option.value = modelName;
-            option.textContent = modelName;
-            settingAssemblyModel.appendChild(option);
-        });
-
-        settingAssemblyModel.value = configuredModels.includes(selectedModel)
-            ? selectedModel
-            : configuredModels[0];
-    }
-
     async function openSettings() {
         if (!settingsPanel) {
             return;
@@ -245,18 +405,17 @@ export function createSettingsPanelManager({
             if (settings && !settings.error) {
                 applySettingsShortcutConfig?.(settings);
 
-                // AI Provider
-                const activeProvider = settings.aiProvider || 'gemini';
+                const activeProvider = settings.aiProvider || 'dashscope';
                 if (settingAiProvider) {
                     settingAiProvider.value = activeProvider;
                 }
                 updateProviderVisibility(activeProvider);
 
-                // Gemini settings
-                if (settingGeminiKey) settingGeminiKey.value = settings.geminiApiKey || '';
-                populateGeminiModelOptions(settings.geminiModels, settings.geminiModel || settings.defaultGeminiModel);
+                populateDashscopeAiModelOptions(
+                    settings.dashscopeAiModels,
+                    settings.dashscopeAiModel || settings.defaultDashscopeAiModel
+                );
 
-                // Ollama settings
                 if (settingOllamaBaseUrl) settingOllamaBaseUrl.value = settings.ollamaBaseUrl || 'http://localhost:11434';
                 if (settingOllamaModel) settingOllamaModel.value = settings.ollamaModel || 'llama3.2';
                 if (settingOllamaModelSelect) settingOllamaModelSelect.classList.add('hidden');
@@ -265,11 +424,16 @@ export function createSettingsPanelManager({
                     settings.programmingLanguages,
                     settings.programmingLanguage || settings.defaultProgrammingLanguage
                 );
-                if (settingAssemblyKey) settingAssemblyKey.value = settings.assemblyAiApiKey || '';
-                populateAssemblyAiSpeechModelOptions(
-                    settings.assemblyAiSpeechModels,
-                    settings.assemblyAiSpeechModel || settings.defaultAssemblyAiSpeechModel
-                );
+
+                const activeAsrProvider = settings.asrProvider || 'paraformer';
+                if (settingAsrProvider) settingAsrProvider.value = activeAsrProvider;
+                updateAsrProviderVisibility(activeAsrProvider);
+
+                if (settingDashscopeKey) settingDashscopeKey.value = settings.dashscopeApiKey || '';
+                if (settingXfyunAppId) settingXfyunAppId.value = settings.xfyunAppId || '';
+                if (settingXfyunKey) settingXfyunKey.value = settings.xfyunApiKey || '';
+                if (settingResumeText) settingResumeText.value = settings.resumeText || '';
+                if (settingJobDescription) settingJobDescription.value = settings.jobDescription || '';
                 if (settingWindowOpacity) {
                     settingWindowOpacity.value = normalizeWindowOpacityLevel(settings.windowOpacityLevel);
                 }
@@ -279,8 +443,10 @@ export function createSettingsPanelManager({
             console.error('Failed to load settings:', error);
         }
 
-        setApiKeyFieldVisibility(settingGeminiKey, toggleGeminiKeyVisibilityBtn, 'Gemini', false);
-        setApiKeyFieldVisibility(settingAssemblyKey, toggleAssemblyKeyVisibilityBtn, 'AssemblyAI', false);
+        setApiKeyFieldVisibility(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope', false);
+        setApiKeyFieldVisibility(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei', false);
+
+        await refreshAudioDeviceOptions();
 
         settingsPanel.classList.remove('hidden');
     }
@@ -290,51 +456,49 @@ export function createSettingsPanelManager({
             settingsPanel.classList.add('hidden');
         }
 
-        setApiKeyFieldVisibility(settingGeminiKey, toggleGeminiKeyVisibilityBtn, 'Gemini', false);
-        setApiKeyFieldVisibility(settingAssemblyKey, toggleAssemblyKeyVisibilityBtn, 'AssemblyAI', false);
+        setApiKeyFieldVisibility(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope', false);
+        setApiKeyFieldVisibility(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei', false);
     }
 
     async function saveSettings() {
         try {
-            const aiProvider = settingAiProvider ? settingAiProvider.value : 'gemini';
-
-            if (aiProvider === 'gemini') {
-                if (!settingGeminiModel || settingGeminiModel.options.length === 0) {
-                    throw new Error('Gemini models are not configured.');
-                }
-            }
+            const aiProvider = settingAiProvider ? settingAiProvider.value : 'dashscope';
 
             if (!settingProgrammingLanguage || settingProgrammingLanguage.options.length === 0) {
                 throw new Error('Programming languages are not configured.');
             }
 
-            if (!settingAssemblyModel || settingAssemblyModel.options.length === 0) {
-                throw new Error('AssemblyAI speech models are not configured.');
-            }
-
             const settings = {
                 aiProvider,
-                geminiApiKey: settingGeminiKey ? settingGeminiKey.value.trim() : '',
-                assemblyAiApiKey: settingAssemblyKey ? settingAssemblyKey.value.trim() : '',
-                geminiModel: settingGeminiModel ? settingGeminiModel.value : '',
+                asrProvider: settingAsrProvider ? settingAsrProvider.value : 'paraformer',
+                dashscopeApiKey: settingDashscopeKey ? settingDashscopeKey.value.trim() : '',
+                dashscopeAiModel: settingDashscopeAiModel ? settingDashscopeAiModel.value : '',
+                xfyunAppId: settingXfyunAppId ? settingXfyunAppId.value.trim() : '',
+                xfyunApiKey: settingXfyunKey ? settingXfyunKey.value.trim() : '',
+                resumeText: settingResumeText ? settingResumeText.value : '',
+                jobDescription: settingJobDescription ? settingJobDescription.value : '',
                 ollamaBaseUrl: settingOllamaBaseUrl ? settingOllamaBaseUrl.value.trim() : '',
                 ollamaModel: settingOllamaModel ? settingOllamaModel.value.trim() : '',
                 programmingLanguage: settingProgrammingLanguage.value,
-                assemblyAiSpeechModel: settingAssemblyModel.value,
                 windowOpacityLevel: normalizeWindowOpacityLevel(settingWindowOpacity?.value)
             };
 
             const result = await window.electronAPI.saveSettings(settings);
 
             if (result.success) {
-                showFeedback?.('Settings saved. Latest AI settings are active now; voice model applies next session.', 'success');
-                onSettingsSaved?.(settings);
+                const micDeviceId = settingMicDevice ? settingMicDevice.value : '';
+                const systemSourceId = settingSystemSource ? settingSystemSource.value : '';
+                setStoredValue(MIC_DEVICE_STORAGE_KEY, micDeviceId);
+                setStoredValue(SYSTEM_SOURCE_STORAGE_KEY, systemSourceId);
+
+                showFeedback?.('Settings saved. AI changes apply now; ASR provider and audio devices apply on next start.', 'success');
+                onSettingsSaved?.({ ...settings, micDeviceId, systemSourceId });
                 closeSettings();
-                return { success: true, settings };
-            } else {
-                showFeedback?.(`Failed to save: ${result.error}`, 'error');
-                return { success: false, error: result.error || 'Failed to save settings' };
+                return { success: true, settings: { ...settings, micDeviceId, systemSourceId } };
             }
+
+            showFeedback?.(`Failed to save: ${result.error}`, 'error');
+            return { success: false, error: result.error || 'Failed to save settings' };
         } catch (error) {
             console.error('Failed to save settings:', error);
             showFeedback?.('Failed to save settings', 'error');
@@ -342,16 +506,20 @@ export function createSettingsPanelManager({
         }
     }
 
-    bindApiKeyVisibilityToggle(settingGeminiKey, toggleGeminiKeyVisibilityBtn, 'Gemini');
-    bindApiKeyVisibilityToggle(settingAssemblyKey, toggleAssemblyKeyVisibilityBtn, 'AssemblyAI');
+    bindApiKeyVisibilityToggle(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope');
+    bindApiKeyVisibilityToggle(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei');
     bindProviderToggle();
     bindFetchOllamaModels();
+    bindRefreshAudioDevices();
 
     return {
         normalizeWindowOpacityLevel,
         updateWindowOpacityValueLabel,
         openSettings,
         closeSettings,
-        saveSettings
+        saveSettings,
+        refreshAudioDeviceOptions,
+        getSelectedMicDeviceId,
+        getSelectedSystemSourceId
     };
 }

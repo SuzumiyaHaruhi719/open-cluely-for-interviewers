@@ -1,26 +1,39 @@
 // AI provider configuration.
-// Supported providers: 'gemini' and 'ollama'.
-const AI_PROVIDERS = ['gemini', 'ollama'];
-const DEFAULT_AI_PROVIDER = 'gemini';
+// All hosted AI (Qwen + DeepSeek + Qwen-VL multimodal) flows through Aliyun
+// DashScope's OpenAI-compatible endpoint with one API key. Ollama stays as
+// an optional local provider.
+const AI_PROVIDERS = ['dashscope', 'ollama'];
+const DEFAULT_AI_PROVIDER = 'dashscope';
+
+// DashScope publishes two API surfaces over the same key. We use the
+// Anthropic-shape one because that's where the latest hosted models
+// (DeepSeek V4 family, Qwen 3.6 Max Preview, Qwen 3.7 Max) actually ship.
+// The OpenAI-compat surface (`/compatible-mode/v1`) lags ~one generation
+// as of May 2026.
+const DASHSCOPE_BASE_URL = 'https://dashscope.aliyuncs.com/apps/anthropic';
+
+// Models exposed on the Anthropic-shape DashScope endpoint. First entry is
+// the default. Use *-vl-* for screenshots; the rest are text-only.
+const DASHSCOPE_AI_MODELS = [
+  'deepseek-v4-pro',
+  'deepseek-v4-flash',
+  'qwen3.6-max-preview',
+  'qwen3.6-plus',
+  'qwen3.6-flash',
+  'qwen3.7-max',
+  'qwen3-vl-max-latest',
+  'qwen3-vl-plus'
+];
+const DEFAULT_DASHSCOPE_AI_MODEL = DASHSCOPE_AI_MODELS[0];
+
+// Model used by the interviewer copilot Stage 1 (hook detection) + Stage 2
+// (follow-up generation). Flash tier is plenty for the 2-call-per-answer
+// pipeline; swap to deepseek-v4-pro if you want deeper reasoning at higher
+// latency.
+const DEFAULT_INTERVIEWER_MODEL = 'deepseek-v4-flash';
 
 const DEFAULT_OLLAMA_BASE_URL = 'http://localhost:11434';
 const DEFAULT_OLLAMA_MODEL = 'llama3.2';
-
-// Gemini model configuration.
-// The first model in this list is treated as the default model everywhere.
-const GEMINI_MODELS = [
-  'gemini-2.5-flash-lite',
-  'gemini-3-flash-preview',
-  'gemini-3.1-flash-lite-preview',
-  'gemini-3.1-pro-preview'
-];
-
-// AssemblyAI speech model configuration.
-// The first model in this list is treated as the default model everywhere.
-const ASSEMBLY_AI_SPEECH_MODELS = [
-  'universal-streaming-english',
-  'universal-streaming-multilingual'
-];
 
 // Programming language configuration.
 // The first language in this list is treated as the default language everywhere.
@@ -149,7 +162,6 @@ const KEYBOARD_SHORTCUTS = [
   }
 ];
 
-// AI provider configuration functions
 function getAiProviders() {
   return [...AI_PROVIDERS];
 }
@@ -166,6 +178,32 @@ function resolveAiProvider(providerName) {
   return isConfiguredAiProvider(providerName) ? providerName : DEFAULT_AI_PROVIDER;
 }
 
+function getDashscopeBaseUrl() {
+  return DASHSCOPE_BASE_URL;
+}
+
+function getDashscopeAiModels() {
+  return [...DASHSCOPE_AI_MODELS];
+}
+
+function getDefaultDashscopeAiModel() {
+  return DEFAULT_DASHSCOPE_AI_MODEL;
+}
+
+function isConfiguredDashscopeAiModel(modelName) {
+  return DASHSCOPE_AI_MODELS.includes(modelName);
+}
+
+function resolveDashscopeAiModel(modelName) {
+  return isConfiguredDashscopeAiModel(modelName)
+    ? modelName
+    : DEFAULT_DASHSCOPE_AI_MODEL;
+}
+
+function getDefaultInterviewerModel() {
+  return DEFAULT_INTERVIEWER_MODEL;
+}
+
 function getDefaultOllamaBaseUrl() {
   return DEFAULT_OLLAMA_BASE_URL;
 }
@@ -174,33 +212,10 @@ function getDefaultOllamaModel() {
   return DEFAULT_OLLAMA_MODEL;
 }
 
-// Gemini model configuration functions
-function getGeminiModels() {
-  if (!Array.isArray(GEMINI_MODELS) || GEMINI_MODELS.length === 0) {
-    throw new Error('Gemini models are not configured. Add at least one model to src/config.js.');
-  }
-
-  return [...GEMINI_MODELS];
-}
-
-function getDefaultGeminiModel() {
-  return getGeminiModels()[0];
-}
-
-function isConfiguredGeminiModel(modelName) {
-  return getGeminiModels().includes(modelName);
-}
-
-function resolveGeminiModel(modelName) {
-  return isConfiguredGeminiModel(modelName) ? modelName : getDefaultGeminiModel();
-}
-
-// Programming language configuration functions
 function getProgrammingLanguages() {
   if (!Array.isArray(PROGRAMMING_LANGUAGES) || PROGRAMMING_LANGUAGES.length === 0) {
     throw new Error('Programming languages are not configured. Add at least one language to src/config.js.');
   }
-
   return [...PROGRAMMING_LANGUAGES];
 }
 
@@ -218,40 +233,10 @@ function resolveProgrammingLanguage(languageName) {
     : getDefaultProgrammingLanguage();
 }
 
-// AssemblyAI speech model configuration functions
-function getAssemblyAiSpeechModels() {
-  if (!Array.isArray(ASSEMBLY_AI_SPEECH_MODELS) || ASSEMBLY_AI_SPEECH_MODELS.length === 0) {
-    throw new Error('AssemblyAI speech models are not configured. Add at least one model to src/config.js.');
-  }
-
-  return [...ASSEMBLY_AI_SPEECH_MODELS];
-}
-
-function getDefaultAssemblyAiSpeechModel() {
-  return getAssemblyAiSpeechModels()[0];
-}
-
-function isConfiguredAssemblyAiSpeechModel(modelName) {
-  return getAssemblyAiSpeechModels().includes(modelName);
-}
-
-function resolveAssemblyAiSpeechModel(modelName, fallbackModel = getDefaultAssemblyAiSpeechModel()) {
-  if (isConfiguredAssemblyAiSpeechModel(modelName)) {
-    return modelName;
-  }
-
-  if (isConfiguredAssemblyAiSpeechModel(fallbackModel)) {
-    return fallbackModel;
-  }
-
-  return getDefaultAssemblyAiSpeechModel();
-}
-
 function getKeyboardShortcuts() {
   if (!Array.isArray(KEYBOARD_SHORTCUTS) || KEYBOARD_SHORTCUTS.length === 0) {
     throw new Error('Keyboard shortcuts are not configured. Add at least one shortcut to src/config.js.');
   }
-
   return KEYBOARD_SHORTCUTS.map((shortcut) => ({ ...shortcut }));
 }
 
@@ -260,12 +245,10 @@ function getKeyboardShortcutById(shortcutId) {
   if (!normalizedId) {
     throw new Error('Shortcut id is required.');
   }
-
   const shortcut = getKeyboardShortcuts().find((entry) => entry.id === normalizedId);
   if (!shortcut) {
     throw new Error(`Shortcut "${normalizedId}" is not configured in src/config.js.`);
   }
-
   return shortcut;
 }
 
@@ -275,30 +258,27 @@ function getKeyboardShortcutAccelerator(shortcutId) {
   if (!accelerator) {
     throw new Error(`Shortcut "${shortcutId}" is missing an accelerator in src/config.js.`);
   }
-
   return accelerator;
 }
 
 module.exports = {
   getAiProviders,
   getDefaultAiProvider,
-  getDefaultOllamaBaseUrl,
-  getDefaultOllamaModel,
   isConfiguredAiProvider,
   resolveAiProvider,
-  getAssemblyAiSpeechModels,
-  getDefaultAssemblyAiSpeechModel,
-  getGeminiModels,
-  getDefaultGeminiModel,
-  getKeyboardShortcutAccelerator,
-  getKeyboardShortcutById,
-  getKeyboardShortcuts,
-  getDefaultProgrammingLanguage,
+  getDashscopeBaseUrl,
+  getDashscopeAiModels,
+  getDefaultDashscopeAiModel,
+  isConfiguredDashscopeAiModel,
+  resolveDashscopeAiModel,
+  getDefaultInterviewerModel,
+  getDefaultOllamaBaseUrl,
+  getDefaultOllamaModel,
   getProgrammingLanguages,
-  isConfiguredAssemblyAiSpeechModel,
-  isConfiguredGeminiModel,
+  getDefaultProgrammingLanguage,
   isConfiguredProgrammingLanguage,
-  resolveAssemblyAiSpeechModel,
-  resolveGeminiModel,
-  resolveProgrammingLanguage
+  resolveProgrammingLanguage,
+  getKeyboardShortcuts,
+  getKeyboardShortcutById,
+  getKeyboardShortcutAccelerator
 };

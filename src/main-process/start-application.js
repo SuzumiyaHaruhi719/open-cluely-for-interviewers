@@ -1,4 +1,4 @@
-﻿const {
+const {
   app,
   dialog,
   desktopCapturer,
@@ -10,14 +10,10 @@ const WebSocket = require('ws');
 
 const {
   loadApplicationEnvironment,
-  normalizeGeminiApiKeys,
   saveApplicationEnvironment
 } = require('../bootstrap/environment');
 const {
-  getAssemblyAiSpeechModels,
-  getDefaultAssemblyAiSpeechModel,
-  getKeyboardShortcuts,
-  resolveAssemblyAiSpeechModel
+  getKeyboardShortcuts
 } = require('../config');
 const {
   getAppStatePath,
@@ -29,9 +25,13 @@ const { createSafeSender } = require('./shared/safe-send');
 const { createGeminiRuntime } = require('./features/assistant/gemini-runtime');
 const { createScreenshotManager } = require('./features/assistant/screenshot-manager');
 const { registerAssistantIpc } = require('./features/assistant/ipc');
-const { createAssemblyAiService } = require('../services/assembly-ai/service');
-const { registerAssemblyAiIpc } = require('../services/assembly-ai/ipc');
+const { createParaformerService } = require('../services/paraformer/service');
+const { createXfyunRtasrService } = require('../services/xfyun-rtasr/service');
+const { createAsrRouter } = require('../services/asr-router');
+const { registerAsrIpc } = require('../services/asr-ipc');
 const { registerSettingsIpc } = require('./features/settings/ipc');
+const { createInterviewerRuntime } = require('./features/interviewer/interviewer-runtime');
+const { registerInterviewerIpc } = require('./features/interviewer/ipc');
 const { createWindowController } = require('./features/window/window-controller');
 const { DEFAULT_WINDOW_OPACITY_LEVEL } = require('./features/window/window-constants');
 const { logStartupConfiguration } = require('./startup-logging');
@@ -50,17 +50,29 @@ function resolveStartupOptions(argv = process.argv) {
 }
 
 async function startApplication() {
+  // Main-process process-level error handlers. Without these, an
+  // unhandled promise rejection in any IPC handler / fetch / async
+  // worker would terminate the Electron main process (Node 22 default
+  // unhandledRejection mode is `throw`). We log + continue so the app
+  // survives transient backend errors. The preload already has
+  // `uncaughtException` handlers for the renderer side.
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('[Main] unhandledRejection', { reason, promise });
+  });
+  process.on('uncaughtException', (err) => {
+    console.error('[Main] uncaughtException', err);
+  });
+
   let appEnvironment = null;
   let appState = null;
   let isShuttingDown = false;
   const startupOptions = resolveStartupOptions();
 
-  const geminiRuntime = createGeminiRuntime();
+  const geminiRuntime = createGeminiRuntime({
+    getDashscopeApiKey: () => appState?.dashscopeApiKey || ''
+  });
 
-  const assemblyAiSpeechModels = getAssemblyAiSpeechModels();
-  const defaultAssemblyAiSpeechModel = getDefaultAssemblyAiSpeechModel();
   const keyboardShortcuts = getKeyboardShortcuts();
-  let activeAssemblyAiSpeechModel = defaultAssemblyAiSpeechModel;
 
   let screenshotManager = null;
   let windowController = null;
@@ -89,13 +101,34 @@ async function startApplication() {
     mobileServer.broadcast(channel, data);
   };
 
-  const assemblyAiService = createAssemblyAiService({
+  const paraformerService = createParaformerService({
     WebSocket,
     desktopCapturer,
-    getAssemblyApiKey: () => appState?.assemblyAiApiKey || '',
-    getSpeechModel: () => activeAssemblyAiSpeechModel,
+    getDashscopeApiKey: () => appState?.dashscopeApiKey || '',
     getGeminiService: () => geminiRuntime.getService(),
     sendToRenderer
+  });
+
+  const xfyunRtasrService = createXfyunRtasrService({
+    WebSocket,
+    desktopCapturer,
+    getXfyunCredentials: () => ({
+      appId: appState?.xfyunAppId || '',
+      apiKey: appState?.xfyunApiKey || ''
+    }),
+    getGeminiService: () => geminiRuntime.getService(),
+    sendToRenderer
+  });
+
+  const asrService = createAsrRouter({
+    providers: {
+      paraformer: paraformerService,
+      xfyun: xfyunRtasrService
+    },
+    getAsrProvider: () => {
+      const p = appState?.asrProvider;
+      return p === 'xfyun' ? 'xfyun' : 'paraformer';
+    }
   });
 
   windowController = createWindowController({
@@ -104,7 +137,7 @@ async function startApplication() {
     globalShortcut,
     createAssistantWindow,
     getAppEnvironment: () => appEnvironment,
-    emitSttDebug: assemblyAiService.emitSttDebug,
+    emitSttDebug: asrService.emitSttDebug,
     sendToRenderer,
     onTakeStealthScreenshot: async () => {
       if (screenshotManager) {
@@ -124,51 +157,43 @@ async function startApplication() {
     appState = loadAppState(app);
 
     const activeAiProvider = geminiRuntime.setActiveAiProvider(appState.aiProvider);
-    const keyState = geminiRuntime.setKeys(
-      normalizeGeminiApiKeys(appState?.geminiApiKey),
-      appState.geminiApiKeyIndex
-    );
-    const activeGeminiModel = geminiRuntime.setActiveGeminiModel(appState.geminiModel);
+    const activeDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(appState.dashscopeAiModel);
     const activeOllamaBaseUrl = geminiRuntime.setActiveOllamaBaseUrl(appState.ollamaBaseUrl);
     const activeOllamaModel = geminiRuntime.setActiveOllamaModel(appState.ollamaModel);
-    activeAssemblyAiSpeechModel = resolveAssemblyAiSpeechModel(appState.assemblyAiSpeechModel);
     const activeProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(appState.programmingLanguage);
     const activeWindowOpacityLevel = windowController.setWindowOpacityLevel(appState.windowOpacityLevel);
 
     if (
       appState.aiProvider !== activeAiProvider ||
-      appState.geminiApiKeyIndex !== keyState.activeApiKeyIndex ||
-      appState.geminiModel !== activeGeminiModel ||
+      appState.dashscopeAiModel !== activeDashscopeAiModel ||
       appState.ollamaBaseUrl !== activeOllamaBaseUrl ||
       appState.ollamaModel !== activeOllamaModel ||
-      appState.assemblyAiSpeechModel !== activeAssemblyAiSpeechModel ||
       appState.programmingLanguage !== activeProgrammingLanguage ||
       appState.windowOpacityLevel !== activeWindowOpacityLevel
     ) {
       appState = saveAppState(app, {
         aiProvider: activeAiProvider,
-        geminiApiKeyIndex: keyState.activeApiKeyIndex,
-        geminiModel: activeGeminiModel,
+        dashscopeAiModel: activeDashscopeAiModel,
         ollamaBaseUrl: activeOllamaBaseUrl,
         ollamaModel: activeOllamaModel,
-        assemblyAiSpeechModel: activeAssemblyAiSpeechModel,
         programmingLanguage: activeProgrammingLanguage,
         windowOpacityLevel: activeWindowOpacityLevel
       });
     }
 
+    const restoredAsrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+
     console.log('Loaded app state from:', getAppStatePath(app));
-    console.log('Restored AI provider from app state:', activeAiProvider);
-    console.log(`Restored Gemini API key index from app state: ${keyState.activeApiKeyIndex + 1}/${keyState.geminiApiKeys.length}`);
-    console.log('Restored Gemini model from app state:', activeGeminiModel);
-    console.log('Restored Ollama config from app state:', activeOllamaModel, 'at', activeOllamaBaseUrl);
-    console.log('Restored AssemblyAI speech model from app state:', activeAssemblyAiSpeechModel);
-    console.log('Restored programming language from app state:', activeProgrammingLanguage);
-    console.log(`Restored window opacity level from app state: ${activeWindowOpacityLevel}/10`);
+    console.log('Restored AI provider:', activeAiProvider);
+    console.log('Restored ASR provider:', restoredAsrProvider);
+    console.log('Restored DashScope AI model:', activeDashscopeAiModel);
+    console.log('Restored Ollama config:', activeOllamaModel, 'at', activeOllamaBaseUrl);
+    console.log('Restored programming language:', activeProgrammingLanguage);
+    console.log(`Restored window opacity level: ${activeWindowOpacityLevel}/10`);
   }
 
   function cleanupTransientResources() {
-    assemblyAiService.dispose();
+    asrService.dispose();
     screenshotManager.cleanupTransientResources();
     windowController.unregisterShortcuts();
     mobileServer.close();
@@ -196,19 +221,29 @@ async function startApplication() {
     screenshotManager,
     windowController,
     geminiRuntime,
-    assemblyAiService,
+    asrService,
     sendToRenderer,
     quitApplication
   });
 
-  registerAssemblyAiIpc({
+  registerAsrIpc({
     ipcMain,
-    assemblyAiService
+    asrService
+  });
+
+  const interviewerRuntime = createInterviewerRuntime({
+    getAppState: () => appState
+  });
+
+  registerInterviewerIpc({
+    ipcMain,
+    interviewerRuntime
   });
 
   registerSettingsIpc({
     ipcMain,
     app,
+    asrService,
     getAppEnvironment: () => appEnvironment,
     setAppEnvironment: (nextEnvironment) => {
       appEnvironment = nextEnvironment;
@@ -222,14 +257,7 @@ async function startApplication() {
     saveAppState,
     geminiRuntime,
     windowController,
-    getAssemblyAiSpeechModel: () => activeAssemblyAiSpeechModel,
-    setAssemblyAiSpeechModel: (nextModel) => {
-      activeAssemblyAiSpeechModel = resolveAssemblyAiSpeechModel(nextModel, activeAssemblyAiSpeechModel);
-      return activeAssemblyAiSpeechModel;
-    },
-    keyboardShortcuts,
-    assemblyAiSpeechModels,
-    defaultAssemblyAiSpeechModel
+    keyboardShortcuts
   });
 
   app.whenReady().then(() => {
@@ -247,33 +275,20 @@ async function startApplication() {
     logStartupConfiguration({
       appEnvironment,
       appState,
-      geminiModels: geminiRuntime.getGeminiModels(),
-      defaultGeminiModel: geminiRuntime.getDefaultGeminiModel(),
-      assemblyAiSpeechModels,
-      defaultAssemblyAiSpeechModel,
       programmingLanguages: geminiRuntime.getProgrammingLanguages(),
       defaultProgrammingLanguage: geminiRuntime.getDefaultProgrammingLanguage()
     });
 
-    geminiRuntime.setActiveKeyIndexChangeHandler((nextIndex) => {
-      if (!appState || appState.geminiApiKeyIndex === nextIndex) {
-        return;
-      }
-
-      appState = saveAppState(app, { geminiApiKeyIndex: nextIndex });
-      console.log(`Persisted Gemini API key index: ${nextIndex + 1}/${geminiRuntime.getApiKeys().length}`);
-    });
-
-    if (geminiRuntime.getActiveAiProvider() === 'ollama') {
+    const activeProvider = geminiRuntime.getActiveAiProvider();
+    if (activeProvider === 'ollama') {
       geminiRuntime.initializeOllamaService(
         geminiRuntime.getActiveOllamaBaseUrl(),
         geminiRuntime.getActiveOllamaModel(),
         geminiRuntime.getActiveProgrammingLanguage()
       );
     } else {
-      geminiRuntime.initializeGeminiService(
-        geminiRuntime.getActiveApiKey(),
-        geminiRuntime.getActiveGeminiModel(),
+      geminiRuntime.initializeDashscopeService(
+        geminiRuntime.getActiveDashscopeAiModel(),
         geminiRuntime.getActiveProgrammingLanguage()
       );
     }

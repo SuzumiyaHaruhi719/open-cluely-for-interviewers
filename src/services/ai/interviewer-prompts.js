@@ -19,12 +19,26 @@ function safe(text, fallback = '(none)') {
   return s ? s : fallback;
 }
 
+// paraformer-realtime-8k-v2 returns emo_tag (positive/neutral/negative) +
+// emo_confidence on sentence_end. We surface it as a context line so the
+// coach can factor evasion-by-affect into its scoring (e.g. nervous +
+// vague-metric is a stronger pin signal than vague-metric alone).
+function emotionLine(candidateEmotion) {
+  if (!candidateEmotion || !candidateEmotion.tag) return '(no emotion signal)';
+  const tag = String(candidateEmotion.tag).toLowerCase();
+  const conf = typeof candidateEmotion.confidence === 'number'
+    ? ` (confidence ${candidateEmotion.confidence.toFixed(2)})`
+    : '';
+  return `${tag}${conf}`;
+}
+
 // ─── STAGE 1 ─────────────────────────────────────────────────────────────────
 function buildHookDetectionPrompt({
   jobDescription = '',
   resumeChunk = '',
   candidateAnswer = '',
-  questionHistory = []
+  questionHistory = [],
+  candidateEmotion = null
 } = {}) {
   const history = Array.isArray(questionHistory)
     ? questionHistory.map((q, i) => `${i + 1}. ${q}`).join('\n')
@@ -40,6 +54,9 @@ ${safe(resumeChunk, '(no resume excerpt)')}
 
 [Candidate's most recent answer]
 ${safe(candidateAnswer, '(empty answer)')}
+
+[Candidate emotion (from acoustic analysis — independent of word content)]
+${emotionLine(candidateEmotion)}
 
 [Questions already asked, oldest first]
 ${safe(history, '(none yet)')}
@@ -57,6 +74,8 @@ risk_signals — be aggressive about detecting these:
   - pronoun-shift: candidate says 'we' for work the resume attributes to 'I'
   - resume-overclaim: candidate's verbal answer is weaker/vaguer than the resume bullet on the same project
   - contradiction: candidate's facts contradict the resume or a prior answer
+
+Emotion guideline: if candidate emotion is 'negative' (high confidence) AND any risk_signal is present, treat it as a stronger pin and ensure depth_worth_score >= 4. Do NOT downgrade score solely because emotion is 'positive' — confident BSing is still BSing. Never include the emotion label in concrete_hooks (hooks must come from the answer text).
 
 When you detect a risk_signal, ALWAYS include the candidate's exact vague phrase (3-8 words) as one of the concrete_hooks. Stage 2 will quote it to pin.
 
@@ -82,7 +101,8 @@ function buildFollowUpQuestionPrompt({
   recommendedDirection = 'technical-depth',
   candidateAnswer = '',
   questionHistory = [],
-  resumeChunk = ''
+  resumeChunk = '',
+  candidateEmotion = null
 } = {}) {
   const hooks = Array.isArray(concreteHooks) ? concreteHooks.join('\n- ') : String(concreteHooks);
   const history = Array.isArray(questionHistory)
@@ -105,6 +125,9 @@ ${recommendedDirection}
 
 [Candidate's last answer]
 ${safe(candidateAnswer)}
+
+[Candidate emotion]
+${emotionLine(candidateEmotion)}
 
 [Questions already asked — do not repeat]
 ${safe(history, '(none yet)')}

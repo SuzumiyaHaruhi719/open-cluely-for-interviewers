@@ -60,32 +60,75 @@ function createAssistantWindow({
     hasShadow: false,
     thickFrame: false,
     titleBarStyle: 'hidden',
-    backgroundColor: '#00000000'
+    // Production stays fully transparent so the glass UI floats over whatever
+    // is behind it. Dev paints a dark solid backdrop so the window is
+    // unmistakably visible on Win11 where transparent+content-protection
+    // sometimes composes to a blank rectangle on certain GPU drivers.
+    backgroundColor: nodeEnv === 'development' ? '#1a1a2e' : '#00000000'
   });
 
   const htmlPath = path.join(__dirname, 'renderer.html');
   console.log('Loading HTML from:', htmlPath);
   mainWindow.loadFile(htmlPath);
 
-  mainWindow.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
-    console.log('Permission requested:', permission);
+  // Permission handlers — only grant microphone / media to file://
+  // origins (the local renderer). With `webSecurity: false` it's
+  // theoretically possible for an unrelated origin to load into a
+  // sub-frame; gate by requestingUrl so an external origin never
+  // inherits the renderer's mic permission.
+  function isLocalRendererOrigin(url) {
+    if (typeof url !== 'string') return false;
+    return url.startsWith('file://');
+  }
+
+  mainWindow.webContents.session.setPermissionRequestHandler((webContents, permission, callback, details) => {
+    const url = details?.requestingUrl ?? webContents?.getURL?.() ?? '';
+    const local = isLocalRendererOrigin(url);
+    console.log('Permission requested:', permission, 'origin:', url, 'local:', local);
+    if (!local) {
+      callback(false);
+      return;
+    }
     if (permission === 'microphone' || permission === 'media') {
-      console.log('Granting microphone permission');
       callback(true);
     } else {
-      console.log('Denying permission:', permission);
       callback(false);
     }
   });
 
   mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin) => {
-    console.log('Permission check:', permission, requestingOrigin);
+    if (!isLocalRendererOrigin(requestingOrigin)) {
+      return false;
+    }
     return permission === 'microphone' || permission === 'media';
   });
 
+  // Hardened file:// handler — normalize and constrain the resolved
+  // path to the app directory. Without this, `webSecurity: false`
+  // combined with this handler would let any injected URI
+  // (`file:///../../etc/passwd`-style) read arbitrary host files when
+  // the renderer fetches via `<img>` / `<script>` / `fetch()`.
+  const appRoot = path.resolve(app.getAppPath());
   mainWindow.webContents.session.protocol.registerFileProtocol('file', (request, callback) => {
-    const pathname = decodeURI(request.url.replace('file:///', ''));
-    callback(pathname);
+    let pathname;
+    try {
+      pathname = decodeURI(request.url.replace('file:///', ''));
+    } catch (err) {
+      console.warn('[file-protocol] decodeURI failed', err);
+      callback({ error: -10 }); // ERR_ACCESS_DENIED
+      return;
+    }
+    const resolved = path.resolve(pathname);
+    // The renderer.html lives inside appRoot; any resolved path that
+    // escapes appRoot is either a misconfig or a traversal attempt.
+    // path.resolve normalises `..` so a `file:///<appRoot>/../foo`
+    // becomes whatever is one level up.
+    if (!resolved.startsWith(appRoot + path.sep) && resolved !== appRoot) {
+      console.warn(`[file-protocol] blocked out-of-app-root path: ${resolved}`);
+      callback({ error: -10 });
+      return;
+    }
+    callback(resolved);
   });
 
   if (process.platform === 'darwin') {

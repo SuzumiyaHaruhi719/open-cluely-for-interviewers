@@ -1,4 +1,4 @@
-/// <reference path="./renderer-globals.d.ts" />
+﻿/// <reference path="./renderer-globals.d.ts" />
 
 import { createMessageStore } from './renderer/features/ai-context/message-store.js';
 import { buildFilteredAiContextBundle as buildAiContextBundle } from './renderer/features/ai-context/context-bundle.js';
@@ -8,7 +8,11 @@ import { createWindowAdjustmentManager } from './renderer/features/layout/window
 import { setupEventListeners as setupEventListenersModule } from './renderer/features/listeners/event-listeners.js';
 import { setupIpcListeners as setupIpcListenersModule } from './renderer/features/listeners/ipc-listeners.js';
 import { createShortcutManager } from './renderer/features/settings/shortcut-manager.js';
-import { createSettingsPanelManager } from './renderer/features/settings/settings-panel-manager.js';
+import {
+    createSettingsPanelManager,
+    getSelectedMicDeviceId as readSelectedMicDeviceId,
+    getSelectedSystemSourceId as readSelectedSystemSourceId
+} from './renderer/features/settings/settings-panel-manager.js';
 import { createTranscriptionManager } from './renderer/features/transcription/transcription-manager.js';
 
 import {
@@ -27,7 +31,10 @@ let stealthHideTimeout = null;
 const THEME_STORAGE_KEY = 'assistant-theme';
 const THEME_LIGHT = 'light';
 const THEME_DARK = 'dark';
-let activeTheme = THEME_LIGHT;
+// Dark is the default because the light theme leaves several panels
+// (settings, monitor) with white text on a 92%-white glass background.
+// The full contrast pass lives under `body.theme-dark` in styles.css.
+let activeTheme = THEME_DARK;
 const AI_CONTEXT_CHAR_BUDGET = 12000;
 const messageStore = createMessageStore();
 let chatMessagesArray = messageStore.getMessages();
@@ -43,6 +50,114 @@ const audioPipeline = createAudioPipeline({
     addMonitorLog: (...args) => addMonitorLog(...args)
 });
 
+const INTERVIEWER_QUESTION_HISTORY_LIMIT = 20;
+const interviewerQuestionHistory = [];
+let interviewerAnalysisInFlight = false;
+// Holds the latest answer that arrived while an analysis was already running.
+// We collapse to only the newest so bursty finals don't queue up unbounded.
+let interviewerPendingAnswer = null;
+let interviewerSkipKeyWarned = false;
+
+function pushInterviewerQuestion(text) {
+    const trimmed = String(text || '').trim();
+    if (!trimmed) return;
+    interviewerQuestionHistory.push(trimmed);
+    if (interviewerQuestionHistory.length > INTERVIEWER_QUESTION_HISTORY_LIMIT) {
+        interviewerQuestionHistory.splice(0, interviewerQuestionHistory.length - INTERVIEWER_QUESTION_HISTORY_LIMIT);
+    }
+}
+
+function renderInterviewerCoachMessage(stage2Parsed, stage1Parsed) {
+    const questions = Array.isArray(stage2Parsed?.questions) ? stage2Parsed.questions : [];
+    if (questions.length === 0) return;
+
+    const lines = [];
+    questions
+        .slice()
+        .sort((a, b) => (a.priority || 99) - (b.priority || 99))
+        .forEach((q) => {
+            const priority = q.priority ? `P${q.priority}` : '·';
+            const questionText = String(q.question || '').trim();
+            const rationale = String(q.rationale || '').trim();
+            if (!questionText) return;
+            lines.push(`**${priority}** ${questionText}`);
+            if (rationale) {
+                lines.push(`*${rationale}*`);
+            }
+        });
+
+    const score = stage1Parsed?.score;
+    const direction = stage1Parsed?.recommended_direction;
+    const headerBits = [];
+    if (typeof score === 'number') headerBits.push(`score ${score}`);
+    if (direction) headerBits.push(direction);
+    const header = headerBits.length ? `_(${headerBits.join(' · ')})_` : '';
+
+    const body = (header ? `${header}\n\n` : '') + lines.join('\n');
+    addChatMessage('interviewer-coach', body);
+}
+
+async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
+    if (!window.electronAPI?.interviewerAnalyzeAnswer) return;
+
+    // Coalesce: if a request is already in flight, replace the pending answer
+    // with the latest one and let the in-flight one finish. We process the
+    // pending answer after the current one resolves.
+    if (interviewerAnalysisInFlight) {
+        interviewerPendingAnswer = { candidateAnswer, emotion };
+        return;
+    }
+
+    interviewerAnalysisInFlight = true;
+    try {
+        const response = await window.electronAPI.interviewerAnalyzeAnswer({
+            candidateAnswer,
+            emotion,
+            questionHistory: interviewerQuestionHistory.slice()
+        });
+        if (!response || response.success === false) {
+            if (response?.error) {
+                addMonitorLog('warn', 'interviewer', response.error, 'system');
+            }
+            return;
+        }
+        if (response.skipped) {
+            // Don't spam the monitor for every short / unconfigured final.
+            // Warn once when the DeepSeek key is missing so the user knows
+            // why the coach is silent; subsequent skips stay quiet.
+            if (response.reason === 'no-dashscope-key' && !interviewerSkipKeyWarned) {
+                interviewerSkipKeyWarned = true;
+                addMonitorLog('warn', 'interviewer', 'AI key (DashScope) not configured — interviewer coach disabled. Add it in Settings.', 'system');
+            }
+            return;
+        }
+        // Reset the once-warned latch if a successful analysis happened
+        // (means the user added the key and the system recovered).
+        interviewerSkipKeyWarned = false;
+
+        if (response.shouldShowFollowUps && response.stage2?.parsed) {
+            renderInterviewerCoachMessage(response.stage2.parsed, response.stage1?.parsed);
+        } else {
+            addMonitorLog('info', 'interviewer', `Stage1 score ${response.stage1?.parsed?.score ?? '?'} — no follow-up emitted`, 'system');
+        }
+    } catch (err) {
+        addMonitorLog('error', 'interviewer', err?.message || 'analysis failed', 'system');
+    } finally {
+        interviewerAnalysisInFlight = false;
+        // Drain the pending answer (if any final arrived while busy).
+        if (interviewerPendingAnswer) {
+            const next = interviewerPendingAnswer;
+            interviewerPendingAnswer = null;
+            // Backward-compat: older code paths may stash a bare string here.
+            if (typeof next === 'string') {
+                triggerInterviewerAnalysis(next, null);
+            } else {
+                triggerInterviewerAnalysis(next.candidateAnswer, next.emotion);
+            }
+        }
+    }
+}
+
 const transcriptBufferManager = createTranscriptBufferManager({
     mergeWindowMs: 3500,
     onBuffer: ({ source, text, segments }) => {
@@ -51,11 +166,13 @@ const transcriptBufferManager = createTranscriptBufferManager({
             chars: text.length
         });
     },
-    onFlush: ({ source, text, reason, segments }) => {
+    onFlush: ({ source, text, reason, segments, emotion }) => {
         if (source === 'system') {
             addChatMessage('voice-system', text);
+            triggerInterviewerAnalysis(text, emotion);
         } else {
             addChatMessage('voice-mic', text);
+            pushInterviewerQuestion(text);
         }
 
         addMonitorLog('info', 'final-flush', 'Merged transcript committed', source, {
@@ -207,21 +324,29 @@ const settingsPanel = document.getElementById('settings-panel');
 const closeSettingsBtn = document.getElementById('close-settings');
 const saveSettingsBtn = document.getElementById('save-settings-btn');
 const settingAiProvider = document.getElementById('setting-ai-provider');
-const geminiSettingsGroup = document.getElementById('gemini-settings-group');
+const dashscopeSettingsGroup = document.getElementById('dashscope-settings-group');
 const ollamaSettingsGroup = document.getElementById('ollama-settings-group');
-const settingGeminiKey = document.getElementById('setting-gemini-key');
-const toggleGeminiKeyVisibilityBtn = document.getElementById('toggle-gemini-key-visibility');
-const settingGeminiModel = document.getElementById('setting-gemini-model');
+const settingDashscopeAiModel = document.getElementById('setting-dashscope-ai-model');
 const settingOllamaBaseUrl = document.getElementById('setting-ollama-base-url');
 const settingOllamaModel = document.getElementById('setting-ollama-model');
 const settingOllamaModelSelect = document.getElementById('setting-ollama-model-select');
 const fetchOllamaModelsBtn = document.getElementById('fetch-ollama-models');
 const settingProgrammingLanguage = document.getElementById('setting-programming-language');
-const settingAssemblyKey = document.getElementById('setting-assembly-key');
-const toggleAssemblyKeyVisibilityBtn = document.getElementById('toggle-assembly-key-visibility');
-const settingAssemblyModel = document.getElementById('setting-assembly-model');
+const settingAsrProvider = document.getElementById('setting-asr-provider');
+const paraformerSettingsGroup = document.getElementById('paraformer-settings-group');
+const xfyunSettingsGroup = document.getElementById('xfyun-settings-group');
+const settingDashscopeKey = document.getElementById('setting-dashscope-key');
+const toggleDashscopeKeyVisibilityBtn = document.getElementById('toggle-dashscope-key-visibility');
+const settingXfyunAppId = document.getElementById('setting-xfyun-appid');
+const settingXfyunKey = document.getElementById('setting-xfyun-key');
+const toggleXfyunKeyVisibilityBtn = document.getElementById('toggle-xfyun-key-visibility');
+const settingResumeText = document.getElementById('setting-resume-text');
+const settingJobDescription = document.getElementById('setting-job-description');
 const settingWindowOpacity = document.getElementById('setting-window-opacity');
 const settingWindowOpacityValue = document.getElementById('setting-window-opacity-value');
+const settingMicDevice = document.getElementById('setting-mic-device');
+const settingSystemSource = document.getElementById('setting-system-source');
+const refreshAudioDevicesBtn = document.getElementById('refresh-audio-devices-btn');
 const settingsShortcutsList = document.getElementById('settings-shortcuts-list');
 
 // Timer
@@ -232,8 +357,11 @@ const MIN_WINDOW_HEIGHT = 380;
 const MAX_CHAT_INPUT_HEIGHT = 88;
 
 let isCloseConfirmationOpen = false;
-let hasGeminiApiKeysConfigured = false;
-let hasAssemblyAiApiKeyConfigured = false;
+// Cached availability flags from get-settings IPC. AI capability is gated
+// on DashScope key (or Ollama, which needs no key). ASR capability is gated
+// on having either the DashScope key (Paraformer) or Xunfei credentials.
+let hasAiConfigured = false;
+let hasAsrConfigured = false;
 const aiActionInFlightState = {
     askAi: false,
     screenAi: false,
@@ -271,21 +399,29 @@ const chatUiManager = createChatUiManager({
 const settingsPanelManager = createSettingsPanelManager({
     settingsPanel,
     settingAiProvider,
-    geminiSettingsGroup,
+    dashscopeSettingsGroup,
     ollamaSettingsGroup,
-    settingGeminiKey,
-    toggleGeminiKeyVisibilityBtn,
-    settingGeminiModel,
+    settingDashscopeAiModel,
     settingProgrammingLanguage,
     settingOllamaBaseUrl,
     settingOllamaModel,
     settingOllamaModelSelect,
     fetchOllamaModelsBtn,
-    settingAssemblyKey,
-    toggleAssemblyKeyVisibilityBtn,
-    settingAssemblyModel,
+    settingAsrProvider,
+    paraformerSettingsGroup,
+    xfyunSettingsGroup,
+    settingDashscopeKey,
+    toggleDashscopeKeyVisibilityBtn,
+    settingXfyunAppId,
+    settingXfyunKey,
+    toggleXfyunKeyVisibilityBtn,
+    settingResumeText,
+    settingJobDescription,
     settingWindowOpacity,
     settingWindowOpacityValue,
+    settingMicDevice,
+    settingSystemSource,
+    refreshAudioDevicesBtn,
     applySettingsShortcutConfig: (settings) => applySettingsShortcutConfig(settings),
     showFeedback: (message, type) => showFeedback(message, type),
     onSettingsSaved: (settings) => {
@@ -312,7 +448,9 @@ const transcriptionManager = createTranscriptionManager({
     addChatMessage: (type, content, options) => addChatMessage(type, content, options),
     showFeedback: (message, type) => showFeedback(message, type),
     isAutoScrollEnabled,
-    isChatNearBottom: () => chatUiManager.isChatNearBottom()
+    isChatNearBottom: () => chatUiManager.isChatNearBottom(),
+    getSelectedMicDeviceId: () => readSelectedMicDeviceId(),
+    getSelectedSystemSourceId: () => readSelectedSystemSourceId()
 });
 
 // Initialize
@@ -397,10 +535,10 @@ function normalizeTheme(theme) {
 function loadStoredThemePreference() {
     try {
         const savedTheme = window.localStorage?.getItem(THEME_STORAGE_KEY) || '';
-        return parseThemePreference(savedTheme) || THEME_LIGHT;
+        return parseThemePreference(savedTheme) || THEME_DARK;
     } catch (error) {
         console.warn('Failed to read saved theme preference:', error);
-        return THEME_LIGHT;
+        return THEME_DARK;
     }
 }
 
@@ -554,38 +692,29 @@ function createStreamHandler(actionId) {
     return { start, finalize, cleanup };
 }
 
-function hasConfiguredGeminiApiKeys(value) {
-    const keys = String(value ?? '')
-        .split(',')
-        .map((entry) => entry.trim())
-        .filter(Boolean);
-    return keys.length > 0;
-}
-
-function hasConfiguredAssemblyAiApiKey(value) {
-    return String(value ?? '').trim().length > 0;
-}
-
 function applyApiKeyAvailabilityFromSettings(settings) {
     if (!settings || typeof settings !== 'object') {
-        hasGeminiApiKeysConfigured = false;
-        hasAssemblyAiApiKeyConfigured = false;
+        hasAiConfigured = false;
+        hasAsrConfigured = false;
         return;
     }
 
-    // Ollama doesn't require API keys, so treat it as always configured
+    // Ollama needs no key; DashScope needs a key.
     if (settings.aiProvider === 'ollama') {
-        hasGeminiApiKeysConfigured = true;
-    } else if (typeof settings.hasGeminiApiKeys === 'boolean') {
-        hasGeminiApiKeysConfigured = settings.hasGeminiApiKeys;
+        hasAiConfigured = true;
+    } else if (typeof settings.hasDashscopeApiKey === 'boolean') {
+        hasAiConfigured = settings.hasDashscopeApiKey;
     } else {
-        hasGeminiApiKeysConfigured = hasConfiguredGeminiApiKeys(settings.geminiApiKey);
+        hasAiConfigured = String(settings.dashscopeApiKey ?? '').trim().length > 0;
     }
 
-    if (typeof settings.hasAssemblyAiApiKey === 'boolean') {
-        hasAssemblyAiApiKeyConfigured = settings.hasAssemblyAiApiKey;
+    // Paraformer reuses the DashScope key; Xunfei needs its own pair.
+    if (settings.asrProvider === 'xfyun') {
+        hasAsrConfigured = settings.hasXfyunCredentials === true
+            || (String(settings.xfyunAppId ?? '').trim().length > 0
+                && String(settings.xfyunApiKey ?? '').trim().length > 0);
     } else {
-        hasAssemblyAiApiKeyConfigured = hasConfiguredAssemblyAiApiKey(settings.assemblyAiApiKey);
+        hasAsrConfigured = hasAiConfigured;
     }
 }
 
@@ -672,8 +801,8 @@ function setSourceSelected(source, enabled) {
 }
 
 async function toggleMasterTranscription() {
-    if (!hasAssemblyAiApiKeyConfigured) {
-        showFeedback('AssemblyAI API key missing. Add it in Settings.', 'error');
+    if (!hasAsrConfigured) {
+        showFeedback('Speech-recognition credentials missing. Add them in Settings.', 'error');
         return;
     }
 
@@ -704,8 +833,8 @@ function buildAskAiContextPayload() {
 }
 
 async function askAiWithSessionContext() {
-    if (!hasGeminiApiKeysConfigured) {
-        showFeedback('Gemini API key missing. Add it in Settings.', 'error');
+    if (!hasAiConfigured) {
+        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
         return;
     }
 
@@ -751,8 +880,8 @@ async function askAiWithSessionContext() {
 }
 
 async function analyzeScreenshotsOnly() {
-    if (!hasGeminiApiKeysConfigured) {
-        showFeedback('Gemini API key missing. Add it in Settings.', 'error');
+    if (!hasAiConfigured) {
+        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
         return;
     }
 
@@ -849,8 +978,8 @@ async function closeApplication() {
 // NEW CLUELY-STYLE FEATURES
 
 async function getResponseSuggestions() {
-    if (!hasGeminiApiKeysConfigured) {
-        showFeedback('Gemini API key missing. Add it in Settings.', 'error');
+    if (!hasAiConfigured) {
+        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
         return;
     }
 
@@ -894,8 +1023,8 @@ async function getResponseSuggestions() {
 }
 
 async function generateMeetingNotes() {
-    if (!hasGeminiApiKeysConfigured) {
-        showFeedback('Gemini API key missing. Add it in Settings.', 'error');
+    if (!hasAiConfigured) {
+        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
         return;
     }
 
@@ -939,8 +1068,8 @@ async function generateMeetingNotes() {
 }
 
 async function getConversationInsights() {
-    if (!hasGeminiApiKeysConfigured) {
-        showFeedback('Gemini API key missing. Add it in Settings.', 'error');
+    if (!hasAiConfigured) {
+        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
         return;
     }
 
@@ -1019,8 +1148,8 @@ function updateUI() {
     const hasTranscriptContext = aiBundle.transcriptContext.length > 0;
     const hasEnabledScreenshots = aiBundle.enabledScreenshotIds.length > 0;
     const hasAiContext = hasTranscriptContext || hasEnabledScreenshots || aiBundle.contextString.length > 0;
-    const canRunAiActions = hasGeminiApiKeysConfigured;
-    const canRunTranscription = hasAssemblyAiApiKeyConfigured;
+    const canRunAiActions = hasAiConfigured;
+    const canRunTranscription = hasAsrConfigured;
     const askAiInFlight = isAiActionInFlight('askAi');
     const screenAiInFlight = isAiActionInFlight('screenAi');
     const suggestInFlight = isAiActionInFlight('suggest');
@@ -1079,10 +1208,10 @@ function showFeedback(message, type = 'info') {
 
 function showLoadingOverlay(message = 'Analyzing screen...') {
     if (loadingOverlay) {
-        // Update the loading text if custom message provided
         const loadingTextElement = loadingOverlay.querySelector('.loading-text');
         if (loadingTextElement) {
-            loadingTextElement.innerHTML = message;
+            // textContent (not innerHTML) — message can originate from AI/error strings
+            loadingTextElement.textContent = message;
         }
         loadingOverlay.classList.remove('hidden');
     }
@@ -1091,10 +1220,9 @@ function showLoadingOverlay(message = 'Analyzing screen...') {
 function hideLoadingOverlay() {
     if (loadingOverlay) {
         loadingOverlay.classList.add('hidden');
-        // Reset to default text
         const loadingTextElement = loadingOverlay.querySelector('.loading-text');
         if (loadingTextElement) {
-            loadingTextElement.innerHTML = 'Analyzing screen...';
+            loadingTextElement.textContent = 'Analyzing screen...';
         }
     }
 }

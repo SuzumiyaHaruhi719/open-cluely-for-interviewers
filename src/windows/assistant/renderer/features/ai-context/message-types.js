@@ -14,12 +14,16 @@ export function isAiResponseMessageType(type) {
   return type === 'ai-response';
 }
 
+export function isInterviewerCoachMessageType(type) {
+  return type === 'interviewer-coach';
+}
+
 export function canToggleAiForMessageType(type) {
   return isTranscriptMessageType(type) || isScreenshotMessageType(type) || isAiResponseMessageType(type);
 }
 
 export function defaultIncludeInAiForMessageType(type) {
-  if (isSystemMessageType(type)) {
+  if (isSystemMessageType(type) || isInterviewerCoachMessageType(type)) {
     return false;
   }
   return true;

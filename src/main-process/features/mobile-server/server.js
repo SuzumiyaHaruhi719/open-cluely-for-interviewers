@@ -30,6 +30,35 @@ function isVirtualAdapter(name = '') {
   return VIRTUAL_ADAPTER_PATTERNS.some((re) => re.test(name));
 }
 
+function isPrivateHost(host) {
+  if (!host) return false;
+  if (host === 'localhost') return true;
+  // IPv4 dotted-quad. The mobile server binds 0.0.0.0 and only listens on
+  // private-range Wi-Fi/Ethernet adapters in practice; anything outside
+  // those ranges is either a public-IP misconfig or a DNS-rebinding attack.
+  const m = host.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (!m) {
+    // IPv6 literal — accept loopback ::1 only; anything else rejected
+    return host === '::1' || host === '[::1]';
+  }
+  const [a, b] = [parseInt(m[1], 10), parseInt(m[2], 10)];
+  if (a === 127) return true;            // loopback
+  if (a === 10) return true;             // RFC1918 10.0.0.0/8
+  if (a === 192 && b === 168) return true; // RFC1918 192.168.0.0/16
+  if (a === 172 && b >= 16 && b <= 31) return true; // RFC1918 172.16.0.0/12
+  if (a === 169 && b === 254) return true; // link-local 169.254.0.0/16
+  return false;
+}
+
+function isPrivateOrigin(origin) {
+  try {
+    const u = new URL(origin);
+    return isPrivateHost(u.hostname);
+  } catch {
+    return false;
+  }
+}
+
 function getLanAddresses() {
   const real = [];
   const virtual = [];
@@ -105,6 +134,7 @@ function createMobileServer({ getGeminiRuntime, getScreenshotManager, notifyDesk
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         res.end(html);
       } catch (err) {
+        console.error('[MobileServer] failed to serve mobile.html', err);
         res.writeHead(500);
         res.end('Mobile UI unavailable');
       }
@@ -117,7 +147,36 @@ function createMobileServer({ getGeminiRuntime, getScreenshotManager, notifyDesk
 
   // ── WebSocket server ───────────────────────────────────────────────────────
 
-  const wss = new WebSocketServer({ server: httpServer });
+  // maxPayload caps a single inbound frame at 256 KiB; defends the main
+  // process against an OOM from a hostile peer (mobile server binds on the
+  // LAN). The largest legitimate payload is an `ask-ai` contextString +
+  // transcript, which is held well below this in `buildFilteredAiContextBundle`.
+  //
+  // verifyClient rejects DNS-rebinding attacks: the only legitimate Origin
+  // for the mobile UI is no Origin (native phone WS) or one whose host
+  // resolves to a private-range / loopback IP. Browsers honor Origin even
+  // when a malicious public page DNS-rebinds to a LAN IP, so checking it
+  // here cuts off the rebinding vector. Hosts like `localhost`, `127.x.x.x`,
+  // `10.x`, `172.16.x-172.31.x`, `192.168.x` pass; everything else rejects.
+  const wss = new WebSocketServer({
+    server: httpServer,
+    maxPayload: 256 * 1024,
+    verifyClient: (info, callback) => {
+      const origin = info.req.headers.origin;
+      if (origin && !isPrivateOrigin(origin)) {
+        console.warn(`[MobileServer] WS rejected: non-private Origin "${origin}"`);
+        callback(false, 403, 'Forbidden origin');
+        return;
+      }
+      const host = info.req.headers.host || '';
+      if (!isPrivateHost(host.split(':')[0])) {
+        console.warn(`[MobileServer] WS rejected: non-private Host "${host}"`);
+        callback(false, 403, 'Forbidden host');
+        return;
+      }
+      callback(true);
+    },
+  });
 
   wss.on('connection', (ws) => {
     clients.add(ws);
@@ -166,7 +225,22 @@ function createMobileServer({ getGeminiRuntime, getScreenshotManager, notifyDesk
             break;
           }
 
-          const contextString = typeof msg.contextString === 'string' ? msg.contextString.trim() : '';
+          let contextString = typeof msg.contextString === 'string' ? msg.contextString.trim() : '';
+          // Cap contextString at 32 KiB — a malicious LAN peer (or an
+          // honest UI bug) could otherwise send an unbounded payload
+          // that burns DashScope quota and pins the model's reasoning
+          // budget. 32 KiB ≈ 8 k tokens, plenty for any reasonable
+          // interview-coach context bundle but firmly bounded.
+          const MAX_CONTEXT_BYTES = 32 * 1024;
+          if (Buffer.byteLength(contextString, 'utf8') > MAX_CONTEXT_BYTES) {
+            console.warn(`[MobileServer] ask-ai contextString truncated from ${Buffer.byteLength(contextString, 'utf8')} bytes`);
+            // Truncate to the byte cap, accepting that we may chop a
+            // multi-byte char in half (UTF-8 decoder downstream is
+            // permissive; DashScope tokenizer treats truncated UTF-8
+            // as the replacement char). Adequate for hostile-input
+            // defense; a clean cut would need code-point walking.
+            contextString = contextString.slice(0, MAX_CONTEXT_BYTES);
+          }
 
           if (!contextString && !screenshotManager?.hasScreenshots()) {
             sendTo(ws, 'error', { message: 'Take a screenshot or type a question first.' });
@@ -188,7 +262,7 @@ function createMobileServer({ getGeminiRuntime, getScreenshotManager, notifyDesk
                 const { imageParts } = await screenshotManager.buildImagePartsFromScreenshots({ strict: false });
                 if (imageParts.length > 0) {
                   text = await geminiRuntime.executeWithKeyFailover((svc) => {
-                    if (!svc || !svc.model) throw new Error('AI model not initialized');
+                    if (!svc || !svc.modelName) throw new Error('AI model not initialized');
                     return svc.askAiWithSessionContextAndScreenshots(imageParts, {
                       contextString,
                       transcriptContext: '',
@@ -202,7 +276,7 @@ function createMobileServer({ getGeminiRuntime, getScreenshotManager, notifyDesk
 
               if (!text) {
                 text = await geminiRuntime.executeWithKeyFailover((svc) => {
-                  if (!svc || !svc.model) throw new Error('AI model not initialized');
+                  if (!svc || !svc.modelName) throw new Error('AI model not initialized');
                   return svc.askAiWithSessionContext({
                     contextString,
                     transcriptContext: '',

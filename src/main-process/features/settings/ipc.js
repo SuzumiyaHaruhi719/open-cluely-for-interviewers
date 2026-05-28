@@ -1,6 +1,7 @@
 function registerSettingsIpc({
   ipcMain,
   app,
+  asrService,
   getAppEnvironment,
   setAppEnvironment,
   getAppState,
@@ -10,27 +11,34 @@ function registerSettingsIpc({
   saveAppState,
   geminiRuntime,
   windowController,
-  getAssemblyAiSpeechModel,
-  setAssemblyAiSpeechModel,
-  keyboardShortcuts,
-  assemblyAiSpeechModels,
-  defaultAssemblyAiSpeechModel
+  keyboardShortcuts
 }) {
   ipcMain.handle('get-settings', () => {
     const appEnvironment = getAppEnvironment();
     const appState = getAppState();
-    const geminiApiKey = typeof appState?.geminiApiKey === 'string' ? appState.geminiApiKey : '';
-    const assemblyAiApiKey = typeof appState?.assemblyAiApiKey === 'string' ? appState.assemblyAiApiKey : '';
+    const dashscopeApiKey = typeof appState?.dashscopeApiKey === 'string' ? appState.dashscopeApiKey : '';
+    const dashscopeAiModel = typeof appState?.dashscopeAiModel === 'string' && appState.dashscopeAiModel
+      ? appState.dashscopeAiModel
+      : geminiRuntime.getDefaultDashscopeAiModel();
+    const xfyunAppId = typeof appState?.xfyunAppId === 'string' ? appState.xfyunAppId : '';
+    const xfyunApiKey = typeof appState?.xfyunApiKey === 'string' ? appState.xfyunApiKey : '';
+    const resumeText = typeof appState?.resumeText === 'string' ? appState.resumeText : '';
+    const jobDescription = typeof appState?.jobDescription === 'string' ? appState.jobDescription : '';
+    const asrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
 
     return {
       aiProvider: geminiRuntime.getActiveAiProvider(),
-      geminiApiKey,
-      assemblyAiApiKey,
-      hasGeminiApiKeys: geminiApiKey.split(',').map((value) => value.trim()).filter(Boolean).length > 0,
-      hasAssemblyAiApiKey: assemblyAiApiKey.length > 0,
-      geminiModel: geminiRuntime.getActiveGeminiModel(),
-      geminiModels: geminiRuntime.getGeminiModels(),
-      defaultGeminiModel: geminiRuntime.getDefaultGeminiModel(),
+      asrProvider,
+      dashscopeApiKey,
+      dashscopeAiModel,
+      xfyunAppId,
+      xfyunApiKey,
+      resumeText,
+      jobDescription,
+      hasDashscopeApiKey: dashscopeApiKey.length > 0,
+      hasXfyunCredentials: xfyunAppId.length > 0 && xfyunApiKey.length > 0,
+      dashscopeAiModels: geminiRuntime.getDashscopeAiModels(),
+      defaultDashscopeAiModel: geminiRuntime.getDefaultDashscopeAiModel(),
       ollamaBaseUrl: geminiRuntime.getActiveOllamaBaseUrl(),
       ollamaModel: geminiRuntime.getActiveOllamaModel(),
       defaultOllamaBaseUrl: geminiRuntime.getDefaultOllamaBaseUrl(),
@@ -38,9 +46,6 @@ function registerSettingsIpc({
       programmingLanguage: geminiRuntime.getActiveProgrammingLanguage(),
       programmingLanguages: geminiRuntime.getProgrammingLanguages(),
       defaultProgrammingLanguage: geminiRuntime.getDefaultProgrammingLanguage(),
-      assemblyAiSpeechModels,
-      defaultAssemblyAiSpeechModel,
-      assemblyAiSpeechModel: getAssemblyAiSpeechModel(),
       keyboardShortcuts,
       hideFromScreenCapture: appEnvironment.hideFromScreenCapture,
       startHidden: appEnvironment.startHidden,
@@ -74,13 +79,21 @@ function registerSettingsIpc({
 
     try {
       const appEnvironment = getAppEnvironment();
+      const previousAsrProvider = (() => {
+        const current = getAppState();
+        return current?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+      })();
       const nextAiProvider = geminiRuntime.setActiveAiProvider(settings.aiProvider);
-      const nextGeminiApiKey = String(settings.geminiApiKey || '').trim();
-      const nextAssemblyAiApiKey = String(settings.assemblyAiApiKey || '').trim();
-      const nextGeminiModel = geminiRuntime.setActiveGeminiModel(settings.geminiModel);
+      const nextDashscopeApiKey = String(settings.dashscopeApiKey || '').trim();
+      const nextDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(settings.dashscopeAiModel);
+      const nextXfyunAppId = String(settings.xfyunAppId || '').trim();
+      const nextXfyunApiKey = String(settings.xfyunApiKey || '').trim();
+      const requestedAsrProvider = String(settings.asrProvider || '').trim().toLowerCase();
+      const nextAsrProvider = requestedAsrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+      const nextResumeText = String(settings.resumeText || '').trim();
+      const nextJobDescription = String(settings.jobDescription || '').trim();
       const nextOllamaBaseUrl = geminiRuntime.setActiveOllamaBaseUrl(settings.ollamaBaseUrl);
       const nextOllamaModel = geminiRuntime.setActiveOllamaModel(settings.ollamaModel);
-      const nextAssemblyModel = setAssemblyAiSpeechModel(settings.assemblyAiSpeechModel);
       const nextProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(settings.programmingLanguage);
       const nextWindowOpacityLevel = windowController.setWindowOpacityLevel(settings.windowOpacityLevel);
 
@@ -93,16 +106,17 @@ function registerSettingsIpc({
         nodeOptions: appEnvironment.nodeOptions
       });
 
-      const keyState = geminiRuntime.setKeys(nextGeminiApiKey, 0);
       const updatedAppState = saveAppState(app, {
         aiProvider: nextAiProvider,
-        geminiApiKey: nextGeminiApiKey,
-        assemblyAiApiKey: nextAssemblyAiApiKey,
-        geminiApiKeyIndex: keyState.activeApiKeyIndex,
-        geminiModel: nextGeminiModel,
+        asrProvider: nextAsrProvider,
+        dashscopeApiKey: nextDashscopeApiKey,
+        dashscopeAiModel: nextDashscopeAiModel,
+        xfyunAppId: nextXfyunAppId,
+        xfyunApiKey: nextXfyunApiKey,
+        resumeText: nextResumeText,
+        jobDescription: nextJobDescription,
         ollamaBaseUrl: nextOllamaBaseUrl,
         ollamaModel: nextOllamaModel,
-        assemblyAiSpeechModel: nextAssemblyModel,
         programmingLanguage: nextProgrammingLanguage,
         windowOpacityLevel: nextWindowOpacityLevel
       });
@@ -110,26 +124,23 @@ function registerSettingsIpc({
       setAppEnvironment(updatedEnvironment);
       setAppState(updatedAppState);
 
+      if (previousAsrProvider !== nextAsrProvider && asrService?.stopAllStreams) {
+        console.log(`ASR provider switched ${previousAsrProvider} → ${nextAsrProvider}; stopping previous streams`);
+        try { asrService.stopAllStreams(); } catch (_) {}
+      }
+
       console.log('Saved app state to:', getAppStatePath(app));
       console.log('Settings saved to:', updatedEnvironment.envPath);
       console.log('Applied AI provider:', nextAiProvider);
+      console.log('Applied DashScope AI model:', nextDashscopeAiModel);
       console.log('Applied programming language:', nextProgrammingLanguage);
       console.log(`Applied window opacity level: ${nextWindowOpacityLevel}/10`);
 
       if (nextAiProvider === 'ollama') {
         console.log(`Applied Ollama model: ${nextOllamaModel} at ${nextOllamaBaseUrl}`);
-        geminiRuntime.initializeOllamaService(
-          nextOllamaBaseUrl,
-          nextOllamaModel,
-          nextProgrammingLanguage
-        );
+        geminiRuntime.initializeOllamaService(nextOllamaBaseUrl, nextOllamaModel, nextProgrammingLanguage);
       } else {
-        console.log(`Applied Gemini API key index: ${keyState.activeApiKeyIndex + 1}/${keyState.geminiApiKeys.length}`);
-        geminiRuntime.initializeGeminiService(
-          keyState.activeApiKey,
-          nextGeminiModel,
-          nextProgrammingLanguage
-        );
+        geminiRuntime.initializeDashscopeService(nextDashscopeAiModel, nextProgrammingLanguage);
       }
 
       return { success: true };

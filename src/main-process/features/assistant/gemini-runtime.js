@@ -1,327 +1,77 @@
-const GeminiService = require('../../../services/ai/gemini-service');
+// ============================================================================
+// AI runtime
+// ----------------------------------------------------------------------------
+// Single front-door over the two active AI provider backends:
+//   - dashscope: hosted Qwen + DeepSeek via DashScope's OpenAI-compatible
+//     endpoint. One key, model selectable in Settings.
+//   - ollama:    optional local fallback.
+//
+// File name is historic (was gemini-runtime when Gemini was the default).
+// ============================================================================
+
 const OllamaService = require('../../../services/ai/ollama-service');
+const DashscopeAnthropicService = require('../../../services/ai/dashscope-anthropic-service');
 const {
   resolveAiProvider,
   getAiProviders,
   getDefaultAiProvider,
+  getDashscopeBaseUrl,
+  getDashscopeAiModels,
+  getDefaultDashscopeAiModel,
+  resolveDashscopeAiModel,
   getDefaultOllamaBaseUrl,
   getDefaultOllamaModel,
-  resolveGeminiModel,
   resolveProgrammingLanguage,
-  getGeminiModels,
-  getDefaultGeminiModel,
   getProgrammingLanguages,
   getDefaultProgrammingLanguage
 } = require('../../../config');
 
-const GEMINI_ALL_KEYS_UNAVAILABLE_ERROR_CODE = 'GEMINI_ALL_KEYS_UNAVAILABLE';
+function createGeminiRuntime(options = {}) {
+  // Lets the runtime read the DashScope key from app-state on every call.
+  const getDashscopeApiKey = typeof options.getDashscopeApiKey === 'function'
+    ? options.getDashscopeApiKey
+    : () => '';
 
-function normalizeGeminiApiKeys(keys) {
-  const sourceValues = Array.isArray(keys)
-    ? keys
-    : String(keys ?? '').split(',');
-  const seen = new Set();
-  const nextKeys = [];
-
-  for (const rawValue of sourceValues) {
-    const key = String(rawValue || '').trim();
-    if (!key || seen.has(key)) {
-      continue;
-    }
-
-    seen.add(key);
-    nextKeys.push(key);
-  }
-
-  return nextKeys;
-}
-
-function createGeminiRuntime() {
-  let geminiService = null;
+  let dashscopeService = null;
   let ollamaService = null;
   let activeAiProvider = getDefaultAiProvider();
-  let activeGeminiModel = getDefaultGeminiModel();
+  let activeDashscopeAiModel = getDefaultDashscopeAiModel();
   let activeProgrammingLanguage = getDefaultProgrammingLanguage();
   let activeOllamaBaseUrl = getDefaultOllamaBaseUrl();
   let activeOllamaModel = getDefaultOllamaModel();
-  let geminiApiKeys = [];
-  let activeApiKeyIndex = 0;
-  let activeKeyIndexChangeHandler = null;
 
-  function notifyActiveKeyIndexChanged(index) {
-    if (typeof activeKeyIndexChangeHandler !== 'function') {
-      return;
-    }
-
-    try {
-      activeKeyIndexChangeHandler(index);
-    } catch (error) {
-      console.error('Failed to persist active Gemini API key index:', error);
-    }
-  }
-
-  function normalizeKeyIndex(index) {
-    if (geminiApiKeys.length === 0) {
-      return 0;
-    }
-
-    const parsedIndex = Number.parseInt(String(index ?? ''), 10);
-    const safeIndex = Number.isFinite(parsedIndex) ? parsedIndex : 0;
-    const maxIndex = geminiApiKeys.length - 1;
-
-    return Math.min(Math.max(safeIndex, 0), maxIndex);
-  }
-
-  function setActiveApiKeyIndex(index, options = {}) {
-    const nextIndex = normalizeKeyIndex(index);
-    const shouldNotify = options.notify !== false;
-    const changed = nextIndex !== activeApiKeyIndex;
-    activeApiKeyIndex = nextIndex;
-
-    if (changed && shouldNotify) {
-      notifyActiveKeyIndexChanged(activeApiKeyIndex);
-    }
-
-    return activeApiKeyIndex;
-  }
-
-  function getActiveApiKey() {
-    if (geminiApiKeys.length === 0) {
-      return '';
-    }
-
-    return geminiApiKeys[activeApiKeyIndex] || '';
-  }
-
-  function hasApiKeys() {
-    return geminiApiKeys.length > 0;
-  }
-
-  function initializeGeminiService(
-    apiKey = getActiveApiKey(),
-    modelName = activeGeminiModel,
+  function initializeDashscopeService(
+    modelName = activeDashscopeAiModel,
     programmingLanguage = activeProgrammingLanguage
   ) {
-    activeGeminiModel = resolveGeminiModel(modelName);
+    activeDashscopeAiModel = resolveDashscopeAiModel(modelName);
     activeProgrammingLanguage = resolveProgrammingLanguage(programmingLanguage);
+    const apiKey = String(getDashscopeApiKey() || '').trim();
 
     try {
-      if (!apiKey) {
-        console.error('Gemini API key not configured in app settings');
-        geminiService = null;
-        return null;
-      }
-
-      console.log(
-        'Initializing Gemini AI Service with model and language:',
-        activeGeminiModel,
-        activeProgrammingLanguage
-      );
-
-      if (geminiService) {
-        geminiService.updateConfiguration({
+      if (dashscopeService) {
+        dashscopeService.updateConfiguration({
+          baseUrl: getDashscopeBaseUrl(),
           apiKey,
-          modelName: activeGeminiModel,
+          modelName: activeDashscopeAiModel,
           programmingLanguage: activeProgrammingLanguage
         });
       } else {
-        geminiService = new GeminiService(apiKey, {
-          modelName: activeGeminiModel,
+        dashscopeService = new DashscopeAnthropicService({
+          providerName: 'DashScope',
+          baseUrl: getDashscopeBaseUrl(),
+          apiKey,
+          modelName: activeDashscopeAiModel,
           programmingLanguage: activeProgrammingLanguage
         });
       }
-
-      console.log('Gemini AI Service initialized successfully');
-      return geminiService;
+      console.log(`DashScope AI service initialized: ${activeDashscopeAiModel}`);
+      return dashscopeService;
     } catch (error) {
-      geminiService = null;
-      console.error('Failed to initialize Gemini AI Service:', error);
+      dashscopeService = null;
+      console.error('Failed to initialize DashScope AI service:', error);
       return null;
     }
-  }
-
-  function setKeys(apiKeys, preferredIndex = 0) {
-    geminiApiKeys = normalizeGeminiApiKeys(apiKeys);
-
-    if (!hasApiKeys()) {
-      setActiveApiKeyIndex(0);
-      geminiService = null;
-      return {
-        geminiApiKeys: [],
-        activeApiKeyIndex: 0,
-        activeApiKey: ''
-      };
-    }
-
-    setActiveApiKeyIndex(preferredIndex);
-
-    return {
-      geminiApiKeys: [...geminiApiKeys],
-      activeApiKeyIndex,
-      activeApiKey: getActiveApiKey()
-    };
-  }
-
-  function getApiKeys() {
-    return [...geminiApiKeys];
-  }
-
-  function switchToNextKey() {
-    if (!hasApiKeys()) {
-      return {
-        switched: false,
-        activeApiKeyIndex,
-        activeApiKey: ''
-      };
-    }
-
-    if (geminiApiKeys.length === 1) {
-      return {
-        switched: false,
-        activeApiKeyIndex,
-        activeApiKey: getActiveApiKey()
-      };
-    }
-
-    const previousIndex = activeApiKeyIndex;
-    const nextIndex = (activeApiKeyIndex + 1) % geminiApiKeys.length;
-    setActiveApiKeyIndex(nextIndex);
-
-    if (nextIndex === previousIndex) {
-      return {
-        switched: false,
-        activeApiKeyIndex,
-        activeApiKey: getActiveApiKey()
-      };
-    }
-
-    initializeGeminiService(getActiveApiKey(), activeGeminiModel, activeProgrammingLanguage);
-
-    return {
-      switched: true,
-      activeApiKeyIndex,
-      activeApiKey: getActiveApiKey()
-    };
-  }
-
-  function isSwitchEligibleError(error) {
-    if (!error) {
-      return false;
-    }
-
-    if (geminiService?.isQuotaExhaustedError?.(error)) {
-      return true;
-    }
-
-    if (geminiService?.isAuthenticationError?.(error)) {
-      return true;
-    }
-
-    const message = String(error?.message || '').toLowerCase();
-    return (
-      message.includes('quota exceeded') ||
-      message.includes('api key not valid') ||
-      message.includes('invalid api key') ||
-      message.includes('permission denied') ||
-      message.includes('401') ||
-      message.includes('403') ||
-      message.includes('unauthorized') ||
-      message.includes('forbidden')
-    );
-  }
-
-  function createAllKeysUnavailableError(cause) {
-    const allKeysUnavailableError = new Error(
-      'All configured Gemini API keys are currently unavailable due to quota or authentication errors.'
-    );
-
-    allKeysUnavailableError.code = GEMINI_ALL_KEYS_UNAVAILABLE_ERROR_CODE;
-    allKeysUnavailableError.isAllKeysUnavailable = true;
-    if (cause) {
-      allKeysUnavailableError.cause = cause;
-    }
-
-    return allKeysUnavailableError;
-  }
-
-  function isAllKeysUnavailableError(error) {
-    return Boolean(
-      error && (
-        error.code === GEMINI_ALL_KEYS_UNAVAILABLE_ERROR_CODE ||
-        error.isAllKeysUnavailable === true
-      )
-    );
-  }
-
-  async function executeWithKeyFailover(operation) {
-    if (typeof operation !== 'function') {
-      throw new Error('AI failover operation must be a function.');
-    }
-
-    // For Ollama, no key failover — just execute directly
-    if (activeAiProvider === 'ollama') {
-      if (!ollamaService) {
-        initializeOllamaService();
-      }
-      if (!ollamaService) {
-        throw new Error('Ollama service not available. Check that Ollama is running.');
-      }
-      return await operation(ollamaService, {
-        activeApiKeyIndex: 0,
-        activeApiKey: '',
-        attempt: 1,
-        totalKeys: 0
-      });
-    }
-
-    if (!hasApiKeys()) {
-      throw new Error('No Gemini API key configured. Add it in Settings.');
-    }
-
-    const totalKeys = geminiApiKeys.length;
-    const startIndex = activeApiKeyIndex;
-    let attemptedKeys = 0;
-    let lastSwitchEligibleError = null;
-
-    while (attemptedKeys < totalKeys) {
-      const activeApiKey = getActiveApiKey();
-      if (!activeApiKey) {
-        break;
-      }
-
-      if (!geminiService || geminiService.apiKey !== activeApiKey) {
-        initializeGeminiService(activeApiKey, activeGeminiModel, activeProgrammingLanguage);
-      }
-
-      try {
-        return await operation(geminiService, {
-          activeApiKeyIndex,
-          activeApiKey,
-          attempt: attemptedKeys + 1,
-          totalKeys
-        });
-      } catch (error) {
-        if (!isSwitchEligibleError(error)) {
-          throw error;
-        }
-
-        lastSwitchEligibleError = error;
-        attemptedKeys += 1;
-
-        if (attemptedKeys >= totalKeys) {
-          if (activeApiKeyIndex !== startIndex) {
-            setActiveApiKeyIndex(startIndex);
-            initializeGeminiService(getActiveApiKey(), activeGeminiModel, activeProgrammingLanguage);
-          }
-
-          throw createAllKeysUnavailableError(lastSwitchEligibleError);
-        }
-
-        switchToNextKey();
-      }
-    }
-
-    throw createAllKeysUnavailableError(lastSwitchEligibleError);
   }
 
   function initializeOllamaService(
@@ -334,12 +84,6 @@ function createGeminiRuntime() {
     activeProgrammingLanguage = resolveProgrammingLanguage(programmingLanguage);
 
     try {
-      console.log(
-        'Initializing Ollama AI Service with model and language:',
-        activeOllamaModel,
-        activeProgrammingLanguage
-      );
-
       if (ollamaService) {
         ollamaService.updateConfiguration({
           baseUrl: activeOllamaBaseUrl,
@@ -353,12 +97,11 @@ function createGeminiRuntime() {
           programmingLanguage: activeProgrammingLanguage
         });
       }
-
-      console.log('Ollama AI Service initialized successfully');
+      console.log(`Ollama AI service initialized: ${activeOllamaModel} @ ${activeOllamaBaseUrl}`);
       return ollamaService;
     } catch (error) {
       ollamaService = null;
-      console.error('Failed to initialize Ollama AI Service:', error);
+      console.error('Failed to initialize Ollama AI service:', error);
       return null;
     }
   }
@@ -367,7 +110,32 @@ function createGeminiRuntime() {
     if (activeAiProvider === 'ollama') {
       return initializeOllamaService(activeOllamaBaseUrl, activeOllamaModel, activeProgrammingLanguage);
     }
-    return initializeGeminiService(getActiveApiKey(), activeGeminiModel, activeProgrammingLanguage);
+    return initializeDashscopeService(activeDashscopeAiModel, activeProgrammingLanguage);
+  }
+
+  async function executeWithKeyFailover(operation) {
+    if (typeof operation !== 'function') {
+      throw new Error('AI failover operation must be a function.');
+    }
+
+    if (activeAiProvider === 'ollama') {
+      if (!ollamaService) initializeOllamaService();
+      if (!ollamaService) {
+        throw new Error('Ollama service not available. Check that Ollama is running.');
+      }
+      return await operation(ollamaService, { attempt: 1, totalKeys: 0 });
+    }
+
+    if (!dashscopeService) initializeDashscopeService();
+    if (!dashscopeService) {
+      throw new Error('DashScope AI service not available. Configure DashScope API key in Settings.');
+    }
+    return await operation(dashscopeService, { attempt: 1, totalKeys: 0 });
+  }
+
+  function isAllKeysUnavailableError(error) {
+    // Single-key providers — kept for callers that still check this.
+    return Boolean(error && (error.code === 'DASHSCOPE_KEY_UNAVAILABLE'));
   }
 
   function setActiveAiProvider(providerName) {
@@ -377,6 +145,15 @@ function createGeminiRuntime() {
 
   function getActiveAiProvider() {
     return activeAiProvider;
+  }
+
+  function setActiveDashscopeAiModel(modelName) {
+    activeDashscopeAiModel = resolveDashscopeAiModel(modelName);
+    return activeDashscopeAiModel;
+  }
+
+  function getActiveDashscopeAiModel() {
+    return activeDashscopeAiModel;
   }
 
   function setActiveOllamaBaseUrl(baseUrl) {
@@ -398,23 +175,26 @@ function createGeminiRuntime() {
   }
 
   function getService() {
-    if (activeAiProvider === 'ollama') {
-      return ollamaService;
-    }
-    return geminiService;
+    if (activeAiProvider === 'ollama') return ollamaService;
+    return dashscopeService;
   }
 
-  function getActiveGeminiModel() {
-    return activeGeminiModel;
+  // Back-compat shim: assistant/ipc.js still gates AI actions on this. After
+  // the dashscope unification "has any API key" is equivalent to "current
+  // provider can run inference" — dashscope needs a key, ollama doesn't.
+  function hasApiKeys() {
+    if (activeAiProvider === 'ollama') return true;
+    return String(getDashscopeApiKey() || '').trim().length > 0;
+  }
+
+  function getApiKeys() {
+    if (activeAiProvider === 'ollama') return [];
+    const key = String(getDashscopeApiKey() || '').trim();
+    return key ? [key] : [];
   }
 
   function getActiveProgrammingLanguage() {
     return activeProgrammingLanguage;
-  }
-
-  function setActiveGeminiModel(modelName) {
-    activeGeminiModel = resolveGeminiModel(modelName);
-    return activeGeminiModel;
   }
 
   function setActiveProgrammingLanguage(language) {
@@ -422,32 +202,23 @@ function createGeminiRuntime() {
     return activeProgrammingLanguage;
   }
 
-  function setActiveKeyIndexChangeHandler(handler) {
-    activeKeyIndexChangeHandler = typeof handler === 'function' ? handler : null;
-  }
-
   return {
-    initializeGeminiService,
+    initializeDashscopeService,
     initializeOllamaService,
     initializeAiService,
-    setKeys,
-    getApiKeys,
-    hasApiKeys,
-    getActiveApiKey,
-    getActiveApiKeyIndex: () => activeApiKeyIndex,
-    switchToNextKey,
     executeWithKeyFailover,
     isAllKeysUnavailableError,
-    setActiveKeyIndexChangeHandler,
+    hasApiKeys,
+    getApiKeys,
     getService,
     getAiProviders,
     getDefaultAiProvider,
     getActiveAiProvider,
     setActiveAiProvider,
-    getGeminiModels,
-    getDefaultGeminiModel,
-    getActiveGeminiModel,
-    setActiveGeminiModel,
+    getDashscopeAiModels,
+    getDefaultDashscopeAiModel,
+    getActiveDashscopeAiModel,
+    setActiveDashscopeAiModel,
     getDefaultOllamaBaseUrl,
     getDefaultOllamaModel,
     getActiveOllamaBaseUrl,
@@ -462,6 +233,5 @@ function createGeminiRuntime() {
 }
 
 module.exports = {
-  GEMINI_ALL_KEYS_UNAVAILABLE_ERROR_CODE,
   createGeminiRuntime
 };

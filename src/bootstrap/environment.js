@@ -11,26 +11,6 @@ const OPTIONAL_ENV_DEFAULTS = Object.freeze({
   NODE_OPTIONS: '--max-old-space-size=4096'
 });
 
-function normalizeGeminiApiKeys(value) {
-  const sourceValues = Array.isArray(value)
-    ? value
-    : String(value ?? '').split(',');
-  const seen = new Set();
-  const keys = [];
-
-  for (const rawValue of sourceValues) {
-    const key = String(rawValue || '').trim();
-    if (!key || seen.has(key)) {
-      continue;
-    }
-
-    seen.add(key);
-    keys.push(key);
-  }
-
-  return keys;
-}
-
 function getEnvPath(app) {
   return app.isPackaged
     ? path.join(process.resourcesPath, '.env')
@@ -61,14 +41,7 @@ function parsePositiveInteger(value, defaultValue) {
 }
 
 function normalizeApplicationEnvironment(source = {}) {
-  const geminiApiKeys = normalizeGeminiApiKeys(
-    source.geminiApiKey ?? source.geminiApiKeys
-  );
-
   return {
-    geminiApiKey: geminiApiKeys.join(','),
-    geminiApiKeys,
-    assemblyAiApiKey: String(source.assemblyAiApiKey || '').trim(),
     hideFromScreenCapture: parseBoolean(
       source.HIDE_FROM_SCREEN_CAPTURE ?? source.hideFromScreenCapture,
       parseBoolean(OPTIONAL_ENV_DEFAULTS.HIDE_FROM_SCREEN_CAPTURE, true)
@@ -91,8 +64,6 @@ function normalizeApplicationEnvironment(source = {}) {
 }
 
 function syncProcessEnvironment(environment) {
-  process.env.GEMINI_API_KEY = environment.geminiApiKey;
-  process.env.ASSEMBLY_AI_API_KEY = environment.assemblyAiApiKey;
   process.env.HIDE_FROM_SCREEN_CAPTURE = String(environment.hideFromScreenCapture);
   process.env.START_HIDDEN = String(environment.startHidden);
   process.env.MAX_SCREENSHOTS = String(environment.maxScreenshots);
@@ -163,7 +134,6 @@ module.exports = {
   buildEnvironmentFileContent,
   getEnvPath,
   loadApplicationEnvironment,
-  normalizeGeminiApiKeys,
   normalizeApplicationEnvironment,
   saveApplicationEnvironment
 };
