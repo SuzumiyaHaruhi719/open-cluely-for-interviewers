@@ -32,6 +32,48 @@ function registerSettingsIpc({
     }
   });
 
+  // Switch the macOS system default output device by name. Darwin-only;
+  // returns a structured not-supported error on Windows/Linux so the renderer
+  // can fall back without exceptions.
+  //
+  // Uses the `SwitchAudioSource` CLI (brew install switchaudio-osx) — the
+  // standard 3rd-party tool for scripting macOS audio routing. Apple does not
+  // expose a stable AppleScript / built-in CLI for this. If the binary is
+  // missing we surface a clear install hint so the user can fix it in one
+  // command rather than seeing an opaque ENOENT.
+  //
+  // Note: this only changes the *default output device*. Actual capture still
+  // relies on the existing loopback path (which follows the system default
+  // and therefore needs BlackHole / an Aggregate Device for content to be
+  // captureable).
+  ipcMain.handle('set-macos-default-output', async (_event, payload = {}) => {
+    if (process.platform !== 'darwin') {
+      return { success: false, error: 'not-supported', platform: process.platform };
+    }
+    const deviceLabel = String(payload?.deviceLabel || '').trim();
+    if (!deviceLabel) {
+      return { success: false, error: 'empty-device-label' };
+    }
+    return await new Promise((resolve) => {
+      execFile('SwitchAudioSource', ['-t', 'output', '-s', deviceLabel], (error, stdout, stderr) => {
+        if (error) {
+          if (error.code === 'ENOENT') {
+            resolve({
+              success: false,
+              error: 'switchaudiosource-missing',
+              hint: 'Install with: brew install switchaudio-osx'
+            });
+            return;
+          }
+          console.error('SwitchAudioSource failed:', error.message, stderr);
+          resolve({ success: false, error: error.message, stderr: String(stderr || '').trim() });
+          return;
+        }
+        resolve({ success: true, stdout: String(stdout || '').trim() });
+      });
+    });
+  });
+
   ipcMain.handle('get-settings', () => {
     const appEnvironment = getAppEnvironment();
     const appState = getAppState();

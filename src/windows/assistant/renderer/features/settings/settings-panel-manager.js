@@ -39,9 +39,13 @@ export function getSelectedSystemSourceValue() {
 
 // Parse a stored system-source value into a structured selector.
 // Values:
-//   ""              → default Windows loopback (desktopCapturer, first screen)
-//   "input:<id>"    → audioinput device (Stereo Mix, VB-Cable, etc.)
+//   ""              → default system loopback (desktopCapturer, first screen)
+//   "input:<id>"    → audioinput device (Stereo Mix, VB-Cable, BlackHole, etc.)
 //   "screen:<id>"   → specific desktopCapturer screen
+//   "output:<id>::<label>" → macOS audiooutput device. Renderer switches the
+//                            macOS system default output to <label> via the
+//                            main-process IPC, then falls through to the
+//                            default loopback path. No-op on Windows/Linux.
 // Anything else is treated as default.
 export function parseSystemSourceSelection(rawValue) {
     const value = String(rawValue || '');
@@ -54,8 +58,20 @@ export function parseSystemSourceSelection(rawValue) {
     if (value.startsWith('screen:')) {
         return { type: 'screen', id: value.slice('screen:'.length) };
     }
+    if (value.startsWith('output:')) {
+        const rest = value.slice('output:'.length);
+        const sepIndex = rest.indexOf('::');
+        if (sepIndex === -1) {
+            return { type: 'output', id: rest, label: '' };
+        }
+        return { type: 'output', id: rest.slice(0, sepIndex), label: rest.slice(sepIndex + 2) };
+    }
     return { type: 'default', id: null };
 }
+
+// Detect macOS in the renderer. Used to ungrey OS audio outputs and rephrase
+// Windows-specific labels in the picker without touching Windows behavior.
+const IS_MAC = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent || '');
 
 function setStoredValue(key, value) {
     try {
@@ -247,7 +263,9 @@ export function createSettingsPanelManager({
 
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
-        defaultOption.textContent = 'Windows default loopback (recommended)';
+        defaultOption.textContent = IS_MAC
+            ? 'macOS default output loopback (needs BlackHole or Aggregate)'
+            : 'Windows default loopback (recommended)';
         settingSystemSource.appendChild(defaultOption);
 
         const audioOutputs = (devices || []).filter((device) => device.kind === 'audiooutput');
@@ -269,19 +287,34 @@ export function createSettingsPanelManager({
             settingSystemSource.appendChild(group);
         }
 
-        // Group 2: detected audio output devices — informational. Chromium's
-        // loopback follows the OS default playback device, so picking one here
-        // just hints which output the user wants captured; the underlying
-        // engine still records whatever the OS routes to the default sink.
+        // Group 2: detected audio output devices.
+        //   Windows: informational only. Chromium's loopback follows the OS
+        //     default playback device, so picking a specific output cannot be
+        //     wired to a direct capture — entries stay disabled (unchanged).
+        //   macOS:   selecting an entry switches the macOS system default
+        //     output via SwitchAudioSource (main-process IPC). The existing
+        //     loopback path then follows the new default. Still requires
+        //     BlackHole / Aggregate for the capture itself.
         if (audioOutputs.length > 0) {
             const group = document.createElement('optgroup');
-            group.label = 'OS audio outputs (set as Windows default to capture)';
+            group.label = IS_MAC
+                ? 'OS audio outputs (sets macOS default — capture via BlackHole)'
+                : 'OS audio outputs (set as Windows default to capture)';
             const labelledOutputs = audioOutputs.filter((device) => device.deviceId && device.deviceId !== 'default');
             labelledOutputs.forEach((device, index) => {
                 const option = document.createElement('option');
-                option.value = '';
-                option.textContent = device.label || `Output ${index + 1}`;
-                option.disabled = true;
+                const label = device.label || `Output ${index + 1}`;
+                if (IS_MAC) {
+                    // Encode both the deviceId (renderer-side identity) and the
+                    // human label (which is what SwitchAudioSource matches on
+                    // because macOS audio device ids are not stable strings).
+                    option.value = `output:${device.deviceId}::${label}`;
+                    option.textContent = label;
+                } else {
+                    option.value = '';
+                    option.textContent = label;
+                    option.disabled = true;
+                }
                 group.appendChild(option);
             });
             if (labelledOutputs.length === 0) {
@@ -317,8 +350,27 @@ export function createSettingsPanelManager({
         }
 
         // Restore selection if the saved value still exists in the dropdown.
+        // For "output:" selections, fall back to id-match then label-match —
+        // macOS Chromium hides audiooutput labels until a media permission is
+        // active in this page session, so on Settings re-open the rebuilt
+        // option values can differ from what was saved. Without this tolerance
+        // the dropdown silently reverts to default.
         const allValues = Array.from(settingSystemSource.querySelectorAll('option')).map((opt) => opt.value);
-        settingSystemSource.value = allValues.includes(saved) ? saved : '';
+        let resolvedValue = '';
+        if (allValues.includes(saved)) {
+            resolvedValue = saved;
+        } else if (saved.startsWith('output:')) {
+            const parsedSaved = parseSystemSourceSelection(saved);
+            const candidate = allValues.find((value) => {
+                if (!value.startsWith('output:')) return false;
+                const parsed = parseSystemSourceSelection(value);
+                if (parsedSaved.id && parsed.id && parsed.id === parsedSaved.id) return true;
+                if (parsedSaved.label && parsed.label && parsed.label === parsedSaved.label) return true;
+                return false;
+            });
+            if (candidate) resolvedValue = candidate;
+        }
+        settingSystemSource.value = resolvedValue;
     }
 
     async function refreshAudioDeviceOptions() {
@@ -435,9 +487,11 @@ export function createSettingsPanelManager({
                 setStoredValue(MIC_DEVICE_STORAGE_KEY, micDeviceId);
                 setStoredValue(SYSTEM_SOURCE_STORAGE_KEY, systemSourceValue);
 
-                showFeedback?.('Settings saved. ASR provider and audio devices apply on next start.', 'success');
+                // Auto-save fires on every field change, so we don't pop a
+                // toast on success and don't close the panel — both were
+                // side-effects of the old click-Save-then-close flow. The
+                // user closes the panel explicitly via the close button.
                 onSettingsSaved?.({ ...settings, micDeviceId, systemSourceValue });
-                closeSettings();
                 return { success: true, settings: { ...settings, micDeviceId, systemSourceValue } };
             }
 
@@ -450,11 +504,57 @@ export function createSettingsPanelManager({
         }
     }
 
+    // Auto-save: every field change persists immediately. Selects / range
+    // inputs save on `change` (atomic user action, no debounce). Text inputs
+    // and textareas debounce on `input` so we don't write on every keystroke;
+    // we also save on `change` (fires on blur) to flush whatever's pending.
+    //
+    // The existing onSettingsSaved callback (wired by the renderer) refreshes
+    // API-key availability and UI state, so auto-save side-effects match what
+    // the old manual Save button used to do.
+    function bindAutoSave() {
+        const immediateFields = [
+            settingAsrProvider,
+            settingDashscopeAiModel,
+            settingProgrammingLanguage,
+            settingWindowOpacity,
+            settingMicDevice,
+            settingSystemSource
+        ];
+        immediateFields.forEach((el) => {
+            if (!el) return;
+            el.addEventListener('change', () => { saveSettings(); });
+        });
+
+        let saveTimer = null;
+        const queueSave = () => {
+            if (saveTimer) clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => { saveTimer = null; saveSettings(); }, 600);
+        };
+        const flushSave = () => {
+            if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+            saveSettings();
+        };
+        const debouncedFields = [
+            settingDashscopeKey,
+            settingXfyunAppId,
+            settingXfyunKey,
+            settingResumeText,
+            settingJobDescription
+        ];
+        debouncedFields.forEach((el) => {
+            if (!el) return;
+            el.addEventListener('input', queueSave);
+            el.addEventListener('change', flushSave);
+        });
+    }
+
     bindApiKeyVisibilityToggle(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope');
     bindApiKeyVisibilityToggle(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei');
     bindAsrProviderToggle();
     bindRefreshAudioDevices();
     bindOpenSoundSettings();
+    bindAutoSave();
 
     return {
         normalizeWindowOpacityLevel,

@@ -292,6 +292,26 @@ export function createTranscriptionManager({
     }
 
     async function captureDefaultScreenLoopback(preferredSourceId) {
+        // macOS hard-fail: Chromium's chromeMediaSource:'desktop' path is
+        // Windows-only for audio. On Mac the stream comes back with either no
+        // audio track at all OR a track that's permanently silent, so we
+        // either crash early or feed empty PCM to the ASR server which then
+        // responds with the cryptic "no valid audio" message.
+        //
+        // The only working macOS path is a virtual loopback INPUT device
+        // (BlackHole / Aggregate). We surface that directly so the user knows
+        // exactly what to do instead of decoding an opaque server error.
+        const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent || '');
+        if (isMac) {
+            throw new Error(
+                'macOS can\'t capture system audio through desktop loopback (Chromium limitation). '
+                + 'In Settings → System source, pick a "Virtual loopback (capture-ready)" entry such as '
+                + '"BlackHole 2ch" or "Blackhole Audio Input (Aggregate)". Then make sure your meeting '
+                + 'audio actually plays through that device — usually via a Multi-Output Device set up '
+                + 'in /Applications/Utilities/Audio MIDI Setup.app.'
+            );
+        }
+
         const sources = await window.electronAPI.getDesktopSources();
         if (!sources || sources.length === 0) {
             throw new Error('No desktop sources found');
@@ -310,6 +330,10 @@ export function createTranscriptionManager({
         const videoTrack = stream.getVideoTracks()[0];
         if (videoTrack && isLikelyCameraTrack(videoTrack.label)) {
             throw new Error(`Desktop capture fell back to camera source (${videoTrack.label || 'unknown'}).`);
+        }
+        if (stream.getAudioTracks().length === 0) {
+            stream.getTracks().forEach((track) => { try { track.stop(); } catch (_) {} });
+            throw new Error('Desktop capture returned no audio track. Check OS sound permissions and that the selected source supports audio.');
         }
         return stream;
     }
@@ -430,8 +454,8 @@ export function createTranscriptionManager({
 
             if (selection.type === 'input' && selection.id) {
                 // Capture directly from a virtual loopback input (Stereo Mix,
-                // VB-Cable, etc.). This is the most reliable way to pick a
-                // specific source on Windows.
+                // VB-Cable, BlackHole, etc.). The most reliable way to pick a
+                // specific source on any platform.
                 addMonitorLog('info', 'system-source', `Using loopback input device ${String(selection.id).slice(0, 8)}…`, 'system');
                 try {
                     systemMediaStream = await navigator.mediaDevices.getUserMedia({
@@ -447,6 +471,28 @@ export function createTranscriptionManager({
                     addMonitorLog('warn', 'system-source-fallback', `Loopback input unavailable (${deviceError.message}); falling back to default screen loopback`, 'system');
                     systemMediaStream = await captureDefaultScreenLoopback(null);
                 }
+            } else if (selection.type === 'output' && selection.label && window.electronAPI?.setMacosDefaultOutput) {
+                // macOS-only path: user picked a real output device (Freebuds,
+                // MacBook Pro Speakers, etc.). Chromium can't capture from
+                // audiooutput devices directly, so we ask the main process to
+                // switch the macOS system default to that device via
+                // SwitchAudioSource, then fall through to the default loopback
+                // path which follows the system default.
+                addMonitorLog('info', 'system-source', `Switching macOS default output to "${selection.label}"`, 'system');
+                try {
+                    const switchResult = await window.electronAPI.setMacosDefaultOutput(selection.label);
+                    if (!switchResult?.success) {
+                        const hint = switchResult?.hint ? ` — ${switchResult.hint}` : '';
+                        const reason = switchResult?.error || 'unknown';
+                        addMonitorLog('warn', 'system-source-fallback', `Could not switch macOS output (${reason})${hint}; falling back to current default`, 'system');
+                        showFeedback(`Could not switch output: ${reason}${hint}`, 'error');
+                    } else {
+                        addMonitorLog('info', 'system-source', `macOS default output now: ${selection.label}`, 'system');
+                    }
+                } catch (switchError) {
+                    addMonitorLog('warn', 'system-source-fallback', `setMacosDefaultOutput threw: ${switchError.message}`, 'system');
+                }
+                systemMediaStream = await captureDefaultScreenLoopback(null);
             } else if (selection.type === 'screen' && selection.id) {
                 addMonitorLog('info', 'system-source', `Using screen source ${selection.id}`, 'system');
                 systemMediaStream = await captureDefaultScreenLoopback(selection.id);

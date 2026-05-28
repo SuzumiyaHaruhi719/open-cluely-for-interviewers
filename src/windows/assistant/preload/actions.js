@@ -165,6 +165,13 @@ function createInvokeActions(ipcRenderer) {
       fallback: (error) => ({ success: false, error: error.message })
     }),
 
+    setMacosDefaultOutput: invokeWithFallback(ipcRenderer, {
+      channel: 'set-macos-default-output',
+      label: 'setMacosDefaultOutput',
+      transformArgs: (args) => [{ deviceLabel: args[0] }],
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
     setThemePreference: invokeWithFallback(ipcRenderer, {
       channel: 'set-theme-preference',
       label: 'setThemePreference',
