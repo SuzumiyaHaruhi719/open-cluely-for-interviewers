@@ -160,7 +160,10 @@ async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
 }
 
 const transcriptBufferManager = createTranscriptBufferManager({
-    mergeWindowMs: 3500,
+    // 9s window keeps natural conversational pauses (3-6s) inside a single
+    // bubble. Bubbles still force-flush at maxBufferChars so a long answer
+    // doesn't grow without bound.
+    mergeWindowMs: 9000,
     onBuffer: ({ source, text, segments }) => {
         addMonitorLog('info', 'final-buffer', 'Buffered transcript segment', source, {
             segments,
