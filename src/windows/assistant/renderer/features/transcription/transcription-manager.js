@@ -452,7 +452,31 @@ export function createTranscriptionManager({
             const result = await window.electronAPI.startVoiceRecognition('system');
             if (result && result.error) throw new Error(result.error);
 
-            if (selection.type === 'input' && selection.id) {
+            if (selection.type === 'process' && selection.id) {
+                // Windows-only: per-process loopback via the application-loopback
+                // sidecar. Audio is pumped main-side into asrService directly,
+                // so the renderer doesn't build a MediaStream/AudioContext for
+                // this branch. We still call startVoiceRecognition above to
+                // open the WebSocket; the sidecar fills it.
+                if (!window.electronAPI?.startProcessAudio) {
+                    addMonitorLog('warn', 'system-source-fallback', 'Per-process capture API missing; falling back to default loopback', 'system');
+                    systemMediaStream = await captureDefaultScreenLoopback(null);
+                } else {
+                    addMonitorLog('info', 'system-source', `Starting per-process capture for PID ${selection.id}`, 'system');
+                    const startResult = await window.electronAPI.startProcessAudio(selection.id);
+                    if (!startResult || startResult.success === false) {
+                        const reason = startResult?.error || 'unknown';
+                        addMonitorLog('warn', 'system-source-fallback', `Per-process capture failed (${reason}); falling back to default loopback`, 'system');
+                        showFeedback(`Per-process capture failed: ${reason}`, 'error');
+                        systemMediaStream = await captureDefaultScreenLoopback(null);
+                    } else {
+                        // No MediaStream — bytes flow main → ASR directly. We
+                        // mark a sentinel value so the stop path knows to call
+                        // stopProcessAudio instead of stopping a MediaStream.
+                        systemMediaStream = '__process_loopback__';
+                    }
+                }
+            } else if (selection.type === 'input' && selection.id) {
                 // Capture directly from a virtual loopback input (Stereo Mix,
                 // VB-Cable, BlackHole, etc.). The most reliable way to pick a
                 // specific source on any platform.
@@ -500,22 +524,34 @@ export function createTranscriptionManager({
                 systemMediaStream = await captureDefaultScreenLoopback(null);
             }
 
-            systemMediaStream.getVideoTracks().forEach((track) => track.stop());
+            if (systemMediaStream === '__process_loopback__') {
+                // Sidecar pumps PCM main-side; no renderer-side audio graph.
+                setSystemActive(true);
+                addChatMessage('system', `Capturing audio from PID ${selection.id}`);
+                showFeedback('Per-process capture on', 'success');
+                addMonitorLog('info', 'source-active', 'Per-process capture active', 'system');
+            } else {
+                systemMediaStream.getVideoTracks().forEach((track) => track.stop());
 
-            systemAudioContext = new AudioContext();
-            await systemAudioContext.resume();
-            resetSourceSampleQueue('system');
-            systemScriptProcessor = await buildAudioProcessor(systemAudioContext, systemMediaStream, 'system', () => isSystemActive);
+                systemAudioContext = new AudioContext();
+                await systemAudioContext.resume();
+                resetSourceSampleQueue('system');
+                systemScriptProcessor = await buildAudioProcessor(systemAudioContext, systemMediaStream, 'system', () => isSystemActive);
 
-            setSystemActive(true);
-            addChatMessage('system', 'Listening to host audio...');
-            showFeedback('System audio on', 'success');
-            addMonitorLog('info', 'source-active', 'Host source active', 'system');
+                setSystemActive(true);
+                addChatMessage('system', 'Listening to host audio...');
+                showFeedback('System audio on', 'success');
+                addMonitorLog('info', 'source-active', 'Host source active', 'system');
+            }
         } catch (error) {
             console.error('Failed to start system audio:', error);
             showFeedback(`System audio failed: ${error.message}`, 'error');
             addMonitorLog('error', 'source-failed', error.message, 'system');
-            stopAudioResources(systemAudioContext, systemMediaStream, systemScriptProcessor);
+            if (systemMediaStream === '__process_loopback__') {
+                try { await window.electronAPI?.stopProcessAudio?.(); } catch (_) {}
+            } else {
+                stopAudioResources(systemAudioContext, systemMediaStream, systemScriptProcessor);
+            }
             systemAudioContext = null;
             systemMediaStream = null;
             systemScriptProcessor = null;
@@ -534,7 +570,13 @@ export function createTranscriptionManager({
         if (!isSystemActive && sourceStatuses.system !== 'connecting') return;
         drainSourceSampleQueue('system', { flushPartial: true });
         flushFinalTranscript('system', 'stop-request');
-        stopAudioResources(systemAudioContext, systemMediaStream, systemScriptProcessor);
+        if (systemMediaStream === '__process_loopback__') {
+            try { await window.electronAPI?.stopProcessAudio?.(); } catch (error) {
+                addMonitorLog('error', 'stop-failed', error.message || 'Failed to stop process audio', 'system');
+            }
+        } else {
+            stopAudioResources(systemAudioContext, systemMediaStream, systemScriptProcessor);
+        }
         systemAudioContext = null;
         systemMediaStream = null;
         systemScriptProcessor = null;

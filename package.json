@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "application-loopback": "^1.2.7",
     "dotenv": "^16.3.1",
     "screenshot-desktop": "^1.15.0",
     "ws": "^8.19.0"

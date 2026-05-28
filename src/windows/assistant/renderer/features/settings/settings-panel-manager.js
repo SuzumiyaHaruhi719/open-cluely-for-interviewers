@@ -46,6 +46,8 @@ export function getSelectedSystemSourceValue() {
 //                            macOS system default output to <label> via the
 //                            main-process IPC, then falls through to the
 //                            default loopback path. No-op on Windows/Linux.
+//   "process:<pid>" → Windows-only per-process loopback via the
+//                     application-loopback sidecar.
 // Anything else is treated as default.
 export function parseSystemSourceSelection(rawValue) {
     const value = String(rawValue || '');
@@ -57,6 +59,9 @@ export function parseSystemSourceSelection(rawValue) {
     }
     if (value.startsWith('screen:')) {
         return { type: 'screen', id: value.slice('screen:'.length) };
+    }
+    if (value.startsWith('process:')) {
+        return { type: 'process', id: value.slice('process:'.length) };
     }
     if (value.startsWith('output:')) {
         const rest = value.slice('output:'.length);
@@ -327,7 +332,34 @@ export function createSettingsPanelManager({
             settingSystemSource.appendChild(group);
         }
 
-        // Group 3: per-screen desktopCapturer sources (advanced, multi-monitor).
+        // Group 3 (Windows-only): per-process loopback via the
+        // application-loopback sidecar. The only way to truly capture a
+        // single app's audio on Windows without virtual cables; Chromium's
+        // own getDisplayMedia can't do it (crbug.com/40947205).
+        if (window.electronAPI?.listAudioProcesses) {
+            try {
+                const result = await window.electronAPI.listAudioProcesses();
+                if (result?.supported && Array.isArray(result.processes) && result.processes.length > 0) {
+                    const group = document.createElement('optgroup');
+                    group.label = 'Specific app (Windows per-process loopback)';
+                    result.processes.forEach((proc) => {
+                        if (!proc?.processId) return;
+                        const option = document.createElement('option');
+                        option.value = `process:${proc.processId}`;
+                        const title = String(proc.title || '').trim();
+                        option.textContent = title
+                            ? `${title} (PID ${proc.processId})`
+                            : `PID ${proc.processId}`;
+                        group.appendChild(option);
+                    });
+                    settingSystemSource.appendChild(group);
+                }
+            } catch (error) {
+                console.warn('Failed to list audio processes:', error);
+            }
+        }
+
+        // Group 4: per-screen desktopCapturer sources (advanced, multi-monitor).
         let desktopSources = [];
         try {
             if (window.electronAPI?.getDesktopSources) {

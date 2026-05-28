@@ -53,6 +53,10 @@ Thumbs.db
 cache/
 logs.txt
 
+# Local smoke-test artefacts (binary PCM dumps)
+scripts/*.raw
+scripts/*.pcm
+
 # Archives
 *.zip
 

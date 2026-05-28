@@ -32,6 +32,8 @@ const { registerAsrIpc } = require('../services/asr-ipc');
 const { registerSettingsIpc } = require('./features/settings/ipc');
 const { createInterviewerRuntime } = require('./features/interviewer/interviewer-runtime');
 const { registerInterviewerIpc } = require('./features/interviewer/ipc');
+const { createProcessLoopbackService } = require('../services/process-loopback/service');
+const { registerProcessLoopbackIpc } = require('../services/process-loopback/ipc');
 const { createWindowController } = require('./features/window/window-controller');
 const { DEFAULT_WINDOW_OPACITY_LEVEL } = require('./features/window/window-constants');
 const { logStartupConfiguration } = require('./startup-logging');
@@ -182,6 +184,7 @@ async function startApplication() {
   }
 
   function cleanupTransientResources() {
+    try { processLoopbackService?.stop?.(); } catch (_) {}
     asrService.dispose();
     screenshotManager.cleanupTransientResources();
     windowController.unregisterShortcuts();
@@ -227,6 +230,16 @@ async function startApplication() {
   registerInterviewerIpc({
     ipcMain,
     interviewerRuntime
+  });
+
+  const processLoopbackService = createProcessLoopbackService({
+    asrService,
+    sendToRenderer
+  });
+
+  registerProcessLoopbackIpc({
+    ipcMain,
+    processLoopbackService
   });
 
   registerSettingsIpc({

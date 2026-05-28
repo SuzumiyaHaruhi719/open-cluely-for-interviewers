@@ -172,6 +172,31 @@ function createInvokeActions(ipcRenderer) {
       fallback: (error) => ({ success: false, error: error.message })
     }),
 
+    listAudioProcesses: invokeWithFallback(ipcRenderer, {
+      channel: 'process-audio-list',
+      label: 'listAudioProcesses',
+      fallback: (error) => ({ supported: false, processes: [], reason: error.message })
+    }),
+
+    startProcessAudio: invokeWithFallback(ipcRenderer, {
+      channel: 'process-audio-start',
+      label: 'startProcessAudio',
+      transformArgs: (args) => [{ processId: args[0] }],
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
+    stopProcessAudio: invokeWithFallback(ipcRenderer, {
+      channel: 'process-audio-stop',
+      label: 'stopProcessAudio',
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
+    getProcessAudioStatus: invokeWithFallback(ipcRenderer, {
+      channel: 'process-audio-status',
+      label: 'getProcessAudioStatus',
+      fallback: () => ({ listening: false })
+    }),
+
     setThemePreference: invokeWithFallback(ipcRenderer, {
       channel: 'set-theme-preference',
       label: 'setThemePreference',
