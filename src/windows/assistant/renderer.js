@@ -169,13 +169,22 @@ const transcriptBufferManager = createTranscriptBufferManager({
             segments,
             chars: text.length
         });
+        // Live update the persistent bubble for this source so it grows as
+        // each sentence's final lands — instead of disappearing at
+        // sentence_end and reappearing only when the 9s window flushes.
+        transcriptionManager.setActiveAccumText(source, text);
     },
     onFlush: ({ source, text, reason, segments, emotion }) => {
+        // Bubble already shows `text` from the preceding onBuffer call (or
+        // the partial render). Just release the reference so the next
+        // partial/final starts a fresh bubble; do NOT addChatMessage —
+        // that would double the message.
+        transcriptionManager.setActiveAccumText(source, text);
+        transcriptionManager.commitActiveLive(source);
+
         if (source === 'system') {
-            addChatMessage('voice-system', text);
             triggerInterviewerAnalysis(text, emotion);
         } else {
-            addChatMessage('voice-mic', text);
             pushInterviewerQuestion(text);
         }
 
@@ -447,6 +456,7 @@ const transcriptionManager = createTranscriptionManager({
     monitorLiveMic,
     monitorLogList,
     addChatMessage: (type, content, options) => addChatMessage(type, content, options),
+    updateChatMessageContent: (messageId, newContent) => chatUiManager.updateChatMessageContent(messageId, newContent),
     showFeedback: (message, type) => showFeedback(message, type),
     isAutoScrollEnabled,
     isChatNearBottom: () => chatUiManager.isChatNearBottom(),

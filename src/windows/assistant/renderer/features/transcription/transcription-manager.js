@@ -17,12 +17,81 @@ export function createTranscriptionManager({
     monitorLiveMic,
     monitorLogList,
     addChatMessage,
+    updateChatMessageContent,
     showFeedback,
     isAutoScrollEnabled = () => true,
     isChatNearBottom = () => true,
     getSelectedMicDeviceId = () => '',
     getSelectedSystemSourceSelection = () => ({ type: 'default', id: null })
 }) {
+    // Per-source state for the in-progress "live" transcript bubble. Until
+    // the merge window flushes (or maxBufferChars triggers), all partials
+    // and finals for one continuous speech burst update the SAME chat
+    // message in place — no ephemeral div removed at sentence_end, no
+    // multi-second blank gap before the merged bubble lands.
+    const activeLive = {
+        mic: { messageId: null, accumText: '' },
+        system: { messageId: null, accumText: '' }
+    };
+
+    function isCjk(ch) {
+        if (!ch) return false;
+        const code = ch.codePointAt(0);
+        return (code >= 0x3400 && code <= 0x9FFF)
+            || (code >= 0xF900 && code <= 0xFAFF)
+            || (code >= 0x3040 && code <= 0x30FF)
+            || (code >= 0xAC00 && code <= 0xD7AF);
+    }
+
+    function joinForDisplay(left, right) {
+        if (!left) return right;
+        if (!right) return left;
+        if (isCjk(left.slice(-1)) && isCjk(right.slice(0, 1))) {
+            return `${left}${right}`;
+        }
+        return `${left} ${right}`;
+    }
+
+    function renderLiveBubble(source, fullText) {
+        const state = activeLive[source];
+        const text = String(fullText || '').trim();
+        if (!text) return;
+
+        if (state.messageId && typeof updateChatMessageContent === 'function') {
+            updateChatMessageContent(state.messageId, text);
+            if (isAutoScrollEnabled() && isChatNearBottom() && chatMessagesElement) {
+                chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+            }
+            return;
+        }
+
+        const messageType = source === 'system' ? 'voice-system' : 'voice-mic';
+        const record = addChatMessage(messageType, text);
+        if (record?.id) {
+            state.messageId = record.id;
+        }
+    }
+
+    function setActiveAccumText(source, text) {
+        // Called from the buffer manager's onBuffer (every queued final).
+        // text here is the canonical merged buffer text — supersedes any
+        // partial text the bubble was showing.
+        activeLive[source].accumText = String(text || '');
+        renderLiveBubble(source, activeLive[source].accumText);
+    }
+
+    function commitActiveLive(source) {
+        // Called on merge-flush. The bubble already shows the final merged
+        // text (last setActiveAccumText). Just release the reference so the
+        // next partial/final starts a brand-new bubble.
+        activeLive[source] = { messageId: null, accumText: '' };
+    }
+
+    function resetActiveLive(source) {
+        // Called on error / source-stop. Drop the reference; the bubble
+        // (if any) becomes a normal finalised message.
+        activeLive[source] = { messageId: null, accumText: '' };
+    }
     let micAudioContext = null;
     let micMediaStream = null;
     let micScriptProcessor = null;
@@ -33,10 +102,9 @@ export function createTranscriptionManager({
     let systemScriptProcessor = null;
     let isSystemActive = false;
 
-    let micPartialText = '';
-    let micPartialDiv = null;
-    let systemPartialText = '';
-    let systemPartialDiv = null;
+    // micPartialDiv / systemPartialDiv used to be ephemeral DOM nodes that
+    // were removed at sentence_end — replaced by persistent live chat
+    // messages (see activeLive + renderLiveBubble below).
 
     const selectedSources = transcriptionSourceState.selectedSources;
     const sourceStatuses = transcriptionSourceState.sourceStatuses;
@@ -422,11 +490,7 @@ export function createTranscriptionManager({
         micAudioContext = null;
         micMediaStream = null;
         micScriptProcessor = null;
-        if (micPartialDiv) {
-            micPartialDiv.remove();
-            micPartialDiv = null;
-        }
-        micPartialText = '';
+        resetActiveLive('mic');
         try {
             await window.electronAPI.stopVoiceRecognition('mic');
         } catch (error) {
@@ -580,11 +644,7 @@ export function createTranscriptionManager({
         systemAudioContext = null;
         systemMediaStream = null;
         systemScriptProcessor = null;
-        if (systemPartialDiv) {
-            systemPartialDiv.remove();
-            systemPartialDiv = null;
-        }
-        systemPartialText = '';
+        resetActiveLive('system');
         try {
             await window.electronAPI.stopVoiceRecognition('system');
         } catch (error) {
@@ -598,21 +658,6 @@ export function createTranscriptionManager({
         showFeedback('System audio off', 'info');
     }
 
-    function createPartialDiv(icon) {
-        const div = document.createElement('div');
-        div.className = 'chat-message voice-message partial';
-        const ts = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        div.innerHTML = `
-        <div class="message-header">
-            <span class="message-icon">${icon}</span>
-            <span class="message-time">${ts}</span>
-            <span class="partial-indicator">Live</span>
-        </div>
-        <div class="message-content partial-text"></div>
-    `;
-        return div;
-    }
-
     function handleVoskPartial(data) {
         const source = normalizeSource(data?.source);
         const text = data?.text;
@@ -620,28 +665,16 @@ export function createTranscriptionManager({
         if (!isSourceActive(source)) return;
 
         const trimmed = text.trim();
-        const icon = source === 'system' ? '\u{1F50A}' : '\u{1F3A4}';
         monitorLastText[source] = `Live: ${trimmed}`;
         renderMonitorState();
 
-        if (source === 'mic') {
-            micPartialText = trimmed;
-            if (!micPartialDiv) {
-                micPartialDiv = createPartialDiv(icon);
-                chatMessagesElement.appendChild(micPartialDiv);
-            }
-            micPartialDiv.querySelector('.message-content').textContent = trimmed;
-        } else {
-            systemPartialText = trimmed;
-            if (!systemPartialDiv) {
-                systemPartialDiv = createPartialDiv(icon);
-                chatMessagesElement.appendChild(systemPartialDiv);
-            }
-            systemPartialDiv.querySelector('.message-content').textContent = trimmed;
-        }
-        if (isAutoScrollEnabled() && isChatNearBottom()) {
-            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
-        }
+        // Show the merged finals so far (from the buffer) plus the live
+        // partial. accumText is updated each time onBuffer fires from the
+        // buffer manager (see setActiveAccumText). Between finals we keep
+        // the bubble visible, so paraformer's sentence_end no longer
+        // produces a blank gap.
+        const display = joinForDisplay(activeLive[source].accumText, trimmed);
+        renderLiveBubble(source, display);
     }
 
     function handleVoskFinal(data) {
@@ -658,19 +691,10 @@ export function createTranscriptionManager({
             emotion: emotion ? `${emotion.tag}/${emotion.confidence ?? '?'}` : null
         });
 
-        if (source === 'mic') {
-            if (micPartialDiv) {
-                micPartialDiv.remove();
-                micPartialDiv = null;
-            }
-            micPartialText = '';
-        } else {
-            if (systemPartialDiv) {
-                systemPartialDiv.remove();
-                systemPartialDiv = null;
-            }
-            systemPartialText = '';
-        }
+        // Queue the final — onBuffer fires synchronously inside this call
+        // and bumps the visible bubble to the latest merged text via
+        // setActiveAccumText. No DOM removal here: the bubble survives
+        // sentence_end and keeps showing the running merged content.
         queueFinalTranscript(source, finalText, emotion);
     }
 
@@ -709,11 +733,7 @@ export function createTranscriptionManager({
             systemAudioContext = null;
             systemMediaStream = null;
             systemScriptProcessor = null;
-            if (systemPartialDiv) {
-                systemPartialDiv.remove();
-                systemPartialDiv = null;
-            }
-            systemPartialText = '';
+            resetActiveLive('system');
             setSystemActive(false);
             resetSourceSampleQueue('system');
             resetFinalTranscriptBuffer('system');
@@ -722,11 +742,7 @@ export function createTranscriptionManager({
             micAudioContext = null;
             micMediaStream = null;
             micScriptProcessor = null;
-            if (micPartialDiv) {
-                micPartialDiv.remove();
-                micPartialDiv = null;
-            }
-            micPartialText = '';
+            resetActiveLive('mic');
             setMicActive(false);
             resetSourceSampleQueue('mic');
             resetFinalTranscriptBuffer('mic');
@@ -745,11 +761,7 @@ export function createTranscriptionManager({
             systemAudioContext = null;
             systemMediaStream = null;
             systemScriptProcessor = null;
-            if (systemPartialDiv) {
-                systemPartialDiv.remove();
-                systemPartialDiv = null;
-            }
-            systemPartialText = '';
+            resetActiveLive('system');
             setSystemActive(false);
             resetSourceSampleQueue('system');
             resetFinalTranscriptBuffer('system');
@@ -758,11 +770,7 @@ export function createTranscriptionManager({
             micAudioContext = null;
             micMediaStream = null;
             micScriptProcessor = null;
-            if (micPartialDiv) {
-                micPartialDiv.remove();
-                micPartialDiv = null;
-            }
-            micPartialText = '';
+            resetActiveLive('mic');
             setMicActive(false);
             resetSourceSampleQueue('mic');
             resetFinalTranscriptBuffer('mic');
@@ -786,6 +794,9 @@ export function createTranscriptionManager({
         handleVoskFinal,
         handleVoskStatus,
         handleVoskError,
-        handleVoskStopped
+        handleVoskStopped,
+        setActiveAccumText,
+        commitActiveLive,
+        resetActiveLive
     };
 }

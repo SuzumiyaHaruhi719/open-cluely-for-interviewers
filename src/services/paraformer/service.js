@@ -73,6 +73,73 @@ function createParaformerService({
   const sttChunkCounters = { mic: 0, system: 0 };
   const sttDroppedChunkCounters = { mic: 0, system: 0 };
 
+  // Idle-timeout reconnect tracking. When DashScope's server closes a task
+  // because its VAD hasn't heard speech for ~60s, we silently restart the
+  // task instead of bubbling up a hard error. Capped to avoid runaway loops
+  // if the error isn't actually idle-shaped.
+  const RECONNECT_BACKOFF_MS = 600;
+  const MAX_RECONNECT_ATTEMPTS_PER_WINDOW = 8;
+  const RECONNECT_WINDOW_MS = 5 * 60 * 1000;
+  const reconnectState = {
+    mic: { wantsActive: false, attempts: [], inFlight: false },
+    system: { wantsActive: false, attempts: [], inFlight: false }
+  };
+
+  function isIdleTimeoutFailure(code, message) {
+    const haystack = `${code || ''} ${message || ''}`.toLowerCase();
+    return /idle|timeout|timed.?out|超时|no.?audio|no.?speech|inactive|expired/.test(haystack);
+  }
+
+  function pruneReconnectAttempts(source) {
+    const now = Date.now();
+    reconnectState[source].attempts = reconnectState[source].attempts.filter((t) => now - t < RECONNECT_WINDOW_MS);
+  }
+
+  function scheduleReconnect(source) {
+    const resolved = normalizeSttSource(source);
+    const state = reconnectState[resolved];
+    if (!state.wantsActive || state.inFlight) return false;
+
+    pruneReconnectAttempts(resolved);
+    if (state.attempts.length >= MAX_RECONNECT_ATTEMPTS_PER_WINDOW) {
+      emitSttDebug({
+        source: resolved,
+        level: 'warn',
+        event: 'reconnect-capped',
+        message: `Hit ${MAX_RECONNECT_ATTEMPTS_PER_WINDOW} reconnect attempts in ${RECONNECT_WINDOW_MS / 60000} min; giving up`
+      });
+      return false;
+    }
+
+    state.attempts.push(Date.now());
+    state.inFlight = true;
+    emitSttDebug({
+      source: resolved,
+      level: 'info',
+      event: 'idle-reconnect',
+      message: `Idle timeout detected; restarting task (attempt ${state.attempts.length}/${MAX_RECONNECT_ATTEMPTS_PER_WINDOW})`
+    });
+
+    setTimeout(() => {
+      // Renderer-side capture is still running; we just open a fresh task
+      // and the next chunk in handleAudioChunk picks it up.
+      Promise.resolve(startStream(resolved))
+        .catch((error) => {
+          emitSttDebug({
+            source: resolved,
+            level: 'error',
+            event: 'reconnect-failed',
+            message: error?.message || 'reconnect failed'
+          });
+        })
+        .finally(() => {
+          state.inFlight = false;
+        });
+    }, RECONNECT_BACKOFF_MS);
+
+    return true;
+  }
+
   function emitSttDebug({ source = null, level = 'info', event = 'event', message = '', meta = null } = {}) {
     sendToRenderer('stt-debug', {
       ts: new Date().toISOString(),
@@ -189,6 +256,11 @@ function createParaformerService({
   function startStream(source) {
     const resolved = normalizeSttSource(source);
     const apiKey = String(getDashscopeApiKey() || '').trim();
+
+    // Mark that the consumer (renderer) wants this source alive — any
+    // server-side task-failed that looks like idle timeout will trigger
+    // a transparent reconnect. Cleared by stopVoiceRecognition.
+    reconnectState[resolved].wantsActive = true;
 
     if (!apiKey) {
       emitSttDebug({
@@ -357,18 +429,39 @@ function createParaformerService({
         if (event === 'task-failed') {
           const code = msg?.header?.error_code || 'task-failed';
           const reason = msg?.header?.error_message || 'task failed';
+          const idle = isIdleTimeoutFailure(code, reason);
+
           emitSttDebug({
             source: resolved,
-            level: 'error',
+            level: idle ? 'warn' : 'error',
             event: 'task-failed',
             message: reason,
-            meta: { code }
+            meta: { code, idle }
           });
+
+          // Drop the dead socket / task ids but keep the source 'streaming'
+          // so handleAudioChunk knows we're transitioning, not stopping.
+          try { sockets[resolved]?.terminate(); } catch (_) {}
+          sockets[resolved] = null;
+          taskIds[resolved] = null;
+          taskStarted[resolved] = false;
+          sttHistoryManager.flushSttHistoryBuffer(resolved, idle ? 'idle-reconnect' : 'task-failed');
+
+          if (idle && reconnectState[resolved].wantsActive) {
+            // Don't surface the failure to the renderer — schedule a
+            // transparent reconnect. The next chunk after the new task
+            // starts flows through normally.
+            if (scheduleReconnect(resolved)) {
+              return;
+            }
+            // If reconnect was capped, fall through to surface the error.
+          }
+
+          streaming[resolved] = false;
           sendToRenderer('vosk-error', {
             source: resolved,
             error: `Paraformer error (${resolved}): ${reason}`
           });
-          sttHistoryManager.flushSttHistoryBuffer(resolved, 'task-failed');
           resetSourceState(resolved);
           return;
         }
@@ -465,6 +558,11 @@ function createParaformerService({
     const stopSource = (src) => {
       const resolved = normalizeSttSource(src);
       const ws = sockets[resolved];
+
+      // Clear the reconnect-want flag so an in-flight task-failed event
+      // doesn't trigger an unwanted reconnect after the user stopped.
+      reconnectState[resolved].wantsActive = false;
+      reconnectState[resolved].inFlight = false;
 
       if (!ws) {
         sttHistoryManager.flushSttHistoryBuffer(resolved, 'stop-noop');
