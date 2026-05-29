@@ -1,0 +1,42 @@
+{
+  "id": "fx_0288",
+  "tags": {
+    "industry": "healthcare",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Priya Nadkarni\nClinical Operations Coordinator | Early-career, 2 years in outpatient care delivery\n\nExperience:\nRiverbend Family Health (2023-present) — Clinical Operations Coordinator\n- Support daily clinic flow across three primary-care pods and the front-desk team\n- Helped roll out a new patient check-in workflow and a reminder-call process\n- Coordinate with nursing staff on rooming and same-day add-on appointments\n- Track no-show patterns and flag scheduling gaps to the practice manager\n\nClearview Urgent Care (2022-2023) — Patient Services Associate\n- Handled patient intake, insurance verification, and phone triage routing\n- Assisted with supply ordering and exam-room turnover\n\nSkills: EMR (Epic), scheduling, patient communication, insurance verification\nEducation: B.S. Health Sciences, State University (2022)\nCertifications: BLS, HIPAA training",
+  "jd": "Riverbend Family Health is hiring a Clinical Operations Coordinator to keep our outpatient clinic running smoothly. Reporting to the Practice Manager, you will own daily clinic flow, the patient check-in experience, and no-show reduction efforts across three primary-care pods. You will partner with nursing on rooming efficiency, help schedule same-day add-ons, and track operational metrics (no-show rate, door-to-provider time, check-in cycle time) that you report weekly. We are looking for an early-career operator who is honest about what they personally did versus what the team did, can describe a process change concretely, and backs claims with measurements they actually saw — not estimates. Growth path toward Operations Lead.",
+  "history": [
+    { "q": "Tell me about your day-to-day at Riverbend — what you personally own versus what the broader team handles." },
+    { "q": "You helped roll out a new check-in workflow. What was the specific problem with the old one?" },
+    { "q": "What was your personal role in that rollout — did you design it, train staff, or something else?" },
+    { "q": "How did you measure whether the new check-in workflow actually improved anything?" },
+    { "q": "Same question on the reminder-call process — what happened to your no-show rate after you launched it?" }
+  ],
+  "candidate_last_answer": "Honestly the reminder-call process was a game changer. We basically eliminated no-shows — I'd say it dropped them by like 90-something percent, almost to zero across all three pods. Door-to-provider time got cut in half too, and patient satisfaction went through the roof, easily into the high 90s. I don't have the exact dashboard numbers in front of me, but everyone said it was the biggest improvement the clinic had seen in years.",
+  "session_state": {
+    "drilled_topics": ["daily-scope-ownership", "checkin-problem-definition", "rollout-personal-role", "checkin-measurement", "noshow-reminder-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: dropped them by like 90-something percent, almost to zero",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate off the inflated near-zero claim by pinning the actual baseline and after numbers she personally saw — the pre-launch no-show rate, the rate the week after, where she read it, and over how many appointments — exposing whether the 90% figure is a measured result or an unverifiable exaggeration"
+    ]
+  }
+}

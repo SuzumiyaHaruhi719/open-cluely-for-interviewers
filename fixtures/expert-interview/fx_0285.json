@@ -1,0 +1,39 @@
+{
+  "id": "fx_0285",
+  "tags": {
+    "industry": "product-management",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "刘文韬 | Product Manager | 5年B2B SaaS产品经验\n\n工作经历：\n云睿数据 — Product Manager（2022至今）\n- 负责数据看板产品线，主导了从0到1的self-serve analytics模块\n- 推动onboarding流程改版，显著降低了新用户流失\n- 和engineering、design紧密协作，主导多个quarterly roadmap的优先级排期\n- 牵头一次定价模型调整项目，跨BD、finance、CS多团队对齐\n\n微帆科技 — Associate PM（2019-2022）\n- 维护核心交易流程，处理大量用户反馈并转化为backlog\n- 参与一次大版本迁移，协调前后端联调\n\n技能：SQL、Figma、Amplitude、A/B testing、用户访谈\n教育：上海交通大学 信息管理与信息系统 本科",
+  "jd": "We are hiring a Product Manager (mid-level) to own our self-serve analytics product line at a Series B data SaaS company. You will report to the Group PM and be accountable for activation rate, week-4 retention, and self-serve conversion. The role owns the full discovery-to-launch loop: running user research, writing PRDs, prioritizing the quarterly roadmap with eng and design, and instrumenting funnels in Amplitude. We expect you to bring evidence: every roadmap bet should trace to a metric, and every launch should have a measured before/after. You will also partner with finance on packaging and pricing experiments. Strong candidates can defend a prioritization decision under pushback and own outcomes — including the ones that did not work.",
+  "history": [
+    { "q": "你简历写主导了self-serve analytics模块从0到1，先讲讲你怎么定义这个模块要解决的核心用户问题，以及上线后activation有没有变化？" },
+    { "q": "你提到onboarding改版『显著降低了新用户流失』——具体降了多少？改版前后的week-4 retention各是多少？" }
+  ],
+  "candidate_last_answer": "说实话我觉得这个问题有点钻牛角尖。Retention这种东西本来就是多因素的，你不能把它简单归因到我一个改版上面。当时数据团队的instrumentation也不全，Amplitude里好多event都是脏的。我可以负责任地说改版方向是对的，用户反馈明显变好了，至于你非要一个具体数字——我现在手头没有，而且我也不觉得背数字是判断一个PM好坏的标准。",
+  "session_state": {
+    "drilled_topics": ["self-serve-module-problem-definition", "onboarding-retention-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 用户反馈明显变好了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 绕过候选人的抵触情绪，把『反馈变好』钉到一个可核验的代理指标上——比如改版前后的onboarding完成率、support ticket数量或NPS逐字反馈条数，迫使其交出哪怕一个能区分相关与因果的具体数字，暴露其究竟是没有数据还是不愿被归因"
+    ]
+  }
+}

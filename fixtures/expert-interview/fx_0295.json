@@ -1,0 +1,52 @@
+{
+  "id": "fx_0295",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "吴天磊 | 产品总监 | 业内公认的顶尖产品操盘手\n\n个人简介：\n本人是市场上极为稀缺的、兼具战略高度与极致执行力的产品领袖。十年间我打造了多款现象级产品，每一款都成为所在赛道的标杆。我对产品的理解远超同侪，曾多次凭一己之力扭转产品颓势，被多位投资人评价为『最懂增长的产品人』。\n\n现任：星岚科技 — 产品总监（2020至今）\n- 一手主导了公司核心产品的全面改版，上线后数据爆炸式增长，成为行业现象级案例\n- 带领产品团队屡创佳绩，团队在我手里从平庸蜕变为顶级战队\n- 凭借敏锐的商业嗅觉，多次精准押中行业风口，被誉为公司的『增长引擎』\n- 与CEO并肩作战，是公司战略的核心制定者之一\n\n此前：鸿翼互联 — 高级产品经理（2016-2020）\n- 独立操盘的产品线为公司贡献了绝大部分营收增量\n- 个人能力被全公司公认，是当之无愧的明星产品经理\n\n再前：微澜科技 — 产品经理（2014-2016）\n\n教育：北京大学 光华管理学院 本科\n自我评价：天生的产品人，永远追求极致，从不接受平庸。",
+  "jd": "我们正在招聘一位产品总监，向CPO汇报，负责核心产品线的战略规划与增长。你将对产品的关键北极星指标、付费转化、用户留存负责，主导产品团队的目标制定与优先级排期，并能就一次具体的产品决策讲清楚数据依据、归因逻辑与取舍。岗位要求你能区分『我个人做了什么』与『团队做了什么』，能用可验证的数据复盘一次改版的成败，并在质疑面前冷静地用证据回应而非情绪化辩护。我们寻找的是能把宏大成绩拆解到具体动作与数字、并对结果坦诚负责的产品领导者。",
+  "history": [
+    { "q": "先介绍下你在星岚负责的产品线范围，以及你对哪些核心指标直接负责。" },
+    { "q": "你简历写一手主导了核心产品全面改版、数据爆炸式增长——先说改版前最核心的问题指标是什么。" },
+    { "q": "『爆炸式增长』具体指什么指标？改版前后的数值各是多少？" },
+    { "q": "这次改版是你一个人主导，还是和团队、和CEO一起定的？你个人的决策具体是哪几个？" },
+    { "q": "改版涉及哪些功能改动？挑一个最关键的，说说你为什么这么改。" },
+    { "q": "这个关键改动上线后，你是怎么验证它真的带来了增长、而不是其他因素？" },
+    { "q": "有没有做过A/B测试？实验组和对照组的差异是多少、置信度如何？" },
+    { "q": "改版过程中有没有哪个决策事后看是错的？" },
+    { "q": "你说团队从平庸蜕变为顶级战队，具体你做了什么管理动作？" },
+    { "q": "『多次精准押中风口』，挑一次说说——你当时基于什么判断、结果如何？" },
+    { "q": "如果让CEO来评价你在那次改版里的真实贡献，他会怎么说？" },
+    { "q": "改版带来的增长，半年后还在吗？有没有回落？" },
+    { "q": "付费转化和留存这两个指标，改版具体影响了哪个、影响多大？" },
+    { "q": "你提到独立操盘的产品线贡献了绝大部分营收增量，这个『绝大部分』是多少比例？" },
+    { "q": "再回到改版——撇开宏观描述，就给我一个数字：你最有把握的那个指标，改版前后分别是多少？" }
+  ],
+  "candidate_last_answer": "我感觉你从头到尾就是在质疑我的真实性，这种问法我不太能接受。我做的成绩是全公司有目共睹的，难道还需要我在这儿背一串数字来自证清白吗？数据这种东西在不同口径下本来就不一样，你单拎一个数字出来根本说明不了问题。我可以很坦率地讲，我对产品的判断力是市场公认的，投资人都认可，你今天非要抠这些细节，恰恰说明你可能没在真正的高速增长环境里待过。这个改版就是成功的，这是事实，不需要靠某一个孤立的数字来证明。",
+  "session_state": {
+    "drilled_topics": ["product-scope", "pre-revamp-problem-metric", "explosive-growth-numbers", "personal-vs-team-decision", "key-feature-change-rationale", "growth-attribution", "ab-test-rigor", "wrong-decision-retro", "team-management-actions", "trend-prediction-case", "ceo-perspective-on-contribution", "growth-durability", "conversion-vs-retention-impact", "revenue-contribution-proportion", "single-hard-number"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 难道还需要我在这儿背一串数字来自证清白吗",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 在不激化对抗的前提下，把范围收窄到候选人自己最有把握的单一指标，要求只给改版前后两个数字和口径定义，区分他是真的握有数据只是抗拒被审视、还是其『爆炸式增长』根本拿不出任何一个可核验的具体数值"
+    ]
+  }
+}

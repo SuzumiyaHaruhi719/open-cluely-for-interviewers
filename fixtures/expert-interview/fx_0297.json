@@ -1,0 +1,54 @@
+{
+  "id": "fx_0297",
+  "tags": {
+    "industry": "product-management",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Aspiring Product Manager | Junior, B.S. Information Systems, University of Washington (expected 2026)\n\nSummary: Aspiring PM with hands-on experience leading product initiatives end to end.\n\nExperience\nProduct Management Intern, NestEgg (a budgeting startup) — Summer 2025\n- Owned the product roadmap for the savings-goals feature from concept to launch\n- Note: joined the team two weeks before launch, so mostly supported QA and release notes\n- Ran weekly user interviews that shaped the roadmap\n- Interviewed 3 users total over the internship\n\nProduct Analyst Intern, Cartwheel Commerce — Summer 2024\n- Led A/B testing strategy for the checkout funnel\n- Helped the data team pull numbers for an experiment a senior PM designed\n- Increased checkout conversion by 12%\n- The experiment was inconclusive and we did not ship the variant\n\nCampus\n- President, Product Management Club (also listed elsewhere as 'active member')\n- Built a class project app used by thousands (about 30 classmates installed it)\n\nSkills: Roadmapping, A/B testing, SQL (basic), Figma, user research",
+  "jd": "Cartwheel Commerce is hiring a Product Management Intern for Summer 2026 to support our Growth pod. You will shadow a senior PM, help write and refine PRDs, synthesize user-interview notes into insights, assist in defining experiment success metrics, and help triage the feature backlog. We are looking for a candidate who can clearly distinguish what they personally did from what their team did, who is honest about the limits of their experience, and who can reason about why an experiment succeeded or failed rather than just citing a headline number. You'll present a synthesis of a small research task to the pod at the end of the internship. No prior PM title required — we care about curiosity, structured thinking, and intellectual honesty about cause and effect.",
+  "history": [
+    { "q": "Tell me about yourself and why product management." },
+    { "q": "Walk me through your internship at NestEgg." },
+    { "q": "You said you owned the savings-goals roadmap concept-to-launch. When in the project did you join?" },
+    { "q": "So given you joined two weeks before launch, what part of the roadmap was already set?" },
+    { "q": "What did you personally do in those two weeks?" },
+    { "q": "You list weekly user interviews. How many users did you actually talk to?" },
+    { "q": "What did you learn from those interviews that changed anything?" },
+    { "q": "Let's go to Cartwheel. You said you led the A/B testing strategy for checkout. Describe that." },
+    { "q": "Who designed the experiment — you or the senior PM?" },
+    { "q": "Your resume says checkout conversion increased 12%. Tell me about that result." },
+    { "q": "But you also noted the experiment was inconclusive and you didn't ship. Help me reconcile those two statements." },
+    { "q": "Where did the 12% number come from, then?" },
+    { "q": "Let's talk about the campus club — president or active member?" },
+    { "q": "Pick the Cartwheel experiment. Tell me the situation and what you were trying to learn." },
+    { "q": "What was the hypothesis and the metric you'd use to judge it?" },
+    { "q": "What did you personally do on that experiment, day to day?" },
+    { "q": "And what was the outcome — what did the data actually show?" },
+    { "q": "Given the result was inconclusive, why do you think it came out that way, and what would you have done differently?" }
+  ],
+  "candidate_last_answer": "So the situation was our checkout had a high drop-off on the payment step, and the senior PM and I wanted to test whether adding a progress bar would reduce abandonment. My task was to help define the metric, which was completion rate on the payment step. What I did day to day was pull the funnel numbers, tag the events in the dashboard, and write up the daily readout for the pod. We ran it for about three weeks. I just don't think I could tell you cleanly why it ended up inconclusive — there were a few things going on and I never really dug into it.",
+  "session_state": {
+    "drilled_topics": ["intro-motivation", "nestegg-overview", "join-timing", "roadmap-preset-scope", "personal-actions-nestegg", "interview-count", "interview-learnings", "cartwheel-overview", "experiment-ownership", "conversion-claim", "claim-reconciliation", "number-provenance", "club-role", "experiment-situation", "hypothesis-metric", "personal-actions-cartwheel", "experiment-outcome", "result-explanation"],
+    "current_competency_target": "analytical-reasoning",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "analytical-reasoning",
+    "missing_evidence": [
+      { "competency": "analytical-reasoning", "evidence_type": "mechanism" },
+      { "competency": "analytical-reasoning", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I just don't think I could tell you cleanly why it ended up inconclusive — there were a few things going on and I never really dug into it",
+      "must-be-question-type: teach-back",
+      "expected-yield: the candidate's actual causal reasoning about the experiment — the specific confounds or design flaws they suspect (e.g. sample size, seasonality, a concurrent change) and how each could have produced an inconclusive result, demonstrating analytical depth rather than a missing Result"
+    ]
+  }
+}

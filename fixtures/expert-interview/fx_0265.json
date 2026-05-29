@@ -1,0 +1,39 @@
+{
+  "id": "fx_0265",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Dana Whitfield — Staff Product Designer\nSeattle, WA | dana.w@example.com\n\nFocus: design systems and complex enterprise workflows.\n\nExperience\n- Staff Product Designer, Helix Cloud (2021–present): own the design system and the admin/permissions surface for a B2B platform. Led the migration to a tokenized system across web and mobile.\n- Senior Product Designer, Tessera (2017–2021): redesigned the billing and provisioning flows.\n- Product Designer, Lunderberg Software (2014–2017).\n\nSkills: design systems, tokens, accessibility (WCAG 2.1 AA), Figma, prototyping, design ops, cross-platform UI.\n\nEducation: B.F.A. Interaction Design, RISD.",
+  "jd": "Helix Cloud is hiring a Staff Product Designer to own our cross-platform design system and lead its adoption across ~40 engineers and 8 designers. You will be accountable for token architecture, accessibility compliance (WCAG 2.1 AA), and measurable adoption of the system, and you will partner with design-ops and platform engineering. We want a staff-level designer who can speak precisely to the architecture decisions behind a system they built: how tokens were structured, how they drove adoption (not just published components), and how they measured success. You will also mentor designers and set the bar for design quality. Strong candidates are crisp, evidence-driven, and can quantify the impact of systems work.",
+  "history": [
+    { "q": "Tell me about the tokenized design-system migration you led at Helix — what was the starting state?" },
+    { "q": "How did you structure the token layers, and why that structure?" },
+    { "q": "Adoption is usually the hard part. How did you actually drive teams to use it, and how did you measure adoption?" }
+  ],
+  "candidate_last_answer": "Three-tier tokens. Tier one is primitives — raw hex, type scale, spacing units, no semantics. Tier two is semantic aliases like surface.default or text.danger that reference primitives. Tier three is component tokens scoped per component, referencing tier two. The point is a brand or theme change only touches tier one, and dark mode is a tier-two remap — engineers never hard-code a hex. For adoption I instrumented it: a lint rule in CI flagged any raw hex or off-scale spacing, and our Figma-to-code pipeline emitted a weekly coverage metric. We went from 0 to 84% token coverage across the web app in two quarters, raw-hex violations dropped from ~1,900 to under 60, and accessibility contrast failures fell to zero on tokenized surfaces. The lever that actually moved adoption wasn't docs — it was making the non-compliant path fail CI.",
+  "session_state": {
+    "drilled_topics": ["token-migration-starting-state", "token-layer-architecture", "adoption-and-measurement"],
+    "current_competency_target": "systems-architecture-rigor",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "systems-architecture-rigor",
+    "missing_evidence": [
+      { "competency": "systems-architecture-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "influence-without-authority", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: making the non-compliant path fail CI",
+      "must-be-question-type: counterfactual",
+      "expected-yield: how the candidate handled the human/political fallout of hard-blocking CI — what teams pushed back, whether builds actually broke and who escalated, what exceptions or migration ramp he granted, and what he would have done if a major team had refused to adopt"
+    ]
+  }
+}

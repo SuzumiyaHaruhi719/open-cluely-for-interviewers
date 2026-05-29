@@ -1,0 +1,54 @@
+{
+  "id": "fx_0252",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "林楠\n客户支持主管 · 5年经验\n\n现任：某SaaS公司 客户支持团队主管\n- 带领8人在线客服与工单团队，负责B端客户的售后支持。\n- 负责一线工单的分级、升级与疑难案例的协调处理。\n- 跟进客户满意度（CSAT）与首次响应时长两项核心指标。\n\n此前：某电商平台 高级客服专员\n- 处理大促期间的客诉与退换货协调。\n- 参与客服话术与知识库的整理工作。\n\n技能：工单系统（Zendesk）、客诉升级流程、知识库维护、跨部门协调。\n求职意向：希望负责更大规模的支持团队或支持运营岗位。",
+  "jd": "我们是一家成长期SaaS公司，现招聘客户支持经理一名，负责管理在线客服与工单团队，对CSAT、首次响应时长、工单解决时长等核心指标负责。岗位职责包括：设计并优化客诉升级流程、推动知识库与自助渠道建设以降低人工工单量、在重大故障期间统筹对客沟通与事后复盘。我们特别看重候选人能否清晰、准确地还原一次重大事件的处理时间线——从发现、升级、对客通知到恢复与复盘各节点的先后与时点，因为支持运营对事件时序与SLA节点高度敏感。要求有团队管理经验，能够用数据说明改进效果。",
+  "history": [
+    { "q": "先请你介绍一下目前带的这个支持团队，规模和你负责的指标。" },
+    { "q": "你们的工单分级是怎么设计的？什么样的工单会被升级？" },
+    { "q": "聊聊CSAT这个指标，你接手时是多少、现在是多少？" },
+    { "q": "为了提升首次响应时长，你具体做了哪些事？" },
+    { "q": "知识库建设这块，你是怎么推动一线去用的？" },
+    { "q": "讲一次让你印象最深的重大故障，当时是什么情况？" },
+    { "q": "那次故障是谁先发现的、通过什么渠道发现的？" },
+    { "q": "从发现到你们决定对外发故障通知，中间隔了多久？" },
+    { "q": "对客的第一条通知是你写的还是一线发的？内容大概是什么？" },
+    { "q": "故障期间客诉量大概涨了多少？你是怎么调配人手的？" },
+    { "q": "工程团队是什么时候介入的？在你们对外通知之前还是之后？" },
+    { "q": "系统大概在什么时候恢复的？恢复后你们做了什么？" },
+    { "q": "复盘会是什么时候开的、谁参加？" },
+    { "q": "刚才你说『先发了恢复通知，然后工程才开始排查』，这个我有点没跟上，能再说一遍吗？" },
+    { "q": "那条恢复通知是在系统真正恢复之前发的，还是之后发的？" },
+    { "q": "那对客的第一条故障通知，和工程团队介入，到底哪个在前？" },
+    { "q": "我们把这次事件的关键节点按时间从头到尾完整捋一遍：发现、升级、对客首次通知、工程介入、恢复、复盘，分别在什么时点？" }
+  ],
+  "candidate_last_answer": "好的我捋一下……我们是先发了恢复通知，然后工程团队才开始排查的。呃不对，应该是先发现异常，然后我先对外发了一条恢复通知告诉客户已经好了，可那会儿其实还没真的恢复，工程是在那之后才介入定位的。复盘会我记得是在故障当天上午开的，但系统是下午才恢复的，所以复盘是在恢复之前就开完了。说到这儿我自己也有点绕，几个节点的先后我一时对不太上。",
+  "session_state": {
+    "drilled_topics": ["team-scope", "ticket-tiering", "csat-trend", "first-response-time", "knowledge-base-adoption", "major-incident-overview", "incident-detection", "notify-decision-latency", "first-customer-notice", "complaint-surge-staffing", "engineering-engagement-timing", "recovery-and-followup", "postmortem-timing", "sequence-clarification", "recovery-notice-timing", "notice-vs-engineering-order"],
+    "current_competency_target": "incident-timeline-rigor",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "incident-timeline-rigor",
+    "missing_evidence": [
+      { "competency": "incident-timeline-rigor", "evidence_type": "timeline" },
+      { "competency": "incident-timeline-rigor", "evidence_type": "owner-of-action" },
+      { "competency": "credibility-consistency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们是先发了恢复通知，然后工程团队才开始排查的",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 候选人对该次重大故障六个关键节点（发现、升级、对客首次通知、工程介入、恢复、复盘）正确且自洽的时间顺序还原，暴露其叙述中恢复通知早于实际恢复、复盘早于恢复、工程介入晚于恢复通知等自相矛盾之处，检验其事件时序严谨性"
+    ]
+  }
+}

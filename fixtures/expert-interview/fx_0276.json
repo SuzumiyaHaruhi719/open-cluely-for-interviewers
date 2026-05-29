@@ -1,0 +1,45 @@
+{
+  "id": "fx_0276",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Junior Supply Chain Analyst\n\nObjective: Detail-oriented analyst with two years of experience in inventory and logistics support, seeking to grow in a fast-paced operations team.\n\nExperience\n\nFerncrest Distribution — Supply Chain Analyst (2023–present)\n- Support demand planning and weekly replenishment for a regional distribution center\n- Maintain inventory accuracy and help investigate stockouts\n- Build and update reports for the planning team in Excel\n- Coordinate with the warehouse on inbound receiving issues\n\nThorne Logistics — Operations Intern (2022–2023)\n- Assisted with order tracking and carrier coordination\n- Helped reconcile shipping discrepancies\n- Supported the team during a warehouse management system rollout\n\nSkills: Excel, basic SQL, demand planning support, inventory reconciliation, logistics coordination\nEducation: BS, Supply Chain Management",
+  "jd": "We're looking for a Junior Supply Chain Analyst to join our replenishment team for a regional distribution network. You'll support demand planning, monitor inventory health, investigate stockouts and overstock, and help improve forecast accuracy. This is a hands-on role with a lot of learning, but we expect analysts to be able to quantify their work — to tell us how big a stockout was, how much inventory they were responsible for, and what measurable difference an action made. Responsibilities: maintain replenishment parameters, partner with the warehouse on receiving accuracy, and produce weekly inventory and service-level reporting. We value curiosity and precision: when something goes wrong, we want an analyst who can clearly explain the size of the problem and their specific contribution to fixing it. Strong Excel required; SQL a plus.",
+  "history": [
+    { "q": "Tell me about your role at Ferncrest — what do you support day to day?" },
+    { "q": "You mentioned investigating stockouts. Walk me through one specific stockout you looked into." },
+    { "q": "How big was that stockout — how many units or how many days of supply were affected?" },
+    { "q": "What was the root cause you found, and what did you do about it?" },
+    { "q": "You maintain inventory accuracy — what was the accuracy level when you started versus now?" },
+    { "q": "Tell me about the reports you build. Who uses them and what decisions do they drive?" },
+    { "q": "During the WMS rollout at Thorne, what was your specific contribution?" },
+    { "q": "Give me a number on any of this — how much inventory do you cover, or how much did one of your fixes save?" }
+  ],
+  "candidate_last_answer": "Oh, um, a number — okay, so, the thing is, it kind of varies week to week, and I don't want to just throw out a figure that isn't right, you know? Like the DC has a lot of SKUs and the inventory value changes all the time depending on season and what's inbound and... um. So for the stockout one, it was definitely a meaningful amount, it was one of our faster-moving items, and the team was pretty concerned about it, and I remember we were all kind of scrambling. And the reports — those are used a lot, people rely on them. I think I help in a lot of small ways that add up? Sorry, I know you asked for a number, I just — I'd rather not guess and be wrong. It was significant though, I can say that.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "stockout-example", "stockout-size", "stockout-rootcause", "inventory-accuracy", "reporting-usage", "wms-contribution"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "problem-solving", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd rather not guess and be wrong. It was significant though",
+      "must-be-question-type: metric-pin",
+      "expected-yield: get the candidate to commit to at least one concrete order-of-magnitude figure — units lost in the stockout, days of supply, SKU count, or inventory value she owns — even an honest estimate with a stated basis rather than 'significant'"
+    ]
+  }
+}

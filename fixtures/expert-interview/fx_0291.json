@@ -1,0 +1,42 @@
+{
+  "id": "fx_0291",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "林浩然 | 医疗集团运营副总裁\n\n职业概述：\n二十余年医疗健康行业管理经验，历任医院运营、连锁医疗集团区域负责人及集团副总裁，主导过多家医疗机构的运营提效与多院区扩张整合。\n\n现任：康宁医疗集团 — 运营副总裁（2019至今）\n- 分管集团旗下12家门诊及2家综合医院的整体运营\n- 牵头多院区的医疗资源调配与流程标准化\n- 推动集团数字化转型，落地HIS与互联网医院平台\n- 负责医保对接、成本管控与新院区筹建\n\n此前：济和连锁医疗 — 华东区运营总监（2013-2019）\n- 负责区域内多家门诊的日常运营与拓展\n- 主导区域内服务标准的统一与质控体系建设\n\n再前：仁安医院 — 运营部经理（2005-2013）\n\n教育：中欧国际工商学院 EMBA；首都医科大学 临床医学 本科\n社会职务：某省医院协会运营管理分会 常务理事",
+  "jd": "我们正在为一家区域连锁医疗集团寻找运营副总裁，向CEO汇报，全面负责集团多院区的运营效率、成本管控与扩张整合。你将对单院区盈亏、平均门诊运营成本、医保回款周期、新院区爬坡周期等核心指标负责，并主导集团层面的流程标准化与数字化转型落地。这个岗位要求你能就一个具体的运营决策讲清楚投入产出与取舍，能用数据复盘一次院区整合或成本优化项目的成败，并在医保政策、医疗安全与商业目标之间做出审慎平衡。我们需要一位能聚焦、能把宏大叙事落到具体动作和数字上的运营领导者。",
+  "history": [
+    { "q": "请先介绍下你在康宁分管的运营范围，以及你对哪些经营指标直接负责。" },
+    { "q": "你提到主导了多院区的医疗资源调配，挑一个最具体的项目，说说当时要解决的核心运营痛点是什么。" },
+    { "q": "数字化转型这块，落地互联网医院平台之后，对门诊运营效率或成本有没有可量化的影响？" },
+    { "q": "新院区筹建你负责过几个？挑一个，说说它的爬坡周期和盈亏平衡点是怎么测算的。" },
+    { "q": "就拿你印象最深的那次院区整合——你个人在头三个月具体做了哪几件事来控成本？" }
+  ],
+  "candidate_last_answer": "这个问题特别好，但要讲清楚得从行业大背景说起。你知道这几年整个医疗行业其实经历了三个阶段的范式转移，从规模扩张到精益运营，再到现在的价值医疗，我个人是非常早就预判到这个趋势的。当年我在济和的时候就跟团队讲，未来一定是得医保者得天下，所以你看现在DRG/DIP的推行完全印证了我的判断。说到院区整合，我还想起一个特别有意思的事，就是医疗行业的人才结构问题，临床出身的管理者和职业经理人之间一直有张力，这个其实是个很值得深聊的话题。还有数字化，我一直觉得很多医院的数字化是为了数字化而数字化，没有真正想清楚价值闭环……总之那次整合我们是非常成功的，团队也都很认可。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "resource-allocation-painpoint", "digital-transformation-impact", "new-site-rampup", "integration-cost-control-actions"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 那次整合我们是非常成功的，团队也都很认可",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 打断行业宏论，把候选人拉回那一次院区整合的头三个月，逼他列出本人亲自做的三件控成本动作以及各自带来的成本变化和时间点，区分『我们很成功』的集体叙事与他个人真实操盘的具体贡献"
+    ]
+  }
+}

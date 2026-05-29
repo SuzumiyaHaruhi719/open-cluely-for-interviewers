@@ -1,0 +1,38 @@
+{
+  "id": "fx_0263",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "苏晴 — 中级产品设计师(交互/体验)\n杭州 · su.qing@example.com · 五年经验\n\n概述\n中级产品设计师,专注于复杂 B 端工作台与移动端体验。擅长把模糊需求转化为清晰的交互方案,并用可用性测试与数据验证设计决策。\n\n工作经历\n产品设计师 — 云策数据 (B 端数据分析平台),二〇二一至今\n- 情境:核心报表搭建页的新手七日留存只有 34%,大量用户卡在第一次建表就流失。任务:在不重构后端的前提下,把新手首次建表成功率从 52% 提到 75% 以上。行动:我做了五场一对一可用性测试,定位到字段拖拽与聚合配置两个卡点;重新设计了引导式建表流程,加入预设模板与即时校验提示,并和前端一起做了埋点。结果:首次建表成功率提到 78%,新手七日留存升到 49%,该流程相关的客服工单下降约三成。\n- 情境:设计规范散落在多个文件里,团队四名设计师产出不一致。任务:统一组件与交互规范。行动:我牵头梳理了一套含三十余个组件的设计系统,定义了状态与间距规则,并推动接入到 Figma 变量。结果:新需求的设计交付周期平均缩短约 40%,走查返工率明显下降。\n\n交互设计师 — 翎动科技(移动工具类 App),二〇一九至二〇二一\n- 情境:核心功能藏得太深,使用率低。行动:重做信息架构与首屏入口。结果:核心功能日活渗透率从 12% 升到 21%。\n\n教育背景\n本科,数字媒体艺术,中国美术学院。\n\n技能\nFigma、可用性测试、交互原型、设计系统、基础埋点与数据分析、用户访谈。",
+  "jd": "云策数据 (Yunce Data) 招聘一名中级产品设计师,负责 B 端数据分析平台的核心工作台体验。你将独立负责报表搭建、数据看板配置等关键链路的交互与体验设计,主导可用性测试,并用数据验证设计效果。我们希望你能把复杂的数据配置流程做得让新手也能上手,推动新手激活与留存指标。你会和产品经理、前端工程师、以及一名资深设计师紧密配合,也需要参与团队设计系统的建设。我们特别关注候选人能否清楚讲出一个由你主导、并真正改善了某个核心指标的设计项目:问题是什么、你做了哪些具体设计决策、怎么验证的、最终数据如何。需要扎实的交互基本功与数据意识。",
+  "history": [
+    { "q": "挑一个你最近主导的、真正改善了核心指标的设计项目,讲讲背景、你做了什么、结果怎么样。" },
+    { "q": "你提到做了五场可用性测试。具体是怎么招募用户、怎么设计任务的?定位到的两个卡点分别是什么?" }
+  ],
+  "candidate_last_answer": "好的。情境是这样:我们核心报表搭建页的新手首次建表成功率只有 52%,很多人第一次建表就放弃了。任务是在不动后端的前提下,把首次建表成功率提到 75% 以上。我具体做了几件事:第一,我从产品后台筛了过去两周内注册且建表失败的用户,招募了五位做一对一的可用性测试,任务设计成『请你新建一张按地区统计销量的表』这种真实场景,全程录屏并记录卡顿点。我定位到两个卡点:一是字段需要拖拽到指定区域,但热区不明显,用户不知道能拖;二是聚合方式(求和/计数)默认是空的,用户建出来一张空表还以为是 bug。行动上,我把拖拽改成可点击添加 + 拖拽双通道,给字段区加了明显的占位提示,聚合方式给了智能默认值并加了即时校验,还设计了三个预设模板让新手能一键起步,并和前端一起补了埋点。结果:首次建表成功率从 52% 提到 78%,新手七日留存从 34% 升到 49%,相关客服工单降了大概三成。我自己最关键的判断是没有去加更多文字说明,而是直接降低操作门槛。",
+  "session_state": {
+    "drilled_topics": ["led-design-project-impact", "usability-test-method-and-findings"],
+    "current_competency_target": "design-decision-rigor",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "design-decision-rigor",
+    "missing_evidence": [
+      { "competency": "design-decision-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "design-decision-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我把拖拽改成可点击添加 + 拖拽双通道",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the design reasoning and validation behind the dual-channel add pattern — what alternatives she considered, whether the click-to-add path actually carried most of the success lift or whether it added clutter, and how she isolated that one change's effect from the template and default-aggregation changes shipped together"
+    ]
+  }
+}

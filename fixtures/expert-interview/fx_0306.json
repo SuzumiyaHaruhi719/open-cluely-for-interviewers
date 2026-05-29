@@ -1,0 +1,43 @@
+{
+  "id": "fx_0306",
+  "tags": {
+    "industry": "product-management",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "over-bragging",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Staff Product Manager who has repeatedly turned around failing products and defined category-creating strategy.\n\n- Owned the 0-to-1 strategy for a platform that became the single most important revenue driver in the company's history\n- The product leader executives turn to when a bet is too big or too ambiguous for anyone else\n- Personally set the multi-year vision that three other PM teams now execute against\n- Drove a pricing-and-packaging overhaul widely regarded as the smartest monetization move the company ever made\n- Trusted by the CPO as the de facto strategy lead for the entire platform org\n- Recognized internally as the strongest product thinker across a 60-PM organization\n\nExperience\nStaff Product Manager, Vector Cloud Platform (2020–present)\nSenior Product Manager, Quill Analytics (2016–2020)\n\nFocus: platform strategy, monetization, 0-to-1, cross-org alignment\nEducation: B.S., Computer Science",
+  "jd": "Vector Cloud Platform is hiring a Staff Product Manager to own monetization strategy for our developer platform. This is a role for someone who can defend a strategic decision under hard questioning: the specific bet, the reasoning, the tradeoffs accepted, and the measurable outcome. We are looking for crisp first-person ownership of strategy decisions and the judgement behind them. You will set multi-year pricing-and-packaging direction, align three platform PM teams, and present to the CPO and the board. We value candidates who answer the question directly under pressure rather than redirecting it back to the interviewer or burying the point in tangents.",
+  "history": [
+    { "q": "Walk me through the pricing-and-packaging overhaul you led — start with the core decision." },
+    { "q": "What was the central bet — what did you change about how the platform was priced?" },
+    { "q": "What were the two or three options you considered, and why did you pick the one you did?" },
+    { "q": "What tradeoff did that choice force — who or what did it hurt?" },
+    { "q": "How did you de-risk the change before rolling it out broadly?" },
+    { "q": "What was the measurable outcome — revenue, adoption, churn?" },
+    { "q": "Let's slow down on the key decision. At the moment you committed to that pricing model over the alternative, what was your actual reasoning and what were you most worried about?" }
+  ],
+  "candidate_last_answer": "Right, so — and this is a great question, it really is — the reasoning was, um, multi-layered, because pricing is never just pricing, it touches positioning and the whole GTM motion and honestly the sales comp plan too, which is a rabbit hole of its own, we could spend an hour just there. There was a lot going on that quarter, reorg, a big customer escalation, so context matters. But let me actually turn it around on you — when you've seen pricing changes work at companies you've been at, what do you think usually makes them stick? Because I'm curious whether your read matches mine, and that'll help me frame which part of the reasoning to dig into.",
+  "session_state": {
+    "drilled_topics": ["overhaul-core-decision", "central-bet", "options-considered", "tradeoff-forced", "de-risking", "measurable-outcome", "key-decision-reasoning"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: let me actually turn it around on you — when you've seen pricing changes work at companies you've been at, what do you think usually makes them stick",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the candidate's own first-person reasoning at the commit moment — the specific pricing model chosen over the named alternative, the single tradeoff that worried him most, and why he accepted it — refusing the reversal and the tangents and forcing a direct decision account"
+    ]
+  }
+}

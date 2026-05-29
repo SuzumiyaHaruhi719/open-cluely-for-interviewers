@@ -1,0 +1,41 @@
+{
+  "id": "fx_0304",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Customer Support Team Lead\n\nProfile: Support professional with five years in SaaS customer support, including two years leading a frontline team.\n\nExperience\nSupport Team Lead, Tilde Software (2022–present)\n- Lead a team of frontline support agents handling email and chat for a mid-market product\n- Drove a queue-triage change that reduced first-response time\n- Partnered with product to cut down repeat tickets on a buggy feature\n- Run weekly QA reviews and 1:1 coaching\n\nSupport Specialist, Tilde Software (2020–2022)\n- Handled escalations and complex billing issues\n- Wrote macros and help-center articles that deflected common tickets\n\nSkills: Zendesk, Intercom, macro/workflow design, QA scorecards, coaching\nEducation: B.A., Communications",
+  "jd": "Tilde Software is hiring a Customer Support Team Lead for our mid-market segment. You will own queue health and team performance, and you will be accountable for concrete service metrics: first-response time, median resolution time, CSAT, and repeat-contact rate. We expect leads to manage by numbers — to know their baselines, the size of the change they drove, and the time window. In the interview we evaluate whether a candidate can state those figures directly when asked, rather than redirecting the question. You will also coach agents, run QA calibration, and partner with product on ticket-deflection.",
+  "history": [
+    { "q": "Tell me about the queue-triage change you led and what problem it solved." },
+    { "q": "What was first-response time before you made the change?" },
+    { "q": "And after — what did first-response time become?" },
+    { "q": "Over what period did you see that improvement?" },
+    { "q": "Give me the actual first-response numbers — before, after, and the timeframe." }
+  ],
+  "candidate_last_answer": "Sure, happy to. Quick question first though — when you say first-response time, do you mean the team median, or the average including the off-hours queue? Because those tell pretty different stories. And are you more interested in the headline number or in how I'd think about which one to optimize? I'd rather give you the version that maps to how you actually evaluate this.",
+  "session_state": {
+    "drilled_topics": ["triage-change-overview", "frt-before", "frt-after", "improvement-period", "frt-actuals"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: do you mean the team median, or the average including the off-hours queue",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete before/after first-response-time figure with its time window — told 'pick the median, just give me the actual before and after' — so the candidate must produce a real number instead of another clarifying question"
+    ]
+  }
+}

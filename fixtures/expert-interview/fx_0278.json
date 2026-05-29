@@ -1,0 +1,37 @@
+{
+  "id": "fx_0278",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "初级用户研究员\n\n求职意向: 用户研究 / 体验研究方向,希望加入有成熟研究流程的团队继续成长。\n\n个人简介\n两年用户研究相关经验,熟悉定性访谈、可用性测试与问卷设计,能独立完成中小型研究项目的全流程,擅长把用户访谈中的零散反馈整理成结构化的洞察。\n\n工作经历\n\n知行教育科技 — 用户研究员 (2023年至今)\n- 负责K12在线课程产品的用户研究,主导过多轮一对一深度访谈\n- 牵头一个关于学员续费意愿下降的专项研究,从访谈设计、招募、执行到出报告全程参与\n- 与产品和设计团队协作,把研究洞察转化为产品改进建议\n- 维护团队的用户反馈整理文档\n\n橙果用户体验咨询 — 研究实习生 (2022年至2023年)\n- 协助资深研究员开展可用性测试与数据整理\n- 参与问卷设计与回收\n\n技能: 深度访谈、可用性测试、问卷设计、定性编码、用户旅程梳理\n教育背景: 应用心理学 本科",
+  "jd": "我们正在为一款K12在线教育产品招聘一名初级用户研究员,你将与一名资深研究员搭档,负责中小型研究项目的执行,包括访谈设计、用户招募、主持访谈、定性编码与产出研究报告。岗位要求: 一到三年用研经验,扎实的定性研究基本功,能把混乱的用户反馈梳理成清晰的洞察,并清楚地讲明白每一个研究决策背后的考量——比如为什么选这个方法、样本怎么定的、最后产品做了什么改变。我们看重研究的严谨性: 在面试中我们会请你完整地走一个你做过的研究,从研究问题一直讲到它如何影响了产品决策,重点听你在研究设计中权衡了什么、又是如何确认结论可靠的。",
+  "history": [
+    { "q": "请挑一个你最有代表性的研究项目,先讲清楚你当时要回答的研究问题是什么,你具体做了什么、最后带来了什么改变。" }
+  ],
+  "candidate_last_answer": "嗯……（停顿）不好意思,让我先理一下思路,我想讲准确一点。……好的。就讲那个续费意愿下降的专项研究吧。当时的情况(Situation)是: 我们一款K12课程的续费率在下滑,但业务方只有数据、不知道原因,内部有好几种猜测。我的任务(Task)是: 独立设计并执行一个定性研究,在两周内找到学员不续费的真实原因,给出可落地的改进建议。我做的事(Action)是: 我先按完课进度把学员分成了三档,有针对性地招募了三类用户做一对一深度访谈,访谈提纲围绕『续费决策那一刻在犹豫什么』来设计;访谈之后我用定性编码把反馈归类,发现核心痛点不是价格,而是家长看不到孩子的学习效果。结果(Result)是: 我把这个洞察和原话证据整理成报告,推动产品上线了一个『阶段性学习成果报告』功能,后来这一档低进度学员的续费犹豫明显缓解,产品和业务方都采纳了我的建议,这个研究也成了团队后续做留存研究的参考模板。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "research-rigor",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "research-rigor",
+    "missing_evidence": [
+      { "competency": "research-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 后来这一档低进度学员的续费犹豫明显缓解",
+      "must-be-question-type: metric-pin",
+      "expected-yield: turn the qualitative-sounding 『犹豫明显缓解』 into something checkable — how she or the team measured the effect of the new feature on renewal, sample sizes per cohort, and how she separated her study's impact from other concurrent changes"
+    ]
+  }
+}

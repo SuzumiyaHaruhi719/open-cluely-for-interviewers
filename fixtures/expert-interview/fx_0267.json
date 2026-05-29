@@ -1,0 +1,45 @@
+{
+  "id": "fx_0267",
+  "tags": {
+    "industry": "design",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "高梓涵 — 设计总监 / Design Director\n北京 · gao.zihan@example.com\n\n关键词\n用户体验 · 交互设计 · 视觉设计 · 设计系统 · 设计中台 · 服务设计 · 用户研究 · 可用性测试 · 信息架构 · 设计策略 · 品牌升级 · 多端一致性 · 设计规范 · 组件库 · Design Ops · 跨团队协作 · 设计度量 · 体验度量体系 · 走查 · 设计评审 · 团队管理 · 人才梯队 · 跨端 · B端 · C端 · 增长设计 · 数据驱动设计 · A/B 实验\n\n经历\n设计总监 — 翰海科技(综合电商与本地生活),二〇二〇至今\n管理一支二十余人的设计团队,覆盖电商、本地生活、和会员三条业务线。负责设计策略、设计系统、设计度量体系、和人才梯队建设。关键词:体验度量、设计中台、组件库治理、跨端一致性、设计评审机制。\n\n高级设计经理 — 星澜出行(出行平台),二〇一七至二〇二〇\n负责司机端与乘客端的体验设计与设计规范。关键词:服务设计、信息架构、可用性测试、多端一致性。\n\n资深交互设计师 — 沐光软件,二〇一四至二〇一七\n关键词:交互设计、原型、用户研究、设计走查。\n\n教育背景\n硕士,设计学,中央美术学院;学士,工业设计,江南大学。",
+  "jd": "翰海科技 (Hanhai Tech) 招聘一名设计总监,负责电商、本地生活与会员三条业务线的整体体验设计与设计组织建设。你将主导设计策略、设计系统与设计中台、以及体验度量体系,管理二十人以上的设计团队,并对设计如何驱动核心业务指标负责。我们尤其关注候选人能否讲清楚一个由你主导的、对组织或业务产生了可量化影响的项目:背景是什么、你做了哪些具体决策与行动、最终用什么数据证明它成功了。我们希望你既懂设计专业,也能用业务和数据语言与高管沟通,并能搭建一套让设计价值可被衡量的机制。需要扎实的设计领导力与跨团队推动能力。",
+  "history": [
+    { "q": "先讲讲你在翰海的角色:团队规模、覆盖哪些业务线、你具体负责什么。" },
+    { "q": "你简历里反复提到『体验度量体系』。这套体系是你从零搭的吗?" },
+    { "q": "为什么当时要做这套度量体系?是什么问题逼着你做的?" },
+    { "q": "你给这套体系定了哪些核心指标?为什么是这几个?" },
+    { "q": "这套指标是怎么落地到各业务线的设计师日常里的?" },
+    { "q": "推行过程中最大的阻力来自哪里?你怎么处理的?" },
+    { "q": "你个人在这件事上最关键的几个决策是什么?" },
+    { "q": "高管层一开始买账吗?你怎么说服他们投入资源的?" },
+    { "q": "这套度量体系上线之后,到底带来了什么可量化的结果?给我具体数字。" }
+  ],
+  "candidate_last_answer": "背景是这样:我们三条业务线的设计质量参差不齐,高管经常问『设计到底有没有价值』,但我们拿不出统一的衡量口径,每次评审都靠主观感受吵架。所以任务是,我要从零搭一套能横向对比、又能跟业务挂钩的体验度量体系。我做的事很具体:第一,我定义了一套分层指标,顶层是任务成功率和满意度(用 UMUX-Lite),中层是关键流程的转化与流失,底层是设计走查的规范符合度;第二,我推动接入埋点,和数据团队一起把这些指标做进了一个设计师能自己看的看板;第三,我改了评审机制,要求每个大需求上线前后都要报这几个指标,把『拍脑袋』改成『看数据』;第四,我每季度组织一次跨业务线的体验复盘。整个过程我自己最关键的判断是先从一条业务线试点跑通再横推,而不是一上来铺三条线。这套机制现在已经是团队的标准动作了,大家都在用,评审的氛围也理性多了。",
+  "session_state": {
+    "drilled_topics": ["role-scope", "metrics-system-ownership", "why-build-it", "core-metrics-choice", "rollout-to-teams", "rollout-resistance", "personal-key-decisions", "exec-buy-in", "quantified-result"],
+    "current_competency_target": "impact-quantification",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "impact-quantification",
+    "missing_evidence": [
+      { "competency": "impact-quantification", "evidence_type": "metric" },
+      { "competency": "impact-quantification", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这套机制现在已经是团队的标准动作了,大家都在用",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete before/after number proving the measurement system created value — e.g., how much a named flow's task-success rate or conversion moved after the system drove a redesign, with the time window — rather than the process-adoption claim she offered in place of a result"
+    ]
+  }
+}

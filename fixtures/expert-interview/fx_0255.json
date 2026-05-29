@@ -1,0 +1,38 @@
+{
+  "id": "fx_0255",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Devon Mraz — Senior Growth Marketing Manager\n\nCORE COMPETENCIES\nGrowth Marketing | Performance Marketing | Demand Generation | Paid Search | Paid Social | SEM | SEO | CRO | Marketing Automation | Lifecycle Marketing | Email Marketing | Funnel Optimization | Attribution Modeling | LTV/CAC | ROAS | MMM | A/B Testing | Multivariate Testing | HubSpot | Marketo | Salesforce | Google Ads | Meta Ads | TikTok Ads | LinkedIn Ads | GA4 | Looker | SQL | Segment | Braze | Iterable | Account-Based Marketing | PLG | Funnel Analytics | Cohort Analysis | Budget Management | Cross-functional Leadership | Stakeholder Management | OKRs | KPIs | Brand | Content | Influencer | Affiliate | Partnerships\n\nSUMMARY\nData-driven, results-oriented senior growth marketer with 8 years scaling B2B and B2C acquisition. Expert across paid, lifecycle, and CRO. Track record of efficient growth and full-funnel optimization.\n\nEXPERIENCE\nLumen Health (B2C subscription, telehealth) — Senior Growth Marketing Manager (2021-present)\n- Own paid acquisition and lifecycle for the consumer subscription business; manage a ~$9M annual media budget and a team of three.\n- Lead full-funnel programs across Google, Meta, and TikTok plus lifecycle email/push via Braze.\n- Partner with data science on incrementality testing and attribution.\n\nNorthpeak SaaS — Growth Marketing Manager (2018-2021)\n- Ran demand generation and paid search for a mid-market B2B product; supported pipeline and MQL targets.\n- Built the marketing-automation nurture program in Marketo.\n\nSKILLS / TOOLS\nGoogle Ads, Meta Ads Manager, TikTok Ads, GA4, Looker, SQL, Braze, HubSpot, Marketo, Segment, Excel/Sheets, basic Python.\n\nEDUCATION\nB.A., Economics.\n\nMETRICS I LIVE BY\nCAC, LTV, ROAS, payback period, blended vs. paid CAC, contribution margin.",
+  "jd": "Lumen Health is hiring a Senior Growth Marketing Manager to own paid acquisition and early lifecycle for our consumer subscription. You will manage a multimillion-dollar media budget, set channel strategy across paid search/social, and run incrementality and CRO experiments that move CAC and subscriber payback. We want a marketer who can tell a complete story about a campaign or test they ran — the situation and goal, exactly what they changed, and the quantified result with timeframe and a clear read on causality (incrementality, not last-click). You'll present performance to the VP of Marketing and partner with data science and finance on attribution. Requirements: 6+ years in growth/performance marketing, hands-on with paid platforms and GA4/SQL, and demonstrated ability to improve CAC or payback with evidence of incremental lift.",
+  "history": [
+    { "q": "Your resume is a wall of tools and acronyms. Cut through it for me: tell me about one acquisition program you ran at Lumen where you actually moved CAC." },
+    { "q": "Walk me through it like a story — what was the situation and target, what exactly did you do, and what was the measured result?" }
+  ],
+  "candidate_last_answer": "Situation: in Q1 2023 our blended CAC on paid had crept from about $58 to $74 over two quarters, mostly because Meta prospecting was saturating — frequency was up and incremental conversions were falling. Target the VP gave me was to get blended paid CAC back under $60 within the quarter without cutting subscriber volume. What I did: I cut the bottom 20% of Meta prospecting audiences by ROAS, shifted roughly $180K of that monthly spend into a TikTok Spark Ads test and into Google non-brand, and I ran a geo-based incrementality test for two weeks to confirm the TikTok spend was actually incremental rather than stealing organic. Result: over the quarter blended paid CAC came down to $56, the geo test showed TikTok was about 82% incremental, subscriber volume held within 3% of plan, and payback dropped from 11 months to 9. The one caveat is the incrementality read had wide confidence intervals because two weeks was short, so I kept the geo holdout running another month to firm it up.",
+  "session_state": {
+    "drilled_topics": ["cac-program-selection", "full-star-walkthrough"],
+    "current_competency_target": "growth-impact-evidence",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "growth-impact-evidence",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "growth-impact-evidence", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the incrementality read had wide confidence intervals because two weeks was short",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: how the candidate handled the weak-confidence incrementality signal — what they did to firm it up, how they decided to keep scaling TikTok despite wide intervals, and what threshold would have made them pull back — testing analytical rigor behind a strong STAR answer"
+    ]
+  }
+}

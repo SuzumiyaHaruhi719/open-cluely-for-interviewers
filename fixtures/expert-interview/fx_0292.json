@@ -1,0 +1,50 @@
+{
+  "id": "fx_0292",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Daniel Okafor\nVP of Sales — Enterprise SaaS\n\nSummary: 15+ years building and scaling enterprise sales organizations across North America and EMEA. Track record of standing up new sales motions, restructuring teams, and turning around underperforming regions.\n\nVertex Cloud (2020-present) — VP of Sales\n- Lead a global enterprise sales org across NA and EMEA\n- Rebuilt the sales process and rolled out a new segmentation model\n- Drove a turnaround of the EMEA region after a leadership change\n- Renegotiated the partner/channel program and introduced a new comp plan\n\nClariON Systems (2015-2020) — Regional Sales Director, then Senior Director\n- Built out the mid-market team and later took on enterprise accounts\n- Launched the company's first outbound SDR function\n\nHelios Analytics (2009-2015) — Account Executive, then Team Lead\n\nEducation: BBA, University of Toronto",
+  "jd": "Vertex Cloud is hiring a VP of Sales to lead our global enterprise organization (NA + EMEA) through the next phase of scale. Reporting to the CRO, you will own bookings, net revenue retention, and sales-cycle efficiency, and you will be accountable for the EMEA turnaround already in motion. The role owns go-to-market motion design, segmentation, comp-plan strategy, and the partner/channel program. We expect a leader who can narrate a turnaround precisely: what state the region was in, what they changed and in what order, who owned each move, and how the numbers responded over time. Strong candidates keep their timelines straight under questioning and tie every claimed result to a date and a metric.",
+  "history": [
+    { "q": "Give me the shape of your org at Vertex — segments, regions, headcount, what you own." },
+    { "q": "You led an EMEA turnaround. What state was the region in when you took it on?" },
+    { "q": "When did you actually take responsibility for EMEA — what month and year?" },
+    { "q": "What was the first structural move you made there?" },
+    { "q": "You also rolled out a new segmentation model — did that come before or after the EMEA work?" },
+    { "q": "And the new comp plan — where does it sit in that sequence?" },
+    { "q": "Who owned the EMEA number day to day while you were restructuring it?" },
+    { "q": "What did bookings look like at the start of the turnaround versus a year in?" },
+    { "q": "The partner program renegotiation — same period, or separate?" },
+    { "q": "Did the segmentation change land before or after you saw bookings move?" },
+    { "q": "Walk me through the first two quarters of the turnaround, quarter by quarter." },
+    { "q": "Which single change do you credit most for the recovery?" },
+    { "q": "Lay out the whole EMEA timeline for me end to end — dates, moves, and the numbers at each step." }
+  ],
+  "candidate_last_answer": "...hm. Let me think about the sequence for a second. ... Okay. So I took EMEA in early 2022 — actually it might have been late 2021, around Q3. The first thing I did was roll out the new comp plan, which then drove the turnaround. Although, now that I say it, the comp plan was really 2023, after we'd already recovered — so the recovery came first, and then comp followed it. The segmentation model I launched before EMEA, but it didn't actually go live until after the partner renegotiation, which itself was right at the start of the turnaround. Bookings were up by the time segmentation shipped, so segmentation was clearly the driver. Sorry — the order's a bit tangled, but the recovery definitely happened.",
+  "session_state": {
+    "drilled_topics": ["org-shape", "emea-starting-state", "emea-start-date", "first-structural-move", "segmentation-sequence", "comp-plan-sequence", "emea-number-owner", "bookings-before-after", "partner-program-timing", "segmentation-vs-bookings", "first-two-quarters", "single-biggest-driver", "full-timeline"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Bookings were up by the time segmentation shipped, so segmentation was clearly the driver",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: force the candidate to fix one consistent dated sequence — when EMEA started, when segmentation actually went live, and when bookings moved — because he has both claimed segmentation shipped after the partner renegotiation and that bookings were already up when it shipped, which makes the causal claim self-contradictory; pinning the dates reveals whether segmentation could have driven a recovery that preceded it"
+    ]
+  }
+}

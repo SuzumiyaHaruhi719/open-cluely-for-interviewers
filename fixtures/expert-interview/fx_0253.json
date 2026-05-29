@@ -1,0 +1,38 @@
+{
+  "id": "fx_0253",
+  "tags": {
+    "industry": "legal",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "周哲 / Zhe Zhou\n法务总监 | 跨境合规与争议解决领域顶尖专家\n\n个人简介\n本人是业内公认的世界级（world-class）法务负责人，拥有无可比拟的跨境交易与合规治理经验。在我职业生涯中，几乎每一个我主导的项目都取得了行业标杆式（best-in-class）的成果。我擅长把法务从成本中心（cost center）重塑为战略驱动引擎，曾多次以一己之力扭转公司在重大监管危机中的被动局面。同行普遍认为我是过去十年中国 in-house legal 领域最具影响力的领导者之一。\n\n核心成就\n- 以卓越的领导力（unparalleled leadership）搭建并领导一支顶级法务与合规团队，团队战斗力堪称行业天花板。\n- 主导集团全球范围的 compliance transformation，建立了被业界争相效仿的合规体系。\n- 在多起高风险跨境并购（cross-border M&A）中担任法务总指挥，每一单都堪称教科书级别的操作。\n- 亲手化解了数起足以重创公司的监管调查（regulatory investigation），力挽狂澜。\n- 被多家媒体誉为合规领域的 thought leader，频繁受邀在高峰论坛发表主题演讲。\n\n工作经历\n某大型科技集团 — 法务总监 / Head of Legal & Compliance（2020年至今）\n- 全面负责集团法务、合规、政府关系与争议解决，向 CEO 直接汇报。\n- 牵头建立覆盖全球多个司法辖区的 compliance program。\n- 统筹重大诉讼、监管沟通与并购法务支持。\n\n某跨国企业中国区 — 高级法律顾问 / Senior Legal Counsel（2015-2020）\n- 负责中国区商事合同、反垄断与数据合规事务。\n- 参与多起跨境争议解决案件。\n\n教育背景\n- 某顶尖法学院 法律硕士（J.M.）\n- 通过中国法律职业资格考试\n\n自我评价\n我对自己的要求是：凡我经手，必属精品。我相信没有我搞不定的合规难题。",
+  "jd": "我们是一家正在快速全球化的科技公司，现招聘 Head of Legal & Compliance（法务合规负责人，directorl级）一名，向总法律顾问汇报，负责搭建并运营覆盖多个司法辖区的合规体系（compliance program），统筹跨境并购法务、重大监管沟通与争议解决。岗位特别要求候选人能够用可验证的事实与结果说明其过往贡献：在描述一次合规体系建设或一次监管危机处置时，我们希望听到清晰的 Situation / Task / Action / Result——尤其是 Result，即体系上线后的覆盖范围、风险事件下降、监管处罚规避或合规成本变化等可量化产出。我们重视脚踏实地、用证据说话的 leader，而非依赖头衔与形容词的自我包装。",
+  "history": [
+    { "q": "你简历里提到主导了集团全球范围的 compliance transformation。先讲讲当时公司面临的具体问题，以及这个项目要解决的核心目标是什么？" },
+    { "q": "那你个人在这个 transformation 里具体做了哪些动作？带我走一遍你亲手推动的几件关键事情。" }
+  ],
+  "candidate_last_answer": "当时的 situation 是这样的：集团刚开始大规模出海，但各个区域的合规标准非常碎片化（fragmented），没有统一的 policy，监管风险敞口很大，这是我们要解决的核心 task。在 action 层面，我亲自做了几件事：第一，我从零搭建了集团统一的 compliance framework，把反贿赂、数据合规、出口管制几条线都纳进来；第二，我主导上线了一套 case management 系统，让所有合规事件都能闭环跟踪；第三，我推动设立了区域 compliance officer 的 dotted-line 汇报机制，把总部的标准下沉到各个 region。可以说整个体系是被业界争相效仿的标杆。",
+  "session_state": {
+    "drilled_topics": ["compliance-transformation-context", "personal-actions"],
+    "current_competency_target": "outcomes-evidence",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-evidence",
+    "missing_evidence": [
+      { "competency": "outcomes-evidence", "evidence_type": "metric" },
+      { "competency": "outcomes-evidence", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 整个体系是被业界争相效仿的标杆",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 该合规体系上线后的可量化 Result——例如覆盖的司法辖区数量、合规事件或监管问询的同比下降幅度、规避的处罚金额或合规成本变化，以及达成这些结果的时间窗口，把自我包装的形容词逼成可验证的产出数据"
+    ]
+  }
+}

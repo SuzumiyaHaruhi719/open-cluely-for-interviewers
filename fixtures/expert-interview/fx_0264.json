@@ -1,0 +1,40 @@
+{
+  "id": "fx_0264",
+  "tags": {
+    "industry": "healthcare",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Marcus Bell\nB.S. Health Informatics (expected 2026), Drexel University\nmarcus.bell@example.edu\n\nObjective: Clinical data analytics internship.\n\nExperience\n- Data Intern, Keystone Health Network (Summer 2025): supported a readmissions analytics project on the inpatient analytics team.\n- Research Assistant, Drexel Biostatistics Lab (2024–2025): cleaned survey datasets, ran descriptive stats in R.\n\nSkills: SQL, R, Python (pandas), Tableau, basic statistics.\n\nCoursework: Clinical Databases, Biostatistics, Health Data Privacy (HIPAA).",
+  "jd": "Keystone Health Network is recruiting a Clinical Data Analytics Intern to support our population-health and readmissions teams. You will write SQL against our clinical data warehouse, build Tableau views, and help validate analyses that inform care-management programs. You will work under a senior analyst and a clinical data scientist. We value interns who can clearly explain what they personally did on a project, how they validated their numbers, and how they handled protected health information responsibly. Comfort discussing methodology at a level appropriate for a student is expected; you do not need to disclose any confidential or proprietary details from prior employers. Strong candidates are precise, coachable, and take ownership of their work.",
+  "history": [
+    { "q": "Tell me about the readmissions analytics project you supported at Keystone — what was the goal?" },
+    { "q": "What part of that analysis did you personally build versus what the senior analyst did?" },
+    { "q": "How did you validate that your readmission counts were correct?" },
+    { "q": "Can you walk me through the specific logic you used to define a 30-day readmission in your query?" }
+  ],
+  "candidate_last_answer": "Honestly, I don't really get why you keep pushing on the query details. I already told you I worked on it. That stuff is under NDA — I signed paperwork at Keystone and I'm not going to sit here and dump their internal logic just because you're asking. Frankly it feels like you're trying to trip me up. If you wanted someone who'd blab confidential definitions you picked the wrong person. I can tell you it was a 30-day window and it worked, but the exact implementation isn't something I'm comfortable getting into, and I think a real professional would respect that instead of grilling an intern about it.",
+  "session_state": {
+    "drilled_topics": ["readmissions-project-goal", "personal-contribution-split", "validation-approach", "readmission-definition-logic"],
+    "current_competency_target": "methodological-precision",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "methodological-precision",
+    "missing_evidence": [
+      { "competency": "methodological-precision", "evidence_type": "mechanism" },
+      { "competency": "communication-under-pressure", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I can tell you it was a 30-day window and it worked",
+      "must-be-question-type: teach-back",
+      "expected-yield: a non-confidential, first-principles explanation of how a 30-day readmission window is generally defined and validated (index discharge date, exclusions like planned readmits, anchoring the second admission), demonstrating the candidate understands the method without disclosing the employer's proprietary code"
+    ]
+  }
+}

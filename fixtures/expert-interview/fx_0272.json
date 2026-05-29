@@ -1,0 +1,44 @@
+{
+  "id": "fx_0272",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "高级供应链规划经理 | 8年制造业与消费电子供应链经验\n\n职业概述\n负责亚太区端到端供应链规划，覆盖需求预测、S&OP、库存与采购协同。主导过多个降本与交期改善项目，熟悉SAP IBP、Kinaxis RapidResponse与高级排程系统。\n\n工作经历\n\n睿成精密电子 — 高级供应链规划经理 (2021-至今)\n- 牵头华东工厂的S&OP流程重构，将预测准确度(forecast accuracy)从68%提升到目前水平\n- 负责管理约2.4亿RMB的成品与原材料库存\n- 简历开头声称『主导端到端规划』，但本段又写明需求预测由市场部统一下发、本人只负责供给侧执行\n- 推动安全库存模型优化，库存周转(inventory turns)由5.1次提升\n\n联宇消费电子 — 供应链规划主管 (2018-2021)\n- 管理三条SMT产线的物料齐套与排产\n- 简历此处写『全面负责供应商谈判与降本』，但在另一段又说采购价格谈判归集团采购中心，本人无定价权\n- 协调跨部门解决缺料问题，on-time delivery(OTD)从82%改善\n\n技能: Demand Planning, S&OP, Inventory Optimization, SAP IBP, Kinaxis, Power BI\n学历: 上海某高校 工业工程 本科",
+  "jd": "我们正在招聘一名高级供应链规划经理(Senior Supply Chain Planning Manager)，向亚太区供应链总监汇报，负责消费电子品类的端到端规划。This role owns the regional S&OP cadence, demand-supply balancing, and a finished-goods inventory pool of roughly 300M RMB. 你需要将forecast accuracy从当前的70%提升到85%以上，将inventory turns从5次提升到8次，同时把OTD维持在95%以上。岗位要求: 5年以上消费电子或制造业规划经验，精通Kinaxis或SAP IBP，有主导S&OP流程落地的实绩，能与采购、市场、工厂多方协同。你将接手一个预测准确度长期不达标、且与代工厂(EMS)有交期纠纷的盘子。需要有清晰的owner意识，能讲清楚哪些决策是你拍板的。",
+  "history": [
+    { "q": "请先介绍一下你在睿成精密目前负责的范围——团队规模、管理的库存金额、以及你owns哪些核心KPI。" },
+    { "q": "你简历里写『主导端到端规划』，但后面又说需求预测由市场部下发。到底forecast这块谁说了算？" },
+    { "q": "把forecast accuracy从68%提升那段展开讲讲，你具体做了哪个动作让它提升的？" },
+    { "q": "你提到推动了安全库存模型优化让inventory turns提升,从5.1次提升到了多少?用了什么方法?" },
+    { "q": "联宇那段你写『全面负责供应商谈判与降本』,可你又说没有定价权。这两个说法怎么调和?" },
+    { "q": "讲一个具体的缺料危机:你是怎么把OTD从82%拉起来的,你个人做了什么决策?" },
+    { "q": "如果让你来负责我们这边那个长期forecast不达标、还跟EMS有交期纠纷的盘子,你头三十天会先动哪里?" }
+  ],
+  "candidate_last_answer": "嗯,这个问题挺好的。不过在我回答之前,我想先反问您一下——咱们这边forecast不达标,到底是模型的问题,还是数据源、还是市场部需求质量的问题?另外跟EMS的纠纷是商务条款层面还是产能层面?because the first thirty days depends entirely on根因在哪。我做过类似的盘子,但每个公司的治理结构不一样。您能先讲讲现在这套S&OP的decision rights是怎么分的吗?如果连谁拍板都没理清,我进来先动哪里其实意义不大。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "forecast-ownership-contradiction", "forecast-accuracy-method", "inventory-turns-method", "negotiation-authority-contradiction", "otd-recovery-action"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-planning", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 您能先讲讲现在这套S&OP的decision rights是怎么分的吗",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: force the candidate to stop reversing the question and commit to a concrete first-30-days action sequence he personally would own, naming which decision he would make first even under ambiguity about root cause"
+    ]
+  }
+}

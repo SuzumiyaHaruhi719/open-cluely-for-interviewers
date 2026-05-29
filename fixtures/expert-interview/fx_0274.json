@@ -1,0 +1,38 @@
+{
+  "id": "fx_0274",
+  "tags": {
+    "industry": "data",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Senior Data Engineer / Analytics Engineer\n\nSkills: Python, SQL, Spark, PySpark, Scala, Airflow, dbt, Kafka, Flink, Snowflake, BigQuery, Redshift, Databricks, Delta Lake, Iceberg, Hudi, Kinesis, Kubernetes, Docker, Terraform, AWS, GCP, Azure, Looker, Tableau, Power BI, Great Expectations, Soda, Monte Carlo, Fivetran, Stitch, Debezium, CDC, dimensional modeling, star schema, data vault, medallion architecture, lakehouse, streaming, batch, ML feature stores, Feast, MLflow, vector databases, real-time analytics.\n\nExperience\n\nHelioStack Analytics — Senior Data Engineer (2021–present)\n- Built and owned core data platform components serving analytics and ML teams\n- Migrated batch pipelines toward a streaming-first architecture using Kafka and Flink\n- Implemented data quality tooling and lineage across the warehouse\n- Partnered with data science on feature pipelines and serving\n\nQuantBridge — Data Engineer (2018–2021)\n- Developed ETL/ELT pipelines feeding the analytics warehouse\n- Optimized Spark jobs for cost and runtime\n- Supported BI and reporting layer\n\nEducation: BSc Computer Science\nCertifications: AWS Certified Data Analytics, Databricks Lakehouse Fundamentals",
+  "jd": "We're hiring a Senior Data Engineer to own our streaming ingestion platform end-to-end. You will be the technical lead for migrating our highest-volume event pipelines (currently ~4 billion events/day) from nightly batch to near-real-time, and you will own the SLAs that the analytics and ML teams depend on. Responsibilities: design and operate Kafka/Flink ingestion, define and enforce data-quality contracts, drive down both pipeline latency (currently p95 of 6 hours, target under 5 minutes) and platform cost. You'll be expected to articulate concrete engineering decisions — why a particular framework, what specifically broke and how you fixed it, what the latency and cost numbers were before and after. We value depth over breadth: we'd rather you can go deep on one streaming migration you actually led than list twenty tools. Strong SQL and distributed-systems fundamentals required.",
+  "history": [
+    { "q": "Your resume lists a streaming-first migration with Kafka and Flink at HelioStack. Walk me through that one migration — what the pipeline was, why you moved it off batch, and what specifically you built." }
+  ],
+  "candidate_last_answer": "Right, yeah, so — okay. [pause] Sorry, let me just collect my thoughts for a second. ... Okay. So the streaming migration. There were actually a lot of moving parts and honestly it touched so many systems — like we had Kafka, and Flink, and there was the whole Snowflake side, and dbt, and at some point we were also looking at Iceberg versus Delta, and the data quality stuff with Great Expectations was kind of happening in parallel, and... you know how it is, everything's connected. Let me back up. The pipeline — it was one of the event pipelines, a high-volume one. We moved it off batch because batch was, you know, slow, and stakeholders were complaining about freshness. And I was involved in a lot of that. We used Flink for the streaming part. There was a lot of tuning. Sorry, I'm rambling — what specifically did you want me to focus on, the architecture or the outcome?",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 3
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We used Flink for the streaming part. There was a lot of tuning.",
+      "must-be-question-type: teach-back",
+      "expected-yield: force the candidate to stop listing tools and explain the actual mechanism — what the Flink job did, what the specific tuning was (e.g. windowing, state backend, checkpointing, parallelism), and which part he personally built versus the team"
+    ]
+  }
+}

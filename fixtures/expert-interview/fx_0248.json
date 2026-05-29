@@ -1,0 +1,49 @@
+{
+  "id": "fx_0248",
+  "tags": {
+    "industry": "operations",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "Jordan Avery\nOperations Associate | Fulfillment & Process Coordination\nColumbus, OH | jordan.avery.ops@example.com | open to relocation\n\nPROFILE\nDetail-oriented operations associate with two years of hands-on experience in a mid-size e-commerce fulfillment center. I started on the packing line, moved into inbound receiving, and for the last eleven months have worked as a floor coordinator supporting a shift of roughly forty associates. My day-to-day is a mix of labor planning, exception handling, and small continuous-improvement projects. I am comfortable in a fast warehouse environment, I like solving the messy little problems that slow a line down, and I am studying for my green belt on my own time. I want my next role to give me more ownership over a process end to end rather than just executing someone else's plan.\n\nWHAT I ACTUALLY DO\nOn a normal day I arrive thirty minutes before the shift to read the prior shift's handoff notes, check the open-order backlog in our WMS, and walk the floor to see which zones are short-staffed. I run the morning standup for my zone, assign associates to stations based on the day's order mix, and watch the units-per-hour board through the shift. When a station falls behind I either re-balance labor or jump in myself. I log every line stoppage longer than ten minutes and the reason code, and I roll those reasons up into a weekly note for my supervisor. I am the person other associates come to when a scan won't go through, a tote is mislabeled, or a carrier pickup is running late, so a lot of my job is unblocking people quickly so the line keeps moving.\n\nEXPERIENCE\nMeridian Fulfillment Co. — Floor Coordinator, Outbound (2024-present)\n- Coordinate a single-shift outbound zone of about forty associates across pick, pack, and ship stations.\n- Own the morning labor assignment and re-balance stations through the day as the order profile shifts between small parcel and oversize.\n- Maintain the line-stoppage log and the weekly reason-code rollup that my supervisor uses in the ops review.\n- Ran a small project to relabel and reorganize the packing-material staging area so packers stopped walking to the far wall for boxes; this was my first real improvement project and the one I usually talk about in interviews.\n- Trained six new hires on the pack station during a peak-season ramp, using the standard work document plus a one-page cheat sheet I drafted.\n- Cover the receiving desk one day a week when the inbound coordinator is off, which means checking in trailers, matching ASNs to POs, and flagging short or damaged shipments.\n\nMeridian Fulfillment Co. — Fulfillment Associate (2023-2024)\n- Started on the pack line, then cross-trained into inbound receiving and put-away.\n- Consistently hit or beat the station rate and was asked to help onboard seasonal associates during the winter peak.\n- Volunteered for the safety committee and helped run the monthly walk-through that checks for blocked fire lanes and damaged racking.\n\nGreenline Grocery — Overnight Stock Clerk (2022-2023)\n- Stocked and faced grocery aisles overnight, broke down pallets, and managed back-room overstock.\n- Learned the basics of inventory rotation and how a planogram drives where product goes.\n\nA PROJECT I AM PROUD OF\nThe packing-material staging fix is the thing I point to most. Packers were walking to a single staging spot on the far wall every time they ran out of a box size, which added a lot of little trips over a shift. I noticed the pattern from watching the floor and from the stoppage log, suggested we put small staging carts at each pack pod, and worked with my supervisor to trial it on two pods first. After we saw it helped we rolled it to all the pods on my shift. I do not have a clean before-and-after number I fully trust, but packers told me it felt faster and we had fewer mid-pack runs for boxes. I learned a lot about how to get buy-in for even a small change and how to trial something before rolling it out everywhere.\n\nSKILLS\n- Warehouse management systems (Manhattan WMS, basic transactions and exception handling)\n- Labor balancing and shift standups\n- Reason-code logging and simple Excel rollups (pivot tables, basic charts)\n- 5S and standard work basics; studying for Lean Six Sigma green belt\n- Forklift certified (sit-down and reach)\n- Comfortable training and onboarding new associates\n\nEDUCATION & CERTIFICATIONS\n- Associate of Applied Science, Logistics & Supply Chain Management, Columbus State Community College (2022)\n- OSHA 10 (warehousing)\n- Forklift operator certification, renewed 2024\n\nWHAT I AM LOOKING FOR\nI want to move from coordinating a single zone to owning a process or a metric across a shift, ideally somewhere I can use the continuous-improvement side more. I learn fast, I am steady under peak-season pressure, and I would rather ask a question early than guess and create rework downstream.",
+  "jd": "Meridian's regional fulfillment network is hiring an Operations Specialist to own throughput and exception management for a single outbound shift. You will run daily labor planning for a 45-60 person zone, monitor units-per-hour against targets, and lead small continuous-improvement projects from observation through measured rollout. We expect you to quantify the impact of changes you make: baseline, intervention, and after-state with real numbers (UPH, cost-per-unit, or labor hours saved). You will own the shift's line-stoppage analysis and present a weekly summary to the site operations manager. The ideal candidate has 1-3 years in a warehouse or fulfillment setting, is comfortable in a WMS, and can show at least one improvement they drove and measured. This is a hands-on role; you will spend most of the day on the floor. Forklift certification and weekend-coverage flexibility required. Growth path is toward shift supervisor within 12-18 months.",
+  "history": [
+    { "q": "Thanks for coming in. Start by walking me through your current role at Meridian and the size of the zone you coordinate." },
+    { "q": "How do you decide each morning where to put your forty associates? What inputs do you use?" },
+    { "q": "Tell me about the line-stoppage log. What do you capture and what do you do with it?" },
+    { "q": "You mentioned a weekly reason-code rollup. Give me an example of a pattern you found in it and what changed because of it." },
+    { "q": "Let's talk about an improvement you drove. Pick one and walk me through it." },
+    { "q": "What made you notice the packing-material problem in the first place?" },
+    { "q": "Why did you trial it on two pods first instead of rolling it out everywhere at once?" },
+    { "q": "Who actually approved the change and who did the physical reorganization — you, your supervisor, or the team?" },
+    { "q": "How long did the whole thing take, from when you noticed it to when it was on every pod?" },
+    { "q": "Here's the one I really care about: how did you measure whether it worked? Give me the before and after numbers." },
+    { "q": "If you don't have a clean number, what would you have measured if you could do it again?" },
+    { "q": "Walk me through exactly how you'd set up that measurement — what data would you pull and from where?" }
+  ],
+  "candidate_last_answer": "So the situation was packers kept running out of boxes and the task was to cut down those trips, and what I did was set up staging carts at each pod after we trialed it on two of them first. Honestly the part I'm weakest on is the result — I do not have a clean before-and-after number I fully trust, packers just told me it felt faster and we had fewer mid-pack runs. If I did it again I'd want to track it properly but in the moment we just kind of knew it was better.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "labor-planning-inputs", "stoppage-log", "reason-code-pattern", "improvement-project-overview", "problem-detection", "staged-rollout-reasoning", "action-ownership", "project-timeline", "measurement-of-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I do not have a clean before-and-after number I fully trust",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete measurement plan — which WMS field or timer the candidate would pull (e.g. trips-for-boxes per hour or UPH at the pack pods), the baseline window, and the post-change window — proving they can quantify an improvement even retroactively"
+    ]
+  }
+}

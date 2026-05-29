@@ -1,0 +1,37 @@
+{
+  "id": "fx_0261",
+  "tags": {
+    "industry": "research",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "陈维 (Wei Chen) — Director of Research / 研究总监\nShanghai | wei.chen@example.com\n\n核心标签 / KEYWORDS\nMachine Learning · Deep Learning · LLM · RAG · RLHF · Computer Vision · NLP · Transformer · Diffusion · Multimodal · MLOps · Distributed Training · CUDA · PyTorch · JAX · Kubernetes · A/B Testing · Causal Inference · Bayesian · Experiment Design · Research Strategy · Team Leadership · Patents · Top-tier Publications (NeurIPS/ICML/CVPR) · Tech Transfer · Grant Funding · IRB · Reproducibility\n\n经历 / EXPERIENCE\nDirector of Research — 智维科技 (Zhiwei Tech), 2019–present\n带领 28 人研究团队，覆盖 foundation models、multimodal retrieval、on-device inference 等方向。Owner of research roadmap、hiring、和 cross-team tech transfer。Keywords: LLM pretraining, RAG, distillation, quantization, eval harness, latency SLO.\n\nPrincipal Research Scientist — 鹏图实验室 (Pengtu Lab), 2015–2019\nLed CV + NLP applied research。Keywords: detection, segmentation, OCR, sequence modeling, knowledge distillation, model compression, edge deployment.\n\nResearch Scientist — Northstar AI, 2012–2015\nKeywords: recommender systems, embeddings, ranking, large-scale training.\n\n教育 / EDUCATION\nPh.D. Computer Science, 清华大学 (Tsinghua)\nB.Eng. EE, 上海交通大学 (SJTU)\n\n其它 / OTHER\nPublications: 30+ · Patents: 11 · Citations: 6k+ · Reviewer: NeurIPS, ICML, ACL",
+  "jd": "智维科技 (Zhiwei Tech) is hiring a Director of Research to lead our applied-foundation-models group (~30 researchers and research engineers). This leader owns the research roadmap for retrieval-augmented generation, on-device inference, and evaluation infrastructure, and is accountable for moving lab results into shipped product within realistic latency and cost budgets. We want a director who has personally driven a hard research bet to a measurable product outcome — not just published. You will partner with product, infra, and a central eval team; set hiring bars; and defend resource allocation to the executive team. Strong candidates can speak precisely to one project they led end-to-end: the hypothesis, the experimental design, the metric that mattered, and the business or product result. 中英文工作环境，需要能在 research rigor 和 shipping pressure 之间做出取舍。",
+  "history": [
+    { "q": "你的简历关键词很多。挑一个你亲自主导、从 research 到 ship 的项目，用 situation / task / action / result 讲清楚你具体做了什么、结果是什么。" }
+  ],
+  "candidate_last_answer": "好，我讲 on-device RAG 这个项目。Situation:我们的旗舰 App 里有个智能助手,之前走云端 LLM,P95 latency 1.8s,而且离线完全不可用,用户流失明显,客服工单里 23% 跟『助手太慢/没网就废』有关。Task:CEO 给的目标是把核心问答做成 on-device,P95 压到 400ms 以内,answer accuracy 不能跌超过 2 个点,半年内上线。Action:我做了三件具体的事。第一,我拍板放弃 7B 直接上端,改成 1.3B 蒸馏模型 + 端侧轻量 retriever 的方案,自己写了第一版 distillation 的 loss 设计和 teacher 数据筛选规则。第二,我重组团队成两个 squad,一个做 quantization(最终 INT4 + per-channel),一个做 retriever 索引压缩,我每周亲自 review eval harness 的指标口径,定了用人工标注的 500 条 golden set 做 gate。第三,跟 infra 谈下来一个 on-device 的 A/B 框架,灰度 5% 起。Result:上线后 P95 做到 370ms,离线可用率从 0 到 98%,answer accuracy 只掉了 1.4 个点(在我们设的容忍区内),相关客服工单环比降了 41%,这个方案后来复制到另外两条产品线。我个人最大的判断就是早期顶住压力没硬上大模型。",
+  "session_state": {
+    "drilled_topics": ["research-to-ship-end-to-end-project"],
+    "current_competency_target": "research-to-product-translation",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "research-to-product-translation",
+    "missing_evidence": [
+      { "competency": "research-to-product-translation", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 改成 1.3B 蒸馏模型 + 端侧轻量 retriever 的方案",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the concrete accuracy/latency/cost tradeoff curve behind choosing a 1.3B distilled model over alternatives — what specific accuracy degradation he accepted at which model sizes, why INT4 over INT8, and what he would have shipped if accuracy had dropped past the 2-point gate"
+    ]
+  }
+}

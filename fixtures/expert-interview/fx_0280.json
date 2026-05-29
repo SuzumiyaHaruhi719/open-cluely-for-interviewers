@@ -1,0 +1,43 @@
+{
+  "id": "fx_0280",
+  "tags": {
+    "industry": "design",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "高级产品设计师 (Senior Product Designer)\n\n技能关键词: 用户体验设计、交互设计、视觉设计、用户研究、可用性测试、信息架构、设计系统、Design System、组件库、Design Token、Figma、Sketch、Principle、ProtoPie、Framer、原型设计、设计规范、A/B测试、数据驱动设计、可访问性、无障碍设计、暗黑模式、响应式设计、跨端设计、B端设计、C端设计、增长设计、设计走查、设计度量、design ops、用户旅程地图、服务设计、情绪板、设计冲刺、敏捷设计。\n\n工作经历\n\n云栖科技 — 高级产品设计师 (2020年至今)\n- 负责企业级SaaS产品的端到端体验设计与设计系统建设\n- 主导一次核心工作流的重设计,显著提升了任务完成效率\n- 牵头搭建并维护跨产品线的统一设计系统与组件库\n- 推动设计与研发的协作流程优化,落地design token体系\n\n蓝鲸互娱 — 产品设计师 (2017年至2020年)\n- 负责一款C端社区产品的交互与视觉设计\n- 参与多个版本的迭代与可用性测试\n\n教育背景: 视觉传达设计 本科\n作品集: 提供B端工作流重设计、设计系统、C端社区改版三个完整案例",
+  "jd": "我们正在为一款企业级SaaS产品招聘一名高级产品设计师(Senior Product Designer),你将负责复杂工作流的端到端体验设计,并主导设计系统的演进。岗位职责: 独立负责核心模块的体验设计,从问题定义、方案探索到落地验证全程owner;牵头设计系统与组件库的建设和治理;用数据和用户证据驱动设计决策。岗位要求: 五年以上产品设计经验,有主导复杂B端工作流重设计的实绩,精通Figma与设计系统搭建。我们重点考察候选人对设计决策的owner意识与严谨度——在面试中我们会请你完整讲一个你主导的设计项目,从你发现的问题、你做的关键设计决策、到你如何用数据验证效果,我们想听到的是具体的决策与权衡,而不是堆砌技能词。",
+  "history": [
+    { "q": "先介绍一下你在云栖目前负责的范围,以及你主导的那次核心工作流重设计要解决什么问题。" },
+    { "q": "你是怎么定位到这个工作流的核心体验问题的?用了什么方法?" },
+    { "q": "重设计里你做的最关键的一个设计决策是什么?当时还考虑过哪些方案?" },
+    { "q": "你说显著提升了任务完成效率,具体是用什么指标、提升了多少?" },
+    { "q": "设计系统那块,你牵头搭建,落地过程中最大的阻力是什么?你怎么推动的?" },
+    { "q": "design token体系落地后,对设计研发协作具体带来了什么可衡量的改变?" },
+    { "q": "再回到那次工作流重设计——如果让你重来一次,有没有哪个决策你会改?" }
+  ],
+  "candidate_last_answer": "如果重来,我会更早引入埋点验证,这点我后面讲。先说这个案子的完整逻辑: 当时的情况(Situation)是,我们这款SaaS的核心审批工作流投诉率很高,客户成功团队每周都收到一堆吐槽,但具体卡在哪没人说得清。我的任务(Task)是: 作为这个模块的设计owner,定位问题并重设计,目标是把单据处理的平均耗时和错误率降下来。我做的事(Action)是: 我先拉了三十个用户的session录屏做行为分析,又对八个高频用户做了可用性测试,定位到核心问题是『多级审批的状态不可见』导致用户反复确认;关键决策是我放弃了团队最初想做的『大改信息架构』方案,改为成本更低的『引入可视化审批流时间线+状态徽标』,因为数据表明80%的困惑集中在状态感知而非结构。结果(Result)是: 上线后单据平均处理时长从约四分钟降到两分半,误操作回退率下降了一半多,这个时间线组件后来还沉淀进了设计系统被三条产品线复用。回到你的问题,我会改的是: 当时我是上线后才补的埋点,应该在设计阶段就和研发约定好度量口径,这样能更早拿到验证、少走一轮弯路。",
+  "session_state": {
+    "drilled_topics": ["current-scope-workflow-problem", "problem-diagnosis-method", "key-design-decision", "efficiency-metric", "design-system-resistance", "design-token-impact"],
+    "current_competency_target": "design-judgement",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "design-judgement",
+    "missing_evidence": [
+      { "competency": "design-judgement", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 当时我是上线后才补的埋点,应该在设计阶段就和研发约定好度量口径",
+      "must-be-question-type: counterfactual",
+      "expected-yield: probe how the post-hoc instrumentation affected the validity of the 4min→2.5min claim — what baseline she actually had before the change, and how she would have set the metric contract up front to know the redesign caused the improvement rather than confounds"
+    ]
+  }
+}

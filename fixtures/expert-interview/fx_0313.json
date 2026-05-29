@@ -1,0 +1,56 @@
+{
+  "id": "fx_0313",
+  "tags": {
+    "industry": "customer-support",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "STAFF CUSTOMER SUPPORT OPERATIONS LEAD\n\nProfessional Summary\nCustomer support operations professional with nine years of experience scaling support functions across consumer and B2B software companies. Specializes in support tooling, workflow design, quality assurance, and the operational metrics that keep a support organization healthy. Hands-on operator who has worked across tier-one frontline support, escalations, and the behind-the-scenes operations that make a queue run: routing rules, macros, SLA configuration, staffing models, and reporting. Passionate about reducing customer effort and building systems that let agents do their best work. Comfortable owning cross-functional projects that touch product, engineering, and workforce planning.\n\nProfessional Experience\n\nBrightline Software — Staff Support Operations Lead (2021 to present)\nBrightline is a B2B project-management SaaS company with a global customer base. I lead support operations for a frontline organization of roughly ninety agents spread across two regions, working closely with team managers, the workforce-planning function, and the product team.\n- Own the configuration and administration of the support platform, including ticket routing, SLA policies, automations, and the knowledge base.\n- Lead the quality-assurance program, defining the scorecard, calibrating reviewers, and reporting on quality trends to support leadership.\n- Partner with workforce planning on staffing models, shrinkage assumptions, and schedule adherence to keep service levels within target.\n- Drove a multi-quarter initiative to reduce repeat contacts and improve first-contact resolution, working with product to close the loop on the top drivers of avoidable tickets.\n- Built and maintain the weekly and monthly operating reviews, presenting trends in volume, handle time, backlog, CSAT, and SLA attainment to the director of support.\n- Coordinated the migration from a legacy ticketing tool to a modern support platform, including data migration, macro rebuilds, and agent training.\n\nHarbor Apps — Support Team Manager (2018 to 2021)\nHarbor was a consumer mobile-app company with a high-volume, fast-moving support queue. I managed a frontline team and gradually took on more operations responsibility.\n- Managed a team of frontline support agents, owning coaching, performance reviews, and day-to-day queue health.\n- Designed and iterated on macros and canned responses to improve consistency and speed.\n- Helped stand up the first formal QA process and CSAT survey program for the support team.\n- Acted as the escalation point for complex or sensitive customer issues, partnering with engineering on bug triage.\n\nNimbus Retail — Senior Support Specialist (2015 to 2018)\nNimbus was an e-commerce company with seasonal volume spikes around major shopping events.\n- Handled tier-two escalations across email, chat, and phone channels.\n- Built knowledge-base content and trained new hires during peak-season ramp.\n- Recognized repeatedly for customer satisfaction and resolution quality.\n\nEarlier Experience\nBegan my career on a frontline retail support desk, where I learned the fundamentals of de-escalation, active listening, and the discipline of closing a ticket completely the first time.\n\nEducation\nBachelor of Science in business administration with a concentration in operations management. I have completed professional certifications in support operations and workforce management, and I regularly participate in support-leadership communities and peer roundtables.\n\nSkills and Tools\n- Support platform administration: routing, SLA policy design, automations, knowledge-base management.\n- Quality assurance: scorecard design, reviewer calibration, quality trend analysis.\n- Workforce planning: staffing models, shrinkage and occupancy, schedule adherence.\n- Operating-review cadence: volume, handle time, backlog, CSAT, FCR, and SLA reporting.\n- Cross-functional project leadership: tooling migrations, contact-deflection initiatives, product feedback loops.\n- Channels: email, chat, phone, and in-app support.\n- Reporting and analytics: building dashboards for queue health, defining and instrumenting operational metrics, and translating trends into staffing and process decisions.\n- Process design: intake and triage workflows, escalation paths, severity definitions, and documentation standards that keep handoffs clean.\n- Vendor and tooling evaluation: scoping requirements, running proofs of concept, and managing implementation and change management for support tools.\n\nSelected Projects\n- Contact-deflection program: partnered with product and the knowledge team to identify the highest-volume avoidable contact reasons and to close the loop through self-service content and in-product fixes, with the goal of bending the volume curve away from headcount growth.\n- Quality-assurance relaunch: rebuilt the scorecard around customer-outcome criteria rather than checklist compliance, recalibrated reviewers to improve inter-rater agreement, and tied QA findings back into coaching plans for team managers.\n- Workforce-model refresh: reworked the staffing model to better reflect channel mix and intraday volume patterns, improving the match between scheduled capacity and actual demand during peak windows.\n- Tooling migration: coordinated the cutover from a legacy ticketing system to a modern support platform, including field mapping, macro and automation rebuilds, historical-data migration, and a phased agent-training and hypercare plan to protect service levels during the transition.\n\nPhilosophy\nGreat support operations are mostly invisible. When the routing is right, the macros are current, the staffing matches the curve, and the quality bar is clear, agents can focus entirely on the customer in front of them. My job is to build and maintain that quiet machinery, to watch the numbers closely enough to see problems before customers do, and to keep closing the loop with product so that the best ticket is the one the customer never has to open. I care deeply about reducing customer effort and about giving agents the tools and clarity they need to succeed, and I measure my own success by the health of the queue and the satisfaction of both customers and the team.",
+  "jd": "We are hiring a Staff Customer Support Operations Lead for a high-growth B2B SaaS company. Reporting to the Director of Support, you will own support tooling, the QA program, workforce-planning partnership, and contact-deflection initiatives for a global frontline team. This is a deeply operational, metrics-driven role. We expect you to be fluent in your own numbers — to be able to state, without hedging, what your first-contact resolution rate was, what moved it, what your SLA attainment looked like, and exactly what you personally did to improve a specific metric. Vague answers about 'partnering' and 'driving initiatives' will not survive this interview; we want the specific change you made, the specific number before and after, and the timeframe. You will run operating reviews, own platform configuration, and lead cross-functional projects with product and engineering. Strong candidates bring crisp, quantified examples of operational improvements they owned end to end.",
+  "history": [
+    { "q": "Give me an overview of your current scope at Brightline — team size, what you own, who you report to." },
+    { "q": "You led a multi-quarter initiative to improve first-contact resolution. What was the FCR before you started?" },
+    { "q": "What did it reach by the end, and over what period?" },
+    { "q": "What was the single biggest driver of repeat contacts you found?" },
+    { "q": "What specific change did you make to address that driver?" },
+    { "q": "Walk me through how you partnered with product to close that loop." },
+    { "q": "What was your SLA attainment when you took over operations?" },
+    { "q": "How did you change the routing rules, concretely?" },
+    { "q": "Tell me about the tooling migration — what was the hardest part?" },
+    { "q": "How did you measure whether the QA scorecard actually improved quality?" },
+    { "q": "What's your current CSAT, and how has it trended over the last year?" },
+    { "q": "Describe a staffing decision you made based on the workforce model." },
+    { "q": "What did you personally build versus what the team built in that FCR initiative?" },
+    { "q": "Give me one number you're most proud of moving, and by how much." },
+    { "q": "How did you isolate your change from everything else happening that quarter?" },
+    { "q": "What would the data show if I pulled the FCR report for that period?" },
+    { "q": "Let's get specific. You keep saying you 'drove' and 'partnered' — I need one concrete metric." },
+    { "q": "Last try: name the one metric you personally moved on the FCR initiative, the before number, the after number, and the timeframe. Just those four things." }
+  ],
+  "candidate_last_answer": "Yeah, I mean, the FCR initiative was really a team effort and it was about driving the right outcomes for customers. We looked at the drivers, we partnered with product, and we moved the needle in a meaningful way over the course of the project. I don't have the exact figures in front of me, but it was a real improvement, and the team felt good about it. It's hard to attribute one number to one person because it's all interconnected, but the trend was definitely in the right direction.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "fcr-before", "fcr-after", "repeat-driver", "specific-change", "product-loop", "sla-baseline", "routing-change", "tooling-migration", "qa-measurement", "csat-trend", "staffing-decision", "personal-vs-team", "proudest-number", "isolation-of-change", "report-evidence", "specificity-push"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we moved the needle in a meaningful way",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single hard number for the FCR initiative — the before value, the after value, and the timeframe — that the candidate has so far avoided giving despite repeated direct asks"
+    ]
+  }
+}

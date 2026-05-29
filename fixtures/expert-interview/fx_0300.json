@@ -1,0 +1,43 @@
+{
+  "id": "fx_0300",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Operations Intern Candidate | B.A. Supply Chain Management, Michigan State (expected 2026)\n\nObjective: Seeking a fall operations internship to apply process-improvement and logistics coursework.\n\nExperience\nWarehouse Operations Intern, FreshRoute Grocery Distribution — Summer 2025\n- Supported the inbound receiving team during a peak season\n- Helped redesign the dock-scheduling process to reduce trailer wait times\n- Tracked carrier on-time performance and flagged recurring late carriers\n- Assisted in a 5S cleanup of the returns staging area\n\nShift Lead (part-time), Campus Dining Services — 2023–2024\n- Coordinated closing shifts and opening prep for a high-traffic dining hall\n- Trained new student workers on food-safety and station procedures\n\nProjects\n- Course capstone: simulated a distribution-center layout change to cut pick travel distance\n\nSkills: Excel, basic SQL, process mapping, Lean/5S fundamentals, Tableau (learning)",
+  "jd": "FreshRoute is hiring an Operations Intern to support continuous-improvement projects in our distribution centers. You will map current-state processes, collect and clean operational data, quantify the impact of proposed changes (wait times, throughput, labor hours), and present a recommendation to the DC operations manager at the end of the term. We expect interns to put numbers on their work: a before/after on the metric, the size of the change, and the time period. We are evaluating for structured problem-solving, comfort with operational data, and the ability to own and defend a recommendation. The strongest candidates can quantify impact even when the data is messy, and they answer the question asked rather than redirecting it.",
+  "history": [
+    { "q": "Tell me about the dock-scheduling redesign you supported at FreshRoute." },
+    { "q": "What was the trailer wait time before the change?" },
+    { "q": "And after the change — what did wait time look like?" },
+    { "q": "How did you measure wait time? Where did the data come from?" },
+    { "q": "What was your specific role in the redesign versus the full-time team?" },
+    { "q": "On carrier on-time performance — roughly what percentage of carriers were arriving late?" },
+    { "q": "Give me the numbers on the dock project: before, after, and over what time window. As precise as you can." }
+  ],
+  "candidate_last_answer": "That's a fair question. Before I answer — when you say 'the numbers,' are you looking for the average wait time specifically, or more the percentage improvement? And over what window do you usually expect an intern project to show impact? I want to make sure I'm giving you what you're actually after, because I could frame it a couple different ways depending on what's most useful to you.",
+  "session_state": {
+    "drilled_topics": ["dock-redesign-overview", "wait-time-before", "wait-time-after", "measurement-source", "personal-role", "carrier-late-rate", "quantified-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: are you looking for the average wait time specifically, or more the percentage improvement",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete before/after figure for trailer wait time (any reasonable unit) and the time window, given to the candidate as 'pick whichever you have and give me the actual number' — forcing a real metric instead of a reframing question"
+    ]
+  }
+}

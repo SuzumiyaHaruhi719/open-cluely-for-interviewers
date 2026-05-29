@@ -1,0 +1,39 @@
+{
+  "id": "fx_0257",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Marcus Delacroix\nVP, Global Supply Chain & Operations\n\nExecutive Profile\nSeasoned supply chain executive with two decades leading global manufacturing, procurement, and distribution organizations across consumer electronics and industrial sectors. Repeatedly brought in to transform underperforming networks, lead through disruption, and build supply chains that are both resilient and efficient. Board-facing operator comfortable owning a large P&L and partnering across the C-suite.\n\nExperience\nVertex Industrial Group — VP, Global Supply Chain & Operations (2020-present)\n- Lead end-to-end supply chain across manufacturing, procurement, planning, and logistics for a global portfolio.\n- Own the supply chain P&L and the network strategy, including footprint and make-vs-buy decisions.\n- Led the organization's response through a multi-year period of severe supply disruption and demand volatility.\n- Drove a major cost and resilience transformation across sourcing and distribution.\n- Built and led a senior operations leadership team spanning multiple regions.\n\nApex Devices — Senior Director, Global Operations (2014-2020)\n- Ran global manufacturing operations and supplier management for a consumer-electronics line.\n- Led footprint consolidation and a supplier-rationalization program.\n\nMeridian Manufacturing — Director, Procurement (2009-2014)\n- Led direct-materials sourcing and strategic supplier negotiations.\n\nEducation\n- MBA, Operations\n- B.S., Industrial Engineering\n\nLeadership Approach\nI build resilient networks, develop strong operating leaders, and lead calmly through disruption. I am proud of the teams I have built and the trust I have earned with boards and partners.",
+  "jd": "Helios Robotics seeks a VP of Global Supply Chain to own our end-to-end network as we scale hardware production 4x over three years. Reporting to the COO, you will own the supply chain P&L, network and footprint strategy, supplier portfolio, and resilience. The board expects rigorous, auditable numbers: when you describe a transformation you led, we will ask for the baseline, the intervention, the dollar and percentage impact, the timeframe, and how the savings were verified by finance. We understand prior results may be confidential, but we expect candidates to characterize impact credibly and at a believable scale, and to be able to discuss method and approach even where exact figures are protected. Requirements: 15+ years in global supply chain leadership, demonstrated network transformation, and experience scaling hardware volume.",
+  "history": [
+    { "q": "You led a cost-and-resilience transformation at Vertex. At a high level, what did the program target and what levers did you pull?" },
+    { "q": "Give me the numbers — baseline cost, the impact you delivered, over what timeframe, and how finance verified it." }
+  ],
+  "candidate_last_answer": "Look, I'd love to, but most of this is under NDA so I can't share the actual figures or the client names — I have to be careful there. What I can tell you directionally is that it was transformational: we took out hundreds of millions in cost, basically cut the landed cost in half across the network, improved on-time delivery by something like 40 to 50 points, and I'd estimate we drove well north of a billion dollars in cumulative value over the program. Resilience went through the roof — we essentially eliminated stockouts. I can't get into how finance signed off given the confidentiality, but trust me, the numbers were enormous and the board was thrilled.",
+  "session_state": {
+    "drilled_topics": ["transformation-levers", "transformation-numbers"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "credibility-consistency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: cut the landed cost in half across the network",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a verifiable, properly-scoped figure behind the implausible 'half' claim — which cost base it was measured against (landed cost of which product lines, what baseline year), the percentage on a defined denominator, and the method finance used to confirm it, all describable without breaching NDA"
+    ]
+  }
+}

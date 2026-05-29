@@ -1,0 +1,44 @@
+{
+  "id": "fx_0268",
+  "tags": {
+    "industry": "healthcare",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "周一帆 — 初级临床数据专员\n成都 · zhou.yifan@example.com · 两年经验\n\n个人宣言\n业内罕见的复合型临床数据人才,精通从数据采集到洞察落地的全链路,被同事公认为团队里『最靠谱的数据担当』。曾以一己之力扭转多个濒临失败的项目,数据敏感度天赋异禀。\n\n经历\n临床数据专员 — 仁和医疗集团(三级医院数据中心),二〇二三至今\n- 独当一面地支撑全院的临床质量指标统计,堪称科室数据中枢。主导多项关键报表,精准度行业领先。\n- 凭借卓越的 SQL 与数据建模能力,屡次在领导面前力挽狂澜。\n\n数据分析实习 — 康桥健康科技,二〇二二至二〇二三\n- 实习期间即展现出远超资历的专业水准,被评为最佳实习生。\n\n技能\nSQL(顶尖水平)、Python、Excel 建模、临床质控指标、医院信息系统(HIS)取数、数据可视化。\n\n教育背景\n本科,卫生信息管理,四川大学。",
+  "jd": "仁和医疗集团 (Renhe Medical) 数据中心招聘一名初级临床数据专员,支持全院临床质量指标的统计与报表。你将在资深数据分析师的指导下,用 SQL 从医院信息系统(HIS)取数,核对并产出质控指标报表,并协助验证分析口径。我们看重候选人能否清楚、诚实地讲出自己具体做过什么、用什么方法保证数据准确、以及遇到口径分歧时怎么处理。岗位要求扎实的 SQL 基本功、严谨的数据校验习惯、和对医疗数据隐私(患者信息脱敏)的基本意识。我们不需要夸大其词,只需要可靠、可教、对自己产出负责的人。",
+  "history": [
+    { "q": "你简历里写『独当一面支撑全院临床质量指标』。先具体说说,你实际负责的是哪几张报表?" },
+    { "q": "挑一张你最熟的报表,讲讲它统计的是什么指标。" },
+    { "q": "这个指标的取数口径是谁定的?你是怎么理解和实现的?" },
+    { "q": "你用 SQL 取数时,怎么保证抓到的患者记录不重不漏?" },
+    { "q": "有没有遇到过你算出来的数和临床科室对不上的情况?" },
+    { "q": "那次对不上,最后定位到是什么原因?" },
+    { "q": "你平时怎么处理报表里涉及的患者隐私信息?" },
+    { "q": "如果资深分析师定的口径你觉得有问题,你会怎么做?" }
+  ],
+  "candidate_last_answer": "我主要负责三张报表,其中最熟的是『非计划再入院率』。它统计的是出院后三十天内因相关诊断非计划再次入院的患者占比。口径是数据中心的负责人定的,我的理解是:分母是统计周期内的出院患者数,分子是这些患者里三十天内非计划再入院的人数,要排除计划内的复诊和转院。SQL 上我用患者唯一住院号加出院时间做关联,去重时按住院号 + 入院时间取唯一,避免一次住院拆成多条记录被重复计。有一次我算出来的再入院率比临床科室的口径高,后来定位到是我没排除『计划性化疗再入院』这类标记,我补了排除条件后就对上了。患者信息我只取做统计必需的字段,身份证和姓名都不进我的查询结果,落地的报表只到科室和指标层级。如果我觉得口径有问题,我会先自己核对一遍数据和定义,再带着具体例子去找资深分析师确认,而不是擅自改。",
+  "session_state": {
+    "drilled_topics": ["report-scope", "metric-definition", "spec-ownership", "dedup-method", "data-mismatch-event", "mismatch-root-cause", "patient-privacy-handling", "disagreement-on-spec"],
+    "current_competency_target": "data-validation-rigor",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "data-validation-rigor",
+    "missing_evidence": [
+      { "competency": "data-validation-rigor", "evidence_type": "mechanism" },
+      { "competency": "data-validation-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 后来定位到是我没排除『计划性化疗再入院』这类标记",
+      "must-be-question-type: teach-back",
+      "expected-yield: how the candidate generally verifies an exclusion is complete and correct — what data field or flag marks a planned readmission, how she checked there were no other unflagged planned-readmit categories silently inflating the numerator, and how she now reconciles her output against the clinical team's before publishing"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fx_0315",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "HR BUSINESS PARTNER\n\nSummary\nMid-level HR Business Partner with seven years of experience supporting engineering and go-to-market organizations through hiring, performance management, and organizational change. Skilled in employee relations, performance calibration, and partnering with managers on tough people decisions.\n\nExperience\n\nVertex Robotics — HR Business Partner (2021 to present)\n- Supported a client group of approximately 350 employees across engineering and product.\n- Note: elsewhere in this resume the same client group is described as roughly 180 employees.\n- Led the annual performance calibration process for the engineering org, facilitating manager calibration sessions.\n- Personally designed and rolled out the company-wide performance review framework from scratch.\n- Note: a later bullet states the performance framework was 'inherited from the prior HRBP and lightly adjusted'.\n- Managed a reduction in force affecting roughly 25 roles, partnering with legal and leadership on selection and communications.\n- Coached managers through complex employee-relations cases, including harassment investigations and performance exits.\n\nClarion Media — Senior HR Coordinator (2018 to 2021)\n- Supported recruiting operations and onboarding for a growing media company.\n- Start date listed elsewhere as 2017; the year of joining is inconsistent across the document.\n- Ran new-hire orientation and maintained HRIS records.\n\nEducation\nBachelor's degree in human resource management. SHRM-CP certification.\n\nSkills\nEmployee relations, performance calibration, organizational design, HRIS administration, workforce planning, manager coaching.",
+  "jd": "We are seeking an HR Business Partner to support a fast-scaling engineering and product organization. Reporting to the Head of People, you will partner with managers on performance, employee relations, and organizational change. The role requires someone who can speak precisely about their own track record — the actual size of the org you supported, what you personally built versus what you inherited, and how you handled sensitive cases. We value candidates who respond to tough, probing questions with composure and candor rather than defensiveness. You will own performance-calibration cycles, advise on reductions in force, and handle employee-relations investigations with discretion and consistency. Strong candidates can reconcile any apparent inconsistencies in their experience calmly and own the specifics of decisions they were part of.",
+  "history": [
+    { "q": "Tell me about your current scope at Vertex — how large is the client group you support?" },
+    { "q": "Your resume lists the same client group as both 350 and 180 employees. Which is it, and what accounts for the difference?" },
+    { "q": "On the performance framework — did you build it from scratch, or was it inherited from the prior HRBP? Your resume says both." },
+    { "q": "Walk me through your specific role in the reduction in force that affected about 25 roles." },
+    { "q": "Let's slow down. I just want to understand: on the performance framework, what exactly did you create yourself versus adjust from what already existed?" }
+  ],
+  "candidate_last_answer": "Honestly, I'm not sure why we keep circling back to this — it feels like you're trying to catch me out on a wording thing rather than actually understand my work. Resumes get edited, bullets get reused, that's just how it goes, and frankly any HR person knows that. I built the framework. I also adjusted what was there. Those aren't contradictory unless you're determined to make them sound that way. If you want me to apologize for a resume that isn't worded to your exact liking, that's not really a fair use of this interview, is it?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "org-size-contradiction", "framework-origin-contradiction", "rif-role", "framework-specifics"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I built the framework. I also adjusted what was there.",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete decomposition of which specific components of the performance framework she authored herself versus inherited and modified, getting past the defensiveness to actual artifacts and decisions she owned"
+    ]
+  }
+}

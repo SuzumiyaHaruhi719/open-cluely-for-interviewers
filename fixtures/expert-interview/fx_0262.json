@@ -1,0 +1,42 @@
+{
+  "id": "fx_0262",
+  "tags": {
+    "industry": "product-management",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "林浩然 (Haoran Lin) — Staff Product Manager / 资深产品经理\n深圳 · haoran.lin@example.com · 9 年产品经验\n\n个人简介\n我是一名专注于平台与商业化方向的资深产品经理,过去九年一直在大型互联网与跨境电商公司做核心产品。我的工作横跨支付、履约、商家平台与增长四个领域,既做过从零到一的新业务,也做过日活过亿的成熟产品的精细化运营。我习惯用数据驱动决策,擅长在多团队、多目标冲突的复杂环境里把模糊的商业问题拆解成清晰的产品路线图,并推动跨职能团队按节奏交付。我对支付清结算、风控、商家激励体系、以及跨境合规有比较深的理解,也带过六到八人的产品小组。下面是我过去几段主要的经历,我会尽量把背景、我负责的范围和最终结果讲清楚,方便面试官了解我的实际贡献和判断方式,以及我在不同阶段所扮演的角色和承担的责任,还有我从每一段经历里总结出来的方法论。\n\n工作经历\n\n资深产品经理(Staff PM)— 远帆跨境 (Yuanfan Cross-border), 2021 至今\n负责商家侧的结算与资金平台。我们的目标是把商家从『卖货后要等很久才拿到钱』这个痛点里解放出来,同时控制平台的资金风险。这段时间我主导了几个比较重要的项目:智能预付款引擎、跨境多币种结算重构、以及商家信用分体系的第一版。核心指标上,商家结算时效 from 平均 9 天 down to 2.5 天,坏账率控制在 0.8% 以内,启用预付款的商家 GMV 同比高出未启用商家约 27%。我在这里既要跟风控、财务、合规拉齐边界,也要跟工程团队一起定技术方案的取舍。\n\nSenior PM — 启航电商 (Qihang E-commerce), 2018–2021\n负责履约与物流体验。Owned 的范围包括下单后的时效承诺、异常订单处理、以及退换货流程的产品化。我们把『超时未送达』的投诉率显著降了下来,也上线了一套基于规则 + 模型的智能改派系统。期间我和数据团队一起搭了履约健康度的指标看板,推动客服、仓配、商家三方共用一套口径。这段经历让我比较深入地理解了一个跨多个部门的复杂链路要怎么做产品。\n\nProduct Manager — 北辰科技 (Beichen Tech), 2015–2018\n做的是 C 端的会员与增长。负责会员体系的等级、权益、和成长值玩法,也做过几次大型促销活动的产品支持。这是我第一次系统地学习 A/B 实验、漏斗分析、和留存曲线的拆解。\n\n助理产品经理 — 微澜信息 (Weilan Info), 2013–2015\n从工具类 App 的需求文档、原型、和上线跟进做起,打下了产品基本功。\n\n技能与工具\nSQL、A/B testing、漏斗与留存分析、Axure/Figma、跨境支付清结算、风控策略基础、商家激励体系设计、OKR 拆解、跨职能项目管理。\n\n教育背景\n硕士,信息管理,武汉大学;学士,软件工程,华中科技大学。\n\n自我评价\n我相信好的产品经理既要懂业务也要懂技术取舍,更要能在多个利益相关方之间找到那个既能推进业务又能控制风险的平衡点。我比较看重把事情真正落地、把指标真正打出来,而不是只停留在写文档和画原型的层面。我也在持续学习,尤其是在跨境合规和资金安全这些越来越重要的领域。",
+  "jd": "Yuanfan Cross-border (远帆跨境) is hiring a Staff Product Manager to own our merchant capital and settlement platform end-to-end. This person sets the multi-quarter roadmap for settlement speed, prepayment/credit products, and cross-border multi-currency payouts, and is personally accountable for the tradeoff between merchant cash-flow experience and platform credit risk (bad-debt rate, fraud exposure). You will lead a pod of 6–8 and drive decisions across risk, finance, compliance, and engineering. We are looking for an individual contributor leader who can articulate the specific calls THEY made — not just what the team shipped. Strong candidates speak in first person about hard tradeoffs (e.g., loosening a credit gate vs. accepting bad-debt, or shipping a partial multi-currency cutover under a regulatory deadline). 需要在中英文环境工作,熟悉支付清结算与风控。",
+  "history": [
+    { "q": "Walk me through the prepayment engine project at Yuanfan — what problem were you solving and what was the scope you owned?" },
+    { "q": "结算时效从 9 天降到 2.5 天,这背后最难的一个技术或风控取舍是什么?" },
+    { "q": "How did you decide where to set the credit gate for which merchants qualify for prepayment?" },
+    { "q": "Tell me about a moment the bad-debt rate started creeping up. What happened and what was the call?" },
+    { "q": "On that bad-debt spike — what did YOU personally decide and do, as the PM who owned the product?" }
+  ],
+  "candidate_last_answer": "Yeah, so when 坏账率 started creeping toward 1.1%, the team really rallied. We pulled the risk folks and the data scientists into a war room, and as a team we looked at the cohorts and figured out it was concentrated in a batch of newer 3C 类目 merchants. 我们一起决定 tighten 那批商家的 credit 额度,and we also rolled out a 分批回款 mechanism。Engineering did a great job shipping the gate change fast, risk re-tuned the 模型 thresholds, and finance helped us model the exposure. 整个团队配合得很好,we brought it back under 0.8% within about two months. It was really a team effort across the board — everybody pitched in, and that's kind of how we operate here, very collaborative.",
+  "session_state": {
+    "drilled_topics": ["prepayment-engine-scope", "settlement-speed-tradeoff", "credit-gate-design", "bad-debt-spike-event", "bad-debt-personal-ownership"],
+    "current_competency_target": "individual-ownership",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "individual-ownership",
+    "missing_evidence": [
+      { "competency": "individual-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "individual-ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们一起决定 tighten 那批商家的 credit 额度",
+      "must-be-question-type: action-attribution",
+      "expected-yield: separate the candidate's personal decision from the team's — exactly which call he made unilaterally as the owning PM (e.g., the specific credit-limit cut, who he had to override, what tradeoff he chose between merchant churn and bad-debt), versus what risk/finance/eng decided"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "fx_0296",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Product Designer who single-handedly transformed a struggling fintech app into an award-winning category leader.\n\n- Personally redesigned the entire onboarding flow that drove a 40% lift in activation — widely credited internally as the turning point for the company\n- The go-to design authority every PM and engineer relies on; nothing ships without my sign-off\n- Built the company's first design system from scratch and rolled it out across 9 squads in under a quarter\n- Recognized as the most influential individual contributor in the product org two years running\n- Mentored a generation of junior designers, several of whom now lead their own teams because of my coaching\n- Repeatedly pulled critical launches back from the brink when teams were floundering\n\nExperience\nSenior Product Designer, PayLane (2021–present)\nProduct Designer, Hatchet Labs (2018–2021)\n\nTools: Figma, FigJam, Protopie, Maze, Amplitude\nEducation: BFA, Interaction Design, Pratt Institute",
+  "jd": "PayLane is hiring a Mid-level Product Designer to own end-to-end design for our payments and money-movement surfaces. You will partner daily with a PM and a 4-engineer pod, run discovery research, ship production-ready Figma specs, and contribute components back to our shared design system. We expect you to defend design decisions with usability evidence, instrument launches with Amplitude, and collaborate with our compliance and risk teams because money-movement screens carry regulatory disclosure requirements (Reg E, dispute-rights language, fee transparency). The ideal candidate is comfortable being one voice in a cross-functional pod rather than a solo authority, can show their personal contribution within team outcomes, and understands that consumer-finance copy and flows must be reviewed before launch. Portfolio review and a live design critique are part of the loop.",
+  "history": [
+    { "q": "Walk me through your role on the PayLane onboarding redesign — who was on the team and what did you personally own?" },
+    { "q": "Your resume says it drove a 40% activation lift. How was activation defined and measured?" },
+    { "q": "What was the activation baseline before the redesign?" },
+    { "q": "Which specific screens or steps did you design versus inherit from someone else?" },
+    { "q": "Tell me about the research that informed the new flow. Who ran it?" },
+    { "q": "How did you validate the design before it shipped?" },
+    { "q": "Walk me through a design decision in that flow that you later had to reverse." },
+    { "q": "You mentioned the design system rollout across 9 squads. What was your role versus the design-systems lead?" },
+    { "q": "How did you handle disagreement with the PM on the onboarding scope?" },
+    { "q": "Let's talk compliance. Money-movement screens have disclosure requirements. How did those factor into the onboarding work?" },
+    { "q": "Give me a specific example of a regulatory disclosure you had to design around." },
+    { "q": "Walk me through how a flow gets reviewed by compliance before launch at PayLane." },
+    { "q": "Was there ever a launch where the compliance review was a bottleneck? What happened?" },
+    { "q": "Tell me about the activation flow launch specifically — did the disclosure language go through review before it went live?" },
+    { "q": "So to be precise: did that onboarding flow ship with compliance sign-off, or did it go out first?" },
+    { "q": "Walk me through exactly what happened with the review on that launch — what did the team decide, and what did you do?" }
+  ],
+  "candidate_last_answer": "Honestly the timeline was tight, so we made a call as a pod to ship the activation flow first and we looped compliance in afterward to true up the disclosure copy. It worked out fine in the end — we caught everything. That's just kind of how we operated; the team moved fast and we cleaned things up as we went. We all owned that decision together, it wasn't any one person's thing.",
+  "session_state": {
+    "drilled_topics": ["onboarding-role-scope", "activation-metric-definition", "activation-baseline", "screen-ownership", "research-ownership", "pre-launch-validation", "reversed-decision", "design-system-role", "pm-disagreement", "compliance-context", "specific-disclosure", "compliance-review-process", "review-bottleneck", "launch-review-sequence", "shipped-with-signoff"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "compliance-judgement", "evidence_type": "timeline" },
+      { "competency": "compliance-judgement", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [
+      { "type": "borderline-compliance", "detail": "Candidate describes shipping a money-movement activation flow to production before required regulatory disclosure copy was reviewed by compliance, then reconciling after the fact." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: we made a call as a pod to ship the activation flow first and we looped compliance in afterward",
+      "must-be-question-type: action-attribution",
+      "expected-yield: what the candidate personally said, approved, or did at the moment of that ship-before-review decision — separating their individual action and position from the pod's collective 'we', plus whether they raised the disclosure-timing risk"
+    ]
+  }
+}

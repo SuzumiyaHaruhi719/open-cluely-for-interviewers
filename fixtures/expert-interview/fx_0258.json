@@ -1,0 +1,49 @@
+{
+  "id": "fx_0258",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "苏蔓 简历\n资深品牌营销经理 | 行业顶尖增长操盘手\n\n个人简介\n本人是业内公认的世界级品牌营销专家，拥有无可比拟的整合营销与增长操盘能力。凡我亲自主导的 campaign，几乎无一例外地成为现象级案例。我擅长以一己之力撬动全渠道资源，把品牌从默默无闻打造成行业标杆。同行普遍认为我是过去几年最具影响力的营销操盘手之一，我的每一次出手都堪称教科书级别。\n\n核心战绩\n- 以卓越的领导力打造多个刷屏级整合营销战役，传播效果堪称天花板。\n- 主导品牌全面升级，让品牌认知度实现跨越式飞跃。\n- 操盘多次大促节点，每一次都创造了惊人的增长神话。\n- 被多家媒体誉为新消费时代的营销领军人物。\n\n工作经历\n某新消费品牌 — 资深品牌营销经理（2021年至今）\n- 全面负责品牌策略、整合营销与大促节点的操盘。\n- 统筹内容、投放、达人合作与公关传播多条线。\n- 带领一支营销团队，向市场副总裁汇报。\n\n某互联网公司 — 品牌营销经理（2018-2021）\n- 负责品牌传播与社会化营销。\n- 参与多次新品上市的营销策划。\n\n教育背景\n- 某高校 市场营销专业 本科\n\n自我评价\n凡我经手，必属精品。我相信没有我打不响的品牌。",
+  "jd": "我们是一家新消费品牌，现招聘资深品牌营销经理一名，向市场负责人汇报，负责品牌策略、整合营销战役与大促节点操盘。岗位职责包括：制定并落地整合营销 campaign、统筹内容投放达人与公关多条线、对品牌核心指标（认知度、互动率、ROI、GMV贡献）负责，并在 campaign 复盘中诚实归因、沉淀方法论。我们特别看重候选人在面对一次效果不及预期的 campaign 时，能否客观复盘自身决策、承担应负的责任，而不是把问题简单归咎于团队、平台或外部环境。要求有完整的大型 campaign 操盘经验，能用数据说明效果与改进。",
+  "history": [
+    { "q": "先介绍一下你现在负责的范围，以及你带的这支营销团队。" },
+    { "q": "你简历里说操盘过多个刷屏级战役，挑一个你最满意的讲讲。" },
+    { "q": "那个战役的核心指标，比如曝光、互动、转化，大概是什么量级？" },
+    { "q": "现在反过来，讲一次效果明显不及预期的 campaign。" },
+    { "q": "当时定的目标是什么？最后差了多少？" },
+    { "q": "这个 campaign 的整体策略是谁定的？你在其中扮演什么角色？" },
+    { "q": "投放预算的分配是你拍板的吗？还是别人定的？" },
+    { "q": "达人和内容这条线当时出了什么问题？" },
+    { "q": "上线的节奏和时间点是谁决定的？" },
+    { "q": "复盘的时候，团队是怎么看待这次失利的原因的？" },
+    { "q": "听下来好像问题都在别人那边，那你自己在这次 campaign 里，哪个决策事后看是你做错了？" },
+    { "q": "具体说，如果重来一次，是你哪一个动作会换一种做法？请说你个人的那一个。" }
+  ],
+  "candidate_last_answer": "说实话这次没做好，主要不怪我。投放团队那边 ROI 模型搭得有问题，钱花得太散；达人这条线是采买同事选的人，调性根本不匹配，内容出来我都看不下去；平台那阵子又改了算法，自然流量被砍了一大截；老板拍板上线的时间也太赶，留给我们打磨的空间几乎没有。我的策略本身是没问题的，方向我定得很清楚，问题就出在下面执行和外部环境，这些确实不是我能控制的。真要说我做错了什么，我一时还真想不出来，因为该把控的方向我都把控到位了。",
+  "session_state": {
+    "drilled_topics": ["scope-and-team", "best-campaign", "best-campaign-metrics", "underperforming-campaign", "target-vs-actual", "strategy-ownership", "budget-allocation-ownership", "creator-content-issue", "launch-timing-ownership", "team-attribution", "self-attribution-probe"],
+    "current_competency_target": "ownership-accountability",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "ownership-accountability",
+    "missing_evidence": [
+      { "competency": "ownership-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "ownership-accountability", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 真要说我做错了什么，我一时还真想不出来",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人对这次失利中自身某一个具体决策的承认与剖析——哪个由其拍板的动作（如策略方向、资源分配或对执行的把关）事后看应当不同，逼其从归咎团队、平台、老板转向自我归因，检验其责任担当"
+    ]
+  }
+}

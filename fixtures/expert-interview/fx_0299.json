@@ -1,0 +1,39 @@
+{
+  "id": "fx_0299",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "李婷 — 初级数据分析师\n\n求职意向：数据分析师（电商方向）\n\n工作经历\n云仓科技 数据分析实习生（2024年7月至今）\n- 情境：大促期间退货率异常升高，业务方不清楚原因。\n- 任务：负责定位高退货品类并量化影响。\n- 行动：用 SQL 拉取近三个月订单与退货明细，按品类和地区做拆解，搭建了一个退货监控看板。\n- 结果：定位到两个问题品类，退货率从 18% 降到 11%，相关 GMV 损失每月减少约 24 万元。\n\n校园项目\n- 用 Python 对公开零售数据集做用户分群（RFM），输出复购策略建议。\n\n技能：SQL、Python（pandas）、Tableau、A/B 实验基础\n教育背景：统计学学士，2024 届",
+  "jd": "云仓科技正在招聘一名初级数据分析师，支持电商业务团队。职责包括：用 SQL 从数据仓库取数、搭建并维护业务看板、对退货与转化等关键指标做归因分析、为 A/B 实验定义成功指标并解读结果。我们希望候选人能清楚说明在团队成果中自己『具体做了什么』——哪一段分析是你亲手完成的，哪一个结论是你自己得出的，而不是笼统地用『我们』来概括。面试中我们会追问个人贡献、分析机制与指标定义。",
+  "history": [
+    { "q": "先简单介绍一下你在云仓科技这段实习吧。" },
+    { "q": "你简历里写大促退货率从 18% 降到 11%，能讲讲这个项目里你具体负责哪一部分吗？" },
+    { "q": "那个退货监控看板，是你一个人搭的，还是团队一起做的？你亲手做了哪些部分？" }
+  ],
+  "candidate_last_answer": "这个项目其实是我们整个数据小组一起完成的。我们一起讨论了分析思路，大家分头去取数、拆解品类，然后我们一起把看板搭出来，最后我们一起向业务方汇报。退货率的下降也是我们团队共同努力的结果，大家配合得挺好的，所以我觉得这是一个很好的团队协作的例子。",
+  "session_state": {
+    "drilled_topics": ["实习概述", "退货项目-个人职责", "看板-个人贡献"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们一起讨论了分析思路，大家分头去取数、拆解品类，然后我们一起把看板搭出来",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人在这个『我们』里亲手做的具体那一块——是哪几张表的 SQL、哪个品类的拆解逻辑、看板里哪个模块由她独立完成，把个人动作从团队叙述中剥离出来"
+    ]
+  }
+}

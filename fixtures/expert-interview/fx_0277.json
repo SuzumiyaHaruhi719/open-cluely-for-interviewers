@@ -1,0 +1,39 @@
+{
+  "id": "fx_0277",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Senior User Researcher | Mixed-methods, fintech & health\n\nProfile: Senior researcher with 9 years owning end-to-end studies that change product direction. I scope the question, choose the method, run the work, and drive decisions with stakeholders.\n\nExperience\n\nNorthGate Money — Senior User Researcher (2021–present)\n- Situation: The lending team's drop-off at income verification was high but nobody knew why.\n- Task: I was asked to find the root cause and recommend a fix within one quarter.\n- Action: I ran a 14-participant moderated study plus an analysis of 30 days of funnel analytics, segmented by verification method, and co-ran two design sprints.\n- Result: Identified that manual document upload caused most abandonment; the redesign cut verification drop-off from 38% to 22% in the following quarter.\n- Built and maintained a research repository adopted by 4 product teams.\n\nVireo Health Labs — UX Researcher (2018–2021)\n- Ran longitudinal diary studies and usability testing for a patient-adherence app\n- Partnered with data science to triangulate qualitative findings against behavioral logs\n\nEducation: MS, Human-Computer Interaction\nMethods: moderated/unmoderated usability, diary studies, surveys, funnel analysis, concept testing",
+  "jd": "We are hiring a Senior User Researcher to embed with our payments product group and own high-stakes, decision-driving research. You will scope ambiguous questions, choose the right mixed-methods approach, run studies end-to-end, and turn findings into product decisions that leadership acts on. Responsibilities: lead 6–8 substantial studies per year, mentor two junior researchers, and own a research repository. We expect senior researchers to speak precisely about method choices and impact: why a given method fit the question, what the sample and design were, and what specifically changed as a result. In this conversation we'll go deep on one or two studies rather than survey your whole history, so come ready to walk through a study from question to decision, including the tradeoffs you weighed in the design.",
+  "history": [
+    { "q": "Pick the study you're proudest of and give me the question you were trying to answer." },
+    { "q": "Walk me through how you designed it — method, sample, and why those fit the question." },
+    { "q": "What changed as a result, and how did you know the change was attributable to your research?" }
+  ],
+  "candidate_last_answer": "The income-verification drop-off study at NorthGate. Situation: our lending funnel was bleeding users at the verification step — drop-off was 38% there, the single worst step, and the team had three competing theories and no evidence. Task: I owned finding the actual cause and recommending a fix within the quarter. Action: I ran a 14-participant moderated study, deliberately recruiting across both verification paths — instant bank-link and manual document upload — and paired it with 30 days of funnel analytics segmented the same way, so qualitative pain points could be checked against where people actually dropped. The diary-style follow-ups showed manual uploaders abandoning when asked to photograph documents on mobile. Result: we moved the manual path behind an instant-link default; drop-off at that step fell from 38% to 22% the next quarter, and because I'd segmented up front, I could show the improvement was concentrated entirely in the cohort that previously hit manual upload — not a general seasonal lift. That segmentation is what let me attribute it.",
+  "session_state": {
+    "drilled_topics": ["study-question", "study-design-rationale"],
+    "current_competency_target": "research-rigor",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "research-rigor",
+    "missing_evidence": [
+      { "competency": "research-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "stakeholder-influence", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: That segmentation is what let me attribute it.",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: surface the limits of the attribution claim — what confounds the segmentation could not rule out, why a 14-person qualitative sample was sufficient to justify a default change, and what tradeoff she accepted by not running a controlled A/B before shipping"
+    ]
+  }
+}

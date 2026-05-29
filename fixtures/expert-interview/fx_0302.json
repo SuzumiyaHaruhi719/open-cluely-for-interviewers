@@ -1,0 +1,53 @@
+{
+  "id": "fx_0302",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "陈雨桐 — UX Designer（B 端 SaaS 方向）\n\n个人简介\n中级 UX designer，5 年经验，专注企业级数据产品的交互设计。\n（另一处写：3 年专职 UX 经验，之前 2 年做的是平面设计。）\n\n工作经历\n蓝鲸数据 高级 UX Designer（2022 至今）\n- 独立负责 BI dashboard 的 redesign，把 onboarding 完成率从 52% 提升到 71%。\n- （备注：onboarding 这块其实是和另一位 designer 一起 co-own 的，A/B test 由 PM 主导。）\n- 主导建立团队 design system，覆盖 6 条产品线。\n- 是数据可视化方向的 design lead。\n（简历另一段又写：目前还是 IC，没有带人。）\n\n光速云 UX Designer（2020–2022）\n- 负责移动端 onboarding flow 重构。\n- 用 Figma + Maze 做 usability testing。\n\n技能：Figma、Protopie、Maze、Amplitude、基础 HTML/CSS\n教育：视觉传达设计学士",
+  "jd": "蓝鲸数据正在招聘一名中级 UX Designer，负责 B 端数据产品（BI dashboard、数据看板）的端到端交互设计。你将与 1 名 PM 和 4 名工程师组成 pod，做用户研究、产出 Figma 高保真稿、并向 shared design system 贡献组件。我们希望候选人能清楚区分『个人贡献』与『团队成果』，能用 usability evidence 和 metric 支撑设计决策，并且在被追问时给出 concise、precise 的回答。简历如有前后不一致之处（比如年限、是否带人、某个成果是否独立完成），面试中会逐一核对。",
+  "history": [
+    { "q": "先讲讲你现在在蓝鲸的 scope 吧——团队多大，你负责什么。" },
+    { "q": "你简历开头写 5 年 UX 经验，后面又写 3 年专职 UX，到底怎么算？" },
+    { "q": "那之前那 2 年平面设计的经历，对你现在做 B 端交互有帮助吗？" },
+    { "q": "你写自己是 data viz 方向的 design lead，但又写目前还是 IC 没带人，这两个怎么对上？" },
+    { "q": "说说那个 BI dashboard redesign 的背景，最初的问题是什么？" },
+    { "q": "你写 onboarding 完成率从 52% 提到 71%，这个指标是怎么定义的？" },
+    { "q": "这次 redesign 哪些屏是你自己设计的，哪些是继承下来的？" },
+    { "q": "你提到 onboarding 是和另一位 designer co-own 的，那你具体 own 了哪一部分？" },
+    { "q": "这个 A/B test 是谁设计的？" },
+    { "q": "既然 A/B test 由 PM 主导，那 71% 这个数你是怎么确认是 redesign 带来的？" },
+    { "q": "讲一个你在这个项目里后来推翻的设计决策。" },
+    { "q": "design system 那块，你和 design-systems 的同事分别负责什么？" },
+    { "q": "和 PM 在 scope 上有过分歧吗？怎么解决的？" },
+    { "q": "你怎么用 usability evidence 去支撑一个有争议的设计？" },
+    { "q": "光速云那段移动端 onboarding 重构，结果怎么样？" },
+    { "q": "回到 BI dashboard——你说 onboarding 是 co-own，那么把 52% 到 71% 这个成果拆开，你个人贡献的那部分到底是什么？" },
+    { "q": "如果只算你亲手做的那部分对完成率的影响，你能给个估计吗？" },
+    { "q": "那就具体说说：在这个 co-own 的 onboarding 里，哪一个由你独立负责的改动，你认为是真正推动完成率的？" }
+  ],
+  "candidate_last_answer": "我个人独立负责的是 onboarding 第二步的 empty-state 重设计。原来新用户进来看到的是一张空表，没有任何引导。我把它改成了一个带 sample data 和三步引导卡片的 guided state，并加了一个『跳过』入口给老用户。这一步在 A/B test 里 step-2 的 drop-off 从 34% 降到 19%，是整个 flow 里降幅最大的单点。其余几步主要是另一位 designer 做的，我不把那部分算在自己头上。",
+  "session_state": {
+    "drilled_topics": ["现任scope", "年限矛盾", "平面设计迁移", "lead-vs-IC矛盾", "redesign背景", "指标定义", "屏幕归属", "co-own个人部分", "ab-test归属", "归因confound", "推翻的决策", "design-system分工", "PM分歧", "usability证据", "光速云结果", "成果拆分-个人贡献", "个人影响估计", "独立改动定位"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 46
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我个人独立负责的是 onboarding 第二步的 empty-state 重设计",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 进一步坐实这一独立贡献的可信度——empty-state 改动的设计依据、step-2 drop-off 34% 到 19% 的取数口径，以及如何在 PM 主导的 A/B test 里把这一单点降幅与其他改动区分开"
+    ]
+  }
+}

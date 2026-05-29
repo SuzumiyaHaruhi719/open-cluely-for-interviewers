@@ -1,0 +1,38 @@
+{
+  "id": "fx_0303",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "王志强 — 销售总监 ｜ 大客户战略 ｜ 业绩增长操盘手 ｜ 全渠道 GTM ｜ 数字化转型布道者\n\n核心标签：战略型销售领导者、增长飞轮、漏斗优化、客户成功、向上销售、交叉销售、客单价提升、ABM、SaaS 订阅、续约率、净收入留存、销售赋能、铁军文化、狼性团队、结果导向、闭环管理、组织效能、降本增效、生态共赢、价值营销、顾问式销售、解决方案销售、关键决策人、高层关系、复杂大单、行业标杆、增长引擎\n\n职业经历\n云启智能 销售总监（2021 至今）\n- 操盘大客户业务线，带领高绩效销售铁军，打造可复制的增长引擎与销售方法论。\n- 全面负责 GTM 战略、漏斗管理、客户成功与续约，驱动业绩高速增长。\n\n恒泰软件 区域销售经理（2017–2021）\n- 负责华东区销售，赋能团队，达成并超越业绩目标。\n\n教育：工商管理硕士（MBA）\n技能：销售管理、谈判、CRM、商业洞察、领导力、战略规划",
+  "jd": "云启智能正在招聘一名销售总监，负责大客户（KA）业务线的整体增长。该角色直接向 CRO 汇报，背负新签 ARR、净收入留存（NRR）与销售团队人效三项核心指标，需要管理一支跨区域的直销与 SDR 团队，并与市场、客户成功、产品紧密协作。我们希望候选人能把『方法论』『增长引擎』这类抽象说法还原成具体的执行链路：你做了哪一个决策、团队据此改变了哪个具体动作、带来了哪个可量化的结果（金额、续约率或客单价的前后对比）。面试会重点追问个人亲手落地的动作、背后的取舍，以及真实的业绩数字，而不是停留在口号层面。",
+  "history": [
+    { "q": "先介绍一下你在云启智能负责的销售业务范围吧——团队规模、营收盘子、你背的核心指标。" },
+    { "q": "你简历里反复提到『可复制的增长引擎』和『销售方法论』。挑一个你亲手落地的具体动作，从当时的问题讲起。" }
+  ],
+  "candidate_last_answer": "其实核心就是打造一支有狼性、结果导向的销售铁军。我们坚持以客户为中心，做顾问式销售和价值营销，把增长飞轮跑起来，实现降本增效和生态共赢。我特别强调闭环管理和组织效能，赋能每一个销售，让方法论可复制、可沉淀。说到底就是战略对齐、力出一孔，业绩自然就上来了。这套打法在我们团队是经过验证的，是真正的增长引擎。",
+  "session_state": {
+    "drilled_topics": ["销售业务范围", "增长引擎-具体动作"],
+    "current_competency_target": "execution-mechanism",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "execution-mechanism",
+    "missing_evidence": [
+      { "competency": "execution-mechanism", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把增长飞轮跑起来，实现降本增效和生态共赢",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把口号还原成一条真实的执行链——他做的某一个具体决策、销售团队随之改变的某个具体动作（比如改了哪段话术、调了哪个漏斗环节）、以及由此带来的一个可量化结果（金额、续约率或客单价的前后对比）"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "fx_0266",
+  "tags": {
+    "industry": "research",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Elena Vasquez-Tan — Director, Materials Research / 材料研究总监\nSingapore · elena.vt@example.com\n\nProfile\nResearch leader in advanced materials and battery chemistry. Build and direct multidisciplinary research programs spanning electrochemistry, characterization, and pilot-scale process development. Bridge fundamental science and commercialization.\n\nExperience\nDirector, Materials Research — Nimbus Energy Materials, 2019–present\n领导一个跨学科研究团队,方向包括 solid-state electrolytes、cathode chemistry、和 characterization。Set research direction, partner with process engineering on scale-up, and steward the IP portfolio. Drove several internal programs from bench concept toward pilot line.\n\nPrincipal Scientist — Aurora Cells, 2014–2019\nLed electrolyte formulation research. Improved cycle stability and worked closely with manufacturing on transfer. Mentored junior scientists and reviewed program milestones.\n\nResearch Scientist — Continental Battery Labs, 2009–2014\nElectrochemical characterization and cell prototyping.\n\nEducation\nPh.D. Materials Science, NUS · B.S. Chemistry, University of the Philippines\n\nSelected Recognition\nMultiple internal innovation awards; named inventor on a portfolio of filed patents; invited talks at international battery symposia.",
+  "jd": "Nimbus Energy Materials is hiring a Director of Materials Research to lead our solid-state battery program from bench to pilot. You will own research strategy across electrolyte and cathode chemistry, direct a multidisciplinary team, and be accountable for demonstrable program outcomes — cycle-life targets, energy-density milestones, and successful transfer to the pilot line. You will defend portfolio and resourcing decisions to the executive team and board. We are explicitly looking for a leader who can quantify impact: which program metrics moved, by how much, over what timeframe, and what your specific bets were. Vague narratives about 『driving innovation』 will not be sufficient. You will partner with process engineering, IP counsel, and commercial. 中英文工作环境。",
+  "history": [
+    { "q": "Give me the shape of your current role at Nimbus — team size, budget, and what you own." },
+    { "q": "What's the headline research bet your team is making right now?" },
+    { "q": "Why solid-state over continuing to optimize liquid electrolytes? What convinced you?" },
+    { "q": "Walk me through the single program you're proudest of leading." },
+    { "q": "What was the starting cycle-life or energy-density baseline on that program?" },
+    { "q": "And where did it land? Give me the numbers." },
+    { "q": "Over what timeframe did that improvement happen?" },
+    { "q": "What was your specific technical bet — the mechanism you were targeting?" },
+    { "q": "Who on the team did what, and what did you personally decide?" },
+    { "q": "Tell me about a program that failed or got killed. What happened?" },
+    { "q": "How do you decide which programs to fund versus cut?" },
+    { "q": "What does 'successful transfer to pilot' mean concretely — what's the gate?" },
+    { "q": "Describe a hard tradeoff between scientific rigor and shipping pressure." },
+    { "q": "How do you set cycle-life targets that are ambitious but credible?" },
+    { "q": "Tell me about a time the data contradicted your hypothesis." },
+    { "q": "Let's get concrete on the solid-state program. What is the actual cycle-life number you've demonstrated at pilot-relevant conditions, and the energy density?" },
+    { "q": "I still don't have a number. Give me one hard metric from that program and the date you hit it." }
+  ],
+  "candidate_last_answer": "I appreciate the focus on rigor — it's exactly the kind of intellectual honesty I try to instill in my org. What I'd say is that our solid-state program represents a paradigm shift in how we think about energy storage. We've been laser-focused on de-risking the fundamental science, building a culture of disciplined experimentation, and aligning our roadmap with where the industry is heading. The mechanism story is compelling, the team is world-class, and we've made meaningful, directionally-positive progress against our north-star metrics. I'm a big believer that you don't manage what you can't measure, so we're absolutely tracking the right KPIs end-to-end and driving toward best-in-class outcomes on cycle life and energy density. The trajectory is strong and I'm confident we're on the path to a genuine breakthrough.",
+  "session_state": {
+    "drilled_topics": ["role-scope", "headline-bet", "solid-state-rationale", "proudest-program", "baseline", "result", "timeframe", "technical-mechanism", "personal-decision", "killed-program", "funding-decisions", "pilot-gate", "rigor-vs-shipping", "target-setting", "data-contradiction", "solid-state-hard-number", "single-metric-with-date"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: meaningful, directionally-positive progress against our north-star metrics",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force exactly one hard number with units and a date — e.g., demonstrated cycle count at a stated capacity-retention threshold and areal current density, measured on a specific date — stripping away the rehearsed narrative to test whether any quantified result actually exists"
+    ]
+  }
+}

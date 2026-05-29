@@ -1,0 +1,41 @@
+{
+  "id": "fx_0283",
+  "tags": {
+    "industry": "operations",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "VP of Operations\n\nProfile: Operations leader with 14 years scaling service and fulfillment organizations. I build the systems, rhythms, and teams that let companies grow without breaking.\n\nExperience\n\nLumenfield Commerce — VP of Operations (2019–present)\n- Own fulfillment, customer operations, and workforce planning across multiple sites\n- Led a multi-site network redesign to improve delivery reliability\n- Stood up an operations analytics and reporting function\n- Drove a continuous-improvement program across the org\n\nCedarline Services — Director of Operations (2015–2019)\n- Managed a regional service delivery organization\n- Implemented new scheduling and capacity-planning processes\n\nEducation: MBA; BS, Industrial Engineering\nFocus areas: network design, S&OP, workforce planning, continuous improvement, operational rhythm",
+  "jd": "We are hiring a VP of Operations to own fulfillment and customer operations across our growing multi-site network. Reporting to the COO, you'll be accountable for hard operational outcomes: on-time delivery, cost-to-serve, and labor productivity, and you'll own the operating budget for these functions. Responsibilities: lead network and capacity planning, run the operational cadence, and drive measurable continuous improvement. We expect VP-level candidates to speak fluently and precisely in numbers — to tell us the before/after on delivery reliability, the dollar impact of a network change, and the productivity gains from a process, tied to specific timeframes. We're a metrics-driven team and we'll keep this interview focused; please answer the question asked with concrete figures rather than narrating the broader journey. Time-boxed to 45 minutes.",
+  "history": [
+    { "q": "Give me your current scope at Lumenfield — functions, sites, budget, and the metrics you own." },
+    { "q": "You led a multi-site network redesign. What was the before/after on delivery reliability, in numbers?" },
+    { "q": "What was the dollar impact of that redesign, and over what timeframe?" },
+    { "q": "Let's keep it concrete: pick the continuous-improvement program and tell me the measured productivity gain." }
+  ],
+  "candidate_last_answer": "So continuous improvement is something I'm genuinely passionate about, and to really appreciate the gain you have to understand the cultural journey we went on. When I joined, the org didn't have a true improvement mindset — so honestly my first six months were all about building trust, doing gemba walks, listening tours, and there's a whole story there about a frontline supervisor in our Reno site who became a kaizen champion, which I love telling because it captures the human side. And I think the real win isn't a number anyway, it's that we built a culture where people surface problems instead of hiding them. We rolled out daily huddles, visual management boards, a suggestion system — the engagement on that was incredible. I could talk for an hour about how we changed the operating philosophy. The productivity piece followed naturally from all of that cultural groundwork, which is the part most leaders skip.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "network-reliability-numbers", "network-dollar-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "communication-focus", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The productivity piece followed naturally from all of that cultural groundwork",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cut off the culture narrative and force the single measured productivity figure asked for — the percentage or unit gain from the continuous-improvement program and the timeframe over which it was realized"
+    ]
+  }
+}

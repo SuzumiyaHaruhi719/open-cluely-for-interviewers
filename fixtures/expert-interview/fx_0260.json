@@ -1,0 +1,40 @@
+{
+  "id": "fx_0260",
+  "tags": {
+    "industry": "marketing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Priya Raghavan — Director of Growth Marketing\nBoston, MA | priya.r@example.com\n\nSUMMARY\nGrowth marketing leader with 11 years across DTC and subscription commerce. Build and run paid-acquisition, lifecycle, and brand teams; accountable for CAC, blended ROAS, and contribution margin.\n\nEXPERIENCE\nDirector, Growth Marketing — Lumora (skincare DTC), 2020–present\n- Situation: blended CAC had risen 40% in 18 months as iOS signal loss broke attribution. Task: hold CAC flat while growing new-customer revenue 25%. Action: rebuilt the measurement stack on a geo-holdout + MMM blend, shifted 30% of spend from prospecting to a creator-led referral motion, and renegotiated agency fees to a performance tier. Result: blended CAC down 18% YoY, new-customer revenue up 31%, contribution margin up 4.2 points across FY23.\n- Situation: email/SMS was a single batch-blast list. Task: lift retention revenue without raising opt-out rates. Action: built a 9-stage lifecycle program with consent-tiered segmentation. Result: retention revenue +$6.1M annualized, opt-out rate held at 0.3%.\n\nSenior Manager, Performance Marketing — Brightfold, 2016–2020\n- Situation: paid social plateaued. Task: find a new scalable channel. Action: stood up an influencer-affiliate program with FTC-compliant disclosure SOPs. Result: channel grew to 22% of new-customer mix in 14 months at a 3.1x ROAS.\n\nMarketing Analyst — Northpoint Retail, 2013–2016\n\nEDUCATION\nB.S. Marketing, Boston College\n\nSKILLS\nGeo-holdout testing, MMM, lifecycle (Klaviyo/Braze), paid social, creator/affiliate, SQL, attribution.",
+  "jd": "Lumora is hiring a Director of Growth Marketing to own new-customer acquisition and lifecycle revenue across our DTC skincare brand (~$140M revenue). You will manage a team of 14 spanning paid media, lifecycle, creator partnerships, and marketing analytics, and a working media budget near $48M. We expect rigorous measurement under signal loss (geo-holdouts, incrementality, MMM), ownership of blended CAC and contribution margin, and the judgment to scale creator and affiliate programs responsibly. This is a regulated consumer category: claims substantiation, FTC endorsement-disclosure compliance, and privacy-consent hygiene are non-negotiable. You will partner with brand, product, legal, and finance, and present channel economics to the executive team monthly. We are particularly interested in leaders who can scale influencer-driven growth without cutting compliance corners.",
+  "history": [
+    { "q": "Tell me about the creator and affiliate program you scaled at Brightfold — what was your role and how big did it get?" },
+    { "q": "Walk me through how you handled FTC disclosure on those influencer posts. Be specific about what you required and how you enforced it." }
+  ],
+  "candidate_last_answer": "Right, so, disclosure — yeah, it's a whole thing, and honestly the landscape was changing so fast back then, like the guidance kept shifting and our legal team was, you know, stretched thin. So what we did was, um, we had the standard hashtag stuff, the ad disclosures, and we'd tell creators to add them. And look, I'll be candid, in a couple of the early gifting pushes we kind of let the disclosures slide because the engagement was so strong and the brand team was breathing down our necks for volume, and at that point you're sort of just trying to keep the train moving, right? It wasn't ideal. Anyway, later we tightened it up with an SOP and a checklist, and I think we got to a much better place, but it was definitely bumpy and there was a lot going on that quarter with the replatforming and the agency stuff too.",
+  "session_state": {
+    "drilled_topics": ["creator-affiliate-program-scope", "ftc-disclosure-enforcement"],
+    "current_competency_target": "compliance-judgement",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "compliance-judgement",
+    "missing_evidence": [
+      { "competency": "compliance-judgement", "evidence_type": "mechanism" },
+      { "competency": "compliance-judgement", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": ["admitted-knowingly-skipped-FTC-disclosure-on-paid-influencer-posts"],
+    "top_question_traits": [
+      "must-anchor-on: we kind of let the disclosures slide because the engagement was so strong",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a precise account of who decided to ship undisclosed paid posts, how many posts and over what window, what was said to legal/creators at the time, and what concrete control was later put in place to prevent recurrence"
+    ]
+  }
+}

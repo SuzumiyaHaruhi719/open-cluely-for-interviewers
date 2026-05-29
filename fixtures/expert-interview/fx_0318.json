@@ -1,0 +1,40 @@
+{
+  "id": "fx_0318",
+  "tags": {
+    "industry": "education",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "VP OF ACADEMIC PRODUCT & LEARNING OUTCOMES | EdTech Visionary\n\n- Transformational education leader leveraging learning science, data-driven pedagogy, and scalable curriculum innovation to drive best-in-class student outcomes at scale\n- Architected paradigm-shifting personalized-learning ecosystems across K-12 and higher-ed portfolios\n- Empowered cross-functional teams to operationalize outcome-centric, standards-aligned learning experiences end to end\n- Spearheaded mission-critical efficacy initiatives that unlocked measurable learning gains and engagement lift\n- Fluent in adaptive learning, competency-based progression, formative assessment, learning analytics, and evidence-based design\n- Trusted thought partner to district leaders, provosts, and edtech investors on the future of learning\n- Pioneered next-generation AI-enabled tutoring and assessment paradigms across the learner lifecycle\n- Frequent keynote speaker on efficacy, equity, and the science of learning\n\nMost recent: LumaLearn — VP, Academic Product & Learning Outcomes (2021-present)\nPrior: Scholar Forge — Senior Director, Curriculum & Efficacy (2017-2021)\nEducation: M.Ed., Learning Design & Technology",
+  "jd": "We are seeking a VP of Academic Product and Learning Outcomes to lead efficacy and curriculum strategy for a growing edtech company serving K-12 districts. Reporting to the Chief Product Officer, you will own the company's efficacy research agenda, define how learning outcomes are measured, and ensure product investments translate into demonstrable student gains. This role demands intellectual honesty about evidence: you must distinguish engagement metrics from genuine learning outcomes, defend your study designs, and report effect sizes candidly — including null results. You will present efficacy findings to district partners and the board, manage a small research team, and partner with product on what to build next. Strong candidates speak concretely about a specific efficacy study they ran: the design, the sample, the outcome measure, and the actual result. Buzzword-heavy answers without a real study behind them will not pass.",
+  "history": [
+    { "q": "Walk me through your scope at LumaLearn — what do you own, and how big is your efficacy team?" },
+    { "q": "You mention 'measurable learning gains' on your resume. Pick one specific efficacy study you led and tell me what you found." },
+    { "q": "Be concrete: what was the outcome measure, the sample size, the study design, and the actual effect size you observed?" }
+  ],
+  "candidate_last_answer": "So efficacy, for me, is really about the whole learner journey and meeting students where they are. We take a very evidence-based, outcomes-first approach, and we're constantly looking at the data to make sure we're moving the needle on real learning. Across our deployments we've seen tremendous engagement and really encouraging signals on learning gains. I don't want to get too into the weeds on any single study, but the through-line is that when you align product to learning science, good outcomes follow — and that's been borne out again and again in our work with districts.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "specific-efficacy-study"],
+    "current_competency_target": "evidence-rigor",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "evidence-rigor",
+    "missing_evidence": [
+      { "competency": "evidence-rigor", "evidence_type": "metric" },
+      { "competency": "evidence-rigor", "evidence_type": "mechanism" },
+      { "competency": "evidence-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: really encouraging signals on learning gains",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one specific efficacy study with a named outcome measure, sample size, study design, and a real effect size — forcing the candidate off engagement-and-signals language onto an actual learning-outcome result"
+    ]
+  }
+}

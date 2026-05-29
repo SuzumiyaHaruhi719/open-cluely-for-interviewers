@@ -1,0 +1,49 @@
+{
+  "id": "fx_0282",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "clean-STAR",
+    "edge_case": "reverses-question"
+  },
+  "resume": "销售总监 (Director of Sales) | 大客户与SaaS销售\n\n概述: 十年B2B销售管理经验,带过区域直销与渠道团队,擅长大客户攻坚与销售流程体系化。\n\n工作经历\n\n云策数据 — 销售总监 (2020年至今)\n- 情境(S): 接手时华东大区年度GMV停滞,销售流程混乱、赢单率低。\n- 任务(T): 重整大区销售打法,一年内把赢单率和大单占比拉起来。\n- 行动(A): 落地了一套从线索分级到赢单复盘的销售方法论,建立周度pipeline评审机制,亲自带队攻坚三个标杆客户。\n- 结果(R): 大区年度GMV从1.2亿增长到1.9亿,赢单率从21%提升到34%,百万级大单占比翻倍。\n- 管理一支约25人的销售团队,含5名销售经理。\n\n聚信软件 — 区域销售经理 (2016年至2020年)\n- 情境(S): 新开拓的华南市场零基础。\n- 任务(T): 从0建立区域客户盘。\n- 行动(A): 搭建渠道伙伴网络,建立标准化的客户拜访与商机推进流程。\n- 结果(R): 两年内把华南区做到公司第二大区域。\n\n技能: 大客户销售、销售团队管理、pipeline管理、渠道建设、销售方法论落地\n学历: 工商管理 本科",
+  "jd": "我们正在为一家SaaS公司招聘销售总监(Director of Sales),向VP Sales汇报,负责一个大区的直销与渠道团队,直接对大区GMV、赢单率与大单结构负责,管理三十人左右的销售团队。岗位职责: owner大区的销售策略与打法,亲自参与重点大客户的攻坚,建设并迭代销售方法论与pipeline管理机制。岗位要求: 八年以上B2B销售管理经验,有把停滞大区重新拉起来的实绩。我们在面试中尤其关注候选人对个人贡献的清晰度——当我们问一个具体战果时,我们想听到的是『我做了什么决策、我亲自推动了什么』,而不是笼统的『我们团队一起努力』。我们需要一个能讲清楚自己个人价值的leader,而不是只会把功劳归给团队的人。",
+  "history": [
+    { "q": "先介绍一下你在云策目前的范围:管多大盘子、多少人、对哪些指标负责?" },
+    { "q": "你接手华东时GMV停滞,你判断的核心问题是什么?" },
+    { "q": "你落地的那套销售方法论,最关键的一个改变是什么?是你设计的吗?" },
+    { "q": "赢单率从21%到34%,这中间你个人做了哪个决策起了最大作用?" },
+    { "q": "讲一个你亲自带队攻坚的标杆客户,你在那一单里具体做了什么?" },
+    { "q": "周度pipeline评审机制是你建的吗?推行时遇到团队抵触怎么办的?" },
+    { "q": "百万级大单占比翻倍,有没有一单是你个人扭转了败局的?讲讲。" },
+    { "q": "你带5个销售经理,有没有一次关键的人事决策是你拍的板?" },
+    { "q": "GMV从1.2亿到1.9亿,你觉得这增长里你个人最大的贡献是哪一块?" },
+    { "q": "聚信华南那段从0到第二大区,哪个决策是你个人的判断?" },
+    { "q": "如果区分一下你和你团队的功劳,你会怎么界定自己的角色?" },
+    { "q": "我感觉你一直在说『我们』。能不能就给我一个只属于你个人的决策?" },
+    { "q": "我再直接问一次:在华东这盘增长里,有哪一件事如果不是你、换别人就做不成?就讲这一件。" }
+  ],
+  "candidate_last_answer": "嗯……说实话,我其实不太习惯把功劳单独摘出来算在自己头上。在我看来,华东这盘能起来,真的是我们整个团队一起拼出来的——我们的销售经理很给力,我们的售前很专业,我们一起把流程跑顺了,我们一起啃下了那几个标杆客户。我不太愿意说『换别人就做不成』,因为这对团队不公平。要不这样,我反过来想请教您一下: 在您的评判标准里,一个好的销售总监,到底应该是那个站出来抢功劳的人,还是那个能让整个团队都出彩、自己隐于幕后的人?我特别想听听您怎么看,因为这其实关系到我们对leadership的理解是不是一致。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "core-problem-diagnosis", "methodology-design-owner", "winrate-decision", "flagship-client-action", "pipeline-mechanism-owner", "big-deal-turnaround", "people-decision", "gmv-personal-contribution", "south-china-judgment", "credit-attribution", "single-personal-decision"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "leadership", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 一个好的销售总监,到底应该是那个站出来抢功劳的人,还是那个能让整个团队都出彩、自己隐于幕后的人",
+      "must-be-question-type: action-attribution",
+      "expected-yield: refuse to accept the reversed question and re-pin the candidate to name one concrete decision or action that was uniquely his — not the team's — in the East-China turnaround, so the interviewer can judge individual ownership rather than collective 『我们』 framing"
+    ]
+  }
+}

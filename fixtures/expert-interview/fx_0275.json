@@ -1,0 +1,49 @@
+{
+  "id": "fx_0275",
+  "tags": {
+    "industry": "hr",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Staff HR Business Partner\n\nSummary: HRBP supporting engineering and product orgs of 400+ people. Focus on performance management, org design, and leadership coaching.\n\nExperience\n\nDriftwave Technologies — Staff HRBP (2020–present)\n- Lead HRBP for a 420-person R&D organization\n- Ran annual performance calibration and promotion cycles\n- Designed and rolled out a new manager-effectiveness program\n- Partnered with leaders on two reorganizations\n\nMaple & Vance — Senior HR Generalist (2017–2020)\n- Supported a 150-person business unit\n- Handled employee relations cases and policy work\n\nEducation: BA, Organizational Psychology\nCertifications: SHRM-SCP",
+  "jd": "We are hiring a Staff HR Business Partner to support a 500-person engineering organization through a period of significant change, including a planned reorganization and a refresh of our performance philosophy. You will be the senior HRBP partnering directly with the VP of Engineering and their leadership team. Responsibilities: own the performance calibration process, coach managers through difficult people decisions, and lead change-management for org changes. We are looking for someone who takes clear personal ownership of outcomes — including the ones that went sideways. In this interview we will ask you to walk through programs you led that did not land as intended, and we want to hear what you specifically would do differently, not who else was at fault. Strong judgment, discretion, and the ability to influence senior leaders without authority are essential.",
+  "history": [
+    { "q": "Tell me about your current scope at Driftwave — who you support and what you own." },
+    { "q": "You designed a manager-effectiveness program. What problem was it meant to solve?" },
+    { "q": "How did you measure whether the program actually improved manager effectiveness?" },
+    { "q": "What was adoption like — what percentage of managers completed it and applied it?" },
+    { "q": "You said adoption was low. Why do you think that happened?" },
+    { "q": "Walk me through the two reorganizations you partnered on. What was your specific role?" },
+    { "q": "In the first reorg, attrition spiked afterward. What part of that do you own?" },
+    { "q": "Let's talk about the performance calibration you ran. Were the outcomes seen as fair by managers?" },
+    { "q": "You mentioned managers pushed back on calibration. What did you do about it?" },
+    { "q": "Was there a case where a promotion decision you facilitated was later reversed?" },
+    { "q": "Looking back at the manager program that didn't land — if you ran it again, what would YOU change?" },
+    { "q": "I want to be direct: across these examples, what's the thing you personally got wrong and would do differently?" }
+  ],
+  "candidate_last_answer": "Honestly, I think I executed my part well. The manager program was solid — the content was good, the rollout plan was good. The reason adoption was low is that the engineering leaders didn't reinforce it; the VP said all the right things in the kickoff but never actually held his directors accountable. And the calibration pushback? That was really a culture problem that predated me — those managers had been allowed to game ratings for years before I arrived. The reorg attrition was driven by comp decisions that finance made, not anything HR controlled. So if I'm being candid, the things that didn't land weren't really mine to fix. I'd say the lesson is I needed better partners, not that I'd do my own work differently.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "manager-program-problem", "program-measurement", "program-adoption", "low-adoption-cause", "reorg-role", "reorg-attrition-ownership", "calibration-fairness", "calibration-pushback", "promotion-reversal", "program-redo"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "change-management", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the things that didn't land weren't really mine to fix",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate past blaming the VP, finance, and culture, and name one concrete decision or action of his own — in the program design or rollout he controlled — that he would change, with what he would do differently"
+    ]
+  }
+}

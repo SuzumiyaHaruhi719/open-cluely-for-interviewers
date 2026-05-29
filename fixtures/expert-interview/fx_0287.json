@@ -1,0 +1,40 @@
+{
+  "id": "fx_0287",
+  "tags": {
+    "industry": "data",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "黄睿 | Data Analyst → Analytics Engineer | 4年经验\n\n现任：聚链科技 Analytics Engineer（2023至今）\n- 用 dbt 重构了核心 revenue 模型，把 reporting pipeline 跑批时间从 4h 压到 50min\n- 维护 Looker semantic layer，supports 给到 growth 和 finance 两个团队\n- 搭了一套 data quality 的 freshness 和 row-count 监控\n\n前职：明度数据 Data Analyst（2021-2023）\n- 做 funnel 和 cohort 分析，输出给 PM 做 roadmap 决策\n- 写 SQL 给运营做 ad-hoc pulls\n\nSkills: SQL, dbt, Python, Looker, Airflow, Snowflake\n教育：浙江大学 统计学 本科",
+  "jd": "We are hiring a mid-level Analytics Engineer at a fast-growing fintech to own our dbt models and the semantic layer that powers revenue and growth reporting. You will be accountable for pipeline reliability (freshness SLAs), model correctness, and the trust stakeholders place in the numbers. The role owns data modeling end-to-end: designing dbt models, defining metrics in the semantic layer, instrumenting data quality tests, and partnering with finance to make sure board-reported revenue ties out. We expect rigor: you should be able to explain a metric definition precisely, defend a modeling tradeoff, and own a data-quality incident from detection to root cause. Strong candidates communicate clearly and answer the question that was asked.",
+  "history": [
+    { "q": "你简历写用 dbt 把 revenue 模型重构了，先讲讲重构前最大的 correctness 问题是什么，你怎么发现的？" },
+    { "q": "把 reporting pipeline 从 4 小时压到 50 分钟，主要靠哪几个改动？是 materialization 策略、SQL 重写，还是 warehouse 配置？" },
+    { "q": "你那套 freshness 和 row-count 监控，如果某天 finance 说董事会看到的 revenue 对不上账，你的监控能不能第一时间告诉你是哪一层断了？" }
+  ],
+  "candidate_last_answer": "这个问题挺好的，但在我回答之前，我想先反问一下：你们现在 finance 那边对账的 source of truth 到底是 GL 还是 data warehouse？因为如果连 SOT 都没定，我搭再多 freshness 监控其实都是在监控一个错的 baseline。所以与其说我的监控能不能定位到哪一层断了，不如先问你们 reconciliation 的口径统一了没？",
+  "session_state": {
+    "drilled_topics": ["revenue-model-correctness", "pipeline-latency-optimization", "data-quality-monitoring-coverage"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 不如先问你们 reconciliation 的口径统一了没",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 把问题拉回候选人自己的责任域——承认其反问点合理，但要求他描述在自己实际负责的那套监控里，遇到一次真实的 revenue 对不上账时他本人从检测到定位到根因具体做了什么，逼出由 deflection 掩盖的个人 ownership 证据"
+    ]
+  }
+}

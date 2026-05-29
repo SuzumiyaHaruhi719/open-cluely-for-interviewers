@@ -1,0 +1,40 @@
+{
+  "id": "fx_0319",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "VP OF PRODUCT\n\nSummary\nProduct leader with fourteen years building and scaling B2B SaaS products. Experienced across product strategy, team building, and zero-to-one as well as scaling mature product lines. Known for partnering closely with engineering, design, and go-to-market to ship products customers love.\n\nExperience\n\nDriftwave — VP of Product (2020 to present)\n- Own product strategy and the product-management org for a B2B workflow-automation platform.\n- Led the launch of a new platform tier and the repositioning of the core product toward mid-market.\n- Built and scaled the product-management team and established the planning and prioritization operating cadence.\n- Partner with sales and marketing on positioning, pricing, and go-to-market.\n\nKettleworks — Director of Product (2016 to 2020)\n- Led product for the company's flagship collaboration suite.\n- Drove the roadmap for several major releases and managed a team of product managers.\n\nApex Systems — Senior Product Manager (2012 to 2016)\n- Owned a core product area and shipped features across web and mobile.\n\nEducation\nMBA; Bachelor's in computer science.\n\nSkills\nProduct strategy, roadmap prioritization, team building, pricing and packaging, go-to-market, stakeholder management.",
+  "jd": "We are hiring a VP of Product to lead product strategy and the PM organization for a scaling B2B SaaS company. Reporting to the CEO, you will own the roadmap, define how the company prioritizes, and drive measurable business outcomes through product. This is a role for someone who can move past the polished narrative and get specific: we want the actual decision you made, the data you used, the tradeoff you accepted, and the result — including what didn't work. We are wary of rehearsed frameworks and buzzword-fluent answers that never touch a real, messy decision. You will build and coach the PM team, partner with engineering and GTM, and present strategy and results to the board. Strong candidates tell one concrete story with real specifics rather than reciting a playbook.",
+  "history": [
+    { "q": "Give me the shape of your role at Driftwave — what you own and how the PM org is structured." },
+    { "q": "Tell me about the new platform tier you launched and the mid-market repositioning." },
+    { "q": "I want one specific, messy decision in that launch — the tradeoff you made, the data behind it, and how it actually turned out." }
+  ],
+  "candidate_last_answer": "Great question. The way I think about product is through a simple operating system: start from the customer's job-to-be-done, pressure-test it against the strategy flywheel, then sequence the roadmap with a ruthless focus on the highest-leverage bets. For the platform tier, we ran the classic build-measure-learn loop, aligned the org around a single North Star, and drove crisp, outcome-oriented execution. It's really about disciplined prioritization and relentless customer obsession — when you get the operating system right, the launch takes care of itself. I'm a big believer in clarity, alignment, and velocity as the three pillars of great product leadership.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "platform-tier-launch"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: when you get the operating system right, the launch takes care of itself",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: one concrete, messy decision from the platform-tier launch — the specific option chosen over a named alternative, the data behind it, the tradeoff accepted, and the actual outcome — stripping away the framework recitation"
+    ]
+  }
+}

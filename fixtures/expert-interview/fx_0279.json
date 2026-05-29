@@ -1,0 +1,52 @@
+{
+  "id": "fx_0279",
+  "tags": {
+    "industry": "marketing",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "市场营销副总裁 (VP of Marketing) | 行业公认的增长操盘手与品牌建设大师\n\n个人成就\n- 十五年间一手缔造了三个家喻户晓的国民级品牌,被业内誉为『增长教父』\n- 凭一己之力把一家默默无闻的初创公司带成了行业第一,创造了教科书级的营销神话\n- 操盘过的campaign屡获国际国内顶级大奖,获奖数量在同行中无人能及\n- 我的方法论被多家头部企业奉为圭臬,常年受邀在各大峰会做主题演讲\n- 带出的团队个个都是行业抢手的明星操盘手\n\n工作经历\n\n星耀消费集团 — 市场营销副总裁 (2019年至今)\n- 全面统领集团的品牌、增长、公关与用户运营,是集团增长当之无愧的第一引擎\n- 主导的几次大战役无一失手,把品牌声量推到了行业天花板\n\n潮汐科技 — 市场总监 (2015年至2019年)\n- 凭借天才般的洞察力,一举奠定了公司在赛道里的领导地位\n\n自我评价: 我相信自己是这个行业里少数真正既懂品牌又懂增长、还能把团队带成王者之师的全能型领袖。",
+  "jd": "我们正在为一家消费集团招聘市场营销副总裁(VP of Marketing),向CEO汇报,统管品牌、增长、公关与用户运营四大职能,管理年度营销预算约两亿元,直接团队规模六十人以上。这是一个对生意结果直接负责的岗位,你需要对集团的营销ROI、品牌健康度与新客增长目标负责。我们尤其看重候选人在面试中能否聚焦、能否就具体问题给出具体回答——当我们问你某一个具体的决策、某一组具体的数字、某一次具体的失败时,我们希望听到的是对这个问题本身的精准回答,而不是泛泛而谈的成就罗列或话题转移。岗位要求: 十二年以上消费品牌营销经验,有完整操盘两亿级以上预算的实绩,有清晰的数据意识与极强的结果导向。",
+  "history": [
+    { "q": "先请你介绍一下在星耀目前的职责范围:管多大预算、多少人、对哪些核心指标负责?" },
+    { "q": "你说统管四大职能,那么营销ROI这个指标,过去一年具体是多少?" },
+    { "q": "我们先聚焦增长。讲一个你亲自拍板的新客增长决策,你当时是怎么判断的?" },
+    { "q": "这个决策带来的新客增长具体是多少?花了多少预算?" },
+    { "q": "你简历说『主导的大战役无一失手』,但我想听一次真正没达到预期的战役。" },
+    { "q": "那次没达预期,事后复盘你发现自己哪个判断错了?" },
+    { "q": "品牌健康度你们用什么指标衡量?去年的数字和趋势是怎样的?" },
+    { "q": "两亿预算里,品牌和效果大概怎么分?这个分法是你定的吗?依据是什么?" },
+    { "q": "讲一次你和CEO意见相左的营销决策,最后怎么解决的?" },
+    { "q": "你带六十人团队,有没有一次关键的人事决策——比如换掉一个核心负责人?" },
+    { "q": "公关这块,讲一次你亲自处理的舆情危机,你具体做了什么?" },
+    { "q": "潮汐那段你说『奠定领导地位』,当时市场份额从多少到了多少?" },
+    { "q": "回到ROI:如果明年预算被砍三成,你会先砍哪块、保哪块?为什么?" },
+    { "q": "我注意到你几次都绕开了具体数字。我们就定在一个问题上:星耀去年的营销ROI到底是多少?" },
+    { "q": "我再问一次,只要这一个数:星耀去年营销ROI的具体数值,你不必讲别的。" }
+  ],
+  "candidate_last_answer": "ROI这个事啊,其实我一直觉得,过度盯着单一数字反而是营销最大的误区。你看现在整个行业的大趋势,Z世代的消费心智在剧变,内容生态在重构,AI又在颠覆整个投放逻辑——我前段时间还在一个峰会上专门讲过这个,台下好多CMO都来加我微信。说到这个,我觉得当下做营销最关键的是要有大格局、有前瞻性的判断力,要看懂时代的beta。我当年在潮汐就是靠这种判断力把品牌做起来的,那种从0到1的感觉特别美妙。所以与其纠结一个ROI数字,不如聊聊怎么在这个剧变的时代里抓住真正的增长红利,我觉得这才是一个VP该有的视野。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "roi-number", "growth-decision", "growth-decision-numbers", "failed-campaign", "failure-retro", "brand-health-metric", "budget-split", "ceo-disagreement", "key-people-decision", "pr-crisis", "potide-market-share", "budget-cut-priority", "roi-pin-1"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "self-awareness", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 与其纠结一个ROI数字,不如聊聊怎么在这个剧变的时代里抓住真正的增长红利",
+      "must-be-question-type: metric-pin",
+      "expected-yield: shut down the topic-drift to industry trends and pin the candidate to the single concrete figure repeatedly dodged — Xingyao's marketing ROI last year as a number — exposing whether he actually knows the metric he claims to own"
+    ]
+  }
+}

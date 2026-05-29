@@ -1,0 +1,47 @@
+{
+  "id": "fx_0307",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Junior Software Engineer | Full-Stack | Cloud-Native | Microservices | CI/CD | Agile | TDD | Scalable Distributed Systems\n\nKeywords: JavaScript, TypeScript, React, Node.js, Express, REST, GraphQL, PostgreSQL, MongoDB, Redis, Docker, Kubernetes, AWS, Terraform, Kafka, gRPC, WebSockets, Jest, Cypress, Git, Prometheus, Grafana, OAuth2, microservices, event-driven, serverless, high-availability, fault-tolerant\n\nExperience\nSoftware Engineer I, Cardinal Systems (2024–present)\n- Built and shipped features across a React frontend and a Node.js backend\n- Contributed to a service that handles a high volume of requests\n- Worked with Docker, Kubernetes, and AWS in a cloud-native microservices architecture\n- Improved API performance and added observability with Prometheus and Grafana\n\nProjects\n- Personal project: a real-time chat app using WebSockets and Redis pub/sub\n\nSkills: see keywords above\nEducation: B.S., Computer Science (2024)",
+  "jd": "Cardinal Systems is hiring a Junior Software Engineer for our platform team. You'll work in a Node.js and React codebase, contribute to backend services, and learn our observability and deployment stack. In the interview we care less about buzzword breadth and more about depth on something you actually built: can you explain how a piece of it works end to end, what you personally implemented, and why you made a specific technical choice. We are evaluating for clear technical communication under follow-up questions, honest scoping of your own contribution, and the ability to stay on the actual mechanism rather than drifting into adjacent topics.",
+  "history": [
+    { "q": "Pick one feature you actually built at Cardinal and walk me through it." },
+    { "q": "You mentioned improving API performance. What specifically was slow, and how did you find out?" },
+    { "q": "What change did you make to improve it?" },
+    { "q": "How did you measure that the change actually helped?" },
+    { "q": "You list Kafka and gRPC. Did you use those at Cardinal, or are they from coursework?" },
+    { "q": "Let's go to your chat app. How does a message get from one client to another — walk the path." },
+    { "q": "Why did you use Redis pub/sub there instead of just keeping connections in memory?" },
+    { "q": "What happens if a user is connected to a different server instance than the sender?" },
+    { "q": "Have you actually run that app on more than one instance, or is the multi-instance part theoretical?" },
+    { "q": "Let's stay on the API performance fix at Cardinal. What was the specific bottleneck you found?" },
+    { "q": "Concretely: what was the slow query or call, how did you confirm it was the bottleneck, and what exactly did you change?" }
+  ],
+  "candidate_last_answer": "Okay so — sorry, I'm a little nervous — the API thing, there was an endpoint that was slow, and I remember the dashboard was kind of red, and, um, there's a lot that goes into latency right, like it could be the database, could be network, could be the load balancer, GC pauses, all of that. We were also mid-migration to Kubernetes around then so things were a bit chaotic. I think it was a query? Or maybe an N+1 kind of situation, I've read about those. I added an index at some point, I'm pretty sure, and it got better. Sorry, what was the exact part you wanted — the bottleneck or the fix?",
+  "session_state": {
+    "drilled_topics": ["feature-walkthrough", "perf-what-was-slow", "perf-change-made", "perf-measurement", "kafka-grpc-provenance", "chat-message-path", "redis-pubsub-rationale", "cross-instance-delivery", "multi-instance-reality", "bottleneck-identification", "bottleneck-and-fix-detail"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "technical-depth", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I think it was a query? Or maybe an N+1 kind of situation, I've read about those. I added an index at some point, I'm pretty sure",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete, ordered account of one real performance fix — the specific slow query or call, the exact signal that confirmed it was the bottleneck, the precise change (which index on which column, or which query rewrite), and the before/after latency — cutting through the nervous hedging and adjacent-topic drift"
+    ]
+  }
+}

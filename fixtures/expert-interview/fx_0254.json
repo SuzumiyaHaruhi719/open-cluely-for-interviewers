@@ -1,0 +1,41 @@
+{
+  "id": "fx_0254",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Priya Nair\nProduct Designer — visionary, award-winning, 6x impact\n\nABOUT\nA world-class product designer who consistently delivers groundbreaking, best-in-class experiences that delight millions. I don't just design screens — I redefine entire categories. Every product I touch sees transformational results, and stakeholders routinely describe my work as the gold standard. I am a relentless craftsperson and a fearless design leader who elevates every team I join.\n\nLEGENDARY WINS\n- Single-handedly drove a complete redesign that revolutionized our flagship checkout and unlocked massive revenue.\n- Pioneered a design system so influential it became the envy of the industry.\n- Universally praised by leadership as the most impactful designer they have ever worked with.\n- Mentored countless designers into superstars.\n\nEXPERIENCE\nFinch (consumer fintech) — Product Designer (2022-present)\n- Lead designer for the payments and checkout surface in a cross-functional squad (PM, 4 engineers, a researcher).\n- Owned the end-to-end redesign of the card-add and checkout flow.\n- Run weekly design critique for the payments pod and partner closely with user research.\n\nBrightline (B2B SaaS) — Product Designer (2019-2022)\n- Designed onboarding and admin-settings experiences for a workforce-scheduling product.\n- Built and maintained the team's component library in Figma.\n\nSKILLS\nFigma, design systems, interaction design, prototyping, usability testing, a11y (WCAG AA), basic HTML/CSS, light data analysis (Amplitude, Looker).\n\nEDUCATION\nB.F.A., Interaction Design.\n\nPHILOSOPHY\nGreat design is invisible. I sweat every pixel and every edge case, and I back my decisions with evidence.",
+  "jd": "Finch is hiring a Mid-level Product Designer for our Payments pod. You will own end-to-end design for checkout and money-movement flows, partner daily with a PM, engineers, and a researcher, and ship instrumented experiments. We care less about adjectives and more about how you actually work: we want a designer who can state a specific problem, the exact change they made, the metric they moved, and what they would do differently. You will present design rationale to the pod and to leadership, and you will be expected to tie your work to outcomes (conversion, error rate, time-on-task) with real numbers. Strong Figma, a portfolio of shipped work, and comfort with quantitative usability data required. We value precise, evidence-backed communicators over self-promotion.",
+  "history": [
+    { "q": "Your resume leans hard on superlatives. Let's get concrete: tell me about the checkout redesign at Finch — what specific problem were you solving?" },
+    { "q": "What was the single biggest change you made to the card-add flow?" },
+    { "q": "How did you validate that change before shipping it to everyone?" },
+    { "q": "What did the metrics show after launch?" },
+    { "q": "What's one thing about that redesign you'd do differently with hindsight?" }
+  ],
+  "candidate_last_answer": "The biggest change was collapsing card entry from three screens into one and auto-detecting the card network from the first six digits so we could drop the manual card-type dropdown. We shipped it as a 50/50 A/B test to about 80,000 users over three weeks. Card-add completion went from 71% to 79%, and add-card support tickets dropped roughly 30% in that window. What I'd do differently: I under-tested the error states — our inline validation for expired cards was confusing for about 4% of failures, and we patched it two weeks post-launch. I'd build the error matrix before the happy path next time.",
+  "session_state": {
+    "drilled_topics": ["checkout-problem-framing", "biggest-change", "pre-launch-validation", "post-launch-metrics", "retrospective-learning"],
+    "current_competency_target": "design-impact-evidence",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "design-impact-evidence",
+    "missing_evidence": [
+      { "competency": "design-impact-evidence", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "design-impact-evidence", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: our inline validation for expired cards was confusing for about 4% of failures",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: how the candidate diagnosed and resolved the expired-card validation failure — what signal surfaced the 4% confusion, the design alternatives they weighed, and what they shipped to fix it — confirming the depth of ownership behind an already-specific answer"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "fx_0316",
+  "tags": {
+    "industry": "research",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "研究科学家（中级）\n\n概述\n四年应用机器学习研究经验，方向为语音与音频信号处理。专注于把研究原型转化为可上线的稳定模型。\n\n工作经历\n\n云听智能 — 研究科学家（2021 年至今）\n- 情境：公司的实时降噪模型在低信噪比的远场场景下表现差，用户在嘈杂环境投诉明显。\n- 任务：负责把远场场景的语音可懂度做上去，同时不能增加超过五毫秒的推理延迟。\n- 行动：设计了一个轻量的双路频谱掩码网络，并引入带噪声课程的训练策略，分阶段提高训练样本的难度。\n- 结果：在内部远场测试集上，客观指标 PESQ 从二点一提升到二点六，词错误率相对下降十八个百分点，推理延迟只增加三毫秒。\n\n声智科技 — 算法工程师（2019 年至 2021 年）\n- 情境：唤醒词模型误唤醒率偏高。\n- 任务：在不降低唤醒率的前提下压低误唤醒。\n- 行动：重构了负样本挖掘流程，加入难负例采样。\n- 结果：误唤醒率下降到原来的三分之一，唤醒率保持不变。\n\n教育\n知名高校信号处理方向硕士。\n\n技能\n语音增强、声学模型、PyTorch、模型压缩、客观与主观评测。",
+  "jd": "我们正在为语音团队招聘一名中级研究科学家，向资深科学家汇报，负责实时语音增强与降噪方向。该岗位要求候选人能够端到端地推动课题：定义问题、设计可证伪的实验、用客观与主观指标验证，并把模型稳定地部署到延迟受限的实时场景。我们看重实验的严谨与诚实——你需要清楚区分相关与因果，能报告指标的真实分布，并坦率说明方法的局限。岗位需要与工程团队协作做模型压缩与上线，并能清楚解释每一个设计取舍背后的理由。我们关注干净、可复现的实验结论，以及候选人对自己亲手工作的清晰把握。",
+  "history": [
+    { "q": "先讲讲你近一年最有代表性的一个项目，把背景说清楚。" },
+    { "q": "你提到远场低信噪比场景表现差，这个问题最初是怎么被定位到的？" },
+    { "q": "你设计的双路频谱掩码网络，核心思路是什么？为什么用两路？" },
+    { "q": "带噪声课程的训练策略，具体是怎么分阶段的？" },
+    { "q": "PESQ 从二点一到二点六，这个测试集的规模和构成是什么？" },
+    { "q": "现在精确讲一遍：那个延迟只增加三毫秒是怎么测的？在什么硬件、什么 batch 设置下？" }
+  ],
+  "candidate_last_answer": "延迟是在目标端侧芯片上、单路实时流式推理、batch 等于一的设置下测的，和线上部署完全一致。我用同一段三十分钟的远场音频，分别跑改动前和改动后的模型各五遍，取每帧处理时间的中位数。基线单帧是八点一毫秒，新模型是十一点二毫秒，差值就是三点一毫秒，我四舍五入说成三毫秒。这里要说明：这是中位数，P99 会更高一点，到了十四毫秒左右，仍在我们五毫秒预算之外的尾部需要继续优化。",
+  "session_state": {
+    "drilled_topics": ["representative-project", "problem-localization", "network-design", "curriculum-strategy", "test-set-composition", "latency-measurement"],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: P99 会更高一点，到了十四毫秒左右",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 逼他说清在 P99 已超出五毫秒延迟预算的情况下，他凭什么判断这个模型可以上线，以及他在可懂度收益与尾部延迟之间是怎么权衡和取舍的"
+    ]
+  }
+}

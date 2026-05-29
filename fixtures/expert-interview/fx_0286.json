@@ -1,0 +1,51 @@
+{
+  "id": "fx_0286",
+  "tags": {
+    "industry": "healthcare",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周敏 | 高级临床质量经理 | 9年三甲医院医疗质量与患者安全经验\n\n核心业绩（STAR）：\n- 情境：2021年心内科导管室术后院内感染率高于全院基线。任务：半年内把导管相关血流感染率降到千分之二以下。行动：我牵头组建了由感控、护理、临床三方的多学科小组，重新制定了置管核查清单，落地了每日导管必要性评估，并按周公示各班组依从率。结果：6个月后CRBSI从千分之四点八降到千分之一点六，相关额外住院日下降约340天。\n- 情境：用药错误上报系统形同虚设，护士怕担责不愿报。任务：建立非惩罚性用药差错上报机制。行动：我推动把上报与绩效脱钩，设计了匿名上报通道，并每月做根因分析复盘会。结果：主动上报量上升3倍，但实际伤害性差错下降42%，说明隐患被提前拦截。\n- 情境：JCI复评在即，病历书写时效不达标。任务：3个月内把首次病程记录8小时完成率提到95%以上。行动：我把时效指标嵌进电子病历的硬质控节点，对12个科室主任逐一沟通整改。结果：完成率从71%提升到97%，顺利通过复评。\n\n最近任职：仁济中心医院 — 高级临床质量经理（2020至今）\n此前：康华医院 — 医疗质量专员（2016-2020）\n资质：注册护士、六西格玛绿带、患者安全认证（CPPS）",
+  "jd": "我们招聘一位高级临床质量经理，向医疗副院长汇报，负责一家大型三甲医院的医疗质量、患者安全与等级评审。你将主导院感防控、不良事件管理、核心制度落地三大板块，对院内感染率、不良事件主动上报率、病历质控达标率等关键指标负责。你需要能独立设计并落地一套非惩罚性的不良事件上报文化，主导多学科协作把硬指标做下来，并能在JCI/等级评审等高压节点统筹全院整改。我们看重能用数据说话、能在临床一线推动行为改变、并在涉及患者安全的灰色地带做出审慎判断的人。",
+  "history": [
+    { "q": "先介绍下你在仁济的职责范围——管哪几块、向谁汇报、对哪些质量指标直接负责。" },
+    { "q": "简历里导管室那个项目，先说当时CRBSI高的根因到底是什么，你怎么定位的？" },
+    { "q": "你提到重做了置管核查清单，清单里最关键的一两条改动是什么？" },
+    { "q": "每日导管必要性评估，是谁来评、怎么保证不流于形式？" },
+    { "q": "按周公示依从率，有没有遇到科室主任的阻力？你怎么处理的？" },
+    { "q": "CRBSI从千分之四点八降到一点六，这个数据是怎么统计的、分母怎么定的？" },
+    { "q": "再说用药差错那块，把上报和绩效脱钩，院领导一开始支持吗？" },
+    { "q": "你说主动上报涨了3倍但伤害性差错降了42%，怎么排除是大家漏报了严重差错？" },
+    { "q": "根因分析复盘会，你印象最深的一次拦截了什么隐患？" },
+    { "q": "病历质控那个，把时效嵌进电子病历硬节点，临床有没有抱怨影响效率？" },
+    { "q": "12个科室主任逐一沟通，最难啃的是哪个科、你怎么谈下来的？" },
+    { "q": "这三个项目里，如果资源只够保一个长期运转，你保哪个？" },
+    { "q": "假设现在有一例非惩罚性上报的差错，其实涉及明显违规操作、且伤害了患者，你怎么处理上报人？" },
+    { "q": "最后一个：导管项目结束一年后，CRBSI有没有反弹？如果有，你认为是哪个环节松了？" }
+  ],
+  "candidate_last_answer": "有小幅反弹，一年后回到了千分之二点三，但没回到原来的水平。我复盘下来主要松在每日必要性评估这一环——项目期我盯得紧，结项后评估变成了走形式，护士在系统里直接默认勾选『需保留』。所以问题不在清单本身，而在评估的真实性失去了监督。我后来的对策是把必要性评估改成必须填写保留理由的强制文本框，并抽查比对。这件事让我明白行为改变如果不嵌进流程的硬约束，靠人盯人是守不住的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "crbsi-root-cause", "checklist-changes", "daily-necessity-review", "compliance-publication", "crbsi-measurement", "non-punitive-reporting-buy-in", "underreporting-control", "rca-case", "emr-hard-stop", "department-negotiation", "resource-prioritization", "ethics-of-violation-report", "crbsi-rebound"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 护士在系统里直接默认勾选『需保留』",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 让候选人还原从发现默认勾选、到改成强制填写保留理由、再到抽查比对这一整条决策链的时间线与触发点——具体什么时候发现的、抽查比对的频率和样本量、改动后反弹是否被压回，检验其对失效机制的判断是否落到了可执行且经过验证的闭环"
+    ]
+  }
+}

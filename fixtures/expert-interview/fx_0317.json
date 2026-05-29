@@ -1,0 +1,50 @@
+{
+  "id": "fx_0317",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Staff Product Designer / 资深产品设计师\n\n个人简介\n资深产品设计师，专注 B 端复杂工作流与 design system。擅长把模糊的业务需求转化为清晰、可扩展的产品界面，推动跨团队的设计一致性。\n\n工作经历\n\n云策数据 — Staff Product Designer（2020 至今）\n- 主导数据分析平台的 information architecture 重构与 design system 建设。\n- 负责核心 dashboard 编辑器的端到端设计,从 discovery 到 handoff。\n- 推动设计与前端共建组件库,提升团队交付一致性。\n- 带教两名 junior designer,建立设计评审机制。\n\n品睿科技 — Senior Designer（2017 至 2020）\n- 负责移动端 onboarding 与付费转化流程的设计迭代。\n- 参与多个 A/B 实验的设计方案。\n\n教育\n交互设计本科。\n\n技能\nFigma、design system、information architecture、prototyping、user research、设计协作流程。",
+  "jd": "We are hiring a Staff Product Designer to lead design for our data-analytics platform. You will own complex workflow design end to end, drive the design system, and partner with PM and engineering on measurable product outcomes. This is a senior, high-trust role: we expect you to back up impact claims with credible, verifiable numbers and a clear account of how the metric was measured and isolated. 我们尤其警惕那种听起来很大、却经不起追问的数字——你需要能说清楚口径、对照组和你个人的贡献边界。You will mentor other designers, run design reviews, and help define how success is measured for the surfaces you own. Strong candidates are precise about attribution and comfortable when an interviewer pressure-tests a metric.",
+  "history": [
+    { "q": "Give me a tour of what you own at 云策数据 today." },
+    { "q": "你简历里没怎么放数字,先讲讲你最有影响力的一个设计项目是什么。" },
+    { "q": "What problem was the dashboard editor redesign trying to solve?" },
+    { "q": "你是怎么发现这个问题的?有哪些 research 或数据支撑?" },
+    { "q": "Walk me through the single most important design decision you made." },
+    { "q": "What was the measurable impact of that redesign?" },
+    { "q": "那个数字具体是怎么定义和测出来的?口径是什么?" },
+    { "q": "What was the baseline before your change, and over what period did you measure?" },
+    { "q": "How did you isolate your design change from other things shipping at the same time?" },
+    { "q": "这个项目里,哪些是你个人设计的,哪些是团队或前端做的?" },
+    { "q": "Did any metric get worse, or any segment regress, after the redesign?" },
+    { "q": "Let's pin the number down. You said engagement went up — give me the exact before value, the exact after value, the metric definition, and the control group." }
+  ],
+  "candidate_last_answer": "这么说吧,这次 redesign 的影响是巨大的,基本上是 game-changing 的级别。我们的用户 engagement 直接翻了大概十倍,daily active 我印象里也至少涨了好几倍,retention 几乎是肉眼可见地起飞。说实话具体的 before/after 数字我手头没有,口径当时也是产品那边定的,但我可以很肯定地说这是公司近几年最成功的设计改版,所有人都这么认为。这个量级的提升,在整个行业里都是很少见的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "most-impactful-project", "problem-statement", "discovery-evidence", "key-decision", "claimed-impact", "metric-definition", "baseline-period", "isolation-of-change", "personal-vs-team", "regression-check"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "experimental-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 用户 engagement 直接翻了大概十倍",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼他把『翻了十倍』落到一个可核验的 before/after 绝对数值、明确的 engagement 口径和对照组上,暴露这个夸大数字背后是否有任何真实测量支撑"
+    ]
+  }
+}

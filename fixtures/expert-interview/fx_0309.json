@@ -1,0 +1,41 @@
+{
+  "id": "fx_0309",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "资深研究科学家 / Staff Research Scientist\n\n个人简介\n业内公认的机器学习方向顶尖专家之一，多次以一己之力推动团队取得突破性成果。研究方向覆盖 large-scale recommendation、representation learning 与 LLM post-training，是同行公认的 thought leader。\n\n工作经历\n\n星轨智能研究院 — Staff Research Scientist（2019 至今）\n- 作为绝对核心，独自定义了实验室未来三年的 research roadmap，被誉为团队的灵魂人物。\n- 主导 retrieval-augmented ranking 项目，将线上推荐场景的 engagement 提升了一个数量级，远超所有竞品。\n- 发表顶会论文若干，单篇 citation 数行业领先，是该子领域绕不开的工作。\n- 一手搭建了团队的 offline evaluation pipeline，被全公司奉为标准范式。\n\n锐合科技 — Senior ML Engineer（2015 至 2019）\n- 负责 CTR 预估模型迭代，多个项目均由本人 carry 上线。\n\n教育\n知名高校计算机硕士，在校期间即被认为是天才型选手。\n\n技能\nPyTorch、distributed training、recommendation systems、A/B testing、causal inference。",
+  "jd": "We are hiring a Staff Research Scientist to join our applied ML research group working on large-scale recommendation and ranking. You will own a research agenda end-to-end: forming hypotheses, designing offline and online experiments, and shipping models that move real product metrics. The role requires rigor in experimental design — we expect you to distinguish correlation from causation, to defend your evaluation methodology, and to report effect sizes honestly with confidence intervals. You will collaborate with engineering to productionize models and with product to define success metrics. Strong publication record is a plus, but day-to-day impact is judged by clean experiments and reproducible gains on the recommendation surface. 该岗位需要候选人能把研究成果转化为线上可复现的指标提升。",
+  "history": [
+    { "q": "Tell me about the research problem you're most proud of in the last two years — set up the context for me." },
+    { "q": "你简历里写 retrieval-augmented ranking 把 engagement 提升了一个数量级，能不能讲讲这个项目的起点是什么？" },
+    { "q": "What was your specific hypothesis going in, and how did you design the experiment to test it?" },
+    { "q": "How did you make sure the gain was causal and not just a seasonality or traffic-mix artifact?" },
+    { "q": "Walk me through the exact result — effect size, the metric, and how confident you were in it." }
+  ],
+  "candidate_last_answer": "好的,我把这个项目完整讲一遍。Situation 是这样:我们的推荐主场景当时用的是 two-tower retrieval 加一个 GBDT 排序,长尾 query 上的 engagement 一直上不去,产品侧的目标是把 7 日留存提起来。Task 落到我头上,我要负责验证『retrieval-augmented ranking 能不能在不牺牲延迟的前提下提升长尾效果』这个假设。Action 上我做了三步:第一,我把检索召回从 top-200 扩到 top-1000 并引入一个 cross-encoder 重排;第二,为了控因果,我用了 switchback 实验设计,按地理区域和时间窗交替分流,避开了 traffic-mix 的混淆;第三,我用 CUPED 做了方差缩减来提高 sensitivity。Result 是:线上 A/B 跑了三周,长尾 query 的 engagement 相对提升 4.2%,95% 置信区间是 2.8% 到 5.6%,p 值小于 0.01,而 P99 延迟只涨了 6 毫秒,在预算之内。这个结论后来在两个独立的 holdout 区域上都复现了。",
+  "session_state": {
+    "drilled_topics": ["proudest-research", "project-origin", "hypothesis-and-design", "causal-validity", "effect-size"],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 两个独立的 holdout 区域上都复现了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼他给出两个 holdout 区域各自的真实 effect size 与置信区间,并把这个口述的 4.2% 与简历里『提升一个数量级』的夸大表述对齐,解释两者差距及简历说法是否站得住脚"
+    ]
+  }
+}

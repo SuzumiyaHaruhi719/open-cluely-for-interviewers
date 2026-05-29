@@ -1,0 +1,38 @@
+{
+  "id": "fx_0249",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Dr. Maren Holloway\nDirector of Curriculum & Instruction\n\nSummary\nEducator and instructional leader with more than fifteen years across the K-12 and district-office space. Began as a middle-school science teacher, moved into instructional coaching, then into district curriculum leadership. Currently oversee curriculum, assessment, and professional learning for a mid-size public district. Passionate about equitable access to rigorous instruction and about building teacher capacity rather than buying it.\n\nExperience\nRiver Heights Unified School District — Director of Curriculum & Instruction\n- Lead the curriculum, assessment, and professional-development functions for the district's elementary and secondary schools.\n- Oversee the adoption cycle for core instructional materials and chair the materials review committee.\n- Direct the district's multi-tiered system of supports work and the associated interventions.\n- Manage a team of content coordinators and instructional coaches.\n- Partner with principals on school-improvement planning and with the assessment office on benchmark design.\n- Led the rollout of a new literacy framework across all elementary schools.\n\nLakeside Community Schools — Instructional Coach, then Coaching Lead\n- Coached teachers across content areas on standards-aligned instruction and formative assessment.\n- Built and facilitated professional-learning communities.\n- Designed and ran summer institutes for new teachers.\n\nEarlier — Middle School Science Teacher\n- Taught grades 7-8 science; served as department chair and mentored student teachers.\n\nEducation\n- Ed.D., Educational Leadership\n- M.Ed., Curriculum & Instruction\n- B.S., Biology\n\nWhat I care about\nI believe instructional improvement is slow, relational work. I am proud of the trust I have built with principals and teachers, and of the way our coaching model has changed how teams talk about student work. I am looking for a role with broader system ownership where I can shape strategy, not just programs.",
+  "jd": "Brightwater Public Schools seeks an Assistant Superintendent for Teaching & Learning to lead academic strategy across 31 schools serving 24,000 students. Reporting to the Superintendent, you will own measurable improvement in literacy and math outcomes, the instructional-materials portfolio, the district assessment system, and a multimillion-dollar professional-learning budget. We are looking for a leader who can set a clear theory of action and then prove it worked: you will be expected to speak fluently about the achievement data behind your prior initiatives — proficiency movement, subgroup gaps closed, the cost and reach of your professional learning, and how you knew an initiative was working versus merely popular. You will present quarterly to the school board on academic progress. The successful candidate has prior district-level instructional leadership, has led at least one large-scale curriculum adoption, and can demonstrate outcomes, not just activities. This is a cabinet-level role.",
+  "history": [
+    { "q": "You led a new literacy framework across all your elementary schools. Tell me what changed for students — what moved, by how much, and how you knew it was the framework and not something else." }
+  ],
+  "candidate_last_answer": "Right. So. ... ... ... Sorry — give me a second to think about how to frame this. ... Okay. So the literacy rollout was a big lift, and honestly there's a lot I could say. We did a ton of professional learning, we got the coaches deeply involved, principals were at the table, and the energy around it was real — teachers were genuinely excited, which you don't always get. And, you know, walkthrough data, the feel of the buildings, the way teams started talking about student work in PLCs, all of that shifted. As for the actual proficiency numbers, I'd want to be careful not to overstate, because attribution in education is genuinely hard and there were other things happening that year too — staffing changes, a new schedule, the usual. But the qualitative signal was strong and the framework clearly raised the floor for what good instruction looked like, even if I can't hand you a clean percentage-point number off the top of my head.",
+  "session_state": {
+    "drilled_topics": ["literacy-framework-outcomes"],
+    "current_competency_target": "outcomes-evidence",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-evidence",
+    "missing_evidence": [
+      { "competency": "outcomes-evidence", "evidence_type": "metric" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "outcomes-evidence", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I can't hand you a clean percentage-point number off the top of my head",
+      "must-be-question-type: metric-pin",
+      "expected-yield: at least one concrete literacy outcome metric (e.g. percent proficient before vs. after, or a specific subgroup gap delta), the baseline year, and the data source — distinguishing real student-outcome movement from teacher enthusiasm and walkthrough impressions"
+    ]
+  }
+}

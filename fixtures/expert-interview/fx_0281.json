@@ -1,0 +1,38 @@
+{
+  "id": "fx_0281",
+  "tags": {
+    "industry": "legal",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "法务总监 (Director of Legal) | 12年公司法务与合规经验\n\n概述\n负责公司商业合同、合规与争议解决,搭建过从零到一的法务体系。Experienced in commercial contracts, corporate compliance, and dispute management for high-growth tech companies.\n\n工作经历\n\n远翥科技 — 法务总监 (2020年至今)\n- 负责公司整体法务管理,直接向GC汇报\n- 简历开头写『独立搭建从零到一的法务体系』,但本段又写明入职时公司已有一个三人法务团队和一套现成的合同模板库,本人主要做的是优化\n- 牵头处理一起重大商业合同纠纷,for a contract dispute involving roughly 20M RMB in disputed amount\n- 推动合同审批流程线上化,把平均合同review周期缩短\n\n联璞集团 — 高级法务经理 (2016年至2020年)\n- 负责商业合同审查与谈判支持\n- 此处写『主导公司所有重大并购的法律尽调』,but另一段写明并购尽调主要由外部律所主办、本人仅做协调对接,并未主导\n- 处理日常合规咨询与员工关系法律事务\n\n技能: Commercial Contracts, Compliance, Dispute Resolution, M&A支持, 合同管理体系\n资质: 法律职业资格证 / 通过司法考试\n学历: 法学硕士",
+  "jd": "我们正在为一家成长期科技公司招聘一名法务总监(Director of Legal),向General Counsel汇报,负责商业合同、合规体系与争议解决,管理一支五人法务团队。This role owns the commercial contracting function end-to-end and is accountable for cycle time, risk posture, and the outcome of major disputes. 岗位职责: 搭建并owner公司的合同管理与审批体系,主导重大商业纠纷的策略与解决,推动合规体系落地。岗位要求: 十年以上公司法务经验,有独立主导重大商业纠纷或并购法律事务的真实实绩。我们会在面试中重点厘清候选人到底亲自owner了哪些事——哪些是你拍板的法律策略、哪些只是配合外部律所,我们希望你能讲清楚自己的真实角色边界,而不是把团队或外部律所的工作算在自己头上。面试控制在四十五分钟内,请尽量聚焦。",
+  "history": [
+    { "q": "你简历开头说『独立搭建从零到一的法务体系』,但后面又写入职时已有三人团队和现成模板库。你到底是从零搭建,还是在已有基础上优化?" },
+    { "q": "那起约2000万的商业合同纠纷,讲讲你个人在里面owner了什么——哪些法律策略是你拍板的,哪些是外部律所做的?" }
+  ],
+  "candidate_last_answer": "这个纠纷其实特别有意思,我得从头讲清楚背景,这样你才能理解我的角色。Well, the dispute本身源于一份长期供货合同的价格调整条款,这里我先科普一下中国合同法里关于情势变更的适用——其实很多人都搞混了情势变更和商业风险的边界,这是个很值得展开的法理问题,我在好几个内部培训里都讲过。说到培训,我特别重视团队的法律素养建设,我在远翥还推动建了一个case library,每个月组织大家做案例研讨,这个文化我觉得是我留下的最宝贵的资产之一。哦对了,关于这个供货合同,对方当时还涉及一个跨境管辖的问题,这又牵扯到仲裁条款的效力,我可以再花点时间讲讲国际仲裁和国内诉讼的策略选择差异……总之这个案子方方面面都很复杂,我投入了大量精力。",
+  "session_state": {
+    "drilled_topics": ["legal-system-buildout-contradiction"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication-focus", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 总之这个案子方方面面都很复杂,我投入了大量精力",
+      "must-be-question-type: action-attribution",
+      "expected-yield: cut off the tangents on contract-law theory and training culture and pin the candidate to the actual question — which specific legal strategy decisions in the 20M dispute he personally made and signed off on, versus what outside counsel led"
+    ]
+  }
+}

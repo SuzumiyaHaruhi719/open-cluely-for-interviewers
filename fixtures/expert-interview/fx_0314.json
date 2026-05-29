@@ -1,0 +1,50 @@
+{
+  "id": "fx_0314",
+  "tags": {
+    "industry": "research",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "研究实习生 / 算法研究实习生（在读硕士）\n\n个人简介\n所在课题组公认最具天赋的学生之一，凭一己之力扛起组里计算机视觉方向的多个核心项目，被导师视为可遇不可求的苗子。\n\n科研与实习经历\n\n某高校视觉计算实验室 — 研究助理（2023 年至今）\n- 作为绝对主力，独自完成了组里小样本图像分割方向的全部关键工作，成果远超同届。\n- 主导一个半监督分割项目，把分割精度做到了组内历史最好水平，无人能及。\n- 一手搭建了实验室的训练与评测流水线，被师弟师妹奉为标准模板。\n\n星澜视觉科技 — 算法实习生（2023 年暑期）\n- 参与缺陷检测模型的迭代，多个改动均由本人推动落地，深受团队倚重。\n\n论文\n以学生第一作者身份投稿计算机视觉会议一篇（在审）。\n\n教育\n顶尖高校计算机科学硕士在读，本科期间成绩名列前茅，被认为是天才型选手。\n\n技能\nPyTorch、语义分割、半监督学习、数据增强、实验设计、模型评测。",
+  "jd": "我们正在为公司视觉算法组招聘一名研究实习生，向一位资深研究员汇报，参与半监督与小样本图像分割方向的课题。该岗位适合在读硕士或博士，要求候选人能够清楚地讲清楚自己亲手做过什么、改了哪一行、为什么这么改，以及实验结论的真实数字和置信范围。我们更看重诚实、严谨与可复现，而不是头衔或论文数量本身。你需要能够区分『自己做的』与『组里其他人做的』，并坦率说明哪些工作还没完成。岗位职责包括复现基线、设计消融实验、维护评测流程，并把结果清晰地汇报给导师与工程团队。我们关注的是干净、可重复的实验结论。",
+  "history": [
+    { "q": "先简单介绍一下你目前在实验室主要负责的方向和你具体的角色。" },
+    { "q": "你简历里写半监督分割项目做到了组内历史最好水平，先讲讲这个项目要解决的核心问题是什么。" },
+    { "q": "你当时的基线是什么？是你自己复现的还是用的别人的代码？" },
+    { "q": "你提出的核心改动是哪一点？为什么认为它会有效？" },
+    { "q": "这个改动相比基线，精度提升了多少？用的是什么指标？" },
+    { "q": "这个结果你跑了几个随机种子？方差有多大？" },
+    { "q": "有没有做消融实验来确认是这个改动起的作用，而不是别的因素？" },
+    { "q": "你说一手搭建了评测流水线，这个流水线里哪一部分是你写的，哪一部分是已有的？" },
+    { "q": "在这个项目里，有没有哪些工作其实是组里其他同学做的？" },
+    { "q": "暑期那段缺陷检测实习，你具体改了模型的哪个部分？" },
+    { "q": "那次改动上线了吗？效果是用什么指标衡量的？" },
+    { "q": "到目前为止，这个半监督项目还有哪些没做完、你自己不满意的地方？" },
+    { "q": "如果让你再重做一遍这个项目，你会先改哪一步？" },
+    { "q": "现在请精确地说：你那个半监督改动相比基线，在什么数据集、什么指标上提升了多少，跑了几个种子，置信范围是多少？" }
+  ],
+  "candidate_last_answer": "在 Pascal VOC 的 1/8 标注划分上，我那个改动把 mIoU 从基线的 68.1 提到了 70.4，平均提升 2.3 个点。我跑了四个随机种子，结果是 70.4 加减 0.3，方差不大。指标是标准的 mIoU，评测划分和基线完全一致。这里我要诚实说明：所谓『组内历史最好』只是在我们组维护的这个内部基线上最好，并没有和公开 SOTA 对齐，这一点简历写得有点过了。",
+  "session_state": {
+    "drilled_topics": ["current-role", "project-problem", "baseline-source", "core-change", "accuracy-gain", "seed-variance", "ablation", "pipeline-ownership", "others-contribution", "internship-change", "internship-metric", "unfinished-work", "counterfactual-redo"],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把 mIoU 从基线的 68.1 提到了 70.4",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼他说清这 2.3 个点是否来自他那一个改动本身（而非数据增强或训练时长等其他变量），消融里单独剥离该改动后的增量是多少"
+    ]
+  }
+}

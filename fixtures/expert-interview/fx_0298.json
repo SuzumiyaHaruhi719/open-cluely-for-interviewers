@@ -1,0 +1,48 @@
+{
+  "id": "fx_0298",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Director of Academic Programs\n\nMeridian Online Academy — Director of Curriculum & Instruction (2020–present)\nLakeside Unified — Assistant Director, Secondary Programs (2016–2020)\nClassroom teacher, high-school mathematics (2009–2016)\n\nM.Ed., Curriculum & Instruction\nB.S., Mathematics\n\nLeads curriculum strategy across a fully online 6–12 school serving ~4,000 students.\nOversees a team of instructional coaches and content leads.\nResponsible for learning outcomes, accreditation readiness, and teacher professional development.\n\nFocus areas: competency-based learning, data-informed instruction, equity in outcomes, teacher coaching.",
+  "jd": "Meridian Online Academy seeks a Director of Academic Programs to own learning outcomes for our 6–12 online school. Reporting to the Chief Academic Officer, you will set curriculum strategy, lead a team of instructional coaches and content leads, and be accountable for measurable improvements in course-completion and proficiency rates across a diverse, distributed student body. We need a leader who can move past education buzzwords to concrete mechanisms: how exactly a coaching model changes teacher practice, how an intervention reaches a struggling student, what the data showed, and what tradeoffs the strategy required. You will present outcomes to the board and to accreditors, defend resource allocation, and partner with the engineering team on the learning platform. The interview will probe for specific, first-person accounts of how you turned a strategy into a result.",
+  "history": [
+    { "q": "Walk me through your current scope at Meridian — team, students, what you're accountable for." },
+    { "q": "You focus on competency-based learning. In plain terms, what did you actually change about how courses work?" },
+    { "q": "Pick one initiative you led that moved a learning outcome. Start with the problem." },
+    { "q": "What was the specific metric and the starting number?" },
+    { "q": "Walk me through the mechanism — how did the change reach an individual struggling student?" },
+    { "q": "What did your instructional coaches do differently after you rolled this out?" },
+    { "q": "How did you know the coaching actually changed teacher practice, not just attendance at a workshop?" },
+    { "q": "What tradeoff did this strategy force — what did you give up or de-prioritize?" },
+    { "q": "Who disagreed with the approach internally, and how did you handle it?" },
+    { "q": "What did the outcome data show after a full year?" },
+    { "q": "Give me the concrete chain: from your decision to a teacher's classroom to a student's result. Be specific." }
+  ],
+  "candidate_last_answer": "At the end of the day, it's about meeting every learner where they are and unlocking their full potential. We leaned into a culture of high expectations and data-driven, student-centered instruction. We empowered our educators, we removed barriers, and we drove equity at scale. When you align people around a shared north star and you operationalize a growth mindset, outcomes follow. That's really the journey we went on — transforming the learner experience holistically.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cbl-concrete-change", "initiative-problem", "metric-baseline", "intervention-mechanism", "coach-behavior-change", "practice-vs-attendance", "strategy-tradeoff", "internal-disagreement", "outcome-data"],
+    "current_competency_target": "execution-mechanism",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "execution-mechanism",
+    "missing_evidence": [
+      { "competency": "execution-mechanism", "evidence_type": "mechanism" },
+      { "competency": "execution-mechanism", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: When you align people around a shared north star and you operationalize a growth mindset, outcomes follow",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the literal step-by-step causal chain from one decision the director made, to what a specific coach then did, to what a named teacher changed in a course, to what happened to an individual struggling student's measured proficiency — stripping away the slogans"
+    ]
+  }
+}

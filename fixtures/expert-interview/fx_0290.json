@@ -1,0 +1,51 @@
+{
+  "id": "fx_0290",
+  "tags": {
+    "industry": "operations",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Marcus Bell\nWarehouse Operations Associate — 2 years\n\nFairlane Fulfillment (2023-present) — Operations Associate\n- Pick/pack on the outbound line; cross-trained on receiving and returns\n- Ran a small pilot to reorder the pick path; cut walk time per order\n- Track daily units-per-hour and report mispicks to the shift lead\n\nNorthgate Logistics (2022-2023) — Warehouse Associate\n- Loading/unloading, cycle counts, basic WMS scanning\n\nSkills: WMS scanners, cycle counting, pallet jack certified, basic Excel\nEducation: High school diploma; coursework in supply-chain fundamentals (community college, ongoing)",
+  "jd": "Fairlane Fulfillment is hiring an Operations Associate for our outbound shift, with a path toward Shift Lead. Reporting to the Shift Supervisor, you will own your pick/pack station throughput, accuracy (mispick rate), and safe handling. We want someone who looks for small process wins, measures them honestly, and can describe exactly what they did and what changed. You will track units-per-hour, flag bottlenecks, and help test improvements to the pick path and slotting. Strong early-career candidates tell a clear story: situation, what they were asked to do, the specific actions they took, and the measured result — including timeframe.",
+  "history": [
+    { "q": "Tell me what you own on the outbound line day to day." },
+    { "q": "What's your typical units-per-hour, and how do you know that number?" },
+    { "q": "You mentioned a pick-path pilot. What problem made you want to change the path?" },
+    { "q": "Whose idea was the pilot — yours or the shift lead's?" },
+    { "q": "Walk me through what you actually changed about the path." },
+    { "q": "How long did the pilot run before you trusted the result?" },
+    { "q": "What was walk time per order before, and after?" },
+    { "q": "How did you measure walk time — steps, a timer, the WMS?" },
+    { "q": "Did the change affect mispick rate, up or down?" },
+    { "q": "Did anyone push back on changing the path? Who, and why?" },
+    { "q": "How did you get the rest of the shift to adopt it?" },
+    { "q": "What would you have done differently if you ran it again?" },
+    { "q": "Did the win hold up a month later, or did it drift back?" },
+    { "q": "What's the next process win you'd go after on this line?" },
+    { "q": "Give me the whole pick-path story start to finish, with the numbers." }
+  ],
+  "candidate_last_answer": "Situation: our station was at the back, so the highest-volume SKUs were a long walk away — I was averaging about 62 units per hour. Task: the shift lead asked me to test whether reslotting the top movers closer would help. Action: over two weeks I logged my own walk time with the WMS timestamps, then we moved the top 20 SKUs by volume into the three bays nearest my pack bench and re-taped the floor labels myself. I retrained the two associates on my shift on the new locations. Result: walk time per order dropped from about 41 seconds to 26, units-per-hour went from 62 to 78 over the next month, and mispicks actually fell a little because the labels were fresh. It held — a month later we were still at 76 to 78.",
+  "session_state": {
+    "drilled_topics": ["outbound-scope", "uph-baseline", "pilot-problem", "pilot-ownership", "path-change-detail", "pilot-duration", "walk-time-before-after", "measurement-method", "mispick-effect", "pushback", "adoption", "retro", "durability", "next-win", "full-story"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: walk time per order dropped from about 41 seconds to 26",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: probe the cost side of the reslotting win — what got displaced when the top 20 SKUs took the three nearest bays, whether slower movers or another associate's path got worse, and whether the 62-to-78 UPH gain held once total-station throughput (not just his own) is counted, testing whether he reasons about the tradeoff or only his local metric"
+    ]
+  }
+}

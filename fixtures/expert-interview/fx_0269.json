@@ -1,0 +1,39 @@
+{
+  "id": "fx_0269",
+  "tags": {
+    "industry": "legal",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Robert Castellano — VP, Legal & Deputy General Counsel\nNew York, NY | r.castellano@example.com\n\nProfile\nSenior legal executive leading commercial, regulatory, and litigation functions for high-growth technology companies. Trusted advisor to the CEO and board. Builds and scales legal organizations and manages outside-counsel relationships.\n\nExperience\nVP, Legal & Deputy GC — Vantage Software, 2020–present\nLead the commercial contracts, privacy, and litigation teams. Oversee enterprise deal support, regulatory strategy, and dispute resolution. Manage the outside-counsel panel and the legal operations function. Partner with sales, product, and finance on go-to-market and compliance.\n\nAssociate General Counsel — Meridian Health Tech, 2015–2020\nLed commercial and regulatory matters. Built the contracts playbook and supported financing and M&A activity.\n\nSenior Counsel — Whitlock & Reyes LLP, 2009–2015\nCommercial litigation and regulatory advisory.\n\nEducation\nJ.D., Columbia Law School · B.A. Political Science, Georgetown University\n\nAdmissions: New York, California",
+  "jd": "Vantage Software is hiring a VP of Legal / Deputy General Counsel to lead commercial contracting, privacy, and litigation for a fast-scaling enterprise SaaS company. You will own the outside-counsel budget, lead a team of attorneys and legal-ops staff, and partner with the CRO on enterprise deal velocity. We need a leader who can quantify the business impact of legal work with credibility — contract cycle-time reduction, outside-counsel spend management, win/settlement outcomes on disputes — and who can substantiate those numbers under scrutiny from the CFO and audit committee. You will report to the General Counsel and present to the board. Strong candidates are precise about what was measured, how, and over what period, and never overstate.",
+  "history": [
+    { "q": "Walk me through your scope at Vantage — team, budget, and the functions you own." },
+    { "q": "Tell me about the contract cycle-time work. What was the business impact you delivered?" }
+  ],
+  "candidate_last_answer": "The contract work was transformational, frankly. When I came in, deals were crawling. I personally overhauled the entire commercial contracting function and we cut cycle time by basically 90% almost overnight — we went from months to essentially same-day on most enterprise deals. That alone unlocked something like a quarter of a billion dollars in accelerated revenue, and I'd estimate we saved the company tens of millions in outside-counsel fees in the first year. Honestly our win rate on disputes went to nearly 100% under my watch. I don't have the exact decks in front of me, but those are the kinds of numbers we were driving — easily nine figures of value to the business. Legal stopped being a cost center and became a profit driver, full stop.",
+  "session_state": {
+    "drilled_topics": ["vp-scope", "contract-cycle-time-impact"],
+    "current_competency_target": "numbers-credibility",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "numbers-credibility",
+    "missing_evidence": [
+      { "competency": "numbers-credibility", "evidence_type": "metric" },
+      { "competency": "numbers-credibility", "evidence_type": "mechanism" },
+      { "competency": "numbers-credibility", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: That alone unlocked something like a quarter of a billion dollars in accelerated revenue",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate to substantiate the $250M claim — the baseline and post-change median cycle time with sample sizes, how legal cycle-time was causally attributed to accelerated revenue (vs. sales/demand), who calculated the figure, and where it would be auditable — exposing whether the number is real or rhetorical"
+    ]
+  }
+}

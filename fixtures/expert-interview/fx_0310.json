@@ -1,0 +1,50 @@
+{
+  "id": "fx_0310",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Product Designer / 产品设计师\n\n微岚科技 — Product Designer（2021–至今）\n- 负责 B 端 SaaS 控制台的 redesign 与设计系统维护。\n- 主导 onboarding flow 改版,把新用户首日激活率从 38% 提到 49%。\n\n趣点互动 — UI Designer（2019–2021）\n- 负责移动端 C 端产品的 visual 与交互。\n\n技能: Figma、design system、用户访谈、prototyping、A/B testing。\n教育: 视觉传达设计本科。",
+  "jd": "We're looking for a mid-level Product Designer to own the end-to-end design of our B2B analytics console. You'll partner with PM and engineering to ship features, maintain and extend our design system, and run lightweight usability studies. The ideal candidate can articulate concrete design decisions and their measurable impact: which flow you changed, why, and what metric moved. 你需要清楚说明每一个设计改动背后的取舍,以及它对激活、留存或任务完成率的具体影响。We value tight, evidence-backed reasoning over portfolio polish. Familiarity with Figma, component libraries, and basic experiment readouts is expected.",
+  "history": [
+    { "q": "Give me a quick tour of what you own at 微岚 today." },
+    { "q": "你简历里写 onboarding 改版把首日激活率从 38% 提到 49%,先讲讲改版前的问题是什么。" },
+    { "q": "What was the single biggest friction point you identified in the old onboarding?" },
+    { "q": "How did you find that friction point — what data or research pointed to it?" },
+    { "q": "Walk me through the specific change you made to the first screen." },
+    { "q": "为什么是这个改法,而不是直接砍掉那一步?当时有没有别的备选方案?" },
+    { "q": "How did you validate the new flow before full rollout?" },
+    { "q": "那 38% 到 49% 是怎么测的?对照组是怎么分的?" },
+    { "q": "Did any sub-segment get worse after the change?" },
+    { "q": "How long did the experiment run, and when did you call it?" },
+    { "q": "What did you do about the design-system debt this change introduced?" },
+    { "q": "如果让你重做一遍,你会改掉哪一个决定?" },
+    { "q": "Now zoom into the activation metric: how exactly was 'first-day activation' defined in your experiment?" },
+    { "q": "Be precise: what event counted as 'activated', and over what window — and was that definition fixed before the test started?" }
+  ],
+  "candidate_last_answer": "激活的定义是固定在实验开始前的:新用户在注册后 24 小时内完成至少一次『创建并保存一个 dashboard』这个动作,就算 activated。窗口是从注册时间戳起算的自然 24 小时,不是日历日。这个口径在 PRD 里写死了,实验全程没动过。对照组和实验组都用同一套埋点和同一个口径。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "onboarding-problem", "friction-point", "discovery-method", "first-screen-change", "design-alternatives", "pre-rollout-validation", "ab-measurement", "segment-regression", "experiment-duration", "design-system-debt", "counterfactual-redo", "metric-definition"],
+    "current_competency_target": "metric-definition-rigor",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "metric-definition-rigor",
+    "missing_evidence": [
+      { "competency": "metric-definition-rigor", "evidence_type": "scope" },
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 创建并保存一个 dashboard",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 追问这个 activation 事件口径是否会被空 dashboard 或测试数据刷量,以及为什么选『保存 dashboard』而非更下游的留存动作作为激活判定"
+    ]
+  }
+}
