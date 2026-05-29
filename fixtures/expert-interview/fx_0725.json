@@ -1,0 +1,43 @@
+{
+  "id": "fx_0725",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "金融风险管理副总裁\n\n经历\n某股份制银行 — 风险管理部副总裁（2019 至今）\n- 负责零售信贷的风险策略与模型治理，管理一支约 25 人的团队\n- 任内主导反欺诈与授信策略迭代，把零售不良率从 2.1% 降到 1.3%\n\n某消费金融公司 — 风险总监（2019–2022）\n- 搭建从 0 到 1 的信贷风控体系，负责评分卡与额度策略\n- 团队规模 40 余人\n\n说明\n- 我目前直接管理 12 人的核心策略团队\n- 在消费金融期间，公司放款规模三年翻了十倍，风控全程零踩雷\n- 我牵头的模型上线后，审批通过率和不良率同时改善\n\n技能：信贷风险策略、评分卡建模、反欺诈、模型治理、监管报送",
+  "jd": "我们为一家持牌消费金融机构招聘风险管理副总裁，向 CRO 汇报，统管零售信贷的风险策略、评分卡模型治理与反欺诈体系。你将对组合不良率、审批通过率、风险调整后收益等核心指标负责，主导策略与模型的迭代节奏，并在放款规模增长与资产质量之间做出清晰取舍。我们重点考察：把一次风险策略调整的因果链与确切指标讲透的能力、面对追问时对简历中前后不一致之处的坦诚澄清、以及在监管约束下做合规决策的判断力。要求 10 年以上信贷风险经验、5 年以上团队管理，有可量化的风险治理案例。",
+  "history": [
+    { "q": "先讲讲你现在的 scope——管多大团队，对哪些风险指标直接负责？" },
+    { "q": "我注意到时间有点对不上：你写现银行 2019 年至今，又写消费金融 2019 到 2022，这两段是重叠的吗？" },
+    { "q": "团队规模你前面写 25 人，下面又写直接管理 12 人。到底是多少？" },
+    { "q": "你说不良率从 2.1% 降到 1.3%，这是同一个组合口径吗？分母变过没有？" },
+    { "q": "消费金融那段你说放款三年翻十倍、风控零踩雷。规模快速扩张时不良率通常会上升，你怎么做到的？" },
+    { "q": "你提到模型上线后审批通过率和不良率同时改善。通过率提升一般会带来更多风险，这两个同时变好的机制是什么？" },
+    { "q": "我们再回到时间线——如果两段经历真的重叠，能不能讲清楚那段时间你到底全职在哪一家？" }
+  ],
+  "candidate_last_answer": "你是不是一直在揪着我简历上的时间不放？说实话我觉得这种问法没什么意义。简历就是个概要，谁会把每个月份都写得分毫不差？你要是真做过风险这行就该知道，重叠很正常，可能是顾问关系、可能是交接期，这些细节重要吗？我管过的团队规模在不同阶段本来就不一样，25 和 12 又不矛盾。你与其在这儿抠数字对不对得上，不如问点有水平的问题。我做出来的结果摆在那儿，不良率实打实降下来了，这个你质疑得了吗？",
+  "session_state": {
+    "drilled_topics": ["current-scope", "timeline-overlap", "team-size-discrepancy", "npl-denominator", "scale-vs-quality", "approval-vs-npl-mechanism"],
+    "current_competency_target": "integrity-consistency",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "integrity-consistency",
+    "missing_evidence": [
+      { "competency": "integrity-consistency", "evidence_type": "timeline" },
+      { "competency": "integrity-consistency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 重叠很正常，可能是顾问关系、可能是交接期",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a concrete, dated reconciliation of the two overlapping 2019 roles — which one was full-time when, and whether the other was advisory — instead of dismissing the discrepancy as an irrelevant detail"
+    ]
+  }
+}

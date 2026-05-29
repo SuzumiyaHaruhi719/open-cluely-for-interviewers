@@ -1,0 +1,50 @@
+{
+  "id": "fx_0698",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "资深工艺工程师 / Senior Process Engineer — 半导体封测方向\n\n关键词标签：SPC、Cpk、Ppk、DOE、6 Sigma、Green Belt、FMEA、8D、APQP、PPAP、Gauge R&R、MSA、Yield improvement、Wire Bonding、Die Attach、Molding、良率提升、稼动率、OEE、根因分析、TPM、Kaizen、Lean、防呆Poka-Yoke、量产导入NPI、CIM、Recipe优化、设备稼动\n\n现任：某半导体封装测试大厂 资深工艺工程师（2019至今）。负责后段封装(wire bond / molding)的工艺维护、良率提升与新品导入。这是一段我个人非常自豪的经历，因为我几乎以一己之力把整条线的关键指标都做到了行业顶尖水平，主管常说我是部门里最强的工艺工程师。\n\n此前：某面板厂 工艺工程师（2015–2019），负责模组段制程与不良改善。\n\n教育：知名理工院校 材料科学与工程 硕士。证书：六西格玛绿带、内部审核员。",
+  "jd": "某半导体封测企业招聘资深工艺工程师(Senior Process Engineer)，负责后段封装制程(wire bonding、die attach、molding)的良率与稼动率。岗位职责：owning良率提升项目并用SPC/DOE方法定位变异源；维护各产品的FMEA与control plan；主导porosity、bonding不良等问题的8D root-cause；支持新品导入(NPI)的PPAP；与设备、品保跨部门协同处理客户containment。任职要求：材料/电子/机械相关硕士优先，五年以上封测制程经验；熟练Cpk/Ppk、MSA/Gauge R&R与统计良率追踪；能在客户稽核(customer audit)中用数据为制程辩护。本轮面试将重点验证候选人所声称数字的真实测量来源，而非名词罗列。On-site为主。",
+  "history": [
+    { "q": "先讲讲你现在负责的这条后段封装线——产品、月产能、你直接负责哪几道制程。" },
+    { "q": "你简历里说几乎一己之力把关键指标做到行业顶尖。先挑良率讲，你接手时baseline yield大概多少？" },
+    { "q": "当时最大的不良模式(failure mode)是什么？占比多少？" },
+    { "q": "你用什么方法定位的根因？讲一个你实际跑过的DOE，因子是怎么选的。" },
+    { "q": "改善之后那个关键bonding特性的Cpk从多少到了多少？用哪台量测设备、怎么做的Gauge R&R？" },
+    { "q": "稼动率(OEE)方面你做了什么？availability、performance、quality分别怎么变化的？" },
+    { "q": "讲一个你主导的8D，从D0到D8，你个人负责哪几步？" },
+    { "q": "NPI导入你跑过几个PPAP？挑一个差点出问题的讲讲。" },
+    { "q": "客户稽核时有没有被挑战过你的数据？当时怎么用数据回应的？" },
+    { "q": "你说的这些良率数字，是你自己的工程tracking、品保系统、还是MES里出来的？" },
+    { "q": "团队里这些改善有多少是你独立做的、有多少是工程师同事一起做的？" },
+    { "q": "好，给我现在最实在的数字：你这条线当前的良率和稼动率分别是多少？怎么测的？" }
+  ],
+  "candidate_last_answer": "说实话现在这条线的数字真的是逆天。我们良率基本上是百分之百，我个人估计就是99.99%往上，稼动率(OEE)也常年挂在99%以上，basically是全行业天花板的水平。这些都是我一个人扛下来的，整个厂里没有第二个人能做到。每一个你能想到的KPI我们都是断层第一，客户每次稽核完都说我们是他们见过最强的supplier。反正就是全方位碾压，没有对手。",
+  "session_state": {
+    "drilled_topics": ["current-line-scope", "yield-baseline", "dominant-failure-mode", "doe-rootcause", "cpk-and-gauge-rr", "oee-breakdown", "8d-personal-steps", "ppap-near-miss", "customer-audit-challenge", "yield-data-source", "individual-vs-team"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 46
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "credibility", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我个人估计就是99.99%往上",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 一个有据可查的良率与稼动率数字，明确绑定到具体测量系统（MES、品保SPC报表或工程log）与时间区间，戳穿99.99%是凭空估计还是从远低于此的真实数据夸大而来"
+    ]
+  }
+}

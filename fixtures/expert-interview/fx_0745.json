@@ -1,0 +1,38 @@
+{
+  "id": "fx_0745",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "资深研究科学家（Staff Research Scientist）　10年计算生物学与药物发现经验\n\n个人概述：从结构生物学博士成长为药企 AI 药物发现方向的资深科学家，长期负责小分子虚拟筛选与活性预测模型的研发与落地。\n\n某创新药企　资深研究科学家（2019.09 至今）\n- 背景：早期管线苗头化合物命中率低，湿实验验证成本高，研发周期长。\n- 任务：搭建一套整合分子对接与机器学习的虚拟筛选流程，提高先导化合物命中率。\n- 行动：构建基于图神经网络的活性预测模型，整合公司内部 12 万条历史 SAR 数据，与药化团队建立『预测-合成-回灌』闭环。\n- 结果：苗头到先导阶段的湿实验命中率从 4% 提升到 17%，单个靶点的先导发现周期从 11 个月缩短到 6 个月，模型已应用于 5 个在研靶点。\n\n某高校系统生物学实验室　博士后（2016.07-2019.08）\n- 发表一作论文 6 篇，主导蛋白-配体结合自由能计算方法学研究。\n\n技能：分子对接、图神经网络、自由能微扰（FEP）、Python、SAR 数据建模、湿实验协作\n学历：结构生物学博士",
+  "jd": "某 AI 制药公司招聘『资深研究科学家（Staff，计算驱动药物发现）』，向计算负责人汇报，负责活性与成药性预测模型的核心研发，并推动其在多个真实管线靶点上的落地。核心目标：把苗头到先导阶段的命中率提升到 15% 以上、把单靶点先导发现周期压缩 40%、建立可复用的『预测-合成-回灌』主动学习闭环。要求 8 年以上计算化学或计算生物学经验，独立主导过模型从研发到管线应用的完整闭环，深入理解分子对接、机器学习活性预测与湿实验的协作边界，能用数据向研发委员会证明计算的真实贡献。",
+  "history": [
+    { "q": "你简历里最亮眼的是把苗头到先导的湿实验命中率从 4% 提到了 17%。请你具体讲讲：这个提升里，你那套图神经网络模型到底贡献了多少？怎么把模型的功劳和药化团队选化合物的经验区分开？" }
+  ],
+  "candidate_last_answer": "嗯，这个命中率的提升其实是一个比较系统性的工程，是多方面因素共同作用的结果。模型肯定是起了很重要的作用的，整个流程跑通之后效果就出来了，团队配合也很关键，大家一起努力把这个事情推进了下去。所以很难说具体是哪一块贡献了多少，更多是一个整体的协同，最后数据上确实看到了明显的改善。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难说具体是哪一块贡献了多少",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 一个可归因的对照——例如未用模型筛选时的基线命中率 vs 模型推荐化合物的命中率，或一次模型推荐与药化经验判断分歧时的结果，迫使候选人用具体证据隔离图神经网络模型的真实增量贡献，而非以『系统性协同』模糊归因"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_0749",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Senior Product Manager — 8 years in B2B SaaS\n\nSummary: PM focused on platform and growth surfaces; took a payments-onboarding product from beta to GA and led a checkout funnel rebuild.\n\nLedgerline (B2B fintech SaaS) — Senior PM, Payments Onboarding (2021–present)\n- Owned the merchant onboarding product; drove activation rate from 38% to 61%\n- Shipped a KYC document-capture flow that cut onboarding drop-off by a third\n- Led a cross-functional pod of 7 (eng, design, risk)\n\nBrightwork — Product Manager, Growth (2018–2021)\n- Ran the self-serve signup funnel; A/B testing program owner\n\nNote A: The onboarding revamp launched in Q1 2022 and we saw the activation lift within the first month.\nNote B: The KYC flow was the first thing I shipped after joining, in mid-2021, and the activation gains came after a six-month ramp.\n\nSkills: product discovery, experimentation, KYC/onboarding, funnel analytics, SQL, roadmap planning\nEducation: BS, Information Systems",
+  "jd": "A B2B payments platform is hiring a Senior Product Manager to own merchant onboarding and activation. Reporting to the Director of Product, you will own the activation funnel end to end, partner with risk and compliance on KYC, and run a disciplined experimentation program. First-year goals: lift activation from 55% to 68%, cut median time-to-first-transaction by 30%, and ship a redesigned KYC capture flow. We need a PM who can give a precise, consistent account of what they shipped and when, reason about funnel tradeoffs, and tie experiments to outcomes. Hybrid, 3 days onsite.",
+  "history": [
+    { "q": "Walk me through your scope at Ledgerline — what product you own and the pod you lead." },
+    { "q": "You drove activation from 38% to 61%. What was the single biggest lever?" },
+    { "q": "The KYC document-capture flow — when did it ship relative to the broader onboarding revamp?" },
+    { "q": "You said the revamp launched Q1 2022, but your resume note says the KYC flow shipped mid-2021 as your first project. Which came first?" },
+    { "q": "Let's pin the activation lift: did it show up within the first month, or after a six-month ramp? Your two notes say different things." },
+    { "q": "How did you isolate the activation gain from seasonality or a pricing change in the same period?" },
+    { "q": "I want one clean timeline: join date, KYC ship date, revamp launch date, and when activation hit 61%. Give me the four dates in order." }
+  ],
+  "candidate_last_answer": "Right, let me lay it out. So I joined in 2021, and the KYC flow was the first thing I shipped — that was mid-2021. The broader onboarding revamp launched in Q1 2022. The activation lift to 61%... okay, so we saw it within the first month after the revamp, which would be early 2022 — but it was also the result of the six-month ramp from the KYC work, so in a sense it landed before the revamp too. Wait — so the KYC was mid-2021, ramp is six months, that gets you to... early 2022, which is the revamp launch, so they kind of coincide. Honestly the activation hitting 61% and the revamp launching are sort of the same moment, give or take. I'd have to pull the exact dates from the launch docs, but the order was join, then KYC, then revamp, and the 61% was somewhere right around the revamp.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "activation-lever", "kyc-vs-revamp-order", "resume-note-contradiction", "lift-timing-contradiction", "confound-isolation"],
+    "current_competency_target": "timeline-coherence",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "timeline-coherence",
+    "missing_evidence": [
+      { "competency": "timeline-coherence", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the 61% was somewhere right around the revamp",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: four non-overlapping, internally consistent dates (join, KYC ship, revamp launch, month activation hit 61%) that resolve the contradiction between the within-first-month claim and the six-month-ramp claim, forcing a single coherent sequence instead of the 'they coincide / pull the docs' hedge"
+    ]
+  }
+}

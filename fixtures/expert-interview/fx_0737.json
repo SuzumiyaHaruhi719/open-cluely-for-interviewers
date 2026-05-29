@@ -1,0 +1,50 @@
+{
+  "id": "fx_0737",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "孙丽华 — 教学运营总监\n\n某全国连锁 K12 培训机构 · 2018 至今\n\n经历与数据(注:多处自相矛盾):\n- 简历摘要写『主导教研体系搭建,覆盖全国 300 家校区』;工作明细又写『负责华东区 40 家校区教学运营』\n- 一处写『学员续报率从 60% 提升到 85%』;另一处图表标注续报率为『行业平均 70% 左右,我们略高』\n- 写『带领 200 人教研与教务团队』;但下方组织描述写『直接下属 6 名区域教学经理』\n- 任职时间一处写 2018 年至今,另一处写『五年多教学管理经验』但又提到 2020 年才转入教学线\n\n负责: 教研标准化、师资培训、续报与转介绍、校区教学质量督导\n技能: 教学体系设计、师训、数据化运营\n教育: 教育学 硕士",
+  "jd": "我们是一家区域 K12 教育机构，正在招聘一名教学运营总监，向运营 VP 汇报，负责多校区的教学质量、师资培训与续报运营。你将对核心教学指标（续报率、满意度、师资达标率）负总责，并需要在管理层会议上用前后一致、可审计的数据说明成效。我们会重点核对简历中的覆盖范围、团队规模与指标口径是否一致。该岗位需主导一次跨校区的教研标准化改革，并对结果用清晰口径量化。",
+  "history": [
+    { "q": "先讲讲你现在负责的范围,覆盖多少校区,你直接管多少人。" },
+    { "q": "你简历一处写覆盖全国 300 家,一处写华东 40 家,以哪个为准？" },
+    { "q": "团队规模也对一下:200 人教研团队,还是 6 名区域经理直接下属？" },
+    { "q": "你的教学管理经验,是 2018 年开始还是 2020 年才转进来的？" },
+    { "q": "续报率这块,你写过 85%,又写过『略高于行业 70%』,到底是多少？" },
+    { "q": "续报率的口径是什么？按学期算还是按学年算,分母是谁？" },
+    { "q": "教研标准化改革,具体改了哪些动作？" },
+    { "q": "这个改革是你拍板的吗,还是总部统一推的？" },
+    { "q": "续报提升里,改革贡献了多少,招生季节性贡献了多少？" },
+    { "q": "师资达标率你们怎么定义和统计的？" },
+    { "q": "改革过程中有没有校区抵触,你怎么处理的？" },
+    { "q": "如果让你拿一个最硬的、能被审计的数字证明你的成效,你会拿哪个？" },
+    { "q": "我想把续报率钉死:确切是从多少、到多少、什么口径、覆盖多少校区？" }
+  ],
+  "candidate_last_answer": "续报率啊,我们是做到了行业最高水平,基本上全国数一数二,续报率我印象里冲到过 90% 以上,有的校区甚至接近 100%,满意度也是常年第一。你说口径…这个其实各校区统计方式不太一样,但总体上肯定是遥遥领先同行的,我们集团内部都拿我们区当标杆。具体覆盖多少家、确切百分之多少我得回去调数据,但反正就是行业天花板,这个我可以非常肯定地讲,做到了别人做不到的高度。",
+  "session_state": {
+    "drilled_topics": ["scope", "coverage-contradiction", "team-size-contradiction", "tenure-contradiction", "reretention-contradiction", "retention-definition", "reform-actions", "reform-owner", "reform-vs-seasonality", "teacher-cert-metric", "campus-resistance", "auditable-metric", "retention-pin"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "data-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 续报率我印象里冲到过 90% 以上",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one auditable retention figure with an explicit definition (per-term vs per-year, denominator) and the exact campus count it covers, forcing reconciliation of the resume's contradictory 85% / 『略高于 70%』 / 90%+ claims into a single defensible number"
+    ]
+  }
+}

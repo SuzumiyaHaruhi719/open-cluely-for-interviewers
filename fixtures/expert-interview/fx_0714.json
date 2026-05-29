@@ -1,0 +1,41 @@
+{
+  "id": "fx_0714",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Rebecca Aldridge\nSenior Instructional Designer / Learning Experience Lead\n\nSummary: Senior instructional designer with 8 years building learner-centered programs across K-12 and corporate L&D. I design transformative learning experiences that drive measurable outcomes and lasting behavior change.\n\nExperience:\nBrightpath Learning — Senior Instructional Designer (2020-present)\n- Led the redesign of the company's flagship onboarding curriculum, dramatically improving completion and learner satisfaction\n- Introduced a competency-based blended-learning model that significantly boosted knowledge retention\n- Partnered with SMEs to modernize content and elevate engagement across the catalog\n- Mentored junior designers and raised the overall quality bar of the team's output\n\nEverlearn Academy — Instructional Designer (2016-2020)\n- Built e-learning modules and facilitator guides; improved course quality and reduced development time\n\nSkills: curriculum design, Articulate Storyline, backward design, Kirkpatrick evaluation, accessibility (WCAG), LMS administration, facilitation\n\nEducation: M.Ed. Instructional Design & Technology; B.A. English\n\nNote: Resume intentionally omits specific metrics; candidate prefers to discuss numbers live.",
+  "jd": "Brightpath Learning is hiring a Senior Instructional Designer / Learning Experience Lead to own flagship curriculum redesigns end to end. You will partner with SMEs, apply backward design, and—critically—prove impact with evaluation data: completion rates, assessment-score gains, retention at 30/90 days, and Kirkpatrick Levels 2-3 where possible. Because the role is accountable to L&D leadership for ROI, we need a designer who attaches concrete numbers to every claim (baseline, post, sample size, window) and who can describe the specific instructional mechanism behind an outcome, not just the outcome's adjectives. Strong candidates resist buzzwords under questioning and can translate 'engagement improved' into a defined metric with a measured delta. Mentorship of junior designers and accessibility fluency (WCAG) are expected.",
+  "history": [
+    { "q": "Tell me about the flagship onboarding redesign at Brightpath — what was the scope and your role?" },
+    { "q": "You say completion 'dramatically improved.' What was the baseline completion rate, what did it become, and over what window?" },
+    { "q": "How did you measure knowledge retention for the competency-based model — what instrument, what sample?" },
+    { "q": "Give me the specific number: what was the retention delta, and at what interval (30 day, 90 day)?" }
+  ],
+  "candidate_last_answer": "So retention really transformed once we moved to the competency-based blended model — learners were so much more engaged and the feedback was overwhelmingly positive, people genuinely loved it. It was a real game-changer for the learner experience, and you could just feel the energy shift in the cohorts. Stakeholders were thrilled with the impact, and it became kind of the gold-standard template we pointed everyone to. I'm really proud of how it elevated the whole learning culture and drove that lasting behavior change we were after.",
+  "session_state": {
+    "drilled_topics": ["onboarding-redesign-scope", "completion-baseline-probe", "retention-instrument", "retention-delta-probe"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "intellectual-honesty", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: retention really transformed",
+      "must-be-question-type: metric-pin",
+      "expected-yield: converting 'transformed' into a defined retention metric with a measured delta — the assessment instrument used, the 30- or 90-day score before and after, and the cohort sample size — exposing whether any retention measurement was actually run or whether the claim rests entirely on engagement sentiment"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "fx_0717",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Product Designer — Platform & Design Systems\n\nSummary: End-to-end design leader fluent in design systems, design tokens, design ops, accessibility (WCAG 2.2 AA), service design, design thinking, atomic design, component governance, multi-brand theming, motion design, prototyping, user research, usability testing, information architecture, interaction design, cross-functional facilitation, north-star metrics, OKRs, agile, lean UX, and Figma/FigJam/Framer/Storybook/Zeplin tooling.\n\nExperience\nHelio Health Platform — Staff Product Designer, Design Systems (2021–present)\n- Owned the enterprise design system serving 9 product squads and 40+ engineers\n- Drove tokenization, theming, and component governance across web and mobile\nDriftpay — Senior Product Designer (2018–2021)\n- Led checkout and onboarding redesigns; partnered with research and analytics\nNimbus Labs — Product Designer (2016–2018)\n\nSkills: Figma, Storybook, design tokens, accessibility, design ops, prototyping, research, IA, motion",
+  "jd": "We're hiring a Staff Product Designer to own our design system as a platform serving nine product squads across web, iOS, and Android. You will set component governance, drive tokenization and multi-brand theming, define adoption metrics, and act as the connective tissue between design and engineering. This is a high-leverage, low-authority role: success means other designers and engineers adopt the system voluntarily because it is faster and better, not because they are forced to. We want evidence you can quantify adoption (coverage %, override rate, time-to-ship deltas), run a deprecation/migration without breaking nine teams, and make hard tradeoffs between flexibility and consistency. Strong systems thinking and crisp written communication are essential. You will report to the Head of Design and partner closely with a Staff Frontend Engineer.",
+  "history": [
+    { "q": "Give me the shape of your current role at Helio — what exactly does owning the design system mean for you day to day?" },
+    { "q": "Tell me about a migration or deprecation you ran across multiple squads. Start with the specific change and how you sequenced the rollout." }
+  ],
+  "candidate_last_answer": "Sure, so migrations are fascinating because they're really a microcosm of organizational change, right? And honestly this connects to something I've been thinking about a lot lately, which is how design systems are basically a form of internal product management, and that got me into reading about platform thinking, and there's this great essay about Stripe's internal tooling culture that I keep recommending to people. Anyway, the migration — we had this whole thing — but first I should mention that our team had just reorged, and the new EM and I had a really different philosophy about governance, which itself is a whole story, because before that I'd worked at Driftpay where governance was basically nonexistent and that taught me a ton about what not to do, like this one time the checkout team shipped their own button component and... where was I going with this? Oh right, you asked about the migration.",
+  "session_state": {
+    "drilled_topics": ["current-role-shape"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "mechanism" },
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "scope", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: where was I going with this? Oh right, you asked about the migration",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the actual ordered sequence of the migration the candidate ran across the nine squads — what changed first, how teams were cut over, and how breakage was prevented — with the tangents stripped"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "fx_0706",
+  "tags": {
+    "industry": "customer-support",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Marcus Whitfield — Senior Customer Support Lead\n\nThe single most impactful support operator most teams will ever hire. I don't manage queues — I redefine what world-class support means.\n\nSelected achievements:\n- Personally rescued a flagship enterprise account worth $4M ARR that three other leaders had already written off\n- Built, from scratch, the best escalation framework in the industry — competitors have since copied it\n- Took a struggling 12-person team and turned them into the highest-rated support pod the company had ever seen, full stop\n- CSAT under my leadership was always top-tier, routinely beating every other team by a wide margin\n- Recognized internally as the go-to person whenever anything truly hard or politically sensitive landed\n- Single-handedly designed the macros library that the entire org still runs on today\n\nExperience:\nHelioDesk (B2B SaaS) — Senior Support Lead (2021-present)\n- Lead a tier-2 escalation pod handling the most complex enterprise tickets\n- Own escalation playbooks, QA calibration, and mentoring of tier-1 agents\n\nBrightline Software — Support Specialist II (2018-2021)\n- Handled enterprise tickets and contributed to knowledge-base content\n\nSkills: escalation management, QA calibration, Zendesk, Intercom, enterprise relationship recovery, mentoring, knowledge management\n\nEducation: B.A. Communications",
+  "jd": "HelioDesk is hiring a Senior Customer Support Lead to own our tier-2 enterprise escalation function. Reporting to the Director of Support, you will lead a pod of senior agents handling our most complex and politically sensitive accounts, own the escalation playbook, run weekly QA calibration, and partner with Engineering and CSM on root-cause and prevention. You will be accountable for tier-2 CSAT, escalation cycle time, reopen rate, and the rate at which escalations are prevented upstream. We need someone who can show, with specifics, how they personally moved these numbers — not just describe philosophy. The ideal candidate is precise about their own contribution versus the team's, comfortable being challenged on details, and able to translate a messy individual save into a repeatable mechanism. This is a hands-on senior IC-plus-lead role, not a pure people-management role.",
+  "history": [
+    { "q": "Tell me about your current scope at HelioDesk — pod size, ticket types, what you personally own." },
+    { "q": "Your resume says you 'rescued a flagship enterprise account worth $4M ARR.' Walk me through that account specifically." },
+    { "q": "What was actually wrong with the account when it landed on your desk?" },
+    { "q": "Who else was involved in that save besides you?" },
+    { "q": "What did YOU personally do in week one of that recovery?" },
+    { "q": "How did you measure that the account was actually 'rescued' and not just temporarily calmed?" },
+    { "q": "You mention an escalation framework competitors copied. What's the core mechanism of it?" },
+    { "q": "How is that framework different from a standard sev-based triage model?" },
+    { "q": "What's your tier-2 CSAT right now, and how is it calculated?" },
+    { "q": "How does that compare to tier-1, and why the gap?" },
+    { "q": "Tell me about a time your framework failed or an escalation went badly." },
+    { "q": "What did you change afterward as a result?" },
+    { "q": "How do you run QA calibration with your pod week to week?" },
+    { "q": "What's your reopen rate, and what's driving the reopens?" },
+    { "q": "Give me a specific escalation you prevented upstream before it ever became a ticket." },
+    { "q": "What did mentoring a specific tier-1 agent look like — pick one person." },
+    { "q": "Let me push on the $4M number. How do you personally know your actions, versus the CSM's or the discount, were what retained that account?" },
+    { "q": "So attribute it for me concretely: what share of that retention was your work, and what's the evidence?" }
+  ],
+  "candidate_last_answer": "Honestly, can I ask you something? What would you even count as 'evidence' here? Because in my experience, the people who obsess over attributing every save to one person usually haven't run a real enterprise escalation. Do you actually think retention works like that — that you can split it into percentages? Let me turn it around: if you were the customer, would you care whose name was on the save, or would you care that the problem got fixed? I'm curious how you'd measure it, because from where I sit the result speaks for itself.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "account-save-narrative", "account-root-cause", "save-collaborators", "week-one-actions", "rescue-measurement", "framework-mechanism", "framework-differentiation", "tier2-csat-definition", "tier-gap", "framework-failure", "post-failure-change", "qa-calibration", "reopen-drivers", "upstream-prevention", "mentoring-specifics", "attribution-challenge"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the result speaks for itself",
+      "must-be-question-type: action-attribution",
+      "expected-yield: refusing the deflection and getting one concrete causal link — a specific action the candidate took (a call, a commitment, an engineering fix he drove) that the customer cited as the reason they renewed, distinguishing his contribution from the CSM's relationship work and any commercial discount"
+    ]
+  }
+}

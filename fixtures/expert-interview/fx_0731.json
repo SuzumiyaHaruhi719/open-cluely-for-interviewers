@@ -1,0 +1,38 @@
+{
+  "id": "fx_0731",
+  "tags": {
+    "industry": "education",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "王晓彤 — 初级课程设计师 / Junior Instructional Designer\n\nK12 在线教育公司 · 2023 至今 · 负责小学数学互动课件设计\n\nSTAR 经历:\n\n项目一 · 互动课件改版\n- Situation: 原有课件完课率(completion rate)只有 52%，学生中途流失严重\n- Task: 提升单元完课率，目标 70%\n- Action: 重新设计 storyboard，加入分段任务、即时反馈和游戏化 checkpoint，配合教研做了 2 轮 A/B test\n- Result: 三个月后完课率到 74%，单元平均停留时长提升约 40%\n\n项目二 · 教师培训材料\n- Situation: 新教师上手慢\n- Task: 做一套 onboarding 微课\n- Action: 设计 6 节短视频脚本 + quiz\n- Result: 新教师达标时间缩短\n\n技能: Articulate Storyline, Figma, ADDIE 模型, 基础数据分析(Excel)\n教育: 教育技术学 本科 2019-2023",
+  "jd": "我们是一家成长期 K12 EdTech 公司，正在招聘一名 Junior Instructional Designer 加入小学数学内容团队。You will design interactive lessons, run small A/B tests on engagement, and partner with subject-matter experts to improve completion and retention. 要求：教育技术或相关背景，熟悉 Storyline/Figma，懂基础 learning analytics。We care that you can describe the measurable result of your work, not just the activity. 该岗位向内容负责人汇报，需要和教研、数据团队紧密协作。",
+  "history": [
+    { "q": "先简单介绍下你现在做的课件设计工作，主要负责哪个学科。" },
+    { "q": "你简历里那个完课率从 52% 提到 74% 的项目，跟我讲讲你具体做了什么 action。" }
+  ],
+  "candidate_last_answer": "对，那个 completion rate 的项目,当时情况是原来课件完课率只有 52%,学生看到一半就退了。我的目标是把单元完课率拉到 70% 以上。我做的事情主要是重新设计了 storyboard,把长内容拆成分段任务,加了即时反馈,还有游戏化的 checkpoint,然后配合教研团队跑了两轮 A/B test,不断调难度曲线和奖励节奏。整个过程我盯得很细,每一版都和教研对脚本。",
+  "session_state": {
+    "drilled_topics": ["role-intro", "completion-project-action"],
+    "current_competency_target": "impact-measurement",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "impact-measurement",
+    "missing_evidence": [
+      { "competency": "impact-measurement", "evidence_type": "metric" },
+      { "competency": "impact-measurement", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 不断调难度曲线和奖励节奏",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the quantified Result the candidate left out — the final completion-rate figure, the time window it took, and how the A/B test attributed the lift — converting a strong Action narrative into a verifiable outcome"
+    ]
+  }
+}

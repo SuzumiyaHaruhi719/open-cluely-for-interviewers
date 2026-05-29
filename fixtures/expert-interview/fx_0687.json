@@ -1,0 +1,50 @@
+{
+  "id": "fx_0687",
+  "tags": {
+    "industry": "sales",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵敏 — 中级客户经理 / SaaS 销售\nzhao.sales@example.com | 五年企业软件销售经验\n\n工作经历\n云策科技 客户经理（2021至今），杭州\n负责华东区中小企业客户的 SaaS 产品销售，主要面向制造与零售行业客户。日常工作包括开发新客户、产品演示、商务谈判、以及老客户的续约与增购。和售前、客户成功团队配合完成从线索到签约的全流程。多次完成季度销售目标，曾获区域季度销售之星。\n\n智联软件 销售代表（2019至2021），杭州\n销售人力资源管理 SaaS，从电话开发起步，负责中小客户的整个销售周期。积累了扎实的电话开发和需求挖掘能力。\n\n技能\n新客户开发、电话与线上演示、需求挖掘、商务谈判、合同签约、客户续约与增购、CRM（销售易、纷享销客）使用、跨部门协作。\n\n教育\n市场营销专业本科。\n\n求职意向\n希望寻找一个有更大客户盘子、能接触到更复杂销售周期的中高级销售岗位，进一步提升大客户管理能力。",
+  "jd": "招聘岗位：客户经理 / 中级 SaaS 销售\n负责中型企业客户的新签与增购销售，独立完成从线索开发、需求挖掘、方案演示到商务谈判和签约的完整销售周期，并与售前和客户成功团队协作。我们希望候选人能够清楚地复盘一个自己亲手谈成（或谈输）的具体单子：客户是谁、卡点在哪、你具体做了什么动作、结果和数字如何。我们看重结构化的销售复盘能力、对销售数据（转化率、客单价、销售周期）的敏感度、以及在多方决策的环境中推进单子的能力。本岗位有明确的季度销售指标，要求候选人能在压力下保持清晰的销售节奏和诚实的预测。",
+  "history": [
+    { "q": "先介绍一下你目前在云策的销售职责,负责什么样的客户。" },
+    { "q": "你一个季度大概背多少指标?完成情况怎么样?" },
+    { "q": "你说多次完成季度目标,具体是几个季度里完成了几个?" },
+    { "q": "你的平均客单价和销售周期大概是什么水平?" },
+    { "q": "讲一个你印象最深的、自己亲手谈下来的单子。" },
+    { "q": "那个客户当时最大的卡点是什么?" },
+    { "q": "客户那边是谁拍板?你是怎么找到这个决策人的?" },
+    { "q": "你具体做了哪几个关键动作把这个单子往前推?" },
+    { "q": "这个单子最后签了多少金额?谈了多久?" },
+    { "q": "那有没有一个你志在必得、最后却谈输了的单子?" },
+    { "q": "那个单子输在哪?复盘下来是什么原因?" },
+    { "q": "你从那次失败里具体改了什么打法?" },
+    { "q": "我想请你聚焦那个谈成的单子,完整讲一遍:客户背景、卡点、你做的关键动作、以及最后的金额和周期。给我具体的数字。" }
+  ],
+  "candidate_last_answer": "啊好的,那个单子……嗯,怎么说呢,其实那段时间我手上同时有好几个单子,压力还挺大的,然后那个客户呢是个做家居的,哦不对,是做小家电的,反正是制造业的客户。然后……我记得当时是夏天,特别热,我去他们厂里跑了好几趟。卡点的话……主要是,嗯,他们老板有点犹豫,可能预算也是个问题吧,具体多少我一下子也想不太起来了。然后我就是,你知道的,就是多沟通,多跟进,反正销售嘛就是要勤快。我记得有一次还赶上他们内部开会,挺巧的。最后……最后是签了的,金额嘛,大概……我得回去翻一下 CRM 才能告诉你准确数字,周期的话也是断断续续谈了挺久的,反正不算短。其实那个客户人挺好的,我们现在还有联系。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "quota", "quarters-hit", "acv-and-cycle", "memorable-won-deal", "deal-blocker", "decision-maker", "key-actions", "deal-size-and-length", "lost-deal", "loss-reason", "what-changed", "won-deal-full-recap"],
+    "current_competency_target": "deal-recall-specificity",
+    "elapsed_minutes": 40
+  },
+  "ground_truth": {
+    "competency_target": "deal-recall-specificity",
+    "missing_evidence": [
+      { "competency": "deal-recall-specificity", "evidence_type": "metric" },
+      { "competency": "deal-recall-specificity", "evidence_type": "owner-of-action" },
+      { "competency": "deal-recall-specificity", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我得回去翻一下 CRM 才能告诉你准确数字",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 一个具体的数字锚点——这个单子的签约金额、谈判周期长度,以及候选人本人(而非泛泛的『多沟通』)采取的某一个可命名的关键动作,把闲聊式的回忆逼成可核实的事实"
+    ]
+  }
+}

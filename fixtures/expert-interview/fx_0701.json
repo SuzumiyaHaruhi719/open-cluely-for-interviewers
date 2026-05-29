@@ -1,0 +1,47 @@
+{
+  "id": "fx_0701",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "资深研究员（Staff Research Scientist）方向：机器学习\n\n现任：某AI研究院 资深研究员（2020至今）\n- 负责大模型预训练的数据与训练效率方向。\n- 一作或共一发表顶会论文若干篇。\n\n此前：某高校博士后（2017–2020），方向为表示学习。\n教育：知名高校 计算机博士（2017）。\n\n技能：PyTorch、分布式训练、大规模数据处理。",
+  "jd": "某AI研究院招聘资深研究员(Staff Research Scientist)，负责大模型训练效率与数据质量方向的研究与落地。岗位职责：主导预训练数据pipeline与去重、配比策略的研究；设计并跑通大规模训练效率实验，量化吞吐与收敛的改进；把研究成果转化为可复现的训练配方并与工程团队协同上线；指导初级研究员。任职要求：机器学习相关博士，三年以上研究经验；有主导大规模训练实验并量化结果的经历；在顶会有一作论文。本轮面试将深入追问候选人在具体工作中个人的贡献边界、实验的可复现细节与量化结果，请准备好坦诚、具体地回应追问，这是研究岗位评估的常规环节。",
+  "history": [
+    { "q": "先介绍一下你现在在研究院的工作，重点是训练效率这块你具体负责什么。" },
+    { "q": "你说一作或共一发了若干篇顶会。挑一篇你最核心的，讲讲你个人具体的贡献是什么。" },
+    { "q": "这篇里有几位共一？你和另一位共一在分工上各自负责哪部分？" },
+    { "q": "你主导的训练效率改进，具体把吞吐(throughput)提升了多少？用什么口径衡量的？" },
+    { "q": "这个提升是在多大规模、什么硬件上测的？baseline是什么配置？" },
+    { "q": "数据去重和配比策略，你做了哪些消融实验来证明它有效？" },
+    { "q": "这些结果别人能复现吗？你有没有把配方固化成可复现的脚本？" },
+    { "q": "如果让另一个团队拿你的方法去复现，最可能在哪一步翻车？" },
+    { "q": "你指导初级研究员时，有没有一次他们的实验结论你判断有问题、需要纠正的经历？" },
+    { "q": "我再确认一下那个吞吐提升的数字——它是端到端的训练时间缩短，还是单步的加速？基线和你的方法分别跑了几次取平均？" }
+  ],
+  "candidate_last_answer": "你这个问法我不太舒服。说实话，你一直揪着复现细节和具体数字不放，是不是不太信任我们做研究的？这些东西在论文里都写了，你自己去看就行，没必要在这里一句一句盘问。做研究本来就有很多隐性的know-how，不是什么都能写进脚本一键复现的，你要是做过research就该懂这个道理。我感觉你可能不太了解我们这个领域的工作方式。这种细节我没义务在面试里全部交代，再说了，真正重要的是思想和方向，纠结这些数字口径其实挺外行的。",
+  "session_state": {
+    "drilled_topics": ["current-role-scope", "paper-personal-contribution", "co-first-author-split", "throughput-improvement-metric", "experiment-scale-baseline", "ablation-studies", "reproducibility", "reproduction-failure-point", "mentoring-correction"],
+    "current_competency_target": "credibility",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "credibility",
+    "missing_evidence": [
+      { "competency": "credibility", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这些东西在论文里都写了，你自己去看就行",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 在不被防御性回避带偏的前提下，逼出那个吞吐提升到底是端到端时间缩短还是单步加速、基线与方法各跑几次取平均的具体口径，验证其个人贡献与结果是否真实可查"
+    ]
+  }
+}

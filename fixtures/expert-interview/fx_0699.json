@@ -1,0 +1,55 @@
+{
+  "id": "fx_0699",
+  "tags": {
+    "industry": "operations",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Operations Manager\n\nGreenline Logistics — Operations Manager (2021–present)\n- Run daily operations for a regional last-mile delivery hub, ~40 drivers, ~3,000 packages/day.\n- Own dispatch, route planning, and on-time delivery performance.\n- Manage two team leads and coordinate with the customer-service desk on exceptions.\n\nQuickShip — Shift Supervisor (2018–2021)\n- Supervised a night sortation shift of ~25 associates.\n- Tracked throughput and missort rates; ran the daily standup.\n\nSkills: route optimization tools, basic SQL, Excel, WMS, dispatch systems.\nEducation: B.S. Business Administration, 2018.",
+  "jd": "Greenline Logistics seeks an Operations Manager for a regional last-mile hub moving ~3,000 packages/day with ~40 drivers. You will own on-time delivery rate, cost-per-package, missort rate, and daily dispatch. Responsibilities: build and balance routes, manage two team leads, run the morning dispatch and a daily performance huddle, handle delivery exceptions with customer service, and drive continuous improvement on on-time performance and cost. You will report a small set of KPIs to the regional director weekly and own the corrective-action plan when on-time dips. We are looking for someone who can speak concretely and in order about what they did during a specific operational problem, with real numbers, rather than narrating in circles. On-site, early start.",
+  "history": [
+    { "q": "Give me the quick version of your current role — hub size, headcount, packages a day, what you own." },
+    { "q": "What's your on-time delivery rate right now, and how do you measure it?" },
+    { "q": "Walk me through your morning — what happens from when you arrive to when the first routes roll out?" },
+    { "q": "How do you build routes? What tool, and what constraints are you balancing?" },
+    { "q": "Tell me about a day on-time delivery dropped badly. What was the number, and what happened?" },
+    { "q": "On that day, what was the very first thing you did once you saw the dip?" },
+    { "q": "Who did you pull in, and what did you ask them specifically?" },
+    { "q": "What did you find was the root cause?" },
+    { "q": "What corrective action did you put in place, and did it stick?" },
+    { "q": "How do you manage your two team leads day to day?" },
+    { "q": "Tell me about a time you had a conflict with one of them. What happened?" },
+    { "q": "How do you handle a driver who's chronically late on their stops?" },
+    { "q": "What's your missort rate, and how do you keep it down?" },
+    { "q": "Describe how you handle a delivery exception that a customer is escalating." },
+    { "q": "What's one process you changed that lowered cost-per-package?" },
+    { "q": "How do you decide what KPIs to bring to the regional director each week?" },
+    { "q": "If peak season volume jumped 40% next month, what would you do first?" },
+    { "q": "Let's go back to that bad on-time day. Just give me the timeline, in order: what you did first, second, third, with the numbers you were looking at." }
+  ],
+  "candidate_last_answer": "Okay so, um, that day — honestly it was a rough one, and you know how it is, the weather was doing this thing where it kept switching, which reminds me, we'd actually just changed our dispatch screen layout the week before, not that that mattered, well maybe it did a little. Anyway, so first I think I — actually wait, I should mention my one team lead was out that day, or was it the day after, I get them mixed up because they both took PTO around then. Um, so I looked at the board, and there were just, like, a lot of red routes, and I was kind of running around, talking to drivers, pulling up the tool, my coffee was cold by like 7am, ha. The point is we eventually got it sorted, I just can't totally remember the exact order, it was such a blur, you know?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "on-time-measurement", "morning-routine", "route-building", "bad-on-time-day", "first-response-action", "who-pulled-in", "root-cause", "corrective-action", "managing-team-leads", "team-lead-conflict", "chronic-late-driver", "missort-rate", "exception-escalation", "cost-per-package-change", "kpi-selection", "peak-surge-plan"],
+    "current_competency_target": "operational-detail",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "operational-detail",
+    "missing_evidence": [
+      { "competency": "operational-detail", "evidence_type": "timeline" },
+      { "competency": "operational-detail", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I just can't totally remember the exact order",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a concrete ordered sequence of the first three actions the candidate took during the on-time drop, each tied to a specific number he was looking at, cutting through the rambling to confirm whether he actually drove the recovery"
+    ]
+  }
+}

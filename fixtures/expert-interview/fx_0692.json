@@ -1,0 +1,49 @@
+{
+  "id": "fx_0692",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Senior Manufacturing Engineer — the operator every plant manager fights to keep\n\n- Single-handedly rescued three failing production lines that nobody else could fix\n- Recognized across the entire automotive supply base as the go-to lean transformation expert\n- Drove a 92% scrap reduction on the stamping floor — a number my old plant still can't believe\n- Personally took plant OEE from the low 60s to a world-class 95% in under a year\n- Built and led the Kaizen culture that turned a chronically late site into the corporation's #1 plant\n- Saved over $14M in two years through changeover and yield projects I designed myself\n- The youngest engineer ever promoted to senior at my last two employers\n- My SMED program is now copied (badly) at four other sites that asked me to consult\n\nNorthgate Powertrain — Senior Manufacturing Engineer (2020–present): owned process engineering for a high-volume aluminum die-cast and machining cell feeding EV inverter housings.\nPrior: Meridian Stamping — Manufacturing Engineer (2016–2020): stamping and weld assembly for body-in-white components.",
+  "jd": "Northgate Powertrain is hiring a Senior Manufacturing Engineer to own process engineering for our aluminum high-pressure die-cast and CNC machining cells producing EV inverter and motor housings at 240k units/year. You will be accountable for cell OEE, first-pass yield, scrap cost, and PPAP readiness for two new program launches in the next 18 months. Responsibilities include leading SMED and changeover-reduction events, owning the FMEA and control plan for each part family, driving root-cause investigations on porosity and dimensional escapes, and partnering with quality on customer containment. You will mentor two junior process engineers and coordinate with maintenance on a 9-machine preventive-maintenance program. We need someone fluent in Cpk, MSA/gauge R&R, and statistical scrap tracking who can defend numbers in a customer audit. On-site five days, occasional supplier travel.",
+  "history": [
+    { "q": "Walk me through your current cell at Northgate — what parts, what volume, what equipment you're responsible for." },
+    { "q": "Your resume says you took OEE from the low 60s to 95% in under a year. Let's start there — what was the single biggest loss bucket when you started?" },
+    { "q": "How were you measuring OEE? Walk me through availability, performance, and quality as you tracked them." },
+    { "q": "What specifically did you change to recover availability on the die-cast machines?" },
+    { "q": "You mention a 92% scrap reduction on stamping. What was the dominant scrap mode, and what was the baseline scrap rate in parts-per-million?" },
+    { "q": "Who validated those scrap numbers — was that your tracking, quality's, or finance's?" },
+    { "q": "Tell me about the $14M savings. How was that calculated and who signed off on the financials?" },
+    { "q": "Let's go to a launch. Describe a PPAP you personally owned and where it nearly went wrong." },
+    { "q": "On porosity specifically — walk me through one root-cause investigation end to end." },
+    { "q": "What did the Cpk look like before and after that fix, and on which characteristic?" },
+    { "q": "Give me the real numbers on this most recent inverter-housing program: what's your current first-pass yield and scrap cost per part right now?" }
+  ],
+  "candidate_last_answer": "Honestly the numbers on this program are off the charts. We're running basically zero scrap — I'd call it a 99.9% first-pass yield, maybe higher on a good week, and our scrap cost is essentially nothing at this point. I single-handedly took this cell to world-class in record time, faster than anyone in the company's ever done it. Every metric you can name, we're crushing it. The plant manager literally tells people I'm the best engineer he's seen in 30 years.",
+  "session_state": {
+    "drilled_topics": ["current-cell-scope", "oee-recovery-claim", "oee-measurement-method", "availability-actions", "stamping-scrap-claim", "scrap-data-ownership", "savings-calculation", "ppap-ownership", "porosity-root-cause", "cpk-before-after"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "credibility", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a 99.9% first-pass yield, maybe higher on a good week",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a verifiable first-pass-yield figure tied to a real measurement system (scrap log, MES, or quality records) over a defined period, exposing whether the 99.9% claim is fabricated or rounded from a far lower actual rate"
+    ]
+  }
+}

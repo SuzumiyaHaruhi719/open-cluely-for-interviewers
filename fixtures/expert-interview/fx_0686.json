@@ -1,0 +1,50 @@
+{
+  "id": "fx_0686",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "周慕云 Muyun Zhou\n金融风险管理副总裁 / VP, Market & Liquidity Risk\nzhou.risk@example.com | 十六年银行与资管风险管理经验\n\n个人概述\n我是一名长期专注于市场风险与流动性风险管理的副总裁级别从业者，过去十六年一直在大型商业银行和资产管理公司的风险条线工作，对利率风险、汇率风险、信用利差风险以及全行层面的流动性管理都有第一线的实操经验。我习惯用数据和模型说话，但同样清楚模型的边界在哪里，知道什么时候必须依靠经验判断去覆盖模型的盲区。我带过最多到二十二人的风险团队，直接向首席风险官汇报，并且长期作为常设成员参加资产负债管理委员会与风险管理委员会，负责把复杂的风险敞口讲清楚、把限额体系建起来、把压力测试做扎实，让董事会和监管都能信服。我的风格是务实、保守、可被审计，我从不喜欢用一个漂亮但说不清来源的数字去糊弄委员会。\n\n工作经历\n\n远东商业银行 市场与流动性风险副总裁（2019年至今），上海\n我目前负责全行的市场风险和流动性风险管理职能，团队规模在十八到二十二人之间波动，下设市场风险计量、流动性风险、以及模型验证三个小组。我直接向首席风险官汇报，是资产负债管理委员会（ALCO）的常设成员。我负责的核心工作包括：搭建并持续校准全行的 VaR 与压力测试体系，制定交易账簿和银行账簿的风险限额，监控并管理流动性覆盖率（LCR）与净稳定资金比例（NSFR），并在每个季度向风险管理委员会和董事会汇报全行风险状况。在我任内，我主导把全行的 LCR 从监管底线附近、大约百分之一百零五的水平，在一年半之内稳步提升并稳定在百分之一百三十以上，方法是重构了高质量流动性资产（HQLA）的组合结构、推动业务条线调整了对公存款的期限结构、并建立了一套覆盖三种情景的日度流动性压力测试。我还在2022年市场剧烈波动期间，提前两周向 ALCO 预警了一类结构性产品的利率敞口集中度问题，推动交易台在波动放大之前完成了对冲减仓，事后复盘这个决策为全行规避了一笔相当可观的潜在损失。\n\n关键职责与成果（远东商业银行）：\n第一，风险计量体系。我牵头把原本基于历史模拟法的 VaR 模型，补充了基于蒙特卡洛的情景模拟，并把回测的例外天数控制在巴塞尔绿区之内。第二，限额管理。我重建了从董事会风险偏好向下分解到各交易台的三层限额体系，让每一个限额都能追溯到风险偏好声明里的一句话。第三，流动性管理。除了把 LCR 提升并稳定，我还牵头设计了应急融资计划（CFP），明确了不同压力情景下的融资工具优先级。第四，监管与审计沟通。我是面对监管现场检查和外部审计时风险条线的主要对接人，过去三年没有出现过被监管认定为重大的风险管理缺陷。\n\n汇通资产管理 高级风险经理 / Senior Risk Manager（2013至2019），深圳\n在这家管理规模约两千亿的资管公司，我负责固定收益与多资产组合的市场风险监控。我建立了覆盖全部组合的每日风险报告体系，设计了针对信用债组合的利差压力测试，并在2016年债市调整中协助投资团队提前识别了若干流动性较差的持仓。我也参与了公司风险管理制度的整体重写，把分散在各部门的风险政策整合成一套统一的风险管理框架。我在这里从风险分析师起步，四年内晋升到高级风险经理，带四人小组。\n\n华南国际银行 风险分析师 / Risk Analyst（2009至2013），广州\nThis is where my risk career started. 我从最基础的市场风险数据处理和 VaR 计算做起，每天负责生成交易账簿的风险敞口报告，逐步参与到利率风险计量和早期的压力测试搭建工作中。这段经历让我打下了扎实的计量基础，也让我养成了对数据来源极度较真的习惯——任何一个数字，我都要能说清楚它是从哪张表、用什么口径、在什么时点取出来的。\n\n专业技能与方法\nMarket risk measurement (VaR — historical simulation & Monte Carlo, expected shortfall); liquidity risk (LCR, NSFR, intraday liquidity, contingency funding planning); interest-rate risk in the banking book (IRRBB); stress testing & scenario design; limit framework design; model validation & backtesting; Basel III/IV; ALCO and board reporting; regulatory examination management. 工具方面熟悉 Python、SQL、以及主流的风险计量系统。\n\n证书与教育\n金融风险管理师（FRM）；金融学硕士；金融工程学士。\n\n求职意向\n我希望寻找一个能够统管市场风险与流动性风险、并能直接参与全行风险偏好制定的副总裁或风险条线负责人岗位。我最擅长、也最享受的，是在委员会里把一个复杂的风险问题讲到所有人都能听懂、并且能据此做出决策的程度。",
+  "jd": "VP, Market & Liquidity Risk — lead the market-risk and liquidity-risk function for a commercial bank's treasury and trading book. You will own the VaR and stress-testing framework, the trading and banking-book limit structure, and the bank's LCR/NSFR liquidity position, reporting to the CRO and serving as a standing member of ALCO. We are looking for someone who can speak with precision and intellectual honesty about risk numbers: what a figure means, how it was computed, what its limitations are, and what specific action they personally drove off the back of it. The role faces active regulatory examination and a board that wants defensible, well-sourced risk reporting. We will probe one or two concrete decisions in depth — a limit breach you managed, a liquidity action you led, or a hedging call you made under stress — and we care about mechanism and ownership, not framework recitation. FRM/CFA, Basel III/IV fluency, and prior ALCO experience expected.",
+  "history": [
+    { "q": "先介绍一下你目前在远东银行负责的 scope——团队、汇报线、以及你 own 哪些 risk metrics。" },
+    { "q": "你们全行的 VaR 框架现在是怎么搭的?historical simulation 还是别的?" },
+    { "q": "你提到把 LCR 从百分之一百零五提到了一百三十以上,这个提升具体是怎么实现的?" },
+    { "q": "重构 HQLA 组合结构,你具体调整了哪些资产?" },
+    { "q": "推动业务条线调整对公存款期限结构,你是怎么让业务买账的?" },
+    { "q": "那套日度流动性压力测试的三个情景分别是什么?" },
+    { "q": "Tell me about the 2022 structural-product interest-rate concentration you flagged." },
+    { "q": "你是怎么提前两周发现那个 concentration 的?是模型报出来的还是你自己看出来的?" },
+    { "q": "你向 ALCO 预警之后,交易台一开始是什么反应?他们 push back 了吗?" },
+    { "q": "你说为全行规避了『相当可观的潜在损失』——给我一个具体的数量级。" },
+    { "q": "那笔减仓本身有没有成本?对冲减仓是要付出代价的,代价是多少?" },
+    { "q": "如果当时市场没有像你预期那样波动,这个 call 会不会反而是个 over-hedge 的错误?" },
+    { "q": "回到 limit framework,你重建的三层限额体系,最底层交易台的限额是怎么定出来的?" },
+    { "q": "过去三年有没有出现过实际的 limit breach?讲一个你亲自处理的。" },
+    { "q": "我们聚焦到那次 2022 的对冲减仓:把这个决策的 tradeoff 讲透——你减了多少仓位、对冲成本是多少、规避的潜在损失你是怎么估算出来的,以及这个估算的口径和局限在哪里。" }
+  ],
+  "candidate_last_answer": "好的,我给具体数字。那是一类挂钩长端利率的结构性产品,全行敞口名义本金大约 38 亿,集中在三个交易台。我在2022年三月中旬通过限额监控里的 DV01 集中度指标发现,这一类产品贡献了交易账簿利率 DV01 的将近百分之四十,远超我设的百分之二十五的单一风险因子集中度软限额。我向 ALCO 建议把名义敞口砍到 20 亿以下。最终交易台在两周内减了大约 18 亿的名义,用国债期货和利率互换做对冲,直接对冲成本加上平仓的 bid-offer 成本合计大约 1200 万人民币。事后四月那波利率上行,如果不减仓,按我们的情景测算这部分敞口的 mark-to-market 损失大约在 1.6 到 1.9 亿之间,所以净规避损失大概是 1.5 到 1.8 亿。需要说清楚口径和局限:这个规避损失是用事后实际利率路径反推的,属于 hindsight 估算,它假设我们不减仓就会一直持有到底,这是高估的方向;另外 1200 万的对冲成本是确定的现金支出,而规避的损失是情景估算,两者的确定性不对等。所以我在给委员会的复盘里写的是区间,而不是一个单一的精确数字。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "var-framework", "lcr-improvement", "hqla-restructure", "deposit-tenor-buy-in", "liquidity-stress-scenarios", "2022-concentration-flag", "concentration-detection", "trading-desk-pushback", "loss-avoided-magnitude", "hedge-cost", "overhedge-counterfactual", "limit-framework-bottom-layer", "actual-limit-breach", "hedge-tradeoff-deep-dive"],
+    "current_competency_target": "risk-number-defensibility",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "risk-number-defensibility",
+    "missing_evidence": [
+      { "competency": "risk-number-defensibility", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 它假设我们不减仓就会一直持有到底,这是高估的方向",
+      "must-be-question-type: counterfactual",
+      "expected-yield: how the candidate would have managed the position under a realistic hold-and-actively-manage counterfactual rather than the static hold-to-maturity assumption — i.e. a more defensible estimate of avoided loss net of the certain 1200万 hedge cost, exposing whether his honest range still justifies the hedge call"
+    ]
+  }
+}

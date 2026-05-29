@@ -1,0 +1,48 @@
+{
+  "id": "fx_0689",
+  "tags": {
+    "industry": "legal",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Theo Brandt\nSenior Privacy Counsel — Data Protection & Regulatory\nbrandt.privacy@example.com | 10 years\n\nExperience\nLumen Health Tech — Senior Privacy Counsel (2020-present)\nLead privacy counsel for a health-data platform. Advise product and engineering on GDPR, HIPAA, and state privacy laws. Manage data-subject requests and regulator interactions.\n\nVerdaSoft — Privacy & Product Counsel (2015-2020)\nBuilt the privacy review process for new features and ran the DPIA program.\n\nSkills\nGDPR, HIPAA, CCPA/CPRA, DPIAs, data-processing agreements, breach response, regulator engagement, privacy-by-design reviews.\n\nEducation\nJ.D.; CIPP/E and CIPP/US certified.",
+  "jd": "Senior Privacy Counsel — own the privacy and data-protection program for a regulated health-data platform. You will run DPIAs, advise product and engineering on privacy-by-design, manage data-subject and regulator interactions, and lead breach-response from a legal standpoint. We need someone who can describe, in concrete operational detail, a privacy problem they personally handled: the specific data flow at issue, the legal analysis they performed, the decision they made, and the outcome. The role faces an active regulator inquiry into a prior data-sharing arrangement and an upcoming HIPAA audit. We will probe hard for specifics — what you actually did, on what facts, under which provision — because vague familiarity with the frameworks is not enough at this level.",
+  "history": [
+    { "q": "Tell me about your current scope as Senior Privacy Counsel at Lumen." },
+    { "q": "Walk me through a DPIA you personally led — what feature, what data, what risk." },
+    { "q": "What was the specific data flow that triggered the highest risk rating?" },
+    { "q": "Under GDPR, what was your lawful basis analysis for that processing?" },
+    { "q": "Tell me about a breach or near-breach you handled from the legal side." },
+    { "q": "What were the notification obligations, and what timeline were you working against?" },
+    { "q": "Describe a time you told product 'no' on a privacy ground. What was the feature?" },
+    { "q": "How did you handle a regulator inquiry — what did the regulator actually ask for?" },
+    { "q": "What's your view on the lawful basis for training models on patient-derived data?" },
+    { "q": "Give me a decision you got wrong on privacy, and what you learned." },
+    { "q": "Pick the single hardest privacy call you've made and take me through it concretely: the facts, the provision, your analysis, and the outcome." }
+  ],
+  "candidate_last_answer": "Sure. I mean, privacy is always about balancing the interests of the individual against the legitimate needs of the business, right? So in these situations you really have to look at the facts and apply the relevant frameworks thoughtfully. I'd say the hardest calls are the ones where the law isn't totally clear, and you have to use judgment. I always try to do the right thing for the data subject while enabling the business to move forward. It's about being a trusted advisor and finding the path that works for everyone.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "dpia-led", "high-risk-data-flow", "lawful-basis-analysis", "breach-handling", "notification-obligations", "told-product-no", "regulator-inquiry", "model-training-lawful-basis", "decision-got-wrong", "hardest-call-concrete"],
+    "current_competency_target": "concrete-legal-reasoning",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "concrete-legal-reasoning",
+    "missing_evidence": [
+      { "competency": "concrete-legal-reasoning", "evidence_type": "named-entity" },
+      { "competency": "concrete-legal-reasoning", "evidence_type": "mechanism" },
+      { "competency": "concrete-legal-reasoning", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: you really have to look at the facts and apply the relevant frameworks thoughtfully",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: one named, concrete privacy matter — the actual feature or data flow, the specific GDPR/HIPAA provision applied, and the analysis the candidate personally ran — forcing a real fact pattern out of the generic 'balancing interests' platitude"
+    ]
+  }
+}

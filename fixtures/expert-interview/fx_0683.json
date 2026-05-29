@@ -1,0 +1,47 @@
+{
+  "id": "fx_0683",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Dana Okafor\nStaff Learning Designer / Curriculum Lead — K-12 EdTech\nokafor.learning@example.com | 9 years in instructional design\n\nExperience\nBrightPath Learning — Staff Curriculum Lead (2021-present)\nLead instructional designer for the middle-school math product. Own the standards-alignment framework and the efficacy measurement approach across the math catalog. Manage a pod of three designers.\n\nKickstart Education — Senior Learning Designer (2017-2021)\nDesigned adaptive-practice content for early literacy. Partnered with the data team on A/B tests of instructional sequences.\n\nSkills\nBackward design, learning-science principles, item writing, efficacy study design, qualitative classroom research, working with teachers and district pilots.\n\nEducation\nM.Ed., Learning Sciences",
+  "jd": "Staff Curriculum / Learning Design Lead — own the efficacy strategy for a K-12 math product used across district partners. You will define how we measure whether our content actually improves student outcomes, design and interpret efficacy studies in partnership with our data-science team, and translate findings into curriculum decisions. We need someone who can speak precisely and honestly about measurement: what the study design was, what the comparison group was, what the effect size and sample were, and what the confidence and limitations are. You will present efficacy results to district leaders and to our research advisory board, so intellectual honesty about what the data can and cannot support is essential. This is a senior individual-contributor role partnering with product, content, and data science.",
+  "history": [
+    { "q": "Tell me about your current scope on the middle-school math product." },
+    { "q": "How do you define efficacy for a math product? What outcomes do you actually track?" },
+    { "q": "Walk me through one efficacy study you designed end to end." },
+    { "q": "What was the comparison group in that study?" },
+    { "q": "How big was the sample, and how were students assigned?" },
+    { "q": "What outcome instrument did you use to measure learning gains?" },
+    { "q": "What effect size did you observe, and was it statistically significant?" },
+    { "q": "Tell me about a result that surprised you or didn't replicate." },
+    { "q": "How do you handle pressure from the business to report a more favorable efficacy number?" },
+    { "q": "Give me the single strongest piece of efficacy evidence you've personally produced — the result you'd put in front of our research advisory board." }
+  ],
+  "candidate_last_answer": "Honestly, the work I'm proudest of is the adaptive-practice redesign — that drove a 312 percent improvement in learning outcomes across the board, and we saw it lift every single student who touched it, no exceptions. District partners told us it was the biggest gain they'd ever recorded in the history of their math programs. We're talking millions of students affected, and the effect basically tripled proficiency overnight. It was honestly one of the largest efficacy results anyone in the entire EdTech industry has ever published.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "efficacy-definition", "study-design", "comparison-group", "sample-and-assignment", "outcome-instrument", "effect-size-significance", "non-replication", "business-pressure-on-numbers", "strongest-evidence"],
+    "current_competency_target": "measurement-rigor",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "measurement-rigor",
+    "missing_evidence": [
+      { "competency": "measurement-rigor", "evidence_type": "metric" },
+      { "competency": "measurement-rigor", "evidence_type": "mechanism" },
+      { "competency": "intellectual-honesty", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a 312 percent improvement in learning outcomes across the board",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the precise definition behind the 312 percent figure — what raw quantity moved (e.g. items correct, proficiency rate, scaled score), the baseline and post value, the sample it was computed on, and whether it was a controlled effect size rather than a pre/post raw delta"
+    ]
+  }
+}

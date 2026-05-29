@@ -1,0 +1,40 @@
+{
+  "id": "fx_0751",
+  "tags": {
+    "industry": "design",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "UX/UI Design Intern Candidate | Human-Centered Design • Design Thinking • Figma • Design Systems • Accessibility (WCAG) • Prototyping • User Research • Interaction Design • Wireframing • Usability Testing • Atomic Design • Design Ops • Information Architecture\n\nAspiring product designer passionate about end-to-end user-centric experiences, leveraging data-informed design and pixel-perfect execution across the full design lifecycle.\n\nNorthgate University — BFA, Interaction Design (expected 2026)\n- Coursework: HCI, Visual Systems, Service Design, Front-End Fundamentals (HTML/CSS/JS)\n\nProjects & Experience:\n- Capstone: redesigned a campus transit app; ran 6 usability tests, built a Figma design system with tokens and components\n- Design club lead: ran weekly critique sessions and a Figma component library for student projects\n- Freelance: a landing page and a small mobile app concept for a local nonprofit\n\nTools: Figma, FigJam, Adobe XD, Illustrator, Notion, Maze, basic HTML/CSS\nSkills: design systems, prototyping, usability testing, accessibility, design tokens, user flows, journey mapping",
+  "jd": "Our consumer app team is hiring a UX/UI Design Intern for a 12-week summer program. Reporting to a Senior Product Designer, you will support a squad shipping features in a shared design system, contributing wireframes, prototypes, and usability test support. We want someone who can clearly articulate what they personally did on a project, reason about a specific design decision and its tradeoffs, and work within an established component library. You'll get mentorship and ship at least one real feature. Onsite 3 days/week. Portfolio required.",
+  "history": [
+    { "q": "Tell me about your capstone transit-app redesign — what was the core problem you were solving?" },
+    { "q": "Your resume lists a lot of methods. On the capstone specifically, what did you personally do versus your teammates?" },
+    { "q": "You ran 6 usability tests. Walk me through one finding that actually changed a design decision." },
+    { "q": "You built a Figma design system with tokens. Why tokens for a student project — wasn't that overkill?" },
+    { "q": "Across your capstone, the design club, and the nonprofit freelance work — pick whichever you want and give me one concrete thing you shipped and its impact." }
+  ],
+  "candidate_last_answer": "I'll touch all three quickly, then go deep on one. Design club: I set up a shared Figma component library; adoption went from 0 to about 15 student projects in a semester. Nonprofit: I shipped a landing page that lifted their newsletter signups from roughly 2% to 5% on the hero CTA. Capstone is the one I'll go deep on: the core change was the transit app's arrival screen. Testing showed 4 of 6 users missed the 'next departure' time because it competed with the route map. I moved the live countdown to a fixed top bar and demoted the map to a tap-to-expand. In the next round, 6 of 6 found it in under 3 seconds, down from an average of about 14. That one decision — promoting the countdown — is the change I'm most confident about.",
+  "session_state": {
+    "drilled_topics": ["capstone-problem", "personal-contribution", "usability-finding", "design-tokens-rationale"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: promoting the countdown — is the change I'm most confident about",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the cost side of promoting the countdown — what the fixed top bar pushed down or hid (e.g. map prominence, other arrival info), why that tradeoff was acceptable for this user goal, and what she would have measured to confirm the demoted element did not create a new problem"
+    ]
+  }
+}

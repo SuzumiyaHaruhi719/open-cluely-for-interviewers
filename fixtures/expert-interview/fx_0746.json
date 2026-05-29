@@ -1,0 +1,40 @@
+{
+  "id": "fx_0746",
+  "tags": {
+    "industry": "data",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Analytics Engineer — 4 years\n\nCurrent: HelioPay (fintech) — Analytics Engineer, 2022–present\n- Own the dbt project and the core revenue + activation models\n- Built the company's self-serve metrics layer in Looker\n- Migrated nightly batch ETL to a near-real-time pipeline\n\nPrior: Cartwheel Retail — Data Analyst, 2020–2022\n- Built dashboards for the merchandising team; ad hoc SQL\n\nSkills: dbt, Snowflake, SQL, Looker, Python, Airflow, dimensional modeling\nEducation: BA, Economics",
+  "jd": "HelioPay's sister company, a B2B payments startup, is hiring a mid-level Analytics Engineer to own the transformation layer end to end. Reporting to the Head of Data, you will own a growing dbt project, the semantic/metrics layer, and data quality for finance and growth stakeholders. First-year goals: cut p95 model build time by 40%, get core-model test coverage above 80%, and stand up a trusted single source of truth for ARR and activation. We want someone who has personally owned a dbt codebase, can reason about incremental models and data freshness tradeoffs, and can debug a pipeline failure under time pressure. Hybrid, 2 days onsite.",
+  "history": [
+    { "q": "Tell me what you own day to day on the HelioPay data team." },
+    { "q": "You migrated nightly batch ETL to near-real-time. What drove that decision, and what did the new architecture look like?" },
+    { "q": "Walk me through one specific incident: a pipeline broke and a stakeholder was blocked. What did you do?" }
+  ],
+  "candidate_last_answer": "Oh, okay, an incident, um — so, there was this one time, and honestly there were a few, but the one that comes to mind, or actually maybe not, let me think... so the revenue model broke, or — wait, it might have been the activation one, they kind of run together in my head because they share an upstream source, which by the way is a whole other story about how that source is owned by the platform team and they don't really tell us when they change schemas, which is super frustrating, anyway. So finance pinged me, or maybe it was Slack, in the morning, and I was like okay let me look, and I opened the dbt logs, and there's a lot going on in there, you know how it is, and I kind of just started digging around. And eventually it got fixed, the dashboard came back. Sorry, what was the specific part you wanted — the root cause? Because I think it was a null thing, or a type thing, one of those.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "batch-to-realtime-decision"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "mechanism" },
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it was a null thing, or a type thing, one of those",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete ordered sequence of debugging steps for one specific incident — how the candidate isolated the root cause (which model, which test or log signal), the exact fix applied, and how long the stakeholder was blocked — replacing the scattered uncertain narration with a verifiable step-by-step account"
+    ]
+  }
+}

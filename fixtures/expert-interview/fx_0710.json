@@ -1,0 +1,43 @@
+{
+  "id": "fx_0710",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Dr. Helena Voss\nStaff Research Scientist — Applied Machine Learning\n\nSummary: Staff scientist with 9 years in industrial ML research, leading projects from problem framing through publication and production handoff.\n\nExperience:\nQuanta Labs — Staff Research Scientist (2019-present)\n- Led the anomaly-detection research program for industrial sensor data\n- Shipped a self-supervised pretraining approach later adopted by two product teams\n- Mentored 4 junior researchers; chaired the internal review board for experimental rigor\n\nHelix AI — Senior Research Scientist (2016-2019)\n- Developed time-series forecasting models for energy demand\n\nPublications: 11 peer-reviewed papers; 3 patents filed.\n\nNote on the flagship project: \"Our anomaly-detection paper was accepted in early 2021, and we began the core experiments roughly a year after the model was already running in production.\"\n\nSkills: self-supervised learning, time-series, PyTorch, experimental design, causal analysis, technical mentorship\n\nEducation: Ph.D. Machine Learning; B.S. Physics",
+  "jd": "Quanta Labs is hiring a Staff Research Scientist to lead applied ML research programs from problem framing through publication and production handoff. You will own experimental design, set the bar for rigor across a small research group, and partner with product teams on transfer to production. We expect staff scientists to narrate a project's timeline crisply — what came first, what the experiment actually tested, and when results gated the next decision — because muddled chronology usually signals muddled causal reasoning. The role requires distinguishing what was hypothesized before an experiment from what was learned after, and being precise about the order of design, data collection, results, and deployment. Strong candidates can reconstruct a multi-quarter research effort coherently under questioning and reconcile any apparent contradiction in sequence.",
+  "history": [
+    { "q": "Give me the overview of your flagship anomaly-detection program at Quanta — what problem, what approach." },
+    { "q": "Lay out the timeline for me: when did you start the core experiments, when did the paper get accepted, and when did it go to production?" },
+    { "q": "You said the model was in production before the core experiments — help me understand how that ordering worked." },
+    { "q": "What did the core experiment actually test, given the model was already deployed?" },
+    { "q": "When did you decide the self-supervised pretraining was the right approach — before or after the production deployment?" },
+    { "q": "Walk me carefully through the sequence one more time: design, data, results, deployment — in order, with rough dates." }
+  ],
+  "candidate_last_answer": "Right, so the paper was accepted in early 2021, and the experiments that backed it — those really kicked off about a year after we'd already deployed to production, so call it 2021 as well. The pretraining decision, that came first, before any of the deployment, but then again we only really validated pretraining once we saw the production results come back, which would have been 2020. So the deployment was 2020, or maybe 2022 — I'd have to check. The point is the results clearly drove the design, and the design drove the results, it all reinforced itself. The data collection happened throughout, before and after, so it's a bit hard to pin to a single quarter.",
+  "session_state": {
+    "drilled_topics": ["program-overview", "timeline-request", "production-before-experiment-probe", "experiment-content", "approach-decision-timing"],
+    "current_competency_target": "process-rigor",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "process-rigor",
+    "missing_evidence": [
+      { "competency": "process-rigor", "evidence_type": "timeline" },
+      { "competency": "intellectual-honesty", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the results clearly drove the design, and the design drove the results",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: forcing a single non-circular chronology — anchoring each milestone (approach decision, data collection, core experiment, paper acceptance early 2021, production deployment) to a concrete quarter so the contradictory 2020/2022 deployment dates and the circular 'results drove design / design drove results' claim collapse into one defensible sequence"
+    ]
+  }
+}

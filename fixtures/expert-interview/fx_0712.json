@@ -1,0 +1,53 @@
+{
+  "id": "fx_0712",
+  "tags": {
+    "industry": "hr",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "陈薇 — 人力资源副总裁 / VP of People\n\n我是那种能把 HR 从成本中心变成增长引擎的稀缺型领导者。过去十五年，我服务过的每一家公司,人才密度和组织效能都因我而发生了质变。\n\n核心亮点：\n- 独自设计并落地了被业内争相模仿的 talent review 体系，被称为标杆\n- 在一家高速增长的科技公司,把 regrettable attrition 从 18% 一路压到 6%，几乎以一己之力扭转了人才流失危机\n- 主导了三次大规模组织重组，每一次都被 CEO 称为『教科书级别』的操盘\n- 一手搭建了覆盖全球五个区域的 people analytics 平台，董事会的人才决策都依赖我的 dashboard\n- 公认的 C-suite 最信任的人才战略顾问，凡是最棘手、最敏感的组织问题，最后都会落到我这里\n\n工作经历：\n星辰科技集团 — VP of People（2020 至今）\n- 负责全球约 4000 名员工的人才战略、组织发展、薪酬与 people analytics\n- 直接向 CEO 汇报，管理一支 30 余人的 HR 团队\n\n远景互联 — 人力资源总监（2015-2020）\n- 负责招聘、绩效与组织发展\n\n技能：talent review、组织设计、people analytics、薪酬体系、变革管理、领导力发展、employer branding\n\n教育：某大学 人力资源管理 硕士；SHRM-SCP 认证",
+  "jd": "星辰科技集团正在寻找一位 VP of People，直接向 CEO 汇报，全面负责全球约 4000 名员工的人才战略、组织设计、薪酬与 people analytics。公司刚经历一轮快速扩张后的整合期，董事会高度关注 regrettable attrition、关键岗位继任覆盖率与人才决策的数据可信度。该岗位要求候选人能够就事论事、聚焦回答：当被问到一个具体的人才或组织决策时，能在限定时间内讲清楚自己究竟做了什么、用什么数据支撑、取舍是什么，而不是发散成泛泛的理念或不相关的故事。我们尤其看重能区分『我个人主导的』与『团队完成的』、并能对每一个引用的指标给出口径与时间窗口的领导者。理想人选在被追问细节时保持克制、精准、不跑题。",
+  "history": [
+    { "q": "先讲讲你在星辰的 scope——你直接管多少人，负责哪些 people 指标？" },
+    { "q": "你简历写 regrettable attrition 从 18% 压到 6%。先说口径：regrettable 是怎么定义的，分母是谁？" },
+    { "q": "这个从 18 到 6 是多长时间发生的？哪一年到哪一年？" },
+    { "q": "在这个降幅里，你个人主导的具体动作是哪几个，而不是团队做的？" },
+    { "q": "你怎么知道 attrition 的下降是你的干预带来的，而不是当年市场环境或者裁员结构变化？" },
+    { "q": "讲一个你主导的 talent review 的具体机制——它和标准的九宫格有什么不同？" },
+    { "q": "那套 talent review 实际改变了哪一个具体的人事决定？给我一个例子。" },
+    { "q": "你说 people analytics dashboard 董事会都在用,上面最核心的三个指标是什么？" },
+    { "q": "这些指标的数据来源和更新频率是怎样的？" },
+    { "q": "讲一次你的某个组织重组方案后来出了问题或者没达到预期的——发生了什么？" },
+    { "q": "那次之后你具体改了什么？" },
+    { "q": "继任覆盖率现在是多少，关键岗位有几个有 ready-now 的继任者？" },
+    { "q": "你怎么处理一个高绩效但价值观有问题的 leader？给我一个你亲自处理过的例子。" },
+    { "q": "在那个 case 里，你最终的决定是什么，依据是什么？" },
+    { "q": "如果让你只保留 dashboard 上的一个指标，你留哪个，为什么？" },
+    { "q": "回到 attrition：给我一个最具体的、你亲自做的动作，配一个能验证的数字——你到底做了什么，结果是什么？" }
+  ],
+  "candidate_last_answer": "这个问题特别好，让我多说几句,因为 attrition 这个事情背后其实是一整套 philosophy。说到留人，我其实想先聊聊文化,you know,文化才是根本。我记得我刚加入星辰的时候,第一周就去食堂跟员工吃饭,这个习惯我一直保持到现在,顺便说一句我们食堂后来还得过奖。然后那年我们还办了一次全球的 town hall,在三亚,场地是我亲自选的,效果特别震撼。其实人才战略说到底跟做品牌是一样的,我以前在远景做 employer branding 的时候就深有体会,那会儿我们还拍过一支招聘视频,播放量特别高。再展开讲讲,我对 leadership 的理解是......总之 attrition 下降是水到渠成的事,是这一整套东西共同作用的结果。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "attrition-definition", "attrition-window", "attrition-personal-actions", "attrition-causation", "talent-review-mechanism", "talent-review-decision-impact", "dashboard-top-metrics", "dashboard-data-source", "reorg-failure", "post-reorg-change", "succession-coverage", "values-vs-performance-case", "values-case-decision", "single-metric-choice"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: attrition 下降是水到渠成的事",
+      "must-be-question-type: action-attribution",
+      "expected-yield: cutting through the culture-and-townhall tangent to one concrete, personally-owned retention intervention (e.g. a specific compensation-band change, a manager-coaching program, or a stay-interview process she ran) tied to a verifiable attrition number and date window, distinguishing her action from the team's and from market effects"
+    ]
+  }
+}

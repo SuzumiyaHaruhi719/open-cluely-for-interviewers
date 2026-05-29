@@ -1,0 +1,37 @@
+{
+  "id": "fx_0722",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "资深精益工程师\n\n某汽车零部件厂 — 资深精益工程师（2019 至今）\n- 负责冲压与焊装车间的精益改善与产线平衡\n- 推动 SMED 快速换模、看板拉动与现场 5S\n\n某家电制造 — 工艺工程师（2015–2019）\n- 负责注塑工段的工艺参数与良率改善\n\n技能：精益生产、SMED、价值流图（VSM）、SPC、节拍优化、TPM\n教育：机械工程本科",
+  "jd": "我们为一家汽车零部件工厂招聘资深（staff 级）精益工程师，向运营总监汇报。你将主导冲压、焊装两个车间的精益转型：换模时间压缩（SMED）、产线节拍平衡、在制品控制与现场目视化。你需要把改善成果量化为可追踪的指标（OEE、换模时间、单件工时、在制品周转），独立主导一条产线的改善从诊断到固化，并能在产量与质量之间做清晰取舍。我们重点考察：把一项改善的个人贡献与具体数字讲清楚的能力、用价值流视角定位瓶颈的功力，以及面对追问时能否给出确切的前后数据。要求 5 年以上制造业精益经验，有可量化的改善案例。",
+  "history": [
+    { "q": "讲一个你主导的最有代表性的 SMED 换模改善——改善前换模多久，你具体做了什么，改善后到多少？" }
+  ],
+  "candidate_last_answer": "好的，那个换模……嗯，怎么说呢，其实那条线情况挺复杂的，换模这个事吧，涉及到很多方面，对，模具、人员、还有那个……物料的准备。我先说一下背景哈，那个车间当时压力很大，订单也急，然后那个……不好意思我有点紧张。换模时间嘛，原来大概……挺长的，我们就开始搞 SMED，做内外作业分离，对，就是那套方法。然后那个改善其实挺顺利的，呃，具体数字我得想一下，反正是降了不少。我先讲到这，您看还想了解哪方面？",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体数字我得想一下，反正是降了不少",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual before-and-after changeover time in minutes for the SMED improvement and which specific internal-to-external conversions the candidate personally implemented, cutting through the nervous filler"
+    ]
+  }
+}

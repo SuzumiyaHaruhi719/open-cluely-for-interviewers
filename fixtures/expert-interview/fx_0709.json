@@ -1,0 +1,42 @@
+{
+  "id": "fx_0709",
+  "tags": {
+    "industry": "education",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Tyler Brennan\nEdTech Growth & Curriculum Intern (rising senior, B.A. Education)\n\nProfile: Aspiring product-minded educator passionate about scaling learning outcomes.\n\nExperience:\nLearnLeap (EdTech startup) — Growth Intern (Summer 2024, 10 weeks)\n- Owned end-to-end growth experiments that 10x'd our user base over the summer\n- Single-handedly redesigned the K-12 math onboarding flow\n- Drove a 300% lift in weekly active learners through viral referral loops\n\nCampus Tutoring Center — Peer Tutor (2022-2024)\n- Tutored intro statistics and algebra; led small group sessions\n\nNote: At LearnLeap I was one of three interns on a small growth pod supporting the full-time PM.\n\nSkills: A/B testing, curriculum design, Google Analytics, Figma (basic), spreadsheet modeling\n\nEducation: B.A. Education (expected 2025), minor in Statistics",
+  "jd": "LearnLeap is hiring a Growth & Curriculum Intern for the upcoming term to support our K-12 learning product. Working alongside a full-time PM and a small growth pod, you will help design and analyze onboarding and engagement experiments, instrument events, and translate findings into curriculum and flow changes. You will be expected to speak precisely about your own contribution on a team, define every metric you cite (what the denominator is, over what window), and distinguish a real, attributable result from a coincidental trend. We value interns who are honest about scope — what they personally owned versus what the team did — and who can reason about whether a metric movement was actually caused by their change. Strong candidates are comfortable being asked to reconcile claims that don't quite line up.",
+  "history": [
+    { "q": "Tell me about your role on the LearnLeap growth pod over the summer." },
+    { "q": "Your resume says you '10x'd the user base.' What's the actual baseline and end number, and over what window?" },
+    { "q": "You also wrote '300% lift in weekly active learners.' How are weekly active learners defined, and how does that square with the 10x claim?" },
+    { "q": "Which specific experiment did you personally design and run, start to finish?" },
+    { "q": "Walk me through how you knew the referral loop caused the lift, versus seasonal back-to-school traffic." }
+  ],
+  "candidate_last_answer": "So the referral loop was massive — it basically went viral and 10x'd everything overnight, we were adding thousands of users a day at the peak. Honestly the growth was so explosive it was hard to even keep exact numbers, but it was easily a 300%, maybe more like 500% lift, the dashboards couldn't really keep up. And it was all organic, completely driven by my redesign. I mean it was the summer so there wasn't really any back-to-school traffic yet, school was out, so it was clearly the loop. It was probably the biggest growth quarter the company ever had, at least that's what everyone was saying.",
+  "session_state": {
+    "drilled_topics": ["pod-role", "10x-baseline-probe", "wau-definition-vs-10x", "owned-experiment", "causation-vs-seasonality"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "intellectual-honesty", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it was easily a 300%, maybe more like 500% lift",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forcing one defensible number — the actual starting and ending weekly-active-learner counts, the exact date window, and the data source — which should expose whether the figure is real or invented and whether his '10x' and '300-500%' claims can be reconciled at all"
+    ]
+  }
+}

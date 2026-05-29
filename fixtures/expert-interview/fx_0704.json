@@ -1,0 +1,46 @@
+{
+  "id": "fx_0704",
+  "tags": {
+    "industry": "healthcare",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "李思远 — 临床数据协调员 / Junior Clinical Data Coordinator\n\n求职意向：肿瘤科临床研究协调员（CRC），希望在以患者安全和数据完整性为核心的研究型医院持续成长。\n\n个人简介：我是一名拥有两年临床研究经验的初级数据协调员，本科毕业于护理学专业，毕业后在一家三级甲等综合医院的肿瘤科临床研究中心工作。我的日常工作围绕着受试者招募、知情同意流程的执行、源数据核查以及电子数据采集系统的录入展开。我对临床试验质量管理规范有较为系统的理解，熟悉国家药品监督管理局发布的相关法规，也参加过研究机构组织的多次伦理培训和方案培训。我希望能够在更复杂的国际多中心试验中承担更多的协调职责，逐步成长为一名能够独立负责整个研究中心运营的资深协调员。在过去两年里，我参与的研究项目涵盖了乳腺癌和结直肠癌两个治疗领域，接触过早期和中期的临床试验，对从筛选到随访的完整流程有切身体会。我性格细致，善于沟通，能够在受试者、研究医生和申办方之间起到桥梁作用。我相信临床研究的每一个数据点背后都是一位真实的患者，因此我始终把数据准确性和受试者权益放在第一位。我也在工作之余自学了基础的统计学知识和医学英语，希望能够更好地阅读英文方案和与国外申办方沟通。除了日常协调工作，我还主动承担了研究中心内部新人的部分带教任务，帮助新入职的同事熟悉系统操作和文件归档流程。我深知临床研究是一项需要长期积累和高度责任心的工作，未来我希望在严谨的科研环境中不断打磨自己的专业能力，为新药研发贡献一份力量，同时也为患者带来更多治疗的希望与可能。\n\n工作经历：\nSunrise Cancer Research Center — Clinical Data Coordinator (2023.07 - present)\n- 负责 2 项 oncology Phase II trials 的日常 site coordination，管理约 40 名 enrolled subjects 的访视安排\n- 执行 informed consent 流程，确保每一份 ICF 在 enrollment 前完成签署与版本核对\n- 在 EDC 系统（Medidata Rave）中完成 CRF 录入，将平均 data entry lag 从 receipt 后 9 天压缩到 4 天\n- 协助处理 query resolution，月均 close 约 60 条 queries，outstanding query rate 维持在 8% 以下\n- 配合 monitor 进行 SDV，准备 source documents 并跟踪 monitoring visit 的 action items\n\n实习经历：\nCity General Hospital — Research Assistant Intern (2022.09 - 2023.05)\n- 协助 PI 整理 regulatory binder 与 essential documents，熟悉 1572、delegation log 等文件\n- 参与 patient screening，依据 inclusion/exclusion criteria 完成初筛记录\n\n技能：GCP 认证、Medidata Rave、EDC 数据录入、informed consent 流程、医学英语阅读、基础 SAS 概念、Microsoft Excel\n\n教育背景：某医科大学 护理学 本科 (2018-2022)\n\n证书：ICH-GCP 培训证书、人类受试者保护（CITI Program）培训证书\n\n语言：中文（母语）、英语（CET-6，可阅读英文临床方案）",
+  "jd": "Sunrise Cancer Research Center is hiring a Clinical Research Coordinator (CRC, junior) to support a portfolio of oncology Phase I-II trials. Reporting to the lead CRC, you will own subject-visit scheduling, informed-consent administration, source-data verification preparation, and electronic data capture (EDC) entry in Medidata Rave. You will be responsible for keeping outstanding query rates below 10%, ensuring 100% ICF version compliance, and meeting protocol-defined visit windows. Candidates must hold a current ICH-GCP certification and understand human-subject protections. We value coordinators who treat every data point as a real patient and who can communicate clearly across subjects, investigators, and sponsors. Experience with international multi-center trials and basic biostatistics is a plus. This is a detail-intensive role in a regulated environment where data integrity and subject safety are non-negotiable.",
+  "history": [
+    { "q": "先简单介绍一下你现在在 Sunrise 的角色，你负责几个 trial，大概管理多少受试者？" },
+    { "q": "你简历上写 data entry lag 从 9 天降到 4 天，这个 4 天是怎么测出来的？" },
+    { "q": "Walk me through 一次具体的 informed consent 流程——从受试者进来到签字，你做了哪些步骤？" },
+    { "q": "如果发现某个受试者签的是旧版本的 ICF，你会怎么处理？" },
+    { "q": "你说月均 close 60 条 queries，这些 query 最常见的类型是什么？" },
+    { "q": "讲一个你印象最深的 protocol deviation——当时发生了什么？" },
+    { "q": "在那次 deviation 里，具体是你做的哪些动作？" },
+    { "q": "Monitor 来做 SDV 的时候，你一般怎么准备 source documents？" },
+    { "q": "现在我想听一个完整的故事：有一次你发现了一个可能影响受试者安全的数据问题，你是怎么从发现到解决的，结果怎么样？" }
+  ],
+  "candidate_last_answer": "嗯，有一次我在录入 vital signs 的时候，发现一个受试者的血压数据明显不对，sitting BP 录成了 60/40 这种数值，按照 protocol 这种情况如果是真的应该触发 AE 上报。当时的情况是这个 site 比较忙，PI 也在出门诊。我意识到这个不太对，because 这个受试者上一次访视还是正常的，所以我马上去核对了 source document。核对之后我发现其实是护士抄录的时候把数字写颠倒了,真实值是 BP 90 多。然后我就 flag 了这个 discrepancy，等 PI 回来确认。这个事情让我学到 source data verification 真的很重要。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "data-entry-lag-metric", "informed-consent-flow", "icf-version-control", "query-types", "protocol-deviation-story", "deviation-personal-actions", "sdv-preparation"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "timeline" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 等 PI 回来确认",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the exact sequence of what the candidate did between flagging the discrepancy and PI confirmation — whether she documented the correction in a note-to-file, who actually amended the EDC value, how long the value sat uncorrected, and whether any interim safety check was triggered while the PI was unavailable"
+    ]
+  }
+}

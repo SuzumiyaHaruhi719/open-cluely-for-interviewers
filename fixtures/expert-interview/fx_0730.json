@@ -1,0 +1,47 @@
+{
+  "id": "fx_0730",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "clean-STAR",
+    "edge_case": "reverses-question"
+  },
+  "resume": "陈昊 — 工程副总裁（VP of Engineering）\n\n现任 · 某 SaaS 公司 · 2020 至今 · 管理约 180 人工程组织，含平台、基础设施与三条业务线\n\n情境/任务/行动/结果（STAR）精选：\n\n1. 平台稳定性治理\n- 情境: 接手时核心 API 月度可用性 99.2%，季度 P1 事故约 9 起\n- 任务: 一年内把可用性提到 99.95%，P1 事故降一半\n- 行动: 设立 SRE 团队、推 error budget 机制、建立事故复盘闭环、重构发布门禁\n- 结果: 12 个月后可用性 99.96%，P1 事故年化 4 起，MTTR 从 96 分钟降到 22 分钟\n\n2. 研发效能\n- 情境: 部署频率每两周一次，前置时间长\n- 任务: 推动持续交付\n- 行动: 主导 CI/CD 平台自建、推行 trunk-based、建度量看板\n- 结果: 部署频率提升到日均 30+ 次，变更失败率从 18% 降到 6%\n\n3. 组织搭建\n- 行动: 一年内从 110 人扩到 180 人，建立职级与晋升体系，自愿离职率从 19% 降到 11%\n\n技能: 分布式系统、SRE、平台工程、组织设计\n教育: 计算机科学 硕士",
+  "jd": "我们是一家处于高速增长期的企业级 SaaS 公司，正在寻找一位工程副总裁（VP of Engineering），向 CTO 汇报，负责约 200 人的工程组织。你将对平台稳定性、研发交付速度与工程师留存负总责，并需要在董事会层面解释技术投资的取舍。我们尤其看重候选人能够清晰区分『你个人做的决策』与『团队完成的工作』，能在压力下给出结构化、可追溯的回答，而不是把问题反推给提问者。该岗位需主导一次核心系统的架构演进，并在两个相互冲突的业务线之间做资源仲裁。",
+  "history": [
+    { "q": "先讲讲你现在管的工程组织，多少人、几条线、你直接对什么负责。" },
+    { "q": "平台可用性从 99.2% 到 99.95%，这件事里你个人下的关键决策是哪一个？" },
+    { "q": "设立 SRE 团队是你拍的板吗？还是 CTO 要求的？" },
+    { "q": "error budget 机制落地时，业务线反对吗？你怎么仲裁的？" },
+    { "q": "部署频率提到日均 30 多次，这个数字是怎么统计的？" },
+    { "q": "自愿离职率从 19% 降到 11%，你做的哪一件事影响最大？" },
+    { "q": "讲一次你和某个业务线 VP 在资源上正面冲突的具体情况。" },
+    { "q": "那次冲突最后是谁拍的板，依据是什么？" },
+    { "q": "如果可用性目标和发布速度目标打架，你优先保哪个，为什么？" },
+    { "q": "我想具体一点：上次你在两条业务线之间做资源仲裁，你个人最终拿掉了谁的资源、给了谁、依据什么数据？" }
+  ],
+  "candidate_last_answer": "嗯…这个问题挺好的，其实…说实话当时情况很复杂，两边都有道理，我…呃…那你觉得在那种情况下,一个 VP 应该怎么取舍?我反过来想问问你,如果是你来做这个决定,你会先看哪个指标?因为我觉得这事儿真的没有标准答案,我当时也是…就是反复权衡,跟两边聊,然后…哎,你们公司一般遇到这种资源打架是怎么处理的?我比较好奇你们的机制,因为不同公司差别挺大的,我也想参考一下。",
+  "session_state": {
+    "drilled_topics": ["org-scope", "availability-decision", "sre-mandate", "error-budget-arbitration", "deploy-metric", "attrition-driver", "resource-conflict", "decision-owner", "availability-vs-speed", "arbitration-pin"],
+    "current_competency_target": "decision-ownership",
+    "elapsed_minutes": 37
+  },
+  "ground_truth": {
+    "competency_target": "decision-ownership",
+    "missing_evidence": [
+      { "competency": "decision-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "decision-ownership", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 那你觉得在那种情况下",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete step-by-step account of the one resource-arbitration the candidate personally decided — which team lost resources, which gained, and the specific data used — refusing to let the candidate deflect by turning the question back on the interviewer"
+    ]
+  }
+}

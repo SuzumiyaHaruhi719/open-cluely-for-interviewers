@@ -1,0 +1,41 @@
+{
+  "id": "fx_0697",
+  "tags": {
+    "industry": "hr",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Junior HR Generalist — a recruiter people remember, the heartbeat of every team I join\n\n- Universally praised as the most personable HR voice candidates ever talk to\n- Ran the most successful campus hiring season our department had ever seen\n- Slashed time-to-hire dramatically and made the whole funnel hum\n- The go-to person for culture, onboarding, and 'making people feel at home'\n- Trusted by leadership far above my level to handle sensitive employee matters\n- Built an onboarding experience interns rave about on Glassdoor\n- Naturally gifted at reading people; closed candidates others had written off\n\nBrightPath Talent Solutions — HR Generalist (2023–present): supporting recruiting, onboarding, and employee relations for a 300-person tech services firm.\nPrior: internship, People Operations, summer 2022.\n\nEducation: B.A. in Human Resources Management, 2023.",
+  "jd": "BrightPath Talent Solutions is hiring a Junior HR Generalist to support full-cycle recruiting and people operations for a 300-person firm. You will own scheduling and coordination across the hiring funnel, run new-hire onboarding, maintain the HRIS, and assist senior HRBPs with employee-relations cases. Responsibilities include sourcing for early-career roles, screening candidates, tracking funnel metrics (time-to-fill, offer-accept rate, candidate NPS), running orientation, and keeping compliance paperwork (I-9, background checks) accurate. We want someone who can speak precisely about what they personally did versus what their team did, who handles confidential matters with discretion, and who can show concrete ownership of at least one process improvement. Reports to the HR Manager.",
+  "history": [
+    { "q": "Tell me about your current role at BrightPath — what parts of the hiring funnel do you personally touch day to day?" },
+    { "q": "You wrote that you 'slashed time-to-hire dramatically.' What was the time-to-hire before, and what was it after?" },
+    { "q": "Let's talk about the campus season you called your department's most successful. What was your specific role on that team?" },
+    { "q": "Walk me through one onboarding improvement you drove. What exactly did you change, and what was your part in it versus the rest of the team?" }
+  ],
+  "candidate_last_answer": "Yeah, so onboarding was a big one for us. We sat down as a team and we realized the first-week experience was kind of clunky, so we redesigned the whole thing together. We built a new welcome packet, we revamped the buddy program, and we got the orientation down to a much tighter agenda. Everyone pitched in — it was super collaborative. We rolled it out and the feedback we got was amazing. We were all really proud of what we accomplished as a group.",
+  "session_state": {
+    "drilled_topics": ["current-funnel-scope", "time-to-hire-claim", "campus-season-role", "onboarding-improvement"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 15
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we redesigned the whole thing together",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a clear separation of the candidate's individual contribution from the team's — which specific piece (welcome packet, buddy program, or agenda) she personally built, what she decided, and what changed because of her work rather than the group's"
+    ]
+  }
+}

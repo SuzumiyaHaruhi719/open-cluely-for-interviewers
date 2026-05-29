@@ -1,0 +1,45 @@
+{
+  "id": "fx_0695",
+  "tags": {
+    "industry": "legal",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "法务副总裁 / 总法律顾问候选人 | 十六年企业法务与合规管理经验\n\n关键能力标签：公司治理、合规体系建设、反舞弊、反垄断、数据合规、个人信息保护、知识产权战略、并购重组、跨境交易、资本市场、IPO、争议解决、内控风控、董事会治理、监管沟通、危机管理、合同管理体系、ESG合规、出口管制、商业秘密保护、法律团队管理、外部律师管理、预算管控\n\n近期任职：某互联网科技集团 法务负责人 / 副总裁（2019年至今）——全面负责集团法务与合规职能，向总裁汇报，管理法务、合规、知识产权三个团队。\n此前：某上市制造企业 法务总监（2014年至2019年）——负责公司及子公司的法律事务、合规与诉讼管理。\n更早：某红圈律师事务所 资深律师（2008年至2014年）——公司业务与争议解决方向。\n\n教育背景：知名政法大学法学硕士，通过国家司法考试，具备公司律师执业资格。\n\n荣誉：曾被行业媒体评为年度优秀总法律顾问入围者。",
+  "jd": "某拟上市科技集团招聘法务副总裁 / 总法律顾问，向CEO汇报并列席董事会。该岗位全面负责集团法律、合规与风险职能，管理一支约二十人的法务团队，覆盖中国及两个海外主体。核心职责：主导搭建与IPO相适配的合规体系与内控制度；牵头处理重大诉讼、监管问询与反垄断申报；建立数据合规与个人信息保护治理框架；管理外部律师与法律预算；为重大并购与融资交易提供法律支持并把控风险。任职要求：十五年以上法务/律师经验，其中五年以上团队负责人经验；有完整经历过IPO或重大融资项目者优先；具备直接向董事会汇报与监管沟通的能力。本轮面试重点考察候选人在具体项目中亲自做出的判断与可量化的结果，而非职责罗列。",
+  "history": [
+    { "q": "先讲讲你现在在这家科技集团的法务负责人岗位上，团队规模、汇报关系和你直接负责的核心职能。" },
+    { "q": "你简历里写了主导合规体系建设。挑一个你亲自牵头搭建的合规制度，讲讲它解决了什么具体问题。" },
+    { "q": "这套制度落地之后，你用什么指标判断它真的起了作用？" },
+    { "q": "说一个你亲自处理过的重大诉讼或监管问询，背景、你的判断、最后结果。" },
+    { "q": "在数据合规方面，你具体推动了哪些动作？比如个人信息保护这块你是怎么落地的？" },
+    { "q": "你怎么管理外部律师和法律预算？过去一年你在预算上做过什么具体决策？" },
+    { "q": "给我一个具体的例子：一次你作为法务负责人，亲自做出的、有明确后果的关键判断。从头到尾你到底做了什么？" }
+  ],
+  "candidate_last_answer": "这个问题问得很好。其实做总法这个岗位，关键就是要有大局观，要站在公司的高度去平衡风险与业务。我一直强调合规是底线，但又不能为了合规而合规，要懂得赋能业务。具体到决策，我们都是充分评估、审慎判断，该坚持的坚持，该灵活的灵活。我带团队也是这个思路，把控好风险敞口，守住合规红线，同时支持公司战略落地。这么多年下来，我觉得最重要的还是格局和担当。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "compliance-system-build", "compliance-effectiveness-metric", "litigation-handling", "data-compliance-actions", "outside-counsel-budget"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "credibility", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们都是充分评估、审慎判断，该坚持的坚持，该灵活的灵活",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 把候选人从『格局与担当』的空话拉到一个具体决策上，逼出她个人（而非团队）在某一次法律判断中实际做了什么、面对什么具体取舍、产生了什么可验证的后果"
+    ]
+  }
+}

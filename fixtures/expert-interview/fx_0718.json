@@ -1,0 +1,54 @@
+{
+  "id": "fx_0718",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "高级学习产品负责人 / Senior Learning Product Lead\n\n经历\nK12 在线教育平台『启思』 — Senior Learning Product Lead (2021–present)\n- Situation：自适应练习系统完课率长期停在 38%，续报率受拖累\n- Task：负责把核心练习模块的完课率与学习效果同时拉起来\n- Action：重构知识点掌握度模型，引入间隔重复 spaced-repetition 调度，联合教研做 2000 题难度标定\n- Result：完课率 38% → 61%（6 个月），单元测掌握度均值 +14 个百分点，相关班级续报率 +9pt\n\n某成人职业教育 — Learning Experience Designer (2018–2021)\n- Situation：直播大班课到课率低、互动差\n- Task：提升到课率与互动参与\n- Action：设计课中 checkpoint quiz + 助教跟踪 SOP\n- Result：到课率 +18pt，课中互动率翻倍\n\n技能：学习科学、自适应学习、A/B 实验、教研协同、埋点分析、Figma",
+  "jd": "我们为一款服务百万学习者的 K12 自适应学习产品招聘高级学习产品负责人，向产品 VP 汇报。你将拥有『练习—测评—反馈』闭环的端到端体验与学习效果，定义并对完课率、知识点掌握度、续报率等北极星指标负责。你需要把学习科学（掌握度模型、spaced repetition、认知负荷）落到产品决策里，独立设计并解读 A/B 实验，深度协同教研团队完成内容标定。我们重点考察：用学习效果数据（而非仅参与度）验证决策的能力、在内容质量与排课算法间做取舍的判断力，以及把一个模糊的『学得更好』命题拆成可上线方案的功力。要求 5 年以上学习产品经验，有完整改版上线且能讲清学习效果数据的案例。",
+  "history": [
+    { "q": "先讲讲你在『启思』的现状 scope——你端到端拥有哪些模块？团队怎么配？" },
+    { "q": "你简历里完课率从 38% 到 61% 这个项目，最初的核心问题是怎么定位出来的？" },
+    { "q": "你重构了知识点掌握度模型，旧模型具体哪里不行？" },
+    { "q": "spaced repetition 的调度间隔是你们自己定的还是用了现成算法？" },
+    { "q": "2000 题难度标定是怎么做的？谁来标，怎么保证一致性？" },
+    { "q": "完课率从 38% 涨到 61%，你怎么排除掉是同期换了内容或拉新人群变化的影响？" },
+    { "q": "有没有做对照实验？实验组和对照组的完课率分别是多少？" },
+    { "q": "你说掌握度均值 +14pt，这个『掌握度』是怎么测出来的？" },
+    { "q": "续报率 +9pt 这个归因，你认为有多少能真正记到你这个改版头上？" },
+    { "q": "在内容质量和排课算法之间，你做过哪个具体取舍？" },
+    { "q": "讲一次你和教研团队在难度标定上严重分歧的具体场景。" },
+    { "q": "如果只能优先提升一个指标——完课率还是掌握度——你选哪个，为什么？" },
+    { "q": "上线后有没有出现学习效果反而下降的子人群？你怎么发现的？" },
+    { "q": "认知负荷过高的反馈你们怎么量化的？" },
+    { "q": "这个项目如果重来，你会最先改哪一步？" },
+    { "q": "现在换个角度：你怎么衡量一个学习产品改动是『学得更好』而不只是『玩得更久』？" },
+    { "q": "回到那个对照实验——能不能直接告诉我实验组和对照组的完课率各是多少？" }
+  ],
+  "candidate_last_answer": "啊这个问题特别好，因为完课率和真正的学习效果其实是两回事，这一点我能聊很久。说起来我最近在重读认知心理学里关于 desirable difficulties 的研究，就是那个 Bjork 的理论，他认为学得太顺反而记不住，这个对我们整个练习设计的哲学影响特别大。然后这又让我想到我们团队 retro 的时候讨论过一个特别有意思的现象，就是有些学生刷题刷得很爽但月考反而退步，我当时还专门写了一篇内部 doc……对了你们公司内部有没有这种知识沉淀的文化？我觉得这个其实比单个 metric 重要得多。哦说回来，你刚问的是那个对照组的完课率对吧，嗯，那个实验当时的 setup 是这样的……其实我先得说一下我们当时埋点埋得有点乱。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "problem-localization", "mastery-model", "spaced-repetition", "item-calibration", "causal-attribution", "ab-test-design", "mastery-measurement", "reenrollment-attribution", "content-vs-scheduling-tradeoff", "research-conflict", "metric-priority", "subgroup-regression", "cognitive-load", "redo-decision", "learning-vs-engagement"],
+    "current_competency_target": "rigor-causality",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "rigor-causality",
+    "missing_evidence": [
+      { "competency": "rigor-causality", "evidence_type": "metric" },
+      { "competency": "rigor-causality", "evidence_type": "mechanism" },
+      { "competency": "execution-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 那个实验当时的 setup 是这样的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual control-group vs treatment-group completion-rate numbers from the A/B test, plus enough of the experiment setup to judge whether the 38%→61% lift was causally attributable, with the cognitive-science tangents stripped"
+    ]
+  }
+}

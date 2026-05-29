@@ -1,0 +1,44 @@
+{
+  "id": "fx_0684",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "sparse-200words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "王哲 Zhe Wang\nSenior Backend Engineer — Distributed Systems\nzwang.eng@example.com | 8 years\n\n现任 Nimbus Pay 高级后端工程师（2021至今）：负责支付清算 platform 的核心服务，主要做 Go 微服务、Kafka 事件流和 PostgreSQL。带一个 4 人小组。\n之前在 一家电商公司 做 backend engineer（2016-2021），负责订单系统。\n\n技能：Go, Java, Kafka, PostgreSQL, Redis, gRPC, Kubernetes, distributed transactions, observability (Prometheus/Grafana)。\n\n教育：计算机科学学士。",
+  "jd": "Senior Backend Engineer — Payments Platform\nYou will own critical services in a payment clearing and settlement platform handling high transaction volume. Core responsibilities: design and operate Go microservices, event-driven pipelines on Kafka, and the consistency model around money movement (idempotency, exactly-once-ish semantics, reconciliation). We expect you to reason precisely about a specific incident or design decision you personally made — the failure mode, the mechanism, the tradeoff you chose and why, and how you verified it. The interview will go deep on one concrete production problem; we care about depth and ownership, not breadth of buzzwords. Strong Go, distributed-systems fundamentals, and an on-call/operational mindset required.",
+  "history": [
+    { "q": "介绍一下你在 Nimbus Pay 负责的 settlement 服务，scope 大概是什么。" },
+    { "q": "你们清算服务怎么保证一笔 payment 不会被重复处理?讲讲 idempotency 的设计。" },
+    { "q": "Tell me about your most serious production incident on that service." },
+    { "q": "那次 double-spend 的 root cause 到底是什么?" },
+    { "q": "你具体是怎么定位到是 Kafka consumer 的 offset commit 时机问题的?" },
+    { "q": "你最后采取的 fix 是什么?为什么选这个方案而不是加分布式锁?" },
+    { "q": "你怎么验证这个 fix 真的解决了问题、而且没引入新的 regression?" },
+    { "q": "我们再回到那个 offset commit 的修复:把那次修复的 tradeoff 给我讲透——你选的方案在 latency 和 consistency 之间是怎么权衡的,代价是什么?" }
+  ],
+  "candidate_last_answer": "哦那个 offset commit 啊。其实说到 Kafka,我觉得现在整个行业对 event-driven 的理解都有点偏差。你看现在大家都在聊 event sourcing、CQRS,但很多人连 at-least-once 和 exactly-once 的本质区别都没搞清楚。我最近还在看一篇讲 Raft 的论文,特别有意思。说起来你们团队现在 settlement 这块用的是哪套 consistency model?是不是也踩过 dual-write 的坑?我挺好奇你们是怎么处理 cross-service 事务的,毕竟这才是支付系统真正难的地方对吧。",
+  "session_state": {
+    "drilled_topics": ["settlement-scope", "idempotency-design", "production-incident", "double-spend-root-cause", "offset-commit-diagnosis", "fix-vs-distributed-lock", "fix-verification", "offset-fix-tradeoff"],
+    "current_competency_target": "distributed-systems-tradeoff-reasoning",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "distributed-systems-tradeoff-reasoning",
+    "missing_evidence": [
+      { "competency": "distributed-systems-tradeoff-reasoning", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "distributed-systems-tradeoff-reasoning", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你们团队现在 settlement 这块用的是哪套 consistency model",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: redirect the candidate off the reversed question and back onto his own fix — the specific latency-versus-consistency tradeoff of the offset-commit change he made, including what concrete cost (added latency, reduced throughput, weaker delivery guarantee) he accepted and why"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "fx_0732",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "刘明 — Backend Engineer (中级)\n\n现任 · 某出行平台 · 订单与支付服务\n\n经历:\n- 负责订单服务的 microservices 拆分，QPS 峰值 12k\n- 主导支付对账系统重写,把对账延迟从 T+1 降到准实时\n- 简历摘要写『4 年后端经验』；工作经历明细只列出 2021 年至今(约 3 年),且 2021-2022 标注为『前端转后端过渡期』\n- 一处写『独立设计并落地』整套对账系统,另一处写『参与对账系统重写,owner 是组里的 tech lead』\n\n技能: Java, Spring, Kafka, MySQL, Redis, 一点 Go\n教育: 软件工程 本科 2017-2021",
+  "jd": "我们是一家出行科技公司，招聘一名中级后端工程师加入交易团队，负责订单与支付链路的高可用与一致性。You will own services that handle real-money transactions, so we need engineers who give precise, internally consistent accounts of what they built and owned. 要求：3 年以上后端经验，熟悉分布式事务、消息队列、对账与幂等设计。We will probe resume claims for consistency — total years, ownership scope, and who actually led each project. 该岗位向交易团队 tech lead 汇报。",
+  "history": [
+    { "q": "先讲讲你现在负责的服务，订单还是支付，具体范围。" },
+    { "q": "你简历写 4 年后端经验，但明细看起来是 3 年，2021-2022 还标了过渡期,帮我对一下。" },
+    { "q": "订单服务拆分是你主导的吗？拆成了几个服务？" },
+    { "q": "QPS 峰值 12k 是压测出来的还是线上真实峰值？" },
+    { "q": "对账系统这块,你写了一处『独立设计落地』,一处『参与、owner 是 tech lead』,到底哪个准确？" },
+    { "q": "准实时对账,延迟具体压到了多少秒？" },
+    { "q": "对账重写时,幂等和一致性是怎么保证的？" },
+    { "q": "如果是 tech lead 主导,那你个人负责的是哪几个模块？" },
+    { "q": "上线后出过对账错账吗？怎么发现和修的？" },
+    { "q": "Kafka 在对账链路里起什么作用,你做了哪些配置决策？" },
+    { "q": "和支付团队、财务团队协作时有没有踩过坑？" },
+    { "q": "回头看,对账这套系统里哪部分是你能拍胸脯说『这是我设计的』？" },
+    { "q": "我就想确认一件事:对账系统的整体架构,是你定的,还是 tech lead 定的?" }
+  ],
+  "candidate_last_answer": "呃…这个怎么说呢,就是…架构这个东西吧,它其实是一个,嗯,team effort,对吧?tech lead 他确实是 owner,挂他名字,but 实际上很多设计…比如那个 reconciliation 的分片逻辑,还有 retry 的策略,其实…呃…我也提了不少 idea,我们当时 whiteboard 上画了好久,我记得有一次我提的方案被采纳了,但也可能是他先想到的我忘了,反正…就是,你要说整体架构是谁定的,我觉得…很难讲清楚,主要是大家一起,我具体哪块完全 own 的我得想想,sorry 这个有点 fuzzy。",
+  "session_state": {
+    "drilled_topics": ["service-scope", "years-discrepancy", "order-split-lead", "qps-source", "ownership-contradiction", "recon-latency", "idempotency", "personal-modules", "recon-bug", "kafka-role", "cross-team", "personal-claim", "architecture-owner"],
+    "current_competency_target": "ownership-clarity",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "ownership-clarity",
+    "missing_evidence": [
+      { "competency": "ownership-clarity", "evidence_type": "owner-of-action" },
+      { "competency": "ownership-clarity", "evidence_type": "scope" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我具体哪块完全 own 的我得想想",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete, non-hedged delineation of which reconciliation modules the candidate personally designed versus what the tech lead owned, resolving the resume's contradictory 『独立设计落地』 vs 『参与』 claims into a factual ownership boundary"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "fx_0696",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "运营总监 | Operations Director — 12年快消与零售运营经验\n\n职业摘要：跨区域运营与流程优化负责人，擅长用数据驱动的方式拉升履约效率与成本结构。带过最大团队约220人，覆盖4个区域DC。\n\nXX连锁零售集团 | 运营总监（2020–至今）\n- Situation: 接手时全国履约SLA达成率仅82%，旺季爆仓频发。\n- Task: 目标是把准时履约率(on-time fulfillment)在两年内拉到95%以上，同时把单均履约成本(cost-per-order)降低15%。\n- Action: 重构了仓配网络的wave planning逻辑，引入labor management system做工时标准，按品类做了slotting优化，并和承运商重谈了KPI挂钩的合同。\n- Result: 18个月内准时履约率从82%提升到96.3%，cost-per-order下降17%，旺季爆仓事故同比下降70%。\n\nYY电商平台 | 高级运营经理（2016–2020）\n- Situation: 退货逆向流程混乱，退款时效慢、客诉高。\n- Task: 重建reverse logistics流程并把退款时效从7天压到48小时。\n- Action: 设计了分级质检与即时退款规则，搭了退货可视化看板(dashboard)，和客服做了SOP打通。\n- Result: 退款时效降到41小时，退货相关客诉率下降52%，NPS提升11个点。\n\n教育：知名高校 工业工程本科。证书：六西格玛黑带(Six Sigma Black Belt)、CPIM。",
+  "jd": "某全渠道零售集团招聘运营总监(Operations Director)，向COO汇报，负责全国履约与门店运营的整体效率。该岗位管理约200人的运营团队及4个区域配送中心，全面负责on-time fulfillment、cost-per-order、库存准确率与逆向物流时效等核心指标。核心职责：主导仓配网络与劳动力规划(labor planning)的持续优化；牵头旺季运营备战(peak readiness)与产能弹性方案；推动门店补货与全渠道库存一盘货(omni-channel inventory)落地；管理三方承运商并以KPI重谈合同。任职要求：十年以上运营经验，含三年以上总监或同级团队管理；有大规模履约网络改造与降本实绩；熟悉精益/六西格玛工具。本轮面试重点考察候选人对其声称的数字背后机制的真实理解，而非方法论的堆砌。",
+  "history": [
+    { "q": "先用三五分钟讲讲你现在在XX零售集团的运营总监岗位——团队、DC数量、你直接负责的核心指标。" },
+    { "q": "你简历里写两年把on-time fulfillment从82%拉到96.3%。先说说82%那会儿，最大的失准来源是什么？" },
+    { "q": "你提到重构了wave planning逻辑。原来的wave是怎么排的，你具体改了哪一块？" },
+    { "q": "引入labor management system之后，工时标准是怎么定出来的？谁来背这个standard？" },
+    { "q": "slotting优化具体是按什么维度做的？改完之后拣货行走距离这类指标怎么变化的？" },
+    { "q": "和承运商把合同改成KPI挂钩——挂的是哪几个KPI，惩罚和激励是怎么设的？" },
+    { "q": "cost-per-order降17%，这17%主要是从哪几块省出来的？给我拆一下。" },
+    { "q": "旺季爆仓下降70%，那一年旺季你提前做了哪些产能弹性的准备？" },
+    { "q": "切到逆向物流。退款时效从7天到41小时，最大的瓶颈原来卡在哪个环节？" },
+    { "q": "你说设计了分级质检和即时退款规则。即时退款的风控边界怎么设的，会不会被薅羊毛？" },
+    { "q": "退货可视化看板上你最看重哪几个指标？团队每天怎么用它？" },
+    { "q": "NPS提升11个点这个归因，你怎么确认主要是逆向流程改善带来的，而不是别的因素？" },
+    { "q": "管200人、4个DC，你怎么做日常的运营节奏管理(operating cadence)？" },
+    { "q": "讲一次你判断错了的运营决策——后来怎么发现、怎么纠偏的？" },
+    { "q": "如果让你重做履约网络这个项目，哪一步你会换一种打法？" },
+    { "q": "最后给我一个最具体的场景：上个旺季峰值那天,你早上到岗后第一个小时做了哪几件事、看了哪几个数、下了哪几个指令？" }
+  ],
+  "candidate_last_answer": "这个问题特别好。其实旺季作战我有一套很成熟的打法，核心就是end-to-end的全局视野加上数据驱动的精细化运营。峰值那天我一定是第一时间build situational awareness，拉通所有stakeholder，确保信息无缝flow。然后就是抓重点、控节奏、做好resource allocation，把整个operation跑成一个高效协同的闭环。我始终相信，excellence in execution来自于平时扎实的readiness加上当天敏捷的response。把这套methodology跑顺，旺季peak自然就稳了，team也能拧成一股绳打硬仗。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "fulfillment-baseline-loss", "wave-planning-redesign", "labor-standard-ownership", "slotting-dimensions", "carrier-kpi-contract", "cost-per-order-breakdown", "peak-capacity-prep", "reverse-bottleneck", "instant-refund-risk", "returns-dashboard-usage", "nps-attribution", "operating-cadence", "wrong-decision", "project-redo"],
+    "current_competency_target": "operational-detail",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "operational-detail",
+    "missing_evidence": [
+      { "competency": "operational-detail", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 峰值那天我一定是第一时间build situational awareness",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从『成熟打法』的口号逼到具体那一个小时的动作序列——他实际打开的是哪个看板、看的是哪几个数字（积压量、人效、承运商到车）、对谁下了哪条具体指令，验证他是否真的在现场指挥过峰值"
+    ]
+  }
+}

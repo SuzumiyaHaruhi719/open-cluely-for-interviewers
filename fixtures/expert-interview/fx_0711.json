@@ -1,0 +1,38 @@
+{
+  "id": "fx_0711",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "张磊 — 生产质量技术员\n\n关键词：精益生产、六西格玛、5S、看板、SMED 快速换模、TPM 全员生产维护、OEE 设备综合效率、SPC 统计过程控制、防错 Poka-Yoke、现场管理 Gemba、价值流图、DMAIC、根因分析、8D、FMEA、安灯系统、节拍时间、标准作业、持续改善、ISO 9001、IATF 16949、PPAP、APQP、来料检验、过程检验、出货检验、不良率、报废率、返工、SAP 质量模块\n\n工作经历：\n恒基汽车零部件 — 质量技术员（2023 至今）\n- 负责冲压车间的过程检验，记录 SPC 数据，处理不良品标识与隔离\n- 参与 8D 报告编写，跟进纠正措施，参加每日现场早会与改善活动\n- 配合客户审核与体系审核，维护检验记录与首件检验文件\n\n睿达精密 — 检验员（2022-2023）\n- 来料检验、出货检验，使用卡尺与三坐标测量基础尺寸\n\n技能：SPC、卡尺/千分尺、三坐标测量基础、8D、5S、IATF 16949 基础、叉车证\n\n教育：某职业技术学院 机械制造 大专（2022）\n\n证书：IATF 16949 内审员培训、质量工具培训",
+  "jd": "恒基汽车零部件正在招聘一名初级质量技术员，负责冲压与焊接车间的过程质量。你将执行过程检验、记录与判读 SPC 数据、处理不良品的标识与隔离，并参与 8D 问题解决与纠正措施跟进。我们尤其看重技术员能够清晰地复盘一次质量事件的时间线——异常什么时候发现、什么时候停线、什么时候隔离、什么时候上报、纠正措施什么时候验证有效——因为混乱的时间顺序往往意味着对因果关系的理解也是混乱的。理想人选能够在被追问时把『发现—遏制—分析—纠正—验证』的先后顺序讲清楚，分清哪一步在前、哪一步在后，并对每个节点给出大致时间。这是一个注重现场纪律与数据准确性的岗位。",
+  "history": [
+    { "q": "讲一次你处理过的批量不良事件——按时间顺序说，你是先发现异常、先停线、还是先隔离？整个『发现到验证』的过程是怎么走的？" }
+  ],
+  "candidate_last_answer": "嗯，那次是一批冲压件尺寸超差。我记得是我们先做了 8D 的纠正措施验证，确认 OK 之后才发现的异常，然后就停线了。其实隔离是最先做的，应该说是上报之后才隔离的，但上报又是在停线之前还是之后我有点记不清了。反正纠正措施是最早完成的那一步，验证有效之后我们才开始分析根因。客户那边的投诉应该是在我们停线之前就到了，也可能是隔离完才到的。总之这几件事差不多是同一时间发生的，先后顺序不太好讲，但结果是这批料最后都拦下来了，没有流到客户那边。",
+  "session_state": {
+    "drilled_topics": ["batch-defect-timeline"],
+    "current_competency_target": "process-rigor",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "process-rigor",
+    "missing_evidence": [
+      { "competency": "process-rigor", "evidence_type": "timeline" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 先做了 8D 的纠正措施验证，确认 OK 之后才发现的异常",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: forcing one coherent containment chronology — pinning each step (detection, line stop, quarantine, escalation, customer complaint arrival, root-cause analysis, corrective-action verification) to a relative order so the impossible 'verified the corrective action before discovering the defect' sequence is corrected into the real order of events"
+    ]
+  }
+}

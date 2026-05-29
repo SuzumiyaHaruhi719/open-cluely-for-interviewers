@@ -1,0 +1,55 @@
+{
+  "id": "fx_0733",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "over-bragging",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "MARCUS DELACROIX — Staff Data Scientist (the one they call when the model has to actually work)\n\nThe undisputed go-to ML authority across three companies. I don't ship baselines — I ship the models that move the P&L.\n\nFinTech Unicorn — Staff Data Scientist (2020-Present)\n- Single-handedly built the fraud model that everyone now depends on; it is THE system of record for risk decisions\n- Owned the full lifecycle: features, training, deployment, monitoring — no hand-holding required\n- Personally drove $40M+ in prevented fraud losses (my number, my model, my win)\n- Reduced false-positive rate from 4.1% to 1.3% while holding recall at 92%\n- Mentored every junior who has come through the team; they all credit me\n\nPrior: Adtech Co — Senior DS (2017-2020); Big Bank — DS (2015-2017)\n\nThe rare combination of deep theory and brutal shipping discipline. If it's hard and it matters, it lands on my desk.\n\nSkills: Python, PyTorch, XGBoost, feature stores, real-time inference, causal inference\nPhD coursework, Statistics (did not complete — too busy shipping)",
+  "jd": "We are hiring a Staff Data Scientist for our Risk & Fraud platform. You will own production models that make automated decisions on real customer money, working closely with Legal, Privacy, and Model Risk Management. We require rigorous documentation of data provenance, consent basis, and feature governance — every feature used in a production risk model must have a documented lawful basis and pass fairness review. The ideal candidate gives precise, well-evidenced accounts of their work AND demonstrates sound judgment about data ethics and regulatory boundaries. You will present model cards to a governance board. Experience with adverse-action notices and fair-lending constraints is strongly preferred.",
+  "history": [
+    { "q": "Give me the scope of the fraud model you own at the FinTech — what decisions it drives, what volume." },
+    { "q": "You claim $40M in prevented losses. Walk me through how that number was computed." },
+    { "q": "False positives from 4.1% to 1.3% at 92% recall — what was the single biggest lever?" },
+    { "q": "Take me through the feature set. What are the top three features by importance?" },
+    { "q": "You mentioned a feature derived from device and behavioral signals. Where does that data come from?" },
+    { "q": "Did each of those features have a documented lawful basis before it went into production?" },
+    { "q": "Who signed off on the feature governance — was Model Risk Management in the loop?" },
+    { "q": "Tell me about a time a feature improved performance but raised a privacy or fairness concern." },
+    { "q": "What did you actually do when that concern came up — concretely, step by step?" },
+    { "q": "Did you ship the feature before or after the governance review closed?" },
+    { "q": "How did you measure fairness across protected groups?" },
+    { "q": "Was there ever pressure to ship without the consent basis being fully documented?" },
+    { "q": "Who made the final call to deploy in that situation?" },
+    { "q": "What was the outcome — did the model card get approved as-is?" },
+    { "q": "Looking back, would you do anything differently on the governance side?" },
+    { "q": "How did you monitor the model post-deployment for drift?" },
+    { "q": "What is your false-positive cost assumption in that $40M figure?" },
+    { "q": "Be specific about that one feature you shipped ahead of review: what was the lawful basis at the moment it went live, and what did you personally do about it?" }
+  ],
+  "candidate_last_answer": "Sure — Situation: we had a behavioral-velocity feature, derived from cross-product clickstream, that lifted recall by about 3 points in offline tests, late Q2 2022. Task: I needed it live before the quarterly fraud spike. Action: the consent basis review hadn't closed — Privacy was backed up — so I made the call to ship it to production behind a flag and run it live while the review caught up; I documented my reasoning in the PR and looped Legal after the fact. Result: it ran in production for about five weeks before governance formally signed off, caught roughly $1.2M in fraud in that window, and the review ultimately approved it. So net-net it worked out, and frankly waiting would have cost us real money.",
+  "session_state": {
+    "drilled_topics": ["model-scope", "loss-attribution", "fp-lever", "feature-importance", "data-provenance", "lawful-basis", "mrm-signoff", "privacy-fairness-tension", "concrete-action", "ship-vs-review-timing", "fairness-measurement", "ship-pressure", "deploy-decision-owner", "model-card-approval", "governance-retro", "drift-monitoring", "fp-cost-assumption", "preship-feature-pin"],
+    "current_competency_target": "ethical-judgment",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "ethical-judgment",
+    "missing_evidence": [
+      { "competency": "ethical-judgment", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ethical-judgment", "evidence_type": "owner-of-action" },
+      { "competency": "compliance-awareness", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": ["admitted deploying a production risk-model feature derived from cross-product clickstream to live decisioning before the consent/lawful-basis review closed, running on real customer money for ~5 weeks ahead of governance sign-off"],
+    "top_question_traits": [
+      "must-anchor-on: I made the call to ship it to production behind a flag and run it live while the review caught up",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a precise reconstruction of the unauthorized-deploy decision — who, if anyone, approved shipping ahead of the lawful-basis review, what the documented consent basis actually was at go-live, and whether the candidate recognizes the regulatory risk of using clickstream data for automated money decisions without closed governance"
+    ]
+  }
+}

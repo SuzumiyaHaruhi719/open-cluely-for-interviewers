@@ -1,0 +1,42 @@
+{
+  "id": "fx_0703",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Staff Counsel — Commercial Contracts & Vendor Risk\n\nProfessional summary: 9 years in-house, focused on commercial contracting, vendor risk, and contract operations at mid-to-large technology companies.\n\nVertex Cloud Inc. — Staff Counsel, Commercial (2020–present)\n- Situation: Sales contracting cycle times were a recurring escalation; legal was the bottleneck on every enterprise deal.\n- Task: Cut legal turnaround on standard commercial agreements and scale review without adding headcount.\n- Action: Built a clause playbook and a self-serve fallback library, stood up a CLM intake/triage workflow, and set risk-tiered approval thresholds so low-risk deals skipped legal.\n- Result: Median legal turnaround on standard MSAs dropped from 9 days to 3 days; ~60% of low-risk deals auto-cleared without attorney touch.\n\nNorthbridge Systems — Commercial Counsel (2016–2020)\n- Situation: Inconsistent DPA and security terms created audit risk across vendor agreements.\n- Task: Standardize data-protection and security exhibits firm-wide.\n- Action: Drafted a modular DPA, negotiated it across the top 50 vendors, and trained procurement on the redline guardrails.\n- Result: Standardized terms across the top vendor base and reduced one-off security escalations materially.\n\nEducation: J.D., 2016. Admitted to state bar. B.A. Political Science, 2013.",
+  "jd": "Vertex Cloud Inc. is hiring Staff Counsel for Commercial Contracts to own the enterprise contracting function and vendor-risk program for a fast-scaling SaaS business. You will draft and negotiate MSAs, DPAs, and order forms; own the clause playbook and CLM workflow; set risk-tiered approval thresholds; and partner with sales, security, and procurement to keep deal velocity high without taking on undue risk. You will report cycle-time and risk metrics to the GC and own the corrective plan when turnaround slips. We want a lawyer who can speak precisely and verifiably about the metrics they claim — baselines, measurement method, and sample size — not headline numbers. Reports to the General Counsel.",
+  "history": [
+    { "q": "Walk me through your current scope at Vertex — what you own across commercial contracting and vendor risk." },
+    { "q": "Your resume says median legal turnaround on standard MSAs went from 9 days to 3. How was turnaround measured — clock start and clock stop?" },
+    { "q": "What was the sample size behind that median, and over what period?" },
+    { "q": "Tell me about the risk-tiered thresholds — how did you decide what counts as 'low-risk' enough to skip legal?" },
+    { "q": "Give me the hard numbers as they stand today: what's your current auto-clear rate and turnaround, and what's the source of truth for those figures?" }
+  ],
+  "candidate_last_answer": "Honestly the program's numbers are spectacular now — we're auto-clearing something like 95% of all deals with zero legal touch, and turnaround on basically everything is down to under a day, often same-hour. I'd say I personally drove well over $10M in efficiency value for the business, easily. The whole thing basically runs itself at this point. Every metric is best-in-class — I don't think there's a contracting function anywhere that's faster than what I built.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "turnaround-measurement-method", "median-sample-size", "risk-tier-definition"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "credibility", "evidence_type": "named-entity" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: auto-clearing something like 95% of all deals with zero legal touch",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a verifiable auto-clear rate tied to a specific system of record (the CLM report) over a defined window with a real denominator, exposing whether the 95% 'all deals' figure conflates low-risk-only auto-clear with the full deal population"
+    ]
+  }
+}

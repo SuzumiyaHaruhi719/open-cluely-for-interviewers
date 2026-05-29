@@ -1,0 +1,39 @@
+{
+  "id": "fx_0726",
+  "tags": {
+    "industry": "marketing",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "VP of Marketing\n\nExperience\nLumen Retail Group — VP of Marketing (present)\n- Lead brand, performance, and lifecycle marketing across DTC and retail channels\n- Rebuilt the marketing org and led a full rebrand and martech replatforming\n- Own the marketing budget and the demand-generation pipeline\n\nFernwood & Co. — Senior Director, Growth Marketing\n- Scaled paid acquisition and built the lifecycle/CRM function from scratch\n- Partnered with product and analytics on attribution\n\nBrightline Media — Marketing Manager\n- Ran paid social and SEM campaigns\n\nSkills: brand strategy, performance marketing, lifecycle/CRM, martech, attribution, team leadership",
+  "jd": "We're hiring a VP of Marketing to own brand, performance, and lifecycle across DTC and retail for a fast-scaling consumer brand, reporting to the CMO. You'll own the marketing budget, the demand pipeline, and blended CAC/LTV, and you'll lead a martech replatforming and a brand refresh in parallel. We care most about a leader who can narrate a major initiative with a clean, consistent timeline and concrete results — when each phase started, what shipped when, and what each move did to CAC, payback, and pipeline. We probe hard on sequence and causality. You'll lead a 30-person org and partner closely with product, analytics, and finance. 8+ years in marketing leadership, 3+ managing teams, with a quantifiable growth track record.",
+  "history": [
+    { "q": "Give me the shape of your current role at Lumen — scope, budget ownership, team size, the metrics you own." },
+    { "q": "You led a rebrand and a martech replatforming. Walk me through that initiative end to end, in order." },
+    { "q": "Let's nail the sequence: which came first — the replatforming or the rebrand launch — and roughly when did each happen relative to your start?" }
+  ],
+  "candidate_last_answer": "Right, so the rebrand actually launched in Q2 of my first year, which was a huge moment. Although — wait, the replatforming had to come first because the new brand assets lived in the new CMS, so that was Q3. But actually the rebrand campaign was already running before we cut over to the new martech stack, I remember because we were still on the old email tool when the brand launched. So the replatforming finished after the rebrand. Hmm, although the data migration started before I even joined, so in a sense the platform work predated everything. Let me put it this way: they were kind of concurrent. The rebrand was first, except the platform foundation was already there, which is why we could move so fast on the campaign side.",
+  "session_state": {
+    "drilled_topics": ["current-role-shape", "initiative-overview"],
+    "current_competency_target": "integrity-consistency",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "integrity-consistency",
+    "missing_evidence": [
+      { "competency": "integrity-consistency", "evidence_type": "timeline" },
+      { "competency": "rigor-causality", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Let me put it this way: they were kind of concurrent",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single non-contradictory ordering of the replatforming versus the rebrand launch with quarters tied to the candidate's start date, resolving whether the platform cutover preceded or followed the brand launch"
+    ]
+  }
+}

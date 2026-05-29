@@ -1,0 +1,49 @@
+{
+  "id": "fx_0700",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "高级供应链经理 / Senior Supply Chain Manager — 全球采购与计划\n\n职业摘要：十年端到端供应链经验，专注于direct material sourcing与S&OP流程。\n\n睿驰电子 | 高级供应链经理（2019–至今）\n- 负责亚太区的采购与供应商管理，管理年采购额约2亿美金的supplier base。\n- 主导了一次global sourcing项目，把关键元器件成本降低了18%。\n- 注：在另一段描述中我写到本岗位主要负责需求计划(demand planning)与S&OP，团队规模约30人；而采购其实只是兼管。\n\n恒翔制造 | 采购经理（2016–2020）\n- 负责原材料采购与寻源。\n- （任职区间与上一份2019年起的工作存在约一年的重叠，因为有一段时间我同时handle两边。）\n\n领先科技 | 供应链分析师（2013–2016）\n- 做需求预测与库存分析。\n- 简历另一处写的是2014–2016；起始年份我自己也常记混。\n\n关于成本节省：摘要里写global sourcing省了18%，但项目总结那栏我写的是节省了大约2000万美金、降幅约12%——两个数字口径不太一致。\n\n教育：知名高校 供应链管理硕士。证书：CPSM、APICS CPIM。",
+  "jd": "睿驰电子招聘高级供应链经理(Senior Supply Chain Manager)，向供应链VP汇报，负责direct material的全球寻源与供应保障。岗位职责：管理关键品类的supplier base与年度采购成本；主导cost-down与谈判项目并对节省金额负责;牵头S&OP中的供应侧承诺与产能协同；管理供应风险(supply risk)与单一来源(single-source)的备援策略；带领一支采购与计划团队。任职要求：八年以上供应链经验，含三年以上团队管理；有大额品类谈判与可量化cost-down实绩；熟悉should-cost、TCO与供应商绩效管理。本轮面试将特别核对候选人简历中前后不一致的职责、时间与数字，请准备好用一致的口径解释。",
+  "history": [
+    { "q": "先讲讲你现在在睿驰的高级供应链经理岗位——你到底主要负责采购，还是需求计划和S&OP？" },
+    { "q": "你简历里这个岗位一处写采购、一处写demand planning带30人团队。哪个是你的主职？团队具体多少人向你汇报？" },
+    { "q": "睿驰是2019年起，恒翔写到2020年，这中间有大概一年重叠。那段时间你的雇佣关系到底是怎样的？" },
+    { "q": "你说主导了global sourcing项目降本18%。这18%是怎么算出来的？基线是什么？" },
+    { "q": "但项目总结那栏你写的是省2000万美金、降幅12%。到底是18%还是12%？哪个口径对？" },
+    { "q": "2亿美金的采购额,这18%或12%是对应这2亿里的多少品类范围？" },
+    { "q": "讲一次你亲自主导的供应商谈判，原始条款和最终条款分别是什么。" },
+    { "q": "single-source的备援你做过什么？举一个你识别风险并落地备援的具体例子。" },
+    { "q": "你在S&OP里具体承诺的是供应侧的什么？产能还是交期？怎么跟计划侧对齐？" },
+    { "q": "领先科技那段，是2013还是2014开始？为什么两处写的不一样？" },
+    { "q": "把时间线从头理一遍：哪一年到哪一年、在哪家、主职是什么,一次说清楚。" },
+    { "q": "我们先放下时间线。回到那个降本数字——18%和12%，请你现在只给我一个对的，并说明它的基线和范围。" }
+  ],
+  "candidate_last_answer": "其实说到这个降本数字，我突然想到一个特别有意思的行业趋势。现在整个供应链都在讲数字化转型嘛，我前阵子去参加了一个论坛，里面讲到AI在需求预测里的应用，我觉得特别有启发。还有现在地缘政治这么复杂，大家都在搞供应链的near-shoring和friend-shoring，我个人对这个话题非常有研究，可以跟您聊很久。对了，我最近还在看一本讲丰田生产方式的书，里面那套精益思想真的是经典中的经典。我觉得做供应链最重要的就是要有这种宏观视野和持续学习的心态，您说是不是？",
+  "session_state": {
+    "drilled_topics": ["primary-role-ambiguity", "team-size-and-job", "employment-overlap", "savings-18pct-basis", "savings-figure-conflict", "savings-category-scope", "supplier-negotiation", "single-source-backup", "s&op-supply-commit", "analyst-start-year"],
+    "current_competency_target": "credibility",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "credibility",
+    "missing_evidence": [
+      { "competency": "credibility", "evidence_type": "metric" },
+      { "competency": "credibility", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我突然想到一个特别有意思的行业趋势",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把候选人从near-shoring与精益的离题发散硬拉回那个降本数字，逼他在18%与12%之间二选一并给出唯一一致的基线和品类范围，暴露简历前后矛盾的真实口径"
+    ]
+  }
+}

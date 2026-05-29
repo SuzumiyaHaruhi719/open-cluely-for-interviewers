@@ -1,0 +1,49 @@
+{
+  "id": "fx_0707",
+  "tags": {
+    "industry": "healthcare",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Priya Nandakumar\nMedical Scribe / Patient Access Associate\n\nSummary: Detail-oriented healthcare associate with 18 months of front-line patient access and scribing experience in an outpatient cardiology clinic.\n\nExperience:\nNorthgate Cardiology Associates — Patient Access Associate (2023-present)\n- Registered patients, verified insurance eligibility, collected co-pays\n- Scheduled follow-ups and coordinated referrals to imaging\n- Scribed physician notes during visits into the EHR (Epic)\n\nValley Community Clinic — Front Desk Volunteer (2022-2023)\n- Greeted patients, managed check-in flow, answered phones\n\nSkills: Epic EHR, insurance verification, medical terminology, patient scheduling, HIPAA awareness\n\nCertifications: BLS (CPR), in progress: Certified Medical Administrative Assistant (CMAA)\n\nEducation: Associate of Science, Health Sciences (2022)",
+  "jd": "Northgate Health is hiring a junior Patient Access Coordinator for our outpatient specialty clinics. You will be the first point of contact for patients: registration, insurance eligibility verification, prior-authorization initiation, co-pay collection, and scheduling. Accuracy directly affects claim denials and patient wait times, so we measure registration error rate, point-of-service collection rate, and eligibility-check completion before the visit. You will work in Epic and must maintain strict HIPAA compliance. We are looking for someone early in their career who can speak concretely about what they actually did on the front desk, can own a mistake and describe how they fixed it, and who understands how a small registration error becomes a downstream billing problem. Comfort with high patient volume and clear, calm communication under pressure is essential.",
+  "history": [
+    { "q": "Tell me about your current role at Northgate Cardiology — what does a typical day look like?" },
+    { "q": "Walk me through exactly how you verify a patient's insurance eligibility before a visit." },
+    { "q": "What happens downstream if an eligibility check is wrong or skipped?" },
+    { "q": "Tell me about a registration error you personally made or caught. What happened?" },
+    { "q": "How did you fix that specific error once you noticed it?" },
+    { "q": "What's your point-of-service collection rate, and how do you handle a patient who can't pay the co-pay?" },
+    { "q": "Describe the prior-authorization process you follow for an imaging referral." },
+    { "q": "How do you keep PHI secure when the front desk gets busy and crowded?" },
+    { "q": "Tell me about a time a patient was upset at check-in. What did you do?" },
+    { "q": "How do you prioritize when three patients arrive at once and the phone is ringing?" },
+    { "q": "What part of patient access do you find hardest, and why?" },
+    { "q": "Give me one concrete thing you did last month that reduced an error or a wait — what exactly did you do?" }
+  ],
+  "candidate_last_answer": "Absolutely — so I'm really passionate about delivering a frictionless, patient-centric front-door experience, and I always strive to go above and beyond to exceed expectations. Last month I leveraged a proactive, solutions-oriented mindset to optimize our workflow and drive operational excellence at the point of care. I'm a strong believer in owning the patient journey end to end and creating those moments of delight. I really lean into continuous improvement and being a team player, so I'd say I added a lot of value and really moved the needle on the patient experience overall.",
+  "session_state": {
+    "drilled_topics": ["typical-day", "eligibility-verification-steps", "eligibility-downstream-impact", "registration-error-story", "error-fix", "pos-collection-rate", "prior-auth-process", "phi-security", "upset-patient", "triage-under-pressure", "hardest-part"],
+    "current_competency_target": "process-rigor",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "process-rigor",
+    "missing_evidence": [
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: really moved the needle on the patient experience",
+      "must-be-question-type: action-attribution",
+      "expected-yield: stripping the buzzwords down to one observable action — the specific change she made to a workflow last month, the step that changed, who else was involved, and any before/after number (wait time, error count, or collection rate) that demonstrates the improvement actually happened"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "fx_0720",
+  "tags": {
+    "industry": "sales",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "销售管培生候选人 / Sales Development Intern\n\n自我评价：天生的 closer，还没正式工作就已经证明了自己的 sales sense\n\n亮点经历\n- 大三在某 SaaS 公司 SDR 实习，three months 内个人 booking 的 demo 数量碾压全组正式员工\n- 校园代理某消费品牌，我一个人带的团队把整个华东区销量做到了第一\n- 商赛拿过全国冠军，case 是我主导的，评委说这是他们见过最强的 go-to-market 方案\n- 公认的人脉王，朋友圈随便发条动态就能带来一堆 leads\n- 对 cold call、cold email、SPIN selling、MEDDIC 这些方法论张口就来\n\n经历\n某 SaaS 公司 — Sales Development Intern (2024 暑期，3 个月)\n校园品牌大使项目 — 区域负责人 (2023–2024)\n\n技能：cold outreach, CRM (Salesforce), SPIN, MEDDIC, 商务谈判",
+  "jd": "我们为一支 B2B SaaS 销售团队招聘 Sales Development Intern（销售开发实习生），向 SDR Team Lead 汇报。你将负责出站线索开发：cold email、cold call、LinkedIn 触达，为 AE 预约合格的 demo。我们看重的是可被教练的原始素质——抗拒被拒绝的韧性、把话术拆解迭代的学习能力、以及对一个具体数字负责的意识，而不是华丽的简历包装。实习期间你需要对每周 outbound 活动量、回复率、以及预约的合格 demo 数负责。我们重点考察：你能否把一个含糊的『我做得很好』具体到可验证的活动量与转化数字、面对真实拒绝的反应、以及从被拒中提炼改进的能力。要求在校学生，每周可投入 4 天以上。",
+  "history": [
+    { "q": "先简单介绍下你自己，以及为什么想做 SDR 这个岗位。" },
+    { "q": "你那段 SaaS 的 SDR 实习，具体负责什么？一天的节奏是怎样的？" },
+    { "q": "你写 demo 数量碾压全组正式员工。全组大概几个人，你一个月 book 了多少个 demo？" },
+    { "q": "这些 demo 里有多少最后转成了合格机会（SQL）？" },
+    { "q": "你的 cold email 回复率大概多少？行业基准你知道是多少吗？" },
+    { "q": "讲一封你写过的、效果最好的 cold email，主题行是什么？" },
+    { "q": "被客户挂电话或者已读不回的时候，你具体怎么调整？" },
+    { "q": "举一个你把某个话术迭代了之后、回复率明显变化的具体例子。" },
+    { "q": "你用 Salesforce 主要记录哪些字段？你自己会看哪些数据？" },
+    { "q": "MEDDIC 里的 Metrics 和 Economic Buyer，你在实习里实际用上过吗？怎么用的？" },
+    { "q": "校园大使那段，你说带团队做到华东第一，团队几个人？销量数字大概多少？" },
+    { "q": "『华东第一』是和谁比的？这个排名是谁统计的？" },
+    { "q": "商赛那个 go-to-market 方案，你个人具体负责哪一部分？" },
+    { "q": "如果一周给你 200 个 cold call 的活动量目标，你怎么拆解到每天？" },
+    { "q": "你觉得一个好的 SDR 最该对哪个数字负责？" },
+    { "q": "假设连续两周你的 demo 预约数都是 0，你会怎么做？" },
+    { "q": "你被拒最狠的一次是什么情况？当时心里怎么想的？" },
+    { "q": "回到实习那段——能不能给我一个确切的数字：你一个月到底 book 了多少个 demo，其中几个转成了 SQL？" }
+  ],
+  "candidate_last_answer": "哦这个数字……其实我想反过来问你一下：你们现在团队里一个 ramp 完成的 SDR，一个月正常 book 多少个 demo 是达标？还有你们的 demo-to-SQL conversion 大概是什么水平？因为我觉得脱离你们的 benchmark，我单说一个数字你也没法判断它好不好对吧。而且不同公司 demo 的定义都不一样，有的算 no-show 有的不算。所以你们这边一个『合格 demo』到底怎么定义的？你先告诉我这些，我才好对应着讲我的数据。",
+  "session_state": {
+    "drilled_topics": ["self-intro-motivation", "sdr-role-shape", "demo-volume", "demo-to-sql", "email-reply-rate", "best-cold-email", "rejection-handling", "script-iteration", "salesforce-usage", "meddic-application", "campus-team-size", "ranking-source", "case-comp-ownership", "activity-breakdown", "key-metric-ownership", "zero-demo-scenario", "worst-rejection"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 其实我想反过来问你一下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate's own actual monthly demo-booking count and how many converted to SQL during the SaaS internship, instead of deflecting by asking the interviewer for the team's benchmark and demo definition"
+    ]
+  }
+}

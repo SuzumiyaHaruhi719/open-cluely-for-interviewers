@@ -1,0 +1,39 @@
+{
+  "id": "fx_0723",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "产品总监 / 被业界公认的增长操盘手\n\n个人标签\n- 一手把某 SaaS 产品从 0 做到行业第一，是这个赛道绕不开的名字\n- 带过的产品没有一个不超额完成目标，业内都说我有点石成金的手感\n- 公认最懂 PLG（产品驱动增长）的产品负责人，方法论被多家公司照搬\n- 演讲常年一票难求，是各大产品大会的常驻嘉宾\n- 我定的产品战略，CEO 基本不改，因为没人比我更懂这个市场\n\n经历\n某 B2B SaaS 公司 — 产品总监（2020 至今）\n- 统管商业化产品线，带 4 个产品经理、2 个设计、对接 30+ 研发\n某协同办公产品 — 高级产品经理（2016–2020）\n\n技能：产品战略、PLG、商业化定价、增长实验、数据分析、跨团队领导",
+  "jd": "我们为一家 B2B SaaS 公司招聘产品总监，向 CPO 汇报，统管商业化产品线并带领一支多职能团队。你将拥有付费转化、客单价、净收入留存（NRR）等核心商业指标，定义并落地从免费到付费的产品驱动增长路径，主导定价与打包策略，并通过增长实验持续优化漏斗。我们重点考察：把一项战略决策的因果链与最终业务结果（含确切数字）讲透的能力、在增长速度与单位经济之间做取舍的判断力，以及带领多职能团队把模糊命题落到上线的领导力。要求 8 年以上产品经验、3 年以上团队管理，有可量化的商业化成功案例。",
+  "history": [
+    { "q": "先讲讲你在现公司的 scope——你统管哪条线，团队多大，对哪些商业指标负责？" },
+    { "q": "你简历说一手把产品从 0 做到行业第一。讲讲那个最关键的战略决策的背景和你当时的判断。" },
+    { "q": "那这个决策，最终对付费转化和 NRR 这些指标，具体带来了多少量化的变化？" }
+  ],
+  "candidate_last_answer": "背景是这样：当时我们的产品是纯销售驱动，获客成本越来越高，免费用户转付费几乎没有路径。我判断这个赛道未来一定是 PLG，光靠销售拉不动规模。我的任务是在六个月内搭出一条自助付费的产品路径。我做的事很清楚：先重做了 onboarding 的 aha moment 设计，把核心价值在用户首次使用的前五分钟内呈现；接着设计了基于用量的 freemium 分层和触发付费的卡点；然后推动定价从『按席位』改成『按用量+席位』的混合模型，并亲自和销售、财务一轮轮对齐打包方案；最后建了一套增长实验的节奏，每两周一个迭代。整个路径在第五个月上线。至于上线后的数据……反正效果是很显著的，市场反馈也特别好，这个 PLG 的打法后来还被同行学了去。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "strategy-decision-context"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "rigor-causality", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 至于上线后的数据……反正效果是很显著的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete before-and-after numbers on free-to-paid conversion and NRR after the PLG path launched, with a timeframe, instead of asserting the result was very significant"
+    ]
+  }
+}

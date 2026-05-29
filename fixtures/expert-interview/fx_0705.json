@@ -1,0 +1,40 @@
+{
+  "id": "fx_0705",
+  "tags": {
+    "industry": "operations",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "王建国 — 运营副总裁\n\n核心履历：在快速消费品与跨境电商行业拥有十六年运营管理经验，专注于供应链履约、仓配网络与成本结构优化。\n\n近期经历：\n云海跨境电商集团 — 运营副总裁（2020 至今）\n- 情境：公司进入欧美市场后，海外仓履约时效落后竞品，旺季退货与缺货并发。\n- 任务：受命统筹全球履约网络，目标是把旺季准时交付率从 82% 提升到 95%。\n- 行动：主导新建三个海外前置仓，重构补货模型，引入分区库存策略，并与两家头部物流商重新谈判分层费率。\n- 结果：两年内旺季准时交付率达到 96%，单均履约成本下降 23%，退货周转天数从 14 天降至 6 天。\n\n此前经历：\n远东日用品股份 — 运营总监（2015-2020）\n- 情境：六个区域仓各自为政，库存可见度低，呆滞库存占比高。\n- 任务：建立统一的库存与运营指标体系。\n- 行动：推动 WMS 系统统一上线，建立 S&OP 月度例会机制，设定区域库存周转考核。\n- 结果：整体库存周转从一年 4.1 次提升到 6.8 次，呆滞库存占比从 11% 降到 4%。\n\n光明制造 — 高级运营经理（2009-2015）\n- 负责一条饮料灌装产线的运营，通过精益改善把综合设备效率从 68% 提升到 81%。\n\n教育：某大学 工业工程 本科；某商学院 EMBA\n\n专长：供应链履约、仓配网络设计、S&OP、成本结构优化、供应商谈判、精益运营",
+  "jd": "云海跨境电商集团正在为其全球运营体系寻找一位运营副总裁，直接向 COO 汇报，全面负责海内外履约网络、仓配运营与运营成本结构。该岗位需要在旺季高并发场景下保障准时交付率与库存健康度，主导海外仓布局与第三方物流商的多年期费率谈判，并对单均履约成本、准时交付率、退货周转等董事会级指标负责。我们正处在一段艰难的转型期：去年旺季出现过一次大规模履约延误，导致重点客户流失与赔付，董事会对运营条线的执行力与问责文化高度关注。理想人选需具备亲自操盘大型履约项目的经验，能够清晰复盘失败、承担责任并给出可验证的改进路径，同时具备在质询压力下保持透明、就事论事的沟通能力。",
+  "history": [
+    { "q": "先讲讲你在云海的职责范围——你直接管多少人，负责哪些 P&L 指标？" },
+    { "q": "你简历写旺季准时交付率从 82% 做到 96%。我想先听不顺利的那一面：这两年里有没有哪个旺季是没达标的？" },
+    { "q": "我拿到的背景信息是，去年旺季你们有一次大规模履约延误导致重点客户流失。当时到底发生了什么，你个人在其中承担了什么决策？" }
+  ],
+  "candidate_last_answer": "这个事情我觉得你们的背景信息可能不太准确。首先那次延误的主要原因是物流商单方面爆仓，这不是我能控制的，行业里那年所有人都出问题了。我不太理解为什么这个面试一上来就揪着一个外部不可抗力的案例不放。真要说责任，那也是采购和物流商的合同问题，我接手的时候那个合同早就签了。我在那个位置上已经把能做的都做了，把交付率从 82 拉到 96 这个数据摆在这里，难道还不能说明问题吗？我们当然处理了客户关系，该补偿的补偿，该沟通的沟通，最后也留住了大部分客户。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "peak-season-miss-probe"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我接手的时候那个合同早就签了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forcing the candidate off the blame frame and onto his own decisions — what he personally did once he discovered the carrier was over capacity, whether he had previously flagged or tried to renegotiate the inherited contract before the failure, and what specific call he owned during the delay rather than what purchasing or the carrier did"
+    ]
+  }
+}

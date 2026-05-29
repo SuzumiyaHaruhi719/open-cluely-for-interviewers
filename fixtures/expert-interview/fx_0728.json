@@ -1,0 +1,52 @@
+{
+  "id": "fx_0728",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "李伟 — Senior Manufacturing Engineer\n\n华东某汽车零部件厂 · 2016 至今 · 负责冲压与焊装产线工艺改善\n\n- 主导 OEE 提升项目，覆盖 3 条产线\n- 推动 SMED 换模优化，缩短换型时间\n- 负责 PFMEA、控制计划与 PPAP 文件\n- 带过 5 人工艺小组\n\n技能: Lean, Six Sigma (Green Belt), Minitab, AutoCAD, PLC 基础\n\n教育: 机械工程 本科 2012-2016",
+  "jd": "我们是一家 Tier-1 汽车零部件供应商，正在招聘一名 Senior Manufacturing Engineer 负责冲压车间的精益改善与产能爬坡。You will own line OEE for two stamping cells, drive SMED and TPM programs, and lead cross-functional kaizen events with quality and maintenance. 要求：5 年以上汽车制造工艺经验，熟悉 IATF 16949、PFMEA、SPC，能用数据驱动决策。You must be able to defend improvement claims with measured baselines, sample sizes, and before/after data the plant controller will audit. 该岗位向冲压车间经理汇报，需现场倒班支持新项目量产。",
+  "history": [
+    { "q": "先介绍一下你现在负责的产线范围，几条线、产量、你直接管的人。" },
+    { "q": "你简历里写了 OEE 提升项目，挑一个具体的产线，说说基线 OEE 是多少。" },
+    { "q": "那个项目你做了哪些具体改动？换模、节拍、还是停机？" },
+    { "q": "SMED 这块，原来的换型时间是多少分钟，改完之后呢？" },
+    { "q": "这个换型时间的数据是怎么测的？谁记录的，样本多少次？" },
+    { "q": "OEE 提升里，可用率、性能、良率三项分别贡献了多少？" },
+    { "q": "你说带 5 人小组，这个项目里你个人具体负责哪部分？" },
+    { "q": "改善前后有没有做过统计显著性验证？用的什么方法？" },
+    { "q": "项目的投入是多少，回收期算过吗？" },
+    { "q": "量产爬坡阶段出过什么质量问题，你怎么处理的？" },
+    { "q": "和维修、质量部门协作时有没有出现过分歧，举个例子。" },
+    { "q": "如果让你重做这个项目，哪一步你会改？" },
+    { "q": "好，我想把数字钉死一点。你刚才提到 OEE 大幅提升，到底从多少提到多少？" },
+    { "q": "再追一句：这个提升是单条线的峰值，还是三条线全年的稳定平均？" }
+  ],
+  "candidate_last_answer": "这个嘛，整体 OEE 我们是从大概六十几一路干到 95% 以上，basically 行业顶尖水平了。三条线全部都是这个量级,换型时间也是直接砍了 80%,良率几乎做到零缺陷。说实话这个 improvement 在我们集团内部是 benchmark,别的厂都来抄我们的做法。具体数字我得回去翻 report,但反正就是行业天花板那种,做到极致了。",
+  "session_state": {
+    "drilled_topics": ["line-scope", "oee-baseline", "process-changes", "smed-timing", "measurement-method", "oee-decomposition", "personal-role", "stat-validation", "payback", "ramp-quality", "cross-team", "retrospective", "oee-pin"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "data-rigor", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 95% 以上，basically 行业顶尖水平了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single audited OEE figure for one named line with the measurement window and sample size, separating peak from sustained average so the inflated 『industry-top 95%』 claim can be checked against the plant controller's records"
+    ]
+  }
+}

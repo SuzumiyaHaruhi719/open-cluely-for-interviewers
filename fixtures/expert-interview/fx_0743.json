@@ -1,0 +1,41 @@
+{
+  "id": "fx_0743",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "clean-STAR",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Senior Supply Chain Planner — 6 years in CPG demand & supply planning\n\nProfessional summary: Demand planner turned end-to-end supply planner, focused on S&OP cadence, inventory health, and supplier reliability across multi-DC networks.\n\nFreshline Foods — Supply Chain Planner II (2021–present)\n- Situation: A regional cold-chain CPG with 9 SKUs in 80% of revenue and chronic stockouts on promo weeks.\n- Task: Own the demand-to-supply handoff for the chilled portfolio and stabilize fill rate.\n- Action: Rebuilt the statistical forecast baseline in the planning tool, introduced a weekly consensus S&OP review, and set up a promo-uplift library.\n- Result: Case fill rate improved from 91% to 97.5% over three quarters; excess-and-obsolete write-offs down 22% YoY; forecast accuracy (MAPE) improved from 41% to 28%.\n\nNorthbay Grocers — Demand Planning Analyst (2019–2021)\n- Built bottoms-up promo forecasts for 1,200 SKUs; supported a DC consolidation from 4 sites to 3.\n\nSkills: SAP IBP, statistical forecasting, S&OP facilitation, inventory optimization, supplier scorecarding\nEducation: BS, Industrial Engineering",
+  "jd": "A fast-growing DTC beverage brand is hiring a Supply Chain Planner (mid-level) to own demand and supply planning for a chilled portfolio sold through retail and ecommerce. Reporting to the Head of Operations, you will run the monthly S&OP cycle, manage finished-goods inventory across three 3PL DCs, and partner with co-manufacturers on capacity. Targets in the first year: lift case fill rate from 93% to 97%, cut excess-and-obsolete inventory by 20%, and tighten forecast MAPE below 30% on the top 20 SKUs. We need someone who has personally owned a forecast process end to end, can quantify their own impact, and has run supplier capacity negotiations. Hybrid, with ~10% travel to co-man sites.",
+  "history": [
+    { "q": "Tell me about your current scope at Freshline — what portfolio you plan, what you personally own in the demand-to-supply handoff." },
+    { "q": "Your resume says case fill rate went from 91% to 97.5%. Walk me through the single biggest lever behind that gain." },
+    { "q": "Forecast MAPE dropping from 41% to 28% is a big move. What specifically did you change in the model or process to get there?" },
+    { "q": "Take the chilled promo-uplift library you mentioned — who built the methodology, and what was your hands-on role in it?" },
+    { "q": "Give me one concrete promo week where the new approach was tested under pressure. What happened, and what did you personally decide?" }
+  ],
+  "candidate_last_answer": "Sure. So there was a big Q4 promo — I can't get into the exact retailer or the unit numbers, that's covered under an NDA I signed with Freshline, so I'll have to keep it high level. But basically we saw the demand signal spiking and we got together as a planning pod and we made the call to pre-build inventory and reallocate across the DCs. We aligned with the co-man, we leaned on the S&OP consensus, and we pulled it off — the team really came together and we hit the fill rate we needed that week. It was a great example of how we operate cross-functionally.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "fill-rate-lever", "mape-mechanism", "promo-library-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we got together as a planning pod and we made the call",
+      "must-be-question-type: action-attribution",
+      "expected-yield: separation of the candidate's individual contribution from the pod's collective action — which specific decision (the pre-build quantity, the DC reallocation split, or the co-man ask) did the candidate personally make or recommend, and on what data, without needing to disclose the NDA-protected retailer name or unit figures"
+    ]
+  }
+}

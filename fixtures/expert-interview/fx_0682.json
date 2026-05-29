@@ -1,0 +1,40 @@
+{
+  "id": "fx_0682",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "李建国\n制造运营副总裁 | 二十年精益与智能制造经验\n\n现任：华东某汽车零部件集团 运营副总裁（2019至今）\n此前：某家电制造企业 工厂总经理（2012至2019）\n\n负责集团四家工厂的生产运营、质量与供应链。主导精益转型与数字化产线升级，统筹年产值约三十亿的制造体系。\n\n核心能力：精益生产、智能制造、产线自动化、供应链协同、成本管控、质量体系（IATF16949）、团队管理。\n\n教育：机械工程学士。",
+  "jd": "招聘岗位：制造运营副总裁\n负责一家大型离散制造企业的多厂区运营，直接管理生产、质量、设备与计划职能，向集团总裁汇报。核心目标包括：将整体设备综合效率（OEE）从目前的百分之六十八提升至百分之七十八，把单位制造成本两年内下降百分之十二，并主导一条新产线从规划到量产的落地。我们需要一位能讲清楚自己在某一次具体改善中到底做了哪些决策、动用了哪些资源、最终量化结果如何的运营领导者，而不是停留在方法论层面的概念表述。要求具备精益与数字化转型的实操经验，以及带领大规模团队穿越变革的成功案例。",
+  "history": [
+    { "q": "请先介绍一下你目前在集团的职责范围，管多少人、对哪些指标负责。" },
+    { "q": "你提到主导过精益转型，能挑一个最有代表性的工厂改善项目讲讲吗？" },
+    { "q": "我想听一个非常具体的例子：某一次你把某条产线的OEE或者单位成本实实在在降下来了，你当时具体做了哪些决策？" }
+  ],
+  "candidate_last_answer": "这个问题问得非常好。我一直坚信，制造的本质是端到端的价值流重构，是以客户为中心、以数据为驱动、以人为本的系统工程。所以在那个项目里，我们打通了人机料法环的全要素闭环，构建了赋能型的精益文化，向上对齐战略，向下沉淀方法论，最终实现了降本增效的高质量发展。我做的核心就是顶层设计加上抓手落地，用数字化为精益赋能，打造了一个可复制、可持续的卓越运营体系，真正把降本增效做到了极致。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "lean-transformation-project", "specific-improvement-decisions"],
+    "current_competency_target": "operational-decision-specificity",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "operational-decision-specificity",
+    "missing_evidence": [
+      { "competency": "operational-decision-specificity", "evidence_type": "owner-of-action" },
+      { "competency": "operational-decision-specificity", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 打通了人机料法环的全要素闭环",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人在那条具体产线上做出的一项可命名的决策（改了哪个工序、上了什么设备或排班、调整了哪个参数），以及该决策带来的OEE或单位成本的具体数字变化和时间窗口"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "fx_0719",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "资深临床数据工程师 / 公认的医疗数据治理第一人\n\n个人战绩\n- 以一己之力搭起整个三甲医院联盟的临床数据中台，被业内当作标杆四处参观\n- 全院公认最懂 HL7 FHIR 与 DICOM 互操作的人，没有之一\n- 主导过的数据质量项目零差错，连药监飞检都挑不出毛病\n- 别人搞不定的脏数据，到我手里没有清不干净的\n- 发表过多篇被反复引用的医疗数据标准化论文，是这个领域绕不开的名字\n\n经历\n某区域医疗集团 — 资深临床数据工程师 / 数据治理负责人（2020 至今）\n某三甲医院信息科 — 数据工程师（2016–2020）\n\n技能：HL7 FHIR、DICOM、ETL、数据质量、临床术语映射（SNOMED CT / ICD-10）、隐私合规",
+  "jd": "我们为一家区域医疗集团招聘资深（staff 级）临床数据工程师，向数据平台总监汇报。你将负责跨 12 家成员医院的临床数据集成与质量治理，主导 HL7 FHIR 接口标准化、临床术语映射（ICD-10 / SNOMED CT）、以及面向科研与监管的数据质量体系。你需要在数据时效性与准确性之间做权衡、设计可审计的数据质量指标、并确保所有处理满足患者隐私与合规要求。我们重点考察：把数据质量量化为可追踪指标的能力、在跨院系统差异下做术语映射取舍的判断力、以及独立排查并修复一类系统性数据错误的实战经验。要求 5 年以上临床数据工程经验，有可讲清指标的质量治理案例。",
+  "history": [
+    { "q": "先讲讲你在现公司的 scope——跨多少家医院？你具体拥有数据链路的哪几段？" },
+    { "q": "你简历说零差错连飞检都挑不出毛病。讲一个你主导的最具体的数据质量项目。" },
+    { "q": "你们的数据质量是用哪些指标在跟踪？给我看一两个口径。" },
+    { "q": "ICD-10 到 SNOMED CT 的术语映射，遇到一对多的歧义时你怎么处理？" },
+    { "q": "讲一次你定位并修复一类系统性数据错误的具体过程。" },
+    { "q": "数据时效和准确性冲突时，举一个你做过的具体取舍。" }
+  ],
+  "candidate_last_answer": "举个最近的例子。三家成员医院的检验结果上传延迟集中在每天 18:00–20:00，那个时段急诊侧拿到的肌酐结果会晚 40–90 分钟，影响 AKI 预警。我们权衡后没有强行追求 100% 实时：对急诊和 ICU 的 12 个关键检验项走优先队列，目标端到端延迟 5 分钟内，达成率从 71% 提到 96%；其余项目仍走每 15 分钟一次的批处理。代价是批处理通道的峰值积压偶尔到 8 分钟，但那些项目临床不敏感，可接受。指标我们盯三个：关键项 P95 延迟、批处理积压时长、以及映射后字段的完整率。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "data-quality-project", "quality-metrics-definition", "terminology-mapping-ambiguity", "systematic-error-fix"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们权衡后没有强行追求 100% 实时",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: who actually owned and made the call to deprioritize the non-critical lab items, what alternatives were considered, and what concrete risk the candidate accepted in exchange for the 5-minute critical-item target"
+    ]
+  }
+}

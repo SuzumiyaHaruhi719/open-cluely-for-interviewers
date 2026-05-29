@@ -1,0 +1,37 @@
+{
+  "id": "fx_0702",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "工程总监 / Director of Engineering — 业内公认的平台稳定性第一人\n\n个人定位：我是那种每家公司都抢着要的工程领导者，凡是我接手的系统，可用性和团队战斗力都会上一个台阶。\n\n云栈科技 | 工程总监（2019–至今）\n- 我一手把核心交易平台的可用性从99.9%提升到99.99%，这是公司历史上从没有人做到过的成绩。\n- 管理约80人的工程团队，横跨3个pod，是CTO最倚重的左膀右臂。\n- 主导了从单体到microservices的整体架构演进，被内部奉为教科书级的迁移。\n- 我设计的on-call与SRE体系现在是全公司的标杆，别的部门都来抄。\n\n讯通互联 | 高级工程经理（2015–2019）\n- 带核心后端团队，做高并发支付链路，扛住了多次大促峰值。\n\n教育：知名高校 计算机本科。一直被同行视为分布式系统领域少有的实战派专家。",
+  "jd": "云栈科技招聘工程总监(Director of Engineering)，向CTO汇报，负责核心交易平台的可靠性、架构演进与团队建设。岗位职责：对平台可用性(availability)、延迟与事故率等SLO负总责；主导服务化架构演进与技术债治理；建设on-call/SRE文化与事故复盘(postmortem)机制；管理多个pod的工程经理并对交付与人才负责。任职要求：十年以上工程经验，含多年总监或同级团队管理；有大规模高可用系统的实操与可量化的可靠性改进实绩；熟悉SLO/error budget、分布式系统与事故管理。本轮面试将聚焦候选人个人在所声称成果中的真实贡献边界与量化口径，请用具体、可核实的方式作答。",
+  "history": [
+    { "q": "你简历里写『一手把核心交易平台可用性从99.9%提升到99.99%』。先把这件事讲清楚：99.9%那会儿，全年停机时间主要由哪几类事故贡献？这个99.99%是按什么口径、统计多长时间窗口算出来的？" }
+  ],
+  "candidate_last_answer": "口径先说清楚：99.99%是按交易成功率的月度加权、滚动12个月算的，不是单月峰值。99.9%那年全年约8.7小时不可用，主要三类：一是数据库主从切换慢，占大概一半；二是一次配置发布没灰度，约2小时;三是上游支付网关抖动连带。我个人主导的是前两类——推动了自动failover把切换从分钟级压到20秒内，以及强制所有发布走灰度。第三类是我们和支付团队一起做的熔断，不全是我的功劳。提升主要发生在2021年Q2到Q4。",
+  "session_state": {
+    "drilled_topics": ["availability-claim-baseline-and-definition"],
+    "current_competency_target": "credibility",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "credibility",
+    "missing_evidence": [
+      { "competency": "credibility", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 推动了自动failover把切换从分钟级压到20秒内",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 在这个已经很具体的答案上继续下钻——候选人个人在自动failover方案里到底做了什么（是他设计了切换逻辑、定了健康检查阈值，还是只是立项推动），把简历『一手提升』的措辞核实到他可验证的具体技术动作"
+    ]
+  }
+}

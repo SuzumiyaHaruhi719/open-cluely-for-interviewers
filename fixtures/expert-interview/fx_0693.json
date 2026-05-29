@@ -1,0 +1,39 @@
+{
+  "id": "fx_0693",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "法学院大三在读 求职法律实习生\n\n核心关键词：合规、尽职调查、合同审查、知识产权、数据合规、反垄断、争议解决、公司治理、并购、私募股权、跨境投资、ESG、个人信息保护法、GDPR、民法典、合规审计、法律检索、Westlaw、北大法宝、法律文书、模拟法庭、英美法、大陆法系、IPO、招股书、尽调清单\n\n教育背景：华东某政法大学 法学本科（2022级，预计2026年毕业），GPA 3.7/4.0\n\n实践经历：\n- 校内法律援助中心志愿者，参与接待咨询\n- 校级模拟法庭比赛参与者\n- 选修课程涵盖公司法、合同法、知识产权法、国际经济法\n\n技能：法律检索（Westlaw、北大法宝）、英语六级、基础合同审查、Office",
+  "jd": "某红圈所公司业务部招聘法律实习生（在校生，每周到岗至少三天）。岗位职责：在律师指导下进行法律检索与案例梳理；协助尽职调查，整理尽调清单与资料；辅助合同的初步审查与翻译；协助准备交易文件与会议纪要；完成合伙人交办的其他事务。任职要求：法学专业大三及以上或研究生在读；熟悉合同法、公司法基础；具备较强的法律检索能力（北大法宝、Westlaw）；中英文文书能力扎实；细致、可靠、抗压。本次招聘主要支持并购与私募股权方向的项目，候选人需要能够在交易节奏紧张时配合加班。",
+  "history": [
+    { "q": "先做个自我介绍吧，重点说说你为什么想做公司业务方向的法律实习，而不是诉讼方向。" },
+    { "q": "你简历里写了熟悉尽职调查。能不能具体讲一次你实际参与过、或者在课程里完整做过的尽调任务？你当时具体负责哪一块、产出了什么文件？" }
+  ],
+  "candidate_last_answer": "其实说到尽职调查，我想先聊聊我特别喜欢咱们所。我从大一就一直关注律所排名，咱们所在红圈所里口碑特别好，我室友的学长去年也在这边实习，他说氛围很不错，食堂也好吃。我个人对并购这个领域一直很有兴趣，因为我觉得这个方向特别高大上，将来薪资待遇应该也比较可观。对了，我最近还在追一部讲华尔街投行的美剧，里面那些做交易的场面真的太燃了，我感觉那就是我想要的生活。所以我特别希望能加入这样一个平台。",
+  "session_state": {
+    "drilled_topics": ["motivation-corporate-vs-litigation", "due-diligence-experience"],
+    "current_competency_target": "hands-on-experience",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "hands-on-experience",
+    "missing_evidence": [
+      { "competency": "hands-on-experience", "evidence_type": "scope" },
+      { "competency": "hands-on-experience", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我想先聊聊我特别喜欢咱们所",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从对律所的崇拜和美剧联想拉回到一次具体的尽调任务，逼出她实际负责的尽调清单条目、检索过的资料类型以及最终产出的文件，判断她是否真的动手做过尽调还是只是堆砌关键词"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "fx_0727",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "人力资源业务伙伴（HRBP）\n\n经历\n某互联网公司 — HRBP（2021 至今）\n- 支持研发与产品两个事业部的人力工作，覆盖招聘协同、绩效落地、员工关系\n- 参与设计并推动了一轮新的绩效校准（calibration）机制\n- 负责事业部的人才盘点与组织氛围建设\n\n某科技公司 — 招聘专员 / 初级 HRBP（2018–2021）\n- 负责技术岗招聘全流程，参与雇主品牌活动\n\n技能：绩效管理、人才盘点、员工关系、招聘协同、组织发展、沟通协调\n教育：人力资源管理本科",
+  "jd": "我们为一家科技公司招聘人力资源业务伙伴（HRBP，中级），向 HRBP 负责人汇报，支持一到两个业务部门。你将负责绩效落地、人才盘点、员工关系与组织发展，并在业务与员工之间做好桥梁。我们重点考察：把一段集体性的 HR 项目里『你个人究竟主导了哪一部分、对什么结果负了责』讲清楚的能力，而不是笼统地用『我们 HR 团队』带过；以及在缺少现成数字时，如何用具体行为与事实佐证自己的贡献。要求 3 年以上 HRBP 或相关经验，有可讲清个人贡献的项目案例。",
+  "history": [
+    { "q": "你简历提到参与设计并推动了一轮新的绩效校准机制。这件事里，哪一部分是你个人主导的？" }
+  ],
+  "candidate_last_answer": "这个绩效校准机制其实是我们 HR 团队一起做的。我们先是调研了各团队对原来绩效的反馈，然后我们一起设计了新的校准流程，最后我们在两个事业部里把它推下去。整个过程中大家配合得很好，我的负责人把控方向，我们几个 HRBP 分头和业务沟通，COE 那边给了方法论支持。所以这个项目能落地，真的是团队协作的结果，我们都出了力。落地之后业务和员工的反馈也都比以前正面了一些。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 其实是我们 HR 团队一起做的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the specific part of the calibration mechanism the candidate personally designed or drove, which business-unit conversations they ran themselves, and what decision was theirs versus the COE's or their manager's"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "fx_0735",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "DEVON OKAFOR — Full-Stack Software Engineer\n\nResults-driven, cloud-native, AI-first engineer leveraging cutting-edge, best-in-class, scalable, resilient, observable microservices to deliver world-class digital transformation.\n\nCORE COMPETENCIES\nKubernetes • Docker • Terraform • AWS • GCP • Azure • Kafka • RabbitMQ • gRPC • GraphQL • REST • React • Next.js • Node.js • Go • Rust • Python • PostgreSQL • MongoDB • Redis • Elasticsearch • Spark • Airflow • CI/CD • GitOps • Service Mesh • Istio • Prometheus • Grafana • OpenTelemetry • Event-Driven Architecture • DDD • CQRS • Serverless • Edge Computing • LLM • RAG • Vector DBs • MLOps • Zero-Trust • SRE • Chaos Engineering\n\nEXPERIENCE\nStreamCo — Software Engineer (2021-Present)\n- Engineered hyper-scalable, low-latency streaming pipelines leveraging Kafka and Spark\n- Drove cloud-native transformation across the platform org\n- Championed observability-first culture with full-stack telemetry\n\nDataNimbus — Engineer (2019-2021)\n- Built robust, fault-tolerant services\n\nEDUCATION\nBS Computer Science, 2019",
+  "jd": "StreamForge is hiring a mid-level Software Engineer for our real-time data platform team. You will work on Kafka-based streaming pipelines that ingest and process high-volume event data. We need engineers who can stay focused on a specific technical problem and explain, in depth, how a particular system they built actually works — partitioning, backpressure, exactly-once semantics, failure handling. Buzzword fluency is not enough; we drill into one system and expect coherent, on-topic, mechanism-level answers. Reports to the Platform Tech Lead. Stack: Kafka, Flink/Spark, Go, Kubernetes.",
+  "history": [
+    { "q": "Pick the streaming pipeline you know best at StreamCo and describe what it does." },
+    { "q": "How is the topic partitioned, and what's the partition key?" },
+    { "q": "What throughput does it handle at peak, in events per second?" },
+    { "q": "How do you handle backpressure when a downstream consumer falls behind?" },
+    { "q": "Do you guarantee exactly-once, at-least-once, or at-most-once? How?" },
+    { "q": "Walk me through what happens when a consumer crashes mid-batch." },
+    { "q": "How do you handle a poison message that keeps failing?" },
+    { "q": "What's your consumer-group rebalancing strategy and its impact on latency?" },
+    { "q": "How do you monitor consumer lag, and what's your alerting threshold?" },
+    { "q": "Tell me about a specific production incident on this pipeline." },
+    { "q": "What did you change after that incident, concretely?" },
+    { "q": "Why Kafka here and not, say, Pulsar or Kinesis — what drove that choice?" },
+    { "q": "Let's go deep on one thing: exactly how does your pipeline achieve exactly-once when a consumer crashes mid-batch? Take me through the mechanism." }
+  ],
+  "candidate_last_answer": "Right, so exactly-once is super important, and honestly it ties into this whole bigger philosophy I have about engineering culture. Like, you know what really makes or breaks reliability? It's observability-first thinking. At StreamCo I championed this whole telemetry transformation — we instrumented everything, Prometheus, Grafana, OpenTelemetry, the works. And that connects to chaos engineering too, which I'm really passionate about, because resilience is a mindset, not a feature. Honestly the industry doesn't talk enough about how Kubernetes and service mesh have changed the game for distributed systems. Istio alone is fascinating. Anyway, what was the question again? Oh, exactly-once — yeah, it's solid, we use Kafka so it's basically handled.",
+  "session_state": {
+    "drilled_topics": ["pipeline-overview", "partitioning", "throughput", "backpressure", "delivery-semantics", "consumer-crash", "poison-message", "rebalancing", "lag-monitoring", "incident", "post-incident-change", "kafka-rationale", "exactly-once-mechanism"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "technical-depth", "evidence_type": "scope" },
+      { "competency": "focus", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we use Kafka so it's basically handled",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete step-by-step mechanism for how the pipeline achieves exactly-once on a mid-batch consumer crash (offset commit ordering, transactional producer, idempotent writes, dedup) — pulling the candidate back from culture tangents to a verifiable technical explanation"
+    ]
+  }
+}

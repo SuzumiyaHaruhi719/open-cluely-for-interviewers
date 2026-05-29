@@ -1,0 +1,46 @@
+{
+  "id": "fx_0747",
+  "tags": {
+    "industry": "operations",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "运营副总裁　14年即时零售与履约运营\n\n现任：某即时零售平台　运营 VP（2020 至今）\n- 负责全国履约网络与城市运营，管理超 200 个前置仓\n- 主导履约时效与单均成本优化\n\n曾任：某生鲜电商　城市运营总监（2016-2020）\n- 负责华东大区运营，搭建分拣与配送体系\n\n技能：履约运营、网络规划、成本管控、团队管理、数据化运营\n学历：物流管理本科",
+  "jd": "某头部即时零售平台招聘『运营副总裁』，向 COO 汇报，全面负责全国履约网络、前置仓运营与单位经济模型。岗位统筹 300+ 前置仓、数万名履约人员，对履约时效、单均履约成本与仓损率负总责。核心目标：12 个月内将平均送达时效压到 30 分钟以内、单均履约成本下降 15%、仓损率控制在 1.5% 以内。要求 10 年以上即时零售或履约运营经验，主导过大规模网络优化与成本结构改造，能用单位经济模型向董事会讲清盈利路径。出差约 25%。",
+  "history": [
+    { "q": "先介绍一下你现在在即时零售平台的运营 scope：管多少仓、多少人、你直接负责哪几个核心指标。" },
+    { "q": "你简历写主导单均成本优化，过去一年单均履约成本从多少降到了多少？" },
+    { "q": "这个降本里，最大的一块来自哪里——是分拣效率、配送密度还是仓租结构？" },
+    { "q": "200 个前置仓，你怎么决定哪些仓该关、哪些该开？用的是什么模型或标准？" },
+    { "q": "讲一个你主导关停一批低效仓的具体决策：当时多少个仓、关了几个、结果如何？" },
+    { "q": "关仓会影响周边时效和用户体验，你怎么权衡降本和时效之间的取舍？" },
+    { "q": "履约时效这块，30 分钟达的达成率你现在做到多少？卡点在哪？" },
+    { "q": "仓损率你怎么管？生鲜损耗的大头通常在哪个环节？" },
+    { "q": "假设你到任新平台，第一个季度会优先动哪三件事来降本？" },
+    { "q": "我们这个岗位要求 12 个月单均成本再降 15%，结合你的经验，你觉得这个目标现实吗？你会怎么拆解？" }
+  ],
+  "candidate_last_answer": "降 15% 这个目标现不现实，其实得看前提。我反过来想先请教你几个问题：你们现在的单均履约成本基线到底是多少？这 15% 是含仓租和人力的全口径，还是只算可变成本？还有，董事会给的时效红线是卡死 30 分钟不能动，还是可以适当放宽换成本？你们前置仓的自营和加盟比例是多少？说实话，这几个问题不搞清楚，我没法负责任地告诉你现不现实——你先把这几个数给我，我才好判断。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cost-per-order-number", "cost-lever-breakdown", "warehouse-open-close-model", "warehouse-shutdown-case", "cost-vs-speed-tradeoff", "30min-attainment", "shrinkage-management", "first-quarter-plan"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你先把这几个数给我，我才好判断",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 把控制权拿回来，逼候选人在合理假设下自行给出降本拆解逻辑——即使基线未知，一个 VP 也应能说明在不同口径/时效约束下 15% 来自哪些杠杆、各贡献多少、需牺牲什么，暴露其是真有方法论还是用反问回避表态"
+    ]
+  }
+}

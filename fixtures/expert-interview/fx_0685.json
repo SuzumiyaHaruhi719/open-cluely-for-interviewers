@@ -1,0 +1,45 @@
+{
+  "id": "fx_0685",
+  "tags": {
+    "industry": "legal",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Marisol Vance — VP, Legal & Deputy General Counsel\nvance.legal@example.com | 16 years, commercial and M&A counsel for B2B SaaS\n\nPROFILE\nDeputy GC building and scaling legal functions through hypergrowth. Owns commercial contracting, M&A execution, and the litigation/disputes portfolio. Reports to the General Counsel; manages a team of nine (six attorneys, three operations).\n\nSELECTED ACCOMPLISHMENTS (Situation / Task / Action / Result)\n\nContract cycle-time reduction\nSituation: Sales complained legal was the bottleneck; median MSA turnaround was 14 business days.\nTask: Cut turnaround without increasing risk on non-standard terms.\nAction: I built a clause playbook, set fallback positions, delegated standard deals to a self-service template, and reserved attorney review for flagged risk terms.\nResult: Median turnaround dropped to 4 business days over two quarters; attorney touch on standard deals fell roughly 60 percent.\n\nM&A integration\nSituation: Company acquired a 40-person competitor.\nTask: Lead legal diligence and post-close integration.\nAction: I ran a 30-day diligence sprint across IP, employment, and open-source exposure, and built the rep-and-warranty risk memo for the board.\nResult: Closed on schedule; two material IP-assignment gaps were remediated pre-close.\n\nDisputes\nSituation: A major customer threatened litigation over an SLA dispute.\nTask: Resolve without precedent-setting payout.\nAction: I led the response strategy, coordinated outside counsel, and negotiated a structured settlement.\nResult: Settled below reserve; no admission, no precedent.\n\nEXPERIENCE\nHelioStack (SaaS) — VP Legal & Deputy GC (2020-present)\nNorthwind Cloud — Senior Commercial Counsel (2014-2020)\nPrior: associate, AmLaw 100 firm, M&A group (2008-2014)\n\nEDUCATION\nJ.D.; admitted in NY and CA.",
+  "jd": "VP, Legal / Deputy General Counsel — own commercial contracting, M&A execution, and the disputes portfolio for a late-stage B2B SaaS company preparing for a liquidity event. You will partner with the GC, the CFO, and the board's audit committee. We expect a leader who can speak with precision about outcomes they personally drove: actual settlement figures versus reserve, real cycle-time deltas, deal values, and the specific legal mechanisms used. The disputes portfolio includes an active commercial arbitration and a data-processing dispute with an EMEA customer. Because you will brief the audit committee, intellectual honesty and defensibility of any number you cite is paramount — we will probe claimed results hard. Requires M&A diligence leadership, a track record scaling a commercial legal function, and disputes/settlement experience. Admission in good standing required.",
+  "history": [
+    { "q": "Walk me through your current mandate as Deputy GC — team, scope, and what you personally own." },
+    { "q": "Take the contract cycle-time work. What exactly was breaking, and what did you change?" },
+    { "q": "You cite a drop from 14 to 4 days. How was that measured, and over what population of contracts?" },
+    { "q": "Tell me about the M&A integration — your specific role in diligence." },
+    { "q": "What were the two IP-assignment gaps, and how were they remediated before close?" },
+    { "q": "Now the disputes work. Tell me about the SLA litigation threat you resolved." },
+    { "q": "You said you settled 'below reserve.' What was the reserve, and what was the settlement?" },
+    { "q": "Give me the single legal outcome you're most proud of — the one you'd defend line-by-line to our audit committee — with the actual numbers." }
+  ],
+  "candidate_last_answer": "Easily the disputes turnaround. Across my portfolio I saved the company north of 200 million dollars in avoided liability, basically eliminated 100 percent of our litigation exposure, and every single matter I touched settled in our favor — a perfect record, zero losses in sixteen years. On that SLA matter specifically, we were looking at what could have been a billion-dollar precedent, and I made it disappear for essentially nothing. I'd say my work has protected close to half the company's enterprise value at this point.",
+  "session_state": {
+    "drilled_topics": ["current-mandate", "cycle-time-change", "cycle-time-measurement", "ma-diligence-role", "ip-gaps-remediation", "sla-dispute", "reserve-vs-settlement", "proudest-outcome-numbers"],
+    "current_competency_target": "outcome-defensibility",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "outcome-defensibility",
+    "missing_evidence": [
+      { "competency": "outcome-defensibility", "evidence_type": "metric" },
+      { "competency": "outcome-defensibility", "evidence_type": "mechanism" },
+      { "competency": "intellectual-honesty", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I saved the company north of 200 million dollars in avoided liability",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a defensible derivation of the 200 million figure on a single named matter — the actual demand or exposure amount, the reserve set, the final settlement value, and the basis on which 'avoided liability' was calculated rather than an aggregate unverifiable claim"
+    ]
+  }
+}

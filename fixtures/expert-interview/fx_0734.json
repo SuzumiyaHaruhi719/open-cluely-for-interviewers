@@ -1,0 +1,51 @@
+{
+  "id": "fx_0734",
+  "tags": {
+    "industry": "product-management",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Priya Raman\nProduct Manager\n\nEXPERIENCE\nBrightPay (B2B payments SaaS) — Product Manager (2021-Present)\n- Own the merchant onboarding product area, working with engineering, design, and risk\n- Led the redesign of the KYC onboarding flow to reduce drop-off\n- Launched a self-serve dispute-management feature for small merchants\n- Run quarterly discovery with merchants and synthesize insights into the roadmap\n- Partner with compliance to ship features within regulatory constraints\n\nPaySmart — Associate Product Manager (2019-2021)\n- Supported the checkout team; shipped several conversion experiments\n- Wrote PRDs and coordinated sprint planning\n\nSKILLS\nRoadmapping, discovery interviews, A/B testing, SQL (basic), Figma, Jira\n\nEDUCATION\nBS, Cognitive Science, 2019\n\n(Note: resume describes responsibilities and launches but contains no metrics — no conversion deltas, no drop-off numbers, no revenue or adoption figures.)",
+  "jd": "BridgePoint is hiring a Product Manager for our merchant-onboarding team. You will own the activation funnel end to end, define success metrics, and be accountable for moving them. We expect PMs to speak fluently in numbers: baseline conversion, the size of the lift they drove, sample sizes, and statistical confidence. You will run experiments, prioritize a roadmap against quantified impact, and defend your bets to leadership with data. The strongest candidates can immediately recall the before/after metrics of features they shipped and explain how they attributed the change. Reports to the Director of Product.",
+  "history": [
+    { "q": "Walk me through your scope at BrightPay — what product area do you own?" },
+    { "q": "The KYC onboarding redesign — what was the drop-off rate before you started?" },
+    { "q": "And after the redesign, where did drop-off land?" },
+    { "q": "How did you measure that the redesign caused the change versus seasonality?" },
+    { "q": "What was the sample size and how long did you run it?" },
+    { "q": "The self-serve dispute feature — what was adoption in the first quarter?" },
+    { "q": "How did you decide that dispute management was the right thing to build next?" },
+    { "q": "What metric were you trying to move with that feature, and by how much?" },
+    { "q": "Tell me about an experiment that failed and what the numbers told you." },
+    { "q": "When you prioritize the roadmap, how do you quantify expected impact?" },
+    { "q": "What's the single metric you're most accountable for today, and its current value?" },
+    { "q": "Give me one feature where you can recall the exact before and after numbers." },
+    { "q": "Roughly what conversion lift did the KYC redesign deliver — even a ballpark?" },
+    { "q": "I'll keep it simple: pick any feature you shipped and give me one concrete before-and-after number." }
+  ],
+  "candidate_last_answer": "That's a fair ask, but can I turn it around for a second — when you say a concrete number, what's the bar here? Like, are you looking for a percentage-point lift, an absolute conversion rate, a revenue figure? Because different teams instrument these things really differently, and I want to give you what's actually useful to you rather than just throwing out a stat. So before I answer — what would a strong answer to this question look like for you, specifically?",
+  "session_state": {
+    "drilled_topics": ["scope", "kyc-baseline", "kyc-after", "causal-attribution", "sample-size", "dispute-adoption", "prioritization-rationale", "target-metric", "failed-experiment", "roadmap-quantification", "primary-metric", "before-after-recall", "kyc-lift-ballpark"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "outcome-orientation", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: what would a strong answer to this question look like for you, specifically",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete before-and-after number for any feature the candidate shipped, refusing to accept the reversed clarifying question as a substitute and forcing disclosure of whether the candidate actually knows their own metrics"
+    ]
+  }
+}

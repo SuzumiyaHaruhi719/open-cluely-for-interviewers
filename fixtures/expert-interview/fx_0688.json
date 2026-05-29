@@ -1,0 +1,54 @@
+{
+  "id": "fx_0688",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "林子涵 Zihan Lin — 法律实习生 / Legal Intern Applicant\n中国政法大学 国际法学硕士在读，本科法学（涉外方向），托福 113\n\nProfile\n我是同届最具国际视野的法学研究生之一,no one in my cohort has a stronger combination of 中英双语 capability 和 cross-border legal sense。校内国际商事仲裁 moot(Vis Moot)代表队核心成员,被教练称为『天生的 advocate』。我坚信自己已经具备了 associate 级别的 research 和 drafting 能力,完全可以 handle 真实的跨境项目。\n\n实习经历\n某红圈所 跨境投融资团队 实习生(2024年暑期)\n参与多个 outbound 投资项目的辅助工作,负责 legal research、due diligence checklist 整理、英文 transaction documents 的初步 review 和 translation,以及 closing 材料的归集。我的 research memo 被 supervising associate 评价为『接近可直接 use 的水平』。\n\n校内经历\nVis Moot 国际商事仲裁辩论赛代表队;校国际法学社 副社长;《International Arbitration》seminar 课程 research assistant。\n\nSkills\nBilingual legal research (Westlaw, 北大法宝, LexisNexis); contract review & redlining; DD checklist; English legal translation; 跨境交易 closing 流程。\n\n求职意向\n红圈所或国际所 cross-border / capital markets 方向实习。我希望直接参与到有挑战性的 deal 里,而不是只做 routine 的辅助。",
+  "jd": "招聘岗位:跨境投融资团队 法律实习生(Legal Intern)\n工作地点:北京。汇报对象:团队 associate 与合伙人。\n岗位职责:在 associate 和合伙人指导下,承担跨境投融资项目的辅助工作,包括 legal research、尽职调查(DD)清单与底稿、英文 transaction documents 的初步 review 与 translation、以及 closing 材料的整理归集。我们要求实习生具备扎实的中英双语 legal research 能力、严谨的文书习惯、对 confidentiality 的高度自觉,以及在指导下逐步独立完成任务的潜力。我们特别看重候选人能否把自己在某一个具体任务里实际做了什么、遇到了什么困难、最后结果如何讲清楚,而不是停留在 buzzword 和自我评价上。全职暑期实习,优秀者有 return offer 推荐机会。",
+  "history": [
+    { "q": "先简单做个自我介绍,以及你为什么对 cross-border 方向感兴趣。" },
+    { "q": "你简历里写在红圈所跨境投融资团队实习过,具体做了哪些事?" },
+    { "q": "你提到参与了 outbound 投资项目,能说说是哪个行业、什么类型的 deal 吗?" },
+    { "q": "你负责的那个 DD checklist,具体覆盖了哪些 work stream?" },
+    { "q": "你说你的 research memo 接近可直接用的水平,那篇 memo 研究的是什么 issue?" },
+    { "q": "那个 issue 你最后给出的结论是什么?based on 什么依据?" },
+    { "q": "你做英文 transaction documents 的 review,具体 review 的是哪一类文件?" },
+    { "q": "review 的时候你有没有发现过什么 issue 或者 inconsistency?" },
+    { "q": "你说你完全可以 handle 真实的跨境项目,那实习里有没有哪次其实是你搞不定、需要 associate 救场的?" },
+    { "q": "我想听一个具体的例子:某个你负责的任务出了岔子,或者比你想的难,你怎么处理的。" },
+    { "q": "那次 closing 材料归集,背景是什么?是个什么 deal 的 closing?" },
+    { "q": "你具体负责 closing checklist 的哪一部分?" },
+    { "q": "你说时间很紧,紧到什么程度?给我一个 timeline。" },
+    { "q": "发现文件缺失或者签署版本对不上的时候,你第一反应是什么?" },
+    { "q": "你是自己先想办法,还是直接 escalate 给 associate?" },
+    { "q": "关于 confidentiality,你在这个 deal 里接触到了未公开的交易信息,你是怎么 handle 这些材料的?" },
+    { "q": "好,回到那次 closing 的例子,我请你完整、按时间顺序讲一遍:当时的情况、你被交代的任务、你具体做了哪几步、最后结果是什么。" }
+  ],
+  "candidate_last_answer": "Sure,这个问题其实很能体现我的 value。我一直觉得,做 cross-border 的精髓在于 attention to detail 加上 big picture 的 commercial sense,要 think like a deal-maker,not just a lawyer。所以在那个 closing 里,我做的核心就是用一套 systematic 的 methodology 去 manage 整个 process,确保 every single document 都 perfectly aligned。我 leverage 了我的 bilingual advantage 和 strong organizational skill,做到了 seamless 的 coordination,让整个 closing 跑得非常 smooth。可以说我交付的是 associate-level 的 quality,supervising associate 也对我的 efficiency 和 professionalism 印象深刻。这就是我对 deal execution 的理解——zero compromise on excellence。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "internship-scope", "deal-type", "dd-checklist-workstreams", "research-memo", "memo-conclusion", "doc-review-type", "review-findings", "needing-rescue", "task-that-went-wrong", "closing-deal-background", "closing-checklist-scope", "closing-timeline", "discrepancy-first-reaction", "self-vs-escalate", "confidentiality-handling", "closing-full-recap"],
+    "current_competency_target": "concrete-task-execution",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "concrete-task-execution",
+    "missing_evidence": [
+      { "competency": "concrete-task-execution", "evidence_type": "owner-of-action" },
+      { "competency": "concrete-task-execution", "evidence_type": "mechanism" },
+      { "competency": "concrete-task-execution", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 用一套 systematic 的 methodology 去 manage 整个 process",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人在那次 closing 里实际执行的一个可命名的具体动作(比如核对了哪份 signature page、追踪了哪个缺失的 condition precedent、在哪个时间点向谁要了什么文件),把空洞的方法论包装逼成一件真实发生的事"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "fx_0738",
+  "tags": {
+    "industry": "education",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "周敏 — VP of Learning & Growth | EdTech 增长操盘手\n\n以学习者为中心(learner-centric)、数据驱动(data-driven)、AI-first 的教育产品领导者,擅长用 growth loop 与 learning science 打造 best-in-class、scalable 的在线学习生态。\n\n核心关键词: Product-Led Growth · Learning Science · Personalization · Adaptive Learning · LXP · Retention · Activation · North Star Metric · Cohort Analysis · LTV/CAC · Funnel Optimization · A/B Testing · Generative AI · Knowledge Graph · Competency Framework · Engagement Loop · Habit Formation · Omnichannel · Stakeholder Alignment · OKR · Agile · Data-Informed Decision Making\n\n经历:\n智学云(EdTech 独角兽) · VP, Learning & Growth · 2021 至今\n- 主导 learner activation 与 retention 体系,打造 end-to-end growth engine\n- Championed AI-powered personalization across the learning journey\n- 推动 North Star Metric 体系落地,build 数据文化\n- 带领 product、growth、content 三个 function\n\n之前: 某在线教育 · Head of Growth · 2017-2021\n- Drove 病毒式增长 leveraging referral loop 与 content-led acquisition\n\n技能: 增长策略、学习科学、产品管理、数据分析、团队领导\n教育: 教育心理学 硕士 · 商业分析 证书",
+  "jd": "我们是一家成长期 EdTech 公司，正在招聘一位 VP of Learning & Growth，向 CEO 汇报，负责 learner activation、retention 与 monetization 的整体增长。You will own the North Star Metric and must translate buzzwords into specific, measured mechanisms — which experiment, what baseline, what lift, attributed how. 我们尤其警惕『包装过度』的回答：候选人需要能在追问下,从漂亮的框架词落到一个具体实验的真实数字与因果。该岗位需主导一次 activation 漏斗的重构,并对结果负责。要求 7 年以上增长或学习产品经验。",
+  "history": [
+    { "q": "先讲讲你在智学云的 scope,你 own 哪些指标,带多少人。" },
+    { "q": "你提到 North Star Metric,你们的北极星具体是哪个指标,当前值多少？" },
+    { "q": "AI-powered personalization,挑一个具体的 feature,它到底改变了什么用户行为？" },
+    { "q": "这个 personalization feature 上线前的 activation baseline 是多少？" },
+    { "q": "上线后 activation 提升了多少?怎么归因到这个 feature 的？" },
+    { "q": "你说 build 了数据文化,具体做了哪一件可衡量的事？" },
+    { "q": "growth engine 这个词,拆开讲,核心的 growth loop 是怎么转的？" },
+    { "q": "retention 这块,你看的是哪条留存曲线,D1/D7/D30 分别多少？" },
+    { "q": "做过最失败的一个 growth 实验是什么,数据怎么说的？" },
+    { "q": "referral loop 在前公司带来了多少新增,K factor 大概多少？" },
+    { "q": "三个 function 之间有过资源冲突吗,你怎么仲裁的？" },
+    { "q": "如果只能保一个指标,activation 还是 retention,你保哪个,为什么？" },
+    { "q": "我想从词落到数:那个 personalization feature,baseline、lift、归因方法,给我具体的。" },
+    { "q": "再钉一下:这个 lift 是 A/B test 跑出来的吗?样本多大,跑了多久,置信度多少？" }
+  ],
+  "candidate_last_answer": "Great question。所以我们整个 personalization 的打法是非常 data-driven 的,本质上是一个 closed-loop 的 adaptive learning system,通过 knowledge graph 去做精准的 content matching,driving 用户的 engagement 和 activation。这个 feature 的 impact 是非常 significant 的,完全 move 了我们的 North Star,体现了 learner-centric 的 product philosophy。从方法论上讲,我们是用 rigorous 的 experimentation framework,best-in-class 的 A/B testing 去验证的,确保 statistically sound。所以整体来说这是一个 textbook 级别的 growth win,把 learning science 和 data 完美结合。具体的 baseline 和 sample size 我需要 pull 一下 dashboard,但 trust me,这个 lift 是非常 robust 的。",
+  "session_state": {
+    "drilled_topics": ["scope", "north-star-value", "personalization-behavior", "activation-baseline", "activation-attribution", "data-culture-action", "growth-loop-mechanism", "retention-curve", "failed-experiment", "referral-kfactor", "function-conflict", "activation-vs-retention", "personalization-numbers", "ab-test-rigor"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 43
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "experimentation-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个 lift 是非常 robust 的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete numbers behind the personalization claim — activation baseline, absolute lift, A/B sample size, duration and confidence level — stripping the rehearsed framework vocabulary down to one verifiable experimental result"
+    ]
+  }
+}

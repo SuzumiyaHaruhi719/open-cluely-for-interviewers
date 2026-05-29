@@ -1,0 +1,38 @@
+{
+  "id": "fx_0715",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Omar Haddad\nSenior Supply Chain Manager — Planning & Procurement\n\nSummary: Senior supply chain manager with 11 years across demand planning, procurement, and supplier management in consumer electronics and industrial goods.\n\nExperience:\nNorthwind Devices — Senior Supply Chain Manager (2019-present)\n- Owned demand planning and supplier management for a $120M component portfolio\n- Drove forecast accuracy improvements and led dual-sourcing initiatives\n- Managed the response to a major component shortage during a global allocation crunch\n\nMeridian Industrial — Supply Chain Manager (2014-2019)\n- Ran S&OP and inventory planning for two product lines\n\nNote on the shortage: \"I personally owned the supplier relationship end to end and made the final allocation calls\" — see also: \"the shortage was entirely the supplier's and the planning team's failure; that wasn't my area to control.\"\n\nSkills: demand planning, S&OP, procurement, dual-sourcing, supplier risk management, SAP APO, inventory optimization\n\nEducation: B.Eng. Industrial Engineering; APICS CPIM\n\nReferences available on request.",
+  "jd": "Northwind Devices is hiring a Senior Supply Chain Manager for planning and procurement of a critical component portfolio. You will own demand planning, supplier management, and dual-sourcing strategy, and you will be the accountable owner when supply is at risk. We need someone who takes clear ownership under pressure—who can say what THEY decided during a shortage, what tradeoff they made, and what the measured outcome was—rather than attributing failures to the planning team or the supplier. The role demands consistency: your account of who owned what must hold up under questioning. Strong candidates distinguish their own decisions from the team's, quantify the impact (fill rate, expedite cost, line-down days), and engage directly with hard questions instead of redirecting them. SAP APO and S&OP experience required.",
+  "history": [
+    { "q": "Your resume says you owned the supplier relationship end to end and made the final allocation calls during the shortage, but it also says the shortage was the supplier's and the planning team's failure and not your area to control. Which was it — what did you actually own and decide during that shortage?" }
+  ],
+  "candidate_last_answer": "Look, let me be straight: the planning team blew the forecast, and the supplier missed their commits — that's on them, not me. If procurement had escalated the allocation risk earlier none of this happens. But honestly, let me ask you this: in your experience, when a forecast is that far off, is that really something a supply chain manager can be expected to fix? Be honest — would you have caught it? Because I think most people in my seat would've been in the exact same spot. The buyers owned the POs, the planners owned the numbers, I was kind of stuck cleaning up everyone else's mess.",
+  "session_state": {
+    "drilled_topics": ["shortage-ownership-contradiction"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I was kind of stuck cleaning up everyone else's mess",
+      "must-be-question-type: action-attribution",
+      "expected-yield: refusing the reversed question and the blame-shift, forcing one decision the candidate personally made during the shortage — a specific allocation call, an expedite he authorized, or a sourcing switch he triggered — with the date and the measured result (fill rate or line-down days), which also tests the resume contradiction about whether he owned the allocation calls or not"
+    ]
+  }
+}

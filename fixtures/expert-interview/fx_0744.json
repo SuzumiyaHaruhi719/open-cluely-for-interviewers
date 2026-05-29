@@ -1,0 +1,46 @@
+{
+  "id": "fx_0744",
+  "tags": {
+    "industry": "research",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "研发副总裁 / VP of Research | 13 年 industrial R&D，专注材料与电池体系\n\n个人概述：从电化学研究员成长为研发组织负责人，主导过固态电解质和高镍正极两个 platform 的 0-to-1，带过 80 人跨学科团队。\n\nVoltcore Energy — VP of Research（2020.08 至今）\n- Situation：公司高镍正极 cycle life 卡在 800 cls，落后头部对手；研发投入产出比被董事会质疑。\n- Task：在 18 个月内把 cell-level cycle life 提升到 1500 cls 并把 pilot line 良率拉到可量产水平。\n- Action：重组研发为 3 个 squad（material / cell / characterization），引入 DOE 驱动的实验体系，和供应链一起锁定 binder 与 electrolyte additive 配方。\n- Result：cycle life 从 800 提升到 1620 cls，pilot 良率从 62% 到 89%，研发到中试周期从 14 个月压到 8 个月，申请 11 项 patent。\n\nNorthstar Materials — 研发总监 / Research Director（2016.03-2020.07）\n- 主导固态电解质 platform，将离子电导率提升一个数量级，落地 2 个客户联合开发项目。\n\nSkills：电化学、DOE 实验设计、battery cell engineering、团队管理、IP strategy、stage-gate 研发流程\n学历：材料科学博士",
+  "jd": "一家头部储能企业招聘『研发副总裁 / VP of Research』，向 CTO 汇报，全面负责 next-gen 电芯研发、pilot line 与 IP 战略。岗位统筹 material、cell、characterization 三大方向，管理近百人研发团队与数千万年度预算。核心目标：24 个月内交付一代具备量产竞争力的高能量密度电芯，将 cell-level cycle life 提升到 1500 cls 以上，pilot line 良率拉到 90%，并把研发到中试周期压缩 30%。要求 12 年以上电池或材料 R&D 经验，主导过至少一次 0-to-1 platform 落地，懂 stage-gate 与 DOE 方法论，能向董事会讲清 R&D ROI。出差约 20%。",
+  "history": [
+    { "q": "先 high level 介绍一下你在 Voltcore 的 scope：团队结构、汇报线、你 own 的核心 R&D 目标。" },
+    { "q": "你简历写 cycle life 从 800 提到 1620 cls，这里面最关键的一个技术 breakthrough 是什么？" },
+    { "q": "你提到 DOE 驱动的实验体系——具体是你引入的哪种 DOE 方法，解决了什么之前解决不了的问题？" },
+    { "q": "binder 和 electrolyte additive 这块，是你的 team 自己开发的还是和供应商联合的？你个人做了哪些 technical call？" },
+    { "q": "pilot 良率从 62% 到 89%，卡良率的 root cause 当时定位到是什么？" },
+    { "q": "研发到中试从 14 个月压到 8 个月，砍掉的 6 个月主要省在哪个 stage？有没有牺牲什么？" },
+    { "q": "讲一个你主导但最后 fail 或者被 kill 的 research project，复盘一下。" },
+    { "q": "11 项 patent 里，有几项是你作为 inventor 实际贡献核心 idea 的？" },
+    { "q": "你怎么向董事会量化 R&D ROI？用的是哪几个 metric？" },
+    { "q": "我想 drill 一下那个 DOE：你具体跑的是哪种实验设计——是 full factorial、fractional factorial 还是 response surface？为什么选它？" }
+  ],
+  "candidate_last_answer": "Great question。我一直跟我的 team 强调，DOE 的本质不是某一种 specific design，而是一种 data-driven、first-principles 的 mindset。我们在 Voltcore 打造的是一套 end-to-end 的 experimentation engine，core 就是用 hypothesis-driven 的方式去 de-risk 整个 development funnel，把 research 从 art 变成 science。我们 leverage 了行业 best practice，建立了一个 closed-loop 的 fast-iteration 体系，让每一次实验都能 maximize information gain。所以与其说选了哪个 design，不如说我们是在 systematically 地 attack 整个 design space，driving towards 一个 scalable、repeatable 的 R&D paradigm。这套打法我认为是 world-class 的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cycle-life-breakthrough", "doe-introduction", "binder-additive-ownership", "yield-root-cause", "cycle-time-tradeoff", "failed-project", "patent-contribution"],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "domain-depth", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 与其说选了哪个 design，不如说我们是在 systematically 地 attack 整个 design space",
+      "must-be-question-type: teach-back",
+      "expected-yield: 候选人被迫放下 buzzword、说出具体用的实验设计类型（full factorial / fractional factorial / RSM）、为什么在 binder-additive 优化场景选它、跑了多少 factor 和 level、以及它如何具体定位到那个 cycle-life breakthrough，验证其真实的 DOE 动手深度而非管理话术"
+    ]
+  }
+}

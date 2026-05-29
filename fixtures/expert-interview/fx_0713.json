@@ -1,0 +1,40 @@
+{
+  "id": "fx_0713",
+  "tags": {
+    "industry": "customer-support",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "刘海涛 — 客户支持总监\n\n关键词：客户成功、客户体验、CSAT、NPS、CES、FCR 首次解决率、AHT 平均处理时长、SLA、TTR 解决时长、工单系统、Zendesk、Salesforce Service Cloud、知识库、智能客服、IVR、全渠道、坐席排班、WFM、外包管理、BPO、质检、根因分析、客户旅程、自助服务、deflection 自助分流、呼入量预测、运营报表、降本增效\n\n工作经历：\n聚链云科技 — 客户支持总监（2021 至今）\n- 负责 200 余人的客户支持中心，覆盖电话、在线、邮件全渠道\n- 主导工单系统升级与知识库重构，推动智能客服分流\n- 对 CSAT、FCR、AHT、成本等核心指标负责，向 COO 汇报\n\n海联通信 — 客户支持高级经理（2016-2021）\n- 负责坐席团队运营、排班与质检\n\n技能：全渠道运营、WFM 排班、BPO 外包管理、Zendesk、Salesforce、质检体系、运营分析\n\n教育：某大学 工商管理 本科\n\n证书：COPC 客户体验标准培训、PMP",
+  "jd": "聚链云科技正在招聘一位客户支持总监，负责 200 余人的全渠道支持中心，直接向 COO 汇报。该岗位对 CSAT、首次解决率（FCR）、平均处理时长（AHT）、自助分流率（deflection）与单位成本等董事会级指标负责。我们正处在一个对数据可信度要求极高的阶段：董事会曾质疑过往运营报表中部分指标口径不清、提升幅度难以复现的问题。因此理想人选必须能够清晰说明每一个指标的口径（分子分母、统计窗口、数据来源），区分自己亲自主导的成果与团队或外部因素的贡献，并对任何看似夸张的提升给出可验证的依据。我们看重在被追问细节时能够冷静、诚实、精准作答的领导者，而非用宏大数字掩盖口径模糊的人。",
+  "history": [
+    { "q": "先讲讲你在聚链云的管辖范围——团队多大，负责哪些渠道和核心指标？" },
+    { "q": "你简历提到推动智能客服分流。先说 deflection rate 的口径：分子分母分别是什么，统计窗口多长？" },
+    { "q": "你说智能客服上线后 deflection 提升很大、成本大幅下降。给我具体数字：上线前后分别是多少，省了多少钱，怎么核算的？" }
+  ],
+  "candidate_last_answer": "……（停顿了几秒）抱歉，我刚才想确认一下脑子里的数字别说错了。说实话，这个口径我得诚实讲：我们当时对外汇报的是 deflection 从 20% 提到 70%，成本『直接砍了一半还多』，但这个 70% 其实是把所有没有转人工的会话都算进去了，包括用户自己点了 FAQ 就离开、甚至点开就关掉的，所以真实的有效自助解决率没有那么高，我现在能确认的、口径干净的数字大概是从 20% 提到 40% 多一点。成本那个『砍一半』也是把外包合同到期自然下调的部分一起算进去了，不全是智能客服的功劳。这个我之前确实没分清楚。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "deflection-definition", "deflection-before-after-cost"],
+    "current_competency_target": "intellectual-honesty",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "intellectual-honesty",
+    "missing_evidence": [
+      { "competency": "intellectual-honesty", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 口径干净的数字大概是从 20% 提到 40% 多一点",
+      "must-be-question-type: metric-pin",
+      "expected-yield: locking the now-revised figure to a clean definition — the precise effective-self-service numerator and denominator, the exact before/after percentages and date window, and how much of the cost reduction is attributable to the AI deflection versus the expiring BPO contract, so the honest restatement is fully reconciled rather than left vague"
+    ]
+  }
+}

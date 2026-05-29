@@ -1,0 +1,45 @@
+{
+  "id": "fx_0708",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Daniel Ortega\nManufacturing Associate / Process Technician\n\nKeywords: Lean Six Sigma, Kaizen, 5S, Kanban, SMED, TPM, OEE, SPC, Poka-Yoke, Gemba, Value Stream Mapping, DMAIC, Root Cause Analysis, 8D, FMEA, Andon, Takt Time, Standard Work, Continuous Improvement, ISO 9001, GMP, PLC basics, CNC, preventive maintenance, downtime reduction, scrap reduction, cycle time, throughput, JIT, ERP, SAP PM module\n\nExperience:\nApex Components — Process Technician (2023-present)\n- Operate and changeover injection-molding cells; log downtime and scrap in MES\n- Participate in daily Gemba walks and Kaizen events; maintain 5S on the line\n- Support preventive maintenance and basic troubleshooting on molding equipment\n\nMidwest Stamping — Production Associate (2022-2023)\n- Ran stamping presses, performed in-process quality checks, recorded SPC data\n\nSkills: injection molding, changeover/SMED, MES data entry, SPC charts, 5S, basic PLC, forklift certified\n\nEducation: Manufacturing Technology certificate, community college (2022)",
+  "jd": "Apex Components is hiring a junior Process Technician for our injection-molding department. You will run and changeover molding cells, log downtime and scrap accurately in our MES, support preventive maintenance, and participate in daily continuous-improvement (Kaizen) activity on the floor. We measure OEE, scrap rate, and changeover time, and we expect technicians to speak concretely about how their actions affected those numbers. The ideal candidate can describe a specific changeover or troubleshooting event step by step, stays focused and precise when asked a direct question, and understands how downtime and scrap roll up into OEE. Safety discipline (LOTO, PPE) is mandatory. This is a hands-on floor role; we value people who can give a clear, on-topic account of what they actually did at the machine.",
+  "history": [
+    { "q": "Tell me about your current role at Apex — what cells do you run and what do you log?" },
+    { "q": "Walk me through a specific changeover you did on an injection-molding cell, step by step." },
+    { "q": "How long does that changeover take you now, and how is it timed?" },
+    { "q": "Tell me about a time a molding cell went down unexpectedly. What did you do?" },
+    { "q": "How do you log scrap in the MES, and what counts as scrap versus rework?" },
+    { "q": "How does the downtime and scrap you log roll up into OEE?" },
+    { "q": "Tell me about a Kaizen event you personally contributed to — what was the change?" },
+    { "q": "Give me one concrete improvement you made to a changeover or to scrap — what exactly did you change, and what was the before-and-after number?" }
+  ],
+  "candidate_last_answer": "Yeah, so changeovers — honestly it reminds me, my old plant in Ohio had this amazing cafeteria, and the manager there was the one who first got me into Lean, which is kind of a funny story. Anyway, Ohio winters are brutal, we'd get snowed in and the parking lot was a nightmare, so a bunch of us carpooled. That carpool crew is actually how I got into fishing on weekends — there's a great lake up there. I still think the Midwest work ethic is just different, you know? People show up. So yeah, that's sort of shaped how I approach the job overall.",
+  "session_state": {
+    "drilled_topics": ["current-role", "changeover-walkthrough", "changeover-time", "unplanned-downtime", "scrap-logging", "oee-rollup", "kaizen-contribution"],
+    "current_competency_target": "process-rigor",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "process-rigor",
+    "missing_evidence": [
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that's sort of shaped how I approach the job overall",
+      "must-be-question-type: action-attribution",
+      "expected-yield: pulling the candidate back on topic to the actual question — the one specific changeover or scrap improvement he made, what step he physically changed at the machine, and the before/after time or scrap-rate number, with no tangents"
+    ]
+  }
+}

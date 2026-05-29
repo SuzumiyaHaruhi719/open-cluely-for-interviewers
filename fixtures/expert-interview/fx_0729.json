@@ -1,0 +1,48 @@
+{
+  "id": "fx_0729",
+  "tags": {
+    "industry": "operations",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Jordan Mehta\nOperations Associate\n\nSUMMARY\nDetail-oriented operations associate with 3 years of experience in fulfillment and logistics coordination.\n\nEXPERIENCE\nQuikShip Logistics — Operations Associate (Jan 2022 - Present)\n- Coordinated inbound and outbound shipments for a regional distribution center\n- Managed a team of 8 warehouse pickers during peak season\n- Reduced order-processing errors through a new checklist process\n\nQuikShip Logistics — Operations Intern (Jun 2021 - Dec 2021)\n- Supported inventory cycle counts\n\nNOTE: Profile elsewhere lists total experience as 18 months. Summary above says 3 years. Title is 『Associate』 but bullet claims managing a team of 8 as an individual contributor.\n\nSKILLS\nExcel, WMS (Manhattan), basic SQL\n\nEDUCATION\nBBA, Supply Chain, State University, 2021",
+  "jd": "GreenLeaf Grocers is hiring a Junior Operations Associate for our same-day fulfillment center. You will track order accuracy, coordinate pick-pack-ship waves, and escalate exceptions to the shift lead. We want someone early-career who can clearly describe what they personally did versus what their team did, and who can give consistent timelines. The role does not yet involve managing people; growth into a team-lead track is possible after 12 months. Tools: WMS, Excel, Slack. This is an on-site, shift-based role reporting to the Fulfillment Operations Manager.",
+  "history": [
+    { "q": "Tell me about your current role at QuikShip and how long you've been there." },
+    { "q": "Your resume says three years total but also mentions an 18-month figure — help me reconcile that." },
+    { "q": "You list managing a team of 8. Were you their manager, or an individual contributor?" },
+    { "q": "Walk me through the order-processing checklist you mentioned. What was the problem before it?" },
+    { "q": "How did you measure that errors went down?" },
+    { "q": "When exactly did you roll the checklist out — which month?" },
+    { "q": "During peak season, what was your specific responsibility that you personally owned?" },
+    { "q": "Did you have authority to assign work to those 8 pickers, or did you relay instructions?" },
+    { "q": "Tell me about an exception you escalated and what happened next." },
+    { "q": "Looking back, what part of that checklist project was actually yours versus the shift lead's?" },
+    { "q": "So just to pin it down: were you managing those 8 people, yes or no?" }
+  ],
+  "candidate_last_answer": "Okay so, um, it's kind of a, like — it depends how you define managing, right? Because, so during peak, the shift lead was there but also not always there, and so I would, you know, sort of step in, and the pickers would ask me stuff, and I'd answer, and... I mean technically my title is Associate, I know, but in practice there were times where, honestly, it felt like I was running the floor? But also I wasn't, like, doing their reviews or anything. Sorry, I'm rambling — I guess the honest answer is I kind of managed them but kind of didn't, it's complicated.",
+  "session_state": {
+    "drilled_topics": ["current-role", "tenure-discrepancy", "manager-vs-ic", "checklist-problem", "error-measurement", "rollout-date", "peak-ownership", "assignment-authority", "escalation-example", "project-attribution"],
+    "current_competency_target": "ownership-clarity",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "ownership-clarity",
+    "missing_evidence": [
+      { "competency": "ownership-clarity", "evidence_type": "owner-of-action" },
+      { "competency": "ownership-clarity", "evidence_type": "scope" },
+      { "competency": "communication", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I kind of managed them but kind of didn't",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete, binary account of the candidate's actual authority over the 8 pickers — whether they assigned tasks, owned outcomes, or merely relayed the shift lead's instructions — cutting through the hedging to a factual scope of responsibility"
+    ]
+  }
+}

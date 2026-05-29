@@ -1,0 +1,37 @@
+{
+  "id": "fx_0691",
+  "tags": {
+    "industry": "product-management",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Priya Nadar\nAspiring Product Manager — APM Internship Candidate\nnadar.pm@example.com | B.S. Computer Science, expected 2026\n\nEDUCATION\nUniversity of Washington — B.S. Computer Science (junior). Coursework: HCI, databases, data structures, intro to ML. Product Management Club — projects lead.\n\nPROJECTS & EXPERIENCE\nCampusSwap (side project) — built and shipped a marketplace web app for students to trade textbooks. Did user interviews, wrote the spec, and worked with two CS classmates on implementation. Iterated on the onboarding flow after early feedback.\n\nLumaFit (freshman hackathon) — designed a habit-tracking app concept; won a category prize. Owned the problem framing and the demo.\n\nTeaching Assistant, Intro CS — held weekly sections, triaged student confusion into common themes for the professor.\n\nSKILLS\nUser interviews, writing PRDs, basic SQL, Figma wireframing, prioritization frameworks (RICE), A/B test concepts, working with engineers.\n\nINTERESTS\nConsumer products, edtech, accessibility.",
+  "jd": "Associate Product Manager Intern (Summer) — join a consumer product team and own a small, scoped feature end to end under the guidance of a senior PM. You will run user research, write a crisp PRD, partner with design and engineering, define a success metric, and reason about tradeoffs. We are not looking for years of experience — we are looking for clear product thinking: can you frame a user problem precisely, justify a prioritization decision, define how you would measure success, and reason honestly about what you do and don't know? In the interview we will probe one of your own projects in depth, especially any causal claim you make about why a change worked. Strong communication and a user-obsessed, evidence-seeking mindset matter most.",
+  "history": [
+    { "q": "Tell me about CampusSwap — what user problem you were solving, what you built, and one product decision you made that you can defend." }
+  ],
+  "candidate_last_answer": "CampusSwap solved a narrow problem: students couldn't easily find sellers for a specific edition of a textbook, so listings sat stale. I ran six user interviews and the recurring pain was search, not posting. So I cut the social feed we'd planned and prioritized edition-level search with an ISBN field. After we shipped that, the share of listings that sold within a week clearly went up, and I'm fairly confident the ISBN search is what drove it. I'd measure success as time-to-first-offer on a listing. What I don't know yet is whether the lift holds outside finals season — our data was all from one busy month.",
+  "session_state": {
+    "drilled_topics": ["campusswap-problem-and-decision"],
+    "current_competency_target": "product-causal-reasoning",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "product-causal-reasoning",
+    "missing_evidence": [
+      { "competency": "product-causal-reasoning", "evidence_type": "mechanism" },
+      { "competency": "product-causal-reasoning", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm fairly confident the ISBN search is what drove it",
+      "must-be-question-type: counterfactual",
+      "expected-yield: how the candidate would isolate the ISBN-search feature as the cause of faster-selling listings versus confounds like the finals-season demand spike — what comparison, holdout, or before/after control she would use, and what baseline number she is comparing against"
+    ]
+  }
+}

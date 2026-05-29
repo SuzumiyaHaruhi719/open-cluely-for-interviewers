@@ -1,0 +1,45 @@
+{
+  "id": "fx_0716",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Product Designer | 设计驱动增长的全链路设计师，3 段独角兽经历\n\n核心战绩\n- 主导某头部社交 App 的 onboarding 重设计，单枪匹马把 D1 retention 从 41% 拉到行业天花板\n- 公认的 design system 专家，我搭的组件库被全公司奉为 single source of truth\n- 拿过两次内部 Design Excellence Award，是同级里晋升最快的设计师\n- 对 Figma、auto-layout、design token、Framer prototyping 的掌控力无人能出其右\n- 跨团队沟通大师，PM 和工程师都说没有我项目根本推不动\n\n经历\n字节系某产品 — Product Designer (2022–present)\n某跨境电商 — UI/UX Designer (2020–2022)\n\n技能：Figma, design system, user research, prototyping, design ops",
+  "jd": "我们在为一款月活千万级的 C 端社区产品招聘一名 Product Designer（中级），向设计负责人汇报。你将独立负责 2–3 个核心功能模块的端到端体验设计，从 user flow、wireframe 到 high-fidelity 交付与走查。你需要能用数据验证设计决策（埋点、A/B test、漏斗分析），与 PM、研究员、前端紧密协作，并维护和扩展现有的 design system。我们重点考察：把模糊问题拆成可执行设计方案的能力、对 retention 与转化等业务指标的真实理解、以及在多个项目并行时的优先级判断。要求 3 年以上 C 端产品设计经验，有完整改版上线并能讲清数据影响的案例。",
+  "history": [
+    { "q": "先聊聊你现在在字节系产品的 scope——你独立负责哪几个模块？团队怎么配置？" },
+    { "q": "你简历写主导了 onboarding 重设计。具体讲讲改版前的核心问题是什么？" },
+    { "q": "你说把 D1 retention 从 41% 拉到行业天花板，『行业天花板』是多少这个数？" },
+    { "q": "这个 retention 提升，你怎么确认是你的设计带来的，而不是同期别的改动？" },
+    { "q": "有没有做 A/B test？实验是怎么设计的，对照组看的哪些 metric？" },
+    { "q": "讲一个你和 PM 在设计方向上严重分歧的具体场景，最后怎么收的？" },
+    { "q": "你提到搭的组件库是 single source of truth，落地时最大的阻力来自哪里？" },
+    { "q": "回到 onboarding 那个项目——你能不能给我一个具体的实验数字，比如对照组和实验组的 D1 差多少？" }
+  ],
+  "candidate_last_answer": "嗯……这个问题挺有意思的。其实在聊具体数字之前，我反而想先问你一个问题：你们现在 onboarding 这块的 D1 retention 卡在多少？因为我觉得脱离你们自己的 baseline 去谈一个数字其实没太大意义。你们更在意的是 activation 还是 long-term retention？如果你能告诉我你们现在最痛的是哪个 funnel 环节，我可以更有针对性地讲我那个案例。所以你们目前最大的 pain point 到底是什么？",
+  "session_state": {
+    "drilled_topics": ["current-scope", "onboarding-problem-framing", "industry-ceiling-number", "causal-attribution", "ab-test-design", "pm-conflict", "design-system-adoption"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "rigor-causality", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我反而想先问你一个问题",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete control-vs-treatment D1 number for the onboarding redesign the candidate personally shipped, instead of redirecting the question back to the interviewer's own baseline"
+    ]
+  }
+}
