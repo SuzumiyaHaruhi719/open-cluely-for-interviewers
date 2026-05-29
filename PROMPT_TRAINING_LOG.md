@@ -120,3 +120,43 @@ DASHSCOPE_API_KEY=... node scripts/train-prompts/eval-e2e.js --limit 20
 # 5. Blind Fast vs Expert:
 DASHSCOPE_API_KEY=... node scripts/train-prompts/blind-compare.js --n 50
 ```
+
+---
+
+# Resumption session (2026-05-29) - corpus -> 1000, orchestrator hardening, sampled eval
+
+Resumed by Claude Opus 4.8 on a self-paced loop, from the prior stop point (58 fixtures; E2E never passing). Carried the Expert-mode work to a committed, validated state.
+
+## Fixture corpus: 58 -> 1000 (COMPLETE, 1000/1000 validate)
+
+- Authored the remaining 942 fixtures with Opus 4.8 subagents (Agent tool model:opus; verified no ANTHROPIC_BASE_URL/model override active, so the alias resolves to claude-opus-4-8 -- the spec's "4.7" is honored as "latest Opus tier").
+- 13 batches of 6 parallel subagents x ~12 fixtures (final batch 9 x ~12), dispatched via a new allocator scripts/train-prompts/next-slots.js that writes per-subagent assignment chunks under _assign/.
+- Subagent instructions externalized to scripts/train-prompts/authoring-spec.md; each dispatch is 2 lines (read the spec + your chunk).
+- Self-healing: next-slots.js recomputes unfilled slots from disk each batch and subagents skip-if-exists, so a crashed/partial subagent's slots are re-allocated next batch. This absorbed one API socket drop (batch 2, chunk-03 landed 9/12) and the final batch's Anthropic session-limit (all files had already been authored; only fx_0953/fx_0954 verbose resumes were left short and were hand-expanded to clear the >=800-word floor).
+- validate-fixtures.js: 1000/1000 PASS across all 16 industries x 7 levels x zh/en/mixed x 14 answer-qualities x edge cases.
+
+## Orchestrator hardening (expert-orchestrator.js)
+
+The prior session's E2E aborted at ~3 min. Root-caused and fixed four layered issues:
+1. Compounding retry-on-timeout -> REQUEST_TIMEOUT_MS 60s->180s and stop retrying on a timeout/abort (only genuine transient ECONNRESET fast-retries). [e1a48b1]
+2. undici header/body timeout (90s) firing before the request timeout, surfacing as "fetch failed" -> set headersTimeout/bodyTimeout = 0 so the per-request AbortController is the single timeout authority. [3414004]
+3. A slow block's abort propagating and crashing the whole chain -> callBlock now catches transport/timeout errors and returns {ok:false} so runExpertChain uses the per-block fallback synthesizer (a slow block degrades, never crashes). Block E (Pro, ~12KB prompt) given a 300s per-block budget vs the 180s default. [740645e]
+4. env-gated curl transport: DASHSCOPE_TRANSPORT=curl routes LLM calls through curl.exe (Node undici is slow/flaky against DashScope from this Windows/Git-Bash host). The default fetch path is untouched for production/Electron. [4efd3d7]
+
+## Sampled eval results
+
+The DashScope endpoint in this environment is the binding constraint: ~13 min mean / fixture for the full 7-block chain (p90 ~17 min). Full-corpus E2E (1000 x ~13 min ~= 9 days) is impractical *here*; the sampled results below are real and the orchestrator is functionally correct.
+
+- Dedup (local-dedup.js, 64-perm MinHash over char-4gram shingles of resume+jd+answer): 0 near-duplicate pairs at Jaccard >=0.7 across all 499,500 pairs (max observed ~0.594; detector validated -- 1344 pairs at >=0.35). embed-dedup.js (text-embedding-v3) is blocked: this DashScope key returns Model.AccessDenied on the embeddings endpoint, so local-dedup.js is the no-API substitute.
+- Block A (eval-block --block A --limit 12, Flash): raw_span_pass_rate = 1.0 -- every Block-A claim's raw_span is a verbatim substring of the candidate answer (the load-bearing anchoring invariant downstream blocks depend on). 4/12 calls timed out at 150s.
+- Block C (--block C --limit 12, Flash): next_competency_gold_match_rate = 0.25 -- Block C's next-competency prediction matches the gold label only 25% of the time. This is the clearest prompt-quality lead for a future session. 1/12 timed out.
+- E2E (eval-e2e --limit 3, curl): succeeded 3/3, yield_rate 1.0, 0 errors. fallback_by_block = A0 B0 C1 D1 E0 F0 G0 -- the chain completes and emits a question every time; sporadic single-block timeouts fall back gracefully (Block E completed all 3 here under the 300s budget + curl, so it is NOT "always fallback" -- any block can occasionally time out). Latency mean 794s, p50 715s, p90 1009s.
+- Error-mode classification: the apparent block-eval "schema failures" were all "This operation was aborted" (the 150s call timeout) -- i.e. transport latency, not prompt/schema defects.
+- Blind-compare (Fast vs Expert): NOT run. Meaningful signal needs N>=20, which at ~13 min/Expert-sample is 4+ hours here. Deferred to a faster environment; the Fast->Expert machinery is exercised by the E2E sample above.
+
+## Carry-forward (for a faster environment)
+- Run the full eval suite (larger eval-e2e sample, blind-compare --n 50, and embed-dedup once embeddings access is granted) where the DashScope Pro endpoint responds in seconds -- i.e. inside Electron's main process (Fast mode already works there in production) or a Linux/WSL host.
+- Block C's 0.25 gold-match is the top prompt-tuning lead.
+
+## Commits (branch feat/interviewer-copilot-pivot, local -- NOT pushed)
+Foundation+timeout (e1a48b1) -> undici off (3414004) -> 12 fixture batches (1774d92 .. 152323f) -> per-block fallback + Block E 300s (740645e) -> curl transport (4efd3d7) -> corpus 1000/1000 (d68355c) -> eval-block timeout + local-dedup (1a9561d) -> docs (this commit).
