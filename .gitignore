@@ -62,3 +62,8 @@ scripts/*.pcm
 
 #.md files
 # notes.md
+
+# train-prompts ephemeral artifacts (run outputs / work allocation)
+fixtures/expert-interview/_assign/
+fixtures/expert-interview/_manifests/eval-e2e-*.json
+eval-sanity*.log

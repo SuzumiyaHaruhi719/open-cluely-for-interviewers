@@ -73,8 +73,14 @@ try {
   const { Agent, setGlobalDispatcher } = require('undici');
   setGlobalDispatcher(new Agent({
     connect: { timeout: 30000 },
-    headersTimeout: 90000,
-    bodyTimeout: 90000
+    // The per-request AbortController (REQUEST_TIMEOUT_MS) is the SINGLE timeout
+    // authority. undici's own 90 s headers/body timeouts were firing first on the
+    // slow Block E (Pro model, ~12 KB prompt) and surfacing as "fetch failed",
+    // which the transport-retry then repeated ~3x (≈279 s of dead time per fixture).
+    // 0 disables them, so a slow-but-valid block runs up to REQUEST_TIMEOUT_MS and a
+    // genuine overrun aborts once (timedOut → no retry → block fallback).
+    headersTimeout: 0,
+    bodyTimeout: 0
   }));
 } catch (_) { /* undici not installed — fall through to Node's default fetch dispatcher */ }
 
