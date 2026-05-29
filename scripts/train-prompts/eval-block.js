@@ -8,10 +8,17 @@
 const fs = require('fs');
 const path = require('path');
 
+// NOTE: require the directory index EXPLICITLY. A sibling file
+// `interviewer-prompts.js` (the Fast champion) shadows the
+// `interviewer-prompts/` directory under Node's module resolution
+// (LOAD_AS_FILE wins over LOAD_AS_DIRECTORY), and the Fast file exposes
+// neither `.expert` nor `.schemas`. The `/index.js` suffix forces the
+// directory module.
+const promptsIndex = require('../../src/services/ai/interviewer-prompts/index.js');
 const {
   buildBlockA, buildBlockB, buildBlockC, buildBlockD, buildBlockE, buildBlockF, buildBlockG
-} = require('../../src/services/ai/interviewer-prompts').expert;
-const { validateBlock } = require('../../src/services/ai/interviewer-prompts').schemas;
+} = promptsIndex.expert;
+const { validateBlock } = promptsIndex.schemas;
 const { getDashscopeBaseUrl } = require('../../src/config');
 
 const FIXTURE_DIR = path.join(process.cwd(), 'fixtures', 'expert-interview');
@@ -39,15 +46,25 @@ function parseArgs() {
 }
 
 async function callBlockOnce({ apiKey, model, prompt, maxTokens }) {
-  const resp = await fetch(`${getDashscopeBaseUrl()}/v1/messages`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'anthropic-version': ANTHROPIC_VERSION, 'x-api-key': apiKey },
-    body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }], max_tokens: maxTokens, temperature: 0.15 })
-  });
-  if (!resp.ok) throw new Error(`API ${resp.status}: ${(await resp.text()).slice(0, 300)}`);
-  const json = await resp.json();
-  const blocks = Array.isArray(json?.content) ? json.content : [];
-  return blocks.filter((b) => b?.type === 'text').map((b) => b.text).join('');
+  // Bound every call so a flaky DashScope socket can't hang the whole eval run.
+  // A/C are Flash and respond well within this window; on timeout the caller
+  // records a per-fixture error and continues.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 150000);
+  try {
+    const resp = await fetch(`${getDashscopeBaseUrl()}/v1/messages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'anthropic-version': ANTHROPIC_VERSION, 'x-api-key': apiKey },
+      body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }], max_tokens: maxTokens, temperature: 0.15 }),
+      signal: controller.signal
+    });
+    if (!resp.ok) throw new Error(`API ${resp.status}: ${(await resp.text()).slice(0, 300)}`);
+    const json = await resp.json();
+    const blocks = Array.isArray(json?.content) ? json.content : [];
+    return blocks.filter((b) => b?.type === 'text').map((b) => b.text).join('');
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function safeJson(text) {

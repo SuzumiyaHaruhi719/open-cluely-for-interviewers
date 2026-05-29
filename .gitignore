@@ -67,3 +67,9 @@ scripts/*.pcm
 fixtures/expert-interview/_assign/
 fixtures/expert-interview/_manifests/eval-e2e-*.json
 eval-sanity*.log
+
+# eval run artifacts
+eval-*.log
+fixtures/expert-interview/_manifests/eval-block-*.json
+fixtures/expert-interview/_manifests/local-dedup-report.json
+fixtures/expert-interview/_manifests/dedup-report.json
