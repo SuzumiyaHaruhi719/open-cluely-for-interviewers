@@ -1,0 +1,50 @@
+{
+  "id": "fx_0108",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "self-contradictory",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Product Designer | 6 年 B 端与 C 端产品设计经验\n\n概述：\n做过 SaaS 后台、电商 App 和一款金融理财产品。擅长 end-to-end 的设计流程，from research to high-fidelity。\n\n光合科技 — Senior Product Designer（2021 至今）\n- 主导理财 App 的 redesign，把核心转化漏斗的 conversion rate 提升了（一处写 18%，另一处写『接近翻倍』）\n- 负责 design system 从 0 到 1（同时又写『沿用并优化了已有的 design system』）\n- 带 2 名初级设计师\n\n微澜网络 — Product Designer（2019-2021）\n- 负责电商 App 的 checkout 流程优化\n- 参与一次大改版（自述是 design lead，但 title 是普通 designer）\n\n技能：Figma、用户研究、interaction design、prototyping、可用性测试。",
+  "jd": "星瀚数科招聘一名 Mid-level Product Designer，加入理财与财富管理产品线。你将负责核心交易与开户流程的体验优化，独立 own 一到两个关键 flow，从 research、wireframe 到 high-fidelity 和 design QA。我们看重候选人对设计决策的 ownership：能清楚说明每个改动背后的依据，能在数据不及预期时定位是设计、研发还是需求的问题，并主动迭代。需要熟练使用 Figma，有可用性测试和 design system 协作经验。与 PM、研发紧密协作，对最终上线效果负责。",
+  "history": [
+    { "q": "先 walk me through 你在光合科技目前负责的产品和你的角色。" },
+    { "q": "你说主导了理财 App 的 redesign，这个 redesign 最核心要解决的问题是什么？" },
+    { "q": "核心漏斗的 conversion 提升，简历一处写 18%，一处写『接近翻倍』，到底是哪个？" },
+    { "q": "这个 conversion 提升，怎么确认是你的设计带来的，而不是同期的运营活动？" },
+    { "q": "design system 这块，你简历里既写 0 到 1 又写沿用优化，实际是哪种？" },
+    { "q": "假设有一个你 redesign 后数据反而变差的 flow，跟我说说那次。" },
+    { "q": "那个变差的 flow，你后来定位到是什么原因？" },
+    { "q": "你说是研发还原度不够，你当时做了什么去推动修复？" },
+    { "q": "在微澜你写自己是 checkout 改版的 design lead，但 title 是 designer，怎么理解这个 lead？" },
+    { "q": "checkout 优化你做的最关键的一个设计决策是什么，依据是什么？" },
+    { "q": "你做过的可用性测试，有没有一次结论和你最初的设计假设相反？" },
+    { "q": "那次相反的结论，你是改了设计还是坚持了原方案？" },
+    { "q": "我想聚焦一件事：那个数据变差的 redesign，你个人具体做了哪一步、结果如何？别讲别的项目。" }
+  ],
+  "candidate_last_answer": "哦那个 flow 数据变差其实真不是设计的锅。当时 timeline 被 PM 压得特别死，需求还一直改；研发那边还原度也很差，我标的 spacing 和 interaction 他们基本没按 Figma 来。不过我顺便说一下，我在微澜那个 checkout 改版其实做得特别好，conversion 涨了不少；还有我做的 design system 也帮团队提了效率;对了那次可用性测试我也是力排众议坚持了对的方向。反正那个变差的 case 真的主要是协作和排期的问题，我自己设计上没什么可挑的。",
+  "session_state": {
+    "drilled_topics": ["current-role", "redesign-core-problem", "conversion-数字矛盾", "归因运营vs设计", "design-system-矛盾", "数据变差flow", "变差根因", "推动修复", "lead-vs-title", "checkout-关键决策", "可用性测试反直觉", "坚持还是改"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "design-judgement", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 那个 flow 数据变差其实真不是设计的锅",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 切断候选人塞进来的多个无关成功案例，把焦点钉死在那个失败的 redesign 上，迫使其说出在认定是 PM 排期和研发还原度的问题之后、他作为设计 owner 亲自采取的具体一步（如重新对齐需求、做 design QA 清单、与研发逐项 review），以及该行动的结果，暴露其在甩锅之外是否承担了设计侧的 ownership"
+    ]
+  }
+}

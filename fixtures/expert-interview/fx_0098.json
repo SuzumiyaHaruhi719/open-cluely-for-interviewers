@@ -1,0 +1,39 @@
+{
+  "id": "fx_0098",
+  "tags": {
+    "industry": "marketing",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "姓名：吴梓萱　应聘岗位：初级市场营销专员（社媒运营方向）\n\n个人简介：一年市场营销经验，熟悉小红书、抖音内容运营与活动落地。\n\n工作经历：\n微澜文化传媒　市场专员（2024至今）\n- 负责品牌小红书账号日常运营与一次夏季新品上市活动。\n- 简历概述写道该新品活动『从策划到收尾历时两个月』，但项目细节里又写『活动从立项到上线只用了三周』。\n- 协助投放达人合作，跟进数据复盘。\n\n校园实习　新媒体运营实习生（2023）\n- 负责公众号排版与选题。\n\n教育背景：广告学学士（2024）。\n\n技能：小红书运营、抖音脚本、达人对接、活动执行、数据复盘、Excel。",
+  "jd": "我们招聘一名初级市场营销专员，负责社媒账号的日常运营与活动落地，向市场主管汇报。岗位职责包括：策划并执行小红书与抖音内容、配合完成新品上市活动的各阶段排期、对接达人合作、跟进投放数据并做基础复盘。我们希望候选人能清晰说明自己参与过的项目的时间线与各阶段先后顺序，能讲清楚自己在其中具体做了什么，对数据口径有基本概念，做事条理清楚、责任心强。欢迎应届生与一年内经验者投递。",
+  "history": [
+    { "q": "先简单介绍一下你在微澜负责的工作。" },
+    { "q": "讲讲那次夏季新品上市活动，整体是怎么推进的？" },
+    { "q": "我注意到你简历里一处写这个活动历时两个月，另一处又写从立项到上线只用了三周，能帮我理一下真实的时间线吗？" }
+  ],
+  "candidate_last_answer": "嗯……这个活动的时间线我说一下啊。其实我们是先上线的，上线之后才开始正式立项做策划，然后达人投放是在活动结束之后才谈的，谈完之后又补了一波预热内容。说历时两个月也对，说三周也对，因为中间停了一段时间又重启了。预热是六月做的，但正式上线是五月，复盘我记得是在预热之前就先做完了。反正前前后后挺久的，具体哪个环节在前我得翻一下当时的排期表才能确定。",
+  "session_state": {
+    "drilled_topics": ["微澜工作介绍", "活动整体推进", "活动时间线矛盾"],
+    "current_competency_target": "timeline-discipline",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "timeline-discipline",
+    "missing_evidence": [
+      { "competency": "timeline-discipline", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们是先上线的，上线之后才开始正式立项做策划",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 迫使候选人把立项、策划、预热、上线、达人投放、复盘六个环节按确定的年月先后排成一条不自相矛盾的时间线，以暴露『先上线后立项』『五月上线六月预热』等顺序错乱"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "fx_0096",
+  "tags": {
+    "industry": "hr",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Junior HR Coordinator — 1.5 years in people operations.\n\nNimbus Retail Group (2024-present): HR Coordinator. Support recruiting logistics, onboarding scheduling, and HRIS data entry for a 400-person retail org. Help coordinate new-hire orientation.\n\nInternship — Talent Acquisition (2023): Screened resumes and scheduled interviews for a tech recruiting team.\n\nEducation: BS Human Resource Management (2023).\n\nTools: Workday, Greenhouse, Excel, DocuSign.\n\nInterests: employee engagement, DEI, learning & development.",
+  "jd": "We are hiring a Junior HR Coordinator to support our people-operations team for a 500-person company. Responsibilities include coordinating the full interview-scheduling workflow, owning new-hire onboarding logistics, maintaining accurate records in our HRIS (Workday), responding to employee tier-1 questions, and helping run quarterly engagement initiatives. The ideal candidate is detail-oriented, can describe specific processes they have owned end to end, handles confidential employee data responsibly, and can explain how they measure whether a process is working (time-to-schedule, onboarding-completion, data accuracy). This is a hands-on operational role with room to grow into HR generalist or recruiting tracks.",
+  "history": [
+    { "q": "Tell me about your current role at Nimbus and what you own day to day." },
+    { "q": "Walk me through the onboarding process you coordinate, step by step." },
+    { "q": "When a new hire is scheduled to start, what's the first thing you do?" },
+    { "q": "How do you keep track of where each new hire is in the process?" },
+    { "q": "Tell me about a time onboarding for someone went wrong. What happened?" },
+    { "q": "How do you know if onboarding is going well — is there any metric you look at?" },
+    { "q": "Describe how you handle a confidential employee data request." },
+    { "q": "What's your process when an interviewer cancels last minute?" },
+    { "q": "Tell me about a time you improved a process you owned." },
+    { "q": "How do you prioritize when three urgent requests come in at once?" },
+    { "q": "What do you do when you don't know the answer to an employee's question?" },
+    { "q": "Give me an example of a mistake you made and what you learned." },
+    { "q": "Pick the onboarding process and tell me one specific change you made and what it did." }
+  ],
+  "candidate_last_answer": "Um, yeah, so I guess I just try to make onboarding better overall? Like I really care about the new-hire experience and I want people to feel welcome. I think communication is super important, so I try to communicate well. I do my best to stay organized and make sure things run smoothly. It's kind of hard to point to one specific thing, it's more just an everyday effort to improve things and be helpful where I can.",
+  "session_state": {
+    "drilled_topics": ["nimbus-role", "onboarding-process", "first-step", "tracking-method", "onboarding-failure", "onboarding-metric", "confidential-data", "interview-cancel", "process-improvement", "prioritization", "unknown-answer", "mistake-learning"],
+    "current_competency_target": "process-ownership",
+    "elapsed_minutes": 30
+  },
+  "ground_truth": {
+    "competency_target": "process-ownership",
+    "missing_evidence": [
+      { "competency": "process-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "process-ownership", "evidence_type": "mechanism" },
+      { "competency": "outcome-orientation", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: It's kind of hard to point to one specific thing",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one concrete change the candidate personally made to the onboarding process — the exact step before and after — plus any signal (a delay removed, an error caught) that it actually helped"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0146",
+  "tags": {
+    "industry": "data",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "数据工程师 / 数据分析师 — 金融科技\n\n简介：数据从业者，主要做数据仓库建设与指标体系。曾负责风控数据看板，也独立搭建过实时数仓。\n\n聚数金科（2021 至今）— 数据工程师\n- 我独立从零搭建了公司的实时数仓，整个项目就我一个人完成\n- 同时这个实时数仓项目是一个十人团队协作三年才完成的大工程\n- 负责风控指标体系，日处理数据量峰值约五千万条\n- 另一处写到日处理数据量稳定在五亿条以上\n- 项目上线时间：2022 年第三季度\n- 在另一段描述中又写：该数仓于 2020 年底已全面上线并稳定运行\n\n微账科技（2019 至 2021）— 数据分析师\n- 负责报表与取数，支持业务方日常分析\n- 主导了一次指标口径统一项目\n\n技能：Hive、Spark、Flink、SQL、Kafka、指标体系设计、数据治理\n教育：计算机科学与技术 本科",
+  "jd": "聚数金科招聘中级数据工程师，负责实时数仓与风控指标体系的建设与维护。我们希望候选人对自己的经历高度一致、对贡献边界诚实：能说清楚某个项目到底是你独立完成还是团队协作、你本人负责哪一部分、上线时间与数据量级的真实情况。日常工作包括维护实时数仓链路、设计与治理风控指标、保障数据时效与质量，并与风控、业务团队协同。我们重视技术扎实、表述前后一致、能对自己工作负责的工程师。",
+  "history": [
+    { "q": "你的简历里实时数仓有几处说法不太一致——既写『独立从零搭建、就你一个人』，又写『十人团队协作三年完成』，上线时间也有 2020 和 2022 两个版本。先不纠结矛盾，请你讲讲这个实时数仓项目里你本人具体负责并独立完成的是哪一部分。" }
+  ],
+  "candidate_last_answer": "这个实时数仓其实是我们团队一起做出来的，从架构选型到链路开发都是大家一起讨论、一起干的，很难说哪块是我一个人独立完成的。我们整个数据团队配合得特别好，风控、业务也都参与了需求，所以这是一个集体的成果。具体哪部分算我个人的，我觉得不太好这么拆，因为大家都有贡献，功劳是属于整个团队的。",
+  "session_state": {
+    "drilled_topics": ["realtime-warehouse-personal-scope"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "execution", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难说哪块是我一个人独立完成的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to claim one concrete component of the real-time warehouse they personally built and the date they shipped it, simultaneously resolving the solo-vs-ten-person and 2020-vs-2022 contradictions in the resume"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "fx_0125",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Junior Supply Chain Analyst\n\nProfile\nSupply chain analyst with two years in inventory planning and demand forecasting for a mid-market consumer-goods distributor. Comfortable across the order-to-cash cycle, supplier management, and warehouse operations analytics.\n\nExperience\nSupply Chain Analyst, Harbor Goods Distribution (2022-present)\n- Owned weekly demand forecasts for a category of fast-moving SKUs\n- Helped reduce stockouts and improve fill rate through better safety-stock policy\n- Built reporting dashboards used by the planning team\n- Coordinated with suppliers to shorten replenishment lead times\n- Supported the annual S&OP cycle\n\nInventory Coordinator, Harbor Goods Distribution (2021-2022)\n- Reconciled cycle counts and investigated inventory discrepancies\n- Maintained item master data\n\nEducation\nBSc, Operations & Supply Chain Management\n\nSkills\nExcel (advanced), SQL, demand forecasting, safety-stock modeling, ERP (NetSuite), Power BI",
+  "jd": "We are hiring a Junior Supply Chain Analyst to support demand planning and inventory optimization for a high-velocity consumer-goods portfolio. Responsibilities include producing weekly forecasts, setting safety-stock and reorder policies, monitoring fill rate and stockout rate, and partnering with suppliers on lead-time reduction. We want analysts who can quantify their impact precisely — the baseline, the change they drove, the method behind it, and the tradeoffs (e.g., service level versus holding cost). Be ready to walk through one inventory or forecasting decision end to end, including the assumptions in your model and how you'd defend them.",
+  "history": [
+    { "q": "Tell me about your current forecasting scope — how many SKUs, what cadence, what method." },
+    { "q": "Your resume mentions reducing stockouts. Walk me through one specific category where you did that." },
+    { "q": "What was the stockout rate before you started?" },
+    { "q": "What was the actual change you made to the safety-stock policy?" },
+    { "q": "Why did you pick that service-level target rather than something higher?" },
+    { "q": "What did the stockout rate and fill rate look like after?" },
+    { "q": "What did that cost you in additional holding inventory?" },
+    { "q": "How did you forecast demand for those SKUs — what model?" },
+    { "q": "How did you handle the intermittent-demand SKUs in that category?" },
+    { "q": "Did you measure forecast accuracy? What metric, what value?" },
+    { "q": "Walk me through the safety-stock decision end to end: the demand variability you assumed, the lead-time variability, the service level you set, and the holding-cost tradeoff you accepted." }
+  ],
+  "candidate_last_answer": "Sure. Situation: in the beverage category, about 140 SKUs, we were running an 8% stockout rate and the planning lead complained fill rate was stuck around 91%. Task: I owned getting stockouts under 4% without blowing up holding cost. Action: I rebuilt the safety-stock formula to use a 95% service level, estimated demand variability from the trailing 13-week standard deviation, and pulled lead-time variability from supplier receipt logs — the lead time itself swung between 5 and 12 days, which was the bigger driver than demand noise. I set reorder points per SKU instead of one blanket buffer. Result: over the next quarter stockouts dropped to 3.5%, fill rate went to 97%, and holding inventory rose about 6%, roughly $120K, which the planning lead signed off on as a fair trade.",
+  "session_state": {
+    "drilled_topics": ["forecast-scope", "stockout-category", "stockout-baseline", "safety-stock-change", "service-level-rationale", "post-change-metrics", "holding-cost-impact", "forecast-model", "intermittent-demand", "forecast-accuracy", "safety-stock-end-to-end"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the lead time itself swung between 5 and 12 days",
+      "must-be-question-type: metric-pin",
+      "expected-yield: how the candidate actually modeled the 5-to-12-day lead-time variability inside the safety-stock formula — whether he used a lead-time-demand convolution or a naive sigma, the distributional assumption, and whether the $120K/6% holding figure is consistent with a 95% service level under that variance"
+    ]
+  }
+}

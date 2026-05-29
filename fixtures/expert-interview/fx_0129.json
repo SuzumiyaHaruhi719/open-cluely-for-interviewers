@@ -1,0 +1,44 @@
+{
+  "id": "fx_0129",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Software Engineer — Health Tech / Clinical Data Platforms\n\nKeywords\nHL7, FHIR, EHR integration, HIPAA, PHI, de-identification, interoperability, HL7v2, CCDA, SMART on FHIR, OAuth2, Epic, Cerner, clinical decision support, terminology services, SNOMED CT, LOINC, ICD-10, data pipelines, Kafka, Spark, HL7 ingestion, audit logging, RBAC, ABAC, Kubernetes, Terraform, AWS, GCP, observability, SLOs, on-call, incident response, data quality, master patient index, EMPI, consent management.\n\nExperience\nStaff Software Engineer, ClariHealth (2020-present)\n- Technical owner of the clinical data ingestion platform processing HL7/FHIR feeds from hospital partners\n- Led HIPAA-compliant de-identification and consent enforcement design\n- Drove reliability of PHI pipelines under strict audit requirements\n\nSenior Software Engineer, MedConnect (2016-2020)\n- Built FHIR integration adapters for EHR systems\n\nEducation\nBSc Computer Science\n\nSkills\nJava, Scala, Go, Python, distributed systems, healthcare interoperability, security engineering",
+  "jd": "We are hiring a Staff Software Engineer to own the reliability and compliance of our clinical data ingestion platform, which processes HL7v2 and FHIR feeds containing PHI from hospital partners. You will be the technical owner of de-identification correctness, consent enforcement, and audit integrity under HIPAA. We evaluate staff candidates on the specific engineering decisions they personally made, the failure mechanisms they diagnosed, and the tradeoffs they accepted (e.g., latency versus de-identification thoroughness). Be ready to walk one PHI-handling incident or design decision end to end and stay on the specific question asked. Strong distributed-systems and healthcare-interoperability background required.",
+  "history": [
+    { "q": "Describe your current ownership on the ingestion platform — what's yours specifically." },
+    { "q": "You list de-identification as a focus. Walk me through one de-identification failure you personally diagnosed." },
+    { "q": "What was leaking, and how did you detect that PHI was getting through?" },
+    { "q": "What was the root cause in the pipeline?" },
+    { "q": "What was the fix, and did it add latency?" },
+    { "q": "How did you verify the fix actually closed the leak across all feed types?" },
+    { "q": "Give me the specific mechanism: which field type slipped through de-identification, why your rules missed it, and exactly what you changed in the pipeline to catch it — step by step." }
+  ],
+  "candidate_last_answer": "So the de-id mechanism — you know, this is actually a great segue into something I've been thinking a lot about, which is how broken healthcare data standards are in general. Like, HL7v2 is from the 80s and we're still parsing pipe-delimited segments in 2026, it's insane. I gave a talk at a meetup about why FHIR adoption is still so slow, and honestly the politics between Epic and Cerner is the real story nobody talks about. I could go on for an hour about vendor lock-in in this industry. And the EHR usability crisis — physicians spend half their day clicking through terrible UIs. That's the stuff that actually matters for patient outcomes, way more than any one pipeline detail.",
+  "session_state": {
+    "drilled_topics": ["ingestion-ownership", "deid-failure-diagnosis", "phi-leak-detection", "leak-root-cause", "fix-and-latency", "fix-verification", "deid-field-mechanism"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "debugging-rigor", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the de-id mechanism",
+      "must-be-question-type: teach-back",
+      "expected-yield: the exact field type that slipped through de-identification, why the existing rules missed it (e.g., free-text note vs structured field, an HL7 segment the rules didn't cover), and the precise pipeline change he made to catch it — pulling him off the industry-rant tangent back to the mechanism"
+    ]
+  }
+}

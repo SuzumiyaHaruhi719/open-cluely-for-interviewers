@@ -1,0 +1,48 @@
+{
+  "id": "fx_0086",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "林小满 — 运营实习生候选人\n\n教育\n某985高校 工商管理本科大三在读,GPA 3.7/4.0。\n\n实习\n趣链科技(2024暑期)运营实习生,支持用户增长团队,负责活动数据整理与daily report。\n- 协助搭建了一个活动效果的tracking dashboard(用Excel + 简单SQL拉数)。\n- 跟进一次拉新campaign的执行,做excel复盘。\n\n校园经历\n- 学生会活动部干事,组织过校园市集,负责招商与现场协调。\n\n技能:Excel、基础SQL、PPT、数据整理、活动执行。\n求职意向:运营实习生。",
+  "jd": "We're hiring an Operations Intern to support our growth-operations team. You'll help run campaign execution, pull and clean activity data, maintain a tracking dashboard, and write daily reports under a senior operations associate. 我们更看重你能把一件具体做过的事讲清楚:problem 是什么、你 personally 做了哪几步、结果怎么样,而不是泛泛的描述。You'll work with Excel and basic SQL; exposure to a BI tool is a plus. This is a learning-oriented role with close mentorship and a path to a return offer. 适合做事细致、沟通清楚、对数据有 sense 的同学。",
+  "history": [
+    { "q": "先简单自我介绍一下:你在趣链主要支持哪个团队、做什么?" },
+    { "q": "你简历里说搭了一个 tracking dashboard,这个 dashboard 是用来看什么指标的?" },
+    { "q": "这个 dashboard 之前没有吗?是你从0搭的,还是在已有基础上改的?" },
+    { "q": "你用 SQL 拉数,具体拉的是哪些表?join 过几张表吗?" },
+    { "q": "讲讲那次拉新 campaign,你具体负责执行里的哪一块?" },
+    { "q": "这个 campaign 的目标是什么?有没有一个明确的 KPI?" },
+    { "q": "你做的 excel 复盘里,最后这个 campaign 的拉新效果怎么样?有数字吗?" },
+    { "q": "你刚说效果『还可以』,能给个具体数字吗?比如拉新多少、转化率多少?" },
+    { "q": "那当时的 baseline 是多少?和这次比有提升吗?" },
+    { "q": "校园市集那个招商,你拉到了几家商家?有没有目标数?" },
+    { "q": "回到 campaign:我理解你做了数据整理和复盘。那这次 campaign 到底有没有达成它的目标?" },
+    { "q": "你别急,慢慢想。就把这一件事补完整:problem、你做的 action 我都听到了,我现在只想要那个 result——这次 campaign 最后的拉新数和目标对比,到底是多少?" }
+  ],
+  "candidate_last_answer": "嗯……(停顿了一下,翻了下手机里的记录)……不好意思我想确认一下数字,怕记错。Situation 是当时那次拉新的注册转化偏低,Task 是 mentor 让我跟进执行加复盘,Action 我做了渠道数据的整理和一版 excel 复盘,把各渠道的 CPA 拉出来对比……(又停顿)result 这块说实话我手头没有准确数字,当时的报表在公司内网,我自己没存。我只记得我们那个渠道的拉新比上一期『有提升』,但具体提升了多少、有没有达成 KPI 目标,我现在真没法给你一个确切的数,这个是我答不上来的。",
+  "session_state": {
+    "drilled_topics": ["self-intro-scope", "dashboard-metric", "dashboard-from-scratch", "sql-tables-join", "campaign-execution-scope", "campaign-kpi", "campaign-result-number", "result-specific-number", "baseline-comparison", "merchant-recruitment-count", "campaign-goal-attainment", "result-pin"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我只记得我们那个渠道的拉新比上一期『有提升』,但具体提升了多少",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forces the candidate to either produce the concrete result the STAR story is missing — the channel's actual new-user number, the CPA, and whether the KPI target was met — or to honestly bound it (order of magnitude, direction, why the exact figure is unavailable) rather than leaving the result blank"
+    ]
+  }
+}

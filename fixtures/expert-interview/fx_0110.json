@@ -1,0 +1,42 @@
+{
+  "id": "fx_0110",
+  "tags": {
+    "industry": "education",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "教育事业部副总裁 | 在线教育增长操盘手\n\n个人简介：\n14 年在线教育行业经验，操盘过多个从 0 到亿级营收的业务，被业内称为增长奇才。带过的团队无不脱胎换骨，所推的策略屡试不爽。\n\n智学未来 — 教育事业部 VP（2019 至今）\n- 全面负责 K12 学科辅导业务的增长与运营\n- 一手把业务做成行业头部，增长曲线令同行望尘莫及\n- 打造了一套被反复复制的增长方法论\n\n卓越在线 — 增长负责人（2015-2019）\n- 负责用户增长与转化\n\n技能：增长战略、用户运营、投放、组织管理、商业化。\n\n自评：战略眼光顶级，执行力无人能及。",
+  "jd": "明德在线教育招聘教育事业部副总裁，负责素质教育新业务线的规模化增长与商业化。该岗位向 CEO 汇报，管理增长、运营与商业化团队，对营收、获客成本（CAC）与续费率负责。我们需要候选人有真实操盘过教育业务规模化的经验，能讲清增长背后的具体打法、单位经济模型与可核实的数据，并能在合规红线（如未成年人信息保护、广告宣传用语、退费规则）内运作。我们尤其看重诚实、可追溯的成果，而非头衔与口号式的自我评价。",
+  "history": [
+    { "q": "先介绍下你在智学未来负责的业务范围和你对哪些核心指标负责。" },
+    { "q": "你说『一手把业务做成行业头部』，能不能讲一个最具体的增长决策？" },
+    { "q": "那这套『被反复复制的增长方法论』，核心是什么，怎么落地的？" },
+    { "q": "增长很猛的同时，获客成本和续费率是怎么变化的？给我数字。" },
+    { "q": "在 K12 这种强监管的赛道，你们的获客和宣传是怎么把握合规边界的？" }
+  ],
+  "candidate_last_answer": "合规这块我们当然是很重视的，大方向上肯定是合规优先。不过说实话增长有时候得灵活一点，行业里大家其实都懂的，宣传话术上稍微夸张一点、家长焦虑营销那一套，只要没人较真一般也没事，转化是真的好。具体怎么把握我也说不太清，反正就是凭经验、看情况，团队会去拿捏那个度。方法论嘛核心就是增长飞轮，把各个环节打通，效果就出来了，挺玄的也挺实在的。",
+  "session_state": {
+    "drilled_topics": ["业务范围与核心指标", "具体增长决策", "增长方法论核心"],
+    "current_competency_target": "integrity-compliance",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "integrity-compliance",
+    "missing_evidence": [
+      { "competency": "integrity-compliance", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": ["candidate-endorses-misleading-advertising", "candidate-normalizes-fear-based-marketing-to-parents-in-regulated-K12"],
+    "top_question_traits": [
+      "must-anchor-on: 宣传话术上稍微夸张一点、家长焦虑营销那一套，只要没人较真一般也没事",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 迫使候选人把『焦虑营销、夸张话术』这一含合规风险的说法落到具体决策链——谁批准这类文案、有没有合规或法务审核、是否触及虚假宣传或未成年人保护红线，暴露其在监管赛道的合规底线与真实把控机制，而非含糊的『凭经验拿捏』"
+    ]
+  }
+}

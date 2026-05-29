@@ -1,0 +1,44 @@
+{
+  "id": "fx_0138",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "运营实习生 — 即时配送平台\n\n简介：本科大三在读，在一家即时配送平台的城市运营组实习，参与商户拓展、骑手调度支持和活动运营的日常工作。\n\n闪达配送（2024 暑期至今）— 城市运营实习生\n- 协助城市经理做商户拜访和上线跟进\n- 帮忙整理骑手排班表，跟进高峰期运力\n- 参与一次拉新活动的执行，做物料和地推跟进\n- 维护运营日报，汇总订单与履约数据\n\n校园经历\n- 学生会外联部，负责赞助商对接\n- 组织过校园市集活动\n\n技能：Excel、地推执行、商户沟通、数据整理\n教育：某大学 工商管理 本科在读",
+  "jd": "闪达配送城市运营组招聘运营实习生，参与商户拓展、运力调度支持与活动运营。我们希望实习生诚实、踏实：能讲清楚自己在某个项目里实际做了什么、改动前后的真实数据、以及这个数字是怎么算出来的。日常工作包括商户拜访跟进、骑手排班协助、活动地推执行和运营日报维护。我们更看重对数据的诚实和对细节的把握，而不是夸大的成绩。表现优秀的实习生有机会转正。",
+  "history": [
+    { "q": "先说说你在闪达实习的这段时间主要做了哪些事。" },
+    { "q": "你参与的那次拉新活动，你具体负责的是哪一块？" },
+    { "q": "活动覆盖了多少个商户或多大的区域？" },
+    { "q": "你说做了地推，地推大概持续了几天，每天接触多少用户？" },
+    { "q": "拉新的效果你是怎么看到的？数据从哪里来？" },
+    { "q": "这个活动一共带来了多少新用户？" },
+    { "q": "你刚说的这个增长数字，是怎么统计出来的？" }
+  ],
+  "candidate_last_answer": "这次活动我一个人就让平台新用户翻了好几倍，整个城市的订单量直接涨了百分之三百，我估计至少带来了几十万新用户，转化率应该有百分之八九十吧。具体数字我没看后台，但我感觉效果特别炸，城市经理都说从来没见过这么猛的增长，基本上是我一个实习生把整个城市的盘子盘活了。",
+  "session_state": {
+    "drilled_topics": ["internship-scope", "campaign-personal-role", "campaign-coverage", "ground-promo-duration", "growth-data-source", "new-user-count", "growth-calculation-method"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体数字我没看后台，但我感觉效果特别炸",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pin the candidate to a verifiable source for the inflated claims — which dashboard, what the actual new-user count was, how a 300% lift was computed — exposing whether any of the numbers are real"
+    ]
+  }
+}

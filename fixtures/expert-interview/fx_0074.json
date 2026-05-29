@@ -1,0 +1,41 @@
+{
+  "id": "fx_0074",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "陈一帆 — 高级增长营销经理\n\n经历\n云图科技(2021至今):高级增长营销经理,负责B2C App的用户增长与付费转化。\n橙果传媒(2018-2021):数字营销主管,负责社交媒体与效果广告投放。\n\n主要工作\n- 操盘多渠道获客,统筹信息流、应用商店与KOL投放。\n- 搭建增长实验流程,推动落地页与转化漏斗的AB测试。\n- 负责月度营销预算分配与ROI复盘。\n\n技能:用户增长、效果广告、AB测试、数据分析、内容营销。\n教育:市场营销本科。",
+  "jd": "我们正在招募一名高级增长营销经理,负责B2C App的全链路增长,直接向市场负责人汇报,统筹获客预算、付费转化与留存提升。你将主导把次日留存从35%提升到45%、把获客成本(CAC)在三个月内降低20%,并牵头一套可复盘的增长实验机制。该岗位要求你能清晰拆解一次具体投放或实验的设计、指标与结论,能就预算在不同渠道间的分配做出权衡,并对结果的因果归因负责。你将面对一个CAC持续走高、渠道效率参差不齐的现状。要求熟练使用GA、增长分析工具与AB测试平台,有从0到1搭建增长实验体系经验者优先。",
+  "history": [
+    { "q": "先聊聊你现在负责的范围:管多少预算、主要跑哪几个获客渠道、对哪个核心指标负责?" },
+    { "q": "挑一次你印象最深的增长实验,讲讲实验假设是什么、怎么设计的。" },
+    { "q": "那次实验的核心指标动了多少?你怎么确认是实验本身带来的变化,而不是其他因素?" },
+    { "q": "我想听一个聚焦的复盘:就那次实验,你当时是怎么判断要不要全量推广的?判断依据是什么?" }
+  ],
+  "candidate_last_answer": "这个实验其实挺有意思的,说到这个我就想起来当时整个团队的氛围特别好,我们那阵子刚搬了新办公室,茶水间还添了台咖啡机。对了,提到咖啡,我后来还研究了一段时间手冲,周末经常去逛咖啡器具市集,认识了不少同好。回到投放上哈——其实我一直觉得现在年轻人的消费习惯变化特别快,你看短视频平台这几年起起落落,前两年还流行那种很重的剧情广告,现在又开始卷达人种草了,行业真的是日新月异。要不我再跟你聊聊我对元宇宙营销的一些看法?我觉得那块未来想象空间巨大。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "experiment-hypothesis", "experiment-attribution", "rollout-decision-criteria"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "focus-discipline", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 回到投放上哈——其实我一直觉得现在年轻人的消费习惯变化特别快",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: cuts off the tangent and forces the candidate to walk the actual go/no-go decision for that one experiment — the threshold metric they set, the observed result against it, and the explicit reasoning that led them to roll out or kill it"
+    ]
+  }
+}

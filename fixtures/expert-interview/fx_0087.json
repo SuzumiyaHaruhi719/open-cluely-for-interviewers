@@ -1,0 +1,49 @@
+{
+  "id": "fx_0087",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Senior Enterprise Account Executive — 9 years in B2B SaaS sales.\n\nGladwell Analytics (2020-present): Senior AE, mid-market and enterprise. Sold data-observability platform into retail and logistics accounts. President's Club 2022.\n\nVerdex Systems (2017-2020): Account Executive, SMB then mid-market. Sold workflow automation tooling.\n\nSkills: MEDDICC, Salesforce, Outreach, multi-threaded enterprise deals, mutual action plans, procurement negotiation.\n\nEducation: BA Economics, state university.",
+  "jd": "Our revenue team is hiring a Senior Enterprise Account Executive to own a named-account list of 25 logos in the financial-services vertical, carrying a $1.8M annual quota with an average deal size of $140K and a 9-month sales cycle. You will run full-cycle motions: sourcing 30% of your own pipeline, multi-threading across economic buyer, champion, and procurement, and forecasting weekly in Clari. We expect rigorous MEDDICC qualification, clean CRM hygiene, and the ability to walk a deal-review committee through risk, next steps, and close-plan confidence. The role partners with sales engineering and deal desk on non-standard pricing. Prior experience displacing an entrenched incumbent and navigating security-review and legal redlines in regulated buyers is strongly preferred.",
+  "history": [
+    { "q": "Tell me about your current patch at Gladwell — segment, quota, and how you're tracking this year." },
+    { "q": "Walk me through your largest closed-won deal in the last 18 months end to end." },
+    { "q": "Who was the economic buyer on that deal, and how did you get access to them?" },
+    { "q": "What was the compelling event that made them buy in that quarter rather than the next?" },
+    { "q": "You list MEDDICC. On that deal, what was your 'I' — the identified pain — in the customer's own words?" },
+    { "q": "How much of your pipeline do you source yourself versus get from marketing or SDRs?" },
+    { "q": "Tell me about a deal you lost to an incumbent. What actually happened?" },
+    { "q": "Walk me through how you handle a procurement-led price negotiation on a non-standard discount." },
+    { "q": "Describe a time a deal slipped a quarter. What did your forecast say versus what happened?" },
+    { "q": "How do you decide which accounts in your list to deprioritize?" },
+    { "q": "Give me a concrete example of one deal where your discovery changed the deal's outcome — what specifically did you uncover, and what did you do next?" }
+  ],
+  "candidate_last_answer": "Honestly, this is where I really differentiate. My discovery philosophy is all about leading with value and earning the right to ask the hard questions. I run a consultative, customer-centric playbook — I peel the onion, I get to the why behind the why, and I co-create a vision of the future state with the buyer. It's about being a trusted advisor, not a vendor. So on that deal, discovery unlocked the whole thing because I showed up as a strategic partner and we built genuine alignment around business outcomes.",
+  "session_state": {
+    "drilled_topics": ["current-patch", "largest-deal", "economic-buyer-access", "compelling-event", "meddicc-pain", "self-sourced-pipeline", "competitive-loss", "procurement-negotiation", "forecast-slippage", "account-deprioritization"],
+    "current_competency_target": "discovery-rigor",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "discovery-rigor",
+    "missing_evidence": [
+      { "competency": "discovery-rigor", "evidence_type": "mechanism" },
+      { "competency": "discovery-rigor", "evidence_type": "named-entity" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: discovery unlocked the whole thing because I showed up as a strategic partner",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the specific questions the candidate asked in that discovery call, the concrete pain or quantified cost the buyer named, and the exact next action that moved the deal forward"
+    ]
+  }
+}

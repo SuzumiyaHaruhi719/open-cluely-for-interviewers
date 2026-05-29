@@ -1,0 +1,54 @@
+{
+  "id": "fx_0100",
+  "tags": {
+    "industry": "education",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "self-contradictory",
+    "edge_case": "reverses-question"
+  },
+  "resume": "VP of Learning & Outcomes | 15 years scaling edtech and academic programs\n\nSummary:\nBuilt and led learning organizations across K-12 and higher-ed SaaS. Drove measurable improvements in learner outcomes and retention at national scale.\n\nBrightPath Learning — VP, Learning & Outcomes (2019-present)\n- Own the academic efficacy function and the outcomes data team (reported as 40 people in one section, 22 in another)\n- Lifted course completion from 54% to 'over 90%' across the platform\n- Launched an adaptive-learning engine credited with a '3x improvement in mastery'\n- Cut time-to-competency 'roughly in half' for the flagship certification track\n\nScholarBridge — Director of Curriculum (2014-2019)\n- Led a curriculum team (listed as 30, elsewhere as 12)\n- Redesigned the assessment framework used across 200 districts\n\nEarlier: Classroom teacher, then instructional designer.\n\nNote: completion-rate baseline appears as both 54% and 61% in different sections; team headcounts conflict between summary and role bullets.",
+  "jd": "Meridian Education is hiring a VP of Learning & Outcomes to own academic efficacy across our higher-ed platform serving 1.4M active learners. Reporting to the Chief Academic Officer, you will lead a 45-person organization spanning learning science, assessment, and outcomes analytics. You will be accountable for board-reported metrics: verified course-completion rate (currently 58%, target 72% in 18 months), learner-reported satisfaction, and a defensible efficacy methodology that survives external academic peer review. We are under regulatory scrutiny on outcomes claims, so every published number must be traceable to a cohort definition and a measurement window. You will inherit a contested efficacy study and a pending accreditation review. Comfort presenting to the board's education-quality committee is required.",
+  "history": [
+    { "q": "Start with your current role at BrightPath — what function do you own and how big is the team?" },
+    { "q": "Your resume lists the outcomes team as 40 in one place and 22 in another. Which is it?" },
+    { "q": "You say completion went from 54% to 'over 90%.' What's the exact current number and the cohort it covers?" },
+    { "q": "Elsewhere the baseline reads 61%, not 54%. Why the discrepancy?" },
+    { "q": "Walk me through how completion rate is defined at BrightPath — what counts as a completion?" },
+    { "q": "The adaptive engine 'credited with 3x improvement in mastery' — how was mastery measured before and after?" },
+    { "q": "Was that a controlled comparison, or pre/post on the same population?" },
+    { "q": "Who outside your team validated the efficacy methodology?" },
+    { "q": "'Time-to-competency cut roughly in half' — from what to what, over which track?" },
+    { "q": "Let's talk about a claim that didn't hold up. Tell me about an outcomes number you had to walk back." },
+    { "q": "How did you handle the contested efficacy study you mentioned earlier?" },
+    { "q": "When the board's quality committee pushed on a number, what did they ask for?" },
+    { "q": "Give me one metric where you can name the cohort, the window, and the source system right now." },
+    { "q": "What was your personal role in defining that measurement, versus the analytics team's?" },
+    { "q": "If an external reviewer audited your headline completion number tomorrow, what would they find?" },
+    { "q": "I want one number, fully specified — the current completion rate, its cohort, and its measurement window. Can you give me that?" }
+  ],
+  "candidate_last_answer": "You know, before I answer that — let me ask you something. How does Meridian currently define a completion? Because honestly, I think the question itself is where most organizations go wrong. At BrightPath our numbers are frankly best-in-class, completion is north of 90%, mastery tripled, time-to-competency basically halved — these are category-leading results that speak for themselves. So I'd flip it back to you: what bar are you actually holding the next VP to?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "team-size-contradiction", "completion-claim", "baseline-discrepancy", "completion-definition", "mastery-3x-method", "controlled-vs-prepost", "external-validation", "time-to-competency", "walked-back-number", "contested-study", "board-committee-ask", "fully-specified-metric", "personal-vs-team-role"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "integrity-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: completion is north of 90%, mastery tripled, time-to-competency basically halved",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forces the candidate off the counter-question and onto a single fully-specified completion figure — exact percentage, the cohort/denominator definition, and the measurement window from a named source system — exposing whether the 'north of 90%' claim has a defensible, auditable basis"
+    ]
+  }
+}

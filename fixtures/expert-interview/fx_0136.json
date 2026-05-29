@@ -1,0 +1,44 @@
+{
+  "id": "fx_0136",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "医疗运营总监 — 连锁门诊管理\n\n简介：医疗健康行业运营管理者，负责连锁门诊的运营标准化、患者体验与质量安全体系。带领跨区域运营团队，推动门诊网络的精细化运营。\n\n康宁医疗集团（2021 至今）— 运营总监\n- 负责多家直营门诊的整体运营，统筹排班、患者动线与质控\n- 主导门诊运营标准化体系建设，推动 SOP 落地\n- 牵头患者满意度提升项目，优化就诊全流程体验\n- 与临床、财务、市场多部门协同，推进运营数字化\n\n安和门诊（2017 至 2021）— 运营经理\n- 负责单店运营，统筹前台、护理与医技排班\n- 参与新店筹备与开业运营\n\n技能：门诊运营管理、SOP 体系建设、质控与患者安全、跨部门协同、医疗数字化\n教育：公共卫生 硕士",
+  "jd": "康宁医疗集团招聘运营总监，负责连锁门诊网络的运营效率与患者体验。我们需要一位能把『成果』讲到颗粒度的领导者：针对某一个你主导的项目，能精确说出改进前的基线指标、你具体做了什么干预、由谁负责各个环节、时间线、以及经过验证的业务结果。日常职责包括运营标准化、排班与产能优化、患者满意度提升、质控与安全管理，并向集团运营 VP 汇报。我们重视用数据说话、对结果负责、能区分『包装话术』与『真实抓手』的候选人。",
+  "history": [
+    { "q": "先介绍一下你在康宁负责的运营范围和门诊数量。" },
+    { "q": "你提到主导了运营标准化体系，当初是什么问题促使要做这件事？" },
+    { "q": "标准化之前，各门诊的运营差异主要体现在哪里？" },
+    { "q": "你说的 SOP 体系，具体覆盖了哪些环节？" },
+    { "q": "患者满意度提升项目，你当时的基线满意度是多少？" },
+    { "q": "在这个满意度项目里，你个人具体做了哪几件事？" },
+    { "q": "我想听一个非常具体的成果：标准化或满意度项目，改进前后到底变了多少，怎么衡量的？" }
+  ],
+  "candidate_last_answer": "这是一个端到端的全链路运营赋能工程，我们以患者为中心，打通了人货场的全场景闭环，通过顶层设计加敏捷迭代的双轮驱动，实现了运营效率与患者体验的双提升。我们沉淀了一套可复制、可规模化的方法论，赋能各门诊形成合力，最终达成了降本增效与体验升级的双赢局面，整体满意度和运营指标都有了非常显著的跃升，真正做到了让数据驱动决策、让标准创造价值。",
+  "session_state": {
+    "drilled_topics": ["operations-scope", "standardization-trigger", "pre-standardization-variance", "sop-coverage", "satisfaction-baseline", "personal-contribution-satisfaction", "concrete-before-after-result"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 整体满意度和运营指标都有了非常显著的跃升",
+      "must-be-question-type: metric-pin",
+      "expected-yield: strip away the buzzword packaging and force a single concrete number — the satisfaction score before and after, with the measurement instrument and time window — proving numbers-fluency behind the slogans"
+    ]
+  }
+}

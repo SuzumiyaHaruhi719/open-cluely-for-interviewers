@@ -1,0 +1,53 @@
+{
+  "id": "fx_0131",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Customer Support Team Lead — SaaS Billing & Payments\n\nProfile: 6 年 customer support 经验, 目前带一个 12 人的 Tier-2 escalation team, 负责 billing disputes 和 chargeback 相关的 support tickets. 熟悉 Zendesk, Intercom, Stripe dashboard.\n\nNimbusPay (2022-present) — Support Team Lead\n- 负责 Tier-2 escalation queue, 处理复杂的 refund 和 reconciliation 问题\n- 推动了一个 macro library 重构项目, 让 agent response 更一致\n- 参与 onboarding 流程的改版, 跟 product team 一起做\n- 每周跑 QA calibration session, review agent 的 ticket handling\n\nBrightDesk (2019-2022) — Senior Support Agent\n- 处理 inbound chat 和 email, 主要是 SMB 客户的 account 问题\n- 帮忙 train 新来的 agent, 做 buddy program\n- 参与一个 knowledge base 清理的 initiative\n\nSkills: Zendesk, Intercom, Stripe, SQL (basic), escalation management, QA calibration\nLanguages: 中文 (native), English (fluent)"
+,
+  "jd": "NimbusPay is hiring a Support Operations Manager to own the escalation and quality function for our payments-support org (40 agents across two sites). You will be accountable for first-contact-resolution on billing disputes, the QA calibration program, and the macro/knowledge-base content that agents rely on. We need someone who can show, with their own hands, how they drove a measurable change — not just participated in one. Concretely: you should be able to walk us through a project you personally led end to end, the metric baseline, what you changed week by week, and the resulting delta. You will partner with Product and Payments-Engineering on root-cause fixes, run weekly calibration, and coach Tier-2 leads. Experience with Stripe dispute flows and Zendesk Explore reporting is strongly preferred.",
+  "history": [
+    { "q": "Tell me about your current role at NimbusPay and the size of the team you lead." },
+    { "q": "What does the Tier-2 escalation queue handle that Tier-1 can't?" },
+    { "q": "You listed a macro library refactor. What problem prompted it?" },
+    { "q": "How did agents handle billing disputes before the refactor?" },
+    { "q": "Walk me through how the new macro library was structured." },
+    { "q": "Who decided which macros to deprecate?" },
+    { "q": "How did you measure whether the refactor improved consistency?" },
+    { "q": "What was the QA score before and after?" },
+    { "q": "Tell me about the onboarding redesign you mentioned." },
+    { "q": "What was your specific contribution to that redesign?" },
+    { "q": "Let's go deeper on the macro refactor — that sounds like the most impactful thing. Who scoped it originally?" },
+    { "q": "When you say the project shipped, what part did you personally own versus the rest of the team?" },
+    { "q": "Did you write the new macros yourself, or review them, or something else?" },
+    { "q": "Give me one concrete decision in that project that was yours alone to make." },
+    { "q": "So on the macro refactor specifically — what was the single thing you did that nobody else could have done?" }
+  ],
+  "candidate_last_answer": "嗯, 这个 project 真的是 team effort, 我们一起 brainstorm 了 macro 的 categories, 然后 we aligned on the taxonomy together. We decided as a group which ones to keep, 大家一起 review 了 draft, and we shipped it together. 整个 team 都很 proud of the outcome, 我觉得这是 our collective win, 很难说哪一部分是我一个人 own 的, 因为 we really操作 as one unit.",
+  "session_state": {
+    "drilled_topics": ["current-role", "tier2-scope", "macro-refactor-trigger", "pre-refactor-state", "macro-structure", "deprecation-decision", "consistency-measurement", "qa-score-delta", "onboarding-redesign", "personal-contribution-onboarding", "macro-scoping-owner", "personal-vs-team-ownership", "macro-authoring-role", "sole-decision"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难说哪一部分是我一个人 own 的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to name one task in the macro refactor they personally executed (e.g. wrote the taxonomy doc, made the final deprecation call, authored specific macros) rather than attributing everything to the team"
+    ]
+  }
+}

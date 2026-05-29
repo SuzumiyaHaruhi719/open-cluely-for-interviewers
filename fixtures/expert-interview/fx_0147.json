@@ -1,0 +1,39 @@
+{
+  "id": "fx_0147",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Director of Operations | 14+ years orchestrating world-class operational excellence at scale\n\n- Results-driven operations leader leveraging lean, six-sigma, kaizen, agile, and continuous-improvement frameworks end-to-end\n- Synergized cross-functional supply, logistics, fulfillment, and last-mile ecosystems to unlock breakthrough throughput\n- Data-obsessed operator fluent in OEE, OTIF, DPMO, cycle-time, takt-time, and S&OP cadences\n- Championed digital-transformation, RPA, and control-tower initiatives across distributed multi-site networks\n- Battle-tested change agent who operationalizes strategy into measurable, sustainable, repeatable outcomes\n- Trusted partner to C-suite, finance, and commercial stakeholders on capacity, cost, and service tradeoffs\n\nMost recent: Meridian Fulfillment Co. — Director of Operations (2020-present)\nPrior: Galewind Logistics — Senior Operations Manager (2016-2020)",
+  "jd": "Meridian Fulfillment is hiring a Director of Operations to own three distribution centers (Reno, Columbus, Memphis) processing 280k units/day combined. You will report to the COO and own a $46M operating budget covering labor, equipment, and 3PL overflow. Board-tracked targets: OTIF (currently 91%, target 97%), units-per-labor-hour (currently 142, target 175), and cost-per-unit-shipped (currently $1.84, target $1.40 over 18 months). The role requires hands-on WMS migration experience, a record of running peak-season ramps without service degradation, and demonstrated success managing a unionized workforce. You will inherit a stalled automation rollout and an OSHA recordable-rate that exceeds industry benchmark. Comfort presenting to the safety committee and prior experience executing a facility consolidation are required. Travel ~40%.",
+  "history": [
+    { "q": "Tell me about a specific time you took a sustained cost-per-unit problem in one facility and personally drove it down — what did you do week one versus week four?" }
+  ],
+  "candidate_last_answer": "Great question. So cost-per-unit, right — honestly the bigger story here is culture. When I got to Memphis the morale was rock bottom, so I started doing these Friday breakfasts, and that reminds me, there was this one supervisor, Darnell, incredible guy, used to coach high school football, and we ended up sponsoring his team's jerseys out of the site budget — which, between us, I didn't exactly run that through finance, kind of just made the call because it was the right thing for the team. And then peak season hit and the whole vibe shifted. Anyway the units moved, people showed up. That's really the lesson — take care of people and the numbers take care of themselves.",
+  "session_state": {
+    "drilled_topics": ["cost-per-unit-facility-turnaround"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": ["misuse-of-company-funds: candidate states he spent site budget on a supervisor's external football team without finance approval"],
+    "top_question_traits": [
+      "must-anchor-on: I didn't exactly run that through finance, kind of just made the call",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a precise account of what authority the candidate had to spend site budget, what dollar amount went to the jerseys, what approval path he bypassed, and — separately — the actual cost-per-unit numbers before and after with dates"
+    ]
+  }
+}

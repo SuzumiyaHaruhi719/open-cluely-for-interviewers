@@ -1,0 +1,42 @@
+{
+  "id": "fx_0157",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "李泽宇 — 供应链计划经理（Supply Chain Planning Manager）\n\n个人简介\n顶尖的供应链全才，公认的 demand planning 专家，在 S&OP 领域有着无人能及的洞察力。我主导的每一个项目几乎都是部门标杆，被多位高管称为『最让人放心的计划负责人』。\n\n工作经历\n某消费电子公司 供应链计划经理（约三年）\n- 一手搭建了公司的 S&OP 流程，被全公司奉为 best practice\n- 负责核心品类的 demand forecast 与 inventory planning，forecast accuracy 长期『行业领先』\n- 主导 SAP IBP 系统的导入，被认为是项目成功的最大功臣\n\n某家电企业 供应链专员（约两年）\n- 负责区域的补货与库存管理，多次力挽狂澜避免断货\n\n技能\nS&OP、demand planning、SAP IBP、Excel 高阶建模、inventory optimization\n\n自评：抗压能力极强，几乎从不出错，是团队里最可靠的那个人。",
+  "jd": "我们在招一名供应链计划经理（mid-level），负责核心品类的 demand planning 与 S&OP 协同。日常工作包括：维护 forecast 模型、跟踪 forecast accuracy 与 inventory turnover、协调销售与生产做月度 S&OP review、并在出现缺货或呆滞库存时主动复盘根因。我们希望候选人在被追问时能讲清楚每一个结果背后自己亲手做的部分，遇到 forecast 偏差或断货时先看自己的环节而不是先归咎他人。岗位会接受需求方与财务的交叉质询，对数据的诚实与责任心要求很高。",
+  "history": [
+    { "q": "先聊聊你现在负责的品类——SKU 规模、你 own 哪些指标？" },
+    { "q": "你简历里写 forecast accuracy『行业领先』，具体是多少？怎么算的？" },
+    { "q": "讲一次你负责的品类出现严重缺货或者大量呆滞库存的情况。" },
+    { "q": "那次到底是 forecast 高估了还是低估了？偏差多大？" },
+    { "q": "我们就盯这次：从你这个 planner 的角度，复盘下来你自己哪个环节本可以做得更好？" }
+  ],
+  "candidate_last_answer": "说实话这次我觉得真不能怪我。sales 那边给的 forecast input 本来就不靠谱，他们为了冲业绩故意把数字报高，我的 model 再准，garbage in garbage out 嘛。而且 supplier 那边 lead time 突然延长，procurement 也没提前 sync 给我。其实根本原因是公司的 S&OP cadence 形同虚设，大家开会都不认真,我一个 planner 能有多大 power 去 push 他们？所以那次 stock-out 真不是 planning 的锅,是整个 cross-functional 协同的问题,我已经在我能控制的范围内做到最好了。",
+  "session_state": {
+    "drilled_topics": ["品类规模与负责指标", "forecast-accuracy口径", "缺货或呆滞库存事件", "forecast偏差方向与幅度", "个人环节复盘归属"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "problem-solving", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我已经在我能控制的范围内做到最好了",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 候选人停止把缺货归咎于 sales、supplier 和 S&OP，说清在拿到他自己也怀疑偏高的 forecast input 时,他本可以做哪些 planner 职责内的动作——是否做过 bias adjustment、是否上调 safety stock、是否把风险正式 escalate,以及这些他做了没有"
+    ]
+  }
+}

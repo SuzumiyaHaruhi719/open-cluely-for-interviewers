@@ -1,0 +1,39 @@
+{
+  "id": "fx_0116",
+  "tags": {
+    "industry": "research",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Research Intern (在读硕士二年级) — Computer Vision & Multimodal Learning\n\n个人亮点 / Highlights\n- 顶级会议作者：作为co-author参与了一篇投往 CVPR 的工作，研究方向是 vision-language pre-training，单这一篇就把我们组在该子领域的 SOTA 往前推进了一大步\n- World-class 的工程能力：精通 PyTorch、DeepSpeed、HuggingFace 全家桶，几乎 day-one 就能上手任何 large-scale 训练 pipeline\n- 超强 research taste：能够independently 发现别人忽视的 research gap，提出的 idea 多次被 lab 同学称为『最有潜力』的方向\n- 全栈式贡献：从 data cleaning、distributed training 到 paper writing、rebuttal 全流程 end-to-end 都能 cover\n- 极强的 ownership：实验室里最 reliable 的人，几乎所有重要的 ablation 都是我在背后默默扛下来的\n\n项目 / Projects\n- Multimodal Retrieval：基于 contrastive learning 的图文检索模型，在内部 benchmark 上 top-1 recall 据说是历史最好\n- Efficient Fine-tuning：探索 LoRA / adapter 在 vision backbone 上的应用\n\n技能 / Skills\nPython、PyTorch、CUDA(基础)、Linux、Git、LaTeX、distributed training、prompt engineering",
+  "jd": "我们的工业研究院招收计算机视觉方向的研究实习生，主要参与 vision-language 表征学习与多模态检索相关课题。实习生将在资深研究员指导下承担具体子任务，包括数据集构建、训练与评估 pipeline 搭建、消融实验设计与结果分析，并有机会作为合作者参与论文工作。我们看重候选人对自己『实际亲手做了哪一部分』的清晰界定、对实验设计取舍（如为何这样设置 baseline 与 ablation）的解释能力，以及对结果数字（指标、提升幅度、训练成本）的诚实掌握。请准备好讲清楚你在团队工作中独立负责的部分，而不是笼统地用『我们』来描述整组的成果。",
+  "history": [
+    { "q": "Let's talk about the CVPR submission on your resume. 这篇工作里你个人具体负责的是哪一块？" },
+    { "q": "你刚提到 ablation，那我们具体看一个：在 contrastive retrieval 那个模型上，你设计并跑的 ablation 是怎么对比的？得到了什么数字？" }
+  ],
+  "candidate_last_answer": "嗯…那个 retrieval 的 ablation 主要是我们组一起讨论出来的，我跟着 senior 一起把几组 setting 都跑了一遍。具体的 recall 数字我记得是我们整体提升了挺多的，反正最后那张 table 是大家一起 polish 出来的。training 的部分 mentor 帮我们搭好了 pipeline，所以 ablation 这块算是 team 的 collective effort 吧，我主要是 follow 着大家的节奏在做。",
+  "session_state": {
+    "drilled_topics": ["cvpr-personal-contribution", "retrieval-ablation-design"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我跟着 senior 一起把几组 setting 都跑了一遍",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人独立做出的 ablation 决策与动作——具体是哪几组 setting、为什么这样选、哪一组配置是他自己提出并实现的，以及对应的 top-1 recall 前后数值"
+    ]
+  }
+}

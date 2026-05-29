@@ -1,0 +1,40 @@
+{
+  "id": "fx_0137",
+  "tags": {
+    "industry": "customer-support",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Staff Support Engineer — Developer Platform\n\nSummary: Staff-level support engineer embedded in a developer-tools company, owning the hardest escalations, the on-call rotation design, and the feedback loop between support and engineering. Acts as the technical bridge for API and SDK customers.\n\nForgeAPI (2021-present) — Staff Support Engineer\n- Own deep technical escalations for the API platform and SDK integrations\n- Designed the support on-call rotation and the escalation-severity rubric\n- Drove a deflection initiative around a self-serve diagnostics tool\n- Run the recurring support-to-engineering bug triage and feed product the top pain themes\n\nStreamline Tools (2018-2021) — Senior Support Engineer\n- Handled enterprise integration support for webhook and streaming customers\n- Built internal runbooks for common failure modes\n\nSkills: REST/Webhooks debugging, log analysis, SQL, Python scripting, on-call design, runbook authoring\nEducation: BS, Computer Science",
+  "jd": "ForgeAPI is hiring a Staff Support Engineer to own the most complex platform escalations and the support-to-engineering feedback loop. We want someone who can take a single project they led — for example a contact-deflection or diagnostics tool — and explain it with discipline: the trigger, what they built, the deflection baseline and result, and the timeline, without wandering into adjacent topics. You will design escalation rubrics, run bug triage with engineering, and mentor senior support engineers. Deep API/webhook debugging skill is required, along with the ability to script tooling. We value engineers who stay on the question and quantify their impact.",
+  "history": [
+    { "q": "Give me a quick overview of your scope as a Staff Support Engineer at ForgeAPI." },
+    { "q": "You listed a deflection initiative around a self-serve diagnostics tool. What problem was it solving?" },
+    { "q": "Walk me through that diagnostics-tool project specifically — what you built and what the deflection result was." }
+  ],
+  "candidate_last_answer": "Right, so the diagnostics tool — it let customers self-check their webhook signature failures before opening a ticket. But honestly, talking about webhooks, it reminds me of this whole rabbit hole I went down on retry semantics, because our retry backoff was using jitter wrong and I spent like two weekends reading the AWS architecture blog about exponential backoff, and that got me into a side thing about how our SDK handles clock skew, which is actually a fascinating problem because NTP drift on customer servers causes signature expiry, and I ended up writing this long internal doc about timekeeping in distributed systems, and oh — that also connects to a Kafka issue we had at my old job at Streamline. Anyway, the diagnostics tool was definitely a good project.",
+  "session_state": {
+    "drilled_topics": ["staff-scope", "diagnostics-tool-problem", "diagnostics-tool-walkthrough"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Anyway, the diagnostics tool was definitely a good project",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: pull the candidate off the backoff/clock-skew/Kafka tangents back to the diagnostics tool itself — what it actually did, how it was built, and the ticket-deflection numbers before and after launch"
+    ]
+  }
+}

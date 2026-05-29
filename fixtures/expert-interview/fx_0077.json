@@ -1,0 +1,38 @@
+{
+  "id": "fx_0077",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Devin Park — Junior Supply Chain Analyst\n\nProfile\nEarly-career analyst focused on procurement operations and inbound logistics, with a habit of framing work in problem / action / result terms.\n\nExperience\nHarborline Goods — Procurement Analyst (2023-present)\n- Situation: Inbound POs were being acknowledged late, with supplier acknowledgment SLA sitting around 60%.\n- Task: I was asked to lift on-time PO acknowledgment to 85% within one quarter.\n- Action: I built a daily exception report in Excel flagging un-acknowledged POs past 24h, set up a standing follow-up cadence with three key suppliers, and proposed an auto-reminder email rule.\n- Result: Acknowledgment SLA rose from 60% to 88% in eleven weeks; expedite freight on those lines dropped noticeably.\n\nCrestfield Retail — Supply Chain Intern (Summer 2022)\n- Reconciled a 400-line SKU master and cleared 70+ duplicate part numbers.\n\nSkills: procurement ops, Excel, PO management, supplier follow-up, data cleanup.\nEducation: BS, Operations & Supply Chain Management.",
+  "jd": "Harborline Goods is hiring a Junior Supply Chain Analyst to support procurement operations under the Procurement Manager. You will own the daily PO exception process, chase supplier acknowledgments, maintain item-master data hygiene, and help reduce expedite freight on inbound lines. We are looking for someone who can describe their own work concretely: what the problem was, what they personally did about it, and what changed as a result, with real numbers. You will inherit a manual acknowledgment-tracking process and a supplier base with inconsistent responsiveness. Comfort in Excel is required; exposure to an ERP (SAP, NetSuite, or similar) is a plus. This is an early-career role with strong mentorship and a clear path into planning or category management.",
+  "history": [
+    { "q": "Your resume says you lifted supplier PO acknowledgment from 60% to 88%. Walk me through what you specifically did — the actual steps, not the summary." }
+  ],
+  "candidate_last_answer": "Yeah, so it was really just about staying on top of things and being proactive. I kept an eye on the POs, made sure suppliers were responsive, and just generally drove accountability. It was a team effort to be honest, everyone pitched in, and over time things just got a lot better. I think the key was good communication and staying organized.",
+  "session_state": {
+    "drilled_topics": ["po-acknowledgment-improvement"],
+    "current_competency_target": "execution-specificity",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "execution-specificity",
+    "missing_evidence": [
+      { "competency": "execution-specificity", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: staying on top of things and being proactive",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forces the candidate to name the concrete mechanism behind the 60-to-88% lift — the exception report, the follow-up cadence with which suppliers, and which step they personally built versus the team — instead of generic 'proactive' and 'communication' filler"
+    ]
+  }
+}

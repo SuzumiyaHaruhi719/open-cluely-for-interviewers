@@ -1,0 +1,47 @@
+{
+  "id": "fx_0119",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Senior Research Scientist — Computational Genomics\n\nSummary\nSenior scientist with 8 years of post-PhD experience building statistical methods for large-scale genomic association studies. Led method development for rare-variant burden testing adopted by several consortia.\n\nExperience\nSenior Research Scientist, GenomeWorks Institute (2019-present)\n- Sole developer of a rare-variant association pipeline used across three consortium studies\n- Led a team of 5 scientists building the same pipeline collaboratively\n- Reduced compute cost of the GWAS pipeline by 60%\n- First-authored the methods paper; the statistical core was primarily designed by a collaborator who has since left\n\nResearch Scientist, BioStat Labs (2016-2019)\n- Joined as the founding member of the statistical genetics group in 2015\n- Built association-testing infrastructure from scratch\n\nEducation\nPhD in Biostatistics, 2014. (Note: 8 years post-PhD as of this year would place the PhD around 2017.)\n\nSkills\nR, Python, C++, Hail, PLINK, mixed models, saddlepoint approximation, cloud-based GWAS at biobank scale",
+  "jd": "We are hiring a Senior Research Scientist in statistical/computational genomics to own the methodology behind our rare-variant association testing platform at biobank scale. You will be the technical owner of the statistical core (calibration of test statistics, control of type-I error under case-control imbalance, and computational scaling), and you will defend methodological choices to external collaborators and reviewers. We assess candidates on the specific design decisions they personally made and can justify — the tradeoffs in a statistical approximation, why one null model over another — not on consortium-level results. Be prepared to clearly separate your individual contributions from collaborative ones, and to reconcile any inconsistencies in your stated history.",
+  "history": [
+    { "q": "Your resume says 'sole developer' of the rare-variant pipeline and also that you 'led a team of 5' building it. Which was it?" },
+    { "q": "Let's focus on the statistical core. You say you first-authored the methods paper — walk me through the core test statistic." },
+    { "q": "Who actually designed the saddlepoint approximation used for the imbalanced case-control setting?" },
+    { "q": "How did you validate that type-I error was controlled under extreme imbalance?" },
+    { "q": "What were the calibration numbers — QQ inflation, lambda — before and after?" },
+    { "q": "You claim a 60% compute reduction. What specifically drove that?" },
+    { "q": "Was that reduction your optimization, or the platform team's?" },
+    { "q": "Let's talk about a methodological tradeoff you personally made. Pick one." },
+    { "q": "Why choose the saddlepoint over a permutation-based null in that case?" },
+    { "q": "Walk me through the single most important statistical decision in the core that was yours and yours alone — what was it, why did you make it, and what would have broken if you'd chosen otherwise?" }
+  ],
+  "candidate_last_answer": "So the statistical core was really a group effort — we as a team landed on the saddlepoint approach because it gave us the calibration we needed at scale. We collectively decided the null model, we ran the calibration experiments together, and the lambda values we reported were something the whole group validated. I'd say the design emerged from our weekly methods discussions rather than any one person, so it's hard to point to a single decision that was just mine — that's not really how our group works.",
+  "session_state": {
+    "drilled_topics": ["sole-vs-team-contradiction", "core-test-statistic", "saddlepoint-authorship", "type-i-validation", "calibration-numbers", "compute-reduction-driver", "compute-reduction-attribution", "methodological-tradeoff", "saddlepoint-vs-permutation", "single-owned-decision"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 37
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it's hard to point to a single decision that was just mine",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one statistical design decision the candidate personally owned in the core — what it was, the specific tradeoff he weighed (e.g., saddlepoint vs permutation null), and what would have broken under the alternative, forcing separation of his work from the departed collaborator's"
+    ]
+  }
+}

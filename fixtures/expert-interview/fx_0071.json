@@ -1,0 +1,50 @@
+{
+  "id": "fx_0071",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "over-bragging",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "医疗事业部总监 | 14年三甲医院信息化与互联网医疗双线操盘手\n\n- 行业公认的数字化转型领军人物,主导建成华东区域规模领先的互联网医院平台\n- 一手缔造覆盖2000万患者的智慧医疗生态,被多家头部三甲奉为标杆样板\n- 战略视野卓绝,以患者为中心重塑全院诊疗流程,屡获省级卫健委通报表扬\n- 极致的跨部门协同能力,打通临床、药剂、医保、IT全链路壁垒\n- 深谙HIS、EMR、LIS、PACS等核心系统,推动院内系统全面云原生化\n- 多次代表集团在国家级医疗信息化峰会发表主题演讲,被誉为思想领袖\n- 以雷霆手段落地分级诊疗与远程会诊,实现优质医疗资源下沉的历史性突破\n\n最近任职:仁和医疗集团 — 医疗事业部总监(2020年至今)\n此前:东方健康科技 — 互联网医院高级经理(2016-2020)",
+  "jd": "我们正在为旗下三甲医院集团寻找一位医疗事业部总监,统筹8家成员医院的信息化与互联网医疗业务,直接向集团COO汇报,全面负责该板块预算、供应商管理与合规交付。你将主导HIS/EMR系统的国产化替换,牵头互联网医院线上问诊量从日均3000单提升至8000单,并将患者隐私数据合规整改在监管要求的期限内闭环。该岗位需要在《个人信息保护法》与《数据安全法》框架下管理患者数据流转,具备带领临床信息团队应对等保三级测评的实战经验,并曾亲自处理过医保结算系统的重大事故。你需要直面集团审计委员会汇报,有过对外部技术供应商多年期合同谈判与索赔的经历。出差约20%。",
+  "history": [
+    { "q": "请先介绍你在仁和医疗的职责范围:团队规模、负责的预算、你直接对哪些核心指标负责。" },
+    { "q": "简历里写『覆盖2000万患者的智慧医疗生态』,这个2000万是怎么统计口径算出来的?活跃用户还是注册用户?" },
+    { "q": "你提到主导了互联网医院平台建设。具体说说,这个项目里哪部分是你亲自拍板决定的?" },
+    { "q": "线上问诊量从多少做到了多少?用了多长时间?" },
+    { "q": "换个话题。说说一次HIS或EMR系统国产化替换的经历,迁移过程中最难的技术决策是什么?" },
+    { "q": "这次替换上线后,有没有出现过数据丢失或诊疗中断?你当时怎么处理的?" },
+    { "q": "聊聊患者隐私合规。你们做等保三级测评时,你个人在其中扮演什么角色?" },
+    { "q": "等保整改有没有踩过监管红线的时候?具体哪一次?" },
+    { "q": "再具体一点:那次医保结算系统事故,从发现到恢复一共多久,谁先发现的,你第一时间做了什么?" },
+    { "q": "你和外部供应商谈过多年期合同,最大一笔合同金额是多少,最终谈下来的条款和初始报价差多少?" },
+    { "q": "回到团队。你这个事业部14个月里有没有做过裁员或团队重组?" },
+    { "q": "我想听一个具体的项目复盘:在所有这些数字化成果里,挑一个你认为最能代表你个人能力的,告诉我你具体做了什么。" },
+    { "q": "那再问得直接些——在那个被评为省级标杆的互联网医院项目里,有没有哪个关键决策是你一个人扛下来、并且事后证明是对的?讲讲那个决策本身。" }
+  ],
+  "candidate_last_answer": "这个项目我们整个团队都特别给力。说实话能拿到省级标杆,靠的是大家伙儿一起拼。临床的同事配合得好,IT团队加班加点,医保和药剂部门也都很支持,我们就是劲往一处使。当时为了赶监管的整改期限,有些患者授权流程我们先简化走了一版,合规那边后来再补的材料,反正最后也都过了。具体哪个决策是我拍板的我倒真说不太上来,因为我们是一个高度协同的团队,很多事都是集体商量着来的,功劳是属于大家的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "patient-count-methodology", "internet-hospital-ownership", "consultation-volume-growth", "his-emr-migration", "migration-incident", "privacy-compliance-role", "compliance-redline", "claims-system-incident", "vendor-contract-terms", "team-restructuring", "signature-project-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "compliance-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": ["possible-PIPL-noncompliance: candidate admits simplifying patient authorization flow to meet a deadline and backfilling compliance materials afterward"],
+    "top_question_traits": [
+      "must-anchor-on: 有些患者授权流程我们先简化走了一版,合规那边后来再补的材料",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forces the candidate to specify who personally approved skipping the patient-authorization step, what exactly was simplified, on what date, and whether any patient data was processed without valid consent during that window"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0132",
+  "tags": {
+    "industry": "legal",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Director of Legal Operations | Trailblazing transformation leader who redefined what legal ops can be\n\nA visionary operator widely regarded as one of the foremost legal-ops minds of my generation. I single-handedly turned a chaotic, reactive legal function into a world-class, data-driven powerhouse that the entire industry now benchmarks against.\n\nMeridian Capital (2020-present) — Director, Legal Operations\n- 一手 built the legal ops function from zero, 现在是 the gold standard 全行业都在 copy\n- Personally architected the CLM (contract lifecycle management) replatform, 我自己 drove every decision\n- Renowned across the legal tech community as the go-to authority on matter management\n- Transformed outside-counsel spend management into a best-in-class discipline 没有人能比\n- Built and led the most respected legal ops team in the region, 我招的每个人都是 top talent\n\nApex Industries (2016-2020) — Senior Legal Operations Manager\n- Pioneered 公司历史上第一个 e-billing program, 彻底改变了游戏规则\n- Universally credited as the person who saved the legal department from itself\n\nThought leader, frequent keynote speaker, and the name partners call when things break.",
+  "jd": "Meridian Capital seeks a Director of Legal Operations to own the CLM platform, outside-counsel spend governance, and matter-management analytics for a 60-lawyer in-house function. This role demands rigor: you will defend your numbers to the General Counsel and the CFO. We need a leader who can speak precisely about a single initiative — the baseline, the specific intervention, who owned each workstream, the timeline, and the verified business outcome — without drifting into adjacent stories. You will manage a team of 8, negotiate panel-counsel rate cards, and run quarterly legal-spend reviews with Finance. Strong preference for candidates with hands-on CLM implementation experience (Ironclad, Agiloft, or similar) and demonstrated success cutting outside-counsel spend through enforceable billing guidelines.",
+  "history": [
+    { "q": "Your resume says you 'single-handedly' transformed the legal function at Meridian and personally architected the CLM replatform. Take one of those — the CLM replatform — and walk me through exactly what you did, start to finish." }
+  ],
+  "candidate_last_answer": "嗯... 好的... 让我想一下怎么 frame 这个... [停顿] ...okay 这个 CLM replatform, 它其实是, 嗯, 一个很有意思的故事. 你知道吗, 说到 contract management, 我最近一直在想整个 legal tech 这个行业的 future, 像 generative AI 现在 changing everything, 我上个月在一个 conference 上讲了 keynote, 谈的就是 AI 怎么 reshape outside counsel 的 relationship, 然后我们 industry 里很多 GC 都在 panic 因为 billing model 要变了, 顺便说一下我还在写一本书 about legal ops maturity, 反正回到 CLM, 它就是一个很 transformative 的 project, 全行业都在看我们怎么做.",
+  "session_state": {
+    "drilled_topics": ["clm-replatform-walkthrough"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "execution", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正回到 CLM, 它就是一个很 transformative 的 project",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: pull the candidate back from the AI/keynote/book tangent to a concrete sequence of CLM-replatform decisions — vendor selection, data migration, rollout phases — with who did what and when"
+    ]
+  }
+}

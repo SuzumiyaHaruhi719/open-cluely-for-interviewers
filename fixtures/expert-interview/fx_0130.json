@@ -1,0 +1,44 @@
+{
+  "id": "fx_0130",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "VP, Financial Planning & Analysis\n\nSummary\nVP of FP&A with 15 years across corporate finance, treasury, and investor relations at high-growth technology companies. Owner of the company-wide forecasting and capital-allocation process.\n\nExperience\nVP FP&A, Lumen Software (2020-present)\n- Owned the consolidated annual operating plan and quarterly reforecast\n- Built the FP&A function from scratch as the first finance hire\n- Inherited a mature 12-person FP&A team and a fully built planning stack on joining\n- Led the model behind a $400M Series F raise\n- Drove the board reporting and variance analysis cadence\n\nSenior Director, FP&A, Brightline (2016-2020)\n- Managed revenue forecasting; forecast accuracy was within 2% every quarter\n- Also noted that revenue routinely missed forecast by wide margins during this period due to sales\n\nEducation\nMBA, Finance; BSc Economics\n\nSkills\nFinancial modeling, three-statement modeling, scenario planning, board reporting, capital allocation, treasury, fundraising, SQL, Anaplan, Excel",
+  "jd": "We are hiring a VP of FP&A to own the consolidated operating plan, quarterly reforecasting, and capital-allocation framework, and to present variance analysis to the board. We evaluate finance leaders on the specific calls they personally owned — forecast assumptions, capital-allocation tradeoffs, and how they handle a forecast miss. We expect candidates to take clear accountability for misses rather than attributing them entirely to other functions, to reconcile any inconsistencies in their stated history, and to defend their modeling assumptions with numbers. Strong three-statement modeling and board-facing experience required.",
+  "history": [
+    { "q": "Your resume says you 'built FP&A from scratch as the first finance hire' but also that you 'inherited a mature 12-person team.' Which is accurate?" },
+    { "q": "Let's talk about a forecast miss. Tell me about the worst quarterly miss you owned." },
+    { "q": "What was the magnitude — forecast versus actual?" },
+    { "q": "Which assumption in your model was wrong?" },
+    { "q": "What did you personally change in the forecasting process after that miss?" },
+    { "q": "At Brightline you claim 2% forecast accuracy every quarter but also that revenue 'routinely missed by wide margins.' How do both hold?" },
+    { "q": "On that worst miss: what was your role in the assumptions that turned out wrong, and what specifically did you change that was within your control?" }
+  ],
+  "candidate_last_answer": "Honestly that miss wasn't really a finance problem — the sales team gave us pipeline numbers that were wildly inflated, and the product org slipped a launch by a full quarter without telling us. Finance can only forecast off the inputs we're handed. I flagged the risk in the board deck, but leadership chose not to act on it. So when actuals came in light, it got pinned on FP&A, which frankly wasn't fair. If sales had given us honest commit numbers, the forecast would've been fine. We did our part.",
+  "session_state": {
+    "drilled_topics": ["first-hire-vs-inherited-contradiction", "worst-miss-story", "miss-magnitude", "wrong-assumption", "process-change-after-miss", "accuracy-vs-miss-contradiction", "personal-role-in-assumptions"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Finance can only forecast off the inputs we're handed",
+      "must-be-question-type: action-attribution",
+      "expected-yield: what the candidate personally owned in the miss despite blaming sales and product — whether he stress-tested the inflated pipeline, applied a commit haircut, or built a downside scenario, and the specific modeling change within his control that he made afterward"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_0094",
+  "tags": {
+    "industry": "research",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "姓名：陈一然　应聘岗位：机器学习研究员（Research Scientist，中级）\n\n个人简介：\n我是一名专注于表示学习与多模态方向的机器学习研究员，目前在一家做企业级语义搜索的公司从事应用研究工作，已经积累了大约五年研究与工程相结合的实践经验。我习惯把模糊的业务诉求拆解成可被量化评估的研究问题，再通过严谨的对照实验逐步逼近答案。我习惯从一个 concrete 的业务问题出发，把它抽象成一个可被量化评估的 research problem，再用 ablation 与 controlled experiment 一步步逼近答案。我相信 reproducibility 与 rigorous evaluation 的价值，平时会把实验配置、随机种子、数据切分都纳入版本管理，方便团队复现与回溯。\n\n工作经历：\n灵犀智能（Lingxi AI）　Applied Research Scientist（2022 至今）\n我所在的团队负责为企业知识库构建一套 retrieval-augmented 的语义搜索系统。我的核心工作是 embedding model 的训练与评估。早期系统用的是一个开源的 sentence embedding 模型，在我们的内部 benchmark 上 recall@10 大约只有 0.61，badcase 集中在长文档与跨语言查询。我主导了一轮 domain adaptation：先用 in-batch negatives 做对比学习的 continued pretraining，再用人工标注的 hard negative 做 fine-tune。为了拿到可靠的 hard negative，我设计了一个 mining pipeline，从线上 query log 里挖掘点击与曝光不一致的样本，再交给标注团队复核。经过两个季度的迭代，内部 benchmark 上的 recall@10 提升到了 0.78，长文档场景的 nDCG 也有明显改善。这一阶段我还和 infra 团队合作，把 embedding 推理迁移到了 ONNX runtime，单条 query 的 p99 latency 从 90ms 降到 40ms 左右。\n除了 retrieval，我也参与了 re-ranker 的实验。我们尝试过 cross-encoder 重排，效果好但太慢，最后折中用了一个 late-interaction 的方案。这里有一个我印象很深的 tradeoff：cross-encoder 在离线指标上几乎全面占优，但 serving 成本和延迟无法接受，于是我们牺牲了一点点 top-1 精度换取了可上线的延迟。这个取舍当时是我和 tech lead 一起拍的板，我负责把两种方案的 offline/online 指标和成本算清楚，写成一页 decision doc。\n\n方舟数据（Ark Data）　Machine Learning Engineer（2019-2022）\n这是我第一份正式工作，主要做推荐系统的 feature engineering 与 offline pipeline。我维护过一条基于 Spark 的特征生产链路，每天处理数十亿条行为日志，产出用户与物品侧特征供下游 ranking 模型使用。我做过一次比较有意思的 debugging：线上 CTR 莫名下跌，最后定位到是上游一个 categorical 特征的 hash 空间发生了碰撞，导致部分长尾类目被映射到了同一个 bucket。修复之后 CTR 恢复，我也顺手补了一套特征分布的 monitoring，用 KL divergence 监控训练与线上分布的 drift。\n在方舟期间我还参与了一个 internal 的 A/B 实验平台的指标层建设，主要是帮算法同学把实验口径标准化，避免不同实验用不同的分母。这段经历让我对 experimentation 的严谨性有了比较深的体会，也是我后来一直强调 evaluation hygiene 的原因。\n\n教育背景：\n计算机科学硕士，研究方向为 information retrieval。硕士期间有一篇关于 learning-to-rank 的工作发表在一个 IR 方向的 workshop 上，我是第二作者，主要负责实验部分。\n\n技能：\nPyTorch、Hugging Face Transformers、FAISS、Spark、ONNX、contrastive learning、retrieval evaluation（recall@k / nDCG / MRR）、A/B testing、experiment tracking（MLflow）、Python、SQL。\n\n我对这个岗位的兴趣：\n我希望能在一个更注重 long-term research 的环境里，继续深耕 multimodal retrieval 这个方向，把 applied 和 fundamental 之间的 gap 缩小一点。",
+  "jd": "We are hiring a mid-level Research Scientist to join our applied retrieval team. You will own the design and evaluation of embedding and re-ranking models for a production semantic-search system, run controlled offline experiments, and translate research wins into shipped improvements. Responsibilities include: defining rigorous evaluation protocols (recall@k, nDCG, MRR), running ablations to attribute gains to specific changes, partnering with infra on latency-quality tradeoffs, and writing clear decision docs. 我们要求候选人能清楚说明每一项指标提升背后的 mechanism 与归因方法，能区分相关性与因果，并能在 serving 成本约束下做出务实取舍。Strong PyTorch and information-retrieval fundamentals required.",
+  "history": [
+    { "q": "先用两三句话介绍一下你现在在灵犀负责的 retrieval 工作。" },
+    { "q": "你提到 recall@10 从 0.61 提升到 0.78，先说说 0.61 是在什么 benchmark、什么数据切分上测的？" },
+    { "q": "这次提升你做了 continued pretraining 和 fine-tune 两步，怎么确认是哪一步真正带来了增益？做过 ablation 吗？" },
+    { "q": "hard negative mining 那个 pipeline，具体是按什么规则挖掘点击与曝光不一致的样本的？" },
+    { "q": "cross-encoder 和 late-interaction 的取舍，offline 上 cross-encoder 好多少、latency 又差多少，给我具体数。" },
+    { "q": "聚焦一个问题：除了 continued pretraining 和 fine-tune，你能不能确定这 0.61 到 0.78 的提升里，有多少其实来自你同期换了标注更干净的评测集，而不是模型本身？" }
+  ],
+  "candidate_last_answer": "啊这个问题特别好，其实说到评测集我就想多聊两句——你知道吗，我们当时标注团队的 setup 特别有意思，标注同学背景五花八门，有学语言学的还有学法律的，我专门给他们做过一次 labeling guideline 的 workshop，那次 workshop 我准备了好几天的 slides，还顺便讲了点 IR 的发展史，从 TF-IDF 一路讲到 dense retrieval，大家反响特别好。对了，说到 dense retrieval，我最近还在看一篇讲 hybrid search 把 BM25 和向量召回融合的 paper，挺有启发的，我觉得这个方向以后特别有前景。还有就是我们 infra 团队那个哥们,他迁 ONNX 的时候踩了好多坑,我们一起 debug 到半夜,那段经历真的特别难忘……不好意思我是不是有点扯远了，你刚才问的是评测集对吧？",
+  "session_state": {
+    "drilled_topics": ["retrieval职责概述", "recall基线口径", "ablation归因", "hard-negative-mining规则", "cross-encoder取舍数字"],
+    "current_competency_target": "evaluation-rigor",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "evaluation-rigor",
+    "missing_evidence": [
+      { "competency": "evaluation-rigor", "evidence_type": "mechanism" },
+      { "competency": "evaluation-rigor", "evidence_type": "scope" },
+      { "competency": "research-integrity", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你刚才问的是评测集对吧",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 把候选人拉回原问题，迫使其说明若评测集保持不变、模型改动单独能贡献多少 recall@10 提升，从而把数据集变化与模型增益的混淆解耦"
+    ]
+  }
+}

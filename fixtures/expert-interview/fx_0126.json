@@ -1,0 +1,42 @@
+{
+  "id": "fx_0126",
+  "tags": {
+    "industry": "marketing",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "市场营销总监\n\n概述\n消费品行业市场营销总监，拥有十二年品牌与增长经验，主导过多个全国性品牌战役与数字化增长项目。\n\n工作经历\n某新消费品牌 市场总监（2020 至今）\n- 全面负责品牌、增长与用户运营，团队规模约 40 人\n- 同时仅负责品牌公关一条线，增长由另一位总监负责\n- 主导双十一大促，GMV 实现显著增长\n- 入职第一年即把市场预算从 8000 万压缩到 3000 万，同时把 GMV 翻了一倍\n\n某快消集团 高级品牌经理（2016-2020）\n- 负责单一品牌的品牌传播\n- 作为市场部负责人统管集团全部六个品牌的市场预算\n\n教育\n市场营销硕士\n\n技能\n品牌战略、整合营销、数字投放、KOL 营销、用户增长、数据分析、预算管理",
+  "jd": "某新消费品牌招聘市场营销总监，全面负责品牌建设与增长，统筹预算分配、渠道投放与效果衡量。我们希望候选人能就某一个具体的增长或品牌项目，说清楚其中由本人做出的关键预算与渠道决策、背后的取舍逻辑（如品效平衡、ROI 与品牌资产的权衡）以及可验证的结果数字。岗位要求候选人对自己简历中陈述的职责范围保持一致，并能用具体而非空泛的语言还原决策过程。需要扎实的数据驱动增长能力与清晰的归因思维。",
+  "history": [
+    { "q": "你简历里一处写『全面负责品牌、增长与用户运营』，另一处又写『仅负责品牌公关一条线，增长由另一位总监负责』。你实际负责的范围到底是什么？" },
+    { "q": "好，那我们看预算这块。你写到第一年把预算从 8000 万压到 3000 万、同时 GMV 翻倍。讲讲你具体砍了哪些投放。" },
+    { "q": "在砍预算的同时还要保 GMV，你做的最关键的一个取舍是什么？" },
+    { "q": "你怎么衡量砍掉的那部分预算原本的 ROI，从而判断它可以砍？" },
+    { "q": "具体点：被你砍掉的那条投放渠道，砍之前和砍之后的获客成本、GMV 贡献分别是多少？你是基于哪个数据下的这个决定？" }
+  ],
+  "candidate_last_answer": "这个其实要看整体的策略协同，预算优化是一个系统工程，不能孤立地看单一渠道。我们当时是从全局出发，做了很多精细化的动作，把钱花在刀刃上，整体效率提升是很明显的。具体的数字我得回去翻一下，但方向上肯定是对的，结果也证明了这一点。增长这个事情本来就是多因素的，很难说是某一个动作带来的。",
+  "session_state": {
+    "drilled_topics": ["scope-contradiction", "budget-cut-specifics", "key-tradeoff", "roi-judgement-basis", "channel-cac-gmv-numbers"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体的数字我得回去翻一下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 被砍掉的那条具体投放渠道在削减前后的获客成本与 GMV 贡献数字，以及候选人据以做出削减决定的归因依据，迫使其从空泛的『系统工程』话术落到一个可验证的数字与一次具体决策上"
+    ]
+  }
+}

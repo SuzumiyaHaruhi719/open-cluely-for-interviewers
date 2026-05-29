@@ -1,0 +1,44 @@
+{
+  "id": "fx_0158",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Growth Marketing Manager | full-funnel, data-driven, performance-obsessed storyteller\n\n- Omnichannel growth marketer who operationalizes full-funnel demand-gen across paid, owned, and earned\n- Fluent in CAC, LTV, ROAS, MQL-to-SQL conversion, attribution modeling, and incrementality testing\n- Orchestrates always-on performance programs across Google, Meta, TikTok, and programmatic DSPs\n- Growth-hacking mindset; relentlessly A/B tests creative, audiences, and landing experiences\n- Cross-functionally partners with product, sales, and lifecycle to compound pipeline velocity\n- Brand-meets-performance hybrid who balances storytelling with rigorous unit economics\n- Champion of marketing-ops, martech-stack rationalization, and clean attribution hygiene\n\nMost recent: Brightline DTC — Growth Marketing Manager (2021-present)\nPrior: Crestwave Media — Performance Marketing Specialist (2018-2021)\n\nTools: GA4, HubSpot, Looker, Segment, Northbeam, Figma, SQL (intermediate)",
+  "jd": "Brightline DTC is hiring a Growth Marketing Manager to own paid-acquisition performance across our core channels. You will manage a ~$4M annual media budget, own blended CAC (currently $58, target $44) and contribution-margin-positive ROAS, and run a continuous experimentation roadmap. We expect you to speak fluently about specific campaigns: what you tested, the hypothesis, the result, and the dollar consequence. The role partners with lifecycle and product on funnel conversion and requires hands-on fluency in attribution (we run GA4 + Northbeam). You will be accountable in a weekly growth review where claims are pressure-tested against the data. Prior DTC or subscription experience strongly preferred.",
+  "history": [
+    { "q": "Walk me through the media budget you own today and the channel split." },
+    { "q": "You list incrementality testing on your resume — describe one incrementality test you actually ran." },
+    { "q": "What was the hypothesis and how did you set up the holdout?" },
+    { "q": "What did the test conclude, and what decision did you make off it?" },
+    { "q": "Let's talk CAC. Tell me about a specific time you brought blended CAC down." },
+    { "q": "What channel drove that, and what was the before-and-after CAC?" },
+    { "q": "Give me one campaign you personally owned end-to-end: the test, the number, and the dollar outcome." }
+  ],
+  "candidate_last_answer": "Yeah, so at the end of the day growth is really about testing into what works and doubling down. I'm very data-driven, so we were always looking at the funnel holistically and optimizing for efficiency. We ran a lot of experiments across the channels, iterated fast, and let the data tell the story. It's about finding those unlock moments and scaling them responsibly. So we leaned into the channels that were performing and pulled back where the economics didn't make sense. That's kind of my whole philosophy — be scrappy, stay close to the numbers, and let performance lead.",
+  "session_state": {
+    "drilled_topics": ["media-budget-split", "incrementality-test-specifics", "holdout-setup", "test-conclusion-decision", "cac-reduction", "channel-and-cac-delta", "owned-campaign-dollar-outcome"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "experimentation-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: let the data tell the story",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate off philosophy and onto one concrete campaign — the specific channel, the exact before/after CAC or ROAS numbers, the test setup, and the dollar consequence of the decision he personally made"
+    ]
+  }
+}

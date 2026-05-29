@@ -1,0 +1,46 @@
+{
+  "id": "fx_0134",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "over-bragging",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "数据分析师 — 电商增长团队（顶尖人才）\n\n自述：我是同届里最强的数据分析师，一年内就成为团队不可替代的核心，所有重要的报表都离不开我。我对数据的直觉无人能及，业务方都说我是最懂他们的分析师。\n\n潮购电商（2024 至今）— 初级数据分析师\n- 我独自扛起了整个增长团队的数据看板，没有我团队就转不动\n- 我做的归因模型被全公司奉为标准，谁都比不了\n- 业务方每次有问题第一个想到的就是我，我是他们最信任的人\n- 我写的 SQL 是团队里最快最干净的，没有之一\n\n校园经历\n- 数学建模竞赛省级一等奖，团队核心\n- 实习期间被导师评为带过最优秀的实习生\n\n技能：SQL（精通到极致）、Python（pandas、numpy）、Tableau、A/B 实验分析、漏斗分析\n教育：某大学 统计学 本科",
+  "jd": "潮购电商增长团队招聘初级数据分析师。日常工作是支持增长与运营团队的数据需求：搭建并维护核心指标看板、做转化漏斗与留存分析、为 A/B 实验出具结论。我们更看重严谨而非夸张：候选人需要能精确说出自己负责的指标口径、计算逻辑、数据来源，并清楚区分相关与因果。需要熟练 SQL，能用 Python 做基础数据处理，会用 Tableau 或类似工具出图。我们希望分析师对数字诚实、口径清晰、结论有据。",
+  "history": [
+    { "q": "先说说你现在在潮购具体负责哪些数据工作。" },
+    { "q": "你提到独自维护增长团队的看板，看板上核心指标有哪些？" },
+    { "q": "其中『活跃用户』这个指标，你的口径是怎么定义的？" },
+    { "q": "去重是按设备还是按账号？跨天怎么算？" },
+    { "q": "数据是从哪几张表取的，更新频率多少？" },
+    { "q": "你说做的归因模型成了公司标准，这是什么归因模型？" },
+    { "q": "为什么选这个归因窗口，而不是更长或更短？" },
+    { "q": "归因结果有没有被业务方质疑过？" },
+    { "q": "看板出过数据错误吗？怎么发现的？" },
+    { "q": "你能不能精确说一下，活跃用户的最终 SQL 逻辑里，去重那一步是怎么写的？" }
+  ],
+  "candidate_last_answer": "嗯……让我想一下确切的写法……[停顿]……好，是这样：活跃用户按账号去重，不按设备，因为一个用户可能多设备登录。具体是对当天有效行为日志按 user_id 做 distinct，有效行为指浏览商品详情、加购或下单这三类事件，纯打开 App 不算。跨天不累计，每天独立算一次日活，月活是把当月每天的活跃 user_id 取并集再 distinct。数据来自行为埋点表 dwd_user_event，每天凌晨两点 T+1 更新一次。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "dashboard-core-metrics", "active-user-definition", "dedup-rule", "source-tables-freshness", "attribution-model-type", "attribution-window-choice", "attribution-pushback", "dashboard-errors", "dedup-sql-logic"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 月活是把当月每天的活跃 user_id 取并集再 distinct",
+      "must-be-question-type: teach-back",
+      "expected-yield: have the candidate write or describe the exact monthly-active SQL (UNION across days then distinct) so the interviewer can confirm hands-on mechanism understanding versus the over-bragging resume claims"
+    ]
+  }
+}

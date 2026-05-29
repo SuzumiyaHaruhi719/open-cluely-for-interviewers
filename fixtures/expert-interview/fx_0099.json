@@ -1,0 +1,47 @@
+{
+  "id": "fx_0099",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "工程总监 | 12年分布式系统与平台研发经验\n\n职业概述：\n带领过最多 200 人的研发团队，负责公司核心交易平台的稳定性与性能。主导多次大规模架构升级，将系统可用性从 99.9% 提升到 99.999%。\n\n近期经历：\n云启科技 — 工程总监（2020 至今）\n- 负责支付与清算平台，直接管理 4 个团队约 60 人\n- 主导微服务化改造，把单体系统拆成 80 多个服务\n- 推动 SRE 体系建设，线上故障同比下降 90%\n\n之前：\n远帆数据 — 高级工程经理（2016-2020）\n- 管理一个 15 人的后端团队\n- 负责订单系统重构\n\n再之前：\n启明软件 — 技术主管（2013-2016）\n- 带 5 人小组做内部工具\n\n技能：Java、Go、Kubernetes、Kafka、分布式事务、团队管理\n\n注：简历多处提到团队规模，最大 200 人，但分项经历相加约为 80 人；可用性数字在不同段落写法不一（99.9%→99.999% 与 99.95% 并存）。",
+  "jd": "云岭金融科技正在招聘一名工程总监，负责核心账务与结算平台。该岗位向 CTO 汇报，管理约 70 人的研发组织，全面负责平台的可用性、性能与成本。你将主导一次跨数据中心的容灾架构升级，目标是把核心链路可用性稳定在 99.99% 以上，并把 P99 延迟从 320ms 降到 150ms 以内。我们需要候选人有真实带领大团队完成架构演进的经验，能给出可核实的容量、延迟与故障数据，并能在董事会层面解释技术投入的回报。你将接手两个进行中的稳定性整改项目和一次刚发生的核心链路故障复盘。",
+  "history": [
+    { "q": "先介绍一下你在云启科技目前的职责：团队规模、负责的系统、你直接对哪些指标负责。" },
+    { "q": "你简历里写带过最多 200 人，但分项加起来约 80 人，这两个数字怎么对上？" },
+    { "q": "微服务化把单体拆成 80 多个服务，这个拆分是你主导的吗，具体你做了哪些决策？" },
+    { "q": "可用性从 99.9% 提升到 99.999%，是同一个系统、同一段时间的数据吗？" },
+    { "q": "我们换个具体的：说一次你亲自处理的核心链路故障，从告警到恢复的时间线。" },
+    { "q": "那次故障的根因是什么，后续你推动了哪些机制性的改动？" },
+    { "q": "SRE 体系建设让线上故障同比下降 90%，这个 90% 的分母和口径是什么？" },
+    { "q": "成本这块，你做过哪一次让单位算力成本明显下降的决策？" },
+    { "q": "再给我一个最具体的：过去一年里，哪一个指标是因为你个人的某个决定而改善的，给我数字和时间。" }
+  ],
+  "candidate_last_answer": "这个我可以很自信地说，过去一年我们团队的整体表现是行业顶尖的。系统可用性我们做到了 99.999%，故障率下降了 95% 以上，P99 延迟我记得是降了大概 80%，成本也优化了将近一半。这些都是实打实的成果。具体哪个指标对应哪个决定不太好拆，因为是一个系统性的提升，但总体来说效果非常炸裂，几乎是断崖式领先同行。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "resume-contradiction-team-size", "microservice-ownership", "availability-number-consistency", "incident-timeline", "incident-root-cause", "故障下降口径", "成本决策"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 效果非常炸裂，几乎是断崖式领先同行",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 强制候选人把某一个具体指标（如 P99 延迟或成本）锁定到一个可核实的基线数值、口径和时间窗口，并说明这个数字的来源系统与对比对象，从而暴露『断崖式领先』是否有真实分母支撑"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "fx_0151",
+  "tags": {
+    "industry": "healthcare",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Amara Okonkwo\nNursing student (BSN, third year) seeking a clinical operations internship\n\nEducation\nState University — BSN candidate, expected next year\n\nExperience\n- Volunteer, community health screening clinic (one semester): took vitals, logged intake forms, helped triage walk-ins\n- Patient-transport aide, university hospital (summer): moved patients between units, learned basic floor workflow\n\nClinical rotations\n- Med-surg rotation (current)\n- Intro pharmacology lab\n\nSkills\nVitals, basic charting, EHR data entry (Epic, classroom-trained), patient communication, BLS certified\n\nReferences available on request",
+  "jd": "Our regional hospital network is hiring a clinical operations intern to support the patient-flow team on a 320-bed campus. You will shadow charge nurses, help track bed-turnover times, assist with discharge-coordination logging, and surface bottlenecks in the admit-discharge-transfer (ADT) process. We are looking for a healthcare student who is comfortable on a busy floor, careful with patient data, and able to describe a specific situation clearly — what happened, what they did, and what the outcome was. You will work alongside clinical staff and must respect patient privacy at all times. The internship runs one semester, roughly 20 hours per week, primarily on the day shift.",
+  "history": [
+    { "q": "Tell me about your patient-transport role this summer — what did a typical shift look like?" },
+    { "q": "Was there a moment on the floor where something went wrong or got chaotic? Walk me through it." },
+    { "q": "Focus on just that one incident: what did you personally do, in order, from the moment you noticed the problem?" }
+  ],
+  "candidate_last_answer": "Okay so — sorry, I get a little nervous — um, there was this one time, it was a Tuesday I think, or maybe Wednesday, and the floor was super busy, like everyone was running, and honestly the elevators in that building are so slow, which is a whole thing, and so I had this patient to move and the bed wasn't ready, and — oh, also my badge wasn't scanning that week so I kept having to ask people to let me through doors, that was stressful — and anyway the nurse was looking for the patient and I wasn't sure if I was supposed to wait or go, and I just kind of stood there for a second, and then it sort of resolved? Like someone figured it out. Sorry, what was the question again — what I did? I think I... mostly I just tried to stay out of the way and be helpful, you know?",
+  "session_state": {
+    "drilled_topics": ["transport-shift-overview", "chaotic-floor-moment", "personal-actions-in-incident"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "composure-under-pressure", "evidence_type": "mechanism" },
+      { "competency": "patient-flow-awareness", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I just kind of stood there for a second, and then it sort of resolved",
+      "must-be-question-type: action-attribution",
+      "expected-yield: cut through the elevators-and-badge tangents and force a concrete, ordered account of what the candidate herself did when the bed wasn't ready — who she told, what decision she made, and whether 'someone figured it out' included any action from her"
+    ]
+  }
+}

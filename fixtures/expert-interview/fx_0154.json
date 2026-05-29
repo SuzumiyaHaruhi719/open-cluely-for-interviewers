@@ -1,0 +1,51 @@
+{
+  "id": "fx_0154",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Devin Hartley — Staff Manufacturing Engineer\n\nExperience\nStaff Manufacturing Engineer, Halcyon Precision (current)\n- Process owner for a high-mix CNC machining cell; lead yield and cycle-time improvement\n- Drive root-cause analysis on scrap and rework across three product lines\n\nSenior Manufacturing Engineer, Halcyon Precision (prior)\n- Owned fixture design and tooling qualification for new part introductions\n\nManufacturing Engineer, Orbit Components (earlier)\n- Supported assembly-line balancing and SPC implementation\n\nEducation\nBS, Mechanical Engineering\n\nSkills\nSPC, DOE, GD&T, lean, CNC process development, FMEA, Minitab",
+  "jd": "Halcyon Precision seeks a Staff Manufacturing Engineer to own process performance for our precision-machining value stream. You will be the technical authority on yield, cycle time, and scrap reduction across multiple CNC cells, lead structured root-cause investigations, and mentor process engineers. We expect rigor: you should be able to describe exactly what you changed, the measured before/after, the sample size, and the statistical basis for your conclusions. You will partner with quality and operations to qualify new parts and drive FMEA-informed process controls. The role demands someone who speaks precisely about data and owns outcomes without hedging.",
+  "history": [
+    { "q": "Walk me through your current scope — which cell, what product mix, what metrics you own." },
+    { "q": "Pick your single highest-impact yield improvement. What was the defect?" },
+    { "q": "What was the baseline yield and over what production volume?" },
+    { "q": "How did you isolate the root cause?" },
+    { "q": "What specifically did you change on the process?" },
+    { "q": "What was the post-change yield, and on what sample size?" },
+    { "q": "How did you confirm the improvement was statistically real, not noise?" },
+    { "q": "What was the dollar impact of that scrap reduction annually?" },
+    { "q": "Did the change introduce any new failure mode? How did you check?" },
+    { "q": "Now cycle time — give me a separate example where you cut cycle time on a part." },
+    { "q": "What was the cycle-time before and after, per unit?" },
+    { "q": "What tradeoff did that cycle-time change cost you elsewhere?" },
+    { "q": "How did you sustain the gain so it didn't regress after you moved on?" },
+    { "q": "Tell me about a time your hypothesis was wrong. What did the data show?" },
+    { "q": "Last one: a junior engineer hands you a yield 'improvement' with n=8. What's the first thing you say to them?" }
+  ],
+  "candidate_last_answer": "First thing: n=8 isn't enough to claim anything, so don't change the process yet. I'd say show me the data and walk through three things. One — what's the baseline distribution and its standard deviation, because with eight points your confidence interval is wide enough to swallow most of the 'gain.' Two — is the improvement larger than the measurement-system error? Run a gage R&R if we haven't; I've seen 'gains' that were just the calipers. Three — was the sample random or did you cherry-pick a good shift? Then I'd have them run it to at least n=30 across two operators and two shifts, hold the process fixed, and we re-check with a two-sample t-test at alpha 0.05. If it holds, we PFMEA the change and put it on a control chart before it goes to production. If it doesn't, we just saved a bad change order.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "yield-defect", "yield-baseline", "root-cause-isolation", "process-change", "post-change-yield", "statistical-confirmation", "scrap-dollar-impact", "new-failure-mode", "cycle-time-example", "cycle-time-before-after", "cycle-time-tradeoff", "sustaining-the-gain", "wrong-hypothesis", "junior-n8-coaching"],
+    "current_competency_target": "data-rigor",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "data-rigor",
+    "missing_evidence": [
+      { "competency": "data-rigor", "evidence_type": "mechanism" },
+      { "competency": "mentorship", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I've seen 'gains' that were just the calipers",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete recounting of the actual time a measurement-system error masqueraded as a yield gain — what the gage R&R revealed, the percent variation attributable to the gage, and how the candidate caught it before a process change shipped"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "fx_0073",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "供应链计划经理\n\n工作经历\n东岭快消(2021至今):供应链计划经理。负责华东大区的需求预测、补货策略与库存管理,对接销售、采购与第三方仓配。\n安骐物流(2018-2021):高级计划专员。参与全国DC网络的库存调拨与安全库存设定。\n\n主要工作\n- 搭建了大区的滚动需求预测流程,推动S&OP月度例会落地。\n- 优化补货模型,缓解了多个高动销SKU的断货问题。\n- 主导一次区域仓库的库存盘点与呆滞品清理专项。\n- 与采购协同调整了关键原料的安全库存水位。\n\n技能:需求预测、库存优化、S&OP、SAP、数据分析。\n教育背景:物流管理本科。",
+  "jd": "我们正在招聘一名供应链计划经理,负责快消品华东大区的端到端计划,直接向供应链总监汇报,统筹需求预测、补货、库存健康度与产销协同。你将主导把大区现货率从约92%提升到97%,同时把库存周转天数从58天压降到45天以内,并牵头每月S&OP例会推动跨部门达成共识。该岗位要求能讲清自己的预测准确率口径(WMAPE/Bias)、能用数据论证安全库存调整的财务影响,并在断货与高库存之间做出权衡。你将面对一个预测准确率长期偏低、呆滞库存占比偏高的现状,需要拿出可量化、可复盘的改进方案。熟练使用SAP与Excel/BI工具,有快消或零售供应链背景者优先。",
+  "history": [
+    { "q": "先介绍下你现在的职责:负责哪个大区、覆盖多少SKU、对接哪些部门。" },
+    { "q": "你简历里说『搭建了滚动需求预测流程』,这个流程具体是怎么跑的?周更还是月更?" },
+    { "q": "你们的预测准确率用什么口径衡量?WMAPE还是别的?上线前后大概是多少?" },
+    { "q": "补货模型优化那块,你改了哪个参数?是调了安全库存还是补货频率?" },
+    { "q": "断货问题缓解了多少?有没有一个现货率的前后对比数字?" },
+    { "q": "换个话题。那次呆滞品清理,清掉了多少金额的库存?占当时总库存多少?" },
+    { "q": "调整关键原料安全库存时,你怎么权衡断货风险和持货成本?" },
+    { "q": "S&OP例会里,有没有一次你的预测和销售的预期差很大,最后怎么对齐的?" },
+    { "q": "你刚说补货优化效果很好,我想听个准数:那几个高动销SKU,优化后现货率到底从多少做到了多少,周转天数动了没有?" }
+  ],
+  "candidate_last_answer": "效果是真的非常显著,基本可以说是脱胎换骨。那几个SKU优化之后现货率几乎做到了百分之百,断货基本绝迹了,周转天数也大幅下降。整体上我估摸着帮公司一年省了好几百万的库存成本,呆滞品几乎清零。具体的现货率前后数字和周转天数我手头没带报表,但这些都是当时大家公认的成绩,效果好到销售部门都专门发邮件表扬过我们计划团队。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "forecast-process-cadence", "forecast-accuracy-metric", "replenishment-parameter", "stockout-improvement", "deadstock-cleanup-amount", "safety-stock-tradeoff", "sop-alignment", "high-velocity-sku-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 现货率几乎做到了百分之百,断货基本绝迹了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forces the candidate to give the exact pre/post fill-rate percentages for the named SKUs, the inventory turnover days before and after, and the measurement window, instead of a vague 'nearly 100 percent' and an unverifiable multi-million cost saving"
+    ]
+  }
+}

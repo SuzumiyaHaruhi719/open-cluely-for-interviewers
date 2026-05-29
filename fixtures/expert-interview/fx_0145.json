@@ -1,0 +1,38 @@
+{
+  "id": "fx_0145",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "高级人力资源经理（Senior HRBP）— 互联网公司\n\n自述：业内公认的顶级 HRBP，所到之处组织效能必然脱胎换骨。我对组织和人的洞察无人能及，业务负责人都把我当成最信任的左膀右臂，没有我搞不定的组织难题。\n\n远图互联（2021 至今）— 高级人力资源经理\n- 我一手缔造了公司最受推崇的人才盘点体系，全公司都在沿用\n- 我主导的绩效改革被誉为里程碑，彻底重塑了公司的绩效文化\n- 我设计的高潜培养项目是行业标杆，挖来的高管个个都是我亲自相中的\n- 业务老大遇到任何组织问题第一个找的就是我，我从没让他们失望过\n\n卓信科技（2017 至 2021）— 人力资源经理\n- 我独立扛起了三条业务线的 HR 支持，几乎是凭一己之力稳住了组织\n- 我推动的招聘提效项目被全公司当成范本\n\n技能：组织发展、人才盘点、绩效管理、高潜培养、招聘策略、员工关系\n教育：人力资源管理 硕士",
+  "jd": "远图互联招聘高级 HRBP，深度支持核心业务线的组织发展、人才盘点与绩效管理。我们希望候选人能够清楚区分『团队成果』与『个人贡献』：针对某一个你参与的项目，能精确说出你本人负责的环节、做了哪些只有你能做的决策、以及结果如何。日常职责包括主导业务线人才盘点、推动绩效与激励机制落地、设计高潜培养项目，并作为业务负责人的组织伙伴。我们重视实事求是、对自己的贡献边界诚实、能扛起明确责任的 HR 专业人士。",
+  "history": [
+    { "q": "你的简历说『一手缔造了公司最受推崇的人才盘点体系』。就拿人才盘点体系来说，请你具体讲讲你本人在其中做了什么、哪些决策是你独立拍板的。" }
+  ],
+  "candidate_last_answer": "人才盘点这件事其实是大家一起做出来的，我们 HR 团队和业务方一起开了很多次共创会，框架是我们集体讨论出来的，校准会也是大家一起评的，标准是团队共同定的。说实话很难拆出哪一块是我个人单独的功劳，因为这就是一个特别讲究协作的事情，我们整个团队一条心，最后的成果是属于大家的，我一直觉得这是我们共同的成绩。",
+  "session_state": {
+    "drilled_topics": ["talent-review-personal-contribution"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 说实话很难拆出哪一块是我个人单独的功劳",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to name one decision in the talent-review system they personally made or one artifact they alone produced, resolving the contradiction between the over-bragging resume and the all-team-credit answer"
+    ]
+  }
+}

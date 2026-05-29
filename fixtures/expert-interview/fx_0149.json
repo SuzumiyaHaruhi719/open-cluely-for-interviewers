@@ -1,0 +1,40 @@
+{
+  "id": "fx_0149",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "林晓 — 数据分析实习生求职者\n\n教育背景\n某综合性大学 统计学专业 大三在读\n\n实习经历\n某电商公司 数据分析实习生（去年暑期，约三个月）\n- 参与用户增长团队的日常取数与报表维护工作\n- 负责搭建并维护活动效果监控看板，覆盖多个促销节点\n- 协助分析师做留存与转化的拆解，输出分析结论给业务方\n- 参与一次 A/B 实验的指标设计与结果复盘\n\n校园项目\n- 课程项目中用 Python 做过一次用户分群（聚类）分析\n- 校数据社团成员，做过几次公开数据集的可视化分享\n\n技能\n熟悉 SQL、Python（pandas）、Excel；了解基础统计与假设检验；接触过 Tableau",
+  "jd": "我们在招一名数据分析实习生，加入用户增长方向团队。日常工作包括：根据业务方需求独立完成取数、搭建与维护核心指标看板、参与 A/B 实验的指标设计与结果分析、并把分析结论清晰地讲给非技术的业务同学。我们希望候选人具备扎实的 SQL 能力、能用 Python 做基础的数据处理、对指标口径有较真的意识，并且在数据出问题时能主动定位原因而不是停在表面。这是一个会被真实业务结果检验的岗位，你产出的数字会直接影响增长团队的决策，因此对严谨性和责任心要求很高。实习期至少四个月，每周到岗四天以上。",
+  "history": [
+    { "q": "先聊聊你在电商那段实习，你具体负责哪块、产出是什么？" },
+    { "q": "你提到维护活动效果监控看板，能讲一次看板上的数字出过问题、你怎么处理的吗？" },
+    { "q": "那次看板口径对不上，最后定位到的根因到底是什么？是谁、在哪个环节引入的？" }
+  ],
+  "candidate_last_answer": "嗯……那次其实主要不是我的问题。是上游数仓的同学改了一张表的字段定义，他也没在群里说一声，我这边看板自然就对不上了。我当时也很无奈，因为埋点本来就是前端那边做的，他们埋得乱七八糟，我只能拿到什么用什么。后来带我的分析师也忙，没空管这个，所以那个差异其实拖了挺久。说实话这种事在那种团队里太常见了，流程不规范，谁出问题都说不清，反正最后也不算是我这边的锅。",
+  "session_state": {
+    "drilled_topics": ["实习职责与产出", "看板数字异常处理", "口径对不上的根因归属"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "problem-solving", "evidence_type": "mechanism" },
+      { "competency": "data-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正最后也不算是我这边的锅",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人停止把责任推给数仓、前端和带教，说清在发现口径对不上之后他本人具体做了哪几步去定位和修复，以及他是否主动去对齐字段定义、回溯了多少天的数据"
+    ]
+  }
+}

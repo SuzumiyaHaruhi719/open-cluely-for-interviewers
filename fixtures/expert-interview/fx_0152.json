@@ -1,0 +1,38 @@
+{
+  "id": "fx_0152",
+  "tags": {
+    "industry": "design",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "陈思远 — 高级产品设计师\n\n经历\n某出行平台 高级产品设计师（约四年）\n- 负责司机端核心体验，主导多个改版项目\n- 推动设计规范在团队内落地\n\n某社交 App 产品设计师（约两年）\n- 负责消息与个人主页模块的迭代\n\n技能\nFigma、交互设计、设计系统、用户研究方法、走查与可用性测试\n\n作品集可应邀提供",
+  "jd": "我们在招一名高级产品设计师，负责一款月活千万级出行产品的司机端体验。你将独立负责核心流程的改版，从问题定义、方案设计到上线后的数据复盘全程负责，并与产品、研发、数据团队紧密协作。我们希望候选人能讲清楚每一个改版背后的真实数据：改了什么、影响了哪个指标、提升多少、用什么口径衡量、样本和周期是什么。岗位会接受设计负责人与数据团队的交叉质询，浮夸而无法验证的数字会被当场拆穿，因此我们更看重严谨、可追溯的成果表达，而不是漂亮的故事。",
+  "history": [
+    { "q": "挑一个你在出行平台主导的司机端改版，讲讲你做了什么、带来了多大的业务影响，以及你是怎么衡量的。" }
+  ],
+  "candidate_last_answer": "这个我特别有发言权。我主导的那次司机端首页改版，直接把全平台司机的接单率拉高了百分之四十多，月留存几乎翻倍，公司那一年新增的几个亿流水基本都是这个改版带起来的，老板在全员会上专门点名表扬。具体数据我手机里有当时的后台截图，其实我离职的时候顺手把那几张核心看板的图导出来存着了，回头可以发你看。口径啥的我倒没太记，反正就是大盘涨得特别猛，团队里都知道是我这版的功劳，没有我那个设计这条业务线根本起不来。",
+  "session_state": {
+    "drilled_topics": ["司机端改版-影响与衡量"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "data-rigor", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": ["confidentiality-risk: candidate says he exported the former employer's core dashboard screenshots when leaving and offers to share them"],
+    "top_question_traits": [
+      "must-anchor-on: 我离职的时候顺手把那几张核心看板的图导出来存着了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼候选人交代接单率『百分之四十多』的口径——分母是哪类司机、对照组怎么设、统计周期多长、是否做过显著性检验，同时暴露他把前公司机密看板带走这一合规风险，而不是接受『大盘涨得猛』这种笼统说法"
+    ]
+  }
+}

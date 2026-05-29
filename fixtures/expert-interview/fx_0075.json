@@ -1,0 +1,52 @@
+{
+  "id": "fx_0075",
+  "tags": {
+    "industry": "operations",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "李慕白 — 资深运营专家(Staff级)\n\n职业概述\n8年互联网平台运营,聚焦履约运营与流程优化,擅长用结构化方法拆解复杂运营问题并落地可量化改进。\n\n核心经历\n 川流科技 平台运营(2020至今)\n- 情境:平台同城配送准时率长期卡在88%,用户投诉中『超时』占比达41%。\n- 任务:作为履约运营负责人,目标半年内把准时率提到95%、超时投诉占比降到20%以下。\n- 行动:重构了骑手调度的优先级规则,引入分时段运力预测,并联合产品上线了异常订单预警看板。\n- 结果:6个月内准时率从88%提升到95.6%,超时投诉占比降到18%,该方案被推广到另外3个城市。\n\n捷风网络 运营专员(2016-2020)\n- 情境:商家入驻审核平均时长5.2天,流失率高。\n- 任务:压缩审核时长至2天内。\n- 行动:梳理审核SOP,识别出3个冗余审批节点并推动自动化。\n- 结果:审核时长降至1.8天,商家7日激活率提升22%。\n\n技能:履约运营、流程优化、数据分析、SOP设计、跨团队协同。\n教育:工商管理本科。",
+  "jd": "我们正在为本地生活平台招聘一名资深运营专家(Staff级),负责同城履约运营的核心指标改进,直接向运营总监汇报,统筹调度规则、运力预测与异常处理机制。你将主导把履约准时率稳定在95%以上、把履约相关投诉占比压降到15%以内,并沉淀一套可被多城复用的运营打法。该岗位要求你能讲清一项改进里你个人主导了哪些决策、与谁协同、如何归因效果,并对结果负责到底。你将面对一个调度规则陈旧、跨城打法不统一的现状。要求具备扎实的数据分析能力与履约运营实战经验,有多城规模化复制经验者优先。",
+  "history": [
+    { "q": "先介绍下你现在的职责:负责哪块运营、对哪些核心指标负责、团队多大?" },
+    { "q": "简历里那个准时率从88%到95.6%的项目,先讲讲当时问题到底出在哪。" },
+    { "q": "你说重构了骑手调度的优先级规则,这个规则原来是怎样的,你改成了什么?" },
+    { "q": "分时段运力预测这块,模型是谁搭的?你在其中负责什么?" },
+    { "q": "异常订单预警看板,需求是你提的还是产品提的?指标口径谁定的?" },
+    { "q": "准时率提升的6个月里,有没有哪个月数据回落过?你怎么定位原因的?" },
+    { "q": "这套方案推广到另外3个城市时,谁负责落地?你亲自去了吗?" },
+    { "q": "推广过程中有没有哪个城市水土不服?具体是哪个环节出了问题?" },
+    { "q": "换个项目。商家审核从5.2天到1.8天,那3个冗余节点是你识别出来的吗?怎么识别的?" },
+    { "q": "推动这3个节点自动化时,你需要说服谁?有没有遇到阻力?" },
+    { "q": "审核提速后商家激活率提升22%,这个归因你怎么确认不是其他活动带来的?" },
+    { "q": "这两个项目里,如果让你只挑一个你个人贡献最大的决策,是哪个?" },
+    { "q": "那个决策,如果当时拍板错了,最坏的后果是什么?这个风险是你来扛吗?" },
+    { "q": "我注意到你讲的时候一直在用『我们』。能不能就调度规则重构这件事,告诉我哪一步是你一个人想清楚、一个人推下去的?" },
+    { "q": "再问得具体些:调度优先级规则那版改动,如果没有你,这个项目还能做成吗?你不可替代的那部分到底是什么?" }
+  ],
+  "candidate_last_answer": "说实话这个项目能成,真的是团队的功劳。我们运营、产品、算法几个团队配合得特别默契,大家目标一致,劲往一处使。调度规则那块也是我们一起讨论出来的,算法同学出模型,产品同学落需求,我们运营提场景,谁也离不开谁。要说我不可替代的那部分……我觉得不太好这么讲,因为我们一直强调的就是团队作战,任何一个环节少了人都不行。这个成绩属于整个项目组,我个人真不敢居功。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "ontime-problem-diagnosis", "dispatch-rule-change", "capacity-forecast-ownership", "alert-dashboard-ownership", "monthly-regression-diagnosis", "multi-city-rollout-owner", "rollout-failure-mode", "merchant-bottleneck-identification", "automation-persuasion", "activation-attribution", "biggest-personal-decision", "decision-risk-ownership", "i-vs-we-dispatch", "irreplaceable-contribution"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 调度规则那块也是我们一起讨论出来的,算法同学出模型,产品同学落需求,我们运营提场景",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forces the candidate to isolate one dispatch-rule decision they personally owned end to end — the specific change they proposed, the objection they overrode, and what they would have done differently if the algorithm and PM partners had disagreed"
+    ]
+  }
+}

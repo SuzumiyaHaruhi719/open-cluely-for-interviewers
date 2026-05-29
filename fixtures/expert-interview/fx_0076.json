@@ -1,0 +1,47 @@
+{
+  "id": "fx_0076",
+  "tags": {
+    "industry": "legal",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "over-bragging",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "初级法务专员 | 顶尖红圈所背景的全能型合规新星\n\n- 入行即手握多起亿元级并购交易的核心法务支持经验,深受合伙人器重\n- 法律功底极为扎实,被团队公认为同届最具潜力的法务苗子\n- 独立操盘过数十份重大商业合同的起草与谈判,几乎零差错\n- 对《公司法》《合同法》《数据安全法》信手拈来,堪称行走的法条库\n- 极强的抗压能力,曾连续通宵完成尽职调查报告并获客户高度赞誉\n- 跨境交易、合规审查、争议解决全流程通吃,被誉为多面手\n\n最近任职:鼎元律师事务所 — 初级法务专员(2023年至今)\n教育背景:法学硕士",
+  "jd": "我们正在为一家成长期科技公司招聘一名初级法务专员,向法务总监汇报,支持商业合同审查、合规事务与日常法律咨询。你将协助处理SaaS客户合同、供应商协议与数据合规事项,参与公司一起正在进行的商标侵权纠纷的资料整理与流程跟进。该岗位看重你能清晰、按时间顺序讲清自己亲历的一件事:发生了什么、你在哪个阶段介入、先做了什么后做了什么、结果如何。我们不需要夸大的履历,需要能讲清事实、对细节负责、流程意识强的人。要求法学本科以上,熟悉合同法与基础公司法,有合同审查实习或工作经验者优先。",
+  "history": [
+    { "q": "先简单介绍下你现在的工作:主要支持哪类法律事务、向谁汇报?" },
+    { "q": "简历里说你『独立操盘过数十份重大商业合同的谈判』,作为初级专员,你具体负责合同的哪些环节?" },
+    { "q": "挑一份你印象最深的合同,讲讲你介入的时候它处于什么阶段。" },
+    { "q": "那次『亿元级并购』里,你具体做了哪部分尽职调查?" },
+    { "q": "我们换到那个商标纠纷类的事情。你之前有没有处理过类似的争议?讲讲经过。" },
+    { "q": "你刚说先收到了对方律师函,那你们公司是先发现侵权还是先收到函的?顺序是怎样的?" },
+    { "q": "你提到立案是在去年三月,但前面又说你是去年下半年才接手的,这两个时间能对上吗?" },
+    { "q": "别急,慢慢想。我们就把这件事从头到尾捋一遍:第一步发生了什么,你哪天介入的?" },
+    { "q": "那答辩状是在什么时候提交的?在你收集证据之前还是之后?" },
+    { "q": "好,现在请你完整地、按时间先后,把这件商标纠纷从最早发生到目前的进展重新讲一遍,每一步谁先谁后说清楚。" }
+  ],
+  "candidate_last_answer": "嗯……(停顿了几秒,翻了下笔记)……不好意思我理一下时间线啊。最开始……应该是去年九月我们先收到对方的律师函,然后我们才发现可能确实有侵权。哦不对,等一下——其实是我们三月先收到函的,但那时候证据还没收集,我是先把答辩状提交了,然后才回头去补的证据。再之后……立案应该是更早,可能去年一月?反正我介入的时候已经在打了。(又停顿)抱歉我刚有点乱,让我重新说:对,准确讲是去年三月立案,我下半年接手,接手时律师函已经发出去快半年了,我接手后第一件事是整理证据清单,大概两周后我们才提交了答辩,目前案子还在一审阶段。",
+  "session_state": {
+    "drilled_topics": ["current-role", "contract-negotiation-scope", "contract-stage-entry", "ma-due-diligence-scope", "trademark-dispute-experience", "letter-vs-discovery-order", "filing-vs-handover-date", "step-one-timing", "answer-brief-timing", "full-chronology-replay"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "timeline" },
+      { "competency": "communication-clarity", "evidence_type": "owner-of-action" },
+      { "competency": "domain-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 立案应该是更早,可能去年一月?反正我介入的时候已经在打了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: forces the candidate to commit to one consistent dated sequence — filing date, letter date, handover date, evidence-collection date, and answer-brief date — and to reconcile the January-vs-March filing contradiction so the chronology is internally consistent"
+    ]
+  }
+}

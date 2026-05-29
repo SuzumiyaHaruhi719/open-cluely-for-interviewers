@@ -1,0 +1,44 @@
+{
+  "id": "fx_0078",
+  "tags": {
+    "industry": "operations",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Senior Operations Manager | Lean Six Sigma | Continuous Improvement | Process Excellence\n\nCore competencies: Lean | Six Sigma (Green Belt) | Kaizen | 5S | Value Stream Mapping | SOP Standardization | Throughput Optimization | OEE | Capacity Planning | S&OP | Cross-Functional Leadership | Stakeholder Management | KPI Dashboards | Root Cause Analysis | DMAIC | Change Management | Operational Excellence | Cost Optimization | Vendor Management | Workflow Automation\n\nExperience\nNorthgate Fulfillment — Senior Operations Manager (2020-present)\n- Drove end-to-end operational excellence across multi-site fulfillment, leveraging Lean and Six Sigma to optimize throughput.\n- Championed continuous improvement culture and Kaizen events to eliminate waste and elevate OEE.\n- Spearheaded SOP standardization and KPI governance across cross-functional stakeholders.\n\nMeridian Logistics — Operations Lead (2016-2020)\n- Owned daily operations, capacity planning, and process optimization initiatives.\n\nSkills: leadership, process improvement, data-driven decision-making, operational rigor.\nEducation: BBA, Operations Management. Lean Six Sigma Green Belt.",
+  "jd": "Northgate Fulfillment seeks a Senior Operations Manager to run two fulfillment sites reporting to the Director of Operations. You will own throughput, labor productivity (units per labor hour), order accuracy, and a cost-per-unit-shipped target. We need an operator who can describe a specific improvement they led: the baseline, the intervention, the mechanism by which it worked, and the measured delta — not a list of methodologies. You will inherit an underperforming second shift, a peak-season backlog risk, and inconsistent SOP adherence across the two sites. Lean/Six Sigma fluency is expected, but we care far more about one concrete, defensible result than a long tools list. Comfort with WMS data and labor-management systems required.",
+  "history": [
+    { "q": "Give me your current scope — how many sites, how many people, and which operational metrics you're accountable for." },
+    { "q": "Your resume lists a lot of methodologies. Pick one Kaizen event you personally ran and tell me what the problem was." },
+    { "q": "What did you actually change in that event — the specific process step, before and after?" },
+    { "q": "What was the baseline metric and what did it become after the change?" },
+    { "q": "You mention OEE improvements. On which line, and by how many points?" },
+    { "q": "Tell me about a time SOP adherence was slipping on second shift. What did you do?" },
+    { "q": "Let's get concrete on that Kaizen result. Give me the exact metric, the before number, the after number, and how long it took." }
+  ],
+  "candidate_last_answer": "So at a high level it was a classic continuous improvement play — we applied Lean principles, ran the DMAIC cycle, and really drove operational excellence end to end. The team embraced the Kaizen mindset and we saw meaningful improvement across the board. Throughput went up, waste went down, and the culture shifted toward data-driven decision-making. I'd say it was a strong result that the stakeholders were really happy with.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "kaizen-problem-framing", "process-change-specifics", "kaizen-baseline-delta", "oee-line-improvement", "sop-adherence-fix", "kaizen-metric-pin"],
+    "current_competency_target": "execution-specificity",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "execution-specificity",
+    "missing_evidence": [
+      { "competency": "execution-specificity", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Throughput went up, waste went down, and the culture shifted",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forces the candidate to abandon methodology buzzwords and state the single Kaizen event's exact baseline number, the after number, the unit (e.g. units per labor hour), and the elapsed weeks to achieve it"
+    ]
+  }
+}

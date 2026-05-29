@@ -1,0 +1,39 @@
+{
+  "id": "fx_0080",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周岚 — 高级品牌与内容营销经理\n\n职业概述\n7年B2B SaaS营销,专注品牌内容与需求生成的结合,习惯用情境-任务-行动-结果的方式复盘每一个campaign。\n\n核心经历\n智核云(2021至今)高级品牌与内容营销经理\n- 情境:公司官网自然流量月均1.2万UV,内容线索转化率仅0.8%,销售抱怨MQL质量差。\n- 任务:半年内把自然流量提升到3万UV、内容线索转化率提到2%,并提升MQL到SQL的转化。\n- 行动:重构了内容主题矩阵,围绕3个高意向关键词集群产出深度内容,联合SEO重做了站内链接结构,并为高意向页面配置了差异化的转化路径。\n- 结果:6个月后自然流量达3.4万UV,内容线索转化率到2.3%,MQL到SQL转化率从11%提升到19%,内容渠道贡献的pipeline同比增长2.1倍。\n\n蓝湖软件(2017-2021)内容营销主管\n- 情境:行业白皮书下载量低,获客成本偏高。\n- 任务:用更低成本获取高质量线索。\n- 行动:重新设计白皮书选题与落地页,搭建了邮件培育序列。\n- 结果:单份白皮书线索成本下降38%,邮件培育带来的二次转化率达14%。\n\n技能:内容营销、SEO、需求生成、营销漏斗、数据复盘。\n教育:新闻学本科。",
+  "jd": "我们正在为一家B2B SaaS公司招聘高级品牌与内容营销经理,向市场负责人汇报,负责内容策略、SEO与需求生成的协同,对自然流量、内容线索转化率与内容渠道贡献的pipeline负责。你需要能就一个具体campaign讲清完整链路:基线、干预动作、生效机制与可量化结果,并能在品牌投入与短期线索之间做出权衡。你将面对一个内容线索转化率偏低、MQL质量受销售质疑的现状。要求熟悉SEO与营销自动化工具,有B2B内容营销实战与漏斗优化经验者优先。",
+  "history": [
+    { "q": "先介绍下你现在负责的范围:对哪些核心指标负责、和销售怎么协同?" },
+    { "q": "简历里那个自然流量从1.2万到3.4万UV的项目,先讲讲你判断问题出在哪。" },
+    { "q": "你说围绕3个高意向关键词集群产出内容,这3个集群是怎么选出来的?" },
+    { "q": "MQL到SQL从11%到19%,你怎么确认这是内容质量提升带来的,而不是销售口径变了?" }
+  ],
+  "candidate_last_answer": "我用了两个交叉验证来排除销售口径的干扰。第一,MQL到SQL的定义在这6个月没有改过,我专门拉了销售运营确认评分模型和阶段定义都没动,这点先排除掉。第二,我把SQL转化率按线索来源拆开看:同期付费渠道的MQL到SQL基本持平在12%左右,只有内容渠道这条线从11%涨到了19%,如果是口径变了,所有渠道应该一起动,而不是只动内容这一条。再补一个佐证:销售反馈内容来的线索更愿意进demo,我们看到这批线索的首次会议出席率从54%提到了71%。所以我判断主要是内容把高意向关键词的流量筛进来了,质量本身变好了。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "traffic-problem-diagnosis", "keyword-cluster-selection", "mql-sql-attribution"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 同期付费渠道的MQL到SQL基本持平在12%左右,只有内容渠道这条线从11%涨到了19%",
+      "must-be-question-type: counterfactual",
+      "expected-yield: pushes the candidate from a clean attribution story into the tradeoff behind it — what brand-building content they sacrificed to chase the three high-intent clusters, and how they would have decided if paid-channel SQL had also risen, testing the depth rather than the recall of their reasoning"
+    ]
+  }
+}

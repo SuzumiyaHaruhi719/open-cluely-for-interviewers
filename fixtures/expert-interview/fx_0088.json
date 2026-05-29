@@ -1,0 +1,44 @@
+{
+  "id": "fx_0088",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "sparse-200words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Director of Curriculum & Instruction — 12 years in K-12 education.\n\nMeridian Unified School District (2019-present): Director of Curriculum. Oversee K-8 ELA and math adoption across 14 schools, ~9,000 students. Led literacy-curriculum rollout.\n\nLakeshore Charter Network (2014-2019): Instructional Coach, then Assistant Principal.\n\nClassroom: 4 years middle-school math teacher.\n\nCredentials: M.Ed Curriculum & Instruction; state administrator license.",
+  "jd": "We are seeking a Director of Curriculum & Instruction to lead the academic program for a 16-school district serving 11,000 students. Reporting to the Deputy Superintendent, you will own the selection, rollout, and continuous improvement of core curriculum in ELA and mathematics, manage a $2.4M instructional-materials budget, and supervise a team of six instructional coaches. You will be accountable for measurable gains on state assessments, fidelity-of-implementation data, and teacher-satisfaction metrics on professional development. The role requires demonstrated success leading a large-scale curriculum adoption from pilot through full implementation, change-management skill with skeptical staff, and the ability to present outcomes to the school board. Experience closing achievement gaps for multilingual learners is preferred.",
+  "history": [
+    { "q": "Describe your current role at Meridian — scope, team, and what you're accountable for." },
+    { "q": "Walk me through the literacy-curriculum rollout you led. What was the goal?" },
+    { "q": "How did you select that curriculum? Who was involved in the decision?" },
+    { "q": "What did the implementation timeline look like across the 14 schools?" },
+    { "q": "How did student outcomes move after the rollout — what does the assessment data show?" },
+    { "q": "Some districts see adoption stall because teachers resist. Did that happen, and how did you handle it?" },
+    { "q": "If you had to name the single biggest reason that rollout fell short of its target, what was it?" }
+  ],
+  "candidate_last_answer": "Look, the honest answer is the rollout was undermined before it ever got to me. The previous director picked a vendor that didn't fit our population, the central-office IT team never provisioned the licenses on time, and frankly half the principals just wouldn't hold their teachers accountable. I was handed a broken situation. Let me ask you something — if you inherited a curriculum nobody bought into and a budget that was already committed, what would you have done differently? Because I'd genuinely like to hear it.",
+  "session_state": {
+    "drilled_topics": ["current-role", "rollout-goal", "curriculum-selection", "implementation-timeline", "outcome-data", "teacher-resistance"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "change-management", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I was handed a broken situation",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific decision or action the candidate personally owned within the constraints they inherited, rather than attributing the shortfall to the prior director, IT, and principals"
+    ]
+  }
+}

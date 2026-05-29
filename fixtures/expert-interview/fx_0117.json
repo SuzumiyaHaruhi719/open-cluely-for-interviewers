@@ -1,0 +1,46 @@
+{
+  "id": "fx_0117",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Staff Research Scientist — Reinforcement Learning & Foundation Models\n\nSelected Highlights\n- World-leading authority on large-scale RLHF; my pipeline work is widely regarded as the gold standard inside the org and arguably the most influential RL infra of its generation\n- First-author on a landmark paper that single-handedly redefined how the field thinks about reward modeling stability\n- Architected a distributed training system that effortlessly scales to thousands of accelerators with near-perfect efficiency\n- Mentored a generation of researchers; multiple are now leaders elsewhere, largely thanks to the foundations I gave them\n- Consistently the go-to person for the hardest, most ambiguous research problems no one else can crack\n\nExperience\nStaff Research Scientist, Frontier AI Lab (2020-present)\n- Led the reward-model training stack used across the lab's flagship alignment efforts\n- Drove research direction on preference optimization and reward hacking mitigation\n\nResearch Scientist, University Spin-off (2016-2020)\n- Worked on policy-gradient methods for robotics\n\nEducation\nPhD, Machine Learning",
+  "jd": "Our lab is hiring a Staff Research Scientist to own the reliability of our reinforcement-learning-from-human-feedback (RLHF) training stack. You will be the technical owner of reward-model training, responsible for diagnosing instability (reward hacking, reward collapse, annotator-disagreement noise), proposing principled mitigations, and quantifying their effect on downstream policy quality. We expect rigorous causal reasoning: when you claim a change helped, you must be able to isolate it from confounds, name the specific metric it moved, and state the experimental design that supports the claim. You will set research direction for a small team, but we evaluate individuals on the specific decisions they personally made and the tradeoffs they weighed — not on lab-wide outcomes. Strong publication record and large-scale training experience required.",
+  "history": [
+    { "q": "Walk me through your current ownership of the reward-model stack — what specifically lands on your desk versus the team's." },
+    { "q": "You mention 'reward hacking mitigation' as a research thrust. Pick one concrete instance of reward hacking you diagnosed." },
+    { "q": "What was the actual signal that told you it was reward hacking and not just a noisy reward model?" },
+    { "q": "Once you suspected it, what was the first intervention you tried?" },
+    { "q": "How did you isolate that your intervention caused the improvement, rather than some other change landing the same week?" },
+    { "q": "What metric did you watch, and what were the before/after numbers?" },
+    { "q": "Let's go to reward-model stability. Tell me about a time the reward model collapsed during training." },
+    { "q": "What was the root cause, and how did you confirm it?" },
+    { "q": "Give me the specific experiment: how did you design the ablation that proved your stabilization fix worked, and what did the curves show?" }
+  ],
+  "candidate_last_answer": "Right, so the stabilization fix — honestly this connects to something I feel strongly about, which is that our whole field is too obsessed with leaderboard chasing. Like, when I started my PhD, people actually read each other's proofs. Now everyone just runs eval harnesses. And don't get me started on the conference review process — I was an area chair last cycle and the quality of reviews was genuinely depressing, reviewers clearly using LLMs to write them. I actually wrote a whole blog post about reviewer accountability that got a lot of traction. Anyway, the broader point is that I think reproducibility culture has eroded, and that's the real crisis. We need better incentives, better tooling, maybe even a new venue model entirely.",
+  "session_state": {
+    "drilled_topics": ["reward-stack-ownership", "reward-hacking-diagnosis", "reward-hacking-signal", "first-intervention", "causal-isolation", "metric-before-after", "reward-collapse-incident", "collapse-root-cause", "stabilization-ablation-design"],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the stabilization fix",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the concrete ablation design that proved the stabilization fix worked — the controlled variable, the held-fixed confounds, what the training/reward curves showed before vs after, and the specific stability metric"
+    ]
+  }
+}

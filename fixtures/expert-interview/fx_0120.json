@@ -1,0 +1,40 @@
+{
+  "id": "fx_0120",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "法律实习生 / 法学院 JM 在读\n\n关键词：公司法、并购重组、尽职调查、合规、数据合规、个人信息保护法、GDPR、反垄断、反不正当竞争、合同审查、诉讼仲裁、知识产权、股权架构、VIE、IPO、私募基金、ABS、跨境投资、外商投资、劳动法、ESG、合规体系搭建、内控、反洗钱、反商业贿赂、FCPA、监管沟通、法律意见书、Term Sheet、SPA、VAM。\n\n实习经历\n- 某红圈所公司业务组实习：参与多个并购与融资项目的尽职调查、合同审查与法律意见书撰写。\n- 某互联网大厂法务实习：参与数据合规、用户协议与隐私政策的梳理。\n\n技能：法律检索（威科先行、北大法宝、Westlaw）、英文合同审阅、法律文书写作。\n证书：通过国家统一法律职业资格考试（主观题待出）。",
+  "jd": "某律师事务所公司业务团队招聘法律实习生，参与并购、融资项目的法律尽职调查、合同审查与法律意见书撰写，并协助数据合规相关事项。我们希望候选人能就自己实际参与过的某一具体项目，清楚说明其中由本人完成的工作环节、发现的关键法律风险点及其分析依据。理解候选人对在职/在校期间所涉项目负有保密义务（NDA），可以在不披露当事人身份与商业秘密的前提下，抽象地说明工作方法、风险类型与分析逻辑。岗位看重扎实的法律分析能力与诚实、克制的表达，而非堆砌术语。",
+  "history": [
+    { "q": "你简历里写了参与并购项目的尽职调查，挑一个你印象最深的，先讲讲这个项目大概是什么类型的交易。" },
+    { "q": "在那次尽调里，由你本人负责核查的是哪一块？你具体看了哪些材料？" },
+    { "q": "理解保密的要求。那我们不谈具体当事人——就方法层面，你在那一块尽调中实际发现的、需要提示给上级的关键风险点是什么，你是依据什么判断它构成风险的？" }
+  ],
+  "candidate_last_answer": "这个问题问得非常好。其实尽职调查的本质，是通过体系化、穿透式的风险识别框架，对标的进行全维度的合规扫描，做到风险前置、闭环管理、赋能交易决策。我始终秉持『勤勉尽责、专业审慎』的执业理念。不过非常抱歉，由于这个项目涉及严格的保密协议（NDA），具体的风险点和材料我确实不方便展开，还请理解。总之我在其中是深度参与、全程跟进的，也充分体现了我的法律检索与风险研判能力。",
+  "session_state": {
+    "drilled_topics": ["dd-project-type", "personal-dd-scope", "key-risk-and-basis"],
+    "current_competency_target": "legal-analysis-depth",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "legal-analysis-depth",
+    "missing_evidence": [
+      { "competency": "legal-analysis-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体的风险点和材料我确实不方便展开",
+      "must-be-question-type: teach-back",
+      "expected-yield: 在不披露当事人与商业秘密的前提下，候选人抽象地讲清一类他亲手识别的法律风险——风险所属类型、他依据哪条法律逻辑或哪类文件判断其构成风险、以及他给上级的处置建议，从而穿透 NDA 借口验证真实分析能力"
+    ]
+  }
+}

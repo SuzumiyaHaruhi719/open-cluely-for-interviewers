@@ -1,0 +1,38 @@
+{
+  "id": "fx_0135",
+  "tags": {
+    "industry": "finance",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Senior Financial Analyst — FP&A\n\nSummary: Financial analyst with experience in corporate FP&A supporting a mid-market SaaS business. Owns the monthly forecast, variance analysis, and ad-hoc decision-support models for the go-to-market organization.\n\nHelioStack (2022-present) — Senior Financial Analyst, FP&A\n- Own the monthly revenue and bookings forecast for the sales organization\n- Built the board-deck variance package and partner with sales leadership on pipeline coverage\n- Led a project to rebuild the headcount-planning model when the prior spreadsheet kept breaking\n- Run the quarterly re-forecast cycle and consolidate inputs from sales ops, marketing, and CS\n\nVanePoint Advisors (2019-2022) — Financial Analyst\n- Supported transaction modeling and due-diligence workbooks for buy-side clients\n- Built three-statement models and assisted with management presentations\n\nSkills: Excel (advanced), Anaplan, NetSuite, SQL (intermediate), three-statement modeling, scenario analysis\nEducation: BBA, Finance",
+  "jd": "HelioStack is hiring a Senior FP&A Analyst to own go-to-market forecasting and decision support. You will partner with the VP of Sales on pipeline coverage, run the quarterly re-forecast, and build models that survive scrutiny from the CFO. We want a candidate who can take one project they led and tell us, precisely: the trigger, the baseline accuracy or pain, what they actually built, who they pulled in, the timeline, and the measurable improvement. The work spans Anaplan model design, variance bridges for the board deck, and headcount/capacity planning. Strong Excel and Anaplan are required; SQL is a plus. We value analysts who are precise with numbers and own forecast accuracy.",
+  "history": [
+    { "q": "Give me an overview of what you own day-to-day in FP&A at HelioStack." },
+    { "q": "You mentioned you rebuilt the headcount-planning model. Walk me through the whole thing — what triggered it, what you built, who was involved, and what changed." }
+  ],
+  "candidate_last_answer": "Sure. The trigger was that our old headcount model was a single Excel file with circular references that broke every time sales reorged — last Q3 it gave finance and the VP of Sales two different ramped-rep counts in the same week, which blew up a board number. My task was to rebuild it so planning was reliable. I scoped it over about five weeks: weeks one to two I interviewed sales ops and the recruiting lead to map the real hiring-to-productivity flow, week three I rebuilt it in Anaplan with a driver-based ramp schedule, weeks four to five I parallel-ran it against the old sheet and reconciled the gaps with our controller. I owned the model design; sales ops validated the ramp assumptions. The result: month-end headcount-to-plan variance went from swinging plus-or-minus fifteen percent down to under four percent for two straight quarters, and the board deck stopped getting reopened over headcount.",
+  "session_state": {
+    "drilled_topics": ["fpa-day-to-day", "headcount-model-rebuild"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I rebuilt it in Anaplan with a driver-based ramp schedule",
+      "must-be-question-type: teach-back",
+      "expected-yield: force the candidate to explain the actual mechanics of the driver-based ramp schedule — which drivers, how ramp productivity is modeled month by month — to confirm they built it versus describing it at a slogan level"
+    ]
+  }
+}

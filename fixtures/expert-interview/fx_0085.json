@@ -1,0 +1,52 @@
+{
+  "id": "fx_0085",
+  "tags": {
+    "industry": "research",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "研发总监 | 国家级人工智能实验室出身的顶尖科研领军者\n\n- 学术界与产业界双栖的稀缺人才,带出过数支业内顶级的算法团队\n- 主导的多个研究方向被誉为行业风向标,论文被顶会反复引用\n- 一手把实验室的研究成果规模化落地,缔造了多个明星产品的技术内核\n- 极强的战略洞察力,总能在技术浪潮来临前精准押注下一个风口\n- 横跨大模型、多模态、强化学习全领域,堪称全栈型科研帅才\n- 频繁受邀在国际顶级学术会议发表主旨演讲,是公认的思想领袖\n\n最近任职:智源未来研究院 — 研发总监(2019年至今)\n此前:某国家级AI实验室 — 资深研究员(2014-2019)",
+  "jd": "我们正在为一家AI公司招聘研发总监,向CTO汇报,负责前沿研究方向的选型、团队管理、研究到产品的转化,以及研发预算与人才梯队建设。该岗位看重你能聚焦地讲清一件事:一次具体的研究方向决策——你基于什么判断押注它、投入了多少资源、最终是否落地、可量化的成效如何,而不是泛泛而谈行业趋势。你将面对一个研究方向分散、研究与工程脱节、人才流失风险偏高的现状。要求有从研究到产品化的完整经验,带过规模化算法团队,能对研发投入产出负责。",
+  "history": [
+    { "q": "先介绍下你现在的职责:带多大团队、管多少研发预算、对什么产出负责。" },
+    { "q": "简历里说你『精准押注下一个风口』,挑一个你押对的方向,讲讲当时为什么选它。" },
+    { "q": "押注这个方向时,你投入了多少人力和算力?这个资源分配是你拍板的吗?" },
+    { "q": "这个研究方向最终落地到哪个产品了?有没有上线?" },
+    { "q": "落地后有没有一个可量化的业务指标改善?比如效果提升或成本下降?" },
+    { "q": "换个话题。说说一次你押错或半途叫停的研究方向,当时怎么决定止损的?" },
+    { "q": "止损那次,沉没成本大概多少?团队怎么安置的?" },
+    { "q": "你们研究到工程的转化,卡点通常在哪?你怎么解决的?" },
+    { "q": "团队人才流失这块,你任内有没有核心成员离开?你怎么应对的?" },
+    { "q": "研发预算分配上,基础研究和应用研究你怎么切分比例?依据是什么?" },
+    { "q": "你提到带出过顶级算法团队,这个团队最核心的3个人现在还在吗?" },
+    { "q": "和CTO或业务方在方向上有没有过分歧?举一次具体的。" },
+    { "q": "我想把话题收回来,聚焦在那次你押对的方向上:你能不能就那一个决策,把你做判断的逻辑链条一步步讲清楚?" },
+    { "q": "你又讲到行业大势了。我只问那一个决策本身:当时摆在你面前有几个备选方向,你是基于哪几条具体证据排除了其他选项、选定它的?" },
+    { "q": "再聚焦一次——别谈行业、别谈趋势,就讲那次方向决策里,你个人看到的、别人没看到的那个关键信号到底是什么?" }
+  ],
+  "candidate_last_answer": "这个问题特别好,说到关键信号,我得先从整个AI行业的发展脉络讲起,不然没法理解。你看从深度学习复兴到现在,其实每隔几年就有一次范式跃迁,这背后是算力、数据和算法三要素的共振。说到算力,我最近特别关注国产芯片的进展,上周还去参观了一家芯片初创公司,聊得特别投机,他们CEO跟我是校友。对了说到校友,我们那届出了好几个创业的,前阵子刚搞了个聚会,大家都感慨现在创业环境跟十年前完全不一样了。其实我一直在思考一个更大的问题:什么才是真正的通用人工智能?这个话题可以聊一整天。要不我先跟你分享一下我对AGI路线图的判断?我觉得这个比那个具体的方向决策有意思多了。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "winning-bet-rationale", "resource-allocation-ownership", "productization-landing", "quantified-impact", "stop-loss-decision", "sunk-cost-team", "research-to-eng-blocker", "talent-retention", "budget-split", "core-team-retention", "cto-disagreement", "decision-logic-chain", "evidence-based-selection", "key-signal-pin"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" },
+      { "competency": "focus-discipline", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我得先从整个AI行业的发展脉络讲起,不然没法理解",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: shuts down the industry-trends and AGI tangent and forces the candidate to name the specific candidate directions on the table, the concrete evidence that ruled each out, and the one observation they personally weighted that others discounted"
+    ]
+  }
+}

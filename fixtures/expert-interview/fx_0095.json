@@ -1,0 +1,48 @@
+{
+  "id": "fx_0095",
+  "tags": {
+    "industry": "education",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Junior Instructional Designer — 2 years building digital learning content.\n\nBrightPath Learning (2023-present): Instructional Designer I. Built self-paced e-learning modules in Articulate Storyline for corporate compliance training. Resume summary says 'led the full redesign of the onboarding curriculum'; experience bullets later say 'supported the senior designer on the onboarding refresh.'\n\nCampus Tutoring Center (2021-2023, part-time during school): Peer tutor and workshop facilitator. Header lists '3 years' of facilitation; dates only cover ~2 years.\n\nProjects: converted a 4-hour instructor-led workshop into a 90-minute online module; built knowledge-check quizzes.\n\nEducation: BA Education, minor in Communications (2023).\n\nTools: Articulate Storyline, Rise, Camtasia, basic HTML/CSS, Google Workspace.",
+  "jd": "We are hiring a Junior Instructional Designer to join our learning-experience team. You will build self-paced e-learning modules, write assessment items aligned to learning objectives, and collaborate with subject-matter experts to translate content into engaging interactions. Day-to-day responsibilities include storyboarding, developing in Articulate Storyline and Rise, running usability checks with a small learner sample, and iterating based on completion and quiz-performance data. We look for candidates who can clearly describe their own contribution on a project, articulate the learning problem they were solving, and show how they measured whether the learning actually landed. Comfort taking SME feedback and a growth mindset matter more than years of experience.",
+  "history": [
+    { "q": "Tell me about your role at BrightPath and what you build day to day." },
+    { "q": "Your summary says you led the onboarding redesign, but the bullets say you supported it. Which was it?" },
+    { "q": "Okay — on that onboarding project, what was the actual learning problem you were trying to fix?" },
+    { "q": "Who decided it needed a redesign, and how was that decision made?" },
+    { "q": "Walk me through the workshop-to-online conversion. What did you change and why?" },
+    { "q": "How did you decide what to cut to get from 4 hours down to 90 minutes?" },
+    { "q": "What tools did you actually author it in?" },
+    { "q": "How did you write the knowledge-check questions — what were they aligned to?" },
+    { "q": "Did you test the module with any real learners before launch?" },
+    { "q": "Tell me about a time an SME pushed back on your design. What happened?" },
+    { "q": "What's one thing you'd do differently on that conversion project?" },
+    { "q": "Give me the full story of one module you're proud of: the problem, what you did, and how you knew it worked." }
+  ],
+  "candidate_last_answer": "Sure. So the compliance module had a real problem — completion rates were sitting around 60% and people were clearly skimming, because the old version was just a 30-slide wall of text with a quiz at the end. So I rebuilt it: I storyboarded a scenario-based flow where learners make decisions as a new employee, added branching with feedback, and broke it into three short chapters with a check after each one. I authored the whole thing in Storyline and pulled in the SME twice to validate the scenarios. Honestly I was really proud of how it turned out — it felt much more engaging and the SME loved the branching.",
+  "session_state": {
+    "drilled_topics": ["brightpath-role", "led-vs-supported-contradiction", "learning-problem", "redesign-decision", "workshop-conversion", "cutting-decisions", "authoring-tools", "quiz-alignment", "learner-testing", "sme-pushback", "lessons-learned"],
+    "current_competency_target": "outcome-orientation",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "outcome-orientation",
+    "missing_evidence": [
+      { "competency": "outcome-orientation", "evidence_type": "metric" },
+      { "competency": "outcome-orientation", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it felt much more engaging and the SME loved the branching",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result of the STAR story — the post-launch completion rate or quiz-score change versus the 60% baseline, and over what period, rather than a subjective claim that it felt more engaging"
+    ]
+  }
+}

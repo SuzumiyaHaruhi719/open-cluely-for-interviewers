@@ -1,0 +1,55 @@
+{
+  "id": "fx_0090",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Aspiring Data Scientist | ML | AI | Deep Learning | NLP | LLMs | Computer Vision | Big Data\n\nProficient in: Python, R, SQL, Scala, Java, C++, Spark, Hadoop, Hive, Kafka, Airflow, dbt, Snowflake, BigQuery, Redshift, Databricks, TensorFlow, PyTorch, Keras, scikit-learn, XGBoost, LightGBM, Hugging Face, LangChain, Docker, Kubernetes, AWS, GCP, Azure, Tableau, Power BI, Looker, MLflow, Kubeflow, Git, Linux.\n\nTechniques: regression, classification, clustering, time series, A/B testing, causal inference, feature engineering, hyperparameter tuning, ensemble methods, transformers, RAG, fine-tuning, reinforcement learning, recommender systems, anomaly detection, dimensionality reduction.\n\nProjects: customer-churn model, sentiment-analysis pipeline, sales-forecasting dashboard, image-classifier demo, RAG chatbot.\n\nEducation: BS Statistics (in progress, junior year). Coursework: probability, linear algebra, ML, databases.\n\nCertifications: Google Data Analytics, AWS Cloud Practitioner, DeepLearning.AI specialization.",
+  "jd": "We are hiring a Data Science Intern to join our experimentation and analytics team for a 12-week summer program. You will partner with a senior data scientist on a scoped project: cleaning and joining event data in SQL, building a baseline predictive model in Python, and presenting findings to product stakeholders. Day-to-day you will write reproducible analysis in notebooks, validate data quality, and help design and read out one A/B test. We value candidates who can reason clearly about a single problem end to end, explain their assumptions, and quantify uncertainty over those who list many tools. Strong SQL and a solid grasp of basic statistics (sampling, hypothesis testing, confidence intervals) are required. You will be mentored closely and are expected to ask good questions.",
+  "history": [
+    { "q": "Tell me a bit about yourself and what draws you to data science." },
+    { "q": "Pick one project from your resume and walk me through the problem you were solving." },
+    { "q": "Let's go with the customer-churn model. What was the target variable, exactly?" },
+    { "q": "Where did the data come from, and how many rows were you working with?" },
+    { "q": "How did you split the data for training and evaluation?" },
+    { "q": "Which metric did you optimize for, and why that one for churn?" },
+    { "q": "What baseline did you compare your model against?" },
+    { "q": "How did you handle class imbalance, if there was any?" },
+    { "q": "Walk me through one feature you engineered and why you thought it would help." },
+    { "q": "How did you check whether the model was overfitting?" },
+    { "q": "If a stakeholder asked 'should we trust this model?', what would you show them?" },
+    { "q": "Let's do some stats. Explain a p-value to me as if I'm a product manager." },
+    { "q": "You ran a sentiment pipeline too — what did you do when the model was confidently wrong?" },
+    { "q": "Suppose an A/B test shows a 2% lift but it's not significant. What do you tell the team?" },
+    { "q": "How do you compute a confidence interval for a conversion rate?" },
+    { "q": "Of all the tools on your resume, which one have you actually used most deeply, and on what?" },
+    { "q": "Let's go back to the churn model. What was your evaluation set's actual performance number?" },
+    { "q": "Stay with me on that churn model — what was the precision or recall you got, and on which split?" }
+  ],
+  "candidate_last_answer": "Right, so the churn model — that actually reminds me of this hackathon I did last spring, which was honestly such a great experience. We had 36 hours and our team built this whole computer-vision thing for sorting recycling, and the energy in the room was unreal. I learned so much about teamwork and staying up all night, and the judges really liked our pitch deck. I think that's when I knew data and AI was my passion. Oh, and I've also been doing this Kaggle competition on the side, the Titanic one, which everyone says you have to do, and I've been reading a lot about LLMs lately because that space is moving so fast.",
+  "session_state": {
+    "drilled_topics": ["self-intro", "project-selection", "churn-target-variable", "data-source-size", "train-test-split", "metric-choice", "baseline", "class-imbalance", "feature-engineering", "overfitting-check", "model-trust", "p-value-explanation", "sentiment-failure", "ab-test-significance", "confidence-interval", "deepest-tool"],
+    "current_competency_target": "evaluation-rigor",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "evaluation-rigor",
+    "missing_evidence": [
+      { "competency": "evaluation-rigor", "evidence_type": "metric" },
+      { "competency": "evaluation-rigor", "evidence_type": "scope" },
+      { "competency": "focus", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the churn model — that actually reminds me of this hackathon I did last spring",
+      "must-be-question-type: metric-pin",
+      "expected-yield: redirects the candidate back to the churn model and forces a single concrete evaluation number (precision, recall, or AUC) tied to the specific test split, instead of drifting to unrelated projects"
+    ]
+  }
+}

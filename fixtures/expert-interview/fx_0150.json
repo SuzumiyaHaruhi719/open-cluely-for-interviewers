@@ -1,0 +1,39 @@
+{
+  "id": "fx_0150",
+  "tags": {
+    "industry": "research",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "周明远 — 研究院 研发总监 / 首席科学家\n\n工作经历\n云栖人工智能研究院 研发总监（2018 年至今）\n- 负责语音与多模态方向的应用研究团队，团队规模约 40 人\n- 主导三个重点项目从立项到落地，多项成果转化为公司产品能力\n\n云栖人工智能研究院 首席科学家（2016 年至今）\n- 全面负责研究院整体技术路线与对外学术合作\n- 直接向 CTO 汇报，统管约 120 人的研究序列\n\n远见科技 高级研究员（2015 年 - 2019 年）\n- 独立承担一个计算机视觉课题，发表论文若干\n\n教育背景\n某重点高校 计算机科学 博士\n\n备注：本人 2017 年起即全职于云栖研究院，此前无任何其他全职任职经历。",
+  "jd": "我们研究院在招一名研发总监，负责一个 30-50 人规模的应用研究团队，方向覆盖语音、自然语言与多模态。该岗位直接向研究院院长汇报，需要对团队的研究课题立项、资源分配、与产品线的成果转化负全责。我们希望候选人有真实带队从 0 到 1 做出可落地成果的经历，能讲清楚每一个关键项目里自己亲手做的决策与取舍，对团队规模、项目周期、投入产出有准确的记忆。岗位会接受院长与公司管理层的严格质询，因此对履历的真实性、时间线的自洽性要求极高。",
+  "history": [
+    { "q": "我先对一下你的履历——你简历上同时写了 2016 年起任首席科学家、2018 年起任研发总监，还写了 2015 到 2019 在远见科技，又说 2017 年起才全职在云栖。这几段时间和身份能帮我理一下吗？" },
+    { "q": "好，那我们先放下时间线。挑一个你在云栖亲手主导、从立项到落地的项目，讲讲你本人做的关键决策。" }
+  ],
+  "candidate_last_answer": "……（停顿）……抱歉我想一下怎么讲清楚。嗯，亲手主导的项目……其实说到立项我就想起当年研究院刚搬到新园区那会儿，那栋楼的网络特别差，我们为了跑实验天天加班到后半夜，食堂都关了，我记得有次我自己开车去给整个组买宵夜，路上还爆了个胎。说到爆胎，我那台车真是一言难尽，后来我换成新能源了，充电桩的事又是一堆故事……哎，扯远了。园区文化这块我其实特别有心得，团队凝聚力就是这么一点点磨出来的，那段日子虽然苦但是真的有意思。你刚问的是哪个项目来着？",
+  "session_state": {
+    "drilled_topics": ["履历时间线自洽性", "亲手主导项目的关键决策"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你刚问的是哪个项目来着",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从园区文化、爆胎、换车这些跑题内容拉回，逼他锁定一个具体项目，按时间顺序说出立项时他本人做了哪几个技术或资源决策、为什么这么选、放弃了什么备选方案"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "fx_0133",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "初级产品经理 — 移动端工具类应用\n\n个人简介：两年产品经验，目前在一款笔记类 App 负责 onboarding 与留存模块。擅长用数据定位问题、设计实验并跟进上线效果。\n\n云笺笔记（2023 至今）— 产品经理\n情境：新用户次日留存只有百分之二十二，远低于行业基准。\n任务：负责把次日留存提升到百分之三十以上。\n行动：我做了二十次新用户访谈，定位到注册后引导步骤过长（七步）是主要流失点；我把引导精简为三步，并设计了一个首日完成第一条笔记的激励任务，做了 A/B 实验灰度百分之五十流量。\n结果：四周后实验组次日留存从百分之二十二提升到百分之三十一，全量上线后稳定在百分之三十。\n\n格物科技（2022 至 2023）— 产品助理\n情境：用户反馈搜索功能找不到历史笔记。\n任务：协助主管定位搜索体验问题。\n行动：我整理了三百条用户反馈做了归类，输出了一份问题分布文档，推动搜索增加标签筛选。\n结果：搜索相关的客诉量在两个月内下降了约四成。\n\n技能：用户访谈、A/B 实验设计、SQL 取数、Axure 原型、留存分析\n教育：某大学 信息管理与信息系统 本科",
+  "jd": "云笺笔记招聘一名初级产品经理，负责新用户激活与早期留存。我们希望候选人能够清晰地讲述一个自己主导的留存提升项目：当时的留存基线是多少、你如何定位流失点、具体做了哪些改动、用什么实验方法验证、最终留存提升了多少。你需要熟练做用户访谈、设计 A/B 实验、用 SQL 自助取数，并能与设计、研发紧密协作推动上线。我们重视用数据说话、对结果负责的产品同学。日常工作包括撰写需求文档、跑增长实验、复盘上线数据，并向产品负责人汇报。",
+  "history": [
+    { "q": "先简单介绍一下你现在在云笺负责的模块吧。" },
+    { "q": "你提到次日留存只有百分之二十二，这个数字是怎么得到的？" },
+    { "q": "你做了二十次用户访谈，访谈对象是怎么选的？" },
+    { "q": "为什么判断引导步骤过长是主要流失点，而不是别的原因？" },
+    { "q": "把引导从七步精简到三步，你砍掉了哪些步骤？" },
+    { "q": "首日激励任务具体是什么形式？" },
+    { "q": "这个 A/B 实验你是怎么设计的，灰度多少流量？" },
+    { "q": "实验跑了多久，最终留存数据是多少，全量后稳定在什么水平？" }
+  ],
+  "candidate_last_answer": "实验我们灰度了百分之五十的新用户流量，对照组保持原来的七步引导，实验组用三步引导加首日激励任务。我设的核心指标是次日留存，辅助看首日第一条笔记完成率。实验跑了四周，到第四周实验组次日留存从百分之二十二提升到百分之三十一，对照组基本没动，差异在统计上显著。后来全量上线，连续两个月稳定在百分之三十左右，所以我判断这个提升是真实可复制的，不是波动。",
+  "session_state": {
+    "drilled_topics": ["current-module", "retention-baseline-source", "interview-sampling", "churn-point-attribution", "onboarding-step-cuts", "incentive-task-form", "ab-test-design", "experiment-duration-result"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 差异在统计上显著",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate to specify how significance was determined — sample size per arm, the test used, confidence level — to confirm numbers-fluency is real rather than a memorized phrase"
+    ]
+  }
+}

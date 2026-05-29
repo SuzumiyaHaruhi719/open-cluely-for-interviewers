@@ -1,0 +1,54 @@
+{
+  "id": "fx_0128",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "verbose-1500words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "产品总监 / B 端 SaaS 与平台产品 — 从业十一年\n\n职业概述\n本人为企业级 SaaS 与平台型产品的产品总监，十一年间历经从一线产品经理到产品负责人的完整成长路径，主导过 CRM、营销自动化与开放平台等多条产品线，熟悉 B 端复杂决策链下的需求洞察、商业化路径设计与跨部门协同。擅长在模糊问题中定义清晰的产品策略，把『客户要的功能』翻译成『可持续的产品与商业模型』，并以数据指标牵引团队迭代。\n\n核心能力\n第一，战略与规划：能够基于市场、客户与公司目标制定多季度产品路线图，识别投入产出比最高的方向，并对不做什么做出明确取舍。第二，商业化设计：在订阅制、用量计费与生态分成等多种模式间做权衡，主导过定价体系与套餐分层的设计与落地。第三，跨部门协同：作为产品负责人对接销售、客户成功、研发与市场，建立需求优先级机制，平衡大客户定制与平台通用性之间的张力。第四，数据驱动：以北极星指标与关键转化漏斗牵引迭代，建立产品健康度看板。\n\n重点经历\n某企业服务公司 产品总监（2019 至今）\n负责营销自动化与客户数据平台（CDP）两条产品线，管理约 15 人的产品团队。期间主导了产品由项目制交付向标准化 SaaS 订阅的转型，推动套餐分层与按用量计费的商业化改造；牵头开放平台与开发者生态的从 0 到 1 建设，定义了 API 开放策略与合作伙伴接入流程；建立了以激活率、付费转化与净留存（NDR）为核心的指标体系，并据此重构了 onboarding 流程。\n某 SaaS 创业公司 高级产品经理（2015-2019）\n负责 CRM 核心模块，从早期 PMF 探索到规模化复制，参与了多轮商业模式调整与销售打法的产品支撑。\n某互联网公司 产品经理（2013-2015）\n负责一款面向中小商家的工具型产品，完成从需求到上线的完整闭环。\n\n方法论与协作\n本人在工作中强调『先把问题定义清楚，再谈解决方案』，习惯用结构化的方式拆解模糊需求，区分表层诉求与底层动机。在跨部门协作中重视建立透明的优先级规则与决策记录，减少反复扯皮。对待数据保持审慎，关注口径一致性与因果而非相关。\n\n职业期望\n希望在一家重视产品长期价值、愿意在商业化与平台生态上持续投入的公司，承担更大范围的产品与组织责任，推动产品从单点工具走向平台化与生态化。",
+  "jd": "某企业服务公司招聘产品总监，负责核心 SaaS 产品线的策略、商业化与平台生态建设。我们希望候选人能就某一个具体的产品决策（如定价改版、平台化取舍、某次重大需求优先级裁决）说清楚其中由本人做出的判断、背后的取舍逻辑与可量化结果。面试中我们关注候选人能否聚焦回答所问的问题本身，避免答非所问或把问题反抛给面试官。岗位要求扎实的商业化设计能力、清晰的优先级决策机制以及数据驱动的迭代习惯。",
+  "history": [
+    { "q": "先讲讲你现在负责的两条产品线，各自的北极星指标是什么。" },
+    { "q": "你提到主导了从项目制到 SaaS 订阅的转型，先说说转型前的核心痛点。" },
+    { "q": "在套餐分层设计里，你是怎么划分各档位的？" },
+    { "q": "为什么这么分，依据是什么客户数据？" },
+    { "q": "按用量计费这块，计费的核心计量单位你最后定的是什么？" },
+    { "q": "为什么选这个计量单位而不是按席位？" },
+    { "q": "定价改版上线后，付费转化和客单价分别有什么变化？" },
+    { "q": "净留存（NDR）改版前后是多少？" },
+    { "q": "开放平台从 0 到 1，你定义的 API 开放策略核心原则是什么？" },
+    { "q": "合作伙伴接入流程里，你设了哪些准入门槛？" },
+    { "q": "生态分成的比例你是怎么定的？" },
+    { "q": "onboarding 重构后，激活率提升了多少？" },
+    { "q": "你提到区分表层诉求与底层动机，举一个你这么做并改变了产品方向的例子。" },
+    { "q": "那次大客户定制和平台通用性冲突时，你最后怎么裁决的？" },
+    { "q": "这个裁决得罪了销售吗？你怎么处理的？" },
+    { "q": "回头看，这个决定如果重来你会改吗？" },
+    { "q": "我们具体说那次大客户定制与平台通用性的冲突：当时摆在你面前的两个选项分别是什么，你基于哪几个指标做的取舍，最后这个决定对 NDR 和大客户续约率的实际影响是多少？" }
+  ],
+  "candidate_last_answer": "其实这个问题我想先反问你一下——你们公司现在在大客户定制和平台化之间，是怎么定位的？因为这直接决定了答案。说到这个，我特别想聊聊我对 B 端产品趋势的看法，我觉得未来三年所有 SaaS 都会往 PLG 转，单纯靠销售驱动的模式一定会遇到天花板。我最近还在研究 AI Agent 对 SaaS 形态的冲击，这块我有很多想法。你们团队现在有在布局 AI 方向吗？我觉得这才是真正值得深聊的话题。",
+  "session_state": {
+    "drilled_topics": ["product-lines-north-star", "saas-transition-painpoint", "tier-design", "tier-rationale", "billing-unit", "billing-unit-rationale", "pricing-conversion-impact", "ndr-before-after", "api-open-strategy", "partner-onboarding-gates", "ecosystem-revshare", "activation-uplift", "surface-vs-underlying-need", "custom-vs-platform-ruling", "sales-conflict-handling", "decision-hindsight", "custom-vs-platform-tradeoff-numbers"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你们公司现在在大客户定制和平台化之间，是怎么定位的",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 阻止候选人把问题反抛与跑题，迫使其回到那次大客户定制与平台通用性冲突——讲清当时的两个具体选项、据以取舍的指标，以及该决定对 NDR 与大客户续约率的实际数字影响"
+    ]
+  }
+}

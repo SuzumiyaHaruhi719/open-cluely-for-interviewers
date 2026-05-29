@@ -1,0 +1,40 @@
+{
+  "id": "fx_0111",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Staff 学习工程师 | 自适应学习系统\n\n概述：\n7 年教育科技产品与算法工程经验，专注自适应学习与内容推荐。习惯用数据驱动迭代，注重可衡量的学习效果。\n\n知行教育科技 — Staff 学习工程师（2020 至今）\n- 负责自适应练习引擎的能力建模与推题策略\n- 主导一次推题算法重构：将知识点掌握度建模从规则法迁移到 IRT（项目反应理论）模型\n- 与教研、数据团队协作定义学习效果指标\n\n启文在线 — 高级算法工程师（2017-2020）\n- 负责错题推荐与个性化练习\n\n技能：Python、推荐系统、IRT、知识追踪（DKT）、A/B 测试、学习数据分析。\n\n代表成果：自适应练习引擎重构后，目标年级的单元测验平均提分与练习完成率均有显著提升（A/B 验证）。",
+  "jd": "致学科技招聘一名 Staff 级学习工程师，主导自适应学习引擎的能力建模与推荐策略演进。你将定义并 own 推题算法的核心逻辑，从能力建模、策略设计到 A/B 实验闭环，并与教研、数据团队协作。我们尤其关注候选人在团队协作成果中能否清晰区分个人贡献——你具体设计了什么、做了哪个关键决策、对结果负了什么责任。需要扎实的 IRT 或知识追踪经验，熟悉 A/B 实验设计与统计显著性判断。",
+  "history": [
+    { "q": "先讲讲你在知行教育目前负责的核心系统和你的角色。" },
+    { "q": "你主导的推题算法重构，从规则法迁到 IRT，当时要解决的核心问题是什么？" },
+    { "q": "这次重构里，模型选型和推题策略具体是怎么定下来的？" },
+    { "q": "我想听清楚：在这次重构里，哪一部分是你个人拍板或亲手做的，结果如何？" }
+  ],
+  "candidate_last_answer": "这个项目我们做得挺扎实的。我们当时先一起调研了 IRT 和知识追踪两条路线，我们讨论后决定先上 IRT，然后我们一起设计了能力建模的参数估计方案，数据团队帮我们准备了训练样本，教研团队帮我们标注了知识点难度，我们又一起跑了 A/B 实验。最后我们目标年级的单元测验平均提了 6 分多，练习完成率从 62% 涨到 78%。整体是团队配合得好，大家都出了力，很难说哪一块是某个人的功劳，反正就是我们一起把它做出来了。",
+  "session_state": {
+    "drilled_topics": ["current-role", "重构核心问题", "模型选型与策略"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难说哪一块是某个人的功劳，反正就是我们一起把它做出来了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 穿透候选人全程『我们』的集体表述，迫使其指认在 IRT 迁移中由他个人拍板或亲手实现的具体决策（如参数估计方法的选择、推题策略的设计取舍），以及他为这一决策承担的结果责任，验证其作为 Staff 级工程师的真实个人 ownership 而非团队叙事"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "fx_0079",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "采购与供应商管理经理 | 制造业供应链降本增效的实战尖兵\n\n- 行业顶尖的战略采购操盘手,主导过多个品类的全球寻源,降本成果斐然\n- 以铁腕谈判著称,曾凭一己之力把核心物料成本压到行业最低\n- 供应商关系管理大师,手握覆盖三大洲的优质供应商资源池\n- 极强的危机处理能力,屡次在供应中断的至暗时刻力挽狂澜\n- 精通战略寻源、成本建模、供应商绩效管理与合同谈判全套打法\n- 被公司奉为降本标杆,所到之处成本必降、交付必稳\n\n最近任职:恒邦制造 — 采购与供应商管理经理(2020年至今)\n此前:广联机电 — 高级采购工程师(2017-2020)",
+  "jd": "我们正在为一家精密制造企业招聘采购与供应商管理经理,向供应链总监汇报,负责关键品类的寻源、成本控制、供应商绩效与交付保障。你将统筹核心物料的双源开发、年度降本目标的落地,以及对一次近期供应中断事件的复盘与整改。该岗位看重你能就一次具体的失败或事故,讲清你自己在其中的决策与责任:你当时怎么判断、做了什么、哪一步本可以做得更好——而不是把问题归咎于他人或外部。你将面对一个单一供应商依赖度偏高、来料质量波动的现状。要求熟悉成本建模与供应商管理体系,有制造业关键物料寻源与风险管控经验者优先。",
+  "history": [
+    { "q": "先介绍下你现在的职责:负责哪些品类、对接多少供应商、对什么指标负责。" },
+    { "q": "简历里说你『凭一己之力把核心物料成本压到行业最低』,讲讲是哪个品类、怎么压下来的?" },
+    { "q": "这个降本幅度有多大?和你接手前比降了多少个点?" },
+    { "q": "换个话题。说说那次供应中断事件,当时是哪个物料、断了多久?" },
+    { "q": "这个供应商是你选的吗?当时为什么没有做双源?" },
+    { "q": "断供发生前,有没有预警信号?你们的供应商绩效监控有没有提示风险?" },
+    { "q": "事件期间你第一时间做了什么决策?有没有启用备选供应商?" },
+    { "q": "复盘的时候,你认为这次事故里你个人有哪些地方本可以做得更好?" },
+    { "q": "我想听你自己的那部分责任:抛开别人,就你作为这个品类的负责人,这次断供你哪一步判断失误了?" }
+  ],
+  "candidate_last_answer": "说实话这事真不能全怪我。首先这个供应商是当年总监拍板定的,我接手的时候双源这事就没影儿,质量团队也一直没把来料波动的数据同步给我们采购。预警这块,我们用的那套供应商绩效系统本来就老旧,根本没法提前报警,这是IT的锅。断供那阵子物流也掉链子,备选供应商的货卡在港口出不来,那是物流部门没协调好。要说我自己的责任……我觉得我已经尽力了,该催的催了,该升级的也升级了,真正出问题的环节都不在我这条线上。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cost-reduction-category", "cost-reduction-magnitude", "supply-disruption-event", "single-source-decision", "early-warning-signals", "disruption-first-actions", "self-retrospective", "personal-responsibility-pin"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "risk-management", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个供应商是当年总监拍板定的,我接手的时候双源这事就没影儿",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forces the candidate to stop redirecting blame to the director, quality, IT, and logistics, and to name one decision within their own authority as category owner — when they could have initiated dual-sourcing after taking over, and why they did not"
+    ]
+  }
+}

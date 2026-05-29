@@ -1,0 +1,44 @@
+{
+  "id": "fx_0140",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": "reverses-question"
+  },
+  "resume": "客户支持实习生 — 在线教育平台\n\n简介：本科大三在读，在一家在线教育平台的用户支持团队实习，负责处理学员的课程与退费咨询，参与工单分流与常见问题文档维护。\n\n知学在线（2024 至今）— 用户支持实习生\n情境：续费高峰期工单积压，学员平均等待回复时间偏长。\n任务：协助主管缩短常见退费类工单的处理时间。\n行动：我统计了一周的工单，发现退费类占了约四成且问法高度相似；我整理出八个高频退费场景，写了对应的标准回复模板，并和主管确认口径后上线。\n结果：退费类工单的平均首次响应时间从约六小时缩短到约两小时，主管反馈学员投诉也减少了。\n\n校园经历\n- 学生社团答疑志愿者，负责新生咨询\n\n技能：工单处理、Excel 数据整理、标准话术撰写、用户沟通\n教育：某大学 教育技术学 本科在读",
+  "jd": "知学在线招聘用户支持实习生，参与学员咨询处理、工单分流与知识库维护。我们希望实习生能讲清楚自己在某个改进中实际做了什么、用什么数据判断、结果如何，并能直接回答面试官的提问而不是反问回避。日常工作包括处理退费与课程咨询工单、维护常见问题模板、协助主管做工单数据统计。我们重视诚实、沟通清晰、对细节负责的同学，表现优秀者有机会转正或获得正式 offer。",
+  "history": [
+    { "q": "先介绍一下你在知学实习负责的工作内容。" },
+    { "q": "你提到退费类工单占了四成，这个比例是怎么统计的？" },
+    { "q": "你整理出八个高频退费场景，是按什么维度分类的？" },
+    { "q": "标准回复模板的口径是你一个人定的，还是和主管一起？" },
+    { "q": "首次响应时间从六小时降到两小时，这个时间是系统里看的吗？" },
+    { "q": "模板上线后，有没有出现学员觉得回复太模板化的情况？" },
+    { "q": "如果遇到模板覆盖不了的退费纠纷，你会怎么处理？" },
+    { "q": "再具体一点：你写的八个模板里，哪一个场景最难定口径，为什么？" }
+  ],
+  "candidate_last_answer": "这个问题挺好的，不过我想先反问您一下：您觉得对于一个实习生来说，定口径这件事到底应该做到多细才算合格？还有，贵公司现在的退费工单是用哪套系统在跑、口径是谁在维护的？我其实更想了解你们团队目前是怎么做的，这样我才好判断我那八个模板里哪个最难。您能先跟我说说你们的标准吗？",
+  "session_state": {
+    "drilled_topics": ["internship-scope", "refund-ratio-method", "scenario-classification", "template-ownership", "response-time-source", "template-rigidity-feedback", "uncovered-dispute-handling", "hardest-template-scenario"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我想先反问您一下",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: redirect the candidate's counter-question back onto themselves and force them to name the single hardest template scenario and the reasoning they used to settle its wording, revealing real ownership of the work"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0072",
+  "tags": {
+    "industry": "design",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Maya Okonkwo\nVP of Product Design\n\nExperience\n- Vellum (2021-present): VP Design. Built and led the product design org for a B2B fintech SaaS.\n- Loomwork (2018-2021): Director of Design, growth and onboarding surfaces.\n- Tinderbox Studio (2014-2018): Senior Product Designer, then Design Manager.\n\nSelected work\n- Led the redesign of the core dashboard and the self-serve onboarding flow.\n- Stood up the company's first design system, shared across web and mobile.\n- Introduced continuous discovery and weekly usability testing.\n\nSkills: design strategy, design systems, design ops, research, hiring, exec partnership.\nEducation: BFA, Communication Design.",
+  "jd": "Vellum is hiring a VP of Product Design to own design end-to-end across a 40-person org (product design, research, content design, design systems). You will report to the CPO and partner with Eng and PM leadership on roadmap. This is a metrics-accountable role: you will be expected to tie design investment to activation rate, time-to-first-value, and self-serve conversion, and to defend those numbers to the board. We want a leader who has scaled a design system across multiple platforms, run a research practice with real sample sizes, and made hard prioritization calls under shipping pressure. You will inherit a fragmented component library, an activation funnel that has been flat for three quarters, and a research team that lacks a clear charter. Strong portfolio of measurable outcomes required, not just visuals.",
+  "history": [
+    { "q": "Give me the shape of your current org at Vellum — headcount, the disciplines you own, and who you report to." },
+    { "q": "Take the onboarding redesign. What problem were you actually solving, and how did you know it was the right problem?" },
+    { "q": "How did you measure the onboarding redesign's impact — what was the baseline activation rate and what did it become?" },
+    { "q": "Let's talk about the design system. What was scattered before, and what did you consolidate?" },
+    { "q": "How did you measure adoption of the design system across teams?" },
+    { "q": "Tell me about a prioritization call where you had to kill or defer something the team loved." },
+    { "q": "What was the hardest tradeoff in that decision, and what did you give up?" },
+    { "q": "You said the onboarding work drove a big activation lift. Walk me through exactly how that number was calculated and who validated it." }
+  ],
+  "candidate_last_answer": "Honestly the impact was massive. The onboarding redesign drove activation up by something like 300%, conversion roughly tripled, and time-to-value basically collapsed overnight. Across the portfolio our design work has generated north of $40M in incremental ARR — that's the number I quote to the board. The design system alone probably saved us thousands of engineering hours a year. I don't have the exact dashboards in front of me, but those are the headline figures everyone internally agrees on.",
+  "session_state": {
+    "drilled_topics": ["current-org-scope", "onboarding-problem-framing", "onboarding-impact-measurement", "design-system-consolidation", "design-system-adoption", "prioritization-call", "prioritization-tradeoff", "activation-metric-provenance"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: activation up by something like 300%, conversion roughly tripled",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forces the candidate to state the absolute baseline and post-change activation rate, the denominator and cohort definition, and name the analyst or dashboard that validated the 300% figure rather than restating a round multiplier"
+    ]
+  }
+}

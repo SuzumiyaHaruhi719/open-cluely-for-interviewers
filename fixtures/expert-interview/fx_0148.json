@@ -1,0 +1,53 @@
+{
+  "id": "fx_0148",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Patrick Vasquez — Vice President of Sales\n\nExperience\nVP of Sales, Lumera Analytics (2019-present)\n- Lead a global field organization selling a data-observability platform into mid-market and enterprise accounts\n- Built and scaled the sales motion across North America and EMEA; introduced a two-tier SDR-to-AE handoff\n- Owned annual quota-setting, territory design, and the commission plan in partnership with RevOps and Finance\n- Drove the transition from a perpetual-license model to annual recurring revenue\n\nRegional Sales Director, Brightpath Software (2014-2019)\n- Ran the West region team selling workflow-automation software\n- Stood up the first formal sales-enablement program and onboarding curriculum\n\nAccount Executive, Cordova Systems (2010-2014)\n- Carried a net-new logo quota in the manufacturing vertical\n\nEducation\nBA, Economics — University of Oregon\n\nSkills: enterprise selling, MEDDICC, forecasting, channel partnerships, pricing strategy",
+  "jd": "Lumera Analytics seeks a VP of Sales to scale revenue from its current run-rate toward a Series-D milestone. You will own the global new-business and expansion number, manage four regional directors and roughly 70 quota-carriers, and report directly to the CRO. You are accountable for net revenue retention (target 120%+), win-rate on competitive evaluations, and sales-cycle compression in the enterprise segment. The role requires demonstrated experience owning a number north of $80M ARR, replacing or upgrading a forecasting methodology, and rebuilding a comp plan that had created perverse incentives. You will inherit a forecast that has missed three consecutive quarters and a discounting culture that has eroded average deal size. Board and investor exposure is significant; you must defend pipeline math under scrutiny. Travel ~50%.",
+  "history": [
+    { "q": "Walk me through your current number at Lumera — the ARR you own and how it splits between new business and expansion." },
+    { "q": "You said the forecast had missed three quarters before you'd want to fix it. What was the miss magnitude each quarter?" },
+    { "q": "How did you personally change the forecasting methodology?" },
+    { "q": "What was the forecast accuracy before versus after your change?" },
+    { "q": "Tell me about the comp-plan rebuild. What specific incentive was broken?" },
+    { "q": "What did you change the accelerators to, and what behavior shifted?" },
+    { "q": "Let's talk net revenue retention. What was NRR when you arrived?" },
+    { "q": "What specific motions drove expansion — and which one moved the needle most?" },
+    { "q": "Give me a competitive deal you personally pulled out of the fire. What was the ACV?" },
+    { "q": "Who was the competitor and what was the deciding factor?" },
+    { "q": "You mentioned discounting eroded deal size. By how much did average deal size fall?" },
+    { "q": "What discipline did you install to stop the discounting?" },
+    { "q": "How did win-rate change after that discipline went in?" },
+    { "q": "Walk me through how you set quota for a brand-new territory with no history." },
+    { "q": "What attainment did that new territory hit in its first full year?" },
+    { "q": "Let me be direct: across everything you've described, give me the single hardest number you carried and the exact result against it." }
+  ],
+  "candidate_last_answer": "...... Sorry — let me take that one properly. The hardest number was the enterprise new-logo target the year we repositioned upmarket. Before I answer the result, let me ask you something: when you say 'result,' are you looking for the bookings figure, the attainment percentage, or the year-over-year growth? Because I'd hate to give you the wrong lens. And honestly, what does 'good' look like to you for a VP at this stage — is the bar landing the number, or is it building the system that lands it next year too? Tell me which one matters more to you and I'll frame it that way.",
+  "session_state": {
+    "drilled_topics": ["current-arr-split", "forecast-miss-magnitude", "forecast-methodology", "forecast-accuracy", "comp-plan-incentive", "accelerator-change", "nrr-baseline", "expansion-motions", "competitive-deal-acv", "competitor-deciding-factor", "discount-erosion", "discount-discipline", "win-rate-shift", "new-territory-quota", "new-territory-attainment", "hardest-number-result"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication-under-pressure", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: are you looking for the bookings figure, the attainment percentage, or the year-over-year growth",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate stops redirecting the question back at the interviewer and commits to one concrete number — the actual enterprise new-logo target dollar figure and the exact attainment result against it"
+    ]
+  }
+}

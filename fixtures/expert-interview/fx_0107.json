@@ -1,0 +1,43 @@
+{
+  "id": "fx_0107",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "应聘：客户支持实习生\n\n教育：行政管理大三在读。\n\n经历：\n校学生会服务部干事，处理过同学的咨询与投诉。\n寒假在一家连锁奶茶店做过两周兼职店员。\n\n技能：沟通能力好、打字快、会用基础办公软件。\n\n自我评价：脾气好、有耐心、喜欢和人打交道。",
+  "jd": "悦客云客服外包中心招聘客户支持实习生，负责通过在线工单和电话为电商商家提供一线支持。实习生需要在规定时效内响应工单，遵循话术与升级流程，记录工单分类，对于无法解决的问题按规范升级给二线。我们看重候选人的同理心、抗压能力，以及面对客户不满时保持专业、不与客户对立的态度。实习期 3 个月，按响应时效、客户满意度和工单质量考核。",
+  "history": [
+    { "q": "先说说你在学生会服务部，处理过印象最深的一次同学投诉是什么？" },
+    { "q": "那次投诉里同学最不满的点是什么，你当时怎么回应的？" },
+    { "q": "如果客户情绪很激动、一直指责你，你一般怎么处理？" },
+    { "q": "举个具体例子：有没有过你觉得对方无理取闹的时候，你是怎么做的？" },
+    { "q": "在奶茶店那两周，有没有遇到过顾客投诉，你怎么处理的？" },
+    { "q": "我想确认一下：当客户的指责其实不太讲道理时，你会怎么既不顶撞又把问题解决？" }
+  ],
+  "candidate_last_answer": "你怎么老是假设客户都是对的？有些人就是来找茬的，我凭什么要一直忍着。我在奶茶店那次，那个顾客明明自己点错了还怪我，我直接跟他说是他自己看错菜单的，这有什么问题吗？我觉得一味迁就客户才是不专业。你们是不是就想要那种唯唯诺诺的人，那这个岗位可能确实不太适合我。",
+  "session_state": {
+    "drilled_topics": ["学生会投诉案例", "投诉核心诉求", "情绪激动应对", "无理取闹处理", "奶茶店投诉"],
+    "current_competency_target": "customer-empathy",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "customer-empathy",
+    "missing_evidence": [
+      { "competency": "customer-empathy", "evidence_type": "mechanism" },
+      { "competency": "self-awareness", "evidence_type": "owner-of-action" },
+      { "competency": "conflict-deescalation", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我直接跟他说是他自己看错菜单的",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 绕开候选人的对抗情绪，让其复盘那次奶茶店冲突的具体决策链——在认定顾客有错之后，他每一步说了什么、对方如何反应、最终问题是否解决，从而暴露他是否有任何降低对立、聚焦解决问题的能力，而不只是争输赢"
+    ]
+  }
+}

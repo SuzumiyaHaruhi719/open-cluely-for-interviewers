@@ -1,0 +1,44 @@
+{
+  "id": "fx_0156",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "sparse-200words",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Priya Nair\nComputer Science student (junior) — backend engineering internship\n\nEducation\nTech Institute — BS Computer Science, expected next year\n\nExperience\n- Software Engineering Intern, a fintech startup (last summer): worked on backend services on the payments team\n- Teaching Assistant, Data Structures course (one semester)\n\nProjects\n- Built a URL shortener with a Redis cache (personal project)\n- Course project: a small REST API with Postgres\n\nSkills\nJava, Python, basic SQL, Git, REST APIs, intro to Docker\n\nActivities\n- Member, university coding club",
+  "jd": "We're hiring a backend engineering intern to join a small services team. You'll work on internal APIs, write tests, and help debug production issues under mentorship. We're looking for a CS student who can reason through a problem out loud, describe a real bug they've chased down — what was failing, how they investigated, and how they fixed it — and who is careful about what they can and can't share from prior work. You'll pair with senior engineers and ship to a staging environment regularly. This is a 12-week summer internship, full-time, on-site three days a week.",
+  "history": [
+    { "q": "Tell me about the payments backend you worked on last summer — what was your piece of it?" },
+    { "q": "Describe a bug or incident you got pulled into. What was the symptom?" },
+    { "q": "How did you start investigating — what did you look at first?" },
+    { "q": "What did the logs or metrics actually show you?" },
+    { "q": "What was the root cause?" },
+    { "q": "What was the fix, and did you write the code or did someone else?" },
+    { "q": "Forget the company specifics for a second — just technically, what was the failure mechanism and what did your fix change?" }
+  ],
+  "candidate_last_answer": "Right, um, so — okay this is a little tricky because, honestly, a lot of that was under NDA, like the payments stuff was super sensitive and I signed a thing, so I don't want to get into the actual system, you know? Um. And it's also just been a while, like that was last summer and I worked on a few things, and there was the on-call rotation which was kind of scary as an intern, and the office had this whole snack situation that everyone obsessed over — sorry, that's not relevant. The bug... it was something with, like, a service timing out? I think? And my mentor and I looked at it. I'd honestly rather not describe the internals because of the NDA, but yeah, it got fixed and the timeouts went away. Sorry, I know that's vague.",
+  "session_state": {
+    "drilled_topics": ["payments-backend-piece", "incident-symptom", "investigation-start", "logs-metrics-evidence", "root-cause", "the-fix-and-authorship", "technical-failure-mechanism"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd honestly rather not describe the internals because of the NDA",
+      "must-be-question-type: teach-back",
+      "expected-yield: separate the protected business specifics from the general engineering mechanism — push the candidate to explain, with no proprietary detail, what a service timeout actually means (where the timeout fired, what resource was contended) and what her fix changed, so confidentiality is respected but technical depth is still demonstrated"
+    ]
+  }
+}
