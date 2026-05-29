@@ -140,7 +140,50 @@ function safeJsonParse(text) {
   }
 }
 
+// Eval-only transport. Node's built-in fetch (undici) is unreliable against
+// DashScope from some Windows / Git-Bash environments (intermittent "fetch
+// failed" and multi-minute hangs), while curl to the same endpoint is fast and
+// reliable. Setting DASHSCOPE_TRANSPORT=curl (eval scripts only — never the
+// production Electron path) routes LLM calls through curl instead. The default
+// fetch path below is left completely untouched.
+async function curlChat({ apiKey, model, prompt, temperature, maxTokens, timeoutMs }) {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const { execFile } = require('child_process');
+  const body = { model, messages: [{ role: 'user', content: prompt }], max_tokens: maxTokens };
+  if (typeof temperature === 'number') body.temperature = temperature;
+  const tmp = path.join(os.tmpdir(), `dsc-${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}.json`);
+  fs.writeFileSync(tmp, JSON.stringify(body), 'utf8');
+  const maxTime = Math.ceil((timeoutMs || REQUEST_TIMEOUT_MS) / 1000);
+  const args = [
+    '-sS', '--max-time', String(maxTime),
+    '-X', 'POST', `${getDashscopeBaseUrl()}/v1/messages`,
+    '-H', 'Content-Type: application/json',
+    '-H', `anthropic-version: ${ANTHROPIC_VERSION}`,
+    '-H', `x-api-key: ${apiKey}`,
+    '--data-binary', `@${tmp}`
+  ];
+  try {
+    const stdout = await new Promise((resolve, reject) => {
+      execFile('curl', args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }, (err, out, errOut) => {
+        if (err) reject(new Error(`curl failed: ${err.message}${errOut ? ` | ${String(errOut).slice(0, 200)}` : ''}`));
+        else resolve(out);
+      });
+    });
+    const json = JSON.parse(stdout);
+    const blocks = Array.isArray(json?.content) ? json.content : [];
+    const text = blocks.filter((b) => b?.type === 'text' && typeof b.text === 'string').map((b) => b.text).join('');
+    return { text, usage: json?.usage, modelEcho: json?.model };
+  } finally {
+    try { fs.unlinkSync(tmp); } catch (_) { /* best-effort cleanup */ }
+  }
+}
+
 async function dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal, timeoutMs = REQUEST_TIMEOUT_MS }) {
+  if (process.env.DASHSCOPE_TRANSPORT === 'curl') {
+    return curlChat({ apiKey, model, prompt, temperature, maxTokens, timeoutMs });
+  }
   const body = {
     model,
     messages: [{ role: 'user', content: prompt }],
