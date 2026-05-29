@@ -117,6 +117,19 @@ const BLOCK_MAX_TOKENS = {
   G: 800
 };
 
+// Per-block request timeout. Block E (Pro model on a ~12 KB composed prompt) is
+// the slow one and legitimately needs longer before we give up and fall back;
+// the rest stay at the default REQUEST_TIMEOUT_MS.
+const BLOCK_TIMEOUTS_MS = {
+  A: REQUEST_TIMEOUT_MS,
+  B: REQUEST_TIMEOUT_MS,
+  C: REQUEST_TIMEOUT_MS,
+  D: REQUEST_TIMEOUT_MS,
+  E: 300000,
+  F: REQUEST_TIMEOUT_MS,
+  G: REQUEST_TIMEOUT_MS
+};
+
 function safeJsonParse(text) {
   if (!text) return null;
   const cleaned = String(text).replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
@@ -127,7 +140,7 @@ function safeJsonParse(text) {
   }
 }
 
-async function dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal }) {
+async function dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal, timeoutMs = REQUEST_TIMEOUT_MS }) {
   const body = {
     model,
     messages: [{ role: 'user', content: prompt }],
@@ -139,7 +152,7 @@ async function dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, ab
   for (let attempt = 0; attempt <= MAX_RETRIES_TRANSPORT; attempt += 1) {
     const controller = new AbortController();
     let timedOut = false;
-    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, REQUEST_TIMEOUT_MS);
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
     if (abortSignal && typeof abortSignal.addEventListener === 'function') {
       abortSignal.addEventListener('abort', () => controller.abort(), { once: true });
     }
@@ -192,7 +205,21 @@ async function callBlock({ blockId, apiKey, prompt, abortSignal }) {
   const temperature = BLOCK_TEMPERATURES[blockId];
   const maxTokens = BLOCK_MAX_TOKENS[blockId];
 
-  const first = await dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal });
+  let first;
+  try {
+    first = await dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal, timeoutMs: BLOCK_TIMEOUTS_MS[blockId] });
+  } catch (err) {
+    // Transport error / timeout-abort on the first attempt. Do NOT throw — that
+    // crashes the whole chain. Signal runExpertChain to use this block's fallback
+    // synthesizer instead, so one slow/failed block degrades gracefully.
+    return {
+      ok: false,
+      data: null,
+      raw: '',
+      trace: [{ block: blockId, attempt: 1, ms: Date.now() - start, ok: false, errors: [`transport: ${err.message}`], model, usage: null }],
+      threw: err.message
+    };
+  }
   let parsed = safeJsonParse(first.text);
   let validation = validateBlock(blockId, parsed);
   const trace = [{
@@ -219,7 +246,14 @@ ${validation.errors.map((e) => `- ${e}`).join('\n')}
 Re-emit the JSON object fixing ALL listed errors. Strict JSON only — no markdown, no prose.`;
 
   const repairStart = Date.now();
-  const second = await dashscopeChat({ apiKey, model, prompt: repairPrompt, temperature: Math.max(0, temperature - 0.05), maxTokens, abortSignal });
+  let second;
+  try {
+    second = await dashscopeChat({ apiKey, model, prompt: repairPrompt, temperature: Math.max(0, temperature - 0.05), maxTokens, abortSignal, timeoutMs: BLOCK_TIMEOUTS_MS[blockId] });
+  } catch (err) {
+    // Repair attempt failed at transport level — fall back rather than crash.
+    trace.push({ block: blockId, attempt: 2, ms: Date.now() - repairStart, ok: false, errors: [`transport: ${err.message}`], model, usage: null, repair: true });
+    return { ok: false, data: null, raw: first.text, trace, threw: err.message };
+  }
   parsed = safeJsonParse(second.text);
   validation = validateBlock(blockId, parsed);
   trace.push({
