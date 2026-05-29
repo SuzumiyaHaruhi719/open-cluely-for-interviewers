@@ -1,0 +1,39 @@
+{
+  "id": "fx_0040",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Priya Nair\nAssociate Product Manager — 1 year experience\n\nRecent: Lumio Fintech — APM, Payments (2023–present)\nShipped two features on the consumer payments app; ran weekly sprint planning with 4 engineers.\n\nSkills: user interviews, Jira, basic SQL, A/B test readouts, Figma handoff.\nEducation: B.Tech, Information Systems, 2023.",
+  "jd": "We are hiring an Associate Product Manager for our payments squad. You will own a single feature area, write crisp PRDs, run discovery interviews, and define one north-star metric plus its guardrails for every launch. You will be expected to defend prioritization decisions with data and to clearly separate what you decided from what the team decided. The role suits someone early in their PM career who can stay specific under questioning: which metric, which segment, what moved, by how much, and why.",
+  "history": [
+    { "q": "Tell me about a feature you owned end-to-end at Lumio. What problem were you solving and how did you scope it?" },
+    { "q": "You said you ran an A/B test on the new payment-confirmation screen — what was the primary metric and what did the result actually show?" }
+  ],
+  "candidate_last_answer": "Okay so, um, the metric — there were kind of a few things we were looking at? Like there was conversion, and also there was, um, time-on-screen, and drop-off, and I think also support tickets at some point. And honestly the A/B test was a little, like — the tooling was new for us, so I'm not a hundred percent sure the split was totally clean, you know? I remember the numbers looked good, like it went up, I want to say it was meaningful, but I'd have to go back and check the exact... yeah. Sorry, what was the question again — the primary metric? I think it was conversion. Probably.",
+  "session_state": {
+    "drilled_topics": ["feature-ownership-scope", "ab-test-primary-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "experiment-rigor", "evidence_type": "mechanism" },
+      { "competency": "experiment-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I remember the numbers looked good, like it went up",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single named primary metric, its baseline and post-test value (or relative lift), the sample/segment it was measured on, and whether the result reached significance — forcing the candidate to commit to one concrete number instead of listing many half-remembered ones"
+    ]
+  }
+}

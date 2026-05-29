@@ -1,0 +1,48 @@
+{
+  "id": "fx_0069",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "刘子谦 (Liu Ziqian) | 工业工程实习生求职者\n\n教育：某理工大学 工业工程 (Industrial Engineering) 本科大三，预计 2027 毕业。GPA 3.7/4.0。\n\n实习经历：\n某汽车零部件工厂 — 精益实习生 (Lean Intern)，2025 暑期。\n  - 简介第一处：作为 line balancing 项目的 owner，我独立完成了某装配线的节拍分析，把 cycle time 从 58 秒降到 49 秒。\n  - 简介第二处（同一段经历）：在 senior IE 工程师的指导下，参与 line balancing 项目，主要负责 stopwatch 计时与数据录入，分析与方案由工程师主导。\n  - 时间另一处写：该实习为 2025 年 1–2 月寒假，共 4 周。\n\n校园项目：\n  - 课程项目中用 Arena 做过一条产线的 discrete-event simulation，identify 出瓶颈工位。\n\n技能：stopwatch time study、spaghetti diagram、Arena simulation、Excel、基础 Minitab、5S。\n证书：校内精益生产工作坊结业。",
+  "jd": "岗位：工业工程实习生 (IE Intern)。我们是一家消费电子代工厂，产线节拍快、改善需求多。实习生将跟随 senior IE，参与 time study、line balancing 与现场改善，具体包括：独立完成至少一个工位的 time study、参与一次 line balancing 并量化产出、做一次现场 waste 的识别与改善提案。我们在面试中会反复核对：哪一部分是你亲手做的、数据是怎么测的、改善 attribute 到谁。我们注意到不少实习生简历里会把团队成果写成个人 ownership，所以会就 scope 做 specific 的追问。要求工业工程或相关专业在读，熟悉基础 time study 方法。",
+  "history": [
+    { "q": "刘同学你好，先聊聊你那段汽车零部件工厂的 lean 实习。先说一下基本情况——实习多长时间，在哪个部门。" },
+    { "q": "我注意到简历上这段实习的时间有两个版本，一处写暑期，一处写 1 到 2 月寒假 4 周。到底是哪个？" },
+    { "q": "好。那这段实习里你提到的 line balancing 项目，简历一处写你是 owner、独立完成节拍分析，另一处写你主要负责 stopwatch 计时和录入、分析由工程师主导。哪个更准确？" },
+    { "q": "明白了。那我们就以你实际做的为准——time study 这部分，你是怎么测 cycle time 的？测了多少个 cycle、怎么处理异常值？" },
+    { "q": "cycle time 从 58 秒到 49 秒这个数，是谁算出来的？你在里面具体做了什么？" },
+    { "q": "那个 line balancing 的方案——把哪些工序重新分配——是工程师出的还是你出的？你有没有提过具体建议？" },
+    { "q": "你校园项目里用 Arena 做仿真，identify 出的瓶颈工位，和你实习里那条线的瓶颈是同一类问题吗？" },
+    { "q": "Arena 那个模型，你设了哪些 input 分布？瓶颈是怎么从仿真结果里看出来的？" },
+    { "q": "回到实习。你说你做 stopwatch time study，现场测的时候有没有遇到工人因为被计时而故意放慢或加快的情况？你怎么处理？" },
+    { "q": "改善提案最后落地了吗？cycle time 真的降下来了吗，是谁去验证的？" },
+    { "q": "如果让你诚实地说，这个项目里百分之多少是你的贡献、百分之多少是工程师的？" },
+    { "q": "好，最后一个具体的——就你亲手做的 time study 那部分，给我讲一个完整的例子：背景、你的任务、你具体怎么做、结果是什么。" }
+  ],
+  "candidate_last_answer": "好的，我讲那个我亲手做的工位 (Situation)：那条装配线有一个拧螺丝的工位，是大家怀疑的瓶颈，但没人有准确数据。我的任务 (Task) 很明确——就是把这个工位的真实 cycle time 测出来，给工程师的分析提供 baseline。我具体做的 (Action)：我连续测了 30 个 cycle，用 stopwatch 记录，剔除了 2 个工人中途取料的异常值，剩下 28 个算平均，是 58.3 秒；我还顺手画了这个工位的 spaghetti diagram，发现工人每个 cycle 要多走两趟去拿料盒。结果 (Result)：我把这两份数据交给工程师，他据此把料盒挪近、重排了相邻两个工序，节拍最后降到 49 秒左右。需要说明的是，节拍方案是工程师定的，我贡献的是这一个工位准确的 time study 数据和那个走动浪费的发现，这部分确实是我独立完成的。",
+  "session_state": {
+    "drilled_topics": ["实习时间矛盾", "line balancing owner归属", "time study方法", "节拍数字归属", "方案归属", "Arena仿真细节", "计时偏差处理", "改善验证", "贡献占比"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "scope" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 剔除了 2 个工人中途取料的异常值",
+      "must-be-question-type: teach-back",
+      "expected-yield: 检验这个看似诚实、scope 收敛得当的 STAR 回答是否经得起方法学追问——让他讲清楚为什么 30 个 cycle 足够、剔除异常值的判定标准是什么，从而确认这一个工位的 time study 真是他亲手做且方法过硬，而非背诵的数字"
+    ]
+  }
+}

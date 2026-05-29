@@ -1,0 +1,38 @@
+{
+  "id": "fx_0039",
+  "tags": {
+    "industry": "marketing",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "李梦琪\n初级社媒运营 | 工作经验 1.5 年\n\n上一份工作：朗悦电商 — 社媒运营专员（2023.07 至今）\n负责小红书与抖音两个品牌账号的日常更新、评论维护、月度数据汇报。\n\n技能：小红书投放、抖音剪辑、Excel 报表、文案撰写。\n教育：杭州某高校 市场营销 本科 2023 届。",
+  "jd": "我们正在招聘一名初级社媒运营，负责小红书品牌账号的内容排期、投放执行与转化复盘。你将独立负责单一品牌账号，对涨粉、互动率与带货 GMV 三项指标负责，并需要每周向运营组长提交一份归因清晰的数据复盘。我们希望候选人能讲清楚自己具体做了什么、改了哪一步、带来了多少变化，而不是泛泛而谈。需要 1 年以上小红书实操经验。",
+  "history": [
+    { "q": "讲一个你独立负责的小红书投放，从定预算到复盘，你具体做了哪些事？带来了什么结果？" }
+  ],
+  "candidate_last_answer": "其实那次投放效果不太好，主要不能怪我。预算是组长定的，定得太低了；选品也是供应链那边给的爆款不够爆;还有平台那阵子限流，自然流量本来就差。我能做的都做了，就是排期发布、找达人,但是达人是市场部对接的，他们给的达人质量参差不齐。所以最后数据没起来，真的不是我这块的问题。",
+  "session_state": {
+    "drilled_topics": ["xiaohongshu-campaign-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我能做的都做了，就是排期发布、找达人",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete account of what the candidate personally decided and did inside the part she controlled — which posts she scheduled, which creators she shortlisted and why, what she changed after seeing weak early numbers, with at least one engagement or GMV figure tied to her own action rather than to the org around her"
+    ]
+  }
+}

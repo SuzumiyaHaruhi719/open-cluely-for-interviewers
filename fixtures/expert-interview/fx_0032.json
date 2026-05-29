@@ -1,0 +1,44 @@
+{
+  "id": "fx_0032",
+  "tags": {
+    "industry": "healthcare",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "高级临床项目经理 医疗器械 / 临床试验方向\n\n概述：八年医疗行业经验，专注于 III 类医疗器械的临床试验项目管理与注册申报支持。熟悉 GCP 规范、伦理审查流程与多中心试验的协调。\n\n工作经历：\n- 高级临床项目经理，安康医疗（2020 至今）：负责一项植入类器械的多中心临床试验。简历前段写『主导 12 家中心的试验启动』，后段又写『负责 8 家中心的入组管理』，中心数量前后不一致。\n- 临床项目经理，安康医疗（2020 至今）：与上一条起止时间完全相同，职级却不同。\n- 临床研究专员，济世生物（2016 至 2020）：负责单中心试验的数据核查与监查访视。简历一处写『累计完成 200 例入组』，另一处写『负责的项目共入组约 90 例』。\n\n关键成果：\n- 将某试验的入组周期从计划的 18 个月缩短至 12 个月。\n- 另一段落写：同一项目入组延期 6 个月。\n- 牵头完成一次成功的伦理审查答辩，零重大不符合项。\n\n技能：GCP、临床监查、伦理沟通、CRO 管理、入组策略、不良事件上报、注册资料整理。\n\n教育背景：临床医学本科，药学相关方向硕士。",
+  "jd": "我们正在招聘一位高级临床项目经理，负责一项 III 类植入器械多中心临床试验的整体推进。该岗位对入组进度、数据质量与合规性负全责，需与 CRO、各研究中心 PI、以及伦理委员会紧密协作。我们看重候选人对项目结果的担当：当试验出现入组延迟或数据质量问题时，能清晰说明自己当时的判断、采取的纠偏动作、以及最终的责任归属，而不是把问题简单归咎于 CRO 或中心。你将接手一个入组进度落后于计划、且有一家中心数据质疑较多的在研项目，需要在不牺牲合规的前提下追回进度。理想候选人能完整复盘一次由自己主导的纠偏过程。",
+  "history": [
+    { "q": "先讲讲你在安康负责的这个多中心试验：到底是几家中心，你的职责边界是什么？" },
+    { "q": "你简历里中心数量写了 12 家也写了 8 家，入组例数也对不上，能解释一下吗？" },
+    { "q": "你说把入组周期从 18 个月缩短到 12 个月，但另一处又写延期 6 个月。哪个是真实情况？" },
+    { "q": "那次入组延迟，最根本的原因是什么？" },
+    { "q": "在延迟发生时，你作为项目经理具体做了哪些纠偏动作？" },
+    { "q": "数据质疑最多的那家中心，问题出在监查环节还是中心本身？你当时怎么处理的？" },
+    { "q": "我想听一个完整的复盘：这次延迟里，哪一部分是你判断或执行上的责任？" }
+  ],
+  "candidate_last_answer": "（停顿了几秒）……抱歉，我刚才在想怎么说比较准确。说实话这个事我现在回想，主要责任真的不在我这边。CRO 那边的监查员频繁换人，交接一团乱；那家中心的 PI 又特别难配合，伦理那边也卡了很久。我能做的都做了，方案我也催了，邮件我也发了，是他们没跟上节奏。要说我有什么责任，顶多就是太相信 CRO 的承诺了吧。",
+  "session_state": {
+    "drilled_topics": ["trial-scope", "site-count-discrepancy", "enrollment-timeline-conflict", "delay-root-cause", "corrective-actions", "data-query-site", "personal-accountability"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution-sequencing", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我能做的都做了，方案我也催了，邮件我也发了，是他们没跟上节奏",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人在延迟发生后真正掌控并执行的具体纠偏动作及其时间点，以及他对哪一部分结果负有直接责任，而非把延迟全部归因于 CRO 与中心"
+    ]
+  }
+}

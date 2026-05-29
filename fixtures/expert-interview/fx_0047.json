@@ -1,0 +1,51 @@
+{
+  "id": "fx_0047",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "王思远 — 量化研究员 / 初级\n\n个人简介\n顶尖量化人才,本科即斩获多项数学竞赛金奖,被誉为同届最具潜力的策略开发者。入行一年内独立创造数千万级收益,所开发的高频策略夏普比率长期稳居团队第一,被多位资深基金经理盛赞为『十年一遇的天才』。\n\n工作经历\n某头部私募 — 量化研究员(2023.07 至今)\n- 独立开发并上线多个 Alpha 策略,贡献组合主要超额收益。\n- 主导一条中频策略线,管理规模数亿元。\n- 自研因子挖掘框架,显著提升团队整体研究效率。\n\n技能:Python、C++、统计套利、机器学习因子、高频做市。\n教育:某顶尖高校 金融工程本科 2023 届,GPA 排名前 1%。",
+  "jd": "我们在为量化团队招聘一名初级研究员。日常工作是因子研究、回测、策略上线与归因。面试中我们会就一个你真正做过的策略深挖:用了什么因子、回测区间和样本、夏普和回撤的具体数字、上线后实盘与回测的偏离、归因怎么做。我们理解部分细节涉及前东家保密协议,但我们需要你在合规边界内讲清楚你的方法论与你个人的贡献,而不是只抛结论性的大数字。需要扎实的统计与编程基础。",
+  "history": [
+    { "q": "先聊聊你最有代表性的一个策略——它属于哪一类?统计套利、趋势、还是做市?" },
+    { "q": "这个策略的核心因子是什么逻辑?为什么你认为它有效?" },
+    { "q": "回测区间是哪一段?用的是日频还是更高频的数据?" },
+    { "q": "回测的夏普比率大概多少?最大回撤呢?" },
+    { "q": "样本内和样本外是怎么切分的?有没有做过滚动验证?" },
+    { "q": "上线之后,实盘表现和回测的偏离有多大?" },
+    { "q": "如果实盘和回测有偏离,你是怎么做归因的?" },
+    { "q": "交易成本和滑点在你的回测里是怎么建模的?" },
+    { "q": "你说『独立开发』,具体哪部分是你写的,哪部分是团队已有框架?" },
+    { "q": "简历写贡献了组合主要超额收益,这个『主要』有量化口径吗?" },
+    { "q": "管理规模数亿元这个数字,是策略容量还是实际分配的资金?" },
+    { "q": "我先不追保密的部分。就讲方法:你判断一个因子失效的标准是什么?" },
+    { "q": "那退一步,不涉及具体数字——你描述一下你做归因的步骤就行。" },
+    { "q": "我只想听你做归因的思路框架,一步一步,不需要任何敏感数据。" }
+  ],
+  "candidate_last_answer": "啊这个…归因的思路…就是,嗯,首先肯定要先看,呃,看是不是…抱歉我有点紧张。就是这块其实我们签了 NDA,很多我不太方便讲,怕踩线。思路的话…大概就是先看收益来源吧,然后…然后再看…嗯具体框架我怕一展开就涉及前东家的东西了。要不…我换个角度?其实也不全是归因,我还想到当时那个数据清洗也挺重要的,有时候是数据的问题…呃我刚说到哪了?对,归因,但这部分真的因为保密我讲不细,见谅。",
+  "session_state": {
+    "drilled_topics": ["strategy-class", "core-factor-logic", "backtest-window", "sharpe-drawdown", "in-out-sample-split", "live-vs-backtest-deviation", "attribution-method", "transaction-cost-model", "personal-vs-framework", "excess-return-definition", "capacity-vs-aum", "factor-decay-criterion", "attribution-steps-no-numbers", "attribution-framework-walkthrough"],
+    "current_competency_target": "methodology-depth",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "methodology-depth",
+    "missing_evidence": [
+      { "competency": "methodology-depth", "evidence_type": "mechanism" },
+      { "competency": "methodology-depth", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这部分真的因为保密我讲不细",
+      "must-be-question-type: teach-back",
+      "expected-yield: 在不触碰任何前东家专有数据的前提下,让候选人讲清楚一套通用的归因方法论步骤——例如把实盘与回测偏离拆成因子暴露、交易成本/滑点、容量冲击三块并逐项判断——以此区分他是真的没有方法论,还是仅仅在用 NDA 回避;一个合格回答应在零敏感数据下仍能讲出可复述的框架"
+    ]
+  }
+}

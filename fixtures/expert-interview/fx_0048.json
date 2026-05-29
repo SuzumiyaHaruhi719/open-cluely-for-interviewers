@@ -1,0 +1,40 @@
+{
+  "id": "fx_0048",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "STAFF PRODUCT DESIGNER — 11+ years crafting delightful, human-centered, end-to-end experiences\n\n- Visionary design leader fluent in design systems, design tokens, atomic design, Figma, FigJam, Sketch, Framer, Principle, design ops, and headless component libraries\n- Champion of user-centric, data-informed, accessibility-first, mobile-first, content-first, AI-native design thinking across the full product lifecycle\n- Deep expertise: discovery, jobs-to-be-done, service blueprinting, journey mapping, heuristic evaluation, usability testing, north-star metrics, OKRs, dual-track agile, lean UX, design QA\n- Cross-functional force-multiplier partnering with PM, eng, research, content, brand, and growth to ship pixel-perfect, conversion-optimized, scalable experiences\n- Mentor and multiplier; scaled design culture, design critique rituals, and design-system governance org-wide\n\nRecent: Helio Health Platform — Staff Product Designer (2021–present)\nPrior: Vance Mobility — Senior Product Designer (2016–2021)\nTooling: Figma, Storybook, Zeroheight, Amplitude, Maze, Dovetail, Lottie, GitHub.",
+  "jd": "We are hiring a Staff Product Designer to own the design system and a complex flagship surface across web and mobile. At the staff level we expect you to drive measurable outcomes and to stay tightly on-point under questioning: name the surface, the decision, the metric, the tradeoff. We will probe one project in depth. The strongest staff candidates resist the urge to give a tour of their entire career and instead go deep on a single decision — what you chose, what you gave up, and the number that moved as a result.",
+  "history": [
+    { "q": "Pick one project where you owned a design-system decision that had a measurable product impact. Set it up for me." },
+    { "q": "What was the specific tradeoff you made — what did you optimize for and what did you knowingly give up?" },
+    { "q": "And what single metric moved as a result of that decision, and by how much?" }
+  ],
+  "candidate_last_answer": "The metric... give me a second. (long pause) ...Sorry — okay, yes, I've got it. The number that moved was form-completion rate on the onboarding flow; it went from about 61% to 73% over the quarter after we shipped the consolidated input components. But honestly that reminds me of this whole other thing about our critique culture — see, when I joined, design critique was kind of broken, people were just rubber-stamping, so I instituted this whole new ritual, and that connects to how I think about mentorship, which actually goes back to my time at Vance Mobility where we were doing this mobility-as-a-service thing, and the parking-payments flow there, and the offsite we ran in Lisbon — anyway, the point is culture is everything, and I could talk about hiring philosophy for an hour, it's a passion of mine.",
+  "session_state": {
+    "drilled_topics": ["design-system-decision-setup", "decision-tradeoff", "single-metric-impact"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "focus-under-pressure", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it went from about 61% to 73% over the quarter after we shipped the consolidated input components",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: pull the candidate back from the culture/mentorship tangent to the consolidated input components specifically — what was deliberately sacrificed to consolidate them (flexibility for edge-case forms, per-team customization, migration cost), how that completion-rate lift was isolated from other onboarding changes shipped that quarter, and why he is confident the components caused the gain"
+    ]
+  }
+}

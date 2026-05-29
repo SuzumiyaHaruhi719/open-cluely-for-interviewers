@@ -1,0 +1,54 @@
+{
+  "id": "fx_0054",
+  "tags": {
+    "industry": "legal",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Gregory Mancuso, J.D.\nVP & Associate General Counsel — Commercial & Regulatory\n\nRecent: Northstar Devices (medtech) — VP, Associate General Counsel (2020–present)\nLed legal for a cross-border acquisition and a subsequent FDA-related compliance matter.\n\nPrior: In-house counsel, two SaaS companies (2011–2020).\nBar: New York, admitted 2009.\nFocus: M&A, commercial contracts, regulatory response, litigation oversight.",
+  "jd": "We are hiring a VP / Associate General Counsel to own complex regulatory and transactional matters. At this level we expect crisp command of facts and timelines — when you narrate a matter, the sequence of events must hold together, because regulators, boards, and courts will not tolerate a muddled chronology. In interviews we deliberately probe the order of events: what triggered what, what you knew when, and what action followed which finding. Candidates whose timelines contradict themselves under questioning raise serious concerns.",
+  "history": [
+    { "q": "Walk me through the cross-border acquisition you led at Northstar. What was the deal?" },
+    { "q": "When did due diligence begin relative to signing?" },
+    { "q": "At what point did the FDA compliance issue first surface?" },
+    { "q": "Was the FDA matter discovered during diligence, or after close?" },
+    { "q": "When did you first notify the board about it?" },
+    { "q": "Did the disclosure to the regulator come before or after the board briefing?" },
+    { "q": "And the remediation plan — was that drafted before or after you notified the regulator?" },
+    { "q": "You said diligence surfaced it; you also said it came up post-close. Which was it?" },
+    { "q": "Let's anchor on dates. Roughly what quarter did the deal sign?" },
+    { "q": "And the FDA finding — same quarter, before, or after?" },
+    { "q": "When did outside counsel get engaged on the regulatory piece?" },
+    { "q": "Was outside counsel retained before or after the board knew?" },
+    { "q": "Did remediation start before the regulator was formally notified?" },
+    { "q": "Help me reconcile this: notification before remediation, but earlier you said remediation came first." },
+    { "q": "So which document existed first — the board memo or the regulator disclosure?" },
+    { "q": "I'm going to ask you to lay out the single correct order, start to finish, slowly." },
+    { "q": "One more time, plainly: what happened first, and what happened last?" }
+  ],
+  "candidate_last_answer": "Right, so the order was — well, the deal closed first, and then during diligence we found the FDA issue, which is what led us to close. No, wait — we notified the board, and then we'd already disclosed to the FDA before that, and the remediation plan, which we drafted after notifying the regulator, was actually finished before we told the board. So if you line it up: close, then diligence, then disclosure, then the board, except the board knew before the disclosure, and remediation was both before and after the FDA call depending on which draft you mean. I'm confident the sequence is sound; it just depends where you start counting.",
+  "session_state": {
+    "drilled_topics": ["deal-overview", "diligence-vs-signing", "fda-surface-timing", "discovery-diligence-or-postclose", "board-notification-timing", "disclosure-vs-board-order", "remediation-vs-disclosure-order", "diligence-contradiction", "deal-signing-quarter", "fda-finding-quarter", "outside-counsel-timing", "counsel-vs-board-order", "remediation-vs-notification", "notification-remediation-contradiction", "board-memo-vs-disclosure-doc", "full-sequence-walkthrough", "first-and-last-event"],
+    "current_competency_target": "timeline-coherence",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "timeline-coherence",
+    "missing_evidence": [
+      { "competency": "timeline-coherence", "evidence_type": "timeline" },
+      { "competency": "regulatory-judgment", "evidence_type": "owner-of-action" },
+      { "competency": "factual-command", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm confident the sequence is sound; it just depends where you start counting",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: force a single non-contradictory chronology anchored to concrete dates or quarters — signing, the FDA finding, board notification, regulator disclosure, and remediation drafting — exposing whether the candidate actually commands the facts of a matter he led or is improvising an order that keeps reversing itself"
+    ]
+  }
+}

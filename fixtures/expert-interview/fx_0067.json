@@ -1,0 +1,46 @@
+{
+  "id": "fx_0067",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "郑霖，数据科学与平台负责人，应聘数据总监（Director of Data）岗位。\n\n职业总述：\n本人拥有约十二年数据领域从业经验，覆盖数据仓库、数据中台、BI、机器学习平台与数据治理多个方向，曾在两家头部互联网公司与一家上市零售集团担任数据团队负责人，带领过最多约六十人的数据组织，主导过从离线数仓到实时数据中台的整体演进，也牵头过公司级的数据治理与指标体系统一项目。我希望通过较为完整的经历陈述，呈现我在数据组织建设与技术决策上的积累。\n\n经历详述：\n\n第一阶段，早期在一家头部互联网公司担任数据开发工程师及后来的数据开发负责人，参与并主导了公司离线数仓的分层重构，把原本杂乱的烟囱式开发统一到一套分层规范之下，显著降低了重复开发。这一阶段我打下了扎实的数据工程基础，对 Hive、Spark 等离线计算引擎有深入理解。\n\n第二阶段，跳槽至一家上市零售集团，担任数据平台负责人，带领团队从零搭建数据中台，统一了线上线下的用户与交易数据口径，支撑了集团的会员运营与精准营销。期间我推动了实时计算体系的建设，引入 Flink 支撑实时大屏与实时风控场景。我也牵头制定了集团层面的指标管理规范，试图解决『同一个指标各部门口径不一』的老大难问题。\n\n第三阶段，也就是目前，在一家头部互联网公司担任数据团队负责人，分管数据平台、数据科学与数据治理三条线，团队约六十人。我负责数据基础设施的稳定性与演进、机器学习平台的建设，以及数据安全与合规相关工作。在我任内，团队完成了数据湖仓一体架构的落地，并推动了特征平台、实验平台等中台能力的建设，服务于公司多个业务线的算法迭代。我也在持续推进数据治理，包括元数据管理、数据质量监控与权限收口。\n\n管理理念：\n在团队管理上，我倾向于给工程师足够的技术自主空间，同时通过清晰的架构原则与评审机制来保证一致性。我认为数据团队既要服务好业务，也要守住数据质量与安全的底线，这两者经常存在张力，需要负责人去权衡。\n\n技术栈与擅长：Hive、Spark、Flink、数据湖仓（Iceberg/Hudi）、调度系统、指标平台、特征平台、实验平台、数据治理体系。\n\n教育背景：某重点高校 计算机科学与技术 硕士；本科同校。\n个人评价：技术视野较宽，既懂工程也懂业务，具备从 0 到 1 搭建数据组织的经验，也有在大规模团队中推动技术与治理变革的实战经历。",
+  "jd": "岗位：数据总监（Director of Data）。我们是一家数据驱动的大型电商平台，正在重塑公司级的数据资产与治理体系。该岗位向 CTO 汇报，负责数据平台、数据科学与数据治理三大板块，并对数据质量、平台稳定性与数据安全直接负责。我们在面试中会针对简历里的关键成果做 deep dive，并且会就技术决策与归属做直接、追根究底的追问——比如某个架构是不是你拍板的、某次数据事故的真实根因与你个人的责任。我们重视候选人能否在被质疑时依然冷静、就事论事地给出可核实的事实，而不是把追问当成冒犯。要求 10 年以上数据经验，5 年以上大团队管理。",
+  "history": [
+    { "q": "郑总你好，先请你介绍一下目前这家公司里，你分管的三条线各自团队规模和核心职责。" },
+    { "q": "你简历里写在任内完成了『数据湖仓一体架构的落地』。这个架构选型——比如选 Iceberg 还是 Hudi——是你拍板的，还是平台团队的架构师定的？" },
+    { "q": "湖仓落地之后，有没有出现过比较严重的数据质量或稳定性事故？讲一次。" },
+    { "q": "你说那次是上游埋点变更导致的。那你们的数据质量监控为什么没有第一时间发现？监控是你这边负责建的吗？" },
+    { "q": "事故影响了哪些下游业务？持续了多久？最后是怎么定级和复盘的？" },
+    { "q": "复盘结论里，归因到数据团队的部分是什么？有没有 action item 落到你头上？" },
+    { "q": "我直接问一句——这次事故，作为分管数据质量的负责人，你个人需要承担的责任是什么？请具体说。" }
+  ],
+  "candidate_last_answer": "我觉得你这个问法有点带有预设立场，好像一定要我认个错才行。事故复盘本来就是对事不对人的，你一上来就揪着『我个人的责任』，这不符合我们做技术复盘的文化。根因明明是上游埋点没有走变更评审，这是流程问题，不是我数据团队的锅。你要是真做过大规模数据平台，就该知道没有任何一个监控能覆盖所有未知的上游变更。我不太理解为什么一定要把一个系统性的流程问题归到某一个人头上，这种问法我觉得没什么建设性。",
+  "session_state": {
+    "drilled_topics": ["三条线职责", "湖仓选型拍板归属", "数据事故经过", "监控为何失效", "事故影响与定级", "复盘归因与action item"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "failure-handling", "evidence_type": "mechanism" },
+      { "competency": "leadership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "Candidate becomes defensive and attacks the interviewer's competence ('你要是真做过大规模数据平台') and motives ('好像一定要我认个错才行') instead of answering a fair accountability question about his own remit. This is candidate-side escalation; the question about a director's personal responsibility for a quality incident on a line he explicitly owns is appropriate and is anticipated by the JD." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: 不是我数据团队的锅",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 绕开『根因是上游流程』的挡箭，把问题收窄到他自己分管的数据质量监控上——强制他说出在他职责范围内本可以做却没做的那一件具体事（如对上游 schema 变更加监控、设置评审卡口），以及复盘后他个人 owns 的 action item"
+    ]
+  }
+}

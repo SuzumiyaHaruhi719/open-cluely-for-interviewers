@@ -1,0 +1,40 @@
+{
+  "id": "fx_0033",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "求职意向：Customer Support Intern（客户支持实习生）\n\n个人简介：天生的 problem solver，沟通能力 top-tier，做过的每一份兼职都被老板评价为『不可替代』。我对 customer experience 有近乎偏执的追求，坚信自己能在任何 support 团队里迅速成为 MVP。\n\n经历亮点：\n- 校园奶茶店 兼职店员：我一个人扛起了高峰期所有的 customer complaint，single-handedly 把门店的好评率拉到了全城第一。老板说我是他见过 service sense 最强的店员，没有之一。\n- 社团活动 志愿者：负责现场答疑，我的 response 速度和态度让所有参与者赞不绝口，被称为『全场最强 support』。\n- 线上代购 个人小生意：自己运营，客户 retention 极高，复购率 insane，几乎所有客户都成了回头客。\n\n技能：极致的 communication、超强的 empathy、天生的 de-escalation 能力、熟练使用各种 IM 工具、快速学习任何 CRM 系统。\n\n教育背景：本科在读，English 流利，naturally 适合面向客户的工作。\n\n一句话总结：把我放在任何 customer-facing 的岗位，我都能成为团队的 game changer。",
+  "jd": "We're hiring a Customer Support Intern for our consumer-app help desk. You'll handle live chat and email tickets, learn our Zendesk workflows, and shadow senior agents on escalations. We care far more about honest, specific reflection than polished self-promotion: tell us about one real ticket you handled, what the customer's actual problem was, what you did step by step, and how you knew it was resolved. 理想的实习生愿意被细节追问，能把『我做了什么』讲清楚，而不是停留在 『我很厉害』 这种笼统的描述。This is an entry-level role with structured mentorship and a clear path to conversion for strong performers.",
+  "history": [
+    { "q": "先聊聊你简历里的奶茶店经历——你说你一个人扛起了高峰期所有的 customer complaint，能具体讲讲是怎么处理的吗？" },
+    { "q": "举一个具体的例子：有没有一次特别难搞的顾客投诉，你是怎么一步步 de-escalate 的？" },
+    { "q": "你提到把门店好评率拉到全城第一，这个『好评率』你是怎么知道的？有看到具体的数据吗？" }
+  ],
+  "candidate_last_answer": "嗯……其实也没有什么特别的 technique 啦，我就是 naturally 比较会跟人打交道。顾客有 complaint 的时候，我就好好跟他们沟通，用我的 empathy 去 handle，基本上 case 都能 solve 掉。具体哪一次我还真说不上来，反正就是大家都觉得我做得很好，store 的 review 也一直很 positive，老板也很满意，差不多就是这样吧。",
+  "session_state": {
+    "drilled_topics": ["bubble-tea-complaint-handling", "specific-deescalation-example", "review-rate-data-source"],
+    "current_competency_target": "self-awareness",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "self-awareness",
+    "missing_evidence": [
+      { "competency": "self-awareness", "evidence_type": "mechanism" },
+      { "competency": "communication-clarity", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体哪一次我还真说不上来",
+      "must-be-question-type: teach-back",
+      "expected-yield: 一个真实的单次投诉处理过程——顾客的具体问题、候选人逐步采取的动作、以及他判断问题已解决的依据，用以检验他是否真的有可复述的方法而非空泛的自我标榜"
+    ]
+  }
+}

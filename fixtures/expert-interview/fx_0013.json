@@ -1,0 +1,39 @@
+{
+  "id": "fx_0013",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Director of Plant Operations — the operator who fixes broken factories\n\nI am, without exaggeration, one of the most effective operations leaders my companies have ever had. Every plant I have touched has become a benchmark.\n\nMeridian Forge Manufacturing — Director, Plant Operations (2019-present)\n- Personally turned around the worst-performing facility in the network and made it #1 within my first year\n- Single-handedly rebuilt the entire maintenance culture; OEE was a disaster before me\n- Widely regarded by the leadership team as the go-to person for any crisis\n- Mentored more future plant managers than anyone else in company history\n\nCastlewood Precision — Senior Production Manager (2013-2019)\n- Ran the highest-throughput line in the division, full stop\n- Hand-picked for every difficult launch because leadership trusted no one else\n\nBSc Mechanical Engineering. Lean Six Sigma Black Belt (top of my cohort).",
+  "jd": "A mid-market industrial manufacturer is seeking a Director of Plant Operations to run a 350-person union facility producing precision-machined components. Reporting to the VP of Operations, you will own safety (TRIR), Overall Equipment Effectiveness (OEE), on-time delivery, and labor cost per unit. The site has chronic unplanned downtime on its two largest CNC cells and a strained relationship with the local union following a recent shift-pattern change. You will lead plant managers, maintenance, quality, and EHS. We are looking for a leader who can speak in specifics about root-cause problem solving and the actual mechanisms behind any turnaround they claim, not headlines.",
+  "history": [
+    { "q": "You describe turning around the worst plant in the network. Walk me through the actual operational state when you arrived." },
+    { "q": "OEE is the headline you lead with. Take me into the single biggest downtime driver on your largest cell and exactly how you attacked it." }
+  ],
+  "candidate_last_answer": "OEE, sure. So the biggest driver was the big CNC cell — but you know what the real story is? It's culture. People underestimate culture every single time. I've given talks on this. We did kaizen events, we did standup boards, I brought in a sensei from my old plant who's frankly a legend. And don't even get me started on the union dynamics, that's a whole separate masterclass I could deliver. We also repainted the floor, which sounds trivial but pride matters. Anyway, the cell came good eventually. It always does when the culture's right.",
+  "session_state": {
+    "drilled_topics": ["plant-arrival-state", "oee-downtime-driver"],
+    "current_competency_target": "root-cause-rigor",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "root-cause-rigor",
+    "missing_evidence": [
+      { "competency": "root-cause-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the cell came good eventually. It always does when the culture's right",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the specific technical root cause of the downtime on the largest CNC cell, the diagnostic steps the candidate personally ran, and the before/after OEE numbers with the time it took"
+    ]
+  }
+}

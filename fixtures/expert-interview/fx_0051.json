@@ -1,0 +1,48 @@
+{
+  "id": "fx_0051",
+  "tags": {
+    "industry": "marketing",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "张雨晴 — 初级增长营销 / 效果投放\n\n关键词:信息流投放、SEM、ROI、ROAS、CPA、CPC、CTR、转化漏斗、A/B 测试、私域、SCRM、用户增长、内容种草、品效合一、全域营销、数据驱动、增长黑客。\n\n工作经历\n某教育科技公司 — 增长营销专员(2023 至今,约 1.5 年)\n- 负责巨量引擎与腾讯广告的信息流账户日常优化。\n- 跟进落地页 A/B 测试,优化转化漏斗。\n- 配合内容团队做投放素材,追求品效合一。\n技能:巨量引擎、腾讯广告、GA、Excel、SQL 基础。\n教育:某双一流高校 广告学本科 2023 届。",
+  "jd": "我们在招聘一名初级效果投放优化师,负责信息流账户的日常优化与转化提升。你将对单一渠道的 ROAS 与 CPA 负责,需要讲清楚:你具体调了哪些定向或出价、改了哪版素材或落地页、转化成本因此变化了多少。我们看重能把结果归因到自己动作上的人,而不是把效果差笼统归给『大盘』『预算』或『别的团队』。需要至少 1 年信息流实操经验,熟悉巨量或腾讯广告后台。",
+  "history": [
+    { "q": "讲一个你独立优化的信息流账户:目标是什么,核心指标是 ROAS 还是 CPA？" },
+    { "q": "账户刚接手时的基线 CPA 大概多少?目标定到多少？" },
+    { "q": "你先动的是定向、出价、还是素材?为什么从这里入手？" },
+    { "q": "定向上你具体收窄或放开了哪些维度?效果怎么样？" },
+    { "q": "出价策略你从哪种切到哪种?是 oCPM 吗？" },
+    { "q": "落地页 A/B 测试你测了哪两版?核心差异是什么？" },
+    { "q": "测试跑了多久?样本量够吗?显著性怎么判断的？" },
+    { "q": "最后 CPA 从基线降到了多少?用的是哪个口径？" },
+    { "q": "这个降幅里,哪部分是你的优化带来的,哪部分是大盘或季节性？" },
+    { "q": "如果效果没达标,你觉得主要卡在哪?" },
+    { "q": "我想确认一件事:这个账户里,有没有哪一处优化是你能明确说『这是我做的、带来了多少变化』？" }
+  ],
+  "candidate_last_answer": "说实话这个账户后面没做起来,但主要原因真不在我。一是预算被砍了,投放量上不去,模型学习期都跑不完;二是素材都是内容团队给的,他们出得慢、质量也一般,我巧妇难为无米之炊;三是那阵子大盘竞争特别激烈,整个行业 CPA 都在涨,不是我一个人能扭转的。我手里能调的出价定向我都调过了,该试的也试了,但巧的是每次稍微有点起色,大盘或者预算就又变了。所以真要说哪一处是我做的还带来明确变化——这个环境下挺难单独拆出来的,锅大部分得算在预算和素材上。",
+  "session_state": {
+    "drilled_topics": ["account-goal-metric", "baseline-cpa-target", "first-lever-rationale", "targeting-adjustments", "bid-strategy-switch", "landing-page-ab-variants", "ab-test-duration-significance", "final-cpa-result", "lift-attribution", "underperformance-bottleneck", "candidate-own-attributable-action"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我手里能调的出价定向我都调过了,该试的也试了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 把候选人从预算/素材/大盘三连甩锅里拉回到她本人控制的杠杆,逼她说出一个具体动作及其可量化结果——例如她把出价从某策略切到 oCPM 后某计划 CPA 由 X 降到 Y、或某一版定向收窄使某计划 CTR/转化率变化多少——证明她至少能把一处改动和一个数字绑定在自己名下"
+    ]
+  }
+}

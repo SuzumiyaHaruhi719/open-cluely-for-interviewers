@@ -1,0 +1,53 @@
+{
+  "id": "fx_0027",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "教育科技公司 K12 业务部 教学产品总监\n\n职业概述：长期负责在线教育平台的课程与教研体系建设，主导过自适应学习系统、教师培训项目以及多省份公立校合作落地。带领跨职能团队完成从内容生产到课堂交付的全链路改造，推动教学效果与续费表现的持续优化。\n\n核心经历：\n- 现任 启明在线教育 教学产品总监（2020 年至今）：统筹教研、产品、运营三条线，负责小学与初中阶段的全学科课程标准制定，牵头建设教师能力模型与备课工具，参与公立校区域化合作的方案设计。\n- 曾任 知行学堂 教研负责人（2016 至 2020）：搭建分层教学内容框架，组织名师团队产出系统化讲义，推动直播大班课向小班互动转型。\n- 曾任 某重点中学 一线教师及教研组长：负责毕业班教学与校本教研。\n\n能力标签：课程体系设计、教研团队管理、自适应学习、教师培训、公立校合作、教学质量评估、家校沟通机制。\n\n教育背景：师范大学教育学硕士。持有中学教师资格证。常年参与行业教学研讨与公开课评议。",
+  "jd": "我们正在寻找一位 K12 教学产品总监，负责一家在线教育平台核心学科产品线的整体规划与交付。该岗位向业务副总裁汇报，统管教研、产品与教学运营三个团队（合计约六十人），对课程完课率、学员阶段性测评提升幅度、以及付费续报率三项指标负全责。我们希望候选人具备从零搭建教研体系的经验，能够将教学效果量化并与产品迭代闭环；有公立校或区域教育局合作落地的实操经历；能在监管趋严的校外培训环境下重新设计合规的产品形态。你将接手一个续报率连续两个季度下滑的初中数学产品线，并需要在六个月内给出可验证的改善方案。需要适应约百分之二十的出差。",
+  "history": [
+    { "q": "先介绍一下你在启明的职责范围：团队规模、负责哪些学科、对哪些指标负责。" },
+    { "q": "你简历里写了『建设教师能力模型』，具体这个模型长什么样？包含哪几个维度？" },
+    { "q": "这个能力模型上线后，你是怎么验证它真的提升了教学质量的？" },
+    { "q": "我们聊聊续报。你在启明期间，初中阶段的续报率大概是多少？基线和你离开时分别是什么水平？" },
+    { "q": "续报率的提升，你认为最关键的一两个动作是什么？" },
+    { "q": "换个角度，自适应学习系统这块，你个人在其中承担了什么角色？" },
+    { "q": "这个系统给完课率带来的变化，有没有一个具体的数字？" },
+    { "q": "公立校合作那条线，能讲一个你亲自谈下来的区域合作吗？对方是谁、合作的核心条款是什么？" },
+    { "q": "在那个合作里，遇到的最大阻力是什么，你怎么推动的？" },
+    { "q": "我们说回团队。你接手教研团队时是什么状态，你做了哪些结构上的调整？" },
+    { "q": "这些调整里，哪一个是你力排众议拍板的？当时反对意见是什么？" },
+    { "q": "教师培训项目，从立项到落地，时间线大概是怎样的？" },
+    { "q": "如果让你给那个培训项目的成效打个分，你会用什么证据支撑这个分数？" },
+    { "q": "现在请你讲一个具体的项目：一次你主导的、对续报率有明确影响的改版。你当时具体做了什么？" },
+    { "q": "我想听的是你个人的决策，不是团队的。这次改版里，哪个关键判断是你做出的？" },
+    { "q": "再具体一点：从你拍板到看到续报数据变化，中间你每一步是怎么推进的？" }
+  ],
+  "candidate_last_answer": "这个项目其实是我们整个团队一起做出来的成果，我特别想强调这一点。我们教研的同学非常给力，产品和运营也配合得很好，大家心往一处使。我们一起复盘了流失的节点，我们重新设计了练习的节奏，我们也调整了班主任的跟进话术。说实话，能有这样的结果，是团队每一个人的功劳，我个人真的不敢居功。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "teacher-competency-model", "teaching-quality-validation", "renewal-rate-baseline", "renewal-key-actions", "adaptive-learning-role", "completion-rate-number", "public-school-deal-terms", "deal-resistance", "team-restructure", "team-contested-decision", "teacher-training-timeline", "training-evidence", "renewal-revamp-actions", "personal-decision-pin"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 是团队每一个人的功劳，我个人真的不敢居功",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 一个只有候选人本人做出的、可与他人区分开的具体决策或动作，最好附带他拍板的时间点和该动作对续报率的可量化影响"
+    ]
+  }
+}

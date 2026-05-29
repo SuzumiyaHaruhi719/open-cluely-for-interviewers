@@ -1,0 +1,41 @@
+{
+  "id": "fx_0070",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "吴佳 | 运营实习生求职\n\n教育：某财经类高校 市场营销本科大三在读，预计 2027 年毕业。\n\n实习：\n- 某连锁健身品牌，运营实习生（2025 年暑期，约两个月）。协助门店做会员活动的执行与数据统计。\n- 校园奶茶店兼职店员（2024）。\n\n技能：Excel、问卷设计、活动执行。\n自评：踏实、能吃苦、沟通好。",
+  "jd": "岗位：运营实习生（活动运营）。我们是一家连锁零售品牌，实习生将参与门店促活活动的策划与执行，需要独立完成一次小活动的从筹备到复盘，并讲清楚每一步的时间节点与因果顺序。我们希望候选人在被追问时间线时能给出清晰、自洽的过程，而不是把先后顺序讲乱。每周到岗四天以上，实习三个月以上。",
+  "history": [
+    { "q": "吴同学你好，先讲讲你在健身品牌那次暑期实习里，参与的那个会员活动大概是做什么的。" },
+    { "q": "这个活动你是从哪个环节开始介入的？是筹备阶段就进去了，还是活动当天才去帮忙？" },
+    { "q": "那活动的报名数据，你是什么时候开始统计的？活动前还是活动后？" },
+    { "q": "你提到做了一份复盘，复盘是在活动结束之后做的吧？里面主要看了哪些数据？" },
+    { "q": "我有点没跟上时间线，帮我理一下——筹备、报名统计、活动当天、复盘，这四件事你做的先后顺序到底是怎样的？" }
+  ],
+  "candidate_last_answer": "嗯……让我想想。复盘其实我们一开始就做了，活动还没正式上线的时候我就把复盘报告先写了一版。报名数据是活动当天才开始统计的，但其实在筹备之前我就已经拿到最终报名人数了。活动当天是第一天去的，不过筹备那几天我也在。所以顺序大概是先复盘、然后筹备、再报名、最后活动当天吧……可能也不完全是这样，时间有点久我记得不是特别清楚。",
+  "session_state": {
+    "drilled_topics": ["活动内容", "介入环节", "报名统计时点", "复盘时点"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 复盘其实我们一开始就做了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 抓住『复盘在活动上线前就做了』『报名统计在筹备之前就拿到最终人数』这种自相矛盾的时序，逼候选人钉死每件事的具体日期或先后，暴露她到底是真参与了全流程还是只在活动当天打了下杂"
+    ]
+  }
+}

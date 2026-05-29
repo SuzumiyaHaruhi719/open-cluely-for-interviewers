@@ -1,0 +1,38 @@
+{
+  "id": "fx_0066",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "陈博士 (Dr. Chen) | VP of Clinical Operations | Patient Outcomes · Value-Based Care · Population Health\n\nKeywords: Value-Based Care, Population Health, Patient Outcomes, Readmission Reduction, Length of Stay (LOS), Care Pathways, Clinical Quality, HCAHPS, CMS Star Ratings, Quality Measures (HEDIS), EHR Optimization (Epic), Throughput, Capacity Management, Multidisciplinary Rounds, Lean in Healthcare, Patient Safety, NPS, Cost of Care。\n\nProfile: 资深临床运营高管，深耕大型医疗集团多年，主导过多家医院的 clinical transformation 与 quality improvement 项目，擅长 driving patient outcomes、optimizing throughput 与 building high-performing clinical teams。\n\n工作经历：\n- 某大型医疗集团，VP of Clinical Operations（2019 至今）。oversees 五家医院的临床运营，owns quality、throughput 与 patient experience 等核心指标，推动 value-based care 转型与 care pathway 标准化。\n- 某三甲医院，医务部主任 / 运营总监（2013–2019）。负责医疗质量与运营效率。\n- 临床出身，曾任主治医师多年。\n\n教育：临床医学博士；某商学院 EMBA。\n证书：Lean Healthcare 认证。\nExpertise: deep experience in readmission reduction、LOS optimization、HCAHPS improvement 与 cross-functional clinical leadership。",
+  "jd": "Role: VP of Clinical Operations。我们是一家正在向 value-based care 转型的区域医疗集团，旗下有六家医院。该岗位 reports to COO，owns 整个集团的 readmission rate、average length of stay (LOS)、HCAHPS 与 cost of care。我们在面试中会持续 push 候选人讲清楚 specific 的数字与 mechanism：你到底用哪个 care pathway 把哪个病种的 readmission 从多少降到多少、为此和临床团队做了哪个艰难的 trade-off。我们不接受 『提升了质量、改善了 outcomes』这种 high-level 描述，需要可核实的 baseline、具体动作与结果。要求临床背景 + 10 年以上运营管理经验。",
+  "history": [
+    { "q": "你简历里 owns readmission、LOS 这些 KPI。能不能讲一个具体的项目——挑一个病种，你接手时它的 30 天 readmission rate 大概是多少，你和临床团队做了什么 care pathway 的改动，最后到了多少？" }
+  ],
+  "candidate_last_answer": "嗯，readmission 这块我们一直是高度重视的。整体来说我们通过 standardize care pathway、加强 discharge planning 和 multidisciplinary 的协作，patient outcomes 是有 meaningful improvement 的。具体来说就是 align 各个临床科室，build 一个更 patient-centric 的流程，然后 continuously monitor 数据。HCAHPS 和病人满意度也都往好的方向走。总体是一个 system-level 的 transformation，方向是对的。",
+  "session_state": {
+    "drilled_topics": ["readmission-care-pathway-specificity"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: meaningful improvement",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把『meaningful improvement』逼成一个具体病种的 30 天 readmission rate before/after 数字、对应的具体 care pathway 改动，以及为推行它和临床科室之间发生的那个真实 trade-off"
+    ]
+  }
+}

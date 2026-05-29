@@ -1,0 +1,49 @@
+{
+  "id": "fx_0037",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "VP of Data\n\nAtlas Retail — VP of Data (2021–present)\n- Lead data engineering, analytics, and ML platform. ~45 people.\n\nNimbus Logistics — Director of Data Engineering (2017–2021)\n\nSkills: data platforms, Snowflake, dbt, governance, team leadership.\n\nEducation: M.S. Computer Science.",
+  "jd": "We are hiring a VP of Data to own the company's data platform, analytics, and ML infrastructure across a 50-person organization. Reporting to the CTO, you will be accountable for platform reliability (data-freshness SLAs, pipeline uptime), the data-cost budget, and the trust the business places in reported numbers. We need a leader who takes ownership of failures: when a pipeline breaks or a metric is wrong, we want someone who can walk through what they personally decided and did, not who they blame. You will inherit a recent high-visibility data-quality incident that caused the board to receive an incorrect revenue figure, and an over-budget cloud-warehouse bill. Strong candidates can describe a specific incident they owned end to end — root cause, their decisions, and the fix.",
+  "history": [
+    { "q": "Walk me through your current scope at Atlas — team, platform, what you're accountable for." },
+    { "q": "Tell me about the most serious data-quality incident on your watch." },
+    { "q": "What was the root cause?" },
+    { "q": "Who owned the pipeline that broke?" },
+    { "q": "When it broke, what did you personally decide in the first hour?" },
+    { "q": "The board got a wrong revenue number. How did that reach them without a check catching it?" },
+    { "q": "Whose responsibility was the validation layer that should have caught it?" },
+    { "q": "What did you change afterward so it couldn't happen again?" },
+    { "q": "On cost — your warehouse bill ran over. What drove the overage?" },
+    { "q": "Who approved the spend that blew the budget?" },
+    { "q": "Stepping back: in that revenue incident, what part was your responsibility as the VP?" },
+    { "q": "I'm asking specifically about your accountability. Name one decision you'd own as a mistake." }
+  ],
+  "candidate_last_answer": "Honestly, if I'm being candid, that incident wasn't really on me. The pipeline that broke was owned by a team that had been neglected before I arrived, the validation layer was something the previous VP never funded, and the analyst who pushed the bad number to the board did it without looping me in. I'd just inherited the whole mess. The cloud overage was finance's call — they approved the contract. So when you ask what I'd own as a mistake, I'd say trusting that the systems I inherited actually worked.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "worst-incident", "root-cause", "pipeline-owner", "first-hour-decision", "board-number-path", "validation-owner", "post-incident-change", "cost-overage-driver", "spend-approver", "vp-responsibility"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that incident wasn't really on me",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete decision or action the candidate personally made (or failed to make) as the accountable VP — e.g., what he did in the days after the bad number reached the board — rather than attributing every failure to inherited systems, the previous VP, finance, and an analyst"
+    ]
+  }
+}

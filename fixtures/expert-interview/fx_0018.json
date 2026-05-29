@@ -1,0 +1,40 @@
+{
+  "id": "fx_0018",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "运营实习生候选人\n\n技能关键词：数据分析、Excel、SQL、流程优化、KPI 监控、报表制作、跨部门沟通、项目协调、用户增长、A/B 测试、看板搭建、SOP 撰写\n\n经历：\n校园新零售项目 — 运营负责人（2024）\n负责门店日常运营数据跟踪与活动策划。\n\n某物流公司 — 运营实习（2023暑期）\n协助处理订单异常与配送时效报表。\n\n工商管理本科在读。",
+  "jd": "我们招聘一名运营实习生，加入城市配送运营团队，向运营主管汇报。日常工作包括跟踪配送时效与异常订单、整理日报周报、协助推进流程优化的小项目。我们希望候选人能用具体数据讲清楚自己做过的一件事：背景、你具体做了什么、结果如何。考察重点是能否如实区分本人贡献与团队贡献，以及面对追问时是否能保持开放、就事论事。",
+  "history": [
+    { "q": "你简历写了『流程优化』，先讲一个你实习期间参与的流程优化的具体例子。" },
+    { "q": "这个优化里你个人具体负责哪一部分？" },
+    { "q": "优化之后配送时效或者异常率有没有量化的变化？" },
+    { "q": "这个数是你自己统计的，还是别人给你的？" }
+  ],
+  "candidate_last_answer": "这个问题我感觉有点在挑刺了。数据当然是我经手的，至于具体谁先算的有那么重要吗？我一个实习生你还指望我一个人把整条链路全包了？说实话面到现在我觉得你们一直在抓着细节不放，这种问法对实习生不太公平。反正那个项目时效是变好了，异常也少了，这就够了吧。",
+  "session_state": {
+    "drilled_topics": ["流程优化例子", "个人负责部分", "量化变化", "数据来源"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on:数据当然是我经手的，至于具体谁先算的有那么重要吗",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人能否平静地说清这次流程优化中本人实际动手的具体步骤——是谁拉的原始数据、谁定义的口径、本人产出的具体交付物，从而把『经手』还原为可核实的个人动作"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "fx_0019",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Customer Support Intern Candidate\n\nUniversity senior, Communications major. Looking for a summer support internship.\n\nExperience:\nCampus IT Help Desk — Student Assistant (2 semesters)\n- Answered student and faculty tickets about laptops, Wi-Fi, and account lockouts\n- Escalated harder issues to full-time staff and followed up with users\n- Helped write a short FAQ for common password-reset questions\n\nLocal Coffee Roasters — Barista (part-time, 1.5 years)\n- Handled customer orders and resolved complaints at the counter\n- Trained two new hires on the espresso machine\n\nSkills: clear communication, patience, ticketing tools, teamwork, quick learner.",
+  "jd": "We are hiring a Customer Support Intern to join our SaaS support team for the summer. You will shadow senior agents, then handle a queue of Tier-1 tickets (billing questions, password resets, basic how-to), escalating complex cases. Reporting to a Support Team Lead, you will be expected to learn our help-desk tool quickly and reflect honestly on what you handled well and what you would do differently. We value coachability: an intern who can take a pointed question about a mistake without getting defensive and walk us through what actually happened.",
+  "history": [
+    { "q": "Tell me about a time at the IT help desk when a user was upset with how you handled their ticket — what happened, and what did you do?" }
+  ],
+  "candidate_last_answer": "I mean, honestly that almost never happened to me, so I'm not sure this is a fair question. If a user got upset it was usually because the system was down or they forgot their own password — that's not really on me. I was just the messenger. People take their frustration out on the help desk all the time, you kind of have to grow a thick skin. So I don't think I really did anything wrong in those situations.",
+  "session_state": {
+    "drilled_topics": ["upset-user-recovery"],
+    "current_competency_target": "self-awareness",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "self-awareness",
+    "missing_evidence": [
+      { "competency": "self-awareness", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I was just the messenger",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one concrete upset-user interaction the candidate was personally part of, the specific thing they said or did in the moment, and at least one thing they would do differently — moving them off blame-shifting toward owned reflection"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0016",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Director, Credit Risk\n\n- Seasoned risk leader fluent in PD/LGD/EAD modeling, IFRS 9 / CECL provisioning, stress testing, and model risk governance (SR 11-7)\n- Deep expertise across retail and commercial portfolios, Basel capital frameworks, and regulatory examination management\n- Proven partner to CRO, Treasury, and Model Validation; drives data-driven, defensible risk appetite frameworks\n- Skilled in Python, SAS, scorecard development, champion-challenger, backtesting, and early-warning indicators\n- Strong communicator with audit committees, regulators, and board risk committees\n\nMost recent: Coastal National Bank — Director, Credit Risk (2020-present)\nPrior: Veridian Financial — Senior Manager, Model Risk (2016-2020)",
+  "jd": "A regional bank ($40B assets) is hiring a Director of Credit Risk to own the consumer-lending model suite and CECL provisioning. Reporting to the CRO, you will be accountable for model performance, the quarterly allowance, regulatory exam responses, and the early-warning framework across cards, auto, and unsecured personal loans. You will defend methodology choices to Model Validation, internal audit, and the regulator. The role demands someone who can calmly walk an examiner through a model override decision and own the judgment behind it. Recent context: a consent-order remediation is in flight and a backtesting exception was raised on the card PD model last cycle.",
+  "history": [
+    { "q": "Walk me through the card PD model you own — methodology, segmentation, and how it performed at the last backtest." },
+    { "q": "There was a backtesting exception flagged last cycle. Tell me what the exception was and what you personally decided to do about it." }
+  ],
+  "candidate_last_answer": "... ... Look, I'm not sure why we're litigating one exception in an interview. ... Okay. Fine. Let me actually answer it. The exception was an under-prediction of default in the near-prime segment after a macro shift our 2019 vintage didn't capture. I owned the call. I applied a qualitative overlay of plus eleven percent to the segment's PD, documented the rationale for Model Validation, and committed to a recalibration the following quarter. I stand by that decision and I walked the examiner through it myself. So — what specifically do you want to know about it?",
+  "session_state": {
+    "drilled_topics": ["card-pd-model-methodology", "backtesting-exception-decision"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "root-cause-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: applied a qualitative overlay of plus eleven percent to the segment's PD",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: how the candidate sized the +11% overlay specifically — what alternatives (e.g., full recalibration, a larger or smaller overlay) were considered, the data or judgment that justified eleven rather than five or twenty, and the provisioning trade-off accepted"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "fx_0053",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Sandra Whitfield\nSenior Instructional Designer — 9 years in K-12 and higher-ed learning design\n\nRecent: Brightpath Learning — Senior Instructional Designer (2019–present)\nLed redesign of a blended-learning curriculum used across a 12-school district.\n\nPrior: Cedar State University — Learning Experience Designer (2015–2019)\n\nSkills: backward design, UDL, LMS (Canvas), formative assessment, accessibility (WCAG), facilitator training.\nEducation: M.Ed Curriculum & Instruction, 2015.",
+  "jd": "We are hiring a Senior Instructional Designer to lead curriculum redesigns end-to-end. At the senior level we need someone who can articulate their personal leadership contribution, not just the team's collective output. In interviews we probe for the line between 'we' and 'I': which decisions you drove, which artifacts you authored, which stakeholders you personally managed, and what outcome you are individually accountable for. Strong candidates own their specific role clearly even while crediting their team.",
+  "history": [
+    { "q": "Tell me about the blended-learning redesign across the 12-school district. What was the mandate?" },
+    { "q": "What was the measurable goal — completion, proficiency, teacher adoption?" },
+    { "q": "Of that whole effort, what decisions did YOU personally drive?" },
+    { "q": "When teacher adoption stalled at a few schools, who diagnosed why, and who fixed it?" },
+    { "q": "Let me be specific: in the adoption turnaround, what did you yourself do?" }
+  ],
+  "candidate_last_answer": "We really came together as a team on that one. We looked at the adoption data, we ran some teacher focus groups, and we realized the onboarding was too dense, so we redesigned it together. We also brought in the instructional coaches and we co-built a lighter rollout. It was a true team effort — everybody pitched in, and we got adoption back up. I'm really proud of what we accomplished as a group; honestly I don't like to single myself out because it was all of us.",
+  "session_state": {
+    "drilled_topics": ["redesign-mandate", "measurable-goal", "personal-decisions", "adoption-diagnosis-owner", "adoption-turnaround-personal-action"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "leadership", "evidence_type": "mechanism" },
+      { "competency": "leadership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I don't like to single myself out because it was all of us",
+      "must-be-question-type: action-attribution",
+      "expected-yield: separate Sandra's individual contribution from the team's — the specific decision she personally made or artifact she authored in the onboarding redesign, who reported to whom, and what she alone was accountable for — to test whether a senior IC can own her leadership role rather than hiding behind 'we'"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fx_0049",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "供应链计划经理 | 6 年经验\n\n核心标签:S&OP、需求预测、安全库存、MRP、DRP、VMI、JIT、精益、六西格玛绿带、SAP APO、Kinaxis、采购寻源、库存周转、缺货率、Bullwhip 治理、端到端可视化、降本增效。\n\n工作经历\n某快消品公司 — 供应链计划经理(2021 至今)\n- 负责全国仓网的需求计划与补货,推动 S&OP 月度循环。\n- 主导库存优化项目,口号是『把呆滞砍下来,把现货提上去』。\n- 跨部门拉通销售、生产、采购,落地端到端协同。\n前:某制造企业 — 高级计划专员(2018-2021)。\n技能:Excel 高级、SQL、Power BI、SAP、Kinaxis RapidResponse。",
+  "jd": "我们在招聘一名供应链计划经理,负责需求预测、库存策略与 S&OP 落地。面试会就一个你主导的库存优化或预测改进项目深挖:基线是多少、你改了什么参数或流程、库存周转和缺货率分别变化了多少、有没有副作用(比如缺货上升)、口径怎么算的。我们看重能心平气和地用数据复盘的人,包括复盘失败和副作用;面对追问就情绪化或甩锅,对这个岗位是减分项。需要 5 年以上计划经验与扎实的数据能力。",
+  "history": [
+    { "q": "讲一个你主导的库存优化项目:出发点是什么,基线库存周转和缺货率各是多少？" },
+    { "q": "你具体调了哪些杠杆?安全库存、补货频率、还是预测模型？" },
+    { "q": "项目后周转和缺货率分别变成了多少?用的什么口径？" },
+    { "q": "降呆滞通常会推高缺货,你这边缺货率有没有因此上升?副作用怎么处理的？" }
+  ],
+  "candidate_last_answer": "你这个问题问得有点外行了。我做了这么多年计划,降库存当然会兼顾缺货,这不是常识吗?你非要揪着副作用不放,是不是觉得我不专业?数据我手上没带,凭记忆我不可能给你报到小数点。反正项目是成功的,领导也认可了,周转肯定是提升了,缺货也没出大问题。你要是不信,可以去问我前领导。我不太理解为什么一个简单的优化项目要被你这样反复盘问,这面试体验说实话不太好。",
+  "session_state": {
+    "drilled_topics": ["inventory-project-baseline", "levers-pulled", "turnover-stockout-result", "stockout-side-effect"],
+    "current_competency_target": "data-rigor",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "data-rigor",
+    "missing_evidence": [
+      { "competency": "data-rigor", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 周转肯定是提升了,缺货也没出大问题",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 绕开情绪化的防御,逼候选人给出库存周转的前后具体数值(次数或天数)和缺货率的前后变化及计算口径,并说明降呆滞期间是否监控到缺货抬升、用什么阈值判断『没出大问题』——把『肯定提升』『没出大问题』替换为可核对的数字"
+    ]
+  }
+}

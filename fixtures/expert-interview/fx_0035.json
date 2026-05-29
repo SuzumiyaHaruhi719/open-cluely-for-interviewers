@@ -1,0 +1,42 @@
+{
+  "id": "fx_0035",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "高级研究员 计算材料 / 电池材料方向\n\n概述：七年研发经验，专注于锂电正极材料的计算筛选与实验验证，发表多篇同行评议论文，主导过一个跨计算与实验的联合攻关项目。\n\n代表项目（STAR）：\n- 情境：团队负责的高镍正极材料循环寿命达不到客户要求，前 80 次循环容量保持率仅 82 percent。\n- 任务：在六个月内把 200 次循环的容量保持率提升到 90 percent 以上。\n- 行动：我搭建了基于第一性原理的掺杂元素筛选流程，从 30 余种候选元素中锁定 3 种，再与实验组设计了正交验证方案，逐轮缩小配方空间。\n- 结果：第 4 个月确定最终配方，200 次循环容量保持率提升到 91.5 percent，该配方进入中试。\n\n其他经历：\n- 高级研究员，新能科技（2021 至今）：负责计算筛选平台建设与小试配方优化。\n- 研究员，某材料研究院（2017 至 2021）：负责材料表征与数据分析。\n\n技能：DFT 计算、材料筛选、实验设计（DOE）、电化学表征、数据分析、跨组协作。\n\n教育背景：材料科学与工程博士。",
+  "jd": "我们正在招聘一位高级研究员，负责锂电正极材料的计算驱动研发，目标是在循环寿命、能量密度与成本三者之间找到可量产的最优配方。该岗位需要把第一性原理计算与实验验证形成闭环，对关键指标（如 200 次循环容量保持率、克容量）负责，并能在有限时间和预算内收敛配方空间。我们希望候选人能清晰复盘一次由自己主导的、从计算筛选到实验验证再到指标达成的完整攻关，说明每一步的判断依据与时间节点。你将接手一个循环寿命卡在瓶颈、且计算与实验脱节的项目，需要在一个研发周期内给出可进入中试的方案。理想候选人专注、能聚焦在被问到的问题上。",
+  "history": [
+    { "q": "先讲讲你在新能负责的范围：计算平台、配方优化，你具体对哪些指标负责？" },
+    { "q": "你简历里那个高镍正极的项目，能完整讲一遍吗——从问题到结果？" },
+    { "q": "你说从 30 多种候选元素锁定 3 种，这个筛选的判据具体是什么？" },
+    { "q": "实验验证那一步，你和实验组是怎么分工的？正交方案是谁设计的？" },
+    { "q": "我想确认一个时间点：从你确定最终配方到 200 次循环数据出来，中间隔了多久？" }
+  ],
+  "candidate_last_answer": "这个时间点嘛……其实说到循环测试，我就想多聊几句，因为这背后牵扯的东西特别有意思。你知道吗，循环测试的标准本身在业界一直有争议，不同客户的测试电流、截止电压都不一样，我之前还专门研究过国标和几家头部客户测试方法的差异，能讲一整个下午。而且我对整个电池行业的技术路线也很有看法，磷酸铁锂和三元的路线之争，固态电池什么时候能真正落地，这些我都有自己的判断。说回你的问题，反正那段时间我们测了挺多轮的，具体隔了多久我得回去翻记录，但我觉得更值得聊的是测试方法论这件事本身。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "high-nickel-project-overview", "screening-criteria", "experiment-division-of-labor", "config-to-data-timeline"],
+    "current_competency_target": "execution-sequencing",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "execution-sequencing",
+    "missing_evidence": [
+      { "competency": "execution-sequencing", "evidence_type": "timeline" },
+      { "competency": "communication-clarity", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体隔了多久我得回去翻记录",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 从确定最终配方到拿到 200 次循环数据之间的实际时长与关键节点，迫使候选人回到被问的时间线问题上，而非继续发散到测试方法论与行业路线之争"
+    ]
+  }
+}

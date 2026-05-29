@@ -1,0 +1,39 @@
+{
+  "id": "fx_0011",
+  "tags": {
+    "industry": "legal",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Commercial Contracts Attorney | 7 years | JD, Georgetown Law\n\n- Detail-oriented dealmaker fluent in SaaS, MSA, SOW, DPA, NDA, and complex cross-border licensing frameworks\n- Results-driven negotiator who proactively de-risks high-stakes vendor relationships end-to-end\n- Trusted business partner; collaborates seamlessly with Sales, Procurement, and Finance stakeholders\n- Skilled in redlining, playbook development, contract lifecycle management (CLM), and self-service enablement\n- Strong command of indemnification, limitation-of-liability, IP assignment, and data-privacy clause architecture\n- Adept at managing outside counsel spend and driving operational efficiency in legal workflows\n\nMost recent: Brightline Software — Commercial Counsel (2022-present)\nPrior: Hargrove & Pike LLP — Associate, Technology Transactions (2017-2022)",
+  "jd": "Our B2B SaaS company is hiring a mid-level Commercial Counsel to own the sell-side contract desk for North America. You will negotiate MSAs, order forms, and DPAs directly with enterprise customers' procurement and legal teams, partnering closely with Sales to hit quarterly close targets. The role requires comfort with limitation-of-liability and indemnification negotiation, building reusable playbooks and fallback positions, and reducing average deal cycle time. You will report to the Associate General Counsel and interface weekly with Sales leadership. Success in the first year means a measurable reduction in legal-review turnaround and a documented negotiation playbook adopted across the Sales org.",
+  "history": [
+    { "q": "Tell me about a high-stakes contract negotiation you personally led from redline to signature." },
+    { "q": "On that deal, the customer pushed for uncapped indemnity. Walk me through exactly how you handled that clause and where you landed." }
+  ],
+  "candidate_last_answer": "Right, so uncapped indemnity is always the sticking point. And honestly that reminds me — the bigger problem at most companies isn't the clause, it's that Sales loops Legal in way too late. I could go on for an hour about deal hygiene. We tried Slack channels, we tried a shared intake form, we even floated a CLM tool but procurement killed the budget. Oh, and don't get me started on outside counsel rates, they've gone insane post-2021. Anyway, the indemnity thing usually works itself out once people calm down.",
+  "session_state": {
+    "drilled_topics": ["high-stakes-negotiation", "indemnity-clause-handling"],
+    "current_competency_target": "negotiation-substance",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "negotiation-substance",
+    "missing_evidence": [
+      { "competency": "negotiation-substance", "evidence_type": "mechanism" },
+      { "competency": "negotiation-substance", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the indemnity thing usually works itself out once people calm down",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the specific sequence of positions the candidate proposed on the uncapped-indemnity clause, the concrete fallback or cap structure offered, and the final negotiated language they personally agreed to"
+    ]
+  }
+}

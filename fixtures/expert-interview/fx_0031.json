@@ -1,0 +1,39 @@
+{
+  "id": "fx_0031",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Customer Support Team Lead — SaaS / B2B\n\nProfile: 5 years in technical support, 2 years leading a front-line queue team for a billing-software product.\n\nExperience:\nSupport Team Lead, LedgerWorks (2022–Present)\n- Situation: Tier-1 queue had a 14-hour first-response time and a 71 CSAT when I took over a 9-person team.\n- Task: Cut first-response time to under 4 hours without adding headcount.\n- Action: Rebuilt the triage macro library, introduced a follow-the-sun handoff with the Manila shift, and set up a daily 15-minute backlog standup.\n- Result: First-response dropped to 3.2 hours in 4 months; CSAT rose from 71 to 84.\n\nSupport Specialist, LedgerWorks (2020–2022)\n- Situation: Repeated escalations on a refund-API integration.\n- Task: Reduce refund-related tickets.\n- Action: Authored a self-serve troubleshooting guide and partnered with Engineering on a clearer error message.\n- Result: Refund tickets fell 38% quarter-over-quarter.\n\nSkills: Zendesk, macro design, SLA management, escalation handling, QA scorecards, shift scheduling.\n\nEducation: B.A. Communications.",
+  "jd": "We're hiring a Customer Support Team Lead (mid-level) for our B2B billing platform. You'll own a 10-person Tier-1 queue and be accountable for first-response time, CSAT, and escalation rate. The role requires hands-on coaching, macro and workflow design, and tight collaboration with Engineering on recurring defects. We want someone who can point to a specific operational change they personally drove and tie it to a measurable result. You'll inherit a backlog spike caused by a recent pricing migration and an escalation-rate trend we need reversed within a quarter. Strong candidates can describe exactly what they did, in what order, and how they knew it worked.",
+  "history": [
+    { "q": "Tell me about your current team and what metrics you own." },
+    { "q": "Your resume says you cut first-response time from 14 hours to 3.2. Walk me through exactly what you did first." }
+  ],
+  "candidate_last_answer": "Yeah, it was really just about getting the team aligned and focused on the right things. We looked at the data, we figured out where the bottlenecks were, and we made some changes to how we worked. Honestly a lot of it came down to communication and making sure everyone was on the same page. Once the team bought in, the numbers kind of took care of themselves.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "first-response-first-action"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-sequencing", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we made some changes to how we worked",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the specific ordered sequence of changes the candidate personally made (which one came first, why), and the mechanism by which each change moved first-response time — not a generic 'alignment' narrative"
+    ]
+  }
+}

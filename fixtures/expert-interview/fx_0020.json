@@ -1,0 +1,45 @@
+{
+  "id": "fx_0020",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Director of Operations — I don't lose. Full stop.\n\nGive me a broken org and a quarter, and I'll hand you back a machine. That's not bravado, that's my track record.\n\nApex Fulfillment Group — Director of Operations (2018-present)\n- Owned a 5-warehouse fulfillment network; widely seen as the most decisive operator in the company\n- Personally rescued a peak-season meltdown everyone else had written off\n- Built the playbook the rest of the org now copies\n- The CEO's first call whenever something is on fire\n\nStellar Logistics — Senior Operations Manager (2013-2018)\n- Ran the flagship cross-dock; consistently the top-performing site, period\n- Promoted faster than anyone in my cohort because results don't lie\n\nMBA, operations concentration.",
+  "jd": "A high-growth e-commerce company is hiring a Director of Operations to own its multi-node fulfillment network through hyper-growth and peak season. Reporting to the COO, you will be accountable for on-time shipment, cost-to-serve, labor planning, and peak readiness across five fulfillment centers. Last peak season saw a significant on-time-shipment miss and elevated overtime spend. We need a leader who, when a plan fails, can own their part of the failure precisely — what they decided, what signal they missed, and what they would change — rather than attributing outcomes to other teams or external factors.",
+  "history": [
+    { "q": "Walk me through last peak season — what was the on-time-shipment target and where did the network land?" },
+    { "q": "When did you first see signals that you were going to miss?" },
+    { "q": "What was your staffing plan going into peak, and who built it?" },
+    { "q": "The forecast you planned against — where did it come from and did you challenge it?" },
+    { "q": "Which node missed worst, and why specifically?" },
+    { "q": "What did you personally change once the miss became clear?" },
+    { "q": "What did that recovery action actually move, and by when?" },
+    { "q": "Looking back, what was the single decision you'd make differently?" },
+    { "q": "Let's be specific about ownership: of that on-time miss, what share was a call you made, versus other teams?" }
+  ],
+  "candidate_last_answer": "Honestly? Very little of it was on me. The demand forecast Marketing handed us was off by a mile, HR couldn't hire the temps they promised, and the WMS vendor's release broke scan rates right before peak. I flagged all of it in advance. If Finance had approved the overtime budget when I asked, we'd have hit the number. I executed the plan I was given flawlessly — the inputs were broken. So the miss really sits with the upstream teams, not operations.",
+  "session_state": {
+    "drilled_topics": ["peak-target-vs-actual", "early-miss-signals", "staffing-plan-ownership", "forecast-challenge", "worst-node", "personal-change-action", "recovery-impact", "biggest-do-over", "ownership-share-split"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I executed the plan I was given flawlessly — the inputs were broken",
+      "must-be-question-type: counterfactual",
+      "expected-yield: at least one decision inside the candidate's own span of control that contributed to the miss — e.g., not building buffer against a forecast he knew was shaky — forcing him off pure upstream blame onto a specific owned choice he would change"
+    ]
+  }
+}

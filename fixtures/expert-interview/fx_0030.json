@@ -1,0 +1,52 @@
+{
+  "id": "fx_0030",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "self-contradictory",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Senior Supply Chain Manager — Global Logistics & Customs\n\nSummary: 11 years in end-to-end supply chain, specializing in international freight, customs brokerage, and supplier compliance for consumer electronics.\n\nExperience:\n- Senior Supply Chain Manager, Helio Devices (Jan 2019 – Present): Own ocean and air freight for APAC-to-US lanes. Led a team of 8 analysts. Reduced landed cost per unit by 14%.\n- Logistics Lead, Helio Devices (Jan 2019 – Present): Managed customs classification and duty optimization across 6 ports. (Note: same start date listed for both roles.)\n- Supply Chain Analyst, Brightline Imports (2014 – 2018): Built the demand-planning model. Promoted to manager in 2015, then went back to analyst in 2016.\n\nKey achievements:\n- Cut total freight spend from $48M to $41M in 2020.\n- Elsewhere in resume: \"Grew freight spend under management to $60M by 2020.\"\n- Implemented a new TMS in 9 months; in another section listed as \"rolled out same TMS in 18 months.\"\n- Held a customs broker license 2017–present; separately states \"pursuing broker license, expected 2025.\"\n\nSkills: Incoterms, HTS classification, duty drawback, supplier audits, S&OP, TMS implementation, freight forwarder negotiation.\n\nEducation: B.S. Industrial Engineering.",
+  "jd": "We are hiring a Senior Supply Chain Manager to own international freight and customs compliance for our consumer-electronics lines moving from APAC into the US and EU. You will manage landed cost, duty exposure, and broker relationships, and you will be the accountable owner for HTS classification accuracy and trade-compliance posture. This role partners closely with Legal and Trade Compliance; we operate under a strict policy that classification and country-of-origin determinations must be defensible to customs authorities. We need someone who can reduce duty spend through legitimate, well-documented strategies (FTAs, duty drawback, first-sale) — not gray-area reclassification. You will inherit an open customs inquiry on one product family and must demonstrate a track record of clean audits. Strong candidates can walk through a specific duty-reduction decision end to end, including who signed off and how it held up under review.",
+  "history": [
+    { "q": "Walk me through your current scope at Helio — lanes, spend under management, team size." },
+    { "q": "Your resume lists two roles at Helio with the same start date. Which was it, and what actually changed?" },
+    { "q": "There's a freight-spend figure that reads both '$41M' and '$60M' for 2020. Which is correct?" },
+    { "q": "Let's talk duty. Walk me through one specific duty-reduction project you owned." },
+    { "q": "What HTS code did you move it from and to, and what was the rationale?" },
+    { "q": "Who signed off on that classification change — you, Legal, or an external broker?" },
+    { "q": "Did that reclassification ever get reviewed by customs? What happened?" },
+    { "q": "On your broker license — it says both '2017–present' and 'expected 2025'. Which is true today?" },
+    { "q": "Tell me about the open customs inquiry you'd be inheriting. Have you handled anything similar?" },
+    { "q": "When you reduced landed cost 14%, how much of that was freight vs. duty vs. other?" },
+    { "q": "What was the timeline on the TMS rollout — 9 months or 18?" },
+    { "q": "Give me a duty-reduction decision where the classification was genuinely defensible. How did you document it?" },
+    { "q": "Be specific: on that reclassification, what was the documented justification, and would it survive a CBP audit?" }
+  ],
+  "candidate_last_answer": "Right, so documentation — that's such a huge topic, and honestly it connects to this whole philosophy I have about supply chain as a discipline. You know, when I started in this field back in 2014, nobody thought about customs as strategic, and I gave this talk once at a regional logistics meetup about how the broker is really the unsung hero of the P&L. Anyway, on that particular reclassification, look, the way I see it, the codes are honestly kind of a gray area, so we picked the one with the lower duty rate and figured if customs didn't flag it, we were fine — that's just how everyone in the industry plays it. But back to documentation as a concept, I really think the bigger story is about culture, and I could talk for an hour about supplier relationships in Shenzhen.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "duplicate-role-dates", "conflicting-spend-figure", "duty-project", "hts-code-change", "classification-signoff", "customs-review", "broker-license-conflict", "open-inquiry", "landed-cost-breakdown", "tms-timeline", "defensible-classification"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "compliance-integrity", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [
+      { "type": "borderline-compliance", "detail": "Candidate describes selecting a lower-duty HTS code in a 'gray area' on the basis that customs may not flag it, and frames knowingly under-classifying to reduce duty as standard industry practice — a potential customs/trade-compliance violation." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: we picked the one with the lower duty rate and figured if customs didn't flag it, we were fine",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: whether the candidate can articulate a defensible, documented classification rationale (e.g., binding ruling, customs counsel sign-off) versus admitting the choice was opportunistic and undocumented, and who actually bore accountability for that determination"
+    ]
+  }
+}

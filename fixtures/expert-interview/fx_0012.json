@@ -1,0 +1,40 @@
+{
+  "id": "fx_0012",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "VP Supply Chain\n\nLeyden Industrial Components (2020-present)\nGlobal logistics, procurement, and S&OP. Network spans 9 DCs, 40+ suppliers.\n\nMidwater Consumer Goods (2015-2020)\nSenior Director, Distribution.\n\nMSc Operations Research, Purdue.",
+  "jd": "We are recruiting a VP of Supply Chain to own end-to-end planning, procurement, and logistics for a $1.2B consumer-electronics manufacturer with three regional distribution networks. Reporting to the COO, you will own inventory turns, on-time-in-full (OTIF), landed cost, and supplier risk across a base of 200+ suppliers. The mandate includes leading an S&OP transformation, rationalizing the carrier mix, and standing up a supplier-risk program after two recent single-source disruptions. You will manage a team of 60 across planning, sourcing, and distribution, and present supply-risk posture to the board quarterly. We need a leader who can substantiate impact with auditable numbers, not directional claims.",
+  "history": [
+    { "q": "Give me the shape of your current org — headcount, the functions you own, and the top two or three metrics you're measured on." },
+    { "q": "You owned an S&OP transformation. What was the single biggest operational lever you pulled, and what did it move?" },
+    { "q": "Quantify that for me — baseline, result, and how the number was validated." }
+  ],
+  "candidate_last_answer": "So when I took over, our S&OP was a mess. Within the first quarter I personally drove inventory turns from about 4 to 22, cut landed cost by 60%, and pushed OTIF from the low 70s to 99.8% — basically overnight once the new cadence kicked in. Forecast accuracy went from a coin flip to 98%+. Honestly we saved north of $300M that year. The CFO was thrilled. I don't have the exact deck in front of me, but those are the numbers, give or take.",
+  "session_state": {
+    "drilled_topics": ["current-org-shape", "sop-lever", "metric-validation"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: drove inventory turns from about 4 to 22, cut landed cost by 60%",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the mechanism and timeframe behind each headline number — how a 4x-to-22x turns jump and a 60% landed-cost cut were physically achieved within a quarter, and which finance or audit artifact validated them"
+    ]
+  }
+}

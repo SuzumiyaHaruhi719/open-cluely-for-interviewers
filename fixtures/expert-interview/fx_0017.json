@@ -1,0 +1,40 @@
+{
+  "id": "fx_0017",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Junior Backend Engineer | 一个被低估的 10x engineer\n\n说实话，我可能是我们组里写代码最快、bug 最少的人。\n\n云图科技 — Backend Engineer (2023-present)\n- 一个人扛起了核心支付服务的大部分开发，组里离了我基本转不动\n- 设计的系统从来没出过线上事故，因为我对代码质量近乎偏执\n- 用 Go 和 Kafka 搭了一套高并发架构，性能吊打老系统\n- mentor 都说我的成长速度是他见过最快的\n\n技能: Go、Java、Kafka、Redis、PostgreSQL、Kubernetes、microservices、distributed systems\n计算机科学本科。",
+  "jd": "We are hiring a junior backend engineer for our payments platform team. You will work on Go microservices handling transaction processing, reporting to a tech lead and collaborating with senior engineers on design. Day to day involves writing and reviewing code, adding tests, debugging production issues, and participating in on-call. We want someone who can explain a system they built in concrete technical detail — the data flow, the failure modes they considered, and exactly which parts they wrote versus inherited. Strong fundamentals in concurrency, databases, and distributed systems messaging matter more than buzzwords.",
+  "history": [
+    { "q": "你简历上说一个人扛起了核心支付服务。先讲讲这个服务具体是做什么的，QPS 量级多大？" },
+    { "q": "你提到用 Kafka 搭了高并发架构。consumer 端你是怎么保证 exactly-once 的？" },
+    { "q": "具体点：如果一条 message 处理到一半服务挂了，你的系统会发生什么？" }
+  ],
+  "candidate_last_answer": "嗯,这个 Kafka 它本身就是高可用的嘛,所以基本不太会有问题。我们用的是 microservices 架构,很 robust 的。exactly-once 的话……Kafka 有那个机制的,我配过。message 挂了的话系统会自己处理好,有 retry 啥的。反正我做的这块一直很稳,没出过事。具体底层我没太关注,因为它就是 work 的。",
+  "session_state": {
+    "drilled_topics": ["payment-service-scope", "kafka-exactly-once", "mid-processing-failure"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "technical-depth", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: message 挂了的话系统会自己处理好,有 retry 啥的",
+      "must-be-question-type: mechanism",
+      "expected-yield: the concrete failure-handling mechanism — offset commit ordering, idempotency keys or dedup store, at-least-once vs exactly-once semantics, and what actually happens to an in-flight message on crash, demonstrating whether the candidate built it or just consumed a library default"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fx_0055",
+  "tags": {
+    "industry": "product-management",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "林思远 | 产品管理实习生求职者 | 数据驱动 · 用户增长 · 敏捷迭代 · 跨部门协同\n\n核心关键词：用户画像、A/B 测试、增长黑客、北极星指标、OKR、MVP、需求池、PRD、竞品分析、用户旅程、漏斗模型、留存曲线、Figma、Axure、SQL、埋点、数据看板、Scrum、看板、用户访谈、商业模式画布、AARRR、PMF、敏捷开发、精益创业、用户故事、Roadmap、灰度发布。\n\n教育背景：某 985 高校 信息管理与信息系统 本科大三在读（预计毕业 2027 年 6 月）。\n\n实习经历：\n- 某社区电商 App，产品助理实习生（2025 年寒假，6 周）：参与了一个签到功能的需求评审，整理过用户反馈，做过竞品调研文档。\n- 校园创业项目『拼课』联合发起人（2024 至今）：一个帮同学拼自习室座位的微信小程序，注册用户据称 800 人。\n\n技能自评：精通 Axure 高保真原型；熟练 SQL 基础查询；了解增长黑客方法论；具备优秀的同理心与共情能力；自驱力强。\n\n荣誉：校产品创新大赛三等奖。",
+  "jd": "岗位：产品经理实习生（增长方向）。我们是一家在线教育平台，月活约 300 万，正在搭建用户增长团队。实习生将跟随一位资深产品经理，参与拉新与留存相关的功能迭代，具体包括：（一）基于埋点数据定位某一段用户流失的漏斗环节，并提出可验证的优化假设；（二）独立撰写至少一份小功能的 PRD，并跟进到上线；（三）设计并解读一次 A/B 实验。我们希望候选人能讲清楚自己真实做过什么、数据是多少、结论是什么，而不是堆砌方法论名词。每周到岗不少于四天，实习期至少三个月。",
+  "history": [
+    { "q": "你好林同学，先聊聊你在那家社区电商 App 的实习。你说你参与了签到功能的需求评审，能具体讲讲你在那个评审里到底负责哪一块吗？" },
+    { "q": "那在整理用户反馈的时候，你大概看了多少条反馈？你是怎么把它们归类、最后输出成什么东西的？" },
+    { "q": "好，换一个。你简历里写了很多增长方法，比如 AARRR、漏斗模型。就拿你那个『拼课』小程序来说，你当时实际用埋点看过哪个环节的流失吗？" },
+    { "q": "我想听的是一个具体的数字或者具体的动作——『拼课』从注册到第一次成功拼座，这一步的转化率大概是多少，你做过什么去提升它？" }
+  ],
+  "candidate_last_answer": "其实说到增长，我觉得最关键的还是要有用户思维和同理心。我平时很喜欢研究各种产品，比如小红书、抖音的推荐机制我都很有研究，我自己还做过一个公众号，写过几篇关于产品方法论的文章，阅读量还不错。我觉得做产品最重要的是要热爱生活、保持好奇心，要能站在用户角度思考问题。所以我一直在锻炼自己的产品 sense，平时也会看很多大厂 PM 的分享。",
+  "session_state": {
+    "drilled_topics": ["签到功能评审职责", "用户反馈处理", "拼课增长方法落地"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "product-sense", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我一直在锻炼自己的产品 sense",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把候选人从『产品 sense』这种空泛自评拉回到具体数字——强制他说出『拼课』从注册到首次成功拼座的真实转化率（哪怕粗估）以及他个人为提升它做过的一个具体动作"
+    ]
+  }
+}

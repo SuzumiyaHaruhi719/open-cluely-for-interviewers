@@ -1,0 +1,38 @@
+{
+  "id": "fx_0050",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Marcus Reyes\nSupply Chain Intern Candidate — Undergraduate, Junior Year\n\nEducation: BS Industrial & Systems Engineering, expected 2026. Relevant coursework: Operations Management, Statistics, Intro to Logistics.\n\nExperience:\n- Campus dining logistics assistant (part-time, 2 semesters): helped track inventory deliveries and flag shortages.\n- Class project: built a small spreadsheet model to reorder a hypothetical warehouse using EOQ.\n\nSkills: Excel, basic Python, EOQ basics, eager to learn ERP systems.",
+  "jd": "We are hiring a Supply Chain Intern to support our procurement and inventory team for a summer rotation. You will help pull reports, run basic reorder calculations, and shadow planners. We do not expect deep experience — we expect curiosity, a willingness to attempt a structured answer, and ownership of your own reasoning. In interviews we look for interns who try to reason through a problem out loud, even imperfectly, rather than immediately bouncing the question back to the interviewer. Coursework in EOQ, statistics, or operations is a plus.",
+  "history": [
+    { "q": "Walk me through what EOQ is and when you'd actually use it in a real warehouse." },
+    { "q": "Suppose demand for an item suddenly doubles for a few weeks. How would you think about adjusting the reorder point?" }
+  ],
+  "candidate_last_answer": "Hmm, well — how would you adjust it? Like, what's the answer you're looking for here? I guess I'd want to know what your team usually does in that situation first. Is this a trick question? What kind of system do you guys use — is it SAP? Honestly I'd rather hear how an expert like you handles it before I guess, because you obviously know the right way and I don't want to say something wrong.",
+  "session_state": {
+    "drilled_topics": ["eoq-concept", "reorder-point-under-demand-shock"],
+    "current_competency_target": "problem-solving-reasoning",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "problem-solving-reasoning",
+    "missing_evidence": [
+      { "competency": "problem-solving-reasoning", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: how would you adjust it? Like, what's the answer you're looking for here?",
+      "must-be-question-type: teach-back",
+      "expected-yield: close off the deflection and require the intern to attempt his own structured reasoning — that doubling demand raises average demand over lead time and therefore the reorder point, plus the effect on safety stock and variability — revealing whether he can reason through the mechanism unaided rather than bouncing the question back to the interviewer"
+    ]
+  }
+}

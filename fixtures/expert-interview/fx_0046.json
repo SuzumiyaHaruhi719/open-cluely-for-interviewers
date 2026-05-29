@@ -1,0 +1,47 @@
+{
+  "id": "fx_0046",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "self-contradictory",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "陈昊 — 后端开发工程师（初级）\n\n工作经历\n字节某业务线 — 后端开发（2022.09 至今，约 1 年）\n同一段经历下方又写：后端开发实习生 + 转正，累计 3 年后端经验。\n\n- 负责订单服务的 Go 微服务开发，QPS 峰值 5 万。\n- 简历另一处写：主要使用 Java/Spring Boot，主导支付链路重构。\n- 独立负责核心服务（另一行又写：在导师指导下参与部分模块）。\n- 线上事故 0 次（项目经历里却描述了一次自己参与的 P1 故障复盘）。\n\n技能：Go、Java、MySQL、Redis、Kafka。教育：某 985 计算机本科 2022 届（另一处写 2021 届）。",
+  "jd": "我们在招聘一名初级后端工程师，加入订单与交易团队。你会负责一两个 Go 微服务的开发与 on-call，需要清楚地讲明白:哪段代码是你写的、哪个决策是你做的、线上出问题时你具体定位和修复了什么。面试中我们会就一个具体故障深挖到底——根因是什么、你这一层做了什么、改了哪一行配置或代码、回归如何验证。我们不接受把责任笼统推给『上游』『环境』或『别人的服务』而讲不清自己那一块的候选人。需要扎实的 Go 或 Java 基础与至少一段真实的线上 on-call 经历。",
+  "history": [
+    { "q": "先对齐一下经历：简历里既写了 1 年、又写了 3 年后端经验，到底哪个是准确的？" },
+    { "q": "你主力语言是 Go 还是 Java？订单服务和支付重构分别用的什么？" },
+    { "q": "选订单服务那个 Go 项目，讲讲它的核心职责和你负责的模块边界。" },
+    { "q": "QPS 峰值 5 万这个数,是整个服务的还是你那个接口的？怎么压测出来的？" },
+    { "q": "简历写线上事故 0 次,但项目经历又提到一次 P1 复盘,这次故障到底发生了没有？" },
+    { "q": "那就讲这次 P1。现象是什么?用户侧表现、影响范围、持续多久？" },
+    { "q": "根因定位是怎么做的?你是怎么一步步排查到根因的？" },
+    { "q": "根因确认后,具体是谁、改了什么把它修复的?" },
+    { "q": "你这一层——订单服务这边——在这次故障里到底做了什么改动？" },
+    { "q": "我只想听你自己那块:你写的代码或你改的配置,哪一处和这次故障直接相关？" }
+  ],
+  "candidate_last_answer": "这个其实情况比较复杂,要分好几块说。第一块是那次 P1,根因主要在上游的库存服务,他们超时配置没设好,把我们拖垮了,不能算我们订单服务的问题;第二块,我还顺便讲下另一个项目,就是支付那边,当时也是中间件 Kafka 抖动,消息积压,运维那边没及时扩容;第三块,还有一次缓存击穿,那个是 DBA 没把 Redis 集群配好。所以你看,我经手的这几件事,真正的根因都不在我这一层,我能改的我都改了,主要还是上下游和环境的锅。要说我自己改了哪一行——具体哪一行我一时想不起来了,反正主要不是我们这块的责任。",
+  "session_state": {
+    "drilled_topics": ["experience-years-contradiction", "primary-language-contradiction", "order-service-scope", "qps-measurement", "incident-existence-contradiction", "p1-symptoms", "root-cause-method", "fix-attribution", "order-layer-change", "candidate-own-line-of-code"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "debugging-rigor", "evidence_type": "mechanism" },
+      { "competency": "debugging-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我能改的我都改了,主要还是上下游和环境的锅",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 把候选人从三个故事里拉回到唯一一个故障,逼他说出订单服务这一侧他本人写或改的具体一处——例如他给下游调用加的超时/熔断参数的具体取值、降级开关的代码位置、或回归验证的方式——而不是继续把根因归给库存、Kafka、DBA 等上下游"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0036",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "民办高校 教务与学生发展总监\n\n概述：十二年高等教育管理经验，专注于教学质量管理、学业预警与毕业生就业。主导过学业预警系统从立项到全校落地。\n\n代表项目（STAR）：\n- 情境：所在学院大一年级首次挂科率高达 23 percent，学业流失风险集中在前两个学期。\n- 任务：一学年内把大一首次挂科率降到 15 percent 以下，并建立可持续的预警机制。\n- 行动：我牵头搭建了基于出勤、阶段测验与作业提交的三维预警模型，设定红黄两级阈值；红色预警触发后 48 小时内由辅导员一对一介入，并联动任课教师调整辅导。\n- 结果：该学年大一首次挂科率降到 13.6 percent，红色预警学生的学期通过率提升了 19 个百分点，机制沿用至今。\n\n经历：\n- 教务与学生发展总监，明德学院（2019 至今）。\n- 学业指导中心主任，某学院（2014 至 2019）。\n\n技能：教学质量管理、学业预警、数据化学生发展、辅导员体系建设、就业指导、跨部门协同。\n\n教育背景：教育管理硕士。",
+  "jd": "我们正在招聘一位教务与学生发展总监，统筹本科教学质量、学业预警与学生发展三条线，向主管教学的副校长汇报，对大一保留率、首次挂科率与毕业生就业落实率负全责。该岗位需要将学生发展工作数据化，建立可量化、可追溯的预警与干预闭环，并推动辅导员与任课教师的协同。我们看重候选人能否完整复盘一次由自己主导的干预项目，清楚说明机制设计、责任归属、时间节点与结果数据。你将接手一个大一流失率偏高、预警机制缺失的学院，需要在一学年内给出可验证的改善。理想候选人能把方法讲到可复制的程度。",
+  "history": [
+    { "q": "先介绍一下你在明德的职责范围，以及你对哪些指标负责。" },
+    { "q": "请完整讲一个你主导的、对挂科率有明确影响的项目：从问题、目标、你的具体动作，到结果数字。" }
+  ],
+  "candidate_last_answer": "好的。背景是我刚接手时，学院大一首次挂科率是 23 percent，流失风险主要集中在前两个学期，这是我要解决的问题。我给自己定的目标是一学年内把它压到 15 percent 以下，并且要留下一套能持续跑的机制，而不是搞一次性运动。具体动作上，我亲自牵头设计了一个三维预警模型，用出勤、阶段测验和作业提交三个信号，设了红黄两级阈值；红色预警一触发，我要求辅导员必须在 48 小时内做一对一介入，同时我去和任课教师对齐，让他们针对这批学生调整辅导节奏。结果是那一学年首次挂科率降到了 13.6 percent，被标为红色预警的那批学生，学期通过率提升了 19 个百分点，这套机制现在还在用。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "intervention-end-to-end"],
+    "current_competency_target": "execution-sequencing",
+    "elapsed_minutes": 10
+  },
+  "ground_truth": {
+    "competency_target": "execution-sequencing",
+    "missing_evidence": [
+      { "competency": "execution-sequencing", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 红色预警一触发，我要求辅导员必须在 48 小时内做一对一介入",
+      "must-be-question-type: mechanism",
+      "expected-yield: 48 小时一对一介入这一环节的具体内部机制——辅导员实际谈什么、如何记录与跟踪、对未按时介入的情况如何兜底，用以验证该机制是真实可复制的流程而非纸面规定"
+    ]
+  }
+}

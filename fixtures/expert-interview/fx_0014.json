@@ -1,0 +1,55 @@
+{
+  "id": "fx_0014",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Associate Product Manager | 2 years\n\n- 熟练 roadmap planning、user story 撰写、backlog grooming、A/B testing、data-driven decision making\n- 精通 Jira、Amplitude、Figma、SQL、Mixpanel，擅长 stakeholder management 与 cross-functional 协作\n- 主导多个 feature 的 discovery 到 launch，强调 user-centric design 与 agile delivery\n- 关键词：MVP、PRD、OKR、north-star metric、retention、activation、funnel optimization、growth\n\n最近: 一家 B2C 电商 App — Associate PM (2023-present)\n之前: 某 SaaS 初创 — Product Analyst Intern (2022-2023)\n学历: 计算机科学本科",
+  "jd": "We are hiring a junior Product Manager for the activation team of a consumer mobile app (8M MAU). Reporting to a Senior PM, you will own a slice of the new-user onboarding funnel and run experiments to lift Day-7 retention. Day to day you will write PRDs, size opportunities with the analytics team, prioritize a backlog with engineering, and ship A/B tests. We expect you to reason crisply from funnel data to a specific hypothesis to a measurable result, and to clearly articulate what you personally decided versus what the team decided.",
+  "history": [
+    { "q": "先聊聊你现在 own 的 onboarding funnel——哪几步，哪一步 drop-off 最严重？" },
+    { "q": "那个 drop-off 你的 hypothesis 是什么？" },
+    { "q": "你怎么验证这个 hypothesis 的？" },
+    { "q": "实验的 success metric 是什么？" },
+    { "q": "sample size 和实验跑了多久？" },
+    { "q": "结果 statistically significant 吗？" },
+    { "q": "你怎么定义 Day-7 retention 的 baseline？" },
+    { "q": "这个 feature 的 PRD 是你独立写的吗？" },
+    { "q": "engineering 给的 estimate 你怎么 challenge 的？" },
+    { "q": "如果 retention 没动，你的 rollback 标准是什么？" },
+    { "q": "举个具体例子：上一个你 ship 的实验，hypothesis、variant、结果分别是什么？" },
+    { "q": "那个实验的 variant 之间 conversion 差多少？" },
+    { "q": "你说『大概有提升』——具体百分点是多少？" },
+    { "q": "这个数你是从 Amplitude 还是 Mixpanel 拉的？" },
+    { "q": "guardrail metric 有没有下降？比如 activation 或者 support ticket？" },
+    { "q": "好，换个角度。这个实验从 idea 到 launch 花了多久？" },
+    { "q": "其中你自己做了哪些 part，哪些是别人做的？" },
+    { "q": "再具体一点：你最近主导的 feature,有没有一个能讲清楚 baseline、variant、最终 lift 三个数字的?" }
+  ],
+  "candidate_last_answer": "嗯……这个嘛,具体数字我得回去翻一下。反正那个 feature 整体是有 positive impact 的,用户 feedback 也挺好的。我们是 data-driven 的团队,所以 decision 都是基于 data 的。baseline 的话……差不多就是行业平均水平吧,variant 也是有提升的,lift 我记得是 significant 的。总之就是一个比较成功的 launch。",
+  "session_state": {
+    "drilled_topics": ["onboarding-funnel", "drop-off-hypothesis", "experiment-validation", "success-metric", "sample-size", "significance", "retention-baseline", "prd-ownership", "eng-estimate", "rollback-criteria", "last-shipped-experiment", "variant-conversion-delta", "lift-magnitude", "data-source", "guardrail-metric", "idea-to-launch-time", "personal-vs-team-split"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: baseline 的话……差不多就是行业平均水平吧",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual numeric baseline, variant, and final lift for one specific experiment the candidate ran, sourced from a named tool, instead of directional language like 『有提升』 or 『行业平均水平』"
+    ]
+  }
+}

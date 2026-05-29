@@ -1,0 +1,43 @@
+{
+  "id": "fx_0038",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Supply Chain Intern Candidate — Operations & Procurement\n\nProfile: Final-year Operations Management student seeking a supply-chain internship; one prior summer internship in warehouse operations.\n\nExperience (STAR):\nWarehouse Operations Intern, Crestwood Distribution (Summer 2024)\n- Situation: The pick-and-pack area had a 6% mis-pick rate causing return-shipment costs.\n- Task: Help reduce mis-picks during my 10-week internship.\n- Action: Shadowed pickers, logged the top 5 error SKUs, and proposed relocating 3 look-alike items to separate bins.\n- Result: Mis-pick rate on those SKUs dropped from 6% to 2.5% over the last 3 weeks.\n\nProjects:\n- Built a small reorder-point model in a class project for a simulated retailer.\n\nSkills: Excel, basic SQL, inventory basics, process observation, Lean intro coursework.\n\nEducation: B.S. Operations Management (expected next year).",
+  "jd": "We're hiring a Supply Chain Intern to support our procurement and warehouse-operations team. You'll help with purchase-order tracking, supplier follow-ups, inventory counts, and small process-improvement projects under a senior analyst's guidance. We value honest, specific reflection over breadth: pick one project, tell us the actual problem, exactly what you did, and how you measured the result. The ideal intern can stay focused on a single example when asked and resist the urge to list everything at once. This is an entry-level role with structured mentorship and a path to a full-time offer for strong performers.",
+  "history": [
+    { "q": "Tell me about your warehouse internship — what was the team and what were you responsible for?" },
+    { "q": "Your resume says you cut mis-picks from 6% to 2.5% on certain SKUs. Pick that one project and walk me through exactly what you did." },
+    { "q": "How did you decide which SKUs were the top error drivers?" },
+    { "q": "When you proposed relocating the bins, who did you bring that to, and did it actually get implemented?" },
+    { "q": "Stay on the mis-pick project for a second — how did you confirm the rate actually dropped to 2.5%?" },
+    { "q": "Just the mis-pick project: what was the single most important thing you personally did?" }
+  ],
+  "candidate_last_answer": "So there were honestly a bunch of things going on that summer. Like, besides the mis-picks, I also helped a little with the inventory count, and there was this whole thing with a supplier being late that I kind of got pulled into, and I did some Excel cleanup for the inbound dock schedule too. On the mis-pick one specifically, I mean, I just kind of looked at stuff and made some suggestions and things got better. It's hard to pull out one thing because it all sort of blended together — I was helping wherever they needed me, you know?",
+  "session_state": {
+    "drilled_topics": ["warehouse-scope", "mispick-project-walkthrough", "top-sku-selection", "bin-proposal-implementation", "rate-confirmation", "single-most-important-action"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: It's hard to pull out one thing because it all sort of blended together",
+      "must-be-question-type: teach-back",
+      "expected-yield: forcing the candidate to isolate the single mis-pick project and narrate the one concrete action he personally took and how he verified the 2.5% result, rather than blending it with the inventory count, the late supplier, and the dock-schedule cleanup"
+    ]
+  }
+}

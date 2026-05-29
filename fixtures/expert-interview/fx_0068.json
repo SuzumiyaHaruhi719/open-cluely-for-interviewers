@@ -1,0 +1,46 @@
+{
+  "id": "fx_0068",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "黄震 — VP of Engineering | 连续创业者 | 架构大神\n\n个人简介：本人是业内公认的 engineering leader，带过的团队没有一个不脱胎换骨。我主导的每一个系统都成为了公司的核心资产，我经手的每一次架构升级都被业界争相模仿。\n\n工作经历：\n- 某独角兽公司，VP of Engineering（2020 至今）。我一手 rebuild 了整个技术体系，把公司从濒临崩溃的单体架构带到了世界级的微服务架构。在我的领导下，系统可用性达到了 five-nines，团队从 30 人扩张到 200+，几乎所有核心技术决策都由我拍板。我个人 single-handedly 解决了困扰公司两年的性能瓶颈。\n- 某大厂，技术专家 / 架构师（2015–2020）。我是该部门 most respected 的技术权威，主导了多个 0 到 1 的平台，影响力辐射全公司。\n- 早年两次创业，均为 technical co-founder，技术全部由我一人扛起。\n\n技术栈：分布式系统、高并发、微服务、云原生、Kubernetes、性能优化——这些我全都精通到 expert 级别。\n\n教育：某名校计算机本科（我认为学历不重要，能力才重要）。\n自我评价：technical vision 顶尖，execution 凶猛，是那种 『把不可能变成可能』的人。",
+  "jd": "Role: VP of Engineering。我们是一家高速增长的 B2B SaaS 公司，正在 scale 工程组织。该岗位 reports to CTO，owns 平台稳定性、交付速度与工程团队的 health。我们在面试中会对简历里的 big claims 做 rigorous 的 deep dive——尤其是 『single-handedly』『一手 rebuild』这类表述，我们会逐一核实：到底哪一部分是你个人写的代码或拍的板，哪一部分是团队做的。我们曾经吃过亏：一位候选人把团队成果包装成个人英雄事迹，入职后无法独立复现。我们重视候选人在被追问 specific scope 时是否依然 specific、诚实，而不是把核实当成冒犯。要求 10 年以上工程经验，5 年以上大团队管理。",
+  "history": [
+    { "q": "黄总你好，先说说你现在这家独角兽，工程团队 200 多人是怎么分组的，你直接管几个 manager。" },
+    { "q": "你简历里写 single-handedly 解决了困扰公司两年的性能瓶颈。这个瓶颈具体是什么——是数据库、是某个服务、还是网络层？" },
+    { "q": "你说是 single-handedly，那这个排查和修复，从定位到上线，前后有几个人参与？你个人写了哪部分代码？" },
+    { "q": "性能瓶颈解决前后，关键指标——比如 P99 latency 或者 QPS——具体是从多少到多少？" },
+    { "q": "你提到把单体带到了 five-nines 可用性。five-nines 是按什么口径算的？统计窗口多长？哪个系统达到了？" },
+    { "q": "团队从 30 扩到 200，这个 scaling 过程中你亲自做的招聘和组织设计，能举一个具体决定吗？" },
+    { "q": "我把前面的问题合起来再问一次——『single-handedly 解决性能瓶颈』这句话，如果让你现在精确地修订，到底是你一个人做的，还是团队做的、你 lead 的？" }
+  ],
+  "candidate_last_answer": "你们今天是不是专门冲着我简历里这几个词来的？我觉得这种 nitpick 没什么意义。我作为 VP，难道还要自己去 commit 代码、自己去数有几个人参与吗？那是 IC 干的事。我说 single-handedly，意思就是这件事的 vision 和 direction 是我定的，没有我根本推不动。你非要我拆成『谁写了哪行代码』，这恰恰说明你不懂 leadership 是什么。我带过的团队、做出来的结果摆在那儿，这种 level 的问题我觉得 beneath 我去一一辩解。",
+  "session_state": {
+    "drilled_topics": ["团队分组与汇报线", "性能瓶颈定位", "single-handedly归属", "性能指标before/after", "five-nines口径", "scaling中的个人决定"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "scope" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "Candidate attacks the interviewer's understanding of leadership ('这恰恰说明你不懂 leadership 是什么', 'beneath 我去一一辩解') and refuses to reconcile a self-authored resume claim of 'single-handedly' against actual team contribution. This is candidate-side deflection; the scope-verification question is appropriate and explicitly anticipated by the JD's prior bad-hire experience." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: 那是 IC 干的事",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: 不接受『VP 不必懂细节』的挡箭，把 single-handedly 这句简历原话锚定到一个可核实的事实——要他点名当时和他一起排查性能瓶颈的具体工程师、他个人拍板的那个技术决定，以及 P99/QPS 的真实 before/after 数字"
+    ]
+  }
+}

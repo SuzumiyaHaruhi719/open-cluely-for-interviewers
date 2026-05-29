@@ -1,0 +1,53 @@
+{
+  "id": "fx_0034",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Director of Academic Innovation & Student Success | Transformational EdTech Leader\n\n- Visionary education strategist leveraging data-driven, learner-centric, outcomes-obsessed methodologies at scale\n- Architect of next-generation, AI-powered, personalized learning ecosystems across K-12 and higher-ed verticals\n- Thought leader in competency-based, mastery-aligned, future-ready pedagogical frameworks\n- Champion of equity-centered, holistic, whole-child student success transformations\n- Cross-functional synergy driver partnering with faculty, administrators, and ed-tech stakeholders end-to-end\n- Deep fluency in NWEA MAP, i-Ready, formative assessment, learning analytics, and engagement telemetry\n- Serial innovator who operationalizes blended, hybrid, flipped, and adaptive learning paradigms\n- Frequent keynote speaker on the future of scalable, personalized, equitable education\n\nMost recent: BrightPath Learning — Director of Academic Innovation (2020–present)\nPrior: Summit Charter Network — Director of Curriculum & Assessment (2016–2020)",
+  "jd": "We are seeking a Director of Academic Innovation to lead curriculum, assessment, and learning-outcomes strategy across a 40-school charter network serving 28,000 students. Reporting to the Chief Academic Officer, you will own measurable student-outcome targets: median reading-growth percentile (currently 48, target 60), course-pass rate in gateway math (currently 71%, target 85%), and a $6M annual instructional-technology budget. The role requires a track record of selecting and rolling out an adaptive-learning platform across multiple campuses, demonstrated improvement in standardized growth measures, and experience managing faculty change at scale. You will inherit an underperforming math intervention program and a stalled platform implementation. Strong candidates can walk through a single initiative end to end — the decision, the rollout sequence, and the outcome data that proves it worked.",
+  "history": [
+    { "q": "Walk me through your current scope at BrightPath — schools, students, budget, the outcome metrics you own." },
+    { "q": "Your resume says 'AI-powered personalized learning ecosystems.' Name one specific platform you actually deployed." },
+    { "q": "Across how many campuses did that platform go live, and over what period?" },
+    { "q": "What outcome metric did you expect it to move, and what was the baseline?" },
+    { "q": "Did it move that metric? Give me the before-and-after number." },
+    { "q": "Let's talk gateway math. What was your intervention, and who designed it?" },
+    { "q": "What was the course-pass rate before and after your intervention?" },
+    { "q": "How did you isolate your intervention's effect from other changes happening that year?" },
+    { "q": "Tell me about the faculty change management — how did you get teachers to actually adopt it?" },
+    { "q": "Was there a campus where adoption failed? What happened there?" },
+    { "q": "On the $6M tech budget — describe one specific reallocation decision you made and why." },
+    { "q": "What did you cut to fund that, and what was the tradeoff?" },
+    { "q": "Walk me through the stalled platform implementation you'd be inheriting here — have you turned one around before?" },
+    { "q": "On that turnaround, what was week one, week two, week three?" },
+    { "q": "Give me one initiative end to end: the decision, the rollout sequence, and the outcome data that proved it worked." },
+    { "q": "I need the outcome data specifically. What number changed, by how much, and by when?" }
+  ],
+  "candidate_last_answer": "Outcome data, yes — but you know what's fascinating, and I think this is the real story here, is how the whole conversation around assessment has evolved over my career. When I started at Summit, we were still arguing about whether standardized testing even measured anything meaningful, and I remember this one faculty retreat where we spent a whole weekend debating the philosophy of mastery. I could honestly write a book about that era. And it ties into my broader thesis about equity, which I've spoken about at three conferences now. So the number — well, growth percentile moved, and it was meaningful, but the deeper point I always come back to is that data alone never tells the human story, and that's really been my life's work if I'm being honest.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "platform-name", "rollout-campuses", "expected-metric", "metric-delta", "math-intervention-owner", "pass-rate-delta", "effect-isolation", "faculty-change", "failed-adoption", "budget-reallocation", "budget-tradeoff", "stalled-implementation-turnaround", "turnaround-week-by-week", "initiative-end-to-end"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "communication-clarity", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: growth percentile moved, and it was meaningful",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the exact before-and-after growth-percentile figures for the named platform, the number of campuses and timeframe over which the change occurred, and confirmation it cleared the interviewer's specific request rather than another philosophical detour"
+    ]
+  }
+}

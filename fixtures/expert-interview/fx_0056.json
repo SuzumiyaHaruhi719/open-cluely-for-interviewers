@@ -1,0 +1,40 @@
+{
+  "id": "fx_0056",
+  "tags": {
+    "industry": "legal",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Marcus Eldridge — Senior Counsel, Commercial & Privacy\n\nSummary: 12 years in-house and private practice across SaaS, fintech, and adtech. Lead negotiator on enterprise agreements; built privacy programs from the ground up.\n\nExperience:\n- Senior Counsel, Helix Payments (2020–present). Headline: \"Sole attorney responsible for all data protection matters globally; reduced contract turnaround from 21 days to 4.\" Elsewhere on resume: \"Member of a four-person legal team; privacy work led by the DPO, to whom I provided drafting support.\"\n- Counsel, Brightwave Adtech (2016–2020). One bullet: \"Personally led the company through its first GDPR audit with zero findings.\" Another bullet (same role): \"Supported outside counsel during the regulator inquiry; outcome was a remediation plan with several required corrective actions.\"\n- Associate, Tunstall & Reyes LLP (2013–2016). Commercial litigation and tech transactions.\n\nEducation: J.D., Georgetown Law (2013). B.A. Philosophy, Tufts (2010).\nBar: New York; District of Columbia. Certifications: CIPP/E, CIPP/US.",
+  "jd": "Lead Privacy Counsel — reporting to the General Counsel of a Series D health-data platform. You will own the company's global privacy posture across HIPAA, GDPR, and emerging US state laws, and serve as the single accountable owner for regulator-facing responses. This is a role for someone who can speak precisely about what they personally did versus what their team did: we have been burned before by a hire whose resume claimed sole ownership of work that turned out to be a supporting role, which created real exposure when a regulator asked follow-up questions the person could not answer. Expect direct, evidence-seeking questioning about specific matters, audit outcomes, and the exact scope of your individual contribution. Responsibilities include leading breach response, owning DPA negotiations at scale, and presenting privacy risk to the board.",
+  "history": [
+    { "q": "Before we go deep, I want to reconcile two things on your resume. For Helix you describe yourself as the 'sole attorney responsible for all data protection matters globally,' but a few lines down you also say you were one of four lawyers and that the privacy work was led by the DPO, to whom you provided drafting support. Which of those is accurate — were you the owner, or the support?" }
+  ],
+  "candidate_last_answer": "Honestly, I find that a strange thing to lead with. Resumes are marketing documents, everybody knows that, and you're reading them like a deposition transcript. Both statements are true depending on how you frame 'responsible.' I'm not going to sit here and let you pick apart my word choices — if you'd actually worked in-house you'd know that titles and reporting lines are messy. I was the one doing the real privacy work, full stop. The DPO thing is a formality. I'd honestly question whether this is a good-faith interview.",
+  "session_state": {
+    "drilled_topics": ["resume-contradiction-helix-ownership"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "Candidate becomes defensive and questions the interviewer's good faith ('I'd honestly question whether this is a good-faith interview', 'if you'd actually worked in-house') rather than answering a fair factual question about a self-contradiction on his own resume. This is candidate-side deflection; the interviewer's reconciliation question is appropriate and is explicitly anticipated by the JD." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: The DPO thing is a formality",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: forces the candidate to name the specific DPO and state, for one concrete privacy matter at Helix, who made the final call versus what he personally drafted — collapsing the 'both are true depending on framing' evasion into a verifiable division of ownership"
+    ]
+  }
+}
