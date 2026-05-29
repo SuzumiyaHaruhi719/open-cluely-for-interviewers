@@ -1,0 +1,52 @@
+{
+  "id": "fx_0768",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "资深企业法务（Staff Counsel） | 商务合同 × 合规 × 数据保护\n\n关键词速览：商务合同审查、SaaS 订阅协议、数据处理协议（DPA）、个人信息保护法（PIPL）、GDPR、跨境数据传输、标准合同条款（SCC）、知识产权、商标、保密协议（NDA）、并购尽职调查（M&A Due Diligence）、争议解决、仲裁、诉讼管理、外部律师管理、合规体系、反垄断、反商业贿赂、公司治理、董事会决议、股权激励。\n\n现任：某科技公司资深法务（Staff Counsel，4 年）\n- 主审商务合同：SaaS 主服务协议、DPA、采购、渠道分销，年均审约 600 份。\n- 负责数据合规：PIPL/GDPR 合规体系、跨境传输 SCC 落地、数据安全评估。\n- 管理争议：作为内部对接人管理在外部律所的 5 起合同与 IP 纠纷。\n- 支持并购：参与两次收购的法律尽调，覆盖 IP、劳动、合规、诉讼。\n\n前职：某律所公司业务组 律师（3 年），商务合同与公司治理方向。\n\n技能标签云：合同审查、合同谈判、DPA、PIPL、GDPR、SCC、跨境数据、IP、商标、NDA、尽职调查、仲裁、诉讼管理、外部律师管理、合规培训、董事会治理、风险评估。\n\n教育：法律硕士，已通过法律职业资格考试。",
+  "jd": "我们正在为公司法务团队招聘一名资深法务（Staff Counsel），核心负责商务合同与数据合规。岗位职责：独立主审高金额、高风险的 SaaS 商务合同与数据处理协议（DPA），就关键条款（责任限制、赔偿、数据安全、跨境传输）进行实质谈判；主导跨境数据传输的合规方案落地；管理外部律所处理的合同与知识产权纠纷。我们尤其看重候选人能就一次真实的高风险合同谈判，讲清楚争议条款的具体内容、对方的诉求与底线、你个人提出的折中方案，以及最终落定的条款与商业代价。请准备好用具体条款、谈判时间线和你本人（而非团队）做出的判断来支撑回答，泛泛而谈的『沟通协调』不足以说明问题。",
+  "history": [
+    { "q": "先介绍一下你现在 Staff Counsel 的职责范围，以及你年均审约的量和最常处理的合同类型。" },
+    { "q": "你说年均审约 600 份。这里面你认为风险最高、最需要你亲自谈判的是哪一类合同？" },
+    { "q": "就 SaaS 主服务协议而言，你最常和对方拉锯的条款是哪几条？" },
+    { "q": "责任限制条款（limitation of liability）你通常的谈判立场是什么？上限一般怎么设？" },
+    { "q": "讲一次你印象最深的责任限制谈判：对方要什么、你的底线在哪、最后怎么落的？" },
+    { "q": "赔偿条款（indemnification）方面，IP 侵权赔偿你一般怎么界定范围和触发条件？" },
+    { "q": "再说数据合规。你提到落地了跨境传输的 SCC，具体是哪条业务线、传输了哪类个人信息？" },
+    { "q": "PIPL 下做跨境传输前的个人信息保护影响评估，你具体评估了哪些要素？" },
+    { "q": "DPA 谈判里，数据安全义务和违约责任这块，你和数据处理方最大的分歧在哪？" },
+    { "q": "你管理过 5 起在外部律所的纠纷。挑一起合同纠纷，讲讲争议的核心法律问题是什么。" },
+    { "q": "那起纠纷里你作为内部对接人，对外部律师的策略你有没有提出过不同意见？" },
+    { "q": "并购尽调那两次，你负责的 IP 和合规部分发现过什么实质性问题吗？" },
+    { "q": "如果尽调发现了一个未决的重大诉讼风险，你会怎么向交易团队提示并影响交易条款？" },
+    { "q": "回到合同：当业务方为了抢单要求你放宽某个高风险条款，你怎么平衡法律风险和商业诉求？" },
+    { "q": "我想请你非常具体地讲那次责任限制谈判的细节：争议金额、对方原始要求、你提的折中、以及最终落定的赔偿上限和它背后的代价。" }
+  ],
+  "candidate_last_answer": "其实说到这个，我最近一直在想法务这个职业在 AI 时代会怎么变。你看现在很多合同审查工具都用大模型了，我自己也很关注 legal tech 的发展，觉得未来初级合同审查可能很多都会被自动化掉。我还专门去听了几场关于 AI 与法律的论坛，挺有启发的。我觉得未来的法务更多是要做判断和谈判这种机器替代不了的事，所以我一直在往这个方向去提升自己的能力，这也是我觉得自己挺有竞争力的地方。",
+  "session_state": {
+    "drilled_topics": ["staff-scope", "highest-risk-contract", "saas-disputed-clauses", "lol-position", "lol-negotiation", "indemnification-ip", "scc-deployment", "pipl-pia", "dpa-dispute", "external-counsel-strategy", "ma-diligence", "business-pressure-tradeoff"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 法务这个职业在 AI 时代会怎么变",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 候选人就那次责任限制谈判给出具体的争议金额、对方原始要求、他本人提出的折中方案与最终落定的赔偿上限及其商业代价，把权衡讲透，而不是飘到 AI 与法律行业趋势的题外话"
+    ]
+  }
+}

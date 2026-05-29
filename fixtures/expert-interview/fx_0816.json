@@ -1,0 +1,55 @@
+{
+  "id": "fx_0816",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "陈耀 — VP of Sales / 大中华区销售负责人\n\n业界公认的销售增长机器。过去十年所到之处,无一不实现 explosive growth,带出的团队个个都是 top performer。\n\n核心成就(自评):\n- 在三家公司连续做到 #1 销售负责人,每一家都让 revenue 翻倍以上\n- 个人及团队从未 miss 过任何一个 quarterly target,quota attainment 长期 200%+\n- 一手打造华东、华南、华北三大区域,建立了行业最强的 enterprise sales 铁军\n- 与几乎所有头部客户的 CXO 都有私人交情,signature deal 无数\n- 被业内称为『闭单之王』,再难的 deal 到我手里都能 close\n\n工作经历:\n- 某 SaaS 公司 — VP of Sales, Greater China (2021 至今):带领 60 人销售团队,负责 enterprise 与 mid-market 两条线,据称把 ARR 从一个亿做到三个亿\n- 某云厂商 — Regional Sales Director (2017-2021):华东大区,team of 25\n- 某硬件公司 — Senior Account Executive (2013-2017)\n\n技能:enterprise selling、谈判、团队管理、forecasting、channel\n教育:工商管理硕士",
+  "jd": "我们是一家处于 Series C 阶段的企业级 SaaS 公司,正在招聘一名 VP of Sales(大中华区),直接向 CRO 汇报,负责一个约 50 人、覆盖 enterprise 与 mid-market 的销售组织。核心 mandate:在 12 个月内把 net new ARR 从 8000 万做到 1.5 亿,把 sales cycle 从平均 9 个月压缩到 6 个月,并把团队整体 quota attainment 从目前的 68% 提升到 85% 以上。我们更看重的是可被验证的、归属清晰的业绩——你需要能讲清楚某一笔大单里你个人具体做了什么、forecast 是怎么打的、丢过哪些重要的单子以及为什么丢。我们对『团队一起努力的结果』和『你个人主导的结果』分得很清。要求 8 年以上企业级销售管理经验,有从零搭建或重建销售组织的实战经历。",
+  "history": [
+    { "q": "先介绍一下你现在的 scope:团队多大、负责哪些 segment、向谁汇报、扛多少 number?" },
+    { "q": "你简历说把 ARR 从一个亿做到三个亿,这是 total ARR 还是 net new?口径是什么?" },
+    { "q": "这三个亿里,enterprise 和 mid-market 各占多少?" },
+    { "q": "你说团队 quota attainment 长期 200%+,这个数字是怎么算的?是 team 平均还是个别 top rep?" },
+    { "q": "我们聊一笔具体的大单。挑一个你印象最深的 signature deal,客户是谁、ACV 多少?" },
+    { "q": "这笔 deal 的 sales cycle 多长?从 first touch 到 close 经历了哪些阶段?" },
+    { "q": "这单里你个人 specifically 做了什么?哪些是你下场谈的,哪些是 rep 谈的?" },
+    { "q": "你提到跟客户 CXO 有私人交情,这单里那位 decision maker 是谁的关系带进来的?" },
+    { "q": "定价上有没有让步?最后的 discount 是多少,你怎么 justify 的?" },
+    { "q": "你说从没 miss 过 target。那有没有哪个季度其实挺悬的?最悬的一次是怎么救回来的?" },
+    { "q": "讲一笔你丢掉的重要 deal。为什么丢的?" },
+    { "q": "丢单之后你做了哪些复盘?team 的打法有没有因此改变?" },
+    { "q": "你的 forecast 准吗?过去四个季度,你 commit 的数字和实际 close 的偏差大概多少?" },
+    { "q": "如果某个 rep 的 pipeline 看起来很满但就是不 close,你怎么判断这里面有多少水分?" },
+    { "q": "你说一手打造了三大区域。华南那个区是你从零搭的吗?第一个 hire 是谁,怎么招的?" },
+    { "q": "把 sales cycle 从 9 个月压到 6 个月,你有没有真做过类似的事?具体改了哪个环节?" },
+    { "q": "如果来我们这,12 个月 net new 翻倍这个目标,你前 90 天会先做什么?" },
+    { "q": "我想再追一下那笔 signature deal。你说『再难的单到你手里都能 close』,那这一单最难的卡点到底是什么,是你哪个具体动作打穿的?" }
+  ],
+  "candidate_last_answer": "这一单说实话就是教科书级别的 enterprise selling。最难的卡点?其实没有真正意义上的卡点,因为我的打法是 360 度全方位经营客户关系,从 champion 到 economic buyer 到 coach 我全都 cover 到位,所以根本不给对手留任何缝隙。我一向相信『信任先行、价值闭环』,把客户的 business outcome 当成自己的 KPI 来扛,deal 自然水到渠成。要说动作,那就是我用我十年沉淀的 enterprise playbook,精准卡位每一个 decision point,以势不可挡的执行力一路推到签约。这就是 top sales 和普通 sales 的本质区别——我从不让 deal 失控,一切尽在掌握。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "arr-definition", "segment-split", "quota-attainment-method", "signature-deal-acv", "deal-sales-cycle", "deal-personal-actions", "cxo-relationship-source", "discount-justification", "near-miss-quarter", "lost-deal", "lost-deal-retrospective", "forecast-accuracy", "pipeline-hygiene", "region-buildout", "cycle-compression-experience", "first-90-days"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution-detail", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 其实没有真正意义上的卡点,因为我的打法是 360 度全方位经营客户关系",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one concrete obstacle in the deal and the single specific action the candidate personally took to overcome it — a real moment of friction, not a restatement of his selling philosophy"
+    ]
+  }
+}

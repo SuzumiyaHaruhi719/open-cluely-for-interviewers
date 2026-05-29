@@ -1,0 +1,74 @@
+{
+  "id": "fx_0785",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "周振国 — 高级产品经理 | 8年 B端 SaaS 产品经验\n\n高级产品经理 — 某企业服务公司 (2021至今)\n- 负责一款面向中大型客户的 CRM 产品线。\n- 主导过几次核心模块的重构与商业化定价改版。\n\n产品经理 — 某互联网公司 (2017-2021)\n- 负责数据中台的产品规划。\n\n教育: 计算机本科 (2017)\n技能: 需求分析、商业化定价、数据中台、跨团队协作、用户访谈\n自我评价: 结果导向，擅长在模糊环境下推动复杂项目落地。",
+  "jd": "招聘高级产品经理 (B端 SaaS)，负责一条核心产品线的规划与商业化。职责：拥有产品线的营收与续费指标、主导定价与打包策略、在数据基础上做取舍决策、向 CPO 汇报可归因的业务结果。我们尤其看重候选人能否坦诚复盘失败：讲清一次你主导但结果不及预期的决策，当时的假设、你做错了什么、以及你从中学到了什么。我们会深挖具体数字和你个人的决策责任，而不是听一堆方法论。能在压力下保持开放、就事论事讨论问题的人，会更适合这个高度协作的岗位。汇报对象为 CPO。",
+  "history": [
+    {
+      "q": "先讲讲你现在负责的 CRM 产品线，核心指标是哪些？"
+    },
+    {
+      "q": "你提到主导过商业化定价改版，挑一次具体说说背景和你的目标。"
+    },
+    {
+      "q": "这次改版的定价假设是什么？你基于什么数据做的？"
+    },
+    {
+      "q": "改版上线后，续费率和客单价的实际变化是怎样的？"
+    },
+    {
+      "q": "听起来这次改版后有一批老客户流失了，这部分流失你当时预料到了吗？"
+    },
+    {
+      "q": "如果重来一次，这个定价决策你会怎么改？"
+    },
+    {
+      "q": "我想确认一个数字：这次改版导致的老客户流失大概多少？这部分流失的营收损失，和你预期带来的增量比，到底是赚了还是亏了？"
+    }
+  ],
+  "candidate_last_answer": "您这个问题问得有点太钻牛角尖了吧。说实话，流失这个事不能全算在我头上，定价是公司层面拍板的，市场环境也在变，客户流失原因多了去了，您非要让我给一个数字，这本身就不科学。我觉得做产品的人不应该被这种细枝末节的数字绑架，格局要大一点。而且我不太理解，您一直揪着这一个所谓『失败』的案例不放，是不是对我有什么预设立场？我做了八年产品，成功的案例多得是，您怎么不问问那些？",
+  "session_state": {
+    "drilled_topics": [
+      "crm-line-metrics",
+      "pricing-revamp-background",
+      "pricing-assumptions",
+      "renewal-arpu-change",
+      "churn-anticipation",
+      "pricing-decision-redo"
+    ],
+    "current_competency_target": "intellectual-honesty",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "intellectual-honesty",
+    "missing_evidence": [
+      {
+        "competency": "intellectual-honesty",
+        "evidence_type": "tradeoff-reasoning"
+      },
+      {
+        "competency": "numbers-fluency",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "ownership",
+        "evidence_type": "owner-of-action"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 流失这个事不能全算在我头上，定价是公司层面拍板的",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: a numbers-grounded reckoning of the churn-versus-incremental-revenue tradeoff and the candidate's personal share of the decision, defusing the hostility to test whether he can own a disappointing outcome and quantify it rather than diffuse responsibility to 'the company'"
+    ]
+  }
+}

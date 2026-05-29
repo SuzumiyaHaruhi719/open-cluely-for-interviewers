@@ -1,0 +1,40 @@
+{
+  "id": "fx_0758",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "黄敏 ｜ HRBP（人力资源业务伙伴）\n\n现任：某互联网公司 技术线 HRBP（2021年至今）\n之前：某零售集团 招聘专员（2018–2021）\n\n主要负责：\n· 支持一条三百余人的技术业务线\n· 负责组织诊断、人才盘点与梯队建设\n· 主导过一次部门级的组织架构调整\n· 牵头年度敬业度调研与改进\n\n技能：组织发展、人才盘点、绩效管理、employee relations。\n教育：人力资源管理 本科。",
+  "jd": "我们正在招聘一名 HRBP，支持公司核心技术业务线（约三百人），作为业务负责人的人力资源伙伴。你将负责组织诊断、人才盘点、梯队建设、绩效校准，并在组织调整、敬业度提升等关键项目中牵头落地。我们希望候选人能讲清楚自己『具体做了什么、带来了什么可衡量的变化』，而不是停留在方法论层面；尤其看重你在一次真实的组织架构调整中所扮演的角色与判断。要求：四年以上 HR 经验，有 HRBP 或 OD 经历，能独立支持中型业务线，沟通与影响力强。",
+  "history": [
+    { "q": "先介绍一下你现在支持的业务线，以及你作为 HRBP 的核心职责。" },
+    { "q": "你简历里提到主导过一次部门级的组织架构调整，说说具体背景。" },
+    { "q": "在那次调整里，哪些决定是你自己拍板的？" },
+    { "q": "这次调整之后，有什么可以衡量的结果吗？比如离职率、敬业度的变化。" }
+  ],
+  "candidate_last_answer": "这个问题特别好。我先反问您一下——咱们这边衡量一次组织调整成功与否，最看重的到底是什么指标？是敬业度、留存率，还是业务交付的效率？因为在我的理念里，组织调整本质上是一个『以人为本、价值驱动』的系统工程，要赋能业务、激活组织、打通人才供应链，真正实现人岗匹配的最优解。我特别相信『组织即战略』，所以我做的一切都是围绕业务战略去拉通、去对齐、去落地的。那您先告诉我贵司最看重哪个维度，我再针对性地展开,这样我的回答才更有的放矢。",
+  "session_state": {
+    "drilled_topics": ["business-line-scope", "reorg-background", "reorg-personal-decisions"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 咱们这边衡量一次组织调整成功与否，最看重的到底是什么指标",
+      "must-be-question-type: action-attribution",
+      "expected-yield: pin the candidate to one decision they personally owned in that reorg (which roles moved, who they had to convince, what they recommended) and the actual post-reorg metric, refusing to let the question be deflected back to the interviewer"
+    ]
+  }
+}

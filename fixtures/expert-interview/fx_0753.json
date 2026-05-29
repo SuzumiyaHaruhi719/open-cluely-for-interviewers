@@ -1,0 +1,39 @@
+{
+  "id": "fx_0753",
+  "tags": {
+    "industry": "finance",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Marcus Whitfield\nFP&A Analyst → Senior Financial Analyst | Consumer goods & retail finance\n\nExperience\nSenior Financial Analyst, Halloway Brands (2021–present)\n- Own the monthly close and variance commentary for the North America snack division\n- Built the rolling forecast model the leadership team uses for quarterly business reviews\n- Partnered with supply chain on a cost-savings initiative across the co-manufacturing network\n- Led the annual budgeting cycle for a portfolio of brands and presented to the divisional CFO\n\nFinancial Analyst, Cedarpoint Capital Advisory (2018–2021)\n- Supported buy-side diligence on consumer/retail M&A engagements\n- Built three-statement models and ran sensitivity analyses for deal teams\n\nEducation: BS Finance. Tools: Excel, SQL, Anaplan, Power BI. CFA Level II candidate.",
+  "jd": "Halloway Brands is hiring a Senior Financial Analyst (Corporate FP&A) to support divisional planning, the monthly close, and the rolling forecast that feeds our quarterly business reviews. You will own variance analysis and commentary, partner with commercial and supply-chain leaders to pressure-test their assumptions, and help run the annual operating-plan (AOP) cycle. We want someone who can reconstruct exactly how a number moved month-over-month and defend it in front of the CFO. Requirements: 4+ years in FP&A or transaction-services/advisory, advanced Excel and financial modeling, comfort with Anaplan or a comparable planning tool, and the judgment to flag when a forecast is drifting from reality. CPG/retail experience preferred.",
+  "history": [
+    { "q": "Tell me about the cost-savings initiative across the co-manufacturing network — what was your role and what happened?" },
+    { "q": "Walk me through the sequence: when did the savings actually land relative to when you forecasted them, and how did that show up in your variance commentary?" }
+  ],
+  "candidate_last_answer": "Sure. So the savings program kicked off in Q2, and we'd already baked most of it into the forecast — actually I think the forecast came after we saw the first results, because the results were what made leadership greenlight it. We presented the realized savings at the Q3 business review, although a lot of those numbers were really from the back half of the prior year when we started the co-man consolidation. The big chunk hit in Q1, or maybe it was Q4, I'd have to check, but by the time we did the QBR most of it was already in the actuals, even though the program technically launched after that QBR. Either way it all flowed through the variance bridge eventually.",
+  "session_state": {
+    "drilled_topics": ["co-man-cost-savings-role"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The big chunk hit in Q1, or maybe it was Q4, I'd have to check",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single committed chronology — program launch date, first realized-savings date, and which specific QBR reported what dollar amount — that resolves whether the forecast preceded or followed the results and exposes whether the candidate actually owns the bridge"
+    ]
+  }
+}

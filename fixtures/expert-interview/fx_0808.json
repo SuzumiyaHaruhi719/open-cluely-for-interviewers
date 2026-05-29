@@ -1,0 +1,55 @@
+{
+  "id": "fx_0808",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "ELENA VOSKUIJLEN, RN, MSN\nStaff Clinical Informatics Specialist | Nursing Informatics | EHR Optimization\nProvidence, RI · elena.v.rn@email.com\n\nSUMMARY\nClinical nurse turned informatics specialist bridging frontline care and the EHR. Background in med-surg and ICU nursing, now focused on clinical workflow optimization, order-set governance, and clinical decision support. Passionate about reducing documentation burden and making the system work for the people at the bedside.\n\nEXPERIENCE\n\nBay State Regional Health (multi-hospital system) — Clinical Informatics Specialist\nRecent years to present, Providence\n- Serve as a liaison between nursing, physician informaticists, and the Epic build team.\n- Lead order-set and clinical-decision-support governance for several service lines.\n- Worked on reducing nursing documentation burden through flowsheet and navigator redesign.\n- Supported a major EHR upgrade, including go-live command-center coverage and at-the-elbow support.\n- Investigate and help remediate clinical decision support alerts that clinicians report as disruptive.\n- Participate in the clinical content change-control committee.\n\nSt. Aldric Medical Center — ICU Staff Nurse, later Charge Nurse\nEarlier years, Boston\n- Provided direct care in a mixed medical-surgical ICU.\n- Served as charge nurse, coordinating assignments and serving as a resource for newer staff.\n- Was an early Epic super-user during the unit's transition from paper, which is how I fell into informatics.\n- Precepted new graduate nurses.\n\nMercy General Hospital — Med-Surg Staff Nurse\nFirst nursing role, Boston\n- Med-surg floor nursing across a range of acuities.\n- Participated in a unit-based shared-governance council.\n\nWHAT I FOCUS ON\n- Reducing documentation burden so nurses spend more time with patients.\n- Clinical decision support that actually helps rather than contributing to alert fatigue.\n- Translating frontline pain points into concrete build requests the IT team can act on.\n- Safe, well-governed change control for clinical content.\n\nWHAT I AM WORKING ON\n- Speaking the data/analytics language fluently; I rely on the analytics team to quantify impact and want to do more of that myself.\n- Formal project-management discipline; I tend to drive by relationships and clinical credibility rather than a structured plan.\n\nCERTIFICATIONS & SKILLS\nRN (RI, MA), MSN in Nursing Informatics, Epic certifications in ClinDoc and Order Sets, familiarity with clinical decision support tools and basic report building.\n\nEDUCATION\nMSN, Nursing Informatics.\nBSN, Nursing.\n\nA NOTE\nI came to informatics from the bedside, and I never want to lose that lens. The best systems are designed by people who remember what it's like to chart at 3 a.m. with four patients and a new admission coming.",
+  "jd": "Staff Clinical Informatics Specialist — Alerts & Decision Support (Integrated Health System)\n\nWe are hiring a Staff Clinical Informatics Specialist to own clinical decision support (CDS) quality and alert burden across our Epic environment. Alert fatigue is a patient-safety and clinician-burnout issue, and this role is accountable for measurably reducing low-value alerts without removing the ones that prevent harm.\n\nWhat we need to see:\n- A specific example of a CDS alert or order set you optimized, the governance you ran, and the measurable change in alert volume, override rate, or a downstream clinical outcome.\n- The ability to quantify impact — alert firing rates, override rates, signal-to-noise — and to reason about the safety tradeoff of suppressing an alert.\n- Sound change-control discipline for clinical content, including how you guard against unintended harm when you turn an alert off.\n- Credibility with both clinicians and the build team, and the judgment to say no to a low-value request.\n- A clear, structured way of telling a project story under time pressure.\n\nReports to the Director of Clinical Informatics. Partners with physician informaticists, pharmacy, and the Epic build team.",
+  "history": [
+    { "q": "Hi Elena, thanks for being here. Give me a quick picture of your current role at Bay State and which service lines you cover." },
+    { "q": "You mention leading CDS governance. Walk me through how that governance committee actually works — cadence, who's at the table, who decides." },
+    { "q": "Let's get specific. Tell me about one clinical decision support alert you optimized because clinicians found it disruptive." },
+    { "q": "What was that alert firing on, and roughly how often was it firing before you touched it?" },
+    { "q": "What was the override rate on it — how often did clinicians dismiss it without acting?" },
+    { "q": "When you reduce or suppress an alert, how do you protect against turning off something that was actually preventing harm?" },
+    { "q": "After your change, what happened to the firing rate and the override rate?" },
+    { "q": "Did you track any downstream clinical outcome — say, the event the alert was meant to prevent — before and after?" },
+    { "q": "Tell me about the documentation-burden work. What flowsheet or navigator did you redesign?" },
+    { "q": "How did you measure whether nursing documentation time actually went down?" },
+    { "q": "Walk me through your change-control process for clinical content from request to production." },
+    { "q": "Give me an example of a low-value build request you said no to, and how you handled the requester." },
+    { "q": "During the EHR upgrade go-live, what was the most serious issue you personally helped remediate?" },
+    { "q": "How do you partner with pharmacy specifically on medication-related alerts?" },
+    { "q": "What's the single CDS metric you think matters most, and why?" },
+    { "q": "Where do you rely on the analytics team versus pulling data yourself today?" },
+    { "q": "Tell me about a CDS change that didn't go as planned and what you learned." },
+    { "q": "Let's go back to that disruptive alert you optimized. Give me the whole arc cleanly — what it was firing on, the numbers before and after, and how you confirmed you didn't remove a safety net." }
+  ],
+  "candidate_last_answer": "Right, okay, so — sorry, let me think about which one to use, because there were a few, and I want to give you a good one. So there was this alert, it was... I think it was a duplicate-therapy one? Or — no, it might have been the renal-dosing one, those kind of blur together honestly because we touched so many. Um. So the thing is, clinicians were really frustrated, like genuinely frustrated, and that matters to me a lot because I came from the bedside and I know what it's like when the system is fighting you, I've been there at 3 a.m. with the alerts just stacking up. So we — the committee, I mean — we looked at it, and the feeling in the room was that it was firing way too much, and the pharmacists agreed, mostly. And then we, um, we tuned it. I don't have the exact firing numbers in front of me, the analytics team had those, but it was a lot, and it went down a good amount after, and clinically I think it was fine because nobody complained about a missed... you know, a missed event. Sorry, I know I'm being a little scattered — is that the kind of example you wanted, or do you want the documentation one?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "governance-mechanics", "specific-alert", "firing-frequency", "override-rate", "safety-guardrail", "post-change-rates", "downstream-outcome", "flowsheet-redesign", "doc-time-measurement", "change-control-process", "said-no-example", "golive-remediation", "pharmacy-partnership", "top-cds-metric", "analytics-reliance", "failed-change"],
+    "current_competency_target": "cds-impact-quantification",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "cds-impact-quantification",
+    "missing_evidence": [
+      { "competency": "cds-impact-quantification", "evidence_type": "metric" },
+      { "competency": "cds-impact-quantification", "evidence_type": "named-entity" },
+      { "competency": "patient-safety-judgment", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I don't have the exact firing numbers in front of me",
+      "must-be-question-type: metric-pin",
+      "expected-yield: anchor her on one specific alert and pin the concrete numbers — which alert (duplicate-therapy vs renal-dosing), its firing rate and override rate before and after, and the specific evidence she used to confirm no harmful event was missed, instead of 'a lot,' 'a good amount,' and 'nobody complained'"
+    ]
+  }
+}

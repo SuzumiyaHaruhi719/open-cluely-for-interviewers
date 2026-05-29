@@ -1,0 +1,40 @@
+{
+  "id": "fx_0766",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "产品副总裁 (VP of Product) | 增长 × 平台 × 商业化\n\n关键词速览: Product-Led Growth, PLG, North Star Metric, OKR, Activation, Retention, Net Revenue Retention (NRR), Churn, Cohort Analysis, A/B Testing, Experimentation Platform, Pricing & Packaging, Monetization, Funnel Optimization, Roadmap, Discovery, Jobs-to-be-Done (JTBD), Platform Strategy, API-first, Data-driven, GTM, Stakeholder Management, P&L Ownership.\n\n现任: 某 B2B SaaS 公司 VP of Product (2021 至今)\n负责 self-serve + sales-assisted 双引擎的整体产品战略，直接管理 6 个 product team、约 40 名 PM/Designer/Data。Owns product 侧的 NRR 与 net-new ARR 两个 board-level 指标。\n\n关键成果 (keyword-dense):\n- 主导 PLG transformation: 把 free-trial 改成 freemium + reverse-trial，activation rate 提升。\n- 重构 pricing & packaging: 从 seat-based 转向 usage-based + platform fee 的 hybrid model。\n- 搭建 experimentation platform: 让团队从一季度几个实验提升到数十个并行 A/B test。\n- 跨团队 alignment: 用 OKR 把 product / growth / sales / finance 对齐到统一 North Star。\n\n前职: 某消费级平台 Senior Director of Product (2017-2021)，负责 retention 与 monetization。\n更早: 产品经理起步，做过 search、payments、growth 多个方向。\n\n技能 tag 云: Roadmapping, Prioritization (RICE/ICE), Funnel, LTV/CAC, Cohorting, SQL, Amplitude, Mixpanel, Looker, Pricing Strategy, Packaging, Sales Enablement, Executive Communication, Org Design.\n\n教育: MBA + 计算机科学本科。",
+  "jd": "We're hiring a VP of Product to own the product strategy and P&L for a B2B SaaS platform scaling from roughly $40M to $100M ARR. You'll lead a 45-person product org across self-serve growth, core platform, and monetization. This role owns two board-level metrics: net revenue retention (currently 108%, target 120%) and self-serve-sourced net-new ARR. We need a leader who has personally driven a pricing-and-packaging change at scale — not just sponsored one — and can speak to the migration mechanics, the at-risk revenue, and how existing customers were grandfathered. You'll partner closely with the CRO and CFO, present quarterly to the board, and be accountable for the experimentation culture. The strongest candidates can decompose a metric like NRR into the specific product levers they pulled and quantify the contribution of each. 我们的团队是中英双语环境，沟通需自如切换。",
+  "history": [
+    { "q": "先 high-level 介绍一下你现在 VP of Product 的 scope：团队规模、你 own 的 board-level 指标，以及 self-serve 和 sales-assisted 两条线的占比。" },
+    { "q": "你提到主导了一次 pricing & packaging 重构，从 seat-based 转到 usage-based + platform fee。Walk me through 为什么做这个决定 —— 是哪个数据信号触发的？" },
+    { "q": "这种 pricing migration 最大的风险就是 churn 和收入波动。你具体是怎么处理 existing customers 的迁移和 grandfathering 的？" },
+    { "q": "NRR 你从一个数字拆到产品 lever。能不能给我一个最关键的 lever，讲清楚你个人做了什么、贡献了多少个百分点？" }
+  ],
+  "candidate_last_answer": "可以。Situation 是这样：我们 NRR 卡在 108% 上不去，拆 cohort 后发现 expansion 主要堵在一个点 —— 客户用量涨了，但 seat-based 定价让他们没有平滑的 upgrade path，到了 seat 上限要么手动找 sales 加座位、要么就忍着不用，expansion 直接断掉。Task 是我作为 product 侧 owner，要在不引发 churn 的前提下把这条 expansion 路径打通，目标当年给 NRR 贡献至少 6 个点。Action 上我主导设计了 usage-based 的 overage 自动计费：超过 included quota 后按用量平滑计费、月底自动结算，并在产品内做了 usage 仪表盘和 80% 用量预警，让客户自己看得到、不被账单吓到；同时和 CFO 一起把 overage 单价定在低于 sales 手动加座位的水平来鼓励自助 expansion。我们先在 15% 流量灰度跑了两个月做 A/B，确认 gross churn 没有上升才全量。Result 是 net-revenue-expansion 那部分 cohort 的 NRR 从 108% 拉到 117%，整体 NRR 当年提升了 7 个点，超过了 6 个点的目标，而且 self-serve expansion 占 net-new 的比例从 22% 涨到 35%。",
+  "session_state": {
+    "drilled_topics": ["vp-product-scope", "pricing-change-trigger", "migration-grandfathering", "nrr-lever-attribution"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: overage 单价定在低于 sales 手动加座位的水平",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 候选人量化这个定价权衡的另一面 —— 把 overage 单价压低对 ASP/毛利或 sales-led deal 的潜在挤出影响，以及他如何验证自助 expansion 的增量没有被低价侵蚀掉，而不只是复述 NRR 提升的好结果"
+    ]
+  }
+}

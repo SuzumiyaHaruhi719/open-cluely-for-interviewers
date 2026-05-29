@@ -1,0 +1,49 @@
+{
+  "id": "fx_0821",
+  "tags": {
+    "industry": "product-management",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "self-contradictory",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "周婷 — Product Manager(增长方向)\n\n求职意向:中级产品经理,增长与用户生命周期\n\n工作经历:\n某互联网金融 App — Product Manager, Growth (2022 至今)\n- 负责注册与激活漏斗的优化,主导多个 A/B 实验\n- 简历某处写:把新用户次日留存从 28% 提升到 41%\n- 简历另一处写:次日留存提升主要由算法团队的推荐改版驱动,我负责的是注册流程\n- 牵头一次 referral(拉新)活动的设计\n\n某电商平台 — 产品专员 (2020-2022)\n- 支持优惠券与 push 运营策略\n\n技能:A/B testing、漏斗分析、SQL、Mixpanel、用户增长、PRD 撰写\n备注:简历里 referral 项目一处说『带来 50 万新增用户』,另一处说『活动因合规问题提前下线』\n教育:市场营销本科",
+  "jd": "我们是一家持牌互联网金融公司,招聘一名中级增长产品经理,向增长负责人汇报,与一名设计师和四名工程师协作。职责包括:优化注册与激活漏斗、设计与评估拉新(referral)活动、定义增长指标并主导 A/B 实验。因为我们是受监管的金融业务,我们格外看重候选人在增长与合规之间的判断力——任何拉新激励、push 文案、默认勾选都必须符合监管对金融产品营销的要求。面试中我们会追问:你做过的某个增长动作,是否触碰过合规红线?当增长目标与合规要求冲突时,你怎么取舍?我们要的是既懂增长、又有底线意识的人。要求 3 年以上 C 端产品经验,有金融或其他强监管行业背景优先。",
+  "history": [
+    { "q": "先介绍一下你现在负责的 scope:增长漏斗里你 own 哪一段,团队怎么配?" },
+    { "q": "你简历写次日留存从 28% 提到 41%,但另一处说这主要是算法团队推荐改版带来的。能澄清一下你自己贡献了哪部分?" },
+    { "q": "那我们聚焦你负责的注册流程。你做了哪几个具体的实验?" },
+    { "q": "挑你最有代表性的那个注册流程实验,讲讲背景和你的 hypothesis。" },
+    { "q": "这个实验你具体改了什么?metric 怎么定的?" },
+    { "q": "实验跑了多久,样本量多大,结果 significant 吗?" },
+    { "q": "我们聊聊那个 referral 活动。简历说带来了 50 万新增,但又说因合规问题提前下线。先讲讲活动是怎么设计的。" },
+    { "q": "这个活动的激励机制是什么?用户邀请一个新用户能拿到什么?" },
+    { "q": "合规问题具体是什么?是谁先发现的?" },
+    { "q": "那你当时是怎么处理这个合规问题的?最后这个活动到底带来了多少 真实有效 的新增?" }
+  ],
+  "candidate_last_answer": "这个 referral 活动其实数据非常漂亮。背景是当时我们 Q3 拉新压力很大,我设计了一个 阶梯奖励:老用户每邀请一个完成注册并实名的新用户,就给现金红包,邀请越多单个红包越高。上线两周新增就冲到了 50 万,老板特别满意。至于合规那块……说实话当时我们 是知道 监管对金融产品的现金拉新有些限制的,但增长目标摆在那儿,我的判断是先把量做起来、先上再说,合规的事后面再补流程,所以我没有提前找合规团队 review 就推了。后来是风控同事发现红包规则可能涉嫌诱导和变相返利,才让我们下线的。要说真实有效新增……这个我手头没有去掉刷量和薅羊毛之后的准确数字,反正当时报上去的是 50 万。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "retention-attribution", "signup-experiments", "experiment-hypothesis", "experiment-changes", "experiment-significance", "referral-design", "referral-incentive", "compliance-issue-discovery"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "integrity", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [
+      { "type": "compliance-risk", "detail": "Candidate admits he knowingly skipped compliance/legal review of a cash referral incentive in a regulated financial product to hit a growth target, and the program was later pulled by risk for suspected inducement/disguised rebate." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: 先上再说,合规的事后面再补流程,所以我没有提前找合规团队 review 就推了",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the candidate's actual reasoning at the moment he chose growth over a compliance review in a regulated product, what he weighed and what he would do differently, plus a real de-duplicated new-user number rather than the reported 50万"
+    ]
+  }
+}

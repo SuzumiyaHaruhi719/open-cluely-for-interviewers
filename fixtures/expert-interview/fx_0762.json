@@ -1,0 +1,52 @@
+{
+  "id": "fx_0762",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Aisha Bello\nSoftware Engineer (Frontend) | ~2 years experience\n\nLumen Health (B2B SaaS) — Software Engineer (2023 – present)\n- Build and maintain features in a React/TypeScript web app used by clinic staff\n- Led a frontend performance effort that improved the initial load experience\n- Reduced flaky tests in the CI pipeline and improved build reliability\n- Collaborated with design and backend on a new scheduling module\n\nCodeworks Bootcamp — 2022\n- Full-stack curriculum (JavaScript, React, Node)\n\nSkills: React, TypeScript, Jest, Webpack/Vite, REST, Git.\nNote: accomplishments described qualitatively; no load times, percentages, or counts given. Education: B.S. Biology.",
+  "jd": "Lumen Health is hiring a Frontend Software Engineer (React/TypeScript) for our clinical scheduling product. You'll build user-facing features, improve performance and reliability, and work closely with design and backend. We care about engineers who can quantify their impact — load-time deltas, bundle-size reductions, test-flakiness rates — and explain the mechanism behind an improvement, not just that it 'felt faster.' Requirements: 1–3 years building production React apps, solid TypeScript, testing experience (Jest/RTL), and the ability to profile and reason about frontend performance. Healthcare or regulated-domain experience a plus.",
+  "history": [
+    { "q": "Give me a quick overview of what you work on at Lumen Health." },
+    { "q": "Let's talk about the frontend performance effort. What was slow to begin with?" },
+    { "q": "How did you confirm that was the bottleneck — what tooling did you use?" },
+    { "q": "Walk me through the first change you made." },
+    { "q": "Was it a code-splitting change, a rendering change, or something on the network side?" },
+    { "q": "Did you change anything about how data was fetched on that screen?" },
+    { "q": "How did you make sure the change didn't regress correctness?" },
+    { "q": "Who reviewed it, and was there any pushback on the approach?" },
+    { "q": "Did the change ship to all users at once or behind a flag?" },
+    { "q": "How did you monitor it after release?" },
+    { "q": "Separately — the flaky-test work. What was making tests flaky?" },
+    { "q": "What was your fix for the flakiness?" },
+    { "q": "Back to performance: what did the initial load look like before your work, in seconds?" },
+    { "q": "And after — what did it become?" },
+    { "q": "How are you measuring 'initial load' exactly — first paint, time-to-interactive?" },
+    { "q": "So put a number on it for me: what was the before-and-after on that load metric?" }
+  ],
+  "candidate_last_answer": "So the situation was the clinic-staff dashboard felt sluggish on first load, and a couple of users mentioned it. My task was to make the initial load feel faster. What I did was profile it in Chrome DevTools, I saw we were shipping one huge JS bundle and rendering a big list eagerly, so I introduced route-based code-splitting and lazy-loaded the heavy charting library, and I virtualized the patient list so we weren't mounting hundreds of rows up front. The result was it definitely felt a lot snappier afterwards — the team noticed, and the users who'd complained said it was better. I'm confident it was a real improvement, it just felt much more responsive on that first paint.",
+  "session_state": {
+    "drilled_topics": ["role-overview", "perf-bottleneck", "profiling-tooling", "first-change", "change-category", "data-fetching", "correctness-regression", "code-review-pushback", "rollout-flag", "post-release-monitoring", "flaky-test-cause", "flaky-test-fix", "load-before-seconds", "load-after-seconds", "load-metric-definition"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it definitely felt a lot snappier afterwards",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing quantified Result — the before/after on a concrete load metric (TTI or first contentful paint, in seconds or ms) and the bundle-size delta, captured from a tool rather than from how it 'felt'"
+    ]
+  }
+}

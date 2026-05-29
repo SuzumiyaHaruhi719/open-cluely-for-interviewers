@@ -1,0 +1,39 @@
+{
+  "id": "fx_0796",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Hannah Oyelaran — Manufacturing Process Engineer\n\nPROFILE\nProcess engineer with six years in high-volume electromechanical assembly, focused on yield improvement, line balancing, and data-driven root-cause analysis.\n\nEXPERIENCE\nVoltaire Drives — Process Engineer (2020 to present)\n- Situation: A new servo-motor assembly line was running at 71% first-pass yield against an 88% target, bottlenecked at the rotor-press station.\n- Task: Own the yield-improvement project and bring first-pass yield to target within one quarter.\n- Action: Ran a Pareto on defect codes, identified press-fit misalignment as 60% of failures, designed a poka-yoke fixture, and ran a DOE on press force and dwell time to set the spec window.\n- Result: First-pass yield rose from 71% to 90% over ten weeks; scrap cost dropped by about $140K annualized; the fixture was standardized across two sister lines.\n\nApex Components — Manufacturing Engineer (2017 to 2020)\n- Situation: Manual final-test step was the throughput constraint on a connector line.\n- Task: Reduce test cycle time without compromising coverage.\n- Action: Reworked the test sequence, parallelized two independent checks, and added a fixture to cut load/unload time.\n- Result: Test cycle time fell from 48s to 31s; line output rose roughly 22%.\n\nSKILLS\nSPC, DOE, poka-yoke, line balancing, PFMEA, Minitab, GD&T, lean/Kaizen.\n\nEDUCATION\nBS, Mechanical Engineering, Purdue University.",
+  "jd": "We are hiring a Manufacturing Process Engineer for a high-volume assembly operation. You will own first-pass yield and throughput for an assembly line, lead root-cause analysis on defects, and drive structured improvements using SPC, DOE, and error-proofing. In the interview we expect you to walk through one yield- or throughput-improvement project with precision: the baseline, how you diagnosed the dominant failure mode, the specific countermeasure you designed, and the quantified result with a timeframe. We value engineers who can be concise and exact about cause, action, and effect, and who can explain the engineering reasoning behind a fixture or a process-window decision. Required: experience with SPC and DOE in a production environment and a track record of sustained yield improvement.",
+  "history": [
+    { "q": "Walk me through your current role at Voltaire and the line you own." },
+    { "q": "Tell me about the servo-motor yield project — what was the baseline and the dominant failure mode?" },
+    { "q": "How did you arrive at the press-force and dwell-time window? Walk me through the DOE." }
+  ],
+  "candidate_last_answer": "I ran a two-factor, three-level full factorial: press force at 4.2, 4.6, and 5.0 kN, dwell at 0.8, 1.2, and 1.6 seconds, three replicates per cell, randomized run order, with press-fit retention force as the response. The main effect of force was strong and dwell was weak above 1.0 second, with a force-by-dwell interaction at the low-force corner. The optimum sat at 4.6 kN and 1.2 s; I set the spec window at 4.5 to 4.8 kN and 1.1 to 1.4 s to keep Cpk above 1.33 against the retention-force lower limit. I confirmed with a 30-piece capability run before releasing it, and we held yield at 90% for the eight weeks I tracked it after.",
+  "session_state": {
+    "drilled_topics": ["current-role-and-line", "yield-baseline-and-failure-mode", "doe-design"],
+    "current_competency_target": "process-improvement-rigor",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "process-improvement-rigor",
+    "missing_evidence": [
+      { "competency": "process-improvement-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "process-improvement-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I set the spec window at 4.5 to 4.8 kN and 1.1 to 1.4 s to keep Cpk above 1.33",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the reasoning behind narrowing the spec window around the 4.6 kN / 1.2 s optimum — why those bounds keep Cpk above 1.33, what process variation she assumed, and the tradeoff between a tighter window's capability margin and its manufacturability"
+    ]
+  }
+}

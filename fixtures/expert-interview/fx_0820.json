@@ -1,0 +1,42 @@
+{
+  "id": "fx_0820",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "孙浩然 — 制造工艺实习生应聘者\n\n关键词:精益生产、六西格玛、5S、SMED、OEE、节拍时间、价值流图、VSM、根因分析、鱼骨图、5why、SPC、控制图、防错、看板、持续改善、TPM、稼动率、不良率、产能、单件流、标准作业\n\n实习经历:\n某汽车零部件厂 — 工艺实习生(2024年暑期)\n- 参与一条装配线的线平衡改善项目\n- 协助采集 OEE 数据,参与一次降低不良率的 kaizen 活动\n- 接触 SPC 控制图与 5why 根因分析\n\n校园项目:\n- 对学校食堂出餐流程做了一次价值流图分析\n\n技能关键词:精益、六西格玛(黄带在学)、Minitab、Excel、AutoCAD、节拍分析、根因分析、SMED、看板\n教育:工业工程本科,大四在读",
+  "jd": "我们是一家汽车零部件制造企业,招聘工艺实习生,向资深制造工程师汇报。日常工作包括:支持装配线的线平衡与降不良项目、采集与解读 OEE 数据、参与现场根因调查。这是面向在校生的实习岗位,我们不要求你样样精通,但要求你诚实、肯负责。当一个项目没达到预期,我们想听你自己的反思和你下次会怎么改,而不是把问题推给别人。面试中我们会追问你在某个挫折里自己具体做了什么、采取了哪个纠正动作。我们看重好奇心、数据意识和担当。实习十二周,需到岗,车间环境需穿劳保鞋。",
+  "history": [
+    { "q": "先讲讲你暑期实习里参与的那个降不良率 kaizen 活动,目标是什么、最后结果怎么样?" },
+    { "q": "这个活动里,你个人具体负责哪一部分?" },
+    { "q": "你提到用 5why 做根因分析,那当时找到的根本原因到底是什么?" },
+    { "q": "你说采集了 OEE 数据,这个数据后来用来支撑哪个改善动作了?" },
+    { "q": "如果让你重新做一次这个 kaizen,你觉得哪里可以做得更好?" },
+    { "q": "我注意到你每次都讲得比较概括。具体一点:不良率从多少降到了多少,这个数字你记得吗?" }
+  ],
+  "candidate_last_answer": "这个数字……说实话我得先反问您一下,咱们这个岗位真的需要实习生记住这么精确的不良率数字吗?我感觉实习更重要的是学方法、学思路对吧。我倒是想问问面试官,在您看来,一个工艺实习生最该具备的能力到底是什么?是死记那些数据,还是理解改善的逻辑?因为如果是后者的话,我觉得我对 5why 和 OEE 的理解是没问题的。要不您先告诉我你们最看重哪一点,我再针对性地讲?",
+  "session_state": {
+    "drilled_topics": ["kaizen-goal-result", "personal-contribution", "root-cause", "oee-data-usage", "retrospective"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-detail", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 咱们这个岗位真的需要实习生记住这么精确的不良率数字吗",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual before-and-after defect-rate numbers (or an honest admission that he doesn't know them) rather than a redirection challenging whether the metric matters"
+    ]
+  }
+}

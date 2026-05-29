@@ -1,0 +1,38 @@
+{
+  "id": "fx_0761",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Sofia Reyes\n2L, J.D. Candidate (expected 2026)\n\nLegal Intern, Hartwell & Brandt LLP — Summer 2025\n- Supported the litigation group on a commercial contract dispute\n- Helped with document review and drafting\n\nStudent Attorney, Law School Civil Clinic — 2024–2025\n- Assisted clients with housing matters under supervision\n\nEducation: J.D. Candidate; B.A. Political Science.\nSkills: legal research (Westlaw, Lexis), Bluebook citation, document review.\nJournal: staff editor.",
+  "jd": "Hartwell & Brandt LLP is hiring a Summer Legal Intern for our litigation practice. You'll support attorneys with legal research, document review, cite-checking, and drafting memos and motion sections. We expect interns to be able to articulate their own specific contribution to a matter — the research question they personally chased down, the argument they drafted, the issue they spotted — not just describe what 'the team' did. Strong writing, attention to detail, and ownership of assigned work are essential. Requirements: rising 2L or 3L, strong legal-research skills (Westlaw/Lexis), Bluebook proficiency, and demonstrated written work product.",
+  "history": [
+    { "q": "Tell me about the commercial contract dispute you supported at Hartwell & Brandt." },
+    { "q": "What part of that matter did you personally own — a specific research question or a section you drafted?" }
+  ],
+  "candidate_last_answer": "Yeah, so it was a really collaborative matter. We dug into the breach-of-contract claims, we pulled together the research on the limitation-of-liability clause, and we drafted the opposition to their motion to dismiss. We met as a team most mornings, and we divided up the issues, and then we put it all together into the brief. The partners were really happy with what we produced, and we ended up surviving the motion. It was a great experience seeing how the whole team works a case from start to finish.",
+  "session_state": {
+    "drilled_topics": ["contract-dispute-overview"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we pulled together the research on the limitation-of-liability clause",
+      "must-be-question-type: action-attribution",
+      "expected-yield: separate the candidate's individual work from the team's — the specific issue or argument she personally researched or drafted, the source she found, and what she wrote, replacing every 'we' with a concrete 'I'"
+    ]
+  }
+}

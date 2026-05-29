@@ -1,0 +1,50 @@
+{
+  "id": "fx_0752",
+  "tags": {
+    "industry": "healthcare",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "陈思远 — Clinical Data Intern 候选人\n本科：临床医学（在读，预计 2026 毕业）\n\n实习经历\n- 仁济医院 心内科 数据实习生（2024.06 – 2024.09，共 6 个月）\n  · 负责 patient intake 表单的数字化，handle 了约 1,200 份病历\n  · 用 Python (pandas) 清洗 ECG 报告数据，把缺失率从 18% 降到 4%\n- 联影医疗 AI 算法组 实习（2024.07 – 2024.12）\n  · 参与 chest X-ray 标注 pipeline，标注 8,000+ 张影像\n\n技能：Python、SQL、Excel；熟悉 HIPAA 合规流程；英语六级\n\n备注：在仁济医院期间『独立负责』全科室的数据治理；同时也提到该工作是与另外两名实习生『共同完成』。简历正文写 GPA 3.9，附件成绩单显示 3.6。",
+  "jd": "我们正在招聘一名 Clinical Data Intern，加入数字健康团队，支持电子病历（EMR）数据的清洗、标注与质量监控。你将与临床医生和数据科学家协作，负责将非结构化的诊疗记录转化为结构化数据集，并参与构建影像标注的 QC（quality control）流程。要求：在校本科/研究生，熟悉 Python 和 SQL，有处理医疗数据（如 ECG、X-ray、病历文本）的经验优先；理解 HIPAA / 数据脱敏的基本原则；做事细致、能对数据质量负责。实习期至少 3 个月，每周 4 天以上。",
+  "history": [
+    { "q": "先自我介绍一下，说说你为什么对 clinical data 这个方向感兴趣。" },
+    { "q": "你简历上有两段实习时间是重叠的（6–9月和7–12月），能解释一下吗？" },
+    { "q": "在仁济医院那段，你说『独立负责』全科室的数据治理，但又写是和两名实习生共同完成，到底是哪种？" },
+    { "q": "好，我们聚焦一个具体任务。说说你把 ECG 数据缺失率从 18% 降到 4% 的那个项目。" },
+    { "q": "当时这 18% 的缺失，主要是哪几类字段缺？" },
+    { "q": "你具体用了什么方法去补或者剔除这些缺失值？" },
+    { "q": "你怎么验证补完之后数据是对的，而不是引入了新的错误？" },
+    { "q": "这个 4% 的最终数字，是你自己算的还是有人帮你核对？" },
+    { "q": "这件事花了你多长时间？" },
+    { "q": "过程中你和临床医生有过哪些具体的沟通？" },
+    { "q": "如果让你重做一次，你会改哪一步？" },
+    { "q": "换个话题，X-ray 标注那 8,000 张，你个人标了多少？" },
+    { "q": "标注一致性（inter-annotator agreement）你们怎么保证的？" },
+    { "q": "回到 ECG 那个项目——把缺失率降下来之后，对下游有什么实际影响吗？给我一个具体的结果。" }
+  ],
+  "candidate_last_answer": "有的，我可以说一个具体的。Situation 是当时心内科要做一个 retrospective study，需要近三年的 ECG 数值，但原始导出里 QT interval 和 heart rate 两个字段缺失严重，到 18%。Task 是我负责在两周内把这批数据清洗到可用，标准是关键字段缺失率低于 5%。Action 上我先按设备型号分组，发现缺失主要集中在一台老 GE 机器导出的 XML，于是我写了个 parser 把嵌在原始波形里的数值重新提取出来，又对实在补不回的记录做标记剔除，全程和主治医生确认了哪些字段不能 impute。Result 是缺失率降到 4%,这批 2,400 条记录最后真的被用进了那篇 retrospective study,医生说省了他们大概三周的人工补录,后来论文投稿的时候数据这块没有被 reviewer challenge。",
+  "session_state": {
+    "drilled_topics": ["motivation", "timeline-overlap", "ownership-contradiction", "ecg-missing-data", "missing-field-types", "imputation-method", "validation-approach", "who-verified", "project-duration", "clinician-communication", "lessons-learned", "xray-personal-volume", "annotation-agreement"],
+    "current_competency_target": "data-quality-rigor",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "data-quality-rigor",
+    "missing_evidence": [
+      { "competency": "data-quality-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 后来论文投稿的时候数据这块没有被 reviewer challenge",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a verifiable external anchor for the claimed downstream impact — the specific study/paper, the candidate's named role on it, and how the candidate personally knows the data was not challenged in review (vs. hearsay from the physician)"
+    ]
+  }
+}

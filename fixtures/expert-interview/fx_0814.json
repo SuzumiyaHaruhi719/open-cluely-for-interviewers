@@ -1,0 +1,38 @@
+{
+  "id": "fx_0814",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Associate Product Manager\n\nSummary: Early-career PM who shipped a 0-to-1 mobile feature and grew it to scale.\n\nEXPERIENCE\nAssociate Product Manager — Brightwave Fitness (Jun 2023 – present)\n- Owned the in-app social challenges feature end to end, from discovery to launch\n- Feature reached 200,000 monthly active users within the first quarter after launch\n- Note elsewhere in resume: 'led the launch of our first-ever paid subscription tier'\n\nProduct Analyst — Brightwave Fitness (Jan 2023 – Jun 2023)\n- Supported the social challenges feature; ran A/B tests on onboarding\n- Built dashboards in Looker tracking activation and D7 retention\n\nADDITIONAL\n- Social challenges launched in March 2023 and was fully sunset by August 2023 due to low engagement\n- Subscriptions: 'I was a supporting member of the subscription squad; the senior PM owned the roadmap'\n- Skills: roadmapping, user research, SQL, A/B testing, Figma\n- Education: B.S. Information Systems, 2022",
+  "jd": "Brightwave Fitness is hiring an Associate Product Manager to own a consumer growth surface inside our mobile app (onboarding and activation). You will work with one designer and three engineers, reporting to a Senior PM. This is a hands-on, early-career role: you'll write the PRDs, define success metrics, run A/B tests, and present results in a biweekly growth review. We want someone who can speak precisely about what they personally did versus what the team did, who knows the difference between a metric they moved and a metric they merely observed, and who can reason honestly about why a feature succeeded or failed. Concrete examples and real numbers matter far more to us than polished narratives. New grads and APMs with 1–2 years of experience welcome.",
+  "history": [
+    { "q": "Your resume says you owned the social challenges feature end to end and grew it to 200,000 monthly actives — but it also notes the feature was sunset a few months after launch. Walk me through what actually happened, and what your role really was." }
+  ],
+  "candidate_last_answer": "Great question — so the social challenges initiative was really a flagship growth lever for us, and I drove it end to end with a relentless focus on user delight and data-informed iteration. We hit 200,000 MAU which was a phenomenal validation of the product-market fit thesis. I'm a big believer in failing fast and learning faster, so when the engagement signals evolved, we made the bold, customer-obsessed decision to sunset and reallocate toward higher-leverage bets. It was a masterclass in disciplined prioritization and stakeholder alignment, honestly — a real 0-to-1 to wind-down journey that shaped my entire product philosophy.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 3
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I drove it end to end with a relentless focus on user delight and data-informed iteration",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a factual separation of what the candidate personally did versus the senior PM and team, plus a real account of why a feature that supposedly hit 200K MAU was sunset within months, with at least one concrete engagement metric"
+    ]
+  }
+}

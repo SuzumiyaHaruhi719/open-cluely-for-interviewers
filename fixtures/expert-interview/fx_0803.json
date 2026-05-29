@@ -1,0 +1,50 @@
+{
+  "id": "fx_0803",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "DANIELLE OKORO\nStaff Learning Experience Designer | Curriculum Architect | EdTech\n\nCORE COMPETENCIES\nInstructional Design · ADDIE · SAM · Backward Design · Bloom's Taxonomy · Constructive Alignment · Competency-Based Education · Mastery Learning · Universal Design for Learning (UDL) · WCAG 2.1 AA · Accessibility · Learning Analytics · LMS Administration · Canvas · Moodle · Articulate Storyline 360 · Rise · Adobe Captivate · xAPI · SCORM · cmi5 · LTI 1.3 · Kirkpatrick Evaluation · Formative Assessment · Summative Assessment · Rubric Design · Item Response Theory · Psychometrics · Adaptive Learning · Personalized Learning Pathways · Microlearning · Spaced Repetition · Retrieval Practice · Gamification · Stakeholder Management · Agile · Scrum · Cross-Functional Collaboration · A/B Testing · Cohort Analysis · Data-Driven Decision Making\n\nPROFESSIONAL EXPERIENCE\n\nBrightPath Learning (B2B upskilling platform) — Staff Learning Experience Designer (2021–present)\nKeywords: curriculum architecture, competency frameworks, learning analytics, completion-rate optimization, adaptive pathways, stakeholder alignment, instructional quality, cross-functional delivery, ADDIE-at-scale, mastery-based progression\n- Owned the architecture of the data-analytics certification track (6 courses, ~40 hours).\n- Drove completion-rate optimization initiatives, A/B-tested assessment placements, championed UDL accessibility.\n- Partnered cross-functionally with SMEs, engineering, product, and customer success on continuous-improvement cycles.\n- Stewarded learning-analytics dashboards to surface drop-off, time-on-task, and mastery signals.\n\nEduNova (K-12 supplemental platform) — Senior Instructional Designer (2018–2021)\nKeywords: backward design, standards alignment, formative assessment, rubric design, differentiation, scaffolding, engagement, retention\n- Designed standards-aligned math modules for grades 6–8 with embedded formative checks.\n- Led rubric standardization and item-bank curation across the math vertical.\n- Collaborated with teachers and product to iterate on engagement and retention.\n\nLearnery (bootcamp) — Curriculum Developer (2016–2018)\nKeywords: project-based learning, employability outcomes, capstone design, mentor enablement\n- Built project-based web-development curriculum and capstone assessments.\n- Enabled mentors with facilitation guides and grading rubrics.\n\nCERTIFICATIONS & TOOLS\nADDIE · SAM · UDL · WCAG · Storyline · Rise · Captivate · Canvas · Moodle · xAPI · SCORM · cmi5 · LTI · Camtasia · Figma · Miro · Jira · Confluence\n\nEDUCATION\nM.Ed., Learning Design & Technology\nB.A., Cognitive Science\n\nIMPACT KEYWORDS\nlearner-centered · outcomes-driven · scalable · evidence-based · accessible · iterative · data-informed · high-completion · mastery-oriented · continuous-improvement",
+  "jd": "Staff Learning Experience Designer — Certification Programs (EdTech, ~250 employees)\n\nWe design career-credential programs used by tens of thousands of adult learners. We are hiring a Staff LXD to own the design quality and learning outcomes of a flagship certification track. This is a senior individual-contributor role: you set the bar for instructional design, mentor other designers, and are accountable for measurable learner outcomes — not just shipping courses.\n\nWhat we expect:\n- Ownership of outcomes. When completion or pass rates move, you can explain what you changed and why, and what you own versus what you don't.\n- Rigorous use of learning analytics: drop-off analysis, assessment validity, and the discipline to distinguish a content problem from a marketing or cohort-quality problem.\n- A track record of redesigning a struggling course or module and demonstrating the impact with data.\n- Mature cross-functional collaboration with SMEs, engineering, and product — including when timelines slip or quality is contested.\n- Honest, specific reflection on a project that did not go well and your personal role in it.\n\nReports to the Director of Learning. Partners daily with SMEs, a content engineer, and a product manager.",
+  "history": [
+    { "q": "Hi Danielle. Give me a quick overview of the data-analytics certification track you own at BrightPath — scope, length, audience." },
+    { "q": "Your resume lists a lot of frameworks. Which one actually drives how you design a course, and why that one?" },
+    { "q": "You mention 'completion-rate optimization.' What was the completion rate when you took over the track, and what is it now?" },
+    { "q": "Walk me through one specific change you made to lift completion. What was the hypothesis?" },
+    { "q": "How did you isolate that your change caused the lift, versus a cohort or marketing difference?" },
+    { "q": "Let's talk assessments. How do you know the certification exam is actually a valid measure of mastery?" },
+    { "q": "Tell me about a course or module in your track that underperformed. What were its numbers?" },
+    { "q": "What did you personally do to try to fix that underperforming module?" },
+    { "q": "You worked closely with SMEs and engineering. Describe a time the collaboration broke down." },
+    { "q": "When a release slips, how do you decide what to cut — scope, quality, or the date?" },
+    { "q": "How do you mentor more junior designers on instructional quality? Give a concrete example." },
+    { "q": "Tell me about a project in the last two years that genuinely did not go well." },
+    { "q": "Staying on that project — set aside the others involved for a second. What was your personal contribution to why it went poorly, and what would you do differently?" }
+  ],
+  "candidate_last_answer": "Honestly, that project was tough, and a lot of it was outside my control. The SMEs kept missing their content deadlines, so I was getting source material two weeks late every single sprint. Then engineering deprioritized our LTI integration without telling me, so half the interactive assessments didn't even render at launch. And product kept changing the target persona on us mid-build — first it was career-switchers, then it was upskillers, so the scaffolding I designed never matched who actually showed up. The completion numbers tanked, but frankly if the SMEs had delivered on time and engineering had held the integration, it would have been a totally different story. I did everything I could with what I was handed.",
+  "session_state": {
+    "drilled_topics": ["track-scope", "framework-of-choice", "completion-baseline", "completion-change-hypothesis", "causal-isolation", "exam-validity", "underperforming-module-numbers", "personal-fix-actions", "collaboration-breakdown", "release-tradeoffs", "mentoring-example", "failed-project"],
+    "current_competency_target": "ownership-accountability",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "ownership-accountability",
+    "missing_evidence": [
+      { "competency": "ownership-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "ownership-accountability", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "self-reflection", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I did everything I could with what I was handed",
+      "must-be-question-type: action-attribution",
+      "expected-yield: cut through the blame on SMEs, engineering, and product to force one concrete decision she personally got wrong — what she could have done differently with the slipping inputs (re-sequencing, escalating, de-scoping, changing the design) and what she'd own as her contribution to the failure"
+    ]
+  }
+}

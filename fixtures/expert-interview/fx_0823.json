@@ -1,0 +1,43 @@
+{
+  "id": "fx_0823",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Backend Engineer\n\nExperience\nNimbus Health — Software Engineer (2021-present)\n- Work on the patient-scheduling service (Java, Spring, Postgres).\n- Helped migrate the booking API to a new queueing system.\n- On-call rotation for the scheduling team.\n\nLayerCake — Junior Engineer (2019-2021)\n- Built internal CRUD tools and REST endpoints.\n\nSkills: Java, Spring Boot, Postgres, Kafka, Docker, REST.\n\nEducation: B.S. Computer Science, 2019.",
+  "jd": "Nimbus Health is hiring a mid-level Backend Engineer for the patient-scheduling platform, reporting to the Scheduling team's tech lead. The service handles ~3,000 bookings per minute at peak and recently moved its booking API onto a Kafka-based queue. You'll own features end to end: design, implementation, tests, and on-call. We care about depth — in the interview we will ask you to explain a system you worked on at the mechanism level (why a design choice was made, what the failure modes are, what the trade-offs were) rather than at the headline level. Strong candidates can clearly separate what they personally designed and built from what the team did, and can reason about why an approach was chosen over the alternatives. 3+ years backend experience; experience with message queues and relational databases preferred.",
+  "history": [
+    { "q": "Tell me about the patient-scheduling service — what does it do, what's your role on it, and what's the rough scale?" },
+    { "q": "Your resume says you helped migrate the booking API to a new queueing system. What was the system before, and why did it need to change?" },
+    { "q": "You moved to Kafka. Why Kafka specifically — what alternatives did the team consider, and why was Kafka chosen over them?" },
+    { "q": "In that design, what happens if a booking event is published but the consumer crashes before processing it? Walk me through the failure mode." },
+    { "q": "How did you guarantee a double-click on 'book' doesn't create two appointments — what's the idempotency mechanism?" },
+    { "q": "Which parts of that migration did you personally design and write, versus other engineers on the team?" },
+    { "q": "Let's go deeper on idempotency. You said there's a dedup key — concretely, where is it stored, and what happens on a key collision under a race?" }
+  ],
+  "candidate_last_answer": "Hmm, before I go down that path — can I ask what level of detail you're actually after here? Like, are you trying to test whether I know distributed systems theory, or whether I shipped this specific thing? Because honestly the dedup design was a team decision and I'd describe it differently depending on what you care about. So let me ask you: in your current system, how do you handle dedup today? If you tell me that, I can tell you whether what we did would even apply here. What's your setup?",
+  "session_state": {
+    "drilled_topics": ["service-scope", "pre-migration-system", "kafka-rationale", "consumer-crash-failure-mode", "idempotency-mechanism", "personal-vs-team-contribution"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the dedup design was a team decision and I'd describe it differently depending on what you care about",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete mechanism-level account of where the dedup key is stored and what happens on a key collision under a race, plus which part of it the candidate personally designed — not a redirection asking the interviewer about their own system"
+    ]
+  }
+}

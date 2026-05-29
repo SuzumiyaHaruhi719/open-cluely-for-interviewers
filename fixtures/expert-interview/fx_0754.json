@@ -1,0 +1,40 @@
+{
+  "id": "fx_0754",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "林雨桐\n运营管理实习生候选人 ｜ 工商管理本科在读（大三）\n\n实习经历\n美团 同城零售 履约运营实习生（2024年7月至2024年12月）\n情境：负责所在城市三个前置仓的日常履约监控，仓内日均订单约两千单。\n任务：在双十一大促期间，把超时配送率从百分之十二降到百分之五以下。\n行动：我重新梳理了拣货动线，按热销品类把货位前置；又和站长一起把高峰时段的排班从两班改成三班错峰；并搭建了一个简单的实时看板监控各仓超时情况。\n结果：大促当周三个仓平均超时率降到百分之四点三，单仓最高峰未爆仓，站长把这套排班方案沿用到了后续大促。\n\n校园经历\n学生会后勤部副部长：组织过两届迎新物资调配，负责五百余件物资的清点与发放。\n\n技能：Excel（数据透视、函数）、SQL 基础、看板工具；做事细致，能扛高压。",
+  "jd": "我们正在招聘运营管理实习生，加入即时零售的履约运营团队，协助前置仓的日常运营监控、异常处理与流程优化。你将跟进每日履约指标（如超时率、缺货率、拣货时效），在大促期间支持排班与产能规划，并参与搭建运营看板。要求：本科在读，做事细致、对数字敏感，熟悉 Excel，有 SQL 基础或运营实习经历者优先；能适应快节奏、轮班和高压的促销周期。实习期至少四个月，每周到岗四天以上。",
+  "history": [
+    { "q": "先简单介绍一下你自己，以及你在美团那段实习主要负责什么。" },
+    { "q": "说说大促那个项目——当时为什么超时率会高到百分之十二？根因是什么？" },
+    { "q": "你提到重新梳理了拣货动线，能具体讲讲你是怎么分析、怎么改的吗？" },
+    { "q": "排班从两班改成三班错峰，这个决定是你做的还是站长做的？你在里面起了什么作用？" }
+  ],
+  "candidate_last_answer": "这个我可以详细说一下。当时的情境是大促前一周，我拉了过去一个月的履约数据，发现晚高峰六点到八点的超时单占了全天超时的七成，根因是那个时段订单量翻倍但拣货人手没变。任务是要在大促前把高峰产能补上去。我的行动是先按小时把订单量画成曲线，找出三个明显的波峰，然后我做了一版错峰排班的建议方案，把原来两班倒改成三班，让人手在波峰前半小时就到位，还专门留了两个机动人力补热销货位。我把这个方案整理成表格，拉着站长一条一条过，解释每个时段为什么要这么排，最后站长同意按我这版去试。",
+  "session_state": {
+    "drilled_topics": ["self-intro-and-scope", "overtime-root-cause", "picking-route-redesign"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 最后站长同意按我这版去试",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result — what the超时率 actually became after the candidate's shift plan ran during大促, quantified against the 5% target, plus evidence the outcome was attributable to the candidate's plan rather than the站长's execution"
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "id": "fx_0778",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "林婉清 — 神经科学方向，理学硕士（2025年毕业）\n报考岗位：认知神经科学初级研究助理\n\n科研经历 — 某高校脑与认知科学实验室 研究助理（2023年9月至2025年6月）\n- 情境：实验室在做一项关于工作记忆负荷与前额叶激活关系的脑电（EEG）研究，前一位师兄毕业后数据采集中断。\n- 任务：导师让我接手被试招募、范式编程和数据预处理，目标是在一年内完成 30 名被试的有效数据采集。\n- 行动：我用 E-Prime 重写了 N-back 范式，规范了被试筛查流程，并在 EEGLAB 里搭了一套标准化的预处理管线（去伪迹、ICA 分解、分段）。\n- 结果：12 个月内采满 32 名有效被试，伪迹剔除后平均每人保留 88% 的 trial，相关结果作为共同二作投到一个领域内会议。\n\n本科毕业设计 — 情绪面孔注意偏向的眼动研究（2022）\n- 情境：想验证焦虑特质高的人对负性面孔是否有注意维持偏向。\n- 任务：独立完成一个小样本眼动实验。\n- 行动：用 Tobii 眼动仪采集 40 名被试的注视数据，按兴趣区做了凝视时间分析。\n- 结果：高焦虑组对负性面孔的首次注视时间显著更长，毕设评为优秀。\n\n技能：E-Prime、EEGLAB、Python（数据分析）、R、基础统计（混合线性模型）\n语言：英语六级，可读英文文献",
+  "jd": "招聘认知神经科学初级研究助理一名。你将加入一个研究工作记忆与注意的实验室，在 PI 和博士后的指导下承担具体研究任务。职责包括：编写并调试实验范式、负责被试招募与伦理材料、采集与预处理行为及脑电数据、用统计软件做初步分析、协助撰写方法部分。我们看重严谨的实验执行：你要能清楚说明每个数据处理决定背后的理由（为什么这样剔除伪迹、为什么选这个统计模型），能诚实区分预注册的假设检验和探索性发现，并对样本量与效应量有基本意识。该岗位以动手实验为主，需要长期坐在实验室与被试和数据打交道。有脑电或眼动经验者优先。",
+  "history": [
+    {
+      "q": "先介绍一下你在脑认知实验室接手的那个工作记忆 EEG 项目吧。"
+    },
+    {
+      "q": "你说接手时数据采集中断了，你接手的时候手上已经有多少被试的数据？"
+    },
+    {
+      "q": "你用 E-Prime 重写了 N-back 范式，为什么要重写而不是沿用师兄留下的程序？"
+    },
+    {
+      "q": "重写之后你怎么确认新范式和旧范式在时间精度上是一致的？"
+    },
+    {
+      "q": "被试筛查流程你规范了哪些标准？哪些人会被排除？"
+    },
+    {
+      "q": "EEGLAB 那套预处理管线里，去伪迹和 ICA 的顺序是怎么定的？"
+    },
+    {
+      "q": "你提到平均保留 88% 的 trial，这个剔除标准是预先定好的还是看数据定的？"
+    },
+    {
+      "q": "ICA 分解后你靠什么判断哪些成分是眼动伪迹要剔掉？"
+    },
+    {
+      "q": "32 名被试这个样本量是怎么定的？有没有做过效应量或检验力的估计？"
+    },
+    {
+      "q": "分析用的是什么统计模型？为什么选它？"
+    },
+    {
+      "q": "结果里哪些是你们一开始就预设要检验的假设，哪些是后来探索发现的？"
+    },
+    {
+      "q": "投会议时你是共同二作，方法部分具体是你写的哪几段？"
+    },
+    {
+      "q": "如果让你重做这个项目，预处理上你会改哪一步？"
+    },
+    {
+      "q": "切换到你本科的眼动毕设，高焦虑组首次注视时间更长，这个『显著』的 p 值和效应量大概是多少？"
+    },
+    {
+      "q": "回到 EEG 那个研究，我想确认一下你对数据的把握：那 88% 的 trial 保留率，剔除标准到底是采集前就写进预注册了，还是看了数据分布之后才定的阈值？"
+    }
+  ],
+  "candidate_last_answer": "其实说到这个我特别想聊聊我们实验室的氛围，PI 人特别好，每周组会都会请大家喝咖啡，师兄师姐也很照顾我。我觉得做科研最重要的就是团队氛围，氛围好了大家才愿意投入。对了，我最近还在自学一门关于脑机接口的网课，特别有意思，讲的是怎么用深度学习去 decode 运动想象，我觉得这才是神经科学未来的方向。还有我那个眼动实验室当时的设备是全校最好的，Tobii 那台仪器特别贵。",
+  "session_state": {
+    "drilled_topics": [
+      "eeg-project-overview",
+      "handover-data-state",
+      "paradigm-rewrite-reason",
+      "timing-precision-check",
+      "screening-criteria",
+      "preprocessing-order",
+      "trial-rejection-rate",
+      "ica-artifact-identification",
+      "sample-size-power",
+      "statistical-model-choice",
+      "preregistered-vs-exploratory",
+      "authorship-contribution",
+      "redo-improvement",
+      "eyetracking-effect-size"
+    ],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "intellectual-honesty",
+        "evidence_type": "scope"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "timeline"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我觉得做科研最重要的就是团队氛围",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a firm redirect off the lab-atmosphere tangent back to the dodged methodological question — whether the 88% trial-rejection threshold was pre-specified before collection or chosen after seeing the data — forcing a step-by-step account that reveals if she grasps the analytic-flexibility risk in EEG preprocessing"
+    ]
+  }
+}

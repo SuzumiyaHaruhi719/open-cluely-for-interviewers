@@ -1,0 +1,38 @@
+{
+  "id": "fx_0757",
+  "tags": {
+    "industry": "operations",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Renata Salcedo\nOperations Manager | E-commerce fulfillment & last-mile\n\nNorthgate Logistics — Operations Manager (Mar 2020 – present)\n- Run daily operations for a regional fulfillment center processing 40,000 units/day\n- Reduced cost-per-order by 22% through a continuous-improvement program\n- Managed a team of 60 associates across two shifts\n\nNorthgate Logistics — Operations Manager (2021 – present)\n- Led the launch of a new sortation center; owned the P&L end to end\n\nBrightway Retail — Shift Supervisor (2017 – 2020)\n- Oversaw inbound receiving and putaway for a 200k sq ft DC\n\nNote: resume lists Operations Manager start as both Mar 2020 and 2021 for the same employer; team size appears as 60 in one bullet and 'led a 25-person team' in the cover note. Education: BBA, Supply Chain.",
+  "jd": "Northgate Logistics is hiring an Operations Manager to run a regional fulfillment center (35k–45k units/day) and drive a continuous-improvement agenda on cost-per-order, throughput, and on-time dispatch. You'll own the daily operating plan across shifts, manage front-line associates and team leads, and partner with engineering on automation rollouts. We want an operator who can attribute a result to the specific changes they personally drove — labor model, slotting, process redesign — and defend the math. Requirements: 4+ years in fulfillment/last-mile operations, demonstrated cost or throughput wins with real numbers, and people-leadership of 25+ associates. Lean/Six Sigma a plus.",
+  "history": [
+    { "q": "You list a 22% cost-per-order reduction through a continuous-improvement program. Walk me through exactly what you changed and how you know it drove that number." }
+  ],
+  "candidate_last_answer": "Absolutely. So this was a holistic, data-driven continuous-improvement journey grounded in operational excellence and a relentless focus on the customer. We took a first-principles approach, broke down silos, and drove a culture of ownership and accountability across the floor. By empowering the team and leveraging best-in-class lean methodologies, we unlocked significant efficiencies and moved the needle on cost-per-order in a really meaningful way. It was all about doing more with less while never compromising on quality — a true win-win that I'm super proud of. At the end of the day it's about people, process, and technology coming together.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: leveraging best-in-class lean methodologies, we unlocked significant efficiencies",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual arithmetic behind the 22% — baseline cost-per-order, the post-change number, the single biggest lever and its individual contribution, and how the change was isolated from volume effects, replacing the buzzwords with defensible figures"
+    ]
+  }
+}

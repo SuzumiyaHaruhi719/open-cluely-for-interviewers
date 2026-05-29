@@ -1,0 +1,53 @@
+{
+  "id": "fx_0815",
+  "tags": {
+    "industry": "hr",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "林小满 — 人力资源实习生应聘者\n\n求职意向:人力资源管培生 / 招聘方向实习\n\n实习经历:\n某互联网公司 人力资源部 招聘实习生(2024年7月至2024年12月)\n- 协助校园招聘项目,负责简历初筛与面试安排\n- 简历里写道:独立负责整个秋招校园宣讲会的策划与执行,覆盖八所高校\n- 另一处又写道:作为团队成员协助一位资深 HR 完成宣讲会的现场支持工作\n- 维护候选人数据库,跟进 offer 发放进度\n\n校园经历:\n校学生会组织部 干事(2022至2023)\n- 参与组织迎新晚会与社团招新\n\n技能:Excel、候选人沟通、面试协调\n备注:简历另一处称自己曾管理三人招聘小组,但实习时长仅半年且职位为实习生\n教育背景:人力资源管理本科,大四在读",
+  "jd": "我们正在招聘一名人力资源实习生,主要支持校园招聘与社招的协调工作,向招聘组 HRBP 汇报。日常工作包括:简历初筛、面试安排与候选人沟通、维护招聘数据看板、协助组织校园宣讲会。我们看重的是实事求是的态度——能清楚说明哪些事是你亲自做的、哪些是协助团队完成的,能用具体的数字和事例说明你的贡献(比如安排了多少场面试、宣讲会到场多少人、转化率如何)。我们不期待实习生独当一面,但期待你诚实、细致、有数据意识。每周到岗至少四天,实习期三到六个月,表现优秀者可转正。",
+  "history": [
+    { "q": "先做个自我介绍吧,讲讲你为什么想做 HR 招聘这个方向?" },
+    { "q": "你在上一段实习里,日常具体负责哪些事情?" },
+    { "q": "简历上说你独立负责了整个秋招宣讲会的策划,但另一处又写是协助资深 HR。能澄清一下你到底承担了什么角色吗?" },
+    { "q": "那我们就聚焦在你真正做的那部分。先说说当时是个什么背景、要解决什么问题?" },
+    { "q": "这个宣讲会项目当时的目标是什么?有没有量化的指标?" },
+    { "q": "在筹备过程中,你具体负责哪几块?" },
+    { "q": "简历里还提到你管理过一个三人招聘小组,这个跟你实习生的身份怎么对得上?" },
+    { "q": "我们先放下那个,回到宣讲会。你刚说你负责场地和候选人邀约,具体是怎么做的?" },
+    { "q": "邀约环节你遇到的最大困难是什么?" },
+    { "q": "那你当时是怎么解决到场率偏低这个问题的?具体做了哪些动作?" },
+    { "q": "你提到发了提醒短信和加了候选人微信,这两个动作分别带来了什么效果?" },
+    { "q": "最后这场宣讲会的结果怎么样?到场多少人,投递转化如何?" },
+    { "q": "这个结果跟你们一开始定的目标比,达成了吗?" },
+    { "q": "整个过程里,哪一部分是你独立完成的,哪一部分是资深 HR 帮你把关的?" },
+    { "q": "如果再做一次,你觉得哪里可以做得更好?" },
+    { "q": "刚才你讲宣讲会讲得挺清楚。现在我想确认一下:简历里那个『管理三人小组』到底是怎么回事?" },
+    { "q": "好,那我理解为是你协调了两位志愿者,而不是正式管理。我们换个角度:你做简历初筛时,用什么标准判断一份简历过不过?" },
+    { "q": "回到宣讲会那次,你说到场率从预估的六成提到了八成五。能不能完整地、按时间顺序讲一遍:当时的情况、你的目标、你具体做了哪几步、最后拿到什么结果?" }
+  ],
+  "candidate_last_answer": "好的,我完整讲一遍。背景是这样:去年九月那场校园宣讲会,我们提前两周在三所高校的就业群里发了报名链接,报名人数有两百出头,但根据往年经验,实际到场往往只有六成左右,也就是一百二十人不到,场地却是按一百八十人订的,会很空,效果也差。我的目标很明确——把到场率从六成拉到八成以上。我具体做了四步:第一,报名后第三天我导出名单,按学校分了三个表,逐个核对联系方式;第二,在宣讲前一天和当天早上各发一次提醒短信,短信里写清楚时间、地点和『前五十名到场可领企业周边』;第三,我主动加了报名同学的微信,建了个临时群,在群里回答他们关于流程和岗位的问题,降低他们的犹豫;第四,我跟资深 HR 申请了二十份小礼品作为到场激励,这部分预算是她帮我把的关。最后结果是:实际到场一百七十二人,到场率百分之八十五点几,比目标高;当场二维码投递简历的有九十八份,投递转化接近百分之五十七。复盘的时候我老师说,提醒短信和微信群这两步贡献最大。所以这件事里,策划框架是资深 HR 给的方向,但名单核对、短信、建群、现场签到这些执行动作是我独立完成的。",
+  "session_state": {
+    "drilled_topics": ["motivation", "daily-responsibilities", "role-clarification", "project-background", "project-goal", "ownership-split", "team-management-claim", "candidate-invitation", "invitation-difficulty", "attendance-fix-actions", "action-effects", "final-result", "goal-attainment", "independent-vs-supported", "retrospective", "team-management-reclarify", "resume-screening-criteria"],
+    "current_competency_target": "execution-detail",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "execution-detail",
+    "missing_evidence": [
+      { "competency": "execution-detail", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 实际到场一百七十二人,到场率百分之八十五点几",
+      "must-be-question-type: metric-pin",
+      "expected-yield: confirmation of which specific actions the candidate personally executed versus those the senior HR signed off on, tying each step to its measurable effect, since the STAR answer is already complete and only attribution boundaries remain to verify"
+    ]
+  }
+}

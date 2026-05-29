@@ -1,0 +1,41 @@
+{
+  "id": "fx_0774",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "高级客户支持专员 / Senior Support Specialist —— 团队里公认最能打硬仗的那个人\n\n我是同事和主管眼中处理疑难工单的第一人选，几乎没有我搞不定的客户升级（escalation）。过去四年我一次次把濒临流失的大客户拉回来，主管说我是团队的定海神针。\n\n现任：某 SaaS 公司 Senior Support Specialist（4 年）\n- 我专门接团队里最棘手的 tier-2 升级工单，别人搞不定的最后都到我这。\n- 我的 CSAT 常年是组里最高，客户点名要我处理。\n- 我一手梳理了团队的疑难问题知识库，没有我那套整理，新人上手要慢得多。\n- 我处理 P1 故障时的沟通堪称模板，主管经常拿我的 case 给别人做示范。\n\n亮点战绩（我都说得有点不好意思了）：\n- 一个准备退订的年付大客户，被我一通操作挽回。\n- 我把某类高频报错的工单量大幅压了下去。\n- 我带新人的上手速度比别人快很多。\n\n前职：电商客服 2 年，做到小组长。\n\n技能：tier-2 升级处理、P1 incident 沟通、根因排查协同、知识库建设、客户挽回、Zendesk、SQL 基础查询。\n教育：本科。",
+  "jd": "We're hiring a mid-level Senior Support Specialist for our SaaS support team. Responsibilities: handle escalated tier-2 tickets, act as support-side point person during P1 incidents (coordinating with engineering and communicating status to affected customers), drive down recurring-issue ticket volume through root-cause partnership and knowledge-base work, and mentor junior agents. 我们的客户与团队是中英双语环境。We value specialists who can give a tight, specific account of an escalation they personally resolved — the symptom, what they did, and the measurable result — without padding. The strongest candidates quantify their impact (CSAT, resolution time, ticket-volume reduction) and clearly separate what they did from what the team did.",
+  "history": [
+    { "q": "先介绍一下你现在 Senior Support Specialist 的职责，以及你主要接哪一类工单。" },
+    { "q": "你简历里说专门接最棘手的 tier-2 升级。给我一个最近的例子：什么样的工单会升级到你这里？" },
+    { "q": "你提到挽回了一个准备退订的年付大客户。这个客户当时为什么要退？" },
+    { "q": "面对这个要退订的客户，你个人具体做了哪几步？" },
+    { "q": "你说把某类高频报错的工单量压了下去。是哪类报错，你怎么定位到根因的？" },
+    { "q": "我想要个具体数字：那类高频报错的工单，在你介入前后，月度工单量从多少降到了多少，用了多久？" }
+  ],
+  "candidate_last_answer": "具体数字我记得很清楚。那类报错是客户在 SSO 登录时偶发跳回登录页、报 session invalid，介入前稳定在每月 320 到 350 张工单，是我们组单一类目最高的。我先用 Zendesk tag 把这类工单聚类，再拉了一周的失败 case 时间戳和客户的 IdP 类型交叉看，发现 90% 集中在用 Okta 的客户、且都在凌晨我们 token 服务滚动重启的时段，于是判断是重启时旧 session 没被平滑接管。我把这个证据链整理后提给了 engineering，他们确认是 token 服务重启没做 graceful drain。修复上线后第二个月这类工单降到约 40 张，第三个月稳定在每月 10 张以内，降幅约 97%，用了大概 6 周从定位到验证。这块根因是工程修的，我的贡献是把分散的工单聚成一个可定位的信号并锁定到 Okta + 重启时段。",
+  "session_state": {
+    "drilled_topics": ["role-scope", "tier2-escalation-example", "churn-reason", "churn-save-actions", "recurring-error-rootcause"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这块根因是工程修的，我的贡献是把分散的工单聚成一个可定位的信号",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 进一步确认候选人个人在定位环节的确切技术动作（如何聚类、用哪些字段交叉、如何排除其他 IdP），把『我把工单聚成信号』这一自我归因落到可复述的具体方法，验证其归因诚实且经得起追问"
+    ]
+  }
+}

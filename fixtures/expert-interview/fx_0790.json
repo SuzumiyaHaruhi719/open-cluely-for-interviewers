@@ -1,0 +1,48 @@
+{
+  "id": "fx_0790",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Marcus Vandenberg — Senior Account Executive (SaaS)\n\n现任：BrightLayer Analytics 高级客户经理（2021 至今）\n- Situation：接手一个停滞的 mid-market 区域，pipeline 几乎为零。\n- Task：12 个月内把新签 ARR 从 0 做到目标线。\n- Action：重建 outbound cadence,引入 MEDDICC 资格认证框架,与 SE 团队搭配做 POC。\n- Result：第一年新签 ARR 做到 1.4M,quota attainment 118%,平均 deal size 提升 35%。\n\n曾任：Northpeak CRM 客户经理（2018 至 2021）\n- 连续两年 President's Club,负责 SMB 到 mid-market 的转型客户。\n\n核心能力：MEDDICC、outbound prospecting、multi-threading、forecast accuracy、renewal & expansion。\n\n教育：南京大学 国际经济与贸易 本科。",
+  "jd": "We are hiring a Senior Account Executive to own a mid-market new-logo territory (deal sizes $30K–$150K ARR). 这个岗位 reports to 区域销售总监,需要 candidate 能够 build pipeline from scratch、跑通完整的 MEDDICC qualification,并对 forecast accuracy 负责。我们特别看重 candidate 能否清晰复盘一个具体的 closed-won deal:从 first touch 到 close 的每个 stage、你个人在 multi-threading 里做了什么、以及最终的 deal size 与 cycle time。You will partner closely with SE and marketing,carry a quota of roughly $1.2M new ARR,and be expected to forecast within 10% accuracy each quarter. 要求三年以上 B2B SaaS closing 经验。",
+  "history": [
+    { "q": "先简单介绍下你在 BrightLayer 负责的 territory 和 quota。" },
+    { "q": "你简历里写第一年新签做到 1.4M ARR,这个数字里 new logo 和 expansion 各占多少？" },
+    { "q": "挑一个你最有代表性的 closed-won deal,先说下客户背景。" },
+    { "q": "这个 deal 的 deal size 和 cycle time 分别是多少？" },
+    { "q": "你在这个 deal 里是怎么做 multi-threading 的?接触了哪几个 stakeholder?" },
+    { "q": "MEDDICC 里的 Economic Buyer,在这个 deal 里具体是谁?" },
+    { "q": "competitor 是谁?你是怎么 differentiate 的?" },
+    { "q": "POC 阶段 SE 帮你做了什么?你自己负责哪部分?" },
+    { "q": "forecast 方面,这个 deal 你最初 commit 在哪个 quarter?最后 close 在哪个 quarter?" },
+    { "q": "你们 forecast accuracy 整体怎么样?有没有出现过 slip?" },
+    { "q": "回到这个 deal,真正让客户签字的临门一脚是什么?" },
+    { "q": "我想确认一下:这个 deal 从 first touch 到 close 中间,具体是哪个动作最大程度地推动了 Economic Buyer 做决定?" }
+  ],
+  "candidate_last_answer": "嗯…这个问题问得挺好的,让我想想啊。其实吧 EB 这个人,他一开始 you know 是很 skeptical 的,然后我们 team 也是 under a lot of pressure,那段时间我同时在跑另外三个 deal,有一个还黄了,挺打击的。然后 EB 嘛…他其实更关心 ROI 这块,但 procurement 那边一直在 push 我们 lower the price,我个人是觉得 discount 不是关键。哦对,中间还有个插曲就是他们 CFO 换人了,这个 disrupt 了一下我们的 timeline。临门一脚啊…我觉得是一个综合的东西吧,就是 trust 慢慢建立起来,加上我们 SE 那个 demo 做得不错,然后 timing 也对,反正最后就 close 了。具体哪个动作最关键我还真得想想,挺多因素的。",
+  "session_state": {
+    "drilled_topics": ["territory与quota", "ARR构成", "deal背景", "deal-size与周期", "multi-threading", "economic-buyer", "竞争差异化", "POC分工", "forecast承诺", "forecast准确率", "临门一脚"],
+    "current_competency_target": "deal-ownership-clarity",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "deal-ownership-clarity",
+    "missing_evidence": [
+      { "competency": "deal-ownership-clarity", "evidence_type": "owner-of-action" },
+      { "competency": "deal-execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体哪个动作最关键我还真得想想",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人剥离掉 trust、timing、SE demo 等模糊归因,指出他本人采取的那一个最具决定性的动作,以及该动作如何直接促成 Economic Buyer 在 CFO 换人后仍做出签约决定"
+    ]
+  }
+}

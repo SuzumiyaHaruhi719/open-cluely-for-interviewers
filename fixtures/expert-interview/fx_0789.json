@@ -1,0 +1,40 @@
+{
+  "id": "fx_0789",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "祁文渊 资深数据工程师\n\n现任：辰星出行 数据平台组 资深数据工程师（2019 至今）\n负责实时数据管道与离线数仓的稳定性，日处理事件量约八十亿条。主导过一次核心计费管道的重构。\n\n曾任：海蓝科技 数据工程师（2016 至 2019）\n搭建公司第一版基于 Hadoop 的离线数仓。\n\n核心能力：Flink 实时计算、Spark 离线处理、数据质量监控、管道性能调优、Kafka 运维。\n\n教育：浙江大学 计算机科学与技术 硕士。",
+  "jd": "我们正在组建出行业务的数据平台核心团队，招聘一名资深（Staff 级）数据工程师，负责支撑日均百亿级事件的实时与离线数据基础设施。你将主导关键数据管道的架构演进，对端到端的数据时延、准确性与成本负责。我们期望你能拿出一个具体的、可量化的工程案例：清晰说明你当时面对的业务背景与技术挑战、你个人承担的角色与具体动作、以及最终在时延、稳定性或成本上带来的可衡量收益。岗位要求精通 Flink 或 Spark，有大规模实时管道的故障排查与重构经验，能够独立推动跨团队的技术决策落地。",
+  "history": [
+    { "q": "请简单介绍一下你在辰星出行负责的数据基础设施规模。" },
+    { "q": "你提到主导过一次核心计费管道的重构，先说说当时为什么要做这次重构？" },
+    { "q": "在这次重构里，具体是你个人负责设计和落地的部分有哪些？" },
+    { "q": "重构完成后，在时延和稳定性上拿到了什么可量化的结果？" }
+  ],
+  "candidate_last_answer": "结果是相当明确的。重构前，计费管道的端到端时延 P99 大概在四十五分钟，每个月因为乱序和重复消费导致的对账差异平均有三十多笔，每次人工排查要两到三个工程师日。背景是去年第二季度业务量翻倍后，老的基于微批的 Spark Streaming 架构扛不住了，时延飙到一个多小时，财务那边对不上账。我的任务是在不影响线上计费的前提下把它重做。我个人负责了从 Spark 微批迁移到 Flink 事件时间窗口的整体方案设计，自己写了基于 Kafka offset 的幂等去重逻辑和水位线对齐策略，并设计了灰度切流方案分三周逐步放量。最终上线后,P99 时延降到四分钟以内，对账差异连续两个月降到零,人工排查工时基本归零，这个方案后来也被另外两个业务线复用了。",
+  "session_state": {
+    "drilled_topics": ["基础设施规模", "重构动机", "个人职责", "量化结果"],
+    "current_competency_target": "data-engineering-depth",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "data-engineering-depth",
+    "missing_evidence": [
+      { "competency": "data-engineering-depth", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 自己写了基于 Kafka offset 的幂等去重逻辑和水位线对齐策略",
+      "must-be-question-type: teach-back",
+      "expected-yield: 候选人讲清楚幂等去重与水位线对齐的实现机制——offset 如何作为去重键、迟到事件如何处理、水位线推进与窗口触发的关系，以验证这套方案是其本人设计而非套话"
+    ]
+  }
+}

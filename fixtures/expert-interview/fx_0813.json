@@ -1,0 +1,47 @@
+{
+  "id": "fx_0813",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "reverses-question"
+  },
+  "resume": "VP of Engineering | Cloud-Native | Distributed Systems | Platform | SRE | DevOps | Kubernetes | Microservices | Event-Driven | Observability | Multi-Region | Zero-Trust | Cost Optimization | AI/ML Infra\n\nResults-driven engineering executive fluent in Go, Rust, Java, Python, Terraform, Kafka, Spanner, gRPC, GraphQL, eBPF, and service mesh (Istio/Linkerd). Deep expertise in scaling platforms to billions of requests, driving SLO culture, and leading org-wide reliability transformations.\n\nEXPERIENCE\nVP Engineering, Platform — Meridian Pay (2021-present)\n- Own platform, infra, SRE, and developer-experience orgs (~140 engineers, 9 teams)\n- Led multi-region active-active migration; champion of error-budget-driven release governance\n- Drove FinOps initiative across compute and storage; advocate of zero-trust networking\n\nSenior Director, Infrastructure — Lumen Retail Cloud (2017-2021)\n- Scaled checkout platform; introduced chaos engineering and progressive delivery\n- Stakeholder-aligned, outcome-obsessed, blameless-postmortem evangelist\n\nKEYWORDS: leadership, mentorship, hiring, OKRs, incident command, capacity planning, latency, throughput, resilience, DR, BCP, compliance, SOC2, PCI-DSS",
+  "jd": "Constellation Logistics is hiring a VP of Engineering to own the reliability and scalability of our real-time fleet-tracking platform, which ingests 4M GPS events per second and powers dispatch for 90,000 vehicles. You will lead ~120 engineers across platform, SRE, and data-pipeline teams, reporting to the CTO. Concrete mandate: drive the platform's p99 dispatch-decision latency from 850ms to under 300ms within three quarters; cut the on-call page volume (currently ~40 pages/week) by half; and lead the migration off a single-region Postgres-plus-Kafka stack to a multi-region architecture without a customer-visible outage. You will own a $14M annual infra budget and be accountable for a board-level 99.95% availability SLA that we currently miss roughly one month in four. We need someone who has personally driven a latency or reliability turnaround at scale, can make hard architectural bets, and can defend trade-offs to a skeptical CTO.",
+  "history": [
+    { "q": "Give me your current scope at Meridian Pay — team size, what systems you own, who you report to." },
+    { "q": "Your resume lists multi-region active-active. Tell me about the specific migration — what was the starting architecture?" },
+    { "q": "What was the single hardest technical trade-off you had to make in that migration?" },
+    { "q": "You mention error-budget-driven release governance. Walk me through how a release actually got blocked under that policy — a real instance." },
+    { "q": "Let's talk latency. Our p99 dispatch latency is 850ms and we need sub-300ms. Have you personally led a latency reduction of that magnitude?" },
+    { "q": "Pick one latency win you led. What was the before and after number, and what was the root cause you fixed?" },
+    { "q": "How did you decide where to spend engineering effort — what was your prioritization mechanism?" },
+    { "q": "You inherited a $14M-equivalent budget at Meridian. Tell me about a cost decision you made that had a real downside you had to accept." },
+    { "q": "Our SLA is 99.95% and we miss it one month in four. In your first 90 days here, what would you actually do?" },
+    { "q": "Concretely though — first 90 days, what is the very first reliability bet you make, and how do you know it's the right one?" }
+  ],
+  "candidate_last_answer": "Honestly, before I commit to a first bet, I'd want to understand a lot more about your environment. Like — what does your incident data actually look like? Are those 40 pages a week clustered in one subsystem or spread out? And what's your current postmortem culture, are people even allowed to push back on a launch? Let me ask you this: when your SLA slips that one month in four, do you actually know the top contributing service, or is it different every time? Because if your own team can't answer that, then me naming a 'first bet' on day one would just be theater. So I'd flip it back — what do you think is broken?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "multi-region-architecture", "migration-tradeoff", "release-governance", "latency-turnaround-claim", "latency-win-specifics", "prioritization-mechanism", "cost-tradeoff"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution-planning", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: me naming a 'first bet' on day one would just be theater. So I'd flip it back",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete first 90-day reliability bet stated as the candidate's own decision, with the diagnostic step they'd run and the signal that would confirm or kill the bet — not a redirection to the interviewer"
+    ]
+  }
+}

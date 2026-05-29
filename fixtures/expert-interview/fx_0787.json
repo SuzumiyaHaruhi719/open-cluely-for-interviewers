@@ -1,0 +1,54 @@
+{
+  "id": "fx_0787",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "RAVI SUNDARESAN\nStaff Data Scientist / ML Engineer\n\nPROFILE\nStaff-level data scientist with deep experience in recommendation and ranking systems for large-scale consumer marketplaces. I work at the intersection of modeling, experimentation, and platform, and I have led the technical direction of ranking workstreams while mentoring senior and mid-level data scientists.\n\nEXPERIENCE\nStaff Data Scientist — Lumen Marketplace (2020–present)\n- Set technical direction for the search-and-discovery ranking team and owned the modeling roadmap.\n- Led the migration of the core ranking model from a gradient-boosted-tree stack to a deep learning architecture.\n- Drove the experimentation strategy for ranking, partnering with product and engineering on the online metrics framework.\n- Mentored several data scientists and reviewed experiment designs across the team.\n\nSenior Data Scientist — Northstar Retail (2016–2020)\n- Built demand-forecasting and personalization models for the e-commerce org.\n- Partnered with marketing on uplift modeling for targeted campaigns.\n\nData Scientist — early-career roles (2012–2016)\n- Various analytics and modeling roles across ad-tech and consumer apps.\n\nEDUCATION\nM.S., Computer Science (Machine Learning) — 2012\nB.Tech, Electrical Engineering — 2010\n\nSKILLS\nRanking & recommendation, deep learning (TensorFlow/PyTorch), online experimentation (A/B testing), causal inference, feature platforms, Python, SQL, Spark.",
+  "jd": "Staff Data Scientist — Ranking & Experimentation, consumer marketplace. You will set technical direction for a ranking team, own the modeling and experimentation roadmap, and be the senior voice on causal rigor in how the org measures impact. We expect you to articulate precise numbers and clean experimental reasoning: when you describe a launch, we want the metric, the effect size, the confidence interval, the guardrails, and how you ruled out confounds — at the level of detail expected of a staff IC who sets the bar for others. You will also mentor senior ICs on experiment design. This is a deep technical role; vague, hand-wavy descriptions of impact will not pass the bar.",
+  "history": [
+    {
+      "q": "You led the migration from a GBDT ranking stack to deep learning. Start at the top — why make that move, and what did the new architecture look like?"
+    },
+    {
+      "q": "Let's get precise on impact. When you launched the deep model, what was the headline online metric, the effect size, the confidence interval, and what guardrail metrics did you watch?"
+    }
+  ],
+  "candidate_last_answer": "Right, so, the impact — okay, so the headline metric was, um, engagement, broadly, like we looked at a few things. There was a lift, definitely a lift, I remember it being a good result, the team was happy. The effect size, I'd have to, you know, pull the exact number, it was — it moved the needle, that's the thing I remember. And, sorry, what was the second part — confidence interval, right, so we, um, we did run it as an A/B, we had the standard significance thresholds, and I think it cleared them, like it was significant. Guardrails, yeah, we watched latency for sure, and there was something on, uh, diversity or maybe revenue, I'd want to check before I misquote. But the takeaway was it was a clear win, I just don't have the precise figures off the top of my head right now.",
+  "session_state": {
+    "drilled_topics": [
+      "gbdt-to-dl-migration-rationale"
+    ],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      {
+        "competency": "numbers-fluency",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "scope"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it moved the needle, that's the thing I remember",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete headline metric, its effect size and confidence interval, and the named guardrails — forcing the staff candidate to either produce the precise experimental numbers his role demands or concede he cannot, rather than hiding behind 'moved the needle'"
+    ]
+  }
+}

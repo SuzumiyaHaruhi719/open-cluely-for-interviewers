@@ -1,0 +1,52 @@
+{
+  "id": "fx_0799",
+  "tags": {
+    "industry": "healthcare",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "顾明谦 资深临床项目经理(Senior Clinical Program Manager)\n\n现任:康岳医疗 临床运营部 高级项目经理(2020 至今)\n负责一个覆盖 12 家三甲医院的多中心 II 期临床试验的 site 管理与入组进度,对 enrollment timeline 和数据质量负责。带 4 名 CRA。\n\n曾任:景和药业 临床监查员 CRA(2016 至 2020),独立监查过 6 家中心。\n\n核心能力:multi-site 入组管理、CRA 团队带教、protocol deviation 把控、site 关系维护、ICH-GCP 合规、数据清理(query 处理)。\n\n教育:复旦大学 临床医学 本科,GCP 认证。",
+  "jd": "我们为创新药企招聘一名资深临床项目经理(Senior CPM),负责多中心临床试验的 site 管理、入组进度与数据质量,带领 CRA 团队并对关键里程碑负责。该岗位需要 candidate 完整复盘一个具体的入组提速或数据质量改善案例:当时的 situation 与目标、你个人主导的具体 action、以及最终在 enrollment rate、query 关闭周期或 deviation 率上的 measurable 结果。You will own the enrollment timeline across multiple sites,manage protocol deviations,and ensure ICH-GCP compliance. 我们重点考察你对结果数据的把控。要求五年以上临床运营经验,有 multi-site II/III 期项目管理经验,GCP 认证。",
+  "history": [
+    { "q": "先介绍下你目前负责的这个多中心试验的规模和你的职责。" },
+    { "q": "你提到对入组进度负责,这个项目最初的 enrollment 目标和实际节奏差距有多大?" },
+    { "q": "入组落后,你诊断下来的主要原因是什么?" },
+    { "q": "哪几家 site 是拖后腿的?你怎么识别出来的?" },
+    { "q": "针对落后的 site,你个人采取了哪些具体动作?" },
+    { "q": "你说做了 site 的 re-training,具体培训了什么内容?" },
+    { "q": "你调整了筛选流程吗?怎么在不违反 protocol 的前提下提速?" },
+    { "q": "CRA 团队这边,你是怎么重新分配监查资源的?" },
+    { "q": "和 PI 沟通入组压力时,你是怎么谈的?" },
+    { "q": "过程中有没有出现过为了赶进度而增加 protocol deviation 的情况?" },
+    { "q": "数据质量方面,query 的关闭周期有改善吗?" },
+    { "q": "这套动作大概执行了多久?" },
+    { "q": "项目里最大的阻力来自哪里?site 端还是 sponsor 端?" },
+    { "q": "你带的 4 个 CRA,在这个过程中能力上有什么成长?" },
+    { "q": "回到结果——经过这一轮提速,月均入组数从多少提升到了多少?" },
+    { "q": "我需要一个具体的结果数字:提速前后的月均入组、或者最终是否按时达到 LPI(末例入组),哪个都行,给我个准数。" }
+  ],
+  "candidate_last_answer": "这块我必须坦白,具体数字我现在没法给您一个准的。Situation 是这样:项目启动后头两个季度 enrollment 严重落后于 plan,12 家中心里有 4 家几乎零入组,sponsor 那边压力很大。我的 task 就是把入组拉回 timeline。我个人 drive 的 action 包括:对 4 家 underperforming site 做了针对性的 re-training,重点讲 eligibility criteria 的把握和 pre-screening 的话术;把我手下最强的一个 CRA 重新调去盯这几家;还亲自和两家中心的 PI 开了 site 层面的 enrollment 攻坚会。但要说月均入组从几例提到几例、最后 LPI 到底卡没卡在原定日期,我手头没带 dashboard,只能说后面明显追上来了不少,sponsor 也没再 escalate。",
+  "session_state": {
+    "drilled_topics": ["项目规模职责", "入组差距", "落后原因", "落后site识别", "个人动作", "re-training内容", "筛选提速合规", "CRA资源调配", "PI沟通", "deviation风险", "query周期", "执行时长", "最大阻力", "CRA成长", "月均入组结果"],
+    "current_competency_target": "enrollment-delivery-impact",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "enrollment-delivery-impact",
+    "missing_evidence": [
+      { "competency": "enrollment-delivery-impact", "evidence_type": "metric" },
+      { "competency": "enrollment-delivery-impact", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 只能说后面明显追上来了不少",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把『追上来了不少』量化为可验证结果——提速前后的月均入组例数、达成所用时长、以及 LPI 是否按原定日期达成,补齐这个 STAR 故事缺失的 Result 部分"
+    ]
+  }
+}

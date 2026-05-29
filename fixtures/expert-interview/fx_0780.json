@@ -1,0 +1,49 @@
+{
+  "id": "fx_0780",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "赵明哲 — 工业工程本科，预计2027年毕业（绩点3.6）\n华中科技大学 · 工业工程系\n\n暑期实训 — 某汽车零部件厂 总装车间（2025年7-8月，6周）\n- 情境：总装线一个工位的节拍经常超标，造成下游堆料。\n- 任务：带教师傅让我观察这个瓶颈工位，找出超时的原因并提改善建议。\n- 行动：我用秒表做了 50 个循环的工时测量，画了操作员走动的意大利面图分析走动路线，发现取料距离过远占了节拍的近三分之一。\n- 结果：我建议把料架前移并改成重力滑道，试行一周后该工位平均节拍从 68 秒降到 54 秒，不再堆料。\n\n课程项目 — 食堂排队仿真（2024）\n- 情境：午高峰排队时间长。\n- 任务：用仿真找最优窗口配置。\n- 行动：我用 Arena 建了排队模型，测试不同开窗数量。\n- 结果：仿真建议午高峰多开2个窗口，平均等待从11分钟降到6分钟。\n\n技能：秒表工时研究、Arena 仿真、AutoCAD、基础精益（IE七大手法）、Excel\n证书：六西格玛黄带",
+  "jd": "工业工程/精益改善实习生（2026暑期）。你将进入一家汽车零部件工厂的总装车间，在资深 IE 工程师指导下负责一个聚焦的生产线改善项目。职责包括：用秒表或视频做标准工时测量、识别瓶颈工位、绘制价值流或线平衡图、提出并小范围试行一个改善方案。我们期望你熟悉 IE 基本手法（工时研究、动作分析、线平衡），愿意长时间站在产线旁观察、能直接和一线操作员沟通。实习产出是一份面向车间主任的改善报告（A3）。修过精益或六西格玛课程者优先。该岗位以现场动手为主。",
+  "history": [
+    {
+      "q": "先聊聊你在汽车零部件厂的实训，那个瓶颈工位的改善项目是怎么回事？"
+    }
+  ],
+  "candidate_last_answer": "嗯……在我详细讲之前，我其实挺好奇的，想先反过来请教您一下：咱们贵厂现在总装线主要用的是哪种节拍管理方式？是看板拉动还是固定节拍的传送线？而且您这边对实习生更看重的是动手测量的能力，还是提改善方案的思路？我感觉先搞清楚您们想要什么样的人，我再讲我的项目会更有针对性。所以能不能麻烦您先跟我说说这个岗位最核心的考察点是什么？",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "ownership",
+        "evidence_type": "owner-of-action"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 想先反过来请教您一下：咱们贵厂现在总装线主要用的是哪种节拍管理方式",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a redirect that closes off the candidate's reversal and forces a concrete account of how he personally measured the bottleneck station — the 50-cycle stopwatch study and the spaghetti-diagram finding — so the question being deflected gets answered with method-level specifics"
+    ]
+  }
+}

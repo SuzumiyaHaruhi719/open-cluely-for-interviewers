@@ -1,0 +1,58 @@
+{
+  "id": "fx_0783",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "MARCUS HOLLAND\nManufacturing / Process Engineer (Early Career) — Injection Molding & Assembly\nGreenville, SC | open to relocation\n\nPROFESSIONAL SUMMARY\nProcess engineer with three years of hands-on experience in high-volume plastics injection molding and downstream assembly for the consumer-appliance industry. Comfortable on a 24/7 shop floor, fluent in the language of cycle time, scrap, OEE, and changeover, and used to working shoulder-to-shoulder with mold-setters, quality technicians, and production supervisors. I came up through a manufacturing-engineering rotational program and have since settled into a process-engineering seat supporting a value stream of fourteen molding presses and two assembly lines. I care a great deal about doing things the right way: standardized work, data before opinions, and changes that survive after the project team goes home. The bulk of my experience is in cross-functional team settings, and I tend to describe my work in those terms because that is genuinely how the plant operates day to day.\n\nWORK EXPERIENCE\n\nProcess Engineer — Cardinal Appliance Components, Greenville SC\nJune 2023 to present\nCardinal molds and assembles structural and cosmetic plastic components for major appliance OEMs. I support the front-half value stream: fourteen injection-molding presses ranging from 120 to 720 tons, plus the two assembly cells that take those molded parts into sub-assemblies.\n- Served as the process-engineering point of contact for a recurring short-shot and flash problem on a large cosmetic bezel that had been one of the plant's top three scrap contributors for over a year. The cross-functional team I was part of worked through a structured problem-solving effort and brought the defect rate down substantially over a couple of quarters.\n- Participated in a broader OEE-improvement initiative across the molding value stream. The team set out to lift availability and reduce unplanned downtime, and over the course of the program the value stream's OEE moved up by a meaningful margin. We did a lot of work on changeover standardization and preventive-maintenance triggers.\n- Supported the launch of two new molds transferred in from a sister plant, including process validation, first-article work with quality, and the early production ramp. The launches hit their start-of-production dates and the team cleared the validation gates on schedule.\n- Helped roll out standardized setup sheets and a process-parameter lockdown approach across several presses, which the group credited with reducing setup-to-setup variation.\n- Worked closely with mold-setters, maintenance, and quality on a daily basis; participated in tiered daily-management huddles and helped the team escalate and close safety and quality issues.\n\nManufacturing Engineering Rotational Associate — Cardinal Appliance Components\nJune 2022 to June 2023\nA twelve-month rotational program spanning molding, assembly, quality, and continuous improvement.\n- Rotated through the molding floor and learned scientific-molding fundamentals: viscosity curves, cavity-pressure profiling, gate-seal studies, and cooling optimization, working under senior process engineers.\n- Spent a quality rotation supporting gauge R&R studies, PPAP documentation, and containment activities for a customer concern. The team resolved the concern and closed it with the customer.\n- Did a continuous-improvement rotation embedded with a kaizen team that reorganized an assembly cell layout; the team reported a reduction in operator walking distance and a modest throughput gain after the event.\n- Built familiarity with the plant MES, downtime-coding system, and SPC software during these rotations.\n\nManufacturing Co-op (two terms) — Brightwater Plastics, Charlotte NC\n2021 (two alternating academic terms)\n- Supported a small process-engineering group at a custom-molding job shop. Helped collect cycle-time data, maintain tool-maintenance logs, and document setup procedures for a range of low-to-mid-volume tools.\n- Assisted the team on a project to reduce regrind contamination; the group implemented better material-handling segregation and saw fewer contamination-related rejects.\n\nEDUCATION\nB.S., Mechanical Engineering — Clemson University, 2022\n- Senior capstone: a team project designing and building a small automated test fixture for a local manufacturer. The team delivered a working fixture that the sponsor accepted at the final review.\n- Relevant coursework: manufacturing processes, statics and mechanics of materials, thermodynamics, statistics and design of experiments, materials science.\n- Society of Manufacturing Engineers student chapter, active member.\n\nTECHNICAL SKILLS\n- Injection molding: scientific-molding principles, process windows, short-shot and flash troubleshooting, changeover and setup standardization.\n- Quality and statistics: SPC, process-capability studies, gauge R&R, PPAP/APQP familiarity, basic design of experiments.\n- Continuous improvement: 5S, standardized work, value-stream thinking, kaizen-event participation, A3 problem solving.\n- Software and systems: Minitab, MES/downtime systems, SolidWorks (moderate), Microsoft Excel (strong), basic SQL for pulling production data.\n- Certifications: Lean Six Sigma Green Belt (in progress), OSHA 10 (general industry).\n\nA NOTE ON HOW I WORK\nManufacturing is a team sport. On the floor, nothing meaningful happens because one engineer had a clever idea in isolation — it happens because the setter, the operator, the quality tech, the maintenance planner, and the supervisor all line up behind a change and keep it running on every shift. I have learned to lead and contribute through that kind of cross-functional teamwork, and I am most proud of the results my teams have delivered together. I am looking for a process- or manufacturing-engineering role where I can keep growing in scientific molding, take on more ownership of a value stream, and eventually mentor the next group of rotational associates the way I was mentored.\n\nREFERENCES\nAvailable on request.",
+  "jd": "Process Engineer (Junior, 2–5 yrs) — Injection Molding, consumer-appliance components manufacturer. You will own process performance for a defined set of molding presses: driving down scrap, improving OEE, standardizing changeovers, and supporting new-mold launches. We expect scientific-molding fundamentals (process windows, cavity pressure, gate seal) and hands-on troubleshooting of short shots, flash, sink, and warpage. Critically, we are hiring an individual contributor who can tell us what *they* personally did: which parameter they changed, which DOE they ran, which decision they made and owned — not just what the team accomplished. You will report to the value-stream engineering lead and be accountable for your presses' scrap and uptime numbers by name. Strong communication with operators and setters is essential.",
+  "history": [
+    {
+      "q": "Walk me through the cosmetic-bezel scrap problem at Cardinal — what was going on, and what was your role on it?"
+    },
+    {
+      "q": "The defect was short shots and flash. Talk me through the actual root-cause work. What did the investigation find?"
+    },
+    {
+      "q": "Once you understood the cause, what process change actually fixed it — which parameters, what new setting?"
+    },
+    {
+      "q": "I want to separate you from the group here. In that bezel project, what was the one thing you personally figured out or decided that the team wouldn't have without you?"
+    }
+  ],
+  "candidate_last_answer": "Honestly it was a real team effort from start to finish. We pulled the molding data together, we ran some experiments on the process window, and we landed on a more stable set of parameters. Quality helped us verify it, maintenance tuned up the press, and the setters held the new standard every shift. So I'd say it was all of us — we solved it together as a cross-functional team, and I'm really proud of what we accomplished as a group. It's hard to single out one person because that's just not how the floor works.",
+  "session_state": {
+    "drilled_topics": [
+      "bezel-problem-overview",
+      "root-cause-investigation",
+      "process-fix-parameters"
+    ],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      {
+        "competency": "ownership",
+        "evidence_type": "owner-of-action"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: It's hard to single out one person because that's just not how the floor works",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a first-person account of the candidate's individual contribution — the specific parameter he set, the DOE he designed, or the call he made — separating his personal ownership from the collective 'we', which the role explicitly requires of an individual contributor"
+    ]
+  }
+}

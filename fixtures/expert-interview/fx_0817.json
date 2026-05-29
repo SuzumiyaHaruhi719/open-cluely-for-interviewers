@@ -1,0 +1,41 @@
+{
+  "id": "fx_0817",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Staff Data Scientist — the person teams call when the model is broken and the deadline is yesterday.\n\nI don't just build models; I build the models that other data scientists study. My work has single-handedly redefined how my org thinks about ML in production.\n\nHIGHLIGHTS\n- Built a fraud model that saved the company tens of millions — widely regarded as the best the company has ever shipped\n- Personally rescued three failing ML projects that nobody else could fix\n- My feature store design became the de facto standard across every team\n- Mentored basically the entire DS org; most of our senior hires learned from me\n\nEXPERIENCE\nStaff Data Scientist — Hollings Financial (2020–present)\n- Lead DS on the real-time fraud and risk platform\n- Owned modeling, feature engineering, and the offline/online serving path\n\nSenior Data Scientist — Tessel Commerce (2016–2020)\n- Recommendation and ranking models for the marketplace\n\nSKILLS: Python, PyTorch, XGBoost, Spark, feature stores, causal inference, MLOps\nEDUCATION: M.S. Statistics",
+  "jd": "Hollings Financial is hiring a Staff Data Scientist for our real-time fraud platform, reporting to the Head of Risk ML. You will own the modeling and deployment path for models that score 12,000 transactions per second and currently catch fraud at a 0.6% false-positive rate against a 92% recall target we miss in two of every three monthly reviews. This is a deep-IC role: we expect you to defend modeling choices rigorously, quantify the business impact of your work in dollars and in precision/recall terms, and reason explicitly about the trade-offs between catching more fraud and blocking good customers. We care a great deal about attribution — what you personally designed and shipped versus what your team did — and about whether your claimed impact survives scrutiny. Strong candidates can walk through a specific model decision end to end, including the ones that didn't work.",
+  "history": [
+    { "q": "Tell me about the fraud model you lead at Hollings — what does it score, what's the volume, and what metrics is it held to?" },
+    { "q": "Your resume says this model saved 'tens of millions.' How was that number computed, and who computed it?" },
+    { "q": "Walk me through one specific modeling decision on that platform — say, how you chose features for the real-time path." },
+    { "q": "You wrote that you 'single-handedly redefined' ML in production here. Pick the single most important thing you personally built and tell me exactly what it was and what it replaced." }
+  ],
+  "candidate_last_answer": "I mean, I could list things, but let me turn it around on you for a second — what are you actually trying to assess here? Because if you want to know whether I can build a state-of-the-art fraud model, the answer is obviously yes, my track record speaks for itself. So maybe a better question is: what's the hardest modeling problem your team is stuck on right now? Tell me that, and I'll tell you on the spot how I'd solve it — that'll be way more useful than me reciting old wins. So what's broken on your side?",
+  "session_state": {
+    "drilled_topics": ["fraud-platform-scope", "dollar-impact-attribution", "feature-selection-decision"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the answer is obviously yes, my track record speaks for itself",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete walkthrough of the single most important component the candidate personally built, what it replaced, and the mechanism by which it improved recall or false-positive rate — instead of deflecting the question back to the interviewer"
+    ]
+  }
+}

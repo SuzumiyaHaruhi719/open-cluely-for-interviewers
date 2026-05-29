@@ -1,0 +1,41 @@
+{
+  "id": "fx_0773",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "VP of Data & Analytics — The leader who turns data chaos into competitive advantage\n\nI am widely regarded as one of the most transformative data executives in the industry. Everywhere I've gone, I've single-handedly rebuilt the data function from the ground up and delivered outcomes others said were impossible. Leadership consistently tells me I'm the best data hire they've ever made.\n\nCurrent: VP of Data & Analytics, high-growth fintech (since the company was tiny, I've owned everything data).\n- Built the entire modern data stack from scratch — nobody else could have done it this fast.\n- Personally drove a self-serve analytics revolution that the whole company now depends on.\n- Created a world-class data org that is the envy of our peers.\n- My data governance program is considered best-in-class by everyone who sees it.\n\nSelected triumphs:\n- Led a migration to a cloud data warehouse that was flawless and on time.\n- Stood up a real-time streaming platform that became mission-critical overnight.\n- Built the experimentation and ML platform that powers our core product decisions.\n\nPrior: Head of Data at two other companies, where I was always the indispensable one.\n\nSkills: data strategy, cloud data warehousing, streaming, ML platforms, governance, executive leadership, org building.\nEducation: M.S. in Computer Science.",
+  "jd": "We are hiring a VP of Data & Analytics to own data strategy, platform, and analytics for a scaling fintech. You will lead a multi-team data organization, drive the evolution of our cloud data platform, own data governance and quality in a regulated environment, and partner with product and finance leadership. We are especially interested in candidates who can give a precise, chronologically coherent account of a major data-platform initiative they led: what existed before, the sequence of decisions and migrations, who did what and when, and the measurable outcomes. We value leaders who can hold a clear timeline under questioning and attribute specific actions to specific points in the project.",
+  "history": [
+    { "q": "Thanks for joining. Give me the high-level shape of the data org you run today — teams, headcount, and what you own." },
+    { "q": "You say you built the entire modern data stack from scratch. Let's take the cloud data-warehouse migration — what existed before, and what did you migrate to?" },
+    { "q": "Walk me through the sequence of that migration. When did it start, what were the major phases, and when did you cut over?" },
+    { "q": "Where did the real-time streaming platform fit in relative to the warehouse migration — before, during, or after?" },
+    { "q": "I want to make sure I've got the timeline straight. Can you lay out, in order, the warehouse cutover, the streaming platform launch, and when governance came in — with rough dates?" }
+  ],
+  "candidate_last_answer": "Right, so the timeline. We cut the warehouse over in Q3 of 2022 — that was the big bang migration, everything moved at once. The streaming platform actually came first, we'd already had streaming running for about a year before the warehouse, so that would've been... 2023, roughly. And governance, we stood that up early, right at the start, before any of the migration — though honestly a lot of the governance work only happened after the streaming platform was already feeding the warehouse, because that's when the data-quality issues showed up. So governance was first, but also it was really a response to the streaming data, which came before the warehouse, which we cut over in Q3 2022. It all happened pretty fast, within about a year, maybe a year and a half.",
+  "session_state": {
+    "drilled_topics": ["data-org-shape", "warehouse-before-after", "migration-sequence", "streaming-placement"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: streaming platform actually came first, we'd already had streaming running for about a year before the warehouse",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single self-consistent chronology with concrete dates that resolves the contradiction (streaming dated to 2023 yet 'a year before' a Q3-2022 warehouse cutover, and governance claimed both first and as a response to streaming), pinning what actually happened when"
+    ]
+  }
+}

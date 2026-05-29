@@ -1,0 +1,86 @@
+{
+  "id": "fx_0786",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "梁文博 (Wenbo Liang) — Staff 级教研与学习科学专家 | 11年 EdTech\n\n核心案例 — 某在线教育公司 自适应学习引擎 (Adaptive Learning) 负责人 (2020至今)\n- Situation: 公司主力 K-12 数学产品的完课率 (completion rate) 停滞在 40% 左右，复购下滑。\n- Task: 作为 staff 教研专家，我牵头设计并验证一套基于 knowledge tracing 的自适应推题机制，目标是用更精准的难度匹配提升完课与学习成效。\n- Action: 我和算法团队共同定义了 mastery 的判定标准，设计了一个分阶段灰度上线的 A/B 实验，先在一个年级灰度，再逐步放量。\n- Result: 全量后完课率从 40% 提升到 58%，单元测验平均分提升 11%，该机制成为公司教研标准。\n\n此前 — 某 K-12 集团 教研总监 (2014-2020)\n- 主导分层教学 (differentiated instruction) 体系落地，覆盖集团 30 余所学校。\n\n教育: 教育技术学硕士 (2013)；数学教育本科 (2011)\n技能: learning science、knowledge tracing、A/B testing、自适应学习、教研体系搭建、DOE\n语言: 英文流利",
+  "jd": "招聘 Staff 级学习科学专家，主导一家在线教育公司自适应学习产品的教研设计与实证验证。职责：定义学习成效的衡量标准、设计可被严格检验的教学/算法干预、用实验数据驱动决策、作为技术专家影响跨团队方向。我们对实验严谨度要求极高：你要能精确还原一次干预的时间线（什么时候上线、灰度多久、什么时候全量、数据在哪个阶段采集）、说清因果识别的逻辑、并诚实区分实验结论与事后叙事。我们会深挖时间线与因果的一致性。汇报对象为 CPO，需要影响算法、产品、内容多个团队。",
+  "history": [
+    {
+      "q": "先讲讲你牵头的自适应推题项目，背景和目标是什么？"
+    },
+    {
+      "q": "你们怎么定义 mastery？判定一个知识点掌握的标准是什么？"
+    },
+    {
+      "q": "knowledge tracing 模型用的是哪一类？BKT 还是 DKT？为什么选它？"
+    },
+    {
+      "q": "A/B 实验的分流单位是什么？学生还是班级？"
+    },
+    {
+      "q": "你提到分阶段灰度，先在一个年级灰度，能讲讲整个上线节奏吗？"
+    },
+    {
+      "q": "完课率 40% 到 58% 这个对比，实验组和对照组是同一时间段跑的吗？"
+    },
+    {
+      "q": "单元测验平均分提升 11%，这个测验在干预前后是同一套题吗？难度可比吗？"
+    },
+    {
+      "q": "灰度阶段你们发现过什么问题，导致调整了上线计划吗？"
+    },
+    {
+      "q": "全量之后有没有持续追踪，会不会有 novelty effect 随时间衰减？"
+    },
+    {
+      "q": "我想把时间线再捋清楚：这套机制到底是先全量上线、再补做的 A/B 验证，还是先灰度 A/B、确认有效之后才全量的？你前面的说法我有点跟不上。"
+    }
+  ],
+  "candidate_last_answer": "嗯，时间线是这样的……我们其实是 2021 年 Q1 先全量上线的，因为业务压力大，当时来不及做实验。然后全量之后效果不错，所以 2020 年下半年我们才补了一轮 A/B 来验证。哦等等，应该说……灰度是 2021 年 Q2 开始的，但全量我记得是 2021 年初就完成了。反正就是先在一个年级灰度了大概……三个月吧，或者是上线之后才灰度的？这个我得回去翻一下记录。总之最后数字是真实的，完课率确实涨到了 58%，先后顺序可能我记混了，但结论没问题。",
+  "session_state": {
+    "drilled_topics": [
+      "adaptive-project-overview",
+      "mastery-definition",
+      "kt-model-choice",
+      "ab-unit-of-randomization",
+      "rollout-cadence",
+      "concurrent-control",
+      "test-comparability",
+      "graylaunch-issues",
+      "novelty-decay"
+    ],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "timeline"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "intellectual-honesty",
+        "evidence_type": "scope"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们其实是 2021 年 Q1 先全量上线的，因为业务压力大，当时来不及做实验。然后全量之后效果不错，所以 2020 年下半年我们才补了一轮 A/B 来验证",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single internally-consistent sequence anchored to absolute dates — when graylaunch started, when the A/B ran relative to full rollout, and at which phase the 40-to-58 data was collected — exposing whether the experiment actually preceded the rollout or the validation was a post-hoc rationalization"
+    ]
+  }
+}

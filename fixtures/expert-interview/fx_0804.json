@@ -1,0 +1,50 @@
+{
+  "id": "fx_0804",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周敏 (Min Zhou)\nVP of Product | 北京 | 产品管理十四年\n\n概述\n面向 B2B SaaS 的产品高管，擅长把模糊的市场信号转化为清晰的产品策略与可执行的路线图。带过最多五十人的产品与设计团队，负责过从 0 到 1 也负责过规模化增长。\n\n代表经历（按 STAR 组织）\n\n智云协作 (Zhiyun, 企业协同 SaaS) — VP of Product, 2021–至今\n- Situation: 公司核心产品 ARR 增长停滞在 ~1.2 亿人民币，net revenue retention 跌到 98%，续费团队反馈客户『用不深』。\n- Task: 作为新上任的 VP，我负责在四个季度内重启增长，目标把 NRR 拉回 110% 以上。\n- Action: 我重做了产品的 activation 漏斗，定义了一个新的北极星指标 (weekly active workspaces with 3+ integrations)；砍掉了三条低价值产品线，把资源集中到协作与集成两个 bet 上；建立了产品与 CS 的 closed-loop 反馈机制。\n- Result: 四个季度后 NRR 回到 112%，activation rate 从 31% 提升到 49%，ARR 重新进入 ~35% 的同比增长。\n\n海航数据 (Haihang, 数据分析平台) — Director of Product, 2017–2021\n- Situation: 平台有很强的技术能力，但 self-serve 转化差，销售严重依赖人工 POC。\n- Task: 负责把产品做得更 self-serve，降低 sales-assisted 的比例。\n- Action: 我主导了 onboarding 重构和 in-product 引导，引入 usage-based 的试用，并和 growth 团队一起跑了一系列 PLG 实验。\n- Result: self-serve 签约占比从 12% 提到 38%，平均销售周期缩短了约三分之一。\n\n微图科技 (Weitu, 可视化工具) — Senior PM, 2013–2017\n- Situation: 一个小众可视化工具，留存差。\n- Task: 提升 7 日与 30 日留存。\n- Action: 重做模板体系和首屏体验，建立了第一套 retention cohort 分析。\n- Result: 30 日留存从 14% 提升到 27%。\n\n我擅长\n- 产品策略与 portfolio 取舍：敢砍线，敢聚焦。\n- 指标体系：从北极星到 input metrics 的拆解。\n- 跨职能领导：与 CS、销售、增长建立闭环。\n\n仍在提升\n- 在董事会层面讲投资回报的故事，我更擅长产品语言，财务语言还在打磨。\n\n工具\nAmplitude, Mixpanel, Looker, Jira, Figma。\n\n教育\n清华大学，计算机科学学士，2009；中欧国际工商学院 EMBA，2019。",
+  "jd": "招聘岗位：VP of Product（B2B SaaS，增长阶段）\n\n我们是一家 ARR 已过两亿人民币、正在冲刺规模化的企业 SaaS 公司，现招聘一名 VP of Product，向 CEO 汇报，负责整体产品策略、路线图与一个四十人以上的产品与设计团队，并直接对增长与留存的核心指标负责。\n\n我们希望候选人：\n- 有把停滞业务重启增长的实战经验，能讲清楚一次完整的 NRR 或 activation 改善背后的判断与取舍。\n- 在 portfolio 取舍上有过真刀真枪的决策——砍线、聚焦、resource reallocation——并能说明当时放弃了什么、承担了什么风险。\n- 对产品指标体系（北极星、input metrics、cohort 分析）有体系化的方法论。\n- 能在董事会与高管层用业务和财务语言讲产品投资回报。\n- 跨职能领导力强，尤其是与销售、CS、增长团队建立闭环。\n\n工作地点北京，需要不定期出差。",
+  "history": [
+    { "q": "周敏你好，先用两分钟介绍一下你在智云现在负责的产品范围和团队规模。" },
+    { "q": "你接手时 NRR 是 98%。当时你判断『用不深』的根因到底是什么？" },
+    { "q": "你定义了一个新北极星指标 weekly active workspaces with 3+ integrations。为什么是这个，而不是更直接的 NRR？" },
+    { "q": "你砍掉了三条产品线。讲讲其中最难砍的那一条，以及你怎么说服相关团队的。" },
+    { "q": "砍线之后被释放的资源，你具体怎么重新分配到协作和集成这两个 bet 上？" },
+    { "q": "activation rate 从 31% 提到 49%，这个 activation 你是怎么定义的？" },
+    { "q": "产品和 CS 的 closed-loop 反馈机制，具体是怎么运转的？多久一个循环？" },
+    { "q": "NRR 四个季度回到 112%。你怎么确认这是产品的功劳，而不是销售或市场的拉动？" },
+    { "q": "在海航你把 self-serve 占比从 12% 提到 38%。当时哪一个 PLG 实验贡献最大？" },
+    { "q": "你提到在董事会讲财务回报是你的弱项。最近一次你是怎么向董事会陈述一个产品投资的 ROI 的？" },
+    { "q": "假设这里的 CEO 要你在一个季度内只保留一个增长 bet，你会怎么选，依据什么？" },
+    { "q": "带四十人以上的产品设计团队，你怎么保证策略不在执行层走样？" },
+    { "q": "回到砍线那个决定——我想听一个完整的复盘：当时的处境、你的目标、你具体做了哪些动作、最后拿到了什么结果，尤其是被砍那条线的客户和团队后来怎么样了？" }
+  ],
+  "candidate_last_answer": "嗯……这个问题挺好的，砍线这件事……怎么说呢，其实当时压力真的很大，因为你知道砍一条产品线不只是产品的事，对吧，它牵扯到销售的 quota、客户的合同、还有团队的士气……我记得那阵子我连续好几个周末都在公司，咖啡喝到胃疼，哈哈。然后……对，背景就是我们有三条线表现不好，我当时其实……唉，怎么讲，我先是做了很多 stakeholder 的沟通，因为我一直相信沟通是最重要的，沟通到位了事情就成了一半……然后那条最难砍的线，它其实还有几个挺重要的客户在用，所以我……嗯……我们当时是给了一个 migration path，但具体那个 path 怎么设计的我得想想……反正后来结果是 OK 的，NRR 也回来了，team 也还在……抱歉我有点紧张，我是不是讲得有点散，你想让我重点说哪一块？",
+  "session_state": {
+    "drilled_topics": ["current-scope", "stagnation-rootcause", "north-star-choice", "hardest-line-cut", "resource-reallocation", "activation-definition", "closed-loop-mechanism", "nrr-attribution", "plg-experiment", "board-roi-story", "single-bet-hypothetical", "strategy-execution-alignment"],
+    "current_competency_target": "portfolio-decision-making",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "portfolio-decision-making",
+    "missing_evidence": [
+      { "competency": "portfolio-decision-making", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "portfolio-decision-making", "evidence_type": "mechanism" },
+      { "competency": "results-quantification", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 但具体那个 path 怎么设计的我得想想",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把她从紧张的发散中拉回，逼出被砍那条线的具体决策链——migration path 是怎么设计的、给了客户多长过渡期、用什么标准判断哪些客户保留哪些放弃、以及被砍线客户的最终留存与 ARR 影响数字"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0819",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Manufacturing / Process Engineering Intern Candidate\n\nKeywords: Lean, Six Sigma, Kaizen, 5S, SMED, OEE, takt time, value stream mapping, root cause analysis, RCA, fishbone, 5-Whys, SPC, control charts, DMAIC, poka-yoke, continuous improvement, throughput, cycle time, scrap reduction, PFMEA, standard work, Gemba\n\nEXPERIENCE\nProcess Engineering Intern — Vantor Components (Summer 2024)\n- Supported a line-balancing project on the assembly floor\n- Assisted with OEE data collection and a scrap-reduction Kaizen event\n- Exposure to SPC control charts and 5-Whys root cause analysis\n\nCoursework Project — University\n- Value stream mapping of a campus dining operation\n\nSKILLS: Lean, Six Sigma (Yellow Belt in progress), Minitab, Excel, AutoCAD, takt-time analysis, RCA, SMED, Kaizen facilitation\nEDUCATION: B.S. Industrial Engineering, expected 2025",
+  "jd": "Vantor Components is hiring a Process Engineering Intern for our high-volume assembly plant, reporting to a Senior Manufacturing Engineer. You'll support line-balancing and scrap-reduction efforts, collect and interpret OEE data, and participate in root-cause investigations on the floor. We're an early-career role, so we don't expect mastery — but we do expect ownership and honesty. When a project doesn't go as planned, we want to hear what you learned and what you would do differently, not who you blame. In the interview we'll probe how you handled a setback: whether you can describe your own contribution to a problem and a concrete corrective action you took. Strong candidates show curiosity, data sense, and accountability. 12-week internship; on-site, steel-toe environment.",
+  "history": [
+    { "q": "Tell me about the scrap-reduction Kaizen event you worked on — what was the goal, and how did it turn out?" }
+  ],
+  "candidate_last_answer": "Honestly, that one didn't really land, but it wasn't on me. The goal was to cut scrap on the assembly line, but the operators just wouldn't follow the new standard work we put up, so the data was a mess. And the senior engineer who was supposed to mentor me was always in meetings, so I never got proper direction. The OEE numbers were unreliable too because the maintenance team kept the machines half-broken. So when scrap didn't go down, that was really a people-and-equipment problem, not anything I did wrong. I did my part — I collected what I could.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "accountability",
+    "elapsed_minutes": 2
+  },
+  "ground_truth": {
+    "competency_target": "accountability",
+    "missing_evidence": [
+      { "competency": "accountability", "evidence_type": "owner-of-action" },
+      { "competency": "problem-solving", "evidence_type": "mechanism" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that was really a people-and-equipment problem, not anything I did wrong",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one specific thing the candidate personally could have done differently — a concrete corrective action they owned — rather than attributing the failure entirely to operators, the mentor, and maintenance"
+    ]
+  }
+}

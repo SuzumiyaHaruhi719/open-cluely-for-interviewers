@@ -1,0 +1,56 @@
+{
+  "id": "fx_0770",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "数据总监（Director of Data）\n\n现任：某电商公司数据总监，约 5 年。带 4 个团队、约 60 人，含数据工程、数据平台、BI 与数据科学。\n\n职责：负责公司数据中台与指标体系，向 CTO 汇报。\n\n经历：\n- 主导数据中台从烟囱式架构到统一湖仓的重建。\n- 建立全公司统一指标口径与数据治理规范。\n- 负责数据质量与成本治理，推动按团队的用量计费。\n\n前职：某出行公司数据负责人 3 年，更早为数据工程师起步。\n\n技能：数据架构、湖仓一体、指标治理、数据质量、成本优化、团队管理。\n\n教育：统计学硕士。",
+  "jd": "我们正在为公司招聘一名数据总监（Director of Data），负责数据组织、数据中台与全公司指标体系。岗位职责：制定数据战略并向 CTO 与业务高管汇报；主导湖仓一体架构演进；建立统一指标口径与数据治理；对数据平台的成本与质量负责；管理多个数据团队并完成跨团队对齐。我们尤其看重候选人能就一次真实的数据治理或架构重建项目，讲清楚问题的具体表象、你个人主导的方案、关键的取舍，以及可量化的结果（成本、质量、交付效率）。请用具体指标、时间线和你本人做出的决策来支撑回答，避免泛泛而谈的趋势论述。",
+  "history": [
+    { "q": "先介绍一下你现在数据总监的职责范围、团队结构和汇报线。" },
+    { "q": "你带 4 个团队约 60 人，这四块的边界和各自的核心产出是什么？" },
+    { "q": "简历提到主导了从烟囱式架构到统一湖仓的重建。重建前最痛的问题是什么？" },
+    { "q": "这种重建的业务触发点是什么？是哪个事件或指标让公司下决心做？" },
+    { "q": "湖仓选型上你做了哪些技术取舍？为什么是这套方案而不是别的？" },
+    { "q": "重建过程中怎么保证老链路不中断、业务无感迁移？" },
+    { "q": "你提到建立统一指标口径。之前口径不一致最典型的冲突是什么？" },
+    { "q": "统一口径必然动了某些团队的既得定义，你怎么推动跨团队达成一致？" },
+    { "q": "数据治理规范落地时最大的阻力来自哪里？你怎么处理的？" },
+    { "q": "成本治理这块，你推动了按团队用量计费，落地后用量行为有变化吗？" },
+    { "q": "按用量计费会不会反而抑制了正当的数据使用？你怎么平衡？" },
+    { "q": "数据质量你用哪些指标衡量？重建前后这些指标变化多少？" },
+    { "q": "出现过一次因为数据质量问题导致业务决策失误的事故吗？讲讲。" },
+    { "q": "那次事故里你个人做了哪些动作来定位和兜底？" },
+    { "q": "你向 CTO 汇报数据战略时，怎么把技术投入翻译成业务高管能接受的语言？" },
+    { "q": "团队管理上，60 人规模你怎么保证标准统一又不扼杀各团队的自主性？" },
+    { "q": "如果让你重做这次湖仓重建，哪一步你会做得不一样？" },
+    { "q": "我想请你非常具体地讲这次湖仓重建：重建前的核心痛点、你个人主导的关键决策与取舍、迁移时间线，以及成本和效率上的可量化结果。" }
+  ],
+  "candidate_last_answer": "其实我最近特别想聊的是数据这个行业整体的走向。你看大模型出来之后，我觉得传统的 BI 和报表这套东西迟早会被自然语言查询取代，以后业务方直接问问题就行了，根本不需要看仪表盘。我自己也很看好数据和 AI 结合的方向，平时读了不少这方面的文章，也参加过几次行业大会。我觉得作为数据负责人，最重要的是把握住这种大趋势，提前布局，这才是真正能给公司创造长期价值的地方。",
+  "session_state": {
+    "drilled_topics": ["director-scope", "team-structure", "lakehouse-painpoint", "rebuild-trigger", "lakehouse-tradeoff", "zero-downtime-migration", "metric-conflict", "cross-team-alignment", "governance-resistance", "usage-billing", "billing-tradeoff", "data-quality-metrics", "quality-incident", "incident-personal-action", "exec-communication", "team-autonomy"],
+    "current_competency_target": "system-design-depth",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "system-design-depth",
+    "missing_evidence": [
+      { "competency": "system-design-depth", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我最近特别想聊的是数据这个行业整体的走向",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 候选人就湖仓重建给出按时间线展开的具体决策链 —— 重建前的核心痛点、他个人定下的关键架构取舍、无感迁移的做法与成本/效率的量化结果，而不是飘到大模型替代 BI 的行业趋势空谈"
+    ]
+  }
+}

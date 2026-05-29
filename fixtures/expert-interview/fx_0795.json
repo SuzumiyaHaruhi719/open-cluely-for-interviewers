@@ -1,0 +1,38 @@
+{
+  "id": "fx_0795",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Devon Carrow\nSupply Chain Management Intern Candidate\n\nOBJECTIVE\nThird-year supply chain management undergraduate seeking a summer internship in logistics or procurement operations. Eager to apply coursework in inventory management and process improvement to a real operations environment.\n\nEDUCATION\nBS, Supply Chain Management (expected next year), Michigan State University. Relevant coursework: Operations Management, Logistics & Transportation, Procurement & Sourcing, Lean Operations, Business Analytics.\n\nEXPERIENCE\nCampus Dining Services — Student Logistics Assistant (last academic year, part-time)\n- Helped coordinate receiving and putaway for a campus dining hall storeroom.\n- Assisted with weekly cycle counts and flagged discrepancies to the storeroom manager.\n- Reorganized the dry-goods shelving layout to make high-turnover items easier to pick.\n- Filled in on placing replenishment orders with distributors when the manager was out.\n\nLakeshore Hardware — Seasonal Stock Associate (two summers ago)\n- Received deliveries, stocked shelves, and supported inventory counts during the busy season.\n- Helped reduce backroom clutter by consolidating overstock.\n\nPROJECTS\nClass capstone (team of four): analyzed a simulated distribution network and recommended a consolidation of two warehouses into one. Presented to the class and the instructor.\n\nSKILLS\nExcel (pivot tables, VLOOKUP), basic SQL, familiarity with ERP concepts, cycle counting, 5S basics. Strong communicator and comfortable on a warehouse floor.\n\nACTIVITIES\nMember, Supply Chain Management Association; volunteer at a local food bank coordinating donation intake.",
+  "jd": "Our distribution operations team is hiring a Supply Chain Intern for the summer. You will support inventory accuracy and replenishment for a regional distribution center, assist with cycle counting and root-causing discrepancies, and help with a small process-improvement project. We are looking for a curious student who can describe a concrete experience clearly and in order — even a class project or a part-time job counts. In the interview we care less about big numbers and more about whether you can reconstruct what you did, in what sequence, and why. You should be comfortable in Excel, willing to spend time on the warehouse floor, and able to communicate findings to a supervisor. This is a paid internship with potential for a return offer.",
+  "history": [
+    { "q": "Thanks for coming in. Tell me a bit about your supply chain coursework and any hands-on experience you've had." },
+    { "q": "You mentioned reorganizing the dry-goods shelving at Campus Dining. Walk me through that — what did you do first, and then what?" }
+  ],
+  "candidate_last_answer": "Sure, so the shelving reorg. Okay so first I think I did the cycle count, and that's how I noticed the high-turnover items were hard to reach — although actually we reorganized the shelves first and then the counts got more accurate after, so maybe the count came after the reorg. The manager asked me to do it, I want to say early in the semester, but it might have been closer to finals because that's when it was busiest. I moved the fast-moving stuff to eye level, and then before that I had already grouped things by category. Then we measured whether picking got faster — or maybe we never formally measured it, I just remember the manager saying it felt quicker. The order of it all is a little fuzzy honestly.",
+  "session_state": {
+    "drilled_topics": ["coursework-and-experience", "shelving-reorg-sequence"],
+    "current_competency_target": "structured-thinking",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "structured-thinking",
+    "missing_evidence": [
+      { "competency": "structured-thinking", "evidence_type": "timeline" },
+      { "competency": "structured-thinking", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we reorganized the shelves first and then the counts got more accurate after, so maybe the count came after the reorg",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single clear ordering of the cycle count and the shelving reorganization — which actually came first and what triggered the other — so the interviewer can judge whether the candidate can reconstruct a simple process in correct sequence"
+    ]
+  }
+}

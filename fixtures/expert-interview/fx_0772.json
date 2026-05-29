@@ -1,0 +1,38 @@
+{
+  "id": "fx_0772",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Finance Intern Candidate — Undergraduate (Junior year)\n\nObjective: Summer analyst internship in corporate FP&A or investment analysis.\n\nEducation: B.S. in Finance, expected next year. Relevant coursework: Corporate Finance, Financial Modeling, Statistics, Accounting I/II. GPA 3.7.\n\nExperience:\n- Treasury Intern, regional manufacturer (last summer, 10 weeks): supported the cash-forecasting process; reconciled daily bank balances across 6 accounts in Excel; helped flag a recurring duplicate-payment pattern to my manager.\n- Student-Managed Investment Fund (1 year): one of 8 analysts managing a small real-money equity portfolio; covered the consumer-staples sector and pitched two long ideas to the fund.\n\nProjects:\n- Built a 3-statement DCF model for a public retailer as a course project, including a sensitivity table on WACC and terminal growth.\n\nSkills: Excel (including index-match, pivot tables, basic VBA), PowerPoint, basic Bloomberg terminal, financial-statement analysis.\nActivities: Finance Club; volunteer tax-prep assistant (VITA program).",
+  "jd": "We are recruiting a Summer Finance Intern to join our corporate FP&A team. Responsibilities include supporting the monthly forecasting and budgeting process, building and maintaining Excel models, preparing variance analyses (actual vs. budget), and assisting with ad-hoc analyses for the finance leadership team. The ideal candidate is comfortable with financial modeling fundamentals, has strong attention to detail, and can clearly explain the assumptions behind a model and how a change in inputs flows through to the outputs. We value candidates who can walk through a piece of analysis they built — the question they were answering, the approach, and crucially the result or recommendation it drove.",
+  "history": [
+    { "q": "Thanks for coming in. Tell me about a piece of financial analysis you've built that you're proud of — what was it and why did it matter?" },
+    { "q": "You mentioned the duplicate-payment pattern you flagged during your treasury internship. Walk me through that — what you noticed, what you did about it, and what came of it." }
+  ],
+  "candidate_last_answer": "Sure. So the situation was that part of my job was reconciling the daily bank balances across six accounts, and one of the things we did was match outgoing payments against the AP records. The task my manager gave me was basically to make sure the cash position was clean each morning. What I did was, after a couple weeks I noticed the same vendor showing up twice in a single week for almost identical amounts, which seemed off, so I built a little pivot that grouped payments by vendor and amount to surface any near-duplicates, and I pulled the ones that looked suspicious and took them to my manager with the backup. So that's the approach I took — set up the pivot, flagged the matches, and escalated them.",
+  "session_state": {
+    "drilled_topics": ["proud-analysis", "duplicate-payment-flag"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: set up the pivot, flagged the matches, and escalated them",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result — how many duplicate payments were actually caught, the dollar amount recovered or prevented, and whether the process was changed afterward, since the candidate narrated S/T/A but stopped before any quantified outcome"
+    ]
+  }
+}

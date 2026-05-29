@@ -1,0 +1,74 @@
+{
+  "id": "fx_0781",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "吴雨桐 (Yutong Wu) — 品牌与增长营销经理 | 6年经验\n\n工作经历\n品牌营销经理 — 某新消费护肤品牌 (2022至今)\n- 负责品牌在小红书、抖音、天猫的整合营销 (integrated marketing)。\n- 主导多次新品上市 campaign 的策划与落地，统筹 KOL/KOC 投放。\n- 搭建了品牌的内容矩阵和 social listening 体系。\n\n高级营销专员 — 某互联网公司 用户增长部 (2019-2022)\n- 负责 performance marketing 的渠道运营 (信息流、应用商店 ASO)。\n- 参与 growth hacking 项目，做用户分层和 lifecycle 运营。\n\n教育\n市场营销学士 — 上海某高校 (2019)\n\n技能: 整合营销、KOL 投放、内容策略、performance marketing、GA4、巨量引擎、A/B testing、品牌定位",
+  "jd": "招聘品牌增长营销经理 (4-7年经验)，负责一个新消费品牌的整合营销与增长。职责包括：制定并执行新品上市的全渠道 campaign、管理 KOL/KOC 投放预算与 ROI、用数据评估每个渠道的获客成本与转化、向 CMO 汇报可归因的增长结果。我们需要一个能把『品牌故事』翻译成可量化生意结果的人：你要能说清每一笔预算花在哪、带来了多少 GMV 或新客、以及你如何在品牌声量和直接转化之间做权衡取舍。这是一个 hands-on 的执行岗，不是纯管理岗。我们尤其警惕只会讲方法论而拿不出具体数字的候选人。汇报对象为 CMO。",
+  "history": [
+    {
+      "q": "先讲讲你现在负责的品牌整合营销，主要在哪几个渠道？"
+    },
+    {
+      "q": "你主导过新品上市 campaign，挑一个最近的，具体讲讲你做了什么。"
+    },
+    {
+      "q": "这次 campaign 的预算大概多少？分配到各渠道的逻辑是什么？"
+    },
+    {
+      "q": "KOL/KOC 投放你是怎么选号的？投完之后用什么指标判断值不值？"
+    },
+    {
+      "q": "这次上市最终带来了多少新客或 GMV？获客成本 (CAC) 是多少？"
+    },
+    {
+      "q": "如果让你只留一个渠道砍掉其它，你会留哪个？为什么？"
+    },
+    {
+      "q": "我再追一次具体数字：那次新品 campaign，你自己负责的那部分预算，花了多少、带来多少可归因的销售？"
+    }
+  ],
+  "candidate_last_answer": "这个问题特别好。我一直坚信营销的本质是『品效合一』，要做的是 full-funnel 的全域种草。我们这次 campaign 的打法是先用 KOL 做心智占领，再用 KOC 做圈层渗透，最后用 performance 收口转化，形成一个完整的 marketing flywheel。整个 campaign 的声量是现象级的，全网曝光非常可观，ROI 也跑赢了行业 benchmark，可以说是一次教科书级别的整合营销。我们真正做到了让品牌资产和生意结果双增长。",
+  "session_state": {
+    "drilled_topics": [
+      "channel-overview",
+      "campaign-walkthrough",
+      "budget-allocation",
+      "kol-selection-metrics",
+      "cac-gmv-outcome",
+      "channel-tradeoff"
+    ],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      {
+        "competency": "numbers-fluency",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "ownership",
+        "evidence_type": "scope"
+      },
+      {
+        "competency": "judgement-tradeoffs",
+        "evidence_type": "tradeoff-reasoning"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: ROI 也跑赢了行业 benchmark，可以说是一次教科书级别的整合营销",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual ROI figure and the industry benchmark it allegedly beat, with the spend and attributable revenue behind it, stripping away the funnel buzzwords to test whether any concrete number exists under the packaged narrative"
+    ]
+  }
+}

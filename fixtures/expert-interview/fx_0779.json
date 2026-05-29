@@ -1,0 +1,89 @@
+{
+  "id": "fx_0779",
+  "tags": {
+    "industry": "legal",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Daniel Okafor — Commercial Contracts Attorney (admitted NY 2017)\n\nSenior Counsel, Commercial — Meridian Logistics (2021–present)\n- Sole counsel for the procurement and vendor org; ~120 contracts/year.\n- Built the company's first contract playbook and clause library.\n\nAssociate — Hale & Brandt LLP (2017–2021)\n- Commercial transactions group; SaaS, MSAs, data-processing addenda.\n\nEducation: J.D., Fordham Law (2017); B.A. Economics, Rutgers (2014)\nLicenses: New York State Bar\nFocus: SaaS agreements, DPAs, limitation-of-liability, indemnification, SLAs",
+  "jd": "Commercial Counsel (mid-level, 4–7 yrs) for a Series C B2B SaaS company. You will own the full vendor and customer contract lifecycle: drafting and negotiating MSAs, order forms, DPAs, and security addenda; advising sales on redlines under deal-cycle pressure; and maintaining a self-serve playbook so reps can close standard deals without legal review. You will partner with security and privacy on GDPR/CCPA obligations and own the limitation-of-liability and indemnity positions in our paper. We need someone who can articulate, clause by clause, where the company will and won't move, and why — and who can quantify the commercial exposure behind each position. Reports to the GC. Hands-on drafting role, not a manager.",
+  "history": [
+    {
+      "q": "Walk me through your current scope at Meridian — what kind of agreements, what volume?"
+    },
+    {
+      "q": "You built their first contract playbook. What problem was it solving?"
+    },
+    {
+      "q": "Give me a concrete clause where your playbook sets a fallback position. Which one?"
+    },
+    {
+      "q": "On limitation of liability — what's your default cap, and what's your first fallback?"
+    },
+    {
+      "q": "Why 12 months of fees as the cap rather than, say, a fixed dollar amount?"
+    },
+    {
+      "q": "Where do you carve out from that cap? What sits in the super-cap or uncapped bucket?"
+    },
+    {
+      "q": "A vendor demands mutual uncapped liability for data breach. How do you respond?"
+    },
+    {
+      "q": "Walk me through a specific negotiation where you had to hold a position under deal pressure."
+    },
+    {
+      "q": "Sales wanted to close by quarter-end. How did you decide what to concede?"
+    },
+    {
+      "q": "What was the commercial exposure if you'd just given them the uncapped indemnity?"
+    },
+    {
+      "q": "How did your playbook change after that deal, if at all?"
+    },
+    {
+      "q": "Quantify it for me: on that breach-indemnity negotiation, what was the actual dollar exposure you were protecting against, and how did you size it?"
+    }
+  ],
+  "candidate_last_answer": "Concretely: the customer was a healthcare network processing roughly 400,000 patient records through our platform. I sized the exposure two ways. First, statutory — under the breach framework that applies, regulated records carry a per-record cost in the low-hundreds of dollars once you blend notification, credit monitoring, and regulatory penalties, so 400K records put the realistic tail around $40–80 million. Second, the contract value was $1.1M annual. An uncapped data-breach indemnity meant we'd be accepting a roughly 40-to-70x exposure on a deal earning us about $1.1M a year. So I held a super-cap at 3x annual fees for the breach carve-out, conceded a faster notification SLA instead, and we closed two days before quarter-end.",
+  "session_state": {
+    "drilled_topics": [
+      "current-scope",
+      "playbook-purpose",
+      "fallback-clause-example",
+      "lol-default-cap",
+      "cap-structure-rationale",
+      "cap-carveouts",
+      "uncapped-breach-pushback",
+      "negotiation-under-pressure",
+      "concession-decision",
+      "playbook-evolution"
+    ],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      {
+        "competency": "numbers-fluency",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "judgement-tradeoffs",
+        "evidence_type": "tradeoff-reasoning"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a per-record cost in the low-hundreds of dollars once you blend notification, credit monitoring, and regulatory penalties",
+      "must-be-question-type: teach-back",
+      "expected-yield: a defensible breakdown of the per-record cost estimate — the source of the low-hundreds figure and how notification, credit monitoring, and penalty components were each weighted — testing whether the candidate's sharp number is grounded in a real methodology or a confident guess"
+    ]
+  }
+}

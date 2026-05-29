@@ -1,0 +1,40 @@
+{
+  "id": "fx_0818",
+  "tags": {
+    "industry": "finance",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "赵明哲 — 高级财务经理\n\n关键词:财务计划与分析、FP&A、预算管理、成本管控、财务建模、三表预测、现金流管理、并购整合、内控、税务筹划、ERP、SAP、Oracle、商业智能、BI、管理报表、降本增效、流程优化、跨部门协同、IPO 筹备、合规、风险管理、投后管理、绩效管理\n\n工作经历:\n某消费品集团 — 高级财务经理(2019 至今)\n- 负责集团 FP&A、年度预算编制与滚动预测\n- 主导一次集团层面的成本优化项目,据称帮助公司显著降本\n- 参与并购标的的财务尽调与投后整合\n\n某制造企业 — 财务经理(2015-2019)\n- 负责事业部成本核算与管理报表\n\n技能关键词:Excel 高级建模、SQL、Power BI、IFRS、合并报表、预算、预测、降本、内控、流程、协同、领导力\n教育:会计学硕士,CPA",
+  "jd": "我们是一家消费品集团,正在招聘一名高级财务经理,向财务总监汇报,带领一支 6 人的 FP&A 团队。核心职责包括:主导年度预算与季度滚动预测、搭建与维护集团财务模型、推动降本增效项目落地、并支持并购的财务尽调与投后整合。我们尤其看重候选人能否清楚区分『团队完成的』与『你个人主导的』——在面试中,我们会反复追问某个项目里你本人具体做了哪个决策、哪个分析是你亲手搭的、哪个数字是你拍的。我们需要一个敢于为结果负责、能讲清楚个人贡献的人,而不是只会说『我们团队一起』的人。要求 8 年以上财务经验,有大型成本优化或预算重构的实战经历,CPA 优先。",
+  "history": [
+    { "q": "先介绍一下你现在的职责:团队多大、主要负责哪几块、向谁汇报?" },
+    { "q": "你简历里提到主导了一次集团成本优化项目。先讲讲这个项目的背景和目标。" },
+    { "q": "这个项目里,有没有哪个关键的降本决策,是你本人拍板或者亲手分析出来的?具体讲讲。" }
+  ],
+  "candidate_last_answer": "这个项目我们做得还是挺成功的。当时我们整个财务团队和业务部门一起,梳理了各个成本科目,然后我们一起开了很多次会,大家集思广益,最后我们定下来一套降本方案。执行的时候也是各个部门配合,我们财务这边出数据、做跟踪,业务那边落地。整体下来效果不错,我们帮公司省了不少钱。所以这真的是一个团队协作的成果,我们每个人都贡献了自己的力量,很难说是哪一个人的功劳,我觉得这种事情本来就不应该强调个人。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cost-project-background"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "decision-making", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难说是哪一个人的功劳,我觉得这种事情本来就不应该强调个人",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single concrete cost-reduction decision or analysis the candidate personally made or built, stated in the first person with a specific number or saving he can claim as his own"
+    ]
+  }
+}

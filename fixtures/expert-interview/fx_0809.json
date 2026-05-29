@@ -1,0 +1,39 @@
+{
+  "id": "fx_0809",
+  "tags": {
+    "industry": "finance",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "孙立 (Li Sun)\n资深量化研究员 / Staff Quant | 上海\n\n个人简述\n我是市场上少见的全栈型 quant，alpha research、risk、execution 我都做到过顶尖水平。我做的策略常年是团队里 Sharpe 最高的，没有之一。我对市场的理解几乎是直觉级的，很多 PM 都说跟我聊一次胜过看十份 research。\n\n工作经历\n\n弘毅资本 (Hongyi, 私募量化)　资深量化研究员 / Staff　2021–至今　上海\n- 独立开发并上线了多个高 Sharpe 的中频股票 alpha 策略，是团队的核心收益来源。\n- 我的策略表现『常年碾压』同组其他人，多次在内部被当作标杆。\n- 一手搭建了团队的 factor research pipeline，大幅提升了全组的研究效率。\n- 在几次极端行情里『精准预判』了风险，帮公司『避免了巨大回撤』。\n\n中信量化 (Zhongxin, 券商资管)　量化研究员　2018–2021　北京\n- 负责多因子选股模型，业绩『行业领先』。\n- 主导了一套 execution 算法的优化，把交易成本『显著降低』。\n\n海通衍生品 (Haitong)　量化交易助理　2016–2018　上海\n- 协助 option market making，很快成为组里『最被依赖』的人。\n\n我擅长什么\n- Alpha research：我的 idea 命中率极高，几乎每个想法都能转化成有效因子。\n- Risk：我对尾部风险有近乎本能的嗅觉。\n- Execution：从信号到成交，全链路我都精通。\n\n我还在提升的地方\n- 几乎没有明显短板；如果一定要说，可能是我对平庸的协作者缺乏耐心。\n\n工具\nPython, C++, kdb+/q, pandas, NumPy, 各类回测框架。\n\n教育背景\n北京大学，金融数学学士；芝加哥大学，金融数学硕士 (MSFM)。\n\n关于我\n我是那种能把一个 desk 的 P&L 扛在肩上的人。我相信顶尖的 quant 凭的是天赋加纪律，而我两样都不缺。",
+  "jd": "招聘岗位：Staff 量化研究员（中频股票 Alpha 方向）\n\n公司背景：我们是一家管理规模可观的量化私募，现招聘一名 Staff 级量化研究员，独立负责一类中频股票 alpha 策略的研究、上线与迭代，并在团队内承担方法论引领与带教角色。\n\n我们希望候选人：\n- 有从 idea 到上线的完整 alpha 研究闭环经验，能讲清楚一个具体策略的信号逻辑、样本内外表现、容量与衰减。\n- 对策略的 Sharpe、turnover、capacity、drawdown 等核心指标能给出真实、可验证的数字，并坦诚区分 backtest 与实盘。\n- 对 overfitting、look-ahead bias、交易成本建模等研究纪律有深刻理解。\n- 能讲清楚一次策略失效或回撤的归因与你的应对。\n- 具备与 PM、风控、交易团队协作的成熟度。\n\n工作地点上海。",
+  "history": [
+    { "q": "孙立你好。先挑你在弘毅最有代表性的一个中频 alpha 策略，讲讲它的核心信号逻辑是什么。" },
+    { "q": "你简历里说你的策略『常年碾压』同组。具体说说这个策略实盘的 Sharpe、turnover 和 capacity 大概是什么量级？" }
+  ],
+  "candidate_last_answer": "嗯，这个怎么说呢，反正表现是真的很好，团队里大家都知道。Sharpe 肯定是行业领先的水平，capacity 也完全够用，我们 PM 从来没担心过这个。具体的数字我现在不太方便透露，毕竟涉及策略细节嘛，你懂的。但你可以相信我，业绩是实打实的，不然我也不会被当成标杆。reputation 这个东西在圈子里是骗不了人的。",
+  "session_state": {
+    "drilled_topics": ["strategy-signal-logic", "strategy-performance-metrics"],
+    "current_competency_target": "quant-rigor-verifiability",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "quant-rigor-verifiability",
+    "missing_evidence": [
+      { "competency": "quant-rigor-verifiability", "evidence_type": "metric" },
+      { "competency": "quant-rigor-verifiability", "evidence_type": "mechanism" },
+      { "competency": "honesty-self-awareness", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Sharpe 肯定是行业领先的水平，capacity 也完全够用",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼出可验证的真实数字——这个策略实盘（而非 backtest）的具体 Sharpe 区间、年化 turnover、capacity 上限与最大回撤，以及他如何在不泄露专有信号的前提下用量级和方法论证明业绩，而不是用 reputation 和『你懂的』搪塞"
+    ]
+  }
+}

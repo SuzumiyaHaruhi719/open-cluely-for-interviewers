@@ -1,0 +1,47 @@
+{
+  "id": "fx_0776",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Priya Natarajan — Mechanical Engineering, B.S. expected May 2027 (GPA 3.7)\nState Polytechnic University | Manufacturing & Lean Systems concentration\n\nMANUFACTURING CO-OP — Riveted Aerostructures Inc. (Summer 2025, 12 weeks)\n- Situation: the wing-rib drilling cell was scrapping ~6% of parts to oversized holes.\n- Task: my supervisor asked me to find the root cause and propose a fix as my co-op project.\n- Action: I ran a measurement-system analysis on the bore gauges, then logged 200 cycles and built a Pareto chart in Minitab; I found drill-bit wear past 400 holes drove the defects.\n- Result: I proposed a 350-hole bit-change interval; in a 2-week trial scrap dropped from 6% to 1.8%, saving an estimated $4,200/month in scrapped titanium.\n\nCAMPUS PROJECT — SAE Baja Suspension Team (2024–2025)\n- Situation: rear control arms were failing at the weld during durability testing.\n- Task: redesign the joint for the regional competition.\n- Action: I ran an FEA stress study in SolidWorks and switched to a gusseted TIG joint.\n- Result: zero weld failures across the 4-hour endurance race; team placed 9th of 31.\n\nSKILLS: GD&T, SolidWorks, Minitab, basic SPC, 5S/kaizen, CNC operation (manual sign-off)\nLEADERSHIP: Vice-chair, campus AIAA chapter",
+  "jd": "Manufacturing Engineering Intern — Process Improvement (Summer 2026). You will join the machining value stream at a Tier-1 aerospace supplier and own a scoped continuous-improvement project under a senior process engineer. Responsibilities: collect cycle-time and quality data on a CNC cell, run basic statistical analysis (SPC, capability studies), propose a process change, and run a small validation trial. We expect familiarity with GD&T, comfort on a shop floor in steel-toe boots, and the ability to talk to operators and machinists directly. Deliverable is an end-of-summer A3 presented to the plant manager. This is a hands-on role; you will spend significant time at the machine, not at a desk. Prior Lean or Six Sigma coursework is a plus.",
+  "history": [
+    { "q": "Tell me about your manufacturing co-op at Riveted Aerostructures — what was the project?" },
+    { "q": "You said scrap was running about 6%. How was that number being measured before you arrived?" },
+    { "q": "Walk me through the measurement-system analysis you ran on the bore gauges. What did it tell you?" },
+    { "q": "How did you settle on drill-bit wear specifically rather than, say, fixture slippage or operator technique?" },
+    { "q": "Why 350 holes as the change interval? How did you pick that number versus 300 or 400?" },
+    { "q": "Who actually approved letting you run the 2-week trial on a production cell?" },
+    { "q": "Did anyone push back on changing bits more often — that's added tooling cost. How did you handle that?" },
+    { "q": "Let's switch to your Baja project. The rear control arms were failing at the weld — what was the redesign?" },
+    { "q": "You mentioned an FEA stress study. What loads did you apply, and how did you know they were realistic?" },
+    { "q": "After you switched to the gusseted joint, how did you confirm it actually fixed the problem rather than just got lucky during one race?" }
+  ],
+  "candidate_last_answer": "So after we moved to the gusseted TIG joint, the situation was the old arms kept cracking at the toe of the weld, and my task was to make sure the new design held. What I did was re-run the FEA with the gusset and confirm the peak stress dropped below yield, and then we put it on the car. And honestly it just felt a lot stiffer when we drove it. So I was pretty confident the redesign worked.",
+  "session_state": {
+    "drilled_topics": ["co-op-project-overview", "scrap-baseline-measurement", "measurement-system-analysis", "root-cause-isolation", "bit-change-interval-rationale", "trial-approval", "tooling-cost-pushback", "baja-redesign", "fea-load-assumptions"],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      { "competency": "experimental-rigor", "evidence_type": "metric" },
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it just felt a lot stiffer when we drove it",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a quantitative validation of the weld fix — strain-gauge data, cycle counts to failure across multiple runs, or a controlled durability comparison — rather than a subjective in-car feel, since the STAR result step is missing concrete numbers"
+    ]
+  }
+}

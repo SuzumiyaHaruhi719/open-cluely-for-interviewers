@@ -1,0 +1,51 @@
+{
+  "id": "fx_0811",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "DEVON ASARE\nDirector of Data | Seattle, WA | devon.asare@email.com\n\nDirector-level data leader. Built and led data engineering and analytics teams at high-growth consumer companies.\n\nEXPERIENCE\nNimbus Retail (e-commerce) — Director of Data, 2021–present\n- Lead a 22-person data org: data engineering, analytics, and ML platform.\n- Owned the migration to a modern lakehouse and the company's metrics layer.\n- Set data strategy and the annual roadmap; report to the CTO.\n\nPelagic Media (streaming) — Senior Manager, Data Engineering, 2018–2021\n- Managed a data-engineering team supporting analytics and personalization.\n- Led the move from batch ETL to streaming ingestion.\n\nForevault (fintech) — Data Engineer, then Lead, 2014–2018\n- Built core pipelines and the first data warehouse.\n\nSKILLS\nData strategy, team leadership, lakehouse architecture, dbt, Spark, Snowflake, metrics governance, hiring.\n\nEDUCATION\nB.S., Computer Science.\n\nNOTE\nI lead through strong senior engineers and clear ownership. I care about reliability and trust in data more than chasing the newest tool.",
+  "jd": "Director of Data Platform — Tidewater (consumer marketplace, ~900 employees)\n\nWe are hiring a Director of Data to own our data platform, analytics, and the reliability and trust of company metrics. You will lead a ~25-person org and report to the VP of Engineering. After a costly platform migration and a stretch of data-quality incidents, leadership needs a director who owns outcomes, can defend technical and people decisions under scrutiny, and partners well across the company.\n\nWhat we expect:\n- Ownership of a major migration or platform decision — including its cost, timeline, and what you would do differently.\n- The ability to quantify platform reliability and the business impact of data-quality incidents.\n- Clear reasoning on build-versus-buy and tool choices, with the tradeoffs made explicit.\n- People-leadership judgment: attrition, hiring bar, and how you handle underperformance.\n- Maturity receiving hard feedback — we will press on decisions and want to see how you respond.\n\nReports to the VP of Engineering. Partners with product, finance, and analytics consumers.",
+  "history": [
+    { "q": "Devon, thanks for coming in. Give me the shape of your data org at Nimbus — headcount, sub-teams, and who you report to." },
+    { "q": "You led a lakehouse migration. What was the original budget and timeline, and where did it actually land?" },
+    { "q": "What drove the overrun — if there was one — and what did you personally own in that?" },
+    { "q": "Walk me through the build-versus-buy decision on the metrics layer. What did you evaluate?" },
+    { "q": "Why build in-house rather than adopt an existing semantic-layer product? What was the tradeoff?" },
+    { "q": "You mention 'reliability and trust in data.' How do you actually measure platform reliability today?" },
+    { "q": "Tell me about a data-quality incident on your watch. What broke, and what was the business impact?" },
+    { "q": "How did you quantify that impact — was there a revenue or decision consequence you can point to?" },
+    { "q": "What's the attrition on your 22-person team been over the last two years?" },
+    { "q": "Tell me about a senior engineer who wasn't meeting the bar. How did you handle it?" },
+    { "q": "How do you set the hiring bar, and where have you lowered it under pressure to fill a seat?" },
+    { "q": "Your resume says you care about reliability 'more than chasing the newest tool.' Where have you been wrong about a tool choice?" },
+    { "q": "If the VP of Engineering told you the lakehouse migration was a mistake, how would you respond?" },
+    { "q": "Let me push on the migration once more — give me the actual numbers: original budget, final cost, the slip in months, and the specific decision you'd reverse if you could." }
+  ],
+  "candidate_last_answer": "I have to be honest, this feels like you're trying to find a 'gotcha' on the migration, and I don't think that's a fair read of it. These projects always run over — anyone who's actually led one knows that. Was it over budget? Sure, somewhat. By how much exactly — I'm not going to pull a precise figure out of the air just to satisfy a number on your scorecard, because the context matters way more than the headline. We made the right call architecturally, the platform is far more reliable now, and frankly the people who set the original budget had no idea what a migration like this takes. If you want a director who recites budget variances from memory, that's not leadership, that's bookkeeping. I stand by the decision, and I'd push back on the premise of the question.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "migration-budget-timeline", "overrun-ownership", "metrics-build-vs-buy", "semantic-layer-tradeoff", "reliability-measurement", "data-quality-incident", "incident-impact-quantification", "team-attrition", "underperformer-handling", "hiring-bar", "tool-choice-wrong", "migration-feedback-response"],
+    "current_competency_target": "ownership-under-scrutiny",
+    "elapsed_minutes": 42
+  },
+  "ground_truth": {
+    "competency_target": "ownership-under-scrutiny",
+    "missing_evidence": [
+      { "competency": "ownership-under-scrutiny", "evidence_type": "metric" },
+      { "competency": "ownership-under-scrutiny", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm not going to pull a precise figure out of the air just to satisfy a number on your scorecard",
+      "must-be-question-type: metric-pin",
+      "expected-yield: hold past the hostility and the deflection onto the original budget-setters to extract the actual numbers — original budget, final cost, months of slip — and one specific decision he personally owns and would reverse, separating defensible architecture from accountable execution"
+    ]
+  }
+}

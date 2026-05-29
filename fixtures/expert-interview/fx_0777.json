@@ -1,0 +1,86 @@
+{
+  "id": "fx_0777",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "陈思远 (Siyuan Chen) — 数据科学方向硕士在读，预计 2026 年 6 月毕业\n华东理工大学 · 统计学硕士 | 本科：应用数学\n\n数据分析实习 — 某生鲜电商平台 增长团队 (2025年3-8月，6个月)\n- Situation: 平台的新用户 7-day retention 长期卡在 22% 左右，增长团队希望找到可干预的抓手。\n- Task: 我的 mentor 让我负责搭一个 churn prediction 的 baseline 模型，并跑一轮 A/B test 验证 push 召回策略。\n- Action: 我用 Python 拉了 80 万用户的行为日志，做了 feature engineering，训练了一个 XGBoost 模型 (AUC 0.81)；然后和运营一起设计了针对高流失概率人群的 push 文案，跑了两周的 A/B test。\n- Result: 实验组的 7-day retention 从 22% 提升到 26%，模型上线后被增长团队沿用。\n\n校园项目 — 城市共享单车调度优化 (2024)\n- Situation: 校园周边早高峰单车经常在地铁站堆积、在宿舍区短缺。\n- Task: 用历史骑行数据预测各站点的净流量，给出调度建议。\n- Action: 我做了时间序列建模 (Prophet)，按小时预测各 cluster 的供需缺口。\n- Result: 在试点的 5 个站点，缺车投诉下降了约三成。\n\n技能: Python (pandas/sklearn/XGBoost)、SQL、A/B testing、因果推断入门、Tableau\n获奖: 校数学建模竞赛一等奖 (2023)",
+  "jd": "数据科学实习生 — 增长与用户留存方向 (2026 暑期)。你将加入一家消费类 App 的 Growth Data 团队，在资深数据科学家的指导下负责一个聚焦的留存项目。职责包括：从行为数据中提取特征、搭建并评估预测模型 (churn / LTV)、与运营团队共同设计并分析 A/B 实验、用清晰的图表向非技术 stakeholder 汇报结论。我们期望候选人熟悉 Python 与 SQL，理解 A/B test 的统计原理 (样本量、显著性、novelty effect)，并能诚实地区分相关性与因果。实习产出是一份可复现的 notebook 和一次面向增长负责人的结论汇报。有因果推断或实验设计经验者优先。",
+  "history": [
+    {
+      "q": "先聊聊你在生鲜电商增长团队的实习，这个 churn prediction 项目背景是什么？"
+    },
+    {
+      "q": "你说 baseline 模型 AUC 做到了 0.81，特征主要是哪几类？"
+    },
+    {
+      "q": "训练数据是 80 万用户，正负样本比例大概是多少？你怎么处理不平衡的？"
+    },
+    {
+      "q": "模型预测出高流失人群之后，push 召回的 A/B test 是怎么设计的？分流单位是什么？"
+    },
+    {
+      "q": "实验组 retention 从 22% 到 26%，这个差异在统计上显著吗？样本量多大？"
+    },
+    {
+      "q": "你怎么排除这只是 push 本身的 novelty effect，而不是模型选人选得准？"
+    },
+    {
+      "q": "有没有设一个『只发 push、随机选人』的对照组来分离模型的增量价值？"
+    },
+    {
+      "q": "现在说说共享单车那个项目，你提到缺车投诉下降了约三成，这个三成是怎么算出来的？"
+    },
+    {
+      "q": "Prophet 的预测误差大概什么量级？你有没有和一个简单的『按上周同时段』baseline 比过？"
+    },
+    {
+      "q": "回到电商那个实验，如果让你现在重新评估，那 4 个点的 retention 提升你有多大把握真的是你模型带来的？"
+    }
+  ],
+  "candidate_last_answer": "说实话我现在回头看，那个项目的 impact 是非常巨大的。我们的模型基本上是 industry-leading 的水平，光是这一个 churn model 上线之后，给整个平台带来的 GMV 增量我估计至少有上千万，retention 的提升也是断崖式的。可以说我那个暑假一个人就把团队全年的留存目标给提前完成了，所以我对这 4 个点的提升 100% 有把握，绝对是模型的功劳。",
+  "session_state": {
+    "drilled_topics": [
+      "churn-project-overview",
+      "model-features",
+      "class-imbalance",
+      "ab-test-design",
+      "statistical-significance",
+      "novelty-effect",
+      "control-group-isolation",
+      "bike-project-metric",
+      "prophet-baseline-comparison"
+    ],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      {
+        "competency": "numbers-fluency",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "intellectual-honesty",
+        "evidence_type": "tradeoff-reasoning"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 给整个平台带来的 GMV 增量我估计至少有上千万",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a traceable derivation of the claimed GMV number — the exact arithmetic linking a 4-point retention lift to revenue, the per-user value assumption, and who at the company actually attributed that GMV to the model — exposing whether the figure is computed or fabricated"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "fx_0782",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Helena Vasquez — 资深教育产品与课程负责人 | 12年 EdTech 与 K-12 经验\n\n- 以学习者为中心 (learner-centric) 的课程设计专家，精通 backward design、Bloom's taxonomy、UDL、formative assessment、mastery learning、scaffolding、differentiated instruction。\n- 数据驱动 (data-driven) 的教学决策者，深谙 learning analytics、adaptive learning、knowledge tracing、A/B testing、cohort retention、NPS、completion rate。\n- 跨职能领导力：横向拉通 product、engineering、content、teacher-success，敏捷交付 (agile delivery) 高影响力的学习产品。\n- 关键词: curriculum architecture、SCORM/xAPI、LMS、blended learning、flipped classroom、competency-based education、OKR、stakeholder management、growth mindset、社会情感学习 (SEL)。\n\n近期: 某在线教育独角兽 — 课程与学习体验负责人 (2020至今)\n此前: 某 K-12 国际学校集团 — 教学发展总监 (2015-2020)\n更早: 中学数学教师 (2011-2015)",
+  "jd": "招聘资深学习体验负责人 (Head of Learning Experience)，主导一家在线教育公司核心课程产品的设计与迭代。职责：拥有课程完课率与学习成效 (learning outcomes) 的北极星指标、设计可被实证检验的教学干预、用 learning analytics 驱动迭代、带领课程与教研团队。我们需要一个能把教育学理论落到可测量结果上的人：你要能讲清某一次具体的课程改版背后的假设、你如何设计实验去验证它有没有提升 learning outcome、以及结果是正是负。我们尤其想听到一个你亲手主导、有明确前后数据对比的改版案例，而不是一堆方法论术语。汇报对象为 CPO。",
+  "history": [
+    {
+      "q": "你的简历列了很多教学法关键词。挑一个你最近亲手主导的课程改版，讲讲你具体改了什么、想验证什么假设、最后 learning outcome 是涨了还是跌了？"
+    }
+  ],
+  "candidate_last_answer": "说到课程改版，我其实更想先分享一下我的教育理念。我始终认为教育的终极目的不是分数，而是点燃学习者内心的火焰，培养终身学习者。我特别欣赏芬兰的教育体系，他们的 phenomenon-based learning 真的很值得我们学习。最近我还读了一本关于神经教育学的书，讲大脑可塑性的，特别震撼。另外我们公司最近团建去了趟云南，我深刻感受到 SEL 社会情感学习在团队里也同样重要。所以我觉得做教育产品，初心比数据更重要。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 3
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "ownership",
+        "evidence_type": "owner-of-action"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 教育的终极目的不是分数，而是点燃学习者内心的火焰",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete redesign she personally led — the specific change, the hypothesis, the before/after learning-outcome metric, and how the intervention was validated — pulling her off the philosophy tangent and back to the experimental-rigor evidence the role demands"
+    ]
+  }
+}

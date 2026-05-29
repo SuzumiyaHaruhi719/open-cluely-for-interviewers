@@ -1,0 +1,55 @@
+{
+  "id": "fx_0767",
+  "tags": {
+    "industry": "hr",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "HR Coordinator / Junior People Operations Specialist\n\nKeyword summary: HRIS, Workday, Bamboo HR, Onboarding, Offboarding, Employee Relations (ER), Benefits Administration, Open Enrollment, FMLA, ADA, EEOC, I-9, E-Verify, ATS, Greenhouse, Recruiting Coordination, Scheduling, Compliance, SOPs, Employee Engagement, Pulse Surveys, DEI, Performance Review Cycle, PIP, Compensation Bands, Payroll Liaison.\n\nCurrent: People Operations Coordinator, mid-size tech company (18 months)\n- Owns onboarding logistics for ~15 new hires/month: offer letters, I-9/E-Verify, HRIS setup in Workday, equipment coordination.\n- Supports the ER team as first-line intake for employee questions and complaints.\n- Coordinated two open-enrollment cycles and the semi-annual performance review cycle in the HRIS.\n- Maintains SOP documentation and the HR ticketing queue.\n\nPrior: HR Intern, staffing agency (6 months) — sourcing coordination, ATS hygiene in Greenhouse, interview scheduling.\n\nSkills tag-cloud: Workday, Greenhouse, FMLA, ADA, EEOC, I-9, E-Verify, Onboarding, Offboarding, Employee Relations, Benefits, Open Enrollment, Compliance, SOPs, Confidentiality, Data Entry, Calendar Management, Slack, Excel, Documentation.\n\nEducation: B.A. in Psychology. Coursework in organizational behavior and labor relations.",
+  "jd": "We are hiring a Junior People Operations Specialist to support our HR team at a 400-person company. Responsibilities include onboarding and offboarding logistics, HRIS data integrity (Workday), benefits and open-enrollment support, and serving as first-line intake for employee-relations matters before escalation to senior HRBPs. This role handles confidential employee data daily, so sound judgment about confidentiality and escalation is essential. We are looking for someone who takes ownership of their work, communicates proactively when something goes wrong, and can describe — at an appropriate level of detail and without breaching confidentiality — how they handled a sensitive situation, what they personally did, and what they learned. Attention to detail on compliance items (I-9, E-Verify, FMLA timelines) is critical.",
+  "history": [
+    { "q": "Thanks for coming in. Tell me about your current role and the volume of onboarding you handle each month." },
+    { "q": "Walk me through your onboarding checklist end to end — from signed offer to day one." },
+    { "q": "You support the ER team as first-line intake. What kinds of issues come to you, and how do you decide what to escalate?" },
+    { "q": "Tell me about a time an employee came to you with a sensitive complaint. How did you handle the intake?" },
+    { "q": "Let's talk compliance. How do you keep I-9 and E-Verify on track for 15 hires a month?" },
+    { "q": "Have you ever found an I-9 or E-Verify error after the deadline? What happened?" },
+    { "q": "You ran two open-enrollment cycles. What was your specific role in those?" },
+    { "q": "Open enrollment is error-prone. Tell me about a benefits enrollment that went wrong on your watch." },
+    { "q": "When the enrollment error happened, who caught it and how was it found?" },
+    { "q": "What did you personally do once the error was discovered?" },
+    { "q": "You mentioned maintaining SOPs. Did you update the SOP after that incident?" },
+    { "q": "Let's talk about the performance review cycle you coordinated. What did you own there?" },
+    { "q": "Did any confidential review data get sent to the wrong manager during that cycle?" },
+    { "q": "Tell me about a time you disagreed with how a senior HRBP wanted to handle something." },
+    { "q": "Have you ever made a data-entry mistake in Workday that affected someone's pay or benefits?" },
+    { "q": "I want to go deeper on the offboarding side. Walk me through a termination you supported logistically." },
+    { "q": "Was there ever a termination where the offboarding logistics broke down — access not revoked, final pay wrong, anything like that?" },
+    { "q": "I'd like specifics on that offboarding that broke down. What exactly went wrong, what was your part in it, and what did you change afterward?" }
+  ],
+  "candidate_last_answer": "Yeah, so I actually can't get into the specifics of that one because it involved a sensitive termination and I'm under an NDA, so I really shouldn't share details. But honestly, to be fair, that one wasn't really on me. The access revocation was IT's job and they dropped the ball, and the final-pay piece was payroll's — I just put in the ticket like I was supposed to. The senior HRBP also didn't loop me in on the timeline until pretty late, so by the time I knew, the window had basically closed. I did my part of the process correctly.",
+  "session_state": {
+    "drilled_topics": ["role-volume", "onboarding-checklist", "er-intake", "sensitive-complaint", "i9-compliance", "open-enrollment-role", "enrollment-error-discovery", "personal-action", "sop-update", "review-cycle", "workday-data-error", "termination-logistics"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that one wasn't really on me",
+      "must-be-question-type: action-attribution",
+      "expected-yield: what the candidate personally owned in the broken offboarding and what they changed afterward — described at a non-confidential, process level so the NDA is respected — instead of distributing blame to IT, payroll, and the HRBP"
+    ]
+  }
+}

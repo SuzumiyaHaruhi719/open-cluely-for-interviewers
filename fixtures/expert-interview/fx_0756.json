@@ -1,0 +1,39 @@
+{
+  "id": "fx_0756",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周哲 (Zhe Zhou) — Senior Backend Engineer\n\n工作经历\nSenior Backend Engineer，字节跳动 商业化中台 (2021–至今)\n- Situation：核心 ads-billing 服务在大促期间频繁出现 latency spike，p99 一度到 1.2s。\n- Task：作为 service owner，需要把 p99 压到 300ms 以内并保证账单一致性。\n- Action：主导了一次 read-path 重构，引入 Redis 二级缓存 + 读写分离，重写了热点账户的 sharding key，并落地了 idempotency token 防止重复扣费。\n- Result：p99 从 1.2s 降到 210ms，大促期间 zero billing discrepancy，QPS 峰值扛住 8 万。\n\nBackend Engineer，Shopee (2018–2021)\n- 负责 payment gateway 的对接与对账，支持过东南亚六国本地支付。\n\n技能：Go、Java、MySQL、Redis、Kafka、gRPC；分布式事务、缓存一致性。\n教育：计算机科学 硕士。",
+  "jd": "We're hiring a Senior Backend Engineer for our payments/billing platform. You'll own latency- and consistency-critical services that process high-volume transactions, drive architecture decisions on caching, sharding, and idempotency, and be the technical owner during peak-traffic events. The role expects someone who can go deep on the actual mechanism — not just name the pattern, but explain the specific failure modes they designed against, the tradeoffs they rejected, and how they verified correctness under load. Requirements: 5+ years backend (Go/Java), strong grasp of distributed systems (consistency, partitioning, idempotency), and a track record owning a production service through real incidents. Experience with high-QPS billing or payments strongly preferred.",
+  "history": [
+    { "q": "Walk me through the ads-billing latency project from your resume — what was actually slow and what did you do?" },
+    { "q": "You introduced a Redis second-level cache on the read path. How did you keep that cache consistent with the source of truth for billing data?" },
+    { "q": "Drill into the idempotency token — what exactly was the failure mode that produced duplicate charges, and how did your token close it?" }
+  ],
+  "candidate_last_answer": "Right, so idempotency is fundamentally about exactly-once semantics in a distributed system. The way I think about it, you want to embrace eventual consistency while still guaranteeing correctness, so we leveraged an idempotency token as a first-class primitive to make the write path deterministic and resilient. It's really a best-practice pattern — you generate the token upstream, you de-dupe at the boundary, and that gives you end-to-end safety and a single source of truth. We also championed an observability-first mindset around it. So at a high level it was about building a robust, scalable, future-proof billing path that just works under load.",
+  "session_state": {
+    "drilled_topics": ["ads-billing-latency-overview", "cache-consistency"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: you generate the token upstream, you de-dupe at the boundary",
+      "must-be-question-type: teach-back",
+      "expected-yield: the concrete mechanism behind the buzzwords — where the token is stored, what the de-dupe check reads and writes (and under which transaction/lock), and what specifically happens on a retry that arrives after a partial write, so the interviewer can tell whether the candidate actually built it"
+    ]
+  }
+}

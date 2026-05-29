@@ -1,0 +1,52 @@
+{
+  "id": "fx_0792",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "陶振海 — 精益生产工程师（中级）\n\n自评：我是公司里 single-handedly 把整条产线良率拉满的那个人,没有我那条线早就停了。所有 lean 项目都是我一手主导,带教过的人没有一个不服。\n\n现任：恒锐精密 注塑车间 生产工程师（2020 至今）\n- 号称全厂 OEE 第一的产线就是我管的,谁也比不了。\n- 主导过一次 cycle time 优化,效果 best-in-class。\n- 精通 SMED、Kaizen、5S、SPC、DOE、TPM,样样都是顶尖水平。\n\n曾任：广发电子 工艺技术员（2017 至 2020）。\n教育：合肥工业大学 机械设计制造及其自动化 本科。\n\n核心能力：注塑工艺、SMED 快速换模、SPC 过程控制、良率提升、产线节拍优化。",
+  "jd": "我们为消费电子注塑业务招聘一名中级生产工程师,负责注塑车间的工艺稳定性与持续改善,对产线 OEE、良率（yield）与 cycle time 负责。该岗位需要 candidate 能够拿出一个具体、可量化的 lean 改善案例:清晰说明问题的 root cause、你采用的具体方法(如 SMED、DOE、SPC),以及在良率或节拍上带来的 measurable 收益。You will own the daily process control of two injection-molding lines,partner with quality and maintenance,and be expected to sustain improvements via standard work. 要求三年以上注塑或精密制造工艺经验,熟悉 SMED 与 SPC。",
+  "history": [
+    { "q": "先介绍下你目前负责的产线和主要工艺职责。" },
+    { "q": "你简历里说这条线 OEE 全厂第一,具体 OEE 数值是多少?" },
+    { "q": "OEE 三个分量(可用率、性能、良率)里,哪个是你拉起来的?" },
+    { "q": "挑一个你主导的 lean 改善案例来讲。" },
+    { "q": "这个案例的 root cause 你是怎么定位的?" },
+    { "q": "良率问题具体是哪种缺陷?缩水、飞边还是其他?" },
+    { "q": "改善前后的良率数字分别是多少?" },
+    { "q": "你用了 DOE 吗?如果用了,因子和水平是怎么设的?" },
+    { "q": "cycle time 优化具体优化了哪个环节?" },
+    { "q": "SMED 换模时间从多少降到了多少?" },
+    { "q": "这些改善是怎么固化下来的?有没有 standard work?" },
+    { "q": "改善之后有没有出现过指标回退?" },
+    { "q": "这个项目你个人投入了多长时间?" },
+    { "q": "质量和维修团队在里面承担了什么角色?" },
+    { "q": "如果让你量化这个项目一年带来的成本节约,大概多少?" },
+    { "q": "你说良率从 92% 提到 98.5%,这 6.5 个点里,SMED、DOE、SPC 各自贡献了多少?能拆开说吗?" }
+  ],
+  "candidate_last_answer": "可以拆。这 6.5 个点主要来自三块。SPC 贡献最大,大概 4 个点:我们对料温和保压压力上了实时管控,把缩水缺陷率从 5.8% 压到 1.6%。DOE 贡献约 1.5 个点:通过两因子三水平的实验把最优保压时间锁定在 2.3 秒,消掉了飞边波动。SMED 本身不直接提良率,但它让换模后 first-article 报废从平均 12 模降到 3 模,折算到批次良率约 1 个点。这三块加起来 6.5,数据来自 MES 上连续三个月的批次记录。",
+  "session_state": {
+    "drilled_topics": ["产线职责", "OEE数值", "OEE分量归属", "案例选择", "root-cause", "缺陷类型", "良率前后", "DOE设计", "cycle-time环节", "SMED换模", "标准化固化", "指标回退", "个人投入", "跨团队角色", "成本节约"],
+    "current_competency_target": "process-improvement-rigor",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "process-improvement-rigor",
+    "missing_evidence": [
+      { "competency": "process-improvement-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把缩水缺陷率从 5.8% 压到 1.6%",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 候选人确认缩水缺陷率下降与良率提升之间的换算逻辑(单一缺陷下降 4.2 个百分点如何对应到 4 个点的整体良率),以及料温与保压压力 SPC 控制限的具体设定,验证其数字的内在一致性"
+    ]
+  }
+}

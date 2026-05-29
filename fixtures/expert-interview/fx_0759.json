@@ -1,0 +1,42 @@
+{
+  "id": "fx_0759",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "韦昊 — Supply Chain Manager (Demand & Supply Planning)\n\n经历\nSupply Chain Manager，某消费电子公司 (2020–至今)\n- 负责 APAC 区域的 demand planning 和 S&OP 流程\n- 主导过一次 forecast accuracy 的提升项目，显著改善了 bias\n- 管理与 contract manufacturer 的 supply 协同，缓解过多次 shortage\n- 推动 safety stock policy 的优化，降低了 inventory holding\n\nDemand Planner，某快消公司 (2017–2020)\n- 负责一个品类的月度 forecast 与补货\n\n技能：S&OP、demand planning、SAP IBP、Excel；跨部门协同。\n教育：供应链管理 硕士。\n\n备注：项目成果多为定性描述，简历未给出 forecast accuracy、inventory 等具体数字。",
+  "jd": "We're hiring a Supply Chain Manager (Demand & Supply Planning) to own the regional S&OP cycle, drive forecast-accuracy improvement, and balance service levels against inventory cost across a contract-manufacturing network. You'll lead the monthly demand review, set safety-stock policy, and be the person who can show — with numbers — how a planning change moved bias, fill rate, or holding cost. We value candidates who stay precise and collaborative under pressure and who can defend a result without getting defensive when challenged on the math. Requirements: 4+ years in demand/supply planning, hands-on with an APS tool (SAP IBP, Kinaxis, o9), and a track record of quantified planning improvements.",
+  "history": [
+    { "q": "Walk me through the forecast-accuracy improvement project — what was the starting point and what did you do?" },
+    { "q": "What was the forecast accuracy (or MAPE/bias) before and after? Give me the numbers." },
+    { "q": "How did you measure accuracy — at what level of aggregation and over what horizon?" },
+    { "q": "You also mention reducing inventory holding. By how much, and did service level hold?" },
+    { "q": "When you say you 'mitigated multiple shortages,' what was the fill-rate impact?" },
+    { "q": "I'm hearing a lot of directional claims but no figures. Can you give me even one hard number from that project — bias before and after?" }
+  ],
+  "candidate_last_answer": "Honestly, I think you're getting a bit fixated on numbers here. Look, 不是每件事都能 reduce 成一个 single metric — supply chain 是很 complex 的,有太多 moving parts。我在那个 project 里 driving 的是 process 和 cross-functional alignment 的改善,这种东西你让我现在背出一个 exact 的 MAPE,那其实有点 unfair。如果你真的 in the trenches 做过 planning 你就会知道,数字 context 不对的时候 misleading 得很。我做出来的成果团队都看得到,你非要一个 precise 的 baseline,我觉得这不是评估一个 senior planner 的正确方式。",
+  "session_state": {
+    "drilled_topics": ["forecast-project-overview", "accuracy-before-after", "measurement-granularity", "inventory-reduction", "shortage-fill-rate"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你让我现在背出一个 exact 的 MAPE,那其实有点 unfair",
+      "must-be-question-type: metric-pin",
+      "expected-yield: de-escalate the pushback and still extract one concrete figure — the bias or MAPE before and after at a stated aggregation level — or force the candidate to concede they cannot produce it, distinguishing real numbers-fluency from defensiveness"
+    ]
+  }
+}

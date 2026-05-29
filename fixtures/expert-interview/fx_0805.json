@@ -1,0 +1,50 @@
+{
+  "id": "fx_0805",
+  "tags": {
+    "industry": "marketing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "PRIYA NAIR\nMarketing Intern Candidate | Rising Senior, B.S. Marketing | priya.nair@email.com\n\nSUMMARY\nData-curious marketing student focused on growth and content. Comfortable with analytics, copywriting, and social. Looking for a summer growth-marketing internship.\n\nEXPERIENCE\n\nGreenLeaf Coffee Co. (local roaster) — Marketing Intern\nSummer 2024 (June–August)\n- Ran the brand's Instagram and TikTok, growing combined followers from 4,200 to 11,000.\n- Wrote and scheduled all organic social content; posted 4–5x per week.\n- Launched the brand's first email newsletter; grew the list to 1,800 subscribers.\n- Note elsewhere on resume lists this same role as 'May–July 2024.'\n\nCampus Eats (student food-delivery startup) — Growth Marketing Lead (volunteer)\nSpring 2024\n- 'Led a team of six' on a referral campaign that drove 900 new student signups in one semester.\n- Designed the referral incentive structure and the landing page.\n- (Founder bio on the Campus Eats site lists Priya as 'one of two marketing volunteers.')\n\nUniversity Marketing Club — Social Media Chair\n2023–2024\n- Managed the club's LinkedIn and Instagram.\n- Grew event attendance by 'over 200%' one semester; a separate section of this resume states event attendance 'roughly doubled.'\n\nSKILLS\nGoogle Analytics 4, Meta Ads Manager, Canva, Mailchimp, basic SQL, A/B testing.\nClaims both 'fluent in SQL' under Skills and 'basic SQL exposure' under Summary.\n\nEDUCATION\nB.S. Marketing, expected 2026. GPA listed as 3.8 in the header and 3.6 in the education section.\n\nNOTES\n- Available full-time June–August.\n- Resume header says 'rising senior'; education line implies graduation 2026, consistent with rising junior in some sections.",
+  "jd": "Summer Growth Marketing Intern — T89 (consumer mobile app, Series A)\n\nWe are a consumer habit-tracking app hiring a summer growth-marketing intern to support paid social, lifecycle email, and organic content experiments. You will work alongside a growth marketer and a content lead. This is a learning role, but we want someone who is precise about what they actually did versus what a team did, who can read a basic funnel, and who is honest about the limits of their experience.\n\nWhat we look for in an intern:\n- Genuine hands-on ownership of at least one channel or campaign, described specifically.\n- The ability to separate personal contribution from team results.\n- Comfort with basic analytics (GA4 or similar) and a willingness to say 'I don't know that yet.'\n- Clear, honest communication — we read resumes closely and will ask about anything that doesn't line up.\n\nReports to the Head of Growth. 12-week paid internship, in-person in Austin or remote.",
+  "history": [
+    { "q": "Hi Priya, thanks for coming in. Tell me briefly which marketing experience you'd point to as most hands-on." },
+    { "q": "At GreenLeaf, you grew combined social from 4,200 to 11,000. Over exactly what window did that happen?" },
+    { "q": "I see the role dated two different ways on your resume — June to August, and May to July. Which is correct?" },
+    { "q": "On the email newsletter — was that genuinely the brand's first, and did you build it solo?" },
+    { "q": "What was the open rate on those newsletters, roughly, and how did you measure it?" },
+    { "q": "Let's go to Campus Eats. Your resume says you 'led a team of six.' Walk me through who was on that team." },
+    { "q": "The Campus Eats site describes you as one of two marketing volunteers. Help me reconcile that with 'led a team of six.'" },
+    { "q": "The referral campaign drove 900 signups. What part of that 900 do you personally attribute to your incentive design?" },
+    { "q": "For the Marketing Club, attendance is listed as 'over 200%' in one place and 'roughly doubled' in another. Which is it?" },
+    { "q": "Your skills list says 'fluent in SQL' but your summary says 'basic SQL exposure.' Where are you really?" },
+    { "q": "If I gave you a GA4 dashboard and asked for the signup conversion rate by channel, could you pull it?" },
+    { "q": "What's a marketing tool or skill on this job description you genuinely don't have yet?" },
+    { "q": "Tell me about a campaign of yours that didn't work, and what you learned." },
+    { "q": "Last thing — your GPA shows as 3.8 in the header and 3.6 in the education section. Which is accurate, and what happened there?" }
+  ],
+  "candidate_last_answer": "The 3.6 is accurate. The 3.8 is a leftover from an earlier version of this resume — it was my GPA after sophomore year, but it dropped to 3.6 after a hard analytics course last fall, and I forgot to update the header. That's on me, and I should have caught it before sending. While we're on it, I'd flag two other things on this resume I'd correct: the Campus Eats line should say 'one of two volunteers,' not 'led a team of six' — I designed the referral incentive and the landing page, but I didn't lead anyone. And GreenLeaf was June to August; the May to July date is wrong.",
+  "session_state": {
+    "drilled_topics": ["most-hands-on", "social-growth-window", "greenleaf-dates", "newsletter-ownership", "newsletter-openrate", "campus-eats-team", "team-of-six-reconcile", "referral-attribution", "attendance-discrepancy", "sql-level", "ga4-pull", "missing-skill", "failed-campaign"],
+    "current_competency_target": "honesty-self-awareness",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "honesty-self-awareness",
+    "missing_evidence": [
+      { "competency": "honesty-self-awareness", "evidence_type": "owner-of-action" },
+      { "competency": "attention-to-detail", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd flag two other things on this resume I'd correct",
+      "must-be-question-type: teach-back",
+      "expected-yield: test whether her proactive self-correction is genuine self-awareness or selective damage control — have her name what process she'll use to prevent resume inconsistencies going forward, and whether any remaining claim (the 11,000 followers, the 1,800 subscribers, the 'over 200%' attendance) still overstates her solo contribution"
+    ]
+  }
+}

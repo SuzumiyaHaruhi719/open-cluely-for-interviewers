@@ -1,0 +1,39 @@
+{
+  "id": "fx_0755",
+  "tags": {
+    "industry": "research",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Dr. Aileen Koh — Director of Research\n\nLeading 一个 40-people 的 ML research org，方向是 foundation models 的 safety & alignment。\n\nNow: Director, Research — Veridian AI Labs (2022–present)\nBefore: Principal Scientist — Helix Research (2016–2022)\nPhD, Machine Learning。\n\nHighlights:\n- 带过 8 个 research scientists 和 2 个 research managers\n- Set 了 lab 的 multi-year research agenda\n- Published 在 NeurIPS / ICML；h-index 30+\n- 负责 research-to-product 的 transfer\n\n联系方式略。",
+  "jd": "Veridian AI Labs is hiring a Director of Research to own the strategy and execution of a multi-team research organization (30–50 researchers) working on alignment and evaluation of frontier models. You will set the multi-year research agenda, make portfolio bets across exploratory and applied tracks, hire and grow research managers, and translate research into product-shippable capabilities. The role reports to the VP of Research and is accountable for both scientific impact (publications, benchmarks) and concrete transfer into the product roadmap. We are looking for a leader who can make hard prioritization calls under deep uncertainty, defend why one bet was funded over another, and own the outcome when a bet does not pay off.",
+  "history": [
+    { "q": "You've set the multi-year research agenda at Veridian. Walk me through one specific bet you funded and one you explicitly killed." },
+    { "q": "Let's stay on the one you killed. Whose project was it, and how did you personally deliver that decision?" },
+    { "q": "Looking back, what's the single biggest research bet you got wrong, and what did it cost the org?" }
+  ],
+  "candidate_last_answer": "That's a fair question, but before I answer it I'm curious — how does your org actually define a research bet being 『wrong』? Because in my experience the framing matters enormously. Do you count a negative result that saved us from a dead end as a failure, or as a successful de-risking? And when you ask what it 『cost』, are you measuring researcher-months, opportunity cost against the roadmap, or reputational cost externally? I find that how a company answers that tells me more about whether I'd thrive there than any single story I could give you. So maybe you tell me how Veridian thinks about that, and I'll map my example onto your definition.",
+  "session_state": {
+    "drilled_topics": ["research-agenda-bets", "killed-project-ownership"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: how does your org actually define a research bet being 『wrong』",
+      "must-be-question-type: counterfactual",
+      "expected-yield: redirect the candidate off the meta-discussion onto a concrete bet that did not pay off — what they believed at funding time, what evidence later proved them wrong, the researcher-months sunk, and what they would have decided differently"
+    ]
+  }
+}

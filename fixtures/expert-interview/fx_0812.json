@@ -1,0 +1,45 @@
+{
+  "id": "fx_0812",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "王志远 — VP, Market Risk\n\n现任某外资银行 VP，负责交易台市场风险管理，覆盖 rates、FX 和 credit 三条产品线。带领一支 quant 与 risk 混合团队，向 CRO 汇报。\n\n工作经历：\n- 某外资银行 — VP, Market Risk Management (2020 至今)\n  · 负责 VaR 与 stress testing 框架的日常运行与方法论评审\n  · 主导一次 risk engine 的迁移项目，从老系统切换到新的 in-house 平台\n  · 牵头应对监管 FRTB 落地的 gap analysis\n- 某券商 — Senior Risk Analyst (2016-2020)\n  · 搭建 desk 层面的限额监控体系\n  · 参与多次 model validation\n\n技能：VaR、Expected Shortfall、FRTB、stress testing、Python、团队管理\n教育：金融工程硕士",
+  "jd": "我们正在为全球市场部门招聘一名 VP / Head of Market Risk，直接向 CRO 汇报，负责一个约 25 人的市场风险团队。该岗位拥有 rates、FX、credit 与 commodities 四条产品线的风险 oversight，需对每日 firm-wide VaR 报告、limit framework 以及 stress testing 方法论负全责。具体目标包括:把 backtesting exception 从每年 9 次降到 4 次以内、在 18 个月内完成 FRTB 下 SA 与 IMA 的并行计算落地、并将 risk engine 的日终批处理时间从 6 小时压缩到 2 小时。你需要直接面对监管(PRA/Fed)的现场检查,能就 model methodology 与 trading desk head 进行有理有据的 pushback,并有过主导 risk system replatform 的实战经验。要求至少 10 年市场风险经验,CFA/FRM 优先。",
+  "history": [
+    { "q": "先介绍一下你现在在 market risk 团队的 scope:团队多大、覆盖哪些产品线、向谁汇报?" },
+    { "q": "你简历里提到主导了一次 risk engine 的迁移。这个项目的 timeline 是怎样的?分几个阶段?" },
+    { "q": "迁移前后,日终批处理的运行时间有没有变化?具体从多少降到多少?" },
+    { "q": "迁移过程中遇到的最大技术风险是什么?你怎么 mitigate 的?" },
+    { "q": "切换到新平台后,你怎么验证新系统算出来的 VaR 跟老系统是一致的?用了什么 reconciliation 方法?" },
+    { "q": "我们换个话题。你提到牵头 FRTB 的 gap analysis,能不能讲讲你 specifically 负责哪一部分?" },
+    { "q": "你这个团队过去一年的 backtesting exception 大概是多少次?有没有触发过监管关注?" },
+    { "q": "回到迁移项目。你说你『主导』了这个项目,那 cutover 那个周末,具体是你做了哪些决定?谁拍板上线?" }
+  ],
+  "candidate_last_answer": "嗯……这个 cutover 其实是个 team effort,对吧,就是……怎么说呢,那个周末挺紧张的,我记得我们 IT 那边的人也在,然后 quant team 也在,大家都在一个会议室里。我当时主要是……就是看着那个 dashboard 嘛,看 numbers 对不对。然后中间有个 batch 跑得有点慢,我们就……讨论了一下,要不要回滚,但是最后还是上了。具体谁说『上』这个字我记不太清了,可能是我,也可能是我老板 dial-in 进来说的,反正那个决定是大家一起做的,你懂我意思吧,risk 这种事情不能一个人拍脑袋。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "migration-timeline", "batch-runtime", "migration-tech-risk", "var-reconciliation", "frtb-gap-analysis", "backtesting-exceptions"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "decision-making", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体谁说『上』这个字我记不太清了,可能是我,也可能是我老板",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a clear statement of who actually held go/no-go authority at cutover and what the candidate personally decided versus what others decided, ideally with the specific sign-off step"
+    ]
+  }
+}

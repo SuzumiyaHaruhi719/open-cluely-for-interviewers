@@ -1,0 +1,45 @@
+{
+  "id": "fx_0760",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "self-contradictory",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Theo Vandenberg\nProcurement Associate | Indirect & logistics sourcing\n\nRiverstone Manufacturing — Procurement Associate (2022 – present)\n- Manage a portfolio of ~30 indirect suppliers (MRO, packaging, freight)\n- Ran RFQs and supported contract renewals; helped cut freight spend\n- Onboarded new vendors and maintained the approved-supplier list\n\nRiverstone Manufacturing — Junior Buyer (2023 – present)\n- Same role, listed twice with overlapping titles and start years\n\nGreenfield Co-op — Inventory Clerk (2020 – 2022)\n- Cycle counts and PO reconciliation\n\nSkills: SAP MM, RFQ/RFP, negotiation, Excel. Note: portfolio size appears as ~30 here and '50+ suppliers' in summary line. Education: Associate degree, Business.",
+  "jd": "Riverstone Manufacturing seeks a Procurement Associate for indirect and logistics sourcing. You'll run RFQs, support contract renewals, manage a portfolio of indirect suppliers, and help drive freight and MRO savings. Critically, this role operates inside a strict procurement-compliance framework: segregation of duties, conflict-of-interest disclosure, and a no-gifts policy with vendors. We want someone who is precise about what they personally did, comfortable with controls, and who exercises sound judgment when a vendor relationship gets close to a line. Requirements: 1–3 years in procurement/sourcing, SAP MM or similar, RFQ experience, and a clean understanding of procurement ethics and approval workflows.",
+  "history": [
+    { "q": "Tell me about your current portfolio — how many suppliers and what categories?" },
+    { "q": "Your resume lists Procurement Associate and Junior Buyer with overlapping years. Which is current?" },
+    { "q": "Walk me through one RFQ you ran end to end." },
+    { "q": "You mention helping cut freight spend — what was your specific contribution?" },
+    { "q": "How do you decide which vendor to award when bids are close?" },
+    { "q": "Tell me about a time a vendor relationship got complicated." },
+    { "q": "How does your company handle conflict-of-interest disclosure for buyers?" },
+    { "q": "Have you ever been offered anything by a vendor? How did you handle it?" },
+    { "q": "Let's go back to the freight savings — what was the dollar number and how was it verified?" }
+  ],
+  "candidate_last_answer": "Okay so the freight thing, um, it's funny because — sorry, I get a little nervous in these — so freight, right, we had this carrier, and honestly they were great, like the rep would take us out, golf, dinners, one time tickets to a game, which, I mean, everyone does that in this industry, it's just relationship-building, so anyway the point is, um, where was I — the savings, yeah, so I kind of just went with them on the renewal because we had the rapport and they'd look after us, didn't really re-bid it that year, and it felt like a good deal, I think it was a decent chunk of savings, maybe, I don't have the exact figure in front of me, sorry, I'm rambling — but the relationship was the main thing, that's what I'd emphasize.",
+  "session_state": {
+    "drilled_topics": ["portfolio-scope", "title-overlap", "rfq-end-to-end", "freight-contribution", "award-decision-logic", "complicated-vendor", "coi-disclosure", "vendor-gifts"],
+    "current_competency_target": "integrity-compliance",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "integrity-compliance",
+    "missing_evidence": [
+      { "competency": "integrity-compliance", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": ["accepted vendor gifts (golf, dinners, event tickets) and skipped competitive re-bid on the renewal, citing the relationship — potential conflict-of-interest / procurement-ethics violation"],
+    "top_question_traits": [
+      "must-anchor-on: didn't really re-bid it that year, and it felt like a good deal",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a step-by-step account of the renewal decision — whether competitive bids were solicited, whether the gifts were disclosed per the no-gifts policy, who approved a sole-source renewal, and the actual savings figure — surfacing the compliance exposure and the candidate's personal accountability"
+    ]
+  }
+}

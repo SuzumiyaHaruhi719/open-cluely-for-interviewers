@@ -1,0 +1,78 @@
+{
+  "id": "fx_0784",
+  "tags": {
+    "industry": "healthcare",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "孙佳怡 (Jiayi Sun) — 公共卫生硕士在读 (MPH)，预计 2026 年毕业\n报考：医院质量改进 (Quality Improvement) 实习生\n\n实习 — 某三甲医院 医务/质控部 (简历开头写：2024年9月至今)\n- 情境：医院住院部的 hand hygiene compliance (手卫生依从率) 偏低，被院感科点名。\n- 任务：我负责协助做一轮手卫生依从率的基线审计和改进。\n- 行动：我设计了观察表，用 WHO 的『五个时刻』标准做了暗访观察，统计各病区依从率，并做了一次针对护士的培训。\n- 结果：干预后全院手卫生依从率从 61% 提升到 79%。\n\n科研助理 — 同一家医院 (此处又写：2023年6月至2024年12月)\n- 协助一个关于术后感染率的回顾性队列研究，做数据清洗和描述性统计。\n- 用 SPSS 跑了卡方检验。\n\n备注：简历技能栏写『精通 SPSS 与 R』，但项目里只用过 SPSS；教育栏写本科为临床医学，另一处个人简介写本科为护理学。\n\n技能: 流行病学方法、SPSS、R (精通)、PDCA、质量改进工具、医院感染防控、Excel\n语言: 英语可读文献",
+  "jd": "招聘医院质量改进 (QI) 实习生 (2026)。你将加入一家大型医院的质控部门，在资深 QI 专员指导下参与一个聚焦的改进项目。职责包括：做基线数据审计、用 PDCA 或类似框架设计改进干预、追踪过程与结果指标、向科室汇报。我们看重数据的严谨与诚实：你要能说清每个数字怎么来的、样本和观察方法是什么、以及你个人具体做了哪些事。我们也会核对简历细节的一致性 (时间线、技能熟练度)。实习产出是一份面向质控委员会的改进报告。有流行病学或统计训练者优先。该岗位以现场数据采集与分析为主。",
+  "history": [
+    {
+      "q": "先聊聊你在质控部的手卫生改进项目，背景是什么？"
+    },
+    {
+      "q": "你的观察表是怎么设计的？依从率具体是怎么定义和计算的？"
+    },
+    {
+      "q": "你说做了暗访观察，一共观察了多少个手卫生时刻？分几个病区？"
+    },
+    {
+      "q": "61% 到 79% 这个提升，是同一批病区的前后对比吗？观察人是不是同一个人？"
+    },
+    {
+      "q": "我注意到你简历里质控实习写的是 2024年9月至今，但科研助理写到 2024年12月——这两段时间是重叠的吗？"
+    },
+    {
+      "q": "你技能栏写『精通 R』，但两个项目好像都只用了 SPSS。你的 R 具体用在哪个项目上了？"
+    },
+    {
+      "q": "你本科到底是临床医学还是护理学？简历里两个地方写得不一样。"
+    },
+    {
+      "q": "回到手卫生那个数字，我想确认一下：那 18 个百分点的提升，会不会主要是因为护士知道有人在暗访、所以表现得更好（霍桑效应），而不是培训本身起了作用？"
+    }
+  ],
+  "candidate_last_answer": "啊这个……霍桑效应……对，您说得有道理，嗯，就是……其实我当时也想过这个问题，但是又没太想清楚，因为那个，护士其实大部分时候不知道我在看，但是也有可能知道，因为我有时候会站在护士站附近，啊不对我是说……总之就是我尽量装作在看病历。然后我刚才说到哪了？哦对培训，培训那天来了挺多人的，我还准备了 PPT，但是会议室投影坏了，我们就……反正最后数字是涨了的。然后那个本科的事我等下可以解释，主要是我转过专业。其实我家里也有人是做护士的，所以我对临床还挺熟的，呃，您刚才问的是观察方法对吧？",
+  "session_state": {
+    "drilled_topics": [
+      "hand-hygiene-overview",
+      "observation-form-definition",
+      "observation-count-wards",
+      "pre-post-same-cohort",
+      "timeline-overlap",
+      "r-skill-claim",
+      "undergrad-major-inconsistency"
+    ],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      {
+        "competency": "experimental-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "intellectual-honesty",
+        "evidence_type": "tradeoff-reasoning"
+      },
+      {
+        "competency": "communication",
+        "evidence_type": "scope"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 护士其实大部分时候不知道我在看，但是也有可能知道",
+      "must-be-question-type: teach-back",
+      "expected-yield: a coherent account of how observation reactivity (Hawthorne effect) was controlled or at least estimated — blinding, covert protocol, or a comparison condition — cutting through the rambling to test whether the candidate can reason about a confound that threatens the 18-point claim"
+    ]
+  }
+}
