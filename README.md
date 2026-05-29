@@ -1,10 +1,10 @@
 # Open-Cluely
 
-Open-Cluely is an Electron desktop copilot for technical interviews and live meetings. It combines AssemblyAI streaming transcription, screenshot capture, and Gemini-powered responses in a compact always-on-top window.
+Open-Cluely is an Electron desktop copilot for live interviews and meetings. **This fork pivots it into an interviewer-side copilot**: it transcribes the candidate's answer in real time and proposes the single sharpest follow-up question to ask next — anchored to a phrase the candidate actually said, and chosen to surface the evidence they're glossing over. The original candidate-side answer tools (Ask AI / Screen AI / Suggest / Notes) remain available as secondary helpers.
 
-Use it only in environments where recording, transcription, screenshots, and AI assistance are allowed.
+All hosted AI runs through **Aliyun DashScope** (DeepSeek V4 + Qwen 3.x) on a single API key; speech-to-text is **pluggable** (Paraformer, AssemblyAI, iFlytek RTASR, or offline Vosk). Compact, always-on-top, with an optional mobile companion.
 
-Open source alternative for Cluely and Parakeetai. Your Real-Time AI Interview Assistant 😉
+Use it only in environments where recording, transcription, screenshots, and AI assistance are allowed and disclosed as your context requires.
 
 ## Looks
 
@@ -15,17 +15,50 @@ Open source alternative for Cluely and Parakeetai. Your Real-Time AI Interview A
 
 ## Features
 
-- Dual-source live transcription for host/system audio and microphone input, with per-source toggles and a live monitor.
-- Four AI action buttons, each with a distinct purpose — described in detail below.
-- Per-message `AI` / `Off` controls let you keep transcript chunks, screenshots, and prior AI replies visible while excluding them from future prompts.
-- Multiple Gemini API keys are supported as a comma-separated list, with automatic failover on quota or authentication errors.
-- Settings support Gemini model selection, AssemblyAI speech model selection, programming language preference, and window opacity.
-- Session state is persisted to `cache/app-state.json`, and screenshot retention is bounded by `MAX_SCREENSHOTS`.
-- **Mobile companion** — a built-in web server exposes a mobile-optimised chat interface on port `7823`. Open the **Network** URL printed at startup (e.g. `http://192.168.1.42:7823`) on a phone that shares the same network as the PC. USB tethering, Wi-Fi hotspot from the phone, or both being on the same Wi-Fi all work.
+- **Interviewer copilot** — generates the next high-value follow-up question from the candidate's latest answer, in **Fast** (2-stage) or **Expert** (7-block) mode. See [Interviewer Copilot](#interviewer-copilot-the-pivot) below.
+- **Dual-source live transcription** for host/system audio and microphone input, with per-source toggles and a live monitor. Pick the exact mic and system-audio source — virtual loopback cable, Windows per-process loopback, or a screen source — in **Settings → Audio devices**.
+- **Pluggable speech-to-text** via an ASR router: Paraformer (DashScope), AssemblyAI, iFlytek RTASR, or offline Vosk.
+- **One DashScope key for all hosted AI** — DeepSeek V4 (`pro`/`flash`) + Qwen 3.x (including `qwen3-vl-*` for screenshots), through Aliyun DashScope's Anthropic-shape endpoint. Gemini and Ollama have been removed.
+- **Candidate-side answer tools** (Ask AI / Screen AI / Suggest / Notes / Insights) retained under a **More ▾** menu, each with per-message `AI` / `Off` context toggles so you control exactly what goes into the next prompt.
+- **Prompt training & evaluation harness** — a 1000-fixture diversity corpus plus scripts to evaluate each block and the full chain. See [Prompt Training & Evaluation](#prompt-training--evaluation).
+- Session state persists to `cache/app-state.json`; screenshot retention is bounded by `MAX_SCREENSHOTS`.
+- **Mobile companion** — a built-in web server exposes a mobile-optimised chat interface on port `7823` (setup details below).
 
-## AI Action Buttons
+## Interviewer Copilot (the pivot)
 
-Each button sends a different slice of context to the AI and is designed for a different moment in the workflow.
+The headline feature of this fork. Instead of answering *for* the candidate, it helps the **interviewer**: it reads the candidate's most recent answer (plus the resume, job description, and question history) and proposes the single best **follow-up question** to ask next — one anchored to a verbatim phrase the candidate actually said, chosen to surface the evidence they're dodging.
+
+It runs in one of two modes, selected in **Settings → Interviewer mode** (default `fast`):
+
+### Fast mode (default) — 2-stage Flash chain
+
+- **Stage 1** detects the weak / unsubstantiated "hooks" in the answer (vague metrics, team-credit-only ownership, timeline gaps).
+- **Stage 2** generates a grounded follow-up that quotes one hook verbatim.
+- ~1.5–3 s on `deepseek-v4-flash`. Best when live-interview latency matters.
+
+### Expert mode — 7-block deep pipeline
+
+A DAG of seven specialized blocks (`A∥C → B → D → E → F → G`):
+
+| Block | Role |
+|-------|------|
+| **A** · Answer Anatomy | extract claims, each tagged with a `raw_span` (a verbatim substring of the answer) |
+| **C** · State Update | track drilled topics + next competency target (runs in parallel with A) |
+| **B** · Evidence Gap | what's missing, over-claimed, or contradictory |
+| **D** · Question Pool | 5 candidate questions, ≥3 distinct question-types, each anchored to a `raw_span` |
+| **E** · Rank & Score | rank candidates on a 6-dimension rubric (`deepseek-v4-pro`) |
+| **F** · Safety Audit | regex + LLM check on the top-2 (bias / illegal / off-limits) |
+| **G** · Final Render | emit the chosen question + interviewer rationale |
+
+Every block validates against a JSON schema, retries once on failure, and falls back to a schema-compliant placeholder if it can't converge — so a slow or failed block **degrades gracefully instead of crashing the chain**. Expert mode trades ~4–8 s of latency for materially better-anchored, harder-to-dodge questions. Full design + tuning history is in [`PROMPT_TRAINING_LOG.md`](./PROMPT_TRAINING_LOG.md).
+
+> **Models:** the interviewer copilot uses `deepseek-v4-flash` by default (Block E uses `deepseek-v4-pro`). Set the default in `DEFAULT_INTERVIEWER_MODEL` / `BLOCK_MODELS`.
+
+---
+
+## Candidate-side answer tools (secondary)
+
+> These are the original Open-Cluely answer buttons. After the interviewer-copilot pivot they are secondary and live under the **More ▾** menu in the top bar. Each sends a different slice of context to the AI for a different moment in the workflow.
 
 ### Ask AI
 
@@ -101,10 +134,10 @@ Use Notes to produce a shareable record at the end of a meeting or interview deb
 ### Requirements
 
 - Windows 10/11 is the primary development target for this repo.
-- Node.js `20.x` is recommended. The existing docs and environment were prepared around `20.20.1`.
+- Node.js `20.x`+ is recommended (the environment was prepared around `20.20.1`; the eval scripts also run under Node 24).
 - npm `10+`
-- At least one Gemini API key (configured in the app Settings UI)
-- One AssemblyAI API key (configured in the app Settings UI)
+- One **Aliyun DashScope** API key — powers all hosted AI (DeepSeek V4 + Qwen 3.x on the Anthropic-shape endpoint); configured in the in-app Settings UI.
+- A key for whichever speech-to-text provider you enable — Paraformer (DashScope key), AssemblyAI, or iFlytek RTASR. Offline **Vosk** needs no key (see [`SETUP-VOSK.md`](./SETUP-VOSK.md)).
 
 ### Setup
 
@@ -171,12 +204,12 @@ winget install --id Microsoft.VisualStudio.2022.BuildTools --exact --accept-pack
 
 [`src/config.js`](./src/config.js) defines the app's configurable lists and defaults:
 
-- Gemini models
-- AssemblyAI speech models
-- Programming language options for code-oriented prompts
+- `DASHSCOPE_AI_MODELS` and `DASHSCOPE_BASE_URL` — hosted models on the DashScope Anthropic-shape endpoint (`deepseek-v4-pro` default, `deepseek-v4-flash`, `qwen3.6-*` / `qwen3.7-max`, `qwen3-vl-*` for screenshots).
+- `DEFAULT_INTERVIEWER_MODEL` — model for the interviewer copilot's Fast 2-stage chain (`deepseek-v4-flash`).
+- Programming-language options for code-oriented prompts
 - Global keyboard shortcuts
 
-The first item in each model/language list is treated as the default.
+The first item in each model/language list is treated as the default. ASR provider selection is handled separately by [`src/services/asr-router.js`](./src/services/asr-router.js).
 
 ### Persisted Files
 
@@ -247,10 +280,10 @@ If `TcpTestSucceeded : True` from the PC but the phone still cannot connect, the
 
 ## Basic Workflow
 
-1. Launch the app and confirm your API keys and models in Settings.
-2. Start transcription and enable whichever sources you need: `Host`, `Mic`, or both.
+1. Launch the app and confirm your DashScope key, models, ASR provider, and **Interviewer mode** (`fast` or `expert`) in Settings.
+2. Start transcription and enable whichever sources you need: `Host` (the candidate's audio), `Mic`, or both. As the candidate answers, the **interviewer copilot** surfaces the next follow-up question to ask.
 3. Take screenshots when visual context is needed — a problem statement, error, or UI.
-4. Use the right button for the moment:
+4. For the secondary candidate-side tools, use the right **More ▾** button for the moment:
    - **Suggest** to get a quick, speakable opening response from the transcript
    - **Ask AI** when you need the full, complete answer from all context
    - **Screen AI** when the problem is on your screen and you want a direct solution
@@ -258,11 +291,28 @@ If `TcpTestSucceeded : True` from the PC but the phone still cannot connect, the
 5. Toggle noisy messages to `Off` before the next AI call so the prompt stays focused on what matters.
 6. Optionally use the **mobile companion** on your phone for discreet control — trigger screenshots, ask AI, or run the mic without touching the desktop.
 
+## Prompt Training & Evaluation
+
+The interviewer-copilot prompts are tuned against a **1000-fixture diversity corpus** under `fixtures/expert-interview/` — synthetic interview snapshots spanning 16 industries × 7 seniority levels × zh/en/mixed language × 14 answer-qualities (vague-empty, inflated-metrics, defensive-hostile, team-credit-only, …) × edge cases (cites-NDA, reverses-question, multi-task-in-one-answer, …). Each fixture carries ground-truth `top_question_traits` so a generated follow-up can be scored automatically. Tooling lives in `scripts/train-prompts/`:
+
+| Script | Purpose |
+|--------|---------|
+| `next-slots.js` | allocate the next unfilled fixture slots into per-author assignment chunks |
+| `authoring-spec.md` | the fixture-authoring contract (schema, hard invariants, diversity rules) |
+| `validate-fixtures.js` | schema + tag-consistency check (corpus is `1000/1000 PASS`) |
+| `local-dedup.js` | no-API MinHash near-duplicate check (`0` pairs at Jaccard ≥ 0.7) |
+| `eval-block.js --block A\|C` | per-block metrics (e.g. Block A `raw_span_pass_rate`) |
+| `eval-e2e.js --limit N` | full 7-block chain: yield, per-block fallback rate, latency |
+| `blind-compare.js --n N` | Fast vs Expert, position-bias-swapped, LLM-judged |
+
+Eval scripts resolve the DashScope key from `cache/app-state.json` (or the `DASHSCOPE_API_KEY` env var). On hosts where Node's `fetch` is slow/flaky against DashScope, set `DASHSCOPE_TRANSPORT=curl` to route LLM calls through `curl`. See [`PROMPT_TRAINING_LOG.md`](./PROMPT_TRAINING_LOG.md) for the iteration history, results, and known environment limits (notably: full-corpus E2E is latency-bound in some environments).
+
 ## Project Structure (Brief)
 
 - `src/main-process/` is the Electron control plane (startup flow, window behavior, global shortcuts, and IPC registration).
 - `src/main-process/features/mobile-server/` is the mobile companion — HTTP + WebSocket server (`server.js`) and the mobile UI (`mobile.html`).
-- `src/services/` contains reusable domain logic (Gemini prompts/runtime behavior, AssemblyAI streaming/transcript history, persisted app-state).
+- `src/services/` contains reusable domain logic (DashScope AI prompts/runtime + interviewer-copilot Fast/Expert prompt builders, the pluggable ASR router and its STT providers, persisted app-state).
+- `src/main-process/features/interviewer/` holds the interviewer-copilot runtime and the Expert-mode 7-block orchestrator.
 - `src/windows/assistant/preload/` is the renderer-safe API boundary (`window.electronAPI` invoke + event wrappers).
 - `src/windows/assistant/renderer/features/` contains modular UI logic (chat, listeners, settings, transcription, context bundling, layout).
 - `src/windows/legacy/` contains old experiments and is not part of the active runtime path.
@@ -274,10 +324,11 @@ src/
   bootstrap/             Environment loading, validation, and persistence
   main-process/          Startup orchestration, IPC wiring, window control, assistant runtime
     features/
+      interviewer/       Interviewer-copilot runtime + Expert-mode 7-block orchestrator
       mobile-server/     Mobile companion HTTP+WS server and mobile UI HTML
   services/
-    ai/                  Gemini service + prompt builders
-    assembly-ai/         Streaming STT service + transcript history manager
+    ai/                  DashScope service + interviewer Fast/Expert prompt builders (expert/ blocks, schemas)
+    asr-router.js        Pluggable STT router: paraformer/, xfyun-rtasr/, assembly-ai, vosk
     state/               App-state load/save helpers
   windows/
     assistant/
