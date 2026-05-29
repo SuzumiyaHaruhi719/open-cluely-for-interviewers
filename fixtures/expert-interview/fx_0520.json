@@ -1,0 +1,52 @@
+{
+  "id": "fx_0520",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Supply Chain Intern Candidate | Demand Planning · S&OP · Inventory Optimization · Lean · Six Sigma · SAP · Power BI · SQL · Tableau · Kinaxis · Logistics · Procurement · Forecasting · MRP · Just-in-Time · Kanban · Continuous Improvement\n\nObjective: Results-driven, data-driven supply chain enthusiast seeking an internship to leverage cross-functional, end-to-end expertise in demand-driven material requirements planning and digital supply network optimization.\n\nProject & Coursework Highlights\n- Spearheaded a capstone simulation applying lean Six Sigma DMAIC to a beer-game bullwhip scenario, optimizing safety-stock and reorder-point parameters\n- Hands-on exposure to SAP MM/PP, Kinaxis RapidResponse, Power BI, Tableau, and advanced SQL for end-to-end supply chain analytics\n- Built a multi-echelon inventory optimization model in a class project leveraging EOQ, ABC analysis, and service-level targets\n- Proficient in S&OP cadence design, demand forecasting (Holt-Winters, ARIMA), and procurement KPI dashboards\n\nExperience\nCampus Logistics Office — Student Assistant (part-time, 2 semesters): supported inbound package sorting and a spreadsheet of delivery volumes.\nRetail Co-op — Seasonal Stockroom Associate (one summer): replenished shelves and counted inventory.\n\nEducation: B.S. Supply Chain Management (expected next year). Coursework: Operations, Logistics, Procurement, Statistics.\nCertifications-in-progress: Lean Six Sigma Yellow Belt; APICS CPIM (studying).",
+  "jd": "We are hiring a Supply Chain Intern to support our demand-planning and inventory team for a consumer-goods distributor. This is an entry-level internship: you will pull data, maintain forecast-accuracy and inventory dashboards, help reconcile the weekly S&OP deck, and shadow planners on replenishment decisions. We are not looking for buzzword fluency — we want to see that you can do one concrete analytical task end to end and explain what you actually did. In the interview we will take a single item from your resume and ask you to go deep: what data, what tool, what method, what result, and what you'd do differently. Honesty about the limits of your experience is valued far more than a long keyword list. You'll report to a Senior Demand Planner and partner with the procurement and warehouse teams. Strong spreadsheet skills and curiosity required; real-world experience not expected.",
+  "history": [
+    { "q": "Your resume lists a lot of tools. Which one have you actually used to complete a real task, start to finish?" },
+    { "q": "Let's take the capstone bullwhip simulation. What was the actual assignment?" },
+    { "q": "You mention optimizing safety-stock and reorder points. What formula or method did you use?" },
+    { "q": "What inputs did that method need, and where did you get them in the simulation?" },
+    { "q": "What service level did you target, and why that number?" },
+    { "q": "You list ARIMA and Holt-Winters. Which did you personally run, and on what data?" },
+    { "q": "Walk me through one Power BI dashboard you built — what were the fields and the data source?" },
+    { "q": "SAP MM/PP is on here. What did you actually do in SAP, concretely?" },
+    { "q": "On the campus logistics job — what did the delivery-volume spreadsheet track?" },
+    { "q": "Did any analysis you did ever change a decision? Whose, and how?" },
+    { "q": "What was the result of your capstone — did your safety-stock change reduce anything measurable in the sim?" },
+    { "q": "Which of these listed skills would you honestly call 'exposure' versus 'proficient'?" },
+    { "q": "If we sat you down with the raw sim data right now, what's the first thing you'd actually do?" },
+    { "q": "What did you get wrong in the capstone, and what did you learn?" },
+    { "q": "Forget the keywords for a second. Pick the single thing you can defend in real depth and tell me exactly what you did, what tool, and what came out of it." }
+  ],
+  "candidate_last_answer": "Absolutely. So at a high level, my approach is rooted in a data-driven, end-to-end, continuous-improvement mindset, leveraging best-in-class methodologies across the digital supply network. In the capstone I operationalized a holistic lean Six Sigma framework to drive optimization across the demand-supply interface, synthesizing multi-echelon inventory theory with advanced analytics to deliver actionable insights. It was really about unlocking value end to end and aligning the safety-stock posture with service-level objectives in a truly cross-functional way. I think that experience demonstrates my ability to translate theory into impact at scale.",
+  "session_state": {
+    "drilled_topics": ["tool-actually-used", "capstone-assignment", "safety-stock-method", "method-inputs", "service-level-target", "arima-vs-holtwinters", "powerbi-dashboard", "sap-usage", "logistics-spreadsheet", "decision-influence", "capstone-result", "exposure-vs-proficient", "first-step-on-data", "capstone-mistake"],
+    "current_competency_target": "analytical-depth",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "analytical-depth",
+    "missing_evidence": [
+      { "competency": "analytical-depth", "evidence_type": "mechanism" },
+      { "competency": "analytical-depth", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: synthesizing multi-echelon inventory theory with advanced analytics to deliver actionable insights",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete walkthrough of one calculation the candidate personally performed in the capstone — the actual reorder-point or safety-stock formula, the specific numbers plugged in, the tool used, and the resulting parameter value — stripping away the rehearsed buzzword framing to expose whether real analytical work occurred"
+    ]
+  }
+}

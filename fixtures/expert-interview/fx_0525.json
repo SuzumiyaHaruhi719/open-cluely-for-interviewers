@@ -1,0 +1,39 @@
+{
+  "id": "fx_0525",
+  "tags": {
+    "industry": "finance",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Senior Credit Risk Analyst — Commercial Lending\n\nSUMMARY\nSeven years in commercial credit risk at mid-cap banks, focused on portfolio monitoring, model validation, and provisioning under CECL.\n\nEXPERIENCE\nMeridian Bank — Senior Credit Risk Analyst (2020-present)\n- Situation: 2022 CRE portfolio showed rising delinquency in office loans. Task: build an early-warning framework. Action: designed a quarterly stress overlay combining LTV migration and tenant-concentration flags; partnered with the CRO to set thresholds. Result: flagged 14 at-risk credits two quarters before default; reduced charge-offs by an estimated $9.1M over 2023.\n- Situation: CECL reserve model was over-provisioning for the C&I book. Task: recalibrate PD curves. Action: re-segmented by NAICS and re-estimated using 8-year loss history. Result: released $4.3M in excess reserves, validated by internal audit.\n\nHarbor Trust — Credit Risk Analyst (2017-2020)\n- Built the bank's first automated covenant-tracking workbook; cut covenant-breach detection lag from ~30 days to 5.\n\nEDUCATION & CERTS\nB.A. Economics, Riverside College. FRM (GARP), 2019.\nSkills: SQL, Python (pandas), Moody's CreditEdge, CECL, stress testing.",
+  "jd": "We are hiring a Senior Credit Risk Analyst to own monitoring and provisioning for a $3.2B commercial real estate and C&I portfolio. You will lead quarterly portfolio reviews, maintain the CECL reserve methodology, validate PD/LGD inputs, and present early-warning findings to the Chief Credit Officer and the loan committee. The role requires deep CECL fluency, comfort defending model assumptions to internal audit and examiners, and the judgment to distinguish a genuine credit deterioration signal from noise. You will work closely with line-of-business relationship managers, who will often disagree with your risk ratings. Strong candidates can reconstruct, from memory, the exact sequence of analytical steps in a past credit call and explain what they knew at each point in time. Series 79 a plus.",
+  "history": [
+    { "q": "Walk me through the office-loan early-warning framework you built at Meridian — what triggered it and what you actually shipped." },
+    { "q": "Take me through the timeline of one specific credit you flagged: when did the first warning fire, what did you do next, and how did the months unfold from there to resolution?" }
+  ],
+  "candidate_last_answer": "Sure. So there was a mixed-use office credit — I think the first flag came up in Q3 2022, when LTV migration crossed our threshold. We escalated to the CRO, and then actually the tenant-concentration flag had already fired before that, in Q1, which is what got us looking in the first place. So we downgraded the rating, and then the borrower missed a payment, which I believe was around Q2 2022 — no, it must have been after the downgrade. Anyway, by the time we restructured it, the LTV flag was the one that triggered everything, even though the concentration issue came later. The point is we caught it early.",
+  "session_state": {
+    "drilled_topics": ["early-warning-framework", "single-credit-timeline"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "timeline" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the LTV flag was the one that triggered everything, even though the concentration issue came later",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single non-contradictory ordering of which flag fired first, when the downgrade happened relative to the missed payment, and which signal actually initiated the review — resolving whether LTV or tenant-concentration came first"
+    ]
+  }
+}

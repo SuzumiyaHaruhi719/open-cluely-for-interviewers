@@ -1,0 +1,48 @@
+{
+  "id": "fx_0516",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Staff Software Engineer — Platform & Reliability\n\nSummary: Staff engineer specializing in distributed systems reliability, latency optimization, and incident response for high-traffic consumer APIs.\n\nVantyx (consumer fintech) — Staff Software Engineer, Platform (2021–present)\n- Situation: the payments API p99 latency had crept to 1,400ms and was breaching the 800ms SLO during peak, triggering downstream timeouts.\n- Task: bring p99 under SLO without a rewrite, and stop the recurring peak-hour incidents.\n- Action: profiled the hot path, found a synchronous fraud-check call blocking the request thread; moved it behind an async pre-authorization cache with a fallback, and added connection-pool backpressure.\n- Result: p99 from 1,400ms to 540ms, peak-hour incident count from 6/quarter to 1/quarter, no increase in fraud loss over two quarters.\n- Situation: a Kafka-based event pipeline was silently dropping events under load.\n- Task: find and fix the loss, and make it observable.\n- Action: instrumented end-to-end with trace IDs, found a consumer rebalance storm, tuned session timeouts and made the consumer idempotent.\n- Result: measured loss from ~0.4% to undetectable; added an alert that has caught two regressions since.\n\nPrior: Senior Backend Engineer, RelayWorks (2017–2021) — built the rate-limiting service still in production.\n\nB.S. Computer Science. Maintains an open-source load-testing tool.",
+  "jd": "Vantyx is hiring a Staff Software Engineer for the Platform & Reliability team. You will own the reliability roadmap for our payments and ledger services, set latency and availability SLOs, and lead incident response and blameless postmortems. As a staff engineer you set technical direction across several teams without direct authority, which means your influence depends on the quality of your reasoning and your willingness to engage critique. You'll drive architecture-review discussions, mentor senior engineers, and represent reliability tradeoffs to product leadership. We interview hard on engineering judgment: we will push on your decisions, ask you to defend tradeoffs, and probe the cases where your approach has limits. The strongest candidates treat that pressure as collaboration. You should be comfortable saying what you'd do differently and where a design's failure modes are. Reports to the Director of Platform Engineering.",
+  "history": [
+    { "q": "Walk me through the payments API latency work — what was the SLO and where did p99 start?" },
+    { "q": "You moved the fraud check behind an async pre-authorization cache. What's the failure mode if that cache is stale?" },
+    { "q": "How did you bound the risk that a stale pre-auth lets through a transaction you'd otherwise block?" },
+    { "q": "Did fraud loss change at all in the tail? How would you even see a small increase?" },
+    { "q": "On the Kafka pipeline — making the consumer idempotent handles redelivery, but what about the rebalance storm root cause?" },
+    { "q": "What's the downside of the session-timeout values you tuned to? When would those bite you?" },
+    { "q": "If I told you a senior engineer reviewed this and thinks the async fraud cache trades correctness for latency, how would you respond?" },
+    { "q": "Suppose the pre-auth fallback fires during a fraud-vendor outage — does the system fail open or closed, and who decided that?" },
+    { "q": "What would you do differently if you rebuilt the latency fix today?" },
+    { "q": "Where does your current design break — what load or failure pattern have you not handled?" },
+    { "q": "Walk me through the specific failure scenario where your async pre-auth design lets a fraudulent transaction through, step by step." }
+  ],
+  "candidate_last_answer": "Look, I've answered this three different ways already and you keep circling back to it. The design works — p99 went from 1,400 to 540, fraud loss didn't move, end of story. If there were a real hole in it, it would have shown up in two quarters of production traffic, and it didn't. I'm not going to invent some hypothetical failure scenario just because you want one. With respect, I've shipped this stuff at scale and I think I'd know if it were broken. Maybe the question is more academic than practical.",
+  "session_state": {
+    "drilled_topics": ["latency-slo", "stale-cache-failure-mode", "fraud-risk-bound", "tail-fraud-loss", "rebalance-root-cause", "session-timeout-downside", "reviewer-critique", "fail-open-vs-closed", "rebuild-differently", "design-breaking-point"],
+    "current_competency_target": "engineering-judgment",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "engineering-judgment",
+    "missing_evidence": [
+      { "competency": "engineering-judgment", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "coachability", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm not going to invent some hypothetical failure scenario just because you want one",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete step-by-step trace of the exact sequence (stale or missing pre-auth, vendor outage, fallback fires) under which the async design admits a transaction that the synchronous check would have blocked, demonstrating the candidate can reason about their own design's failure mode instead of asserting it has none"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "fx_0513",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Staff Instructional Designer & Learning Architect — the person every district calls when a curriculum has to actually work\n\n- Single-handedly transformed learning outcomes across an entire K-12 district; widely regarded as the gold standard in modern instructional design\n- Authored what many consider the definitive blended-learning framework now imitated across the region\n- Routinely turns failing programs into flagship showcases that leadership parades to the school board\n- Unmatched ability to translate cognitive science into classroom magic that teachers and students adore\n- Trusted far above my pay grade; principals defer to my judgment on anything curriculum-related\n- Built personally branded PD workshops that educators line up to attend\n\nExperience\nBrightPath Learning Group — Staff Instructional Designer (2019–present). Lead designer on the district's flagship blended-learning rollout. Mentor to a pod of four junior designers.\nClearwater Unified School District — Curriculum Specialist (2015–2019). Supported math and ELA adoption cycles.\n\nEducation: M.Ed Curriculum & Instruction. Certified in UDL and a half-dozen LMS platforms.",
+  "jd": "BrightPath Learning Group seeks a Staff Instructional Designer to own the design system behind our blended-learning products used by 40+ districts. You will lead the redesign of a flagged 9th-grade math course whose completion rate sits at 54% and whose post-unit assessment scores have stalled. You'll be expected to define the measurement plan (what learning gain looks like, how it's instrumented), run design experiments with teacher cohorts, and ship iterations on a release cadence. This is an individual-contributor staff role: you set technical direction for a team of designers without managing them. We care about evidence — you should be comfortable saying exactly which intervention moved which metric, by how much, on what population. You'll partner with data science on A/B instrumentation and with field teams on classroom implementation. Strong opinions on cognitive load, retrieval practice, and assessment validity expected.",
+  "history": [
+    { "q": "Tell me about the flagship blended-learning rollout you led at BrightPath." },
+    { "q": "Your resume says you 'transformed learning outcomes across the district.' What outcome metric, specifically, and what was the before and after?" },
+    { "q": "How was that metric measured — what instrument, what population?" },
+    { "q": "Let's get concrete on one course. Pick a single course you redesigned and tell me what you changed." },
+    { "q": "What was the completion or proficiency number before your redesign, and after?" },
+    { "q": "How did you know the change was caused by your redesign and not something else?" },
+    { "q": "Did you run any kind of controlled comparison or A/B between cohorts?" },
+    { "q": "On the blended-learning framework you authored — what's one concrete design rule in it?" },
+    { "q": "Give me one teacher cohort experiment you ran and what it told you." },
+    { "q": "Pick your single most measurable win and give me the numbers: population, baseline, result, timeframe." }
+  ],
+  "candidate_last_answer": "Honestly the most measurable win is just the overall transformation in engagement and outcomes. Teachers tell me all the time that students are way more engaged now, and the feedback has been overwhelmingly positive across the board. The framework really moved the needle on learning. I don't have the exact spreadsheet in front of me, but everyone who's seen the results agrees it was a step change — it's the kind of thing where you just know it's working when you walk into the classrooms.",
+  "session_state": {
+    "drilled_topics": ["flagship-rollout", "district-outcome-claim", "measurement-instrument", "single-course-change", "before-after-number", "causal-attribution", "ab-comparison", "framework-rule", "teacher-cohort-experiment"],
+    "current_competency_target": "evidence-of-impact",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "evidence-of-impact",
+    "missing_evidence": [
+      { "competency": "evidence-of-impact", "evidence_type": "metric" },
+      { "competency": "evidence-of-impact", "evidence_type": "mechanism" },
+      { "competency": "evidence-of-impact", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: you just know it's working when you walk into the classrooms",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one named course with a quantified baseline and post-intervention result on a defined student population over a stated timeframe, replacing the impressionistic engagement claim with an instrumented learning-gain number"
+    ]
+  }
+}

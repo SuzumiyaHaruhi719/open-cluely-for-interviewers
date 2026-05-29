@@ -1,0 +1,39 @@
+{
+  "id": "fx_0466",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "林晓彤\n求职意向：客户支持团队负责人 / Customer Support Team Lead\n邮箱：lin.xiaotong@example.cn　城市：深圳\n\n个人概述\n我是一名拥有五年客户支持经验的从业者，过去三年带过一个十二人左右的客服小组，主要服务一家跨境电商平台的中英文客户。我的工作横跨日常的工单处理、排班、质检，以及和产品、物流团队的跨部门协作。我熟悉主流的工单系统 Zendesk 和 Intercom，能够搭建基本的 macro 模板库和自动分流规则，也会用 Looker 和 Excel 拉取并分析团队的核心指标，比如 CSAT、first response time、resolution time 和 ticket backlog。我对 SLA 的概念非常熟悉，知道如何在高峰期通过排班和优先级规则去守住响应时效。我带团队的风格偏向数据驱动，每周都会和组员一起 review 各自的质检结果和客户满意度趋势，并把高频问题反馈给产品团队推动根因解决。\n\n详细的工作内容描述如下。在我负责这个客服小组的这三年里，我的核心目标一直是在控制人力成本的前提下，把客户满意度和响应时效维持在一个比较健康的水平。每天上班我会先看前一天积压下来的工单数量，判断当天是否需要临时调整排班；遇到大促活动之前，我会提前两到三周和运营对齐预计的咨询量，按历史数据估算需要增加多少临时坐席。日常我会抽查每个组员每周的若干条工单，按照内部的质检表打分，重点看回复是否准确、语气是否得体、有没有真正解决客户的问题而不是简单地关单。对于反复出现的产品类问题，我会整理成清单，定期同步给产品经理，推动他们从源头上修复，而不是让客服一遍遍地解释。我也比较注重团队成员的成长，会安排老带新，让有经验的客服带教新人度过前两周的适应期。这一段经历让我比较系统地理解了一个客服团队是如何在成本、效率和体验这三者之间做平衡的。\n\n工作经历\n某跨境电商平台　Customer Support Team Lead　2021年至今\n带领一个约十二人的中英文客服小组，负责北美和东南亚市场的售前售后支持。主要职责包括：团队日常工单的分配与排班；制定并维护 macro 模板和 escalation 流程；每周质检与一对一反馈；监控 CSAT、FRT、resolution time 等核心指标并做周报；在大促期间协调临时坐席与加班安排；作为客服侧的接口与产品、物流、风控团队协作处理升级问题。\n\n某 SaaS 公司　Customer Support Specialist　2019年至2021年\n作为一线客服处理 B2B 客户的技术类咨询，主要通过邮件和在线聊天支持。负责整理高频问题的帮助文档，参与搭建了公司第一版的 self-service 帮助中心，使一部分基础问题可以由客户自助解决。\n\n核心技能\n工单与客服系统：Zendesk、Intercom，熟悉 macro、trigger、自动分流与 SLA 配置。\n数据分析：能用 Looker 和 Excel 拉取并分析 CSAT、FRT、resolution time、backlog 等指标，会做周度和月度趋势报表。\n团队管理：排班、质检、一对一反馈、新人带教、大促人力规划。\n跨部门协作：与产品团队做高频问题的根因反馈，与物流和风控团队处理升级工单。\n语言：中文母语，英文可作为工作语言，能够处理英文客户的书面沟通。\n\n教育背景\n某大学　英语语言文学专业　文学学士　2015年至2019年\n\n自我评价\n我认为一个好的客服负责人不只是盯指标，更要理解指标背后的客户体验。我擅长把模糊的客户抱怨转化成可以推动产品改进的清单，也擅长在高峰期用排班和优先级规则稳住团队的节奏。我希望下一段工作能管理一个更大的团队，并且更深入地参与到客户体验的策略层面。",
+  "jd": "We are hiring a Customer Support Team Lead for a fast-growing cross-border e-commerce platform, based in Shenzhen, supporting both Chinese and English-speaking customers. You will own a team of 10 to 15 agents, drive day-to-day operations (scheduling, queue management, escalations), run weekly quality reviews, and report on core KPIs including CSAT, first response time, resolution time, and backlog. You will partner with Product and Logistics to push recurring issues toward root-cause fixes, and you will plan staffing for major promotional peaks. Requirements: 3+ years in customer support with at least 2 years leading a team; hands-on experience with Zendesk or Intercom (macros, triggers, SLA configuration); the ability to pull and interpret your own metrics in Looker or Excel; bilingual Chinese/English. Crucially, we expect leaders who can defend their numbers — when you claim a CSAT lift or an FRT improvement, you must be able to explain the measurement window, the baseline, the sample, and what specifically drove the change.",
+  "history": [
+    { "q": "简单介绍一下你现在带的这个团队，规模多大、服务哪些市场、你主要负责哪些方面？" },
+    { "q": "你提到很注重 CSAT 和响应时效，能不能给我一个具体的例子，说说你做了什么让某个指标变好了——顺便把改善前后的数字和你是怎么测的也讲清楚。" }
+  ],
+  "candidate_last_answer": "Sure。我接手这个团队之后做的最自豪的一件事，就是把 CSAT 从行业平均水平直接拉到了接近满分的程度，FRT 也是断崖式地下降，basically 我们的响应速度在整个公司是第一名。这个提升是非常 dramatic 的，老板当时都惊到了。具体的 baseline 数字和测量窗口我现在手头没有，但反正就是从很差变成了行业领先，团队士气也跟着上来了，这个 impact 是实打实的。",
+  "session_state": {
+    "drilled_topics": ["团队规模与职责"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把 CSAT 从行业平均水平直接拉到了接近满分的程度，FRT 也是断崖式地下降",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼候选人给出可验证的具体数字——CSAT 的起点和终点分值、FRT 改善前后的具体时长、测量窗口和样本量，以及在没有这些数字时承认其说法是无法佐证的夸大表述"
+    ]
+  }
+}

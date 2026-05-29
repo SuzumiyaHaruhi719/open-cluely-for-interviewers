@@ -1,0 +1,48 @@
+{
+  "id": "fx_0531",
+  "tags": {
+    "industry": "customer-support",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "客服专员 / Support Agent\n\n经历\n小满科技 Support Agent (2022 至今)\n- 处理日常 ticket，主要是账户与 billing 问题\n- 熟练使用 Zendesk\n\n微光网络 客服 (2021-2022)\n- 接听电话，处理退款\n\n教育\n东海学院 大专 (2021)\n技能: Zendesk, 电话沟通, 退款处理, 英语日常。",
+  "jd": "我们在招聘一名 junior support agent，加入一家电商平台的 customer care 团队。你会处理 billing、退款与账户类 ticket，目标是在保证 CSAT 的前提下提升 first-contact resolution。这个岗位需要能接受反馈、能复盘自己处理失误的 case，并愿意按团队 SOP 持续改进。我们会在面试里请你具体讲一个被客户投诉或被 QA 扣分的 case，看你怎么反思 —— 防御心态过强、把问题都归咎于客户或系统的候选人不适合这个团队。",
+  "history": [
+    { "q": "先说说你在小满科技的日常吧 —— 主要处理哪类 ticket?" },
+    { "q": "你的 CSAT 大概在什么水平?" },
+    { "q": "讲一个最近被客户投诉的 case 吧。" },
+    { "q": "客户当时具体不满意什么?" },
+    { "q": "回头看，这个 case 里你自己有哪里可以做得更好?" },
+    { "q": "QA 给你这通对话打了多少分? 扣分点是什么?" },
+    { "q": "你认同那个扣分吗?" },
+    { "q": "如果同样的情况再来一次，你会改哪一步?" },
+    { "q": "你的 first-contact resolution 大概是多少?" },
+    { "q": "团队 SOP 里有没有哪条你觉得不合理、但还是照做了的?" },
+    { "q": "我想再确认一下：刚才那个被投诉的 case，抛开客户和系统的问题，纯粹从你自己的操作来看，有没有哪一步是你做得不对、可以认下来的? 请具体说。" }
+  ],
+  "candidate_last_answer": "说真的，这个问题我有点不太想回答。那个 case 根本不是我的问题，是客户自己没看清楚 refund policy，还有系统当时也在抽风，ticket 都加载不出来。QA 扣我分我也觉得很冤，他们坐在后面看录像当然轻松，真让他们上线接那个客户试试? 你一直追问我哪里做错了，可我已经说了，我该做的都做了。要我硬说自己错在哪，我没法编一个出来。",
+  "session_state": {
+    "drilled_topics": ["ticket-types", "csat-level", "complaint-case", "customer-grievance", "self-reflection", "qa-score", "agree-with-qa", "do-over", "fcr-level", "sop-disagreement"],
+    "current_competency_target": "self-awareness",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "self-awareness",
+    "missing_evidence": [
+      { "competency": "self-awareness", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" },
+      { "competency": "coachability", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 要我硬说自己错在哪，我没法编一个出来",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single concrete step in the candidate's own handling — wording, timing, or escalation choice — that they can own as improvable, separating their actions from the customer/system blame and surfacing whether any self-reflection exists at all"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "fx_0479",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "资深后端工程师 / Staff 级\n\n核心经历\n后端平台组 资深工程师(2020 至今)\n- 情境:核心交易系统在大促期间频繁出现数据库连接池耗尽,导致下单超时率上升。\n- 任务:作为该服务的技术负责人,负责把大促峰值下的下单超时率降到 0.5% 以内。\n- 行动:主导引入连接池治理与读写分离,重写了热点账户的扣减逻辑,采用本地缓存加异步落库,并推动建立了全链路压测机制。\n- 结果:连续两个大促峰值下单超时率从 3.2% 降到 0.3%,数据库 CPU 峰值下降约 40%。\n\n支付网关组 高级工程师(2017-2020)\n- 情境:支付回调存在重复通知导致少量重复入账。\n- 任务:负责设计幂等方案彻底消除重复入账。\n- 行动:基于唯一流水号与状态机设计了幂等中间层,并补齐了对账与告警。\n- 结果:重复入账问题清零,对账差异从每日数十笔降为零。\n\n技能:Java、Go、MySQL、Redis、Kafka、分布式事务、全链路压测、高并发系统设计\n教育:计算机科学硕士",
+  "jd": "我们正在招聘一名 Staff 级后端工程师,负责核心交易与履约链路的高可用与高并发架构。你将主导大促备战的容量规划与全链路压测,负责热点账户、库存扣减等强一致场景的方案设计,并对核心接口的超时率、成功率、数据库稳定性等指标负责。要求:具备大型交易系统的高并发实战经验,能独立定位并解决线上性能瓶颈,熟悉分布式事务与幂等设计,能够把模糊的稳定性问题拆解成可度量、可验证的工程方案,并向技术委员会清晰陈述架构权衡。你将接手一个在历史大促中反复出现数据库连接池耗尽的核心下单服务。",
+  "history": [
+    { "q": "先讲讲你现在负责的核心交易系统,你具体 own 哪一块,对哪些指标负责?" },
+    { "q": "你简历里写大促下单超时率从 3.2% 降到 0.3%。先讲讲当时的瓶颈到底是什么,你是怎么定位的?" },
+    { "q": "你提到引入了读写分离和热点账户的扣减重写。这两个改动里,哪一个对超时率的改善贡献更大,你怎么验证的?" }
+  ],
+  "candidate_last_answer": "其实当时整体就是一个系统性的优化,我们从架构层面做了很多事情,把该治理的都治理了一遍。瓶颈嘛,主要就是高并发下的一些资源问题,我们针对性地做了优化,效果还是挺明显的。具体哪个贡献更大不太好说,因为是组合拳,大家一起 push 下来的,反正最后指标就上去了。我觉得关键还是要有全局视角,把系统当成一个整体来看。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "bottleneck-and-localization", "change-attribution"],
+    "current_competency_target": "process-rigor",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "process-rigor",
+    "missing_evidence": [
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体哪个贡献更大不太好说,因为是组合拳",
+      "must-be-question-type: mechanism",
+      "expected-yield: force the candidate to name the specific mechanism by which connection-pool exhaustion was relieved and present the isolating evidence (e.g. a pressure-test run with only read-write splitting enabled) that attributes the timeout improvement to one change versus the hot-account rewrite, instead of crediting an undifferentiated 『组合拳』"
+    ]
+  }
+}

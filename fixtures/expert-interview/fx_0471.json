@@ -1,0 +1,45 @@
+{
+  "id": "fx_0471",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "赵琳 | Senior Growth Marketing Manager | 上海\nlin.zhao@example.cn\n\n简介：八年增长营销经验，专注用户增长与付费投放。带过五人小团队，负责一家消费 App 的 paid acquisition 与 retention。\n\n工作经历\n某消费 App　Senior Growth Marketing Manager　2021至今\n负责全渠道 paid acquisition，管理月度预算，统筹 Facebook、Google、抖音投放，优化 CAC 与 ROAS，与产品团队合作做留存活动。\n\n某电商公司　Growth Marketing Manager　2017至2021\n负责拉新与 CRM，搭建了邮件与 push 的生命周期营销。\n\n技能：paid acquisition、ROAS 优化、A/B testing、CRM、归因分析、Google Analytics、AppsFlyer。\n\n教育：某大学 市场营销专业 本科 2017。",
+  "jd": "We're hiring a Senior Growth Marketing Manager for a consumer mobile app, based in Shanghai. You will own paid acquisition across channels (Meta, Google, Douyin), manage a sizable monthly budget, and be accountable for CAC, ROAS, and the contribution of paid to installs and revenue. You'll partner with product on retention and with finance on budget efficiency. Requirements: 6+ years in growth/performance marketing, hands-on channel buying, strong command of attribution (MMP like AppsFlyer, plus incrementality thinking), and the ability to defend your numbers. This is a senior, numbers-accountable role: leadership will probe how you measure incrementality versus last-click, how you separate your contribution from organic and seasonality, and how you respond to hard questions. We value candidates who engage critique with evidence rather than defensiveness.",
+  "history": [
+    { "q": "Walk me through your current scope — channels, budget, and the metrics you own." },
+    { "q": "You list ROAS optimization. What ROAS were you running at, and how is it defined in your setup?" },
+    { "q": "How do you separate paid's contribution from organic installs and seasonality?" },
+    { "q": "Have you ever run an incrementality test — geo holdout or PSA — rather than relying on last-click attribution?" },
+    { "q": "Your CAC last year — what was the trend, and what drove it?" },
+    { "q": "When CAC rose, how much of that was platform cost inflation versus your targeting or creative choices?" },
+    { "q": "Tell me about a campaign that underperformed and what you learned." },
+    { "q": "I'm pressing on attribution because it's core to this role. Concretely: how do you know your reported ROAS isn't just claiming credit for conversions that would've happened anyway?" }
+  ],
+  "candidate_last_answer": "你这个问题问得有点外行了，说实话。Last-click 就是行业标准，我用的是 AppsFlyer 的数据，这还能有什么问题？你是在质疑我八年的专业判断吗？incrementality test 那套理论听起来很美，但真正做投放的人都知道根本没那么多预算去做 geo holdout。我把 ROAS 做上去了，installs 涨了，这就是结果。你要是觉得 organic 才是主因，那你来告诉我怎么解释投放停了量就掉？我做这行的时候你们这套方法论还没流行呢。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "roas-definition", "paid-vs-organic-separation", "incrementality-testing", "cac-trend", "cac-driver-attribution", "underperforming-campaign"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 投放停了量就掉",
+      "must-be-question-type: teach-back",
+      "expected-yield: 让候选人撇开防御性情绪，真正解释他凭什么把 installs 归因给 paid——是否做过哪怕一次预算暂停/地理留出的对照、停投后量级下掉了多少、多快恢复，从而暴露他只有 last-click 的相关性证据而没有任何增量性证据"
+    ]
+  }
+}

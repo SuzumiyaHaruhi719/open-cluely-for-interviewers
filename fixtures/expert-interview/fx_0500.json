@@ -1,0 +1,49 @@
+{
+  "id": "fx_0500",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "姓名：陈维一　Staff 临床数据工程师\n\n核心经历\n- 主导某三甲医院电子病历（EMR）数据中台建设，覆盖全院 32 个科室\n- 负责重症监护早期预警模型（Sepsis 预测）从研发到上线的全流程\n- 团队规模：高峰期带领 14 名工程师与 3 名临床信息专员\n\n工作履历\n仁和医疗科技　Staff 数据工程师　2021.03 至今\n- 设计并落地 ICU 脓毒症预警系统，覆盖 8 个 ICU 病区\n- 简历另一处又写道：脓毒症系统仅在 2 个试点病区运行，尚未全院推广\n- 将模型推理延迟从 900ms 降低到 120ms\n\n康桥健康　高级数据工程师　2018.06-2021.02\n- 入职时间一处写 2018.06，另一份附录写 2019 年初才加入\n- 搭建 HL7/FHIR 数据接入管道，对接 6 家区域医院\n\n教育\n华东理工大学　生物医学工程　硕士\n\n技能：Python、Spark、FHIR、SQL、临床 NLP、模型监控\n\n备注：本人对外宣称带过 14 人团队，但项目结项报告里署名的直接下属只有 4 人。",
+  "jd": "我们正在为一家区域医疗集团招聘 Staff 级临床数据工程师，负责跨院区的临床决策支持系统（CDSS）平台。你将拥有脓毒症、急性肾损伤等多个预警模型的端到端落地责任，需要协调临床、信息科与合规三方，确保模型在真实病区的可用性与安全性。我们关注的硬指标包括：预警模型的灵敏度与特异度、误报率（当前一线护士抱怨误报过多）、从数据接入到模型上线的周期，以及模型上线后对临床流程的实际影响。你需要有在受监管医疗环境下处理 PHI 的经验，能向院方质控委员会汇报，并对模型漂移建立长期监控机制。这是一个强调真实临床落地而非论文指标的岗位。",
+  "history": [
+    { "q": "先介绍一下你目前在仁和医疗的职责范围，团队多大、你直接负责哪些系统？" },
+    { "q": "你简历里脓毒症预警系统一处写覆盖 8 个 ICU 病区，另一处又写只有 2 个试点病区，到底是哪个？" },
+    { "q": "那个脓毒症模型上线后，临床上实际的灵敏度和特异度分别是多少？" },
+    { "q": "一线护士对误报率的抱怨你们怎么处理的？误报率从多少降到了多少？" },
+    { "q": "模型推理延迟你说从 900ms 降到 120ms，这个优化具体是你做的哪部分？" },
+    { "q": "换个话题，从数据接入到模型真正在病区跑起来，整个周期大概多久？" },
+    { "q": "你提到带过 14 人团队，但结项报告署名只有 4 个直接下属，这个差异怎么解释？" },
+    { "q": "在康桥健康搭 FHIR 管道时，你对接了 6 家医院，数据质量问题最大的是哪一类？" },
+    { "q": "脓毒症模型有没有出现过上线后效果衰减、需要重新训练的情况？" },
+    { "q": "现在请你聚焦讲一个最能体现你临床落地能力的具体成果，要有可核实的数字。" },
+    { "q": "那你刚说的那个数字，是在哪个病区、用什么口径、什么时间窗算出来的？" }
+  ],
+  "candidate_last_answer": "这么说吧，我们那套脓毒症模型上线之后效果是革命性的，把全院的脓毒症死亡率直接降低了百分之六十，灵敏度做到了百分之九十九点八，误报基本上是零。光这一个系统一年就帮医院省下了差不多三千万，院长在大会上专门表扬过。这些数字在行业里绝对是断层领先的，别的医院根本做不到。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "resume-contradiction-icu-coverage", "model-sensitivity-specificity", "false-alarm-rate", "inference-latency-ownership", "data-to-deployment-cycle", "team-size-contradiction", "fhir-data-quality", "model-drift"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "credibility", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把全院的脓毒症死亡率直接降低了百分之六十",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼出该死亡率数字的真实计算口径——分子分母定义、对照组、统计的病区范围与时间窗，从而暴露这是一个不可核实的夸大指标还是有据可查的结果"
+    ]
+  }
+}

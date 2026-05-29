@@ -1,0 +1,42 @@
+{
+  "id": "fx_0523",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "高级研究员 · 机器学习 / 计算机视觉\n\n概述：高级研究员，专注计算机视觉与模型压缩方向，在工业缺陷检测的落地上有完整的从研究到部署经验。\n\n璇玑研究院 — 高级研究员（2020 至今）\n- 主导工业质检视觉模型的研发与落地，第一作者发表 3 篇顶会论文。\n- 备注：其中 1 篇为第一作者，另 2 篇为第三、第四作者。\n- 负责一个 6 人算法小组，独立带队完成缺陷检测项目。\n- 说明：小组实际是我和另一位资深研究员共同带，工程化部分由平台团队负责。\n- 将产线缺陷漏检率从 8% 降到 0.5%。\n- 修正：0.5% 是离线测试集上的最优结果，产线实测稳定在约 1.2%。\n- 模型推理延迟优化到 15ms，部署在边缘设备上。\n- 注：15ms 是在 GPU 服务器上的数字，边缘设备上约为 40ms。\n\n清岚科技 — 算法研究员（2017–2020）\n参与 OCR 与图像分类项目，负责数据标注流程设计与基线模型训练。\n\n技能：PyTorch、模型量化与蒸馏、目标检测、缺陷检测、边缘部署。\n学历：计算机视觉方向 博士。",
+  "jd": "璇玑研究院招聘一名高级研究员，负责工业视觉缺陷检测方向的研究与落地，直接向首席科学家汇报。岗位职责包括：主导缺陷检测模型的算法设计、模型压缩与边缘部署，推动从离线实验到产线落地的闭环，并对漏检率、误检率、推理延迟等核心指标负责。我们在面试中会针对一个具体的项目反复追问完整脉络——你面对的问题是什么、目标指标多少、你具体做了哪些技术决策、最终量化结果如何，并且会区分离线指标与产线实测指标。我们重视研究者的严谨与诚实，尤其是对实验结论边界的清晰表述。你将与平台工程团队和产线工艺团队协作。要求博士或同等研究经验，有目标检测与模型压缩的实战经验。",
+  "history": [
+    { "q": "讲讲你在璇玑主导的那个缺陷检测项目——当时产线面临的核心问题是什么？" },
+    { "q": "目标指标是怎么定的？漏检率和误检率分别要做到多少？" },
+    { "q": "你具体做了哪些技术决策来把漏检率打下来？讲讲模型这块。" },
+    { "q": "模型压缩和边缘部署这块，你是怎么在精度和延迟之间做权衡的？" },
+    { "q": "最终结果如何？离线和产线实测分别是多少？" },
+    { "q": "你简历写漏检率降到 0.5%，但也注明产线是 1.2%。这个差距的来源你怎么解释？" }
+  ],
+  "candidate_last_answer": "好的我完整讲一下。Situation 是这样：那条产线原来用传统规则加人工复检，漏检率大概 8%，客户投诉很多，而且人工复检一个班要 4 个质检员，成本很高。Task 是我们要把漏检率做到 1% 以内，同时误检率不能超过 3%，因为误检太高产线工人就不信任系统了。Action 上我做了三件事：第一，把检测框架从两阶段换成单阶段并改造了 anchor 设计，专门针对小目标缺陷；第二，针对样本极度不均衡，我设计了一套难例挖掘加数据增强的方案，把稀有缺陷类别的召回单独优化；第三，做了量化和蒸馏把模型压到边缘设备能跑。Result：离线测试集漏检率 0.5%、误检率 2.4%，产线实测漏检率稳定在 1.2%，误检 2.8%，人工复检从 4 人减到 1 人，项目大概用了 9 个月。产线那 1.2% 主要是因为实际光照和新型缺陷的分布漂移，这个我们后来靠持续回流数据在收敛。要说不足，模型对全新缺陷类型的泛化我觉得还是行业普遍没解决好的难题，我们也只能算做到了业界主流水平。",
+  "session_state": {
+    "drilled_topics": ["产线核心问题", "目标指标设定", "降漏检技术决策", "精度延迟权衡", "离线vs产线结果"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 对全新缺陷类型的泛化我觉得还是行业普遍没解决好的难题，我们也只能算做到了业界主流水平",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a concrete, falsifiable claim about the distribution-drift generalization gap — which specific benchmark or method defines the 『业界主流水平』 they claim, what the measured generalization number on novel defect types actually was, and what they personally tried beyond data re-flow — converting the vague industry-norm hedge into a verifiable technical boundary"
+    ]
+  }
+}

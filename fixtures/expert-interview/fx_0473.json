@@ -1,0 +1,48 @@
+{
+  "id": "fx_0473",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Jordan Maxwell — Senior Account Executive\njordan.maxwell@example.com | Denver, CO\n\nSummary: Senior enterprise AE, 9 years selling B2B SaaS into mid-market and enterprise accounts. Consistent President's Club performer.\n\nExperience\nSenior Account Executive — Summit Analytics (2020 to present)\nSold a data-analytics platform into enterprise accounts. Carried a quota, ran full-cycle deals from prospecting to close, managed a pipeline across multiple verticals.\n\nAccount Executive — Brightpath CRM (2016 to 2020)\nMid-market full-cycle sales. Grew a territory from a small book of business.\n\nSkills: enterprise sales, full-cycle closing, pipeline management, MEDDIC, Salesforce, negotiation, forecasting.\n\nEducation: B.A. Economics, University of Colorado, 2015.",
+  "jd": "We are hiring a Senior Account Executive to sell our enterprise data platform into mid-market and enterprise accounts. You'll run full-cycle deals, build and forecast a pipeline, and partner with sales engineering and customer success. Requirements: 6+ years closing B2B SaaS, a track record of carrying and hitting quota, MEDDIC or similar qualification discipline, and clean Salesforce hygiene. This is a quota-accountable, numbers-heavy role. In the interview we will press hard on your actual numbers: real quota and attainment, average deal size, sales cycle, and how much of your pipeline you personally sourced versus what was handed to you. We strongly prefer reps who quote precise, verifiable figures and who can separate their individual contribution from team or marketing-sourced wins.",
+  "history": [
+    { "q": "Give me the shape of your current role at Summit — segment, quota, and what you carry." },
+    { "q": "What was your quota last year and your attainment against it?" },
+    { "q": "What's your average deal size and typical sales cycle?" },
+    { "q": "Walk me through your largest deal — how it started and how you closed it." },
+    { "q": "How much of your pipeline did you personally source versus inbound or SDR-sourced?" },
+    { "q": "Tell me about a deal you lost and why." },
+    { "q": "How do you qualify? Walk me through MEDDIC on a recent deal." },
+    { "q": "What does your forecast accuracy look like — how close are your commits to actuals?" },
+    { "q": "Describe a time you had to discount heavily. What did you give up and what did you protect?" },
+    { "q": "How do you keep your Salesforce pipeline honest?" },
+    { "q": "Let's nail down the headline number. What was your exact attainment last year, and over what quota?" }
+  ],
+  "candidate_last_answer": "Last year was honestly one for the record books — I crushed it, probably like 250% of quota, maybe more. I was easily the top rep in the company, no contest. My deals were all massive, I closed some of the biggest logos we'd ever landed. The exact quota number moves around because of how they set it, and I don't have the Salesforce export handy, but everyone knew I was carrying the team. I've basically been at the top every single year, it's just what I do.",
+  "session_state": {
+    "drilled_topics": ["current-role-shape", "quota-attainment", "deal-size-cycle", "largest-deal", "pipeline-sourcing", "lost-deal", "meddic-qualification", "forecast-accuracy", "discounting-tradeoff", "salesforce-hygiene"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: probably like 250% of quota, maybe more",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual quota dollar figure, the actual closed-won dollars, attainment to one decimal, the measurement year, and at least one named deal with its size and close date — forcing the candidate to either substantiate the 250% claim with verifiable numbers or expose it as bravado"
+    ]
+  }
+}

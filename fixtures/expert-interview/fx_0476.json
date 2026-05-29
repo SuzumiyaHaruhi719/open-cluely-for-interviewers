@@ -1,0 +1,54 @@
+{
+  "id": "fx_0476",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "机械工程本科在读 | Manufacturing Process Intern Candidate\n\nKeywords: Lean Manufacturing, Six Sigma, Kaizen, 5S, Kanban, SPC, DMAIC, TPM, OEE, Poka-Yoke, Value Stream Mapping, Takt Time, CNC, CAD/CAM, SolidWorks, AutoCAD, GD&T, FMEA, PPAP, APQP, ISO 9001, IATF 16949, MES, ERP, SAP PP, Andon, Heijunka, Jidoka, root-cause analysis, fishbone, Pareto, cycle-time reduction, throughput optimization\n\n核心技能 Core Skills:\n- 熟悉 Lean / Six Sigma 方法论，课程项目中应用过 DMAIC 与 value stream mapping\n- SolidWorks、AutoCAD 制图，了解 GD&T 公差标注\n- Python / MATLAB 数据分析，可做 SPC 控制图\n- 英语 CET-6，可读英文技术文档\n\n项目经历 Projects:\n- 校办工厂 capstone：与 4 人小组优化某夹具装配线布局 (line layout)，课程报告里写了 takt time 与 OEE 概念\n- 课程作业：用 fishbone + Pareto 分析某虚拟产线 defect rate\n\n实习 Internship:\n- 某汽车零部件厂 暑期见习 6 周 (shadowing，无正式 KPI)\n\n证书: Six Sigma Green Belt (online MOOC), SolidWorks CSWA",
+  "jd": "We are hiring a Manufacturing Engineering Intern for a Tier-1 automotive components plant (stamping + assembly). You will support the process engineering team on the brake-caliper assembly line. Responsibilities: assist with time studies and takt-time balancing, help maintain SPC charts on critical-to-quality dimensions, participate in Kaizen events, and run small data-collection tasks under an assigned mentor. You will NOT own a line or a KPI; expectations are learning-oriented. Required: pursuing a degree in Mechanical/Industrial Engineering, basic familiarity with lean concepts, comfort on a shop floor (PPE, safety rules), and willingness to work first shift. Nice to have: SolidWorks, Python for basic data work. This is a 12-week paid internship; strong interns are considered for new-grad rotational offers.",
+  "history": [
+    { "q": "Thanks for coming in. To start — why manufacturing, and why this brake-caliper line specifically?" },
+    { "q": "Your resume lists a lot of lean tools. Which one have you actually used hands-on, not just read about?" },
+    { "q": "Tell me about the capstone line-layout project. What was your specific piece of it?" },
+    { "q": "You wrote 『takt time』 in the report — in your own words, what is takt time and why does it matter?" },
+    { "q": "On that fixture line, what was the bottleneck station, and how did your group identify it?" },
+    { "q": "How did you measure cycle time? Stopwatch, video, MES data?" },
+    { "q": "During your 6-week shadowing at the auto-parts plant, what was one thing on the floor that surprised you?" },
+    { "q": "Did you ever see an Andon pull happen? Walk me through what the operators did." },
+    { "q": "Let's do a small scenario. SPC chart shows three consecutive points trending up toward the upper control limit, none over yet. What do you do?" },
+    { "q": "You mentioned a fishbone for defect analysis. Give me two of the categories you put on it." },
+    { "q": "If I asked you to do a time study on station 4 tomorrow morning, how would you set it up?" },
+    { "q": "What PPE would you expect to wear on a stamping floor, and why?" },
+    { "q": "Suppose your mentor is busy and an operator asks you whether a borderline part should ship. What do you say?" },
+    { "q": "Tell me about a time you had to learn an unfamiliar tool or method quickly for a class project." },
+    { "q": "What does OEE stand for, and which of its three components do you think operators most directly affect?" },
+    { "q": "Concretely: on the capstone fixture line, what change did your group recommend, and what was the before/after number?" },
+    { "q": "Right — so what was the actual cycle-time or throughput delta after your recommended layout change? Give me the number." }
+  ],
+  "candidate_last_answer": "嗯…其实那个 capstone 项目让我学到最多的是 teamwork。我们组里有个同学特别 push，开会经常吵起来，后来我们用了一个 group charter,大家分工才顺畅。我觉得 soft skills 在制造业其实被低估了 honestly。而且我那个学期还在准备 Six Sigma 的 online 考试,时间管理压力很大,我专门做了一个 Notion 的 schedule。所以我对自己的 time management 还挺有信心的,我相信来实习也能很快上手。",
+  "session_state": {
+    "drilled_topics": ["motivation", "hands-on-lean-tool", "capstone-role", "takt-time-definition", "bottleneck-id", "cycle-time-method", "shadowing-observation", "andon", "spc-trend-scenario", "fishbone-categories", "time-study-setup", "ppe-safety", "ship-decision-judgment", "fast-learning", "oee-definition", "capstone-result-number"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 所以我对自己的 time management 还挺有信心的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: drag the candidate off the time-management tangent back to the asked question and force a concrete before/after cycle-time or throughput number from the capstone layout change, or an explicit admission that the project produced no measured result"
+    ]
+  }
+}

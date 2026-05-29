@@ -1,0 +1,41 @@
+{
+  "id": "fx_0509",
+  "tags": {
+    "industry": "marketing",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "钱一诺　市场营销实习生\n\n求职意向：内容营销 / 新媒体运营实习\n\n关键词：品牌营销、内容营销、新媒体运营、私域流量、用户增长、SEO、SEM、信息流投放、ROI、转化漏斗、用户画像、A/B 测试、KOL/KOC、社媒矩阵、增长黑客、数据驱动、用户旅程、内容种草、公域私域、裂变、漏斗优化、CTR、CPM、GMV、留存、拉新、促活、复购、品效合一、全域营销、心智占领\n\n实习经历\n微光文化传媒　新媒体实习生　2024.06-2024.11\n- 负责小红书与抖音账号的内容运营，关键词：种草、爆款、流量、涨粉、互动率\n- 参与品牌 campaign 的 social 投放，关键词：信息流、CTR、CPM、ROI\n\n校园经历\n校新媒体中心　成员，关键词：公众号、推文、排版、选题\n\n教育\n中国传媒大学　广告学　本科大三\n\n技能：文案、剪映、Photoshop、小红书运营、抖音运营、数据分析、SEO、SEM、私域运营",
+  "jd": "我们为一家消费品牌招聘市场营销实习生，主要支持小红书与抖音的内容运营。日常工作包括：选题策划、内容撰写与排版、跟进发布数据并做简单复盘、配合品牌 campaign 的执行。面试中我们会针对一条你真正做过的内容，追问从选题到发布到复盘的具体过程，以及你个人在其中做的判断。我们不看重简历上堆了多少营销术语，而看重你能否就一件具体的事讲清楚、答到点子上。",
+  "history": [
+    { "q": "先聊聊你在微光做的小红书内容运营，主要负责哪类账号？" },
+    { "q": "挑一条你自己做的笔记，说说当时为什么选这个选题？" },
+    { "q": "这条笔记发出去之后，数据表现怎么样，你怎么复盘的？" },
+    { "q": "如果让你重新做这条笔记，你会改哪一点？" },
+    { "q": "具体说说：这条笔记的封面和标题，你当时是怎么定的？" }
+  ],
+  "candidate_last_answer": "说到封面和标题，其实我觉得现在整个内容行业的趋势特别值得聊。你看现在大家都在讲『品效合一』和『全域营销』嘛，我平时特别喜欢研究各大品牌的营销案例，像那些刷屏的 campaign 我都会去拆解。我还关注了好多营销博主，每天都在学增长黑客的方法论。我觉得做营销最重要的是要有大局观，要懂用户心智，要能站在品牌战略的高度去思考整个用户旅程……",
+  "session_state": {
+    "drilled_topics": ["account-scope", "topic-selection-rationale", "post-performance-review", "what-to-change"],
+    "current_competency_target": "execution-specificity",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "execution-specificity",
+    "missing_evidence": [
+      { "competency": "execution-specificity", "evidence_type": "mechanism" },
+      { "competency": "execution-specificity", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我平时特别喜欢研究各大品牌的营销案例",
+      "must-be-question-type: teach-back",
+      "expected-yield: 把候选人从行业大趋势的跑题里拉回到那一条具体笔记，逼她说出封面的具体画面、标题的实际文案、以及她当时基于什么数据或判断这样定，验证她是否真的亲手做过这条内容"
+    ]
+  }
+}

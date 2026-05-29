@@ -1,0 +1,37 @@
+{
+  "id": "fx_0484",
+  "tags": {
+    "industry": "sales",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "资深企业级销售 / Staff Enterprise Account Executive\n\n简介\n大客户销售出身,主攻 SaaS 平台的 enterprise 新签与扩展。擅长复杂多线程的 deal,和 C-level 打交道,推动长周期的战略型采购落地。\n\n工作经历\n某 SaaS 公司 — Staff Enterprise AE(2021 至今)\n- 负责金融与制造行业的大客户新签与 upsell\n- 主导多个战略级 deal 的全流程,从 prospecting 到 closing\n- 与 SE、CSM、legal 协同推进复杂采购\n- 多次拿下行业标杆客户\n\n某软件公司 — Enterprise AE(2018-2021)\n- 负责区域大客户开拓\n- 参与重点行业的 pipeline 建设\n\n技能:enterprise sales、complex deal、MEDDIC、多线程谈判、C-level engagement、续约与扩展\n备注:简历通篇未列任何 quota、达成率、ACV、win rate 等具体数字。",
+  "jd": "We are hiring a Staff Enterprise Account Executive for a B2B SaaS platform, focused on net-new logos and expansion in financial services and manufacturing. You will own a strategic-account territory, run complex multi-threaded deals from prospecting to close, and partner with SE/CSM/legal on long-cycle procurements. Required: 6+ years enterprise SaaS sales, a verifiable track record against quota (we will ask for attainment %, ACV, and win rate), MEDDIC or similar qualification discipline, and the ability to attribute a specific deal outcome to your own actions. We value candidates who speak in concrete numbers and own their results. You will inherit a territory with a stalled flagship-account renewal.",
+  "history": [
+    { "q": "Let's get concrete right away. Pick your single biggest closed deal in the last two years — give me the ACV, your quota that year, your attainment, and what you personally did to win it." }
+  ],
+  "candidate_last_answer": "说实话这个问题问得有点 narrow 了。Enterprise sales 不是看一个数字的,你这样问其实抓不到重点。我去年同时在推三个大 deal:一个金融客户的 platform 新签,一个制造业的 multi-year renewal plus expansion,还有一个 competitive displacement——把对手从一个标杆客户那里换掉。这三个我都深度参与了,都很复杂,都涉及 C-level。具体 ACV 和 quota attainment 我现在不方便一个个报,而且坦白讲,纠结这种数字的面试官我见多了,真正懂 enterprise 的 leader 看的是 deal 的 quality 和 strategic value,不是死磕一个百分比。你要是非要数字,我可以会后发你,但我更想聊 deal 本身怎么打的。",
+  "session_state": {
+    "drilled_topics": ["biggest-deal-acv-quota-attainment"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体 ACV 和 quota attainment 我现在不方便一个个报",
+      "must-be-question-type: metric-pin",
+      "expected-yield: hold the line through the hostility and the three-deal deflection — make the candidate commit to one of the three deals and state its ACV, that year's quota, and attainment %, or explicitly concede they cannot/will not provide attainment numbers"
+    ]
+  }
+}

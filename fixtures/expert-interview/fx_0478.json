@@ -1,0 +1,46 @@
+{
+  "id": "fx_0478",
+  "tags": {
+    "industry": "operations",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "运营负责人 / Staff Operations Lead — 跨境电商履约与城配网络\n\n个人简介\n我是一名专注于电商履约运营的资深从业者,过去八年一直在做仓储、运输与最后一公里配送的运营管理工作。我的核心能力在于把混乱的、靠人盯人的运营现场,逐步改造成有标准、有数据、有节奏的可复制体系。我相信运营的本质不是救火,而是把救火的次数变少;不是让某个英雄式的主管连续加班把单发出去,而是让流程本身在没有英雄的情况下也能稳定运转。下面我会比较详细地回顾我这几年做过的几件事,以及我从中总结出来的方法论。\n\n在现公司,我负责华东区域的履约运营,管理范围包括两个区域分拨中心、七个城市的前置仓,以及与之配套的城配车队和外包配送商。日常要对发货时效、履约成本、破损率、客诉率这几个核心指标负责。我刚接手这块业务的时候,情况其实相当被动:旺季一来,分拨中心就爆仓,订单积压在月台上发不出去,司机在门口排队等装车,客服那边投诉电话被打爆。当时整个团队的状态是非常疲惫的,大家都在加班,但加班并没有换来时效的改善,反而因为疲劳导致拣货出错率上升,形成了恶性循环。我意识到,如果不从根子上重构作业流程和排班机制,单纯靠堆人、堆工时是解决不了问题的。\n\n于是我做的第一件事,是把整个履约链路拆开来看,找到真正的瓶颈在哪里。我带着几个班组长,连续两周泡在分拨中心,用最笨的办法掐表做时间研究,把订单从进系统到出库装车的每一个环节的耗时都记录下来。我们发现,真正的堵点并不是大家以为的拣货环节,而是在拣货完成之后的复核与分拣交接环节:因为复核台数量不够,拣完的货大量堆在复核区等待,造成了二次积压。看清楚这一点之后,我们重新规划了作业区的物理布局,把复核台从四个增加到九个,并且按照订单结构把高频小件单独开辟了一条快速通道,让它不再和大件订单抢同一条复核线。\n\n光改布局还不够,排班也得跟上。原来的排班是固定两班倒,旺季淡季一个样,导致旺季人手严重不足、淡季又有人闲着没事干。我引入了一套基于历史订单量预测的弹性排班机制,根据每天预测的单量来动态决定当天需要开几条线、排多少人。为了让预测更准,我和数据团队一起,用过去两年的订单数据做了一个简单的预测模型,把大促、节假日、天气这些因素都纳入进来。这套机制上线之后,旺季爆仓的情况明显缓解了,人效也提上来了,因为大家不再是无差别地加班,而是在真正有单的时候集中产能。\n\n第三件事是和外包配送商的合作模式改造。原来我们和配送商是按票结算的,配送商为了多接单,经常超出自己的运力承诺,结果就是签收时效得不到保障,客诉居高不下。我重新设计了结算与考核机制,把单纯的按票付费改成了与时效、签收率、破损率挂钩的阶梯式结算,达标的给溢价,不达标的扣款,并且建立了每周的运营复盘会,把数据摆在桌面上和配送商一起看。一开始配送商是有抵触情绪的,觉得我们在压价,但我反复和他们沟通,核心是让他们明白,稳定的时效带来的是更高的复购和更大的单量,长期来看是双赢。半年下来,我们核心配送商的签收时效达标率有了明显提升,合作关系反而比以前更稳固了。\n\n回顾这几年的工作,我最大的体会是:运营管理者最重要的能力,是从一堆嘈杂的现象里识别出真正的瓶颈,然后用机制而不是用蛮力去解决它。我也踩过坑,比如最早做弹性排班的时候,因为预测模型太粗糙,有几次预测严重偏低,导致现场措手不及,我后来才明白预测必须留安全冗余,并且要给现场留出快速增援的预案。这些教训让我对运营这件事更加敬畏,也更加坚信数据和流程的价值。\n\nWork Experience (English summary)\n- Current Co. — Staff Operations Lead, East-China Fulfillment (2021-present): own delivery SLA, fulfillment cost, breakage rate, and complaint rate across 2 DCs, 7 forward warehouses, an owned city-delivery fleet, and 3PL last-mile partners.\n- Prior — Regional Warehouse Operations Manager (2018-2021): ran a single sortation hub; led WMS rollout and slotting redesign.\n- Earlier — Operations Supervisor / Shift Lead (2016-2018).\n\nSkills: WMS, demand forecasting, labor scheduling, 3PL/SLA contract design, time-and-motion study, layout optimization, S&OP basics, SQL for ops analytics, Excel modeling.\nTools: SAP EWM, internal OMS, Tableau, SQL.",
+  "jd": "We are hiring a Staff Operations Lead to own regional fulfillment performance for a fast-growing cross-border e-commerce platform. Scope: multiple distribution centers, forward-stocking locations, an owned last-mile fleet, and a portfolio of 3PL partners. You will be accountable for delivery SLA, cost-per-order, breakage, and complaint rate, and you will be expected to redesign labor scheduling, partner contracts, and physical workflow to hit peak-season targets without runaway overtime. Required: 6+ years in e-commerce or logistics operations, demonstrated experience finding and fixing real throughput bottlenecks with data, hands-on labor-planning and 3PL SLA design, and comfort presenting cost and SLA tradeoffs to leadership. You will inherit a peak-season congestion problem and a 3PL whose sign-on-time performance is below target.",
+  "history": [
+    { "q": "Give me your current scope in one minute — facilities, headcount footprint, and the metrics you own." },
+    { "q": "You inherited a peak-season congestion problem. What did you find was the real bottleneck?" },
+    { "q": "How did you actually locate that bottleneck — what did you measure, and how?" },
+    { "q": "You added complexity by splitting a fast lane for small items. What did that cost you, and was it worth it?" },
+    { "q": "Tell me about the flexible-scheduling model. What inputs drove it?" },
+    { "q": "When your forecast was wrong early on, what specifically broke on the floor?" },
+    { "q": "On the 3PL: walk me through the new tiered settlement design and how partners reacted." },
+    { "q": "How did you get a resistant 3PL to actually accept penalty clauses?" },
+    { "q": "Across all of this, what's the one tradeoff you'd defend hardest if leadership pushed back on cost?" },
+    { "q": "Quantify it for me: on the complaint rate specifically, what was the before and after, and over what window?" }
+  ],
+  "candidate_last_answer": "客诉率 from 4.1% down to 1.7% over the first peak season,大概 ten weeks。两个 driver:复核台 4→9 把月台积压压下去,加上 3PL 的 tiered settlement 把签收时效达标率从 78% 拉到 92%。我没有 over-claim 说是我一个人做的,但这两个 mechanism 的 design 和落地是我主导的。代价我也讲清楚:fast lane 多占了一条复核线的 footprint,淡季利用率只有 ~60%,但旺季它扛住了 small-item 的洪峰,所以我认为值。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "bottleneck-identification", "measurement-method", "fast-lane-tradeoff", "scheduling-inputs", "forecast-failure-mode", "3pl-settlement-design", "3pl-resistance-handling", "cost-tradeoff-defense"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 客诉率 from 4.1% down to 1.7% over the first peak season",
+      "must-be-question-type: metric-pin",
+      "expected-yield: confirm the complaint-rate figure is decomposable — what fraction of the 4.1%→1.7% drop is attributable to the dock-congestion fix versus the 3PL sign-on-time improvement, and whether the denominator (orders) was held constant across the ten-week window"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "fx_0486",
+  "tags": {
+    "industry": "sales",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "资深销售 / Staff 级 — 工业设备解决方案销售\n\n工作经历\n某工业自动化公司 — 资深销售(2021 至今)\n- 一处简介写『负责华北大区,带 8 人销售团队』,另一处写『独立大客户销售,不带团队』\n- 负责自动化产线设备的大客户新签与方案销售\n- 主导多个长周期项目型 deal\n- 配额一处写『年度 quota 3000 万』,另一处写『季度 quota 3000 万』\n\n某机械制造公司 — 销售经理(2018-2021)\n- 离职时间一处写 2021 年 6 月,另一处写 2020 年底\n- 负责区域渠道与直销\n\n技能:工业设备销售、方案型销售、长周期项目 deal、招投标、渠道管理、客户关系\n教育:机械工程本科",
+  "jd": "我们正在招聘一名 Staff 级解决方案销售,负责工业自动化设备的大客户新签与项目型销售。你将主导长周期、多干系人的招投标与方案落地,对接客户的技术与采购决策链,并对新签金额、回款与赢单率负责。要求:具备工业设备或方案型销售的实战经验,能完整复盘一个 deal 的打法并用数字说明结果,过往经历中的职责范围、时间线与配额口径需经得起核对。我们重视能讲清楚『最后赢没赢、赢了多少』的候选人。你将接手一个卡在采购环节的标杆项目。",
+  "history": [
+    { "q": "先对齐:你现在带 8 人团队还是独立大客户销售?简历两处写得不一样。" },
+    { "q": "配额到底是年度 3000 万还是季度 3000 万?这两个差很多。" },
+    { "q": "上一家离职时间一处 2021 年 6 月、一处 2020 年底,以哪个为准?" },
+    { "q": "好,讲一个你主导的项目型 deal。先说背景和客户的核心诉求。" },
+    { "q": "你当时的目标和卡点是什么?决策链上谁是关键人?" },
+    { "q": "具体讲讲你怎么打的:多线程怎么推进,标书和商务怎么做的?" }
+  ],
+  "candidate_last_answer": "这个 deal 是华北一家大型汽车零部件厂的整线自动化改造。背景(S):客户老产线效率瓶颈明显,想上一套柔性产线,但内部技术派和采购派意见不合,技术要性能、采购压价格。我的任务(T)是在对手已经先入场的情况下翻盘拿下这个标杆。我的打法(A):我先绕开采购,直接和他们的设备工程总监建立信任,陪他去看了我们另一个客户的现场样板;同时联合我们的 SE 出了一版针对他们节拍痛点的定制方案,把总拥有成本 TCO 算给采购看;招投标阶段我们做了两轮技术澄清,商务上用分期付款换价格刚性。整个 deal 我多线程推了大概大半年,把技术、采购、财务几条线都串起来了。打法上我是比较有信心的,这套多线程加 TCO 的方法我屡试不爽。",
+  "session_state": {
+    "drilled_topics": ["scope-contradiction", "quota-contradiction", "tenure-contradiction", "deal-background", "objective-and-blockers", "deal-execution-mechanics"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这套多线程加 TCO 的方法我屡试不爽",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate gave a complete S/T/A but no Result — force the missing outcome: did the deal close, the signed contract value, when it closed, and against what quota, rather than another assertion that the method always works"
+    ]
+  }
+}

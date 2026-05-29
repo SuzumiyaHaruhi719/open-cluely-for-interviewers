@@ -1,0 +1,40 @@
+{
+  "id": "fx_0529",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "初级投资分析师 / 行业新星\n\n个人简介\n我是金融行业不可多得的复合型人才，本科期间就展现出远超同龄人的投研天赋。我对市场有着近乎本能的敏锐嗅觉，自学完成了卖方分析师三年才能掌握的全套建模能力，被多位老师称为『天生做投资的人』。\n\n核心亮点\n- 大学期间运营个人模拟组合，年化收益率高达百分之四十，全程跑赢大盘\n- 独立完成数十份行业深度报告，质量直逼头部券商研报\n- 精通 DCF、可比公司、LBO 等全套估值模型，无所不能\n- 在校期间斩获多项投资比赛大奖，几乎逢赛必胜\n\n实习经历\n远东证券 研究所实习生（二零二三年六月至九月）\n- 协助分析师覆盖新能源板块，独立撰写了多篇行业点评\n- 实习期间表现极为突出，被誉为带教过最优秀的实习生\n\n海川基金 投研实习生（二零二二年暑期）\n- 参与一级市场项目尽调，搭建了完整的财务模型\n\n教育背景\n江南财经大学 金融学 本科，二零二四年毕业，绩点排名专业前列。\n技能：财务建模、行业研究、估值、Wind、Python 数据处理。",
+  "jd": "我们正在招聘一名初级买方研究员，加入二级市场权益投资团队，覆盖消费与制造板块。日常工作包括搭建并维护财务模型、撰写公司与行业研究、参与投资决策讨论，并向基金经理汇报。我们看重的是扎实的基本功与诚实的自我认知，而不是华丽的措辞 —— 最强的候选人能用具体的数据口径说明自己做过什么：模拟组合的收益是怎么算的、回撤多大、跑赢的是哪个基准、哪些是自己独立完成的、哪些是团队的成果。我们会就每一个数字追问其计算方法与可验证性。需要熟练的建模能力、清晰的逻辑表达，以及在压力下承认『我还不知道』的坦诚。",
+  "history": [
+    { "q": "先聊聊你大学期间运营的模拟组合吧 —— 是什么策略，覆盖哪些标的?" },
+    { "q": "你简历里写年化百分之四十、全程跑赢大盘。这个收益是怎么算出来的，跑赢的是哪个基准?" },
+    { "q": "那这段时间里你的最大回撤是多少，遇到过亏损最大的一笔交易是什么?" }
+  ],
+  "candidate_last_answer": "说实话，回撤这种东西对我来说基本不是问题，因为我的择时能力是经过市场反复验证的。我可以很自信地说，我的模拟组合几乎没有像样的回撤，因为我总能在大跌之前就提前减仓 —— 这是一种盘感，是天赋。年化百分之四十还是保守的，我个人的实盘体感比这高得多。可以说在投研这件事上我已经达到了远超应届生的水平，是那种天生就该做投资的人。基准什么的其实不重要，重要的是我跑赢了所有人。",
+  "session_state": {
+    "drilled_topics": ["mock-portfolio-strategy", "return-methodology", "max-drawdown"],
+    "current_competency_target": "intellectual-honesty",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "intellectual-honesty",
+    "missing_evidence": [
+      { "competency": "intellectual-honesty", "evidence_type": "metric" },
+      { "competency": "intellectual-honesty", "evidence_type": "mechanism" },
+      { "competency": "analytical-rigor", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我的模拟组合几乎没有像样的回撤，因为我总能在大跌之前就提前减仓",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a specific losing trade or drawdown episode with the actual percentage and date, and what the candidate did when a position moved against them — puncturing the 『no real drawdown / pure instinct』 claim with a concrete adverse case"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0470",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Alex Petrov — Staff Software Engineer\nalex.petrov@example.com | Seattle, WA\n\nSUMMARY\nStaff engineer with 11 years of experience building large-scale distributed systems and payments infrastructure. Hands-on technical leader who still writes most of the critical code on my teams.\n\nEXPERIENCE\nStaff Software Engineer — Helix Payments (2019 to present)\n- Tech lead for the payments ledger service handling millions of transactions per day.\n- I personally architected and wrote the core double-entry ledger from scratch.\n- Led a team of 8 engineers; as a staff engineer I mostly stay out of the code and focus on design reviews and mentorship.\n- Reduced p99 latency on the settlement path; owned the migration from a monolith to services.\n- Drove our PCI-DSS compliance effort for the cardholder data environment.\n\nSenior Software Engineer — Nimbus Cloud (2015 to 2019)\n- Built internal tooling for the data platform team.\n- I was the sole engineer on the team for most of my tenure.\n- Collaborated with a cross-functional group of 12 on the platform redesign.\n\nSoftware Engineer — Various startups (2013 to 2015)\n- Full-stack work across two early-stage companies.\n\nSKILLS\nGo, Java, Python, distributed systems, payments, PostgreSQL, Kafka, Kubernetes, system design, PCI-DSS.\n\nEDUCATION\nB.S. Computer Science, University of Washington, 2013.\n\nNOTE\nI believe strong engineers ship fast and ask forgiveness; I also believe in rigorous process and never cutting corners on compliance.",
+  "jd": "We're hiring a Staff Software Engineer for our payments platform team. You'll set technical direction for services handling sensitive cardholder and financial data, lead design reviews, mentor senior engineers, and partner with security and compliance on our PCI-DSS-scoped systems. Responsibilities: own architecture for high-throughput, correctness-critical services; drive cross-team technical decisions; raise the engineering bar through reviews and mentorship; partner with security on threat modeling and audit readiness. Requirements: 8+ years building distributed systems, depth in at least one production payments or financial-data system, strong system-design judgment, and a track record of leading without authority. Because this role touches regulated financial data, we screen hard for sound judgment under compliance constraints and for candidates who own their decisions plainly rather than deflecting. We expect staff engineers to model the behavior they want from their teams.",
+  "history": [
+    { "q": "Your resume says you 'personally architected and wrote the core double-entry ledger,' but also that as a staff engineer you 'mostly stay out of the code.' Help me reconcile those — which is it on the ledger?" },
+    { "q": "Let's go deep on the ledger. Walk me through how you guarantee correctness under concurrent writes." },
+    { "q": "You drove the PCI-DSS effort. Tell me about a specific moment where a compliance requirement conflicted with shipping speed." },
+    { "q": "What did you actually do in that moment — what was the decision and who made it?" },
+    { "q": "Your resume note says you believe in 'ship fast and ask forgiveness' but also 'never cutting corners on compliance.' In the cardholder data environment, how do you hold both?" },
+    { "q": "Give me one concrete time, in a PCI-scoped system, where you moved forward without full sign-off. What exactly did you ship, and what was the gap?" }
+  ],
+  "candidate_last_answer": "Honestly? Let me turn that around on you — how does your team define 'full sign-off,' because in my experience that bar is set by people who've never shipped under a deadline. But fine, one time we needed to launch a new settlement endpoint and the formal security review was backed up two weeks. So I pushed it to production with the cardholder data logging still on in plaintext, told myself we'd scrub the logs later, and we hit the launch date. It was the right call for the business. Wouldn't you have done the same if it was your number on the line?",
+  "session_state": {
+    "drilled_topics": ["resume-contradiction-ledger", "ledger-concurrency-correctness", "compliance-vs-speed-moment", "decision-ownership", "ship-fast-vs-compliance-philosophy"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity-under-pressure", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [
+      { "type": "compliance-risk", "detail": "Candidate admits shipping a PCI-scoped settlement endpoint to production with cardholder data logged in plaintext and deferring remediation, framed as the right business call — a likely PCI-DSS violation involving sensitive cardholder data." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: with the cardholder data logging still on in plaintext, told myself we'd scrub the logs later",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a non-deflected account of the plaintext-cardholder-data incident — what the actual exposure window and blast radius were, whether logs were ever scrubbed and when, who he informed (security, compliance, his manager), and his after-the-fact judgment on whether it was acceptable — while resisting his attempt to reverse the question onto the interviewer"
+    ]
+  }
+}

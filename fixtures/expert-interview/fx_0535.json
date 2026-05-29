@@ -1,0 +1,40 @@
+{
+  "id": "fx_0535",
+  "tags": {
+    "industry": "operations",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "运营副总裁（VP of Operations）\n\n概述\n十六年运营管理经验，覆盖供应链、履约与城市运营。曾在多家高速扩张的本地生活与电商公司担任运营负责人，主导过大规模团队管理与跨区域履约网络的搭建。\n\n工作经历\n\n速达到家 运营副总裁（二零二零至二零二四）\n- 负责全国履约与城市运营，管理覆盖多座城市的运营团队与配送网络\n- 主导了履约网络的区域化重构与仓配整合项目\n- 牵头推动履约时效与成本的优化，参与公司级的运营战略制定\n- 经历了一次大规模的业务收缩与团队调整\n\n万联优选 运营总监（二零一六至二零二零）\n- 负责区域仓配与最后一公里履约，搭建了多个城市的运营体系\n- 推动过多个降本增效项目\n\n教育背景\n东都大学 工商管理硕士（MBA），二零一二年毕业。\n技能：供应链运营、履约网络、城市运营、团队管理、降本增效、运营战略。",
+  "jd": "我们正在招聘一名运营副总裁，负责一家成长期即时零售公司的全国履约与城市运营。你将管理跨城市的运营团队、owning 履约时效与成本指标，并向 CEO 直接汇报。这个岗位需要极强的结果担当与复盘能力 —— 我们会重点考察你如何面对失败的项目或下滑的指标：你能否清晰说出自己的判断在哪里出了问题、当时基于什么信息做的决定、以及你个人为结果承担了什么。把不利结果主要归因于外部环境、前任、或下属执行的候选人，不符合我们对这个层级的要求。需要扎实的履约网络经验与诚实的自我复盘能力。",
+  "history": [
+    { "q": "先讲讲你在速达到家主导的履约网络区域化重构 —— 目标是什么?" },
+    { "q": "这个重构最后达成预期了吗?" },
+    { "q": "据我了解那次重构后履约成本不降反升，还伴随一次大规模收缩。从结果看，你觉得问题出在哪里?" }
+  ],
+  "candidate_last_answer": "坦白讲，那个结果我认为主要不是方案本身的问题。方向是对的，是执行层面没跟上 —— 下面几个城市经理能力参差不齐，该砍的仓他们舍不得砍，数据报上来还注水，我在总部其实是被蒙在鼓里的。再加上当时大环境急转直下，资本市场一收紧，公司战略一天一个样，前任 CEO 留下的烂摊子也不少，仓配系统本来就是个半成品。说实话换谁来都很难做。我能做的判断我都做了，方案设计上我是问心无愧的，真正掉链子的是落地那一环，那不是我能完全控制的。",
+  "session_state": {
+    "drilled_topics": ["network-restructure-goal", "did-it-succeed", "root-cause-of-failure"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 真正掉链子的是落地那一环，那不是我能完全控制的",
+      "must-be-question-type: counterfactual",
+      "expected-yield: one decision the candidate personally got wrong in the restructure — a specific assumption or design choice they would change with hindsight — forcing accountability past the 『执行没跟上 / 大环境 / 前任』 blame and onto their own judgment"
+    ]
+  }
+}

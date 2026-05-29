@@ -1,0 +1,47 @@
+{
+  "id": "fx_0508",
+  "tags": {
+    "industry": "operations",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "孙明哲　Staff 供应链运营经理\n\n核心经历\n- 主导跨境电商履约网络的 S&OP（销售与运营规划）流程搭建\n- 负责区域仓网布局与库存周转优化\n- 简历开头写管理 5 个海外仓，下文运营细节里又写只直接管 2 个仓、另外 3 个是 3PL 代运营\n\n工作履历\n远帆跨境　Staff 供应链运营经理　2021.05 至今\n- 一处写在职约 4 年，另一处时间线推算只有约 3 年\n- 推动 demand forecasting 从 Excel 迁移到 planning 系统\n- 简历又在某段落写预测仍主要靠人工 Excel，系统只是辅助\n- 负责与 3PL 谈 SLA 与 cost-per-order\n\n顺联物流　高级运营专员　2017-2021\n- 负责 last-mile 配送的承运商管理\n\n教育\n同济大学　物流工程　硕士\n\n技能：S&OP、Inventory planning、3PL 管理、SQL、Power BI、Demand forecasting\n\n备注：fill rate 一处写常年稳定在 98%，另一处复盘里写旺季曾跌到 85%。",
+  "jd": "我们为一家跨境电商公司招聘 Staff 级供应链运营经理，负责海外仓网与履约（fulfillment）的端到端运营。你将拥有 S&OP 流程、库存计划（inventory planning）、以及 3PL 履约伙伴管理的责任，核心 KPI 包括 fill rate、库存周转天数、cost-per-order 与旺季的 on-time 履约率。我们需要候选人能精确讲清自己真实负责的范围（直管仓 vs 代运营仓）、用的预测方法到底是系统还是人工、以及关键数字背后的口径。面试会针对简历中的不一致之处追问，欣赏 precise、不含糊的回答。",
+  "history": [
+    { "q": "先讲讲你在远帆现在的范围，海外仓你到底直接管几个？" },
+    { "q": "简历开头写管 5 个仓，后面又说只直管 2 个、3 个是 3PL，澄清一下？" },
+    { "q": "你说推动 demand forecasting 迁到 planning 系统，但又写预测仍主要靠 Excel，现状到底是哪个？" },
+    { "q": "fill rate 一处写常年 98%，另一处写旺季跌到 85%，真实情况是？" },
+    { "q": "旺季跌到 85% 那次，root cause 是什么？" },
+    { "q": "你跟 3PL 谈 cost-per-order，谈下来的口径是含尾程还是不含？" },
+    { "q": "库存周转天数你们现在大概多少？用什么口径算的？" },
+    { "q": "S&OP 例会是你 own 吗？哪些部门参加，你负责哪一段？" },
+    { "q": "你在职到底多久？一处写 4 年一处推算只有 3 年。" },
+    { "q": "现在请你具体讲一次你做的、有可核实结果的运营改进。" },
+    { "q": "那次改进里，前后的那个数字是你自己拉的还是别人给你的？" }
+  ],
+  "candidate_last_answer": "讲一个具体的：去年 Q3 旺季，我直管的美西仓 fill rate 从 85% 拉回到 96%。root cause 是 safety stock 设置用的是全年平均需求，没有按 SKU 的旺季 demand 调。我做的是对 top 200 SKU 重新算了旺季的 reorder point，把 safety stock 上调了一档，数字是我自己从 WMS 导出后用 Power BI 复核的，不是别人给的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "warehouse-count-contradiction", "forecasting-method-contradiction", "fill-rate-contradiction", "peak-root-cause", "cost-per-order-definition", "inventory-turns", "snop-ownership", "tenure-contradiction"],
+    "current_competency_target": "execution-specificity",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "execution-specificity",
+    "missing_evidence": [
+      { "competency": "execution-specificity", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 对 top 200 SKU 重新算了旺季的 reorder point",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 让候选人把这次 reorder point 调整讲到底——他用什么 lead time 和服务水平假设算的、为什么选 top 200 而不是全量、上调 safety stock 是否带来了库存周转或持有成本的代价，从而验证决策链是否真实严谨"
+    ]
+  }
+}

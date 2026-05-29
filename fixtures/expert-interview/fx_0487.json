@@ -1,0 +1,48 @@
+{
+  "id": "fx_0487",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "明星产品经理 / Senior PM — B2C 增长方向\n\n个人定位\n我是一名以 growth 见长的资深产品经理,被同行称为『增长黑客里最懂用户的,懂用户里最会增长的』。我主导过多个现象级功能,对 north-star metric 有近乎直觉的把握,几乎每一个我碰过的 project 都跑出了超预期的结果。\n\n工作经历\n某头部 C 端 App — Senior Product Manager(2021 至今)\n- 负责用户增长与留存方向,owning 多个核心 funnel\n- 主导 onboarding 改版、push/召回体系、增长实验平台从 0 到 1\n- 据称把新用户 7 日留存推到了行业天花板\n- 公认的 data-driven decision maker,A/B 实验信手拈来\n\n某互联网公司 — 产品经理(2018-2021)\n- 负责社区互动方向的若干功能\n\n技能:growth、用户留存、A/B testing、funnel optimization、北极星指标、数据分析、SQL、增长实验设计\n教育:数据科学本科\n备注:简历多处使用『现象级』『天花板』『超预期』等措辞,但未给出任何具体 baseline 或 lift 数字。",
+  "jd": "We are hiring a Senior Product Manager for B2C growth, owning new-user activation, retention, and the experimentation roadmap. You will own a north-star metric, design and read A/B experiments rigorously, and drive measurable lift in activation and D7/D30 retention. Required: 5+ years in growth PM, demonstrated ownership of a retention or activation metric with credible baseline and lift numbers, hands-on experiment design (sample sizing, guardrail metrics, significance), and the ability to attribute lift to a specific change rather than to general 『optimization』. We will probe whether outcome claims are backed by real experiment readouts. You will inherit an onboarding funnel with a known D7-retention drop-off.",
+  "history": [
+    { "q": "Give me your current scope — which funnel and which metric do you actually own?" },
+    { "q": "Your resume says you pushed D7 retention to 『行业天花板』. What was the baseline, and what did it become?" },
+    { "q": "Walk me through the onboarding redesign — what was the core hypothesis?" },
+    { "q": "How did you decide which onboarding step to cut versus keep?" },
+    { "q": "What was the single experiment that moved D7 the most? Give me the readout." },
+    { "q": "What guardrail metrics did you watch so activation didn't cannibalize long-term retention?" },
+    { "q": "How did you size that experiment — what was your MDE and sample?" },
+    { "q": "When did you decide it was significant enough to ship?" },
+    { "q": "On the push/recall system — how did you separate its lift from the onboarding change?" },
+    { "q": "Was there a test that lost? What did you learn and kill?" },
+    { "q": "Let's pin the headline: D7 retention before, D7 after, and which one change you'd credit most — with the number." }
+  ],
+  "candidate_last_answer": "嗯,这个其实很难给一个 single number,因为 growth 是一个 holistic 的事情,很多动作叠加在一起。整体来讲我们的 D7 是有明显提升的,在行业里是非常 top 的水平。具体 baseline 我一时记不太清了,反正提升幅度挺可观的。哪一个 change 贡献最大也不好讲,onboarding、push、实验平台都有 contribution,是一套 combo。我比较相信 data,但增长这事儿你不能只盯一个数字,要看整体的 health。反正结果是很 solid 的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "d7-baseline-after", "onboarding-hypothesis", "step-cut-decision", "top-experiment-readout", "guardrail-metrics", "experiment-sizing-mde", "significance-ship-decision", "push-lift-isolation", "losing-test"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体 baseline 我一时记不太清了,反正提升幅度挺可观的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: refuse to accept 『holistic』 and 『combo』 — force one concrete number pair (D7 baseline and post-change D7) tied to a single named experiment with its readout, exposing whether the candidate actually owns a measured result or only headline boasts"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "fx_0481",
+  "tags": {
+    "industry": "finance",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "明星级财务分析师 / FP&A 中坚力量\n\n个人亮点(自评)\n- 公司有史以来最年轻的高级财务分析师,被 CFO 亲口称为『最靠谱的那个人』\n- 凭一己之力把集团预算流程从一团乱麻整顿成行业标杆\n- 财务建模能力公认顶尖,模型被全公司奉为模板\n- 极强的商业敏感度,多次精准预判业务拐点,挽救了无数潜在损失\n\n工作经历\n大型零售集团 — 高级财务分析师 / FP&A(2021 至今)\n- 主导集团年度预算与季度滚动预测\n- 负责毛利、费用率、现金流等核心指标的分析与预警\n- 搭建并维护多业态门店的盈利能力模型\n- 深度参与降本增效专项,推动费用结构优化\n\n某快消公司 — 财务分析师(2018-2021)\n- 负责区域损益分析与差异说明\n- 参与年度预算编制\n\n技能:FP&A、财务建模、预算与滚动预测、商业分析、Excel(大神级)、SQL、Power BI、Anaplan\n教育:会计学本科;CPA、CFA 二级",
+  "jd": "我们正在招聘一名中级 FP&A 财务分析师,负责零售业态的预算、滚动预测与盈利能力分析。你将主导门店与品类的毛利分析、费用率管控与差异归因,搭建并迭代盈利能力模型,支持降本增效专项,并向业务负责人清晰呈现财务洞察与改进建议。要求:3-6 年 FP&A 或财务分析经验,扎实的财务建模与预测能力,能把业务变化拆解为可量化的财务影响,具备良好的跨部门沟通与质疑能力。我们看重务实、能落地、对数字负责的候选人,而非只会包装的人。你将参与一个正在进行的费用结构优化专项。",
+  "history": [
+    { "q": "你简历写得很高调,我想听点具体的。讲一个你主导的降本增效的真实案例:背景、你的任务、你具体做了什么、最后结果是多少?" }
+  ],
+  "candidate_last_answer": "好的,我讲门店人效专项。背景(S):去年华南区 38 家门店人工成本占营收 14.2%,明显高于集团均值 11.5%,但区域负责人坚持说是因为新店爬坡,不肯动。任务(T):我负责量化到底是新店问题还是排班问题,并给出可落地的优化方案,目标是把人工费用率压到 12% 以内。行动(A):我把 38 家店按开业满 12 个月与否拆成两组分别看,发现老店人工费用率也有 13.1%,排除了『纯爬坡』的说法;再用每小时客流和每小时排班人数做了散点,找出 9 家明显排班与客流错配的店,和运营一起重排了高峰/平峰班次,并设了一个人效看板每周复盘。结果(R):这 9 家店三个月后人工费用率从平均 13.6% 降到 11.8%,区域整体从 14.2% 降到 12.3%,年化节省约 470 万,看板也被推广到了其他区域。这个数我可以拿明细对得上。",
+  "session_state": {
+    "drilled_topics": ["cost-reduction-case"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 年化节省约 470 万",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pin down how the 4.7M annualized saving was computed — whether it is the run-rate of the 9 stores' labor-cost-rate drop applied to actual revenue or an extrapolation, whether it nets out any sales impact from the reschedule, and whether the figure double-counts the region-wide 14.2%→12.3% improvement"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fx_0501",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "林书航　初级研究助理（计算材料方向）\n\n研究经历\n- 参与钙钛矿太阳能电池稳定性的第一性原理计算课题\n- 简历开头写主要负责 DFT 计算，后文项目描述里又说自己主要做实验样品制备\n- 协助撰写一篇投稿中的会议论文\n\n项目细节\n清源能源材料实验室　研究助理　2023.09-2025.04\n- 一处写在组里待了一年半，另一处时间线写 2023.09 至今约两年\n- 使用 VASP 跑能带结构与缺陷形成能\n- 又在技能栏注明 VASP 仅停留在跟着师兄看过几次的程度\n\n教育\n南方科技大学　材料科学与工程　本科在读（大四）\n\n技能：Python（初级）、VASP（了解）、Origin 画图、文献调研\n\n备注：GPA 一处写 3.7/4.0，另一处个人陈述里写排名专业前 30%。",
+  "jd": "某新能源材料研究院招聘初级研究助理，支持钙钛矿与钠离子电池方向的计算-实验联合课题。岗位职责包括：在导师指导下完成 DFT 计算任务（建模、提交作业、后处理）、整理实验与计算数据、参与组会汇报与论文图表制作。我们希望候选人能讲清楚自己真正独立完成过的一项工作——用了什么方法、得到什么结果、遇到什么问题如何解决。我们更看重诚实和可成长性，而不是夸大参与度；面试中会请你具体讲解一段你亲手做过的计算或实验流程，并追问技术细节。",
+  "history": [
+    { "q": "先简单说说你在清源实验室这一年多具体做了什么，是偏计算还是偏实验？" },
+    { "q": "你简历里 DFT 计算和样品制备都写成『主要负责』，能讲清楚到底哪块是你亲手做的吗？" },
+    { "q": "那你用 VASP 跑能带结构的时候，输入文件里 ENCUT 和 K 点是怎么定的？" },
+    { "q": "好，那请你完整讲一个你独立从头到尾做完的具体任务，方法、结果、踩过的坑都说说。" }
+  ],
+  "candidate_last_answer": "嗯……这个的话，其实我做的东西还挺多的，方方面面都接触了一些。具体就是跟着师兄做项目嘛，该跑的也跑了，数据也整理了。结果方面我觉得还行吧，反正最后论文也在往前推。坑肯定是有的，但都是些常见的小问题，慢慢也就解决了，整体来说收获挺大的。",
+  "session_state": {
+    "drilled_topics": ["role-clarification", "resume-contradiction-compute-vs-experiment", "vasp-input-parameters"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 该跑的也跑了，数据也整理了",
+      "must-be-question-type: teach-back",
+      "expected-yield: 逼候选人具体讲清『跑了什么』——某一次计算用的体系、参数、命令与输出文件如何判读，从而区分他是亲手操作过还是只在旁边看过"
+    ]
+  }
+}

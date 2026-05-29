@@ -1,0 +1,44 @@
+{
+  "id": "fx_0517",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "VP of Sales — 企业级 SaaS / 大客户销售\n\n概述：12 年 B2B SaaS 销售管理经验，专注 enterprise new-logo 获取与 net revenue retention 提升，带过最大 80 人的 quota-carrying 团队。\n\nNimbusFlow（数据分析平台）— VP of Sales（2021 至今）\n- Situation：公司刚完成 B 轮，new ARR 增长停滞在 18% YoY，sales cycle 拖到 11 个月。\n- Task：把 enterprise 板块的 new ARR 增速拉回 40%+，并压缩 sales cycle。\n- Action：重建了 segmentation 和 territory model，引入 MEDDICC 作为统一 qualification 框架，把 SDR-to-AE 的 handoff SLA 标准化，并搭了一个 deal-desk 来管 pricing exception。\n- Result：enterprise new ARR 增速从 18% 提到 47%，sales cycle 从 11 个月压到 7 个月，win rate 从 19% 提到 28%（两个财年内）。\n\nVerdex Software — Senior Sales Director（2017–2021）\n- Situation：续约率低，gross churn 高达 22%。\n- Task：把 NRR 做到 110% 以上。\n- Action：建了 customer-success 与 sales 的联合 account-planning 机制，推 multi-year 合同结构。\n- Result：NRR 从 96% 提到 114%，gross churn 降到 9%。\n\n教育背景：市场营销学士。Challenger Sale 与 MEDDICC 认证讲师。",
+  "jd": "NimbusFlow 正在招聘一位 VP of Sales 领导我们的 enterprise 与 commercial 两个销售板块（合计约 60 名 quota-carrying reps），直接向 CRO 汇报，负责 new ARR、net revenue retention 与 sales-cycle 效率三项 board-level 指标。当前 enterprise new ARR 增速为 22%，目标在 18 个月内做到 45%+；NRR 当前 104%，目标 115%。这个岗位需要候选人能讲清楚自己亲手做过的、可量化的 pipeline 与 forecasting 改造：具体改了哪个环节、影响了哪个数字、用了多长时间。你将负责 forecast accuracy 的治理、deal-desk 的 pricing 审批，以及与 marketing 的 pipeline-coverage 对齐。我们会在面试中反复追问 forecasting 与 pipeline 的具体机制，期望候选人回答紧扣问题、给出明确数字，而不是发散到行业趋势或个人理念。需要 ~30% 出差。",
+  "history": [
+    { "q": "先讲讲你在 NimbusFlow 现在的 scope——团队规模、负责的 ARR 数字、汇报线。" },
+    { "q": "你把 enterprise new ARR 增速从 18% 拉到 47%。第一个真正起作用的 lever 是什么？" },
+    { "q": "你提到引入了 MEDDICC。具体说说 forecast accuracy 在引入前后是多少？" },
+    { "q": "你们的 forecast 多久 review 一次，commit 与 best-case 的口径是怎么定义的？" },
+    { "q": "讲一个具体的例子：某个季度 forecast 偏差很大，你做了什么把它纠回来？" },
+    { "q": "deal-desk 是你亲手搭的吗？它具体卡哪些 pricing exception，审批 SLA 多长？" },
+    { "q": "回到 forecasting——请给我一个具体季度的 forecast 数字：你 commit 了多少，实际 close 了多少，gap 是怎么来的？" }
+  ],
+  "candidate_last_answer": "这个问题问得很好，其实我觉得 forecasting 的本质是 culture 的问题。你看现在整个 SaaS 行业都在从 growth-at-all-costs 转向 efficient growth，PLG 和 sales-led 的边界越来越模糊，AI 又在重塑整个 GTM motion——我最近读了好几份 benchmark report，里面讲到 top-quartile 的公司怎么用 AI 做 pipeline scoring。我特别 passionate 的一点是怎么 build 一个 high-performance 的销售文化，让每个 rep 都有 ownership。说到团队，我带过的人现在很多都做到 VP 了，这是我最自豪的事情。文化对了，forecast 自然就准了。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "arr-growth-lever", "meddicc-forecast-accuracy", "forecast-cadence-definitions", "forecast-miss-recovery", "deal-desk-mechanics"],
+    "current_competency_target": "forecasting-rigor",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "forecasting-rigor",
+    "missing_evidence": [
+      { "competency": "forecasting-rigor", "evidence_type": "metric" },
+      { "competency": "forecasting-rigor", "evidence_type": "mechanism" },
+      { "competency": "forecasting-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 文化对了，forecast 自然就准了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one specific quarter's committed-versus-actual ARR with the size and source of the gap, pulling the candidate off the industry-trends and culture tangent and back to a concrete forecasting number they personally owned"
+    ]
+  }
+}

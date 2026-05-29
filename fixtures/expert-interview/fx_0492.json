@@ -1,0 +1,46 @@
+{
+  "id": "fx_0492",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Priya Raghunathan\nVP, Treasury & Capital Markets\n\nExperience\nVP, Treasury — Meridian Bancorp (regional bank, ~$40B assets), 2019-present\nDirector, Asset-Liability Management — Meridian Bancorp, 2015-2019\nSenior Manager, Liquidity Risk — Cohen & Webb (advisory), 2011-2015\n\nFocus areas\n- Interest-rate risk and balance-sheet management\n- Liquidity and funding strategy\n- Investment portfolio oversight\n- Regulatory liquidity reporting\n\nEducation\nMBA, Finance — University of Chicago Booth\nBA, Economics — Tufts University\nCFA charterholder",
+  "jd": "Cascade Financial Group seeks a VP of Treasury to own balance-sheet and liquidity strategy for a $55B-asset regional bank navigating a volatile rate environment. Reporting to the Treasurer, you will lead interest-rate-risk management, the investment portfolio, funding strategy, and regulatory liquidity reporting (LCR, internal stress framework). The board is focused on the bank's recent deposit outflows and the unrealized losses sitting in the available-for-sale book. We need a leader who can speak plainly about hard calls: when you hedged or chose not to, what you assumed about deposit behavior, and what you got wrong. This role presents to the ALCO and the board risk committee. We will press on specifics — basis points, durations, dollar impacts, and the reasoning behind a position — and we are skeptical of polished narratives that don't survive a follow-up question.",
+  "history": [
+    { "q": "Walk me through your current treasury mandate at Meridian and what you personally own." },
+    { "q": "2022-2023 was brutal for bank balance sheets. Tell me how your AFS book performed through the rate run-up." },
+    { "q": "Did you reposition the portfolio, and if so, when did you act relative to the rate moves?" },
+    { "q": "Let's talk deposits. What assumptions were you running on deposit beta and runoff?" },
+    { "q": "Were those assumptions right? Where did reality diverge?" },
+    { "q": "Describe a specific hedging decision you made — or deliberately didn't make — during that period." },
+    { "q": "What was the notional, the instrument, and the rationale on that hedge?" },
+    { "q": "Tell me about a treasury call you got wrong and what it cost." },
+    { "q": "Give me the single hardest balance-sheet decision you personally made in the last two years — the actual numbers and your reasoning at the moment of the call." }
+  ],
+  "candidate_last_answer": "Great question, and it really comes down to disciplined, through-the-cycle balance-sheet stewardship. My philosophy has always been that treasury is about optionality and resilience, not market-timing. So the hardest decision was fundamentally about staying true to our risk appetite framework while remaining nimble. We took a measured, data-driven posture: we stress-tested rigorously, we engaged ALCO proactively, and we positioned the balance sheet to be antifragile across a range of rate scenarios. At the end of the day it's about protecting net interest margin while preserving liquidity optionality — and I'd say we threaded that needle by staying disciplined and not chasing the market. It was a textbook case of letting your framework do the work.",
+  "session_state": {
+    "drilled_topics": ["treasury-mandate", "afs-book-performance", "portfolio-repositioning-timing", "deposit-assumptions", "assumption-accuracy", "hedging-decision", "hedge-terms", "decision-got-wrong"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: positioned the balance sheet to be antifragile across a range of rate scenarios",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the actual decision behind the buzzwords — the specific position taken or avoided, its notional and duration, the basis points at stake, the date relative to rate moves, and the explicit tradeoff between protecting NIM and preserving liquidity"
+    ]
+  }
+}

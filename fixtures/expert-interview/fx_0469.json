@@ -1,0 +1,51 @@
+{
+  "id": "fx_0469",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Devon Okafor — Junior Data Analyst\ndevon.okafor@example.com | github.com/devonok | Chicago, IL\n\nTECH STACK (keywords): Python, pandas, NumPy, SQL, PostgreSQL, MySQL, BigQuery, Snowflake, dbt, Airflow, Spark, Hadoop, Kafka, Tableau, Power BI, Looker, Excel, R, scikit-learn, TensorFlow, PyTorch, Git, Docker, Kubernetes, AWS, GCP, Azure, ETL, ELT, data warehousing, data modeling, star schema, machine learning, deep learning, A/B testing, statistics, regression, clustering, NLP, computer vision, MLOps, CI/CD, REST APIs, GraphQL, Redis, MongoDB, Databricks.\n\nSUMMARY\nData-driven junior analyst passionate about turning data into insights using cutting-edge tools across the entire modern data stack. Experienced with end-to-end pipelines, dashboards, and machine learning workflows.\n\nEXPERIENCE\nData Analyst — Lakeshore Retail Analytics (Jul 2023 to present)\n- Built dashboards in Tableau and Looker for the merchandising team.\n- Wrote SQL queries against the BigQuery warehouse to pull weekly sales reports.\n- Maintained a couple of dbt models and helped monitor an Airflow DAG.\n- Did exploratory analysis in pandas on customer purchase data.\n- Participated in A/B test readouts with the growth team.\n\nData Intern — Midwest Insurance Co (Summer 2022)\n- Cleaned claims data in Python and built an Excel dashboard for the actuarial team.\n- Shadowed the data engineering team and learned about ETL.\n\nPROJECTS\n- Personal project: trained a scikit-learn churn model on a public telco dataset (Kaggle).\n- Personal project: built a Spark + Kafka streaming demo following an online tutorial.\n\nEDUCATION\nB.S. Statistics, University of Illinois Urbana-Champaign, 2022.\n\nCERTIFICATIONS\nGoogle Data Analytics Certificate; AWS Cloud Practitioner (in progress).",
+  "jd": "We are hiring a Junior Data Analyst for our retail analytics team. You'll write SQL against our BigQuery warehouse, build and maintain dashboards in Tableau or Looker, support A/B test analysis for the growth team, and contribute to our dbt transformation layer. Requirements: 1 to 3 years (internships count) with SQL and at least one BI tool, comfort with pandas for ad-hoc analysis, and basic understanding of experimentation. The day-to-day is concrete: stakeholders ask precise questions and need precise, scoped answers. We value analysts who can stay on the question being asked, state exactly what they did versus what the team did, and quantify the result. Buzzword fluency is not what we screen for; we screen for the ability to take one real analysis from question to defensible answer.",
+  "history": [
+    { "q": "Your resume lists a very long tech stack. Let's ground it — at Lakeshore, what do you personally touch in a normal week?" },
+    { "q": "You list Spark, Kafka, TensorFlow, Kubernetes. Which of those have you used in a job, versus a tutorial or personal project?" },
+    { "q": "Let's pick one real thing. Tell me about a dashboard you built for the merchandising team." },
+    { "q": "What decision did that dashboard actually drive for them?" },
+    { "q": "You mentioned A/B test readouts. Walk me through one experiment you contributed to." },
+    { "q": "What was your specific piece of that experiment versus the growth team's?" },
+    { "q": "How did you determine whether the result was statistically meaningful?" },
+    { "q": "Let's talk SQL. Describe a genuinely tricky query you had to write and what made it hard." },
+    { "q": "You said you maintained a couple of dbt models — what did maintaining them involve?" },
+    { "q": "Tell me about a time your analysis was wrong or misleading. What happened?" },
+    { "q": "How do you usually validate a number before you hand it to a stakeholder?" },
+    { "q": "Let's do a focused one. A merchandiser asks: 'which category drove last week's revenue dip?' Walk me through exactly how you'd answer that, step by step." },
+    { "q": "I want to keep you on that exact question. Just the steps for the revenue-dip analysis — no tangents." },
+    { "q": "Let's try once more, and I need you to give me only the concrete steps for the revenue-dip query — start at 'I open the warehouse' and stop when you hand over the answer." }
+  ],
+  "candidate_last_answer": "Okay so for the revenue-dip thing, first I'd open the warehouse — and honestly this reminds me of when I was first learning SQL back in college, our professor had this whole philosophy about how data is like a language, which is so true, and that's actually why I got into this field, because my older cousin works in finance and he always said data is the new oil, which, you know, there's a debate about whether that metaphor even holds up because oil is finite and data isn't, but anyway. So I'd probably look at the sales table, and BigQuery is interesting because the way it bills you is by bytes scanned, which I learned the hard way one time when I ran a huge query, that was a whole thing with my manager — and Snowflake does it differently with credits, I actually have a personal project comparing them. Where was I? Right, the revenue dip. I'd, um, slice it by category somehow.",
+  "session_state": {
+    "drilled_topics": ["weekly-actual-work", "stack-real-vs-tutorial", "dashboard-example", "dashboard-decision-impact", "ab-test-walkthrough", "ab-test-ownership", "statistical-significance", "tricky-sql", "dbt-maintenance", "wrong-analysis", "number-validation", "revenue-dip-walkthrough", "revenue-dip-refocus-1"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "analytical-rigor", "evidence_type": "scope" },
+      { "competency": "communication-followthrough", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd, um, slice it by category somehow",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a tangent-free, ordered sequence of the actual analytical steps for the revenue-dip query — which tables he joins, how he isolates the dip to a category (week-over-week delta, contribution to variance), and the exact handoff — exposing whether he can execute a basic analysis or only free-associates around buzzwords"
+    ]
+  }
+}

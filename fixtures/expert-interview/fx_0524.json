@@ -1,0 +1,51 @@
+{
+  "id": "fx_0524",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Aspiring Software Engineer | Soon-to-be industry-defining backend architect\n\nI am a self-taught full-stack prodigy currently pursuing a B.S. in Computer Science (3rd year). I single-handedly built three production-grade platforms before the age of 20 and routinely outperform engineers with 10+ years of experience.\n\nSELECTED ACHIEVEMENTS\n- Solo-architected a 'web-scale' real-time chat app (React, Node, WebSockets) that effortlessly handles unlimited concurrent users\n- Created a revolutionary trading bot that beats the market consistently\n- Hackathon legend: won every hackathon I have ever entered (4 of them)\n- Mastered 11 programming languages and every major cloud provider\n\nEXPERIENCE\nFreelance Developer (2023-present) — Delivered flawless code for various clients, zero bugs ever shipped.\nCS Tutor, University Learning Center (2022-2023) — Taught struggling students who could not keep up.\n\nEDUCATION\nB.S. Computer Science, State University, expected 2026. GPA 3.4.\n\nSKILLS: Python, JavaScript, TypeScript, Go, Rust, Java, C++, AWS, GCP, Azure, Kubernetes, Docker, everything DevOps.",
+  "jd": "Backend Engineering Intern (Summer, 12 weeks) on the Payments Platform team. You will work alongside senior engineers to ship small, well-scoped features in our Go services that process transaction ledgers. Responsibilities: write unit and integration tests, fix bugs surfaced by on-call, participate in code review, and complete one mentored project end-to-end (design doc, implementation, rollout behind a feature flag). We care far more about how you debug, ask questions, and reason about tradeoffs than about how many languages you list. You will be evaluated on code quality, collaboration in PRs, and your ability to scope down an ambiguous problem. Required: data structures fundamentals, some experience with a typed language, and a willingness to say 'I don't know yet.' Mentorship and pairing are central to this internship.",
+  "history": [
+    { "q": "Thanks for coming in. To start, can you tell me about a project on your resume you're most proud of?" },
+    { "q": "You mention a real-time chat app handling 'unlimited concurrent users.' What does the architecture actually look like?" },
+    { "q": "When you say unlimited — what happened when you load-tested it? What number did it actually reach before something broke?" },
+    { "q": "Let's go concrete: describe one bug in that chat app that took you more than a day to fix." },
+    { "q": "How did you isolate the cause? Walk me through your debugging steps." },
+    { "q": "What signal told you the fix worked, versus just masking the symptom?" },
+    { "q": "Switching topics — the role is in Go. What's your actual experience with Go specifically?" },
+    { "q": "Can you explain how a goroutine differs from an OS thread, in your own words?" },
+    { "q": "Suppose two goroutines write to the same map. What goes wrong and how would you fix it?" },
+    { "q": "Let's talk about working with others. Tell me about a code review where someone pushed back on your approach." },
+    { "q": "What did you change as a result of that feedback?" },
+    { "q": "Now imagine I hand you a vague ticket: 'payments are sometimes slow.' How do you scope that down before writing any code?" },
+    { "q": "What's the first measurement you'd take, and why that one?" },
+    { "q": "Tell me about a specific time you were genuinely stuck and had to ask a more senior person for help. What was the problem, what did you ask, and what did you learn?" }
+  ],
+  "candidate_last_answer": "Honestly, what really sets me apart is my passion. Like, ever since I was a kid I've been obsessed with computers — I built my first PC at twelve, and I think that hunger is what makes me different from other candidates. I'm also super competitive; I won four hackathons, and I feel like that drive is exactly what your team needs. And culturally I think I'd fit in really well because I love fast-paced environments and I'm a quick learner who can pick up anything.",
+  "session_state": {
+    "drilled_topics": ["proudest-project", "chat-app-architecture", "load-test-ceiling", "hard-bug", "debugging-method", "fix-verification", "go-experience", "goroutines", "concurrent-map", "code-review-pushback", "feedback-response", "scoping-ambiguity", "first-measurement"],
+    "current_competency_target": "growth-mindset",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "growth-mindset",
+    "missing_evidence": [
+      { "competency": "growth-mindset", "evidence_type": "mechanism" },
+      { "competency": "growth-mindset", "evidence_type": "owner-of-action" },
+      { "competency": "collaboration", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm a quick learner who can pick up anything",
+      "must-be-question-type: teach-back",
+      "expected-yield: one concrete instance where the candidate was stuck, what specific question they asked a senior person, and what they actually changed afterward — forcing them off the passion narrative and onto a real learning episode"
+    ]
+  }
+}

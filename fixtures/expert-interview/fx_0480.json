@@ -1,0 +1,46 @@
+{
+  "id": "fx_0480",
+  "tags": {
+    "industry": "hr",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff People Operations Partner | Total Rewards • DEI • HRBP • Org Design\n\nCore competencies (keywords): HRBP, total rewards, compensation benchmarking, pay equity, job architecture, leveling frameworks, performance calibration, talent reviews, succession planning, organizational design, change management, employee relations, ER investigations, engagement surveys, eNPS, attrition modeling, headcount planning, HRIS (Workday), people analytics, OKRs, manager enablement, DEI strategy, ERG sponsorship, compliance, EEOC, FLSA, leaves administration, M&A integration, workforce planning, retention programs\n\nExperience\nGrowthTech — Staff People Operations Partner (2021-present)\n- HRBP to a 400-person product & engineering org\n- Built the engineering leveling framework and ran annual comp calibration\n- Led pay-equity analysis and remediation across two cycles\n- Drove manager enablement for performance and calibration cycles\n\nPriorCo — Senior HR Business Partner (2018-2021)\n- Supported a 250-person GTM org through a reorg and a hiring freeze\n- Ran ER investigations and engagement-survey action planning\n\nSkills: Workday, Greenhouse, Lattice, Excel/Sheets people analytics, SQL basics\nCerts: SHRM-SCP",
+  "jd": "We are hiring a Staff People Operations Partner to act as the senior HRBP for a 400+ person product and engineering organization. You will own the leveling/job-architecture framework, run annual compensation calibration, lead pay-equity analysis and remediation, and partner with leaders on org design and headcount planning. You will be the escalation point for complex employee-relations matters and will drive measurable improvements in regretted attrition and manager effectiveness. Required: 6+ years HRBP/People Ops, hands-on total-rewards and leveling experience, demonstrated pay-equity remediation with defensible methodology, comfort presenting comp and attrition analytics to executives, and sound judgment on confidential ER matters. You will inherit an engineering org with compressed pay bands and rising regretted attrition among senior ICs.",
+  "history": [
+    { "q": "Quick scope check — who do you partner with today and what do you own end to end?" },
+    { "q": "You inherited compressed pay bands here on paper. Tell me about the leveling framework you built at GrowthTech." },
+    { "q": "How did you decide the number of levels and the band widths? What anchored it?" },
+    { "q": "Walk me through the pay-equity analysis — what was your methodology, concretely?" },
+    { "q": "When you found gaps, how did you decide who got remediated and by how much?" },
+    { "q": "What did remediation cost, and how did you get finance to fund it?" },
+    { "q": "Regretted attrition among senior ICs is the live problem here. What moved it at GrowthTech?" },
+    { "q": "How did you isolate that your intervention — not the market — drove the change?" },
+    { "q": "Tell me about a calibration session that got contentious. What did you personally do?" },
+    { "q": "Give me the hardest number: after remediation and the retention work, what happened to senior-IC regretted attrition, and over what period?" }
+  ],
+  "candidate_last_answer": "Senior-IC regretted attrition went from 14% annualized to 8% over three quarters. I won't claim it was all comp — we also fixed the promotion-velocity problem, which exit interviews flagged more than pay. To isolate it I tracked regretted exits by band and by promo-eligibility status; the biggest drop was in the cohort that was both underleveled and overdue for promo, which is exactly who the remediation plus the off-cycle promo round targeted. Comp remediation cost about $1.1M annualized; I funded it by showing finance that one senior-IC backfill ran roughly $90K fully loaded, so the breakeven was under 13 saves.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "leveling-framework", "band-design-rationale", "pay-equity-methodology", "remediation-decision-rule", "remediation-cost-funding", "attrition-intervention", "attribution-isolation", "contentious-calibration"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the breakeven was under 13 saves",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pressure-test the breakeven claim — confirm whether the $1.1M annualized remediation cost was compared against the right denominator (cost of regretted senior-IC backfills actually avoided, not gross headcount) and whether the 14%→8% drop translates into more than 13 retained senior ICs given the cohort size"
+    ]
+  }
+}

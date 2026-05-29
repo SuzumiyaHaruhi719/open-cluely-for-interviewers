@@ -1,0 +1,40 @@
+{
+  "id": "fx_0495",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "苏明哲\n初级研究员（材料方向）\n\n经历\n华辰新材料研究院 助理研究员 2023 至今\n参与锂电池正极材料项目\n\n教育\n浙江大学 材料科学与工程 硕士 2023\n\n技能\nXRD、SEM 表征、电池组装与测试、实验数据处理\n\n论文\n合作发表 SCI 论文一篇（第三作者）",
+  "jd": "某新材料研究院招聘初级研究员（电池材料方向），加入正极材料课题组，向课题组长汇报。你将独立承担材料合成、表征与电化学测试，记录可追溯的实验数据，并在组会上清晰汇报结果。我们看重的是实验严谨性与对自己数据的掌控力：一个实验的变量是怎么控制的、对照怎么设、异常数据怎么排查、结论的边界在哪里。面试会针对你做过的具体实验追问机理与细节。我们希望候选人能在结果不理想时不慌，把问题讲清楚，而不是用一堆话术绕过关键事实。",
+  "history": [
+    { "q": "先讲讲你在研究院参与的正极材料项目，你具体负责哪部分。" },
+    { "q": "挑一个你印象最深的实验，讲讲你想验证什么。" },
+    { "q": "你这个实验里，关键变量是怎么控制的，对照组怎么设的？" }
+  ],
+  "candidate_last_answer": "嗯……对照组，这个……不好意思我有点紧张。就是，那个实验是想看掺杂比例对循环性能的影响，对，掺杂。然后……哦我应该先说背景，就是我们那个材料一直循环衰减比较快，组长让我试不同的掺杂量。然后我就……做了几组。变量控制方面，呃，烧结温度我是想保持一致的，但是中间那台炉子有一次好像波动过，我不太确定有没有影响。对照组的话……其实我没有特别严格地设一个完全不掺杂的基准，因为时间比较赶，我直接拿之前师兄的数据当参考了。诶我是不是跑题了，你问的是变量还是对照来着？反正就是，数据是有的，趋势我觉得是对的，但严格说对照这块我现在想想是有点不规范。",
+  "session_state": {
+    "drilled_topics": ["项目职责", "实验目的", "变量与对照设置"],
+    "current_competency_target": "rigor",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "rigor",
+    "missing_evidence": [
+      { "competency": "rigor", "evidence_type": "mechanism" },
+      { "competency": "rigor", "evidence_type": "scope" },
+      { "competency": "communication", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我直接拿之前师兄的数据当参考了",
+      "must-be-question-type: teach-back",
+      "expected-yield: 把紧张的散乱叙述收敛成一个清楚的实验设计交代——是否有同批次的无掺杂基准、烧结温度波动是否被记录与排查、借用师兄历史数据作对照会引入哪些系统误差，从而暴露这次实验在对照严谨性上的真实漏洞"
+    ]
+  }
+}

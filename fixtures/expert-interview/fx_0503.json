@@ -1,0 +1,42 @@
+{
+  "id": "fx_0503",
+  "tags": {
+    "industry": "operations",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "DEVON PRICE — Operations Manager (Fulfillment & Logistics)\n\nTHE ONE-LINER: I am, without exaggeration, the single best operations manager any warehouse has ever had.\n\nIMPACT (because results are all that matter)\n- Personally turned around a failing 200,000 sq ft distribution center that everyone else had given up on\n- Single-handedly cut order cycle time in half within my first month — something the previous manager couldn't do in two years\n- Built the best-performing shift in the entire network, full stop\n- Known company-wide as the go-to operator when things are on fire\n- Routinely outperform every peer on every metric that matters\n\nEXPERIENCE\nMeridian Distribution — Operations Manager (2021–present)\n- Own a 180-person fulfillment operation across two shifts\n- Drove throughput, accuracy, and on-time-ship to levels the site had never seen\n- Rebuilt the entire labor model from scratch (the old one was a joke)\n- Manage relationships with carriers, temp agencies, and the WMS vendor\n\nApex Logistics — Shift Supervisor (2018–2021)\n- Ran the highest-volume shift in the building\n- Trained dozens of supervisors who went on to bigger roles\n- Hit every peak-season target while others scrambled\n\nEDUCATION\nB.S. Supply Chain Management — Regional State University\n\nSKILLS: Warehouse ops, WMS (Manhattan), labor planning, carrier management, continuous improvement, leadership\n\nNOTE: I don't do false modesty. If you want someone who'll downplay their wins, I'm not your person.",
+  "jd": "Meridian Distribution is hiring a mid-level Operations Manager for a high-volume fulfillment center. You'll own throughput, pick/pack accuracy, on-time-ship, labor cost per unit, and safety (recordable incident rate). This is a team sport: you'll partner daily with HR, safety, carriers, and the WMS team, and you'll be coaching frontline supervisors. We're looking for someone who can be specific about how they diagnose and fix operational problems, who owns mistakes as readily as wins, and who can take coaching. The interview will probe how you handle being challenged on your numbers and how you collaborate when things go wrong — culture fit matters as much as raw operational skill.",
+  "history": [
+    { "q": "Tell me about the distribution center turnaround you led at Meridian. What state was it in when you arrived?" },
+    { "q": "You say you cut order cycle time in half in your first month. Walk me through exactly what changed and how it was measured." },
+    { "q": "What was the recordable incident rate on your shifts, and how did it trend while you owned it?" },
+    { "q": "When you rebuilt the labor model, who else was involved — HR, finance, the supervisors?" },
+    { "q": "Let me push on the cycle-time number — a 50% drop in one month is unusual. What baseline were you comparing against, and could some of that have been seasonal or due to lower volume?" }
+  ],
+  "candidate_last_answer": "Honestly, I don't really get why you keep hammering on this one number. Are you actually questioning whether I did it? Because I'm telling you I did, and frankly my track record speaks for itself. If you've never run a DC at that scale, I get why a 50% drop sounds 'unusual' to you, but for someone who actually knows what they're doing it's not. I'm not going to sit here and dig up spreadsheets to prove something I already told you. You either trust the results or you don't.",
+  "session_state": {
+    "drilled_topics": ["turnaround-initial-state", "cycle-time-mechanism", "safety-incident-rate", "labor-model-collaboration"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "collaboration", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm not going to sit here and dig up spreadsheets to prove something I already told you",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete baseline and post-change cycle-time figures with the comparison window and volume context — forcing the candidate past the defensiveness to either substantiate the 50% claim or reveal it was confounded by seasonality"
+    ]
+  }
+}

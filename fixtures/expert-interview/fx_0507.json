@@ -1,0 +1,47 @@
+{
+  "id": "fx_0507",
+  "tags": {
+    "industry": "healthcare",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "吴予安　初级临床研究协调员（CRC）\n\n安和临床研究中心　CRC　2024.01 至今\n- 协助某抗肿瘤药 II 期临床试验的受试者管理\n- 负责知情同意流程协助、随访预约与原始数据录入\n\n教育\n中山大学　护理学　本科\n\n技能：GCP、EDC 系统录入、受试者沟通、随访管理\n\n证书：GCP 培训合格证",
+  "jd": "我们为一家临床研究机构招聘初级临床研究协调员（CRC），支持肿瘤方向的多中心临床试验。日常职责包括：协助研究者完成受试者入组与知情同意、安排随访、在 EDC 系统录入原始数据、配合监查（CRA）的源数据核查（SDV）。我们高度重视 GCP 合规与数据真实性。面试中会重点考察候选人对自己个人职责的清晰认知——在试验流程里你亲手负责哪一环、出现数据差异时你个人怎么处理，而不是笼统地说团队一起完成。我们希望候选人能明确区分个人贡献与团队工作。",
+  "history": [
+    { "q": "先介绍一下你在安和负责的这个 II 期试验，你的角色是什么？" },
+    { "q": "知情同意这一环，具体到一个受试者，你个人会做哪些事？" },
+    { "q": "受试者随访的预约和提醒是你负责吗？怎么保证不脱落？" },
+    { "q": "EDC 录入的时候，源数据和录入值对不上，你个人会怎么处理？" },
+    { "q": "CRA 来做 SDV 核查，发现一个 query，处理流程里哪一步是你做的？" },
+    { "q": "有没有受试者临时反悔不想继续了，你个人是怎么沟通的？" },
+    { "q": "试验里出现过一次 protocol deviation 吗？你个人在其中负责什么？" },
+    { "q": "你录入数据的及时性怎么保证，有没有自己的一套节奏？" },
+    { "q": "和研究护士、研究医生协作时，哪部分是明确归你的？" },
+    { "q": "现在请你只讲『你自己』做成的一件事，不要用『我们』。" },
+    { "q": "那件事里，是你先发现问题的，还是别人发现后交给你的？" }
+  ],
+  "candidate_last_answer": "其实我们整个 CRC 团队都是一起把这个试验撑起来的。入组的时候我们一起核对入排标准，随访我们一起盯，数据有问题我们也是一起跟研究者确认。真要说哪件事是我一个人做成的，我觉得不太好这么分，因为我们配合得很紧密，基本上每件事背后都有团队，功劳是大家的。",
+  "session_state": {
+    "drilled_topics": ["trial-role", "informed-consent-personal-task", "follow-up-retention", "edc-data-discrepancy", "sdv-query-handling", "subject-withdrawal", "protocol-deviation", "data-entry-timeliness", "cross-role-collaboration"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 数据有问题我们也是一起跟研究者确认",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 逼候选人在一次具体的数据差异事件中说出『她本人』做的那一步——是她先发现的、她去核对了哪份源文件、她提交了哪个 query，从而把个人职责从团队叙事里剥离出来"
+    ]
+  }
+}

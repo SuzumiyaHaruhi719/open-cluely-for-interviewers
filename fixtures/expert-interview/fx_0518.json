@@ -1,0 +1,38 @@
+{
+  "id": "fx_0518",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "后端工程师 · 全公司公认的性能优化第一人\n\n个人简介：\n- 业内罕见的全栈型后端专家，凡是别人搞不定的线上疑难杂症，最后都会落到我手里\n- 以一己之力扛起整个订单系统的高并发架构，团队里没有第二个人能独立 hold 住\n- 我写的缓存中间件被多个部门奉为标杆，至今无人能超越\n- 领导多次公开表示，没有我这个项目根本上不了线\n- 技术品味极高，代码质量是团队天花板级别的存在\n\n工作经历：\n云启科技 — 后端工程师（2021 至今）\n负责订单与交易链路的服务端开发，主导过一次大促前的性能优化专项，参与核心交易系统的微服务拆分。\n\n齐鸣网络 — 初级后端工程师（2019–2021）\n参与电商后台的接口开发与日常迭代维护，负责过一部分商品中心的接口。\n\n技能：Java、Spring Cloud、Redis、Kafka、MySQL 调优、分布式缓存。\n学历：计算机科学与技术 本科。",
+  "jd": "云启科技招聘一名后端工程师，负责订单与交易核心链路的高并发服务端开发，直接向技术负责人汇报。岗位重点是大促场景下的性能与稳定性：你需要主导接口的延迟优化、缓存与限流策略设计，并对线上故障做根因分析。我们在面试中会针对一个具体的优化案例反复追问完整脉络——你当时面对的是什么问题、目标指标是多少、你『具体做了哪些动作』、最终量化结果如何。我们尤其看重候选人能否把自己亲手做的技术动作讲清楚，而不只是给出一个漂亮的结果数字。你将与稳定性团队、SRE 以及上下游业务方协作，参与容量规划和压测演练。要求三年以上后端经验，熟悉分布式缓存与消息队列。",
+  "history": [
+    { "q": "讲讲你在云启主导的那次大促前性能优化专项——当时遇到的是什么问题，目标指标是多少？" },
+    { "q": "好，那你具体做了哪些技术动作把这个指标打下来的？尽量讲细节。" }
+  ],
+  "candidate_last_answer": "这个项目我印象很深。当时订单创建接口在压测里 p99 已经飙到 1800 毫秒，大促肯定扛不住，目标是要压到 500 毫秒以内，QPS 还得撑到平时的五倍。最后效果非常好，上线之后大促当天接口 p99 稳定在 420 毫秒，零故障，整个交易链路一次抖动都没有，订单成功率 99.99%，老板在复盘会上专门点名表扬了我。可以说这是我职业生涯里最漂亮的一仗，业内能做到这个水平的人不多。",
+  "session_state": {
+    "drilled_topics": ["大促优化-问题与目标"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 最后效果非常好，上线之后大促当天接口 p99 稳定在 420 毫秒",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the specific technical actions the candidate personally took to move p99 from 1800ms to under 500ms — which bottleneck was identified, what was changed in the cache/query/threading layer, and in what order — filling the missing Action that the answer skipped by jumping straight from problem to result"
+    ]
+  }
+}

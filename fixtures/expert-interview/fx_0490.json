@@ -1,0 +1,40 @@
+{
+  "id": "fx_0490",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "DIRECTOR OF CLINICAL OPERATIONS | PATIENT SAFETY | VALUE-BASED CARE | LEAN HEALTHCARE\n\nResults-driven, patient-centric clinical operations executive leveraging cross-functional leadership to drive operational excellence, throughput optimization, and best-in-class quality outcomes across the care continuum.\n\nCORE COMPETENCIES\nLean Six Sigma | Patient Throughput | Length-of-Stay Reduction | HCAHPS | CMS Star Ratings | Value-Based Care | Population Health | EHR Optimization (Epic) | Capacity Management | Care Coordination | Joint Commission Readiness | Change Management | Stakeholder Alignment | RCA / FMEA | Magnet Designation | Revenue Cycle | Throughput KPIs\n\nPROFESSIONAL EXPERIENCE\nDirector, Clinical Operations — Lakeshore Regional Medical Center (420-bed acute care) — 2020-Present\n- Spearheaded enterprise-wide patient-flow transformation across the care continuum, driving best-in-class throughput and operational excellence\n- Championed a culture of safety leveraging high-reliability principles and data-driven decisioning\n- Orchestrated cross-functional alignment between nursing, case management, and physician stakeholders\n- Operationalized capacity-command-center methodologies to optimize bed utilization end-to-end\n\nAssociate Director, Care Coordination — St. Brendan Health System — 2016-2020\n- Drove length-of-stay initiatives and discharge-planning workflows leveraging Lean methodologies\n- Partnered seamlessly with revenue-cycle and quality stakeholders to deliver value-based outcomes\n\nManager, Nursing Operations — St. Brendan Health System — 2012-2016\n\nEDUCATION & CREDENTIALS\nMSN, Nursing Administration | BSN | RN (active) | Lean Six Sigma Green Belt | CPHQ",
+  "jd": "Northcrest Health is recruiting a Director of Clinical Operations to lead patient throughput and capacity management for a 500-bed academic medical center. Reporting to the COO, this leader owns the capacity command center, ED-to-inpatient flow, discharge optimization, and the relationship between nursing, hospitalists, and case management. The mandate is concrete: median ED boarding time currently exceeds 6 hours against a target of 2; observed-to-expected length of stay sits at 1.18 with a target of 1.0; and avoidable discharge delays cost an estimated $4M annually. You will be expected to stand up daily flow huddles, deploy a measurable capacity-management model, and demonstrate prior, personally-led results in length-of-stay reduction. We will probe for specifics: what you changed, what moved, and how you isolated your intervention's effect from secular trends. Joint Commission and Epic experience expected.",
+  "history": [
+    { "q": "Your resume is heavy on themes like 'operational excellence' and 'best-in-class throughput.' Pick the single flow initiative you're proudest of and ground it for me." },
+    { "q": "What was the baseline metric before you started, and where did it land?" },
+    { "q": "Walk me through what you and your team actually changed operationally to get there." }
+  ],
+  "candidate_last_answer": "So when I came into Lakeshore, our discharge process was a mess — patients medically ready to leave were sitting in beds until mid-afternoon because the orders, transport, and pharmacy reconciliation weren't sequenced. The goal I set with the COO was to pull our discharge-order-to-departure curve earlier in the day so we'd free beds for the ED before the afternoon surge. What we changed: I stood up a 9 a.m. multidisciplinary flow huddle with nursing, case management, hospitalists, and pharmacy, and we instituted a 'discharge by noon' target with the criteria-led discharge orders written the evening before. We also built a real-time bed-tracking board in Epic so charge nurses could see the queue. I personally chaired the huddle for the first four months until it became routine, and I retrained the charge nurses on the new escalation pathway. It genuinely changed the culture — people started owning the discharge instead of waiting on each other.",
+  "session_state": {
+    "drilled_topics": ["resume-buzzword-grounding", "baseline-metric", "operational-change-detail"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: pull our discharge-order-to-departure curve earlier in the day",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete before/after numbers the answer omits — baseline vs. post-intervention median discharge time and observed-to-expected LOS, the percentage of discharges hitting the by-noon target, and over what period the gain held"
+    ]
+  }
+}

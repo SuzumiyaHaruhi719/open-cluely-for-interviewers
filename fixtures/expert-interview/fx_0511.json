@@ -1,0 +1,42 @@
+{
+  "id": "fx_0511",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "马铭远　高级人力资源专家（HRBP 方向）\n\n一句话：我是同行里公认最强的 HRBP，没有之一。\n\n核心战绩（结果才是硬道理）\n- 凭一己之力把一个濒临崩盘的研发团队的离职率拉到全公司最低\n- 主导的招聘体系被 CEO 当面称赞为『教科书级别』\n- 别人搞不定的高管入职与组织调整，最后都得我来收尾\n- 我经手的每一次组织变革，满意度都远超同行水平\n- 公司上下出了棘手的人的问题，第一个想到的就是我\n\n工作经历\n锐进科技　高级 HRBP　2020 至今\n- 支持约 600 人的研发与产品线，独立负责该 BU 的组织发展与人才盘点\n- 主导多轮组织架构调整与关键岗位招聘\n- 设计并推行了 BU 的绩效校准（calibration）机制\n\n远恒集团　HRBP　2016-2020\n- 负责销售体系的招聘与员工关系\n\n教育\n中国人民大学　劳动与社会保障　本科\n\n技能：组织发展、人才盘点、绩效管理、招聘、员工关系、薪酬沟通\n\n备注：我不喜欢谦虚，如果你想要一个把成绩说小的人，那我不合适。",
+  "jd": "我们为一家科技公司招聘高级 HRBP，支持数百人规模的研发与产品组织。你将负责组织发展、人才盘点、绩效校准、关键岗位招聘与员工关系。我们希望候选人能就一项具体成果讲清楚因果链：你做了哪个干预、它如何影响了某个可核实的指标（如离职率、招聘周期、绩效分布），以及你如何排除其他因素的影响。面试会就你的关键数字进行追问，也会考察你被质疑时的协作姿态——我们重视能坦然面对挑战、用证据回应而非情绪化防御的候选人。",
+  "history": [
+    { "q": "先讲讲你在锐进支持的这条研发线，你具体负责哪些 HR 模块？" },
+    { "q": "你简历说把研发团队离职率拉到全公司最低，原来是多少、降到了多少？" },
+    { "q": "你做了哪些具体干预？怎么确认离职率下降是你的动作带来的，而不是市场或业务原因？" },
+    { "q": "绩效校准机制是你独立设计的吗？落地时业务负责人怎么配合的？" },
+    { "q": "我想再确认一下离职率这个数——降幅这么大，同期是不是也赶上了行业裁员、外部机会变少？" }
+  ],
+  "candidate_last_answer": "你这个问题我有点听不下去了。你是在暗示我那个离职率的成绩是蹭了大环境的运气？我跟你讲，那是我一个一个谈出来的，加班加点做出来的。你要是没真正做过 HRBP，可能不太理解这里面的含金量。我不需要靠归因分析来证明什么，结果摆在那儿，全公司最低就是最低。这种东西你信就信，不信我也没必要在这儿跟你掰扯数据。",
+  "session_state": {
+    "drilled_topics": ["module-scope", "attrition-before-after", "intervention-causality", "calibration-ownership"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "collaboration", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我不需要靠归因分析来证明什么",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 越过情绪化防御，逼候选人面对反事实——若同期没有行业裁员、外部机会照常，离职率是否还会同样下降，从而判断他能否把自身干预的因果效应与外部环境区分开"
+    ]
+  }
+}

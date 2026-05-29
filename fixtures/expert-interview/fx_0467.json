@@ -1,0 +1,45 @@
+{
+  "id": "fx_0467",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "黄文杰 | Director of Operations\n华东区供应链与运营负责人 · 12年运营老兵 · 增长操盘手\n\n核心标签\n- 行业顶尖的运营操盘手，主导过多个从0到1再到规模化的供应链体系搭建\n- 数据驱动的决策大师，对仓配、履约、成本结构有教科书级别的理解\n- 跨部门协同的天花板，能把销售、产品、财务、物流拧成一股绳\n- 带过最多三百人的运营团队，被公认为最能打硬仗的运营领导者\n- 履约时效、仓储成本、人效等所有核心指标都做到过区域第一\n\n关于我（这一段是我对自己这些年的总结）。说实话，在运营这个领域干了十二年，我自认为已经把这一行的门道摸得很透了。无论是仓网规划、库存周转、最后一公里的配送时效，还是大促期间的弹性扩容，我都亲自带队打过最硬的仗。我最自豪的是，我所到之处，几乎没有搞不定的运营难题。早期我在一家零售连锁做区域运营的时候，硬是把一个长期亏损的大区扭亏为盈；后来到电商平台负责履约，又把整个华东的配送时效做到了行业领先。我带团队的风格是结果导向，我不喜欢听借口，只看交付。很多和我共事过的人都说，跟着我能学到真东西，也能打胜仗。我对自己的要求是：进了一个盘子，就要让这个盘子的核心指标肉眼可见地变好。\n\n工作经历\n某头部电商平台　Director of Operations（华东履约）　2020年至今\n负责华东区域的仓储与配送履约体系，管理多个区域仓和数百人的运营团队。主导了区域仓网的重新规划，推动了大促期间的弹性产能方案，搭建了履约时效的监控体系。在我任内，华东的核心履约指标实现了跨越式提升，多次在内部被评为标杆区域。\n\n某零售连锁集团　Regional Operations Manager　2016年至2020年\n负责华东多个城市的门店运营与区域仓配。接手时该大区处于亏损状态，我通过优化补货模型、调整人力结构和压缩仓储成本，带领团队实现扭亏为盈，并连续多个季度保持盈利。\n\n某物流公司　运营主管 / 高级运营经理　2012年至2016年\n从一线运营做起，负责分拨中心的现场管理与时效改善，逐步晋升至高级运营经理，期间多次主导分拨效率的优化项目。\n\n核心能力\n供应链与履约：仓网规划、库存管理、最后一公里时效优化、大促弹性扩容。\n成本与人效：仓储成本控制、运营人力结构优化、人效提升。\n团队管理：曾管理最多约三百人的运营团队，擅长结果导向的团队建设。\n工具：熟悉主流 WMS、OMS 系统，能用 BI 工具看核心运营 dashboard。\n\n教育背景\n某大学　物流管理专业　管理学学士　2008年至2012年\n\n一句话总结\n给我一个有问题的运营盘子，我就能还你一个区域第一。",
+  "jd": "A national e-commerce and retail group is hiring a Director of Operations to own regional fulfillment (warehousing, last-mile, labor, cost) across East China. You will lead a multi-site operation of several hundred staff, own the regional fulfillment P&L, redesign the warehouse network for cost and speed, build elastic capacity for promotional peaks, and report regional KPIs to the COO. We need a candidate with 8+ years in operations, multi-site warehouse and last-mile leadership, demonstrated P&L turnaround experience, and fluency with WMS/OMS systems and BI dashboards. Bilingual Chinese/English preferred for cross-border coordination. This is a numbers-accountable role: the COO and the finance partner will press you on every claimed improvement — baseline, measurement period, attribution, and confounding factors. We are explicitly looking for a leader who distinguishes between what they personally drove and what the market or other teams delivered.",
+  "history": [
+    { "q": "Let's start with your current role. 介绍一下你在华东履约负责的范围——团队规模、仓的数量、你直接 own 哪些指标？" },
+    { "q": "你简历里写华东的履约指标实现了『跨越式提升』。具体是哪个指标，从多少提升到了多少？" },
+    { "q": "这个时效提升的测量窗口是怎么定的？baseline 取的是哪个时间段？" },
+    { "q": "你早年那个扭亏为盈的大区，接手时亏多少、你离开时的盈利水平是多少？" },
+    { "q": "那个扭亏，里面有多少是你做的运营动作带来的，有多少是大盘或者市场环境的变化？" },
+    { "q": "回到华东履约。仓网重新规划这件事，是你拍板的还是集团统一规划、你负责落地？" },
+    { "q": "你说管理过约三百人的团队，这是直接汇报给你的,还是包含了外包和临时工?" },
+    { "q": "好，我想请你把华东这个时效提升的数字钉死一点——到底从多少做到了多少，分子分母怎么算的？" }
+  ],
+  "candidate_last_answer": "这么说吧，我接手华东之后，配送时效那是脱胎换骨的提升，行业里基本找不到比我们更快的。我们当时的履约效率提升了起码百分之五十以上，成本也大幅下降，妥妥的区域第一，这个是全公司都知道的。至于你说的具体分子分母、从几小时做到几小时，那些细节是下面团队在跟的，我作为 director 看的是大方向和结果，结果就是我们最快，这一点毋庸置疑。",
+  "session_state": {
+    "drilled_topics": ["当前职责范围", "跨越式提升的指标", "时效测量窗口", "扭亏数字", "扭亏归因", "仓网规划决策权", "团队口径"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们当时的履约效率提升了起码百分之五十以上",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 逼这位 director 给出可核实的履约时效绝对值（从几小时到几小时）、百分之五十的计算口径和测量窗口，并暴露他把『看大方向』当作回避具体数字的借口、无法区分个人贡献与团队/市场贡献"
+    ]
+  }
+}

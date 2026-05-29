@@ -1,0 +1,38 @@
+{
+  "id": "fx_0522",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "供应链计划经理候选人 | 关键词：需求计划 · S&OP · 库存优化 · MRP · DRP · 安全库存 · 补货策略 · APS · SAP · Oracle · Kinaxis · Power BI · SQL · 精益 · 六西格玛 · 牛鞭效应 · VMI · JIT · 看板 · 数据驱动 · 端到端\n\n概述：数据驱动型供应链计划专家，端到端打通需求—供给—库存全链路，精通各类先进计划系统与分析工具。\n\n工作经历：\n恒益消费品 — 供应链计划经理（2021 至今）\n负责一个 SKU 数约 1200 的快消品类的需求计划与库存管理，主导 S&OP 流程，覆盖需求预测、补货策略、安全库存设定与呆滞库存治理。熟练使用 SAP APO、Kinaxis、Power BI 做端到端分析与可视化。\n\n锐通物流 — 高级计划专员（2018–2021）\n负责区域仓的补货计划与库存周转优化，参与 DRP 体系搭建。\n\n技能：需求预测（Holt-Winters、ARIMA）、S&OP、库存优化、MRP/DRP、APS 系统、SQL、Power BI、精益六西格玛。\n学历：物流与供应链管理 本科。",
+  "jd": "恒益消费品招聘一名供应链计划经理，负责核心快消品类的需求计划与库存优化，直接向供应链总监汇报。岗位职责包括：搭建并运行月度 S&OP 流程、提升预测准确率、设计补货与安全库存策略、降低呆滞库存。我们在面试中会针对一个具体的库存或预测改进案例反复追问完整脉络——基线指标是多少、你具体改了哪个参数或环节、最终带来多少可量化的改善、用了多长时间。我们希望候选人紧扣问题、给出明确数字，而不是发散到行业趋势、工具罗列或个人理念。你将与采购、销售和仓储团队协作，主导预测准确率（forecast accuracy）和库存周转（inventory turns）两项核心指标的改善。要求三年以上计划岗经验，熟悉至少一种主流 APS 系统。",
+  "history": [
+    { "q": "讲讲你在恒益做的一个具体的库存优化案例——当时哪个指标有问题，基线是多少？" },
+    { "q": "好，那你具体改了哪个环节或参数，最后库存周转或呆滞库存改善了多少，用了多久？" }
+  ],
+  "candidate_last_answer": "这个问题特别好。其实我一直觉得，供应链未来最大的变量是 AI 和数字化转型。你看现在整个行业都在讲端到端可视化、控制塔、digital twin，我自己也特别关注这些前沿趋势，平时会去看很多 Gartner 的报告。我觉得一个优秀的计划经理，最重要的是要有 end-to-end 的全局视角和数据驱动的思维方式，要能打通需求和供给。说到工具，我对 Kinaxis 和 SAP APO 都很熟，还自学了 Python 做预测。我们这个行业最大的痛点其实就是部门墙，S&OP 之所以难做，本质上是个跨部门协同和组织文化的问题。把这个想透了，具体的库存数字反而是水到渠成的事。",
+  "session_state": {
+    "drilled_topics": ["库存优化案例-问题与基线"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把这个想透了，具体的库存数字反而是水到渠成的事",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one concrete inventory case with a baseline turns or excess-stock figure, the specific parameter or process the candidate changed, and the quantified improvement over a stated period — forcing the candidate off the AI/digital-transformation and organizational-culture tangent back to a number they personally moved"
+    ]
+  }
+}

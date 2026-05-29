@@ -1,0 +1,47 @@
+{
+  "id": "fx_0530",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "客户支持实习生 / 服务之星\n\n自我介绍\n我是天生适合做客户服务的人，沟通能力与共情力远超同龄人。无论多难缠的客户，到我手里都能化干戈为玉帛，同事们都说我是团队里的定海神针。\n\n实习与项目经历\n光速云科技 客服实习生（二零二三年七月至今）\n- 负责处理 SaaS 产品的用户工单，几乎零差评\n- 参与了一次重大故障的客户安抚行动，效果卓越\n- 协助团队优化了帮助中心文档，被反复表扬\n\n校园经历\n- 校学生会权益部成员，处理过大量同学投诉\n- 组织过多场大型活动，口碑爆棚\n\n教育背景\n滨江职业技术学院 商务英语 大专在读，预计二零二五年毕业。\n技能：客户沟通、工单处理、Zendesk、文档撰写、英语口语。",
+  "jd": "我们在招聘一名客户支持实习生，加入一家成长期 SaaS 公司的用户成功团队。你将处理日常工单、参与故障期间的客户沟通、协助维护帮助中心文档，并在资深同事的带教下完成一个端到端的小项目。我们最看重的是真实的个人贡献与责任感 —— 在面试中我们会反复追问『你自己具体做了什么』：哪一句话是你说的、哪个决定是你做的、哪个动作是你亲手执行的。习惯用『我们团队』来概括一切、说不清个人边界的候选人会很吃亏。需要良好的沟通能力、细致的态度，以及愿意承担具体责任的心态。",
+  "history": [
+    { "q": "先简单介绍一下你在光速云的实习吧 —— 团队多大，你负责哪块?" },
+    { "q": "你提到参与了一次重大故障的客户安抚。当时发生了什么?" },
+    { "q": "在那次故障里，你个人具体做了什么?" },
+    { "q": "面对愤怒的客户，是你亲自回复的，还是你的带教老师?" },
+    { "q": "你说几乎零差评 —— 这个工单量大概是多少，差评率怎么算的?" },
+    { "q": "帮助中心文档优化那件事，是你提议的还是别人安排的?" },
+    { "q": "你改了哪几篇文档，改了什么内容?" },
+    { "q": "举一个你独立处理、没有求助任何人的难缠客户案例。" },
+    { "q": "那个案例里，你说了哪句关键的话让客户消气?" },
+    { "q": "我再问得直接一点：在这次故障安抚里，有没有哪一个动作是完全由你一个人决定并执行、不涉及团队其他人的? 请具体说。" }
+  ],
+  "candidate_last_answer": "其实那次故障我们团队配合得特别好，大家分工明确，一起把客户情绪稳住了。我们当时统一了话术，我们一起盯着工单，谁有空就接谁，整个过程是非常 team 的。带教老师定的大方向，我们几个实习生就一起执行，效果非常好，最后客户都满意了。要说哪个动作完全是我一个人的，其实我觉得在我们团队里没必要分得那么清，因为我们就是一个整体，功劳都是大家的。",
+  "session_state": {
+    "drilled_topics": ["internship-scope", "outage-incident", "personal-contribution", "who-replied", "zero-negative-claim", "doc-initiative", "which-docs", "independent-case", "key-line"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "communication", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 要说哪个动作完全是我一个人的，其实我觉得在我们团队里没必要分得那么清",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one action the candidate personally owned end-to-end during the outage — a specific message they wrote or decision they made alone — breaking the reflexive 『we / the whole team』 framing into a first-person contribution"
+    ]
+  }
+}

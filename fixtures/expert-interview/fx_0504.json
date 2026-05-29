@@ -1,0 +1,47 @@
+{
+  "id": "fx_0504",
+  "tags": {
+    "industry": "sales",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵亦凡　初级 SDR（Sales Development Representative）\n\n求职意向：SaaS 行业 Inside Sales / SDR\n\n工作经历\n云striveSaaS（CRM 厂商）　SDR　2024.02 至今\n- 负责 outbound 开发，主要做 cold call 与 LinkedIn 触达，给 AE 输送 qualified pipeline\n- 维护自己的 sequence，用 Salesloft 做 cadence 管理\n- 参与每周的 pipeline review，跟 AE 一起做 handoff\n- 主要面向中小企业（SMB）客户群\n\n实习\n初橙科技　市场实习生　2023.06-2023.09\n- 协助做线上活动获客，整理 leads 给销售团队\n\n教育\n上海对外经贸大学　市场营销　本科\n\n技能：Cold calling、Salesloft、Salesforce CRM、LinkedIn Sales Navigator、英语流利\n\n备注：简历通篇没有写任何具体数字（如 quota 达成率、SQL 数量、转化率），只描述了做过的动作。",
+  "jd": "我们是一家成长期 SaaS 公司，招聘初级 SDR，负责 outbound pipeline 开发。你将通过 cold call、邮件和 LinkedIn 触达目标客户，完成 qualification，并把 SQL（Sales Qualified Lead）干净地 handoff 给 AE。我们用 Salesforce + Salesloft。岗位有明确的 activity 与 pipeline quota。面试中我们会非常具体地追问你的真实数字：每天打多少电话、connect rate 多少、一个月能产出多少 meeting、show-up rate 如何、quota 达成情况。我们欣赏诚实、precise 的候选人——不会夸大，也能把自己的转化漏斗讲清楚。",
+  "history": [
+    { "q": "先说说你现在在云strive的日常，outbound 这块具体怎么做？" },
+    { "q": "你一天大概打多少个 cold call？connect rate 是多少？" },
+    { "q": "从 connect 上的电话到约成一个 meeting，你的转化大概是什么水平？" },
+    { "q": "你约的 meeting，AE 那边的 show-up rate 怎么样？" },
+    { "q": "一个月你大概能给 AE 输送多少个 qualified 的机会？" },
+    { "q": "你们用什么标准判定一个 lead 算 qualified？BANT 还是别的？" },
+    { "q": "讲一个你印象最深的 cold call，怎么从开场白聊到约下一步的？" },
+    { "q": "你的 sequence 里 email 和 call 是怎么排的？哪一步回复最多？" },
+    { "q": "跟 AE 做 handoff 的时候，你会交接哪些信息？" },
+    { "q": "你这几个月的 quota 达成情况怎么样？有没有没达标的月份？" },
+    { "q": "如果某个月明显落后于 quota，你会先调整哪个环节？" }
+  ],
+  "candidate_last_answer": "我会先看漏斗哪一层掉得最狠。一般我先查 connect rate——如果电话根本接通得少，那调的是拨打时间段和 list 质量，把 call 集中到上午 9 到 11 点决策者更容易接的窗口。如果是 connect 够、但约不下 meeting，那问题在话术，我会换开场的 value hook 再 A/B 两周。我不会上来就盲目加 activity 量，先定位再动手。",
+  "session_state": {
+    "drilled_topics": ["daily-outbound-routine", "call-volume-connect-rate", "meeting-conversion", "show-up-rate", "monthly-qualified-output", "qualification-criteria", "memorable-cold-call", "sequence-design", "ae-handoff", "quota-attainment"],
+    "current_competency_target": "sales-process-rigor",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "sales-process-rigor",
+    "missing_evidence": [
+      { "competency": "sales-process-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 换开场的 value hook 再 A/B 两周",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 让候选人把这次 A/B 测试讲透——对照的两个 hook 分别是什么、用什么指标判定胜出、两周后实际 connect-to-meeting 转化变化了多少，验证他是真的跑过实验还是只会说方法论"
+    ]
+  }
+}

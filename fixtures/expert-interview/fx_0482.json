@@ -1,0 +1,50 @@
+{
+  "id": "fx_0482",
+  "tags": {
+    "industry": "operations",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "self-contradictory",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "资深运营负责人 / Staff 级 — 共享出行平台\n\n工作经历\n某头部出行平台 — 资深运营负责人(2021 至今)\n- 负责一线城市的供需平衡运营与司机激励策略\n- 主导动态调度与高峰期运力调配机制\n- 带领约 15 人的城市运营团队\n\n注:在另一处个人简介中又写为『独立负责全国运力策略,管理 60 人跨区域团队』。\n\n某网约车公司 — 高级运营经理(2018-2021)\n- 入职时间一处写 2018 年 3 月,另一处写 2019 年 1 月\n- 负责区域补贴投放与 ROI 优化\n- 主导一次大规模补贴策略调整\n\n技能:供需平衡、动态定价、补贴 ROI、运营策略、SQL、A/B 实验设计、运力调度\n教育:工业工程本科\n备注:简历不同版本对司机激励预算规模描述不一致(一处称『季度预算约 2000 万』,另一处称『年度预算约 2000 万』)。",
+  "jd": "我们正在招聘一名 Staff 级运营负责人,负责共享出行平台的供需平衡与司机激励运营。你将主导高峰期运力调配、补贴投放与 ROI 优化、A/B 实验设计,并对接单率、应答率、司机留存与补贴效率等核心指标负责。要求:具备出行/即时配送等强供需场景的运营实战经验,能用数据驱动决策并清晰陈述策略权衡;能在保密约束下仍把方法论讲清楚。我们会仔细核对你过往经历中职责范围、时间线与预算规模的一致性。你将接手一个补贴效率持续走低的城市。",
+  "history": [
+    { "q": "先对齐一下范围:你现在到底负责一个城市还是全国运力?团队多少人?" },
+    { "q": "你简历里一处写带 15 人,另一处写 60 人跨区域,这两个是同一段经历吗?哪个准确?" },
+    { "q": "上一家公司你的入职时间,一处写 2018 年 3 月,一处写 2019 年 1 月,以哪个为准?" },
+    { "q": "司机激励预算到底是季度 2000 万还是年度 2000 万?这两个差了四倍。" },
+    { "q": "好,先放下简历。讲讲你现在负责城市的核心矛盾是什么?" },
+    { "q": "高峰期运力不足,你具体用什么机制去调配?" },
+    { "q": "动态调度的触发条件是怎么设定的?谁来定阈值?" },
+    { "q": "补贴 ROI 你是怎么度量的?分母放的是什么?" },
+    { "q": "讲一次你做的 A/B 实验:假设、样本、读数。" },
+    { "q": "那次实验如果显著性不够,你会怎么处理?" },
+    { "q": "你提到接手的城市补贴效率走低,你判断根因是什么?" },
+    { "q": "针对这个根因,你具体改了哪一个杠杆?改之前和改之后的补贴效率分别是多少?" },
+    { "q": "这个改动有没有副作用,比如把司机留存压下去了?你怎么权衡?" },
+    { "q": "把那次补贴策略调整的核心数字给我:投入产出比从多少到多少,样本是哪些城市?" }
+  ],
+  "candidate_last_answer": "这个我得说明一下:上一家的补贴 ROI 绝对数和城市名单是签了 NDA 的,我不能透露具体投入产出比和涉及的城市,抱歉。但方法和方向我可以讲清楚:那次我们把『无差别冲单补贴』改成了按时段、按司机分层的定向补贴,核心是把预算从平峰挪到早晚高峰的供给缺口上。读数我们看的是『每元补贴新增的有效完单』这个口径,改完之后这个口径是明显改善的,留存没有掉,因为我们对头部活跃司机保留了底薪式激励。具体倍数和城市名单受限,我只能讲到这里。",
+  "session_state": {
+    "drilled_topics": ["scope-clarification", "team-size-contradiction", "tenure-date-contradiction", "budget-scale-contradiction", "city-core-problem", "peak-capacity-mechanism", "dispatch-threshold-ownership", "subsidy-roi-definition", "ab-test-walkthrough", "ab-insignificance-handling", "subsidy-decline-rootcause", "lever-changed-before-after", "side-effect-tradeoff"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 改完之后这个口径是明显改善的,留存没有掉",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: respect the NDA on absolute ROI and city names, but force the candidate to articulate the directional tradeoff in non-confidential terms — what they gave up by shifting budget from off-peak to peak, how they detected that head-driver retention did not drop, and what the decision rule was if retention had started to slip"
+    ]
+  }
+}

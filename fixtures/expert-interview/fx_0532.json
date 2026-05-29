@@ -1,0 +1,44 @@
+{
+  "id": "fx_0532",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Director of Operations — Precision Components Manufacturing\n\nSUMMARY\n15 years in discrete manufacturing operations, last 6 at director level running multi-line plants. Lean/Six Sigma Black Belt. Track record turning around OEE and on-time delivery in unionized environments.\n\nEXPERIENCE\nVanguard Precision (Tier-1 automotive supplier) — Director of Operations (2019-present)\n- Situation: Flagship plant (220 staff, 3 machining lines) running 58% OEE with 81% on-time delivery; customer threatened to resource a $40M program. Task: recover the account within two quarters. Action: chartered three kaizen teams, instituted SMED on the bottleneck cell, rebuilt the preventive-maintenance schedule around failure data, and put a daily tiered-accountability board in place. Result: OEE 58% to 74% in seven months, on-time delivery 81% to 96%; customer retained the program and added a second.\n- Situation: Scrap on a critical aerospace part hit 7.2%, eating margin. Task: get it under 2%. Action: ran a DMAIC, found a fixture-wear root cause via designed experiment, changed fixturing material and added in-process gauging. Result: scrap to 1.4% sustained over 12 months; ~$1.1M annualized savings.\n\nPiedmont Tooling — Plant Manager (2014-2019)\n- Took a greenfield line from launch to 90% OEE in 14 months; led the workforce ramp from 0 to 65 operators.\n\nEDUCATION & CERTS\nB.S. Mechanical Engineering, Tech State, 2009. ASQ Six Sigma Black Belt. APICS CPIM.\nSkills: Lean, Six Sigma (DMAIC), TPM/OEE, SMED, capacity planning, S&OP, union labor relations.",
+  "jd": "We are seeking a Director of Operations for a 300-person precision-machining plant supplying automotive and aerospace customers. You will own P&L for the site, lead a salaried staff of 8 (production, quality, maintenance, planning), and be accountable for OEE, on-time delivery, scrap, and safety. The plant is mid-turnaround: OEE sits in the low 60s and a key aerospace customer is on a corrective-action plan. We need an operator who can diagnose a constraint quickly, who reasons explicitly about tradeoffs (e.g., throughput vs. changeover vs. inventory), and who can speak in precise numbers about past turnarounds — the specific metric, the baseline, the intervention, and the time it took. This is a unionized site; labor-relations judgment is essential.",
+  "history": [
+    { "q": "Walk me through the Vanguard flagship turnaround — what state was the plant in when you arrived?" },
+    { "q": "You moved OEE from 58 to 74. Which of the three OEE components — availability, performance, quality — moved most?" },
+    { "q": "SMED on the bottleneck cell: what was the changeover time before and after?" },
+    { "q": "There's an obvious tradeoff between running smaller batches and absorbing more changeovers. How did you think about that?" },
+    { "q": "The aerospace scrap project — how did you land on fixture wear as the root cause rather than, say, tool wear or material variation?" },
+    { "q": "Why a designed experiment there instead of just replacing fixtures and watching?" },
+    { "q": "This is a union site. Tell me about a decision in the turnaround that the union pushed back on." },
+    { "q": "How did you resolve it without blowing up the daily accountability process you'd just installed?" },
+    { "q": "Last one: if you take this plant at low-60s OEE with an aerospace customer on a corrective-action plan, what's the first constraint you'd go measure in week one, and why that one before anything else?" }
+  ],
+  "candidate_last_answer": "Week one I'd quantify the constraint before touching anything: pull 60 days of machine-state data and stratify downtime by cell, then sit on the floor for two shifts to validate the data against reality — logged downtime and real downtime usually disagree. My hypothesis on a low-60s plant with an aerospace CAP is that quality losses and unplanned downtime on one or two cells dominate, not labor. I'd go to the corrective-action cell first because that account is the existential risk, and a containment miss there can cost the program regardless of how good OEE looks elsewhere. So: stabilize quality on the CAP part, then attack the throughput constraint. I'd commit to a baseline number by end of week one and a measurable target by end of week two, not a vague improvement plan.",
+  "session_state": {
+    "drilled_topics": ["vanguard-turnaround-state", "oee-component-breakdown", "smed-changeover-numbers", "batch-changeover-tradeoff", "scrap-root-cause", "doe-rationale", "union-pushback", "union-resolution"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: stabilize quality on the CAP part, then attack the throughput constraint",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the explicit cost of sequencing quality-first — what throughput or delivery the candidate is willing to sacrifice while the CAP cell is stabilized, and the condition under which they would flip the order — testing whether the crisp plan rests on real tradeoff reasoning rather than a rehearsed sequence"
+    ]
+  }
+}

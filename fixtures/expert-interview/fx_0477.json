@@ -1,0 +1,46 @@
+{
+  "id": "fx_0477",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "numbers-missing",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Staff Clinical Informatics Specialist\n\nSummary: Registered nurse turned clinical informaticist supporting EHR optimization, clinical decision support (CDS), and provider workflow design across a multi-hospital system. Bridge between bedside clinicians and the Epic build team.\n\nExperience:\nRegional Health Network — Staff Clinical Informatics Specialist (2020-present)\n- Lead analyst for inpatient CDS alerts and order-set governance\n- Partner with pharmacy, nursing, and physician informatics on alert-fatigue reduction\n- Own intake and prioritization of clinician-submitted optimization requests\n- Facilitate go-live support for new units and acquired facilities\n\nMetro Community Hospital — Clinical Informatics Analyst (2016-2020)\n- Built and maintained nursing documentation flowsheets\n- Supported sepsis best-practice-advisory rollout\n- Trained super-users ahead of major Epic upgrades\n\nPrior: Med-Surg RN, 6 years\n\nSkills: Epic (Inpatient, ClinDoc, Orders, BPA build), CDS governance, clinical workflow analysis, HL7/FHIR basics, change management, super-user training\nCredentials: RN, BSN; Epic ClinDoc & Orders certified",
+  "jd": "Our academic medical center seeks a Staff Clinical Informatics Specialist to lead clinical decision support governance and provider-burnout-reduction efforts within Epic. You will chair the alert-stewardship committee, own the lifecycle of interruptive BPAs, and drive measurable reductions in alert volume without compromising patient-safety catches. Responsibilities: quantify alert override rates and signal-to-noise, lead order-set standardization across service lines, partner with physician informatics on documentation-burden reduction, and support multi-site go-lives. Required: active RN or equivalent clinical license, Epic certification (ClinDoc and/or Orders), 4+ years clinical informatics, demonstrated experience retiring or tuning CDS alerts with before/after data. You will present alert-stewardship outcomes to the CMIO and the patient-safety committee.",
+  "history": [
+    { "q": "Give me the shape of your current role — what do you own in the CDS governance space?" },
+    { "q": "Alert fatigue is core to this job. Tell me about a specific alert you helped retire or retune." },
+    { "q": "Before you touched it, how did you know that alert was a problem? What signal told you?" },
+    { "q": "Walk me through your actual process for deciding to tune versus retire it — who was in the room?" },
+    { "q": "What was the patient-safety risk of loosening it, and how did you guard against missing a real catch?" },
+    { "q": "What changed after the intervention — give me the before and after numbers." },
+    { "q": "How did you validate that you didn't introduce a new safety gap post-change?" },
+    { "q": "Now zoom out: tell me about a time you had to balance competing clinician demands while running one of these governance efforts." },
+    { "q": "Of everything you just described, which single decision are you most proud of owning personally, and what was the measured result?" }
+  ],
+  "candidate_last_answer": "Honestly there were a few running at once, so let me give you the whole picture. The vancomycin dosing BPA — Situation: it was firing on nearly every renal patient and pharmacists were drowning. Task: I owned tuning it without losing the AKI catch. Action: I pulled 90 days of override data, met with pharmacy and nephrology, rebuilt the logic to suppress when a pharmacist consult was already active, and piloted on two units first. Result: override rate dropped from 91% to 34% over eight weeks with zero missed dosing-adjustment events on chart audit. At the same time I was standardizing the sepsis order set across four service lines, AND I was running go-live support for an acquired critical-access hospital, AND I kicked off the documentation-burden workgroup. So it was a lot at once, but the vanc one is the one I'd point to.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "alert-retune-example", "problem-signal", "tune-vs-retire-process", "safety-risk-guardrail", "before-after-numbers", "post-change-validation", "competing-demands"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "process-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: At the same time I was standardizing the sepsis order set across four service lines, AND I was running go-live support",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: force the candidate to isolate the single proudest decision and detail what they personally decided and traded off, separating their individual contribution from the three parallel initiatives they bundled into one answer"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_0468",
+  "tags": {
+    "industry": "design",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Marcus Bell — Junior Product Designer\nPortland, OR | marcus.bell@example.com | portfolio: marcusbell.design\n\nSUMMARY\nJunior product designer with 2 years of experience on a B2B SaaS team, focused on usability improvements to existing workflows. I work in Figma, run moderated usability tests, and partner closely with engineers to ship.\n\nEXPERIENCE\nJunior Product Designer — Cardinal Logistics Software (Aug 2023 to present)\n- Owned the redesign of the shipment-creation flow used by ~4,000 daily active dispatchers.\n  Situation: the existing 6-step wizard had a 38% drop-off at step 4 (address entry) per our analytics.\n  Task: I was asked to reduce drop-off on that step without changing the backend address-validation API.\n  Action: I ran 6 moderated usability sessions, found that users were confused by a silent validation error, redesigned the step to surface inline errors and added autofill from recent addresses, and prototyped two variants in Figma for an A/B test.\n  Result: the winning variant cut step-4 drop-off from 38% to 21% over a 3-week test, which the PM estimated saved roughly 300 support tickets a month.\n- Maintained and extended the team's Figma component library (about 60 components), documenting usage so engineers could self-serve.\n- Ran a quarterly accessibility audit on the dispatcher dashboard and fixed 14 contrast and focus-order issues against WCAG AA.\n\nDesign Intern — Rivertown Health App (Jan 2023 to Jun 2023)\n- Redesigned the medication-reminder onboarding for a consumer health app; created the click-through prototype and the usability test script.\n- Supported the lead designer on a design-system token migration.\n\nSKILLS\nFigma (auto-layout, components, variants, prototyping), moderated and unmoderated usability testing, basic HTML/CSS for design hand-off, accessibility (WCAG AA basics), A/B test readouts.\n\nEDUCATION\nB.A. Graphic Design, Portland State University, 2022.\n\nPORTFOLIO HIGHLIGHTS\n- Shipment-creation flow redesign (case study with before/after metrics)\n- Dispatcher dashboard accessibility pass\n- Medication-reminder onboarding (internship case study)",
+  "jd": "We're hiring a Junior Product Designer for our logistics SaaS team. You'll improve existing workflows used by thousands of operational users, run usability tests, prototype in Figma, and partner with PMs and engineers to ship measurable improvements. Responsibilities: own scoped redesigns of existing flows; plan and moderate usability sessions; produce prototypes and specs for engineering hand-off; contribute to and document our component library; participate in accessibility reviews. Requirements: 1 to 3 years of product design experience (internships count), a portfolio showing before/after impact, fluency in Figma, comfort running usability tests, and the ability to articulate the reasoning behind design decisions. We care a lot about candidates who can separate what they personally designed from what the team did, who can defend a tradeoff, and who can tell us how they measured success rather than just asserting it.",
+  "history": [
+    { "q": "Walk me through your role at Cardinal Logistics — what do you own day to day?" },
+    { "q": "Pick the project you're proudest of and give me the short version." },
+    { "q": "You said step 4 had a 38% drop-off. How did you know that, and how did you isolate it to that step?" },
+    { "q": "Tell me about the usability sessions — how many, who were the participants, what did you actually learn?" },
+    { "q": "Walk me through the design change itself. What did you change and why?" },
+    { "q": "How did you validate that the new version was actually better?" },
+    { "q": "Give me the full story end to end — situation, what you were asked to do, what you personally did, and the result with numbers." }
+  ],
+  "candidate_last_answer": "Sure. Situation: our shipment-creation wizard had a 38% drop-off at the address-entry step, which analytics flagged as our single biggest funnel leak for dispatchers. Task: my PM asked me to cut that drop-off without touching the backend validation API. Action: I ran six moderated sessions, recruited from our actual dispatcher customers, and found people were hitting a silent validation error with no message. I redesigned the step to show inline errors and pull in recent addresses, built two Figma variants, and we ran a three-week A/B test. Result: the winning variant took step-4 drop-off from 38% to 21%, and the team estimated it saved around 300 support tickets a month.",
+  "session_state": {
+    "drilled_topics": ["role-scope", "proudest-project-overview", "drop-off-measurement", "usability-sessions", "design-change-rationale", "validation-method"],
+    "current_competency_target": "impact-measurement",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "impact-measurement",
+    "missing_evidence": [
+      { "competency": "impact-measurement", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the team estimated it saved around 300 support tickets a month",
+      "must-be-question-type: action-attribution",
+      "expected-yield: who specifically produced the 300-tickets-a-month estimate and how — whether the candidate derived it himself or is repeating the PM's number, what assumptions linked drop-off reduction to ticket volume, and how much of the design decision was his versus the team's"
+    ]
+  }
+}

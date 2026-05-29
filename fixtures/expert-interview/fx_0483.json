@@ -1,0 +1,43 @@
+{
+  "id": "fx_0483",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Supply Chain Planner (Mid-level)\n\nProfile: Demand and supply planner for a consumer-electronics accessories brand. Owned forecasting, replenishment, and supplier coordination across Asia-sourced SKUs.\n\nExperience\nBrightGear Inc. — Supply Chain Planner (2020-present)\n- Profile line 1 says: 『managed end-to-end S&OP for a $120M product line』\n- Profile line 2 (elsewhere on resume) says: 『supported the S&OP process as one of three planners』\n- Ran demand forecasting in a statistical planning tool and managed PO placement with three contract manufacturers\n- Participated in a network redesign that consolidated two DCs\n- Helped drive an inventory-reduction initiative\n\nSummerline Co. — Junior Demand Planner (2018-2020)\n- Title also appears as 『Demand Planning Analyst』 in the experience section\n- Maintained forecasts and supported monthly review cadence\n\nSkills: demand forecasting, S&OP, replenishment, supplier management, inventory optimization, Excel, SQL basics, statistical forecasting tool\nNote: forecast-accuracy claim listed once as 『improved forecast accuracy by 15 points』 and once as 『improved forecast accuracy to 85%』.",
+  "jd": "We are hiring a mid-level Supply Chain Planner to own demand forecasting, replenishment, and supplier coordination for a portfolio of Asia-sourced SKUs. You will run the monthly S&OP cadence with sales and operations, drive forecast-accuracy and inventory-turn improvements, and manage PO placement and expedite decisions with contract manufacturers. Required: 3-6 years in demand/supply planning, hands-on forecasting in a planning system, demonstrated ownership of a specific accuracy or inventory metric with before/after evidence, and the ability to clearly separate your individual contribution from the team's. We will probe consistency of scope and metric claims across your resume. You will inherit an inventory-reduction target and a forecast-accuracy gap on a fast-moving accessories line.",
+  "history": [
+    { "q": "Let's clarify scope first — did you own end-to-end S&OP for the $120M line, or were you one of three planners supporting it?" },
+    { "q": "Your accuracy claim shows up two ways — 『up 15 points』 and 『to 85%』. Which is it, and from what baseline?" },
+    { "q": "Tell me about the inventory-reduction initiative. What was your specific piece of it?" },
+    { "q": "On the DC consolidation — what was your role in that, concretely?" },
+    { "q": "Walk me through one expedite decision you personally made with a contract manufacturer." },
+    { "q": "When the forecast missed badly one month, what did you do differently the next cycle?" },
+    { "q": "Of the inventory-reduction result, how much can you attribute to your own forecasting work versus the network change?" }
+  ],
+  "candidate_last_answer": "Honestly, that's a tough one to split out — and maybe a better question is, in a planning team this size, is it even fair to isolate one person's contribution? We hit the inventory target together. We tightened the forecast, we cleaned up the safety-stock parameters, and we worked closely with the DC team on the consolidation. It was really a team effort end to end — the planners, the buyers, the warehouse folks all pulled in the same direction. How would you even measure individual attribution in a setup like that?",
+  "session_state": {
+    "drilled_topics": ["scope-clarification", "accuracy-claim-reconciliation", "inventory-initiative-role", "dc-consolidation-role", "expedite-decision", "forecast-miss-recovery"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We tightened the forecast, we cleaned up the safety-stock parameters",
+      "must-be-question-type: action-attribution",
+      "expected-yield: push past the question-reversal and the blanket 『we』 to extract one decision the candidate personally made and executed — e.g. which safety-stock parameters they themselves changed, on which SKUs, and what their individual change did to inventory or accuracy"
+    ]
+  }
+}

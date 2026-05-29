@@ -1,0 +1,41 @@
+{
+  "id": "fx_0485",
+  "tags": {
+    "industry": "education",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "VP of Academic Programs & Student Success | Visionary EdTech & Higher-Ed Leader\n\nWorld-class education executive with a once-in-a-generation track record of transforming institutions and rewriting what's possible for student outcomes.\n\nSelected triumphs\n- Single-handedly redesigned the entire student-success model and lifted graduation rates to unprecedented heights\n- Architected a learning ecosystem that became the envy of the sector and was studied by peer institutions nationwide\n- Drove the most successful enrollment turnaround in the institution's history\n- Built and scaled an online program that generated transformational revenue and changed thousands of lives\n- Universally regarded by faculty and board alike as the definitive authority on student outcomes\n\nExperience\nMeridian University — VP, Academic Programs & Student Success (2020-present)\n- Own academic program portfolio, retention/completion strategy, and the online-learning P&L\n- Lead a cross-functional org spanning advising, instructional design, and program operations\n\nPrior: Dean of Online Learning, Lakeside College (2016-2020)\n\nSkills: student-success strategy, retention analytics, program design, online learning, enrollment strategy, faculty governance, P&L ownership",
+  "jd": "Our university seeks a VP of Academic Programs & Student Success to own retention, completion, and the online-learning P&L across a portfolio of undergraduate and professional programs. You will be accountable to the Provost and the Board for graduation-rate and retention outcomes, online-program margin, and the integrity of how those outcomes are measured. Required: senior academic leadership experience, demonstrated improvement in retention/completion backed by defensible methodology (cohort definitions, comparison groups), online-program P&L ownership, and the ability to withstand scrutiny on how metrics are computed and attributed. We will probe inflated or unsubstantiated outcome claims rigorously. You will inherit a flat retention trend and an online portfolio under margin pressure.",
+  "history": [
+    { "q": "Give me your current remit at Meridian — what outcomes are you accountable for, and to whom?" },
+    { "q": "Your resume says you 『lifted graduation rates to unprecedented heights.』 What were the actual before and after rates, and over what cohorts?" },
+    { "q": "How did you define the cohort and the comparison group for that graduation-rate claim?" },
+    { "q": "You also cite a record enrollment turnaround. What drove it, and how much was your team versus market/demographics?" },
+    { "q": "On the online program — you said 『transformational revenue.』 Give me the revenue, the margin, and how the margin was calculated." }
+  ],
+  "candidate_last_answer": "The online program was a rocket ship — we generated tens of millions in transformational revenue and the margins were honestly off the charts, north of 70% at the peak. Graduation rates? We basically doubled them, and our retention was best-in-class by any measure. I'd say we moved completion by 30, maybe 40 points — it was that dramatic. Look, the exact cohort math is the kind of thing my analytics team lived in, but the trajectory was undeniable; everyone on the board could see we were rewriting the playbook. These were the biggest gains the institution had ever seen, full stop.",
+  "session_state": {
+    "drilled_topics": ["current-remit", "graduation-rate-before-after", "cohort-definition", "enrollment-attribution", "online-revenue-margin"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd say we moved completion by 30, maybe 40 points",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate to replace the vague 『30, maybe 40 points』 with an exact baseline completion rate, the specific cohort years compared, and the comparison-group definition — exposing whether the doubled-rate claim survives a defensible cohort methodology or collapses into an unverifiable boast"
+    ]
+  }
+}

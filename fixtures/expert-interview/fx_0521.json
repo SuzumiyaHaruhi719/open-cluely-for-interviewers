@@ -1,0 +1,51 @@
+{
+  "id": "fx_0521",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "高级 HR 业务伙伴（Senior HRBP）/ 人才与组织发展\n\n个人亮点：\n- 公司公认的『救火队长』，最难搞的组织问题最后都交给我收尾\n- 凭一己之力把一个濒临崩盘的事业部 attrition 从 35% 拉回行业领先水平\n- 我设计的 performance calibration 机制被 HR 总部直接拿去全公司推广\n- 业务老大离不开我，所有敏感的人事决策都要先听我的意见\n- 在 talent review 和 succession planning 上的判断力,团队里无人能及\n\n工作经历：\n联讯科技 — Senior HRBP（2020 至今）\n支持一个约 600 人的研发与产品事业部,负责 org design、performance management、talent review、employee relations 以及关键岗位的 retention。主导过一次事业部级别的组织重组和一次 RIF（裁员)项目。\n\n华锐集团 — HRBP（2017–2020）\n支持销售与市场线约 300 人,负责招聘协调、绩效流程落地和员工关系处理。\n\n技能：org design、talent management、performance calibration、employee relations、change management、HR analytics(基础)。\n学历：人力资源管理硕士。",
+  "jd": "联讯科技招聘一名 Senior HRBP,支持核心研发事业部(约 600 人),直接向 HRD 汇报并作为业务负责人的战略伙伴。岗位职责包括 org design、performance management、talent review、succession planning 以及高敏感度的 employee relations 与 retention。我们会在面试中针对你『亲手负责过』的一个棘手案例反复追问:你当时的判断是什么、你具体做了哪个决策、结果如何、你从中承担了什么责任。我们特别看重 ownership——一个成熟的 HRBP 在事情出问题时,应该能讲清楚自己的判断在哪里失误、下次会怎么改,而不是把问题归到业务方或流程上。你将负责一个事业部的 attrition 与 engagement 指标,并主导组织变革项目的人力侧落地。要求五年以上 HRBP 经验,有组织重组或 RIF 操盘经验。",
+  "history": [
+    { "q": "先讲讲你现在支持的事业部——规模、你负责的范围、汇报线。" },
+    { "q": "你简历上说把 attrition 从 35% 拉回行业领先。这个 35% 是怎么算的,基线哪一年?" },
+    { "q": "那现在 attrition 具体是多少?你说的『行业领先』参照的是哪个 benchmark?" },
+    { "q": "讲讲你主导的那次组织重组——business context 是什么,你负责哪一部分?" },
+    { "q": "重组之后那个事业部的 regrettable attrition 有没有变化?" },
+    { "q": "你提到主导过一次 RIF。范围多大,选人标准是谁定的?" },
+    { "q": "RIF 之后留下来的核心人才,流失情况怎么样?" },
+    { "q": "现在我想聊一个出问题的案例。讲一个你 retention 没做成、关键人才还是走了的情况。" },
+    { "q": "那个关键岗位的人是什么时候提出离职信号的?你第一时间做了什么?" },
+    { "q": "你当时给业务负责人的建议具体是什么?他采纳了吗?" },
+    { "q": "事后看,这个人的流失,你自己的判断有没有失误的地方?" },
+    { "q": "你说是业务方没及时批 counter-offer。但作为 HRBP,你 escalate 了吗,什么时候?" },
+    { "q": "如果重来一次,在你自己能控制的范围内,你会怎么做不一样?" },
+    { "q": "我想听的是你自己的那部分责任——不是业务方、不是 comp 流程,就是你这个 HRBP 在这件事上判断错了什么?" }
+  ],
+  "candidate_last_answer": "说实话这个 case 真的不能怪我。我很早就 flag 了这个人的 flight risk,在 talent review 上明确说过他是 critical 的,但业务老大当时一门心思扑在发版上,根本没把 retention 当回事。comp 团队那边 counter-offer 审批又特别慢,流程卡了快三周,等批下来人家 offer 都接了。我能做的我都做了,该提醒的提醒了,该写的 retention plan 也写了。这就是个典型的业务不重视加上 comp 流程僵化的问题,换谁来做这个 HRBP 结果都一样。我自己这块真没什么好复盘的,我的判断从头到尾都是对的。",
+  "session_state": {
+    "drilled_topics": ["事业部范围", "attrition基线算法", "行业benchmark", "组织重组", "重组后流失", "RIF范围与标准", "RIF后核心流失", "retention失败案例", "离职信号响应", "给业务建议"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 43
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我自己这块真没什么好复盘的,我的判断从头到尾都是对的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the candidate's own escalation decisions and timing — when exactly they raised the counter-offer beyond the business owner, what they personally chose to do or not do when comp stalled, and one thing their own judgment got wrong — instead of attributing the loss entirely to the business owner and the comp process"
+    ]
+  }
+}

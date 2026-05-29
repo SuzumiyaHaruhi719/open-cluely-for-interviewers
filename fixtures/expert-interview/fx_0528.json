@@ -1,0 +1,54 @@
+{
+  "id": "fx_0528",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Customer Support Team Lead\n\nSummary: People-first support leader who has spent the last six years building empathetic, high-trust teams and championing the voice of the customer. I believe great support is a craft, and I coach to that standard every day.\n\nExperience\nBrightline SaaS — Support Team Lead (2021-present)\n- Lead a team of front-line support specialists handling technical tickets for a B2B analytics product.\n- Owned the team's quality program, coaching cadence, and onboarding for new hires.\n- Partnered with product and engineering to escalate and close the loop on recurring issues.\n- Drove improvements in our CSAT and first-response experience through coaching and process refinement.\n\nNimbus Retail — Senior Support Specialist (2018-2021)\n- Handled escalated billing and account issues for a consumer subscription service.\n- Recognized repeatedly for de-escalation skills and mentoring newer agents.\n- Helped pilot a new knowledge-base initiative that reduced repeat contacts.\n\nEarlier: Support Specialist, various (2017-2018).\n\nEducation: B.A. Communications, City University, 2017.\nSkills: Zendesk, coaching, QA/quality monitoring, knowledge management, de-escalation, voice-of-customer.",
+  "jd": "We're hiring a Customer Support Team Lead for our B2B SaaS support org. You'll lead a team of 8-12 specialists, own their coaching and development, run the team's quality program, and act as the escalation point for hard tickets. Critically, you'll be expected to manage the team to its operating metrics — CSAT, first-response time, resolution time, and backlog — and to defend those numbers in monthly business reviews. We want a leader who coaches with empathy AND who is fluent in the operational data: what your numbers are, where they were when you started, what specifically you changed, and what moved as a result. The interview will probe hard for concrete figures and the mechanism connecting your actions to outcomes, so come ready to go beyond philosophy.",
+  "history": [
+    { "q": "Tell me about your current team at Brightline — size, what they support, how it's structured." },
+    { "q": "What does your coaching cadence actually look like week to week?" },
+    { "q": "You say you 'drove improvements in CSAT.' Where was CSAT when you took over the team?" },
+    { "q": "And where is it now?" },
+    { "q": "What was the single biggest lever that moved it?" },
+    { "q": "Let's talk first-response time. What's your team's current FRT target, and are you hitting it?" },
+    { "q": "Tell me about a specific agent you coached from underperforming to strong. What did you do?" },
+    { "q": "How do you measure whether your coaching is working, beyond a gut feel?" },
+    { "q": "Describe your quality program — how many tickets do you review per agent per week, and against what rubric?" },
+    { "q": "You mentioned a knowledge-base initiative at Nimbus that 'reduced repeat contacts.' By how much?" },
+    { "q": "Walk me through how you'd handle a week where backlog suddenly doubled." },
+    { "q": "What's your current backlog, and how do you track aging tickets?" },
+    { "q": "Tell me about a time you pushed back on product or engineering to fix a recurring issue." },
+    { "q": "What happened — did the issue volume actually drop after they fixed it?" },
+    { "q": "How do you decide which escalations you take personally versus delegate?" },
+    { "q": "If I asked your best agent what you're like as a manager, what would they say, and what would your weakest say?" },
+    { "q": "I'm going to ask one more time, plainly: give me one specific number — any operating metric on your team today — its current value, where it was a year ago, and the one change you made that moved it." }
+  ],
+  "candidate_last_answer": "Absolutely, and I love that you're pushing on this because metrics matter. So here's my philosophy: I always say what gets measured gets managed, but what gets coached gets transformed. I'm relentlessly customer-obsessed and I lead with empathy first, data second — but always both. The way I think about it, every metric is just a story about a human moment, and my north star is moving the needle on the customer experience holistically. So when you ask about a number, what I'd really point to is the culture I've built: a team that's bought in, that owns the outcome, that goes above and beyond. That's the leading indicator that everything else follows from.",
+  "session_state": {
+    "drilled_topics": ["team-structure", "coaching-cadence", "csat-baseline", "csat-current", "biggest-lever", "frt-target", "agent-turnaround", "coaching-measurement", "quality-program", "kb-repeat-contacts", "backlog-spike", "current-backlog", "eng-pushback", "issue-volume-drop", "escalation-triage", "manager-self-awareness"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: when you ask about a number, what I'd really point to is the culture I've built",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one literal operating figure (CSAT, FRT, backlog) with its current value, its value a year ago, and the single change the candidate made — forcing them off the culture-philosophy framing onto a quantified before/after they own"
+    ]
+  }
+}

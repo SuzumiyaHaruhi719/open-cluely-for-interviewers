@@ -1,0 +1,40 @@
+{
+  "id": "fx_0515",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "self-contradictory",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Junior Procurement Analyst\n\nProfile: Detail-oriented procurement analyst, early career, supporting indirect-spend sourcing and supplier onboarding for a mid-size manufacturer.\n\nHarborline Manufacturing — Junior Procurement Analyst (2022–present)\n- Owned end-to-end supplier qualification for the indirect category, personally approving new vendors into the ERP.\n- Note: final vendor approvals were signed off by my manager; I prepared the qualification packets.\n- Reduced maverick (off-contract) spend by 30% in my first year.\n- Maverick spend actually rose slightly during the ERP transition; the 30% figure refers to a single department.\n- Negotiated pricing with three strategic suppliers, saving the company significant cost.\n- Clarification: I sat in on the negotiations led by the category manager and took notes; I did not lead them.\n- Managed the supplier scorecard process across 40+ vendors.\n- The scorecard covered our top 12 vendors; the other suppliers were not yet onboarded to it.\n\nSkills: ERP requisition workflows, spend analysis in spreadsheets, supplier onboarding documentation, RFQ support.\nEducation: B.S. Supply Chain Management.",
+  "jd": "Harborline Manufacturing is hiring a Junior Procurement Analyst to support indirect-spend sourcing, supplier onboarding, and contract compliance. You will run RFQs under the guidance of a category manager, maintain supplier qualification records in the ERP, and help enforce the off-contract (maverick) spend policy across departments. A core part of the role is data integrity and process compliance: vendors must be qualified before purchase orders are issued, and conflict-of-interest and anti-bribery checks must be completed and documented for every new supplier. We want someone who is precise about what they personally did versus what the team did, who takes ownership of errors, and who understands why the qualification gates exist. You'll report to the Procurement Manager and partner with Finance on spend reporting and with Legal on supplier compliance attestations.",
+  "history": [
+    { "q": "Your resume says you reduced maverick spend by 30% but also that it rose during the ERP transition. Which is it, and what did you personally do?" },
+    { "q": "Walk me through how a new supplier gets qualified in your process — who does what, and where are the compliance checks?" },
+    { "q": "Tell me about a time a purchase order went out to a supplier that wasn't fully qualified. What happened and what did you do about it?" }
+  ],
+  "candidate_last_answer": "Honestly that situation wasn't really on me. The category manager was slammed and told me to just push the PO through so we wouldn't miss the production deadline, so I went ahead and issued it before the anti-bribery check came back — but that was his call, not mine. And Legal is the one who's supposed to catch that stuff anyway, they're the gatekeepers, not me. The ERP was also half-broken during the transition so the qualification flag didn't even fire. If anything it was a systems problem and a Legal problem. I was just doing what I was told.",
+  "session_state": {
+    "drilled_topics": ["maverick-spend-contradiction", "qualification-process"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "compliance-judgement", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": ["admitted issuing a purchase order before the required anti-bribery/conflict-of-interest check cleared, then attributing the compliance bypass to the manager, Legal, and a broken ERP"],
+    "top_question_traits": [
+      "must-anchor-on: I went ahead and issued it before the anti-bribery check came back — but that was his call, not mine",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the candidate's own decision and options at the moment of the bypass — whether they raised the missing check, what they could have done other than issue the PO, and what they personally own — rather than diffusing the compliance failure onto the manager, Legal, and the ERP"
+    ]
+  }
+}

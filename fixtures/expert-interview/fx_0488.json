@@ -1,0 +1,49 @@
+{
+  "id": "fx_0488",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Maya Okafor\nJ.D. Candidate, Class of 2026 — Georgetown University Law Center\nB.A. Political Science, University of Michigan\n\nEXPERIENCE\nSummer Legal Intern, Office of the Public Defender (Cook County) — Summer 2025\n- Assisted staff attorneys on misdemeanor and felony case preparation\n- Drafted suppression motions and reviewed discovery for assigned matters\n- Conducted client intake interviews at the detention center\n- Shepardized authorities and assembled exhibit binders for trial\n\nPro Bono Volunteer, Immigration Clinic — 2024-2025\n- Supported asylum applicants with declaration drafting\n- Helped translate intake forms for Spanish-speaking clients\n\nLegal Research Assistant, Prof. Daniels (Criminal Procedure) — 2024\n- Researched Fourth Amendment doctrine for a forthcoming law review article\n- Cite-checked and Bluebooked manuscript footnotes\n\nSKILLS\nWestlaw, Lexis, document review, legal writing, Spanish (conversational)\n\nACTIVITIES\nStaff Editor, Georgetown Immigration Law Journal\nMember, Criminal Law Student Association",
+  "jd": "The Cook County Public Defender seeks a 1L/2L summer legal intern to support our felony trial division. Interns work directly under licensed staff attorneys and contribute to active criminal matters. Responsibilities include drafting pretrial motions (suppression, severance, discovery), reviewing police reports and body-cam footage, conducting jail-side client interviews, and preparing trial exhibits. The ideal candidate has completed a criminal procedure course, is comfortable in a high-volume public-interest setting, demonstrates sound legal judgment under deadline pressure, and can communicate clearly with clients in difficult circumstances. Spanish fluency is a plus. This is an unpaid clinical placement; academic credit is available. We evaluate interns on legal writing quality, initiative, and the ability to own a discrete piece of a case.",
+  "history": [
+    { "q": "Tell me why you want to spend a summer in a public defender's office rather than a firm." },
+    { "q": "Your resume lists 'drafted suppression motions.' Pick one and walk me through it." },
+    { "q": "What was the factual basis for the stop you were challenging?" },
+    { "q": "Which legal standard did you anchor the motion on, and why that one?" },
+    { "q": "Who supervised the draft, and how much of the final filing was your language?" },
+    { "q": "Did the motion get ruled on? What happened?" },
+    { "q": "Let's talk about client intake. Describe a difficult intake interview you conducted." },
+    { "q": "How did you handle the language barrier in that interview?" },
+    { "q": "Tell me about a time you caught an error or gap in the discovery you were reviewing." },
+    { "q": "What did you do once you found it?" },
+    { "q": "Give me a concrete example of a moment in the internship where you took initiative without being asked." },
+    { "q": "Walk me through one specific instance — start to finish — where you owned a discrete task on a real case and it changed the outcome." }
+  ],
+  "candidate_last_answer": "Sure. The Situation was a felony gun-possession case where my supervising attorney was buried in trial prep and the suppression deadline was eight days out. My Task was to put together the first full draft of the motion to suppress the firearm. So I pulled the arrest report and the body-cam, and I noticed the officer's stated reason for the stop — a cracked taillight — wasn't actually visible in the footage. That was the Action: I built the motion around the lack of reasonable suspicion, cited Terry and our state's stop-and-frisk line, and flagged the body-cam timestamp as our key exhibit. I wrote the fact section and the argument; my supervisor tightened two paragraphs but kept my structure. The Result was the judge granted the motion, the gun was excluded, and the State dropped the felony count to a misdemeanor two weeks later. My supervisor later had me train the next intern on pulling body-cam discrepancies.",
+  "session_state": {
+    "drilled_topics": ["motivation", "suppression-motion-detail", "factual-basis-of-stop", "legal-standard-choice", "supervision-and-ownership", "intake-interview", "language-barrier", "discovery-error", "initiative", "case-ownership-end-to-end"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "legal-judgement", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: my supervisor tightened two paragraphs but kept my structure",
+      "must-be-question-type: action-attribution",
+      "expected-yield: precise delineation of which analytical choices and sentences were the candidate's own versus the supervisor's, including whether the candidate independently chose the reasonable-suspicion theory or was directed to it"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "fx_0512",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Director of Operations — Regional Fulfillment, MeridianGoods\n\nSummary: Operations leader with 12 years running high-volume fulfillment and last-mile networks. Focused on throughput, labor productivity, and on-time delivery in DTC and retail-replenishment channels.\n\nMeridianGoods — Director of Operations (2020–present)\n- Situation: inherited a 4-DC network missing its on-time-ship SLA (82% vs 95% target) after a peak-season meltdown.\n- Task: restore SLA and cut cost-per-unit-shipped within two peak cycles.\n- Action: rebuilt the labor-planning model, introduced a wave-picking redesign, and renegotiated the parcel-carrier mix.\n- Result: on-time-ship to 96.4%, cost-per-unit down 19% over 18 months, peak attrition down from 41% to 24%.\n\nNorthgate Retail — Senior Operations Manager, Distribution (2016–2020)\n- Situation: single DC could not absorb a 2x e-commerce volume spike.\n- Task: stand up a second shift and a returns-processing line without new square footage.\n- Action: cross-trained 60 associates, sequenced returns into off-peak windows, added cycle-count discipline.\n- Result: throughput +70%, inventory accuracy from 94% to 99.1%, returns cycle-time from 9 days to 3.\n\nEarlier: Operations Supervisor, ParcelWorks (2013–2016). BS Industrial Engineering, state university. Lean Six Sigma Black Belt.",
+  "jd": "MeridianGoods is hiring a Director of Operations to own a five-DC fulfillment network (1,400 associates, $190M annual opex) serving DTC and wholesale. You will be accountable for on-time-ship SLA, units-per-labor-hour, cost-per-unit-shipped, and safety recordable rate. The first mandate is to lead a WMS migration off a legacy on-prem system to a cloud platform across all five sites within 14 months while holding peak SLA. You will own the S&OP interface with merchandising, the parcel-carrier contract portfolio, and the peak-season ramp plan (we triple headcount Oct–Dec). The role reports to the VP Supply Chain and partners with HR on a multi-site labor strategy. We need someone who can sequence a complex migration without dropping service, and who is precise about what changed when. Travel 40% across sites in the Midwest and Southeast.",
+  "history": [
+    { "q": "Give me the shape of your current network at MeridianGoods — sites, headcount, opex." },
+    { "q": "You took on-time-ship from 82% to 96.4%. Which lever moved the number first?" },
+    { "q": "Walk me through the wave-picking redesign — what specifically changed on the floor?" },
+    { "q": "You also renegotiated the carrier mix. What were the old terms versus the new terms?" },
+    { "q": "Let's talk peak. How did attrition go from 41% to 24% — what did you actually do?" },
+    { "q": "Now the WMS angle. Have you led a warehouse-management-system migration before?" },
+    { "q": "Tell me about that migration. Which site went first and why?" },
+    { "q": "What was the sequence — go-live dates, pilot, rollback plan?" },
+    { "q": "When did peak season fall relative to your go-lives?" },
+    { "q": "So did the first site go live before or after peak that year?" },
+    { "q": "And the labor-planning rebuild — did that come before or after the WMS work?" },
+    { "q": "Help me get the order straight: WMS pilot, labor model, peak ramp — what came first?" },
+    { "q": "Walk me through that one year end to end, month by month — when did each piece land?" }
+  ],
+  "candidate_last_answer": "Okay so that year. We did the WMS pilot at the Columbus site, and that was right around peak, I think late Q4. But the labor-planning rebuild was already live before that — actually no, the labor model came after we saw how peak went, so it must have been the following spring. And the carrier renegotiation, that closed mid-year, before the pilot. Although the pilot might have slipped into January. Either way the SLA held through peak, and then we did the labor model, which is what made peak work in the first place. So everything basically landed in that twelve-month window.",
+  "session_state": {
+    "drilled_topics": ["network-scope", "sla-recovery-lever", "wave-picking", "carrier-terms", "peak-attrition", "wms-experience", "migration-first-site", "migration-sequence", "peak-timing"],
+    "current_competency_target": "execution-sequencing",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "execution-sequencing",
+    "missing_evidence": [
+      { "competency": "execution-sequencing", "evidence_type": "timeline" },
+      { "competency": "execution-sequencing", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the labor model came after we saw how peak went, so it must have been the following spring",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single non-contradictory chronology with concrete months tying the WMS pilot, the labor-planning rebuild, and the peak ramp to dates, resolving whether the labor model preceded or followed the peak it supposedly enabled"
+    ]
+  }
+}

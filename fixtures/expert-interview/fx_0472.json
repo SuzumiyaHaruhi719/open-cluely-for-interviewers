@@ -1,0 +1,43 @@
+{
+  "id": "fx_0472",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Tyler Brooks — Manufacturing Process Technician (Junior)\ntyler.brooks@example.com | Greenville, SC\n\nSUMMARY\nProcess technician with about two years on an injection-molding floor. Comfortable supporting setups, troubleshooting basic defects, and helping with continuous-improvement activities.\n\nEXPERIENCE\nProcess Technician — Piedmont Plastics Manufacturing (2023 to present)\n- Support mold changeovers and assist process engineers with parameter setup on injection-molding presses.\n- Help troubleshoot common defects like short shots, flash, and sink marks.\n- Record scrap and downtime on the daily production log.\n- Participated in a Kaizen event aimed at reducing changeover time on one press cell.\n- Maintain setup sheets and update them when parameters change.\n\nProduction Operator — Piedmont Plastics Manufacturing (2022 to 2023)\n- Ran molding presses, performed visual inspection, and packed finished parts.\n- Flagged quality issues to the line lead.\n\nSKILLS\nInjection molding setup support, basic defect troubleshooting, reading setup sheets, SPC charts (reading), 5S, Kaizen participation, basic Excel.\n\nEDUCATION\nAssociate Degree, Mechatronics, Greenville Technical College, 2022.\n\nCERTIFICATIONS\nForklift certified; completed an internal SMED awareness training.",
+  "jd": "We are hiring a junior Process Technician / Process Improvement Technician for an injection-molding operation. You'll support changeovers, assist engineers with parameter optimization, troubleshoot defects, and contribute to continuous-improvement (Kaizen/SMED) projects on the floor. Requirements: 1 to 3 years in a molding or similar manufacturing environment, familiarity with common molding defects, comfort reading setup sheets and SPC charts, and participation in improvement activities. This role grows toward owning improvement projects, so we look closely at how candidates talk about results: we want technicians who can tell us how an improvement was measured, what the real baseline was, and what portion they personally contributed — not round, dramatic numbers they can't substantiate.",
+  "history": [
+    { "q": "Tell me about your current role on the molding floor — what do you do in a typical shift?" },
+    { "q": "Walk me through a changeover you support. What are the actual steps?" },
+    { "q": "You listed a Kaizen event on changeover time. What was the team trying to accomplish?" },
+    { "q": "What was your specific role in that Kaizen versus the engineer's or the line lead's?" },
+    { "q": "How did the team measure changeover time before and after?" },
+    { "q": "So put a number on it — how much did changeover time actually improve, and how do you know?" }
+  ],
+  "candidate_last_answer": "Oh, it was huge. We basically cut changeover time by like 80%, maybe more. Honestly it probably saved the plant millions a year once you add it all up. Before our Kaizen it was a total mess and afterward it was basically instant — I'd say we got it down to almost nothing. I don't have the exact stopwatch numbers in front of me, but everybody on the floor knew it was a massive win, like one of the biggest improvements the plant had ever seen.",
+  "session_state": {
+    "drilled_topics": ["shift-responsibilities", "changeover-steps", "kaizen-objective", "kaizen-personal-role", "before-after-measurement"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We basically cut changeover time by like 80%, maybe more",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the real before-and-after changeover times in minutes, how they were measured (stopwatch, MES, who timed it), the baseline date range, and whether the 80% and 'millions a year' are anything more than floor-talk the candidate is repeating"
+    ]
+  }
+}

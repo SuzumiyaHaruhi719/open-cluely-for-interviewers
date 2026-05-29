@@ -1,0 +1,47 @@
+{
+  "id": "fx_0534",
+  "tags": {
+    "industry": "design",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "初级产品设计师（UI/UX）\n\n概述\n两年产品设计经验，专注于 B 端数据产品的体验设计，热衷于用设计驱动业务增长。\n\n工作经历\n\n星澜数据 产品设计师（二零二三年三月至今）\n- 独立负责数据看板产品的全部设计工作，从零到一搭建了设计系统\n- 主导了一次首页改版，将用户次日留存提升了显著比例\n\n（同一段经历下方又写道）\n- 作为设计团队的一员，配合资深设计师完成看板改版，主要承担切图与标注\n\n墨方科技 设计实习生（二零二二年六月至二零二二年十二月）\n- 参与移动端 App 的界面设计\n\n项目亮点\n- 我搭建的设计系统被全公司采用，覆盖所有产品线\n- 不过设计系统目前还在试点阶段，仅在我负责的看板产品中使用\n\n教育背景\n华亭美术学院 视觉传达设计 本科，二零二二年毕业。\n（另一处写：二零二三年毕业）\n技能：Figma、设计系统、交互设计、用户研究、数据可视化、切图标注。",
+  "jd": "我们在招聘一名初级产品设计师，加入一家 B 端数据产品公司的体验设计团队。你将参与数据看板与可视化产品的界面与交互设计，维护并扩展团队的设计系统，配合产品与研发落地需求，并参与用户研究。我们重视诚实、可核实的履历与清晰的个人贡献边界 —— 面试中我们会就简历里的每一处细节追问，包括你究竟是独立负责还是协作执行、设计系统的真实采用范围、以及你引用的任何业务指标的口径。习惯用宏大措辞包装、说不清自己具体做了哪部分的候选人会很吃亏。需要扎实的 Figma 能力与对交互细节的敏感度。",
+  "history": [
+    { "q": "先介绍一下你在星澜数据负责的数据看板产品吧。" },
+    { "q": "你简历里既写了『独立负责全部设计』，又写了『配合资深设计师、主要做切图标注』。到底是哪种?" },
+    { "q": "那个设计系统，是你从零搭建的吗?" },
+    { "q": "简历一处说它『被全公司采用、覆盖所有产线』，另一处说『还在试点、只在看板用』。真实情况是哪个?" },
+    { "q": "首页改版把次日留存提升了『显著比例』 —— 具体是从多少到多少?" },
+    { "q": "这个留存数据是谁统计的，你看到的是哪个后台?" },
+    { "q": "你在墨方的实习是哪段时间? 简历写的是二零二二下半年。" },
+    { "q": "你的毕业时间到底是二零二二还是二零二三? 简历上两个都出现了。" },
+    { "q": "在看板改版里，有没有哪个交互决定是你自己提出并被采纳的?" },
+    { "q": "我想请你一次性说清楚：在星澜这段经历里，哪些是你独立完成的、哪些是协作的、设计系统真实覆盖了几条产线? 请用具体的事实回答，不要用形容词。" }
+  ],
+  "candidate_last_answer": "其实我觉得这些细节背后是一个更大的故事 —— 我一直相信设计是要驱动业务价值的，是要 end-to-end 地 own 用户体验的。在星澜，我的角色可以说是非常 full-stack 的设计师，既有 0 到 1 的系统化思维，也有落地的执行力。设计系统这块，我是带着平台化的视角去搭的，虽然现在覆盖范围还在演进，但它的设计哲学是面向全公司的。留存提升和独立与否这些，我觉得不该用割裂的方式去看，因为好的设计本来就是协作与主导的统一体。总之我对自己在这段经历里创造的价值是非常有信心的。",
+  "session_state": {
+    "drilled_topics": ["dashboard-product", "solo-vs-collab", "design-system-origin", "adoption-scope", "retention-numbers", "retention-source", "internship-dates", "graduation-year", "owned-interaction-decision"],
+    "current_competency_target": "intellectual-honesty",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "intellectual-honesty",
+    "missing_evidence": [
+      { "competency": "intellectual-honesty", "evidence_type": "scope" },
+      { "competency": "intellectual-honesty", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 好的设计本来就是协作与主导的统一体",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a factual, non-rhetorical split of what the candidate did solo versus collaboratively on the dashboard and exactly how many product lines the design system actually covers — forcing them to resolve the resume's contradiction instead of dissolving it into 『协作与主导的统一体』"
+    ]
+  }
+}

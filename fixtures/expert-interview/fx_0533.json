@@ -1,0 +1,41 @@
+{
+  "id": "fx_0533",
+  "tags": {
+    "industry": "hr",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "资深人力资源专家（HRBP 方向）\n\n概述\n十年人力资源经验，专注于组织发展、绩效体系与人才盘点，长期作为业务部门的 HRBP 搭档。擅长在快速变化的组织里推动人才决策落地。\n\n工作经历\n\n海纳互联 资深 HRBP（二零一九年至今）\n- 支持一个研发与产品合计数百人的事业群，担任核心管理团队的人力搭档\n- 主导了事业群的绩效校准（calibration）机制，推动经理们对评分口径达成一致\n- 牵头设计并落地了一套人才盘点与继任计划，识别高潜并制定发展路径\n- 在一次组织调整中，负责方案设计与全程沟通，帮助团队平稳过渡\n\n青松科技 HR 经理（二零一五至二零一九）\n- 负责招聘与员工关系，搭建了新员工 onboarding 流程\n- 处理过多起复杂的员工关系个案\n\n教育背景\n云岭大学 人力资源管理 硕士，二零一五年毕业。\n技能：HRBP、组织发展、绩效校准、人才盘点、继任计划、员工关系、组织诊断。",
+  "jd": "我们正在招聘一名 Staff 级 HRBP，搭档一个数百人的技术事业群的核心管理团队。你将主导绩效校准、人才盘点与继任计划，参与组织设计，并在组织调整中担任方案设计与沟通的核心角色。这个岗位需要把人力工作讲成可衡量的业务影响 —— 比如校准机制如何改变了评分分布、高潜识别后的留存或晋升结果、组织调整后的关键人才保留率。最强的候选人能清晰区分『我设计并主导的』与『团队执行的』，并能用具体数据与机制说明效果，而不是停留在『过程很顺利』这类感受性描述。需要扎实的组织发展功底与在压力下条理清晰表达的能力。",
+  "history": [
+    { "q": "先讲讲你在海纳互联主导的绩效校准机制吧 —— 当初是为了解决什么问题?" },
+    { "q": "校准上线之后，经理们的评分分布有没有发生变化? 怎么看出来的?" },
+    { "q": "你提到那次组织调整里负责方案设计与沟通。具体是什么样的调整?" },
+    { "q": "那次调整之后，受影响团队里的关键人才留下来了吗? 留存大概是什么情况?" }
+  ],
+  "candidate_last_answer": "嗯……这个问题挺好的，留存这块，其实……怎么说呢，我觉得整体是还可以的，因为我们当时沟通做得很细，一对一谈了很多轮，氛围其实没有想象中那么差，这一点我还挺自豪的。然后……抱歉我理一下，关键人才嘛，就是那些核心的同学，大部分是留下来的，至少我感觉是这样，当然也有个别走的，但那个更多是个人原因。具体留存率我得回去翻一下数据，当时 HR 系统里应该有，我印象里是不错的。其实那次调整更大的价值是团队情绪稳住了，没有出现那种大规模的动荡，这个比数字更重要吧我觉得……您是想问具体的留存数字，还是想了解我沟通的做法?",
+  "session_state": {
+    "drilled_topics": ["calibration-problem", "rating-distribution-shift", "reorg-detail"],
+    "current_competency_target": "outcomes-measurement",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-measurement",
+    "missing_evidence": [
+      { "competency": "outcomes-measurement", "evidence_type": "metric" },
+      { "competency": "outcomes-measurement", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体留存率我得回去翻一下数据，当时 HR 系统里应该有，我印象里是不错的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual key-talent retention figure after the reorg — how many of the identified critical people stayed out of how many, over what window — pinning down a defensible number instead of the 『情绪稳住了』 impression"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "fx_0496",
+  "tags": {
+    "industry": "operations",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Tomas Reyes\nOperations Coordinator — Fulfillment & Logistics\n\nEXPERIENCE\nOperations Coordinator, BrightBox Fulfillment — 2023-Present\n- Situation: inbound receiving backlog averaged 2 days at the Reno warehouse. Task: cut dock-to-stock time. Action: re-sequenced the receiving queue by SKU velocity and added a midday cycle-count. Result: dock-to-stock dropped from 48h to 14h over one quarter.\n- Situation: pick-error rate sat at 1.4%. Task: reduce mispicks on the B-line. Action: introduced scan-verify at pack-out and a daily error-review huddle. Result: mispicks fell to 0.5% in eight weeks.\n- Coordinated daily standups for a 30-person floor team across two shifts.\n\nShift Lead, QuickServe Distribution — 2021-2023\n- Situation: peak-season overtime was 22%. Task: smooth labor demand. Action: built a simple volume-forecast sheet and staggered start times. Result: overtime fell to 12% during peak.\n- Trained 12 seasonal hires on safety and pick procedures.\n\nEDUCATION\nB.S. Supply Chain Management, University of Nevada, Reno — 2021\n\nSKILLS\nWMS (Manhattan), Excel, cycle counting, labor scheduling, Lean basics, forklift certified",
+  "jd": "Vantage Distribution is hiring an Operations Coordinator for our high-volume e-commerce fulfillment center (350k sq ft, 200+ associates across three shifts). Reporting to the Shift Operations Manager, you will run daily floor execution: labor allocation, dock-to-stock flow, pick/pack/ship throughput, and the daily metrics huddle. We expect a coordinator who can diagnose a throughput problem on the floor, isolate the real bottleneck rather than the obvious symptom, and drive a measurable fix. The ideal candidate has 1-3 years in a WMS-driven warehouse, is comfortable with labor-planning math, and can stay composed and clear under peak-season pressure. We will ask you to walk through specific operational problems you've solved — the bottleneck, your intervention, and the numbers — and we value calm, structured communication.",
+  "history": [
+    { "q": "Tell me about your current role at BrightBox and the size of the operation you support." },
+    { "q": "Your resume says you cut dock-to-stock from 48 to 14 hours. What was actually causing the backlog?" },
+    { "q": "How did you confirm SKU-velocity sequencing was the right lever and not just adding headcount?" },
+    { "q": "Let's talk about the mispick project. What was driving the 1.4% error rate?" },
+    { "q": "Why scan-verify at pack-out specifically, rather than at the pick face?" },
+    { "q": "Tell me about the overtime work at QuickServe. How did the forecast sheet actually work?" },
+    { "q": "How accurate was that forecast week to week?" },
+    { "q": "Describe a time the floor blew up on you mid-shift — what happened and what did you do?" },
+    { "q": "How did you keep the team calm while you sorted it out?" },
+    { "q": "Walk me through one specific peak day where you had to re-allocate labor in real time — what was the bottleneck, what did you move, and what was the result?" }
+  ],
+  "candidate_last_answer": "Okay so — sorry, peak day, there was a lot going on that day. Um, so it was Black Friday weekend, the Saturday I think, or maybe it was the Cyber Monday, honestly they kind of blur together during peak. Anyway, the thing is, we had a ton of volume, like way more than the forecast said, and — oh, I should mention our forecast sheet, which I built, it usually was pretty good but that day it was just off. So the floor was backing up at pack-out, or, well, it looked like pack-out but it might've actually been the dock, I remember running back and forth. And I just kind of — you know how it is, you have to triage. So I pulled some people. I think I moved a couple folks from picking over to pack, and we kind of got through it. It was stressful, my manager was asking for numbers and I didn't have them in the moment. But yeah, we shipped most of it, eventually. Sorry, what was the specific part you wanted — the bottleneck or the labor move?",
+  "session_state": {
+    "drilled_topics": ["current-role-scope", "dock-to-stock-root-cause", "sequencing-vs-headcount", "mispick-driver", "scan-verify-placement", "overtime-forecast-mechanism", "forecast-accuracy", "mid-shift-crisis", "team-calm-under-pressure"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "scope" },
+      { "competency": "rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it looked like pack-out but it might've actually been the dock",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a clear identification of the actual bottleneck (pack-out vs. dock), the signal he used to locate it, exactly how many people he moved and from where, and the throughput result — cutting through the rambling to a structured account"
+    ]
+  }
+}

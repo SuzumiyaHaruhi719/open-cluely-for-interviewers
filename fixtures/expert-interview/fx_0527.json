@@ -1,0 +1,39 @@
+{
+  "id": "fx_0527",
+  "tags": {
+    "industry": "legal",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "资深公司法务 / Senior Corporate Counsel — 商业合同与合规\n\n概述\n八年公司法务经验，专注于 commercial contracts、data privacy compliance 与跨境交易。曾在一家美元基金支持的 SaaS 公司主导整个法务体系搭建。\n\n工作经历\n\n云启科技 (CloudKey) — Senior Corporate Counsel (2020 至今)\n- Situation: 公司从 50 人扩张到 600 人，合同审批全靠邮件，平均周期 11 天，业务部门怨声载道。\n  Task: 重建 contract lifecycle。\n  Action: 我引入了 CLM 系统 (Ironclad)，制定了三档 risk-tiering 审批矩阵，并起草了 12 套标准模板覆盖 80% 的常见交易。\n  Result: 合同平均审批周期从 11 天降到 2 天，法务团队人均处理量翻倍，business 满意度 (内部 NPS) 从 30 升到 62。\n- Situation: GDPR 与《个人信息保护法》同时落地，公司有 EU 与中国双重 exposure。\n  Task: 建立统一的 data privacy 合规框架。\n  Action: 我主导了 data mapping、DPA 模板谈判，并与 security 团队共建 breach-response playbook。\n  Result: 通过了客户方的两次 vendor security audit，零整改项。\n\n恒信律师事务所 — Associate (2016-2020)\n- 代理过 14 起商业合同纠纷，主导过一起标的额 RMB 2.3 亿的供应链违约仲裁，为客户挽回约 1.6 亿。\n\n教育与资质\n中国政法大学 法学硕士 (LL.M.)，2016。中国法律职业资格 (Bar)，2016。CIPP/E 认证，2021。\n技能: commercial contracts, data privacy (GDPR/PIPL), CLM (Ironclad), 跨境交易, 仲裁, vendor risk。",
+  "jd": "我们正在招聘一名 Senior Corporate Counsel，负责一家成长期 fintech 公司的商业合同与全球数据合规。This role owns the contract lifecycle end-to-end: 模板体系、审批流程、CLM 工具治理，以及与销售和采购团队的日常协作。你还将主导 data privacy 合规 (GDPR、PIPL、CCPA) 并直接向 General Counsel 汇报。我们尤其看重能用可核实的数字说明自己影响力的候选人 —— 比如审批周期的真实前后对比、模板覆盖率的统计口径、以及这些数字是如何被独立验证的。最强的候选人能清楚区分『我个人主导的』与『团队完成的』，并能解释每一个指标背后的 measurement methodology。需要扎实的跨境合规经验，以及在没有正式职权的情况下推动业务团队改变工作方式的能力。",
+  "history": [
+    { "q": "请讲讲你在云启主导的 contract lifecycle 重建 —— 当时最核心的问题是什么，你具体交付了什么?" },
+    { "q": "你提到审批周期从 11 天降到 2 天，business NPS 从 30 升到 62。这些数字是怎么测出来的，口径是什么?" }
+  ],
+  "candidate_last_answer": "这些数字其实都非常 solid。审批周期这块，我可以说是 industry-leading 的成绩 —— 我们做到了行业最快，几乎是同类公司的十倍效率。NPS 从 30 到 62 那是保守说法，实际体感是法务从全公司最被讨厌的部门变成了最受欢迎的，business 那边基本是 100% 满意。模板覆盖率我当时说 80%，但其实后来覆盖了几乎所有场景，我个人起草的模板帮公司一年省下了至少八位数的法务成本。可以说整个 transformation 是我一手推动的，影响力是 company-wide 的。",
+  "session_state": {
+    "drilled_topics": ["clm-rebuild", "approval-cycle-metrics"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我个人起草的模板帮公司一年省下了至少八位数的法务成本",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the exact calculation behind the eight-figure savings claim — baseline legal cost, what was counted, what was attributable to the candidate's own templates versus the team, and how the figure was validated rather than estimated"
+    ]
+  }
+}
