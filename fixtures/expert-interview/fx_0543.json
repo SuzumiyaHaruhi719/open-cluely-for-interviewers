@@ -1,0 +1,49 @@
+{
+  "id": "fx_0543",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "宋怀瑾\n产品副总裁 / VP of Product\n\n概述：十五年产品经验，覆盖企业 SaaS 与平台型产品，长期负责产品战略、组织搭建与商业化。带过多个产品线，主导过多次重大的产品方向转型。\n\n工作经历\n\n某企业服务公司 — VP of Product (2020 - 至今)\n- 负责公司整体产品战略与产品组织，向 CEO 汇报。\n- 主导核心产品从单一工具向平台化的转型。\n- 重建了产品与商业化、销售之间的协作机制。\n- 搭建了产品团队的人才梯队与评估体系。\n\n某 SaaS 公司 — 产品总监 (2015 - 2020)\n- 负责多条产品线，推动产品与增长团队的整合。\n- 主导若干关键功能的从无到有。\n\n某互联网公司 — 高级产品经理 (2011 - 2015)\n- 负责核心交易链路的产品设计与迭代。\n\n教育\n- 硕士，计算机相关专业。\n\n技能：产品战略、平台化设计、商业化、组织管理、跨部门协作。\n\n备注：擅长在不确定中定方向，注重长期价值。",
+  "jd": "招聘 VP of Product，主导公司产品战略与重大方向决策。你将负责一条或多条核心产品线的战略、组织与商业化，向 CEO 汇报，并在董事会层面对产品结果负责。我们尤其看重一次重大产品转型的完整复盘能力：当时的处境与约束、你设定的目标、你个人推动的关键动作、以及最终可量化的商业与组织结果。理想候选人能用结构化的方式讲清一个高风险决策的全过程，并诚实呈现数字与代价。",
+  "history": [
+    { "q": "先介绍一下你目前负责的产品组织和战略范围。" },
+    { "q": "你简历里提到主导了核心产品从工具向平台的转型，先说说当时公司的处境。" },
+    { "q": "为什么是那个时间点做转型？不转的话风险是什么？" },
+    { "q": "你给这次转型设定的目标是什么？怎么定义成功？" },
+    { "q": "这个决策是你拍的板吗？董事会和 CEO 是什么态度？" },
+    { "q": "转型最关键的几个动作里，哪一个是你个人亲自推动的？" },
+    { "q": "组织上你做了哪些调整来支撑这次转型？" },
+    { "q": "过程中最大的阻力来自哪里，你怎么化解的？" },
+    { "q": "转型对商业指标的影响是什么？用数字说说。" },
+    { "q": "客户侧或者留存侧有没有可量化的变化？" },
+    { "q": "这次转型有没有付出什么代价或者踩过的坑？" },
+    { "q": "如果重新来一次，你会改哪个决策？" },
+    { "q": "这次转型最关键的那一个判断，用一句话说是什么？" }
+  ],
+  "candidate_last_answer": "处境是这样：2021 年初，我们的核心工具产品 ARR 大概 8000 万人民币，但同比增速从前两年的 60% 掉到了 18%，续费率也从 88% 滑到 79%，头部客户开始要我们做更多集成、把我们当平台用，但我们的架构撑不住。任务上我给董事会立的目标是：用 18 个月把平台化产品的收入占比从 0 做到 30%，同时把整体 NRR 拉回 110% 以上。动作上，我个人主导了三件事：一是砍掉两条边缘产品线、把 40% 的研发资源集中到平台 API 上；二是我亲自重谈了和销售的激励机制，把平台采用率写进销售提成；三是我搭了一个 12 人的平台 PM 小组并亲自带了前两个季度。结果是：18 个月后平台收入占比做到了 34%，超过目标，整体 ARR 涨到 1.4 亿，NRR 回到 113%，续费率回到 86%。代价是头半年因为资源转移，工具产品的迭代变慢，流失了大概三个中小客户、损失约 200 万 ARR，这个我在董事会上是如实讲过的。",
+  "session_state": {
+    "drilled_topics": ["org-strategy-scope", "transformation-situation", "timing-risk", "success-definition", "decision-ownership", "personal-key-action", "org-adjustments", "biggest-resistance"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "results-orientation", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 流失了大概三个中小客户、损失约 200 万 ARR",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: deeper reasoning about the deliberate tradeoff the candidate already disclosed — why sacrificing the tool product's velocity and those mid-market accounts was an acceptable price for the platform bet, and what guardrails were set so the disclosed cost did not run larger"
+    ]
+  }
+}

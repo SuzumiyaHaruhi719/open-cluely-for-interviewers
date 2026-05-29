@@ -1,0 +1,45 @@
+{
+  "id": "fx_0570",
+  "tags": {
+    "industry": "education",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "教育事业部副总裁 (VP) — 关键词导向简历\n\n核心标签\n战略愿景、规模化增长、用户增长、续费率、口碑驱动、教研体系、双师模式、OMO 融合、师资培养、教学质量、品牌、组织建设、降本增效、精细化运营、数据驱动、生态协同、第二曲线、增长飞轮、闭环、赋能、抓手、顶层设计、对齐、拉通、心智、护城河\n\n工作经历\n智学未来教育集团 — 教育事业部 VP (2019 至今)\n· 全面负责 K12 在线业务的教研、教学、运营与增长\n· 推动双师与 OMO 模式落地,构建教研中台\n· 主导组织升级与人才梯队建设\n· 对续费率、NPS 与规模化增长负责\n\n弘文在线 — 教学副总裁 / 教研负责人 (2015 至 2019)\n· 负责教研体系搭建与师资培养\n· 推动教学质量标准化\n\n技能与关注\n教育战略、教研与教学体系、增长与续费、组织与人才、品牌与口碑、数据驱动决策\n\n教育\n教育学硕士",
+  "jd": "我们正在为一家教育科技集团寻找一位教育事业部副总裁 (VP)，全面负责核心学科业务线的教研、教学质量、用户增长与续费,直接向 CEO 汇报。岗位职责：制定并落地事业部战略、对续费率与规模化增长负责、构建教研与师资培养体系、推动 OMO/双师等模式创新、搭建组织与人才梯队、向董事会汇报业务健康度。我们看重：能用具体数字讲清楚业务现状与改进 (续费率、NPS、获客成本、班均人数)、清晰区分个人战略决策与团队执行、真实的组织操盘与教研体系搭建经验。这是一个对结果高度负责的高管岗位，期望候选人摒弃口号、给出可验证的事实。",
+  "history": [
+    { "q": "先讲讲你在智学未来负责的业务范围,以及直接对接到哪一层。" },
+    { "q": "你说对续费率负责。你接手时续费率是多少,现在是多少?" },
+    { "q": "推动双师和 OMO 落地——这个战略决定是你做的吗?讲讲你个人在里面的判断。" },
+    { "q": "教研中台的搭建,带来了哪个可量化的业务结果?" },
+    { "q": "组织升级具体是怎么做的?你亲自做了哪些关键人事决定?" },
+    { "q": "你向董事会汇报业务健康度时,主要看哪几个数字?各自现在的水平是多少?" },
+    { "q": "讲一次你做过的、事后证明是错误的战略判断,以及你怎么纠偏的。" },
+    { "q": "我想请你聚焦一件事:过去一年,你个人主导的、对续费率影响最大的那一个决定,具体是什么,带来了多少个百分点的变化?" }
+  ],
+  "candidate_last_answer": "这个其实有好几块都很关键,我快速说几个。一是我们在教研上做了很多顶层设计,把体系拉通了,口碑和续费整体都有向好;二是组织上我们做了升级,人才梯队更健康了,团队战斗力明显提升;三是增长这块我们也搭了飞轮,获客和口碑形成了正循环。具体数字我一时记不太清,但方向上这几件事都让业务往好的方向走了不少,续费率肯定是涨了的。",
+  "session_state": {
+    "drilled_topics": ["business-scope", "renewal-rate-delta", "omo-strategy-ownership", "teaching-midplatform-result", "org-upgrade-decisions", "board-reporting-metrics", "wrong-strategic-call", "single-renewal-driver"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体数字我一时记不太清",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete renewal-rate figure (starting and ending percentage over a stated period) tied to the one decision the candidate personally drove, cutting through the bundled slogans to test whether any verifiable number exists"
+    ]
+  }
+}

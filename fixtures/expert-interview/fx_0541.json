@@ -1,0 +1,40 @@
+{
+  "id": "fx_0541",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "MARCUS DELACROIX\nVisionary Product Leader (Junior) | Growth Savant | 10x Builder\n\nI am, without exaggeration, one of the sharpest young product minds of my cohort. In under two years I have single-handedly driven outcomes most PMs take a decade to touch.\n\nEXPERIENCE\nProduct Manager — Lumio (consumer fintech app), 2023-present\n- Personally owned the entire growth function and 3x'd activation through sheer product intuition.\n- Conceived, designed, and shipped the referral program that became the company's #1 growth lever.\n- Routinely outperform senior PMs; leadership frequently defers to my judgment on roadmap calls.\n- Built the north-star metric framework the whole company now runs on.\n\nAssociate PM — Plinth (early-stage marketplace), 2022-2023\n- Drove the most successful onboarding redesign in the company's history.\n- Mentored engineers and designers despite being the most junior person in the room.\n\nEDUCATION\nB.S., Cognitive Science — top of my class.\n\nSKILLS\nElite product instincts, world-class prioritization, unmatched stakeholder influence, SQL, Amplitude, Figma.",
+  "jd": "Product Manager (Junior) — Cadence, a B2C habit-tracking app. We are looking for an early-career PM to own one growth surface end to end: framing hypotheses, designing experiments, and reading results honestly. You will work closely with data, design, and engineering, and you will be expected to clearly separate your individual contribution from the team's. We value intellectual honesty, calm responses to hard questions, and the ability to walk through exactly what you did and what the measured impact was. Self-awareness about what you do not yet know matters as much as raw ambition.",
+  "history": [
+    { "q": "Your resume says you '3x'd activation through sheer product intuition' at Lumio. Walk me through what you actually did." },
+    { "q": "You wrote that you 'single-handedly' owned the growth function. Who else was on that team, and what did they own?" },
+    { "q": "Let's ground the activation number — what was the baseline, what was the final figure, and over what period did it move?" }
+  ],
+  "candidate_last_answer": "Look, I don't really appreciate the implication here. When I say single-handedly, I mean I was the driving force — obviously there were engineers, that's how products get built, but the vision and the calls were mine. You're trying to get me to discount my own work and I'm not going to do that. The activation tripled, that's the number that matters. I don't memorize baselines like some junior analyst; that's exactly the kind of small-ball thinking that holds people back. If you want someone who recites dashboards, I'm probably not your guy, and honestly that says more about the role than about me.",
+  "session_state": {
+    "drilled_topics": ["activation-3x-actions", "single-handed-team-scope"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I don't memorize baselines like some junior analyst",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete activation baseline, final value, and time window behind the '3x' claim — forcing a falsifiable number rather than letting the candidate dismiss the request as small-ball"
+    ]
+  }
+}

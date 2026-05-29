@@ -1,0 +1,40 @@
+{
+  "id": "fx_0579",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "赵敏 — 资深临床护理（ICU）\n\n现任：仁济综合医院 重症医学科 主管护师（2017至今）\n之前：市第二人民医院 ICU 护师（2012-2017）\n\n核心经历：\n- 负责ICU危重患者的床旁护理与病情监测\n- 参与科室院感防控与护理质量改进\n- 带教低年资护士与实习生\n\n技能：危重症护理、血流动力学监测、呼吸机管理、CRRT、院感防控\n资质：注册护士、ICU专科护士认证\n学历：护理学 本科",
+  "jd": "仁济综合医院重症医学科招聘资深临床护理（主管护师/Staff级），负责危重患者床旁护理、护理质量与院感指标的持续改进，并承担低年资护士带教。该岗位需要你主导或深度参与至少一项护理质量改进项目（如导管相关血流感染CLABSI、呼吸机相关肺炎VAP、压力性损伤的下降），能讲清楚改进前后的指标、你采取的具体干预措施，以及你在跨班次落地执行中的个人角色。我们重视坦诚复盘的能力：当指标未达标或发生不良事件时，能客观分析自身环节的改进空间。",
+  "history": [
+    { "q": "先介绍一下你在仁济ICU的角色和主要负责的工作。" },
+    { "q": "你参与过院感防控，能讲一个你深度参与的护理质量改进项目吗？比如VAP或CLABSI的下降。" },
+    { "q": "在那个项目里，有没有哪个阶段指标其实是不升反降、或者一度没达标的？" },
+    { "q": "我想理解你自己在其中可以改进的环节——回头看，你个人那部分有没有可以做得更好的地方？" }
+  ],
+  "candidate_last_answer": "你这个问题我有点不太理解。我在ICU干了十几年，该做的流程我都是严格按规范执行的，指标没达标那也不是我一个护士能决定的事。你要是想问我哪里做错了，那我可以直接告诉你，我个人这块真没什么好改的。说实话，VAP下不来更多是医生那边的镇静和拔管时机、还有人手配置的问题，这些都不归我管。你们面试是不是都喜欢这么揪着一个人不放？",
+  "session_state": {
+    "drilled_topics": ["current-role", "qi-project", "metric-not-met-phase", "self-improvement-reflection"],
+    "current_competency_target": "self-reflection-and-learning",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "self-reflection-and-learning",
+    "missing_evidence": [
+      { "competency": "self-reflection-and-learning", "evidence_type": "owner-of-action" },
+      { "competency": "self-reflection-and-learning", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我个人这块真没什么好改的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one concrete thing within the candidate's own nursing scope that she could have done differently on the QI project, de-escalating the hostility and getting past the deflection onto physicians and staffing to surface genuine self-reflection"
+    ]
+  }
+}

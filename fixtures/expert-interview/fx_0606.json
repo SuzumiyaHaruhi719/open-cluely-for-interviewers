@@ -1,0 +1,42 @@
+{
+  "id": "fx_0606",
+  "tags": {
+    "industry": "hr",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "招聘专员 (Junior Recruiter) — 互联网/科技行业技术招聘\n\n个人简介\n本人为人力资源管理专业本科毕业, 现任招聘专员, 主要负责研发与产品岗位的全流程招聘 (full-cycle recruiting), 包括职位需求对齐 (intake)、渠道寻源 (sourcing)、简历初筛、面试协调以及 offer 沟通。我对技术招聘有浓厚兴趣, 熟悉主流招聘渠道与 ATS 系统的操作, 也在持续学习如何用数据来衡量和优化招聘漏斗的效率。下面用一段较完整的中文叙述说明我的工作方式与过往做法, 方便面试官评估我的表达条理与对招聘业务的理解深度。\n\n关于我对技术招聘的理解, 我想从招聘漏斗 (funnel) 的角度完整讲一下我的工作思路。技术招聘的难点在于, 优秀的工程师通常并不主动找工作, 所以纯粹靠挂职位等简历投递是远远不够的, 必须做主动寻源。我日常的工作是先和用人经理 (hiring manager) 做需求对齐, 把一个模糊的 『要个后端』 翻译成清晰的画像: 技术栈、年限、项目背景、团队协作要求, 以及哪些是硬性门槛、哪些是加分项。需求对齐做得好, 后面整条漏斗的转化率才有保障, 否则就是大量无效面试、彼此浪费时间。寻源环节我会综合用招聘网站、内推、技术社区和人才库, 针对不同岗位调整关键词和触达话术。初筛阶段我关注的不只是关键词匹配, 更看候选人的项目深度和成长曲线是否和岗位匹配。面试协调看起来是杂活, 其实非常考验细致程度——一个面试官临时有事、一个时区没对齐, 都可能让一个好候选人流失。到了 offer 阶段, 沟通节奏和对候选人顾虑的把握往往决定 offer 能不能谈下来。我始终认为招聘不是简单的 『找人填坑』, 而是在为团队长期的战斗力做投资, 所以我对每一个环节的质量都比较较真。这也是我希望在更专业的招聘团队里继续提升的原因——我想把自己对招聘漏斗的理解, 用更严谨的数据和方法验证出来。\n\n工作经历\n聘联科技 — 招聘专员 (2023至今)\n- 负责后端、前端、算法等研发岗位的全流程招聘, 服务多个研发团队的用人经理。\n- 维护和优化简历初筛标准, 与用人经理对齐岗位画像。\n- 协调多轮技术面试与终面, 跟进面试反馈与 offer 沟通。\n- 参与校园招聘的宣讲与现场面试组织。\n\n校园经历\n- 学院就业指导中心助理, 协助组织校招宣讲会与简历门诊。\n- 人力资源协会成员, 参与组织模拟面试活动。\n\n技能\n- 工具: 主流 ATS、招聘网站后台、Boss 直聘/脉脉等社交招聘平台、Excel。\n- 能力: 全流程招聘、技术岗 sourcing、面试协调、候选人体验维护。\n- 语言: 中文母语, 英语 CET-6, 可进行基础英文邮件沟通。\n\n自我评价\n我是一个比较有韧性的人, 招聘本身就是一个高频被拒、需要不断跟进的工作, 我能保持耐心和节奏。我也在努力让自己从 『执行型』 招聘转向 『数据型』 招聘, 学着用漏斗各环节的转化数据来定位问题、和用人经理用事实对话。",
+  "jd": "聘联科技招聘一名 Junior Recruiter, 负责研发岗位的全流程招聘。You will own 从 intake 到 offer 的招聘漏斗, 对关键招聘指标负责: time-to-fill、各环节通过率 (pass-through rate)、offer 接受率 (offer acceptance rate) 以及面试官与候选人的体验。我们希望候选人能用数据说话——你的漏斗在哪个环节流失最多、你做了什么去改善、改善了多少。面试中我们会追问具体数字和归因, 如果某个环节数据不好看, 我们更想听到你如何诚实复盘, 而不是把责任推给用人经理或市场。岗位需要与多个 hiring manager 协作, 平衡招聘速度与质量, 并维护良好的候选人体验。",
+  "history": [
+    { "q": "先讲讲你现在负责的招聘漏斗——大概服务几个团队, 同时在招几个岗位?" },
+    { "q": "你这边 time-to-fill 大概是多少天? 和团队平均比怎么样?" },
+    { "q": "你的漏斗在哪个环节流失最严重——简历初筛、技术面, 还是 offer 环节?" },
+    { "q": "offer 接受率你知道吗? 最近被拒掉的 offer, 候选人给的主要原因是什么?" },
+    { "q": "如果用人经理反馈你推的简历质量不稳定, 你会怎么看这个反馈?" },
+    { "q": "我直接说——你这条线的 offer 接受率明显低于团队, 这部分你自己复盘下来, 问题出在哪?" }
+  ],
+  "candidate_last_answer": "说实话, 这个问题我有点不太认同。offer 接受率低真的不能全算到我头上吧? 你想啊, 候选人最后不来, 八成是因为薪资给不到位, 或者是用人经理面试体验太差, 这些我一个招聘专员能控制吗? 我把人约来、流程跟到位、该沟通的都沟通了, 我的环节我做得没毛病。你们老是盯着接受率这个数, 但这个数明明是好几个部门共同的结果, 凭什么让招聘一个人背? 我觉得与其追问我这个, 不如去看看 comp 团队给的 package 有没有竞争力。反正我跟进的每一个 candidate 我都尽力了, 流失的那些我心里清楚不是我流程的问题。",
+  "session_state": {
+    "drilled_topics": ["funnel-scope", "time-to-fill", "biggest-dropoff-stage", "offer-acceptance-and-decline-reasons", "hm-resume-quality-feedback"],
+    "current_competency_target": "self-accountability",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "self-accountability",
+    "missing_evidence": [
+      { "competency": "self-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 流失的那些我心里清楚不是我流程的问题",
+      "must-be-question-type: action-attribution",
+      "expected-yield: at least one concrete step within the candidate's own control (intake calibration, expectation-setting, candidate prep, or sell-call timing) that they personally changed or could change to lift offer acceptance, moving them off blaming comp and hiring managers to owning their slice of the funnel"
+    ]
+  }
+}

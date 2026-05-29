@@ -1,0 +1,38 @@
+{
+  "id": "fx_0550",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Priya Raman — Customer Support Team Lead\n\nSummary: Mid-level support professional with 6 years in SaaS technical support, including 3 years leading a frontline team.\n\nExperience:\nBrightline Software — Support Team Lead (Jan 2021 – present)\n- Led a team of 9 Tier-1 and Tier-2 agents handling billing and integration tickets.\n- Reduced average first-response time from 6 hours to 90 minutes.\n- Promoted to Team Lead in 2022 after two years as a senior agent. (Note: elsewhere this resume says I joined Brightline in 2021 and led the team from day one.)\n- Owned the Zendesk macro library and the escalation playbook.\n\nBrightline Software — Senior Support Agent (2021 – 2022)\n- Handled the most complex enterprise escalations; personal CSAT of 96%.\n\nMapleGrid Inc — Support Agent (2017 – 2021)\n- Tier-1 phone and email support for a consumer fintech app.\n- During this time I also managed a team of 5 agents and set the team's QA standards.\n\nSkills: Zendesk, Intercom, SQL (basic), escalation management, QA scorecards, onboarding new hires.\n\nNote on tenure: My resume header says 6 years of experience, though the listed roles above span from 2017 to present, which is 8 years.",
+  "jd": "Riverstone Cloud is hiring a Customer Support Team Lead to run a 10-person Tier-1/Tier-2 team supporting our B2B analytics platform. Reporting to the Head of Support, you will own first-response time (target <2h), CSAT (target 90+), and escalation SLA compliance. You will coach agents through weekly QA, maintain the macro/knowledge-base library, and partner with Engineering on recurring defect escalations. We are looking for someone who can speak precisely about results they personally delivered — including what changed, by how much, and over what period. Candidates should be comfortable with metric ownership and able to reconcile the specifics of their own track record. 3+ years of frontline support and 1+ year leading a team required.",
+  "history": [
+    { "q": "Your resume says you cut first-response time from 6 hours to 90 minutes at Brightline. Walk me through exactly what you did, and tell me what the final outcome was." }
+  ],
+  "candidate_last_answer": "Sure. So the situation was that when I stepped into the lead role, our Tier-1 queue was a mess — first responses were averaging around 6 hours and customers were escalating just to get acknowledged. My task was basically to get that number down because it was hurting CSAT. So what I did was, I rebuilt the macro library so agents weren't writing every reply from scratch, I set up a triage rotation where one agent each morning owned just-acknowledging new tickets within 15 minutes, and I started a daily 10-minute standup to surface anything stuck. I also coached the two slowest agents one-on-one on prioritization. That's pretty much the playbook I ran.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: That's pretty much the playbook I ran",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result — the actual final first-response-time number she achieved, how long it took to get from 6h to 90min, and whether CSAT moved as claimed, since she narrated Situation/Task/Action but never closed the loop on the measured outcome"
+    ]
+  }
+}

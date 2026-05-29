@@ -1,0 +1,47 @@
+{
+  "id": "fx_0566",
+  "tags": {
+    "industry": "design",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "产品设计实习生 / Product Design Intern\n\n概述\n视觉传达大三在读，专注 UX/UI 与交互设计，熟悉 Figma、原型设计和基础用户研究。希望在真实产品团队里把课堂方法论落地。\n\n项目经历 (均为课程或个人项目，已用 STAR 方式整理)\n校园二手交易 App 改版 (课程项目，三人小组)\n· Situation: 校内现有二手平台发布流程繁琐，同学普遍抱怨\n· Task: 我负责 redesign 整个 listing 发布流程的 UX\n· Action: 我做了 8 个用户访谈，画了 user journey map，产出 3 版 wireframe 并用 Figma 做了可交互 prototype，组织了 5 人的可用性测试\n· Result: 在可用性测试里，发布流程的任务完成时间从平均 2 分 10 秒降到 48 秒,5 个测试用户里 4 个偏好新版\n\n独立项目：本地咖啡馆点单小程序概念稿\n· Situation: 观察到周边咖啡馆排队点单效率低\n· Task: 设计一套自助点单的交互概念\n· Action: 竞品分析 4 款点单产品，搭建信息架构，输出 high-fidelity mockup 和一份简短 design rationale\n· Result: 作为作品集项目获得课程 A,并在系内展示\n\n技能\nFigma、Prototyping、用户访谈、可用性测试、信息架构、Design System 基础、HTML/CSS 基础\n\n教育\n视觉传达设计本科在读 (预计明年毕业)",
+  "jd": "We are hiring a Product Design Intern to join a consumer mobile team for a 6-month placement. 你将和资深 designer、PM、engineer 一起，参与真实功能的设计：from problem framing to wireframe, prototype, and design QA。Responsibilities: support user research, produce wireframes and Figma prototypes, contribute to the design system, and iterate based on usability feedback。我们看重：扎实的 Figma 与交互基本功、能讲清楚自己设计决策背后的 rationale、对 usability 数据的基本敏感度、以及在反馈中迭代的开放心态。This is an entry-level role; we care more about how you think and justify decisions than polished portfolio pieces.",
+  "history": [
+    { "q": "先简单介绍一下你自己，以及你最想从这个 design intern 岗位里学到什么。" },
+    { "q": "讲讲那个二手交易 App 改版项目——你在三人小组里具体负责哪一块？" },
+    { "q": "你说任务完成时间从 2 分 10 秒降到 48 秒。这个数据是怎么测出来的？" },
+    { "q": "5 个用户里 4 个偏好新版——那第 5 个为什么不喜欢？他的反馈你怎么处理的？" },
+    { "q": "你做了 8 个用户访谈,访谈里有没有哪个发现是和你最初的假设相反的？" },
+    { "q": "为什么 listing 发布流程要从原来的多步改成你那个设计？你权衡了哪些方案？" },
+    { "q": "咖啡馆点单那个项目,你的信息架构是怎么组织的?为什么这么分?" },
+    { "q": "如果让你重做二手交易那个项目,你会改哪一个设计决定?" },
+    { "q": "你提到用了 Figma 做可交互 prototype——交互里有没有一个细节是你特别纠结过的?" },
+    { "q": "在可用性测试里,你是怎么避免自己引导用户给出你想要的答案的?" },
+    { "q": "我再追问一下任务完成时间这个数据:48 秒是 5 个用户的平均值,还是中位数?样本这么小,你觉得这个结论可靠吗?" }
+  ],
+  "candidate_last_answer": "嗯……这个问题我想反问一下您:在实际的产品团队里,像我们这种 5 个人的可用性测试,你们一般是看平均值还是中位数呀?而且我其实挺好奇的,在真实工作里样本小到什么程度你们就不敢下结论了?我课上老师说小样本也能发现 80% 的可用性问题,但我不确定工业界是不是这么看,所以想先听听您怎么判断这个 sample size 够不够。",
+  "session_state": {
+    "drilled_topics": ["self-intro-goal", "project-role", "task-time-measurement", "fifth-user-feedback", "contrary-finding", "flow-redesign-tradeoff", "ia-organization", "redo-decision", "prototype-detail", "moderation-bias", "mean-vs-median-sample-size"],
+    "current_competency_target": "data-literacy",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "data-literacy",
+    "missing_evidence": [
+      { "competency": "data-literacy", "evidence_type": "metric" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你们一般是看平均值还是中位数呀",
+      "must-be-question-type: teach-back",
+      "expected-yield: whether the candidate can actually state which statistic their own 48-second figure was and reason about its reliability at n=5 — surfacing genuine data literacy — instead of deflecting the question back to the interviewer"
+    ]
+  }
+}

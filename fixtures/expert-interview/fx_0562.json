@@ -1,0 +1,50 @@
+{
+  "id": "fx_0562",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "工程总监 / Director of Engineering\n\n概述\n约十五年软件工程与团队管理经验，目前在一家 B 轮 SaaS 公司带领后端与平台团队。负责过 service 拆分、平台稳定性治理、on-call 文化建设，以及多个跨团队的架构演进项目。带过最大规模的工程组织覆盖后端、平台、SRE 三条线。\n\n工作经历\n云栖数据 (CloudNest) — Director of Engineering, Platform (2020 至今)\n· 负责 platform 与 infrastructure 团队，下辖若干个 squad，管理多名 EM\n· 推动单体到 microservices 的拆分，主导核心 trading 链路的 reliability 治理\n· 建立 incident review 与 postmortem 机制，改善了线上稳定性\n· 牵头把 CI/CD pipeline 现代化，缩短了发布周期\n· 负责团队 headcount 规划与 performance 校准 (calibration)\n\n蜂巢科技 — Engineering Manager → Senior EM (2016 至 2020)\n· 从带一个 backend squad 成长为带多个 squad 的 senior manager\n· 负责支付与对账服务的重构\n· 建立 code review 规范与 service ownership 模型\n\n早期 — Software Engineer → Tech Lead (2010 至 2016)\n· 后端为主，Java / Go，做过高并发的订单与库存服务\n\n技能与关注\n工程组织管理、平台与可靠性 (reliability / SLO)、incident response、架构演进、跨团队协作、人才培养与 calibration、技术战略\n\n教育\n计算机科学本科",
+  "jd": "We are hiring a Director of Engineering to own the platform and reliability organization (three teams, ~35 engineers, including SRE) at a Series-C fintech. 你将直接向 VP Engineering 汇报，负责 platform reliability、developer experience、以及核心交易链路的 SLO。Responsibilities: set and defend SLOs for the trading path, own the incident-management and postmortem process, drive a multi-quarter migration off a legacy monolith, manage and grow EMs, and own headcount and calibration for the org. 我们看重：能用数据讲清楚 reliability 现状与目标 (SLO、error budget、MTTR)、有真实带 EM 和做 calibration 的经验、以及在架构演进中做权衡取舍的判断力。This is a senior leadership role with board-visible reliability commitments.",
+  "history": [
+    { "q": "先讲讲你现在在 CloudNest 的 org 结构：几条线、几个 squad、直接和间接汇报多少人。" },
+    { "q": "你说主导了 monolith 到 microservices 的拆分。这个迁移的范围有多大，分了几个阶段？" },
+    { "q": "拆分之前和之后，核心 trading 链路的 reliability 是用什么指标衡量的？SLO 定在多少？" },
+    { "q": "你提到建立了 incident review 机制。改善之前的 MTTR 大概是多少，改善后到了什么水平？" },
+    { "q": "CI/CD 现代化把发布周期『缩短了』——从多久缩短到多久？" },
+    { "q": "讲一个你和某位 EM 在 calibration 里意见不一致的具体例子，你怎么处理的？" },
+    { "q": "在这次 microservices 拆分里，你做过的最难的一个 tradeoff 是什么？" },
+    { "q": "如果让你给现在团队的 platform reliability 打个分，满分十分你打几分，为什么？" },
+    { "q": "你带的 EM 里有没有 performance 不达标的？你是怎么发现、怎么处理的？" },
+    { "q": "拆分过程中有没有出过比较严重的线上事故？讲一个具体的。" },
+    { "q": "你怎么向 VP 或者董事会汇报 reliability 的现状？用的是哪几个数字？" },
+    { "q": "回到 SLO——我注意到你一直没给我一个具体的 availability 目标数字。你们 trading 链路的 SLO 到底是几个 9？" },
+    { "q": "那 error budget 呢？你们有没有定 error budget policy，超了之后会怎么处理?" },
+    { "q": "我换个方式问：过去一个季度,你们 trading 链路实际跑出来的 availability 是多少？" }
+  ],
+  "candidate_last_answer": "我反过来想先问你一个问题——在你看来，一个 Director 真的需要把上个季度的 availability 数字背到小数点后两位吗？你觉得是记住一个 number 重要，还是建立一套让团队自己对 reliability 负责的机制重要？说实话，我更想听听你们团队现在 SLO 的成熟度到哪一步了，这样我才好判断你们到底需要的是一个会背数字的人,还是一个能搭体系的人。",
+  "session_state": {
+    "drilled_topics": ["org-structure", "migration-scope", "trading-slo-definition", "mttr-delta", "release-cadence-delta", "calibration-disagreement", "hardest-tradeoff", "reliability-self-score", "underperforming-em", "major-incident", "board-reporting-metrics", "slo-nines", "error-budget-policy"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 真的需要把上个季度的 availability 数字背到小数点后两位吗",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual trading-path SLO target (number of nines) and the prior quarter's realized availability, demonstrating the candidate can speak to the reliability numbers they are accountable for rather than redirecting the question back at the interviewer"
+    ]
+  }
+}

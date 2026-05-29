@@ -1,0 +1,38 @@
+{
+  "id": "fx_0602",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "增长营销经理 — 消费类 App 用户增长\n\n橙果科技 — 增长营销经理 (2021至今)\n情境: 新用户次日留存停在 28%, 投放成本 (CPI) 持续走高, 单纯加预算已经跑不动。\n任务: 在不增加月度预算的前提下, 把次留拉到 35% 以上, 同时压低获客成本。\n行动: 重做了新用户的 onboarding 引导漏斗, 上线了一套基于行为分层的 push 召回策略, 并把投放素材从泛投改成分人群定向测试。\n结果: 次日留存从 28% 提升到 37%, CPI 下降 19%, 季度自然量占比从 22% 升到 31%。\n\n橙果科技 — 营销专员 (2019-2021)\n负责渠道投放执行与日报。\n\n技能: 信息流投放、A/B 测试、用户分层、GrowingIO、SQL。",
+  "jd": "橙果科技招聘一名增长营销经理, 负责消费类 App 的拉新与留存增长。你将对次日/7 日留存、获客成本 (CPI) 和自然量占比负责, 统筹投放、产品 onboarding 与召回策略三条线。我们看重候选人能把一个增长项目的时间线讲清楚: 哪个动作先上、哪个后上、各自带来多少增量, 以及不同动作之间是否互相干扰。你需要用 A/B 测试的方法归因, 而不是把所有提升都笼统归功于自己。岗位将与产品、数据团队紧密协作, 并在月度增长会上向管理层汇报关键指标与下阶段策略。请准备好用具体数字和清晰的因果顺序说明你的判断。",
+  "history": [
+    { "q": "先讲讲你现在负责的增长盘子——预算量级、主要渠道, 以及你和产品、数据团队怎么分工?" },
+    { "q": "简历里次留从 28% 到 37% 这个项目, 请把时间线讲清楚: onboarding 改版、push 召回、定向投放分别什么时候上的, 各贡献了多少?" }
+  ],
+  "candidate_last_answer": "好的, 这个项目大概持续了一个季度。顺序大概是这样: 我们最早上的其实是 push 召回策略, 当时次留很快就到了 35% 左右, 效果立竿见影。然后看到留存起来了, 我们才回头去做 onboarding 引导漏斗的改版, 这一步是项目快结束的时候做的。定向投放的测试我印象里是在最开始和 push 同期跑的, 也可能是 onboarding 改版之后才铺开, 这块我得查一下排期表。所以严格说, onboarding 改版虽然是最后做的, 但它其实是把前面 push 拉起来的留存又巩固了一道。时间点我记得有点混, 不过整体就是先做的召回, 投放穿插在中间, onboarding 收尾。",
+  "session_state": {
+    "drilled_topics": ["growth-scope-and-budget"],
+    "current_competency_target": "execution-sequencing",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "execution-sequencing",
+    "missing_evidence": [
+      { "competency": "execution-sequencing", "evidence_type": "timeline" },
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: onboarding 改版虽然是最后做的, 但它其实是把前面 push 拉起来的留存又巩固了一道",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single consistent ordering of push recall, onboarding redesign, and targeted-media testing — and how, if onboarding shipped last, the candidate isolated its incremental retention lift from the earlier push gains rather than double-counting"
+    ]
+  }
+}

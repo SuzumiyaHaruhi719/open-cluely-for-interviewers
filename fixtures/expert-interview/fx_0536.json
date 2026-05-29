@@ -1,0 +1,47 @@
+{
+  "id": "fx_0536",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Priya Ramaswamy\nJ.D. Candidate, Class of 2026 — Hastings College of the Law\nB.A. Political Science, UC Davis (2023)\n\nExperience\n- Legal Intern, Alameda County Public Defender (Summer 2025): supported two staff attorneys on misdemeanor caseload.\n- Research Assistant to Prof. L. Okonkwo (2024-2025): contract-law casebook updates.\n\nSkills\n- Westlaw, Lexis, Bluebook citation, e-discovery review (Relativity, intro level).\n- Conversational Hindi and Tamil.\n\nActivities\n- Staff editor, Hastings Law Journal.\n- Moot Court, regional quarterfinalist (2025).\n\nReferences available on request.",
+  "jd": "Summer Associate (Litigation) — Marin & Castille LLP, San Francisco. We seek a rising 3L to join our commercial-litigation group for a 10-week summer program. You will draft research memos, assist with document review in active discovery, cite-check briefs, and shadow associates at depositions and motion hearings. Strong candidates demonstrate rigorous legal research, precise Bluebook citation, sound judgment about privilege and confidentiality, and the ability to summarize a complicated record for a supervising partner. This is a feeder program for full-time offers; we evaluate ownership, attention to detail, and clarity of written and oral communication.",
+  "history": [
+    { "q": "Tell me about your summer at the Alameda County Public Defender — what kind of matters did you touch?" },
+    { "q": "What was your specific role on the two attorneys' misdemeanor caseload?" },
+    { "q": "Walk me through a research memo you wrote that actually changed how an attorney approached a matter." },
+    { "q": "On the document-review side, how comfortable are you flagging potential privilege?" },
+    { "q": "Let's go deeper on one assignment. Pick a single case where your research mattered and set the scene for me." },
+    { "q": "What exactly were you asked to find out, and who asked you?" },
+    { "q": "What did you personally do — what was your research process, step by step?" },
+    { "q": "What did you find, and how did you communicate it to the supervising attorney?" },
+    { "q": "Did your memo change the outcome or the strategy in that matter? How do you know?" },
+    { "q": "Looking back at that assignment, what would you do differently next time?" }
+  ],
+  "candidate_last_answer": "So the situation was a suppression-motion question on a vehicle stop, and the attorney asked me to figure out whether the stop was justified under our circuit's recent case law. My task was to find controlling authority on pretextual stops. What I did was pull every Ninth Circuit case from the last five years, I shepardized them in Lexis, and I built a two-page memo with a recommendation that the stop was vulnerable on the reasonable-suspicion prong. The attorney said it was useful and used a couple of the cites.",
+  "session_state": {
+    "drilled_topics": ["public-defender-scope", "caseload-role", "memo-impact", "privilege-comfort", "case-setup", "assignment-ask", "research-process", "communication-to-attorney"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The attorney said it was useful and used a couple of the cites",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete result tied to the memo — whether the suppression motion was actually filed, how the judge ruled, or what the attorney decided — instead of the vague 'used a couple of the cites' closer that omits the Result of the STAR story"
+    ]
+  }
+}

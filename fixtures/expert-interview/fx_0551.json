@@ -1,0 +1,42 @@
+{
+  "id": "fx_0551",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "陈宇航　应聘岗位：初级财务分析师\n\n关键词：财务建模、三表联动、估值（DCF/可比公司）、预算编制、预实差异分析、Excel高级函数、数据透视表、Power BI、SQL、合并报表、成本分析、现金流预测、财务尽调、IFRS、内控、KPI看板、商业分析、降本增效\n\n教育背景：\n上海某财经院校　财务管理专业　本科\n\n实习与项目经历：\n泽宁资本　财务分析实习生（半年）\n- 参与多个项目的财务建模与三表联动搭建，协助完成DCF与可比公司估值\n- 协助团队进行预算编制与预实差异分析，输出KPI看板\n- 使用Excel高级函数、数据透视表及Power BI进行数据清洗与可视化\n\n弘毅科技　财务部实习生（三个月）\n- 协助合并报表编制与成本分析\n- 参与现金流预测模型的维护与更新\n\n技能证书：CFA一级在读、计算机二级、英语六级",
+  "jd": "某零售集团财务共享中心招聘初级财务分析师一名，常驻上海，向财务分析经理汇报。核心职责：负责月度经营数据的预实差异分析，搭建并维护成本与毛利看板；参与年度预算编制；按业务部门口径出具利润分析报告；配合季度滚动预测的数据准备。我们希望候选人具备扎实的Excel与建模基础，最重要的是能够【就一个具体的分析任务讲清楚自己做了什么、用了什么口径、得出什么结论】，而不是泛泛而谈工具或行业趋势。能给出具体数字、计算逻辑与时间线的候选人将更受青睐。需要细致、严谨，能承受月结期的工作强度。",
+  "history": [
+    { "q": "先讲讲你在泽宁资本实习时，最主要负责的一块工作是什么。" },
+    { "q": "你提到协助做过预实差异分析，挑一个具体项目，说说那次差异主要出在哪。" },
+    { "q": "那次分析里，你是用什么口径去拆解差异的？比如按部门还是按科目？" },
+    { "q": "你搭的那个KPI看板，里面最关键的两三个指标是什么，怎么算的？" },
+    { "q": "再具体一点：那次预实差异，预算和实际差了多少？你最后得出的结论是什么？" }
+  ],
+  "candidate_last_answer": "嗯，说到预实差异，我其实想先聊聊我对整个零售行业的看法。我觉得现在零售这个赛道变化特别快，尤其是这两年线上线下融合，全渠道是个大趋势，然后消费降级也好消费分级也好，对企业的成本结构影响很大。我平时很喜欢看一些行业研报，像招商、中信他们出的那种，我觉得做财务分析一定要有商业sense，不能只盯着数字。还有就是CFA我现在在备考一级，里面讲的那些估值方法我觉得对建立财务框架特别有帮助。所以我觉得一个好的分析师应该是既懂业务又懂数据的复合型人才，这也是我一直努力的方向。",
+  "session_state": {
+    "drilled_topics": ["zening-main-work", "variance-project", "variance-dimension", "kpi-dashboard-metrics"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我其实想先聊聊我对整个零售行业的看法",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pull the candidate off the industry-trend tangent back to the specific variance project — the actual budget-vs-actual gap (in amount or percent), how it was decomposed, and the concrete conclusion he drew"
+    ]
+  }
+}

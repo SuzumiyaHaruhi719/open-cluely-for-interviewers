@@ -1,0 +1,46 @@
+{
+  "id": "fx_0548",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "运营总监 / Director of Operations — 14年端到端运营管理经验\n\n核心标签：lean、six-sigma、OKR、S&OP、demand-planning、throughput、cost-optimization、cross-functional leadership、process-reengineering、KPI-driven、continuous-improvement、change-management、vendor-governance、capacity-planning\n\n- 主导多地履约中心（fulfillment center）的端到端运营优化，覆盖华东、华南、华北三大区域\n- 推动 lean 与 six-sigma 文化落地，打造 high-performing、data-driven 的卓越运营团队\n- 以 OKR 与 KPI 双轮驱动，赋能跨职能协同，持续交付 best-in-class 的运营结果\n- 操盘 S&OP 流程重构与 demand-planning 体系搭建，提升整体 throughput 与履约时效\n- 深度参与 cost-optimization 与 capacity-planning，长期对接供应商治理（vendor-governance）\n\n近期履历：\nNimbus Retail Group — Director of Operations（2020至今）\n此前：Harborline Logistics — Senior Operations Manager（2016-2020）",
+  "jd": "Nimbus Retail Group is hiring a Director of Operations to own the P&L for a five-warehouse fulfillment network (Shanghai, Guangzhou, Chengdu, Wuhan, Tianjin) processing roughly 90,000 orders/day at peak. Reporting to the VP Supply Chain, you will own throughput, on-time-shipment rate (currently 91.4%, target 97%), units-per-labor-hour, and a $42M annual operating budget. We need a leader who has personally driven a measurable productivity step-change, run S&OP across regions, and managed peak-season ramps. You will inherit a stalled WMS migration and an attrition problem in the Wuhan site (annualized turnover 68%). Strong candidates can show specific before/after operational metrics they personally moved, and can articulate the tradeoffs they made under cost pressure. Mandarin/English bilingual required; travel ~40% across sites.",
+  "history": [
+    { "q": "Walk me through your current scope at Nimbus — sites, daily order volume, the budget and metrics you own." },
+    { "q": "你的简历上写了 six-sigma 和 lean。挑一个你亲自带的具体项目讲讲。" },
+    { "q": "What was the baseline metric before that project, and what did it become after?" },
+    { "q": "Wuhan 站点 68% 的离职率，如果是你接手，前 30 天你具体会做什么？" },
+    { "q": "Let's talk throughput. Tell me about one decision where you raised units-per-labor-hour." },
+    { "q": "那个决策的 tradeoff 是什么？你为了提升 throughput 牺牲了什么？" },
+    { "q": "You mentioned an S&OP redesign. Who owned the forecast accuracy number — you or planning?" },
+    { "q": "Give me one peak-season ramp you ran end to end. What did you personally decide in week one?" }
+  ],
+  "candidate_last_answer": "嗯…peak ramp 这块，其实…怎么说呢，每年的 Q4 都挺 intense 的对吧，就是…volume 上来了嘛，然后大家都很忙。我记得有一年…哦不对，可能是前年，反正那次我们招了一批 temp labor，然后…嗯，培训也是个事儿，对了培训这块其实挺关键的我后面可以再展开。然后 week one 嘛…就是…你知道的，开很多会，对齐嘛,跟 planning 对、跟 HR 对、跟站长们对…我觉得 alignment 真的特别重要。反正最后还行吧，撑过去了。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "lean-six-sigma-project", "before-after-metric", "wuhan-attrition-plan", "throughput-decision", "throughput-tradeoff", "sop-forecast-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: week one 嘛…就是…你知道的，开很多会",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete, sequenced list of decisions the candidate personally made in week one of a specific peak ramp (which year, which sites, how many temps hired, what staffing/throughput target), instead of 'lots of meetings' and alignment"
+    ]
+  }
+}

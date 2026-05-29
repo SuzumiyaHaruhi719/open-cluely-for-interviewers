@@ -1,0 +1,41 @@
+{
+  "id": "fx_0558",
+  "tags": {
+    "industry": "design",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "clean-STAR",
+    "edge_case": "reverses-question"
+  },
+  "resume": "苏蔓　设计副总裁（VP of Design）\n\n概述：16年产品与体验设计，近7年负责设计组织建设，现管理一支约60人的设计团队（含产品设计、用户研究、设计系统、品牌）。\n\n经历：\n星澜科技　VP of Design（2019至今）\n- 情境：公司从单一产品扩张到多产品线，设计质量参差、复用率低。\n- 任务：统一体验标准，建立可规模化的设计体系与团队梯队。\n- 行动：牵头搭建跨产品的 Design System，重组团队为『横向能力中心+纵向业务线』矩阵，引入设计度量（任务完成率、可用性评分），并建立设计评审与晋升标准。\n- 结果：设计系统组件复用率从约30%提升至82%，关键流程任务完成率提升19个百分点，设计交付周期缩短约40%，团队主动流失率从21%降至9%。\n\n此前：某大厂　设计总监（2013-2019）\n- 负责核心产品改版，主导一次端到端的可用性提升项目，使核心转化率提升的同时降低了客服工单量。\n\n教育：交互设计硕士。",
+  "jd": "某综合性科技集团招聘设计副总裁（VP of Design），常驻深圳，向集团CPO汇报。负责统领约80人的设计组织，覆盖多条业务线的产品设计、用户研究与设计系统，建立可规模化的体验标准与人才梯队。你将主导一次跨业务线的设计体系整合，并解决各线设计质量与效率不均的问题。我们尤其看重候选人能就一次亲自主导的组织级变革，讲清楚【完整的情境—任务—行动—结果】，尤其是可量化的最终结果与归因。需要大规模设计团队管理经验，能在矩阵式组织中推动跨线协作。",
+  "history": [
+    { "q": "先讲讲你在星澜现在的设计组织：多少人、分哪几块、你直接负责什么。" },
+    { "q": "你简历里写的那次设计体系整合，最初的情境和你要解决的核心问题是什么？" },
+    { "q": "为了把组件复用率从30%拉到82%，你具体做了哪几件事？" },
+    { "q": "那这次整合最终在业务结果上的体现是什么？除了复用率，对业务指标有什么可量化的影响？" }
+  ],
+  "candidate_last_answer": "组件复用率、任务完成率这些我们都有在追，过程指标其实做得挺扎实的。不过说到对业务结果的可量化影响……我倒想先反问你一个问题：你们集团现在是怎么定义『设计的业务价值』的？是看转化、留存这类北极星指标，还是更看重交付效率和成本？因为不同的定义，我能给你讲的故事完全不一样。如果你们看的是效率，那我这套体系的结果就很直接；如果你们要的是营收归因，那坦白说设计的贡献往往是和产品、增长团队耦合在一起的，单独切出来反而不严谨。所以我想先理解你们的口径，再决定怎么回答更有意义。",
+  "session_state": {
+    "drilled_topics": ["current-org-scope", "integration-situation", "reuse-rate-actions"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我倒想先反问你一个问题",
+      "must-be-question-type: metric-pin",
+      "expected-yield: acknowledge the reframe but still pin the missing Result — one concrete business-metric outcome the design-system integration drove (the conversion or efficiency number) and how she attributed design's share — so the question-reversal doesn't let her skip the quantified result"
+    ]
+  }
+}

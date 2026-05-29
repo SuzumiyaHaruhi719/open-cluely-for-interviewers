@@ -1,0 +1,42 @@
+{
+  "id": "fx_0577",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Jordan Ellis — Law Student, Summer Legal Intern Candidate\n\nFuture top-tier litigator. Already operating years ahead of my peers and recognized everywhere as a standout legal mind.\n\nCampus Legal Aid Clinic (2024-present) — Student Volunteer\n- Single-handedly handled a massive caseload and reportedly saved clients millions in liabilities\n- My research memos were called the best the supervising attorney had ever seen\n- Basically ran the intake operation by myself\n\nMoot Court (2023-2024)\n- Undefeated; widely considered the strongest oralist in the program\n\nLegal Research Assistant to Professor (2023)\n- Drafted sections of a law review article that I'd say was career-defining for the professor\n\nSkills: legal research (Westlaw, Lexis), brief writing, Bluebook citation, client intake\nEducation: J.D. Candidate, expected 2026; B.A. Political Science (summa cum laude)",
+  "jd": "Hawthorne & Reyes LLP is hiring summer legal interns for our commercial litigation group. Interns support associates with legal research, drafting memos and sections of briefs, cite-checking, and document review. We expect strong Bluebook proficiency, rigorous Westlaw/Lexis research, and the judgment to flag adverse authority honestly. This is a learning role: we value interns who can describe precisely what they did on a real assignment, distinguish their own work from the supervising attorney's, and speak accurately about scope and outcomes rather than overstating impact.",
+  "history": [
+    { "q": "Tell me about your work at the Campus Legal Aid Clinic." },
+    { "q": "Your resume says your memos 'saved clients millions.' Walk me through one specific memo." },
+    { "q": "What was the legal question that memo addressed?" },
+    { "q": "How did you arrive at the 'millions saved' figure?" },
+    { "q": "What part of that work was yours versus the supervising attorney's?" }
+  ],
+  "candidate_last_answer": "Oh, the impact was honestly enormous — I'd estimate my research alone saved the clinic's clients somewhere north of five million dollars in potential liability last year. Every memo I touched basically changed the outcome of the case. The supervising attorney told me I was operating at a third-year associate level, and frankly the clinic's success rate skyrocketed once I came on board. I'd say I was responsible for a huge chunk of our wins.",
+  "session_state": {
+    "drilled_topics": ["clinic-work", "specific-memo", "legal-question", "millions-figure-basis", "ownership-vs-supervisor"],
+    "current_competency_target": "integrity-and-self-assessment",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "integrity-and-self-assessment",
+    "missing_evidence": [
+      { "competency": "integrity-and-self-assessment", "evidence_type": "metric" },
+      { "competency": "integrity-and-self-assessment", "evidence_type": "owner-of-action" },
+      { "competency": "legal-research-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: somewhere north of five million dollars in potential liability",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual derivation of the five-million-dollar claim for a single intake-level memo — the matter, the exposure figure, and who calculated it — exposing whether the number is invented or inherited rather than the intern's own measured impact"
+    ]
+  }
+}

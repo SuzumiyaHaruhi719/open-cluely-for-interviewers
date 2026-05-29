@@ -1,0 +1,46 @@
+{
+  "id": "fx_0554",
+  "tags": {
+    "industry": "customer-support",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "高级客户支持经理 / Senior Customer Support Manager — 10年SaaS支持经验\n\n关键词：CSAT、NPS、FCR、AHT、SLA、escalation-management、omnichannel、Zendesk、Salesforce Service Cloud、knowledge-base、self-service deflection、workforce-management、QA-scorecard、voice-of-customer、churn-reduction、playbook、shift-left\n\n- 负责一支约35人的多语言（multilingual）支持团队，覆盖APAC时区\n- 主导 omnichannel 体系建设与 self-service deflection，持续优化 CSAT 与 FCR\n- 搭建 QA-scorecard 与 coaching 机制，driving 团队向 best-in-class 水平迈进\n- 牵头 knowledge-base 重构与 shift-left 策略，降低 escalation 与 churn\n- 深度运营 SLA 与 workforce-management，保障高峰期 coverage\n\n近期：云枢科技 Senior Support Manager（2020至今）\n此前：某SaaS公司 Support Team Lead（2015-2020）",
+  "jd": "云图数据 (CloudAtlas) is hiring a Senior Customer Support Manager to run a 30-person multilingual team supporting our APAC B2B SaaS customers. Reporting to the Director of Support, you will own CSAT (currently 81, target 90), first-contact-resolution (currently 64%, target 78%), and a self-service deflection program. You will rebuild the knowledge base, run weekly QA coaching, and partner with Product on a shift-left strategy. We strongly value candidates who can speak about a result they personally drove with verifiable, single-number precision — baseline, after-state, timeframe, and the mechanism — rather than broad claims. Inflated or unsourced figures will be probed hard. 7+ years in SaaS support and 3+ years managing a team required. 中英文双语 required.",
+  "history": [
+    { "q": "先讲讲你在云枢现在的 scope：团队多少人、覆盖哪些时区、你直接 own 哪些 metric。" },
+    { "q": "You list self-service deflection on your resume. Walk me through one deflection initiative you personally led." },
+    { "q": "那个 deflection 项目上线前，self-service 的 deflection rate 基线是多少？" },
+    { "q": "After launch, what did the deflection rate become, and over what timeframe?" },
+    { "q": "deflection 上去之后，ticket volume 实际降了多少？这个降幅你怎么测的？" },
+    { "q": "再说 CSAT。你有没有亲手把某个团队或某条线的 CSAT 拉起来过？" },
+    { "q": "From what to what? And what was the single biggest driver?" },
+    { "q": "knowledge-base 重构那块，你 own 了哪一部分？是你写 content 还是定 strategy？" },
+    { "q": "给我一个你最有把握、能经得起 audit 的数字，并说清楚它是怎么被验证的。" }
+  ],
+  "candidate_last_answer": "说实话，我经手的项目效果都挺夸张的。那个 deflection 上线之后，ticket volume 我们直接砍了大概七成吧，CSAT 也是从七十几一路干到接近满分，FCR 基本翻倍。这些 number 在业内都是 top 级别的，我带过的团队拿过好几个内部大奖。怎么验证哦…dashboard 上都有，但具体那份 report 我现在调不出来，反正 leadership 都认可，你 trust me 就行，我做的东西从来不掺水的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "deflection-initiative", "deflection-baseline", "deflection-after-timeframe", "ticket-volume-measurement", "csat-handson", "csat-delta-driver", "kb-ownership"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: ticket volume 我们直接砍了大概七成吧",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one auditable ticket-deflection number for a specific program — true baseline volume, after-state, the window it took, and exactly how deflection was attributed/measured — instead of '~70%' and a missing dashboard"
+    ]
+  }
+}

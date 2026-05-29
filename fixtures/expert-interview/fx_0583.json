@@ -1,0 +1,46 @@
+{
+  "id": "fx_0583",
+  "tags": {
+    "industry": "customer-support",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "吴坤 — 客户服务总监\n\n现任：星橙科技 客户服务总监（负责约150人客服中心）\n之前：和悦云 客户支持高级经理（2016-2020）\n\n核心经历：\n- 负责多渠道客服中心整体运营与SLA达成\n- 主导一次客服系统（工单平台）的更换与上线\n- 推动质检体系与坐席培训机制建设\n- 向COO汇报核心服务指标\n\n技能：呼叫中心运营、SLA管理、工单系统、排班（WFM）、质检、团队管理\n学历：工商管理 本科",
+  "jd": "星橙科技招聘客户服务总监，负责约150人多渠道客服中心的整体运营，直接向COO汇报。你将owner服务SLA（首响、解决时长）、CSAT、人力成本与一次工单平台的迭代或replatform。我们尤其看重你能否把一个跨季度的大项目讲得时间线清晰、前后一致——例如一次系统切换：立项、选型、试点、全量上线、稳定的各个时间节点分别在什么时候，你在每个阶段做了什么。叙述中前后矛盾的时间线会是重要的考察点。",
+  "history": [
+    { "q": "先介绍一下你在星橙现在负责的客服中心规模和你的职责。" },
+    { "q": "你简历提到主导过一次工单平台的更换，先讲讲为什么要换。" },
+    { "q": "这个 replatform 项目整体跨度多长时间？大概什么时候立项、什么时候全量上线？" },
+    { "q": "选型阶段你们评估了哪几家、花了多久？" },
+    { "q": "试点是先在哪个团队跑的？试点跑了多久？" },
+    { "q": "试点和全量上线之间间隔了多久？" },
+    { "q": "上线后多久指标才稳定下来？" },
+    { "q": "你个人在选型和上线两个阶段分别做了什么？" },
+    { "q": "这个项目最大的风险点是什么、怎么 mitigate 的？" },
+    { "q": "我把时间线和你对一遍：你能不能按月把立项、选型、试点、全量、稳定这几个节点重新捋一遍？" }
+  ],
+  "candidate_last_answer": "嗯，整个项目大概是2022年做的。我记得是Q1立项的，然后选型大概花了两个月。不过试点其实我们2021年下半年就已经在做了，先在华东团队跑的。全量上线是2022年3月，但稳定下来要到2022年下半年，差不多用了大半年。哦对，选型那会儿其实是上线之后我们才补做的系统化评估，因为一开始时间太赶。所以严格说立项到全量也就一个多季度吧，但前后加起来又像是跨了一年多，我自己捋的时候也有点绕。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "replatform-rationale", "project-duration", "vendor-selection", "pilot-team-duration", "pilot-to-rollout-gap", "post-launch-stabilization", "personal-role-by-phase", "biggest-risk", "timeline-reconciliation"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "execution-rigor", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 试点其实我们2021年下半年就已经在做了，先在华东团队跑的",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single internally-consistent month-by-month sequence for the replatform, resolving how a pilot in late-2021 precedes a Q1-2022 kickoff and a selection done after go-live, exposing whether the candidate actually owned and remembers the project"
+    ]
+  }
+}

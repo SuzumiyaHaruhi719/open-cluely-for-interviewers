@@ -1,0 +1,48 @@
+{
+  "id": "fx_0576",
+  "tags": {
+    "industry": "sales",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Devon Carter — Account Executive (Mid-Market SaaS)\n\nNorthpeak Software (2021-present) — Account Executive\n- Carry a mid-market new-business quota; sell HR/payroll software\n- Run full cycle from discovery to close\n\nClearwave (2019-2021) — Sales Development Rep, then AE (promoted)\n- Booked outbound meetings, later carried a small closing quota\n\nSkills: discovery, MEDDIC (familiar), Salesforce, outbound prospecting\nEducation: B.A. Economics\n\nReferences available on request.",
+  "jd": "Northpeak Software seeks a mid-market Account Executive to own net-new revenue for our HR and payroll suite in the 200-2,000 employee segment. You'll run full-cycle deals (avg ACV ~$45k), build and manage your own pipeline, and consistently hit a $900k annual quota. We use MEDDICC and expect rigorous qualification, multi-threaded deals, and accurate forecasting. The strongest candidates can walk through a specific deal in detail: how they found it, how they qualified economic buyer and metrics, the objections they overcame, and the exact path to close with dollar figures and dates.",
+  "history": [
+    { "q": "Tell me about your current quota and segment at Northpeak." },
+    { "q": "What was your attainment last year — percentage to quota?" },
+    { "q": "How do you typically build pipeline today?" },
+    { "q": "Walk me through your qualification process. Do you use a framework?" },
+    { "q": "Tell me about your largest closed deal in the last year." },
+    { "q": "How did you originally source that deal?" },
+    { "q": "Who was the economic buyer, and how did you confirm budget?" },
+    { "q": "What was the toughest objection, and how did you handle it?" },
+    { "q": "What was the ACV and how long was the sales cycle?" },
+    { "q": "What nearly killed the deal at the end?" },
+    { "q": "Give me the single most important thing you did that won that deal." }
+  ],
+  "candidate_last_answer": "Honestly, I think the biggest thing was just building a really strong relationship and being there for the customer. I always try to add value and be consultative, you know? It's about understanding their needs and being a trusted advisor. So I just stayed close to them throughout the process and made sure they felt good about us, and eventually it all came together and we got it across the line.",
+  "session_state": {
+    "drilled_topics": ["current-quota", "attainment", "pipeline-build", "qualification-framework", "largest-deal", "deal-sourcing", "economic-buyer", "objection-handling", "acv-and-cycle", "deal-risk"],
+    "current_competency_target": "sales-execution",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "sales-execution",
+    "missing_evidence": [
+      { "competency": "sales-execution", "evidence_type": "mechanism" },
+      { "competency": "sales-execution", "evidence_type": "named-entity" },
+      { "competency": "results-orientation", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I always try to add value and be consultative",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete, specific sequence of selling actions on the named deal — the actual discovery questions, the multi-threading moves, the proof points used — instead of generic 'trusted advisor' platitudes"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "fx_0557",
+  "tags": {
+    "industry": "marketing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Devon Park — Marketing Intern Candidate\n\nRising senior, B.A. Communications (expected next year).\n\nExperience:\n- Social media volunteer for a campus sustainability club: ran the Instagram, posted ~3x/week.\n- Part-time barista (2 years) — customer interaction, fast-paced environment.\n\nProjects:\n- Class group project: built a mock content calendar for a local coffee shop.\n\nSkills: Canva, Instagram, TikTok, basic copywriting, eager to learn.\n\nLooking for: a summer marketing internship to grow into a content/social role.",
+  "jd": "Brightwave Media is hiring a Summer Marketing Intern to support our social and content team. Reporting to a Content Marketing Associate, you will draft post copy, schedule content, pull basic engagement metrics, and help with light community management. We are looking for someone curious and coachable who can reflect honestly on what they've tried, what worked, and what didn't — including mistakes. This is an entry-level role; we don't expect a track record, but we do expect candidates to engage thoughtfully with feedback and questions rather than getting defensive. Strong written communication and familiarity with Instagram/TikTok required.",
+  "history": [
+    { "q": "Thanks for coming in. Tell me a bit about the campus sustainability club social media you ran." },
+    { "q": "Roughly how many followers did the account have while you ran it?" },
+    { "q": "Did the follower count or engagement change over the time you ran it?" },
+    { "q": "How were you measuring engagement — likes, comments, reach?" },
+    { "q": "What kind of posts seemed to do best?" },
+    { "q": "Can you give me a specific example of a post that flopped, and why you think it did?" },
+    { "q": "When a post underperformed, did you change your approach afterward?" },
+    { "q": "For the coffee-shop content calendar project — what was the goal you set for it?" },
+    { "q": "Who was the target audience you designed it for?" },
+    { "q": "How did you decide the posting cadence in that calendar?" },
+    { "q": "If a manager told you your post copy was off-brand, how would you respond?" },
+    { "q": "Tell me about a time you got feedback you disagreed with. What did you do?" },
+    { "q": "Looking back at the club account, is there anything you'd do differently?" },
+    { "q": "What metric would you want to be judged on in this internship?" },
+    { "q": "How comfortable are you pulling numbers from Instagram Insights?" },
+    { "q": "What's a marketing campaign by any brand that you admire, and why?" },
+    { "q": "I want to go back to the flopped post — you said earlier you couldn't think of one. Can you try again? Even a small example helps." },
+    { "q": "I'm not trying to trip you up — I'm asking because reflecting on what didn't work is most of this job. Can you walk me through one post that didn't land and what you took from it?" }
+  ],
+  "candidate_last_answer": "Honestly, I feel like you keep hammering on this 'failed post' thing and it's a little unfair. It was a volunteer club, not a Fortune 500 brand. Why does it even matter if one post got fewer likes? I posted consistently and people liked the content, that should count for something. I don't really keep a list of my 'failures' to recite in interviews. If you just want me to make something up to fit your question, I can, but I'd rather not. I think the obsession with mistakes is kind of a red flag honestly.",
+  "session_state": {
+    "drilled_topics": ["club-account-overview", "follower-count", "engagement-trend", "engagement-metric", "best-posts", "flopped-post", "post-iteration", "calendar-goal", "calendar-audience", "calendar-cadence", "off-brand-response", "feedback-disagreement", "club-retrospective", "internship-metric", "insights-comfort", "admired-campaign", "flopped-post-retry"],
+    "current_competency_target": "coachability",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "coachability",
+    "missing_evidence": [
+      { "competency": "coachability", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the obsession with mistakes is kind of a red flag honestly",
+      "must-be-question-type: teach-back",
+      "expected-yield: de-escalate and reframe so the candidate offers one concrete underperforming post plus the lesson taken from it, revealing whether she can engage with constructive feedback without becoming defensive — the core competency the role screens for"
+    ]
+  }
+}

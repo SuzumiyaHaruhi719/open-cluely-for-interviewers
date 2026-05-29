@@ -1,0 +1,38 @@
+{
+  "id": "fx_0597",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Director of Clinical Operations — multi-site ambulatory network (32 clinics, 1,100 staff)\n\nMercy Ridge Health — Director, Clinical Operations (2019-present)\n- Situation: post-merger network had inconsistent intake workflows; door-to-provider time averaged 47 minutes across sites.\n- Task: standardize intake and cut door-to-provider time without adding headcount.\n- Action: ran a 6-site pilot of a redesigned rooming protocol, retrained 240 medical assistants, and deployed a shared scheduling template.\n- Result: door-to-provider time fell from 47 to 29 minutes network-wide over 11 months; patient-experience top-box rose 9 points.\n\nMercy Ridge Health — Associate Director, Clinic Ops (2016-2019)\n- Led the EHR migration (Cerner to Epic) across 12 sites; cutover completed with <2% scheduling-error rate in month one.\n\nDayton General — Practice Manager (2012-2016)\n\nCredentials: MHA; Lean Six Sigma Black Belt; licensed RN (inactive).",
+  "jd": "Mercy Ridge Health seeks a Director of Clinical Operations to own the operational performance of our ambulatory network as we integrate two newly acquired specialty groups. You will be accountable for access metrics (third-next-available appointment, door-to-provider time), staffing models for 1,100+ clinical staff, and the operational side of a system-wide Epic optimization. You will partner with the CMO on quality measures and with revenue-cycle on front-end accuracy. We need a leader who can sequence a multi-site change program — what you pilot, where, in what order, and how you decide to scale or kill — and who can speak precisely about the timeline and the causal chain between an intervention and the metric it moved. Expect board reporting on access and a live integration with two practices mid-year.",
+  "history": [
+    { "q": "Walk me through the door-to-provider improvement on your resume — when did each phase happen, and how did you sequence the pilot, the retraining, and the full rollout?" }
+  ],
+  "candidate_last_answer": "So the headline result is we took door-to-provider from 47 minutes down to 29. The way it went — we rolled the scheduling template out network-wide first, that was the big lever, and then after we saw the numbers move we went back and did the 6-site pilot to validate the rooming protocol. The retraining of the medical assistants happened sort of early on, I want to say before the pilot, maybe around the same time as the full rollout. Honestly the eleven months kind of blur together, but the pilot was definitely the last big piece, that's when we locked in the gains.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "execution-sequencing",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "execution-sequencing",
+    "missing_evidence": [
+      { "competency": "execution-sequencing", "evidence_type": "timeline" },
+      { "competency": "execution-sequencing", "evidence_type": "mechanism" },
+      { "competency": "decision-rigor", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we went back and did the 6-site pilot to validate the rooming protocol",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a corrected, internally consistent ordering of the pilot, the medical-assistant retraining, and the network-wide template rollout, with which one actually came first and how a pilot run after full rollout could have validated anything"
+    ]
+  }
+}

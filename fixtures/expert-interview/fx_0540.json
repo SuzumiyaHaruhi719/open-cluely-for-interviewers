@@ -1,0 +1,53 @@
+{
+  "id": "fx_0540",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "周岩\n资深数据工程师 / Staff 数据方向\n\n概述：八年数据经验，主要做数仓和实时计算。\n\n经历：\n现公司，数据平台团队，负责实时数仓和指标体系。\n上一家，电商公司，做离线数仓和报表。\n\n技能：\nFlink、Spark、Hive、Kafka、ClickHouse、调度系统。\n\n备注：带过小团队，做过几次大的链路重构。",
+  "jd": "招聘 Staff 级数据工程师，负责公司实时数据平台的架构演进。你将主导核心数据链路的设计与重构，定义指标口径与数据质量标准，并在跨团队协作中推动技术决策落地。我们看重对一次具体技术决策的清晰复盘能力：背景是什么、为什么这么选、放弃了哪些方案、最终的量化收益。理想候选人在被追问技术细节时，能聚焦、能讲清取舍，而不是发散到无关话题。",
+  "history": [
+    { "q": "先介绍一下你现在负责的实时数据平台，团队规模和你的角色。" },
+    { "q": "你们实时链路现在的整体架构是怎样的？从采集到消费走一遍。" },
+    { "q": "你提到做过几次大的链路重构，挑一次最重要的讲讲背景。" },
+    { "q": "这次重构要解决的核心问题是什么？" },
+    { "q": "重构前的瓶颈具体表现在哪？延迟、成本还是稳定性？" },
+    { "q": "你当时考虑了哪几个技术方案？" },
+    { "q": "最终为什么选了现在这个方案，放弃了其他的原因是什么？" },
+    { "q": "这个方案是你主导设计的吗？还有谁参与决策？" },
+    { "q": "落地过程中最大的技术难点是什么，你怎么解决的？" },
+    { "q": "重构之后，端到端延迟从多少降到了多少？" },
+    { "q": "成本这块有没有量化的变化？" },
+    { "q": "数据质量或者口径一致性，你是怎么保障的？" },
+    { "q": "跨团队推动这个决策时，有没有遇到阻力？你怎么处理的？" },
+    { "q": "如果现在重新做这次重构，你会改哪个决策？" },
+    { "q": "我们聚焦一下延迟那个数字——P99 延迟具体是多少？" },
+    { "q": "好，那这次重构最关键的那一个技术取舍，用一句话总结是什么？" }
+  ],
+  "candidate_last_answer": "嗯……一句话总结的话……其实吧，这个事情挺复杂的，因为当时我们团队也在换人，老大也换了，然后那段时间正好赶上大促，大家都很忙，对，说到大促，那年大促的流量是真的大，我记得有天晚上我们还一起加班吃了外卖……扯远了扯远了。回到延迟，P99 嘛……这个我得想想，因为口径有好几个，有的人算端到端，有的算单个算子，反正都降了不少。取舍的话……主要还是看场景吧，你懂的，做技术嘛总要平衡,稳定性和成本啊延迟啊都得管，不能只看一个，对不对。所以那个关键取舍……嗯，让我再组织一下语言。",
+  "session_state": {
+    "drilled_topics": ["platform-scope", "realtime-architecture", "refactor-background", "core-problem", "pre-refactor-bottleneck", "candidate-options", "option-choice-rationale", "design-ownership", "implementation-hardship", "latency-delta", "cost-delta", "data-quality", "cross-team-resistance", "counterfactual-redo"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 取舍的话……主要还是看场景吧，你懂的",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the single concrete engineering tradeoff at the heart of the refactor — what was sacrificed for what (e.g. consistency vs latency, cost vs stability) and the reasoning — cutting through the rambling tangents to one decisive, defensible choice"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "fx_0574",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Marcus Delaney — Customer Support Team Lead, SaaS\n\nA relentless customer-obsessed operator who single-handedly transformed a struggling support queue into a world-class, award-caliber machine. Consistently the top performer everywhere I go.\n\nBrightline POS (2021-present) — Support Team Lead\n- Personally rescued the support org from chaos and drove CSAT to record highs\n- Owned the entire escalation process and was the go-to person for every hard ticket\n- Single-handedly slashed backlog and rewrote the entire knowledge base\n- Mentored the whole team; basically everyone's growth ran through me\n\nHelpStack (2018-2021) — Senior Support Agent\n- Hands-down the highest-rated agent on the floor, every quarter without exception\n- Built the macros and workflows the team still uses today\n\nSkills: Zendesk, escalation management, SLA ownership, QA, coaching\nEducation: B.A. Communications",
+  "jd": "Brightline POS is hiring a Customer Support Team Lead to own day-to-day operations for a 12-agent team handling Tier-1 and Tier-2 tickets for our point-of-sale platform. You will own queue health, SLA attainment (first-response under 2 hours, resolution under 24 hours), CSAT (currently 81, target 88), and escalation quality into engineering. The role requires hands-on coaching, root-causing recurring ticket drivers, and partnering with product to reduce contact volume. We want someone who takes personal accountability for outcomes, runs tight 1:1s, and can show a concrete example of turning around an underperforming metric they personally owned.",
+  "history": [
+    { "q": "Tell me about your current role at Brightline and the team you lead." },
+    { "q": "Your resume says you 'single-handedly slashed backlog.' What was the backlog when you started?" },
+    { "q": "What specific actions did you take to bring it down?" },
+    { "q": "How did CSAT move over that period, and what's your current number?" },
+    { "q": "Walk me through how you run escalations into engineering today." },
+    { "q": "Let's talk about a miss. Tell me about a quarter where your team's SLA slipped." },
+    { "q": "What was the SLA attainment that quarter versus target?" },
+    { "q": "When you saw it slipping, what did you personally do as the lead?" },
+    { "q": "Did you change anything about staffing, scheduling, or the queue itself?" },
+    { "q": "I want to understand your ownership here: what part of that miss was within your control, and what did you do about it?" }
+  ],
+  "candidate_last_answer": "Honestly, that quarter was rough, but it really wasn't on me. Product shipped a buggy release without giving us a heads-up, so we got slammed with tickets nobody could've predicted. On top of that, two of my best agents were out, and HR took forever to backfill them. And the WFM team's forecast was just wrong, so we were understaffed going in. At the end of the day, the bulk of it came down to other teams dropping the ball, and I was kind of left holding the bag for numbers I didn't really control.",
+  "session_state": {
+    "drilled_topics": ["current-role", "backlog-baseline", "backlog-actions", "csat-trajectory", "escalation-process", "sla-miss-intro", "sla-attainment-number", "personal-action-on-miss", "staffing-changes"],
+    "current_competency_target": "ownership-accountability",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "ownership-accountability",
+    "missing_evidence": [
+      { "competency": "ownership-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "problem-solving", "evidence_type": "mechanism" },
+      { "competency": "results-orientation", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the bulk of it came down to other teams dropping the ball, and I was kind of left holding the bag",
+      "must-be-question-type: action-attribution",
+      "expected-yield: at least one concrete action the candidate took within their own span of control as the team lead during the SLA miss, forcing accountability past the blame on product, HR, and WFM"
+    ]
+  }
+}

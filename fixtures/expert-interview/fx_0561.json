@@ -1,0 +1,40 @@
+{
+  "id": "fx_0561",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "供应链分析师 (Supply Chain Analyst) — 求职意向：初级 / Junior\n\n个人简介\n两年供应链与物流运营经验，熟悉 inventory planning、demand forecasting 和 supplier coordination。擅长用 Excel 和 SQL 做数据分析，支持过华东区域仓配网络的库存优化项目。\n\n工作经历\n远途物流科技 — 供应链分析师 (2023年3月 至今)\n· 负责华东区 6 个 DC 的 inventory replenishment，把整体 inventory turnover 从 4 次/年提升到 8 次/年\n· 主导 demand forecasting 模型搭建，forecast accuracy (MAPE) 长期稳定在 30% 左右，团队都很满意\n· 独立负责 supplier onboarding，管理 40 多家供应商的交期与对账\n\n顺达供应链 — 物流运营专员 (2022年6月 至 2023年3月)\n· 跟进出库与配送，处理日常异常工单\n· 协助仓库盘点\n\n注：本人 2022 年 6 月本科毕业后即全职工作；同时简历另一处写明拥有『五年以上』供应链从业经验。\n\n技能\nExcel (VLOOKUP / 数据透视表)、SQL 基础、demand planning、库存管理、WMS 系统操作\n\n教育背景\n物流管理本科，2022 年毕业",
+  "jd": "我们正在招聘一名初级供应链分析师 (Junior Supply Chain Analyst)，加入快速增长的电商履约团队，base 上海。This role supports inventory planning and demand forecasting across a multi-DC fulfillment network. 你将负责：维护和提升 forecast accuracy、监控 inventory turnover 与 stockout 率、支持 supplier 交期跟进、用 SQL 和 Excel 产出周度运营报表。我们看重：扎实的数据基本功、对 demand planning 指标 (MAPE、turnover、fill rate) 的真实理解、以及能把分析结论讲清楚的沟通能力。This is an entry-level role; we expect candidates to be honest about what they personally did versus what the team did.",
+  "history": [
+    { "q": "先自我介绍一下，讲讲你在远途物流具体负责哪一块、团队多大。" },
+    { "q": "你简历上写 inventory turnover 从 4 次/年做到 8 次/年。具体讲讲：你做了哪些动作，哪一项贡献最大？" },
+    { "q": "我注意到一个地方：你写 2022 年本科毕业全职工作，但另一处写『五年以上从业经验』。这两个怎么对上？" },
+    { "q": "你提到 forecast accuracy 的 MAPE 稳定在 30%。在你们这个业务里，30% 的 MAPE 算好还是算差？你怎么判断的？" }
+  ],
+  "candidate_last_answer": "你这是在挑刺吧。30% 的 MAPE 我们 team 都觉得很 ok，业务方从来没抱怨过，你凭什么说它差？而且简历上那个『五年以上』就是个笔误，至于揪着不放吗？我做初级岗位你问得跟审问似的。反正 MAPE 30% 在我们公司就是正常水平，这个数字没什么好解释的。",
+  "session_state": {
+    "drilled_topics": ["self-intro-scope", "turnover-attribution", "resume-experience-contradiction", "mape-benchmark-judgement"],
+    "current_competency_target": "data-literacy",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "data-literacy",
+    "missing_evidence": [
+      { "competency": "data-literacy", "evidence_type": "metric" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 30% 的 MAPE 我们 team 都觉得很 ok",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete benchmark the candidate can name (what a good MAPE looks like for their SKU mix / lead time, and why 30% is or is not acceptable for fast-moving e-commerce) rather than the defensive appeal that the team was fine with it"
+    ]
+  }
+}

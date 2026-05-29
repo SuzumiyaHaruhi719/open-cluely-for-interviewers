@@ -1,0 +1,45 @@
+{
+  "id": "fx_0591",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "clean-STAR",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Director of Global Supply Chain — Consumer Electronics\n\nHarbor Devices — Director, Global Supply Chain (2019–present)\n- Situation: Inherited a single-region contract-manufacturing footprint that left the company exposed to a tariff shock and a 14-week lead time on the flagship line.\n- Task: Diversify manufacturing across two additional regions and cut flagship lead time below 8 weeks within 18 months.\n- Action: Stood up a dual-region CM strategy, led the supplier qualification governance, and chaired the S&OP forum across demand, planning, and ops.\n- Result: Brought a second region to volume production, reduced flagship lead time to 7 weeks, and held line-down incidents to zero through the transition.\n\n- Situation: Component allocation crisis during an industry-wide shortage threatened 30% of build plan.\n- Task: Protect the build plan and prioritize allocation across three product lines.\n- Action: Established an allocation council, renegotiated commitments with two tier-1 suppliers, and set a transparent prioritization rubric.\n- Result: Protected the high-margin line at full volume and limited total build shortfall to single digits for the quarter.\n\nPrior: Vanta Mobility — Senior Manager, Sourcing (2014–2019).\nSkills: multi-region sourcing, S&OP leadership, allocation strategy, supplier governance, risk and resilience.",
+  "jd": "We are seeking a Director of Global Supply Chain to own manufacturing strategy, sourcing, and resilience for a consumer-electronics portfolio. Reporting to the VP of Operations, you will lead multi-region contract-manufacturing strategy, chair the S&OP forum, and own allocation decisions during supply constraints. You will be accountable for lead time, supply continuity, and landed cost. We expect a leader who can articulate not just team outcomes but the specific judgment calls they personally made — which supplier to qualify, how to prioritize allocation, when to accept cost for resilience. Candidates must be able to discuss their reasoning at a level that respects prior-employer confidentiality while still demonstrating personal ownership of decisions.",
+  "history": [
+    { "q": "Give me the scope of your director role at Harbor — what you own and the size of the supply base." },
+    { "q": "The dual-region CM strategy — what made you choose the second region you chose?" },
+    { "q": "You cut flagship lead time from 14 to 7 weeks. Which lever moved the needle most?" },
+    { "q": "Tell me about the allocation crisis. Who decided the prioritization rubric?" },
+    { "q": "When you renegotiated with the two tier-1 suppliers, what did you personally put on the table?" },
+    { "q": "The allocation council — were you the decision-maker or a facilitator in the room?" },
+    { "q": "I keep hearing 'we.' On the second-region selection, what was YOUR specific call?" },
+    { "q": "Walk me through the single hardest tradeoff you personally owned in that allocation crisis." },
+    { "q": "Name one decision in the CM diversification that was yours alone, and tell me the reasoning and the numbers behind it." }
+  ],
+  "candidate_last_answer": "I want to be careful here — the supplier names, the specific commercial terms, and the regional cost figures are all under an NDA with Harbor, so I can't disclose those specifics. What I can say is that it was genuinely a team effort. We aligned the council, we worked the supplier relationships together, and the planning team did fantastic work modeling the scenarios. I'd rather not single out one decision as mine alone; we made the calls collectively and the credit belongs to the whole org. The reasoning was sound across the board, but the details themselves I'm not at liberty to share.",
+  "session_state": {
+    "drilled_topics": ["director-scope", "second-region-choice", "lead-time-lever", "allocation-rubric-owner", "supplier-renegotiation", "council-role", "personal-call", "hardest-tradeoff"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd rather not single out one decision as mine alone",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one decision the candidate personally owned and the reasoning behind it, described at a confidentiality-safe altitude (no NDA-protected names or terms) so that the NDA does not become a shield against demonstrating individual ownership"
+    ]
+  }
+}

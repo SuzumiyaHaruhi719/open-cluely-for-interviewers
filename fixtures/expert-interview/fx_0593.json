@@ -1,0 +1,40 @@
+{
+  "id": "fx_0593",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Director of Data Science — Marketplace / Growth\n\nOrbit Marketplace — Director of Data Science (2020–present)\n- Lead a data-science org of 18 across experimentation, marketplace pricing, and growth ML.\n- Built the company's experimentation platform and the central metrics layer.\n- Owned the pricing model that sets take-rate recommendations for the two-sided marketplace.\n- Summary line elsewhere on resume: 'Manage a team of 12 data scientists.'\n\nSelected outcomes\n- Drove a pricing model that lifted marketplace contribution margin by 220 bps in its first full year.\n- Scaled the experimentation platform from ~20 to ~400 experiments per quarter.\n- Reduced experiment readout time from 9 days to under 2 days.\n\nPrior\nClearstep Analytics — Senior Data Scientist, then Manager (2015–2020).\nSkills: causal inference, experimentation design, pricing/elasticity modeling, ML platform, team leadership.\nEducation: MS, Statistics.",
+  "jd": "We are hiring a Director of Data Science to lead experimentation, pricing, and growth ML for a two-sided marketplace. Reporting to the VP of Data, you will own the experimentation platform, the metrics layer, and the pricing models that drive marketplace economics. You will be accountable for the rigor of causal claims, the velocity of experimentation, and the measurable business impact of models. We expect a leader who is precise and consistent about their team scope and their numbers, who can defend a causal attribution under scrutiny, and who distinguishes correlation from a clean experimental read. Strong background in causal inference and pricing required.",
+  "history": [
+    { "q": "Give me your current scope at Orbit — team size, the surfaces you own, and your top metric." },
+    { "q": "Your resume says 18 in one place and 12 in another. What's the actual headcount and structure?" },
+    { "q": "Tell me about the pricing model. How did you establish that 220-bps margin lift was caused by the model and not by market mix?" },
+    { "q": "Be specific about the causal design — what was the unit of randomization, and how did you handle marketplace interference between buyers and sellers?" }
+  ],
+  "candidate_last_answer": "The 18-versus-12 is a stale summary line — it's 18 today: 11 ICs across three pods, 3 pod leads, plus a 4-person platform team, all reporting to me. On the pricing attribution, I won't claim a clean 220 bps from a single test, because randomizing price in a two-sided marketplace creates interference — treated and control sellers compete for the same buyers. We ran a cluster-randomized design at the metro level, 40 metros split 20/20, with a two-week burn-in, and estimated a 180-to-240-bps lift with the point at 220. The remaining mix risk we bounded with a synthetic-control backtest on three holdout metros. So 220 is the midpoint of a defensible range, not a precise causal scalar.",
+  "session_state": {
+    "drilled_topics": ["orbit-scope", "headcount-reconciliation", "pricing-attribution", "causal-design"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: bounded with a synthetic-control backtest on three holdout metros",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the assumptions and limitations of the synthetic-control backtest — why three holdout metros is sufficient, what biases the cluster-randomized estimate could still carry, and the tradeoff between metro-level clustering (less interference) and reduced statistical power"
+    ]
+  }
+}

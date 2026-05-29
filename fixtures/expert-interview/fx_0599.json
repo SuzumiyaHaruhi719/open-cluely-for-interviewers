@@ -1,0 +1,45 @@
+{
+  "id": "fx_0599",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Staff Research Scientist — 机器学习 / 推荐系统\n\n云栖智能 (Yunqi AI) — Staff Research Scientist (2020至今)\n- Situation: 主推荐流的 ranking model 在长尾内容上 CTR 偏低, offline AUC 和 online 表现 gap 大。\n- Task: 主导一个新的 multi-task ranking 架构, 在不掉主指标的前提下提升长尾曝光与 engagement。\n- Action: 设计 shared-bottom + MMoE 的多任务结构, 跑了一系列 offline ablation, 然后通过两轮 A/B test 灰度上线。\n- Result: 长尾内容 CTR +14%, 主流 dwell time +3.2%, 模型已成为团队 ranking 的 production baseline。\n- 一作论文一篇 (RecSys), 两项专利。\n\n云栖智能 — Senior Research Scientist (2017-2020)\n- 负责 embedding recall 召回侧, 把召回候选集从单路扩展到多路融合。\n\n学历: 计算机博士, 研究方向 learning-to-rank。",
+  "jd": "云栖智能招聘一名 Staff Research Scientist, 负责推荐系统 ranking 侧的核心建模与方法演进。You will own ranking model 的 offline/online 评测体系, 主导新架构从 idea 到 production 的全流程, 并指导 2-3 名初级研究员。我们关心的是科学严谨性: 你如何设计 ablation 来归因每个组件的增益, A/B test 的实验顺序与统计显著性如何把控, 以及当 offline AUC 和 online 指标背离时你怎么判断。你需要能精确地讲清楚一个项目的时间线——哪个实验先跑、灰度分几轮、什么时候才敢全量——因为方法演进的可信度恰恰建立在这条因果链上。你将与工程团队共建 feature pipeline, 与产品对齐长尾生态目标。",
+  "history": [
+    { "q": "先讲讲你现在的 scope——你主导 ranking 哪一块, 带几个人, 和工程怎么分工?" },
+    { "q": "简历里那个 multi-task ranking 架构, 你为什么选 MMoE 而不是更简单的 shared-bottom 或者直接多个独立模型?" },
+    { "q": "你做了哪些 ablation 来证明长尾 CTR 的提升确实来自 MMoE, 而不是别的改动?" },
+    { "q": "offline AUC 提升了多少? 和 online 的 CTR 增益对得上吗?" },
+    { "q": "当 offline 和 online 背离的时候, 你以哪个为准, 怎么决策?" },
+    { "q": "两轮 A/B test 各自的流量、周期和统计显著性是怎么设计的?" },
+    { "q": "如果 treatment 组主指标 dwell time 出现回退, 你的 stopping rule 是什么?" },
+    { "q": "把整个项目的时间线给我捋一遍——ablation、第一轮 A/B、第二轮 A/B、全量, 分别在什么时候, 怎么排的?" }
+  ],
+  "candidate_last_answer": "嗯, 整个项目大概跑了半年。顺序大致是这样: 我们其实是先上了第一轮 A/B, 看到长尾 CTR 涨了, 然后才回头补的 offline ablation 去解释为什么涨。第二轮 A/B 我记得是在全量之后又做的一次复测, 用来确认线上稳定。所以 ablation 应该是在第一轮和第二轮 A/B 中间那段时间做的, 也可能是跟第一轮 A/B 同时在跑, 这块我得翻一下实验记录。反正最后全量是在第二轮 A/B 之前就推了, 因为当时业务催得紧。时间点确实有点糊, 但大方向就是 online 先看到信号, offline 再补证据。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "architecture-choice", "ablation-attribution", "offline-online-gap-size", "offline-vs-online-decision", "ab-test-design", "stopping-rule"],
+    "current_competency_target": "experimental-rigor",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "experimental-rigor",
+    "missing_evidence": [
+      { "competency": "experimental-rigor", "evidence_type": "timeline" },
+      { "competency": "experimental-rigor", "evidence_type": "mechanism" },
+      { "competency": "decision-rigor", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 最后全量是在第二轮 A/B 之前就推了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a consistent ordering of ablation, round-1 A/B, round-2 A/B, and full rollout — and how a second A/B run after full rollout could function as a controlled re-test, exposing whether the candidate actually gated launch on evidence or shipped first and justified later"
+    ]
+  }
+}

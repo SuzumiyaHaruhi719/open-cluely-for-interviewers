@@ -1,0 +1,52 @@
+{
+  "id": "fx_0573",
+  "tags": {
+    "industry": "data",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "林佳 — 高级数据工程师 / 数据平台\n\n工作经历：\n- 极光数据科技 高级数据工程师（2020.03 - 至今）\n  · 负责离线数仓与实时链路建设，团队规模约6人\n  · 主导从Hive迁移到Spark的项目，将T+1报表延迟从6小时降到40分钟\n- 极光数据科技 数据开发工程师（2018.06 - 2020.02）\n  · 注：本段与上一段时间存在重叠表述，简历中两处对极光的入职时间分别写为2018年和2019年\n- 云图信息 ETL工程师（2016 - 2018）\n\n项目亮点：\n- 搭建公司级实时数仓，日处理事件量峰值约20亿条\n- 另一处简历表述写为『日处理5亿条』，前后口径不一致\n- 主导数据质量监控体系，将核心表SLA达成率提升到99.5%\n\n技术栈：Spark、Flink、Kafka、Hive、ClickHouse、Airflow、Python、Scala\n学历：软件工程 硕士",
+  "jd": "极光数据科技招聘高级数据工程师，负责公司核心实时数仓的稳定性与扩展性。你将主导Flink实时链路的治理、数据质量SLA体系建设，以及离线到实时的口径统一。我们日处理事件量在数十亿级别，对端到端延迟与数据准确性要求极高。该岗位需要你能独立定位线上数据故障的根因、设计可回溯的血缘与监控，并带领3-6人的小组推进平台化建设。要求对Spark/Flink有深入的调优经验，能讲清楚一次真实的性能或稳定性问题是如何被你定位并关闭的。",
+  "history": [
+    { "q": "先聊聊你现在在极光负责的范围，团队多大、你管哪几条链路？" },
+    { "q": "你简历里两处对极光的入职时间不太一致，到底是2018还是2019年入职的？" },
+    { "q": "明白，那从数据开发到高级工程师，你的职责边界是怎么变化的？" },
+    { "q": "你写了从Hive迁到Spark把报表延迟从6小时降到40分钟，这个项目你是主导还是参与？" },
+    { "q": "迁移过程中最大的技术难点是什么？" },
+    { "q": "简历里日处理事件量一处写20亿、一处写5亿，实际峰值到底是多少？" },
+    { "q": "这个20亿的口径是按事件条数还是按消息条数算的？" },
+    { "q": "你提到把核心表SLA达成率做到99.5%，分母是怎么定义的？" },
+    { "q": "好，我想深入一个具体故障。讲一次你们实时链路出过的线上事故。" },
+    { "q": "当时是怎么发现的？告警先报的还是业务先反馈的？" },
+    { "q": "你定位根因花了多久？根因到底是什么？" },
+    { "q": "修复的动作是你做的还是组里其他人做的？" },
+    { "q": "事后你做了什么来防止它再发生？" },
+    { "q": "我再追一个：那次事故影响了哪些下游、影响面多大？" },
+    { "q": "那现在我请你把这次事故从发现到彻底关闭，按时间顺序、一步一步、你个人做了什么，完整讲一遍。" }
+  ],
+  "candidate_last_answer": "嗯……这个其实……让我想一下啊，那次事故说起来还挺典型的，对吧。就是……当时是大促前一周，反正那段时间我们压力都特别大，我记得好像是个周四还是周五来着，呃，对，应该是周四。然后Flink那边突然就……延迟开始往上飘，然后我第一反应是去看Kafka的消费lag，但是吧，那天我其实还在忙另外一个需求评审，所以一开始没太注意。后来……嗯,后来值班的同学先看的,然后我们一起拉了个群,大概排查了……我也记不太清具体多久了,反正挺久的。根因这块呢，说实话有好几个因素叠在一起，状态后端、反压、还有一个checkpoint的配置,我现在想起来还有点乱。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "resume-date-contradiction", "role-evolution", "hive-spark-ownership", "migration-difficulty", "event-volume-contradiction", "volume-definition", "sla-denominator", "incident-intro", "incident-detection", "rca-duration", "fix-ownership", "prevention", "blast-radius"],
+    "current_competency_target": "incident-rca-ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "incident-rca-ownership",
+    "missing_evidence": [
+      { "competency": "incident-rca-ownership", "evidence_type": "timeline" },
+      { "competency": "incident-rca-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "incident-rca-ownership", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 后来值班的同学先看的,然后我们一起拉了个群,大概排查了……我也记不太清具体多久了",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete ordered timeline of what the candidate personally did from detection to closure, pinning down who actually drove the RCA versus the on-call engineer and how long each step took, cutting through the rambling"
+    ]
+  }
+}

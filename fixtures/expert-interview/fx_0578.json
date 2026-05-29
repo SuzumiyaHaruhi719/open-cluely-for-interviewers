@@ -1,0 +1,52 @@
+{
+  "id": "fx_0578",
+  "tags": {
+    "industry": "operations",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Alyssa Romero — Operations Associate\n\nKEYWORDS: operations excellence, process improvement, Lean, Six Sigma, Kaizen, SOP, KPI, OKR, SLA, workflow optimization, cross-functional collaboration, data-driven, dashboards, Excel, SQL, Tableau, inventory, fulfillment, logistics, supply chain, vendor management, root cause analysis, continuous improvement, stakeholder management, project coordination, Agile, Scrum, JIRA, Asana, automation, efficiency, throughput, cycle time\n\nFreshCart (2023-present) — Operations Associate\n- Support fulfillment operations; track KPIs; maintain SOPs and dashboards\n- Coordinate cross-functional process-improvement initiatives leveraging Lean and data-driven workflows\n- Drive continuous improvement and operational excellence across the order lifecycle\n\nInternship — Logistics Coordinator (2022)\n- Assisted with inventory reconciliation and vendor communications\n\nSkills: Excel (advanced), SQL (basic), Tableau, process mapping, KPI tracking\nEducation: B.S. Supply Chain Management",
+  "jd": "FreshCart is hiring an Operations Associate to support our grocery fulfillment operations. You'll own daily KPI tracking (pick rate, order accuracy, on-time dispatch), maintain and improve SOPs, and run small process-improvement projects in partnership with the warehouse and analytics teams. We want someone early-career who is genuinely hands-on: can describe a specific improvement they drove, the baseline metric, exactly what they changed in the process, and the measured result. Comfort with Excel/SQL and clear written SOPs required.",
+  "history": [
+    { "q": "Tell me what you own day to day at FreshCart." },
+    { "q": "Your resume lists a lot of methodologies. Which have you actually used on the job?" },
+    { "q": "Which KPIs do you track most closely?" },
+    { "q": "What's your current order-accuracy number?" },
+    { "q": "Tell me about a process-improvement project you drove." },
+    { "q": "What problem prompted it?" },
+    { "q": "What was the baseline metric before you started?" },
+    { "q": "What exactly did you change in the process?" },
+    { "q": "Who else was involved, and what was your specific part?" },
+    { "q": "How did you validate the change actually worked?" },
+    { "q": "Did you write or update an SOP as part of it?" },
+    { "q": "How did you use Excel or SQL in this project?" },
+    { "q": "Were there any tradeoffs or downsides to the change?" },
+    { "q": "How long did the whole thing take?" },
+    { "q": "Now give me the complete story start to finish: the situation, your task, what you did, and the result." },
+    { "q": "And what was the final number after the change settled in?" }
+  ],
+  "candidate_last_answer": "So the situation was that our pick accuracy in the cold-storage zone was dragging, around 96.2%, and mis-picks were causing customer refunds. My task was to figure out why and fix it. So I pulled the error data, ran a quick Pareto in Excel, and found most errors were on look-alike SKUs stored next to each other. So what I did was re-slot those SKUs apart, added a color-coded bin label, and rewrote the pick SOP for that zone, and I trained the two shift leads on it. We rolled it out and the team adopted it well, so I'm confident it had a real impact.",
+  "session_state": {
+    "drilled_topics": ["daily-ownership", "methodologies-used", "key-kpis", "order-accuracy-number", "improvement-project", "problem-trigger", "baseline-metric", "process-change", "team-and-role", "validation-method", "sop-update", "excel-sql-use", "tradeoffs", "duration", "full-star-story"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We rolled it out and the team adopted it well, so I'm confident it had a real impact",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual post-change pick-accuracy number versus the 96.2% baseline and over what window it stabilized, since the candidate delivered Situation/Task/Action but replaced the Result with a confidence statement"
+    ]
+  }
+}

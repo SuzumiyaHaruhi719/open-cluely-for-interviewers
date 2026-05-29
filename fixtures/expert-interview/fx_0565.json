@@ -1,0 +1,52 @@
+{
+  "id": "fx_0565",
+  "tags": {
+    "industry": "customer-support",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "客户支持总监 / Director of Customer Support\n\n概述\n十二年客户支持与服务运营经验，目前在一家跨境电商平台带领全球客服组织，覆盖中英双语 support、social care 和 escalation 团队。关注 CSAT、deflection、agent experience 与 support 自动化。\n\n工作经历\n环球购 (GlobeMart) — Director of Customer Support (2020 至今)\n· 负责跨境 support 组织，覆盖多个 site 和外包 BPO 伙伴\n· 推动 self-service 与 chatbot deflection 提升，改善了整体 CSAT\n· 主导一次 ticketing 系统从旧平台到 Zendesk 的 migration\n· 建立 QA 与 coaching 体系，降低了 escalation 率\n· 负责 BPO 合同管理与 capacity 规划\n\n知客科技 — Customer Support Manager → Senior Manager (2015 至 2020)\n· 从带一个 support team 成长为带多个 team 的 senior manager\n· 负责排班 (WFM)、SLA 达成与 agent 培训\n\n技能\nsupport 运营、CSAT / NPS 管理、deflection 与自动化、BPO 管理、WFM 排班、QA 与 coaching、跨文化团队管理\n\n教育\n英语语言文学本科",
+  "jd": "We are hiring a Director of Customer Support to own a global, multilingual support organization (~250 agents across two internal sites plus BPO) for a cross-border e-commerce platform. 你将向 VP Customer Experience 汇报，owning CSAT、deflection rate、cost-per-contact 和 BPO 合同。Responsibilities: drive a self-service and automation roadmap, own a CCaaS/ticketing platform decision, manage BPO partners and capacity planning, build QA and coaching systems, and present support performance to the executive team. 我们看重：能用数字讲清楚 support 现状与改进 (CSAT、deflection、CPC、SLA)、清晰区分个人决策与团队执行、真实的 BPO 谈判与平台迁移经验。This director-level role expects crisp personal ownership of decisions and outcomes.",
+  "history": [
+    { "q": "先讲讲你在 GlobeMart 的 support org 结构：几个 site、多少 agent、有没有 BPO。" },
+    { "q": "你提到推动了 chatbot deflection。这个项目是你发起的吗？讲讲你个人在里面做了什么决定。" },
+    { "q": "deflection 提升之后，CSAT 和 cost-per-contact 分别有什么变化？" },
+    { "q": "Zendesk migration——为什么选 Zendesk 而不是别的平台？这个决定是谁拍板的？" },
+    { "q": "migration 过程中最大的一个风险是什么，你怎么处理的？" },
+    { "q": "你说建立了 QA 和 coaching 体系。这个体系的设计是你主导的还是团队自下而上做的？" },
+    { "q": "escalation 率从多少降到了多少？" },
+    { "q": "讲一次你和 BPO 伙伴的合同谈判，原始条款和最终条款分别是什么。" },
+    { "q": "在 capacity 规划上，你做过的一个比较艰难的取舍是什么？" },
+    { "q": "团队里有没有 underperforming 的 manager？你个人是怎么处理的？" },
+    { "q": "你怎么向 VP 汇报 support 的健康度？用哪几个数字？" },
+    { "q": "我想往回拉一下——前面几个项目你都在说『我们』。chatbot 那个项目，到底是谁第一个提出来要做的？" },
+    { "q": "那 deflection 的目标值是谁定的？是你定的吗？" },
+    { "q": "再具体一点：在 chatbot 项目里，有没有一个决定是你一个人拍板、并且为结果负责的？" },
+    { "q": "QA 体系上线后，有没有 agent 或 manager 反对？你个人怎么处理这种反对的？" },
+    { "q": "如果这个 chatbot 项目失败了，谁该负责？你会怎么向上汇报？" }
+  ],
+  "candidate_last_answer": "其实我们整个 team 一直是高度协作的,很难说是哪一个人拍的板。chatbot 这个事情我们当时是一起讨论出来的,产品、运营、我们 support 这边都有 input,目标值也是大家一起对齐的,我不太喜欢去强调说是我一个人的功劳。我们这个 org 文化就是 collective ownership,出了成绩是大家的,真要说责任,那也是 we own it together。所以你问谁拍的板,我真的觉得这个问题不太适用于我们这种协作模式。",
+  "session_state": {
+    "drilled_topics": ["org-structure", "chatbot-origination", "deflection-csat-cpc-delta", "platform-selection-decider", "migration-risk", "qa-system-ownership", "escalation-delta", "bpo-contract-terms", "capacity-tradeoff", "underperformer-handling", "exec-reporting-metrics", "we-vs-i-origination", "deflection-target-owner", "personal-decision-accountability", "qa-resistance-handling"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "leadership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难说是哪一个人拍的板",
+      "must-be-question-type: action-attribution",
+      "expected-yield: at least one decision in the chatbot initiative the candidate personally made and owned the outcome of — what they decided, what they would have been blamed for if it failed — cutting through the collective-ownership framing to surface individual director-level accountability"
+    ]
+  }
+}

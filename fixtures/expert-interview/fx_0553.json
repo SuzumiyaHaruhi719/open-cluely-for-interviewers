@@ -1,0 +1,42 @@
+{
+  "id": "fx_0553",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵明哲　资深研究员（材料 / 电池方向）\n\n研究方向：锂离子电池正极材料、固态电解质界面、电化学表征。\n\n工作经历：\n清辉新能源研究院　资深研究员（多年至今）\n- 负责高镍正极材料的配方开发与循环寿命改善研究\n- 牵头一个跨组的固态电解质预研项目，协调材料、电芯与表征团队\n- 指导若干名初级研究员与研究生，参与论文与专利撰写\n\n此前：某高校材料学院　博士后\n- 从事电极界面表征方法研究，发表多篇同行评审论文\n\n教育背景：材料科学与工程博士。\n\n说明：本简历不含具体数值指标（循环次数、容量保持率、项目周期等），相关数据可在面谈时提供。",
+  "jd": "某电池材料公司研究院招聘资深研究员（正极方向），常驻合肥，向研究院院长汇报。核心职责：主导高镍正极材料的循环寿命与产气抑制研究，从立项、实验设计到中试放大全程负责；牵头跨组预研项目并管理里程碑节点。我们尤其看重候选人能否就一个亲自主导的项目，讲清楚【清晰、自洽的时间线】——何时立项、关键实验在哪个阶段、何时出关键结论、何时转中试——以及每个节点对应的负责人。对时间线含糊或前后矛盾的叙述会重点追问。需电化学表征实战经验，能管理预研到中试的完整周期。",
+  "history": [
+    { "q": "先介绍一下你目前牵头的固态电解质预研项目，它要解决的核心问题是什么。" },
+    { "q": "这个项目是什么时候立项的？立项时最初的目标是什么？" },
+    { "q": "从立项到现在，关键的几个阶段是怎么排的？你按时间顺序给我捋一遍。" },
+    { "q": "你刚说界面表征是在中试之后做的，但前面又说立项第一年就在做表征，这两个怎么对得上？" },
+    { "q": "那这个项目目前到底走到哪一步了？是还在预研，还是已经进中试？" }
+  ],
+  "candidate_last_answer": "嗯，这个项目时间线我捋一下啊。我们大概是…前年下半年立的项吧，对，差不多前年。然后第一年主要是做界面表征和配方筛选，这个我印象很深。哦不过中试那块…我们其实去年年初就开始小批量验证了，所以表征应该是在中试之后才系统做的。等等，也不对，因为立项第一年我们就在表征了…可能是两条线并行吧。反正大的节点就是先立项、然后表征、然后中试，但具体哪个月、谁负责哪段，我得回去翻一下记录，时间上我有点记混了，可能去年和前年的事儿叠在一起了。",
+  "session_state": {
+    "drilled_topics": ["project-core-problem", "kickoff-date-goal", "phase-sequence", "characterization-vs-pilot-conflict", "current-stage"],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 时间上我有点记混了，可能去年和前年的事儿叠在一起了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single consistent chronology for one project — kickoff quarter, when characterization actually happened relative to pilot scale-up, current stage — that resolves the self-contradiction, with the owner of each milestone named"
+    ]
+  }
+}

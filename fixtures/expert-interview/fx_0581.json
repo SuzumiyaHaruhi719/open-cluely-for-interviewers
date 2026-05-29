@@ -1,0 +1,44 @@
+{
+  "id": "fx_0581",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "苏晴 — Staff Product Designer\n\n现象级产品设计师。我主导的 redesign 基本上都是 conversion 暴涨、口碑炸裂的级别,业内 benchmark 都得参考我。\n\n潮汐科技 (2021-至今) — Staff Product Designer\n- 独立 own 核心交易 flow 的 end-to-end redesign,据说直接把 conversion 翻了倍\n- 一手建立公司 design system,被团队当成 single source of truth\n- 我的 design 评审从来没被 PM 挑出过问题\n- mentor 了整个 design team,人均成长全靠我\n\n光合设计 (2017-2021) — Senior Product Designer\n- 主导多个 0-to-1 产品,每个上线即爆款\n- A/B test 赢面几乎 100%\n\n技能:交互设计、design system、用户研究、Figma、原型、可用性测试\n学历:工业设计 学士",
+  "jd": "潮汐科技招聘 Staff Product Designer,负责核心交易与增长链路的端到端体验设计,与 PM、研发、数据团队深度协作。你将 own 关键 flow 的 redesign、维护并演进 design system,并以 A/B test 与可用性数据驱动决策。我们看重 designer 能否把设计影响讲得 evidence-based:一次 redesign 带来的 conversion 或 retention 变化,实验是怎么设计的、样本和周期多大、归因是否干净。我们对夸大的、无法验证的『翻倍』式数字保持高度警惕。",
+  "history": [
+    { "q": "先聊聊你在潮汐 own 的设计范围和你的角色。" },
+    { "q": "你简历说核心交易 flow 的 redesign 把 conversion 翻了倍,讲讲这个项目背景。" },
+    { "q": "redesign 之前那个 flow 的 conversion baseline 大概是多少?" },
+    { "q": "这个翻倍是通过 A/B test 测出来的吗?实验怎么设计的?" },
+    { "q": "实验跑了多久、样本量多大?" },
+    { "q": "同期有没有别的改动,比如 pricing 或 promotion,可能也影响了 conversion?" },
+    { "q": "那你怎么确认这个提升是你的 design 带来的,而不是其他因素?" }
+  ],
+  "candidate_last_answer": "这个提升 absolutely 是我 design 的功劳,conversion 直接从原来的水平翻了一倍还多,可以说是断崖式的 lift。说实话我都没怎么依赖严格的 A/B test,因为 redesign 上线之后数据肉眼可见地起飞,GMV 那一个季度直接 explode。其他什么 pricing、promotion 的影响我觉得 negligible,核心就是我的 design 让整个体验脱胎换骨,这种 impact 在业内都算 top-tier 的水平了。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "redesign-background", "conversion-baseline", "ab-test-design", "sample-and-duration", "confounding-changes", "attribution-cleanliness"],
+    "current_competency_target": "impact-measurement-rigor",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "impact-measurement-rigor",
+    "missing_evidence": [
+      { "competency": "impact-measurement-rigor", "evidence_type": "metric" },
+      { "competency": "impact-measurement-rigor", "evidence_type": "mechanism" },
+      { "competency": "integrity-and-self-assessment", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我都没怎么依赖严格的 A/B test,因为 redesign 上线之后数据肉眼可见地起飞",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual baseline and post-redesign conversion numbers with the real experiment setup (control, sample, duration), exposing whether the 『翻倍』 claim is measured or eyeballed given concurrent pricing and promotion changes"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_0595",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Director of Financial Planning & Analysis — B2B SaaS\n\nSummit Cloud — Director of FP&A (2019–present)\n- Situation: Board lost confidence in the forecast after three consecutive quarters of >10% revenue miss.\n- Task: Rebuild the forecasting process and restore forecast accuracy to within 3% by year-end.\n- Action: Replaced the spreadsheet-driven bottoms-up model with a driver-based model, instituted a monthly business review, and renegotiated the data feed from the CRM.\n- Result: Brought quarterly forecast error inside 3% within three quarters and presented a clean reforecast to the board.\n\n- Situation: A planned debt refinancing required a credible 18-month liquidity model under three scenarios.\n- Task: Own the liquidity model and the scenario narrative for lenders.\n- Action: Built the three-scenario model, ran sensitivity on churn and collections, and led the lender Q&A.\n- Result: Closed the refinancing at improved terms; the downside scenario held covenant headroom throughout.\n\nPrior: Brookline Capital — Senior FP&A Manager (2014–2019).\nSkills: driver-based forecasting, scenario modeling, board reporting, treasury/liquidity, CRM-to-finance data integration.",
+  "jd": "We are seeking a Director of FP&A to own forecasting, scenario planning, and board reporting for a B2B SaaS business. Reporting to the CFO, you will rebuild and operate the driver-based forecast, lead monthly business reviews, support financing events with liquidity modeling, and present to the board. You will be accountable for forecast accuracy and the integrity of the numbers you present. We expect a director who can narrate the sequence of a turnaround precisely — when the model changed, when accuracy recovered, and in what order events occurred — without contradicting themselves under questioning. Experience restoring forecast credibility and supporting a financing event is strongly preferred.",
+  "history": [
+    { "q": "Give me the scope of your FP&A role at Summit and the metric you're judged on." },
+    { "q": "Take the forecast rebuild. What was the board's confidence problem when you started?" },
+    { "q": "What was the single biggest change — the driver-based model, the monthly review, or the CRM data feed?" },
+    { "q": "Help me with the sequence: did you fix the CRM data feed before or after you switched to the driver-based model?" },
+    { "q": "And the monthly business review — did that start before accuracy recovered, or was it the thing that recovered it?" },
+    { "q": "When exactly did forecast error first come inside 3% — which quarter relative to the model switch?" },
+    { "q": "Just walk me through the turnaround in order, quarter by quarter: data feed, model, monthly review, and when accuracy hit 3%." }
+  ],
+  "candidate_last_answer": "Right, so the accuracy came inside 3% in Q2, which was actually before we switched to the driver-based model in Q3 — the model is what got us there. We started the monthly business review first, in Q1, although it really only worked once the driver model was live, so I'd say the review came after the model in practice. And the CRM data feed, we renegotiated that last, after the model was already running, even though the model obviously depended on clean CRM data to function. I know that sounds circular. The quarters run together a bit because the board pressure compressed everything into about nine months.",
+  "session_state": {
+    "drilled_topics": ["fpa-scope", "board-confidence-problem", "biggest-change", "crm-vs-model-order", "monthly-review-timing", "accuracy-recovery-quarter"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The quarters run together a bit",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single consistent ordering of the four events — CRM data feed, driver-based model, monthly business review, and the quarter accuracy first hit 3% — that resolves the impossibility of accuracy recovering before the model that supposedly caused it and the model running before the CRM feed it depended on"
+    ]
+  }
+}

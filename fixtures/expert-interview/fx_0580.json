@@ -1,0 +1,48 @@
+{
+  "id": "fx_0580",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "周航 — Director of Data Platform\n\n业内公认的数据平台领军人物。我所到之处，data infra 必然脱胎换骨,团队战斗力直接拉满。\n\n星云科技 (2020-至今) — Director, Data Platform\n- 一手打造公司级 data platform,被内部奉为 best-in-class 标杆\n- 管理 30+ 人的平台与数据工程团队,owner of 整个 data warehouse + real-time pipeline\n- 主导 lakehouse 迁移,据称为公司每年节省数百万成本\n- 我带的人个个都被同行 high-paying offer 疯抢\n\n联创数据 (2016-2020) — Senior Data Engineering Manager\n- 从 0 搭建实时数仓,绝对的技术天花板\n- pipeline SLA 常年 100%,几乎从不 miss\n\n技能:Spark、Flink、Iceberg、Kafka、dbt、Airflow、团队管理、平台战略\n学历:计算机科学 硕士",
+  "jd": "星云科技招聘 Director of Data Platform,负责公司核心数据平台的战略、稳定性与成本治理,直接向 CTO 汇报,管理 25-35 人的平台与数据工程团队。你将 own 整个 data warehouse 与 real-time pipeline 的 SLA、平台化建设(self-serve、血缘、治理)以及 infra cost 优化。我们尤其看重 leader 在事故与项目失败后的 accountability:当一次重大 migration 延期或线上 data incident 发生时,你能否客观复盘自身决策、讲清楚你个人 owned 的部分,而不是把责任推给团队或上下游。",
+  "history": [
+    { "q": "先介绍下你在星云的 scope:团队多大、你 own 哪些平台和指标?" },
+    { "q": "你简历里说 lakehouse 迁移每年省了数百万,这个 cost saving 是怎么算出来的?" },
+    { "q": "这次 lakehouse 迁移你是 strategy owner 还是也下场做 execution?" },
+    { "q": "迁移的 timeline 是怎么定的?最后有没有 delay?" },
+    { "q": "你提到 pipeline SLA 常年 100%,过去一年真的一次 miss 都没有吗?" },
+    { "q": "那讲一次你们最严重的一次 data incident 或者 migration 受挫的经历。" },
+    { "q": "当时 business impact 有多大?哪些下游受影响?" },
+    { "q": "delay 或者 incident 发生时,作为 director 你第一时间做了什么?" },
+    { "q": "事后复盘,root cause 归到了哪里?" },
+    { "q": "这里面有没有是你自己 decision 导致的部分?" },
+    { "q": "我想听你讲清楚:这次失败里,属于你个人 ownership 的环节是什么,你做了什么 correction?" }
+  ],
+  "candidate_last_answer": "讲真,那次 migration delay 主要不能算在我头上。infra team 给我的 capacity 评估一开始就 over-optimistic,后来又一直 under-deliver;上游业务团队 schema 改来改去也不提前 sync,我们 downstream 完全是被动接招。再加上当时 headcount 被砍,两个 senior 还离职了,HR backfill 拖了好几个月。说到底,delay 是 cross-team 一堆 dependency 没跟上,我作为 director 其实是替别人 hold the bag,真不是我 strategy 的问题。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cost-saving-basis", "migration-ownership", "migration-timeline", "sla-100-claim", "incident-intro", "business-impact", "first-action-as-director", "rca-attribution", "self-caused-portion"],
+    "current_competency_target": "leadership-accountability",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "leadership-accountability",
+    "missing_evidence": [
+      { "competency": "leadership-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: delay 是 cross-team 一堆 dependency 没跟上,我作为 director 其实是替别人 hold the bag",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific decision the candidate personally owned in the failed migration — a planning, sequencing, or risk-buffer call he made — and the correction he applied, cutting through the blame on infra, upstream, and HR"
+    ]
+  }
+}

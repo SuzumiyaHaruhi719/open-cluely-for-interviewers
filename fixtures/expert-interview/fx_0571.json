@@ -1,0 +1,41 @@
+{
+  "id": "fx_0571",
+  "tags": {
+    "industry": "product-management",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "资深产品经理 / Staff PM\n\n概述\n九年产品经理经验,聚焦 B 端 SaaS 与平台型产品。擅长从零到一的产品定义、复杂 B 端工作流设计,以及用数据驱动迭代。\n\n工作经历\n聚效云 (JoinFlow) — Staff 产品经理 (2020 至今)\n· 负责企业协作平台的核心工作流模块,服务数千家企业客户\n· 主导一次审批引擎重构,把平均审批时长大幅缩短\n· 注:本段一处写『独立负责整个审批引擎的端到端 PRD 与上线』,另一处又写『审批引擎由另一位 PM 主导,我仅参与部分评审』,前后矛盾\n· 推动数据埋点与产品分析体系建设\n\n畅联科技 — 高级产品经理 (2016 至 2020)\n· 负责 IM 与消息中台,做过高并发场景的产品设计\n· 主导消息已读回执功能的设计与上线\n\n技能\n产品定义、B 端工作流设计、PRD 撰写、数据分析 (埋点 / 漏斗)、跨团队协作、用户研究、需求优先级管理\n\n教育\n软件工程本科",
+  "jd": "我们正在招聘一名 Staff 产品经理,负责企业级 SaaS 协作平台的核心工作流产品线,直接向 Group PM 汇报。岗位职责：owning 工作流与审批模块的产品策略与 roadmap、撰写高质量 PRD、用数据定义问题并衡量结果、协调研发与设计落地、对核心产品指标 (审批时长、采纳率、留存) 负责。我们看重：从问题定义到结果衡量的完整闭环能力、清晰区分个人主导与团队参与的诚实度、扎实的数据分析功底、以及在复杂 B 端场景下做权衡取舍的判断力。这是一个高自主性的资深岗位,期望候选人讲清楚自己主导的项目从背景到可量化结果的全过程。",
+  "history": [
+    { "q": "先讲讲你在聚效云负责的产品线范围,以及团队协作结构。" },
+    { "q": "简历里有处矛盾:一处说你独立负责审批引擎端到端 PRD 与上线,另一处又说那是别人主导、你只参与评审。到底是哪种?" },
+    { "q": "既然你说审批引擎重构主要是你主导的,那完整讲一下:背景是什么、你的目标、你具体做了哪些动作?" },
+    { "q": "你说审批时长『大幅缩短』——重构前的平均审批时长是多少,重构后是多少?" },
+    { "q": "除了审批时长,这次重构对采纳率或者客户留存有没有可量化的影响?你是怎么衡量的?" }
+  ],
+  "candidate_last_answer": "先澄清矛盾:审批引擎确实是我主导的,那句『仅参与评审』是写错了,指的是另一个排期模块,我会改掉。背景是这样:我们老的审批引擎是写死的串行流程,大客户普遍反映配不出他们的多级会签和条件分支,销售那边因为这个丢了好几个大单。我的目标是做一个可视化、可配置的审批流引擎,让客户自助配置复杂审批链。我具体做了这些:我先访谈了十二家典型大客户,把审批场景抽象成『节点+条件+角色』三要素的模型;然后我写了完整的 PRD,定义了可视化编排器、条件网关、会签/或签等能力;接着我和研发一起把它拆成三期上线,我自己盯了每一期的灰度和客户验收。至于结果嘛……上线之后客户反馈是普遍变好了,大家用得挺顺的,销售也说好配了,我感觉是个挺成功的项目,具体的数字我这边……当时主要精力在交付上,留存和采纳率的量化数据我没有特别去拉。",
+  "session_state": {
+    "drilled_topics": ["product-scope", "resume-contradiction-ownership", "approval-engine-star", "approval-time-delta"],
+    "current_competency_target": "data-literacy",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "data-literacy",
+    "missing_evidence": [
+      { "competency": "data-literacy", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 留存和采纳率的量化数据我没有特别去拉",
+      "must-be-question-type: metric-pin",
+      "expected-yield: whether the candidate can produce or reconstruct any quantified result for a project they claim to have led end-to-end — the before/after approval time at minimum, or the adoption/retention signal they monitored — exposing the missing Result in an otherwise specific STAR narrative"
+    ]
+  }
+}

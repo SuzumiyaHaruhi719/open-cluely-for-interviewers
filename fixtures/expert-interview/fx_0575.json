@@ -1,0 +1,44 @@
+{
+  "id": "fx_0575",
+  "tags": {
+    "industry": "marketing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Priya Nakamura — Director of Growth Marketing\n\nVisionary growth leader with a flawless track record of building category-defining demand engines from zero. Wherever I land, pipeline explodes and the brand becomes the one everyone copies.\n\nVoltline (2020-present) — Director, Growth Marketing\n- Architected the entire demand-gen function and turned it into the industry gold standard\n- Owned a multi-million-dollar budget and consistently smashed every pipeline target\n- Built a best-in-class team that other companies constantly try to poach\n- Personally drove the brand to market-leader status in under two years\n\nHelio Analytics (2016-2020) — Senior Demand Generation Manager\n- Single-handedly built the paid acquisition program from scratch\n- Routinely doubled MQLs quarter over quarter\n\nSkills: demand generation, paid media, marketing ops, ABM, attribution, lifecycle\nEducation: MBA, Marketing; B.S. Statistics",
+  "jd": "Voltline is hiring a Director of Growth Marketing to own the full demand-generation engine for our B2B analytics platform. You will own the pipeline number (sourced and influenced), a 7-figure annual budget across paid, lifecycle, and ABM, and the marketing-ops/attribution stack. Reporting to the CMO, you'll set quarterly targets, manage a team of 8, and partner with sales on conversion through the funnel. We want a leader who can show, with hard numbers and clear timelines, a specific campaign or program they owned end-to-end: the goal, what they did, and the measurable outcome against target.",
+  "history": [
+    { "q": "Give me the shape of your current role at Voltline — budget, team, the number you own." },
+    { "q": "Your resume says you 'consistently smashed every pipeline target.' Pick the most important quarter and tell me the target." },
+    { "q": "What was the single biggest lever you pulled to hit pipeline that year?" },
+    { "q": "How do you attribute sourced versus influenced pipeline in your model?" },
+    { "q": "Tell me about a specific program you owned end-to-end — what was the business goal?" },
+    { "q": "What exactly did you and the team build and launch for that program?" },
+    { "q": "Walk me through it as a full story: the situation, the goal, what you did, and what it delivered." }
+  ],
+  "candidate_last_answer": "So the situation was that our self-serve funnel had stalled and the CMO wanted enterprise pipeline, fast. The goal we set was to stand up an ABM motion targeting the top 200 accounts in two quarters. So what I did was redesign our whole segmentation, I personally rebuilt the account scoring with our ops lead, we launched a coordinated paid plus outbound plus events play, and I rewrote the sales-marketing SLA so leads didn't fall through. We executed hard and the program went live on schedule and the sales team loved it.",
+  "session_state": {
+    "drilled_topics": ["current-role", "pipeline-target", "biggest-lever", "attribution-model", "program-goal", "program-build", "full-star-story"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We executed hard and the program went live on schedule and the sales team loved it",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual pipeline or revenue the ABM program generated against the top-200-account goal and by when, since the candidate gave a complete Situation/Task/Action but substituted sentiment for the Result"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_0586",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "采购经理｜电子制造行业元器件采购\n\n项目一：关键元器件双源化\n- 情境：主力产品线的某颗 MCU 单一供应商,交期波动导致两次产线停线。\n- 任务：在一个季度内为这颗 MCU 引入合格的第二供应商,降低断供风险。\n- 行动：筛选三家备选,推动研发完成 Pin-to-Pin 替代验证,与新供应商谈定阶梯价与安全库存条款。\n- 结果:第二供应商通过认证,该料断供风险显著下降,当年因此再无产线停线。\n\n项目二:年度降本谈判\n- 情境:被动元件品类年度成本高于行业对标。\n- 任务:负责该品类年度议价,目标降本 8%。\n- 行动:整合多供应商需求做集中招标,引入价格指数联动条款。\n- 结果:该品类年度综合降本 9.2%,签约周期内价格随指数回落额外受益。\n\n技能:寻源策略、供应商认证、招标谈判、BOM 成本分析、断供风险管理。",
+  "jd": "我们招聘一名采购经理,负责电子制造业务的关键元器件寻源与成本管理。该岗位向采购总监汇报,负责供应商开发与认证、年度议价、断供风险管理以及与研发、计划部门的跨职能协同,直接对品类降本率、供应连续性和供应商绩效负责。你将主导关键料的多源化策略,在交期与价格波动时制定保供方案,并以数据支撑采购决策。我们期望候选人有三到五年电子或制造行业采购经验,熟悉元器件供应市场,具备扎实的谈判与成本分析能力,能清晰还原自己在每一项决策中的判断依据。",
+  "history": [
+    { "q": "先讲讲你现在负责的采购品类范围和你直接对接的供应商规模。" },
+    { "q": "那颗 MCU 的双源化,第二供应商是你从几家里选的,标准是什么?" },
+    { "q": "Pin-to-Pin 替代验证是研发主导还是你推动的?你具体做了什么?" },
+    { "q": "你说断供风险显著下降。在引入第二源之前,这颗料的安全库存放了几周?" },
+    { "q": "被动元件那次降本 9.2%,如果只看你谈下来的部分,价格指数联动贡献了多少,集中招标贡献了多少?" },
+    { "q": "现在请你拆开说:那 9.2% 里,哪些是你的谈判争取来的,哪些是市场价格自然回落带来的?" }
+  ],
+  "candidate_last_answer": "这个问题挺有意思的,我反过来想请教您一下:在您看来,采购降本到底应该怎么归因才算合理?如果市场本来就在跌,你谈不谈价格都会降,那这部分到底算不算采购的功劳?业内其实一直有争论。您见过那么多采购的案例,您觉得一个真正优秀的采购,应该把指数回落的部分算进自己的 KPI 吗?我特别想听听您的标准。",
+  "session_state": {
+    "drilled_topics": ["procurement-scope", "dual-source-selection", "pin-to-pin-validation", "safety-stock-baseline", "cost-saving-decomposition"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 应该把指数回落的部分算进自己的 KPI 吗",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把 9.2% 降本明确拆成谈判贡献与市场指数回落两部分的具体百分点或金额,把反抛给面试官的问题重新交回候选人自己回答"
+    ]
+  }
+}

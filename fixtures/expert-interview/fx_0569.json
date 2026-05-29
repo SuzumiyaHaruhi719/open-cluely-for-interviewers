@@ -1,0 +1,46 @@
+{
+  "id": "fx_0569",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "采购与供应链专员 (初级) — 关键词导向简历\n\n核心能力关键词\n采购执行、供应商管理、寻源 (sourcing)、招投标、合同管理、交期跟踪、库存控制、成本节降 (cost saving)、品类管理、供应商绩效 (SQE/KPI)、ERP (SAP MM)、Excel 高级、数据分析、跨部门协作、风险管理、敏捷供应链、端到端、降本增效、闭环管理、流程优化、精益、看板拉动、JIT、安全库存、需求计划、S&OP 支持\n\n工作经历\n恒益制造 — 采购专员 (2023 至今)\n· 负责电子料品类的采购执行与交期跟踪，对接二十余家供应商\n· 参与一次年度降本项目，品类成本目标节降百分之八\n· 维护 SAP MM 采购订单与对账\n· 支持需求计划与安全库存设置\n\n华工电子 — 采购助理 (2022 至 2023)\n· 协助下单、催货、单据归档\n\n技能\nSAP MM、Excel (透视表 / VLOOKUP)、采购流程、供应商对接、基础数据分析\n\n教育\n供应链管理本科，2022 年毕业",
+  "jd": "我们正在招聘一名初级采购与供应链专员，加入电子制造企业的采购团队，负责电子料品类的采购执行、交期跟踪与供应商绩效管理。岗位职责：执行采购订单、跟踪交期与到货、推动品类降本、维护供应商 KPI、支持需求计划与库存设置。我们看重：扎实的采购执行基本功、对交期与缺料问题的归因与解决能力、能坦诚复盘自己在问题中的责任而非一味归咎外部、以及基础的数据分析能力。这是一个初级岗位，期望候选人能讲清楚自己具体做了什么、从失误中学到了什么。",
+  "history": [
+    { "q": "先介绍一下你在恒益负责的采购品类和日常工作。" },
+    { "q": "你提到参与了年度降本项目，目标是百分之八。最后实际节降了多少？你具体负责哪一块？" },
+    { "q": "讲一次你经历过的比较严重的缺料 (shortage) 事件，当时发生了什么？" },
+    { "q": "那次缺料，根本原因是什么？" },
+    { "q": "你作为对接这家供应商的采购，提前有没有预警信号？你当时做了什么？" },
+    { "q": "如果重来一次，你自己在那次事件里会有哪些地方做得不一样？" },
+    { "q": "交期跟踪你具体是怎么做的？多久 review 一次？用什么工具？" },
+    { "q": "安全库存的设置——参数是你定的还是别人给的？你理解背后的逻辑吗？" },
+    { "q": "你和供应商对账时出现过差异吗？怎么处理的？" },
+    { "q": "我想再回到那次缺料：你反复说是供应商和计划部门的问题,那你自己作为采购,到底有没有可以改进的地方？" }
+  ],
+  "candidate_last_answer": "说实话那次缺料真的不能怪我。供应商自己产能爬坡没跟上,交期一拖再拖,这是他们的问题;计划部门给的需求预测又特别不准,忽高忽低,我一个采购怎么可能预判得了?而且我们经理当时也没给我足够的权限去切换备选供应商。我该催的货都催了,该发的邮件都发了,流程上我一点没错。要说改进,那也是供应商和计划那边该改进,我能做的都做了。",
+  "session_state": {
+    "drilled_topics": ["procurement-scope", "cost-saving-attribution", "shortage-event", "shortage-root-cause", "early-warning-signals", "self-counterfactual", "delivery-tracking-method", "safety-stock-logic", "reconciliation-discrepancy", "self-accountability-probe"],
+    "current_competency_target": "self-awareness",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "self-awareness",
+    "missing_evidence": [
+      { "competency": "self-awareness", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 流程上我一点没错",
+      "must-be-question-type: counterfactual",
+      "expected-yield: at least one concrete action within the candidate's own control that could have changed the shortage outcome — e.g. escalating earlier, building buffer, flagging the forecast volatility in writing — surfacing genuine self-accountability instead of blaming the supplier, planning team, and manager"
+    ]
+  }
+}

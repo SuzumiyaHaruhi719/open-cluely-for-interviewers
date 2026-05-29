@@ -1,0 +1,52 @@
+{
+  "id": "fx_0596",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Staff Product Designer | The designer behind 3 award-winning, category-defining products\n\n- Single-handedly redefined the design language for a 40-million-user fintech platform; my system is now the gold standard the entire org copies\n- World-class craft: my work has been featured on the front page of every design community that matters\n- Built the most-adopted design system in company history from absolute zero, by myself, in record time\n- Universally regarded as the highest-bar reviewer; teams beg to get on my projects\n- Drove a redesign that, frankly, saved the company's flagship product\n- Mentor to dozens; several of my mentees are now leads because of me\n\nStaff Product Designer — Vantain Money (2020-present)\nLead Product Designer — Brightline Health App (2017-2020)\nSenior Designer — multiple agencies (2013-2017)\n\nSkills: design systems, design tokens, accessibility (WCAG 2.2), Figma, prototyping, qualitative research, design ops",
+  "jd": "Vantain Money is hiring a Staff Product Designer to own the design system and lead cross-team craft for our money-movement surfaces (transfers, scheduled payments, disputes). You will be the connective tissue between four product squads, the accessibility working group, and engineering's component library team. Concrete charter: drive WCAG 2.2 AA conformance across 200+ screens, cut design-to-engineering handoff defects (currently averaging 14 per release), and establish a token governance model that survives three concurrent rebrand experiments. This is an individual-contributor role with heavy influence-without-authority demands; you will not manage people but must move five teams that don't report to you. We expect you to show your work: redlines, audit spreadsheets, before/after metrics, and the specific tradeoffs you made when craft collided with shipping deadlines.",
+  "history": [
+    { "q": "Tell me about your current scope at Vantain — which surfaces you own and who you work with." },
+    { "q": "Your resume says you built 'the most-adopted design system in company history.' Walk me through how adoption was actually measured." },
+    { "q": "When you say built it 'by myself,' who else touched the system — engineering, other designers, design ops?" },
+    { "q": "Let's talk WCAG 2.2 AA. Pick one screen you remediated and walk me through the specific failures you found." },
+    { "q": "How did you prioritize which accessibility defects to fix first across 200+ screens?" },
+    { "q": "You mentioned handoff defects. What was the defect rate before you got involved, and what is it now?" },
+    { "q": "Describe a time craft collided with a shipping deadline. What did you cut?" },
+    { "q": "Who made the final call on that cut — you, the PM, or eng?" },
+    { "q": "Tell me about the token governance model. What happens when two rebrand experiments want conflicting token values?" },
+    { "q": "Give me a concrete example of moving a team that didn't report to you. What was the disagreement?" },
+    { "q": "What evidence did you bring to that conversation to change their mind?" },
+    { "q": "Walk me through a design decision you got wrong. What was the fallout?" },
+    { "q": "How do you know the redesign 'saved the flagship product' — what metric moved, by how much?" },
+    { "q": "Okay, narrow it down for me: one design-system decision you personally made, the alternatives you weighed, and why you chose what you chose." }
+  ],
+  "candidate_last_answer": "Right, so, okay — there were a lot of decisions, honestly, like the whole thing was kind of a journey? And I think the thing about design systems is that they're never really done, you know, it's a living thing, so it's hard to pick just one because they all connect. Um. So one that comes to mind, maybe, was around spacing? Or it might have been color tokens, I'd have to look. But the point is we had a lot of debates, and people had opinions, and I tried to listen to everyone, and then we sort of landed on something that felt right for the brand and also worked for engineering, which is always the hard part, balancing those. And, yeah, I mean it evolved a lot after that too, so the decision kind of made itself in a way.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "adoption-measurement", "solo-vs-team", "wcag-remediation", "a11y-prioritization", "handoff-defect-rate", "craft-vs-deadline", "decision-owner", "token-governance", "influence-without-authority", "evidence-in-persuasion", "design-mistake", "redesign-impact"],
+    "current_competency_target": "decision-rigor",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "decision-rigor",
+    "missing_evidence": [
+      { "competency": "decision-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "decision-rigor", "evidence_type": "named-entity" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "craft-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the decision kind of made itself in a way",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a single named design-system decision (spacing OR color tokens, not both), the concrete alternatives considered, the data or constraint that broke the tie, and an explicit statement of who made the final call"
+    ]
+  }
+}

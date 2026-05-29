@@ -1,0 +1,54 @@
+{
+  "id": "fx_0592",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "self-contradictory",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Director of Academic Programs — Higher Education / EdTech\n\nSummary\nAcademic leader with 12 years of experience building and scaling degree and certificate programs. Started my career as an adjunct instructor in 2008 and have led program portfolios ever since.\n\nMeridian State University — Director of Academic Programs (2018–present)\n- Led the launch of an online graduate certificate portfolio across four colleges.\n- Grew online enrollment from 1,200 to 4,500 students over three years.\n- Improved first-year retention from 71% to 84%.\n- Managed a team of 9 program managers and instructional designers.\n\nLakeshore College — Associate Dean, Continuing Education (2014–2019)\n- Oversaw the continuing-education catalog and a portfolio of professional certificates.\n- Launched the institution's first fully online program.\n\nPinnacle Learning (EdTech) — Senior Program Manager (2012–2014)\n- Managed curriculum partnerships with university clients.\n\nNote: Total team managed at peak was 25 people across both academic and operations functions.\n\nSkills: program design, accreditation, enrollment strategy, retention, instructional design oversight, P&L for academic units.\nEducation: EdD, Higher Education Administration; MA, Curriculum & Instruction.",
+  "jd": "We are seeking a Director of Academic Programs to lead the strategy, launch, and continuous improvement of online and hybrid degree and certificate programs. Reporting to the Provost's office, you will own enrollment growth, retention, accreditation readiness, and the performance of a program-management and instructional-design team. You will be accountable for clear, consistent reporting of outcomes to academic leadership. We expect a director who can speak precisely and consistently about their own track record — enrollment and retention numbers, timelines, and team scope — and who responds to scrutiny with reflection rather than defensiveness. Experience with accreditation cycles and online program operations is required.",
+  "history": [
+    { "q": "Give me the scope of your current role at Meridian — programs, team, and the metrics you own." },
+    { "q": "Your resume says you started as an adjunct in 2008 but also cites 12 years of experience. Help me reconcile the dates." },
+    { "q": "You list the Meridian role as 2018 to present and the Lakeshore role as 2014 to 2019. Those overlap — which is right?" },
+    { "q": "You say you managed 9 people at Meridian but also '25 at peak.' Walk me through the actual reporting structure." },
+    { "q": "Let's take enrollment. You cite growth from 1,200 to 4,500. Over exactly which years?" },
+    { "q": "What drove that growth specifically — new programs, marketing, pricing, or something else?" },
+    { "q": "Retention from 71% to 84% — how was retention defined and measured?" },
+    { "q": "Which single intervention contributed most to the retention gain?" },
+    { "q": "At Lakeshore you say you launched the first fully online program. Meridian's resume implies that too — which institution was actually first for you?" },
+    { "q": "Tell me about an accreditation cycle you personally led and the outcome." },
+    { "q": "What was the hardest stakeholder conflict you navigated in a program launch?" },
+    { "q": "When enrollment growth stalled in any year, what did you do?" },
+    { "q": "How did you report these outcomes to the Provost's office — what cadence and format?" },
+    { "q": "Let's go back to the team size. Concretely: at Meridian, how many direct reports, and how many dotted-line?" },
+    { "q": "And the enrollment number — was 4,500 headcount, or cumulative enrollments including repeats?" },
+    { "q": "I'm trying to pin one clean number with you: peak direct reports at Meridian. Just that one figure." },
+    { "q": "You've given me three different team sizes now. Walk me through, person by person, who reported to you at Meridian last year." }
+  ],
+  "candidate_last_answer": "Look, I think you're getting unnecessarily hung up on the org chart, and frankly it feels like you're trying to catch me out rather than understand my impact. Fine — let me give you the full picture all at once. At Meridian I had nine direct reports, but with the instructional-design pool and the ops folks it's really twenty-five, depending on how you count contractors. And while we're at it, the enrollment thing: 4,500 is the number, whether that's headcount or enrollments is an accounting distinction your team would obsess over more than mine. Oh, and the retention work — that was three programs at once, the certificate redesign, the advising overhaul, and the LMS migration, all of which I ran simultaneously. I don't see why the exact headcount matters when retention went up 13 points. Is this really the best use of our time?",
+  "session_state": {
+    "drilled_topics": ["meridian-scope", "career-dates", "role-overlap", "team-size", "enrollment-window", "growth-drivers", "retention-definition", "retention-driver", "first-online-program", "accreditation-cycle", "stakeholder-conflict", "stalled-growth", "reporting-cadence", "direct-reports-pin", "enrollment-definition", "peak-reports-pin"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: depending on how you count contractors",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a single unambiguous figure for peak direct reports at Meridian last year, ideally enumerated by role, decoupled from the dotted-line and contractor counts she keeps folding in to avoid committing to one number"
+    ]
+  }
+}

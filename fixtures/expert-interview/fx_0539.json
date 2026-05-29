@@ -1,0 +1,50 @@
+{
+  "id": "fx_0539",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "林晓 (Xiao Lin)\n客户支持团队负责人 / Support Team Lead\n\n概述：5 年 SaaS 客户支持经验，带过 tier-1 和 tier-2 团队，熟悉 Zendesk、Intercom，做过支持流程的搭建和优化。\n\n工作经历\n\n某 B2B SaaS 公司 — Support Team Lead (2022 - 至今)\n- 带领一支 support 团队，负责日常 ticket 处理和 escalation。\n- 推动 knowledge base 建设，沉淀常见问题的 SOP。\n- 参与 SLA 制定，和产品、研发对接 bug escalation 流程。\n- 做过几次 onboarding 培训，帮助新人快速上手。\n\n某消费电子公司 — 高级客服专员 (2019 - 2022)\n- 处理 VIP 客户的投诉和疑难工单。\n- 协助 QA 抽检，参与服务话术优化。\n\n教育\n- 本科，英语专业。\n\n技能：Zendesk、Intercom、Jira、基础 SQL、双语客服（中/英）。\n\n备注：擅长 de-escalation 和团队管理，注重客户体验。",
+  "jd": "Support Team Lead — 某成长期 SaaS 公司客户成功部门。我们在找一位有经验的支持团队负责人，管理 8-10 人的 tier-2 团队，对 CSAT、首响时间和解决时长这几个 metric 负责。你将 own escalation 流程、和产品团队对接 bug 优先级，并通过数据找到流程瓶颈。我们看重用具体数字说话的能力，以及在面对质询时能清楚拆解自己的判断逻辑。理想候选人能讲清楚自己做过的某一个具体决策——背景、动作、以及可量化的结果。",
+  "history": [
+    { "q": "先介绍下你现在带的 support 团队，规模和你负责的范围。" },
+    { "q": "你们团队目前最关注哪几个 metric？现在大概是什么水平？" },
+    { "q": "你简历里提到推动 knowledge base 建设，这个项目当时解决的是什么问题？" },
+    { "q": "knowledge base 上线之后，对哪个指标产生了影响？" },
+    { "q": "SLA 制定那块，你具体负责了哪一部分？" },
+    { "q": "讲一个具体的例子：有没有一次你通过数据发现了支持流程里的瓶颈？" },
+    { "q": "那次瓶颈的根因是什么？你怎么定位到的？" },
+    { "q": "你采取了什么动作？" },
+    { "q": "动作上线之后，首响时间或者解决时长改善了多少？" },
+    { "q": "escalation 到研发那条线，你是怎么定优先级的？" },
+    { "q": "有没有一次 escalation 处理得不好、客户不满意的情况？" },
+    { "q": "我想确认一个数字：你刚才说的那个改善，baseline 和最终值分别是多少？" },
+    { "q": "回到那个瓶颈项目——如果让你量化它给团队带来的价值，你会怎么衡量？" }
+  ],
+  "candidate_last_answer": "这个问题挺有意思的。不过我想反过来问你一下——在你们这边，team lead 到底是更看重把 metric 数字做漂亮，还是更看重 team 的稳定和长期的 customer experience？因为这两个有时候是冲突的。你们现在 CSAT 卡在哪个区间？escalation 到研发那边的响应到底快不快？我感觉得先搞清楚你们真正想解决的是什么问题，我才好告诉你我会怎么量化。说真的，你们更想要一个天天盯 dashboard 的人，还是一个能 hold 住团队的人？",
+  "session_state": {
+    "drilled_topics": ["team-scope", "team-metrics", "kb-problem", "kb-impact", "sla-role", "bottleneck-example", "root-cause", "actions-taken", "improvement-magnitude", "escalation-prioritization", "bad-escalation-case", "baseline-final-numbers"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我想反过来问你一下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a quantified value statement for the bottleneck project the candidate keeps deflecting — a baseline-to-final number on first-response or resolution time and how it ties to team value — instead of redirecting the question back to the interviewer"
+    ]
+  }
+}

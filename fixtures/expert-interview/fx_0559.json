@@ -1,0 +1,47 @@
+{
+  "id": "fx_0559",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Aaron Cole — Senior Product Manager\n\n8 years in B2B SaaS product, last 4 in payments/fintech.\n\nPaylith — Senior PM, Merchant Platform (2021–present)\n- Own the merchant onboarding and KYC flow.\n- Shipped a redesigned onboarding wizard and a risk-rules configuration tool.\n\nPrior: Ledgerly — Product Manager (2017–2021), reconciliation and reporting.\n\nEducation: B.S. Economics.\nSkills: roadmapping, SQL, A/B testing, stakeholder management.",
+  "jd": "Cobalt Pay is hiring a Senior Product Manager to own merchant onboarding and activation for our payments platform. Reporting to the Group PM, you will own the onboarding completion rate (currently 58%, target 75%), time-to-first-transaction, and KYC pass-through. You will lead a squad of engineers and work closely with Risk and Compliance. We are looking for a PM who takes clear ownership of outcomes — including failures — and can explain what they personally would have done differently, rather than attributing misses to other teams. Candidates should reason crisply about tradeoffs under regulatory constraints. 5+ years of product management, fintech experience preferred.",
+  "history": [
+    { "q": "Tell me about your scope at Paylith — what you own on the merchant platform." },
+    { "q": "Walk me through the onboarding wizard redesign. What was the goal?" },
+    { "q": "What was the onboarding completion rate before the redesign?" },
+    { "q": "And after it shipped — did completion improve?" },
+    { "q": "It went down? Tell me what happened." },
+    { "q": "What was your hypothesis going into the redesign?" },
+    { "q": "When the numbers dropped, what did you do?" },
+    { "q": "Whose decision was it to ship without the extra KYC step gated?" },
+    { "q": "Looking back, what would you personally have done differently?" },
+    { "q": "Let's be specific — not what the team should have done, what YOU would have changed in how you ran it." }
+  ],
+  "candidate_last_answer": "Honestly, a lot of it came down to things outside my control. Engineering shipped the wizard two sprints late, so we had no runway to test properly. Design gave me mockups that tested poorly and they wouldn't iterate fast enough. Risk kept changing the KYC requirements on me mid-build, which broke the flow. And leadership pushed a hard launch date even though I flagged the risk. So when completion dropped, it wasn't really a product-decision problem — it was everyone around me not delivering. If those teams had done their part, the redesign would've hit the number. What would I do differently? Probably just pick better teams to work with.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "wizard-goal", "completion-baseline", "completion-after", "what-happened", "redesign-hypothesis", "drop-response", "kyc-gating-decision", "would-do-differently"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it wasn't really a product-decision problem",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force one concrete product decision Aaron himself owned and would change — e.g. how he scoped, sequenced, or de-risked the launch he agreed to — instead of attributing the completion-rate drop entirely to Engineering, Design, Risk, and leadership"
+    ]
+  }
+}

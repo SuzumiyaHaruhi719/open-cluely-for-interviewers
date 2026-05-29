@@ -1,0 +1,38 @@
+{
+  "id": "fx_0563",
+  "tags": {
+    "industry": "operations",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "运营专家 / Staff 运营\n\n概述\n八年互联网运营经验，专注本地生活与到店履约方向。带过商家运营、活动运营和履约运营团队，擅长用数据驱动的方式做精细化运营。\n\n工作经历\n邻里到家 — 高级运营专家 (2021 至今)\n· 负责华南区到店核销与商家履约运营，覆盖约一万二千家商家\n· 主导一次大型核销异常治理专项，把异常核销率从百分之三点二降到百分之零点九\n· 搭建商家分层运营体系，把腰部商家的月活跃率从百分之四十提升到百分之六十二\n· 注：本段同时写道『独立负责全国所有区域运营』，与上文『华南区』表述存在前后矛盾\n\n好邻生活 — 运营经理 (2017 至 2021)\n· 负责活动运营，操盘过多次平台级大促\n· 搭建商家激励与考核机制\n\n技能\n精细化运营、数据分析 (SQL / 看板)、商家分层、活动策划、履约流程优化、跨部门协作\n\n教育\n市场营销本科",
+  "jd": "我们正在招聘一名 Staff 级运营专家，加入本地生活到店事业部，负责到店核销与商家履约的运营治理。岗位职责：owning 核销异常与履约质量的端到端运营、搭建并迭代商家分层运营体系、用数据定位问题并推动跨部门（产品、风控、商家BD）落地解决方案、对核心运营指标（核销异常率、商家活跃率、履约时效）负责。我们看重：扎实的数据驱动运营能力、能独立操盘专项治理项目的经验、清晰的因果归因能力、以及把复杂运营问题讲清楚的表达力。这是一个高自主性的资深岗位，期望候选人能讲清楚每个结果背后自己具体做了什么。",
+  "history": [
+    { "q": "先简单介绍一下你现在在邻里到家负责的运营范围，以及团队规模。" },
+    { "q": "你简历里提到主导过一次核销异常治理，把异常率从百分之三点二降到百分之零点九。完整讲一下这个项目：背景、你的目标、你具体做了哪些动作、最后结果怎么样。" }
+  ],
+  "candidate_last_answer": "好的。背景是这样：去年第二季度，华南区到店核销的异常率突然冲到百分之三点二，远高于平台百分之一的红线，财务那边每月因为异常核销要多赔付大概四十多万，老板把治理这件事压给了我。我的目标很明确：六十天内把异常率压到百分之一以下，同时不能误伤正常商家的核销体验。我做了三件事：第一，我拉着风控和数据一起把异常核销拆成了四类，发现其中百分之七十都集中在『同一设备短时间高频核销』和『核销地点与商家定位偏差超过两公里』这两个场景；第二，我推动产品上线了实时风控拦截规则，并且为了不误伤,我设计了一个商家申诉的快速通道，申诉一般两小时内人工复核；第三,我对异常最集中的前两百家商家做了一对一的BD回访和处罚分级。最后用了五十三天，异常率从百分之三点二降到百分之零点九，每月赔付从四十多万降到不到十万，商家投诉量没有上升,这个机制后来也被推广到了其他大区。",
+  "session_state": {
+    "drilled_topics": ["operations-scope", "verification-anomaly-project"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 为了不误伤,我设计了一个商家申诉的快速通道",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the concrete decision logic and thresholds behind the appeal fast-lane (how the two-hour SLA was set, who staffed the manual review, what false-positive rate it was tuned against) to confirm the candidate personally owned the mechanism design rather than reciting a clean outcome"
+    ]
+  }
+}

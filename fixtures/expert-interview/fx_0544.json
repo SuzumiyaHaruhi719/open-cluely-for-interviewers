@@ -1,0 +1,44 @@
+{
+  "id": "fx_0544",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "GABRIELA REYES\nSenior Enterprise Account Executive — B2B SaaS\n\nSUMMARY\nSenior AE with 9 years closing complex, multi-stakeholder deals in mid-market and enterprise SaaS. Consistent quota overachievement and a track record of expanding strategic accounts.\n\nEXPERIENCE\n\nSenior Enterprise AE — Tessera Cloud (2021-present)\n- Situation: inherited a flat $1.8M book with low net retention in the manufacturing vertical.\n- Task: grow the book and land at least one logo above $500K ACV.\n- Action: built a vertical-specific value narrative, ran a structured discovery motion with the SE team, and orchestrated a multi-threaded close with procurement and security.\n- Result: grew the book to $3.1M in 18 months and closed a $640K ACV flagship logo; 128% of quota in FY23.\n\nEnterprise AE — Halcyon Systems (2018-2021)\n- Situation: new logo team in a competitive observability market.\n- Task: hit $1.2M new ACV annually.\n- Action: partnered with marketing on targeted ABM, ran executive briefings, negotiated multi-year terms.\n- Result: averaged 115% of quota across three years; won two competitive displacements.\n\nAccount Executive — Brightline (2015-2018)\n- Grew from SDR to closing role; exceeded ramp targets in first two quarters.\n\nEDUCATION\nB.A., Communications — University of Texas at Austin.\n\nSKILLS\nMEDDICC, multi-threading, value selling, procurement negotiation, Salesforce, Gong, Clari.",
+  "jd": "Senior Enterprise Account Executive — Northwind Data, a B2B data-infrastructure company. You will own a named-account book in the enterprise segment, drive net-new and expansion ACV, and run complex multi-stakeholder cycles end to end. We use MEDDICC and expect rigorous deal hygiene. In interviews we probe for individual ownership: we want to hear exactly what you personally did to move a deal — the specific stakeholder you won over, the concession you decided to make, the moment the deal was at risk and how you personally saved it — not a description of what the team did collectively.",
+  "history": [
+    { "q": "Walk me through your current book at Tessera — size, segment, and how you've grown it." },
+    { "q": "Tell me about that $640K flagship logo. What was the account situation when you picked it up?" },
+    { "q": "Who were the key stakeholders in that deal, and which one was the hardest to win?" },
+    { "q": "There's usually a moment a big deal almost dies. What was that moment here?" },
+    { "q": "When it was at risk, what did you personally do to get it back on track?" },
+    { "q": "Procurement and security both had to sign off — how did you navigate the security review specifically?" },
+    { "q": "What concession or tradeoff did you decide to make to close it, and why?" },
+    { "q": "Looking at that close, what's the single thing you did that most moved the deal forward?" }
+  ],
+  "candidate_last_answer": "Honestly it was a real team effort end to end. We did a great job multi-threading the account, we got our SEs in early, and we worked really well with the security team to get through the review. We made the right call on the commercial terms together, and when things got shaky we rallied as a pod and kept the momentum going. I'm really proud of what we pulled off — we just executed well as a unit and the deal came together. Everybody played their part.",
+  "session_state": {
+    "drilled_topics": ["current-book-scope", "flagship-account-situation", "key-stakeholders", "deal-at-risk-moment", "personal-save-action", "security-review-navigation", "concession-tradeoff"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we just executed well as a unit and the deal came together",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the candidate's own first-person actions on the flagship deal — the specific stakeholder they personally won over and the exact move they made when it was at risk — replacing the collective 'we' with an individual owner-of-action"
+    ]
+  }
+}

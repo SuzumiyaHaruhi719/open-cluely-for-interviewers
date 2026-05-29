@@ -1,0 +1,37 @@
+{
+  "id": "fx_0601",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Director of Product — B2B payments platform\n\nFlowpay — Director of Product (2020-present)\n- Situation: merchant onboarding took 9 business days median; 31% of applicants abandoned before activation.\n- Task: own a cross-functional effort to cut time-to-activation and reduce abandonment without loosening risk controls.\n- Action: re-sequenced KYB verification to run async, introduced a progressive-disclosure application flow, and partnered with risk to auto-approve low-risk segments.\n- Result: median onboarding dropped from 9 days to 1.5 days; abandonment fell from 31% to 12%; activated-merchant volume up 22% YoY.\n\nFlowpay — Group Product Manager (2017-2020)\n- Launched the dispute-management product line from 0 to $4M ARR.\n\nNorthgate Financial — Senior PM (2014-2017)\n\nSkills: payments, risk/KYB, experimentation, roadmap prioritization, P&L ownership.",
+  "jd": "Flowpay is hiring a Director of Product to own the merchant-acquisition surface end to end: onboarding, activation, and the risk/growth balance that governs both. You will be accountable for time-to-activation, activation-rate, and fraud-loss-basis-points as a joint scorecard with the risk org — these goals are in deliberate tension, and we want a leader who can articulate the tradeoff explicitly rather than optimizing one at the expense of the other. You will lead a triad with engineering and design, set the quarterly roadmap, and defend prioritization calls to the exec team. We expect crisp storytelling: the situation you inherited, the decision you made, the action you drove, and—critically—how you measured the result and what it cost on the other side of the ledger.",
+  "history": [
+    { "q": "Walk me through the onboarding-time win on your resume — the situation, what you decided to do, and how it turned out, including the risk side of the ledger." }
+  ],
+  "candidate_last_answer": "Sure. When I took over the acquisition surface, onboarding was a mess — 9-day median, almost a third of applicants dropping off before they ever activated. Risk and growth were basically at war. So I framed it as a joint problem and got both orgs to commit to a shared scorecard. The mandate was clear: cut time-to-activation and abandonment, but not by loosening controls. I personally drove the strategy — re-sequencing KYB to run async, pushing a progressive-disclosure flow, and getting risk to agree to auto-approve the clearly low-risk segments. I spent a lot of political capital getting the risk VP to sign off on that last one; that was the hard-won decision. We aligned the triad, set the quarterly bets, and shipped it in two phases.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "outcome-orientation",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "outcome-orientation",
+    "missing_evidence": [
+      { "competency": "outcome-orientation", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We aligned the triad, set the quarterly bets, and shipped it in two phases",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual result numbers the answer omitted — final time-to-activation, abandonment, and especially the fraud-loss-basis-points the auto-approval cost, closing the missing R of the STAR story"
+    ]
+  }
+}

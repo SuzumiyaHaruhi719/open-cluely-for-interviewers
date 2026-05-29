@@ -1,0 +1,37 @@
+{
+  "id": "fx_0598",
+  "tags": {
+    "industry": "operations",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "供应链运营经理 (Supply Chain Operations Manager) — 跨境电商履约\n\n海岚科技 (Hailan Tech) — Operations Manager (2021至今)\n- Situation: 华东仓 peak season 爆仓, 旺季订单准时发货率 (on-time ship rate) 只有 82%。\n- Task: 把 on-time ship rate 在一个旺季周期内提升到 95% 以上, 同时不增加固定 headcount。\n- Action: 重新设计 wave picking 波次策略, 引入 cross-dock 流程处理快周转 SKU, 并搭建一个 real-time 的 SLA dashboard 监控每个履约环节。\n- Result: on-time ship rate 从 82% 提升到 96.4%, 单均履约成本 (cost per order) 下降 11%, 旺季退货率持平。\n\n海岚科技 — Operations Supervisor (2018-2021)\n- 管理 60 人拣货团队, 负责 inbound 收货与库内 QC。\n\n技能: WMS (Manhattan), Lean, 数据分析 (SQL), S&OP 协同。",
+  "jd": "海岚科技正在招聘一名 Operations Manager, 负责华东履约中心的日常运营与旺季备战。You will own 履约准时率 (on-time ship rate)、单均成本 (cost per order)、库内人效 (units per labor hour) 三个核心指标, 并在 peak season 期间协调 inbound、拣货、打包、出库各环节。我们需要一个能把改进项目讲清楚的人: what you changed, 为什么这么排序, 以及每个动作和指标变动之间的 causal link。你将与 S&OP 团队对接需求预测, 与承运商谈 SLA, 并对一线 200 人团队的排班模型负责。我们尤其看重候选人能用具体数字说明 tradeoff——比如为了准时率你在成本或人效上做了什么取舍。",
+  "history": [
+    { "q": "请具体讲一下简历里 on-time ship rate 从 82% 到 96.4% 这个项目——你做了哪几件事, 各自贡献了多少, 以及为什么先做波次再做 cross-dock?" }
+  ],
+  "candidate_last_answer": "好, 我拆开讲。Situation 是去年 Q4 旺季, 华东仓爆仓, on-time ship rate 掉到 82%, 当时积压最严重的是高频小件。Task 是我要在那一个旺季周期内把准时率拉到 95% 以上, 而且不能加固定 headcount。Action 分三步: 第一步先改 wave picking, 把原来按订单建波改成按拣货路径聚类建波, 这一步上线两周后准时率就回到了 89%; 第二步针对周转最快的 top 300 SKU 上 cross-dock, 收货后直接转出库, 不入库存, 这部分又贡献了大概 5 个点; 第三步搭 real-time SLA dashboard, 让组长能在环节超时前就介入。我先做波次是因为它零成本、改个配置就能见效, cross-dock 要改动线所以放第二。Result 是整个旺季结束 on-time 做到 96.4%, cost per order 降了 11%, 退货率持平。Tradeoff 是 cross-dock 让那批 SKU 的库内 QC 比例从 100% 降到抽检 20%, 我用承运商破损数据兜底确认没有放大破损。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "operational-execution",
+    "elapsed_minutes": 3
+  },
+  "ground_truth": {
+    "competency_target": "operational-execution",
+    "missing_evidence": [
+      { "competency": "operational-execution", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: cross-dock 让那批 SKU 的库内 QC 比例从 100% 降到抽检 20%",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: how the candidate validated that dropping QC from full to 20% sampling did not raise defect or damage escapes — the specific guardrail metric, its baseline, and the threshold that would have triggered rolling QC back up"
+    ]
+  }
+}

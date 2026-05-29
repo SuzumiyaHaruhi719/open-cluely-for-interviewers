@@ -1,0 +1,47 @@
+{
+  "id": "fx_0552",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "王立群　制造运营总监\n\n经验：18年汽车零部件制造管理，覆盖冲压、焊装、总装三大工艺。\n\n现任：恒锐精密　制造总监（2019至今）\n负责三座工厂、约1200名员工，主管产能规划、质量与精益改善。\n此前：上海某主机厂配套商　生产经理（2011-2019）。\n\n擅长：精益生产、TPM、产线节拍优化、良率提升、成本管控。\n学历：机械工程本科。",
+  "jd": "某新能源汽车零部件企业招聘制造运营总监，常驻苏州，向运营副总裁汇报。负责两座工厂的整体制造运营，覆盖产能爬坡、良率、单位制造成本与交付准时率。当前总装线综合良率92.6%，目标96%；OEE约68%，目标78%。你将主导一条新产线的量产爬坡，并解决现有焊装工序的瓶颈。我们希望候选人能就自己亲手主导的某次改善，讲清楚【可被验证的基线数字、改善后的数字、用了多长时间、以及具体的归因逻辑】。对夸大或无法溯源的成绩会重点追问。需要精益与质量体系实战经验，能承受量产爬坡期的高强度。",
+  "history": [
+    { "q": "先介绍一下你现在在恒锐的管理范围：几座厂、多少人、你直接负责哪些指标。" },
+    { "q": "你说擅长良率提升，挑一个你亲自主导的项目讲讲背景。" },
+    { "q": "那个项目改善前的基线良率是多少？" },
+    { "q": "改善后达到了多少，用了多长时间？" },
+    { "q": "良率提升的主因你归到哪几条？怎么验证是这几条起的作用？" },
+    { "q": "再说OEE。你有没有亲手把某条线的OEE显著拉起来过？" },
+    { "q": "那条线OEE从多少到多少？停机损失主要砍在哪个环节？" },
+    { "q": "成本这块，你主导过的单位制造成本下降，幅度大概多少？" },
+    { "q": "这个降幅是怎么算出来的？分母口径是什么？" },
+    { "q": "给我一个最能代表你水平的数字，并说清楚它是怎么被审计或验证的。" }
+  ],
+  "candidate_last_answer": "这么说吧，我经手的项目，良率基本都是从八十几直接干到九十九以上，OEE我随便带带就能拉到九十多，行业里很少有人做到。成本我主导的那几年，单位制造成本砍了至少一半还多，每年给公司省下大几千万甚至上亿都是常事。验证？我们这些数字都是实打实的，董事会都认可，具体审计报告我手头没有，但你信我，圈子里我的名声就是这么打出来的，没有水分。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "yield-project-context", "yield-baseline", "yield-after-duration", "yield-attribution", "oee-handson", "oee-delta-bottleneck", "unit-cost-reduction", "cost-denominator", "signature-verified-number"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 每年给公司省下大几千万甚至上亿都是常事",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force one single auditable cost-savings figure tied to a specific plant, year, and computation (numerator/denominator), and how it was verified — collapsing the grand unverifiable ranges into one defensible number"
+    ]
+  }
+}

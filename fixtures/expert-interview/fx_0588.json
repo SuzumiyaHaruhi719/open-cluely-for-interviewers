@@ -1,0 +1,53 @@
+{
+  "id": "fx_0588",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Data Engineer | Lakehouse • Streaming • MLOps • Data Mesh • GenAI-ready platforms\n\nCore stack: Spark, Flink, Kafka, Iceberg, Delta Lake, dbt, Airflow, Dagster, Snowflake, BigQuery, Databricks, Trino, Kubernetes, Terraform, Great Expectations, OpenLineage, Debezium, Protobuf, Avro.\n\nProfile\n- Staff-level platform engineer architecting petabyte-scale, real-time, cloud-native, cost-optimized data ecosystems.\n- Champion of data-mesh principles, shift-left data quality, contract-driven pipelines, and self-serve analytics enablement.\n- Drove org-wide migration to a lakehouse paradigm and a streaming-first ingestion backbone.\n- Owner of the data-quality framework, the lineage layer, and the SLA/SLO governance model.\n- Partner to analytics, ML, and product on a unified semantic layer and feature store.\n\nExperience\nVertex Analytics — Staff Data Engineer (2020–present)\n- Led the lakehouse migration and the batch-to-streaming re-architecture of the ingestion layer.\n- Stood up the data-quality and lineage tooling across the core domains.\nDataFoundry — Senior Data Engineer (2017–2020)\n- Built batch ETL and the first warehouse models for the analytics org.\n\nSkills: distributed systems, schema evolution, CDC, data contracts, cost governance, on-call leadership.",
+  "jd": "We are seeking a Staff Data Engineer to own the reliability and economics of our core data platform. Reporting to the Director of Data Platform, you will lead the streaming ingestion backbone, the data-quality and lineage layers, and the cost-governance model across a petabyte-scale lakehouse. You will set SLAs/SLOs for critical datasets, lead incident response for data-quality regressions, and partner with ML and analytics teams on contracts and the semantic layer. We expect a staff engineer who owns outcomes end to end, can quantify reliability and cost, and — critically — takes accountability for failures in systems they architect rather than attributing them to downstream teams.",
+  "history": [
+    { "q": "Walk me through what you actually own day to day on the Vertex data platform." },
+    { "q": "Your resume lists a long stack. Pick the lakehouse migration — what was the concrete before and after state?" },
+    { "q": "Batch-to-streaming re-architecture: what drove the decision, and what did you personally design?" },
+    { "q": "What SLAs did you set on the critical datasets, and how were they measured?" },
+    { "q": "Tell me about the data-quality framework. What checks did it enforce and where did they run?" },
+    { "q": "How did you handle schema evolution for the CDC streams — what was the contract?" },
+    { "q": "What did the migration do to platform cost? Give me a number." },
+    { "q": "Now I want a failure. Tell me about a significant data incident on a system you own." },
+    { "q": "You mentioned the freshness SLA breach. What was the customer-facing impact?" },
+    { "q": "How long was the breach, and how was it detected — alert or someone reporting it?" },
+    { "q": "Walk me through the root cause as you understood it that day." },
+    { "q": "What did the postmortem assign as the primary cause?" },
+    { "q": "What remediation did you personally drive afterward?" },
+    { "q": "Did the same class of incident recur after your fix?" },
+    { "q": "Let me be direct: you architected the streaming layer. What part of that incident was a design choice you made?" },
+    { "q": "Specifically — name the decision in your own design that contributed to that outage, not what another team did." }
+  ],
+  "candidate_last_answer": "Honestly, the design itself was sound. The real cause was that the upstream product team shipped a breaking schema change without telling anyone, and the SRE team had muted the freshness alert during an unrelated migration, so we found out late. On top of that, the analytics consumers had built a brittle dashboard that fell over the moment the data was a few hours stale. My streaming layer did exactly what it was specified to do. If the upstream team had respected the contract and SRE hadn't silenced the alert, none of this happens.",
+  "session_state": {
+    "drilled_topics": ["platform-scope", "lakehouse-before-after", "batch-to-streaming-design", "dataset-slas", "dq-framework", "schema-evolution", "migration-cost", "data-incident", "customer-impact", "detection-and-duration", "root-cause", "postmortem-cause", "remediation", "recurrence"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: My streaming layer did exactly what it was specified to do",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific design decision the candidate himself made (e.g., no contract-enforcement gate on ingest, no schema-drift detection, alerting owned outside his layer) that allowed an upstream breaking change to propagate, owned as his own gap rather than another team's failure"
+    ]
+  }
+}

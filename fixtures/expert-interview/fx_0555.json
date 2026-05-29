@@ -1,0 +1,39 @@
+{
+  "id": "fx_0555",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Senior Product Manager | 9 years shipping customer-obsessed, data-driven products at scale\n\n- Outcome-oriented PM who leverages first-principles thinking to unlock step-change growth\n- Owns the full product lifecycle: discovery, roadmap, GTM, and iterative experimentation\n- Deeply fluent in north-star metrics, OKRs, funnels, retention, activation, and LTV\n- Drives cross-functional alignment across Eng, Design, Data Science, and Marketing\n- Champion of continuous discovery, hypothesis-driven A/B testing, and rapid iteration\n- Translates ambiguous problem spaces into crisp, prioritized, high-leverage roadmaps\n- Passionate storyteller who rallies stakeholders around a compelling product vision\n\nMost recent: Quanta Labs — Senior Product Manager, Growth (2021-present)\nPrior: Tessellate — Product Manager (2018-2021)\n\nSkills: SQL, Amplitude, Mixpanel, experimentation, roadmapping, PRDs, user research, prioritization frameworks (RICE, ICE).",
+  "jd": "Vireo is hiring a Senior Product Manager for our Growth pod to own activation and early-retention for a consumer productivity app (4M MAU). Reporting to the Director of Product, you will own the activation funnel (currently 31% of signups reach the aha-moment in week one, target 45%) and D30 retention. You will run a continuous experimentation program, write crisp PRDs, and partner with a dedicated squad of 5 engineers and a designer. We are looking for a PM who can speak concretely about a specific experiment or feature they owned — the hypothesis, what shipped, the measured result, and what they learned. Vague, framework-heavy answers without a real example will not pass our bar. 5+ years of product management, ideally in consumer growth.",
+  "history": [
+    { "q": "Tell me about your current role at Quanta — what surface you own and which metric you're accountable for." },
+    { "q": "Pick the single experiment or feature you're most proud of from the last year. Walk me through the hypothesis, what you shipped, and the measured result." }
+  ],
+  "candidate_last_answer": "Yeah, so I think the thing I'm most proud of is really how we leveled up our experimentation culture. It was less about any single feature and more about the way we approached growth holistically. We got really disciplined about hypothesis-driven thinking, we aligned the squad around the north-star, and we just iterated relentlessly. The impact was meaningful — we moved the needle on activation and the team felt a lot more empowered. It's hard to point to one experiment because it was really a system we built, but the outcomes spoke for themselves.",
+  "session_state": {
+    "drilled_topics": ["current-surface-metric"],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: It's hard to point to one experiment",
+      "must-be-question-type: teach-back",
+      "expected-yield: one concrete experiment with a falsifiable hypothesis, the exact variant shipped, the activation delta with numbers, and the decision made on the result — forcing past the 'we built a system' abstraction the interviewer explicitly asked him to avoid"
+    ]
+  }
+}

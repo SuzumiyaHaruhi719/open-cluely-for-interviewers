@@ -1,0 +1,38 @@
+{
+  "id": "fx_0542",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "高建斌\n运营总监 / Director of Operations\n\n概述：我是行业里少有的、能同时把效率、成本、体验三者做到极致的运营操盘手。十二年经验，带过千人团队，没有我搞不定的运营难题。\n\n工作经历\n\n某头部生活服务平台 — 运营总监 (2019 - 至今)\n- 一手打造了全国履约网络，把行业标杆甩在身后。\n- 我主导的一系列改革，让整个大区脱胎换骨。\n- 老板的很多关键决策都听我的，我说往东没人敢往西。\n\n某物流公司 — 高级运营经理 (2014 - 2019)\n- 凭一己之力扭转了华东仓配的烂摊子。\n- 带出来的人现在很多都是别家的总监。\n\n教育\n- 本科，工商管理。\n\n技能：供应链管理、团队管理、精益运营、数据驱动决策。\n\n备注：业内口碑极佳，是公认的运营一把好手。",
+  "jd": "招聘运营总监（Director），负责区域履约网络的整体运营。你将统筹仓配、客服、成本与服务质量，对核心运营指标（履约时效、单均成本、客诉率）负责，并主导跨部门的流程改革。我们看重的是：面对一个具体问题时，能否聚焦地讲清楚一件事——背景、你个人的关键动作、以及可验证的结果——而不是把多个故事糅在一起、泛泛而谈。理想候选人在压力下依然条理清晰、用数字说话。",
+  "history": [
+    { "q": "讲一个你最有代表性的运营改革项目：背景是什么，你个人做了哪一个关键决策，最终结果如何用数字衡量？" }
+  ],
+  "candidate_last_answer": "好的好的，这个我太有的讲了，说实话我做过的项目太多了一时不知道挑哪个……要不我几个一起说吧。第一个是华东仓配那个，当时一团乱，我去了之后大刀阔斧改了一通，时效就上来了；然后还有全国履约网络那个，那个更大，我基本上是从零搭起来的，把竞对都比下去了；哦对还有一个客诉的项目也很典型，我们当时客诉高得吓人，我牵头搞了一套机制，后来就好多了……这么说吧，这几个我都是核心。具体数字嘛……华东那个时效好像提了不少，客诉那个降幅也挺大的，全国网络那个体量太大了一时也说不清，反正都是我操盘的。你想先听哪个？我感觉每个都能讲半小时。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 3
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "results-orientation", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 要不我几个一起说吧",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the candidate committing to one single project and laying out the ordered decision chain within it — the specific situation, the one key decision they personally made, and a verifiable result number — instead of skimming across three half-told stories"
+    ]
+  }
+}

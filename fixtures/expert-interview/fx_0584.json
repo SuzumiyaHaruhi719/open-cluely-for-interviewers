@@ -1,0 +1,51 @@
+{
+  "id": "fx_0584",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "高级供应链计划经理｜华东区域配送网络\n\n经历一：区域库存周转优化\n- 情境：所在快消企业华东仓的库存周转天数长期停在 58 天，呆滞库存占比 19%。\n- 任务：受命在两个季度内把周转天数压到 40 天以内，呆滞占比降到 10% 以下。\n- 行动：重构 ABC 分类的补货策略，把 A 类 SKU 从月度计划改为按周滚动；推动与三家核心供应商签订 VMI 寄售协议；上线需求预测的移动加权模型替代原来的简单均值。\n- 结果：两个季度后周转天数降到 41 天，呆滞占比降到 11%，释放营运资金约 2300 万元。\n\n经历二：旺季履约准时率提升\n- 情境：双十一大促期间区域准时交付率只有 82%，客诉集中在配送延迟。\n- 任务：负责把次年大促的准时率提升到 95% 以上。\n- 行动：与承运商重谈分层时效 SLA，搭建预分仓的前置铺货模型，把华东订单的平均运输半径缩短。\n- 结果：次年大促准时率达到 96.3%，配送相关客诉同比下降 44%。\n\n技能：S&OP 流程、需求预测、库存优化、SAP IBP、承运商管理。",
+  "jd": "我们正在招聘一名高级供应链计划经理，负责华东区域配送网络的端到端计划与履约。该岗位向区域供应链总监汇报，统筹需求预测、库存策略、补货计划与承运商绩效管理，直接对区域的库存周转、履约准时率和物流成本三项核心指标负责。你将主导跨部门的 S&OP 例会，协调销售、采购与仓储运营之间的供需平衡，并在大促等高峰场景下牵头制定履约保障方案。我们期望候选人具备至少五年快消或零售行业的区域计划经验，熟练使用 SAP IBP 或同类计划系统，能用数据驱动决策，并有在指标承压时独立推动改善的实战记录。",
+  "history": [
+    { "q": "先介绍一下你现在在华东仓的职责范围，团队规模和你直接负责的指标。" },
+    { "q": "你简历里写两个季度把周转天数从 58 天压到 41 天，先讲讲你接手时的真实起点。" },
+    { "q": "ABC 补货策略的重构，具体是你定的规则还是沿用了既有模板？" },
+    { "q": "A 类 SKU 改成按周滚动以后，缺货率有没有变化？用什么口径衡量的？" },
+    { "q": "VMI 寄售协议是你主谈的吗？三家供应商分别让出了什么条件？" },
+    { "q": "移动加权预测模型上线后，预测准确率（比如 WMAPE）从多少变到多少？" },
+    { "q": "释放营运资金 2300 万这个数，是财务认账的口径还是你自己估的？" },
+    { "q": "换个话题。讲讲那次大促准时率从 82% 提到 96% 的项目。" },
+    { "q": "分层时效 SLA 是怎么设计的？承运商接受了吗？" },
+    { "q": "预分仓的前置铺货，铺货量你是怎么定的？压错了会积压。" },
+    { "q": "现在我想听一次不顺的。讲一个你主导但结果没达标的供应链项目。" },
+    { "q": "你刚才提到那次系统切换延期，是哪个环节先出的问题？" },
+    { "q": "如果时间倒回项目启动那一周，你自己会做哪件事不一样？" },
+    { "q": "具体说，那次准时率没达标，你个人在哪一步本可以介入却没有介入？" }
+  ],
+  "candidate_last_answer": "说实话那次没达标主要不是计划侧的问题。IT 团队的系统切换一拖再拖，承运商那边的运力也没按合同给到，仓储运营在旺季前还临时换了主管，整个就乱了。我这边的预测和补货计划其实都按时交了，是下游一个接一个掉链子，最后准时率才没上去。要是他们任何一环跟上了，结果都不会是这样。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "inventory-turns-baseline", "abc-replenishment", "stockout-rate", "vmi-terms", "forecast-accuracy", "working-capital-claim", "peak-otd-project", "tiered-sla", "forward-stocking", "failed-project"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 是下游一个接一个掉链子",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 一项候选人本人在项目中实际采取或本应采取的具体动作，以及他作为计划负责人对下游风险（IT 延期、运力缺口）应当预案却未预案的环节"
+    ]
+  }
+}

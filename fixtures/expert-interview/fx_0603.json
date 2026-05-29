@@ -1,0 +1,42 @@
+{
+  "id": "fx_0603",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "医疗事业部副总裁 (VP) — 区域连锁医院集团\n\n康宁医疗集团 — 医疗事业部 VP (2019至今)\n- 全面负责集团旗下 8 家医院的运营, 分管床位周转、医保控费与质量安全。\n- 主导 DRG 付费改革落地, 第一年就实现医保结余 4200 万元。\n- 注: 简历另一处写 DRG 项目是 2021 年才启动, 但此处称 2019 上任当年即完成全集团推广。\n- 任内门诊量从年 180 万人次增长到 260 万人次; 但分管范围一栏又写 『仅负责住院端运营, 不含门诊』。\n- 带领团队规模约 6000 人 (摘要处), 后文履历又写 『直接管理 3 个职能科室, 共约 120 人』。\n\n康宁医疗集团 — 运营总监 (2015-2019)\n- 负责单院运营, 推动平均住院日从 9.1 天降到 7.3 天。\n\n学历: 临床医学硕士、EMBA。",
+  "jd": "康宁医疗集团招聘一名医疗事业部 VP, 全面负责区域内多院区的运营管理。你将对床位周转效率、医保控费 (DRG/DIP 付费下的结余率)、医疗质量与患者安全负责, 并统筹院长团队完成集团战略目标。我们需要一位能把改革项目讲清楚的领导者: 项目何时启动、覆盖范围多大、由谁主导、产生了多少可核实的财务与运营结果。鉴于该岗位直接对集团 CEO 与董事会汇报, 我们尤其看重数据口径的一致性与可追溯性——你陈述的规模、时间线与结果必须经得起追问。岗位需与医保局、卫健委等外部机构对接, 并对外部审计负责。",
+  "history": [
+    { "q": "先界定一下您现在的分管范围——到底是 8 家医院的全部运营, 还是只负责住院端? 简历里这两处说法不太一致。" },
+    { "q": "您直接管理的团队规模, 是摘要里写的 6000 人, 还是后面履历写的 120 人? 请说明口径。" },
+    { "q": "DRG 付费改革, 到底是 2019 年上任当年完成全集团推广, 还是 2021 年才启动? 时间线请厘清。" },
+    { "q": "那 4200 万的医保结余, 是怎么核算出来的? 和谁的口径对齐过?" },
+    { "q": "门诊量从 180 万涨到 260 万, 如果您只分管住院端, 这个增长怎么算到您名下?" },
+    { "q": "好, 抛开口径问题, 请就 DRG 这一个项目, 完整讲一遍: 当时的情境、您定的目标、您具体做了什么、最后结果如何。" }
+  ],
+  "candidate_last_answer": "好, 我讲 DRG 这个项目。情境是当时医保从按项目付费转向 DRG, 集团如果不改, 超支风险很大, 几家院区的成本结构都偏粗放。目标我定得很明确: 要在付费改革的窗口期内把集团整体做到医保结余为正, 而不是被动接受扣款。我具体做的事包括: 牵头成立了跨院区的 DRG 管理办公室, 推动临床路径标准化, 重新设计了科室的成本核算口径, 还跟医保局做了多轮病组分值的沟通。这几件事是我亲自盯下来的, 院长团队按我定的节奏执行。至于最后的结果嘛……改革方向是对的, 各院区配合度也比预期高, 团队执行得很到位, 整体氛围和能力都上了一个台阶。这个项目让我对 DRG 下的精细化运营理解深了很多。",
+  "session_state": {
+    "drilled_topics": ["scope-inpatient-vs-all", "team-size-discrepancy", "drg-timeline-discrepancy", "savings-accounting-basis", "outpatient-growth-attribution"],
+    "current_competency_target": "results-verifiability",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "results-verifiability",
+    "missing_evidence": [
+      { "competency": "results-verifiability", "evidence_type": "metric" },
+      { "competency": "results-verifiability", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 改革方向是对的, 各院区配合度也比预期高, 团队执行得很到位",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete result the answer skipped — the actual DRG savings figure with its accounting basis and the year it was realized, reconciled against the resume's contradictory 2019-vs-2021 start date and the 4200万 claim"
+    ]
+  }
+}

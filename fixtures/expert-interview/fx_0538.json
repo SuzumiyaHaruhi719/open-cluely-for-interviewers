@@ -1,0 +1,53 @@
+{
+  "id": "fx_0538",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "陈宇 (Yu Chen)\n初级产品经理 / Associate Product Manager\n\n概述：3 年互联网产品经验，专注 B2C growth 和用户增长。负责过 DAU 千万级的社交 App 的核心功能。\n\n工作经历\n\n字节系某社交产品 — Associate PM (2022.06 - 至今)\n- 独立负责 onboarding 改版，把新用户 D1 retention 从 32% 提升到 41%。\n- 主导 push 策略优化，单独 owner，coordinate 了 5 个团队。\n- 注：本岗位为我第一份正式产品工作。\n\n某电商创业公司 — 产品经理 (2021.01 - 2022.05)\n- 从 0 到 1 搭建会员体系，带领 8 人产品团队。\n- 负责 GMV 增长，季度环比 +20%。\n\n实习 — 某大厂数据中台 (2020.06 - 2020.09)\n- 数据看板需求梳理。\n\n教育\n- 本科 2019 届毕业（2015-2019），市场营销专业。\n- 注：2021 年期间为全职在校研究生，同时全职工作。\n\n技能：Axure、SQL（基础）、A/B test 设计、PRD 撰写。",
+  "jd": "Associate Product Manager — 某出海工具类 App。我们正在寻找一位初级 PM 加入 growth 团队，负责新用户激活和留存。你将 own 一到两个核心 funnel，设计并跑 A/B 实验，和数据、设计、研发紧密协作。我们看重 ownership、对 metric 的诚实态度，以及把一个增长假设讲清楚的能力。理想候选人能清楚地区分『我做的』和『团队做的』，并且能在被 challenge 数据时保持冷静、用证据回应。",
+  "history": [
+    { "q": "先介绍一下你目前在做的产品，以及你具体负责哪一块。" },
+    { "q": "你简历上写 onboarding 改版把 D1 retention 从 32% 提到 41%，这个项目的背景是什么？" },
+    { "q": "这个 onboarding 项目是你独立负责的吗？还有谁参与？" },
+    { "q": "41% 这个数字是怎么测的？用的什么口径、跑了多久？" },
+    { "q": "我注意到这是你写的第一份正式产品工作，但上一段你又写了带 8 人团队做会员体系，这两个怎么对应？" },
+    { "q": "2021 年那段，你简历上同时写了全职工作和全职在校研究生，能解释一下时间线吗？" },
+    { "q": "我们先放下时间线。说说 push 策略那个项目，你作为 single owner 具体做了什么决策？" },
+    { "q": "你说 coordinate 了 5 个团队，能点名是哪几个团队、各自负责什么吗？" },
+    { "q": "push 优化之后哪个 metric 动了？提升了多少？" },
+    { "q": "你怎么排除这个提升不是大盘自然波动或者其他活动带来的？" },
+    { "q": "会员体系那个项目，GMV 季度环比 +20%，这里面你个人的贡献是哪部分？" },
+    { "q": "带 8 人团队，你当时是什么 title？谁向你汇报？" },
+    { "q": "你刚才对几个数字的解释和简历不太一致，我想确认一下哪个是准确的。" },
+    { "q": "我们换个角度。如果让你重新做 onboarding 改版，你会怎么验证那个 retention 提升是真实的？" },
+    { "q": "你觉得一个初级 PM 在汇报 metric 的时候，最容易犯的错误是什么？" },
+    { "q": "回到 push 项目——你作为 owner，如果实验结果不显著，你会怎么跟团队和老板说？" }
+  ],
+  "candidate_last_answer": "我觉得你这么一直 challenge 数字其实没什么意义。这些 metric 都是真实跑出来的，41% 就是 41%，你要是不信我也没办法。说实话之前面试我的人没有一个像你这样一直 grill 时间线的，时间线那些就是简历格式问题，HR 模板填的。push 项目我就是 owner，我说了算，结果好不好你看 retention 涨了就知道了。你要纠结口径那是你的问题，反正数据是对的。",
+  "session_state": {
+    "drilled_topics": ["current-product-scope", "onboarding-background", "onboarding-ownership", "retention-measurement", "resume-contradiction-firstjob", "timeline-contradiction-2021", "push-ownership", "named-teams", "push-metric", "confound-control", "gmv-contribution", "team-lead-title"],
+    "current_competency_target": "data-integrity",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "data-integrity",
+    "missing_evidence": [
+      { "competency": "data-integrity", "evidence_type": "metric" },
+      { "competency": "data-integrity", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 41% 就是 41%，你要是不信我也没办法",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a precise, falsifiable account of the retention measurement — the exact cohort definition, the denominator, the observation window, and any holdout — so the bald assertion that the number is simply correct can be checked rather than asserted"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "fx_0585",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "应届金融硕士｜券商研究所实习生（拟转正）\n\n实习项目一：行业研究助理（消费板块）\n- 情境：所在研究小组覆盖的休闲食品板块缺一份系统的渠道库存跟踪表。\n- 任务：在三周内独立搭建一份覆盖六家上市公司的月度渠道库存与动销跟踪模型。\n- 行动：整理各家季报与电话会纪要，设计库存周转与动销假设，向带教分析师确认口径后录入数据。\n- 结果：模型纳入小组常用底稿，带教分析师在两份深度报告中引用了其中的数据。\n\n实习项目二：盈利预测复核\n- 情境：组里一家覆盖标的的盈利预测模型存在多处历史数据与年报对不上的情况。\n- 任务：负责逐行复核近三年利润表与现金流量表的勾稽关系。\n- 行动：比对年报附注，标记差异项，整理成复核清单提交带教分析师。\n- 结果：修正了七处录入错误，模型重新通过组内质检。\n\n技能：Wind、Excel 建模、三大报表勾稽、行业比较分析。在校曾获 CFA 一级。",
+  "jd": "我们券商研究所招聘消费组研究实习生（表现优异可转正）。该岗位协助资深分析师完成行业与公司研究，日常工作包括搭建与维护财务模型、整理产业链与渠道调研数据、撰写点评初稿，并对盈利预测的数据准确性负责。你需要在分析师指导下独立完成一家公司的盈利预测复核，确保三大报表勾稽无误。我们看重候选人的数据严谨度、对错误的归因能力以及在压力下交付的稳定性，要求熟练使用 Wind 与 Excel，具备扎实的财务报表基本功，CFA 一级或在考者优先。",
+  "history": [
+    { "q": "先说说你这段券商实习里，带教分析师真正放手让你独立做的是哪部分。" },
+    { "q": "渠道库存跟踪模型，六家公司的数据口径是你定的还是分析师给的？" },
+    { "q": "你说模型被两份深度报告引用，具体引用了哪个指标？" },
+    { "q": "动销假设你是怎么设的？依据是什么？" },
+    { "q": "换到盈利预测复核。你说修正了七处录入错误，举一处最关键的。" },
+    { "q": "三大报表勾稽，你具体核的是哪几条等式？" },
+    { "q": "那七处错误原来是谁录入的？你怎么发现的？" },
+    { "q": "复核清单提交后，分析师有没有让你返工？" },
+    { "q": "现在讲一次你交付出问题的经历，哪怕是小事。" },
+    { "q": "你刚说那次数据交晚了，晚了多久？" },
+    { "q": "那份数据最后是谁补上的？" },
+    { "q": "如果重来一次，从你拿到任务那天起，你自己会怎么安排？" },
+    { "q": "具体讲，那次延误里，属于你个人没做到位的是哪一步？" }
+  ],
+  "candidate_last_answer": "那次主要是因为别人给我的原始数据本身就有问题。Wind 导出的口径前后不一致，前面带我的那位分析师又临时请假没人确认，组里另一个实习生答应帮我核但一直没回。我能做的部分都做完了，是这些外部条件没配合上，才导致最后交晚了。换谁在那个位置都快不了。",
+  "session_state": {
+    "drilled_topics": ["intern-scope", "channel-model-ownership", "report-citation", "sell-through-assumptions", "forecast-review", "statement-articulation", "error-source", "rework", "delivery-miss"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 是这些外部条件没配合上",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人在数据延误中实际负责的一步（如未尽早核对口径、未主动升级求助或未预留缓冲），以及他本可独立采取的具体补救动作"
+    ]
+  }
+}

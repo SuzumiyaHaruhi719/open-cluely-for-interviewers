@@ -1,0 +1,51 @@
+{
+  "id": "fx_0600",
+  "tags": {
+    "industry": "customer-support",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "clean-STAR",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "客户支持专员 (初级) — SaaS 在线客服\n\n速达云 — 客户支持专员 (2023至今)\n情境: 团队工单积压, 高峰期首次响应时间一度超过 30 分钟, 客户满意度下滑。\n任务: 我负责把自己负责队列的首响时间压到 5 分钟以内, 并提升一次解决率。\n行动: 整理了一份高频问题的标准话术库, 把常见退款和发票问题做成自助回复模板, 主动在班次内优先认领高优先级工单。\n结果: 我的队列首响时间从平均 18 分钟降到 4 分钟, 一次解决率从 71% 提升到 86%, 个人 CSAT 连续两季度排在小组第一。\n\n速达云 — 客服实习生 (2022-2023)\n负责工单分类与基础答疑。\n\n技能: Zendesk、话术撰写、基础 SQL 查询、退款流程。",
+  "jd": "速达云招聘一名初级客户支持专员, 负责处理付费用户的工单与在线咨询。你将对首次响应时间 (FRT)、一次解决率 (FCR) 和客户满意度 (CSAT) 三个指标负责, 在班次内认领并闭环高优先级工单。我们希望候选人能就一个具体的改进动作讲清楚: 你做了什么、为什么这么做、带来了多少可量化的变化。该岗位需要严格遵守退款与隐私合规要求——任何超出权限的退款、绕过审批流程或向未验证身份的来电者透露账户信息都是红线。你将与二线技术支持和财务对接, 并参与每周的工单复盘会, 用数据说明问题根因。",
+  "history": [
+    { "q": "先介绍一下你现在负责的队列——每天大概多少工单, 主要是哪类问题?" },
+    { "q": "简历里说首响时间从 18 分钟降到 4 分钟, 这个 4 分钟是怎么统计的?" },
+    { "q": "你做的标准话术库, 具体覆盖了哪些高频问题?" },
+    { "q": "一次解决率从 71% 到 86%, 你觉得主要是哪个动作带来的?" },
+    { "q": "讲一个你处理过的最棘手的退款工单, 当时情况是怎样的?" },
+    { "q": "那次退款, 审批流程是怎么走的, 谁最终批准的?" },
+    { "q": "如果客户情绪很激动、一直催, 但金额超出你的权限, 你会怎么处理?" },
+    { "q": "你怎么验证来电客户的身份, 才会跟他讨论账户细节?" },
+    { "q": "有没有遇到过为了让客户满意, 而想走捷径的时候?" },
+    { "q": "再具体一点——那次你说的捷径, 到底做了什么?" },
+    { "q": "自助回复模板上线后, 有没有出现回复不准确、反而惹恼客户的情况?" },
+    { "q": "每周复盘会上, 你一般负责讲哪部分数据?" },
+    { "q": "你和二线技术支持是怎么协作交接工单的?" },
+    { "q": "回到刚才那个超权限退款的场景——请只讲那一次, 你当时具体怎么做的, 最后金额是谁批的?" }
+  ],
+  "candidate_last_answer": "哦对那次啊, 其实说到退款我就想起来, 我们当时整个团队氛围特别好, 组长人也很 nice, 经常带我们团建, 上次还一起去爬山。说回工单的话, 我觉得做客服最重要的是心态, 你得情绪稳定, 不能被客户带跑。我平时还会看一些沟通技巧的书。那个客户当时其实挺着急的, 金额也确实超了我的额度, 不过他态度后来还行。哦对了我最近在自学 Python, 想以后能做点数据分析的活儿。那次退款……嗯, 反正最后是退下来了, 客户挺满意的, 走的流程嘛, 大差不差就那样, 我记不太清细节了, 反正没出什么问题就对了。",
+  "session_state": {
+    "drilled_topics": ["queue-scope", "frt-measurement", "macro-library", "fcr-attribution", "hard-refund-case", "refund-approval-path", "over-limit-escalation", "identity-verification", "shortcut-temptation", "shortcut-specifics", "macro-accuracy-risk", "retro-data-ownership", "tier2-handoff"],
+    "current_competency_target": "process-compliance",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "process-compliance",
+    "missing_evidence": [
+      { "competency": "process-compliance", "evidence_type": "owner-of-action" },
+      { "competency": "process-compliance", "evidence_type": "scope" },
+      { "competency": "integrity", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": ["possible-unapproved-refund-or-bypassed-approval: candidate vaguely admits an over-limit refund 『走的流程嘛, 大差不差就那样』 and cannot or will not name who approved it, brushing the stated refund-approval red line"],
+    "top_question_traits": [
+      "must-anchor-on: 走的流程嘛, 大差不差就那样, 我记不太清细节了",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: the specific approver's name or role for the over-limit refund and the exact approval steps taken — forcing the candidate off the team-building tangent to either confirm a proper escalation or reveal the approval was skipped"
+    ]
+  }
+}

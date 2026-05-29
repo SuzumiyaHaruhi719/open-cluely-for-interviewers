@@ -1,0 +1,48 @@
+{
+  "id": "fx_0572",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "陈伟 — 高级制造工艺工程师\n\n现任：龙腾精密机械 高级工艺工程师（2019至今）\n之前：华翔汽车零部件 工艺工程师（2015-2019）\n\n核心经历：\n- 负责注塑与冲压产线的工艺优化与良率提升\n- 主导某发动机支架产线的节拍改善项目\n- 推动产线防错（防呆）方案落地，降低人为缺陷\n- 参与新产品导入（NPI）的工艺验证与首件检验\n\n技能：精益生产、SPC、FMEA、节拍分析、CNC编程基础\n学历：机械工程 学士\n证书：六西格玛绿带",
+  "jd": "龙腾精密机械招聘高级制造工艺工程师，负责一条年产能约80万件的金属冲压与注塑混线产线的整体工艺与良率。你将主导良率提升、节拍改善与停机时间削减，目标是把综合良率从92%提升到97%、把换模时间（SMED）从45分钟压缩到15分钟以内。该岗位需要扎实的精益与六西格玛经验，能独立带领跨职能改善小组（含设备、质量、生产），并向制造总监汇报项目进展与财务收益。要求有量产环境下从问题定义到根因关闭的完整闭环经验，能用SPC与FMEA支撑决策。",
+  "history": [
+    { "q": "先介绍一下你在龙腾精密现在负责的产线范围和你的角色。" },
+    { "q": "你简历里提到主导了发动机支架产线的节拍改善，这条产线原来的节拍是多少？" },
+    { "q": "改善之后节拍达到了什么水平？用了多长时间？" },
+    { "q": "这个节拍改善项目里，你个人具体做了哪些事？团队又是谁做的？" },
+    { "q": "你提到推动了防错方案，能讲一个具体的缺陷模式和你的对策吗？" },
+    { "q": "那个防错方案上线后，缺陷率从多少降到了多少？" },
+    { "q": "我们这边一个核心痛点是换模时间，你做过SMED吗？" },
+    { "q": "讲一个你做SMED的具体案例：当时换模多久，瓶颈在哪？" },
+    { "q": "好，现在我想听一个完整的故事：一次你负责把某条产线的良率显著拉升的经历。" },
+    { "q": "当时的背景和目标是什么？良率卡在多少？" },
+    { "q": "那你具体是怎么做的？最后良率到了多少、花了多久？" }
+  ],
+  "candidate_last_answer": "当时那条注塑产线的良率一直在91%上下波动，客户投诉也比较多，厂长给我们定的目标是要冲到96%。我接手以后先拉了一个跨部门的小组，把近三个月的不良数据按缺陷类型做了帕累托，发现飞边和缩水占了七成。然后我组织大家围绕模温和保压做了一轮DOE，重新设定了工艺窗口，又加了模温机的联动监控。这一套打法我们坚持推下去，团队配合得也很好，整体节奏抓得很紧。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "takt-improvement-baseline", "takt-improvement-result", "personal-vs-team-action", "poka-yoke-defect-mode", "defect-rate-delta", "smed-experience", "smed-case-detail", "yield-story-setup", "yield-baseline"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "timeline" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这一套打法我们坚持推下去，团队配合得也很好",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the final yield number actually achieved versus the 96% target and how many weeks the DOE-plus-mold-temperature fix took to stabilize, since the candidate set up a full STAR but omitted the Result"
+    ]
+  }
+}

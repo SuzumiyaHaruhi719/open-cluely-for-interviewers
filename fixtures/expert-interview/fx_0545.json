@@ -1,0 +1,49 @@
+{
+  "id": "fx_0545",
+  "tags": {
+    "industry": "operations",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "self-contradictory",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "TOBIAS HEMMINGER\nSenior Operations Manager — Logistics & Fulfillment\n\nSUMMARY\nSenior operations leader with experience scaling fulfillment networks and running large distribution sites.\n\nEXPERIENCE\n\nSenior Operations Manager — Vantage Fulfillment (2020-present)\n- Ran the West Coast fulfillment hub; responsible for throughput, labor, and safety.\n- Led a major automation rollout across the network.\n- Note: in this role I managed a team of 12 direct reports.\n- Elsewhere on this resume I reference leading 400+ associates in the same role.\n\nOperations Manager — Cascade Distribution (2017-2020)\n- Oversaw a single distribution center with 400+ associates across three shifts.\n- Reduced cost-per-unit through process redesign.\n- Note: start date listed here as 2017, though my education section implies I was still completing my degree full-time through 2018.\n\nShift Supervisor — Cascade Distribution (2016-2017)\n\nEDUCATION\nB.S., Supply Chain Management — completed 2018 (full-time program 2014-2018).\n\nSKILLS\nWMS, labor planning, Lean/Six Sigma (Green Belt), automation deployment, safety compliance, S&OP.",
+  "jd": "Senior Operations Manager — Keystone Logistics, a third-party fulfillment provider. You will own a major distribution site: throughput, labor productivity, safety, and cost-per-unit. You will lead automation and process-improvement initiatives and report results to regional leadership. In interviews we look for tight, specific storytelling: a clear timeline, the precise actions you took, and quantified outcomes. We respect confidentiality, but strong candidates can still convey the shape of their results and their personal role without disclosing anything proprietary.",
+  "history": [
+    { "q": "Walk me through your current scope at Vantage — site size, headcount, the metrics you own." },
+    { "q": "I see a team of 12 in one place and 400+ associates in another for the same role — which is it?" },
+    { "q": "Tell me about the automation rollout you led. What was the goal?" },
+    { "q": "What was the baseline throughput before automation, and where did it land?" },
+    { "q": "What was your personal role in that rollout versus the vendor's or corporate's?" },
+    { "q": "Let's talk cost-per-unit at Cascade. How much did you take out, and over what period?" },
+    { "q": "What specific process did you redesign to get there?" },
+    { "q": "Were there any safety tradeoffs in pushing throughput? How did you manage them?" },
+    { "q": "Tell me about a time the automation rollout went sideways. What happened?" },
+    { "q": "How did you measure labor productivity before and after?" },
+    { "q": "What did you personally do in the first 30 days of the rollout?" },
+    { "q": "Of all of this, what's the single result you're proudest of, with a number?" },
+    { "q": "I just need one concrete figure for the automation throughput gain — what was it?" }
+  ],
+  "candidate_last_answer": "Yeah, so the throughput number — I really wish I could hand you the exact figure, but that one's covered under an NDA with the automation vendor, so I have to be careful there. What I can say is it was a meaningful lift. And honestly the whole rollout reminds me of this thing we ran into with the break-room schedules, which sounds minor but it was a whole saga — we had three shifts and the micro-kitchen vendor kept missing deliveries, and I ended up spending two weeks just on that, which taught me a ton about supplier management. Oh, and that same quarter we also repainted the dock lanes for a safety audit, which was its own adventure. People underestimate how much of ops is just that kind of blocking and tackling. Anyway, the automation thing went well, I just can't share the specific percentage.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "headcount-contradiction", "automation-goal", "automation-baseline", "automation-personal-role", "cost-per-unit-delta", "process-redesign", "safety-tradeoffs", "automation-failure", "labor-productivity-measurement", "first-30-days"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 40
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it was a meaningful lift",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a quantified shape of the throughput result the candidate can share without breaching the NDA — a percentage range, a relative multiple, or a units-per-hour delta — pulling them off the break-room and dock-lane tangents back to the one figure asked for"
+    ]
+  }
+}

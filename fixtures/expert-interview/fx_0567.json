@@ -1,0 +1,53 @@
+{
+  "id": "fx_0567",
+  "tags": {
+    "industry": "marketing",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Junior Growth Marketing Associate\n\nProfile\nEarly-career marketer with about two years of experience across performance and content marketing for direct-to-consumer brands. Comfortable with paid social, email lifecycle, and basic analytics.\n\nExperience\nBrightLeaf DTC — Growth Marketing Associate (2023–present)\n- Ran paid social campaigns across Meta and TikTok, managing a monthly budget I was fully responsible for\n- Note: elsewhere in this resume I describe the same role as 'supported the senior marketer on paid social; did not own budget'\n- Built and sent the weekly email newsletter; improved open rates over time\n- Helped launch two new product lines with coordinated content calendars\n- Reported on campaign performance to the marketing lead\n\nPixelter Agency — Marketing Intern (2022–2023)\n- Assisted account managers with content scheduling and basic reporting\n- Drafted social copy and gathered competitor research\n\nSkills\nMeta Ads Manager, TikTok Ads, basic SQL, Google Analytics, email tools (Klaviyo), content calendars, A/B testing basics\n\nEducation\nB.A. in Communications, 2022",
+  "jd": "We are hiring a Junior Growth Marketing Associate for a fast-moving DTC brand. You will support and increasingly own paid social campaigns (Meta, TikTok), run the email lifecycle program, and report on performance using Google Analytics and the ad platforms. Responsibilities: manage day-to-day campaign optimization, run structured A/B tests, maintain the content calendar, and produce weekly performance reports. We value: hands-on familiarity with the ad platforms, honesty about what you personally owned versus supported, basic comfort with metrics (CPA, ROAS, CTR, open/click rates), and the ability to explain why a campaign did or didn't work. This is an entry-level role; we expect specifics, not buzzwords.",
+  "history": [
+    { "q": "Tell me about your current role at BrightLeaf — what do you own day to day?" },
+    { "q": "There's a contradiction on your resume: one line says you were 'fully responsible' for the paid social budget, another says you 'did not own budget' and supported the senior marketer. Which is accurate?" },
+    { "q": "Okay — for the campaigns you touched, what platform did most of the spend go to, and roughly how much per month?" },
+    { "q": "What was the ROAS or CPA on your best-performing campaign?" },
+    { "q": "You said you improved newsletter open rates. From what to what?" },
+    { "q": "What specifically did you change that moved the open rate?" },
+    { "q": "Walk me through one A/B test you ran end to end — the hypothesis, the variants, and the result." },
+    { "q": "On the two product launches, what was your specific contribution versus the team's?" },
+    { "q": "Which metric did you report to the marketing lead most often, and what did a good week look like?" },
+    { "q": "Tell me about a campaign that underperformed. What did you conclude was the cause?" },
+    { "q": "If I gave you a campaign with a CPA double the target, what would you check first?" },
+    { "q": "Let's go back to the budget question — give me a single concrete number: the largest monthly spend you personally adjusted." },
+    { "q": "And the open-rate improvement — I still don't have the two numbers. What was the starting open rate?" },
+    { "q": "For that one A/B test, what was the actual percentage difference between the variants?" },
+    { "q": "What does ROAS stand for, and how would you calculate it for one of your campaigns?" },
+    { "q": "I'm hearing a lot of general statements. Give me one specific, verifiable result from the last year with an actual number attached." }
+  ],
+  "candidate_last_answer": "Yeah, so I mean, the results were generally pretty positive overall. We were always optimizing and iterating, and the campaigns did well across the board. The open rates went up, the engagement was strong, and the team was happy with the direction. I don't have an exact number off the top of my head, but I'd say things definitely improved a lot during my time there.",
+  "session_state": {
+    "drilled_topics": ["role-ownership", "budget-contradiction", "spend-platform-amount", "best-campaign-roas", "open-rate-delta", "open-rate-lever", "ab-test-walkthrough", "launch-contribution", "reported-metric", "underperforming-campaign", "high-cpa-diagnosis", "largest-spend-number", "open-rate-start", "ab-test-percentage", "roas-definition"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "data-literacy", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I don't have an exact number off the top of my head",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete, verifiable figure with a unit and timeframe (e.g. starting vs ending open rate, or largest monthly spend adjusted) that the candidate can actually produce, breaking the pattern of generalities and revealing whether any real numeric result exists"
+    ]
+  }
+}

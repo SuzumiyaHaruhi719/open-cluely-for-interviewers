@@ -1,0 +1,42 @@
+{
+  "id": "fx_0564",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "高级人力资源业务伙伴 / Senior HRBP\n\n概述\n十年人力资源经验，其中七年专注 HRBP 与组织发展方向，服务过技术研发与销售两类组织。擅长组织诊断、人才盘点、绩效体系落地与员工关系处理。\n\n工作经历\n星桥科技 — 高级 HRBP (2020 至今)\n· 支持研发中心约八百人的组织，直接对接三位 VP\n· 主导一次研发组织的人才盘点与继任计划，覆盖核心岗位\n· 操盘一次涉及一百二十人的组织调整，离职合规零投诉\n· 注：本段又称『我从不直接参与裁员相关工作，只做正向人才发展』，与上文组织调整经历前后矛盾\n\n云帆网络 — HRBP (2016 至 2020)\n· 支持销售组织，负责招聘、绩效校准与员工关系\n· 推动新人 onboarding 体系优化\n\n早期 — 招聘专员 → 招聘主管 (2014 至 2016)\n\n技能\n组织诊断、人才盘点、绩效管理、员工关系、薪酬沟通、HRBP 业务伙伴、变革管理\n\n教育\n人力资源管理本科",
+  "jd": "我们正在为快速扩张的研发组织招聘一名 Senior HRBP，支持约六百到八百人的技术团队，直接对接业务线 VP。岗位职责：负责组织诊断与人才盘点、推动绩效与校准 (calibration) 落地、处理复杂员工关系与组织调整、用数据支撑组织健康度决策。我们看重：真实操盘过组织调整或人才盘点项目的经验、能讲清楚自己在敏感事件中的具体角色与判断、扎实的员工关系处理能力、以及在合规与人情之间做平衡的成熟度。这是一个高敏感度的资深岗位，期望候选人坦诚区分『团队做的』和『自己做的』。",
+  "history": [
+    { "q": "先讲讲你现在在星桥科技支持的组织范围，对接到什么层级。" },
+    { "q": "你提到主导过一次研发组织的人才盘点。讲讲这个盘点是怎么设计和落地的。" },
+    { "q": "我注意到简历里有个矛盾：一处说你操盘过一百二十人的组织调整，另一处又说你从不直接参与裁员。哪个是真实情况？" },
+    { "q": "既然你确实参与了那次组织调整，完整讲一下：当时的背景、你的职责、你具体做了什么、结果如何。" },
+    { "q": "在那次调整里，最让你为难的一个具体决定是什么？" },
+    { "q": "你说『离职合规零投诉』——你是怎么确保这一点的，具体做了哪些动作？" }
+  ],
+  "candidate_last_answer": "我先澄清那个矛盾：简历那句『从不参与裁员』是早期版本留下的措辞，不准确，真实情况是我确实主导了那次组织调整，我应该删掉那句,这是我的疏忽。完整讲一下：背景是二零二二年底公司一条研发产品线被战略性砍掉，涉及一百二十人需要安置，HR 这边由我作为 HRBP 牵头。我的职责是设计整个安置方案并保证合规和体验。我具体做了四件事：第一，我和法务、业务负责人一起把一百二十人分成『内部转岗』『协商离职』两类,最后约四十五人内部转岗、七十五人协商离职；第二，对协商离职的人，我设计了高于法定标准的补偿包 (N+2) 并提前和工会、法务对齐；第三，我培训了所有参与谈话的管理者,统一话术、统一流程，并要求每场谈话 HR 在场；第四，我们搭了一个为期两个月的再就业支持，包括内推和简历辅导。结果是七十五人全部签署协议、零劳动仲裁、零公开投诉，整个过程四十天内完成，内部转岗的四十五人六个月留存率百分之九十以上。这件事我最大的体会是合规是底线、体面才是关键。",
+  "session_state": {
+    "drilled_topics": ["hrbp-scope", "talent-review-design", "resume-contradiction-layoff", "reorg-full-story", "hardest-decision", "zero-complaint-mechanism"],
+    "current_competency_target": "stakeholder-judgement",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "stakeholder-judgement",
+    "missing_evidence": [
+      { "competency": "stakeholder-judgement", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 合规是底线、体面才是关键",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: a specific instance where 合规 and 体面 actually conflicted in that reorg and how the candidate personally chose between them — e.g. a case where the compliant action would have felt cold and what they traded off — rather than a tidy slogan summarizing the outcome"
+    ]
+  }
+}

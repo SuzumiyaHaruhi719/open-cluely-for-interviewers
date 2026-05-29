@@ -1,0 +1,46 @@
+{
+  "id": "fx_0556",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Marcus Whitfield — Junior Supply Chain Analyst\n\n2 years in inbound logistics and inventory planning.\n\nDelara Goods — Supply Chain Analyst (2023–present)\n- Manage reorder points and safety stock for ~140 SKUs in the home-goods category.\n- Run weekly purchase-order proposals; coordinate with two 3PL warehouses.\n- Built a stockout-tracking sheet used by the planning team.\n\nPrior: 6-month logistics internship at a regional distributor.\n\nEducation: B.S. Supply Chain Management.\nTools: Excel, NetSuite, basic SQL.",
+  "jd": "Northvale Distribution is hiring a Junior Supply Chain Analyst to support inventory planning for our home and kitchen categories (~1,200 SKUs across three DCs). Reporting to the Demand Planning Manager, you will maintain reorder points and safety stock, generate weekly PO proposals, monitor stockouts and excess, and help improve forecast accuracy. We want an analyst who can explain the actual mechanics of their work — how a safety-stock number was derived, what assumptions went in, and how they validated it — not just which tool they used. Candidates who can give precise figures and reasoning will stand out. 1–3 years in inventory/replenishment preferred; comfort with Excel and an ERP required.",
+  "history": [
+    { "q": "Tell me about your current scope at Delara — how many SKUs and what you own." },
+    { "q": "How do you set the reorder point for a given SKU? Walk me through the calculation." },
+    { "q": "Where do you get the lead-time and demand-variability inputs?" },
+    { "q": "Give me a specific SKU where you changed the safety stock recently. What did you change and why?" },
+    { "q": "What was the service-level target you were solving for on that SKU?" },
+    { "q": "How did you validate that the new safety-stock level was actually better?" },
+    { "q": "Tell me about a stockout you caught early. What did you do?" },
+    { "q": "When you raised safety stock on that SKU, what happened to holding cost — did anyone push back?" },
+    { "q": "Across your 140 SKUs, how do you decide which ones to review first each week?" },
+    { "q": "On that ABC prioritization — how exactly did you classify the SKUs into A, B, and C?" }
+  ],
+  "candidate_last_answer": "I classified them by annual usage value — unit cost times annual demand — and ranked all 140 descending. The top ~20% of SKUs that drove roughly 78% of usage value I tagged A and review every week. The next band, about 30% of SKUs covering the next ~17% of value, are B and I review biweekly. The remaining ~50% are C, reviewed monthly. I pulled twelve months of demand and cost from NetSuite into Excel, computed cumulative value share, and set the A/B/C cut lines at the 80% and 95% cumulative marks. I refresh the classification quarterly because a couple of seasonal SKUs jump bands.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "reorder-point-calc", "input-sources", "safety-stock-change", "service-level-target", "validation-method", "early-stockout", "holding-cost-pushback", "weekly-review-priority"],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I refresh the classification quarterly because a couple of seasonal SKUs jump bands",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: how he handles the limits of a pure usage-value ABC model — e.g. a low-value but business-critical or long-lead SKU that ABC would under-prioritize — testing whether he reasons about criticality/lead-time beyond the mechanical classification he just nailed"
+    ]
+  }
+}

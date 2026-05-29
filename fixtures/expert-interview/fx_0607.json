@@ -1,0 +1,49 @@
+{
+  "id": "fx_0607",
+  "tags": {
+    "industry": "education",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "VP of Academic Programs — online higher-education provider\n\nMeridian Online University — VP, Academic Programs (2018-present)\n- Owns curriculum strategy, faculty operations, and learning outcomes across 40+ degree programs.\n- Summary states: grew enrollment from 12,000 to 30,000 students.\n- Experience bullet later states: \"led the program portfolio while enrollment held flat at ~18,000 amid a tightening market.\"\n- Drove course-completion rate from 61% to 78% (summary), though a later line reports completion \"improved modestly, roughly 4 points, over my tenure.\"\n- Reduced cost-per-completion via a shared-services faculty model.\n- Note: title shows VP since 2018, but a credentials line lists \"promoted to VP in 2021 after three years as Dean of Faculty.\"\n\nMeridian Online University — Dean of Faculty (2015-2018)\n- Standardized course-design rubric across programs.\n\nPrior: Riverton College — Department Chair, Business (2010-2015)\n\nCredentials: EdD, Higher Ed Leadership; board member, regional accreditation working group.",
+  "jd": "Meridian Online University seeks a VP of Academic Programs to own learning outcomes and program economics across our online degree portfolio. You will be accountable for board-level metrics — enrollment growth, course-completion rate, cost-per-completion, and accreditation standing — and must reconcile academic quality with financial sustainability in a market where enrollment has softened sector-wide. We need a leader who speaks precisely and consistently about their own track record: the same metric should mean the same thing every time you cite it. You will defend program decisions to the provost, the board, and accreditors, all of whom will press on the causal link between your interventions and the outcomes you claim. Expect rigorous scrutiny of attribution, timelines, and the tradeoffs you made between growth, completion, and cost.",
+  "history": [
+    { "q": "Walk me through your current scope at Meridian — programs, faculty, and the metrics you own." },
+    { "q": "Your resume cites enrollment growing from 12,000 to 30,000 in one place and holding flat at ~18,000 in another. Which is it?" },
+    { "q": "Same question on completion: 61% to 78%, or 'roughly 4 points'? Reconcile those for me." },
+    { "q": "When exactly did you become VP — 2018, as the title says, or 2021 per the credentials line?" },
+    { "q": "Let's set the resume aside. Pick the completion-rate work and tell me the actual baseline and endpoint." },
+    { "q": "What specific intervention drove completion — the course-design rubric, the shared-services faculty model, or something else?" },
+    { "q": "How did you isolate that intervention's effect from the shift in student mix as enrollment changed?" },
+    { "q": "What did the shared-services faculty model do to cost-per-completion, in dollars or percentage?" },
+    { "q": "Did the shared-services model trade off against anything — faculty satisfaction, contact hours, quality scores?" },
+    { "q": "Who owned the accreditation relationship during this period — you or the provost?" },
+    { "q": "Tell me about a program you decided to sunset. What was the enrollment and completion data behind that call?" },
+    { "q": "What did you get wrong in the portfolio strategy, and what did it cost?" },
+    { "q": "Give me the one number you're most confident in across your whole tenure, and tell me precisely how it was measured." }
+  ],
+  "candidate_last_answer": "Well, before I answer that — let me ask you something. What's the metric this board actually cares about most? Because I can talk completion, I can talk cost-per-completion, I can talk enrollment, but they tell very different stories depending on what you're optimizing for. So what would you want me to be confident in — and frankly, how is your team currently measuring completion today? Because if your definition counts withdrawals differently than mine did, then my number and your number aren't even comparable, and I'd hate to give you a figure that you then can't reconcile against your own dashboard. So tell me which one matters to you and I'll go deep on that one.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "enrollment-discrepancy", "completion-discrepancy", "vp-date-discrepancy", "completion-actuals", "completion-intervention", "intervention-isolation", "cost-per-completion", "shared-services-tradeoff", "accreditation-ownership", "program-sunset-decision", "portfolio-mistake"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: how is your team currently measuring completion today",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one number the candidate will personally stand behind with its exact measurement definition (numerator, denominator, treatment of withdrawals, time window) — refusing to let the candidate redirect the burden of definition onto the interviewer and forcing them to commit to a single figure that reconciles the resume's contradictions"
+    ]
+  }
+}

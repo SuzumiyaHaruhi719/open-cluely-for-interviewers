@@ -1,0 +1,55 @@
+{
+  "id": "fx_0546",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "RENATA OYELARAN-FISCHER\nVice President, Data & Analytics\n\nSUMMARY\nData executive with 16 years building analytics organizations, data platforms, and ML capabilities across fintech and retail. Repeated success standing up data functions from scratch and scaling them.\n\nEXPERIENCE\n\nVP, Data & Analytics — Argent Financial (2019-present)\n- Built the data org from the ground up; grew it to 60 people across analytics, data engineering, and ML.\n- Note: elsewhere I describe inheriting an existing 45-person team here and restructuring it.\n- Owned the migration from an on-prem warehouse to a cloud lakehouse.\n- Reduced data-platform cost while improving freshness.\n- Reported to the CTO; later note says I reported to the CFO during the same period.\n\nSenior Director, Analytics — Halewood Retail (2014-2019)\n- Led analytics for merchandising and supply chain.\n- Delivered a demand-forecasting capability that improved in-stock rates.\n- Note: tenure listed as 2014-2019, but the role below overlaps it through 2016 in a different city.\n\nDirector, BI — Halewood Retail (2013-2016)\n- Ran the BI and reporting function.\n\nEDUCATION\nM.S., Statistics; B.S., Economics.\n\nSKILLS\nData strategy, lakehouse architecture, ML platform, org design, governance, executive stakeholder management, Snowflake, dbt, Spark.",
+  "jd": "Vice President, Data & Analytics — Meridian Commerce. You will own the company's data strategy, platform, and analytics/ML organization, reporting to the CTO. We expect a leader who can speak precisely about org structure, platform economics, and outcomes — and who responds to scrutiny with evidence rather than defensiveness. In the interview we will probe apparent inconsistencies in your history and the specific, quantified results of platform and organizational changes you led. We value executives who can calmly reconcile the record and own the details.",
+  "history": [
+    { "q": "Give me the shape of your current org at Argent — headcount, sub-teams, who you report to." },
+    { "q": "Did you build that team from scratch, or inherit and restructure it? Your resume says both." },
+    { "q": "What was the headcount on day one versus today?" },
+    { "q": "Who exactly did you report to during the lakehouse migration — CTO or CFO?" },
+    { "q": "Walk me through the on-prem to lakehouse migration. What was the driver?" },
+    { "q": "What was the platform cost before and after, in absolute terms?" },
+    { "q": "You said cost went down and freshness went up — quantify the freshness improvement." },
+    { "q": "What was your personal role in the migration versus your engineering leads?" },
+    { "q": "Let's reconcile the Halewood dates — the Senior Director and Director roles overlap. How?" },
+    { "q": "The demand-forecasting work — what was the in-stock rate before and after?" },
+    { "q": "How did you attribute the in-stock improvement to the forecasting model specifically?" },
+    { "q": "What was the dollar value of that in-stock improvement to the business?" },
+    { "q": "Back to Argent — how did you fund a 60-person org? What was the budget?" },
+    { "q": "When you say you grew it to 60, how many were net-new hires you made versus transfers?" },
+    { "q": "Tell me about a data initiative under you that failed or got cancelled." },
+    { "q": "How did you handle the governance and compliance side of the lakehouse?" },
+    { "q": "I'm seeing several inconsistencies — team origin, reporting line, dates. Help me square them." },
+    { "q": "Let's just nail one: on the migration, what is the single hard cost number, before and after?" }
+  ],
+  "candidate_last_answer": "You know, I've sat through a lot of interviews and I've never had someone treat my resume like a cross-examination. These so-called inconsistencies are just summarization — at my level you don't itemize every reporting line and every headcount to the decimal. Build versus inherit, CTO versus CFO, that's semantics; the matrix was complicated and you wouldn't understand the org without being inside it. As for the hard cost number, I'm not going to play this gotcha game where you fixate on one figure. The migration was a success, full stop. If this is how the process goes, I'm frankly questioning whether this is the right environment for someone operating at my level.",
+  "session_state": {
+    "drilled_topics": ["current-org-shape", "build-vs-inherit", "headcount-day-one", "reporting-line", "migration-driver", "platform-cost-absolute", "freshness-quantification", "migration-personal-role", "halewood-date-overlap", "instock-before-after", "instock-attribution", "instock-dollar-value", "org-budget", "net-new-vs-transfer", "failed-initiative", "governance"],
+    "current_competency_target": "data-integrity",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "data-integrity",
+    "missing_evidence": [
+      { "competency": "data-integrity", "evidence_type": "metric" },
+      { "competency": "data-integrity", "evidence_type": "named-entity" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Build versus inherit, CTO versus CFO, that's semantics",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a single unambiguous fact the candidate keeps dodging — the actual reporting line and whether the team was built or inherited — pinned to a name and a headcount on a specific date, so the contradiction is resolved rather than waved away as semantics"
+    ]
+  }
+}

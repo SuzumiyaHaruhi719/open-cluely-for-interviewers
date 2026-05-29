@@ -1,0 +1,46 @@
+{
+  "id": "fx_0587",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Senior HR Business Partner — Technology & Product orgs\n\nExperience\nMeridian Software — Senior HRBP (2021–present)\n- Partner to the VP of Engineering and three director-level eng leaders covering a product-and-platform organization.\n- Owned the annual performance calibration for the engineering org, redesigning the rubric and facilitating cross-team calibration sessions.\n- Led the response to a sharp rise in regretted attrition among senior engineers, running stay interviews and reshaping the leveling-and-promotion guidelines.\n- Coached managers through several sensitive performance-management and exit cases.\n\nBrightline Retail — HR Generalist (2018–2021)\n- Ran end-to-end onboarding for corporate hires and administered the engagement survey cycle.\n- Supported two reductions-in-force, handling notification logistics and severance documentation.\n\nSkills: performance calibration, employee relations, org design, comp planning, workforce analytics, coaching.\nEducation: BA, Industrial-Organizational Psychology.",
+  "jd": "We are hiring a Senior HR Business Partner to support a fast-scaling engineering and product organization. Reporting to the Director of People Partners, you will own performance calibration, partner with senior leaders on org design and workforce planning, and lead the diagnosis and reduction of regretted attrition. You will coach managers through complex employee-relations and performance cases, and you will be expected to bring data to every recommendation — quantifying attrition, calibration outcomes, and the impact of interventions. The ideal candidate has 4–7 years in an HRBP or generalist role within tech, is precise about cause and effect, and can cleanly separate what a program did from what background trends did.",
+  "history": [
+    { "q": "Tell me about the scope of your current HRBP role — who you support and what you own end to end." },
+    { "q": "You redesigned the calibration rubric. What was wrong with the old one, specifically?" },
+    { "q": "How did you facilitate the cross-team calibration sessions — what was your role in the room?" },
+    { "q": "Let's go to the regretted-attrition work. How did you define 'regretted' versus ordinary attrition?" },
+    { "q": "What did the stay interviews actually surface as the top driver?" },
+    { "q": "You reshaped the leveling-and-promotion guidelines. Give me one concrete change you made." },
+    { "q": "How did you know that change was the thing that mattered, versus comp or the market cooling?" },
+    { "q": "What was the regretted-attrition rate before your intervention, and what was it after?" },
+    { "q": "Over what window did you measure that, and how many senior engineers were in the denominator?" },
+    { "q": "If you isolate just the promotion-guideline change, what share of the attrition improvement do you attribute to it, and how confident are you?" }
+  ],
+  "candidate_last_answer": "I won't overclaim attribution here. Regretted senior-eng attrition was 14% annualized in H1, and 6% annualized in H2, across a denominator of 71 senior engineers. Three things moved in that window: the promotion-guideline change, a 4% mid-cycle comp adjustment for the most-affected level, and the broader market cooling. I can cleanly attribute the comp piece because we staged it to one level first and saw their attrition drop ahead of the others. For the promotion change I'd put it at maybe a third of the remaining improvement — it's my best estimate, not a clean read, because it shipped the same month as the comp move.",
+  "session_state": {
+    "drilled_topics": ["hrbp-scope", "calibration-rubric", "calibration-facilitation", "regretted-definition", "stay-interview-driver", "leveling-change", "attribution-vs-comp", "attrition-before-after", "measurement-window"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it shipped the same month as the comp move",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete account of how she would have designed the rollout to separate the promotion-guideline effect from the comp adjustment, or what signal she would watch next time to disentangle the two confounded interventions"
+    ]
+  }
+}

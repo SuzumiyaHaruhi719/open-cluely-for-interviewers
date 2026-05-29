@@ -1,0 +1,53 @@
+{
+  "id": "fx_0582",
+  "tags": {
+    "industry": "operations",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "黄子轩 — Operations Associate (运营专员)\n\nKEYWORDS: operations、process improvement、Lean、Kaizen、SOP、KPI、OKR、SLA、workflow optimization、cross-functional、data-driven、dashboard、Excel、SQL、Tableau、inventory、fulfillment、last-mile、supply chain、vendor management、RCA、continuous improvement、stakeholder management、Agile、Scrum、JIRA、自动化、throughput、cycle time、cost reduction\n\n极兔速运 (2023-至今) — Operations Associate\n- support 末端 last-mile 履约运营,日常 track KPI、维护 SOP 和 dashboard\n- 参与 cross-functional 的 process improvement,主打 data-driven 的 workflow optimization\n- 推动 operational excellence 贯穿整个 order lifecycle\n\n实习 — 仓储协调 (2022)\n- 协助 inventory 盘点与 vendor 沟通\n\n技能:Excel(advanced)、SQL(basic)、Tableau、流程梳理、KPI tracking\n学历:物流管理 本科",
+  "jd": "极兔速运招聘 Operations Associate,支持末端 last-mile 履约运营。你将负责每日 KPI tracking(妥投率、time-to-deliver、异常件处理时效)、维护并改进 SOP,并参与小型 process-improvement 项目,与仓配和数据团队协作。我们看重 early-career 候选人是否真正 hands-on:能讲清楚一个你 driven 的改进项目、baseline 指标、你具体改了流程的哪一环、measured result。同时我们重视 coachability——面对追问时,能否冷静、具体地展开,而不是回避或情绪化。",
+  "history": [
+    { "q": "先讲讲你在极兔每天具体负责什么。" },
+    { "q": "你简历列了一长串 methodology,哪些是你真正上手用过的?" },
+    { "q": "你平时盯得最紧的 KPI 是哪几个?" },
+    { "q": "你们现在的妥投率大概是多少?" },
+    { "q": "讲一个你 driven 的 process-improvement 项目。" },
+    { "q": "当时是什么问题触发的?" },
+    { "q": "改之前的 baseline 指标是多少?" },
+    { "q": "你具体改了流程里的哪一环?" },
+    { "q": "这个项目里你个人的部分是什么,别人又做了什么?" },
+    { "q": "你怎么 validate 这个改动真的有效?" },
+    { "q": "Excel 或 SQL 在这个项目里你具体怎么用的?" },
+    { "q": "有没有什么 tradeoff 或者负面影响?" },
+    { "q": "整个项目花了多久?" },
+    { "q": "改完之后那个指标最终到了多少?" },
+    { "q": "我注意到你前面说 baseline 和后面说的数字对不太上,能澄清一下吗?" },
+    { "q": "我不是质疑你,只是想把这个 metric 弄准确——到底改善了多少个百分点?" },
+    { "q": "那你能不能把这个数字的来源、你怎么算的,具体讲清楚?" }
+  ],
+  "candidate_last_answer": "你怎么一直纠着这个数字不放啊?我前面不是已经说过了吗。我跟你讲,我做的事情绝对是有效的,这个 process improvement 是实打实的 impact,你非要一个精确到小数点的数字,这本来就不现实好吧。我又不是天天背 KPI 报表的人,具体多少个百分点我记不清了怎么了?反正肯定是改好了。你们面试官是不是就喜欢这样 challenge 应届生,有意思吗?",
+  "session_state": {
+    "drilled_topics": ["daily-ownership", "methodologies-used", "key-kpis", "delivery-rate-number", "improvement-project", "problem-trigger", "baseline-metric", "process-change", "team-and-role", "validation-method", "excel-sql-use", "tradeoffs", "duration", "final-number", "number-inconsistency", "percentage-point-pin"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 42
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体多少个百分点我记不清了怎么了?反正肯定是改好了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete before-and-after delivery-rate number with how it was computed, de-escalating the hostility so the candidate either substantiates the improvement or reveals the claimed impact was never actually measured"
+    ]
+  }
+}

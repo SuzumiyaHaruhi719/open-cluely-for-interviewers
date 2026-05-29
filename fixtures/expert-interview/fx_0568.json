@@ -1,0 +1,54 @@
+{
+  "id": "fx_0568",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Senior Instructional Designer & Learning Experience Strategist\n\n- Outcomes-obsessed learning architect leveraging evidence-based pedagogy, backward design, and data-driven iteration to drive measurable learner mastery at scale\n- Deep fluency across the full learning lifecycle: needs analysis, competency mapping, curriculum architecture, assessment design, LMS deployment, and Kirkpatrick-level evaluation\n- Power-user of Articulate Storyline, Rise, Adobe Captivate, Figma, and xAPI/SCORM authoring; LMS-agnostic (Canvas, Moodle, Cornerstone, Docebo)\n- Champion of accessibility-first, WCAG-compliant, mobile-responsive learning experiences\n- Cross-functional collaborator partnering with SMEs, faculty, and product to operationalize learning science\n- Track record standing up scalable micro-learning, blended, and competency-based programs\n- Fluent in learning analytics, A/B-tested course iteration, and cohort-based outcome measurement\n\nMost recent: Lumina Learning (EdTech) — Senior Instructional Designer (2020–present)\nPrior: State University Online — Instructional Designer, Center for Teaching Innovation (2016–2020)\nEarlier: K-12 classroom teacher, secondary mathematics (2012–2016)\n\nEducation: M.Ed. Learning Design & Technology; B.S. Mathematics. Certified in Quality Matters course review.",
+  "jd": "We are seeking a Senior Instructional Designer to own the redesign of a flagship competency-based program at a growing EdTech company. Reporting to the Director of Learning, you will lead needs analysis, curriculum architecture, assessment design, and outcome measurement across multiple courses, partnering with SMEs and product. Responsibilities: define learning outcomes and competency maps, design valid assessments, instrument courses for learning analytics, run iterative A/B tests on instructional approaches, and report learner-outcome impact to leadership. We value: rigorous, quantified outcome measurement (completion, mastery, time-to-competency), strong evaluation methodology, and the discipline to focus deeply on the highest-leverage problem rather than spreading effort thin. This senior role expects crisp ownership of a specific program redesign and its measured results.",
+  "history": [
+    { "q": "Tell me about your current role at Lumina and the scope of programs you own." },
+    { "q": "Pick the single program redesign you're proudest of and walk me through the learner-outcome impact." },
+    { "q": "What was the completion rate before and after that redesign?" },
+    { "q": "How did you measure 'mastery' — what was the actual assessment and its validity evidence?" },
+    { "q": "You mentioned A/B testing course iterations. Describe one test: the two instructional variants and the result." },
+    { "q": "What was your sample size on that test, and was the difference statistically meaningful?" },
+    { "q": "How did you partner with SMEs when they disagreed with your instructional approach?" },
+    { "q": "Tell me about a redesign that didn't move the outcome you expected. What happened?" },
+    { "q": "Time-to-competency — did you measure it, and what was the before/after?" },
+    { "q": "Which LMS did that program run on, and did the platform constrain your design?" },
+    { "q": "How did you instrument the course for analytics — what events did you actually track?" },
+    { "q": "When you report learner-outcome impact to leadership, which single metric do you lead with and why?" },
+    { "q": "Walk me through the competency map for that flagship program — how many competencies, how were they validated?" },
+    { "q": "I want to go deep on just the assessment validity. What evidence did you collect that the assessment measured the competency and not something else?" },
+    { "q": "If you had one more quarter on that program, what's the single highest-leverage change you'd make?" },
+    { "q": "Tell me about a time you had to push back on a stakeholder who wanted to add scope to a course." },
+    { "q": "Across everything you've described, what do you think is your single biggest weakness as a designer?" },
+    { "q": "Let's stay on just the flagship redesign. In one sentence, what was the one change that drove most of the completion improvement?" }
+  ],
+  "candidate_last_answer": "Honestly there were a few that all mattered — let me give you three quickly. One, I cut the program from fourteen modules to nine by mapping each to a validated competency and dropping the rest; completion went from 61% to 78% over two cohorts of about 400 learners each. Two, separately, I replaced a single high-stakes final with three checkpoint assessments, which moved median time-to-competency from 11 weeks to 8. Three, on a different course entirely, I A/B-tested worked-examples against problem-first and worked-examples won by 9 points on the post-test at n=240. They were all big levers.",
+  "session_state": {
+    "drilled_topics": ["lumina-scope", "proudest-redesign", "completion-delta", "mastery-assessment-validity", "ab-test-variants", "ab-sample-significance", "sme-disagreement", "failed-redesign", "time-to-competency", "lms-constraint", "analytics-instrumentation", "leadership-lead-metric", "competency-map-validation", "assessment-validity-evidence", "next-quarter-change", "scope-pushback", "biggest-weakness"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 61
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: They were all big levers",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: forcing the candidate to isolate the single change on the flagship redesign that drove most of the 61%-to-78% completion gain and the causal reasoning for it, rather than bundling three different courses' wins into one answer"
+    ]
+  }
+}
