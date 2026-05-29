@@ -1,0 +1,43 @@
+{
+  "id": "fx_0960",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "高伟 — 资深大客户销售经理\n\n关键词:大客户销售、KA、解决方案销售、顾问式销售、SaaS、PaaS、ToB、销售漏斗、MEDDIC、SPIN、客户成功、续费、增购、回款、招投标、商务谈判、渠道管理、生态合作、CRM、销售预测、ARR、MRR、客单价、转化率、私域、增长黑客、大模型、数字化转型、降本增效、生态闭环、全链路、赋能、抓手、组合拳。\n\n经历\n某 SaaS 公司 — 资深大客户销售经理(2021 至今)\n- 负责金融与制造行业头部客户的解决方案销售与全链路赋能。\n- 操盘多个百万级招投标项目,打造标杆案例闭环。\n- 用顾问式销售与 MEDDIC 方法论拉通客户决策链,提升赢单率。\n某 ToB 平台 — 大客户销售(2017–2021)\n- 负责区域大客户的拓新、续费与增购全周期管理。\n- 搭建渠道生态,联合伙伴打组合拳放大商机。\n\n技能:解决方案销售、商务谈判、招投标、CRM、销售预测、客户成功。\n教育:某高校 市场营销 本科。",
+  "jd": "我们正在招聘一名资深大客户销售经理,负责金融、制造等重点行业头部客户的 ToB 解决方案销售。你将独立操盘从商机挖掘、方案匹配、招投标到回款的完整周期,并通过续费与增购实现存量客户的持续增长。我们期望候选人能用清晰的数字说明自己过往的业绩——具体的签单金额、赢单率、回款周期——并能讲清在一个具体大单里自己究竟做了哪些关键动作、推动了哪些决策。面试会重点穿透简历上的方法论术语,考察真实的成交细节。",
+  "history": [
+    { "q": "先介绍一下你现在负责的客户盘子、年度目标和达成情况。" },
+    { "q": "你简历里写了 MEDDIC,挑一个你用它拿下的具体单子讲讲。" },
+    { "q": "这个单子从首次接触到签约,一共花了多久?中间卡在哪个环节最久?" },
+    { "q": "你说提升了赢单率,从多少提到了多少?" },
+    { "q": "客户的决策链里,真正拍板的人是谁?你是怎么接触到他的?" },
+    { "q": "就这个百万级的单子,具体说说你个人做的最关键的一个动作是什么、带来了什么结果。" }
+  ],
+  "candidate_last_answer": "嗯…这个单子确实挺典型的,怎么说呢,其实大客户销售就是个系统工程嘛,你得讲究全链路、打组合拳,不能只盯着一个点。当时这个客户吧,它内部其实也挺复杂的,有好几条线,采购、技术、业务都得照顾到,我那段时间几乎天天泡在客户那边……对了,我们当时还做了私域运营,效果挺好的。然后呢,最关键的动作……我觉得吧,可能就是我一直在帮客户做价值传递和信任建立,因为 ToB 嘛,本质还是信任。具体哪一个动作最关键我还真不好说,反正就是一套组合拳打下来,水到渠成就签了,大概就是这么个情况。",
+  "session_state": {
+    "drilled_topics": ["current-book-and-target", "meddic-deal-example", "deal-cycle-bottleneck", "win-rate-improvement", "decision-maker-access"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "sales-execution", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 一套组合拳打下来,水到渠成就签了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to abandon the buzzword cloud and name one single concrete action he personally took in this deal — what he did, to whom, on roughly what date — and the specific result that action produced"
+    ]
+  }
+}

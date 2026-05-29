@@ -1,0 +1,53 @@
+{
+  "id": "fx_0928",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "#1 Enterprise Account Executive — The Closer Every Company Wants\n\nLegendary enterprise seller. I am consistently the top rep everywhere I go, the guy leadership puts in front of the biggest logos when a deal absolutely cannot be lost. President's Club every single year of my career. I don't just hit quota — I redefine what quota means.\n\nExperience\nApex Cloud Solutions — Senior Enterprise AE (2020 to present)\nClosed the largest deal in company history. Single-handedly carried the East region. CROs call me when they need a whale landed. I built more pipeline than the rest of my team combined and mentored every junior rep into a top performer.\n\nVertex Systems — Enterprise AE (2016 to 2020)\nNumber one rep four years running. Crushed every target. Won the strategic account nobody else could crack.\n\nSkills: closing (elite), C-suite relationships (unmatched), negotiation (world-class), pipeline generation (relentless), MEDDIC, Challenger, forecasting.\nEducation: BBA, University of Texas.",
+  "jd": "We are hiring a Senior Enterprise Account Executive to own a named-account territory of roughly 30 strategic logos in the financial-services vertical. You will carry a $2.2M annual quota, run complex multi-stakeholder deals with 6-to-12-month sales cycles, and be expected to build and forecast a 3x pipeline with discipline. The role requires demonstrated ability to land net-new logos (not just expand), navigate procurement and security review in regulated buyers, and forecast accurately within a tight variance. You will partner with sales engineering, legal, and customer success, and you will be held to a rigorous weekly forecast cadence with the VP of Sales. We value reps who can speak precisely to their own numbers — deal sizes, win rates, cycle lengths — and who own their pipeline rather than relying on inbound. On-target earnings are competitive with accelerators. Reports to the RVP, Financial Services.",
+  "history": [
+    { "q": "Let's start with your current number — what's your quota at Apex and where did you land last year?" },
+    { "q": "You say you closed the largest deal in company history. What was the contract value?" },
+    { "q": "Walk me through that deal — who was the buyer and what was the use case?" },
+    { "q": "How long was that sales cycle, start to signed?" },
+    { "q": "Who were the key stakeholders, and which one was your champion?" },
+    { "q": "What nearly killed the deal, and how did you save it?" },
+    { "q": "What was your win rate last year on qualified opportunities?" },
+    { "q": "How much of your pipeline was self-sourced versus inbound or SDR-fed?" },
+    { "q": "Tell me about a deal you lost. What happened?" },
+    { "q": "How do you build a forecast, and how accurate were you last quarter?" },
+    { "q": "This territory is regulated financial services. How do you handle a long security review?" },
+    { "q": "Give me an example of landing a net-new logo, not an expansion." },
+    { "q": "How do you run a multi-threaded deal when your champion leaves mid-cycle?" },
+    { "q": "What's your MEDDIC discipline like — how do you qualify Economic Buyer?" },
+    { "q": "If you inherited this 30-account territory cold, what's your first 30 days?" },
+    { "q": "Last one — back to that largest-ever deal: what specifically did YOU do in the final two weeks to get it signed?" }
+  ],
+  "candidate_last_answer": "Honestly, selling is all about relationships and energy. I'm a people person — I can walk into any room and own it. You know, I actually just got back from a sales kickoff in Cabo and the keynote speaker talked about mindset, and that's so true, it's 90% mindset. I read a ton of sales books, I'm a huge fan of all the classics, and I always tell the younger reps it's about hustle and belief. At the end of the day people buy from people they like, and everybody likes me. That's just who I am.",
+  "session_state": {
+    "drilled_topics": ["current-quota-attainment", "largest-deal-value", "deal-buyer-usecase", "sales-cycle-length", "stakeholders-champion", "deal-save", "win-rate", "self-sourced-pipeline", "lost-deal", "forecast-accuracy", "security-review", "net-new-logo", "champion-departure", "meddic-economic-buyer", "territory-first-30"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 40
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it's 90% mindset",
+      "must-be-question-type: action-attribution",
+      "expected-yield: redirect the candidate off the mindset/relationships tangent to the asked question — the specific, concrete actions he personally took in the final two weeks to get the largest-ever deal signed, with names, sequence, and what moved the buyer"
+    ]
+  }
+}

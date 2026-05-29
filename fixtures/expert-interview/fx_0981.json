@@ -1,0 +1,41 @@
+{
+  "id": "fx_0981",
+  "tags": {
+    "industry": "education",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Marcus Bell\nEarly-career Instructional Designer / Curriculum Associate\n\nSUMMARY\nFormer high-school humanities teacher transitioning into instructional design. I build engaging, standards-aligned learning experiences and have a passion for accessible, learner-centered materials.\n\nEXPERIENCE\nCurriculum Associate — Brightpath Learning (2023–present)\n- Developed several units of online coursework for middle-school social studies.\n- Collaborated with subject-matter experts to align content to state standards.\n- Revised lessons based on teacher feedback and improved learner engagement.\n- Helped migrate legacy PDFs into the new LMS.\n\nHigh-School Teacher, World History — Lincoln Public Schools (2019–2023)\n- Taught multiple sections and improved student outcomes year over year.\n- Introduced project-based assessments that students responded well to.\n- Mentored newer teachers on lesson planning.\n\nEDUCATION\nM.Ed. Curriculum & Instruction; B.A. History.\n\nSKILLS\nArticulate Storyline, Canva, Google Workspace, basic HTML, backward design, formative assessment.\n\nNOTE: Most of my impact was qualitative — I don't have a lot of the hard dashboards from my teaching years, but engagement and feedback were consistently positive.",
+  "jd": "Summit Online Academy seeks a Junior Instructional Designer to join our K-12 content team. You'll work alongside senior designers and SMEs to build interactive lessons in Articulate Storyline, write assessment items aligned to learning objectives, and iterate on courses based on learner analytics. The role is data-aware: we expect designers to look at completion rates, item-difficulty stats, and engagement dashboards and make evidence-based revisions. We're looking for someone who can point to a specific course or unit they built, explain a design decision they made, and describe how they knew it worked — ideally with a before/after signal. Teaching background is a plus, but you must be comfortable defending design choices with evidence rather than intuition alone.",
+  "history": [
+    { "q": "Marcus, tell me about a specific unit or course you built at Brightpath — what was it and who was it for?" },
+    { "q": "You wrote that you 'improved learner engagement.' Walk me through one revision you made and what signal told you engagement actually went up." },
+    { "q": "When you migrated legacy PDFs into the LMS, what was the hardest instructional-design problem you had to solve, not just the technical one?" },
+    { "q": "Let's get concrete. Pick the single lesson you're proudest of. Tell me the before-state, the change you made, and the specific evidence — a number, a completion rate, an item-difficulty shift — that told you it landed." }
+  ],
+  "candidate_last_answer": "You know, I think what really drives me is the philosophy of education itself. I'm a huge believer in Universal Design for Learning and I love thinking about pedagogy at a high level — how do we make learning meaningful, how do we honor different learners' identities. I actually run a small newsletter about education theory on the side, and I've been reading a lot of bell hooks lately, which has reshaped how I think about the classroom as a space of liberation. That ethos is really what I'd bring to Summit.",
+  "session_state": {
+    "drilled_topics": ["specific-unit-built", "engagement-revision-signal", "id-problem-in-migration"],
+    "current_competency_target": "evidence-based-iteration",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "evidence-based-iteration",
+    "missing_evidence": [
+      { "competency": "evidence-based-iteration", "evidence_type": "metric" },
+      { "competency": "evidence-based-iteration", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: what really drives me is the philosophy of education itself",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pull the candidate back from education philosophy to one concrete lesson with a before-state, the specific revision, and a measurable after-signal (completion rate, item-difficulty shift, or engagement metric) proving the change worked"
+    ]
+  }
+}

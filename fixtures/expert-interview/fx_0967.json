@@ -1,0 +1,41 @@
+{
+  "id": "fx_0967",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "黄强 — 供应链总监\n\n概述\n供应链总监,负责消费电子行业的端到端供应链,涵盖计划、采购、生产协同与物流履约,擅长在供需波动下做平衡决策。\n\n经历\n某消费电子品牌 — 供应链总监(2019 至今)\n- 主导集团 S&OP 体系落地,统筹计划、采购与销售的月度对齐。\n- 该岗位我直接管理约 60 人的供应链团队,横跨三个职能。\n- 注:简历另一段又写——目前团队规模约 20 人,主要负责计划职能。\n- 牵头一次重大缺芯危机下的供应保障,确保核心产品线不断供。\n某代工与品牌公司 — 供应链高级经理(2014–2019)\n- 负责区域仓配网络的优化与第三方物流管理。\n- 这一时期我主导了全国仓网从 12 仓收缩到 5 仓的整合项目。\n- 简历另一处写:仓网整合项目由我的上级主导,我作为执行成员参与落地。\n\n技能:S&OP、需求计划、采购管理、库存优化、仓配网络、供应风险管理。\n教育:某高校 物流管理 本科。",
+  "jd": "我们正在招聘一名供应链总监,直接向 COO 汇报,负责消费电子产品的端到端供应链,涵盖 S&OP、需求与供应计划、采购协同、库存与物流履约。你将主导供需平衡的关键决策,牵头供应风险应对,并对库存周转、履约及时率与供应保障负全责。我们期望候选人能清晰说明自己在具体项目中的真实角色与决策权,能用确切数字描述结果,并在被追问时给出前后一致、可核实的细节。面试会重点核对简历各段经历的职责边界与量化成果。",
+  "history": [
+    { "q": "先介绍一下你目前的职责范围、团队规模和汇报线。" },
+    { "q": "你简历里团队规模一处写 60 人一处写 20 人,先帮我厘清一下真实情况。" },
+    { "q": "讲讲那次缺芯危机,当时的核心矛盾是什么?" },
+    { "q": "你具体做了哪些动作来保供?和供应商、和内部分别怎么协调的?" },
+    { "q": "那次保供最后的结果怎么样?对断供天数、履约率、成本这些有什么具体影响?" }
+  ],
+  "candidate_last_answer": "那次缺芯是 2021 年最严重的时候,我们一颗核心电源芯片的交期从 8 周一下子拉到了 52 周,而我们手上的安全库存只够撑大概六周,核心产品线随时可能断供,这是当时最大的矛盾(情境和任务)。我做的动作主要有三块:第一,我亲自带队和原厂高层重新谈分配,把我们的优先级往上提;第二,我推动研发同步启动了第二供应商的料号验证,做 dual-source;第三,我重新切了生产排程,优先保高毛利的旗舰机型,把入门机型的产量主动往后压(行动)。整个过程我是全程主导的。至于最后的结果……反正是扛过去了,旗舰线基本没受大影响,具体的断供天数和履约率数字我这边一时记不太清了。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "team-size-contradiction", "chip-shortage-conflict", "supply-assurance-actions"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "supply-risk-management", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体的断供天数和履约率数字我这边一时记不太清了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate to supply the missing Result — concrete numbers for stockout days avoided, on-time fulfillment rate during the crisis, and the cost premium paid for expedited allocation — converting a strong S/T/A story into a verifiable outcome"
+    ]
+  }
+}

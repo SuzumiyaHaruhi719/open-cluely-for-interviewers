@@ -1,0 +1,52 @@
+{
+  "id": "fx_0948",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "财务副总裁（VP, Finance）| 16年企业财务与FP&A经验，覆盖制造与跨境电商\n\n职业概要\n- 主导过多次预算重构与成本管控项目，推动公司从粗放经营走向精细化\n- 搭建过完整的财务BP（Business Partner）体系，深度支持业务决策\n- 熟悉合并报表、资金管理（treasury）、税务筹划与内控（internal control）\n\n工作经历\n海岸供应链集团 财务副总裁 2019年至今\n- 统管FP&A、资金、税务与财务共享中心，团队规模约40人\n- 推动全集团预算流程改革，把年度预算编制周期缩短了『不少』\n- 主导一次现金流危机应对，帮助公司渡过难关\n- 牵头ERP（SAP）财务模块上线，提升了核算效率\n\n远途跨境电商 财务总监 2014年至2019年\n- 负责境内外主体的合并报表与资金调拨\n- 优化了应收账款管理，回款情况有明显改善\n- 协助完成一轮股权融资的财务尽调配合\n\n教育背景\n中央财经大学 会计学硕士\n注册会计师（CPA）、特许公认会计师（ACCA）资格",
+  "jd": "我们为一家年营收约30亿元的跨境供应链集团招聘财务副总裁，向CFO汇报，统管FP&A、资金管理与财务共享中心（约40人）。公司刚经历一轮快速并购，当前核心挑战是：经营性现金流波动大（去年经营性现金流为负的两个季度），子公司众多导致合并与预算口径混乱，以及业务部门对财务支持的满意度低。该岗位需要重建滚动预测（rolling forecast）与现金流预测机制，主导一次集团级的降本（cost-out）专项，并把财务BP真正嵌入业务决策。要求具备可量化的现金流改善或降本成果、跨主体合并报表的实操经验，以及在董事会与审计委员会陈述的能力。",
+  "history": [
+    { "q": "先介绍一下你在海岸供应链的管辖范围：团队规模、负责的职能、直接汇报对象。" },
+    { "q": "你简历写预算编制周期缩短了『不少』。具体从多少天缩短到多少天？" },
+    { "q": "我们先聊现金流。你提到主导过一次现金流危机应对，先说背景：当时公司面临的具体情况是什么？" },
+    { "q": "那次危机的根因是什么？是回款、还是过度扩张、还是融资断档？" },
+    { "q": "你当时设定的首要目标是什么？要把现金流恢复到什么水平、在多长时间内？" },
+    { "q": "围绕这个目标,你个人牵头做了哪几件最关键的事?" },
+    { "q": "在收紧资本开支这件事上,是你拍板的还是CFO拍板的?你的权限边界在哪?" },
+    { "q": "你提到优化了应收账款,具体改了什么政策或流程?" },
+    { "q": "和业务部门谈账期收紧,一定有阻力,你怎么处理销售端的反弹?" },
+    { "q": "滚动预测这个机制,你是怎么从无到有建起来的?多久滚动一次,谁负责输入?" },
+    { "q": "ERP（SAP）财务模块上线,你在其中扮演的是发起人、项目owner还是验收方?" },
+    { "q": "这次危机应对里,有没有哪个决策事后看是错的?" },
+    { "q": "你刚才讲了背景、根因、目标和你的动作,我现在想听结果:现金流到底恢复到了什么程度?" },
+    { "q": "我换个问法:经营性现金流的具体数字,从负多少恢复到了正多少?" },
+    { "q": "那回款周期（DSO）呢,有没有一个改善前后的天数?" },
+    { "q": "好,那这次专项一共释放了多少现金,大概的量级总该有吧?" }
+  ],
+  "candidate_last_answer": "情况是这样:当时我们刚并购完两家子公司,经营性现金流连续两个季度为负,银行授信也快用满了。我设的目标很明确,就是在两个季度内把经营性现金流转正,并且建立一套能提前4周预警的现金流预测。我个人牵头做了三件事:第一,成立了一个跨部门的现金作战室,我每周亲自主持;第二,把资本开支审批权限上收,超过50万的项目一律暂停重审;第三,推动应收端按客户分层,把高风险客户的账期从90天压到60天。这套打法当时上下都很认可,确实帮公司稳住了局面,渡过了那个最难的阶段。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "budget-cycle-vague", "cashflow-crisis-context", "root-cause", "goal-setting", "personal-actions", "capex-authority", "ar-policy", "sales-pushback", "rolling-forecast-mechanism", "erp-role", "decision-mistake", "result-probe-1", "result-probe-2", "dso-probe"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 54
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 确实帮公司稳住了局面,渡过了那个最难的阶段",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 在候选人已给出完整的情境、任务、行动后,逼出始终缺失的『结果』量化值——经营性现金流由负转正的具体金额、达成所用的实际周数,以及专项释放的现金总量,任何一个可核验的数字"
+    ]
+  }
+}

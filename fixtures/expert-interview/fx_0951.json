@@ -1,0 +1,43 @@
+{
+  "id": "fx_0951",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "财务分析师（Financial Analyst）| 2年FP&A与商业分析经验\n\n职业概要\n- 在快消公司支持月度结账（month-end close）、预算编制与销售费用分析\n- 熟练使用Excel建模、SQL取数与BI看板（Power BI）搭建\n- 协助业务部门做投入产出（ROI）测算与费用复盘\n\n工作经历\n沁果食品（GuangZhou）财务分析师 2022年至今\n- 支持销售大区的月度closing与费用核算,出具management report\n- 参与一次促销费用（trade spend）的复盘项目,帮助业务识别低效投放\n- 维护并优化了几个常用的BI dashboard,提升了报表自动化程度\n\n实习经历\n某四大会计师事务所 审计实习生 2021年暑期\n- 参与制造业客户的存货监盘与凭证抽样测试\n\n教育背景\n中山大学 财务管理 本科\nCFA一级已通过",
+  "jd": "我们为一家快消品公司招聘财务分析师（FP&A方向），向FP&A经理汇报，主要支持销售大区的预算、费用分析与促销投放（trade spend）复盘。该岗位需要独立完成月度结账中的费用核算、搭建可复用的费用分析模型、并能把分析结论清晰地讲给非财务的业务同事。当前团队的核心痛点是促销费用ROI测算口径不统一、且大量分析依赖手工Excel、易出错。理想候选人能用SQL/BI把重复性取数自动化，并在一次实际的费用复盘中给出可量化的节约或效率提升。要求扎实的Excel建模能力、清晰的逻辑表达，以及对数字的敏感度。",
+  "history": [
+    { "q": "先简单介绍一下你目前的工作:支持哪个业务线、主要做哪几类分析、向谁汇报。" },
+    { "q": "你提到参与了一次trade spend复盘。先说背景:这个项目是因为什么发起的,要解决什么问题?" },
+    { "q": "你在这个项目里的具体角色是什么?是你独立做的,还是跟着别人做?" },
+    { "q": "你们当时怎么界定一笔促销投放是『低效』的?用的是什么口径或标准?" },
+    { "q": "你具体做了哪些分析动作?从取数到出结论,讲讲过程。" },
+    { "q": "你用SQL/BI把哪部分自动化了?之前手工要多久,自动化之后呢?" },
+    { "q": "好,那这次复盘最后的结果是什么?帮业务砍掉或省下了多少促销费用?" }
+  ],
+  "candidate_last_answer": "这个项目其实是因为我们大区的trade spend超预算了,manager想搞清楚钱到底花在哪、哪些投放没效果。我的角色是主要的分析executor,数据基本是我一个人拉的。过程上,我先从SQL里把过去四个季度的促销明细按SKU和门店类型拉出来,然后在Excel里建了个模型,把每笔投放的费用对应到它带来的增量销量(incremental sales),再算单位投入的销量提升。最后我把ROI明显偏低的几类投放标出来,做成dashboard给到business team。整个分析框架和口径都是我搭的,我自己觉得这套方法挺扎实的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "project-context", "personal-role", "low-efficiency-definition", "analysis-process", "automation-detail"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 整个分析框架和口径都是我搭的,我自己觉得这套方法挺扎实的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 在候选人已讲清情境、任务、行动后,逼出缺失的结果量化——这次复盘最终帮业务砍掉或重新分配了多少trade spend(金额或占比),以及业务是否真的采纳了她标出的低效投放,任意一个可核验的结果数字"
+    ]
+  }
+}

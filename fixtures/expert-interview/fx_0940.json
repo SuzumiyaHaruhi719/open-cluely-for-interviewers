@@ -1,0 +1,51 @@
+{
+  "id": "fx_0940",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵衡 — 质量工程师\n地点：广东东莞\n\n个人简介\n质量工程师，主要从事消费电子整机的来料与制程质量管控，熟悉常见的质量工具与体系运作，擅长在现场推动跨部门的质量整改与持续改善。\n\n工作经历\n质量工程师，朗讯电子（东莞）有限公司（2018 年至今）\n负责整机组装线的制程质量与客诉处理，组织材料评审、推动供应商整改、参与新产品导入的质量验证。\n牵头过多次重大客诉的根因分析与纠正措施落地，协调研发、工艺与供应链共同解决批量性问题。\n负责工厂质量例会与质量看板的维护，推动质量意识在一线的落地。\n\n质量技术员，朗讯电子（东莞）有限公司（2015-2018）\n负责来料检验、首件确认与日常巡检，记录并上报异常。\n\n技能\n质量管理体系、来料与制程检验、根因分析（八步法、五问、鱼骨图）、供应商质量管理、新产品导入质量验证、质量看板与例会管理。\n\n教育\n华南理工大学 材料科学与工程 本科（2015）。\n\n说明\n本人习惯把质量工作落在过程与机制上，简历不堆砌数字，更看重把问题讲清楚、把改善做扎实。",
+  "jd": "招聘岗位：高级质量工程师（制程方向），消费电子整机。\n\n一家整机代工企业招募高级质量工程师，负责一条主力组装线的制程质量与客诉闭环。你将主导重大客诉的根因分析与纠正措施落地，统筹来料、制程与出货三个环节的质量控制，并对直通率与客退率负责。近期重点是带队收敛一个批量性客诉问题，要求把整改的时间线讲清楚——哪个阶段做了什么、临时措施和永久措施分别是什么时候上的、效果什么时候验证。我们希望候选人能交代一个清晰、前后一致的整改时间线。",
+  "history": [
+    { "q": "先介绍一下你现在负责的质量范围——产品、产线、你对哪些指标负责。" },
+    { "q": "讲一个你牵头的重大客诉，先说说问题是什么。" },
+    { "q": "这个批量性问题的根因最后定位到哪里？" },
+    { "q": "你们当时上的临时围堵措施是什么？" },
+    { "q": "永久纠正措施又是什么？" },
+    { "q": "围堵和永久措施分别影响了多少批次？" },
+    { "q": "客户那边当时给了多长的整改窗口？" },
+    { "q": "整改过程中和供应商是怎么协同的？" },
+    { "q": "你个人在这个 8D 里负责哪几步？" },
+    { "q": "验证阶段你们看的是什么数据？" },
+    { "q": "这个问题从爆发到关闭一共花了多久？" },
+    { "q": "中间有没有反复——关了又复发？" },
+    { "q": "现在我想把时间线钉死：临时围堵、永久措施、效果验证，分别是哪个时间点？" },
+    { "q": "你确认一下顺序——是先上的永久措施还是先做的效果验证？" },
+    { "q": "那再帮我捋一遍，从客诉那天起，第一周、第二周、第三周分别发生了什么？" }
+  ],
+  "candidate_last_answer": "嗯，我尽量捋一下。客诉那天我们先停了线做围堵……不对，好像是先上的永久措施换了供应商的来料，效果验证之后才补的围堵记录。其实直通率的改善在这个客诉之前就已经在做了，是客诉之后才系统去复盘的。第一周和第二周我有点分不清，反正中间复发过一次，然后我们又退回去重新做了一轮验证。具体哪一周做了哪件事我记不太清，讲着讲着我自己都有点绕进去了。总之最后是关闭了的，客户也认可了。",
+  "session_state": {
+    "drilled_topics": ["quality-scope", "complaint-problem", "root-cause", "containment", "permanent-action", "batch-impact", "customer-window", "supplier-coordination", "8d-ownership", "verification-data", "closure-duration", "recurrence"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 讲着讲着我自己都有点绕进去了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single non-contradictory week-by-week sequence stating whether containment or the permanent supplier-material change came first, when verification ran, and whether the recurrence happened before or after the permanent fix"
+    ]
+  }
+}

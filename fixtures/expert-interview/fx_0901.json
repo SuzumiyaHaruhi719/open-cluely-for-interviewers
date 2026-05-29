@@ -1,0 +1,38 @@
+{
+  "id": "fx_0901",
+  "tags": {
+    "industry": "education",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "初中数学教师 / 应届教师岗候选人\n\n姓名:周晓彤\n城市:成都\n教育背景:师范大学数学与应用数学专业,本科,持初中数学教师资格证。\n\n实习与项目经历:\n情境:在某公立中学进行为期一学期的教育实习,负责初一两个班的数学课堂与课后辅导。\n任务:提升所带班级在期中到期末之间的数学平均分,并降低不及格人数。\n行动:我重新设计了每周的错题讲评流程,把高频错题分类,针对计算粗心和概念混淆两类问题设计了不同的小练习;同时建立了课后十五分钟的一对一答疑机制,优先辅导班级里排名靠后的八名学生。\n结果:期末考试两个班的数学平均分从原来的七十二分提升到七十九分,不及格人数从十一人下降到四人,班主任在实习评语里给出了优秀评级。\n\n技能:分层教学、错题管理、课堂互动设计、家校沟通。",
+  "jd": "我们招聘一名初中数学教师(应届亦可)。岗位职责:承担初中年级数学教学,设计并实施分层教学方案,负责班级数学成绩的提升与学困生辅导,与家长保持有效沟通,并参与教研组的备课与公开课。任职要求:数学或师范相关专业本科及以上,持有初中数学教师资格证;有清晰的教学设计能力,能够用具体数据说明自己带过的班级在成绩、及格率或学习习惯上的改善;具备良好的课堂管理与表达能力。我们尤其看重候选人能否把一次具体的教学干预讲清楚:做了什么、为什么这么做、效果如何衡量。",
+  "history": [
+    { "q": "请你讲一个具体的例子:实习期间,你是怎么帮助班里数学比较吃力的学生提升成绩的?从你发现问题到看到效果,完整说一遍。" }
+  ],
+  "candidate_last_answer": "嗯这个问题让我想起很多事。其实我一开始对当老师挺犹豫的,因为我大学的时候还参加过辩论社,拿过校级的二等奖,那段经历对我影响很大,让我口才变好了不少。然后实习那个学校离我租的地方特别远,每天要坐一个多小时地铁,路上我经常刷数学教学的短视频,有个博主讲得特别好我还关注了。说到学生辅导,其实成都那边的家长真的很重视教育,我接触下来感触很深,有时候周末还会约着一起带孩子去博物馆。哦对,我们教研组组长人也特别好,经常请我们喝奶茶。总之那段时间我成长了特别多,整个人都开朗了。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "teaching-intervention-rigor",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "teaching-intervention-rigor",
+    "missing_evidence": [
+      { "competency": "teaching-intervention-rigor", "evidence_type": "mechanism" },
+      { "competency": "teaching-intervention-rigor", "evidence_type": "metric" },
+      { "competency": "teaching-intervention-rigor", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 说到学生辅导,其实成都那边的家长真的很重视教育",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从跑题的生活叙述拉回到一个具体的学困生干预:她具体发现了什么问题、设计了什么针对性练习或辅导步骤、成绩用什么数据衡量、提升了多少"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0955",
+  "tags": {
+    "industry": "marketing",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "市场副总裁（VP, Marketing）| 14年增长与品牌经验，覆盖消费电子与DTC\n\n职业概要\n以可量化的增长结果为导向的市场负责人,擅长performance marketing与品牌建设的平衡。\n\n工作经历\n光弧消费电子（ShenZhen）市场副总裁 2020年至今\n- 情境:接手时公司线上获客成本(CAC)持续走高,付费渠道ROI下滑,新品牌认知度低。\n- 任务:在12个月内把blended CAC降低,同时把品牌自然流量占比提升。\n- 行动:重构付费投放结构,把预算从单一信息流向搜索+私域+达人(KOL)矩阵分散;搭建归因模型(MTA)统一口径;启动一条内容驱动的品牌增长线。\n- 结果:blended CAC同比下降约24%,自然/直访流量占比从31%提升到45%,付费渠道ROAS从1.8提升到2.6(数据来自公司BI,可在面谈时讨论口径)。\n\n岸潮DTC品牌 市场总监 2016年至2020年\n- 情境:一个新DTC护肤品牌从0起步,预算有限。\n- 任务:用有限预算做出第一波规模化增长。\n- 行动:以红人种草+精准投放组合冷启动,建立用户分层的email/短信生命周期营销。\n- 结果:18个月内月营收从约80万元做到约950万元,复购率(repeat rate)做到38%。\n\n教育背景\n复旦大学 市场营销 硕士",
+  "jd": "我们为一家消费电子公司招聘市场副总裁,向CEO汇报,统管performance marketing、品牌与用户增长(约30人)。当前核心挑战:付费获客成本(CAC)连续两年上升,blended ROAS承压(当前约1.9),且过度依赖单一信息流渠道,品牌自然流量薄弱。该岗位需要重构渠道与预算结构、建立可信的归因(attribution)口径,并在控制CAC的同时把品牌自然流量做起来。要求具备可量化且口径清晰的增长成果、对营销归因方法论的深入理解,以及在董事会层面用真实数据(而非虚高口径)陈述ROI的能力。我们会重点考察候选人对自己所报数字的归因严谨度。",
+  "history": [
+    { "q": "你简历里这段增长经历写得很完整。先说光弧那段:你接手时blended CAC和ROAS的具体起点是多少,你设定的12个月目标分别是多少?" },
+    { "q": "你提到搭了MTA归因模型来统一口径。那我们就从归因聊起:你那个『同比下降24%』的CAC,是用哪种归因口径算出来的,为什么这个口径可信?" }
+  ],
+  "candidate_last_answer": "说实话,24%这个数字其实是很保守的讲法。按我们最激进的口径算,那一年我们的整体marketing efficiency至少翻了三倍,ROAS一度冲到过8、9的水平,有的单条达人内容ROI做到过几十倍。归因这个事我觉得不用太纠结口径,反正我带过的每个team最后业绩都是指数级增长,这个是行业里公认的。在岸潮那边其实也一样,我们的复购率最高的时候做到过60%、70%,远超我简历上写的那个数,只是简历上我写得低调了一点。",
+  "session_state": {
+    "drilled_topics": ["growth-baseline-and-target"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 10
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 按我们最激进的口径算,那一年我们的整体marketing efficiency至少翻了三倍",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 戳破虚高口径,逼候选人锁定单一可核验的归因方法和一个具体数字——blended CAC下降到底用的是last-click、MTA还是incrementality口径,分母里包含哪些花费,以及他能否复述出BI里那个24%(而非随口的『三倍』『8、9』『几十倍』)是怎么算出来的"
+    ]
+  }
+}

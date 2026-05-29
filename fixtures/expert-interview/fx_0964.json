@@ -1,0 +1,52 @@
+{
+  "id": "fx_0964",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "罗建国 — 财务总监 / FP&A 负责人\n\n关键词:FP&A、财务战略、预算管理、滚动预测、三表模型、现金流管理、资本运作、并购整合、税务筹划、内控、SOX、降本增效、经营分析、BP、资金管理、IPO、对赌、估值、DCF、毛利率、净利率、ROE、回款、应收账款、营运资本、降本、提效、价值创造、业财融合、数字化、战略落地、闭环、抓手、协同。\n\n经历\n某新消费集团 — 财务总监(2019 至今)\n- 主导集团 FP&A 体系搭建,推动业财融合与经营分析闭环。\n- 牵头一轮 Pre-IPO 融资与对赌条款谈判。\n- 操盘多起降本增效专项,优化营运资本与现金流。\n- 主导一次并购标的的财务尽调与投后整合。\n某上市公司 — 财务经理 / 高级经理(2013–2019)\n- 负责合并报表、预算管理与经营分析。\n- 参与公司 IPO 申报期的财务规范化工作。\n\n技能:FP&A、预算与预测、并购财务、现金流管理、内控、税务筹划。\n教育:某财经高校 会计学 硕士,CPA。",
+  "jd": "我们正在为快速扩张的集团招聘一名财务总监,直接向 CFO 汇报,负责 FP&A、预算与滚动预测、经营分析以及重大资本运作的财务支持。你将主导业财融合、现金流与营运资本管理,并在并购与融资中承担财务尽调与投后整合的核心角色。我们期望候选人能讲清自己亲自主导的决策与具体的财务机制,能用真实数字支撑结论,并能在被层层追问时给出可验证的细节而非战略口号。面试将重点穿透简历上的术语,直达真实的操盘颗粒度。",
+  "history": [
+    { "q": "先介绍一下你现在的职责范围、团队规模和汇报线。" },
+    { "q": "你说主导了 FP&A 体系搭建,之前集团的预算流程是什么样的?" },
+    { "q": "业财融合这个词很大,你具体做了哪一件事让业务和财务真正打通了?" },
+    { "q": "滚动预测多久滚一次?预测和实际的偏差你怎么管理?" },
+    { "q": "那轮 Pre-IPO 融资,融了多少、估值多少、对赌的核心条款是什么?" },
+    { "q": "对赌如果完不成,你当时怎么测算下行风险的?" },
+    { "q": "降本增效专项,你砍的最大的一块成本是什么?省了多少?" },
+    { "q": "优化营运资本具体动了哪些科目?应收周转天数从多少降到多少?" },
+    { "q": "那次并购的标的,你尽调时发现的最大财务风险是什么?" },
+    { "q": "投后整合,你做的第一件事是什么?多久实现了财务并表?" },
+    { "q": "换个角度,作为财务总监,你怎么平衡业务想要的激进增长和财务的稳健?" },
+    { "q": "举一个你否决了业务一个高增长但高风险投入的例子。" },
+    { "q": "你提到现金流管理,公司现金流最紧张的一次是什么时候,你怎么扛过去的?" },
+    { "q": "如果让你给 CEO 一个最关键的经营健康指标,你会选哪个,为什么?" },
+    { "q": "具体讲那次降本:你说省了一大块,到底是哪个具体动作、省了多少钱、对毛利率影响几个点?" }
+  ],
+  "candidate_last_answer": "这个问题问得非常到位,降本增效确实是财务总监价值创造的核心抓手。我的方法论是系统性的:首先要建立全面的成本穿透视角,然后通过业财融合实现精细化的经营分析闭环,最后用数字化手段做到降本提效的长效机制。在这个项目里,我们打的是一套组合拳,从采购协同、流程优化到费用管控全链路发力,真正实现了向管理要效益。最终的成果是显著优化了集团的成本结构,毛利率得到了实质性改善,为公司的价值创造做出了重要贡献。这背后体现的其实是一种从战略到落地的闭环思维,也是我一直坚持的财务赋能业务的理念。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "prior-budget-process", "biz-finance-integration", "rolling-forecast-variance", "preipo-terms", "downside-risk-model", "cost-cut-biggest-item", "working-capital-dso", "ma-diligence-risk", "post-merger-integration", "growth-vs-prudence", "vetoed-investment", "cash-crunch", "key-health-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "finance-mechanism", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 显著优化了集团的成本结构,毛利率得到了实质性改善",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate to abandon the slogans and name the single concrete cost action, the actual amount saved in currency, and the specific number of margin points it moved — anchored to a real line item rather than 'a combination of moves'"
+    ]
+  }
+}

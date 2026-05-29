@@ -1,0 +1,49 @@
+{
+  "id": "fx_0899",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Supply Chain Analyst / Planner\n\nPriya Nadkarni | Demand & Supply Planning | Consumer goods\n\nSummary: Mid-level supply chain professional with experience in demand planning, inventory management, and S&OP support for a consumer packaged-goods company. Comfortable across forecasting, replenishment, and supplier coordination.\n\nExperience:\n- FreshLarder Foods — Supply Chain Analyst (2021-now). Own demand forecasts for a category, run weekly replenishment, support the monthly S&OP cycle, and coordinate with co-manufacturers.\n- Quikmart Distribution — Planning Associate (2019-2021). Inventory tracking, PO management, expediting.\n\nSkills: demand forecasting, SAP IBP, Excel, S&OP, safety-stock policy, supplier coordination.\n\nEducation: BS Supply Chain Management.",
+  "jd": "We're hiring a mid-level Demand & Supply Planner to own end-to-end planning for a consumer-goods category. You will build and improve the statistical demand forecast, set inventory and safety-stock policy, run weekly replenishment, and represent supply in the monthly S&OP process. You'll be measured on forecast accuracy (MAPE), inventory turns, and service level / fill rate. The ideal candidate can explain how they reduced a specific planning error, knows how to balance service level against working capital, and has hands-on experience with a planning system (SAP IBP, Kinaxis, o9, or similar). Strong analytical skills and the ability to drive cross-functional decisions in S&OP are essential.",
+  "history": [
+    { "q": "Give me an overview of what you plan today at FreshLarder — which category, what SKUs, what's your planning horizon?" },
+    { "q": "How do you currently measure forecast accuracy, and where does your category sit?" },
+    { "q": "Tell me about a specific time your forecast was badly wrong. What happened?" },
+    { "q": "What did you change in your forecasting approach as a result?" },
+    { "q": "How do you set safety stock today? Walk me through the actual policy." },
+    { "q": "Describe a stockout you were responsible for. What was the root cause?" },
+    { "q": "How do you think about the tradeoff between service level and working capital?" },
+    { "q": "Tell me about your role in the monthly S&OP meeting — what decision did you drive?" },
+    { "q": "Describe a disagreement with sales over a forecast. How did it resolve?" },
+    { "q": "What's a planning improvement you implemented that you're proud of?" },
+    { "q": "How did you measure whether that improvement actually worked?" },
+    { "q": "Let's stay on that improvement. Be specific: what was the metric before, what did you do, and what was it after?" }
+  ],
+  "candidate_last_answer": "Yeah, so I worked on improving our planning process and it definitely had a positive impact. We made things more efficient and the forecasts got better over time. I collaborated with the team and we used the tools we had to drive improvements. Overall the inventory situation got healthier and people were happier with how things were running.",
+  "session_state": {
+    "drilled_topics": ["planning-scope", "forecast-accuracy-baseline", "bad-forecast-story", "forecast-approach-change", "safety-stock-policy", "stockout-root-cause", "service-vs-capital", "sop-decision", "sales-disagreement", "improvement-pride", "improvement-measurement"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "metric" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the forecasts got better over time",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual before and after forecast-accuracy number (e.g. MAPE) for a named SKU or category and the specific change that drove it, replacing 'got better' with a quantified delta"
+    ]
+  }
+}

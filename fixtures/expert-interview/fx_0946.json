@@ -1,0 +1,39 @@
+{
+  "id": "fx_0946",
+  "tags": {
+    "industry": "hr",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "人力资源总监 | 15年HR全模块经验，互联网与新消费行业\n\n个人简介\n我是业内公认的顶尖HR负责人之一，曾独自一人把一家公司的组织能力『从0带到行业标杆』。我设计的绩效体系被多家头部公司直接抄袭，我主导的校招项目是全行业最成功的案例，没有之一。\n\n核心成就（均为本人单独完成）\n- 在乐刻新消费担任HRD期间，把整体离职率从行业最高水平做到全行业最低，无人能及\n- 我一手打造的OKR推行项目，让全公司人效（revenue per head）翻了一倍多\n- 我谈下的猎头与招聘渠道协议，为公司省下的钱『数都数不清』\n- 业内只要提到employer branding，第一个想到的就是我\n\n工作经历\n乐刻新消费（HangZhou）人力资源总监 2020年至今\n- 管理一个15人的HRBP+招聘+薪酬+OD团队，覆盖2000人规模的公司\n- 主导绩效改革、组织设计（org design）与人才盘评（talent review）\n\n途见科技（ShangHai）HR经理 2015年至2020年\n- 负责招聘与员工关系\n\n教育背景\n中国人民大学 劳动与社会保障 本科",
+  "jd": "我们为一家2000人规模的新消费公司招聘人力资源总监，向CEO汇报，统管HRBP、招聘、薪酬绩效与组织发展（OD）四条线，团队约15人。当前公司处于高速扩张后的整固期，核心痛点有三：关键岗位主动离职率偏高（去年核心研发regretted attrition达21%）、绩效体系流于形式（manager打分集中在B档，区分度低）、以及人效连续两年下滑（revenue per head同比下降8%）。该岗位需要给出可落地的retention与performance calibration方案，并能在董事会层面用数据讲清楚组织健康度。要求有从0到1搭建绩效校准（calibration）机制的实操经验，以及可量化的离职率改善案例。",
+  "history": [
+    { "q": "你简历里写『把离职率做到全行业最低』。先界定清楚：你说的是哪一类离职率，regretted attrition还是整体turnover，离任前后的具体数字是多少？" },
+    { "q": "好，那我们具体讲绩效校准。你在乐刻主导的calibration机制，第一次校准会是怎么开的，你怎么解决manager打分都挤在B档、没有区分度的问题？" }
+  ],
+  "candidate_last_answer": "说到绩效啊,我其实特别想聊聊我们公司的culture。我一直觉得,HR最重要的不是流程,而是人心。我去年还专门组织了一场全员的team building,在莫干山,那个场地是我亲自选的,风景特别好,大家反馈都说是这几年最难忘的一次活动。而且我个人在employer branding这块真的很有心得,我们做的雇主品牌视频在社交媒体上特别火。绩效这种事,说到底还是要靠企业文化去驱动的,你说对吧?",
+  "session_state": {
+    "drilled_topics": ["attrition-metric-definition"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 绩效这种事,说到底还是要靠企业文化去驱动的",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从team building和雇主品牌的跑题拉回，逼出calibration会议的具体机制——校准会的人员构成、强制分布或相对排序的规则、以及她如何在会上推翻一个manager打在B档的具体评分，附带改革前后B档占比的数字"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "fx_0963",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "David Sun — 销售总监 / Enterprise Sales Director\n\n个人概述\n我是一名拥有十二年企业级软件销售与销售管理经验的销售总监,长期负责大中华区 ToB SaaS 业务的新签与增购增长。我经历过从单兵作战的 Account Executive 到带领多团队的 Sales Director 的完整成长路径,既能亲自操盘千万级的复杂大单,也擅长搭建可复制的销售方法论与团队管理体系。我的管理风格是数据驱动加上贴身辅导,坚信销售管理的本质是帮助每一个销售把过程动作做对,而不是只盯着最终的结果数字。我熟悉从 pipeline 建设、forecast 管理到 deal review 的完整销售运营闭环,也有丰富的与渠道伙伴共同 go-to-market 的实战经验。\n\n工作经历\n某国际 SaaS 公司 大中华区销售总监(2020 至今)\n我目前负责该公司在大中华区的企业级业务,直接管理三个行业销售团队,团队总人数约二十五人,全年新签 ARR 目标位于八位数人民币区间。在这个岗位上,我做的最重要的几件事包括:第一,重建了团队的 forecast 纪律,把原来拍脑袋式的预测改造成基于 MEDDIC 与机会阶段的概率加权模型,使季度预测的准确度显著提升;第二,我亲自牵头拿下了公司在该区域历史上最大的一笔金融行业单子,从最初的高层关系建立、到方案共创、再到最后复杂的商务与法务谈判,我全程深度参与;第三,我重构了团队的薪酬与 territory 划分,解决了长期存在的资源分配不公与内部抢单问题。在过去几年里,我所负责的区域连续完成了年度目标,团队的人员流失率也维持在健康水平。\n\n某本土软件公司 销售经理(2016–2020)\n我在这家公司从资深销售做起,两年后晋升为销售经理,带领一个八人的中型客户销售团队。这段经历让我第一次系统性地学习如何从一个出色的个人贡献者转型为团队管理者,我学会了如何放手让团队成员去打单,如何通过 deal review 而不是亲自下场来提升团队的整体赢单率,也第一次体会到管理者的业绩来自于团队的乘数效应而非自己的单点产出。\n\n更早期经历\n职业生涯早期我做过四年的一线企业销售,负责中小客户的电话销售与上门拜访,这段经历为我打下了扎实的销售基本功。\n\n技能:企业级解决方案销售、销售团队管理、forecast 与 pipeline 管理、MEDDIC、商务谈判、渠道生态、territory 规划。\n教育:某高校 工商管理 本科。",
+  "jd": "我们正在为大中华区招聘一名 Enterprise Sales Director,直接向大中华区总经理汇报,负责企业级 SaaS 业务的新签与增购增长,并管理多个行业销售团队。你将负责团队的 forecast 纪律、pipeline 健康度、territory 规划与关键大单的操盘。我们期望候选人能清晰区分自己亲自主导的部分与团队产出,能用具体数字说明业绩,并能讲清每一个管理决策(如薪酬调整、territory 重划)背后的取舍与代价。面试会重点穿透到真实的决策细节,而非高层叙事。",
+  "history": [
+    { "q": "先介绍一下你现在的 scope:团队规模、ARR 目标和汇报线。" },
+    { "q": "你说重建了 forecast 纪律,之前的预测准确度大概是什么水平?" },
+    { "q": "改成概率加权模型后,准确度提升到多少?你怎么衡量的?" },
+    { "q": "那笔历史最大的金融单子,签约金额和周期分别是多少?" },
+    { "q": "这个单子里,真正的 economic buyer 是谁?你是怎么建立关系的?" },
+    { "q": "这单你个人做的最关键的一个动作是什么?" },
+    { "q": "重构薪酬和 territory,触动了谁的利益?有人离职吗?" },
+    { "q": "territory 重划的原则是什么?你怎么决定谁拿哪块?" },
+    { "q": "有没有一个销售明确反对你的 territory 调整?你怎么处理的?" },
+    { "q": "你管理风格里说贴身辅导,举一个你救回一个濒临离职的 top sales 的例子。" },
+    { "q": "如果团队季度 forecast 注定无法达成,你会在什么时间点、怎么向上汇报?" },
+    { "q": "具体说:那次薪酬重构,你在公平和保留 top performer 之间,具体牺牲了什么、保住了什么?" }
+  ],
+  "candidate_last_answer": "那次薪酬重构,我牺牲的是 top performer 的短期安全感,保住的是团队长期的公平与可持续性。具体说:原来的 comp plan 对老人极度有利,几个 top sales 守着历史大客户的续费就能轻松超额,新人却拿不到好 territory。我把续费佣金的 rate 从老人手里下调了大约三分之一,转移到新签上,同时给受影响的两个 top performer 设了一年的 earnings protection 兜底。代价是其中一个 top sales 当年到手减少、情绪很大,我谈了三次,最后他留下了;但另一个还是走了。我接受了流失一个 top performer 的代价,因为如果继续让续费躺赚,我永远养不出第二梯队,团队的 pipeline 会越来越依赖那几个人,这对组织是更大的风险。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "forecast-before-accuracy", "forecast-after-accuracy", "biggest-deal-size-cycle", "economic-buyer-access", "personal-key-action", "comp-territory-impact", "territory-allocation-principle", "territory-objection", "coaching-save-example", "missed-forecast-escalation"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "people-leadership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我接受了流失一个 top performer 的代价",
+      "must-be-question-type: counterfactual",
+      "expected-yield: force the candidate to defend the decision counterfactually — whether the second-tier pipeline he claims to have built actually materialized after the top performer left, and what would have changed if both top performers had walked"
+    ]
+  }
+}

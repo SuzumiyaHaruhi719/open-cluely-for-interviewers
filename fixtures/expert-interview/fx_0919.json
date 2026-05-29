@@ -1,0 +1,37 @@
+{
+  "id": "fx_0919",
+  "tags": {
+    "industry": "design",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "高级产品设计师\n\n技能关键词：UX Design、UI Design、交互设计、用户研究、Design System、Figma、Sketch、Prototyping、A/B Testing、可用性测试、Usability、信息架构、IA、Design Token、组件库、Wireframe、用户旅程、User Journey、Persona、设计走查、Heuristic Evaluation、数据驱动设计、Growth、转化漏斗、Conversion、移动端、响应式、Accessibility、无障碍。\n\n经历\n岸线科技 — 高级产品设计师（2021至今）\n负责电商交易链路的体验设计，主导结算与支付流程的可用性优化，关键词：Checkout、Funnel、A/B Testing、转化率、Design System、组件复用。\n\n墨方互娱 — 交互设计师（2018—2021）\n负责会员中心与营销活动页的交互设计，关键词：Interaction、营销、活动页、用户研究、Usability。\n\n技能补充：Figma、Principle、Axure、HTML/CSS 基础、埋点分析、用户访谈、竞品分析。\n\n教育：视觉传达设计 本科。",
+  "jd": "我们寻找一名高级产品设计师，加入电商体验团队，向设计主管汇报，主导交易与转化链路的体验设计。你需要独立承接关键流程的优化、用 A/B 实验验证设计假设、并与产品和研发紧密协作把设计落地。岗位看重候选人能否清楚说明一次具体的设计改动：你改了什么、基于什么假设、实验怎么设计、对哪个转化指标产生了多大影响。我们偏好回答精准、有数字、能讲清因果的设计师，而不是堆砌设计名词或泛泛而谈『体验更好了』。我们也会关注你在数据不显著或实验失败时的处理方式。",
+  "history": [
+    { "q": "讲一个你主导的、对转化指标有明确影响的设计改动。" },
+    { "q": "这个改动你是基于什么假设做的？实验是怎么设计的？" }
+  ],
+  "candidate_last_answer": "假设是：结算页的地址填写步骤太长导致流失。我把原来的四步表单合并成两步，并把支付方式默认选中上次使用的。实验用 50/50 分流，跑了三周，样本约 12 万订单。结果实验组的结算转化率从 68.2% 提升到 72.5%，提升 4.3 个百分点，p 值小于 0.01，显著。客单价无明显变化，排除了只筛选高意愿用户的可能。上线后我又观察了两周，效果稳定，于是全量。",
+  "session_state": {
+    "drilled_topics": ["转化设计改动", "设计假设与实验设计"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把原来的四步表单合并成两步，并把支付方式默认选中上次使用的",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 候选人对这次改动取舍的深层推理——把两个变量（四步合两步、默认支付方式）同时改动后如何区分各自贡献，以及默认选中上次支付方式是否带来误支付或客诉风险，证明他理解收益与风险的权衡而非只报喜"
+    ]
+  }
+}

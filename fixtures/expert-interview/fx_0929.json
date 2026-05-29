@@ -1,0 +1,41 @@
+{
+  "id": "fx_0929",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Award-Winning Senior Curriculum Director — Transforming Education at Scale\n\nVisionary instructional leader recognized as one of the most influential voices in K-12 curriculum design. I have single-handedly elevated student outcomes wherever I've worked and am widely regarded as a pioneer of modern, equity-centered learning.\n\nExperience\nBrightPath Learning — Senior Director of Curriculum & Instruction (2019 to present)\nArchitected a district-wide curriculum overhaul hailed as a model for the entire state. Every school I touched saw dramatic gains. Teachers consistently tell me I'm the best leader they've ever had. I personally drove the most ambitious literacy transformation the district had ever seen.\n\nMeridian Public Schools — Curriculum Coordinator (2014 to 2019)\nLed standards alignment across all grade bands. Universally praised by principals and the school board.\n\nSkills: curriculum design (best-in-class), instructional coaching (transformational), data-driven instruction, standards alignment, professional development, stakeholder leadership.\nEducation: M.Ed, Curriculum & Instruction. B.A., English Education.",
+  "jd": "We are seeking a Senior Director of Curriculum & Instruction to lead instructional strategy across a 22-school district serving roughly 18,000 students. Reporting to the Chief Academic Officer, you will own the K-12 curriculum framework, lead a team of content coordinators and instructional coaches, and be accountable for measurable gains in literacy and math proficiency — current third-grade reading proficiency sits at 54% with a board target of 68% in three years. You will design and run professional development, implement a data-driven instruction cycle tied to interim assessments, and partner with principals on classroom implementation. The role requires demonstrated, evidence-backed improvement in student outcomes, fluency with assessment data, and experience leading change across many campuses. We value leaders who can speak concretely about what they did and what changed, supported by specific data. Some travel between campuses.",
+  "history": [
+    { "q": "You describe a district-wide literacy transformation. What was the starting reading-proficiency number and where did it land?" },
+    { "q": "What specifically did the curriculum overhaul change in the classroom day to day?" },
+    { "q": "How did you measure whether teacher practice actually changed after your PD?" },
+    { "q": "Last one — pick your single highest-impact intervention and walk me through exactly what you did and what the data showed." }
+  ],
+  "candidate_last_answer": "I mean, it was a comprehensive, holistic effort across the board. We really focused on raising the bar and supporting our teachers and putting students first. It was about transformation at every level, you know, moving the needle on outcomes and building a culture of excellence. There were a lot of moving pieces and it was a real team effort, and the results spoke for themselves. We did a lot of great work and I'm really proud of the impact we had.",
+  "session_state": {
+    "drilled_topics": ["literacy-baseline-and-result", "classroom-level-change", "pd-effectiveness-measure"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the results spoke for themselves",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force one concrete, named intervention with the actual before/after proficiency numbers, the timeframe, and the specific action she personally took — replacing the empty 'holistic/moving the needle' language with verifiable specifics"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "fx_0931",
+  "tags": {
+    "industry": "healthcare",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Rockstar Healthcare Operations Analyst — Driving Transformational Impact\n\nA results-obsessed analyst who delivers game-changing outcomes from day one. Despite being early in my career, I've already saved my organization millions and am considered the go-to problem solver across the entire hospital system.\n\nExperience\nSummit Regional Health — Operations Analyst (2023 to present)\nSingle-handedly redesigned patient-flow processes that slashed ER wait times and saved the hospital a fortune. Leadership calls my dashboards the best they've ever seen. I personally drove improvements that no one thought were possible.\n\nLakeshore Medical Group — Operations Intern (2022 to 2023)\nBuilt reporting that revolutionized how the clinic ran. Praised by everyone.\n\nSkills: data analysis (advanced), process improvement, Tableau, SQL, Lean Six Sigma (in progress), stakeholder communication (exceptional).\nEducation: B.S., Health Administration, 2022.",
+  "jd": "We are hiring a Healthcare Operations Analyst (early-career) to support process-improvement initiatives across our hospital's emergency and outpatient departments. Reporting to the Director of Operations, you will build and maintain dashboards, analyze patient-flow and throughput data, support Lean improvement events, and help quantify the impact of operational changes. The role requires solid SQL and data-visualization skills, careful and honest data handling, and the ability to explain methodology clearly. We value analysts who understand the difference between correlation and causation, who can state the limits of their data, and who attribute results accurately. You will partner with nursing leadership, finance, and IT. This is a hands-on analyst role with mentorship; we are not looking for someone to claim credit for system-wide outcomes but to do rigorous, well-scoped analytical work. Hospital-based, on-site.",
+  "history": [
+    { "q": "Tell me about your current role at Summit — who do you report to and what do you actually own?" },
+    { "q": "You mention redesigning patient flow. What was your specific role versus the team's?" },
+    { "q": "What was the ER wait-time baseline before any changes?" },
+    { "q": "What data source did you use to measure wait times?" },
+    { "q": "Walk me through one dashboard you built — what were the inputs and the metric?" },
+    { "q": "How did you validate the dashboard numbers against the source system?" },
+    { "q": "When you say it 'saved a fortune,' how was that dollar figure calculated?" },
+    { "q": "Who signed off on that savings number — finance, or your team?" },
+    { "q": "How do you separate the effect of your change from other things happening at the same time?" },
+    { "q": "What were the limitations of your analysis?" },
+    { "q": "Tell me about a time your analysis was wrong or incomplete." },
+    { "q": "What SQL did the patient-flow analysis involve — joins, aggregations, what tables?" },
+    { "q": "How did nursing leadership actually use your dashboard day to day?" },
+    { "q": "What's the difference, in your work, between correlation and causation?" },
+    { "q": "If your wait-time numbers disagreed with the ER director's gut, what would you do?" },
+    { "q": "What would you do differently on the patient-flow project if you started over?" },
+    { "q": "How would you scope a new throughput-analysis request from the Director here?" },
+    { "q": "Last one — be precise: what exact ER wait-time number did it start at, what did it end at, and over what period?" }
+  ],
+  "candidate_last_answer": "Oh, the impact was massive. We cut ER wait times by like 70%, basically overnight, and I'm pretty sure we saved the hospital somewhere around five or six million dollars that year. Patient satisfaction shot through the roof, like into the high 90s. Honestly the numbers were off the charts across the board — every single metric improved dramatically. I don't have the exact figures in front of me but it was a huge, huge win, probably one of the biggest turnarounds the hospital has ever seen, and everyone agreed it was because of my work.",
+  "session_state": {
+    "drilled_topics": ["current-role-ownership", "personal-vs-team-role", "wait-time-baseline", "data-source", "dashboard-inputs", "dashboard-validation", "savings-calculation", "savings-signoff", "confound-isolation", "analysis-limitations", "analysis-wrong", "sql-detail", "nursing-usage", "correlation-causation", "data-vs-gut", "lessons-learned", "scoping-approach"],
+    "current_competency_target": "credibility-consistency",
+    "elapsed_minutes": 46
+  },
+  "ground_truth": {
+    "competency_target": "credibility-consistency",
+    "missing_evidence": [
+      { "competency": "credibility-consistency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we saved the hospital somewhere around five or six million dollars that year",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the actual ER wait-time start and end numbers, the measurement period, and the precise basis for the five-to-six-million savings figure — exposing whether any of these grand numbers are real or can be tied to his own narrowly-scoped analyst work"
+    ]
+  }
+}

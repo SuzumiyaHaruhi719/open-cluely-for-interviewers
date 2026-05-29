@@ -1,0 +1,43 @@
+{
+  "id": "fx_0991",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "RACHEL VOSS\nVP of Sales — Enterprise SaaS\nrachel.voss.sales@example.com\n\nPROFILE\nEnterprise sales leader with 13 years scaling go-to-market motions in B2B SaaS. I have built and led teams through hypergrowth and turnaround, owning new-logo and expansion revenue.\n\nEXPERIENCE\n\nVP of Sales — Cobalt Analytics (2021–present)\nLead the global enterprise sales org for a data-analytics platform.\n- Team size: I lead a team of 35 quota-carrying reps (summary) — though a later section states \"built and scaled the team from 12 to 60.\"\n- Grew annual recurring revenue from $40M to $95M (this section) / cited elsewhere as \"took the business from roughly $50M to over $100M.\"\n- Tenure note: \"Joined Cobalt in early 2021\" here, but the GTM-Transformation project below says it ran \"over 2019–2021 under my leadership at Cobalt.\"\n- Implemented MEDDICC across the org and rebuilt the sales-comp plan.\n- Closed the company's largest-ever deal, a multi-year contract with a global bank.\n\nGTM Transformation (project highlight)\n- Led a go-to-market transformation that shifted the org from a geography model to an industry-vertical model, said to run over 2019–2021 under my leadership at Cobalt — predating the stated 2021 start date.\n\nSenior Director, Sales — Vantage Cloud (2016–2021)\n- Owned the Americas commercial segment.\n- Improved net revenue retention from 105% to 121%.\n- Reduced average sales cycle from 120 to 78 days.\n\nRegional Sales Manager — Helios Software (2012–2016)\n- Managed a team of 8 reps in the Midwest.\n- President's Club two years running.\n\nSKILLS\nEnterprise GTM strategy, sales-team building, MEDDICC/forecasting, comp-plan design, vertical go-to-market, executive negotiation, NRR/expansion motion, pipeline management.\n\nEDUCATION\nB.A. Economics.",
+  "jd": "Helix Data is hiring a VP of Sales to lead our enterprise go-to-market as we scale past $60M ARR. Reporting to the CRO, you'll own new-logo and expansion revenue, build and develop a quota-carrying team, and drive a forecasting discipline the board can trust. We are looking for a leader who has personally driven a specific, measurable revenue transformation — and who can narrate it cleanly: the starting state, the diagnosis, the specific motions you installed, and the quantified outcome with a timeline. We will press on consistency; if the numbers or dates on your resume move, we will ask you to reconcile them on the spot. MEDDICC fluency, comp-plan design experience, and a track record of executive-level deal-making are expected.",
+  "history": [
+    { "q": "Rachel, give me the shape of your current role at Cobalt — team size, what revenue you own." },
+    { "q": "Your resume says 35 reps in one place and 'scaled from 12 to 60' in another. Which is the real number today?" },
+    { "q": "Same on ARR — I see $40M to $95M and also '$50M to over $100M.' Reconcile those for me." },
+    { "q": "There's also a date issue: you list a 2021 start at Cobalt, but the GTM transformation is dated 2019–2021 'under your leadership at Cobalt.' When did you actually join?" },
+    { "q": "Let's go deep on the GTM transformation — the shift from geography to vertical model. What did you personally drive?" },
+    { "q": "How did you sequence that change so you didn't tank in-flight pipeline during the reorg?" },
+    { "q": "Take that transformation end to end: the starting state, the specific motions you installed, and the measured result with a timeline." }
+  ],
+  "candidate_last_answer": "Sure. So what I did was install a vertical coverage model — I carved the team into industry pods, hired in two seasoned reps from banking and healthcare, layered MEDDICC on top so the forecast got real, and rebuilt comp to reward multi-year and expansion. The pods ramped, the pipeline got higher quality, and within about three quarters we were closing bigger, stickier deals — we ended up roughly doubling the business. It was the right call and the board loved it.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "headcount-discrepancy", "arr-discrepancy", "tenure-discrepancy", "gtm-personal-role", "reorg-pipeline-sequencing"],
+    "current_competency_target": "transformation-results",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "transformation-results",
+    "missing_evidence": [
+      { "competency": "transformation-results", "evidence_type": "scope" },
+      { "competency": "transformation-results", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: roughly doubling the business",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Situation baseline and a committed outcome — the exact starting ARR and rep count before the vertical reorg, the precise ending figure, and the window — so 'roughly doubling' resolves to hard numbers consistent with one of the conflicting resume claims"
+    ]
+  }
+}

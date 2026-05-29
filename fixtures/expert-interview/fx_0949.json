@@ -1,0 +1,45 @@
+{
+  "id": "fx_0949",
+  "tags": {
+    "industry": "design",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "高级产品设计师（Senior Product Designer）| 8年B端与C端体验设计\n\n自我介绍\n我大概是同龄设计师里最强的那一档。我经手的每一个项目，转化率都会大幅提升，我的设计稿几乎从不被推翻，因为我对用户的理解近乎本能。业内不少人把我做的支付流程当成教科书级的范例。\n\n代表作（均为本人主导）\n- 一手重做了一款月活千万级App的核心下单流程，被公认为行业标杆\n- 我设计的引导流程让新用户留存『大幅提升』，具体数字我懒得记\n- 多次在公司设计评审中『一稿过』，无人能及\n- 我的作品集是很多设计师私下传阅学习的对象\n\n工作经历\n潮汐科技（HangZhou）高级产品设计师 2020年至今\n- 负责电商主App的交易链路（下单、支付、订单）体验设计\n- 主导一次结算页（checkout）改版，并参与设计系统（design system）建设\n\n岸线信息 产品设计师 2017年至2020年\n- 负责会员中心与营销活动页设计\n\n教育背景\n江南大学 视觉传达设计 本科",
+  "jd": "我们为一款月活千万级的电商App招聘高级产品设计师，向设计负责人汇报，主理交易链路（下单、支付、订单）的端到端体验。当前核心问题是结算页（checkout）的转化漏斗存在明显流失：进入结算页到提交订单的转化率为68%，行业基准约80%；其中地址确认与优惠券选择两步流失最严重。该岗位需要主导一次结算页改版，能用数据定位流失点、提出并验证假设（A/B test），并与产品、前端、增长团队协作落地。要求具备可量化的转化提升案例、扎实的交互细节功底，以及把设计决策讲清楚『为什么』的能力。",
+  "history": [
+    { "q": "先介绍一下你目前在潮汐科技的职责:负责哪条产品线、和谁协作、最近主导的一个项目是什么。" },
+    { "q": "你简历写引导流程让新用户留存『大幅提升』。具体提升了多少,从多少到多少?" },
+    { "q": "我们聚焦那次结算页改版。改版前,你是怎么定位到流失点的?" },
+    { "q": "你说地址确认这一步流失严重,你当时看的是哪个具体指标,数值是多少?" },
+    { "q": "针对地址这一步,你提出的假设是什么?为什么认为改了就能降低流失?" },
+    { "q": "这个改动上线时做A/B test了吗?对照组和实验组怎么分的?" },
+    { "q": "实验跑了多久?最后看的是哪个核心指标,实验组比对照组高了多少?" },
+    { "q": "改版过程中,前端说某个交互成本太高做不了,你怎么处理这个冲突?" },
+    { "q": "我们再回到那个核心问题:这次改版,结算页的整体转化率,改前是多少,改后是多少?" }
+  ],
+  "candidate_last_answer": "嗯……这个……怎么说呢,就是,转化率肯定是提升了的,这个我很确定。具体的数字嘛……当时其实看了好多个指标,有点多,我一下子……你知道做设计的人,我们对数字没那么敏感嘛,哈哈。就是那个,改版之后大家反馈都挺好的,老板也夸了,然后……对了我还想起来当时配色也调了,从那个偏冷的灰调到了暖一点的……诶我是不是跑题了?反正转化是涨了的,涨了挺多,我回头……要不我回头把具体数字发给你?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "retention-vague", "funnel-diagnosis", "address-step-metric", "hypothesis", "ab-test-design", "ab-test-result", "frontend-conflict"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们对数字没那么敏感嘛",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 穿过紧张的发散与配色跑题,逼出结算页改版的核心转化数字——改版前后从结算页到提交订单的转化率各是多少,以及A/B实验中实验组相对对照组的具体提升幅度,任意一个她能确证的数值"
+    ]
+  }
+}

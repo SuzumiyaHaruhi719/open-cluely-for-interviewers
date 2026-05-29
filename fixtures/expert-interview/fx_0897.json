@@ -1,0 +1,46 @@
+{
+  "id": "fx_0897",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Manufacturing Engineering Intern Candidate\n\nMarcus Trent | Mechanical Engineering, junior year, State Polytechnic\n\nObjective: Summer manufacturing engineering internship in automotive or industrial components.\n\nProjects & Experience:\n- Formula SAE team, manufacturing sub-team: helped fabricate suspension brackets and assisted with the CNC workflow.\n- Coursework project: redesigned a bracket for easier machining and reduced part count.\n- Part-time machine shop assistant on campus: operated manual lathe and mill, deburring, basic QA checks.\n\nSkills: SolidWorks, GD&T basics, manual machining, some CNC, Lean intro course.\n\nRelevant courses: Manufacturing Processes, Materials Science, Statics.",
+  "jd": "Summer Manufacturing Engineering Intern. You will support a stamping and assembly plant producing automotive structural components. Responsibilities: shadow process engineers on the line, run basic time studies, help document standard work, support a continuous-improvement (kaizen) event, and assist with root-cause analysis on a recurring defect. You should be comfortable on a shop floor, able to use measurement tools (calipers, micrometers), and willing to follow all safety and PPE protocols without exception. We value interns who ask questions, take feedback, and own small problems end to end. Pursuing a degree in mechanical, manufacturing, or industrial engineering. Prior hands-on fabrication or machine-shop exposure is a plus.",
+  "history": [
+    { "q": "Thanks for coming in. To start, what drew you to manufacturing specifically, rather than design or R&D?" },
+    { "q": "Tell me about your role on the Formula SAE manufacturing sub-team — what did you personally fabricate?" },
+    { "q": "On the bracket redesign, you mention reducing part count. From what to what, and how did you validate it was easier to machine?" },
+    { "q": "Walk me through a time you measured a part and it was out of tolerance. What did you do?" },
+    { "q": "In the campus machine shop, describe the QA checks you ran. What were you actually inspecting for?" },
+    { "q": "Tell me about a time you got critical feedback on your work. How did you handle it?" },
+    { "q": "Safety on a stamping line is non-negotiable. Describe a situation where you followed a safety procedure even when it slowed you down." },
+    { "q": "Let's go back to the bracket project. You said it was 'easier to machine' — I'm trying to understand what specifically made it easier. Can you be concrete?" },
+    { "q": "I'm pressing because the detail matters here. What was the actual machining step you eliminated or simplified, and how do you know it helped?" }
+  ],
+  "candidate_last_answer": "Honestly I feel like you're trying to trip me up. It was easier to machine, okay? Fewer features means fewer operations, everyone knows that. I don't see why I need to recite every single setup step from a class project I did months ago. If you want someone who memorized a spreadsheet, that's not me. The point is I improved the design and the team used it.",
+  "session_state": {
+    "drilled_topics": ["motivation", "fsae-fabrication", "part-count-validation", "out-of-tolerance", "qa-inspection", "feedback-handling", "safety-procedure", "bracket-machining-detail"],
+    "current_competency_target": "engineering-rigor",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "engineering-rigor",
+    "missing_evidence": [
+      { "competency": "engineering-rigor", "evidence_type": "mechanism" },
+      { "competency": "engineering-rigor", "evidence_type": "metric" },
+      { "competency": "coachability", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Fewer features means fewer operations, everyone knows that",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete walkthrough of which specific machining operation or setup the redesign removed and the before/after operation count, distinguishing real process understanding from a hand-wave"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "fx_0902",
+  "tags": {
+    "industry": "sales",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Staff Sales Engineer / Solutions Lead — 顶级 SE,常年 President's Club\n\n黄健 (Jian Huang) | Beijing | 11 yrs presales\n\n我是公司有史以来最强的 sales engineer 之一。Career highlights:\n- 连续四年 President's Club,是团队里 win-rate 最高的 SE,几乎 every deal I touch closes。\n- Single-handedly 把华北区最大的几个 enterprise 客户拿下,没有我这些 deal 根本 close 不了。\n- 我的 demo 被全公司当成 gold standard,新人都拿我的录像 training。\n- 主导过无数次复杂 POC,从来没有失败过。\n- AE 们 always request me by name 因为 my technical credibility 直接决定 deal 的成败。\n\nExperience:\n- ScaleDB (data infra) — Staff Sales Engineer (2020-now). 支持 enterprise AE team,负责 POC、architecture review、technical close。\n- Previously SE at two other infra vendors。\n\nSkills: distributed databases, POC management, technical discovery, demo engineering, MEDDICC, executive whiteboarding.",
+  "jd": "We are hiring a Staff Sales Engineer to be the senior technical lead on our largest enterprise opportunities for a data-infrastructure platform. You will own technical discovery, run multi-week proof-of-concepts against measurable success criteria, handle architecture and security reviews, and partner with AEs to drive technical close. You'll also mentor junior SEs and feed product gaps back to engineering. We expect 8+ years in presales for technical products, a track record of winning competitive POCs, and the ability to quantify your impact: win rates, POC conversion, and influenced ARR. The strongest candidates can describe one POC they nearly lost and exactly how they turned it around. Mandarin and English required.",
+  "history": [
+    { "q": "Give me the scope of your SE role at ScaleDB — deal sizes, how many AEs you support, what you own technically." },
+    { "q": "You say nearly every deal you touch closes. What's your actual POC win rate, and how do you track it?" },
+    { "q": "Pick the largest enterprise deal you supported. What was the technical use case?" },
+    { "q": "Walk me through the POC success criteria on that deal — who defined them?" },
+    { "q": "Tell me about a competitive POC. Who were you up against and on what did it come down to?" },
+    { "q": "You mention your demo is a 'gold standard.' What specifically do you do differently in a demo?" },
+    { "q": "Describe a technical objection you couldn't answer in the room. What did you do next?" },
+    { "q": "Tell me about a POC that went badly. What happened?" },
+    { "q": "How did you turn that one around — or didn't you?" },
+    { "q": "Where have you fed a product gap back to engineering, and what came of it?" },
+    { "q": "How do you mentor a junior SE? Give a specific instance." },
+    { "q": "Tell me about a time the AE and you disagreed on technical strategy." },
+    { "q": "What's a deal you lost on technical grounds, and what did you learn?" },
+    { "q": "Go back to the competitive POC you mentioned. Be precise: what was the single criterion that decided it, what did you do about that criterion, and what was the measured result?" }
+  ],
+  "candidate_last_answer": "对,那个 competitive POC 我记得很清楚。Situation 是 we were up against the incumbent,客户的 main concern 是 query latency under concurrency。我的 task 就是 prove 我们在高并发下更快。所以我 personally 重新设计了 benchmark,把它做得更贴近他们真实的 workload,然后 ran it live 给他们的 architect 看,he was impressed。这个 deal 后来就 swung our way 了,客户的技术团队 became big fans of mine。",
+  "session_state": {
+    "drilled_topics": ["se-scope", "poc-win-rate", "largest-deal-usecase", "poc-success-criteria", "competitive-poc-overview", "demo-differentiation", "unanswered-objection", "bad-poc", "poc-turnaround", "product-gap-feedback", "mentoring", "ae-disagreement", "technical-loss"],
+    "current_competency_target": "technical-win-attribution",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "technical-win-attribution",
+    "missing_evidence": [
+      { "competency": "technical-win-attribution", "evidence_type": "metric" },
+      { "competency": "technical-win-attribution", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: ran it live 给他们的 architect 看,he was impressed",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual latency-under-concurrency numbers the benchmark produced (theirs vs the incumbent) and what specifically the candidate changed in the benchmark design, converting 'he was impressed' into a measured technical result"
+    ]
+  }
+}

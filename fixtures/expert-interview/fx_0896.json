@@ -1,0 +1,43 @@
+{
+  "id": "fx_0896",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Senior Enterprise Account Executive\n\n陈伟 | Shanghai | 8 yrs SaaS sales\n\nSummary: Closed mid-market and enterprise deals for two B2B SaaS vendors. Carried quota in the APAC region, focused on logistics and retail verticals.\n\nExperience:\n- CloudFleet (2021-now), Senior AE. Net-new logo hunting plus expansion. Top accounts include a regional 3PL and a grocery chain.\n- DataBridge (2018-2021), AE. Inbound and outbound, SMB to mid-market.\n\nSkills: MEDDICC, Salesforce, multi-threading, contract negotiation, QBR ownership.\n\nLanguages: Mandarin (native), English (fluent).",
+  "jd": "We are hiring a Senior Enterprise Account Executive to own a named-account territory of 30 strategic logistics and retail accounts in Greater China. You will carry an annual quota of USD 1.8M new ARR, run full-cycle deals from prospecting to close, and multi-thread across procurement, IT, and operations buyers. Required: 6+ years closing complex SaaS deals with ACVs above USD 100K, fluency with a structured sales methodology (MEDDICC/MEDDPICC), and a documented track record of landing-and-expanding at least one account past USD 500K ARR. You will partner with SDRs, solution engineers, and customer success, and present pipeline and forecast accuracy weekly to the regional VP. Mandarin and English fluency required.",
+  "history": [
+    { "q": "Tell me about your current territory at CloudFleet — how many accounts, what's the quota, and how are you tracking against it this year?" },
+    { "q": "Pick the largest deal you closed in the last 18 months. Walk me through the buying committee and how you multi-threaded." },
+    { "q": "You listed land-and-expand as a strength. Take one account from a first contract to its largest renewal — what did the ARR look like at each stage?" },
+    { "q": "Where did that expansion nearly fall apart, and what did you personally do to save it?" },
+    { "q": "Let's talk forecasting. Describe a quarter where your forecast was wrong. What happened?" },
+    { "q": "Take me inside one specific expansion motion: the grocery chain. What was the trigger to expand, and what did you do step by step?" }
+  ],
+  "candidate_last_answer": "对,grocery chain 这个客户 is a good one. So the situation 是 they started with a single-region pilot, 大概 80K ARR。我的 target 是 push them to a national rollout。所以我做的事情就是 align 他们的 ops VP on a business case,然后 we ran a joint QBR,后来 it expanded nicely。整个过程 felt really collaborative and we built a lot of trust along the way.",
+  "session_state": {
+    "drilled_topics": ["current-territory", "largest-deal-committee", "land-expand-arr-stages", "expansion-near-miss", "forecast-miss"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it expanded nicely",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the specific final ARR the grocery account reached after the national rollout, the multiple over the 80K starting point, and how many months the expansion took"
+    ]
+  }
+}

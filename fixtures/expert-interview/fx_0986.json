@@ -1,0 +1,53 @@
+{
+  "id": "fx_0986",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "TOMÁS REYES\nProcess / Quality Engineer — Precision Machining\ntomas.reyes.qe@example.com\n\nSUMMARY\nProcess and quality engineer with six years in CNC machining and welded-assembly manufacturing. I run DOEs, own SPC for critical-to-quality features, and lead containment-and-corrective-action when a process drifts.\n\nEXPERIENCE\n\nProcess Engineer — Apex Precision Components (2021–present)\nSupplier of machined hydraulic manifolds to off-highway OEMs.\n- Situation: A bore-diameter feature on our top manifold was running a Cpk of 0.9 against a customer requirement of 1.33, driving a 4% scrap rate. Task: get the feature capable. Action: I ran a structured DOE on coolant concentration, tool path step-over, and insert grade; identified coolant concentration as the dominant factor; standardized concentration with an inline refractometer check each shift and added a tool-life counter. Result: Cpk moved to 1.51 and scrap on that feature fell from 4% to 0.6% over three months, saving roughly $180K annually.\n- Situation: Customer PPAP was at risk because our gage R&R on a thread-depth check was 28%. Task: get under 10%. Action: found the operator-to-operator variation was driven by an ambiguous datum call-out; rewrote the work instruction with a fixture-located datum and retrained four inspectors. Result: gage R&R dropped to 7%, PPAP approved on time.\n\nQuality Engineer — Forge & Form Manufacturing (2018–2021)\nWelded structural assemblies.\n- Situation: Weld porosity rejects spiked to 9% on a frame weldment after a wire-supplier change. Task: contain and root-cause. Action: led the 8D, ran a fishbone, isolated the cause to shielding-gas flow drop from a worn regulator interacting with the new wire's higher feed rate, replaced regulators on six cells and added a daily flow check. Result: porosity rejects back to under 1% within two weeks; closed the 8D with the customer.\n- Built the incoming-inspection sampling plan for purchased castings; reduced inspection labor while holding escape rate flat.\n\nSKILLS\nDOE, SPC, Cpk/Ppk, gage R&R / MSA, 8D, PPAP/APQP, GD&T, fishbone/5-why, Minitab, CMM programming basics, blueprint reading.\n\nCERTIFICATIONS\nASQ Certified Quality Engineer (CQE); Lean Six Sigma Green Belt.\n\nEDUCATION\nB.S. Manufacturing Engineering Technology.",
+  "jd": "Ridgeline Hydraulics is hiring a mid-level Process/Quality Engineer for our precision-machining cell that supplies safety-critical components. You will own SPC on critical features, lead DOEs to bring marginal processes to capability, and run 8D corrective actions when quality escapes occur. Reporting to the Quality Manager, you'll partner daily with machinists, tooling, and the CMM lab. We want an engineer who can take us through a specific capability improvement they personally drove — and we mean the actual experimental method and the hands-on changes you made, step by step, not just the before/after numbers. We will press on the mechanism: what did you vary, why, in what order, and how did you isolate the real cause. Strong statistics, Minitab fluency, and a CQE are highly valued.",
+  "history": [
+    { "q": "Tomás, give me a quick map of your current role at Apex — what you own day to day." },
+    { "q": "Let's start with the bore-diameter Cpk problem. What was the customer requirement and where were you?" },
+    { "q": "What was the business impact of that 4% scrap before you touched it?" },
+    { "q": "You ran a DOE. What factors did you choose to study and why those?" },
+    { "q": "How many runs, and what design — full factorial, fractional?" },
+    { "q": "You said coolant concentration was dominant. What did the analysis actually show — effect size, p-value?" },
+    { "q": "How did you lock in the coolant concentration on the floor so it didn't drift back?" },
+    { "q": "What was the final Cpk and how long did it hold?" },
+    { "q": "Now the gage R&R problem — 28% is rough. How did you figure out it was the datum call-out?" },
+    { "q": "Walk me through rewriting that work instruction. What specifically changed?" },
+    { "q": "Switching to Forge & Form: the porosity spike after the wire change. How did you contain it first?" },
+    { "q": "Take me through the 8D. What did the fishbone surface as candidate causes?" },
+    { "q": "How did you confirm it was the regulator interacting with the new wire and not the wire itself?" },
+    { "q": "What was your specific role in the 8D versus the welding supervisor's?" },
+    { "q": "On the casting sampling plan — how did you set the sample size?" },
+    { "q": "Of all these, which one are you proudest of and why?" },
+    { "q": "Take the bore-diameter DOE one more time, but I want the mechanism in your own hands: walk me run by run through what you varied, in what order, and exactly how you isolated coolant as the cause." }
+  ],
+  "candidate_last_answer": "Yeah, that one was a good win. So like I said, the feature was at a 0.9 Cpk against the 1.33 the customer wanted, and the scrap was killing us at 4%. We knew it had to get fixed before the next quarter. So basically I dug into it, did the analysis, and coolant concentration turned out to be the big driver — once we got on top of that the whole thing came into line. End result was a 1.51 Cpk and scrap down to 0.6%, about $180K a year. It was really satisfying to see those control charts finally calm down.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "bore-cpk-baseline", "scrap-business-impact", "doe-factor-selection", "doe-design", "coolant-effect-stats", "coolant-control-plan", "final-cpk-durability", "gage-rr-rootcause", "work-instruction-change", "porosity-containment", "8d-fishbone", "regulator-vs-wire", "8d-role", "sampling-size"],
+    "current_competency_target": "technical-mechanism",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "technical-mechanism",
+    "missing_evidence": [
+      { "competency": "technical-mechanism", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I dug into it, did the analysis",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the missing Action mechanism — the actual run-by-run experimental sequence (what was varied first, the design, how factors were held vs. changed) showing how he personally isolated coolant concentration rather than jumping straight from problem to the result numbers"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "fx_0912",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "SENIOR ENTERPRISE ACCOUNT EXECUTIVE — THE #1 CLOSER YOU WILL EVER MEET\n\nLegendary, unstoppable revenue machine. President's Club every single year, no exceptions, ever. I don't miss quota — I obliterate it. Recognized company-wide as the gold standard for enterprise selling.\n\nEXPERIENCE\nVertex Data Cloud — Senior Enterprise AE (2021–present)\n- Crushed quota at 180%+ attainment, year after year, untouchable on the leaderboard\n- Single-handedly landed the largest logo in company history\n- The deals everyone else gave up on? I closed them. Every time.\n- World-class at C-suite relationships; CIOs take my calls personally\n\nApex Systems — Enterprise AE (2017–2021)\n- Top rep on the floor, period. Built the playbook the whole team now uses.\n- Turned a dead territory into the company's #1 region basically overnight\n\nNimbus Software — Account Executive (2014–2017)\n- Rookie of the year, then immediately the best rep two years running\n\nSKILLS: Closing (elite), MEDDPICC (mastered it), negotiation (undefeated), enterprise SaaS, multi-threading, forecasting.\nEDUCATION: BA Economics.",
+  "jd": "We are hiring a Senior Enterprise Account Executive to own a named-account territory of ~30 strategic logos for our data-infrastructure platform. You will report to the RVP and carry a $2.2M new-logo quota. The role demands rigorous pipeline discipline (MEDDPICC), accurate forecasting, and the ability to run complex multi-stakeholder deals with 6–9 month sales cycles. We sell into both the data-engineering org and the CFO's office, so command of technical and economic buyers is essential. In interviews we go deep on a single real deal: we want the exact contract value, the procurement timeline, who the economic buyer was, what nearly killed the deal, and what you personally did to save it. We value precise, verifiable answers over self-promotion.",
+  "history": [
+    { "q": "Give me your current territory at Vertex — number of accounts, quota, segment." },
+    { "q": "What's your quota attainment this year and last, in dollars not percentages?" },
+    { "q": "Walk me to the single biggest deal you closed at Vertex. Who was the customer and what was the ACV?" },
+    { "q": "Who was the economic buyer on that deal, and who was the technical champion?" },
+    { "q": "How long was the cycle from first meeting to signature?" },
+    { "q": "What was the competitive situation — were you displacing an incumbent?" },
+    { "q": "At what stage did the deal nearly die, and why?" },
+    { "q": "What did you personally do to get it back on track?" },
+    { "q": "How did procurement and legal play out — any concessions on price or terms?" },
+    { "q": "What did your MEDDPICC scorecard look like at the point you committed it to forecast?" },
+    { "q": "How accurate was your forecast that quarter — what did you call versus what landed?" },
+    { "q": "Of that ACV, how much was net-new versus expansion?" },
+    { "q": "What did you learn from that deal that changed how you sell now?" },
+    { "q": "One more on numbers: of your $2.2M attainment, how much came from your top two deals, and what were their exact values?" }
+  ],
+  "candidate_last_answer": "Two deals carried most of it. Meridian Logistics was $840K ACV — all net-new, three-year term, signed March 14th. Helix Bioworks was $610K ACV, of which $470K was net-new and $140K was an expansion on an existing seat license, signed May 2nd. So those two were $1.45M of my $2.31M booked, roughly 63%. The rest came from four mid-sized deals between $90K and $230K. Happy to pull up the exact close dates on the other four if useful.",
+  "session_state": {
+    "drilled_topics": ["territory-scope", "quota-attainment-dollars", "biggest-deal-acv", "economic-buyer", "deal-cycle-length", "competitive-displacement", "deal-near-death", "personal-save-action", "procurement-concessions", "meddpicc-scorecard", "forecast-accuracy", "netnew-vs-expansion", "deal-learnings"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Helix Bioworks was $610K ACV, of which $470K was net-new and $140K was an expansion",
+      "must-be-question-type: metric-pin",
+      "expected-yield: confirmation that the expansion-vs-net-new split is real and internally consistent — pinning whether the $140K expansion should count toward a new-logo quota, and whether the four smaller deals reconcile cleanly to the stated $2.31M total"
+    ]
+  }
+}

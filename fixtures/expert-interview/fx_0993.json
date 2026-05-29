@@ -1,0 +1,44 @@
+{
+  "id": "fx_0993",
+  "tags": {
+    "industry": "customer-support",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "林晓琳 / Senior Customer Support Specialist\n\n现任职：星海云 SaaS，Tier-2 Support 高级专员（2022至今）\n- 负责 enterprise 客户的 escalation 处理与 root-cause 复盘\n- 维护 macro 与 KB 文档，CSAT 长期保持 90+\n- 跨时区 on-call，处理 P1 incident 的客户沟通\n\n此前：迅捷网络，Support Specialist（2019-2022）\n- 处理 billing 与 API integration 类工单\n\n技能：Zendesk、Intercom、SQL 基础查询、English（工作语言）、客户 de-escalation\n\n证书：Zendesk Support Administrator\n\n目标：希望转向 Support Team Lead，带教新人并负责 escalation 流程优化。",
+  "jd": "星海云 SaaS 招聘一名 Senior Support Specialist（escalation 方向），向 Support Manager 汇报。你将作为 Tier-2 的 escalation owner，负责 enterprise 客户 P1/P2 故障期间的对客沟通、内部 cross-team 协调，以及事后 RCA（root-cause analysis）的撰写。岗位要求：能独立 own 一次完整的 major incident 客户沟通，把 timeline、客户影响、缓解动作讲清楚；熟悉 Zendesk SLA 配置；有把重复 escalation 转化为 KB/macro 沉淀的经验。面试会重点考察你在一次真实 incident 中，从接报到 resolution 每个节点你具体做了什么、和谁协调的。",
+  "history": [
+    { "q": "介绍一下你现在在星海云做 escalation 的日常职责。" },
+    { "q": "讲一次你印象最深的 enterprise 客户 P1 incident。" },
+    { "q": "那次故障的 root cause 最后定位到是什么？" },
+    { "q": "在 mitigation 期间，你具体负责哪一块？是对客还是对内协调？" },
+    { "q": "你和哪些团队协调的？工程、SRE 还是 account team？" },
+    { "q": "从客户报障到最终 resolution，整体花了多长时间？" },
+    { "q": "事后的 RCA 是你写的吗？里面有没有沉淀成 KB 或 macro？" }
+  ],
+  "candidate_last_answer": "啊这个……不好意思我有点紧张，RCA 嘛，对，就是那个 root-cause 文档，其实当时情况挺乱的，客户那边一直在催，我们 Slack 上好多 thread，然后我就……嗯，对了你刚问的是 KB 还是 RCA 来着？我先说 RCA 吧，那个文档当时是有人写的，我记得我也补了几段，主要是 timeline 那块，但具体最后是不是我 submit 的我得想想，因为那几天我还在跟 billing 那边另一个 ticket，反正挺忙的，KB 后来好像也更新了一条 macro，但那个可能是我同事弄的，我不太确定，要不我再回忆一下？",
+  "session_state": {
+    "drilled_topics": ["escalation 职责", "P1 incident 案例", "root-cause 定位", "mitigation 分工", "跨团队协调", "incident 总时长"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 但具体最后是不是我 submit 的我得想想",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 明确该 RCA 文档与 KB/macro 沉淀中究竟哪些部分由候选人本人撰写并提交、哪些是同事完成，把 timeline 段落的具体作者与最终 owner 钉死，剥离『有人写的』式的模糊归属"
+    ]
+  }
+}

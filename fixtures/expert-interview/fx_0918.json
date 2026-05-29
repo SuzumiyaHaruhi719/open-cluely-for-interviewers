@@ -1,0 +1,46 @@
+{
+  "id": "fx_0918",
+  "tags": {
+    "industry": "hr",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "资深人力资源专家（Staff HRBP / People Partner）\n\n个人简介\n我是一名以业务为中心、数据驱动的资深人力资源伙伴，长期服务于高速增长的科技组织，专注于把宏大的组织战略转化为可落地的人才举措。过去十二年里，我始终相信人力资源不应只是支持性职能，而应成为驱动业务结果的战略杠杆。我擅长在充满不确定性的环境中赋能管理者、激活组织活力、并以全局视角推动端到端的人才生态建设。我深信，真正卓越的 People Partner 必须既懂业务语言，又懂人心温度，能够在 scale 与 humanity 之间找到优雅的平衡点。\n\n核心理念\n我把每一次组织变革都视为一次重塑文化基因的契机。我倡导以终为始、自上而下对齐、自下而上共创的工作方式，致力于打造高信任、高敬业、高韧性的组织氛围。我相信人才密度是一切的基石，也相信只有让正确的人在正确的位置上发光，组织才能行稳致远、基业长青。这些年我反复打磨自己的方法论，逐渐形成了一套以战略对齐为核、以数据洞察为翼、以管理者赋能为桥的人才运营框架。\n\n工作经历\n\n寰宇智能科技 — 资深人力资源伙伴 / Staff People Partner（2020 至今）\n作为研发与产品组织的核心 HRBP，我深度参与组织的战略解码与人才盘点，统筹覆盖招聘、绩效、继任、发展、敬业度在内的全链路 People 议程。我牵头搭建了面向 Engineering 组织的 talent review 机制，推动 calibration 文化在多个团队落地，并以 OKR 为锚定，帮助 leadership 把组织目标层层拆解、对齐到个人。我倡导用数据说话，主导了敬业度调研的闭环治理，把 engagement 洞察转化为可执行的行动计划，持续为业务注入组织能量。\n\n云栖网络 — 高级人力资源业务伙伴（2016—2020）\n我服务于快速扩张的商业化与销售组织，亲历团队从百人到数百人的高速 scale。我以伙伴姿态赋能一线管理者，推动绩效管理体系的迭代升级，并在多轮组织调整中扮演变革催化剂的角色。我始终秉持以人为本、结果导向的双轮驱动理念，努力在业务节奏与员工体验之间寻找最优解，帮助组织在动荡中保持凝聚力与战斗力。\n\n晨曦人才咨询 — 人力资源顾问（2013—2016）\n作为咨询顾问，我为多家成长型企业提供组织诊断、薪酬体系设计与人才发展方案。这段经历让我建立了体系化、结构化的思维框架，也让我深刻理解，任何人力资源解决方案都必须扎根于业务的真实土壤，才能真正开花结果、创造价值。\n\n核心能力 Core Competencies\n战略人力资源（Strategic HR）、组织发展（OD）、人才盘点（Talent Review）、继任规划（Succession Planning）、绩效管理（Performance Management）、敬业度（Engagement）、变革管理（Change Management）、Stakeholder Management、Data-driven People Analytics、Coaching。\n\n我的工作信条\n我深信，最好的人力资源工作是无声却深远的：它体现在每一次艰难决策背后的人性温度里，体现在每一位管理者被赋能后的成长里，也体现在整个组织被点燃后的澎湃动能里。我愿意继续以战略伙伴的身份，陪伴业务穿越周期、共启未来，让组织成为人才向往、价值涌流、生生不息的沃土。\n\n教育背景\n人力资源管理 硕士。劳动与社会保障 本科。持有相关人力资源专业认证。",
+  "jd": "我们正在寻找一名 Staff 级 People Partner / HRBP，作为研发组织的战略人才伙伴，向 HR 负责人汇报。你将与 Engineering leadership 紧密协作，主导 talent review、succession planning、绩效校准与敬业度治理的全流程，并以 People Analytics 支撑组织决策。这个岗位最看重的不是漂亮的方法论，而是可被验证的具体成果：在面试中，我们会反复追问你某一项人才举措的真实细节——你定义了什么指标、基线是多少、你具体推动了哪些动作、最终哪个数字发生了多大变化、以及哪些是你个人的贡献。我们对包装精美但缺乏实证的『战略叙事』保持高度警惕，请准备好用数据、时间线和个人动作来支撑你的每一个论断。",
+  "history": [
+    { "q": "先介绍一下你在寰宇负责的 HRBP 范围——支持多大的组织、覆盖哪些 People 议程。" },
+    { "q": "你提到牵头搭建了 Engineering 的 talent review 机制，当时要解决的具体问题是什么？" },
+    { "q": "这套 talent review 落地后，你怎么衡量它有没有效果？看哪个指标？" },
+    { "q": "你说推动了 calibration 文化落地，具体改变了哪些管理者的哪些行为？" },
+    { "q": "敬业度调研的闭环治理，你个人具体做了哪几步？" },
+    { "q": "调研之后哪个 engagement 指标发生了变化？基线和变化后分别是多少？" },
+    { "q": "在那些组织调整里，你作为『变革催化剂』，落地了哪些具体动作？" },
+    { "q": "这些动作里，哪些是你独立推动、哪些是团队共同完成的？" },
+    { "q": "我们具体说一项：你最有把握的人才举措，它带来的最硬的一个量化结果是什么？" }
+  ],
+  "candidate_last_answer": "这是个好问题。我一直认为，最有把握的人才举措，本质上是关于战略对齐与组织赋能的端到端闭环。我们通过 data-driven 的方式，激活了组织的人才密度，赋能了 leadership，并以终为始地推动了文化的深度重塑。整个 talent agenda 的 ROI 是非常显著的，engagement 和 retention 都得到了系统性的提升，组织能量被充分点燃。可以说，我们打造了一个高信任、高敬业、可持续的人才生态。具体到某一个数字，我觉得人才工作的价值往往是长周期、潜移默化的，很难用单一 KPI 去框定，但它的战略价值毋庸置疑。",
+  "session_state": {
+    "drilled_topics": ["HRBP范围", "talent-review问题定义", "talent-review衡量指标", "calibration行为改变", "敬业度闭环个人动作", "engagement指标变化", "变革催化具体动作", "个人vs团队边界"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难用单一 KPI 去框定",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 一个具体可验证的人才指标结果——engagement 或 retention 的基线数值、变化幅度与时间窗口，以及该变化中可归因到候选人个人动作的部分，戳破『ROI 非常显著』『潜移默化』这类包装化叙事"
+    ]
+  }
+}

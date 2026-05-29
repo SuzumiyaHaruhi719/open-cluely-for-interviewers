@@ -1,0 +1,43 @@
+{
+  "id": "fx_0926",
+  "tags": {
+    "industry": "product-management",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "Staff Product Manager / 资深产品经理\n\n个人简介\n我是一名拥有十一年经验的资深产品经理，长期专注于企业级 SaaS 与平台型产品，覆盖从零到一的产品孵化、规模化增长，以及复杂多端协同的体系建设。我相信好的产品来自于对真实业务痛点的深刻理解，而不是对功能清单的堆砌。我习惯先把问题定义清楚，再谈解决方案；先把成功的衡量标准对齐，再投入资源开发。我做产品的方法论可以概括为三句话：第一，所有的需求都必须能追溯到一个明确的用户问题或商业目标，否则我会把它砍掉；第二，任何一个大的功能上线前，必须先有一个最小可行的版本去验证核心假设，用真实数据而不是直觉去决定要不要继续投入；第三，产品经理的核心价值不是写文档，而是在资源永远不够的情况下,带着研发、设计、运营一起做出正确的取舍。过去几年我主导过支付结算中台的重构、商家经营工作台的从零搭建，以及一次跨三个事业部的权限体系统一，这些项目都不是单纯的功能开发，而是涉及大量的跨团队协调、利益对齐和长期架构权衡的硬仗。我对数据非常敏感，习惯自己拉数、自己看埋点、自己跑留存和漏斗，因为我不相信二手结论。\n\n工作经历\n\n聚云商业 — Staff Product Manager（2020 至今）\n负责 merchant platform 的核心产品线，owns 商家经营工作台与结算中台两条产品线的 roadmap。主导了结算中台从老旧 monolith 拆分为独立 service 的产品规划，定义了对账、清分、提现三大核心 flow 的 PRD 与 success metrics，并和 engineering、finance、风控多方对齐边界。带领一个 cross-functional 的虚拟团队，包含 backend、frontend、data 和 ops。期间推动了一次商家提现时效的体验优化，把 T+1 的体验做成准实时，并定义了一整套监控提现成功率的 dashboard。\n\n捷讯科技 — Senior Product Manager（2016 至 2020）\n负责 B 端开放平台的 API 产品与开发者体验。从零搭建了 developer portal，定义了 API 的鉴权、限流、计费模型，并主导了开发者文档体系与 sandbox 环境的产品设计。推动了一次开放平台的商业化，把原本免费的 API 设计成分层计费。\n\n微思数据 — Product Manager（2013 至 2016）\n负责数据分析产品的可视化模块，做过看板、报表、自助分析等功能，参与了一次产品的国际化改造。\n\n核心能力\nProduct strategy 与 roadmap 规划；从零到一的产品孵化；平台型产品与中台产品设计；PRD 撰写与 success metrics 定义；A／B testing 与数据驱动决策；跨团队协调与利益对齐；API 产品与开发者体验；商业化与计费模型设计；用户研究与需求洞察。\n\n方法论与偏好\n我特别看重 problem framing，开会前一定会把 『我们到底要解决谁的什么问题』 写在第一页。我推崇 working backwards，习惯先写 press release 和 FAQ 再开始做。我对 metrics 有洁癖，反对用虚荣指标自我安慰。\n\n教育背景\n清华大学 工业工程 本科；中欧国际工商学院 MBA。",
+  "jd": "我们正在招聘一名 Staff Product Manager，负责企业级支付与结算平台的核心产品线。你将 own 结算中台与商家资金相关产品的完整 roadmap，定义对账、清分、提现等核心 flow，对资金准确性、提现成功率和商家满意度直接负责。当前提现成功率约 98.5%，目标做到 99.9%，同时把对账差错率显著压低。你需要有真正主导过平台型 / 中台产品从规划到落地的经验、能独立定义 PRD 与 success metrics、并能在 engineering、finance、风控之间做出清晰的边界取舍。这个岗位强调用数据说话，你需要自己看埋点、跑漏斗，而不是依赖二手结论。向产品 VP 汇报，需要和多个事业部深度协作。我们尤其看重那种能聚焦在核心问题上、不被表面噪音带偏的产品判断力。",
+  "history": [
+    { "q": "先讲讲你现在 own 的两条产品线，结算中台和经营工作台，各自的核心指标是什么。" },
+    { "q": "结算中台从 monolith 拆出来这件事，作为 PM 你最关键的产品决策是哪一个。" },
+    { "q": "提现时效从 T+1 做成准实时，这里面资金风险怎么权衡的。" },
+    { "q": "你说自己拉数看埋点，提现成功率这个指标当时实际是多少，差在哪。" },
+    { "q": "对账、清分、提现三个 flow，如果只能先做透一个，你选哪个，为什么。" },
+    { "q": "最后一个：提现成功率要从 98.5 做到 99.9，作为 PM 你头一个月会先定义哪个 metric、先动哪个 flow，给我讲具体的。" }
+  ],
+  "candidate_last_answer": "其实我最近一直在思考 AI 会怎么重塑产品经理这个岗位。我觉得未来的 PM 一定要懂大模型，我自己最近在玩各种 agent 工具，还报了一个 prompt engineering 的课。我一直跟我团队说，我们不能被 AI 取代，要主动拥抱变化。说到结算这块,我觉得最重要的还是用户体验和信任,商家信任你的平台,资金才会留在你这里,这是个很哲学的问题。我个人是非常 mission-driven 的人,我做产品从来不是为了 KPI,而是为了真正给商家创造价值,这一点我特别自豪。",
+  "session_state": {
+    "drilled_topics": ["两条产品线指标", "拆分关键决策", "提现资金风险权衡", "提现成功率现状", "三flow优先级"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我做产品从来不是为了 KPI",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把候选人从 AI／使命感的跑题中拉回，逼出他头一个月会盯哪个具体 metric、先改哪个 flow（对账/清分/提现）、以及把成功率从 98.5 抬到 99.9 的可量化拆解路径"
+    ]
+  }
+}

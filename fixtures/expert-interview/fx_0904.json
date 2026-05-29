@@ -1,0 +1,39 @@
+{
+  "id": "fx_0904",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Senior Process Engineer — Injection Molding\n\nHelena Voss | Stuttgart | 9 years in plastics manufacturing\n\nProfile: Senior process engineer specializing in injection molding for automotive interior components. Owns process validation, scrap reduction, and cycle-time optimization across a 24-machine cell.\n\nSelected achievement (STAR):\n- Situation: A high-volume interior trim part ran at 8.4% scrap, well above the 3% target, threatening a customer PPAP.\n- Task: As process owner, I was asked to bring scrap under 3% within one quarter without new tooling spend.\n- Action: I ran a structured DOE on melt temperature, hold pressure, and cooling time; rebalanced the hot runner; and standardized startup parameters with a locked recipe and operator work instructions.\n- Result: Scrap fell from 8.4% to 2.1% in 10 weeks, cycle time dropped 1.3 seconds, and we passed PPAP on schedule, saving an estimated EUR 140K annually.\n\nSkills: injection molding, DOE, SPC, hot-runner balancing, PPAP/APQP, scientific molding, Moldflow.",
+  "jd": "We are seeking a Senior Process Engineer for injection molding to own process performance across a multi-machine cell producing automotive components. Responsibilities: drive scrap and cycle-time reduction, lead process validation (APQP/PPAP), apply scientific molding and DOE to stabilize processes, and own SPC and corrective actions on quality escapes. The ideal candidate has 7+ years in injection molding, can quantify their impact on scrap, cycle time, and cost, and can explain the engineering mechanism behind a specific improvement, not just the result. You should be comfortable leading a cross-functional problem-solving team and presenting process data to customers during audits.",
+  "history": [
+    { "q": "Walk me through your current responsibilities — the cell you own, the part mix, and the metrics you're accountable for." },
+    { "q": "Your resume highlights a scrap reduction from 8.4% to 2.1%. Tell me the story end to end." },
+    { "q": "You mention a DOE on melt temp, hold pressure, and cooling time. Which factor turned out to dominate, and what was the mechanism — why did changing it reduce that specific defect?" }
+  ],
+  "candidate_last_answer": "So the situation was the trim part was at 8.4% scrap, mostly sink marks and short shots, and my task was to get it under 3% without new tooling. What I did was run a full factorial DOE across those three factors and then lock in the winning recipe with work instructions. The result was clear — we landed at 2.1% in ten weeks and passed PPAP. Honestly the DOE just showed us the right window and we dialed it in from there.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "scrap-reduction-story"],
+    "current_competency_target": "engineering-mechanism-depth",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "engineering-mechanism-depth",
+    "missing_evidence": [
+      { "competency": "engineering-mechanism-depth", "evidence_type": "mechanism" },
+      { "competency": "engineering-mechanism-depth", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the DOE just showed us the right window and we dialed it in from there",
+      "must-be-question-type: teach-back",
+      "expected-yield: which single factor dominated and the physical mechanism by which it reduced sink marks or short shots (e.g. why hold pressure vs melt temp), demonstrating real molding understanding rather than 'we dialed it in'"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "fx_0934",
+  "tags": {
+    "industry": "customer-support",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Senior Support Operations Lead — CX | WFM | CSAT | Zendesk | Salesforce Service Cloud | Five9 | Genesys | SLA | AHT | FCR | NPS | QA | Knowledge Management | Macros | Triage | Escalation Management | Tier-2 | Voice of Customer | Deflection | Self-Service | Chatbot | NLU | Conversational AI | Power BI | Looker | SQL | Workforce Forecasting | Erlang-C | Shrinkage | Occupancy\n\nExperience\nSenior Support Operations Lead, Brightwave SaaS (2021-present): own WFM, QA, and escalation for a 90-agent omnichannel org; chat + voice + email.\nSupport Team Lead, Cogent Apps (2018-2021): managed a 14-agent Tier-2 queue.\nSupport Agent → Senior Agent, Cogent Apps (2015-2018).\n\nTools: Zendesk, Salesforce Service Cloud, Five9, Genesys, Looker, SQL, Power BI.\nCerts: Zendesk Admin, Genesys Cloud CX Professional.\nEducation: B.S. Information Systems, Arizona State (2015).",
+  "jd": "Senior Manager, Support Operations. You will run workforce management, quality, and escalation for a 120-agent global support org (voice, chat, email) at a high-growth fintech. The role owns staffing forecasts, schedule adherence, and the QA program, and is accountable for AHT, FCR, CSAT, and SLA attainment across three queues. You will partner with Product on deflection and with Finance on the per-contact cost model. We want a leader who reasons from data — someone who can tell us not just what their metrics were, but the specific operational lever that moved them and by how much.",
+  "history": [
+    { "q": "Walk me through the scope you own today at Brightwave — channels, headcount, and the metrics you're accountable for." },
+    { "q": "Pick one metric you moved materially. What was it and what did you change?" },
+    { "q": "Be specific: what was the single biggest operational lever, and how much did it move the number?" }
+  ],
+  "candidate_last_answer": "FCR on chat. It sat at 61% for Q1. The biggest lever was rewriting the Tier-1 triage routing: we were misrouting billing chats to the general queue, so agents bounced them. I rebuilt the intent rules in Zendesk so billing intents went straight to the billing-trained pod, and I added two macros for the top refund scenarios. FCR went from 61% to 74% over eight weeks, and chat AHT dropped about 40 seconds because of the macros. I owned the routing change end-to-end; QA validated the intent tags.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "metric-selection"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I rebuilt the intent rules in Zendesk so billing intents went straight to the billing-trained pod",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the mechanism behind the intent-rule rebuild — how intents were classified, how misroutes were detected, and what tradeoff was accepted by routing billing to a specialized pod (e.g. queue-load imbalance or staffing risk)"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "fx_0970",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "教学发展总监\n\n现任明德教育集团教学发展总监，负责 K12 课程体系与教研团队管理。此前在两家在线教育公司任教研负责人。\n\n经历\n明德教育 — 教学发展总监（2021 至今）\n- 统筹三个学科的课程标准与教师培训\n- 牵头分层教学项目在十二个校区落地\n\n智学在线 — 教研负责人（2017-2021）\n- 搭建初中数学教研体系\n\n教育背景\n课程与教学论硕士\n\n技能：课程设计、教师培训、教学质量评估",
+  "jd": "明德教育集团招聘教学发展总监，负责集团 K12 课程体系的顶层设计与落地。该岗位向教学副总裁汇报，全面负责课程标准、教研团队建设、教师培训以及教学质量数据。我们关注可量化的教学成效：续报率、家长满意度、教师胜任力达标率以及分层教学的提分效果。你将管理一支约六十人的教研团队，牵头分层教学改革在全部校区的推广，并定期向集团呈报教学质量报告。需要扎实的课程设计功底、大规模教研团队管理经验，以及用数据驱动教学决策的能力。",
+  "history": [
+    { "q": "先介绍一下你在明德负责的教研范围和团队规模。" },
+    { "q": "你牵头的分层教学项目，最初是为了解决什么教学问题？" },
+    { "q": "这个分层项目在十二个校区落地后，提分效果或续报率有什么变化？" },
+    { "q": "具体说说，你怎么衡量分层教学到底有没有效果？用了哪些数据？" }
+  ],
+  "candidate_last_answer": "说到衡量效果，我觉得教育这件事本质上是育人，不能只看冷冰冰的数字。我一直跟团队强调，我们做的是良心工程。你看现在整个行业，双减之后大家都很焦虑，资本退潮，很多机构都在收缩，家长的教育观念也在变。我前阵子还去参加了一个教育论坛，几位专家聊到 AI 对未来教育形态的冲击，特别有启发。其实我们集团的企业文化也很强调长期主义，老板经常说要做难而正确的事。所以我带团队的理念一直是先把人带好，结果自然就来了。",
+  "session_state": {
+    "drilled_topics": ["教研范围与团队", "分层项目-问题定义", "分层项目-成效变化"],
+    "current_competency_target": "measurement-rigor",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "measurement-rigor",
+    "missing_evidence": [
+      { "competency": "measurement-rigor", "evidence_type": "metric" },
+      { "competency": "measurement-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 教育这件事本质上是育人，不能只看冷冰冰的数字",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把候选人从行业感慨和理念发挥拉回到具体衡量方法——分层教学用了哪些可量化指标、提分或续报的前后数字，逼出真实的测量口径而非价值观陈述"
+    ]
+  }
+}

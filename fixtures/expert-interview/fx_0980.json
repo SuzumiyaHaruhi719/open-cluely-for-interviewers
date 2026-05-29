@@ -1,0 +1,43 @@
+{
+  "id": "fx_0980",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Priya Nadkarni\nMechanical Engineering, B.S. expected 2027 — State Polytechnic University\nManufacturing Process Intern candidate\n\nEDUCATION\nState Polytechnic University, GPA 3.6/4.0. Relevant coursework: Manufacturing Processes, GD&T, Statics, Materials Science, Lean Six Sigma (Yellow Belt, certified Mar 2025).\n\nPROJECT EXPERIENCE\n- Capstone Cell Redesign (Sept 2024–Dec 2024): Situation — our student factory lab ran a 4-station assembly cell with a 38-second bottleneck at the press station. Task — I was assigned to cut cycle time without buying new equipment. Action — I time-studied all four stations over 30 cycles, found the press operator walked 6 steps for fasteners each cycle, and relocated the fastener bin within arm's reach. Result — bottleneck dropped from 38s to 29s, a 24% improvement, verified across 50 cycles.\n- FSAE Brake Bracket (2024): Situation — bracket failed at 80% of rated load in testing. Task — redesign to pass 1.5x safety factor. Action — ran FEA in Fusion 360, added a gusset, moved to 6061-T6. Result — passed at 1.6x in two test cycles.\n\nWORK EXPERIENCE\nCampus Makerspace Assistant (2023–present): trained 40+ students on lathe and 3D-printer safety; logged zero injuries during my shifts.\n\nSKILLS\nSolidWorks, Fusion 360, basic GD&T, time studies, Minitab basics, Python (pandas).",
+  "jd": "Reliable Forge Components is hiring a summer Manufacturing Process Intern for our Tier-1 automotive stamping plant. You will sit on the floor with our process engineering team and support real line problems: running time studies, helping set up SMED changeover trials, collecting scrap-rate data, and documenting standard work. The ideal intern has hands-on coursework in manufacturing processes, comfort with a stopwatch and a spreadsheet, and the curiosity to ask operators why a step is done a certain way. You will present one process-improvement recommendation to the plant manager at the end of the 12-week program. We value candidates who can describe a specific change they personally drove and quantify its effect, however small. Safety-first mindset is non-negotiable; you will complete lockout/tagout training in week one.",
+  "history": [
+    { "q": "Thanks for coming in, Priya. To start — tell me about your capstone cell redesign. What was the actual problem?" },
+    { "q": "You said the press station was the bottleneck at 38 seconds. How did you confirm it was the bottleneck and not one of the other stations?" },
+    { "q": "Walk me through exactly what you changed and why moving the fastener bin would help." },
+    { "q": "How did you verify the improvement held — what did you measure after?" },
+    { "q": "Now, on this internship you'd be running SMED changeover trials. Tell me about a time you had to figure out a process you'd never seen before." },
+    { "q": "Let me bring it back to the floor. Imagine an operator tells you a step is 'just how we've always done it' but it looks wasteful. Concretely, what would you do in your first week to understand whether it's actually waste?" }
+  ],
+  "candidate_last_answer": "Right, so honestly what excites me most about Reliable Forge is the culture — I read that you do hackathons and there's a strong mentorship program, and I really value learning from senior people. I'm also super into sustainability, and I saw your plant has solar panels on the roof, which is awesome. I think that aligns with my personal values around climate, and I've been part of my school's green energy club for two years where we did a lot of cool outreach events.",
+  "session_state": {
+    "drilled_topics": ["capstone-problem-framing", "bottleneck-identification", "specific-change-rationale", "verification-method", "novel-process-approach"],
+    "current_competency_target": "shop-floor-investigation",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "shop-floor-investigation",
+    "missing_evidence": [
+      { "competency": "shop-floor-investigation", "evidence_type": "mechanism" },
+      { "competency": "shop-floor-investigation", "evidence_type": "owner-of-action" },
+      { "competency": "curiosity-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: what excites me most about Reliable Forge is the culture",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: redirect the candidate off the culture tangent and force a concrete week-one investigative sequence (shadow the operator, time the step, ask why, check the standard-work doc, compare shifts) for deciding whether a habitual step is real waste"
+    ]
+  }
+}

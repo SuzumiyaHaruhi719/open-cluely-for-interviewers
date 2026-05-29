@@ -1,0 +1,51 @@
+{
+  "id": "fx_0907",
+  "tags": {
+    "industry": "healthcare",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "初级临床研究协调员(CRC)\n\n姓名:李婷\n城市:广州\n关键词:临床试验、GCP、ICH-GCP、知情同意、受试者招募、source data verification、CRF、EDC、不良事件上报、SAE、方案依从性、伦理委员会、监查访视、随机化、药物管理、数据录入、质量控制、SOP、肿瘤、心血管、I-IV期。\n\n个人简介:具备一年临床研究协调经验的初级 CRC,在三甲医院肿瘤科支持多中心药物临床试验,熟悉 GCP 流程与受试者全周期管理。\n\n工作经历:\n- 仁济临床研究中心 — 临床研究协调员(2024至今)。负责受试者招募、知情同意、随访安排、CRF 填写与 EDC 录入、配合监查与稽查。\n- 此前有一段医院科室的实习经历。\n\n教育背景:护理学本科。",
+  "jd": "我们招聘一名初级临床研究协调员(CRC),在肿瘤科支持多中心药物临床试验。岗位职责:协助受试者招募与知情同意、安排随访、按方案完成 CRF 与 EDC 数据录入、配合监查与稽查、协助处理不良事件上报。任职要求:护理、药学或医学相关专业;了解 GCP 与受试者保护原则;做事细致,能够具体说明自己在一次真实试验中承担的工作——你具体做了什么、遇到过什么方案偏离或数据问题、如何处理。我们尤其看重候选人能否落到具体的操作和事件上,而不是只会复述流程术语和口号。",
+  "history": [
+    { "q": "先说说你现在支持的是什么试验,你在团队里负责哪一块。" },
+    { "q": "讲讲你做知情同意的流程,你具体怎么跟受试者沟通。" },
+    { "q": "受试者招募你负责吗?你入组过几个,遇到过筛选失败的情况吗?" },
+    { "q": "EDC 数据录入这块,你怎么保证录入的准确性?" },
+    { "q": "遇到过 query 吗?讲一个你处理过的具体的数据 query。" },
+    { "q": "讲一次你遇到的方案偏离(protocol deviation),你怎么发现又怎么处理的?" },
+    { "q": "不良事件上报你参与过吗?具体讲一个你经手的 AE。" },
+    { "q": "监查访视的时候,监查员一般会查你哪些东西?你怎么准备?" },
+    { "q": "随访脱落是临床试验的难点,你有没有把一个快脱落的受试者拉回来的经历?" },
+    { "q": "药物管理这块你接触过吗?具体负责什么。" },
+    { "q": "你和研究者(PI)或者护士配合的时候,出现过沟通不一致吗?" },
+    { "q": "稽查和监查有什么不一样?你经历过稽查吗?" },
+    { "q": "说一个你工作中犯过的错,后来怎么补救的。" },
+    { "q": "回到方案偏离那个话题。别说原则,就讲那一次:你到底发现了什么、当时具体做了哪几步、最后报给了谁、结果怎样?" }
+  ],
+  "candidate_last_answer": "好的。其实在处理方案偏离这件事上,我始终秉持以受试者安全为中心、以质量为生命线的核心理念,严格遵循 GCP 原则和 SOP 要求,做到全流程闭环管理、零容忍偏差。我会第一时间启动风险识别,确保数据的真实、准确、完整、及时,同时与各方保持高效协同,推动问题的及时闭环。我认为合规意识和细节把控是一名优秀 CRC 的立身之本,我也一直用最高标准来要求自己,真正做到敬畏规则、守护受试者权益。",
+  "session_state": {
+    "drilled_topics": ["试验范围", "知情同意流程", "受试者招募与筛失", "EDC录入准确性", "数据query处理", "方案偏离概述", "AE上报", "监查访视准备", "随访脱落挽回", "药物管理", "与PI沟通", "稽查与监查区别", "工作失误补救"],
+    "current_competency_target": "protocol-deviation-handling",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "protocol-deviation-handling",
+    "missing_evidence": [
+      { "competency": "protocol-deviation-handling", "evidence_type": "owner-of-action" },
+      { "competency": "protocol-deviation-handling", "evidence_type": "timeline" },
+      { "competency": "protocol-deviation-handling", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 做到全流程闭环管理、零容忍偏差",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从口号式套话拉回到那一次真实的方案偏离:她具体发现了什么偏离、按时间顺序做了哪几步、上报给了谁(CRA/PI/伦理)、最终如何归档处理,验证她是否真的经历过而非背诵术语"
+    ]
+  }
+}

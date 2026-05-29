@@ -1,0 +1,39 @@
+{
+  "id": "fx_0975",
+  "tags": {
+    "industry": "design",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "VP of Design & Brand Experience\n\nKeywords: design leadership, design systems, design ops, human-centered design, service design, UX strategy, research ops, accessibility (WCAG), Figma, design tokens, 0-to-1, product-led growth, brand systems, cross-functional leadership, design maturity, North-star metrics, NPS, conversion, stakeholder alignment, org design, hiring, mentorship\n\nExperience\nNimbus Health — VP of Design (2020-present)\n- Lead a 40-person design org across product, brand, and research\n- Owned a full rebrand and a design-system consolidation\n- Drove a checkout redesign tied to conversion goals\n\nPrior\nOrbit Software — Director of UX (2016-2020)\nPaperkite Studio — Design Manager (2013-2016)\n\nEducation\nBFA Interaction Design, Metro Arts (2013)\n\nSkills: design systems, leadership, research ops, accessibility, brand strategy",
+  "jd": "Nimbus Health is hiring a VP of Design to lead a 40-person organization spanning product design, research, brand, and design systems. Reporting to the CPO, you will own design quality, the maturity of our design system, and design's measurable contribution to product outcomes — activation, task success, and accessibility compliance. We are looking for a leader who takes accountability: when a flagship initiative underperforms, we want to hear what you would have done differently, not who else was at fault. You will partner with product and engineering at the executive level and be expected to speak candidly about a project that missed its goals and your role in the miss.",
+  "history": [
+    { "q": "Give me the shape of your org at Nimbus — team size, the disciplines you cover, and who you report to." },
+    { "q": "Walk me through the checkout redesign that was tied to conversion goals — what was the target?" },
+    { "q": "Did it hit the target? Tell me honestly what happened and what your role was in the outcome." }
+  ],
+  "candidate_last_answer": "Honestly, that one was set up to fail before design even got involved. Product handed us a half-baked spec, the conversion target was a number finance pulled out of thin air, and engineering kept descoping the work mid-sprint so half of what my team designed never shipped the way we intended. My designers did beautiful, rigorous work — the research was solid. If the PM had held the line on scope and analytics had instrumented the funnel correctly, we'd have hit it. So no, we didn't reach the target, but that's really on how the cross-functional partners ran it, not the design.",
+  "session_state": {
+    "drilled_topics": ["org-shape", "checkout-redesign-target"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that's really on how the cross-functional partners ran it, not the design",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific decision the candidate personally owned in the miss — what they did or failed to do as the design leader — instead of attributing the failure to product, finance, and engineering"
+    ]
+  }
+}

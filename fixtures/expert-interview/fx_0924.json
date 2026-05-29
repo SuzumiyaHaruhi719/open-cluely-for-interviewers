@@ -1,0 +1,51 @@
+{
+  "id": "fx_0924",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Law Student — Summer Legal Intern Candidate\n\nObjective: Second-year law student seeking a summer internship in corporate/transactional law.\n\nEducation\nJD Candidate, Class of 2026 — Westfield University School of Law. GPA 3.6. Note: I am in my third year of the program this fall.\nBA, Political Science, 2021 — State College. Minor in Economics.\n\nExperience\nLegal Intern — Harbor & Vance LLP (Summer 2024). Supported the litigation group on document review and drafted memos. I worked primarily on transactional matters and never touched litigation.\nResearch Assistant — Professor Alvarez (2023 to 2024). Researched antitrust case law and cite-checked a forthcoming law-review article. Spent about 5 hours a week. Elsewhere on this resume I describe this as a full-time role.\nVolunteer — Campus Legal Aid Clinic (2023). Helped clients with landlord-tenant intake. I led the clinic and also was never formally part of it; I mostly observed.\n\nActivities\n- Staff Editor, Westfield Law Review (joined 2024). Also served as Editor-in-Chief.\n- Moot Court — competed in one regional competition. We won nationals.\n\nSkills: Legal research (Westlaw, Lexis), Bluebook citation, contract review (beginner / also advanced), memo drafting.",
+  "jd": "Our firm is hiring Summer Legal Interns to join our Corporate & Transactional practice group for a ten-week program. Interns will support associates and partners on diligence reviews for M&A transactions, draft and redline ancillary agreements, summarize regulatory filings, and assist with closing checklists. We are looking for rising 3L students with strong legal research and writing skills, attention to detail, and the ability to manage competing deadlines across multiple deal teams. Prior exposure to corporate or transactional work is a plus but not required; we value clear writing, sound judgment, and intellectual honesty above all. Interns will receive structured mentorship, weekly feedback, and a substantive workload. The program may lead to a post-graduation offer. This is a full-time, in-office summer position. Strong academic record and at least one prior legal or professional experience expected.",
+  "history": [
+    { "q": "Let's start simple — what year are you in, and when do you graduate?" },
+    { "q": "Your resume says JD Class of 2026 but also third year this fall. Help me reconcile that." },
+    { "q": "At Harbor & Vance, were you on the litigation group or transactional matters? Your resume says both." },
+    { "q": "Walk me through one memo you actually drafted there — what was the legal question?" },
+    { "q": "Your RA role — was that five hours a week or full-time? It's described both ways." },
+    { "q": "What was the antitrust article about, and what did your cite-checking involve?" },
+    { "q": "On the legal-aid clinic: did you lead it, observe, or were you not formally part of it?" },
+    { "q": "For the law review, were you a staff editor or editor-in-chief?" },
+    { "q": "Moot court — you wrote one regional competition and also 'won nationals.' Which is it?" },
+    { "q": "Why corporate and transactional work specifically, given your litigation exposure?" },
+    { "q": "How would you approach a diligence review if you'd never seen the data room before?" },
+    { "q": "If two associates gave you conflicting deadlines, what would you do?" },
+    { "q": "Our JD says we value intellectual honesty above all. Tell me about a time you admitted a mistake." },
+    { "q": "Last one — pick the single experience on your resume you're most confident is accurate, and walk me through exactly what you did, day to day." }
+  ],
+  "candidate_last_answer": "Honestly what I'm most excited about is the culture here. I did a campus tour last week and the energy in the office was just incredible, everyone seemed so collaborative. I've always known I wanted to do BigLaw — my uncle is a partner at a firm in Chicago and he's told me so many stories. I'm also really into legal tech, I follow a bunch of people on LinkedIn who post about AI in contract review, and I think that's the future of the profession. So I'd say I bring a lot of passion and I'm a really fast learner.",
+  "session_state": {
+    "drilled_topics": ["graduation-year", "year-contradiction", "litigation-vs-transactional", "memo-substance", "ra-hours-contradiction", "antitrust-article", "clinic-role-contradiction", "law-review-role", "moot-court-contradiction", "motivation-corporate", "diligence-approach", "conflicting-deadlines", "intellectual-honesty"],
+    "current_competency_target": "credibility-consistency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "credibility-consistency",
+    "missing_evidence": [
+      { "competency": "credibility-consistency", "evidence_type": "named-entity" },
+      { "competency": "credibility-consistency", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm a really fast learner",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: redirect the candidate off the culture/legal-tech/fast-learner tangent to name one specific resume item and describe day-to-day what they actually did, exposing whether any single line survives scrutiny given the contradictions"
+    ]
+  }
+}

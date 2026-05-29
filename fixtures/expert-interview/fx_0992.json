@@ -1,0 +1,47 @@
+{
+  "id": "fx_0992",
+  "tags": {
+    "industry": "sales",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "陈思远 / 销售实习生候选人\n邮箱：chensiyuan@example.com / 电话：138-0000-1234\n\n教育背景\n华东师范大学 市场营销专业 大三在读 预计2027年毕业\n\n实习经历\n云图科技 销售发展部 实习生（2025年7月起）\n- 负责教育SaaS产品的电话外呼与线索初筛\n- 使用销售易CRM录入客户信息并跟进\n- 协助销售经理整理周报与客户名单\n\n校园经历\n校创业协会 商务拓展组 组员\n- 拉取校园活动赞助，对接本地商家\n\n技能\n普通话、英语CET-6、Excel、企业微信、基础话术撰写\n\n自我评价\n抗压能力强，愿意打陌生拜访电话，希望在B端销售方向长期发展。",
+  "jd": "云图科技正在招聘一名销售发展代表（SDR）实习生，常驻上海，每周到岗四天，实习期不少于六个月。你将负责教育行业SaaS产品的外呼开发、线索筛选与会议预约，把合格商机交接给客户经理。岗位要求：能熟练使用CRM记录跟进、每日完成约定外呼量、对拒绝有较强心理承受力。我们看重你是否能清楚复盘自己的转化漏斗，能否讲清楚从首次触达到约成会议之间每一步发生了什么、间隔多久。表现优秀者实习结束后可转为校园招聘正式offer。",
+  "history": [
+    { "q": "先简单介绍一下你在云图科技实习时的具体职责。" },
+    { "q": "你每天大概打多少通外呼电话？" },
+    { "q": "讲一个你印象最深的、最后约成了会议的客户。" },
+    { "q": "这个客户你是哪天第一次联系上的？" },
+    { "q": "从第一次通话到他同意见面，中间隔了多久？" },
+    { "q": "中间你一共跟进了几次？分别都做了什么？" },
+    { "q": "你刚才说先发了产品资料，那是在第一通电话之前还是之后？" },
+    { "q": "会议是你约的，还是客户经理帮你约的？" },
+    { "q": "那次会议最后有没有转成商机？谁负责后续跟进？" },
+    { "q": "你能不能把这个客户从触达到约成的时间线，按先后顺序再理一遍？" }
+  ],
+  "candidate_last_answer": "嗯……我想想啊。其实是这样的，他先回复了我发的产品资料，然后我才第一次给他打的电话，那应该是九月中旬吧。哦不对，应该是我先打了电话他没接，我才加的微信发的资料。会议大概是十月初约成的……不过我记得资料是约完会议之后他主动找我要的。反正前前后后差不多两三周，中间跟进过四五次，具体哪次干了什么我有点记混了。",
+  "session_state": {
+    "drilled_topics": ["实习职责", "外呼量", "约成客户案例", "首次触达时间", "触达到约成时长", "跟进次数与动作"],
+    "current_competency_target": "timeline-accuracy",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "timeline-accuracy",
+    "missing_evidence": [
+      { "competency": "timeline-accuracy", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 他先回复了我发的产品资料，然后我才第一次给他打的电话",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 一条前后一致、不自相矛盾的事件时间线——明确电话、加微信、发资料、约会议四个动作各自发生在哪一天以及先后顺序，消除『资料在通话前』与『资料在约会议后才要』的矛盾"
+    ]
+  }
+}

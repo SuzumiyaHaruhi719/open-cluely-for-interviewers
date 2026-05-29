@@ -1,0 +1,54 @@
+{
+  "id": "fx_0925",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Software Engineer / 资深技术专家\n\nKeywords: Kubernetes, Istio, Envoy, gRPC, Kafka, Pulsar, Flink, Spark, Cassandra, ScyllaDB, Redis, PostgreSQL, CockroachDB, Go, Rust, Java, Python, Terraform, Pulumi, ArgoCD, Prometheus, Grafana, OpenTelemetry, eBPF, gVisor, Service Mesh, Event Sourcing, CQRS, DDD, Saga, Outbox, Sharding, Multi-region, Active-Active, SLO, SLI, Error Budget, Chaos Engineering, Distributed Tracing, Zero-downtime Migration.\n\n经历\n云栈科技 — Staff Engineer（2021 至今）\n负责 payment platform 的 distributed architecture，主导一次从 monolith 到 microservices 的拆分，推动 multi-region active-active 部署，owns 核心交易链路的 SLO。Tech stack: Go, Kafka, CockroachDB, Istio, ArgoCD。带过 virtual team，做过若干次 incident 的 root cause 复盘。\n\n极风网络 — Senior Engineer（2017 至 2021）\n做 real-time data pipeline，用 Flink 和 Pulsar 搭了 streaming 平台，参与 sharding 方案设计。\n\n智云数据 — Software Engineer（2014 至 2017）\n后端 CRUD、API 开发、若干 performance tuning。\n\nSkills: 高并发、高可用、分布式事务、可观测性、性能调优、技术选型。\n教育背景：浙江大学 计算机科学 本科。",
+  "jd": "我们在招聘一名 Staff Software Engineer，负责支付平台的核心交易链路。你将 own 整个 transaction path 的架构、可靠性与性能，主导 multi-region active-active 的演进，把核心链路的 availability 从当前的 99.9% 提到 99.99%，并把 P99 latency 压到 50ms 以内。你需要有真正主导过 monolith 到 microservices 拆分的经验、对 distributed transaction（Saga / Outbox）有 production 级别的实战、以及在重大 incident 中作为 technical lead 定位并根治问题的能力。这个岗位需要深度参与 on-call、owns SLO 与 error budget、并能把架构决策讲清楚给 VP 级别。强调一点：我们要找的是能对结果负责、而不是甩锅的人。需要和 SRE、产品、风控团队紧密协作。",
+  "history": [
+    { "q": "先讲讲你现在 own 的范围：哪条链路、什么 stack、对哪些 SLO 负责。" },
+    { "q": "那次 monolith 到 microservices 的拆分，你是从哪个 service 先切的。" },
+    { "q": "拆分的时候 distributed transaction 怎么保证一致性，用的 Saga 还是 Outbox。" },
+    { "q": "multi-region active-active，写冲突 conflict resolution 是怎么做的。" },
+    { "q": "你说 owns 核心交易链路的 SLO，现在 availability 实际是多少。" },
+    { "q": "讲一次你印象最深的 P0 incident，当时是什么 symptom。" },
+    { "q": "那次 incident 的 root cause 到底是什么，机制上讲清楚。" },
+    { "q": "谁先定位到的根因，你还是 SRE。" },
+    { "q": "事后 action item 有哪些，落地了几个。" },
+    { "q": "CockroachDB 选型是你拍的吗，为什么不用现成的 MySQL 分库。" },
+    { "q": "P99 latency 现在多少，瓶颈在哪一跳。" },
+    { "q": "你带的 virtual team 多少人，怎么对齐技术方向。" },
+    { "q": "如果让你把 availability 从 99.9 做到 99.99，头一个月先动什么。" },
+    { "q": "你觉得这条链路现在最大的技术债是什么。" },
+    { "q": "上次那个 incident 如果重来，你会提前做什么来避免。" },
+    { "q": "拆分项目最后上线延期了吗，延了多久。" },
+    { "q": "最后一个：那次拆分上线后出的重大故障，作为 technical lead，哪一步是你自己判断失误导致的。" }
+  ],
+  "candidate_last_answer": "说实话那次故障主要不是我的问题。当时 SRE 那边给的 capacity plan 就是不准，DBA 也没把 connection pool 调到位，产品又一直催着上线、根本不给我们留 buffer。我 architecture 设计是没问题的，review 也过了。真要说的话，是上游团队的 dependency 没 ready，他们的 API 一直在变，我们 downstream 只能被动接。如果当时大家都按我说的来，按我设计的 rollout plan 走，根本不会出这个事。所以这个锅我觉得不该我背。",
+  "session_state": {
+    "drilled_topics": ["现有范围", "拆分起点", "分布式事务一致性", "写冲突解决", "实际availability", "P0症状", "根因机制", "根因定位归属", "action-item落地", "选型决策", "P99瓶颈", "团队对齐", "可用性提升计划", "技术债", "事故预防", "上线延期"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 按我设计的 rollout plan 走，根本不会出这个事",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 逼出他自己 rollout plan 里的具体设计决策和漏洞——他亲手做了哪个判断、那个判断在故障中起了什么作用，把责任从上游/SRE/产品拉回到他自身可控的技术决策上"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0944",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "销售副总裁 | 12年企业级SaaS与硬件销售管理经验\n\n职业概要\n- 曾带领北亚区销售团队，从0搭建到85人规模，覆盖中国大陆、香港、台湾三个市场\n- 连续四年超额完成年度配额，最近一年团队ARR达2.4亿元人民币\n- 擅长大客户直销（Enterprise Direct）与渠道分销（Channel）双轮驱动\n\n工作经历\n云启科技（ShenZhen）销售副总裁 2021年3月至今\n- 负责大中华区全部新签与续约收入，直接汇报给CEO\n- 注：本段又写到只负责新签收入，续约由客户成功团队独立承担，二者表述不一致\n- 把销售周期从平均108天压缩到72天\n- 团队人数表述前后矛盾：概要写85人，此处写全区域共52人\n\n维数信息（BeiJing）大区销售总监 2017年至2021年\n- 管理华北区12人团队，年度新签从1800万增长到6200万\n- 简历他处又称该阶段已晋升为全国销售负责人，职级描述自相矛盾\n- 主导引入CRM系统（HubSpot），但另一处写的是Salesforce\n\n教育背景\n上海交通大学 工商管理硕士（MBA）\n华中科技大学 市场营销学士",
+  "jd": "我们正在为一家B轮企业级SaaS公司招聘销售副总裁，直接向CEO汇报，统管大中华区销售组织（约60人，含直销、渠道与售前）。该岗位对全年新签与净留存（NRR）双重负责，当前NRR为103%，目标提升至118%；新签ARR目标为同比增长50%。你将接手一支士气受挫的团队（上季度配额达成率仅为71%），需要重新设计区域划分、配额分配与提成方案，并与市场、客户成功、产品三个部门建立稳定的需求转化机制。要求具备从混乱到规范的销售体系建设经验、可量化的大客户成单案例，以及在董事会层面陈述销售预测的能力。需出差约40%。",
+  "history": [
+    { "q": "先请你介绍一下目前在云启科技的管辖范围：团队规模、负责的收入口径、直接汇报对象。" },
+    { "q": "你简历里团队规模有两处数字不一致，一处写85人，一处写52人，到底是多少？" },
+    { "q": "你说既负责新签也负责续约，但下面又写续约由客户成功独立承担。你实际对哪条线的收入数字负责？" },
+    { "q": "我们先聚焦新签。说一个你亲自带队拿下的大客户，从立项到签约的过程。" },
+    { "q": "那一单的合同金额、销售周期、你个人在其中做了哪几件事？" },
+    { "q": "你提到把销售周期从108天压到72天。具体改了什么，才让周期缩短的？" },
+    { "q": "提成方案的重新设计，是你主导的还是HR主导的？你拍板了哪几个关键参数？" },
+    { "q": "现在请把焦点放回数字：你接手云启时大中华区的NRR是多少，你离任前是多少，中间你做了哪一件最关键的动作？" }
+  ],
+  "candidate_last_answer": "我接手时大中华区NRR是96%，最近一个完整财年做到109%。最关键的一个动作，是把续约的责任在Q2从客户成功团队收回到销售线，由原来的客户经理在到期前90天介入。具体就一件事：我设了一个『120天预警』机制，CRM在合同到期前120天自动建单派给对应AE，AE必须在到期前60天提交一次续约方案评审。半年内,大单（年合同额超300万）的提前续约率从41%升到78%,NRR那13个百分点主要来自这里。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "headcount-contradiction", "revenue-line-contradiction", "enterprise-deal-ownership", "deal-specifics", "sales-cycle-mechanism", "comp-plan-ownership"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把续约的责任在Q2从客户成功团队收回到销售线",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 让候选人说清把续约从客户成功收回到销售线时的代价与取舍——客户成功团队的反弹、AE既背新签又背续约后的精力分配、以及为什么收回比保留在CS更优，最好带一个反映冲突的具体决策点"
+    ]
+  }
+}

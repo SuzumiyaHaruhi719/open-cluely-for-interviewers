@@ -1,0 +1,43 @@
+{
+  "id": "fx_0937",
+  "tags": {
+    "industry": "data",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "PRIYA NARAYANAN — Senior Data Engineer\nSeattle, WA\n\nSUMMARY\nSenior data engineer with 9 years building batch and streaming pipelines on the modern data stack. Owner of a petabyte-scale lakehouse migration.\n\nEXPERIENCE\nSenior Data Engineer, Lumen Analytics (2020–present)\n- Led the migration from a legacy Redshift warehouse to a Snowflake + dbt lakehouse.\n- Built and own the company's streaming ingestion layer on Kafka and Flink.\n- Reduced pipeline costs by 60% (note: elsewhere I describe the same project as a 35% cost reduction — the 60% figure includes storage, 35% is compute only).\n- Team of 6 engineers reporting to me.\n\nData Engineer, Lumen Analytics (2018–2021)\n- Promoted into the senior role; built the original Airflow orchestration layer.\n- Sole data engineer for the analytics org.\n\nData Analyst, Brightpath Retail (2015–2018)\n- SQL reporting and Tableau dashboards.\n- Started in 2016 after finishing my master's. (Resume header says 9 years of experience; the dated roles total roughly 8.)\n\nNOTE: My current title is Senior Data Engineer, though my email signature and LinkedIn list 'Staff Data Engineer' — the staff title is an informal internal designation, not a formal promotion.\n\nEDUCATION\nM.S. Computer Science, University of Washington (2016)\nB.Tech, Anna University (2013)\n\nSKILLS\nSnowflake, dbt, Spark, Kafka, Flink, Airflow, Python, SQL, Terraform, AWS (S3, Glue, EMR).",
+  "jd": "Senior Data Engineer — Streaming Platform. You will own the real-time data platform for a logistics company moving millions of events per hour. The role designs and operates streaming pipelines (Kafka, Flink or Spark Structured Streaming), defines the lakehouse architecture, and is accountable for pipeline reliability (SLA on freshness and completeness) and cost efficiency. You will lead a small team and partner with analytics and ML. We want an engineer who can go deep on a single technical decision — the design alternatives considered, why one was chosen, and the measured impact — and keep the answer tight and on-point.",
+  "history": [
+    { "q": "Give me a quick map of your current scope at Lumen — pipelines you own and team size." },
+    { "q": "Pick the Redshift-to-Snowflake migration. What was the core architectural decision you had to make?" },
+    { "q": "Why dbt for transformations rather than keeping logic in stored procedures or Spark jobs?" },
+    { "q": "How did you handle the cutover without breaking downstream consumers?" },
+    { "q": "You cite a cost reduction — be precise: compute, storage, or both, and the baseline?" },
+    { "q": "Let's go to streaming. Walk me through one concrete reliability problem you solved on the Kafka/Flink layer." },
+    { "q": "Stay on that one incident: what was the root cause and what was your fix?" }
+  ],
+  "candidate_last_answer": "Right, so the incident — okay, this actually connects to a bigger thing I care a lot about, which is how most teams think about streaming wrong from the start. Like, everyone reaches for exactly-once semantics, but honestly the obsession with exactly-once is a trap, and I could talk for an hour about idempotency versus true exactly-once and where the CAP theorem bites you. And it reminds me of this conference talk I gave — well, co-presented — on backpressure, where we got into watermarking strategies, and that whole debate about event-time versus processing-time windows, which by the way is something I think every data org gets wrong. Oh, and there's a great blog post on this. Anyway, streaming is just such a deep topic, I find myself going down these rabbit holes constantly.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "migration-decision", "dbt-rationale", "cutover-safety", "cost-precision", "streaming-incident"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "execution-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: this actually connects to a bigger thing I care a lot about",
+      "must-be-question-type: teach-back",
+      "expected-yield: the specific Kafka/Flink incident pulled back on-topic — the actual symptom, root cause, and the concrete fix the candidate implemented, instead of a general lecture on streaming philosophy"
+    ]
+  }
+}

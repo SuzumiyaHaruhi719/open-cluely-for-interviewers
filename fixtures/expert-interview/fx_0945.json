@@ -1,0 +1,40 @@
+{
+  "id": "fx_0945",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Manufacturing Process Engineer — Lean | Six Sigma | TPM | SMED | OEE | Kaizen | 5S | Kanban | DMAIC | SPC | FMEA | Poka-Yoke | Andon | Value Stream Mapping | Root Cause Analysis | 8D | Gemba | Heijunka | Jidoka | Takt Time | Continuous Improvement\n\nPROFILE\nResults-driven, cross-functional, hands-on process engineer with proven expertise in lean manufacturing, operational excellence, and end-to-end continuous improvement. Passionate, detail-oriented, data-driven team player who thrives in fast-paced, high-volume environments.\n\nCORE COMPETENCIES\nLean Manufacturing · Six Sigma Green Belt · Total Productive Maintenance · Single-Minute Exchange of Die · Overall Equipment Effectiveness · Statistical Process Control · Failure Mode and Effects Analysis · Standard Work · Line Balancing · Throughput Optimization · Scrap Reduction · Cycle-Time Reduction · Cost Avoidance\n\nEXPERIENCE\nMeridian Components (Tier-1 automotive supplier) — Process Engineer, 2020–present\nInjection-molding and assembly cell, three shifts, 14 machines.\n- Drove lean, TPM, SMED, OEE, kaizen, and 5S initiatives across the value stream\n- Supported continuous improvement, scrap reduction, and cycle-time optimization efforts\n- Partnered cross-functionally with quality, maintenance, and production teams\n\nHalvorsen Industrial — Manufacturing Engineer (co-op then FTE), 2017–2020\n- Contributed to root-cause analysis, FMEA, and SPC deployment on the stamping line\n\nEDUCATION\nB.S. Mechanical Engineering — State Polytechnic University, 2017\nASQ Six Sigma Green Belt (certified 2019)",
+  "jd": "Mid-level Manufacturing Process Engineer for an injection-molding plant running three shifts across 14 presses and two automated assembly cells. You will own OEE for your value stream (currently 61%, plant target 75%), lead changeover-reduction (SMED) projects, and run structured problem-solving (8D, DMAIC) on the plant's top scrap and downtime drivers. The role is hands-on at the line: you are expected to personally lead kaizen events, write standard work, and drive measurable, sustained improvement — not just facilitate. Success in year one means a documented OEE gain on at least one cell with the financial impact quantified, plus a repeatable changeover standard adopted by operators. You will report to the Plant Engineering Manager and work daily with maintenance, quality, and shift supervisors.",
+  "history": [
+    { "q": "Your resume lists a lot of methodologies. Pick the single project you're proudest of and walk me through it end to end." },
+    { "q": "On that SMED project — what was the changeover time before and after, and how did you get there?" },
+    { "q": "Within that project, what specifically did YOU do that nobody else on the team did?" }
+  ],
+  "candidate_last_answer": "Honestly it was a real team effort. We got everyone in a room, we mapped the changeover, and we just chipped away at it together. The operators had great ideas, maintenance helped us pre-stage the tooling, and quality signed off on the new standard. We brought the changeover down and we were all really proud of what we accomplished as a group. I don't like to single myself out — we won as a team.",
+  "session_state": {
+    "drilled_topics": ["proudest-project", "smed-before-after"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We brought the changeover down and we were all really proud of what we accomplished as a group",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to isolate his own individual contribution from the team's — the specific decision he made or analysis he personally ran on the SMED event, and the before/after changeover minutes attributable to that action rather than to operators or maintenance"
+    ]
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "id": "fx_0953",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "PRIYA RAMACHANDRAN\nSupply Chain & Operations Intern Candidate | Junior, B.S. Industrial & Systems Engineering\nUniversity of the Northern Plains | Expected graduation next May | Cumulative GPA 3.7/4.0 | Minor in Data Analytics\n\nOBJECTIVE\nDetail-oriented industrial engineering student seeking a summer supply chain operations internship where I can apply coursework in inventory theory, forecasting, and process improvement to real distribution and planning problems. I am most energized by turning messy operational data into decisions: understanding where stockouts come from, why a line is slow, and how a small policy change ripples through cost and service. I want to spend the summer close to the floor and the data, learn how a real planning organization runs, and contribute to a measurable improvement on at least one workstream.\n\nEDUCATION\nUniversity of the Northern Plains — B.S. Industrial & Systems Engineering, Data Analytics minor\n- Core coursework: Operations Research, Deterministic & Stochastic Inventory Models, Production Planning & Control, Quality Engineering, Simulation Modeling (Arena), Supply Chain Analytics, Statistics, Linear Programming, Database Systems (SQL)\n- GPA 3.7; named to the Engineering Honor Roll twice\n- Coursework projects in demand forecasting, EOQ/safety-stock modeling, and discrete-event simulation\n\nRELEVANT EXPERIENCE\nGreenfield Grocers (regional grocery chain) — Supply Chain Analyst Intern, last summer\n- Sat with the replenishment and demand-planning team supporting roughly 40 stores out of one distribution center\n- Pulled point-of-sale and on-hand data via SQL and built spreadsheet models to investigate out-of-stocks on fast-moving SKUs\n- Ran an analysis on a category of high-velocity perishable items where stockouts were frequent, examining reorder points and lead-time variability\n- Presented findings to the planning manager and recommended adjustments to safety-stock settings for a subset of items; I was told the recommendation was 'directionally right' but I rotated off before the change was fully implemented, so I did not see the final service-level numbers myself\n- Documented the data-pull process so the next intern could reproduce the report\n\nCampus Dining Logistics — Student Operations Assistant, two academic years\n- Helped manage receiving, putaway, and inventory counts for a campus dining commissary feeding several thousand students daily\n- Reduced a recurring discrepancy between system inventory and physical counts by proposing a more disciplined cycle-count schedule, which the manager adopted\n- Coordinated with vendors on delivery windows and flagged recurring short-shipments\n- Learned FIFO discipline, the realities of perishable shrink, and how a small receiving error compounds downstream\n\nPROJECTS\nDiscrete-Event Simulation of a Packaging Line (course project)\n- Built an Arena model of a two-stage packaging line to find the bottleneck workstation and test buffer-sizing scenarios\n- Showed in simulation that adding a modest buffer between stages improved modeled throughput, and wrote up the tradeoff against the floor space it required\nDemand Forecasting Mini-Project\n- Compared moving-average, exponential-smoothing, and a simple regression forecast on a public retail dataset; evaluated each on MAPE and bias\n- Learned why a lower-error model is not always the right operational choice if it is unstable month to month\nSafety-Stock & EOQ Model\n- Built a spreadsheet that computes reorder points and economic order quantities under different service-level targets and demand variability assumptions\n\nLEADERSHIP & ACTIVITIES\nINFORMS Student Chapter — Logistics Coordinator\n- Organized a plant tour at a regional distribution center and a guest talk by a supply chain director on demand planning\n- Coordinated logistics for the chapter's case-competition team\nIntramural soccer — team captain two seasons (I genuinely love the sport and it's where I learned to lead under pressure)\n\nTECHNICAL SKILLS\n- Data: SQL (joins, aggregation, basic window functions), Excel (advanced — pivot tables, lookups, what-if/scenario, basic VBA macros), Python (pandas, matplotlib — intermediate)\n- Modeling: Arena simulation, linear programming formulation, EOQ/safety-stock, forecasting (moving average, exponential smoothing, regression)\n- Analytics: descriptive statistics, MAPE/bias evaluation, basic A/B reasoning\n- Visualization: Excel charts, introductory Power BI\n- Familiar concepts: ABC analysis, lead-time variability, bullwhip effect, FIFO, cycle counting, service level vs. fill rate\n\nWHAT I BRING\nI am comfortable getting my hands into raw data and into the physical operation, I document my work so others can build on it, and I care about whether a recommendation actually got implemented and moved a number — not just whether the analysis was clever. I'm looking for a team that will give me a real problem, hold me to a measurable outcome, and tell me directly where my thinking is wrong.\n\n\nADDITIONAL COURSEWORK & CONTINUOUS LEARNING\n- Completed a self-paced course on inventory optimization covering multi-echelon safety stock, periodic-review versus continuous-review policies, and the newsvendor model for perishable items where overage and underage costs are very different\n- Audited a graduate seminar on logistics network design and modeled a small two-warehouse allocation problem, comparing transportation cost against service-level tradeoffs under several demand splits\n- Keep a personal reference notebook of forecasting and inventory formulas with worked numerical examples, so on the job I can apply a reorder-point or safety-stock calculation quickly instead of rederiving it under time pressure\n- Try to connect every technique back to one concrete question: does it reduce stockouts, free working capital, or shorten lead time, and can I actually measure the change after it ships\n\nADDITIONAL EXPERIENCE\nCampus Makerspace - Volunteer Inventory Steward (one academic year)\n- Set up a lightweight check-out and reorder system for shared tools and consumables, which reduced the number of times a part was out of stock when a student needed it for a project\n- Built a simple par-level sheet so restocking decisions did not depend on one person remembering what was running low, and trained two other volunteers to keep it current\n\nREFERENCES\nGreenfield Grocers planning manager and a faculty advisor available upon request.",
+  "jd": "We are hiring a summer Supply Chain Operations intern to support our demand-planning and replenishment team for a regional distribution network. You will work under a senior planner on a defined set of SKUs and stores. Responsibilities: pull and clean sales and inventory data, investigate out-of-stock and overstock drivers, model safety-stock and reorder-point changes, and help quantify the service-level and inventory-cost impact of proposed changes. You will be expected to take one workstream from analysis through to a recommendation that the planning team can actually act on, and to follow it far enough to see whether it moved fill rate or working capital. Strong candidates are comfortable in SQL and Excel, can reason about lead-time variability and service level, and care about implementation and measured outcomes rather than just analysis. You will present your work to the planning manager at the end of the internship. Reports to the Demand Planning Manager.",
+  "history": [
+    {
+      "q": "Walk me through your internship at Greenfield Grocers — the team, the SKUs you supported, and what you were actually asked to figure out."
+    },
+    {
+      "q": "You analyzed stockouts on fast-moving perishables. How did you pull the data, and what did the raw data actually show you?"
+    },
+    {
+      "q": "How did you separate a true stockout from a data artifact like a phantom inventory or a mis-scan at receiving?"
+    },
+    {
+      "q": "You recommended changing safety-stock settings. Walk me through the actual calculation — what inputs, what service-level target, what formula?"
+    },
+    {
+      "q": "Lead-time variability matters a lot here. How did you estimate it, and what did you assume about the demand distribution?"
+    },
+    {
+      "q": "Your manager said the recommendation was 'directionally right.' What was the one thing they pushed back on or wanted you to tighten?"
+    },
+    {
+      "q": "You rotated off before it shipped. If you had two more weeks, what would you have done to validate the change before trusting it?"
+    },
+    {
+      "q": "On the campus cycle-count change — what was the discrepancy rate before, and how did you know your new schedule actually fixed it?"
+    },
+    {
+      "q": "In your packaging-line simulation you added a buffer. What was the tradeoff you wrote up, and would you actually recommend it on a real floor?"
+    },
+    {
+      "q": "Let's go back to the perishables analysis. Concretely: for the one SKU where stockouts were worst, what reorder point did you have, what did you recommend changing it to, and what service level were you targeting?"
+    }
+  ],
+  "candidate_last_answer": "Oh man, perishables — that's such a deep topic. So here's the thing about perishables that most people don't appreciate: shrink is this whole hidden world. Did you know that grocery shrink across the industry runs into billions of dollars a year? I went down a real rabbit hole on this last summer. It actually connects to this fascinating documentary I watched about food waste and how something like a third of all food produced globally gets thrown out, which is wild when you think about supply chains end to end. And it reminds me of my operations research professor, who had this great line about how every inventory problem is really a philosophy problem about uncertainty. He once spent a whole lecture on the history of the EOQ formula, going back to 1913, Ford Whitman Harris, super interesting guy. Honestly I find the sustainability angle of all this really motivating — it's part of why I love this field so much.",
+  "session_state": {
+    "drilled_topics": [
+      "greenfield-scope",
+      "stockout-data-pull",
+      "stockout-vs-artifact",
+      "safety-stock-calc",
+      "lead-time-variability",
+      "manager-pushback",
+      "validation-plan",
+      "cycle-count-before-after",
+      "simulation-tradeoff"
+    ],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      {
+        "competency": "numbers-fluency",
+        "evidence_type": "metric"
+      },
+      {
+        "competency": "execution-rigor",
+        "evidence_type": "mechanism"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: shrink is this whole hidden world",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cut off the food-waste documentary tangent and pin the specific numbers for the worst-stockout SKU — its original reorder point, the recommended new value, and the target service level — proving she actually did the calculation rather than gesturing at the topic"
+    ]
+  }
+}

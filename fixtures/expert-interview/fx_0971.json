@@ -1,0 +1,44 @@
+{
+  "id": "fx_0971",
+  "tags": {
+    "industry": "product-management",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Product Manager — Payments & Checkout\n\nSummary\nProduct manager with 6 years owning B2C checkout and payments surfaces. I ship measurable conversion and retention wins and partner closely with eng, design, and risk.\n\nExperience\nFinch Commerce — Product Manager, Checkout (2021-present)\n- Situation: guest checkout conversion was stalling at 61% on mobile web.\n- Task: own a quarter-long initiative to lift mobile checkout conversion.\n- Action: ran a discovery sprint, killed a redundant address step, added express wallets (Apple/Google Pay), and A/B tested a one-page flow.\n- Result: mobile guest conversion 61% to 68.4% in 11 weeks; +$2.1M annualized GMV.\n\n- Situation: refund disputes were generating 14% of support tickets.\n- Task: reduce refund-driven contacts without hurting CSAT.\n- Action: shipped self-serve refund status + proactive email; partnered with support on macros.\n- Result: refund tickets down 31%; CSAT held at 4.6/5.\n\nLayerPay — Associate PM (2018-2021)\n- Launched saved-card vaulting; raised repeat-purchase rate from 22% to 29%.\n\nEducation\nB.A. Economics, Hill University (2018)\n\nSkills: SQL, Amplitude, experimentation, payments (PSPs, 3DS, tokenization), roadmap & discovery",
+  "jd": "Finch Commerce is hiring a Product Manager to own our subscription billing and dunning experience. You will be accountable for involuntary churn (currently 4.2% monthly, target sub-3%), trial-to-paid conversion, and payment success rate across our PSPs. The role requires real experimentation rigor — you should be able to describe a test you designed, the hypothesis, the guardrail metrics, and how you read the result. You will partner with growth, risk, and finance, and present billing-health reviews to the leadership team. We want PMs who can connect a product change to a defensible revenue or retention number and who know when a 'win' was actually noise.",
+  "history": [
+    { "q": "Tell me about your current scope at Finch — what surface do you own and what metrics?" },
+    { "q": "Walk me through the mobile checkout conversion project. What was the starting point?" },
+    { "q": "What specifically did you change? Take me through the actions in order." },
+    { "q": "You added express wallets and killed an address step at the same time — how did you isolate which change drove the lift?" },
+    { "q": "Let's talk experiment design. What was your hypothesis and your guardrail metrics on that A/B test?" },
+    { "q": "The result was 61% to 68.4% — how long did you run the test, and was it stat-sig?" },
+    { "q": "Now the refund self-serve project. What problem were you solving and what did you build?" },
+    { "q": "On that refund project — you told me the problem and what you shipped, but walk me through how you actually knew it worked. What did the result look like, and what was your read on whether it was real?" }
+  ],
+  "candidate_last_answer": "So for the refund self-serve project, the situation was that refund-status questions were clogging support, and my task was to cut those contacts without tanking CSAT. What I did was ship a self-serve refund tracker plus a proactive 'your refund is processing' email, and I worked with the support leads to retire the old macros so agents stopped manually answering. We rolled it out to everyone at once because leadership wanted it fast. I'm confident it landed well — the team felt the relief almost immediately and support stopped escalating these.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "checkout-starting-point", "checkout-actions", "checkout-attribution", "experiment-hypothesis-guardrails", "checkout-statsig-duration", "refund-problem-and-build"],
+    "current_competency_target": "measurement-rigor",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "measurement-rigor",
+    "missing_evidence": [
+      { "competency": "measurement-rigor", "evidence_type": "metric" },
+      { "competency": "experimentation", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm confident it landed well — the team felt the relief almost immediately",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result — the actual refund-ticket reduction and CSAT figures plus how the candidate attributed the change (baseline window, control, or noise check) rather than a feelings-based claim that it worked"
+    ]
+  }
+}

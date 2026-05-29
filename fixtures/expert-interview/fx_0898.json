@@ -1,0 +1,53 @@
+{
+  "id": "fx_0898",
+  "tags": {
+    "industry": "hr",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Staff People Partner / HRBP\n\nDana Okoro | People & Culture | Tech and high-growth scale-ups\n\nProfile: Senior HR business partner supporting engineering and go-to-market orgs. Owns the full employee lifecycle: workforce planning, performance, compensation cycles, org design, and complex employee relations. Trusted advisor to senior leaders.\n\nExperience:\n- Helix Robotics — Staff People Partner (2020-now). Partner to the VP of Engineering and VP of Sales. Led performance calibration, restructures, and ER investigations.\n- Brightwave — Senior HRBP (2016-2020). Supported a growing product org, ran annual comp planning and manager enablement.\n\nFocus areas: org design, performance management, employee relations, change management, leadership coaching, DEI programs.\n\nEducation: BA Organizational Psychology. SHRM-SCP.",
+  "jd": "We are seeking a Staff People Partner to act as the senior HRBP for a 400-person engineering organization. You will own org design and workforce planning with the engineering leadership team, run the performance calibration and compensation cycles, advise on complex employee-relations matters and investigations, and lead change-management for reorgs and leadership transitions. The ideal candidate has 8+ years in progressive HRBP roles, has personally led at least one significant restructure, can navigate sensitive ER cases with sound judgement and documentation, and partners credibly with VP-level leaders. You should be able to turn people data into a clear narrative for executives and balance employee advocacy with business needs. SHRM-SCP or equivalent preferred.",
+  "history": [
+    { "q": "Give me the shape of your current role at Helix — which leaders you support and what you own end to end." },
+    { "q": "You support a VP of Engineering. Describe the single hardest org-design problem you've partnered on there." },
+    { "q": "Walk me through how you ran your last performance calibration. What was the process?" },
+    { "q": "Where did managers disagree in that calibration, and how did you personally resolve it?" },
+    { "q": "Tell me about a complex ER investigation you led. What was the allegation and how did you scope it?" },
+    { "q": "How did that investigation conclude, and what was your specific recommendation?" },
+    { "q": "Describe a restructure you led. What was the rationale and how many roles were affected?" },
+    { "q": "How did you sequence the communications for that restructure, day by day?" },
+    { "q": "Tell me about a time you pushed back on a VP. What was the disagreement?" },
+    { "q": "How do you turn people data into an executive narrative? Give a specific example." },
+    { "q": "What people metric do you watch most closely, and why that one?" },
+    { "q": "Describe a leadership transition you managed. What made it hard?" },
+    { "q": "Tell me about a DEI program you owned and how you measured whether it worked." },
+    { "q": "Give me an example of a judgement call where you balanced employee advocacy against the business." },
+    { "q": "What feedback have you gotten from a leader you support that changed how you operate?" },
+    { "q": "Let's get concrete on the restructure. Forget the framework — what did you actually do in the 72 hours before the announcement, and what went wrong?" }
+  ],
+  "candidate_last_answer": "Great question. My philosophy on restructures is that they're fundamentally about people-centric change leadership. I always operate from a place of empathy-led, data-informed decision-making, ensuring stakeholder alignment and a single source of truth. I leverage a change-management framework to drive clarity, build psychological safety, and create a seamless employee experience. At the end of the day, it's about meeting people where they are and bringing the org along on the journey with transparency and trust.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "org-design-problem", "calibration-process", "calibration-disagreement", "er-investigation-scope", "er-conclusion", "restructure-rationale", "restructure-comms-sequence", "pushed-back-on-vp", "data-to-narrative", "key-metric", "leadership-transition", "dei-measurement", "advocacy-vs-business", "leader-feedback"],
+    "current_competency_target": "change-execution",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "change-execution",
+    "missing_evidence": [
+      { "competency": "change-execution", "evidence_type": "owner-of-action" },
+      { "competency": "change-execution", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I leverage a change-management framework to drive clarity, build psychological safety, and create a seamless employee experience",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the specific actions the candidate personally took in the 72 hours before the announcement and the one thing that actually went wrong, cutting past rehearsed framework language to a real lived sequence"
+    ]
+  }
+}

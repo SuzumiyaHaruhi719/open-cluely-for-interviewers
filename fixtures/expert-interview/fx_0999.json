@@ -1,0 +1,53 @@
+{
+  "id": "fx_0999",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Daniel Okeke — Staff Data Engineer / Platform\n\nKEYWORDS: Spark, Flink, Kafka, Airflow, dbt, Snowflake, BigQuery, Databricks, Delta Lake, Iceberg, data mesh, lakehouse, CDC, Debezium, lineage, data contracts, dimensional modeling, Kimball, streaming, batch, orchestration, data quality, Great Expectations, observability, Terraform, Kubernetes, Python, Scala, SQL, partitioning, cost optimization, SLA, freshness\n\nEXPERIENCE\nStaff Data Engineer, Lumadex (2021–present)\n- Led the migration from a nightly batch warehouse to a streaming lakehouse on Iceberg.\n- Owned the data-quality and lineage initiative across 200+ pipelines.\n\nSenior Data Engineer, Corvex Analytics (2017–2021)\n- Built the original Airflow orchestration layer and the dbt modeling standard.\n\nEDUCATION\nM.S. Computer Science\n\nSKILLS: Spark, Flink, Kafka, dbt, Snowflake, Iceberg, Terraform, Python, Scala, SQL",
+  "jd": "Lumadex is hiring a Staff Data Engineer to own the reliability and evolution of our streaming lakehouse platform. You will set the multi-quarter roadmap for our migration off legacy batch, own data-quality SLAs across the pipeline estate, and lead cross-team data-contract adoption. We need someone who can narrate a complex, multi-phase platform migration with a precise and internally consistent timeline: which phase shipped in which quarter, what depended on what, and when the cutover actually happened. The interview will probe the chronology and sequencing of your past migrations in detail, so be prepared to reconcile overlapping workstreams and give concrete dates.",
+  "history": [
+    { "q": "Walk me through the batch-to-streaming lakehouse migration you led at Lumadex." },
+    { "q": "When did the migration project actually kick off?" },
+    { "q": "What was the first phase you shipped?" },
+    { "q": "Did the Iceberg adoption come before or after you stood up the streaming ingestion?" },
+    { "q": "When did the data-quality and lineage initiative start relative to the migration?" },
+    { "q": "You said the lineage work was a prerequisite — but earlier you said it started after cutover. Which is it?" },
+    { "q": "When did the production cutover off the nightly batch warehouse happen?" },
+    { "q": "How long did the dual-running period last, where both batch and streaming ran in parallel?" },
+    { "q": "Was the dbt modeling standard already in place, or did you build it during this migration?" },
+    { "q": "Which quarter did you decommission the legacy Airflow batch DAGs?" },
+    { "q": "Did data-contract adoption happen during the migration or after?" },
+    { "q": "Who owned the streaming ingestion workstream while you owned lineage?" },
+    { "q": "Earlier you put cutover in Q3, now the lineage work 'finished just before cutover' in Q1 — help me line those up." },
+    { "q": "So which came first: Iceberg in production, or the cutover off batch?" },
+    { "q": "If the dual-run lasted two quarters and cutover was Q3, when did dual-run start?" },
+    { "q": "Give me the whole thing as one ordered timeline, phase by phase with the quarter each shipped." }
+  ],
+  "candidate_last_answer": "Okay, the timeline — so we kicked off in early 2022, Q1. The first thing we shipped was the Iceberg tables, which was after we stood up streaming ingestion, although honestly the ingestion and the Iceberg work kind of happened together. The lineage initiative was a prerequisite, so that finished just before cutover, which was Q3 — wait, no, lineage actually started after cutover because that's when we had the new pipelines to instrument. Dual-run lasted about two quarters, so if cutover was Q3 then dual-run started in Q2, but I also remember decommissioning the old Airflow DAGs in Q2, which would've been before cutover, so maybe cutover was earlier. It's a bit fuzzy on exact quarters honestly.",
+  "session_state": {
+    "drilled_topics": ["migration-overview", "kickoff-date", "first-phase", "iceberg-vs-ingestion-order", "lineage-timing", "lineage-prereq-contradiction", "cutover-date", "dual-run-duration", "dbt-standard-timing", "airflow-decommission-quarter"],
+    "current_competency_target": "timeline-accuracy",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "timeline-accuracy",
+    "missing_evidence": [
+      { "competency": "timeline-accuracy", "evidence_type": "timeline" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The lineage initiative was a prerequisite, so that finished just before cutover, which was Q3 — wait, no, lineage actually started after cutover",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single ordered, quarter-by-quarter migration timeline that resolves whether lineage was a pre-cutover prerequisite or a post-cutover effort, fixes the cutover quarter consistently against the two-quarter dual-run and the Q2 Airflow decommission, and pins whether Iceberg in production preceded or followed the batch cutover"
+    ]
+  }
+}

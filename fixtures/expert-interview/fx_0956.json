@@ -1,0 +1,54 @@
+{
+  "id": "fx_0956",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "陈志远 — Staff 软件工程师 / 平台基础设施方向\n\n核心经历\n- 情境：某出行平台订单链路在高峰期 P99 延迟从 80ms 恶化到 600ms，影响日均 1200 万单。任务：作为技术负责人重构订单写入路径。行动：将单体 MySQL 拆分为按城市分片的 16 个库，引入本地缓存与异步对账。结果：P99 回落到 65ms，写入吞吐提升 3.4 倍，年度数据库成本下降 220 万元。\n- 情境：跨三个业务团队的 RPC 框架版本碎片化，故障定位平均耗时 4 小时。任务：统一治理。行动：主导设计统一的可观测性 SDK，强制 trace 透传，建立熔断默认值。结果：MTTR 从 4 小时降到 35 分钟，覆盖 380 个服务。\n- 情境：一次大促前压测发现库存超卖风险。任务：在两周内交付幂等扣减方案。行动：设计基于 Redis Lua 的原子扣减 + 数据库兜底对账。行动落地后结果：超卖率从 0.3% 降到 0,大促零资损。\n\n技能：Go、Java、MySQL 分库分表、Kafka、Kubernetes、分布式事务、性能调优。\n教育：某 985 高校 计算机科学 硕士。",
+  "jd": "我们正在为核心交易平台招聘一名 Staff 软件工程师,负责订单与履约链路的架构演进。你将主导跨多个业务域的技术决策,推动稳定性、性能与成本三者的平衡。职责包括:定义未来两年交易系统的分库分表与多活容灾方案;牵头解决高并发场景下的一致性难题;作为技术权威评审关键设计并辅导高级工程师。我们期望候选人有亿级日订单系统的实操经验,能够清晰阐述每一个架构权衡背后的取舍,并对自己主导的技术决策负责。该岗位直接向技术总监汇报,需要频繁与产品、SRE 与数据团队协作。",
+  "history": [
+    { "q": "请先用三分钟介绍一下你在出行平台最近一年的主要职责和团队规模。" },
+    { "q": "你简历里写订单链路 P99 从 600ms 回落到 65ms,先讲讲恶化是怎么发生的。" },
+    { "q": "当时为什么选择按城市分 16 个库,而不是按用户 ID 哈希分片?" },
+    { "q": "16 这个分片数是怎么定出来的?有没有考虑后续扩容?" },
+    { "q": "本地缓存引入后,缓存与数据库的一致性你是怎么保证的?" },
+    { "q": "异步对账的延迟窗口是多久?这个窗口期内的脏数据怎么处理?" },
+    { "q": "你说写入吞吐提升 3.4 倍,这个数字是在什么压测条件下测出来的?" },
+    { "q": "再说统一可观测性 SDK 那件事,强制 trace 透传时其他团队抵触吗?" },
+    { "q": "MTTR 从 4 小时降到 35 分钟,这个 35 分钟是中位数还是平均数?" },
+    { "q": "熔断默认值你是怎么定的?定得太激进会误伤,太松又不起作用。" },
+    { "q": "Redis Lua 原子扣减方案,如果 Redis 主从切换丢了那条扣减记录怎么办?" },
+    { "q": "数据库兜底对账多久跑一次?对账发现不一致时以谁为准?" },
+    { "q": "现在换个话题。你作为 Staff,怎么去影响那些不直接向你汇报的团队?" },
+    { "q": "举一个你的设计评审意见被资深工程师强烈反对、最后你改变了立场的例子。" },
+    { "q": "我们这边要做订单系统的多活容灾,你会怎么设计跨地域的数据一致性?" },
+    { "q": "假设多活下两个机房同时写同一个订单,你的冲突解决策略是什么?" },
+    { "q": "好,具体说:同城双活和异地多活,对于交易系统你优先推哪一个,为什么?" }
+  ],
+  "candidate_last_answer": "这个问题挺好的。其实在回答之前,我想先反问您一下:咱们这个交易平台目前的容灾目标 RTO 和 RPO 具体是多少?是要求 RPO 等于零、一条订单都不能丢,还是可以接受秒级的数据回退?另外预算上是否支持三地五中心这种规模?因为我觉得同城双活还是异地多活,本质上完全取决于业务能接受的故障域和成本边界,脱离这些前提去推一个方案是不负责任的。您能先告诉我这些约束吗?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "p99-regression-root-cause", "sharding-key-choice", "shard-count-rationale", "cache-consistency", "reconciliation-window", "throughput-benchmark", "observability-sdk-adoption", "mttr-statistic", "circuit-breaker-defaults", "redis-failover", "db-reconciliation-authority", "cross-team-influence", "design-review-conflict", "multi-region-consistency", "write-write-conflict"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "system-design", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 脱离这些前提去推一个方案是不负责任的",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: force the candidate to stop deferring to the interviewer and actually state, under a stated assumption (e.g. RPO=0 vs second-level loss), which of same-city dual-active or cross-region multi-active he would pick and the concrete consistency mechanism and cost tradeoff behind that choice"
+    ]
+  }
+}

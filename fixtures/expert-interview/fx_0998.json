@@ -1,0 +1,52 @@
+{
+  "id": "fx_0998",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Priya Nandakumar — Finance / Investment Banking Intern Candidate\n\nKEYWORDS: DCF, LBO, comparable company analysis, precedent transactions, three-statement modeling, WACC, IRR, NPV, accretion/dilution, sensitivity analysis, valuation, M&A, capital structure, EBITDA, free cash flow, Bloomberg Terminal, Capital IQ, FactSet, Excel, VBA, pitch books, due diligence, equity research, fixed income, derivatives, Monte Carlo, Python, pandas, financial modeling, leveraged finance, ECM, DCM\n\nEDUCATION\nB.S. Finance, State University — Junior, expected 2027, GPA 3.8\n\nEXPERIENCE\nFinance Club — Valuation Lead\n- Built DCF and LBO models for case competitions\nBoutique Advisory (summer analyst, 2025)\n- Supported a sell-side engagement; assisted with comps and the data room\n\nSKILLS: financial modeling, valuation, Excel/VBA, Python, Bloomberg",
+  "jd": "Our boutique advisory firm is hiring a summer M&A analyst intern. You will build and maintain valuation models (DCF, LBO, comps), assist with due diligence, and support deal teams on live sell-side and buy-side engagements. We expect a candidate who can defend the mechanics of a model they personally built — explain their WACC build, their terminal-value assumptions, and the specific outputs — without deflecting. The interview will test whether you can stand behind your numbers and reasoning under direct questioning rather than redirecting the question back to the interviewer. Strong Excel, intellectual honesty, and the ability to own your assumptions are required.",
+  "history": [
+    { "q": "Tell me about the LBO model you built for the case competition." },
+    { "q": "What entry multiple did you assume, and why?" },
+    { "q": "How did you build your WACC for the DCF?" },
+    { "q": "What discount rate did you land on?" },
+    { "q": "What terminal growth rate did you use?" },
+    { "q": "Walk me through how you got to your terminal value." },
+    { "q": "What was the implied IRR in your LBO base case?" },
+    { "q": "How much leverage did you assume at entry — what debt-to-EBITDA?" },
+    { "q": "What were the key value-creation drivers in your returns bridge?" },
+    { "q": "How sensitive was your IRR to the exit multiple?" },
+    { "q": "On the sell-side engagement at the boutique — what did you personally do on the comps?" },
+    { "q": "Which comparable companies did you include, and did you exclude any?" },
+    { "q": "How did you handle calendarization of the comps?" },
+    { "q": "Let's go back to your DCF — just give me the discount rate and how you built it." },
+    { "q": "I need a straight answer on the WACC: what cost of equity did you use, and what was the risk-free rate and beta behind it?" }
+  ],
+  "candidate_last_answer": "Well, before I answer that — can I ask what you'd typically expect to see here? Like, are you looking for a CAPM build with a specific beta source, or are you more interested in how I'd think about it conceptually? Because honestly, what's the WACC you all use internally for a deal like this? I feel like if I knew the house convention I could frame my answer better. And out of curiosity, when you built models at my stage, did you pull beta from Bloomberg or just use an industry average? I'd genuinely love to hear how you'd approach it.",
+  "session_state": {
+    "drilled_topics": ["lbo-model", "entry-multiple", "wacc-build", "discount-rate", "terminal-growth", "terminal-value", "lbo-irr", "entry-leverage", "value-creation-drivers", "comps-personal-contribution"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "intellectual-honesty", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: what's the WACC you all use internally for a deal like this",
+      "must-be-question-type: teach-back",
+      "expected-yield: the candidate's own concrete WACC build for the model they claim to have built — a specific risk-free rate, beta and its source, cost of equity via CAPM, and the resulting discount rate — without bouncing the question back to the interviewer or fishing for the house convention"
+    ]
+  }
+}

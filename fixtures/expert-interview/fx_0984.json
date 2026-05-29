@@ -1,0 +1,47 @@
+{
+  "id": "fx_0984",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "GRACE OKONKWO\nDirector of Manufacturing Operations\n\nPROFILE\nManufacturing leader with 15 years in discrete and process manufacturing, specializing in plant turnarounds, OEE improvement, and multi-site standardization. I have led plants through lean transformations and capital expansions.\n\nEXPERIENCE\n\nDirector of Manufacturing — Halcyon Industrial Products (2020–present)\nOwn three plants (Ohio, Tennessee, Mexico) producing injection-molded and assembled consumer-durables components. Lead a team of 3 plant managers and roughly 600 employees across the network.\n- Led a network-wide OEE improvement program. Raised average OEE from 61% to 79% over two years.\n- Note in later bullet: \"Drove OEE from the high 60s to the low 80s\" — figures cited inconsistently across reviews.\n- Consolidated two product lines from the Ohio plant into Tennessee, closing the Ohio molding cell.\n- Headcount: led 600 employees (summary) / \"directly accountable for ~850 across the three sites\" (per a separate section below).\n- Capital: delivered a $12M automation expansion in Tennessee on time.\n\nPlant Manager — Halcyon Industrial Products, Ohio (2016–2020)\n- Ran the Ohio plant, ~250 employees.\n- Reduced scrap rate from 7.2% to 3.1%.\n- Joined Halcyon in 2017 (per this section) — though the title block above shows the Ohio role beginning in 2016.\n\nOperations Manager — Veritas Molding (2010–2016)\n- Managed two shifts of injection molding.\n- Improved on-time delivery to 96%.\n\nADDITIONAL SCOPE NOTE\nAt Halcyon I have been directly accountable for approximately 850 employees across the three sites and a combined operating budget I usually describe as around $140M, though our network revenue is closer to $90M.\n\nEDUCATION & CERTS\nB.S. Industrial Engineering. Lean Six Sigma Black Belt. APICS CPIM.\n\nSKILLS\nOEE/TPM, lean transformation, multi-site standardization, capital project delivery, S&OP, plant consolidation, labor relations.",
+  "jd": "Meridian Manufacturing Group is hiring a Director of Manufacturing to lead a three-plant network (combined ~700 employees) producing precision components for industrial customers. Reporting to the COO, you will own network OEE, the consolidated manufacturing budget, capital project delivery, and a multi-site standardization agenda. We are in the middle of a difficult plant consolidation and need a leader who has personally executed a similar move and can speak precisely about the decision, the execution, and — critically — the measurable outcome. In the interview, expect deep questions on a single transformation you led: we will probe the trigger, your specific role, the resistance you managed, and the hard numbers before and after. Consistency and command of your own facts matter; we will notice if figures shift. Black Belt and capital-delivery track record expected.",
+  "history": [
+    { "q": "Grace, lay out your current scope at Halcyon — sites, team size, what you own." },
+    { "q": "I want to anchor on numbers. Your summary says 600 employees but a later section says about 850. Which is it, and why the gap?" },
+    { "q": "Same question on budget — you mention a $140M operating budget but $90M network revenue. Help me reconcile that." },
+    { "q": "Let's go to the OEE program. What was the baseline and what triggered the program?" },
+    { "q": "You cite 61% to 79% in one place and 'high 60s to low 80s' in another. Which figure is the real one?" },
+    { "q": "Walk me through the Ohio-to-Tennessee consolidation. What drove the decision to close the Ohio molding cell?" },
+    { "q": "What was your specific role in that consolidation versus the plant managers'?" },
+    { "q": "How did you handle the affected Ohio workforce — what did you actually do for them?" },
+    { "q": "What resistance did you hit from the Tennessee side absorbing the volume, and how did you manage it?" },
+    { "q": "When did you actually join Halcyon? The title block says 2016 for Ohio but the role section says 2017." },
+    { "q": "Take the consolidation end to end. Give me the situation, your task, the actions you personally drove, and the measured result — throughput, cost, quality, whatever you tracked." }
+  ],
+  "candidate_last_answer": "Sure. So the situation was that Ohio was sub-scale — we had two molding lines running at maybe 55% utilization while Tennessee had open capacity and newer presses. My task as director was to consolidate without disrupting customer supply during the move. So what I did personally: I built the transfer plan, sequenced the tool moves so we never had both the Ohio and Tennessee version of a part down at the same time, I negotiated the temporary safety-stock build with our top three customers so we had a buffer, and I personally ran the weekly war-room through the whole cutover. I also owned the WARN-notice timing and the severance framework with HR for the Ohio team. We sequenced 40-some tools over about four months without a single line-down event for a customer.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "headcount-discrepancy", "budget-discrepancy", "oee-baseline-trigger", "oee-figure-conflict", "consolidation-decision", "consolidation-role", "workforce-handling", "tennessee-resistance", "tenure-discrepancy"],
+    "current_competency_target": "results-delivery",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "results-delivery",
+    "missing_evidence": [
+      { "competency": "results-delivery", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: without a single line-down event for a customer",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result quantification beyond the avoided-disruption claim — the actual cost takeout, utilization gain at Tennessee, or unit-cost delta from consolidating the two lines, with a number and timeframe"
+    ]
+  }
+}

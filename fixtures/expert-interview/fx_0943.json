@@ -1,0 +1,44 @@
+{
+  "id": "fx_0943",
+  "tags": {
+    "industry": "marketing",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "周梦琪 — 增长营销负责人\n地点：深圳\n\n个人简介\n增长营销负责人，长期负责消费品牌的全渠道增长与用户运营，擅长把品牌投放与效果投放打通，搭建数据驱动的增长机制。习惯把策略落到可复用的方法与流程上。\n\n工作经历\n增长营销负责人，沐光消费品牌（2020 年至今）\n负责品牌的整体增长策略，统筹效果投放、内容营销与私域运营，牵头多次大型电商节点的整合营销战役。\n推动建立从投放到转化的数据看板与归因机制，协同电商、产品与供应链拉齐节奏。\n带领跨职能团队完成多次新品上市的整合传播。\n\n品牌经理，怡和快消（2016-2020）\n负责单一品类的品牌传播与渠道投放，参与年度营销规划。\n\n市场专员，怡和快消（2014-2016）\n负责活动执行与渠道物料。\n\n技能\n整合营销、效果投放（信息流/电商广告）、内容与社媒运营、私域与会员运营、数据归因与增长分析、跨部门协同。\n\n教育\n中山大学 市场营销 本科（2014）。\n\n说明\n简历不刻意堆砌数字，更看重把增长的逻辑与方法讲清楚。",
+  "jd": "招聘岗位：增长营销负责人（Staff 级），消费品牌。\n\n一家消费品牌招募增长营销负责人，主导品牌的全渠道增长。你将统筹效果投放、内容与私域运营，搭建数据驱动的增长闭环，并对获客成本、ROAS 与复购率负责。近期重点是带队打好一次大促整合战役。我们希望候选人能用具体的情境、任务、行动与可量化结果，讲清楚一次他亲自主导、并真正改善了核心指标的增长战役。",
+  "history": [
+    { "q": "先讲讲你现在的职责范围——团队、渠道、你对哪些增长指标负责。" },
+    { "q": "挑一次你亲自主导的大促整合战役，先说说背景和你的目标。" },
+    { "q": "当时核心要解决的增长瓶颈是什么？" },
+    { "q": "你的整体打法是怎么设计的？" },
+    { "q": "效果投放这块你具体做了哪些动作？" },
+    { "q": "私域和内容是怎么配合的？" },
+    { "q": "团队和预算是怎么分配的？" },
+    { "q": "那这次战役最后的可量化结果是什么——用具体数字讲讲情境、任务、行动、结果。" }
+  ],
+  "candidate_last_answer": "好。情境是去年双十一，品牌的获客成本连续两个季度走高，老客复购也在下滑，CEO 要求这次大促既要冲 GMV 又要把获客成本压下来。我的任务是在大促期间把整体 ROAS 做到 3.5 以上，同时把新客获客成本降百分之二十。我的动作分三块：第一，把效果投放从纯拉新调整为『拉新+召回』双目标，对沉睡老客单独建了召回人群包；第二，提前一个月用内容种草蓄水，把私域会员从活动前的引导加购转为大促当天集中转化；第三，按人群价值重新分配预算，把约六成预算压到 ROI 最高的两个渠道。结果是大促当天 GMV 同比增长百分之四十，整体 ROAS 做到 3.8，新客获客成本同比降了百分之二十三，私域贡献了大约三成五的成交额。",
+  "session_state": {
+    "drilled_topics": ["growth-scope", "campaign-context", "growth-bottleneck", "overall-playbook", "paid-actions", "private-domain", "team-budget"],
+    "current_competency_target": "outcomes",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "outcomes",
+    "missing_evidence": [
+      { "competency": "outcomes", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把约六成预算压到 ROI 最高的两个渠道",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the decision mechanism behind the 60% budget concentration — how channel ROI was measured pre-campaign, which two channels won and which were starved, and the tradeoff risk of over-concentrating spend during peak"
+    ]
+  }
+}

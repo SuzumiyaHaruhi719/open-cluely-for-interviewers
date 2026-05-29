@@ -1,0 +1,42 @@
+{
+  "id": "fx_0938",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "JORDAN KELLER\nJunior Software Engineer | Seattle, WA\n\nOBJECTIVE\nRecent CS grad seeking a backend engineering role. About 2 years of professional experience.\n\nEXPERIENCE\nSoftware Engineer I, Tessellate Software (Jan 2023 – present)\n- Backend developer on the payments team, Node.js and PostgreSQL.\n- Led the redesign of the refunds service. (Note: in the bullet below I describe myself as having 'assisted' on this same refunds work — I led the API design but assisted on the data-migration part.)\n- Owned on-call rotation for the team.\n\nSoftware Engineering Intern, Tessellate Software (Summer 2022)\n- Converted to full-time after the internship.\n- Worked on internal tooling in Python.\n\nFreelance Web Developer (2021 – 2022)\n- Built small business websites. (Header says ~2 years professional experience; counting freelance plus full-time it's closer to 3, but I usually only count the full-time year and a half.)\n\nEDUCATION\nB.S. Computer Science, University of Washington — graduated 2022. (Internship was Summer 2022; I list the FT start as Jan 2023, so there is a gap I usually explain as finishing coursework in fall.)\n\nSKILLS\nJavaScript/TypeScript, Node.js, Express, PostgreSQL, Python, Git, Docker (basic), some AWS.",
+  "jd": "Backend Engineer (Early Career). Join our payments platform team building services that process refunds, disputes, and settlement. You'll write Node.js/TypeScript services backed by PostgreSQL, participate in on-call, and own well-scoped features end to end. We're looking for someone early in their career who can clearly explain a piece of code they wrote — what problem it solved, the approach, and how they verified it worked. Strong fundamentals and clear communication matter more than years of experience.",
+  "history": [
+    { "q": "Tell me a bit about your role on the payments team — what do you work on day to day?" },
+    { "q": "You mention redesigning the refunds service. What problem was the redesign solving?" },
+    { "q": "What part of that did you personally lead versus contribute to?" },
+    { "q": "Walk me through the refund API you designed — the key endpoint and its inputs/outputs." },
+    { "q": "How did you handle a refund that partially fails — say the payment processor times out mid-request?" },
+    { "q": "Concretely, how did you make that retry safe so a customer isn't refunded twice?" }
+  ],
+  "candidate_last_answer": "Right, yeah, so — okay so the double-refund thing, that's, um, that's a really good question. So basically we, um, we didn't want to refund someone twice, obviously, that would be really bad, so we had like a — sorry, let me think. So there was an idempotency thing, I think we used an idempotency key? Or — actually it might have been that we just checked the database first to see if a refund row existed, I'm honestly blanking a little. We definitely talked about idempotency keys in design review, I remember that, but I'm not a hundred percent sure if that's what shipped or if my teammate did that part. Sorry, I get a bit nervous on this stuff. Um, I think it worked though, we didn't get double-refund tickets, so.",
+  "session_state": {
+    "drilled_topics": ["daily-scope", "refund-problem", "ownership-split", "api-design", "partial-failure"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm not a hundred percent sure if that's what shipped or if my teammate did that part",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a definite answer on which mechanism actually shipped — idempotency key versus a pre-insert existence check — and whether the candidate personally implemented it, pinning the exact column/key and uniqueness constraint used"
+    ]
+  }
+}

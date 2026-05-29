@@ -1,0 +1,39 @@
+{
+  "id": "fx_0978",
+  "tags": {
+    "industry": "hr",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "人力资源总监 / HRD —— 全面薪酬与组织发展\n\n【个人简介】\n我是一名拥有十四年经验的人力资源总监，长期在快速增长的科技与互联网企业负责全面薪酬（Total Rewards）、组织发展（OD）与人才管理体系。我的职业信条是：人力资源不是成本中心，而是业务增长的杠杆。过去十四年里，我先后在三家不同发展阶段的公司搭建并迭代了完整的人力资源体系，亲历了从几百人到数千人的组织扩张，也经历过逆周期下的组织收缩与重组。我习惯用数据说话，也始终把人的体验放在和效率同样重要的位置上，因为我深信，任何一项制度设计如果脱离了一线员工的真实感受，最终都会在执行层面失真。无论是设计薪酬带宽、搭建绩效校准机制，还是推动一次敏感的组织调整，我都坚持先把问题定义清楚，再用结构化的方法一步步落地，并且在每一个关键节点上保留可追溯的决策记录，这样无论面对管理层质询还是合规审查，我都能拿出经得起检验的依据。我相信好的人力资源负责人，既要懂业务的语言，能和 CFO 谈清楚每一分钱投入的回报，也要懂人心的温度，能让被影响的员工感到被尊重和被妥善对待。这种在理性与人性之间寻找平衡的能力，是我十四年里最珍视的积累。\n\n【工作经历】\n\n星澜科技 —— 人力资源总监（2020 至今）\n职责范围：向 CHRO 汇报，负责约 2000 人规模公司的全面薪酬、组织发展与人才盘点体系。\n- 主导重构了公司的薪酬体系（Comp framework），引入基于岗位价值评估（job evaluation）的薪酬带宽（salary band），把原本散乱的 40 多个职级压缩到 18 级，并将薪酬市场分位（market percentile）锚定在 P60。\n- 设计并落地了季度绩效校准（calibration）机制，配合 forced distribution 的软性引导，使高绩效（top performer）的识别一致性显著提升。\n- 主导过一次涉及约 8% 人员的组织优化（RIF），在 legal 与 finance 的共同参与下完成，全程保留 documentation，未发生劳动仲裁败诉。\n- 推动 pay equity（薪酬公平性）回顾，按性别与职级做回归分析，识别并修复了若干不合理差异。\n\n云图互联 —— 高级 HR 经理 / HRBP 负责人（2016-2020）\n职责范围：负责研发与产品两大事业群的 HRBP 团队，支持约 800 人。\n- 搭建研发序列的 career ladder（职业发展通道），把晋升标准从主观评价转向行为锚定（behaviorally anchored）。\n- 牵头 employee engagement（敬业度）调研的设计与改善闭环，response rate 从 58% 提升到 84%。\n- 配合业务负责人完成多轮 headcount planning（编制规划）与 backfill 决策。\n\n锐行软件 —— HR 主管（2013-2016）\n- 从零搭建招聘体系，年新增 hire 约 120 人，并建立结构化面试（structured interview）题库。\n- 负责 onboarding 流程设计，将新人 90 天留存率（retention）提升到 92%。\n\n【教育背景】\n人力资源管理硕士；工商管理学士。\n\n【认证与技能】\nSHRM-SCP；薪酬管理相关认证；技能涵盖 Total Rewards、job evaluation、salary banding、performance calibration、pay equity analysis、organizational design、workforce planning、employee relations、HR analytics（基础 SQL 与 PowerBI）。我尤其擅长把复杂的薪酬与组织问题翻译成业务和财务能听懂的语言，并在执行层面兼顾合规与员工体验。",
+  "jd": "星澜科技诚聘人力资源总监（HRD），全面负责全面薪酬、绩效校准与组织发展。This role reports to the CHRO and owns Total Rewards、performance calibration、以及组织设计的整体落地。我们关注可量化、可被审计的成效：薪酬市场分位的达成、绩效校准的一致性、敬业度（eNPS）的改善，以及任何一次组织调整中 documentation 的完整性。我们尤其看重候选人能否清楚还原一个真实项目的全过程——背景、你亲自做的关键动作、最终的量化结果——而不是停留在理念层面。你需要能在董事会与审计委员会面前，用证据而非主张为自己的数字与决策辩护，并对敏感的 employee relations 事件做出合规、defensible 的处理。",
+  "history": [
+    { "q": "先介绍一下你在星澜的 scope —— 支持的人数、你 own 哪几块、向谁汇报。" },
+    { "q": "你简历里提到重构了 comp framework，把职级从 40 多压到 18 级。这个项目当时要解决的核心问题是什么，你具体做了哪些动作？" },
+    { "q": "我想听完整的闭环：这次薪酬体系重构上线之后，最终的量化结果是什么？比如薪酬市场分位是否真的落到了 P60，离职率或 offer 接受率有没有变化？" }
+  ],
+  "candidate_last_answer": "好的，这个 comp framework 重构我可以讲得比较细。当时的 situation 是公司三年里通过几次并购拼起来，职级体系特别乱，同岗不同薪、薪酬带宽互相打架，HRBP 每次定薪都在救火（task 就是要建立一套统一、可解释的 salary band）。我做的 action 很明确：第一步我带团队做了全量的 job evaluation，用统一的岗位价值模型重新打分；第二步把 40 多个职级压缩到 18 级，并对齐外部 market data，把目标分位定在 P60；第三步设计了过渡方案，对低于带宽下限的人分两年 green-circle 补齐，对超出上限的做 red-circle 冻结。整个项目我是 owner，从方案设计到和各 BU 负责人逐一对齐都是我亲自推的。我对这套体系的设计质量非常有信心，落地过程也比较顺。",
+  "session_state": {
+    "drilled_topics": ["scope", "comp-framework-问题与动作"],
+    "current_competency_target": "delivery-outcomes",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "delivery-outcomes",
+    "missing_evidence": [
+      { "competency": "delivery-outcomes", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我对这套体系的设计质量非常有信心，落地过程也比较顺",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 补出缺失的 Result——重构后薪酬市场分位是否真的达到 P60、离职率或 offer 接受率的前后数字，把一个详尽但缺量化结果的 STAR 故事补成可审计的成效"
+    ]
+  }
+}

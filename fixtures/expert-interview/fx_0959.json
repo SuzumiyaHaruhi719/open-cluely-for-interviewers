@@ -1,0 +1,42 @@
+{
+  "id": "fx_0959",
+  "tags": {
+    "industry": "hr",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "周敏 — 人力资源总监\n\n概述\n人力资源总监,长期负责组织发展、人才盘点与薪酬绩效体系建设,服务过高速扩张期的互联网与新消费企业。擅长把业务战略翻译成组织与人才动作。\n\n工作经历\n某新消费集团 — HRD(2020 至今)\n- 主导集团从单一品牌扩张到多品牌阶段的组织架构调整。\n- 搭建分层级的人才盘点与继任者机制,覆盖总监及以上岗位。\n- 牵头重构销售与门店序列的绩效与激励方案。\n- 推动一次涉及多个事业部的组织合并与人员安置。\n\n某互联网公司 — HR 高级经理 / HRBP 负责人(2016–2020)\n- 作为核心业务线 HRBP,支持团队从两百人扩张到上千人。\n- 设计并落地校招管培生项目。\n- 处理多起复杂的员工关系与合规事件。\n\n技能:组织发展、人才盘点、薪酬绩效设计、HRBP、员工关系、组织变革。\n教育:某高校 人力资源管理 本科。",
+  "jd": "我们正在为快速扩张的集团招聘一名人力资源总监,直接向 CHRO 汇报,负责核心事业群的组织发展、人才盘点与绩效激励体系。你将主导组织架构演进、关键岗位继任者计划,并在业务重组时牵头人员安置与文化融合。我们期望候选人能清晰区分自己亲自主导的决策与团队执行的部分,能讲清每一个组织动作背后的业务逻辑与取舍,并对涉及合规与员工关系的敏感场景有成熟判断。面试将重点考察真实的决策颗粒度而非泛泛而谈。",
+  "history": [
+    { "q": "先讲讲你现在在集团负责的范围、汇报线和团队规模。" },
+    { "q": "你提到主导了单品牌到多品牌的组织调整,这次调整最核心的一个决策是什么?" },
+    { "q": "人才盘点机制覆盖总监及以上,你具体是怎么定义『继任就绪』的标准的?" },
+    { "q": "重构销售序列激励方案时,你和业务负责人最大的分歧在哪?" },
+    { "q": "那次跨事业部的组织合并,人员安置上你亲自做的最难的一个决定是什么?" },
+    { "q": "具体说那次合并:有多少人受影响,你怎么平衡保留关键人才和控制冗余?" }
+  ],
+  "candidate_last_answer": "那次合并涉及两个事业部、约 340 名员工,其中职能岗重叠最严重。我亲自定的原则是:先保能力、再看忠诚、最后看成本。具体做法是,我们用三周时间做了一轮针对重叠岗位的双向盘点,业务一号位和我各打一份,差异项我逐个面谈拍板。最后保留了 28 个关键岗位中的 25 个,主动离职率控制在合并人群的 6% 以内,没有触发任何劳动仲裁。最难的决定是裁掉一位绩效优秀但能力与新组织不匹配的老员工,我选择给了 N+3 加三个月内部推荐期,既守住了体面,也守住了团队对公平的信任。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "multi-brand-reorg-decision", "succession-readiness-criteria", "sales-incentive-disagreement", "merger-hardest-decision"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "people-leadership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 先保能力、再看忠诚、最后看成本",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: force the candidate to expose how the stated priority order actually resolved a real conflict — a concrete case where 'capability first' contradicted 'loyalty' or 'cost', and the reasoning that decided who stayed versus who was let go"
+    ]
+  }
+}

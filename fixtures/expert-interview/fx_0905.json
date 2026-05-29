@@ -1,0 +1,45 @@
+{
+  "id": "fx_0905",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Junior Data Analyst / Data Scientist\n\n吴敏 (Min Wu) | Hangzhou | 2 yrs experience\n\nTech stack: Python, pandas, NumPy, scikit-learn, SQL, dbt, Airflow, Spark, Tableau, Power BI, A/B testing, regression, classification, clustering, feature engineering, ETL, data warehousing, Snowflake, Git, statistics, machine learning, dashboards, KPI reporting.\n\nExperience:\n- BrightCart (e-commerce) — Data Analyst (2023-now)。负责 marketing 和 product 的 analytics,build dashboards,run A/B tests,support 业务团队的 ad-hoc analysis。\n- 在校期间做过 data science 课程项目和一段 analytics 实习。\n\nProjects: churn prediction model, A/B test framework, marketing-attribution dashboard。\n\n教育背景:统计学本科。",
+  "jd": "We're hiring a Junior Data Analyst to support our marketing and product teams. You will build and maintain dashboards, run and interpret A/B tests, write SQL for ad-hoc analysis, and translate findings into clear recommendations. The ideal candidate is early in their career but can speak precisely about their own work: how an experiment was designed, what the actual result was, and what decision it drove. Required: solid SQL, Python (pandas), and a grounding in statistics and experimentation. You should be able to explain the difference between correlation and causation and describe one analysis you ran that changed a business decision. Mandarin and English working proficiency.",
+  "history": [
+    { "q": "Tell me about your analytics scope at BrightCart — which teams you support and what you ship most often." },
+    { "q": "You list an A/B test framework. Walk me through one experiment you actually ran." },
+    { "q": "How did you decide the sample size and how long to run that test?" },
+    { "q": "What was the metric, and what was the result — was it statistically significant?" },
+    { "q": "What decision did the business make off the back of that result?" },
+    { "q": "Tell me about the churn model. What features mattered most?" },
+    { "q": "How did you evaluate whether the churn model was any good?" },
+    { "q": "Describe a time your analysis was wrong or misleading. What happened?" },
+    { "q": "Let's go back to that A/B test. Be concrete: what was the metric before, what was the lift, and how did you know it wasn't just noise?" }
+  ],
+  "candidate_last_answer": "嗯,那个 A/B test 整体上是有 positive impact 的。我们 looked at the data 然后发现 treatment group 表现更好一些,所以 business 那边就 went with it。Statistically 我记得是 fine 的,反正 the numbers looked good。具体的 lift 我现在记不太清了,but overall 那个 experiment 算是 successful 的,team 也挺满意。",
+  "session_state": {
+    "drilled_topics": ["analytics-scope", "ab-test-overview", "sample-size-decision", "metric-significance", "business-decision", "churn-features", "churn-evaluation", "wrong-analysis"],
+    "current_competency_target": "experimentation-rigor",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "experimentation-rigor",
+    "missing_evidence": [
+      { "competency": "experimentation-rigor", "evidence_type": "metric" },
+      { "competency": "experimentation-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the numbers looked good",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual baseline metric, the measured lift, and the significance level or sample size of the experiment, replacing 'numbers looked good' with concrete figures that show real experimentation rigor"
+    ]
+  }
+}

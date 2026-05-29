@@ -1,0 +1,38 @@
+{
+  "id": "fx_0947",
+  "tags": {
+    "industry": "healthcare",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Senior Clinical Operations Manager — the person hospitals call when nothing else has worked\n\nABOUT ME\nI am, without exaggeration, one of the most effective clinical operations leaders you will meet. Every department I have touched has come out transformed. When I arrived at Cedar Valley Health, the ED was a disaster; by the time I left it was the model the whole network copied. People still tell me I single-handedly saved that department.\n\nSIGNATURE ACHIEVEMENTS\n- Personally rescued an emergency department from the brink and made it best-in-class\n- Cut door-to-provider time more than anyone in the region thought possible\n- Built a patient-flow program so good that other hospitals begged me to consult\n- Universally regarded by physicians and nurses as the leader who actually gets things done\n\nEXPERIENCE\nCedar Valley Health System — Senior Clinical Operations Manager, 2019–present\nResponsible for ED throughput, bed management, and patient-flow initiatives across a 410-bed acute-care hospital.\n- Led throughput and capacity-management programs spanning the ED, inpatient units, and discharge planning\n- Chaired the daily bed-huddle and the throughput steering committee\n\nRiverbend Regional Medical Center — Operations Coordinator, 2015–2019\n- Coordinated patient transport, environmental services scheduling, and discharge logistics\n\nEDUCATION & CREDENTIALS\nMHA, Health Administration — Mercer State University\nLean Healthcare Certificate; BLS-certified",
+  "jd": "Senior Clinical Operations Manager for a 410-bed acute-care hospital, owning emergency-department throughput and inpatient capacity. The ED's current door-to-provider median is 47 minutes (target 25) and left-without-being-seen (LWBS) is 4.1% (target under 2%). You will lead a multidisciplinary throughput program: redesign triage and intake, partner with hospitalists on discharge-before-noon, and stand up a real-time capacity-management process with nursing and bed control. The role demands someone who can run a structured improvement effort, hold clinical and non-clinical stakeholders accountable, and tie operational changes to measurable patient-flow outcomes. You will report to the COO and present throughput metrics at the monthly operations review. Prior experience reducing ED boarding and LWBS in an acute setting is required.",
+  "history": [
+    { "q": "You write that you 'single-handedly saved' the ED at Cedar Valley. Walk me through exactly what you did to the door-to-provider process — start with what the workflow looked like the week you arrived." }
+  ],
+  "candidate_last_answer": "Oh, the ED — where do I even start. So you have to understand the context first. The whole reason I got into healthcare operations is actually a really interesting story: my grandmother spent three weeks in a hospital when I was nineteen, and the way the staff treated her, I just knew. And then later in grad school I had this professor — brilliant guy, used to run a trauma center in Chicago — and he had these war stories about the eighties when EDs were the Wild West, no electronic records, paper charts everywhere. People don't realize how far we've come. You know, I could talk for hours about the history of triage as a concept, it actually goes back to Napoleon's battlefield surgeons, which is fascinating when you think about it. Anyway, Cedar Valley was a real journey, lots of personalities involved, and I learned so much about myself along the way.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Cedar Valley was a real journey, lots of personalities involved, and I learned so much about myself along the way",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: cut off the historical tangent and force a concrete week-one-to-week-N sequence of the door-to-provider redesign — what the triage workflow was, the specific change he made, who he reassigned, and the before/after door-to-provider minutes"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_1000",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Tomas Reyes — Junior Manufacturing / Process Engineer\n\nSUMMARY\nProcess engineer focused on continuous improvement, lean manufacturing, and reducing scrap on high-volume assembly lines.\n\nEXPERIENCE\nProcess Engineer I, Kestrel Components (2023–present)\n- Led a kaizen event on the injection-molding line to reduce cycle time and scrap.\n- Implemented an SPC monitoring approach on a critical-to-quality dimension.\n- Partnered with maintenance to reduce unplanned downtime on the press.\n- Standardized work instructions for a key sub-assembly station.\n\nManufacturing Engineering Co-op, Drayton Tool (2022)\n- Supported a line-balancing study and assisted with fixture redesign.\n\nEDUCATION\nB.S. Mechanical Engineering, 2022\n\nSKILLS: Lean, Six Sigma (Green Belt in progress), SPC, GD&T, SolidWorks, root-cause analysis, 5S",
+  "jd": "Kestrel Components is hiring a Junior Process Engineer for our injection-molding and assembly operations. You will own continuous-improvement projects, run kaizen events, and drive measurable reductions in cycle time, scrap, and downtime. The role requires someone who can quantify the impact of their work: baseline versus result on scrap rate (in PPM or %), cycle-time seconds saved, and downtime hours recovered. In the interview we will ask you to put hard numbers to a specific improvement you led — before-and-after metrics and the dollar or throughput impact — so be ready to move past general process descriptions to concrete figures.",
+  "history": [
+    { "q": "Tell me about the kaizen event you led on the injection-molding line." },
+    { "q": "What was the scrap rate before the kaizen, in percent or PPM?" },
+    { "q": "And what did the scrap rate drop to afterward?" },
+    { "q": "How many seconds of cycle time did you actually take out?" },
+    { "q": "What was the throughput or dollar impact of those improvements?" },
+    { "q": "Let's stay on this — just give me the before and after scrap numbers for that line." }
+  ],
+  "candidate_last_answer": "You know, what really made that project work was the team culture we built. I'm a huge believer in getting the operators involved — they know the line better than any engineer. We did these morning huddles and honestly the energy shift was incredible, people started bringing their own ideas to the board. That's the kind of thing that doesn't show up in a report but it's what real lean is about. It reminds me of a book I read on the Toyota Production System — the philosophy of respect for people is so underrated. I think if more plants focused on culture instead of just chasing metrics, they'd be way better off in the long run.",
+  "session_state": {
+    "drilled_topics": ["kaizen-overview", "scrap-baseline", "scrap-after", "cycle-time-seconds", "throughput-dollar-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it's what real lean is about",
+      "must-be-question-type: metric-pin",
+      "expected-yield: hard before-and-after numbers for the kaizen — the scrap rate in % or PPM before and after, the exact cycle-time seconds removed, and a throughput or dollar figure — instead of redirecting to team culture and TPS philosophy"
+    ]
+  }
+}

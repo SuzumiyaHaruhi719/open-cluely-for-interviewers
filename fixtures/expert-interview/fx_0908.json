@@ -1,0 +1,41 @@
+{
+  "id": "fx_0908",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Director of Plant Operations | Discrete & process manufacturing | 14 years\n\nSummary: Operations leader who scaled two greenfield sites and owns end-to-end P&L for a 3-line automotive components plant.\n\nExperience\nRiverbend Components — Director of Operations (2020–present)\n- Ran the Kentucky stamping plant, 320 hourly + 28 salaried, $190M annual revenue\n- Led the lean transformation that took OEE from 61% to 78% in 18 months\n- Note elsewhere in profile: 'individual contributor on continuous-improvement projects, no direct reports until 2022'\n- Reduced scrap rate from 4.1% to 2.3%\n- Owned capital budget of $12M; in cover letter states 'have never personally owned a capital budget'\n\nHelios Manufacturing — Plant Manager (2016–2020)\n- Managed injection-molding operations, claims '24/7 three-shift coverage'\n- Separate bullet: 'plant ran a single day shift, Monday–Friday'\n- Implemented SPC across all lines; certified Six Sigma Black Belt (2018)\n- Resume header also lists 'Green Belt, in progress'\n\nTorrent Auto — Production Supervisor (2012–2016)\n- Supervised 40 operators on final assembly\n- Promoted twice; one section says 'left as supervisor', another says 'departed as Senior Manager'\n\nEducation: BS Industrial Engineering, Purdue (2012)\nSkills: Lean, Six Sigma, TPM, Kaizen, Hoshin Kanri, SAP PP module",
+  "jd": "Reporting to the VP of Manufacturing, the Director of Plant Operations will own full P&L for a 450-person tier-1 automotive supplier plant running stamping and weld lines on a three-shift schedule. You will be accountable to the executive team for safety (TRIR), quality (PPM to the OEM), delivery (OTD), and cost (conversion cost per unit). The plant is mid-launch on a new EV bracket program and is behind on PPAP. We need someone who has personally led a lean turnaround, owned a multi-million-dollar capital plan, and managed a unionized hourly workforce through ramp. You will set the annual operating plan, run the daily management system, and present plant performance at monthly business reviews. Expect heavy floor presence during the launch curve.",
+  "history": [
+    { "q": "Take me through the Riverbend stamping plant — your actual span of control, what you owned, and the headline numbers." },
+    { "q": "Your profile says you took OEE from 61 to 78 in 18 months. Walk me through what specifically drove that — which losses did you attack first?" },
+    { "q": "I want to pin one thing down: did you personally own the $12M capital budget, or were you an individual contributor on those projects? Your resume says both. Tell me exactly what your role was." }
+  ],
+  "candidate_last_answer": "Right, so, that's — okay, the capital thing. So it depends a little on, you know, how you define 'own,' because at Riverbend the structure was kind of in flux, we were reorging, and honestly there was a stretch where titles didn't really mean what they say on paper. I was in the room for a lot of it. The CFO ran the gating but I was, like, very involved, I'd say deeply involved, I drove a lot of the analysis on the press line spend, or my team did, well, I didn't have a team at first, that came later, 2022 maybe? And the $12M, that's the program total I think, or it might be the multi-year, I'd have to check. The point is I was very involved.",
+  "session_state": {
+    "drilled_topics": ["plant-scope", "oee-improvement-drivers", "capital-budget-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I was in the room for a lot of it",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete delineation of which capital decisions the candidate personally made versus observed — e.g. the specific press-line spend amount he approved, the approval authority he held, and the date he first had direct reports — resolving the IC-vs-owner contradiction"
+    ]
+  }
+}

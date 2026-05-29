@@ -1,0 +1,37 @@
+{
+  "id": "fx_0950",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Staff Data Scientist | 9年机器学习与数据平台经验，广告与推荐方向\n\n职业概要\n- 主导过多个推荐系统（recommendation）与排序模型（ranking）的迭代，对业务指标有持续正向贡献\n- 深耕特征工程（feature engineering）、模型上线（model serving）与实验平台（experimentation）建设\n- 带过算法小组，推动从离线评估到在线A/B test的闭环\n\n工作经历\n星汇科技（BeiJing）Staff Data Scientist 2020年至今\n- 负责信息流广告的pCTR/pCVR模型迭代与特征体系建设\n- 主导一次ranking模型从GBDT到deep model的迁移，线上效果『有明显提升』\n- 推动特征平台（feature store）落地，缩短了特征上线周期\n\n聆云数据 高级算法工程师 2016年至2020年\n- 负责电商搜索的相关性排序与query理解\n- 优化召回与精排链路，相关业务指标『改善显著』\n\n教育背景\n北京大学 计算机科学 硕士\n研究方向：大规模机器学习与在线学习（online learning）",
+  "jd": "我们为一家信息流广告平台招聘Staff Data Scientist，向算法负责人汇报，主理广告排序（ranking）与转化预估（pCVR）方向。当前核心目标是在不显著抬高用户体验成本的前提下提升广告变现效率：当前eCPM相对行业领先者仍有差距，pCVR模型的离线AUC约0.72但线上收益增量已经放缓。该岗位需要主导一次ranking模型的架构升级（如从树模型迁移到深度模型），独立设计离线评估与在线A/B实验体系，并能把模型改动与最终的收入/体验指标的因果关系讲清楚。要求具备可量化的线上收益提升案例、扎实的实验设计能力，以及在跨团队（产品、工程、商业化）中推动复杂项目落地的经验。",
+  "history": [
+    { "q": "Your resume says the GBDT-to-deep-model migration delivered '明显提升'. Be specific: what was the online lift on your primary business metric, and how did you attribute it to the model versus everything else shipping that quarter?" }
+  ],
+  "candidate_last_answer": "Hmm,在我回答之前,我反而想先问问你们——你们这边定义『primary business metric』的时候,到底是看eCPM、广告收入,还是ad load调整后的净收益?因为这几个口径差别很大。还有,你们现在的experimentation平台是怎么做attribution的,是简单的A/B还是有switchback或者geo experiment?说实话,如果连归因口径都没对齐,我给你一个数字其实意义不大。所以不如你先告诉我,你们最关心的north star metric是哪个,我再针对性地讲我的case,这样对你们更有参考价值,你觉得呢?",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 如果连归因口径都没对齐,我给你一个数字其实意义不大",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 不被反问带跑、把问题交还给候选人,逼他针对他自己当时使用的primary metric口径给出GBDT到deep model迁移的具体线上增量数字,以及他当时实际用的归因方法(简单A/B还是switchback),证明他真正owns那个结果而非在转移话题"
+    ]
+  }
+}

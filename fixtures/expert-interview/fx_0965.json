@@ -1,0 +1,40 @@
+{
+  "id": "fx_0965",
+  "tags": {
+    "industry": "healthcare",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "吴静 — 资深临床研究经理(CRM)\n\n概述\n资深临床研究经理,负责创新药 II/III 期临床试验的项目管理与运营,擅长跨区域多中心试验的进度、质量与合规管控。\n\n经历\n某创新药企 — 资深临床研究经理(2021 至今)\n- 独立负责一项 III 期肿瘤试验的全流程项目管理,覆盖全国 30 家中心。\n- 该试验我从启动到数据库锁定全程主导,按期完成入组。\n注:本段另一处写到——作为团队成员之一,协助项目总监管理上述 III 期试验的部分中心。\n- 牵头优化入组速度,使整体入组周期较计划缩短。\n某 CRO 公司 — 临床研究专员 / 高级专员(2017–2021)\n- 负责多个 II 期项目的监查(CRA)工作,常驻华东区域。\n- 简历另一处又写:这一时期主要在公司总部做项目协调,不常出差到中心。\n\n技能:GCP、临床试验项目管理、入组管理、稽查应对、供应商管理、多中心协调。\n教育:某医科大学 药学 本科。",
+  "jd": "我们正在招聘一名资深临床研究经理,负责创新药 II/III 期多中心临床试验的端到端项目管理,对入组进度、数据质量与 GCP 合规负全责。你将主导从项目启动、中心管理到数据库锁定的全流程,协调研究中心、CRO 与内部跨职能团队。我们期望候选人能清晰说明自己在具体试验中真正承担的角色与决策,能用确切的数字描述入组与进度,并在被追问细节时给出一致、可核实的回答。面试会重点核对简历中各段经历的真实职责边界。",
+  "history": [
+    { "q": "先介绍一下你目前负责的这项 III 期试验的规模和你的角色。" },
+    { "q": "你说独立主导全流程,那这个项目的项目总监在其中是什么角色?" },
+    { "q": "30 家中心的入组,最慢的那家你是怎么处理的?" },
+    { "q": "你简历里既写独立主导、又写协助总监管理部分中心,我想确认你到底负责的是全部还是部分中心?" }
+  ],
+  "candidate_last_answer": "您看到的这个『差异』其实恰恰体现了我在项目中扮演的复合型、全方位的角色。我一直秉持的理念是,优秀的临床研究经理应该既能仰望星空、统筹全局,又能脚踏实地、深入一线。所以从某种意义上说,我既是这个 III 期试验的全流程主导者,也是与项目总监高度协同、深度赋能的核心团队成员——这两者本质上是统一的,是一体两面的关系。我做的就是用主人翁的心态去 own 整个项目,推动从启动到锁库的全链路闭环,真正做到了对项目结果的端到端负责。",
+  "session_state": {
+    "drilled_topics": ["trial-scope-and-role", "pm-director-role-overlap", "slowest-site-handling"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 既是这个 III 期试验的全流程主导者,也是与项目总监高度协同、深度赋能的核心团队成员",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: force the candidate to resolve the contradiction concretely — name how many of the 30 sites she personally owned end-to-end versus which the project director owned, and one specific decision she made alone that proves the scope of her actual authority"
+    ]
+  }
+}

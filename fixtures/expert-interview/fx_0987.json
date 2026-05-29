@@ -1,0 +1,52 @@
+{
+  "id": "fx_0987",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "clean-STAR",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "ALYSSA KIM\nHR Business Partner — People Operations\nalyssa.kim.hrbp@example.com\n\nSUMMARY\nHRBP with seven years supporting fast-scaling tech and operations teams. I partner with line leaders on org design, performance, and difficult employee-relations cases, and I run programs end to end with measurable outcomes.\n\nEXPERIENCE\n\nSenior HR Business Partner — Lumen Software (2021–present)\nSupport a 450-person Engineering and Product org as the sole senior HRBP.\n- Situation: Regretted attrition in Engineering hit 18% annually, well above the 11% company target. Task: bring it under target within a year. Action: ran stay interviews with 30 high-performers, found compensation compression and unclear promotion criteria were the top two drivers, partnered with Total Rewards on an off-cycle adjustment for 22 affected engineers and rewrote the leveling rubric with the VP Eng. Result: regretted attrition fell from 18% to 9% over four quarters.\n- Situation: A manager was the subject of three bullying complaints. Task: investigate and resolve. Action: ran a structured investigation, interviewed seven people, substantiated two of three allegations, and delivered a final written warning plus a coaching plan. Result: team eNPS recovered from -20 to +35 over two quarters; no repeat complaints.\n- Designed and launched a manager-enablement program for 40 first-time managers; measured a 12-point lift in their teams' manager-effectiveness scores.\n\nHR Generalist — Tidewater Logistics (2017–2021)\n- Ran annual open enrollment for 1,200 employees with a 98% on-time completion rate.\n- Reduced time-to-fill for warehouse roles from 38 to 24 days by rebuilding the referral program.\n- Handled day-to-day ER, leaves, and accommodations across three sites.\n\nSKILLS\nEmployee relations & investigations, org design, performance management, compensation partnering, stay/exit interviews, HR analytics (attrition, eNPS), program design, coaching managers, workday reporting.\n\nCERTIFICATIONS\nSHRM-CP; certified in a structured-investigation methodology.\n\nEDUCATION\nB.A. Organizational Psychology.",
+  "jd": "Northstar Robotics is hiring an HR Business Partner to support a 400-person technical organization. Reporting to the Head of People, you'll partner with engineering leaders on org design and performance, own complex employee-relations investigations end to end, and drive retention in a tight talent market. We are looking for someone who can go deep on a single case or program and stay there: in this interview we will pick one situation and ask you to narrate it slowly — your specific actions, the judgment calls, the resistance, and the measured outcome — without skating across five accomplishments at once. We value rigor in investigations, comfort with comp and leveling mechanics, and the discipline to substantiate claims with evidence rather than polish.",
+  "history": [
+    { "q": "Alyssa, give me the shape of your current role at Lumen — who you support and what you own." },
+    { "q": "Let's go deep on the Engineering attrition problem. What was the baseline and the target?" },
+    { "q": "You ran stay interviews with 30 high-performers. How did you choose those 30?" },
+    { "q": "You said comp compression and unclear promotion criteria were the top drivers. How did you separate those two from, say, manager quality?" },
+    { "q": "The off-cycle adjustment for 22 engineers — what was your specific role versus Total Rewards'?" },
+    { "q": "Walk me through rewriting the leveling rubric. What was broken and what changed?" },
+    { "q": "How long did the attrition improvement take to show up, and how did you know it was your intervention?" },
+    { "q": "Now the bullying investigation. Before any findings — how did you set up the investigation to be fair to the accused manager?" },
+    { "q": "You substantiated two of three allegations. Walk me through how you weighed conflicting witness accounts on the one you did not substantiate." },
+    { "q": "What was the hardest judgment call in that case?" },
+    { "q": "The manager-enablement program — what was the single most impactful module and why?" },
+    { "q": "Back at Tidewater, the time-to-fill drop from 38 to 24 days — what specifically did you change in the referral program?" },
+    { "q": "Tell me about a time one of these interventions did NOT work as planned." },
+    { "q": "Which of these are you proudest of?" },
+    { "q": "Let's slow all the way down on just the bullying investigation. Take me step by step through how you ran it — and stay on that one case the whole time." }
+  ],
+  "candidate_last_answer": "Absolutely — so at the end of the day my philosophy is that great HR is about driving outcomes through people, and I'm very outcomes-oriented and very data-driven. So with the investigation, I leaned into my structured methodology, I built trust with the stakeholders, I led with empathy but anchored on the facts, and we landed the plane — eNPS went from -20 to +35. But honestly that's just one example; the same playbook is exactly how I cracked the attrition problem, where I drove 18 down to 9 by being a true strategic partner to the VP, and it's the same muscle I used standing up the manager-enablement program where we got a 12-point lift, and frankly it's how I ran open enrollment at Tidewater at 98% on time. It's all the same operating system: empathy, data, and relentless execution.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "attrition-baseline", "stay-interview-selection", "driver-isolation", "comp-adjustment-role", "leveling-rubric", "attrition-attribution", "investigation-fairness-setup", "conflicting-witnesses", "hardest-judgment-call", "manager-program-module", "timetofill-mechanism", "a-failure", "proudest"],
+    "current_competency_target": "investigation-rigor",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "investigation-rigor",
+    "missing_evidence": [
+      { "competency": "investigation-rigor", "evidence_type": "mechanism" },
+      { "competency": "investigation-rigor", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I leaned into my structured methodology",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a single-case, step-by-step account of how she actually ran the bullying investigation (intake, evidence preservation, interview order, how she weighed conflicting accounts, the substantiation standard) — pinning her to that one case instead of the buzzword-laden sweep across four accomplishments"
+    ]
+  }
+}

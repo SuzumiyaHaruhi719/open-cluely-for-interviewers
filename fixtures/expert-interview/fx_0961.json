@@ -1,0 +1,55 @@
+{
+  "id": "fx_0961",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Kevin Zhao — Staff Engineer, ML Platform\n\n概述\nStaff 工程师,负责机器学习平台与 feature store 建设,服务公司多条业务线的模型训练与在线推理。擅长把分散的 ML workflow 收敛成统一的平台能力。\n\n经历\n某科技公司 — Staff Engineer, ML Platform(2020 至今)\n- 主导设计了公司统一的 feature store,打通离线训练与在线 serving 的特征一致性。\n- 推动 model serving 从各团队自建迁移到统一的 inference gateway。\n- 牵头建设 ML pipeline 的 CI/CD 与 model registry,提升上线效率。\n- 作为 tech lead 评审跨团队的关键 ML infra 设计。\n某独角兽公司 — Senior Engineer(2016–2020)\n- 负责推荐系统的 online serving 链路优化。\n- 参与搭建早期的 A/B testing 平台。\n\n技能:Python、Go、Kubernetes、feature store、model serving、Ray、Spark、ML pipeline、observability。\n教育:某高校 计算机 硕士。",
+  "jd": "我们正在为 AI 基础设施团队招聘一名 Staff Engineer,负责 ML platform 的架构演进,核心是 feature store、model serving 与训练-推理一致性。你将主导跨业务线的平台收敛,定义 inference gateway 与 model registry 的技术标准,并作为技术权威评审关键设计。我们期望候选人能讲清每一个架构决策背后的 tradeoff 与失败教训,能清晰区分自己 owns 的部分与团队贡献,并能用具体的工程细节而非高层叙事来支撑结论。面试会层层穿透,直到触及真实的 mechanism。",
+  "history": [
+    { "q": "先介绍一下你在 ML platform 团队的 scope 和团队规模。" },
+    { "q": "你主导的 feature store,当初要解决的最核心痛点是什么?" },
+    { "q": "训练和 serving 的 feature 不一致,你们之前具体出过什么 bug?" },
+    { "q": "feature store 的存储选型,你们最后用了什么,为什么?" },
+    { "q": "online serving 的特征读取延迟你们的 P99 目标是多少?" },
+    { "q": "迁移到统一 inference gateway,各团队最大的抵触点是什么?" },
+    { "q": "迁移过程中有没有出现过线上事故?怎么 rollback 的?" },
+    { "q": "model registry 你是怎么设计版本与回滚机制的?" },
+    { "q": "CI/CD for ML 和普通服务的 CI/CD 最大的不同在哪?" },
+    { "q": "你提到提升了上线效率,之前上线一个模型要多久,之后呢?" },
+    { "q": "feature store 上线后,有没有哪个设计决策事后证明是错的?" },
+    { "q": "换个角度,作为 Staff 你怎么决定哪些该做成平台、哪些留给业务团队自建?" },
+    { "q": "举一个你坚持的技术方案被团队否决的例子。" },
+    { "q": "inference gateway 的多租户隔离你是怎么做的?" },
+    { "q": "如果一个大模型 serving 把整个 gateway 的资源吃满了,你的隔离策略是什么?" },
+    { "q": "你们的 model serving 支持 GPU 共享吗?怎么做的调度?" },
+    { "q": "现在让你重做一遍 feature store,你会改的最大的一个设计决策是什么?" },
+    { "q": "具体讲:那个你会改的决策,当初为什么做错了,正确的做法应该是怎样的 mechanism?" }
+  ],
+  "candidate_last_answer": "这个问题非常好,其实它触及了平台演进的本质。我一直跟团队强调,做 platform 最重要的是 think in systems,要有 first-principles 的思维,要 design for evolvability 而不是 design for today。如果让我重做 feature store,我会更早地拥抱 unified abstraction,把 offline 和 online 的 data plane 真正统一起来,做到 single source of truth。这本质上是一个 architecture philosophy 的问题——你是优先 velocity 还是 correctness,我现在更相信 long-term leverage。所以核心的 learning 就是:always optimize for the platform's north star,而不是被短期需求带跑。这也是我作为 Staff 一直在 drive 的 mindset。",
+  "session_state": {
+    "drilled_topics": ["platform-scope", "feature-store-pain", "train-serve-skew-bug", "storage-choice", "serving-latency-target", "gateway-migration-resistance", "migration-incident-rollback", "registry-versioning", "ml-cicd-difference", "deploy-speed", "wrong-design-decision", "platform-vs-team-boundary", "rejected-proposal", "multitenancy-isolation", "noisy-neighbor", "gpu-sharing-scheduling", "feature-store-redo"],
+    "current_competency_target": "system-design",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "system-design",
+    "missing_evidence": [
+      { "competency": "system-design", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把 offline 和 online 的 data plane 真正统一起来,做到 single source of truth",
+      "must-be-question-type: teach-back",
+      "expected-yield: force the candidate to drop the abstract philosophy and describe the concrete mechanism — what specifically broke under the old split design, what the unified data plane would physically look like (write path, read path, consistency guarantee), and why the original choice failed"
+    ]
+  }
+}

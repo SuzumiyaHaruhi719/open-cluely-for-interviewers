@@ -1,0 +1,41 @@
+{
+  "id": "fx_0916",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "over-bragging",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "SENIOR SUPPLY CHAIN MANAGER — THE OPERATOR WHO SAVES SINKING SUPPLY CHAINS\n\nWorld-class supply chain leader. If a network is broken, I fix it — fast, and better than anyone. I have never met a stockout I couldn't crush or a supplier I couldn't bring to heel.\n\nEXPERIENCE\nGlobus Consumer Goods — Senior Supply Chain Manager (2020–present)\n- Single-handedly rescued the company from a catastrophic pandemic supply crisis; I personally kept the shelves full when competitors went dark\n- Slashed inventory costs dramatically while simultaneously achieving best-in-class service levels — a combination experts said was impossible\n- The go-to firefighter for every executive escalation; leadership calls me first, always\n- Renegotiated supplier contracts like a chess grandmaster, extracting terms nobody else could\n\nMeridian Distribution — Supply Chain Manager (2016–2020)\n- Built the most efficient distribution network in the region, hands down\n- Drove on-time-in-full to elite levels through sheer operational mastery\n\nApex Foods — Demand Planner (2013–2016)\n- The most accurate forecaster the team had ever seen\n\nSKILLS: S&OP, demand planning, supplier management, inventory optimization, logistics, SAP, network design, the works.\nEDUCATION: BS Supply Chain Management. APICS CPIM.",
+  "jd": "We are hiring a Senior Supply Chain Manager to own end-to-end planning for a $400M consumer-goods category. Reporting to the Director of Supply Chain, you will run the monthly S&OP cycle, own finished-goods inventory targets and service levels (OTIF), and lead supplier-recovery efforts during disruptions. The category is recovering from a year of poor fill rates and bloated safety stock. We need an operator who can speak precisely about a single recovery they led: what the problem was, what they personally decided, the sequence of actions over time, and the measurable before-and-after on inventory, fill rate, and cost. We are wary of generalists who describe everything at once; we want depth on one story, with numbers and dates.",
+  "history": [
+    { "q": "Give me your current scope at Globus — category size, what you plan, who you work with." },
+    { "q": "Your resume says you 'rescued the company from a catastrophic supply crisis.' Pick that one situation and walk me through it." },
+    { "q": "Let's slow down and go deep on just the inventory side — what were the actual numbers before and after, and what did you personally do first?" }
+  ],
+  "candidate_last_answer": "Right, okay, so it wasn't just inventory honestly, it was kind of everything at once — like, there was the supplier piece where I renegotiated terms with our two biggest vendors, and there was the forecasting overhaul we did, and also I stood up a whole new expedite process with the 3PL, and oh, the S&OP cadence, we changed that too, we went from monthly to weekly for a while. On inventory specifically, I mean, we brought it down a lot, and service went up, both at the same time, which is the hard part. The first thing I did first was... well, a few things in parallel really, because in a crisis you can't do them one at a time, you're juggling — I was talking to suppliers and fixing the forecast and reworking safety stock kind of all at once. Numbers-wise it was a big improvement across the board, I'd have to dig up the exact figures.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "crisis-situation-overview", "inventory-before-after-first-action"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The first thing I did first was... well, a few things in parallel really",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a single ordered sequence isolating the inventory recovery alone — the specific first action he personally took, the starting safety-stock or days-of-supply figure, the target he set, and the dated before/after on inventory and fill rate, cutting through the everything-at-once framing"
+    ]
+  }
+}

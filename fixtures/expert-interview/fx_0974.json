@@ -1,0 +1,45 @@
+{
+  "id": "fx_0974",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Data Science Intern Candidate | MS Statistics (in progress)\n\nKeywords: Python, pandas, NumPy, scikit-learn, PyTorch, TensorFlow, SQL, Spark, Airflow, dbt, A/B testing, causal inference, XGBoost, feature engineering, MLOps, Docker, AWS SageMaker, Tableau, NLP, transformers, time-series, Bayesian methods, experimentation, ETL, data pipelines, model deployment\n\nExperience\nGreenline Analytics — Data Science Intern (Summer 2024)\n- Built a churn-prediction prototype on subscriber data using XGBoost\n- Wrote ETL in SQL + Airflow to assemble the feature table\n- Presented model results to the growth team\n\nUniversity Research Assistant (2023-present)\n- Cleaned and modeled survey panel data for a labor-economics study\n\nProjects\n- Kaggle: top-15% finish on a tabular classification competition\n- Course project: built an A/B test analyzer with sequential-testing guardrails\n\nEducation\nMS Statistics, Lakeshore University (expected 2025); BS Mathematics (2023)",
+  "jd": "Greenline Analytics is hiring a Data Science Intern to support our retention modeling team. You will help build and validate churn and propensity models, write reproducible feature pipelines, and help the growth team read experiment results correctly. We care about fundamentals: can you choose an appropriate evaluation metric, reason about leakage and imbalance, and explain why a model decision is sound? You will pair with a senior data scientist, contribute to code review, and present findings to non-technical stakeholders. We do not expect production ownership; we do expect you to defend your modeling choices clearly and honestly state a model's limitations.",
+  "history": [
+    { "q": "Tell me about the churn-prediction prototype you built at Greenline. What was the prediction target?" },
+    { "q": "How did you define churn — what window, what event?" },
+    { "q": "What did the feature table look like, and how did you assemble it?" },
+    { "q": "Why XGBoost over, say, logistic regression for this problem?" },
+    { "q": "Churn is usually imbalanced. What was your positive rate, and how did you handle it?" },
+    { "q": "What evaluation metric did you optimize, and why not plain accuracy?" },
+    { "q": "How did you guard against leakage in that feature table?" },
+    { "q": "What was the model's performance, and how did you communicate its limits to the growth team?" },
+    { "q": "One more on evaluation: you mentioned PR-AUC. Walk me through how you actually validated — your split strategy and how you picked the decision threshold." }
+  ],
+  "candidate_last_answer": "I used a time-based split, not random: trained on Jan–Apr, validated on May, tested on June, so no future leakage across the cohort. The positive rate was about 6%, so I reported PR-AUC, which was 0.41 versus a 0.06 baseline. For the threshold I didn't default to 0.5 — the growth team could only contact roughly the top 8% of subscribers, so I set the cutoff at the score that flagged that top 8%, which gave precision around 0.34 at that operating point. I told them recall there was only about 0.55, so we'd miss nearly half the real churners.",
+  "session_state": {
+    "drilled_topics": ["churn-target", "churn-definition-window", "feature-table-assembly", "model-choice-rationale", "imbalance-positive-rate", "eval-metric-choice", "leakage-guard", "performance-and-limits"],
+    "current_competency_target": "measurement-rigor",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "measurement-rigor",
+    "missing_evidence": [
+      { "competency": "measurement-rigor", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I set the cutoff at the score that flagged that top 8%, which gave precision around 0.34 at that operating point",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the candidate's reasoning about the precision/recall tradeoff at that operating point — whether missing ~45% of churners was the right business call, and how they'd defend or revisit the 8% capacity-driven threshold"
+    ]
+  }
+}

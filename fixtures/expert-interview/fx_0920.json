@@ -1,0 +1,54 @@
+{
+  "id": "fx_0920",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Director of Plant Operations\n\nLed multi-site discrete manufacturing operations (automotive tier-1 components) across two plants in Ohio and one in Monterrey. Accountable for safety, quality, delivery, and cost for stamping, welding, and final assembly lines.\n\nExperience\n- Director, Plant Operations — Calderon Metalworks (2019-present). Own three value streams, a unionized workforce, and the plant capital plan. Drove a lean transformation program, launched a new EV bracket line, and resolved a chronic customer PPM escalation.\n- Plant Manager — Calderon Metalworks, Sandusky (2015-2019). Ran the stamping and weld departments; recovered an at-risk launch and led the response to a major press failure.\n- Operations Manager — Hartwell Components (2010-2015). Managed final assembly and the SQDC tiered-meeting rollout.\n\nSkills: Toyota Production System, value-stream mapping, SMED, APQP/PPAP, IATF 16949, capital justification, union labor relations.\nEducation: BS Mechanical Engineering, Purdue University. Green Belt.",
+  "jd": "Our company is hiring a Director of Manufacturing Operations to own three plants supplying powertrain and chassis components to North American OEMs. You will be accountable for plant-level P&L, a safety record currently running at a 3.1 TRIR (target sub-1.5), on-time delivery (currently 91%, target 98%), and a scrap-and-rework cost line of $14M annually that the COO wants cut by 30% over 18 months. You will lead roughly 1,400 hourly and salaried staff, negotiate alongside HR with two local unions whose contracts expire next year, and own a $22M capital budget including a planned automation cell. The role requires demonstrated turnaround of an underperforming launch, fluency in IATF 16949 audit readiness, and experience standing in front of an OEM customer during an active quality containment. Reports to the COO. Relocation to the Midwest required.",
+  "history": [
+    { "q": "Give me the shape of your current role — sites, headcount, and what you're personally accountable for." },
+    { "q": "Walk me through the lean transformation you mention. Where did you start?" },
+    { "q": "What was the single biggest constraint you found in the stamping value stream?" },
+    { "q": "Tell me about the chronic PPM escalation. What was the customer seeing?" },
+    { "q": "When did you first realize the containment wasn't going to hold?" },
+    { "q": "Who actually led the root-cause analysis — you, your quality manager, or the supplier?" },
+    { "q": "What was the true root cause, mechanically — walk me through the failure mode." },
+    { "q": "How did you keep parts flowing to the customer while you fixed it?" },
+    { "q": "Let's talk about the EV bracket launch. What made it at-risk?" },
+    { "q": "What did you change in the APQP timeline to recover it?" },
+    { "q": "Tell me about the press failure — what failed and what was your first call?" },
+    { "q": "How did you handle the union during the recovery overtime?" },
+    { "q": "What's your approach to justifying a capital project to a CFO who's skeptical?" },
+    { "q": "Now the automation cell in this JD — how would you sequence the first 90 days of that?" },
+    { "q": "Where do you expect the biggest resistance to that automation, and from whom?" },
+    { "q": "If the OEM pulled volume mid-launch, how would you protect the business case?" },
+    { "q": "Last one on execution: in the PPM recovery, what specifically did YOU do in the first week — day by day?" }
+  ],
+  "candidate_last_answer": "Day one I shut the line and pulled containment in-house instead of trusting the sort house. Day two I stood at the weld cell with the operator and confirmed the bad nuggets were a fixture-locating issue, not operator error. Day three I had the tool shop re-machine the locators overnight and ran a 200-piece capability check myself before release. I owned the customer call personally and gave them a daily PPM number until we closed it.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "lean-transformation", "stamping-constraint", "ppm-escalation", "containment-timing", "rca-ownership", "root-cause-mechanism", "supply-continuity", "ev-launch-risk", "apqp-recovery", "press-failure", "union-overtime", "capital-justification", "automation-sequencing", "automation-resistance", "volume-pull-risk"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: ran a 200-piece capability check myself before release",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual capability result (Cpk or PPM before vs after), the customer's starting and closing PPM numbers, and how many days the containment ran before closure"
+    ]
+  }
+}

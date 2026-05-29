@@ -1,0 +1,38 @@
+{
+  "id": "fx_0941",
+  "tags": {
+    "industry": "hr",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "孙磊 — 人力资源副总裁（VP, HR）\n\n关键词：组织发展｜人才战略｜OD｜继任计划｜HRBP 三支柱｜薪酬激励｜股权激励｜并购整合 M&A｜文化融合｜组织诊断｜人效｜编制管控｜OKR｜绩效管理｜雇主品牌｜领导力发展｜员工敬业度｜劳动关系｜裁员合规｜共享服务中心 SSC\n\n工作经历\n人力资源副总裁，恒达科技集团（2020 年至今）：向 CEO 汇报，统筹约六千人规模的人力资源体系，覆盖三支柱、薪酬激励、组织发展与并购整合。\nHR 总监，鼎新软件（2016-2020）：负责研发与销售体系的 HRBP 与人才发展。\n高级 HRBP，鼎新软件（2013-2016）。\n\n技能：组织诊断与设计、并购人力整合、薪酬与股权激励设计、继任与领导力发展、人效分析、劳动关系与合规。\n\n教育：中国人民大学 劳动经济学 硕士（2013）。",
+  "jd": "招聘岗位：人力资源副总裁（VP, HR），科技集团。\n\n一家处于并购扩张期的科技集团招募人力资源副总裁，向 CEO 汇报，统筹集团级人力资源战略。你将主导并购后的组织与人才整合、设计集团薪酬与激励体系、并推动文化融合与关键人才保留。近期重点是带领一次跨业务线的整合，要求对保留率、人效与整合节奏负责。我们希望候选人能用具体的情境、任务、行动与可量化结果，讲清楚他亲自主导的一次并购人力整合。",
+  "history": [
+    { "q": "先讲讲你在恒达的整体职责——汇报线、覆盖人数、你对哪些结果负责。" },
+    { "q": "讲一个你亲自主导的并购后人力整合项目，用具体的情境、你的任务、你做的动作和最终结果来说。" }
+  ],
+  "candidate_last_answer": "好的。情境是去年集团收购了一家约八百人的同业公司，两边在薪酬带宽和绩效文化上差异很大，被收购方核心研发的离职意向已经抬头，关键人才保留是最大风险。这家公司的具体名称受保密协议约束，我不便透露，但整合的做法我可以完整讲。我的任务是在六个月内完成组织对齐并把核心人才一年保留率做到九成以上。我的动作是：第一，两周内完成双方薪酬带宽的对标，对约一百二十名关键人才设计了为期十八个月的保留激励包；第二，亲自和被收购方的二十位核心负责人一对一面谈，明确职级与汇报关系；第三，搭建了双方统一的 OKR 与绩效口径，分三个月过渡。结果是六个月内组织对齐如期完成，核心人才十二个月保留率做到了百分之九十二，整体人效在整合后第三季度回到收购前水平。",
+  "session_state": {
+    "drilled_topics": ["vp-scope"],
+    "current_competency_target": "outcomes",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "outcomes",
+    "missing_evidence": [
+      { "competency": "outcomes", "evidence_type": "named-entity" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这家公司的具体名称受保密协议约束，我不便透露",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: without breaching the NDA, the harder tradeoff inside the integration — for example which incumbent leaders were displaced to align reporting lines, or what the retention package cost relative to the synergy target, surfacing judgement rather than the rehearsed metrics"
+    ]
+  }
+}

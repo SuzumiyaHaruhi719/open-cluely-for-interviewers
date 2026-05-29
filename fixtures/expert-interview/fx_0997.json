@@ -1,0 +1,42 @@
+{
+  "id": "fx_0997",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "黄宏伟 / 资本市场部 副总裁（VP）\n\n个人战绩（节选）\n- 18年投行与企业融资履历，累计操刀融资规模超800亿元，无一单失败\n- 业内公认的『融资天花板』，多次被评为年度最佳交易操盘手\n- 凭一己之力把所在团队从行业第七带到第一，业绩碾压同业\n- 与数十位顶级机构掌门人私交甚笃，资源无人能及\n- 主导的某IPO项目创下当年发行市盈率纪录，至今无人打破\n\n现任：鼎盛证券 资本市场部 VP（2020至今）\n- 全面统筹股权融资业务，团队规模约40人\n\n此前：恒通投资 执行董事（2013-2020）\n\n教育：清华大学经管学院 金融硕士\n\n座右铭：要么第一，要么不做。",
+  "jd": "鼎盛证券资本市场部招聘一名副总裁（VP），向资本市场部董事总经理汇报，负责股权融资项目的统筹与执行、定价决策与机构投资者关系。岗位核心要求：能就一个你亲自主导的具体项目，讲清楚定价区间是如何确定的、簿记建档（bookbuilding）过程中你做了哪些关键决策、最终定价与发行结果的量化数据。面试会高度聚焦单个项目的细节与你本人的决策贡献，请准备好回答关于具体定价、认购倍数、回拨机制等问题，泛泛而谈的行业地位与人脉资源不在考察范围内。",
+  "history": [
+    { "q": "请选一个你近三年亲自主导的股权融资项目，讲讲它的基本情况。" },
+    { "q": "这个项目的定价区间你们最初是怎么定的？" },
+    { "q": "簿记建档过程中，最终认购倍数大概是多少？" },
+    { "q": "在定价那一刻，你做的最关键的一个判断是什么？" },
+    { "q": "我想把话题拉回到这一单的定价决策——具体说说你当时的取舍。" }
+  ],
+  "candidate_last_answer": "定价这个事吧，说到底拼的还是资源和人脉。你想啊，我跟好几家头部公募的老总都是多年的交情，平时一起打球、一起喝茶，这种信任不是一天两天能建立的。我跟你讲，做我们这行，圈子才是核心竞争力。前阵子我还参加了一个行业峰会，台上几位都是我的老朋友，大家聊起来都说现在市场风格变了。你看现在注册制、北交所、还有出海这些大趋势，我觉得未来三年整个资本市场的格局都会重塑，机会非常多。所以我一直说，跟对人、站对风口，比什么定价模型都重要。",
+  "session_state": {
+    "drilled_topics": ["项目基本情况", "定价区间制定", "认购倍数", "关键定价判断"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 定价这个事吧，说到底拼的还是资源和人脉",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 把候选人从人脉与行业趋势的泛谈拉回到那一单的具体定价取舍——在定价区间内最终定在哪个价位、放弃了更高定价换取了什么（认购质量、长线机构占比还是上市后稳定性），并给出认购倍数等量化依据"
+    ]
+  }
+}

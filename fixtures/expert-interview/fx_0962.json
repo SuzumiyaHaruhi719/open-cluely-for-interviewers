@@ -1,0 +1,49 @@
+{
+  "id": "fx_0962",
+  "tags": {
+    "industry": "customer-support",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Priya Nair — Senior Support Operations Manager\n\nSummary\nSenior support operations manager with experience running tier-2 technical support and escalations for a B2B SaaS product. Focus on queue health, escalation design, and agent enablement.\n\nExperience\nHelioStack (B2B SaaS) — Senior Support Operations Manager (2020–present)\n- Manages a tier-2 technical support team and the escalation path into engineering.\n- Redesigned the escalation taxonomy and routing after chronic mis-routes.\n- Stood up a knowledge-base review cadence with the product team.\n- Owns the support side of major incident response and customer comms.\n- Partners with the product org on a recurring top-defects review.\n\nClearwave Software — Support Team Lead (2016–2020)\n- Led a frontline support pod across two time zones.\n- Built the first shift-coverage model for weekend on-call.\n\nSkills: escalation management, queue/WFM basics, incident comms, knowledge management, Zendesk, Jira, SLA design.\nEducation: B.A. Communications.",
+  "jd": "We are hiring a Senior Support Operations Manager to own tier-2 technical support, escalations into engineering, and major-incident customer communications for a B2B SaaS platform. You will be accountable for escalation accuracy, time-to-engineering, SLA attainment on P1/P2 issues, and the feedback loop that turns recurring defects into product fixes. The role demands someone who can describe exactly what THEY designed versus what the team executed, can articulate the tradeoffs behind a routing or staffing decision, and can speak precisely about mechanisms rather than generalities. You will interface directly with engineering leadership during incidents and present escalation trends to the product org.",
+  "history": [
+    { "q": "Give me the shape of your current role — team size, what queues you own, and the metrics you're measured on." },
+    { "q": "You redesigned the escalation taxonomy. What was actually broken before?" },
+    { "q": "How were mis-routes hurting you — what did a bad route cost in practice?" },
+    { "q": "Walk me through the new taxonomy. What are the top-level buckets and how does routing decide?" },
+    { "q": "Who owned the routing logic technically — you, or engineering?" },
+    { "q": "How did you validate the new routing didn't just move the problem somewhere else?" },
+    { "q": "On the knowledge-base cadence — what triggers an article to get reviewed?" },
+    { "q": "When a P1 incident hits, what's your first move in the first 15 minutes?" },
+    { "q": "How do you decide when to send the first external customer comm versus waiting for more signal?" },
+    { "q": "The top-defects review with product — how do you prioritize which defects actually get fixed?" },
+    { "q": "Tell me about a time the product team pushed back on a defect you wanted fixed. What happened?" },
+    { "q": "What's the hardest tradeoff in your escalation design — speed to engineering versus what?" },
+    { "q": "Be specific: in your routing design, where did you deliberately accept a worse outcome on one dimension to win on another?" }
+  ],
+  "candidate_last_answer": "The deliberate tradeoff was speed versus engineering signal-to-noise. I could route any P2 with the word 'data loss' straight to the on-call engineer and get the fastest possible response, but that floods engineering with false positives and trains them to ignore the queue. So I accepted a slightly slower path: those tickets go to a tier-2 triage owner first for a five-minute reproduction check before they page engineering. We lose roughly an extra ten minutes on the genuine cases, but engineering's false-positive rate on pages dropped enough that they now respond inside our target on the real ones. I optimized for engineering trust in the signal over raw speed, because a fast page nobody believes is worthless.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "taxonomy-before-state", "misroute-cost", "new-taxonomy-structure", "routing-ownership", "routing-validation", "kb-review-trigger", "p1-first-move", "first-comm-decision", "defect-prioritization", "product-pushback", "hardest-tradeoff"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "process-design", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a fast page nobody believes is worthless",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: force the candidate to quantify or bound the tradeoff with the actual numbers behind it — the false-positive rate before and after the triage gate, and the evidence that the extra ten minutes did not cause a real data-loss case to breach SLA"
+    ]
+  }
+}

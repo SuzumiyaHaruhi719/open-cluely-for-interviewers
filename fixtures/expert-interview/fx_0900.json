@@ -1,0 +1,43 @@
+{
+  "id": "fx_0900",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Director, FP&A | 财务规划与分析负责人\n\n林涛 (Tao Lin) | Hong Kong / Shenzhen | 14 yrs finance\n\nCore competencies: FP&A, three-statement modeling, driver-based forecasting, zero-based budgeting, scenario planning, capital allocation, board reporting, EBITDA margin expansion, working-capital optimization, unit economics, cohort analysis, ARR/NRR/CAC/LTV, headcount planning, variance analysis, M&A integration, cross-functional partnership, stakeholder management, Anaplan, Adaptive, Power BI, SQL, IFRS/US GAAP.\n\nExperience:\n- NovaPay (fintech) — Director FP&A (2019-now). Own the company forecast model, board materials, and the annual budget. Partner with the CFO and BU heads.\n- Sinotrust Capital — Senior Finance Manager (2014-2019). Budgeting, reporting, and ad-hoc deal support.\n- Started in audit (Big 4).\n\nEducation: MSc Finance. CFA charterholder.",
+  "jd": "We are seeking a Director of FP&A for a high-growth fintech to own the company's financial planning, forecasting, and board reporting. You will run the annual budget and quarterly reforecasts, build and maintain the driver-based operating model, own unit economics and SaaS metrics (ARR, NRR, CAC payback, LTV), and serve as the analytical partner to the CFO and executive team on capital allocation. The role requires 10+ years of progressive finance experience, deep modeling expertise, the ability to challenge business leaders on their assumptions with data, and a record of improving a specific financial outcome such as margin, cash conversion, or forecast accuracy. You should be equally comfortable in the model and in front of the board. CFA or MBA preferred. Mandarin and English required.",
+  "history": [
+    { "q": "Give me the scope of your FP&A role at NovaPay — what you own and who you partner with." },
+    { "q": "You list 'EBITDA margin expansion' as a competency. Tell me about a specific decision where your analysis drove a margin improvement." },
+    { "q": "Walk me through how your driver-based model is actually built — what are the top drivers?" },
+    { "q": "Tell me about a forecast you got materially wrong. What did you miss?" },
+    { "q": "Describe a time you had to challenge the CFO or a BU head on their assumptions. What did you say?" },
+    { "q": "Let's get specific on capital allocation. Give me one investment you recommended against, the numbers behind it, and what leadership ultimately decided." }
+  ],
+  "candidate_last_answer": "在我回答之前,我想先 understand your angle better。Capital allocation 是个很宽的话题 — are you more interested in 我怎么 build the business case, or 你想看 how I handle 当 leadership overrides my recommendation? And honestly, what does 『good』 look like for this role on capital allocation? 因为 different shops define rigor 很不一样。我不想 give you a generic answer if 你心里 already have a specific bar in mind.",
+  "session_state": {
+    "drilled_topics": ["fpa-scope", "margin-expansion-decision", "driver-model-build", "forecast-miss", "challenge-cfo"],
+    "current_competency_target": "capital-allocation-judgement",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "capital-allocation-judgement",
+    "missing_evidence": [
+      { "competency": "capital-allocation-judgement", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "capital-allocation-judgement", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: give you a generic answer if 你心里 already have a specific bar in mind",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a single concrete capital-allocation case — the investment the candidate recommended against, the actual numbers (IRR/payback/size), and the final decision — instead of redirecting the question back to the interviewer"
+    ]
+  }
+}

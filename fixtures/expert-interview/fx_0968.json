@@ -1,0 +1,52 @@
+{
+  "id": "fx_0968",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Junior Manufacturing Engineer\n\nProfile\nMechanical engineering graduate working on the assembly line for a mid-size automotive supplier. Comfortable on the shop floor, in CAD, and running root-cause analysis with the quality team.\n\nExperience\nRiverbend Components — Manufacturing Engineer I (2023-present)\n- Support a CNC machining cell that produces brake caliper brackets\n- Ran several kaizen events with operators to reduce changeover time\n- Helped roll out a new SPC charting process on two lines\n- Investigated scrap on the powder-coat line and proposed fixture changes\n- Wrote standard work instructions for a new part family\n\nWestfield Tooling — Manufacturing Co-op (2022)\n- Shadowed the process engineering team on a line-balancing project\n- Built fixtures in SolidWorks and validated first-article parts\n\nEducation\nB.S. Mechanical Engineering, State Polytechnic (2023)\n\nSkills\nSolidWorks, GD&T, SPC, lean/kaizen, Minitab basics, PLC familiarity",
+  "jd": "Riverbend Components is hiring a Manufacturing Engineer II to own process improvement for our high-volume brake machining and powder-coat lines. You will lead kaizen events, drive scrap and OEE improvements, maintain SPC systems, and partner with quality on PPAP and corrective actions. We expect you to quantify the impact of every project — cycle-time seconds removed, scrap PPM reduced, dollars saved, OEE points gained. You will own the changeover-reduction program across three cells and report results monthly to the plant manager. Requires hands-on fixture design, comfort reading control charts, and the ability to defend your numbers in a tier meeting.",
+  "history": [
+    { "q": "Tell me about your current role at Riverbend and which line you support." },
+    { "q": "Walk me through the CNC cell — what part, what volume per shift?" },
+    { "q": "You listed several kaizen events to reduce changeover. Pick the one you owned most directly." },
+    { "q": "What was the changeover time before you started, in minutes?" },
+    { "q": "And after the kaizen — what did it land at?" },
+    { "q": "How did you measure that? Stopwatch, MES timestamps, something else?" },
+    { "q": "Let's talk scrap on the powder-coat line. What was the defect you chased?" },
+    { "q": "What scrap rate or PPM were you seeing before the fixture change?" },
+    { "q": "What did the fixture change actually do to that number?" },
+    { "q": "Did that fixture change get validated through PPAP, and who signed off?" },
+    { "q": "On the SPC rollout — what characteristic were you charting, and what was Cpk?" },
+    { "q": "Did any of your projects move OEE on the line? By how much?" },
+    { "q": "When you say a project 'saved time,' how do you translate that into dollars for the plant manager?" },
+    { "q": "Give me the single project you're proudest of and the hard number attached to it." },
+    { "q": "Let's stay on that changeover project. Before-and-after in minutes, and the dollar value of the time you freed up — what are those two numbers?" }
+  ],
+  "candidate_last_answer": "Honestly the changeover one is the project I'd point to. But I want to make sure I give you what you're actually after — when you say the dollar value of the time you freed up, do you mean the labor rate times the minutes, or the extra parts we could run in that window? Because those give pretty different numbers, and I'd rather answer the one your tier meetings care about. How does the plant manager here usually want changeover savings framed?",
+  "session_state": {
+    "drilled_topics": ["current-role", "cnc-cell-volume", "changeover-kaizen-ownership", "changeover-before", "changeover-after", "measurement-method", "powdercoat-scrap-defect", "scrap-ppm-before", "fixture-change-effect", "ppap-signoff", "spc-cpk", "oee-impact", "time-to-dollars", "proudest-number"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "process-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: do you mean the labor rate times the minutes, or the extra parts we could run in that window",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual before/after changeover minutes and a concrete dollar figure computed either way, forcing the candidate to commit to real numbers instead of reflecting the question back to the interviewer"
+    ]
+  }
+}

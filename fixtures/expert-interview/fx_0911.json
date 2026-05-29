@@ -1,0 +1,43 @@
+{
+  "id": "fx_0911",
+  "tags": {
+    "industry": "sales",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "求职意向：销售实习生\n\n本科大三在读，工商管理专业。\n\n校园经历\n校学生会外联部成员，负责为社团活动联系赞助商。\n院篮球赛组织志愿者，协助拉到一家本地餐饮赞助。\n\n实践经历\n暑期在一家连锁健身房做过两个月的会籍顾问兼职，主要在门店前台接待和电话邀约。\n\n技能与证书\n普通话、英语四级、基础 Excel、社交媒体运营。\n\n自我评价\n性格外向，喜欢和人打交道，抗压能力强，愿意从一线销售做起。",
+  "jd": "我们招聘一名销售实习生，加入 SaaS 公司的内销团队，向销售主管汇报。日常工作包括电话与企业微信触达潜在客户、整理线索、协助销售完成产品演示的排期、以及维护 CRM 中的客户信息。我们希望候选人能讲清楚自己在过往经历中真正独立完成过的事，而不是泛泛而谈。岗位看重沟通主动性、对拒绝的承受力、以及把一件具体的事从头跟到尾的执行力。实习表现优秀者有机会转正为销售发展代表。我们不要求成熟的销售经验，但会重点考察候选人能否把一段经历的来龙去脉、自己的具体动作和结果说清楚。",
+  "history": [
+    { "q": "先做个自我介绍吧，说说你为什么想做销售。" },
+    { "q": "你在健身房做会籍顾问那段，具体负责什么？" },
+    { "q": "电话邀约的时候被拒绝多吗？你一般怎么处理？" },
+    { "q": "学生会拉赞助那次，你是怎么找到赞助商的？" },
+    { "q": "挑一件你最有成就感的事，完整讲一遍：你做了什么，结果怎么样？" }
+  ],
+  "candidate_last_answer": "成就感的事啊，其实挺多的，我一下子想到好几个。比如健身房那次吧，我一个月好像邀约成了好几单，具体数字记不清了；哦对还有篮球赛，那次我们拉到了一家餐饮赞助，过程还挺曲折的；然后学生会外联那边我也帮过忙，联系过好几个商家；还有一次小组作业我当组长……反正这些事都让我挺有成就感的。要说最有成就感的——嗯，可能都差不多吧，每件事我都挺投入的，都学到了东西。你想让我先说哪个？",
+  "session_state": {
+    "drilled_topics": ["自我介绍与动机", "会籍顾问职责", "电话拒绝处理", "学生会拉赞助"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 要说最有成就感的——嗯，可能都差不多吧",
+      "must-be-question-type: teach-back",
+      "expected-yield: 候选人被迫选定单独一件事并按 起因-动作-结果 讲完整——他个人具体做了哪几步、花了多长时间、拿到什么可量化的结果，从而展示能否把一段经历讲清楚而不是堆砌多个碎片"
+    ]
+  }
+}

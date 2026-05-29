@@ -1,0 +1,54 @@
+{
+  "id": "fx_0973",
+  "tags": {
+    "industry": "hr",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Director of People & Culture | The HR leader every CEO wishes they had\n\nWho I am\nI don't just run HR — I transform companies. I have single-handedly rebuilt the people function at three high-growth startups, turning toxic cultures into award-winning workplaces. Founders trust me with their hardest people problems because I always deliver.\n\nImpact\n- Personally drove employee engagement to the highest scores in company history at every org I've touched\n- Slashed attrition dramatically and made retention a non-issue wherever I go\n- Built world-class talent machines that out-recruited far bigger competitors\n- Hand-picked and coached dozens of leaders who are now executives elsewhere\n- Designed comp philosophies that founders called the best they'd ever seen\n\nExperience\nVeloce Labs — Director, People & Culture (2021-present)\nBrightseed AI — Head of People (2019-2021)\nTandem Robotics — People Lead (2017-2019)\n\nEducation\nB.A. Organizational Psychology, Crestline College (2017)\n\nCertifications: SHRM-SCP, executive coaching credential",
+  "jd": "Veloce Labs is hiring a Director of People & Culture to own talent, performance, comp, and employee relations for a 500-person company scaling fast. You will report to the COO and be accountable for regretted attrition (currently 18%, target sub-12%), time-to-fill, engagement (eNPS), and the integrity of our performance and comp cycles. We expect a leader who can show the data behind their claims — which retention levers they pulled, what moved, and what didn't. You will own a sensitive area: investigations, RIFs, and pay-equity reviews must be handled defensibly and documented. We need someone who can be challenged on their numbers in a board setting and respond with evidence, not assertions.",
+  "history": [
+    { "q": "Walk me through your scope at Veloce — headcount supported, what you own, who you report to." },
+    { "q": "Your resume says you 'drove engagement to the highest scores in company history.' At Veloce, what was the eNPS when you started?" },
+    { "q": "And where is it now?" },
+    { "q": "How is that eNPS measured — what tool, what cadence, what response rate?" },
+    { "q": "You also say you 'slashed attrition dramatically.' What was regretted attrition when you arrived?" },
+    { "q": "What is it today, and how do you define 'regretted'?" },
+    { "q": "Which specific lever do you credit most for the attrition change?" },
+    { "q": "Did you run any controlled comparison, or is this the company-wide trend over the same period the market also softened?" },
+    { "q": "Let's go to a comp cycle you ran. What was the merit budget and how did you allocate it?" },
+    { "q": "Did you do a pay-equity analysis? What method, and what did you find?" },
+    { "q": "If you found gaps, what did you actually adjust, and what did it cost?" },
+    { "q": "Tell me about an investigation you led. Without names — what was the allegation category and your process?" },
+    { "q": "How did you document it, and who reviewed your findings?" },
+    { "q": "You've used the word 'single-handedly' a few times. On the engagement turnaround, who else owned pieces of that work?" },
+    { "q": "Tell me about a people initiative that did NOT work and what you learned." },
+    { "q": "Back to attrition: I still don't have a defensible number. What was regretted attrition the quarter you arrived, the quarter most recent, and the source of truth for both?" },
+    { "q": "I'm asking because a board will press exactly this. So: the two numbers and the system they come from — can you give them to me now?" }
+  ],
+  "candidate_last_answer": "Honestly, I think this line of questioning is missing the point. You keep drilling on a single attrition number like it's the only thing that matters, and frankly that's a pretty junior way to evaluate a People leader. The results speak for themselves — every company I've joined has gotten dramatically better, and the founders will tell you that. If you want me to play the spreadsheet game I can, but great culture work isn't something you reduce to one metric, and I'd push back on the premise that it should be.",
+  "session_state": {
+    "drilled_topics": ["scope", "enps-baseline", "enps-now", "enps-method", "attrition-baseline", "attrition-now-definition", "attrition-lever", "attrition-attribution", "comp-cycle-budget", "pay-equity-method", "pay-equity-remediation", "investigation-process", "investigation-documentation", "single-handed-claim", "failed-initiative", "attrition-numbers-pressed"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "named-entity" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that's a pretty junior way to evaluate a People leader",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the two specific regretted-attrition figures (arrival quarter and most recent) plus the named system of record, holding the candidate to evidence despite the hostile deflection rather than letting the pushback close the topic"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "fx_0954",
+  "tags": {
+    "industry": "hr",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "verbose-1500words",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "MAYA FELDSTEIN\nPeople / Human Resources Intern Candidate | Junior, B.A. Industrial-Organizational Psychology\nCedar Ridge University | Expected graduation next spring | GPA 3.8/4.0 | Minor in Business Analytics\n\nSUMMARY\nI/O psychology student aiming for a summer People Operations internship where I can support recruiting operations, onboarding, and people analytics with structured, data-informed work. I like the parts of HR that are measurable: time-to-fill, offer-acceptance rates, onboarding completion, and engagement-survey signals. I have run a campus recruiting funnel, built onboarding checklists that other organizations adopted, and cleaned and analyzed survey data for a 300-person student organization. I am looking for a team that treats People Ops as an operational discipline and will hold me to outcomes I can quantify.\n\nEDUCATION\nCedar Ridge University — B.A. Industrial-Organizational Psychology, Business Analytics minor\n- Relevant coursework: Personnel Selection & Assessment, Organizational Behavior, Survey Design & Measurement, Statistics for the Behavioral Sciences, HR Analytics, Business Communication, Database Systems (intro SQL)\n- GPA 3.8; Psychology Department research assistant for two semesters\n- Coursework in psychometrics, structured-interview design, and survey validity\n\nRELEVANT EXPERIENCE\nCedar Ridge Office of Undergraduate Admissions — Recruiting Operations Intern, last summer\n- Supported the campus tour-guide and ambassador hiring cycle: a funnel of roughly 120 applicants down to about 25 hires\n- Built and maintained the applicant tracking spreadsheet, scheduled interview blocks, and coordinated three rounds of structured interviews for a five-person hiring panel\n- Standardized the interview scorecard so panelists rated the same four competencies on the same scale, which the coordinator told me cut down on inconsistent scoring\n- Drafted offer and rejection email templates and tracked acceptance; the role saw a meaningful improvement in how quickly offers went out, though I did not own the final time-to-fill metric\nResidence Life — Resident Advisor, two academic years\n- Onboarded and supported a floor of 40 residents; ran conflict-resolution conversations and documented incidents per policy\n- Redesigned the new-resident onboarding checklist after noticing move-in confusion; the updated checklist was adopted by all RAs in my building\n\nLEADERSHIP & PROJECTS\nStudent Government Association — People & Operations Director\n- Oversaw recruiting and onboarding for a 300-member volunteer organization\n- Designed and ran the annual member engagement survey: wrote the items, cleaned the responses in a spreadsheet, and analyzed results by committee\n- Identified that one committee had a sharp drop in satisfaction tied to unclear role expectations, and recommended a role-charter fix that leadership piloted\nPeople Analytics Course Project\n- Built a small dashboard analyzing a public HR dataset, looking at attrition by tenure band and department, and wrote up which cuts were signal versus noise\nStructured-Interview Design Project\n- Designed a behaviorally-anchored rating scale for a hypothetical customer-service role and tested it with classmates for inter-rater reliability\n\nSKILLS & TOOLS\n- Data: Excel (advanced — pivot tables, lookups, conditional logic), intro SQL, basic Python (pandas) for survey cleaning\n- HR systems exposure: applicant-tracking spreadsheet workflows; self-taught basics of a common ATS through a free portal\n- Methods: survey design, structured-interview scorecards, basic inter-rater reliability, descriptive statistics\n- Communication: drafting candidate-facing emails, scheduling at volume, documentation and process write-ups\n- Familiar concepts: time-to-fill, offer-acceptance rate, onboarding completion, engagement-survey design, adverse-impact awareness\n\nWHAT I BRING\nI am organized under volume, I document processes so they survive after I leave, and I care whether a change I made actually moved a number. I am comfortable being measured and told directly where I am wrong. I want a summer where I own a small piece of recruiting or onboarding end to end and can point to a concrete result.\n\n\nADDITIONAL EXPERIENCE\nCedar Ridge Career Center - Peer Recruiting Coach (part-time, one academic year)\n- Coached roughly 30 students per semester on resumes and interview preparation, running mock structured interviews and giving feedback against a consistent competency rubric\n- Tracked informally which preparation steps correlated with students reaching final-round interviews and shared the pattern with the center staff\nLocal Community Nonprofit - Volunteer Coordinator (summer before last)\n- Recruited and onboarded about 50 event volunteers, built the sign-up and shift-scheduling workflow in a shared spreadsheet, and wrote a one-page onboarding guide the organizer reused the following year\n\nADDITIONAL COURSEWORK & CONTINUOUS LEARNING\n- Completed a course in HR analytics covering attrition modeling, funnel-conversion analysis, and the difference between leading and lagging people metrics\n- Self-studied the fundamentals of a common applicant-tracking system through a free training portal, focusing on pipeline stages, scorecard configuration, and basic reporting\n- Read broadly on structured interviewing and selection validity, and I try to tie every recruiting or onboarding change back to a measurable outcome such as time-to-fill, offer-acceptance, or onboarding-completion rate\n- Maintain a personal library of interview scorecard templates and onboarding checklists with notes on what worked and what I would change next time\n\nWHAT ELSE I BRING\nI am comfortable owning a small process end to end, measuring it honestly, and saying clearly which part of a result was mine versus the team rather than rounding up.\n\nREFERENCES\nAdmissions recruiting coordinator and a faculty research advisor available on request.",
+  "jd": "We are hiring a summer People Operations intern to support our talent acquisition and onboarding team. You will help run parts of the recruiting funnel (scheduling, candidate communications, scorecard hygiene), support new-hire onboarding logistics, and assist with light people-analytics reporting. We want someone organized, data-comfortable, and outcome-oriented: you should be able to take a small process — say, interview scheduling or onboarding-checklist completion — and improve it in a way we can measure. You will work under a People Ops Specialist and present one improvement project at the end of the summer. Strong candidates have run a recruiting funnel or onboarding process before (in any setting), are tight and specific about what they did versus the team, and can speak to a metric they influenced. Comfort with spreadsheets is required; ATS exposure is a plus. Reports to the People Operations Manager.",
+  "history": [
+    {
+      "q": "Tell me about a recruiting or onboarding process you've personally run or improved — pick the one you'd point to first."
+    },
+    {
+      "q": "On the admissions scorecard you standardized — what exactly was inconsistent before, and what did you change?"
+    },
+    {
+      "q": "Give me one more example of an HR process improvement you drove, and be specific about what you personally changed and what moved."
+    }
+  ],
+  "candidate_last_answer": "Three quick ones. First, the admissions funnel: 120 applicants to about 25 hires; I built the tracking sheet and standardized the interview scorecard so all five panelists rated the same four competencies one-to-five, which cut the score spread between panelists on the same candidate. Second, the SGA engagement survey: I wrote the items and analyzed 300 responses by committee, found one committee's satisfaction had dropped because role expectations were unclear, and recommended a role charter that leadership piloted the next term. Third, the RA onboarding checklist: move-in had recurring confusion about key pickup and mandatory meetings, so I rebuilt the checklist into a day-by-day sequence and all RAs in my building adopted it the following year. I can go deeper on any one of those.",
+  "session_state": {
+    "drilled_topics": [
+      "recruiting-process-overview",
+      "scorecard-standardization"
+    ],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      {
+        "competency": "execution-rigor",
+        "evidence_type": "mechanism"
+      },
+      {
+        "competency": "numbers-fluency",
+        "evidence_type": "metric"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: cut the score spread between panelists on the same candidate",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pick the single scorecard story out of the three she packed in and force the quantified mechanism — how she measured panelist score spread before versus after, what the actual reduction was, and how she knew it was the scorecard rather than a different applicant pool"
+    ]
+  }
+}

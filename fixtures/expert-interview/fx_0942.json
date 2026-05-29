@@ -1,0 +1,37 @@
+{
+  "id": "fx_0942",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "林子honor — 软件工程实习生候选人\n地点：杭州 | 邮箱 lin.intern@example.com\n\n教育背景\n浙江大学 计算机科学与技术 本科 大三在读（预计 2026 毕业）\n相关课程：Data Structures、Operating Systems、Computer Networks、Database Systems。\n\n项目经历（STAR 结构）\n校园二手交易平台后端（课程项目，2024 春）\n- Situation：课程小组要做一个支持发帖、搜索、下单的二手交易 web app，原型搜索很慢。\n- Task：我负责后端的搜索接口，目标是把关键词搜索的 P95 latency 降到 200ms 以内。\n- Action：用 PostgreSQL 的全文检索建了 GIN index，又加了一层 Redis 缓存热门查询，并写了基础的 load test。\n- Result：P95 latency 从约 900ms 降到 150ms 左右，小组 demo 拿到了课程 A。\n\n开源贡献\n- 给一个 Python CLI 工具提了两个 PR，修复了 argument parsing 的 bug，已被 merge。\n\n技能\nPython、Java、SQL、Git、基础 Docker、Linux 命令行。\n\n自我评价\n学习能力强，喜欢把问题拆清楚再动手，愿意在 code review 里接受反馈。",
+  "jd": "招聘岗位：后端开发实习生（Backend Intern）。\n\n我们是一家 SaaS 创业公司，招募后端开发实习生加入平台团队。你将在 mentor 指导下参与 Python/Go 服务的开发，写有明确范围的功能，参与 code review，并学习基本的可观测性与 on-call 文化。我们看重扎实的计算机基础和清晰的表达——能把你写过的一段代码讲清楚：解决了什么问题、用了什么思路、是怎么验证它有效的，并且能把做事的先后顺序讲明白。",
+  "history": [
+    { "q": "讲讲你简历里那个二手交易平台的搜索优化吧——你具体做了什么，按什么顺序做的？最后怎么验证有效的？" }
+  ],
+  "candidate_last_answer": "嗯，让我想想顺序啊。我们应该是先加的 Redis cache，latency 就降下来了，然后才发现其实是没建 index 导致慢的，所以又回去给 PostgreSQL 建了 GIN index。其实 load test 是在优化之前……不对，好像是优化做完之后才补的 test。具体哪一步先做的我有点记不清了，反正中间还退回去把缓存的逻辑重写过一遍。最后 P95 是降到 150ms 左右啦，但前后那个顺序我自己讲着讲着也乱了。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "timeline" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 前后那个顺序我自己讲着讲着也乱了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single consistent ordering — whether the GIN index or the Redis cache was added first, when the load test was written relative to those changes, and which change actually produced the latency drop measured by that test"
+    ]
+  }
+}

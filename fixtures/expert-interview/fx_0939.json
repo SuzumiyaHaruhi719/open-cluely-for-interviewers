@@ -1,0 +1,40 @@
+{
+  "id": "fx_0939",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "王思颖 — 课程产品负责人（教研）\n\n关键词：K12｜在线教育｜课程研发｜教研体系｜双师课堂｜OMO｜学习路径设计｜自适应学习｜知识图谱｜学情数据｜续报率｜完课率｜NPS｜教师培训｜教材编写｜大单元教学｜项目制学习 PBL｜AI 辅助批改｜直播课｜录播课｜分层教学\n\n工作经历\n资深教研产品经理，启明在线教育（2019 年至今）：负责小学数学课程产品线的教研与产品融合，统筹课程研发、学习路径与学情数据闭环。\n教研组长，弘文教育（2015-2019）：带初中数学教研团队，负责教材编写与教师培训。\n一线数学教师，弘文教育（2012-2015）。\n\n技能：课程体系搭建、知识图谱设计、学情数据分析、教师培训、双师与 OMO 模式运营。\n\n教育背景：北京师范大学 课程与教学论 硕士（2012）。",
+  "jd": "招聘岗位：课程产品负责人（Staff 级教研），小学数学方向。\n\n一家在线教育公司招募课程产品负责人，主导一条学科产品线的教研与产品融合。你将负责课程体系与学习路径设计，搭建以学情数据驱动的改善闭环，并对完课率与续报率负责。近期重点是主导一次大单元课程改版，要求把改版的节奏讲清楚——先做了什么、什么时候上线、数据何时见效。我们希望候选人能够非常清晰地交代一个改版项目的时间线与因果顺序，而不是把不同阶段混在一起讲。",
+  "history": [
+    { "q": "先讲讲你现在负责的小学数学产品线——范围、团队、你对哪些指标负责。" },
+    { "q": "挑一次你主导的课程改版，讲讲它要解决什么问题。" },
+    { "q": "这次大单元改版你是怎么推进的？" },
+    { "q": "我想把时间线钉清楚——先上的是新课程结构，还是先做的学情数据采集？分别是什么时候，数据什么时候见效的？" }
+  ],
+  "candidate_last_answer": "嗯……这个时间线我得想一下。我们好像是先把完课率拉上去了，然后才上的新课程结构？不对，应该是先做了学情数据采集，再根据数据去改的大单元……但其实续报率的提升是在改版之前那个学期就有的，是改版之后才系统去做数据闭环的。具体哪个学期上线我记不太准了，反正后来又回头补了一轮教师培训，前后的顺序我自己讲着讲着也有点绕。总之最后完课率和续报率都改善了。",
+  "session_state": {
+    "drilled_topics": ["product-scope", "revamp-problem", "revamp-process"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "outcomes", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 前后的顺序我自己讲着讲着也有点绕",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: one consistent ordered timeline — whether data collection or the new unit structure shipped first, the term each launched, and when completion/renewal metrics actually moved relative to launch"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0917",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "初级数据分析师\n\n两年数据分析经验，熟悉电商与增长场景。\n\n经历\n潮汐电商 — 数据分析师（2022至今）\n支持增长团队的日常取数与看板搭建，参与 A/B 实验的数据分析。\n\n实习 — 某出行平台 数据分析实习生（2021—2022）\n协助运营团队整理业务报表。\n\n技能：SQL、Python、Tableau、A/B 实验分析、指标体系搭建。\n\n教育：统计学 本科。",
+  "jd": "我们招聘一名初级数据分析师，加入电商增长团队，向数据负责人汇报。你将独立承接业务方的取数需求、搭建并维护核心指标看板、并参与增长实验的指标设计与结果解读。岗位特别看重候选人能否清楚区分『团队做了什么』和『你个人做了什么』——在面试中我们会反复追问你在某个项目里亲手完成的部分、你独立做出的判断、以及你个人对结果的贡献。我们需要能独立扛事的分析师，而不是只能跟着团队跑的执行者。请准备好用具体的个人动作和数字来回答问题。",
+  "history": [
+    { "q": "讲一个你参与过的、印象比较深的数据分析项目，重点说说你个人在里面具体做了什么。" }
+  ],
+  "candidate_last_answer": "我们当时做的是一个用户分层的项目。我们先一起梳理了业务目标，然后我们搭了一套分层模型，我们还设计了对应的指标看板，上线之后我们的策略让转化提升了一些。整个过程我们配合得挺好的，数据、产品、运营一起推进，最后我们这个项目也拿到了团队的认可。我们都觉得收获挺大的。",
+  "session_state": {
+    "drilled_topics": ["数据分析项目个人贡献"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们搭了一套分层模型，我们还设计了对应的指标看板",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 把『我们』拆成『我』——候选人在分层模型与看板里亲手写的那部分（具体哪几层的规则、哪个 SQL 或哪几张看板由他独立完成）、他个人做出的判断，以及可归因到他的转化提升数字"
+    ]
+  }
+}

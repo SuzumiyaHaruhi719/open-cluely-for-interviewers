@@ -1,0 +1,42 @@
+{
+  "id": "fx_0958",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Marcus Delgado — Senior Manufacturing Engineer\n\nSummary\nSenior manufacturing engineer with a background in automotive component production, focused on process improvement, line balancing, and quality. Hands-on with lean methods and cross-functional launch teams.\n\nExperience\nApex Drivetrain Components — Senior Manufacturing Engineer (2019–present)\n- Owned process engineering for a transmission housing machining cell.\n- Led a scrap-reduction initiative on the CNC line that significantly improved yield.\n- Drove a changeover-time improvement project across two production shifts.\n- Coordinated a supplier-quality containment after a porosity issue in castings.\n- Mentored two junior process engineers and led daily tier meetings.\n\nNorthgate Stamping — Manufacturing Engineer (2015–2019)\n- Supported a new stamping line launch from PPAP through SOP.\n- Reduced downtime on a press line through preventive-maintenance changes.\n- Participated in several kaizen events targeting OEE.\n\nSkills: Lean Manufacturing, Six Sigma (Green Belt), GD&T, PFMEA, SPC, line balancing, root-cause analysis.\nEducation: B.S. Mechanical Engineering, State Polytechnic.",
+  "jd": "We are hiring a Senior Manufacturing Engineer to own process engineering for a high-volume machining and assembly value stream. You will be accountable for cell-level OEE, scrap and rework reduction, and changeover performance, and you will lead cross-functional problem-solving (8D) on chronic quality escapes. The role requires fluency in translating improvement work into hard numbers — yield points, downtime minutes, cost-per-part — and defending those numbers to a plant leadership team. You will lead launch readiness (PPAP, run-at-rate) for new programs and mentor junior engineers. We expect a candidate who can speak precisely about what THEY drove versus what the team did, and who can quantify before/after impact for the projects they cite.",
+  "history": [
+    { "q": "Tell me about the transmission housing cell you own — volumes, headcount, the key metrics you're judged on." },
+    { "q": "Walk me through the scrap-reduction initiative on the CNC line. What was the root cause you found?" },
+    { "q": "What was the scrap rate before, and where did it land after?" },
+    { "q": "On the changeover project — what was the changeover time at the start, and what did you get it to?" },
+    { "q": "The casting porosity containment — what was your specific role versus the supplier-quality engineer's?" },
+    { "q": "Let's go deep on the scrap project. Give me the actual yield numbers before and after, and the dollar impact you put in front of plant leadership." }
+  ],
+  "candidate_last_answer": "Right, so the scrap project, um... [long pause] ...sorry, give me a second. Okay. So, the thing about that line is there were a lot of moving parts, you know, we had tooling issues and the operators were kind of doing their own thing on offsets, and honestly the data system at that plant was a mess so pulling clean numbers was always a fight... Okay. Let me actually answer your question. Before the project our first-pass yield on that cell was sitting in the low-to-mid eighties — I want to say around 84 percent — and after we locked down the offset standard work and added the in-process gauging, it came up into the low nineties, call it around 92. On dollars, I presented it as a meaningful annual savings to the plant team; I don't have the exact figure in front of me but it was in the low six figures based on scrap cost per part times the volume.",
+  "session_state": {
+    "drilled_topics": ["cell-scope", "scrap-root-cause", "scrap-rate-before-after", "changeover-numbers", "porosity-role-split"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I don't have the exact figure in front of me but it was in the low six figures",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate to commit to a concrete scrap-cost-per-part and annual volume so the claimed low-six-figure savings can be reconstructed and sanity-checked, rather than left as a hand-waved range"
+    ]
+  }
+}

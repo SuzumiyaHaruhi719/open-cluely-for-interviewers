@@ -1,0 +1,38 @@
+{
+  "id": "fx_0914",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "客户支持实习生候选人\n\nKeywords / 关键词: Customer Support, Customer Success, CSAT, NPS, Ticketing, Zendesk, Intercom, Freshdesk, SLA, First Response Time, FRT, Escalation, Omnichannel, Live Chat, Email Support, Knowledge Base, Macros, QA, Voice of Customer, Churn, Onboarding, B2B SaaS, Salesforce Service Cloud, Jira, Slack, Help Center, Tier 1, Tier 2.\n\n个人简介\n大三在读，热爱 Customer-facing 工作，熟悉主流 ticketing 工具与 SLA 概念，追求高 CSAT 与低 FRT。\n\n经历\n校园 IT Help Desk 志愿者：处理同学的设备报修 ticket，使用学校的 ticketing system 跟进 escalation。\n某电商客服暑期兼职：通过 live chat 与 email 处理售后咨询，熟悉退换货流程与 knowledge base 维护。\n\n技能 Skills: Zendesk, Intercom, Excel, 多渠道沟通, 英语 CET-6, 抗压, 团队协作, problem-solving, time management.\n\n教育: 本科在读，信息管理方向。",
+  "jd": "我们在招一名 Customer Support Intern，加入一家 B2B SaaS 公司的支持团队，向 Support Team Lead 汇报。你会通过 Zendesk 处理 Tier-1 的 email 与 live-chat tickets，遵守 SLA 与 FRT 目标，必要时向 Tier-2 做 escalation，并协助维护 Help Center 文章。我们希望候选人能把一次真实的客户处理过程讲清楚——尤其是事件发生的先后顺序：你什么时候收到 ticket、做了哪几步、什么时候升级、客户什么时候确认问题解决。岗位看重清晰的时间线叙述与对 ticket 状态流转的理解，而不是堆砌工具名词。表现优秀者有机会转为正式的 Support Associate。",
+  "history": [
+    { "q": "讲一个你处理过的比较棘手的客户 ticket，从头到尾，按时间顺序说一下你具体做了什么。" }
+  ],
+  "candidate_last_answer": "好的，那次是一个用户反馈登录不了。我记得是先升级给 Tier-2 之后，才让用户去清了 cache,嗯……不对，应该是用户清完 cache 还是不行，我才收到这个 ticket 的。然后我第一时间就 close 了 ticket,因为问题解决了——哦等一下，其实是我先回复了用户,但那时候 Tier-2 已经在处理了,所以 escalation 应该是在我回复之前？反正最后用户说好了。时间上大概……是当天下午我接的,但 resolve 是第二天早上,可中间我又记得是几个小时就搞定的,这个 timeline 我有点绕不清楚,总之结果是好的,CSAT 给了五星。",
+  "session_state": {
+    "drilled_topics": ["ticket-handling-walkthrough"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "timeline" },
+      { "competency": "execution", "evidence_type": "owner-of-action" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个 timeline 我有点绕不清楚",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 一条无矛盾的事件时序——ticket 收到的确切时间点、escalation 到 Tier-2 是在他回复之前还是之后、用户清 cache 发生在升级前还是升级后、以及 resolve 究竟是几小时还是隔天，逼候选人把自相矛盾的先后顺序理顺"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "fx_0994",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Marcus Devlin — Director of Engineering\n\nSUMMARY\nEngineering leader with 14 years of experience scaling platform teams and owning large migrations.\n\nEXPERIENCE\nDirector of Engineering, Heliograph (2021–present)\n- Led the company-wide migration from a monolith to microservices, completed in 2022.\n- Grew the platform org from 12 to 40 engineers across three squads.\n- Owned the SRE function and drove p99 latency down by 60%.\n\nDirector of Engineering, Heliograph (2019–2023)\n- Stood up the data platform team and shipped the first event-streaming pipeline.\n\nSenior Engineering Manager, Tessellate Systems (2016–2021)\n- Managed two teams (Payments and Identity); the microservices migration described above was actually kicked off here in 2020 and finished after I left.\n\nEARLIER\nStaff Engineer, Northbridge (2012–2016)\n\nNOTE: My current title is Director, though for most of the Heliograph period I operated as a VP of Engineering reporting directly to the CTO.\n\nEDUCATION\nB.S. Computer Science, 2011",
+  "jd": "Heliograph is hiring a Director of Engineering to own our platform and reliability organization (~35 engineers across platform, SRE, and developer-experience squads). You will report to the VP of Engineering and be accountable for migration delivery, reliability SLOs, and the multi-year roadmap. We need a leader who can speak precisely to the timeline and sequencing of a large architectural migration they personally led: when it started, what shipped in which quarter, who owned each workstream, and how scope changed across job transitions. The interview will probe the exact chronology of your past migrations and how your role evolved, so be ready to reconcile overlapping engagements with concrete dates.",
+  "history": [
+    { "q": "Your resume shows the monolith-to-microservices migration completing in 2022 at Heliograph, but also says it was kicked off at Tessellate in 2020 and finished after you left. Walk me through the actual timeline." },
+    { "q": "And the two Director-of-Engineering stints at Heliograph overlap — 2021 to present and 2019 to 2023. Which dates are right?" },
+    { "q": "So in your own words: when did the microservices migration start, and where were you sitting when it shipped?" }
+  ],
+  "candidate_last_answer": "Right, so the migration — I kicked it off at Heliograph in 2020, no, sorry, that was Tessellate. We started it at Heliograph and it shipped in 2022. Although I think I'd actually moved over to Tessellate by the time the last service cut over, so the final pieces landed after I left. And honestly the 2019 versus 2021 thing is just because I was Director and VP at the same time for a stretch, so depending on which title you go by the start date shifts. The migration itself, though — that was definitely a 2020 kickoff at Heliograph, give or take.",
+  "session_state": {
+    "drilled_topics": ["migration-timeline-conflict", "overlapping-director-tenures", "migration-kickoff-vs-ship-location"],
+    "current_competency_target": "timeline-accuracy",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "timeline-accuracy",
+    "missing_evidence": [
+      { "competency": "timeline-accuracy", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "scope-clarity", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I kicked it off at Heliograph in 2020, no, sorry, that was Tessellate",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single internally consistent chronology that fixes the migration's kickoff year and employer, names which employer the candidate was at when it shipped, and reconciles that with the overlapping 2019/2021 Director tenures rather than waving them away as a dual title"
+    ]
+  }
+}
