@@ -1,0 +1,38 @@
+{
+  "id": "fx_0008",
+  "tags": {
+    "industry": "operations",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Senior Operations Engineer · The reliability operator most senior infrastructure leaders quietly hope to hire\n\n- Single-handedly architected the most resilient multi-region failover system ever deployed at Helios Cloud — survived three real-world AWS outages without a single customer-visible incident\n- Owned the SRE response for every Sev1 in 2024; personally credited by the CEO with saving the company from what would have been a quarter-defining outage\n- Built a chaos-engineering practice from scratch that has become the de facto reference inside two peer companies (referenced in their public engineering blog posts as the inspiration for their own programs)\n- Reduced platform-wide MTTR by an industry-leading 71% in a single year while simultaneously increasing change frequency 3x — a combination most teams consider impossible\n- Mentored 11 SREs to senior level; six are now staff engineers at peer hyperscalers\n\nHelios Cloud · Senior Operations Engineer · 2021-present\nNorthstar Infra · SRE II · 2018-2021\nMIT BS Computer Science 2018",
+  "jd": "Polaris Trading Platform is hiring a Senior Operations Engineer to own the SRE function for our matching-engine and risk-pricing services. You will operate on a follow-the-sun on-call with two London colleagues. Required: (1) verifiable on-call experience as the named IC for at least 12 months on a tier-0 service; (2) ability to walk through, in numbers, the specific MTTR/MTTD improvements you personally drove and the precise interventions that produced them — we will ask for the math; (3) experience with low-latency, microsecond-budget systems (or willingness to demonstrate fast learning under our 30-day ramp plan); (4) comfort working with regulated-environment auditors. We are a small team — 8 SREs total — and need a peer who can ramp without supervision.",
+  "history": [
+    { "q": "Your resume claims you reduced platform-wide MTTR by 71% in a single year while increasing change frequency 3x. I want to understand the math behind that. Give me the starting baseline MTTR in minutes, the ending number, the change-frequency baseline and the ending, the measurement window, and the specific interventions you personally drove that produced the result." }
+  ],
+  "candidate_last_answer": "Absolutely, happy to walk through it. So at Helios our MTTR went from somewhere in the range of 90 to 120 minutes down to around 30 minutes on average, which is the 71% reduction — and that's actually a conservative framing because some service tiers saw closer to 80% improvement. Change frequency tripled from roughly 30 deploys a week to over 100, which by industry standards is genuinely category-leading. The window was essentially calendar year 2023. As for the specific interventions, there were a number of them — we modernized our incident-response tooling, we invested heavily in observability, we instituted blameless postmortems as a real cultural pillar, and we shipped a couple of really meaningful chaos-engineering experiments that surfaced latent failure modes before customers ever saw them. I personally was the technical lead on essentially all of that work. The combined effect was, frankly, one of the largest reliability transformations our CTO had ever seen in his 20-year career — he said as much in his department all-hands.",
+  "session_state": {
+    "drilled_topics": ["mttr-71-percent-math-deep-dive"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "named-tool" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: somewhere in the range of 90 to 120 minutes",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single MTTR number with a single measurement methodology (median vs. mean, per-service-tier vs. aggregate) — kills the range-of-ranges evasion and forces one falsifiable baseline"
+    ]
+  }
+}

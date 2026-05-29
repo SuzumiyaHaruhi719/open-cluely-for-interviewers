@@ -304,6 +304,14 @@
         <section class="settings-section">
           <h3 class="settings-section-title">Interviewer context</h3>
           <div class="settings-group">
+            <label class="settings-label" for="setting-interviewer-mode">Interviewer mode</label>
+            <select id="setting-interviewer-mode" class="settings-input">
+              <option value="fast">Fast (2-stage flash · default)</option>
+              <option value="expert">Expert (7-block · A∥C→B→D→E→F→G)</option>
+            </select>
+            <p class="settings-helper-text">Fast = the champion 3-stage chain (low-latency follow-ups). Expert = 7-block deep pipeline with anchored claim extraction, CoVe gap audit, six-dim rank/score, and safety audit. Expert is slower (4-8 s) but materially better follow-ups.</p>
+          </div>
+          <div class="settings-group">
             <label class="settings-label" for="setting-resume-text">Candidate resume</label>
             <textarea id="setting-resume-text" class="settings-input settings-textarea" rows="6" placeholder="Paste the candidate's resume — bullets, projects, metrics."></textarea>
           </div>

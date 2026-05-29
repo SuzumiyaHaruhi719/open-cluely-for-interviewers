@@ -1,0 +1,41 @@
+{
+  "id": "fx_0221",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Yuxi Han - Staff Curriculum Designer\n\nProfile: 教育产品 / 课程体系设计 / 评估体系 / K12 与成人教育跨域经验。9年从业。\n\nExperience:\n2021 - present  某头部在线教育公司 - Staff Curriculum Architect\n  - 主导小学阶段数学课程体系的端到端重构，覆盖 grade 1-6 全学段。\n  - Led the design of formative assessment framework, embedded into the student-facing app.\n  - 牵头与 academic advisory board 的协作机制 redesign。\n  - 培训了 junior curriculum designers 若干名。\n\n2018 - 2021  某成人技能培训机构 - Senior Curriculum Designer\n  - Owned curriculum design for two flagship programs (data analytics, product management).\n  - Worked with subject-matter experts (SMEs) from industry on lesson sequencing.\n  - Introduced project-based capstone model.\n\n2015 - 2018  某K12教培机构 - Curriculum Designer\n  - Designed初中数学体系 supplementary materials.\n  - Co-authored teacher-facing pedagogy handbook.\n\nEducation: MA in Curriculum & Instruction, 国内某师范类Top高校, 2015; BA Mathematics, 同校, 2013.\n\nSkills: Backward design, ADDIE, UDL, formative assessment design, item response theory (basic), 中英双语教研写作.",
+  "jd": "Role: Staff Curriculum Designer - K12 数学方向\n\n我们是一家面向 K12 的科技教育公司，正在为数学学科组招聘一位 Staff 级课程设计师，主导小学和初中数学课程体系的整体演进。该岗位向 Head of Academics 汇报，负责领导一个 5-7 人的 instructional designer 团队，并与教研、产品、数据团队紧密协作。\n\nYou will: own the end-to-end design of the 数学 K-9 curriculum spine（学习目标 taxonomy、knowledge graph、scaffolding sequence、formative assessment）；partner with the product team on how curriculum surfaces in the student-facing app and the teacher-facing dashboard；define and operate a feedback loop where learning-outcome signals from the platform inform curriculum iteration；mentor 3-5 mid-level curriculum designers.\n\nMust-haves: 8+ years of curriculum or instructional design experience；at least one shipped end-to-end curriculum program with measurable学习成效 evidence；comfort working with data teams on learning analytics；strong中英双语 communication.",
+  "history": [
+    { "q": "Yuxi，先讲一下你过去三年最 representative 的一个 curriculum project。我们想听 specific 的 design choices 和 outcomes。" },
+    { "q": "在你刚才描述的 grade 1-6 数学体系重构里，最难的一个 design decision 是什么？" },
+    { "q": "好的，那针对 fraction 那一块的 scaffolding sequence，你当时是怎么 validate 你的设计的？走的什么 evaluation path？" },
+    { "q": "在那个 pilot 里，有没有出现过 surprising 的 finding，让你回头改了原本的设计？" },
+    { "q": "Last question on this thread——你刚才提到这次重构的 outcomes 是 measurable 的。能不能给我一个 specific 的 number？比如 mastery rate、retention、completion 任何一个？" }
+  ],
+  "candidate_last_answer": "Yeah 给你一个具体的。Situation: 我们 fraction 那个 unit 重构前，grade 4 学生的 unit-end mastery check（10题题库，pass threshold 是 8/10）通过率是 52%，这是 2022 春季学期 baseline，N 约 2.4 万学生。Task: 我当时给团队设的 goal 是把通过率拉到 70% 以上，且不牺牲后续 grade 5 比例与小数衔接 unit 的成绩。Action: 我做了三件事——（1）把 fraction-as-quotient 这个 conceptual frame 从 grade 5 提前到 grade 4 末尾，作为衔接 anchor；（2）在 scaffolding 里加了一个 visual-model intermediate stage，原来是直接跳到 symbolic notation 的；（3）和数据团队一起把 formative assessment 的 item bank 从 32 题扩到 78 题，并按 IRT 难度梯度做了重排。Result: 2022 秋季学期，grade 4 unit-end mastery 通过率到 71%，grade 5 衔接 unit 的同学群体追踪显示 retention（30 天后再测）从 baseline 的 44% 上升到 58%。另外有一个 unexpected 的 finding 是，teacher-facing dashboard 上 \"flagged for re-teach\" 的学生数下降了大约 1/3，这个不是我们当时 target 的指标但反过来证明了 visual-model stage 的 effect。",
+  "session_state": {
+    "drilled_topics": ["代表性项目", "最难design decision", "fraction scaffolding validation", "pilot surprising finding", "measurable outcome数字"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "collaboration", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把 fraction-as-quotient 这个 conceptual frame 从 grade 5 提前到 grade 4 末尾",
+      "must-be-question-type: tradeoff-articulation",
+      "expected-yield: 候选人需具体说明把概念提前一个学段付出了什么代价（grade 5原计划课时被挤压、教师培训成本、家长沟通成本），以及他如何与教研团队权衡"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0001",
+  "tags": {
+    "industry": "customer-support",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "VP, Global Customer Experience | 18+ years driving best-in-class support ecosystems\n\n- Strategic visionary who leverages cross-functional synergy to deliver world-class customer outcomes at hyperscale\n- Architected paradigm-shifting omnichannel transformations across enterprise B2B/B2C portfolios\n- Empowered high-performing global teams to operationalize customer-centric philosophies end-to-end\n- Spearheaded mission-critical CX initiatives that unlocked sustainable competitive advantage\n- Stakeholder whisperer; partners seamlessly with C-suite to align go-to-market motions with VOC insights\n- Pioneered next-generation AI-enabled service paradigms across the support lifecycle\n- Best-in-class operator with deep fluency in NPS, CSAT, FCR, AHT, and other industry-leading metrics\n- Trusted thought leader and frequent speaker on the future of customer obsession\n\nMost recent: Acme Cloud Services — VP Customer Experience (2021-present)\nPrior: Northwind Software — Senior Director, Global Support (2017-2021)",
+  "jd": "We are seeking a VP of Customer Support to lead a 600-person global organization spanning four hubs (Austin, Dublin, Manila, Bangalore). The role reports to the CCO and owns the full support P&L, including agent compensation, tooling spend, and contact-deflection investments. You will be accountable for board-level metrics: CSAT (currently 78, target 86), median time-to-resolution (currently 11h, target 4h), and cost-per-contact (currently $7.20, target $4.50 over 24 months). The role requires deep experience operating in a regulated SaaS environment, a track record of replatforming a CCaaS stack, and demonstrated success negotiating with BPO partners on multi-year contracts. You will inherit two active vendor disputes and a recent NPS regression in EMEA. You must be comfortable presenting to the audit committee and have prior experience in workforce reductions of 10%+ executed humanely. Travel ~30%.",
+  "history": [
+    { "q": "Walk me through your current scope at Acme Cloud — team size, P&L, key metrics you own." },
+    { "q": "You mentioned 'AI-enabled service paradigms' on your resume. Pick one specific deployment and tell me what you built." },
+    { "q": "How did you measure whether that AI deployment actually moved a business metric?" },
+    { "q": "Let's switch to cost. Walk me through a specific decision where you reduced cost-per-contact." },
+    { "q": "What was the dollar impact, and over what timeframe?" },
+    { "q": "Tell me about a BPO contract renegotiation you personally led. What were the original and final terms?" },
+    { "q": "Give me a concrete example: one time you had to take cost out of the support org. What did you actually do, week one, week two, week three?" }
+  ],
+  "candidate_last_answer": "Yeah, so cost takeout is really about being thoughtful and surgical. You have to engage your stakeholders, align on a North Star, and then execute against the operating model. I'm a big believer in not just slashing — it's about reimagining the work itself. So we partnered with finance, we partnered with the BU leaders, and we built a roadmap. And then we executed.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "ai-deployment-specificity", "ai-business-impact", "cost-per-contact", "bpo-contract-terms", "cost-takeout-execution"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 32
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: built a roadmap. And then we executed",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific week-by-week list of personal actions the candidate took to reduce cost-per-contact, with at least one dollar figure or headcount delta tied to a date"
+    ]
+  }
+}

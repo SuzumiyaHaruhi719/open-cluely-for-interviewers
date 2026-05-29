@@ -1,0 +1,55 @@
+{
+  "id": "fx_0102",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "黄启明 — 高级产品经理\n现职:高级产品经理,美团到家事业部 闪购方向,北京,2021年4月至今。\n  - 负责闪购前置仓选品策略,主导上线 SKU 从 8000 扩展到 22000。\n  - 上线后单仓日均订单提升 35%,毛利率提升 4.2 个百分点。\n同段经历另一描述:高级产品经理,美团闪购,2021年4月至今。\n  - 负责选品策略支持,主要工作是与采购团队同步需求 + 维护 SKU 后台。\n  - 单仓日均订单数据由 BI 团队归因,主要驱动因素是同期补贴提升。\n更早:产品经理,饿了么新零售,2019-2021。\n教育:北大光华管理学院本科 2015,中欧 MBA 2019。",
+  "jd": "高级产品经理 — 即时零售选品方向,小象超市(美团旗下,独立 BU)。 工作内容:负责前置仓 SKU 长尾扩展的 0-1 与 1-10,直接对单仓 GMV、毛利率、动销率三个指标负责;每两周向 BU 负责人 review 一次选品决策。我们正在从美团到家系统迁移,因此需要 PM 能够清楚解释自己过往项目中——补贴、选品、UI 改版这几个变量的相对贡献——而不是把所有功劳归到选品或把所有锅推给 BI 归因。本岗位每天预计与 3-4 个 stakeholders 同步,要求候选人 stay on point,不在 30 分钟会议里只讲一件事讲不完。文化上我们对'扯远了'非常敏感,因为决策窗口很短。坐标北京/上海,薪资 80-110万 base,股票按 BU 独立结算。",
+  "history": [
+    { "q": "先简单介绍一下你最近一年在美团闪购最主要负责的项目。" },
+    { "q": "SKU 从 8000 扩到 22000 这个数字,是你直接 owner 的范围吗?" },
+    { "q": "扩品过程中你最关键的一个判断是什么?" },
+    { "q": "你提到单仓订单涨了 35%,这个增量你怎么归因到选品 vs 同期的补贴和 UI 改版?" },
+    { "q": "BI 团队的归因结论是什么?他们用的什么方法,DID 还是 uplift?" },
+    { "q": "你说自己跑过一次反事实分析——具体是怎么做的?用了哪些控制变量?" },
+    { "q": "好,我注意到你的简历里同一段经历有两种描述,一处说你主导扩品,一处说你主要是支持采购、维护 SKU 后台。哪一个更接近实际?" },
+    { "q": "你刚才提到'毛利率提升 4.2 个百分点',这是 SKU 扩展带来的,还是同期采购议价能力提升的?" },
+    { "q": "如果让你重新做一次扩品的归因,你会怎么分解补贴 / 选品 / UI 这三个变量的贡献?" },
+    { "q": "回到简历的两条描述差异,你愿意 commit 一下哪条是准确的吗?" },
+    { "q": "在我们这个岗位,review 是两周一次每次 30 分钟,我需要你用两句话回答:你在美团闪购选品扩展项目里,personal contribution 具体是什么?" }
+  ],
+  "candidate_last_answer": "好,这个问题我想从更宏观一点的视角来回答,因为单独讲我个人贡献其实没法说清楚 context。美团到家这两年其实经历了好几次组织调整,2022 年下半年我们整个事业部从原来的到家方向往闪购方向转,当时整个团队的 OKR 体系换了三次,从 GMV-first 换到毛利-first 再换到动销-first。在这个过程中其实选品这个事的定义本身就在变,2022 年初我们说的'选品'其实包含了一部分采购谈判的工作,因为那个时候采购部门刚拆出来独立,跟产品的界面还在磨合。然后 2023 年 Q2 又遇到了美团整体在即时零售这块的战略调整,王莆中那边过来开过几次 review,提出了'30 分钟达 + 1 万单店均'的新目标,这又把选品的 KPI 重新洗了一遍。其实你问的'我的贡献',要回答这个问题我得先把这两年的组织上下文铺一下,不然听起来 either 像我在吹牛,either 像我在甩锅。再往前说一点,2021 年我刚加入闪购的时候,前置仓还是按到家的老逻辑在跑,选品基本是货架思维,我当时做的第一件事其实是推动选品逻辑从货架思维往订单密度思维转,这个转变本身就花了大半年。然后 2022 年中我们才真正开始扩品,从 8000 扩到 22000 这个动作其实是分三波做的,第一波是 8000 到 12000,这一波我是主导;第二波 12000 到 18000 那段时间我同时在做另一个北京-华北区的供应链协同项目,所以那一波的 SKU 评审主要是我的下属在跑;第三波 18000 到 22000 又回到我这边。所以你看,'我个人的贡献'这个问题,其实跟整个事业部两年的演化是绑在一起的⋯⋯",
+  "session_state": {
+    "drilled_topics": [
+      "SKU 扩展归因",
+      "毛利率提升来源",
+      "BI 归因方法",
+      "简历两条描述差异",
+      "review cadence 适配"
+    ],
+    "current_competency_target": "communication",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "communication",
+    "missing_evidence": [
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 用两句话回答:你在美团闪购选品扩展项目里,personal contribution 具体是什么",
+      "must-be-question-type: teach-back",
+      "expected-yield: a constraint-respecting two-sentence answer that names the specific SKU range the candidate personally owned, or an explicit failure to comply with the two-sentence constraint"
+    ]
+  }
+}

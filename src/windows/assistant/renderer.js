@@ -348,6 +348,7 @@ const settingXfyunKey = document.getElementById('setting-xfyun-key');
 const toggleXfyunKeyVisibilityBtn = document.getElementById('toggle-xfyun-key-visibility');
 const settingResumeText = document.getElementById('setting-resume-text');
 const settingJobDescription = document.getElementById('setting-job-description');
+const settingInterviewerMode = document.getElementById('setting-interviewer-mode');
 const settingWindowOpacity = document.getElementById('setting-window-opacity');
 const settingWindowOpacityValue = document.getElementById('setting-window-opacity-value');
 const settingMicDevice = document.getElementById('setting-mic-device');
@@ -426,6 +427,7 @@ const settingsPanelManager = createSettingsPanelManager({
     toggleXfyunKeyVisibilityBtn,
     settingResumeText,
     settingJobDescription,
+    settingInterviewerMode,
     settingWindowOpacity,
     settingWindowOpacityValue,
     settingMicDevice,

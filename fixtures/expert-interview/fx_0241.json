@@ -1,0 +1,39 @@
+{
+  "id": "fx_0241",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "黄启明 (Qiming Huang) - Staff Supply Chain Planning Expert\n\n个人简介：\n本人 12 年供应链规划与执行经验，覆盖 consumer electronics、automotive Tier-1 supplier、以及最近三年的 medical devices 行业。从最早期作为 demand planner 起步，逐步进入到 multi-echelon inventory optimization、S&OP process design、APS implementation 等更复杂的领域。曾经在国内、欧洲、东南亚三地有过 in-region 工作经验，比较 comfortable navigate 多种 supply chain context。\n\nDetailed Experience:\n\n2022 - present  某 medical devices 集团 - Staff Supply Planning Expert\n本人加入这家集团是在 2022 年初，当时集团正在做 SAP S/4HANA + IBP 的迁移，原有的 APO 系统已经 EOL。我个人主导了 demand planning module 的 design、UAT 与 go-live 工作，覆盖大中华区 14 个工厂和 3 个 DC。期间最复杂的一个 challenge 是 device family 的 attribute-based forecasting，因为医疗器械的 SKU 复杂度极高，传统的 statistical forecasting 在 long-tail 上 hit rate 太低。我和 IT 团队、business 团队一起设计了一个 hierarchical pooling + attribute regression 的混合方案，在 pilot 阶段 forecast accuracy（WMAPE）从 38% 改善到 24%。Go-live 后第一个完整季度，集团 inventory turns 改善了大约 15%，service level 维持在原有水平。\n\n这段时间我还兼任了 master data governance 的 cross-functional lead role，因为 MDM 是 IBP 落地的前置条件，原有 MDM 团队的 ownership 不够强，集团 CIO 在 2022 年中（应该是 6 月，也可能是 7 月，记不太清确切日期）让我牵头一个 6 个月的 governance reset。这件事一直做到 2022 年底，然后 2023 年初我才正式 transition 回 IBP 主线。\n\n2019 - 2022  某 automotive Tier-1 supplier - Senior Supply Chain Planner\n这段是我职业生涯里挑战最大也最有成就感的一段。当时正好赶上 2020-2021 的 semiconductor shortage，我从 senior planner 一路升到 planning manager，期间 led 了集团亚太区 allocation committee 的运作。我们用了一个相对 unconventional 的方法——把传统的 customer-priority-based allocation 改成 margin-weighted 的 dual-objective allocation，既保住了 strategic customers 也 protect 了 EBITDA。这套机制后来被复制到欧洲区。值得一提的是，2020 年那一波 shortage 最严重的时候，我们团队连续 47 天没有 missing customer commitment。\n\n2015 - 2019  某 consumer electronics 大厂 - Demand Planner -> Senior Demand Planner\n这是我职业生涯的起点。从 entry-level demand planner 一路做起，主要负责一个 $800M ARR 的 product line。我学会了所有 demand planning 的基本功——baseline forecasting、event uplift modeling、cannibalization adjustment、bias monitoring、forecast value-add metric 等等。也是在这段时间里，我第一次接触到 multi-echelon inventory optimization，当时用的是 Llamasoft（现在的 Coupa）。\n\nEducation:\n2015  MS in Industrial Engineering, 某 985 高校\n2013  BS in Logistics Management, 同校\n\nSkills (detailed):\nAPS: SAP APO, SAP IBP (DP/SOP/IP modules), Kinaxis RapidResponse, Llamasoft/Coupa\nProgramming: Python (pandas, scikit-learn, basic), SQL (intermediate), R (basic)\nFrameworks: SCOR, S&OP, IBP process design, DDMRP basics\nDomain: medical devices, automotive Tier-1, consumer electronics\nLanguages: 中文 (native), English (full professional), 德语 (limited working - 在 automotive 那段练出来的)\n\nCertifications:\n- APICS CSCP (2018)\n- APICS CPIM Part 1 (2017)\n\n个人爱好：徒步、咖啡冲煮、看 sci-fi 小说。",
+  "jd": "岗位：Staff Supply Chain Planning Expert - APAC\n\n我们是一家全球医疗器械集团，正在为亚太区组建一个新的 supply chain planning excellence center。This Staff-level role reports to APAC VP of Supply Chain, owns the planning methodology evolution across 大中华区 / 东南亚 / ANZ 三个 sub-regions, 覆盖近 20 个工厂、6 个 DC、~$1.5B annual revenue 的 planning footprint.\n\n核心职责：（1）主导 next-gen planning playbook 的设计与 rollout，特别是在 attribute-based forecasting 和 multi-echelon inventory optimization 两个方向；（2）作为 APAC region 的 IBP product owner，与 global IT 协同 drive enhancement roadmap；（3）build a 4-6 人的 regional planning analytics team；（4）每季度向 APAC leadership team 汇报 planning health。\n\n要求：8+ years of supply chain planning experience, of which 3+ years at staff or equivalent senior individual contributor level；hands-on experience with at least one major APS (SAP IBP, Kinaxis, o9, Blue Yonder) including go-live experience；must be able to articulate the timeline and ownership of past projects with precision——we will probe deeply on timeline accuracy；medical devices / pharma / regulated industry experience strongly preferred.",
+  "history": [
+    { "q": "Qiming, 先讲一下你最近 medical devices 这边 IBP go-live 的 timeline。Specifically: 你是 2022 年几月加入的，UAT 跑了多久，正式 go-live 是哪个 quarter？" },
+    { "q": "好的。但是我注意到你简历里也提到，你同时被 CIO 抽去做 6 个月的 MDM governance reset，从 2022 年 6 月或 7 月开始到 2022 年底。如果是这样，那 IBP demand planning module 的 UAT 和 go-live 时间窗口具体落在哪里？这两段工作有 overlap 还是 sequential？" }
+  ],
+  "candidate_last_answer": "嗯…让我想一下，因为时间确实有点 jumbled。我是 2022 年 2 月底加入的，加入之后大概有两三个月做 ramp-up 和 design phase，所以 design phase 大致是 March 到 May。然后 CIO 找我做 MDM 那件事，should be 6 月底或者 7 月初——我记得是有一次 leadership offsite 之后他找我谈的，但 honestly 我不记得 offsite 是 6 月还是 7 月。MDM 那个 reset 跑了大概 6 个月，所以 should be 跑到 12 月或者 2023 年 1 月。但是与此同时 IBP 的 UAT 我记得是 2022 年 Q4 跑的，go-live 是…嗯…我现在想想，应该是 2023 年 1 月 1 日的 fiscal year start，但也可能是 2022 年 11 月就先 soft-launch 了一部分 module，full go-live 在 2023 年初。所以 your question is whether two streams overlapped——actually yes 它们是 overlap 的，但是不是 fully 6 个月 overlap，because MDM 那段我前两个月是 heavy-loaded、后四个月相对 maintenance mode，所以 IBP UAT 的 critical period 我能腾出手。Hmm 但是这么说的话 UAT 又不太可能在 Q4 跑完，because 6 月到 12 月本来是 IBP design 收尾加 build 的关键期…我可能需要回去查一下我的 calendar 才能给你精确日期。",
+  "session_state": {
+    "drilled_topics": ["IBP go-live timeline", "MDM与IBP overlap"],
+    "current_competency_target": "communication",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "timeline" },
+      { "competency": "communication", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我可能需要回去查一下我的 calendar",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 候选人必须给出一个可被验证的具体里程碑日期（如 go-live 的 month 和 year），并明确他在 MDM 与 IBP 双线 overlap 期间真正 owned 的是哪条；timeline 模糊度暴露其是否真正端到端主导过 go-live"
+    ]
+  }
+}

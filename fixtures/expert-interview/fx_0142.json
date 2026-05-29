@@ -1,0 +1,54 @@
+{
+  "id": "fx_0142",
+  "tags": {
+    "industry": "product-management",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Anika Bhattacharya — Staff Product Manager\nStaff PM, Growth Platform, Loom (Atlassian), San Francisco, May 2022 – present.\n  - Owned the activation-funnel re-architecture; drove week-1 activation from 41% to 56% across self-serve cohort.\n  - Led a team of 6 PMs across activation, retention, and pricing experiments.\nAnother entry, same dates, same company: Staff PM, Growth Platform, Loom, May 2022 – present.\n  - IC role with no direct reports; partnered with the Growth EM and 2 other PMs.\n  - Activation lift was a Growth-team result; my piece was the onboarding-checklist experiment which contributed ~4 ppt.\nSenior PM, Growth, Notion, 2019-2022.\nMBA Wharton 2019. Undergrad IIT Delhi (Industrial Engineering) 2015.",
+  "jd": "Staff Product Manager, Growth — Sennett.ai (Series C, San Francisco). Reports to VP Product. Owns the self-serve funnel from anonymous-visit to paid-conversion. You will (a) personally write PRDs, (b) personally instrument and read out experiments in Mixpanel + Statsig, (c) coordinate with 1 design partner and 1 EM. This is explicitly an IC role with no direct reports; if you are looking for a people-management title, this isn't it. We interview hard on whether candidates can distinguish 'I owned X' from 'my team owned X', because every prior Staff hire who blurred that line struggled in the first 90 days at our scale (40 engineers total). The interview will press repeatedly on attribution; we expect direct, single-sentence answers when asked who owned a metric. Comp: $260-310k base + equity refresh.",
+  "history": [
+    { "q": "Walk me through the activation-funnel work at Loom — specifically your role versus the team's role." },
+    { "q": "You mentioned 41% to 56% week-1 activation — over what time window?" },
+    { "q": "Which experiments contributed most to that lift?" },
+    { "q": "Was the onboarding-checklist your PRD, or someone else's?" },
+    { "q": "Who ran the statistical analysis on the checklist test?" },
+    { "q": "How was the 56% figure measured — DAU/WAU, feature-level, or self-reported survey?" },
+    { "q": "Your resume has two entries for this exact role. One says you led a team of 6 PMs, the other says you were an IC with no direct reports. Which is accurate?" },
+    { "q": "I'd like a direct answer — at Loom, did anyone formally report to you on the org chart?" },
+    { "q": "Was there a dotted-line or matrix relationship, or no reporting at all?" },
+    { "q": "Given that this role at Sennett is explicitly IC with no reports, do you have a preference between IC and people-management?" },
+    { "q": "Last one on this: when you wrote 'Led a team of 6 PMs' on your resume, what did 'led' mean operationally — did you set their OKRs, write their reviews, or something else?" }
+  ],
+  "candidate_last_answer": "That's a fair question, and before I answer I actually want to ask you something — can you tell me what *Sennett* means by 'led' for a Staff PM? Because in my experience the word travels really differently between companies. At Notion 'led' meant you wrote the strategy doc and the team executed; at Loom 'led' meant you ran the weekly working session and 你 owned the roadmap document but not headcount. So 我 想 understand what flavor of 'led' you're looking for here before I describe what I did, otherwise I'll probably describe it 用 a vocabulary that doesn't match yours. Is that okay?",
+  "session_state": {
+    "drilled_topics": [
+      "Loom activation lift attribution",
+      "onboarding-checklist ownership",
+      "resume contradiction on team size",
+      "IC vs management preference"
+    ],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "role-fit", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: when you wrote 'Led a team of 6 PMs' on your resume, what did 'led' mean operationally",
+      "must-be-question-type: resume-contradiction-pin",
+      "expected-yield: a concrete operational definition (set OKRs / wrote reviews / ran working session / none of the above) rather than a meta-question deflecting back to the interviewer's vocabulary"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_0082",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Priya Raghavan — Director, Credit Risk\nDirector, Credit Risk Modeling, Tessera Bank (regional US, $48B assets), Jan 2020 – present.\n  Situation: Bank's commercial real estate (CRE) loan book grew 34% in 2021-2022 against a regional concentration limit set by the OCC examiner team.\n  Task: Build a forward-looking CRE stress framework and present to the Risk Committee before the 2023 CCAR-equivalent stress test.\n  Action: Led team of 7 quants + 2 risk officers; designed PD/LGD model using Moody's CMM data, integrated with bank's PPNR forecast; ran 4 scenarios including 40% office vacancy shock.\n  Result: Framework adopted; identified $312M of marginal capital need under severely adverse scenario; bank pre-emptively raised $400M Tier 2 in Q4 2022 ahead of the March 2023 regional banking turmoil.\nPrior: VP Credit Risk, KeyCorp 2016-2020. AVP, JPMorgan CCB 2013-2016.\nMBA Booth 2013. BS Math UIUC 2009.",
+  "jd": "Director, Enterprise Credit Risk — Stoneridge Bancorp ($72B assets, midwest). Reports to the Chief Risk Officer. Owns the full credit risk modeling stack: PD/LGD/EAD across C&I, CRE, and consumer; CECL governance; stress testing for DFAST (subject to recent threshold changes); model risk management coordination with the SR 11-7 team. We just emerged from a 2024 Matter Requiring Attention (MRA) from our regulator on CRE concentration; the new Director will be the named owner of the remediation plan. We need a leader who, when something goes wrong, names what they personally got wrong before naming the model, the data vendor, or the team. The interview will probe failure handling directly. Comp: $340-410k base, 60% target bonus, LTI.",
+  "history": [
+    { "q": "Walk me through a credit-risk call you made that turned out wrong — not a model that performed within expected error bands, but a real judgment call you regret." },
+    { "q": "You mentioned the 2021 CRE office book at Tessera — tell me more about what you personally recommended to the Risk Committee that didn't age well, and what you'd do differently." }
+  ],
+  "candidate_last_answer": "Honestly, looking back, the issue wasn't really my recommendation — it was that the office-vacancy data we were getting from CoStar at the time was systematically understating sublease overhang. CoStar 当时 was about 6 months behind on Class B office in secondary markets, and our PPNR team also fed me deposit-beta assumptions that turned out to be way too sticky. So when I presented the 40% vacancy scenario as the 'severely adverse' case, that was actually based on what the vendor data and the ALM team gave me. The other piece is that the Risk Committee chair at the time — he's since retired — had a strong prior that office would mean-revert, and that 也 shaped how the scenarios got framed. If 那些 inputs had been right, the recommendation would've held up.",
+  "session_state": {
+    "drilled_topics": [
+      "Tessera CRE stress framework 2022",
+      "office vacancy scenario design"
+    ],
+    "current_competency_target": "failure-handling",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "failure-handling",
+    "missing_evidence": [
+      { "competency": "failure-handling", "evidence_type": "failure-handling" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "integrity", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that was actually based on what the vendor data and the ALM team gave me",
+      "must-be-question-type: action-attribution",
+      "expected-yield: an articulation of what the candidate personally would do differently as the model owner, independent of CoStar accuracy, the ALM team, or the committee chair"
+    ]
+  }
+}

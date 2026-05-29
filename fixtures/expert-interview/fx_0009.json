@@ -1,0 +1,38 @@
+{
+  "id": "fx_0009",
+  "tags": {
+    "industry": "customer-support",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "客户体验副总裁 · 13 年企业级支持业务负责人\n\n- 端到端运营全球级客户支持组织,以世界级标杆水平交付卓越客户旅程\n- 打造了行业领先的全渠道支持体系,赋能销售、产品、市场跨部门高效协同\n- 系统性地驱动公司从被动响应文化向主动客户成功文化的范式转型\n- 引领多个里程碑式的 AI 与自动化项目,持续释放运营杠杆和组织效能\n- 长期担任客户大会主旨演讲嘉宾,被视为客户体验领域的思想引领者\n- 深耕大型团队管理、跨文化领导力、以及高复杂度供应商生态构建\n\n2020 年至今 · 翔云科技 · 客户体验副总裁\n2015 年-2020 年 · 蓝弧软件 · 客户成功总监\n2010 年-2015 年 · 华信电信 · 高级支持经理",
+  "jd": "我们正在为翔云科技招聘客户体验副总裁,直接 report to CCO。岗位 own 全球 300 人支持团队、年度 8000 万人民币预算,以及对 CSAT、TTR、cost-per-contact、NRR 等 4 个董事级 KPI 的最终交付。候选人必须在面试中清晰区分自己个人做过的决策和团队整体的工作 —— 我们近期面试中遇到多位高级候选人无法在被追问时把'我'和'我们'分开,这会成为本轮的 deal-breaker。其他 must-have: 在至少一次重大支持系统替换中担任决策方拍板人;至少一次执行过 8% 以上的支持团队人员优化并妥善处理沟通;有过被 CFO 和 CRO 双方同时挑战预算的真实经历。",
+  "history": [
+    { "q": "请你先介绍一下你在翔云的现有 scope —— 团队规模、预算、对哪些董事级 KPI 负责。" },
+    { "q": "好。第二题我想 zoom in 在 leadership。讲一个你今年最自豪的 leadership moment —— 不是项目结果,而是你作为 leader 的具体动作。" }
+  ],
+  "candidate_last_answer": "好的,我最自豪的 leadership moment 应该是今年 Q2 我们成功完成了 CCaaS 平台迁移。这个项目是公司战略级别的,我们整个团队真的拧成一股绳,从架构组、坐席培训组、到供应商对接组,大家熬了无数个夜。我们的项目经理非常给力,设计组同事在新流程的可视化上做了大量工作,前线坐席也非常配合。整个公司从 CEO 到一线都对支持团队的执行力刮目相看,我们最后比原计划提前两周完成切换。我觉得这次的成功体现了我们这个团队的凝聚力和专业能力。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "leadership-moment"],
+    "current_competency_target": "leadership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "leadership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们整个团队真的拧成一股绳",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific decision the candidate personally made (not the team) — the question must demand the candidate's own first-person action verb on a named subject, ideally with date/timing"
+    ]
+  }
+}

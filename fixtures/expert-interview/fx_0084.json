@@ -1,0 +1,49 @@
+{
+  "id": "fx_0084",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "verbose-1500words",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "李婷 — 资深增长营销经理 · 8 年消费互联网\n\n职业经历\n\n2022 年 6 月 - 至今 · 喜茶 (HEYTEA) 总部 · 资深增长经理 (会员与私域)\n喜茶是国内现制茶饮头部品牌，在我加入时全国门店约 850 家，会员体系刚刚从积分制升级到付费会员（喜茶星球会员）。我作为会员与私域板块的核心成员，承担了多个端到端的项目落地。具体职责包括：(1) 主导付费会员 LTV 模型搭建，与数据科学团队合作，使用 RFM 分层 + Cohort 分析，建立了会员价值的可量化口径，并在月度业务会上向 CMO 汇报；(2) 负责小程序会员中心的产品迭代节奏，与产品经理和前端团队对接，每两周一个发版周期；(3) 主导大型节日营销活动（春节、520、双 11）的会员侧 campaign，预算规模在 200-500 万人民币之间；(4) 私域社群运营策略，包括企微 SOP、社群分层、KOC 激励体系；(5) 跨品类联名营销（例如和 FENDI 的联名活动）的会员转化承接。在我的主导下，付费会员 GMV 占总 GMV 的比例从 18% 提升到了 43%，会员复购率从 2.1 次/月提升到 3.8 次/月，私域社群规模从 80 万扩展到 320 万。我还推动了一项跨部门的归因模型升级——把 last-click 改成了 multi-touch，整个市场部的 ROI 口径都因此重做。这个项目我和数据团队、IT 团队、市场总监、CFO 都对齐过，最终在 2023 年 Q4 落地。\n\n2019 年 - 2022 年 6 月 · 元气森林 · 高级品牌经理 (新品孵化)\n负责无糖气泡水之外的副线产品（含燃茶、外星人电解质水）的从 0 到 1 品牌孵化与冷启动。具体工作包括竞品分析、产品定位、包装设计 brief、首批 KOL 投放策略、电商首发节奏（天猫旗舰店、京东超市、抖音小店）。其中外星人电解质水从立项到首发用时 11 个月，首年销售额过亿，是当年元气森林新品类最快达成的产品。期间我管理过的最大单次抖音投放预算是 1200 万，ROI 大约 3.2x。\n\n2017 年 - 2019 年 · 完美日记 · 品牌经理 (社媒内容)\n负责小红书与抖音的品牌内容矩阵搭建。承接过单条爆文（小红书）阅读量超过 800 万的案例。\n\n2015 年 - 2017 年 · 联合利华上海 · 助理品牌经理 (清扬男士品类)\n负责清扬男士线下 KA 渠道（家乐福、大润发）的促销节奏管理。\n\n教育背景\n- 复旦大学新闻学院 · 广告学学士 · 2015 届\n- 中欧商学院 · 数字营销 mini-MBA · 2021 年结业\n\n语言与技能\n中文（母语）、英语（流利，曾接待联合利华伦敦总部团队）、SQL（中级，能独立写 join 和 window function）、Tableau、Mixpanel、Adjust、神策、Growing IO、企微管家。\n\n奖项与认证\n- 2023 年 金鼠标 数字营销大赛 银奖（喜茶 × FENDI 联名 case）\n- 2021 年 元气森林 年度新人奖\n- 中欧商学院 Distinguished Alumni 提名（2024）",
+  "jd": "瑞幸咖啡 (Luckin Coffee) 总部招资深增长经理 (会员与生命周期)，向 CGO 直接汇报。岗位职责：(1) owning 瑞幸付费会员体系（咖啡补给社、月卡）的端到端 KPI，包括渗透率、ARPU、LTV、流失率；(2) 主导新会员等级权益设计，与产品、数据、门店运营三方对齐；(3) 制定季度会员 campaign roadmap，单 campaign 预算 500 万 - 2000 万；(4) 跨部门协同——产品、CRM、数据科学、门店运营、财务。Must-have：(1) 真正 owned 过付费会员体系的核心 KPI（不是只 own 一个 sub-funnel）；(2) 能 quantify 自己工作对 LTV / 复购 / GMV 的真实贡献，并且能讲清楚 attribution 怎么做的——我们对夸大归因非常敏感；(3) 能在 CFO 面前为预算做 trade-off defense；(4) 能讲出至少一个 campaign 没达到预期的案例，包括 root cause 和复盘。直接管理人数：4-6 人。",
+  "history": [
+    { "q": "先聊一下你在喜茶的 scope。你说 owning 会员与私域板块，那具体 KPI 是谁定的？" },
+    { "q": "嗯。简历里写 GMV 占比从 18% 提升到 43%——这是付费会员的 GMV 占总 GMV，对吧？这个口径是从哪个月开始算的，到哪个月截止？" },
+    { "q": "OK。那 18% 到 43% 这个提升，主要的 driver 是什么？是付费会员渗透率上升，还是付费会员 ARPU 上升？" },
+    { "q": "你说渗透率从 12% 到 28%，ARPU 也涨了。那这两个的贡献拆分大概是几几开？" },
+    { "q": "好，那同期付费会员的定义有没有变过？比如门槛价、权益结构？" },
+    { "q": "权益升级是哪个月上线的？升级之后定义没变，但喜茶星球的 SKU 包含品类有没有变？" },
+    { "q": "理解。换个话题——multi-touch 归因模型那个项目，你说你 push 落地。具体是你提的方案，还是数据团队提的？" },
+    { "q": "落地之后，整个市场部的 ROI 口径变了，对吧？变了之后，你自己的 campaign ROI 是上调了还是下调了？" },
+    { "q": "等一下——你刚才说改归因之后你的 ROI 反而提升了。但 multi-touch 通常会把功劳分散到更多触点，对头部直接归因的 channel 一般是下调的。你能解释一下这个反直觉的结果吗？" },
+    { "q": "OK。那我们 zoom in 到具体数字。复购率 2.1 到 3.8 次/月——这个是付费会员的复购，还是全量会员的复购？" },
+    { "q": "好。那付费会员里，复购 3.8 次/月是中位数还是均值？" },
+    { "q": "好。最后一个——FENDI 联名 case 拿了金鼠标银奖。这个 case 的 incremental GMV 是多少？也就是说，如果没做这个联名，估算的 baseline 是什么？" },
+    { "q": "你刚才提到 incremental 大约 4500 万——这个数字是怎么算出来的？baseline 用的什么模型？" }
+  ],
+  "candidate_last_answer": "嗯这个问题挺好的，我一起把几个事讲清楚。FENDI 联名那个 case 的 incremental 4500 万，这个数我们当时用的是同期对比法——拿联名 campaign 那两周的 GMV，减掉上一个月同周期的 GMV，再做了一个季节性调整。具体调整系数我记得是 1.15 还是 1.18，要回去翻一下。然后顺便我把另外两个数也补一下，付费会员复购 3.8 次/月那个是均值不是中位数，但中位数我印象里也有 3.2-3.4 这个量级，差距不大。然后归因模型那个事我想再澄清一下——我刚才说改了之后我的 ROI 提升，主要是因为 multi-touch 把 awareness 阶段的私域社群触达也算进了 attribution chain，我的 campaign 很多都是私域驱动的，所以分到的权重反而更多，这个其实是合理的，不是反直觉。还有一个就是 GMV 占比 18 到 43，我刚说是同期付费会员定义没变，但其实 2023 Q2 升级之后我们把『喜茶星球银卡』也算进了付费会员口径，这个之前的统计里是单独算的，所以严格说算是定义有一点变化，不过影响不大，大概 5-7 个百分点。整体来说我觉得这些数字都是经得起 audit 的，我们当时和财务也对过口径。",
+  "session_state": {
+    "drilled_topics": ["scope-kpi-ownership", "gmv-percentage-period", "gmv-driver-decomposition", "penetration-vs-arpu-split", "paid-member-definition-change", "perk-upgrade-timing", "attribution-model-proposer", "post-attribution-roi-direction", "counterintuitive-roi-explanation", "repurchase-rate-scope", "repurchase-mean-vs-median", "fendi-incremental-gmv", "fendi-baseline-methodology"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 喜茶星球银卡也算进了付费会员口径",
+      "must-be-question-type: resume-contradiction-pin",
+      "expected-yield: forces candidate to restate the 18%-to-43% delta under the consistent (pre-redefinition) definition, exposing whether the headline number on the resume holds up — and whether the candidate self-corrects or doubles down"
+    ]
+  }
+}

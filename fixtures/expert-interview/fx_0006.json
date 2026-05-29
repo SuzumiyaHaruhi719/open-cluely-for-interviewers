@@ -1,0 +1,51 @@
+{
+  "id": "fx_0006",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "VP of Product · 14 years building products that have fundamentally redefined entire categories\n\nLegacy at a glance\n- Personally responsible for taking a generationally important consumer product from 0 to 80 million MAU in 27 months — widely regarded as one of the fastest organic-only scale-ups in social-software history\n- Architected the strategic pivot that single-handedly saved Lighthouse from a near-extinction event in 2020 — turned the company into a clear category leader within 18 months\n- Universally recognized as one of the most prolific product builders in B2B SaaS — shipped 13 flagship features in 18 months at NorthOps, every one of which became the #1 reason customers cited for renewal\n- Built and led the most talented PM bench in Series-B SaaS history; 7 of my direct reports went on to become VPs at peer companies\n- Visionary thinker whose POVs on platform-vs-product strategy are routinely sought out by top-tier VCs as required pre-reading for their portfolio CEOs\n\nMost recent: NorthOps Inc (Series C SaaS) · VP Product · 2022-present\nPrior: Lighthouse Consumer Inc · Director Product · 2018-2022\nEducation: Stanford GSB MBA; MIT BS Computer Science",
+  "jd": "Tribune SaaS, a Series-D mid-market collaboration platform, is hiring a VP of Product reporting to the CEO. You will own product strategy across our three lines (Pages, Boards, Connect), manage 14 PMs across 5 teams, and partner with Engineering on a $42M annual roadmap. Required: (1) a track record running a multi-product, multi-team PM org of at least 10 PMs at a B2B SaaS company between $50M and $300M ARR — consumer-only or pure-startup-zero-to-one experience is not a substitute; (2) ability to articulate, in numbers, the specific ARR lift you drove and how; (3) experience presenting roadmaps to board and audit committee, with discipline around what you commit vs. what you label as 'opportunistic'; (4) hands-on retention-and-expansion fluency (NRR, GRR, logo retention, expansion attach rates) — not just acquisition metrics. We want a builder who can show their math, not a visionary who tells stories.",
+  "history": [
+    { "q": "Walk me through your current scope at NorthOps — team size, products you own, primary KPIs." },
+    { "q": "Your resume says NorthOps shipped 13 flagship features in 18 months. Pick the single feature that drove the most ARR and tell me about it." },
+    { "q": "What was the ARR lift attributable to that feature in the first 12 months post-launch?" },
+    { "q": "How did you isolate that feature's contribution from other things that shipped in the same window?" },
+    { "q": "When you say 'attributable,' are we talking ARR from new logos, expansion ARR, or both?" },
+    { "q": "What was the feature's adoption rate among the existing book — what percent of accounts had used it within 90 days?" },
+    { "q": "Switch topic — your resume says you took a product from 0 to 80M MAU in 27 months at Lighthouse. What was your specific scope there — were you the GM, the PM, or supporting?" },
+    { "q": "Did Lighthouse run any paid acquisition during that 27-month window?" },
+    { "q": "Got it. Switching to organization: at NorthOps you manage how many PMs directly, and how many indirectly?" },
+    { "q": "Who do those PMs report to operationally vs. dotted-line?" },
+    { "q": "Tell me about a PM you hired who didn't work out. What happened and what did you do?" },
+    { "q": "How long did that performance issue go on before you acted?" },
+    { "q": "Final on retention metrics — what's NorthOps' NRR over the last four quarters?" },
+    { "q": "Okay — pin the ARR-lift answer for me. You said the top feature drove material ARR. Give me the specific dollar number — net-new ARR, expansion ARR, or total ACV impact — and the measurement window." }
+  ],
+  "candidate_last_answer": "Sure, happy to put a number on it. The flagship feature drove approximately $40M in ARR impact in its first year, which is one of the highest single-feature contributions I've ever seen in B2B SaaS — frankly an industry-defining outcome. That's a blended figure across net-new logos who specifically cited the feature in their buying decision, expansion ARR from existing customers who upgraded tiers to access it, and what we internally call 'preserved ARR,' which is renewals that would have churned but didn't because of the feature. Measurement window was the first twelve months post-GA. To be clear, $40M is a conservative estimate — our finance team actually has it modeled at closer to $52M if you include the second-order effects on our partner ecosystem and the brand lift it produced. Either way, it was 10x what the original business case projected, and the feature alone moved NRR by north of 8 points, which is essentially unheard of in our segment.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "top-feature-arr-attribution", "arr-isolation-methodology", "arr-segmentation", "feature-adoption", "lighthouse-mau-scope", "lighthouse-paid-acquisition", "team-size-direct-indirect", "pm-reporting-lines", "pm-firing-example", "performance-issue-timeline", "norchops-nrr", "feature-arr-lift-pin"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: our finance team actually has it modeled at closer to $52M",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: the specific finance-team artifact (deck name, model file, board-pre-read date) where the $52M number is documented — separates a real attribution model from a number the candidate invented under pressure"
+    ]
+  }
+}

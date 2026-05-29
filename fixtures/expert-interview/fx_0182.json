@@ -1,0 +1,53 @@
+{
+  "id": "fx_0182",
+  "tags": {
+    "industry": "data",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "over-bragging",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Marcus Olatunji — Staff Data Scientist (Causal Inference & Experimentation)\nStaff DS, Experimentation Platform, Stripe, Remote (US), Feb 2021 – present.\n  - Single-handedly rebuilt Stripe's entire A/B testing platform from the ground up.\n  - Authored the company's official guidance on CUPED, switchback designs, and quasi-experimental methods. Cited 80+ times internally.\n  - Saved Stripe an estimated $40M/year through experimentation rigor improvements (per VP attribution memo).\n  - Personally trained 400+ engineers and PMs on causal inference fundamentals.\nSenior DS, Uber Marketplace, 2017-2021. PhD Statistics, CMU 2017.\nKaggle Grandmaster (top 200 globally).",
+  "jd": "Staff Data Scientist, Causal & Experimentation — Cobalt Health (Series D, NYC). Reports to the Head of Data Science. You will own the experimentation review process across 4 product teams running roughly 80 experiments/quarter. Concrete responsibilities: design switchback experiments for the marketplace surface, write causal-inference guidance the team will actually follow, and review high-stakes experiment readouts before they reach the CEO. We need someone who can talk specifically about *which* method they chose for *which* problem and *why* the alternative was rejected. We do not need someone who can only describe outcomes in vague company-wide terms. Health data context means we cannot accept 'I can't share that' as a blanket non-answer — we will ask candidates to anchor methodology claims in non-confidential specifics (e.g., 'I used CUPED with X covariate because Y'). Comp: $295-355k base + equity.",
+  "history": [
+    { "q": "Walk me through one specific Stripe experiment where CUPED variance reduction made a material difference to your decision." },
+    { "q": "What was the covariate you used in the CUPED adjustment?" },
+    { "q": "How much variance reduction did you get?" },
+    { "q": "Why CUPED instead of stratification or a regression adjustment?" },
+    { "q": "You mentioned the experimentation platform rebuild — what was the most consequential design decision?" },
+    { "q": "Can you describe one switchback experiment you ran and the time-period choice you made?" },
+    { "q": "How did you handle carryover effects in that switchback?" },
+    { "q": "The $40M/year savings figure — how was that attributed to your work specifically?" },
+    { "q": "Was the attribution memo something you could share the methodology of, or at minimum the high-level math?" },
+    { "q": "Help me anchor on something concrete — for *any* one experiment in your tenure, can you tell me the metric, the effect size, and the method you chose?" }
+  ],
+  "candidate_last_answer": "Yeah, I appreciate the push for specifics. Unfortunately almost everything I worked on at Stripe is under NDA — like, even the methodology is considered competitive information, and I had to sign an additional confidentiality agreement on top of the standard one. So I can talk in general terms about, you know, the kinds of methods we used and the rigor we brought, and the impact was significant, but specific metrics or effect sizes from any individual experiment — that's not something I can share. I think you'll find when 你 look at my publications and conference talks, the depth is there, 只是 I have to be careful about which specific examples I cite in an interview setting like this one.",
+  "session_state": {
+    "drilled_topics": [
+      "CUPED specifics",
+      "switchback design",
+      "$40M attribution",
+      "platform rebuild design choices"
+    ],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "named-tool" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "communication", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: even the methodology is considered competitive information",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a non-confidential methodology specific (e.g., 'CUPED with pre-period revenue as covariate, ~40% variance reduction on a checkout-conversion experiment') or an explicit admission that the candidate cannot provide methodology details independent of company-specific metrics"
+    ]
+  }
+}

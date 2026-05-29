@@ -1,0 +1,44 @@
+{
+  "id": "fx_0203",
+  "tags": {
+    "industry": "customer-support",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "孙振华 — 客户成功与服务运营 VP — 16 年经验 — 候选岗位：CS VP\n\n工作经历：\n\n2021.09 — 至今：某 全球 SaaS 公司 大中华区 客户成功 VP\n职责：管理 280+ 人客服 + CSM 团队（北京 / 上海 / 成都 / 深圳 / 香港五地）；负责大中华区 ARR 续约与扩展；与产品、销售、合作伙伴团队的跨部门接口；季度 OKR 与 H/H reviews 责任人。\n关键事件（不便披露具体数字）：\n- 主导建立大中华区第一个 24/7 中英双语支持中心\n- 推动公司客户满意度评估体系从 CSAT 单指标过渡到 NPS + CES + CSAT 三维度\n- 牵头一次重大 SLA 违约事件的客户挽留行动\n- 完成一次客服外包 vs 自建的战略评估\n\n2017.05 — 2021.08：某 国内云厂商 客户成功总监\n职责：管理 120 人 CSM 团队；负责头部客户（年单 500w+）的健康度与续约。\n\n2014.03 — 2017.04：某 跨境电商平台 客服运营总监\n2010.08 — 2014.02：某 国内电信运营商 集团客服中心 高级经理\n2008.07 — 2010.07：某 外资银行 客户体验组 顾问\n\n教育：中欧国际工商学院 EMBA（2018-2020）/ 上海交通大学 工商管理 本科（2004-2008）\n\n语言：中文母语 / 英语流利 / 粤语沟通无障碍\n\n备注：因前两份工作均为上市公司，业绩具体数字以面谈方式分享。",
+  "jd": "客户成功与支持 VP — 国内一家 估值 30 亿美金 的 SaaS 独角兽公司（北京总部，业务覆盖国内 + 东南亚）。向 COO 汇报，并向 CEO 直接 dotted-line 汇报客户健康度议题。岗位职责：1）整合现有 350 人的客服 + 客户成功团队（目前由两个总监分别管理，存在协同问题）；2）建立统一的客户健康度模型并接入续约预测；3）将 NRR（net revenue retention）从当前的 108% 拉到 118%；4）主持月度客户 escalation 复盘与季度 board-level 客户满意度汇报；5）作为 CEO 在重大客户事件中的一线指挥代理人。任职要求：12 年以上客户成功 / 客服运营经验，至少 5 年带 200+ 人团队，至少 1 次完整带过 NRR 8 个百分点以上提升的 case；具备多地 / 跨境团队管理经验；擅长跨部门协同（销售、产品、合作伙伴）。",
+  "history": [
+    { "q": "孙总你好。我们直接进入主题。你简历里提到主导过一次重大 SLA 违约的客户挽留行动 — 把这件事详细讲一下。" },
+    { "q": "客户最终续约了吗？" },
+    { "q": "续约金额从年单 4500w 降到了 3200w — 29% 的下降。这个降幅你认为可控吗？或者说，如果重来一次，你能把这 29% 压缩到多少？" }
+  ],
+  "candidate_last_answer": "这个问题我想分两层回答。\n\n首先 29% 的降幅是不是可控 — 坦白讲那个 case 里 SLA 违约本身不是 CS 团队的责任，根因在产品侧。产品团队 2023 年 Q1 上了一个新版本，引入了一个 message queue 的 regression bug，导致客户的核心业务流在高峰期出现 4 次断流，单次最长 47 分钟，累计影响 6 个工作日。这种事故 CS 团队是被动接盘的，事故发生时我们能做的就是控制客户感知、协调产品侧的修复节奏、争取补偿方案被客户接受。换句话说，29% 不是 CS 工作的失败，是产品稳定性事故的下游成本。\n\n第二层，如果重来一次能压缩到多少 — 我觉得现实地讲，能压缩到 20% 左右，不能更低。理由是：客户 CFO 在第二次电话里就明确说他们今年的 IT 预算被砍了 25%，所以即便没有 SLA 事件，续约金额本身也会下降一个 15-20% 的量级。我们最终谈成 29% 里，大概有 15% 是客户自身预算的下行，14% 是 SLA 事件的让步。把那 14% 优化到 5-8%，需要的是事故响应阶段产品侧能在 24 小时内拿出明确的 root cause 报告，但当时产品 VP 让我们等了 5 天 — 这 5 天里客户的不安全感是被放大的。我后来在内部复盘的时候明确提了这一点，产品 VP 当时不接受我的判断，他认为 5 天是合理的工程严谨性，但我坚持那是客户挽留的关键窗口期。\n\n所以总的来说，29% 我认为已经是在跨部门约束下能拿到的相当 OK 的结果。如果让我做一个公平的归因，CS 团队贡献是 +8 个百分点的少损失（如果没有我们一线挽留可能降幅会到 37%），产品稳定性扣分大概 -14 个百分点，客户预算自然下行 -15 个百分点。这个分解我当时在 QBR 上跟 CEO 报告过，CEO 也认可。\n\n顺带说一句，那个 message queue 的 bug 现在还在产品 backlog 上没有彻底根治，2024 年 Q2 又复现了一次小规模事故。所以这个客户后续的健康度其实一直承压，但那已经不是 CS 单方面能解决的问题了。",
+  "session_state": {
+    "drilled_topics": [
+      "sla-incident-narrative",
+      "renewal-outcome"
+    ],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "leadership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "collaboration", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 产品 VP 让我们等了 5 天",
+      "must-be-question-type: action-attribution",
+      "expected-yield: probe what the candidate did to actually shorten that 5-day window — escalation to CEO, direct ownership of the customer-comms during the gap, internal politics — separating 'I diagnosed the bottleneck' ownership from 'I removed the bottleneck' ownership, which is the relevant signal for VP-level cross-functional execution"
+    ]
+  }
+}

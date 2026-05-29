@@ -1,0 +1,48 @@
+{
+  "id": "fx_0024",
+  "tags": {
+    "industry": "finance",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Wei Chen — Staff Quant Risk · 8 years\n\nExperience\n- 2021 - present · Meridian Capital (HK) · Staff Quantitative Risk Analyst\n- 2017 - 2021 · ICBC International · Senior Risk Analyst\n- 2015 - 2017 · PwC HK · Audit Associate\n\nEducation\n- MSc Financial Engineering, HKUST, 2015\n- BS Mathematics, Fudan, 2013\n\nSkills: Python, KDB+, VaR, stress testing, Basel III, IFRS 9.\n\nLanguages: Mandarin, Cantonese, English.",
+  "jd": "Meridian Capital APAC 招 Staff Quant Risk — partner directly with the Head of Market Risk on the HK desk. Scope: own the firm-wide VaR back-testing program across equities, FX, and credit books (~$4.2B notional), redesign the daily PnL attribution flow with the front-office quants, and lead one risk methodology project per half (current pipeline: switching from historical sim VaR to filtered HS, plus a stressed-VaR overlay for the China A-share book). Must-have: (1) 真正 owned 过 VaR methodology change at a regulated entity (not just supported); (2) 能 articulate model choice trade-offs (parametric vs HS vs Monte Carlo) without reading from notes; (3) 能 push back on the front office when their PnL doesn't reconcile — 这个职位 is not a support role; (4) 流利英文,Cantonese is a plus for the HK regulator conversations. Direct managerial scope: 0 reports now, 1-2 within 18 months.",
+  "history": [
+    { "q": "Walk me through your current scope at Meridian — what books do you cover?" },
+    { "q": "On the filtered HS migration you mentioned in the screening call — when did that project actually go live?" },
+    { "q": "Who was the model owner of record on the regulatory submission?" },
+    { "q": "Got it. 那 the design of the filtering window — GARCH(1,1) volatility scaling 还是 EWMA? Who picked that?" },
+    { "q": "OK. 让我换一个角度。你说 partner with front office quants on PnL attribution — give me one example where their PnL didn't tie to your risk numbers and you had to push back." },
+    { "q": "你说 the difference was traced to a corporate action handling bug — 谁 first spotted that the numbers didn't tie?" },
+    { "q": "Who actually did the reconciliation work — you, or the front office quant?" },
+    { "q": "Right. Let's talk about the stressed-VaR overlay for the A-share book. What stress scenarios did you propose?" },
+    { "q": "When you say 'we proposed the 2015 circuit-breaker scenario' — who is 'we'? You, your manager, or the broader team?" },
+    { "q": "Did you write the scenario specification document?" },
+    { "q": "OK. Let me ask differently — in the last 12 months, name one risk methodology decision where you were the person who made the final call, not your manager." },
+    { "q": "[after 8 seconds of silence] Take your time. One decision where the final call was yours." }
+  ],
+  "candidate_last_answer": "Sorry, 让我想一下…… [六秒静默] OK so one example — we, ah, the team had to decide whether to flag a large credit position as a stressed-VaR breach during the March 2023 SVB contagion week. The position was a basket trade and the historical-sim VaR didn't capture the regional bank correlation spike. So the team flagged it, we — sorry, the team — escalated to the CRO. I think 最终 the call was 集体讨论 reached, my manager talked to the CRO, the front office quant ran the alternative scenario, and we agreed to apply a 1.5x overlay multiplier for that week. It was a good team outcome. 我 contributed by running some of the numbers and 帮 my manager prep the memo for the CRO. Everyone played their part.",
+  "session_state": {
+    "drilled_topics": ["scope", "fhs-go-live-date", "model-owner-of-record", "filter-window-choice", "pnl-pushback-example", "bug-first-spotter", "reconciliation-doer", "stressed-var-scenarios", "scenario-attribution-we-vs-i", "spec-doc-author", "final-call-ownership-1"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 1.5x overlay multiplier",
+      "must-be-question-type: action-attribution",
+      "expected-yield: who specifically chose 1.5x rather than 1.3x or 2.0x — forces candidate out of 'team' framing onto a single decision-maker for the magnitude"
+    ]
+  }
+}

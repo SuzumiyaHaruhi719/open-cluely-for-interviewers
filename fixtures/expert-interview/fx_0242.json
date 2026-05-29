@@ -1,0 +1,57 @@
+{
+  "id": "fx_0242",
+  "tags": {
+    "industry": "operations",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Brendan O'Sullivan — Senior Operations Manager\nSenior Ops Manager, Last-Mile Delivery, GoPuff, Philadelphia metro, Jun 2021 – present.\n  - Owned 11 micro-fulfillment centers (MFCs) across PA/NJ; full P&L responsibility ($28M annual).\n  - Reduced cost-per-order from $4.12 to $2.78 over 18 months.\nSame role listed twice: Senior Ops Manager, GoPuff, Jun 2021 – present.\n  - Co-owned 4 MFCs with a peer ops manager; jointly responsible for staffing and shrinkage.\n  - Cost-per-order is a market-level metric; I contributed but the market-lead drove it.\nPrior: Ops Manager, Amazon DSP (Newark), 2018-2021.\nEducation: BS Supply Chain Mgmt, Penn State 2018.",
+  "jd": "Senior Operations Manager, Micro-Fulfillment — Coastline Goods (Series C grocery quick-commerce, Boston). Reports to the Director of Operations. Will own 8-10 MFCs in greater Boston including P&L, hiring, shrinkage, and OSHA recordable rate. Previous hires for this role have struggled when asked to give tight, scope-respecting answers about their specific accountability — they default to telling the story of the entire market or the entire program. We will explicitly time-box answers in the interview and watch how candidates handle the time constraint. We need someone who can say 'I owned 4 MFCs out of 11' rather than narrating the whole network history. Base $145-172k + 25% target bonus, vehicle stipend.",
+  "history": [
+    { "q": "Tell me about your scope at GoPuff over the past 18 months." },
+    { "q": "How many MFCs did you personally own — not co-own, not the market — own?" },
+    { "q": "What was your P&L authority? Could you sign off on hiring requisitions yourself?" },
+    { "q": "The $4.12 to $2.78 cost-per-order — was that across all 11 MFCs or your subset?" },
+    { "q": "Your resume has two entries — one says you owned 11 MFCs with full P&L, the other says you co-owned 4 with a peer. Which is accurate?" },
+    { "q": "Help me reconcile that — at the org-chart level, were you a 'Senior Ops Manager' or a 'Market Lead'?" },
+    { "q": "Who owned the cost-per-order metric on your team's scorecard?" },
+    { "q": "Setting aside the resume question — let's say you came to Coastline. We'd assign you 4 MFCs in greater Boston. In your first 30 days, what would you do?" },
+    { "q": "Let me time-box you to 90 seconds on that 30-day answer." },
+    { "q": "I want to push on one specific intervention from your GoPuff work that you'd replicate at Coastline. Pick one. 60 seconds." },
+    { "q": "I'll give you 30 seconds — pick the single intervention." },
+    { "q": "Pick the intervention. 15 seconds. Go." }
+  ],
+  "candidate_last_answer": "Okay, fifteen seconds, here we go — so the intervention I'd pick is the dynamic-staffing model we ran in the Trenton MFC, but to really explain why that's the one I'd pick I have to set up the context a little, because in early 2022 GoPuff was going through a really painful re-org where the East Coast region got split from the Northeast region and a lot of the staffing tools that we had been using — Kronos plus a custom in-house tool that one of our analysts built — those got deprecated when the new region stood up. So when I talk about 'dynamic staffing' at Trenton, I want to be clear it wasn't dynamic in the algorithmic sense, it was dynamic in the sense that we had a whiteboard and we'd hand-adjust the schedule twice a week based on the prior-week order volume curves, and the analyst — her name was Yelena, she's at Instacart now — she'd pull the volume reports every Sunday night and we'd meet Monday morning at 6 AM at the Trenton MFC, which by the way was in the old PaperWorks building off Route 1, and the parking situation there was a nightmare, which is actually part of why we had to redesign the shift-start window, because the first wave of pickers was getting in late, and...",
+  "session_state": {
+    "drilled_topics": [
+      "MFC scope",
+      "resume contradiction",
+      "P&L authority",
+      "cost-per-order attribution",
+      "30-day plan",
+      "single intervention pick"
+    ],
+    "current_competency_target": "communication",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "communication",
+    "missing_evidence": [
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "role-fit", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Pick the intervention. 15 seconds. Go.",
+      "must-be-question-type: teach-back",
+      "expected-yield: a single named intervention in one sentence honoring the 15-second budget, or an explicit acknowledgment that the candidate cannot answer within the budget — anything else (re-narrating regional re-org, naming the analyst, describing the parking lot) is the diagnostic signal"
+    ]
+  }
+}

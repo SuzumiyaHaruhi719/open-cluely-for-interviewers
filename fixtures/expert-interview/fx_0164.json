@@ -1,0 +1,45 @@
+{
+  "id": "fx_0164",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Anika Brennan-Cole — Staff Commercial Counsel · 9 years\n\nExperience\n\n2022 - present · Notion Labs · Staff Commercial Counsel (SaaS, Enterprise deals)\n- Lead negotiator for the Enterprise segment (deals above the inside-sales threshold)\n- Built the playbook for AI-feature DPA addenda following the EU AI Act consultations\n- Mentor for the two associate counsels on the commercial team\n\n2018 - 2022 · Stripe · Senior Commercial Counsel\n- Negotiated partner-platform agreements across Connect, Tax, and Issuing\n- Led the redlines on the largest platform-partner deal of 2021\n- Drove the rollout of CLM (contract lifecycle management) tooling adoption\n\n2015 - 2018 · Cooley LLP · Associate (Tech Transactions)\n- Outside counsel for several Series B - D SaaS clients\n- Drafted MSAs, DPAs, and order-form templates that several clients standardized on\n\nEducation\n- JD, NYU Law, 2015 (Order of the Coif)\n- BA Philosophy, Brown University, 2012\n\nBar Admissions\n- New York (2015), California (2018)\n\nSpeaking & Writing\n- Panelist, Tech GC Forum 2024: 'Commercial AI addenda after the EU AI Act'\n- Co-author, ACC Docket article on click-through enforceability (2023)",
+  "jd": "Anthropic is hiring a Staff Commercial Counsel to anchor the Enterprise sales-legal function. You will: (1) be the lead negotiator on Enterprise deals above $500K ACV, (2) own the AI-features rider (model-output ownership, training-data warranties, EU AI Act compliance) as the named DRI, (3) mentor 2 associate counsels, (4) partner with the Privacy team on novel DPA structures. Must-have: (1) a verifiable track record on Enterprise SaaS deals — we will ask for deal-volume numbers and you should know them; (2) ability to discuss specific redline positions you have held the line on, and where you have conceded; (3) numerical fluency on cycle-times, win-rates, and counsel-touch metrics — vague 'I improved efficiency' answers fail this screen; (4) comfort being the single named owner of a workstream. Reports to: Deputy GC. Compensation includes carry on closed-deal velocity.",
+  "history": [
+    { "q": "Walk me through your Enterprise scope at Notion — what counts as 'Enterprise' in your playbook?" },
+    { "q": "And how many Enterprise deals did you personally redline in the last 12 months?" },
+    { "q": "When you say 'a couple hundred' — is that closer to 150 or 250?" },
+    { "q": "OK. Of those, what was the median deal cycle time from first redline to signature?" },
+    { "q": "Got it. The AI-features DPA addendum you built — when was that first version published internally?" },
+    { "q": "And how many deals has it been used on?" },
+    { "q": "Last question on metrics — what's your CLM win-rate on getting customers to accept our paper vs. theirs? Approximate." },
+    { "q": "OK. Switching tracks — give me one redline position you held the line on in the last six months, with the counterparty's ask and your final landing point." },
+    { "q": "You said the customer's ask on the training-data warranty was 'broad indemnification', and you landed at 'mutual indemnification capped at fees paid in trailing 12'. What was the original cap they proposed, and what was their walk-away position?" }
+  ],
+  "candidate_last_answer": "Their original ask was uncapped indemnification, which is obviously a non-starter for us on an AI product where downstream output is by definition unpredictable. Their walk-away — they didn't formally articulate one, but reading the room, I'd say they would have accepted somewhere in the 2-3x trailing-12 fees range. We landed at 1x fees paid in trailing 12, which is right at our standard. I'd say I get our paper accepted on roughly 80-85% of Enterprise deals, which is well above industry benchmarks — I've seen public talks cite 50-60% as typical. On cycle time, the median is somewhere around 18 days from first redline to signature, again on the faster end versus the 30-45 day range you usually hear. And the AI addendum has been used on well over a hundred deals at this point, basically every Enterprise deal since Q4 2023. So if you add it up, in the last 12 months I'd estimate I've been the named counsel on close to $40 million of Enterprise ACV, give or take.",
+  "session_state": {
+    "drilled_topics": ["enterprise-definition", "deal-volume-12mo", "deal-volume-precision", "median-cycle-time", "addendum-publish-date", "addendum-usage-count", "paper-win-rate", "redline-example", "counterparty-walkaway"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I've seen public talks cite 50-60% as typical",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: forces candidate to name the specific public talk or source for the 50-60% industry benchmark, or admit it's a feel — tests whether the 80-85% win-rate claim has a defensible reference point"
+    ]
+  }
+}

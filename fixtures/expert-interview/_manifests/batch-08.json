@@ -1,0 +1,706 @@
+{
+  "batch_index": 8,
+  "slot_count": 50,
+  "slots": [
+    {
+      "fixture_id": "fx_0008",
+      "slot_index": 7,
+      "tags": {
+        "industry": "operations",
+        "level": "senior",
+        "language": "en",
+        "answer_quality": "inflated-metrics",
+        "history_length_bucket": "1-3",
+        "history_length": 1,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0028",
+      "slot_index": 27,
+      "tags": {
+        "industry": "product-management",
+        "level": "staff",
+        "language": "zh",
+        "answer_quality": "defensive-hostile",
+        "history_length_bucket": "8-12",
+        "history_length": 12,
+        "resume_type": "verbose-1500words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0048",
+      "slot_index": 47,
+      "tags": {
+        "industry": "design",
+        "level": "staff",
+        "language": "en",
+        "answer_quality": "overtime-tangent",
+        "history_length_bucket": "1-3",
+        "history_length": 3,
+        "resume_type": "keyword-stuffed",
+        "edge_case": "silent-then-recovered"
+      }
+    },
+    {
+      "fixture_id": "fx_0068",
+      "slot_index": 67,
+      "tags": {
+        "industry": "tech-engineering",
+        "level": "vp",
+        "language": "mixed",
+        "answer_quality": "defensive-hostile",
+        "history_length_bucket": "4-7",
+        "history_length": 7,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0088",
+      "slot_index": 87,
+      "tags": {
+        "industry": "education",
+        "level": "senior",
+        "language": "en",
+        "answer_quality": "deflective-blame",
+        "history_length_bucket": "4-7",
+        "history_length": 7,
+        "resume_type": "sparse-200words",
+        "edge_case": "reverses-question"
+      }
+    },
+    {
+      "fixture_id": "fx_0108",
+      "slot_index": 107,
+      "tags": {
+        "industry": "design",
+        "level": "mid",
+        "language": "mixed",
+        "answer_quality": "deflective-blame",
+        "history_length_bucket": "13+",
+        "history_length": 13,
+        "resume_type": "self-contradictory",
+        "edge_case": "multi-task-in-one-answer"
+      }
+    },
+    {
+      "fixture_id": "fx_0128",
+      "slot_index": 127,
+      "tags": {
+        "industry": "product-management",
+        "level": "director",
+        "language": "zh",
+        "answer_quality": "off-topic",
+        "history_length_bucket": "13+",
+        "history_length": 17,
+        "resume_type": "verbose-1500words",
+        "edge_case": "reverses-question"
+      }
+    },
+    {
+      "fixture_id": "fx_0148",
+      "slot_index": 147,
+      "tags": {
+        "industry": "sales",
+        "level": "vp",
+        "language": "en",
+        "answer_quality": "counter-question",
+        "history_length_bucket": "13+",
+        "history_length": 16,
+        "resume_type": "numbers-missing",
+        "edge_case": "silent-then-recovered"
+      }
+    },
+    {
+      "fixture_id": "fx_0168",
+      "slot_index": 167,
+      "tags": {
+        "industry": "legal",
+        "level": "senior",
+        "language": "mixed",
+        "answer_quality": "overtime-tangent",
+        "history_length_bucket": "4-7",
+        "history_length": 5,
+        "resume_type": "verbose-1500words",
+        "edge_case": "silent-then-recovered"
+      }
+    },
+    {
+      "fixture_id": "fx_0188",
+      "slot_index": 187,
+      "tags": {
+        "industry": "research",
+        "level": "intern",
+        "language": "en",
+        "answer_quality": "team-credit-only",
+        "history_length_bucket": "4-7",
+        "history_length": 4,
+        "resume_type": "verbose-1500words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0208",
+      "slot_index": 207,
+      "tags": {
+        "industry": "education",
+        "level": "senior",
+        "language": "zh",
+        "answer_quality": "off-topic",
+        "history_length_bucket": "13+",
+        "history_length": 15,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0228",
+      "slot_index": 227,
+      "tags": {
+        "industry": "marketing",
+        "level": "junior",
+        "language": "zh",
+        "answer_quality": "STAR-complete",
+        "history_length_bucket": "4-7",
+        "history_length": 5,
+        "resume_type": "clean-STAR",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0248",
+      "slot_index": 247,
+      "tags": {
+        "industry": "operations",
+        "level": "junior",
+        "language": "en",
+        "answer_quality": "STAR-partial",
+        "history_length_bucket": "8-12",
+        "history_length": 12,
+        "resume_type": "verbose-1500words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0268",
+      "slot_index": 267,
+      "tags": {
+        "industry": "healthcare",
+        "level": "junior",
+        "language": "zh",
+        "answer_quality": "concise-precise",
+        "history_length_bucket": "8-12",
+        "history_length": 8,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0288",
+      "slot_index": 287,
+      "tags": {
+        "industry": "healthcare",
+        "level": "junior",
+        "language": "en",
+        "answer_quality": "inflated-metrics",
+        "history_length_bucket": "4-7",
+        "history_length": 5,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0308",
+      "slot_index": 307,
+      "tags": {
+        "industry": "tech-engineering",
+        "level": "vp",
+        "language": "zh",
+        "answer_quality": "STAR-partial",
+        "history_length_bucket": "13+",
+        "history_length": 14,
+        "resume_type": "self-contradictory",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0328",
+      "slot_index": 327,
+      "tags": {
+        "industry": "healthcare",
+        "level": "director",
+        "language": "zh",
+        "answer_quality": "vague-empty",
+        "history_length_bucket": "4-7",
+        "history_length": 5,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0348",
+      "slot_index": 347,
+      "tags": {
+        "industry": "supply-chain",
+        "level": "intern",
+        "language": "mixed",
+        "answer_quality": "counter-question",
+        "history_length_bucket": "13+",
+        "history_length": 18,
+        "resume_type": "verbose-1500words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0368",
+      "slot_index": 367,
+      "tags": {
+        "industry": "healthcare",
+        "level": "director",
+        "language": "en",
+        "answer_quality": "deflective-blame",
+        "history_length_bucket": "8-12",
+        "history_length": 11,
+        "resume_type": "self-contradictory",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0388",
+      "slot_index": 387,
+      "tags": {
+        "industry": "marketing",
+        "level": "intern",
+        "language": "en",
+        "answer_quality": "team-credit-only",
+        "history_length_bucket": "1-3",
+        "history_length": 3,
+        "resume_type": "verbose-1500words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0408",
+      "slot_index": 407,
+      "tags": {
+        "industry": "healthcare",
+        "level": "director",
+        "language": "en",
+        "answer_quality": "overtime-tangent",
+        "history_length_bucket": "4-7",
+        "history_length": 6,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0428",
+      "slot_index": 427,
+      "tags": {
+        "industry": "data",
+        "level": "intern",
+        "language": "mixed",
+        "answer_quality": "concise-precise",
+        "history_length_bucket": "8-12",
+        "history_length": 9,
+        "resume_type": "sparse-200words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0448",
+      "slot_index": 447,
+      "tags": {
+        "industry": "sales",
+        "level": "mid",
+        "language": "en",
+        "answer_quality": "over-packaged",
+        "history_length_bucket": "13+",
+        "history_length": 16,
+        "resume_type": "keyword-stuffed",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0468",
+      "slot_index": 467,
+      "tags": {
+        "industry": "design",
+        "level": "junior",
+        "language": "en",
+        "answer_quality": "STAR-complete",
+        "history_length_bucket": "4-7",
+        "history_length": 7,
+        "resume_type": "clean-STAR",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0488",
+      "slot_index": 487,
+      "tags": {
+        "industry": "legal",
+        "level": "intern",
+        "language": "en",
+        "answer_quality": "STAR-complete",
+        "history_length_bucket": "8-12",
+        "history_length": 12,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0508",
+      "slot_index": 507,
+      "tags": {
+        "industry": "operations",
+        "level": "staff",
+        "language": "mixed",
+        "answer_quality": "concise-precise",
+        "history_length_bucket": "8-12",
+        "history_length": 11,
+        "resume_type": "self-contradictory",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0528",
+      "slot_index": 527,
+      "tags": {
+        "industry": "customer-support",
+        "level": "mid",
+        "language": "en",
+        "answer_quality": "over-packaged",
+        "history_length_bucket": "13+",
+        "history_length": 17,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0548",
+      "slot_index": 547,
+      "tags": {
+        "industry": "operations",
+        "level": "director",
+        "language": "mixed",
+        "answer_quality": "nervous-rambling",
+        "history_length_bucket": "8-12",
+        "history_length": 8,
+        "resume_type": "keyword-stuffed",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0568",
+      "slot_index": 567,
+      "tags": {
+        "industry": "education",
+        "level": "senior",
+        "language": "en",
+        "answer_quality": "concise-precise",
+        "history_length_bucket": "13+",
+        "history_length": 18,
+        "resume_type": "keyword-stuffed",
+        "edge_case": "multi-task-in-one-answer"
+      }
+    },
+    {
+      "fixture_id": "fx_0588",
+      "slot_index": 587,
+      "tags": {
+        "industry": "data",
+        "level": "staff",
+        "language": "en",
+        "answer_quality": "deflective-blame",
+        "history_length_bucket": "13+",
+        "history_length": 16,
+        "resume_type": "keyword-stuffed",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0608",
+      "slot_index": 607,
+      "tags": {
+        "industry": "sales",
+        "level": "vp",
+        "language": "en",
+        "answer_quality": "vague-empty",
+        "history_length_bucket": "13+",
+        "history_length": 16,
+        "resume_type": "keyword-stuffed",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0628",
+      "slot_index": 627,
+      "tags": {
+        "industry": "research",
+        "level": "staff",
+        "language": "zh",
+        "answer_quality": "vague-empty",
+        "history_length_bucket": "13+",
+        "history_length": 18,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0648",
+      "slot_index": 647,
+      "tags": {
+        "industry": "sales",
+        "level": "senior",
+        "language": "en",
+        "answer_quality": "timeline-confused",
+        "history_length_bucket": "4-7",
+        "history_length": 6,
+        "resume_type": "self-contradictory",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0668",
+      "slot_index": 667,
+      "tags": {
+        "industry": "finance",
+        "level": "vp",
+        "language": "en",
+        "answer_quality": "STAR-partial",
+        "history_length_bucket": "13+",
+        "history_length": 15,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0688",
+      "slot_index": 687,
+      "tags": {
+        "industry": "legal",
+        "level": "intern",
+        "language": "mixed",
+        "answer_quality": "over-packaged",
+        "history_length_bucket": "13+",
+        "history_length": 17,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0708",
+      "slot_index": 707,
+      "tags": {
+        "industry": "manufacturing",
+        "level": "junior",
+        "language": "en",
+        "answer_quality": "off-topic",
+        "history_length_bucket": "8-12",
+        "history_length": 8,
+        "resume_type": "keyword-stuffed",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0728",
+      "slot_index": 727,
+      "tags": {
+        "industry": "manufacturing",
+        "level": "senior",
+        "language": "mixed",
+        "answer_quality": "inflated-metrics",
+        "history_length_bucket": "13+",
+        "history_length": 14,
+        "resume_type": "sparse-200words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0748",
+      "slot_index": 747,
+      "tags": {
+        "industry": "hr",
+        "level": "senior",
+        "language": "zh",
+        "answer_quality": "off-topic",
+        "history_length_bucket": "13+",
+        "history_length": 16,
+        "resume_type": "clean-STAR",
+        "edge_case": "multi-task-in-one-answer"
+      }
+    },
+    {
+      "fixture_id": "fx_0768",
+      "slot_index": 767,
+      "tags": {
+        "industry": "legal",
+        "level": "staff",
+        "language": "zh",
+        "answer_quality": "off-topic",
+        "history_length_bucket": "13+",
+        "history_length": 15,
+        "resume_type": "keyword-stuffed",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0788",
+      "slot_index": 787,
+      "tags": {
+        "industry": "sales",
+        "level": "staff",
+        "language": "zh",
+        "answer_quality": "timeline-confused",
+        "history_length_bucket": "13+",
+        "history_length": 13,
+        "resume_type": "sparse-200words",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0808",
+      "slot_index": 807,
+      "tags": {
+        "industry": "healthcare",
+        "level": "staff",
+        "language": "en",
+        "answer_quality": "nervous-rambling",
+        "history_length_bucket": "13+",
+        "history_length": 18,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0828",
+      "slot_index": 827,
+      "tags": {
+        "industry": "tech-engineering",
+        "level": "mid",
+        "language": "en",
+        "answer_quality": "timeline-confused",
+        "history_length_bucket": "8-12",
+        "history_length": 8,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0848",
+      "slot_index": 847,
+      "tags": {
+        "industry": "sales",
+        "level": "director",
+        "language": "mixed",
+        "answer_quality": "off-topic",
+        "history_length_bucket": "1-3",
+        "history_length": 2,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0868",
+      "slot_index": 867,
+      "tags": {
+        "industry": "marketing",
+        "level": "vp",
+        "language": "mixed",
+        "answer_quality": "STAR-partial",
+        "history_length_bucket": "1-3",
+        "history_length": 1,
+        "resume_type": "self-contradictory",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0888",
+      "slot_index": 887,
+      "tags": {
+        "industry": "sales",
+        "level": "director",
+        "language": "mixed",
+        "answer_quality": "STAR-partial",
+        "history_length_bucket": "8-12",
+        "history_length": 9,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0908",
+      "slot_index": 907,
+      "tags": {
+        "industry": "manufacturing",
+        "level": "director",
+        "language": "en",
+        "answer_quality": "nervous-rambling",
+        "history_length_bucket": "1-3",
+        "history_length": 3,
+        "resume_type": "self-contradictory",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0928",
+      "slot_index": 927,
+      "tags": {
+        "industry": "sales",
+        "level": "senior",
+        "language": "en",
+        "answer_quality": "off-topic",
+        "history_length_bucket": "13+",
+        "history_length": 16,
+        "resume_type": "over-bragging",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0948",
+      "slot_index": 947,
+      "tags": {
+        "industry": "finance",
+        "level": "vp",
+        "language": "zh",
+        "answer_quality": "STAR-partial",
+        "history_length_bucket": "13+",
+        "history_length": 16,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0968",
+      "slot_index": 967,
+      "tags": {
+        "industry": "manufacturing",
+        "level": "junior",
+        "language": "en",
+        "answer_quality": "counter-question",
+        "history_length_bucket": "13+",
+        "history_length": 15,
+        "resume_type": "numbers-missing",
+        "edge_case": null
+      }
+    },
+    {
+      "fixture_id": "fx_0988",
+      "slot_index": 987,
+      "tags": {
+        "industry": "finance",
+        "level": "director",
+        "language": "zh",
+        "answer_quality": "nervous-rambling",
+        "history_length_bucket": "8-12",
+        "history_length": 12,
+        "resume_type": "clean-STAR",
+        "edge_case": null
+      }
+    }
+  ]
+}

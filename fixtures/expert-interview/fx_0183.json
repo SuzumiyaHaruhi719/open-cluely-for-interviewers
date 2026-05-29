@@ -1,0 +1,56 @@
+{
+  "id": "fx_0183",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Rachel Kowalski — Director of Data Engineering — 12 yrs experience — Seattle.\n\nEXPERIENCE\n\n2021.08 — present: Director, Data Platform, Brightline Logistics (Series-D supply-chain SaaS, ~900 employees)\n- Leads a 28-person data platform org: 14 data engineers, 6 platform engineers, 4 analytics engineers, 4 ML engineers, including 3 EM reports.\n- Owns Snowflake + dbt + Airflow + Kafka stack. Annual platform spend roughly USD 6.4M (Snowflake ~3.1M, AWS ~2.0M, tooling ~1.3M).\n- 'Reduced Snowflake spend by 38% YoY while doubling query volume' (2023 OKR).\n- 'Built a real-time inventory event pipeline serving 47 internal teams' — latency p95 sub-second.\n\n2018.04 — 2021.07: Senior Manager, Data Engineering, Convoy (freight tech). Built the team from 4 to 19. Wrote the original streaming-vs-batch decision doc that's still referenced 4 years later.\n\n2015.01 — 2018.03: Tech Lead, Data Infrastructure, Zillow Group. Led the migration from Hive to Spark.\n\n2012.06 — 2014.12: Software Engineer, Microsoft (Bing Ads infrastructure).\n\nEDUCATION: MS Computer Science, University of Washington (2012); BS Computer Science, Carnegie Mellon (2010).\n\nNOTE (contradiction the candidate may not be aware of): resume bullet at Brightline says 'reduced Snowflake spend by 38% YoY while doubling query volume', while another section says 'annual Snowflake spend ~3.1M' — implying prior-year spend was ~5M, which contradicts the company's published 2022 cost-disclosure of USD 4.1M for analytics tooling line item. The discrepancy is a tell.\n\nSPEAKING: Snowflake Summit 2023 (panel: cost optimization at scale); Data Council 2024 (talk: building platform teams under 30).",
+  "jd": "Director of Data Platform — Series-D climate-tech company (HQ Boston, ~600 employees, growing 70% YoY). Reports to VP Engineering. Inherits a 22-person data platform org currently in 3 pods (ingestion, transformation, ML serving). Mandate over next 18 months: 1) Bring data platform unit-cost (USD per TB processed) down by 40% without sacrificing freshness SLAs; 2) Migrate from a monolithic Airflow deployment to a sharded scheduling architecture; 3) Build the data contracts framework that lets 6 application teams self-serve schema changes; 4) Grow team from 22 to 32 over 12 months without ratio degradation; 5) Be the technical face of the data org in board-level discussions on AI infrastructure investment. Must-have: 10+ yrs experience with at least 3 yrs as a director or equivalent owning a data platform P&L > USD 4M; experience executing a major cost-reduction program with disclosed pre/post numbers; comfort presenting to non-technical executives.",
+  "history": [
+    { "q": "Walk me through the Snowflake cost-reduction program. Start at the trigger event." },
+    { "q": "You said spend dropped from prior year to 3.1M while query volume doubled. What was the prior-year Snowflake spend?" },
+    { "q": "OK, 5.0M prior year. Your resume implies a 38% reduction, which maps to roughly 3.1M from 5.0M. But your company's 2022 10-Q-equivalent disclosure shows the 'analytics tooling' line item at 4.1M. Help me reconcile those." },
+    { "q": "Got it — so the 4.1M is the post-discount figure and the 5.0M is the list-price figure. The 38% reduction is measured against list, not against actual cash spent. Is that how it was presented internally?" },
+    { "q": "And in the board deck specifically?" },
+    { "q": "Hmm. The board deck showed '38% reduction' without specifying the basis. Did the CFO or VP Eng ever ask which basis you were using?" },
+    { "q": "The CFO asked once and you clarified. Was the clarification reflected in the next deck?" },
+    { "q": "OK. Let's switch — the 6 levers you mentioned: warehouse right-sizing, query optimization, materialization strategy changes, idle suspension, multi-cluster gating, and reservation purchase. Rank them by USD impact." },
+    { "q": "You ranked reservation purchase as #1 at ~USD 800k. Reservation is a CFO-level commitment, not a platform-team decision. Was that lever yours to take credit for in the 38% number?" }
+  ],
+  "candidate_last_answer": "That's a fair pushback and it's a fair question — let me try to be precise. The reservation purchase decision was joint. CFO finally signed it but the analysis underneath, the multi-year capacity model, the scenario tradeoffs — that all came out of my team. I personally built the spreadsheet model in late Q2 2022. So when I say the program 'reduced spend 38%' I do include the reservation impact because without our model the CFO wouldn't have had the conviction to commit.\n\nBut I want to zoom out for a second because I think the question you're really asking — and I appreciate you pushing on this — is about attribution discipline, and that's something I've actually thought a lot about. When I was at Convoy from 2018 to 2021, I had a similar situation where we did a Spark migration and the cost impact was something like USD 1.4M annualized, but a meaningful chunk of that was actually a separate Hadoop sunset that the infra team had been planning for two quarters before I even joined. I claimed the full 1.4M in my self-review that year, and my manager at the time, Doug — Doug is now CTO at Anchor Logistics, great guy, I still keep in touch with him — Doug pulled me aside and said 'Rachel, the number is the number, but the attribution has to be honest, otherwise you lose your peers'. That conversation has stuck with me.\n\nWhich is funny because it's not the first time I've had that kind of feedback. Back at Zillow in 2017 we did the Hive-to-Spark thing — and that one really was end-to-end mine, I architected it, I rolled it out, I dealt with the very angry analytics team for six months — and even there I remember being careful in my promotion packet to call out that the original ADR for moving off Hive was written by someone who left before I joined. So there's a pattern in my career of getting better at separating 'I drove the outcome' from 'I authored the original idea'.\n\nComing back to Snowflake: I think the most defensible way to present that number would have been a stacked bar — 'platform-team-controllable savings: ~X%, commercial savings via reservation: ~Y%, together ~38%'. We didn't do it that way in the board deck because the board deck was time-boxed at 8 slides and the design team pushed back on the visual complexity. In retrospect I should have insisted. I think actually if I were doing this role at your company, that's one of the first things I'd want to set up — a clean attribution framework for platform-team OKRs so this exact ambiguity doesn't repeat. I gave a talk at Data Council 2024 that touches on this — happy to share the deck.\n\nAlso, to your earlier question about whether the clarification was reflected in the next deck — actually, I should add, the next deck after the CFO question was Q4 2023, and by then we were already presenting a different cost story because we'd onboarded a new BI workload that bumped baseline back up, so the 38% framing kind of naturally retired itself.",
+  "session_state": {
+    "drilled_topics": [
+      "snowflake-program-trigger",
+      "prior-year-spend",
+      "38pc-reconciliation-vs-disclosure",
+      "basis-of-measurement",
+      "board-deck-basis",
+      "cfo-clarification",
+      "clarification-reflection-in-next-deck",
+      "six-levers-ranking"
+    ],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "owner-of-action" },
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "metric" },
+      { "competency": "leadership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 38% framing kind of naturally retired itself",
+      "must-be-question-type: resume-contradiction-pin",
+      "expected-yield: confront the candidate with the fact that the 38% claim still sits on the resume that arrived for this interview today — testing whether the 'in retrospect I should have insisted on stacked bar' insight produces any updating behavior or remains purely retrospective, which separates self-aware-but-passive integrity from active integrity"
+    ]
+  }
+}

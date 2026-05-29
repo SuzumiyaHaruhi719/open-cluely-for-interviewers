@@ -1,0 +1,58 @@
+{
+  "id": "fx_0163",
+  "tags": {
+    "industry": "research",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "clean-STAR",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Marco Esposito — Applied Research Scientist (mid-level, 5 yrs post-PhD) — Berlin.\n\nEXPERIENCE\n\n2022.04 — present: Senior Research Scientist, Helix Therapeutics (computational biology / generative ML for drug discovery)\nS — Helix had a 14-person ML team and wanted to validate whether their in-house diffusion model for protein structure prediction was meaningfully ahead of public benchmarks (AlphaFold 2, ESMFold).\nT — Lead a 6-month benchmarking study and publish a technical report by end of 2023.\nA — 1) Designed the evaluation suite covering 4 protein families (membrane, intrinsically-disordered, multi-chain, antibody); 2) Implemented the comparison pipeline using OpenMM + PyMOL for structural validation; 3) Ran the studies on 480 GPU-days of A100 compute; 4) Authored a 22-page technical report submitted internally and selectively shared with 3 academic collaborators under MTA.\nR — Report concluded Helix's model outperformed AlphaFold 2 on antibody (CDR-H3) by 4.1 Å median RMSD and matched on the other 3 families. Report became the basis for Helix's Series-B fundraising deck (raised $80M, May 2024).\n\n2020.01 — 2022.03: Research Scientist, DeepMind (Health team, contract researcher)\nS — Joined as part of the post-AlphaFold 2 expansion focusing on structural validation and protein-ligand interaction.\nT — Contribute to a published paper on docking validation methodology within 18 months.\nA — Co-authored validation pipeline; ran ~120 ligand-protein docking studies; contributed Sections 3 and 5 of a Nature Methods submission.\nR — Paper published Nature Methods 2022, 4th author of 11.\n\n2018.09 — 2019.12: Postdoc, ETH Zurich (Krause Lab, Bayesian optimization for materials).\n\nEDUCATION: PhD Computer Science, EPFL (2018, thesis on Bayesian optimization for biological assays); MSc EPFL (2014); BSc University of Bologna (2012).\n\nLANGUAGES: Italian (native), English (fluent), German (working), French (working).",
+  "jd": "Senior Research Scientist (mid-to-senior, IC track) — small biotech-AI startup (Series B, 55 people, Berlin). Reports to VP Research. Role: 1) Lead 1-2 research workstreams in protein design or generative chemistry; 2) Own publication strategy for assigned area (target 1-2 venue-quality papers / year); 3) Mentor 2-3 junior researchers; 4) Sit on the model-release review board; 5) Represent the company at 2-3 major conferences per year (NeurIPS, ICML, ICLR, RECOMB, ISMB). Must-have: PhD in CS / computational biology / related; 4-7 yrs post-PhD; first / co-first authorship on at least 2 peer-reviewed papers in last 3 yrs; experience leading a research project end-to-end where you owned the question, the experimental design, and the writeup; comfort with the dual obligation of scientific honesty and commercial confidentiality.",
+  "history": [
+    { "q": "Walk me through the Helix benchmarking study. Why was the result not published externally, given how strong it sounds?" },
+    { "q": "Was the decision to keep it internal yours, or someone else's?" },
+    { "q": "You mentioned the 4.1 Å median RMSD advantage on antibody CDR-H3. What was the baseline AlphaFold 2 number you were comparing against?" },
+    { "q": "5.3 Å is significantly worse than the published AlphaFold 2 antibody numbers — most peer-reviewed benchmarks put it around 2.8-3.5 Å on CDR-H3. How do you reconcile that?" },
+    { "q": "OK. Was your test set evaluated by anyone external to Helix?" },
+    { "q": "You said the 3 academic collaborators under MTA reviewed the report — did any of them push back on the test-set composition or the AF2 baseline number?" },
+    { "q": "What did the collaborator at Cambridge specifically say about the AF2 baseline?" },
+    { "q": "How was the response to that critique decided — by you, by the VP Research, or by leadership above the VP?" },
+    { "q": "After the Series-B closed in May 2024, was the 4.1 Å advantage figure used in the fundraising deck?" },
+    { "q": "Was the 5.3 Å AF2 baseline disclosed in the deck, or was the comparison presented as 'X Å advantage over public benchmarks'?" }
+  ],
+  "candidate_last_answer": "Honestly, I have to be careful what I say here because the deck content is under NDA, but I'll tell you what I can. The deck — which I did not author, and did not present to investors — was prepared by the BD team and the CEO's chief of staff. I provided the technical report and answered some clarifying questions, but the way the comparison was framed for fundraising was a BD decision. I think they presented it as 'meaningfully ahead of public benchmarks on antibody loop modeling' without naming a specific Å delta against AF2. I'm not 100% sure because I didn't see the final version that went to investors.\n\nLook, on the broader question of the AF2 baseline — I want to push back a little. Yes, our 5.3 Å number was higher than the published AF2 CDR-H3 numbers. But that's because we ran AF2 off-the-shelf with default settings, which is not how most published benchmarks run it — published benchmarks usually use the multimer model with specific MSA-depth tuning, which we didn't have bandwidth to set up. I raised this with the VP Research in November 2023 and suggested we either re-run AF2 with proper tuning or weaken the claim. The VP's call was that re-running would push the report past the Series-B timeline, and the report's purpose was internal validation anyway, so we'd disclaim the AF2-tuning caveat in a footnote and proceed.\n\nI did include a footnote on page 18 of the technical report. Whether the BD team carried that footnote into the deck I genuinely don't know — that's on them. I want to be clear: the technical report itself was honest about the methodological asymmetry. If the way the result was presented to investors lost that nuance, that's a BD and exec-team issue, not a research-integrity issue on my side. I did my part by documenting the limitation. There's only so much an IC can do when the deck-creation process happens above their head.",
+  "session_state": {
+    "drilled_topics": [
+      "publication-vs-internal-decision",
+      "decision-ownership",
+      "af2-baseline-number",
+      "af2-baseline-reconciliation",
+      "external-test-set-evaluation",
+      "collaborator-pushback",
+      "cambridge-collaborator-specific-critique",
+      "response-to-critique-ownership",
+      "fundraising-deck-usage"
+    ],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "owner-of-action" },
+      { "competency": "integrity", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "failure-handling", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: footnote on page 18",
+      "must-be-question-type: action-attribution",
+      "expected-yield: test whether candidate took any active step to verify the footnote survived into the investor deck, or actively asked to review the deck before it went out — distinguishes 'I documented it, my job is done' integrity stance from 'I owned the truth of what investors saw' integrity stance, which is the relevant signal for a senior IC role"
+    ]
+  }
+}

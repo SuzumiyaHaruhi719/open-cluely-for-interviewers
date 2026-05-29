@@ -1,0 +1,47 @@
+{
+  "id": "fx_0143",
+  "tags": {
+    "industry": "legal",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Priya Ramanathan — Junior Counsel candidate — 2 yrs PQE — Bangalore.\n\nEXPERIENCE\n\n2023 — present: Associate, Khaitan & Co (Bangalore office) — TMT / Data Protection / Tech contracts. Worked across SaaS contracting, DPDP Act readiness advisory, several M&A diligences on the tech side. Drafted MSAs, DPAs, SCCs, AUPs for both Indian and cross-border clients.\n\n2022 — 2023: Associate, Trilegal (Mumbai office) — General Corporate / Tech transactions. Rotated through corporate, tech, and competition desks. Drafted shareholder agreements, supported one PE diligence.\n\n2021 — 2022: Trainee, Trilegal.\n\nEDUCATION: BA LLB (Hons), NLSIU Bangalore (2016-2021).\n\nLICENSING: Enrolled with Bar Council of Karnataka, 2021. Admitted to practice in India.\n\nLANGUAGES: English (native), Hindi (fluent), Tamil (fluent), Kannada (working).\n\nSKILLS: Contract drafting, data protection, TMT-sector regulatory analysis, cross-border DPA work.\n\nNote: figures and case names withheld per firm confidentiality policies.",
+  "jd": "Junior Counsel (data privacy focus) — In-house at a Series-D Indian SaaS company (HQ Bangalore, customers across India, EU, US). Reports to Head of Legal. Team of 3 (Head of Legal + Senior Counsel + this role). Day-to-day: 1) Own the DPDP Act (India) implementation workstream end-to-end, including consent framework, data-principal request workflows, breach response SOP; 2) Review and negotiate DPAs / SCCs with EU enterprise customers (target turnaround 5 business days); 3) Support GDPR Art. 28 processor obligations; 4) Maintain the records of processing activities (RoPA); 5) Run quarterly privacy training for engineering. Must-have: 2-4 yrs PQE, at least 12 months meaningfully focused on data protection (DPDP / GDPR / both); experience drafting or substantively negotiating DPAs; comfort sitting in a small in-house team where you own a workstream rather than support one.",
+  "history": [
+    { "q": "Welcome. Let's start with this: of the DPA work you've done, pick the one negotiation where you sat opposite the counterparty's counsel and walk me through it." },
+    { "q": "You said this was an EU enterprise customer for one of your Khaitan clients. Roughly when did this happen — quarter and year?" },
+    { "q": "OK, Q3 2024. How long did the negotiation run, start to finish?" },
+    { "q": "Got it. Of those rounds, which round did the SCC Module question come up, and what was the dispute?" },
+    { "q": "Walk me through the timeline of just that Module question: when the counterparty first raised it, when you proposed your position, when it was resolved." }
+  ],
+  "candidate_last_answer": "OK so the Module question came up — I want to say it was round 3, but actually, hmm, it might have been round 2 because I remember we were still on the main MSA and hadn't fully moved into the DPA exhibit yet, so it had to be round 2. The counterparty's counsel raised it on a call. The call was... I think it was a Tuesday in early September 2024. Or it might have been late August, because I remember our partner was on leave that week and I had to handle the call alone, and her leave was the last week of August.\n\nSo say late August 2024. They raised that since the customer was acting as a controller and our client was processing on their behalf, Module 2 (controller-to-processor) was the right pick. Our client's position internally — and I had taken this from a memo our partner had circulated maybe two months earlier, so around June 2024 — was that for this specific data flow there was actually a sub-set of data where our client was a joint controller, not a processor, and so Module 1 (controller-to-controller) needed to apply for that subset. So the dispute became: one DPA with one Module, or one DPA layering both Modules.\n\nI sent my written position to the counterparty on... let me think... it would have been about a week after the call, so first week of September. They came back two weeks later, which puts us in mid-September, with a counter-proposal that said they would accept the layered Module structure if we agreed to a tighter sub-processor flow-down clause. That part I actually escalated to our partner who was back from leave by then, and she signed off on the trade.\n\nResolved final position: layered Modules (1 for the joint-controller subset, 2 for the processor-portion), tighter sub-processor consent (case-by-case, not generic), signed... I want to say end of September but it might have spilled into early October because there was a separate redlining round on Annex II that took an extra week.\n\nSorry, I realize I said earlier the whole negotiation was 'about 6 weeks' but laying this out the Module piece alone took 4-5 weeks, so the total was probably closer to 8 weeks. I should correct that.",
+  "session_state": {
+    "drilled_topics": [
+      "dpa-negotiation-case-selection",
+      "negotiation-timing",
+      "negotiation-duration",
+      "scc-module-dispute-origin"
+    ],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "timeline" },
+      { "competency": "technical-depth", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: layered Module structure",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: force candidate to commit to specific dates for the partner-handover moment and partner sign-off, exposing whether candidate independently authored the layered-Module position or merely transmitted partner's pre-existing memo — disentangles 'I drafted it' from 'I argued for it'"
+    ]
+  }
+}

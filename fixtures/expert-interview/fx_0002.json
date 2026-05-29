@@ -1,0 +1,44 @@
+{
+  "id": "fx_0002",
+  "tags": {
+    "industry": "operations",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Operations Engineer · 9 years scaling mission-critical infrastructure\n\n- Strategically operationalized end-to-end production excellence across multi-region hyperscale workloads\n- Architected best-in-class incident response paradigms, championing a culture of relentless reliability\n- Led cross-functional war rooms to drive holistic root-cause synthesis at enterprise scale\n- Empowered SRE squads to ship value-add automation, leveraging modern observability stacks\n- Pioneered next-generation chaos engineering frameworks across the platform org\n- Owned strategic vendor relationships with cloud and observability partners\n- Drove a culture of psychological safety in postmortems through transparent learning loops\n\nMost recent: Lattice Cloud (2022-present) — Staff Operations Engineer, Platform Reliability\nPrior: Crystal Data (2018-2022) — Senior SRE",
+  "jd": "我们正在为 Lattice Cloud 平台可靠性团队招聘 Staff Operations Engineer。Reports to Director of Platform。You will own the on-call rotation for a 4-region Kubernetes fleet (~3000 nodes), drive the SLO/SLI program for tier-1 services (currently 5 services on a 99.95 budget), and lead at least one major reliability initiative per quarter. We need someone who has personally written runbooks that fired during real incidents, who has rolled back a bad deploy at 3am, and who can quantify the dollar impact of unplanned downtime. The team is recovering from a Q4 incident that cost ~$2.3M in SLO credits — your first 90 days will include a deep audit of our error-budget burn drivers. Travel <10%.",
+  "history": [
+    { "q": "Walk me through your current scope at Lattice — what services do you own end-to-end?" },
+    { "q": "Your resume mentions 'best-in-class incident response.' Pick one Sev1 you led last quarter and tell me about it." },
+    { "q": "What was the customer-visible impact of that incident — duration, requests affected, dollar SLO credits issued?" },
+    { "q": "Who actually wrote the rollback script — you, your teammate, or a SRE on another team?" },
+    { "q": "Your prior answer used 'we' a lot. Walk me through your individual contributions during that incident, hour by hour." },
+    { "q": "I want to make sure I understand — when you say you 'led' the response, were you the IC, the comms lead, or the on-call?" },
+    { "q": "Last question on this — what is one decision you personally made during that Sev1 that, in hindsight, you wish you'd made differently?" }
+  ],
+  "candidate_last_answer": "我觉得这个问题有点 unfair。说实话, every Sev1 is a team effort — 你不能让 one engineer 承担 hindsight blame。如果你想要 individual heroics, that's actually an anti-pattern in modern SRE culture. 我做的 decisions 都是 based on best available info at the time, and the postmortem 也是这么 conclude 的。If you want me to nitpick something, fine — maybe 我应该 page 一下 the database team 更早 5 分钟? 但是 honestly that's nitpicking — overall response 是 textbook execution.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "sev1-leadership-claim", "customer-impact-numbers", "owner-of-action", "individual-vs-team", "role-clarity", "hindsight-self-critique"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "failure-handling", "evidence_type": "failure-handling" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: maybe 我应该 page 一下 the database team 更早 5 分钟",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete named decision the candidate owned alone, with the alternative considered and the timing window — converts defensive 'it was textbook' into a specific 5-minute window of personal judgment"
+    ]
+  }
+}

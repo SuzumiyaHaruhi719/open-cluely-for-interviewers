@@ -1,0 +1,50 @@
+{
+  "id": "fx_0201",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "刘思远 · Staff Research Scientist（CV / 多模态方向）\n\n工作经历：\n2020-至今  某互联网大厂视觉技术中台  Staff 研究员\n  - 主导了集团统一视觉表征模型的预训练工作，模型已在5+业务线落地。\n  - 该项目由我和另一位Staff同事共同leads，他主要负责模型架构、我主要负责数据与评测。\n  - 在ICCV/CVPR/NeurIPS等顶会发表论文12篇，其中5篇为一作。\n  - 在顶会发表论文7篇，其中一作3篇。（注：以上两行均出现在简历中，编号系统按毕业后实际计数）\n\n2016-2020  某高校CV实验室  博士研究生\n  - 师从国内CV领域知名教授，研究方向为视频理解与时序建模。\n  - 博士期间累计6篇一作CCF-A会议论文。\n\n教育：2020 PhD 计算机视觉；2016 BS 计算机科学。\n\n技能：PyTorch、JAX、大规模分布式训练、CLIP系/SigLIP系预训练、视频-语言对齐、评测体系设计、学术写作。",
+  "jd": "岗位：Staff Research Scientist - 多模态大模型评测与对齐方向\n\n我们是国内某头部AI实验室，正在为基础模型团队招聘一位Staff级研究员，专注于多模态（视觉-语言-音频）大模型的评测与对齐方向。该岗位向Research Director汇报，预期独立带一条小research line（2-4人），并对集团多模态大模型的训练决策产生直接影响。\n\n职责：（1）牵头下一代多模态评测体系的设计，涵盖能力、安全、鲁棒性三个维度；（2）独立负责一条研究线，从立项到论文产出端到端owner；（3）与训练团队、产品团队建立稳定的评测信号反馈机制；（4）每年在顶会（CVPR/ICCV/NeurIPS/ICML）一作或末作发表论文1-2篇。\n\n要求：CV/ML/多模态相关博士；6年以上博士后/工业界研究经验或具有Staff级影响力背书；顶会一作论文5篇以上；具备独立owner一条研究线的实际经历；能在跨职能场合清晰表达技术判断。",
+  "history": [
+    { "q": "刘老师好，先请您简单overview一下您过去三年最core的研究方向。" },
+    { "q": "您提到\"集团统一视觉表征模型\"，能否定义一下\"统一\"在这里具体指什么？是单一checkpoint服务多业务，还是单一架构多checkpoint？" },
+    { "q": "好的。那这个模型最新一版的预训练数据规模、参数规模、训练算力大概是什么量级？" },
+    { "q": "您提到和另一位Staff同事共同leads。能否更具体地说，在最近一次大版本的release里，哪些决策是您拍板的、哪些是他拍板的、哪些是你们共同决定的？" },
+    { "q": "我注意到简历里有两处对论文数量的描述不太一致——一处写ICCV/CVPR/NeurIPS发表12篇含5篇一作，另一处写顶会发表7篇含一作3篇。能澄清一下哪个口径是准确的吗？" },
+    { "q": "好的，我们接下来聊评测。您主要负责数据与评测——能不能挑一个您主导设计的评测benchmark，从立项到落地讲一下？" },
+    { "q": "在这个benchmark的设计里，您当时是怎么决定要不要hold-out哪些数据的？有没有出现过hold-out泄漏的事故？" },
+    { "q": "您刚才提到的那个泄漏事故，是您团队内部哪一步先发现的？是评测分数异常、还是有人review code的时候发现的？" },
+    { "q": "在那次事故的复盘里，您个人承担了哪一类action item？" },
+    { "q": "好的。换一个角度——您提到模型在5+业务线落地。能挑一个您参与最深的业务线，讲讲您是怎么和业务方对齐评测指标的？" },
+    { "q": "在那个对齐过程里，您和业务方之间有没有出现过比较尖锐的分歧？最后怎么解决的？" },
+    { "q": "我们时间还有差不多十分钟。最后想问一下：您目前正在思考下一年研究agenda的时候，最top of mind的一个开放问题是什么？" },
+    { "q": "好的，那就这个开放问题——您觉得它的关键瓶颈是数据、算法、还是评测？为什么？" }
+  ],
+  "candidate_last_answer": "这是一个很好的问题，关键瓶颈这件事我最近确实想了挺多。我自己的观点是，三个都很重要，但我想先稍微跳开一下，因为最近我在读Anthropic的mechanistic interpretability那条线，特别是他们关于sparse autoencoders的几篇blog，给了我很多启发。我觉得整个领域可能正在经历一个范式转换，从scaling law驱动转向interpretability驱动。然后我也想提一下DeepSeek-V3和R1出来之后，对我们这种偏视觉的人其实震撼挺大的，因为它显示出post-training的回报可能比我们想象的要大。还有就是Yann LeCun最近又在批评autoregressive paradigm，我虽然不完全同意他，但是他提的world model那套东西我觉得对多模态评测的指导意义很大。所以回到您的问题，我觉得如果非要选一个，我会说是评测，但是评测的内涵已经变了，不再是benchmark accuracy那种，而是更像process-level evaluation，类似OpenAI o1那种过程奖励模型的思路。当然这里面还有RLHF vs RLAIF的讨论...",
+  "session_state": {
+    "drilled_topics": ["研究方向overview", "统一定义", "训练规模", "决策owner拆分", "论文数量口径", "评测benchmark立项", "hold-out泄漏发现", "事故复盘action", "业务对齐", "业务分歧", "下一年agenda开放问题", "瓶颈定位"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "communication",
+    "missing_evidence": [
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 评测的内涵已经变了",
+      "must-be-question-type: teach-back",
+      "expected-yield: 切断对Anthropic/DeepSeek/LeCun的引用，强制候选人用自己的话定义他所说的'process-level evaluation'与传统benchmark accuracy的关键差异，并说出一个他自己已经design或正在design的具体evaluation原型"
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "fx_0123",
+  "tags": {
+    "industry": "marketing",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Vivian Tang — Junior Performance Marketer — 1.5 yrs full-time + 2 internships — applying: Performance Marketing Specialist (junior).\n\nEXPERIENCE\n\n2023.07 — present: Performance Marketing Associate, GoodBaby (cross-border DTC baby products, Shenzhen HQ)\n- Situation: 团队负责北美市场 Meta + TikTok 双平台投放，月预算 USD 180k 左右，我加入时团队 3 人，我作为最 junior 的成员。\n- Task: 接手 Meta 端母婴湿巾品类的 prospecting campaign，要求在 Q4 把 ROAS 从 1.8 提到 2.5。\n- Action: 1) 把原本 14 个 ad set 收敛到 6 个，按用户阶段分层（new-mom 0-6 months / 6-18 months / gifting）；2) 重新做了 30 组 creative test，淘汰 22 组，保留 8 组高 CTR creative；3) 把出价策略从 lowest cost 改为 cost cap，cap 设在 USD 14；4) 引入 incrementality test，独立验证了 4 组 audience 的真实增量贡献。\n- Result: Q4 平均 ROAS 2.7（超过 2.5 目标），其中 11 月单月 ROAS 3.1，是该 SKU 的历史最高；同期 CAC 从 USD 23 降至 USD 17。\n\n2022.09 — 2023.06: Marketing Intern, Anker Innovations (Shenzhen)\n- Situation: 校招实习 9 个月，跨 Amazon + 独立站 两个团队。\n- Task: 主要支持 Amazon 端的 sponsored products 与独立站的 Google Ads。\n- Action: 协助优化 ASIN 级别的关键词出价，建立每周 keyword performance dashboard；独立站侧负责 Google Shopping feed 的 catalog 优化。\n- Result: Amazon 端我直接负责的 12 个 ASIN，在 3 个月内 ACoS 平均下降 5.2 个百分点；独立站 Google Shopping 的 feed 错误率从 14% 降至 2.3%。\n\n2022.01 — 2022.05: Digital Marketing Intern, Ogilvy Shanghai\n- 服务客户：联合利华凡士林。日常支持 brief 拆解与 weekly performance report。\n\nEDUCATION: BBA, City University of Hong Kong (2018-2022), Marketing major, GPA 3.6/4.0.\n\nSKILLS: Meta Ads Manager / TikTok Ads Manager / Google Ads / Amazon Sponsored Products / GA4 / Looker Studio / SQL (basic) / Excel pivot / 中文母语 / 英语流利 / 粤语流利.",
+  "jd": "Performance Marketing Specialist (junior, 1-3 yrs) — cross-border DTC consumer electronics brand (Shenzhen-based, 80% revenue from US/EU). Reports to performance marketing manager. Day-to-day: 1) 独立 own 1-2 个产品线的 Meta + TikTok 投放（月预算 USD 100-300k）；2) 每周输出 performance review 与 next-week test plan；3) 主导 creative testing 节奏（每月 20+ creative variants）；4) 与 creative team 协作 brief 新素材；5) 每季度做 1 次 incrementality 或 geo-holdout 测试。要求：1-3 年 Meta / TikTok 投放经验，月预算操盘量 ≥ USD 100k；ROAS / CAC / incrementality 等指标有自己解读能力；能跨语言（中英）跑会；抗压、能接受高频复盘节奏。",
+  "history": [
+    { "q": "Let's start broad. Walk me through what you do on a typical Monday at GoodBaby." },
+    { "q": "你刚才说每个 Monday 都先看周末 ROAS — 周末和工作日的 ROAS 差异在你这个品类里大概是什么 pattern？" },
+    { "q": "OK. 简历里你写 ROAS 从 1.8 提到 2.7，我想拆解一下：你说收敛 ad set 从 14 个到 6 个 — 这个决定是你自己做的还是 manager 拍板的？" },
+    { "q": "好的，那个 cost cap 设在 USD 14 — 14 这个数字怎么来的？" },
+    { "q": "你 cap 设在 14 的同时，CAC 从 23 降到了 17。这两个数字之间的关系你怎么解释？" },
+    { "q": "incrementality test 那一块 — 用的什么方法论？geo holdout / ghost ads / conversion lift？" },
+    { "q": "conversion lift 在 Meta 上的 minimum detectable effect 你这次设的多少？" },
+    { "q": "MDE 20% 在 USD 180k 月预算下能不能在 14 天测出来 — 你算过 sample size 吗？" },
+    { "q": "好，那我换个角度问：incrementality test 的结论让你 kill 掉了哪一组 audience？" },
+    { "q": "你刚说 lookalike 1% based on past purchasers 'incremental contribution 接近零' — 'incremental contribution 接近零' 你的具体定义是什么？" },
+    { "q": "我注意到你在描述 lookalike 的时候用了'我们认为'。这个判断是你 own 的，还是和 manager 一起讨论出来的？" },
+    { "q": "好，下一个：creative testing 你写 30 组淘汰 22 组留 8 组。这 30 组是谁产出的？" },
+    { "q": "creative team 给你的 30 组里 — 你提的 brief 里有几个具体的 creative hypothesis？" },
+    { "q": "8 组留下的高 CTR creative，最高的那组 CTR 是多少？" },
+    { "q": "你说留下的 8 组里有一组 CTR 4.2% — 行业 benchmark 你参考的是哪个数据源？" },
+    { "q": "Statista 那份报告是 2022 还是 2023 的？" },
+    { "q": "OK，最后一个数据点问题：你说 Q4 平均 ROAS 2.7 — 这个 2.7 是 GMV / ad spend 还是 net revenue / ad spend？" },
+    { "q": "你的 2.7 是 GMV / ad spend，没有扣 returns。如果按你们品类 18% 的退货率算回 net ROAS，大概在 2.2 左右，这个数字仍然过了 2.5 的目标吗？" }
+  ],
+  "candidate_last_answer": "我觉得你这个问题已经在 leading 我了。Q4 KPI 是 manager 设的 ROAS 2.5，没有人说要看 net ROAS，公司内部 dashboard 看的就是 GMV 口径，我做的就是 dashboard 上呈现的指标，这是公司层面的定义不是我个人选的。\n\n而且坦白讲，从面试开头到现在你已经问了我快 20 个问题，每一个都是在挑数字的刺，从 cost cap 14 这个数字怎么来的、到 lookalike 1% 的判断、到 CTR benchmark 是 Statista 哪一年的、再到现在退货率反推 net ROAS — 我感觉这个对话已经不是在评估我能不能做 junior performance marketing specialist 这个岗位，而是在做一个对我个人的 cross-examination。如果你的判断是我不合适，可以直接说，我可以接受，不需要用这种方式去 corner 一个 candidate。\n\n关于你刚才那个 18% 退货率反推的问题 — 我没有这个数字。退货率是供应链团队管的，performance marketing 团队的 KPI 设的就是 GMV ROAS。如果公司层面想看 net ROAS，那应该是 manager 和 director 层面去推动 KPI 重新定义，不是一个入职 18 个月的 associate 去算。\n\n我也想反问一下：贵司 junior performance specialist 这个岗位，KPI 是按 GMV ROAS 算还是 net ROAS 算？如果是 net，我可以接受 reset 预期；如果是 GMV，那你刚才那个反推就和岗位实际工作是脱节的。",
+  "session_state": {
+    "drilled_topics": [
+      "monday-workflow",
+      "ad-set-consolidation-ownership",
+      "cost-cap-14-rationale",
+      "cap-vs-cac-relationship",
+      "incrementality-methodology",
+      "mde-and-sample-size",
+      "lookalike-kill-decision",
+      "incremental-contribution-definition",
+      "judgment-ownership-vs-manager",
+      "creative-test-30-source",
+      "creative-hypothesis-count",
+      "top-ctr-creative",
+      "ctr-benchmark-source",
+      "statista-report-year",
+      "roas-numerator-definition",
+      "net-roas-recalculation"
+    ],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "metric" },
+      { "competency": "failure-handling", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "candidate accuses interviewer of 'leading me' and 'cornering a candidate' instead of answering the technical question about net ROAS implication" }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: net ROAS 2.2",
+      "must-be-question-type: tradeoff-articulation",
+      "expected-yield: redirect candidate back to the substantive question (does the GMV vs net distinction change the interpretation of their Q4 performance) while observing whether they can de-escalate and re-engage with the analytical content after defensive outburst — tests both numeracy and emotional regulation under pressure"
+    ]
+  }
+}

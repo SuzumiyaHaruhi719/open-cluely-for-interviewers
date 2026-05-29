@@ -1,0 +1,39 @@
+{
+  "id": "fx_0104",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "张鸿宇 — VP of Product · 16 年消费互联网产品\n\n职业经历\n\n2020 - 至今 · 滴滴出行 · VP of Product (网约车主业务线)\n\nSituation: 接手时网约车日单量从疫情前的 3000 万下滑到 1800 万，且面临高德、美团聚合平台的流量分流压力。Task: 重建产品差异化壁垒，恢复 DAU 与单均 GMV。Action: (1) 主导『特惠快车』产品线立项与分层定价策略，与算法、定价、运营三方对齐；(2) 重建司机端的接单决策辅助产品（含智能派单解释、收益预测）；(3) 推动安全产品中台化，将『行程录音 + 一键报警 + 行程分享』封装为可被其他业务线复用的 SDK。Result: 日单量在 2023 Q4 恢复到 2700 万，特惠快车贡献约 22% 单量；司机端接单率提升 4.3 个百分点；安全 SDK 被花小猪、滴滴货运两条线复用。\n\n2016 - 2020 · 美团 · 产品总监 (到店餐饮 - 商家侧)\n\nSituation: 商家 SaaS 渗透率 12%，但商家投诉『产品功能多但没人教』，NPS -8。Task: 重新设计商家管理后台的信息架构与 onboarding 流程，目标 NPS > 20。Action: 主导用户研究 (访谈 47 家商家)，重构信息架构为『经营仪表盘 / 营销工具 / 财务对账』三大模块；引入 in-product onboarding tour；与商家培训团队合作录制 23 个微课。Result: 18 个月后渗透率到 28%，NPS +24，重度活跃商家比例从 19% 到 41%。\n\n2012 - 2016 · 携程 · 高级产品经理 → 产品总监 (机票)\n负责机票预订主流程产品迭代。主导过国际航线退改签产品重构，将退票工单平均处理时长从 72 小时降至 18 小时。\n\n2008 - 2012 · 阿里巴巴 · 产品经理 (1688 国际站)\n\n教育\n- 清华大学经管学院 工商管理硕士 (MBA) · 2008\n- 北京邮电大学 通信工程学士 · 2005\n\n语言\n中文 (母语)、英文 (商务流利)、日语 (N2，2015 年携程驻东京半年)\n\n外部活动\n- 极客公园年度产品大会 2022 年主题演讲嘉宾",
+  "jd": "理想汽车 (Li Auto) 招 VP of Product，向 CEO 直接汇报，scope 包含车机系统 (Li OS)、手机 App、车主社区三个产品线，团队规模约 80 人 (5 个产品总监 + 4 个设计总监 + 资深 PM 与设计师)。当前最关键的命题：(1) 车机系统从 Android Automotive fork 迁移到自研内核的产品节奏与功能取舍；(2) 手机 App 与车机的 cross-device 体验重构，包括 OTA 推送策略、远程控车、家庭账户体系；(3) 车主社区从『售后服务工单+车主论坛』升级为有商业化潜力的内容平台。Must-have：(1) 真正 owned 过 1000 万 DAU 以上消费产品的 P&L 或 OKR；(2) 在硬件 × 软件交界场景有产品判断力 (汽车、IoT、机器人都可)；(3) 能向 CEO / 董事会讲清楚产品取舍的 tradeoff 与机会成本；(4) 能管理 5+ 个总监并做组织诊断。下属 attrition risk：当前产品总监团队有 2 个在产假与考虑离职边缘。",
+  "history": [
+    { "q": "你在滴滴 owned 过日单量 2700 万的网约车业务，这是一个超过千万 DAU 的消费产品。我想先聊一下硬件 × 软件交界的判断力——你怎么看车机产品和手机 App 产品最大的差异？" },
+    { "q": "OK。理想现在最大的产品取舍命题是 Li OS 从 Android Automotive fork 迁到自研内核——你如果是 VP of Product，你会怎么评估这个迁移的 go/no-go？" },
+    { "q": "你说会先做 user-impact 评估，但 user-impact 在迁移期内基本是 0 (用户无感)，真正的 trade-off 是工程成本与未来 5 年的差异化潜力。你怎么看这个未来 5 年的 bet？" }
+  ],
+  "candidate_last_answer": "这个问题我觉得要从更大的视角来看。其实国内汽车行业现在面临的不是单一的技术路线选择，而是整个智能化叙事的迁移。你看华为、小米、比亚迪，每家的打法都不一样——华为是 HarmonyOS 全栈，小米是手车一体的生态闭环，比亚迪走的是垂直整合。理想现在的位置其实挺微妙的，李想个人 IP 又强，用户基本盘又非常忠诚，所以产品决策不能脱离这个语境。我之前在滴滴的时候，程维和柳青对产品方向的判断也是这个逻辑——你不能只看产品本身，要看产品在公司整体叙事里的位置。所以我觉得理想做不做自研内核，其实跟一个更大的问题绑定——理想要不要走『全栈智能化』这条路。如果走，那自研内核是必经之路，迁移期再痛也要做；如果不走，那 fork Android Automotive 反而是更聪明的资源分配。我个人倾向于做，但前提是 CEO 想清楚组织层面要不要承接这个长期投入。还有就是组织文化的问题——理想现在的产研文化我没近距离观察过，但从外面看，公司价值观非常强，这是优势也是约束。如果新 VP 进来推大改革，文化适配会是第一道坎，这个我比技术问题更担心。",
+  "session_state": {
+    "drilled_topics": ["hardware-software-product-diff", "li-os-migration-go-no-go", "5-year-bet-on-self-research"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "communication", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 工程成本与未来 5 年的差异化潜力",
+      "must-be-question-type: tradeoff-articulation",
+      "expected-yield: forces candidate off the abstract 'company narrative' framing onto a concrete 5-year capability the self-built kernel would unlock that Android Automotive fork would not — pins judgement on a specific differentiator"
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "id": "fx_0124",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "self-contradictory",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Marcus Holbrook — Director of Curriculum & Learning Design · 12 years\n\nExperience\n\n2022 - present · Coursera (remote, US) · Director of Curriculum Strategy, Workforce Programs\n- Lead a team of 14 (3 senior managers, 8 instructional designers, 3 program managers)\n- P&L responsibility for the Workforce Recovery program (~$28M ARR)\n- Reduced average course-build cycle from 14 weeks to 8 weeks through a standardized template library\n- Personally authored 6 of the 24 flagship courses in the catalog\n\n2019 - 2022 · 2U / edX (post-merger) · Senior Manager, Learning Design\n- Managed a team of 6 instructional designers across the MicroMasters portfolio\n- Owned the partnership with MIT OCW for the Supply Chain MicroMasters relaunch (drove the redesign hands-on)\n- Reported directly to the VP of Content (no manager between us)\n- Note: org chart was matrixed; the Supply Chain MM relaunch was a cross-functional effort and my role was contributor-of-record on the IDX team\n\n2016 - 2019 · Khan Academy · Senior Instructional Designer (math, grades 9-12)\n- Led the Algebra II curriculum rebuild\n- Mentored 4 junior designers (formal mentorship program)\n\n2013 - 2016 · Pearson Higher Ed · Instructional Designer\n\nEducation\n- EdD Learning Design & Technology, Pepperdine University, 2018\n- MA Educational Psychology, Stanford GSE, 2013\n- BA English, Williams College, 2011\n\nNotable\n- Speaker, ASU+GSV Summit 2023 (panel: 'AI-native curriculum design')\n- Published: 'Scaffolding for Adult Learners' (chapter, Routledge handbook, 2021)\n- Board member, EdSurge advisory council (term: 2022-2024)",
+  "jd": "Outlier (an online tutoring + credentialing platform, Series C, ~140 employees) is hiring a Director of Curriculum to lead a 12-person curriculum team building stackable credential programs for adult learners returning to higher ed. You will: (1) own the academic quality and credit-articulation strategy for 8 active program tracks, (2) be the accountable owner (not co-owner, not contributor) for new program launches end-to-end, (3) manage and coach 3 senior ICs and 1 manager, (4) partner with the Head of Partnerships on university accreditation conversations. Must-have: (1) a genuine track record of being the named accountable owner — we screen carefully for resumes where a candidate calls themselves 'lead' but the actual decision-making sat with a VP; (2) ability to articulate one curriculum design decision where you traded off academic rigor against time-to-market and explain the reasoning; (3) directness when discussing scope of past roles, including being able to say what you did NOT own; (4) familiarity with the regulatory landscape (Title IV, regional accreditors). Reports to the VP of Learning.",
+  "history": [
+    {
+      "q": "Walk me through your current scope at Coursera — you said you have P&L for the Workforce Recovery program. What does P&L responsibility mean in your case, specifically?"
+    },
+    {
+      "q": "Got it. And when you say revenue, you mean booked ARR or recognized revenue? Who actually sets the price point for each course?"
+    },
+    {
+      "q": "OK. Let's zoom in on the MIT OCW Supply Chain MicroMasters relaunch. Your resume says you owned that partnership, but the note further down says 'contributor-of-record on the IDX team' — which one is accurate?"
+    },
+    {
+      "q": "Right. Let's talk about who picked the final curriculum sequence for the Supply Chain MM. Was that you, the MIT faculty PI, or your VP at edX?"
+    },
+    {
+      "q": "And the trade-off between depth in the operations-research module versus breadth across the five courses — that decision, who made the final call?"
+    },
+    {
+      "q": "OK. Different track. Your resume mentions reducing course-build cycle from 14 to 8 weeks at Coursera. What changed? Process? Tooling? Both?"
+    },
+    {
+      "q": "Was the template library a thing you built, or a thing your team built and you sponsored?"
+    },
+    {
+      "q": "Let me ask directly — over the last 12 months, name one curriculum design decision where you personally made the final call against the recommendation of a more senior person."
+    }
+  ],
+  "candidate_last_answer": "I want to be careful here because a lot of what's most relevant is under NDA from my time at 2U — there was a content-IP dispute with one of the university partners that I can't get into without risking violation of the separation agreement I signed when I left. So I'll have to speak in general terms. Look, the honest answer is that what I think is more interesting than any single decision is the framework I've developed over twelve years for when to escalate and when to hold ground. There's a model I teach in my Pepperdine guest lectures — it's three questions: does the senior person have the data I have, do they have the accountability I have, and do they have the timeline pressure I have. If the answer to any of those is no, then I have a duty to push back. I've written about this — there's a draft chapter I'm working on for an EdSurge collection, happy to share it. I think frankly the industry under-discusses this because most curriculum directors come from faculty backgrounds where consensus norms dominate, whereas my background is more product-adjacent so I default to clearer accountability lines. To your specific question, yeah I've definitely had moments like that, but I'd rather walk you through the framework than pick one example that risks the NDA issue.",
+  "session_state": {
+    "drilled_topics": [
+      "pnl-scope",
+      "revenue-and-pricing-authority",
+      "mit-mm-ownership-contradiction",
+      "curriculum-sequence-decider",
+      "depth-vs-breadth-decider",
+      "course-cycle-reduction-driver",
+      "template-library-builder",
+      "specific-pushback-decision",
+      "specific-pushback-decision-retry"
+    ],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      {
+        "competency": "ownership",
+        "evidence_type": "owner-of-action"
+      },
+      {
+        "competency": "integrity",
+        "evidence_type": "resume-vs-verbal-overclaim"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd rather walk you through the framework than pick one example",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forces candidate to either name one non-2U decision (Coursera, Khan, Pearson — none under NDA) or acknowledge the avoidance — pins ownership claim to a verifiable instance"
+    ]
+  }
+}

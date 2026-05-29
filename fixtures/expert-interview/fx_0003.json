@@ -1,0 +1,50 @@
+{
+  "id": "fx_0003",
+  "tags": {
+    "industry": "customer-support",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "verbose-1500words",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "陈昊宇 · 客户成功与体验副总裁\n\n职业概述\n十六年专注于大型 SaaS 与互联网公司的客户支持体系建设,先后在三家不同规模的企业（C 端互联网巨头、B2B 中型 SaaS、跨境电商独角兽）担任过支持负责人、客户成功负责人和客户体验副总裁。深度参与过两次 IPO 前的客户运营合规审计,以及一次跨境数据合规整改。\n\n工作经历\n\n2021 年 7 月 - 至今 · 麒麟云科技 · 客户体验副总裁\n- 直接管理 480 人的全球支持团队（北京、新加坡、墨西哥城三地交付中心),向 CCO 汇报\n- 负责支持业务全年预算 1.2 亿人民币,覆盖人力、工具、BPO 外包三大成本中心\n- 主导 CCaaS 系统替换项目,从 Genesys 迁移到自建的统一平台,2023 年 Q3 完成切换\n- 建立公司首个端到端 NPS 治理委员会,把跨部门反馈闭环时间从平均 47 天压缩到 14 天\n- 推动 AI 辅助坐席工具上线,坐席每天平均处理工单数从 38 单提升到 52 单\n- 2022 年牵头处理一起涉及用户隐私的客诉危机,事后接受过内部审计询问,审计结论为支持团队处理流程合规\n\n2017 年 4 月 - 2021 年 6 月 · 蓝鲸 SaaS · 客户成功高级总监\n- 从 0 搭建客户成功团队,3 年内规模从 12 人扩至 140 人\n- 设计公司首版客户健康度评分模型,把续约率从 71% 拉到 86%\n- 主导一次涉及 200 多家企业客户的服务条款重大变更沟通,客户流失率控制在 3% 以内\n\n2013 年 2 月 - 2017 年 3 月 · 红雀互娱 · 用户支持总监\n- 管理 220 人的 7×24 用户支持团队,服务 8000 万 MAU 产品\n- 推动客服外包从单一 BPO 转为双供应商竞争模式,年度成本下降 18%\n\n2008 年 9 月 - 2013 年 1 月 · 各大型互联网公司初中级支持岗位\n- 起步于一线客服,逐步晋升到团队主管、运营经理\n\n教育背景\n复旦大学 工商管理硕士（MBA）2015\n华东理工大学 工业工程学士 2008\n\n证书与社会职务\n- HDI Strategic Leadership 认证\n- 中国软件行业协会客户体验工作组副组长\n- 多次在 SaaStr Asia、Frost & Sullivan 客户体验论坛担任演讲嘉宾",
+  "jd": "我们正在为麒麟云科技招聘客户体验副总裁继任候选人(现任候选人即将转岗)。这个岗位直接向 CCO 汇报,管理 480 人的全球支持团队和 1.2 亿人民币年度预算。我们要找的候选人必须具备以下硬性条件:(1) 至少有一次主导 CCaaS 平台替换或重大系统迁移的实操经验,能够从需求评估、供应商选型、合同谈判到上线运营全程拍板;(2) 在数据合规和用户隐私敏感环境下管理过支持团队,并且能够清晰地讲清自己在处理合规事件时做过的具体决策(尤其是与法务的交互边界);(3) 拥有量化结果的能力 —— 能够拿出具体的预算节省额、SLA 改善幅度、客户健康度提升数据,而不仅仅是百分比;(4) 在跨地域、跨文化团队管理上有真实的踩坑和爬坑经历。我们目前面临的核心挑战:中国和东南亚 NPS 持续下滑,自建 CCaaS 平台稳定性低于预期,以及监管对跨境数据流动的新要求。",
+  "history": [
+    { "q": "请先介绍一下你在麒麟云的现有职责 —— 团队规模、预算、核心 KPI。" },
+    { "q": "你简历里提到 CCaaS 替换项目 2023 年 Q3 完成切换。这个项目的总投入是多少?" },
+    { "q": "切换之后稳定性和成本两个维度,有没有具体的对比数据?" },
+    { "q": "你说 AI 辅助坐席让每天工单处理量从 38 单到 52 单 —— 这个 52 单的口径是什么?是同一类型工单吗?" },
+    { "q": "你提到 2022 年处理过一起隐私客诉危机。能不能讲一下事件的大致背景和你个人在其中的角色?" },
+    { "q": "处理那次危机的时候,你和法务团队的边界在哪里?哪些决策是你拍板的,哪些是法务拍板的?" },
+    { "q": "审计结论说流程合规,但是从今天回看,你会怎么评价当时支持团队的响应?" },
+    { "q": "好,我们换个话题 —— 谈谈你对 NPS 治理委员会的设计。这个委员会的实际决策权在哪一级?" },
+    { "q": "好,把镜头拉回 AI 工具上线那个事。你说每天工单数从 38 单提升到 52 单,这个 37% 的提升非常显著。它在不同业务线之间分布是均匀的吗?" },
+    { "q": "你说 37% 是均匀的,但是又提到不同业务线坐席培训不同。再具体一点 —— 哪条业务线的提升最高,哪条最低?差距大概有多大?" },
+    { "q": "好。最后再问一个 —— 你刚才说 AI 工具让坐席工单量 38 升到 52。这个数据是你怎么取数的?是从 CCaaS 系统直接拉的,还是 BI 团队算的?" }
+  ],
+  "candidate_last_answer": "这个数据当然是非常 solid 的 —— 我们整个 AI 工具上线之后,坐席的整体效率提升了大概 35% 到 40%,这是非常显著的成果。具体口径其实是综合了 CCaaS 后台日志、BI 团队的报表、还有我们内部坐席满意度调研三个来源交叉验证出来的。每天 38 到 52 是个均值口径,但有些坐席最高峰能到 70 单一天,这说明天花板还远没有触到。整个项目我们对外是按照行业领先案例来报的,业界类似项目通常只能做到 15% 到 20% 的提升,所以我们这个数据在合规审计的时候也被引用为正面案例。当然你刚才问到的数据出处,坦率讲那个事件本身因为还涉及一些 NDA 和内审保留条款,具体取数链路我不太方便完整披露 —— 但我可以保证这个数字是经过 CFO 办公室签字背书的。",
+  "session_state": {
+    "drilled_topics": ["current-scope-1.2y-budget", "ccaas-migration-total-cost", "stability-cost-comparison", "ai-tool-ticket-count-definition", "privacy-incident-2022-role", "legal-boundary-decisions", "hindsight-self-critique", "nps-committee-authority", "ai-tool-uniformity", "highest-lowest-business-line", "data-provenance"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [
+      { "rule": "irrelevant-to-role", "evidence": "" }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: 经过 CFO 办公室签字背书",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: the actual document name or report ID that the CFO office signed off on, plus the date — converts a deflection-by-authority into a verifiable artifact reference"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "total_fixtures": 1000,
+  "batches": 20,
+  "batch_size": 50,
+  "dimensions": {
+    "industries": [
+      "tech-engineering",
+      "product-management",
+      "data",
+      "design",
+      "sales",
+      "operations",
+      "hr",
+      "legal",
+      "finance",
+      "marketing",
+      "customer-support",
+      "supply-chain",
+      "manufacturing",
+      "research",
+      "education",
+      "healthcare"
+    ],
+    "levels": [
+      "intern",
+      "junior",
+      "mid",
+      "senior",
+      "staff",
+      "director",
+      "vp"
+    ],
+    "languages": [
+      "zh",
+      "en",
+      "mixed"
+    ],
+    "answer_qualities": [
+      "STAR-complete",
+      "STAR-partial",
+      "vague-empty",
+      "over-packaged",
+      "inflated-metrics",
+      "off-topic",
+      "deflective-blame",
+      "concise-precise",
+      "defensive-hostile",
+      "nervous-rambling",
+      "overtime-tangent",
+      "counter-question",
+      "team-credit-only",
+      "timeline-confused"
+    ],
+    "history_buckets": [
+      "1-3",
+      "4-7",
+      "8-12",
+      "13+"
+    ],
+    "resume_types": [
+      "clean-STAR",
+      "keyword-stuffed",
+      "numbers-missing",
+      "self-contradictory",
+      "over-bragging",
+      "sparse-200words",
+      "verbose-1500words"
+    ],
+    "edge_cases": [
+      "silent-then-recovered",
+      "multi-task-in-one-answer",
+      "reverses-question",
+      "cites-NDA",
+      "borderline-compliance"
+    ]
+  },
+  "quota_check": "PASS"
+}

@@ -1,0 +1,53 @@
+{
+  "id": "fx_0122",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Dr. Reuben Castaneda, PharmD, MS-HEOR — Staff Clinical Pharmacist / Pharmacoeconomics Lead\nKeywords: HEOR, RWE, EHR-integration, Epic, Cerner, FHIR, HL7, ICD-10, RxNorm, SNOMED-CT, NCQA-HEDIS, MIPS, MACRA, 340B, MTM, CMR, antimicrobial-stewardship, ASP, opioid-stewardship, REMS, PBM, prior-auth, formulary-management, AWP, WAC, NADAC, GPO, IDN, IDS, ACO, MSSP, value-based-contracting, outcomes-based-rebates, indication-based-pricing, PrEP, HCV-DAA, GLP-1, biosimilar-substitution, P&T, MUE, DUR.\nStaff Pharmacist & HEOR Lead, Meridian Health System (4-hospital IDS, Phoenix), Aug 2020 – present.\n  - Co-led the 2023 GLP-1 formulary restriction project across 4 hospitals and 22 outpatient clinics.\n  - Maintained the antimicrobial stewardship dashboard (Tableau on Epic Caboodle).\nPharmacy Resident PGY-2 (Health-System Pharmacy Administration), Banner UMC Tucson, 2018-2020.\nPharmD, University of Arizona 2018. MS-HEOR, Univ. of Washington (part-time, 2021-2023).",
+  "jd": "Staff Clinical Pharmacist — Pharmacoeconomics & Stewardship, Crestpoint Health (6-hospital nonprofit IDS, Pacific Northwest). Owner-level role reporting to the System Director of Pharmacy. You will (1) own the system-wide formulary restriction process including authoring P&T monographs and defending recommendations to physician section chiefs, (2) lead at least 2 stewardship initiatives per year, (3) be the named accountable owner when a restriction backfires clinically or operationally. The interview specifically probes failure-handling because of a 2023 GLP-1 restriction at our system that caused a 6-week patient-access disruption and ended in a public letter from the endocrinology section. We want a candidate who can articulate what *they* would have done differently in such a situation, not what the committee or pharma rep got wrong. PharmD required, board certification preferred, MS-HEOR or equivalent strongly preferred. Comp: $172-198k base + on-call differential + retention bonus.",
+  "history": [
+    { "q": "Tell me about the GLP-1 formulary restriction work you co-led at Meridian in 2023." },
+    { "q": "What were the specific criteria you put on the restriction — BMI cutoff, A1c threshold, prior metformin, all of the above?" },
+    { "q": "How did endocrinology react when the criteria went live?" },
+    { "q": "Did the restriction cause any patient-access disruption?" },
+    { "q": "How long did the disruption last, and how many patients were affected?" },
+    { "q": "Walk me through the root cause — why did it disrupt access rather than just slowing prescribing?" },
+    { "q": "When the endocrinology section chief escalated, what did you personally say or do?" },
+    { "q": "Looking back, what would you have done differently in your role as HEOR lead?" },
+    { "q": "I want to push on that — you've named the EHR build team, the supply chain forecast, and the endocrinology rep. What did *you* personally get wrong?" },
+    { "q": "Setting aside the other groups for a second — name one concrete thing you, Reuben, would do differently if you were running this restriction at Crestpoint next quarter." }
+  ],
+  "candidate_last_answer": "Yeah, I hear what you're asking, and I want to be honest — I think the framing of 'what did I personally get wrong' kind of misses how these projects actually work at a 4-hospital IDS. 我 was the HEOR lead, which means I built the budget-impact model and the criteria framework, but the execution — the Epic build, the prior-auth workflow, the patient comms — those were owned by other functions. So when you ask what I'd do differently, the honest answer is: I'd have pushed harder for IT to staff the Epic build correctly, and I'd have pushed harder for the supply chain team to model the sublease — sorry, the substitution demand — onto semaglutide. The endocrinology rep on P&T also signed off on the criteria and then walked it back publicly, which I think 是 a governance issue, not an analytical one. If those three groups had executed on what they committed to in the P&T meeting, the rollout would have been smooth.",
+  "session_state": {
+    "drilled_topics": [
+      "GLP-1 restriction criteria",
+      "patient-access disruption timeline",
+      "endocrinology escalation",
+      "personal accountability"
+    ],
+    "current_competency_target": "failure-handling",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "failure-handling",
+    "missing_evidence": [
+      { "competency": "failure-handling", "evidence_type": "failure-handling" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd have pushed harder for IT to staff the Epic build correctly",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single concrete change in the candidate's own HEOR-lead actions (e.g., a different criteria threshold, a different stakeholder cadence, a different go/no-go gate) — not advocacy for other teams to behave differently"
+    ]
+  }
+}

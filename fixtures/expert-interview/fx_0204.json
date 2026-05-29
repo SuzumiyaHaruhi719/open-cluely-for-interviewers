@@ -1,0 +1,43 @@
+{
+  "id": "fx_0204",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "陈晓萌 — 工艺工程师 · 2 年\n\n经历\n2023 - 至今 · 富士康郑州 · 工艺工程师 (iPhone 后摄模组组装段)\n2022 - 2023 · 富士康郑州 · 工艺工程师 (实习转正)\n\n教育\n- 郑州大学 自动化学士 · 2022\n\n技能\n- Minitab、SPC、FMEA、Excel、AutoCAD\n- 普通话、英文 (CET-6)\n\n证书\n- 六西格玛绿带 (公司内部认证, 2024)",
+  "jd": "富士康深圳基地招工艺工程师 (中级)，负责 iPad 触控屏贴合段的工艺改善与不良攻关。直接汇报给段长。岗位职责：(1) own 至少一个工艺参数的优化项目 (从立项到闭环)，时间窗口约 3-6 个月；(2) 协调 SMT、组装、品质三方进行不良根因分析；(3) 每周向段长汇报 KPI 进展，必须能讲清楚自己做了什么、团队做了什么；(4) 带教 1 名实习工程师。Must-have：(1) 至少独立 own 过一个改善项目，能讲清楚自己个人的贡献 (不是只讲 we did)；(2) 能讲出至少一个真实数字 (DPPM、CPK、不良率) 的 before/after；(3) 能在面试中清晰区分『我做的』『我的师傅做的』『我们一起做的』；(4) 对 SPC / FMEA / DOE 有实操经验。我们尤其在意候选人能否在面试中把个人贡献从团队成果里分离出来。",
+  "history": [
+    { "q": "先聊一下你在富士康郑州的工作内容——你主要负责哪一段工艺？" },
+    { "q": "OK。后摄模组组装段最近一年有什么主要的改善项目你参与过的？" },
+    { "q": "嗯。那个 AA 段 (主动对位段) 的胶水点胶量参数优化——这个项目你的具体职责是什么？" },
+    { "q": "OK。那 DOE 方案是谁设计的？你还是你师傅？" },
+    { "q": "OK。然后 DOE 跑完之后，结果分析是谁做的？" },
+    { "q": "好。那最后改善前 CPK 多少，改善后 CPK 多少？这个数字你记得吗？" },
+    { "q": "好——那如果我现在让你只讲一件事是你自己独立做的、师傅没插手的，你能讲一个吗？" }
+  ],
+  "candidate_last_answer": "嗯……老实说，我们段的工程师团队配合很紧密，基本上每件事我师傅和段长都会 review，所以严格意义上『完全独立、师傅没插手』的事情其实不多。我们团队的文化就是这样，rookie 阶段都是 pair 着做。要说我自己出力多一点的——可能是每周的 SPC 控制图日常维护吧，就是每天去拉机台数据，跑 Minitab 看有没有点子超控制限，如果有就发邮件给段长和我师傅，他们会一起看是不是需要起 FMEA。这个事是我每天在做的，但说实话『独立完成』也不太准确，因为判断要不要起 FMEA 还是师傅拍板的。还有就是带新来的实习生熟悉 SOP 这个事，我自己带过两个实习生，给他们讲产线 layout、教他们用 Minitab，这个算是我自己做的。但工艺改善这种项目，我们团队都是一起的，没有谁单独 own 一个的说法。我们段长经常说『 results are the team's, lessons are individual 』，所以我也习惯了 credit 给团队。",
+  "session_state": {
+    "drilled_topics": ["scope-process-segment", "improvement-project-name", "individual-role-in-doe", "doe-design-attribution", "doe-analysis-attribution", "cpk-before-after", "independent-contribution-isolation"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 带过两个实习生",
+      "must-be-question-type: action-attribution",
+      "expected-yield: zooms into the mentorship work as a candidate-owned scope where 'team' can't be invoked — forces candidate to describe one judgement call they made unilaterally while mentoring, pinning ownership at a verifiable level appropriate for a 2-year engineer"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0083",
+  "tags": {
+    "industry": "research",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "李志远 博士 — 应用研究 VP — 18 年工业研究经验 — 候选岗位：基础模型实验室 副总裁 (Research VP)\n\n个人摘要：我是国内极少数能同时在'前沿模型研究'和'大规模工业落地'两端都拿出顶级成果的复合型研究领导者。\n\nHIGHLIGHTS:\n- 2009 年起在 MSRA 任研究员，发表论文 60+ 篇，h-index 31，Google Scholar 引用 12,000+（这是 2023 年底的数据，现在应该更高）\n- 在 NeurIPS / ICML / ICLR / ACL / EMNLP 五大顶会均有第一作者论文\n- 2015 年加入阿里达摩院，4 年内从 P8 升至 P10，是当年同批次中升职最快的研究员\n- 主导设计了某中国 top-3 电商平台的核心推荐模型架构（覆盖 8 亿日活）\n- 2019 年加入字节 AI Lab，组建并领导了一支 60 人规模的应用研究团队，团队产出直接支撑了三个核心业务线的 AI 能力\n- 2022 年作为 founding researcher 加入一家国内头部大模型创业公司（具体公司不便披露），负责对齐与安全方向，模型已发布两代\n- 拿过 ACL 最佳长文奖 1 次（2018）、阿里巴巴 CEO 特别贡献奖 2 次、字节 OKR S 评级 3 次\n- 多次受邀作为 NeurIPS / ICML area chair，是国内极少数获此邀请的工业界研究者\n- 培养的下属中已有 5 人成为各大厂研究 director 或同等级别\n\n个人特质：执行力极强 / 战略眼光独到 / 善于从 0 到 1 / 善于从 1 到 100 / 既懂技术又懂商业 / 既能写论文又能扛业务指标\n\n教育：清华大学 计算机科学 博士 (2009) / 清华大学 计算机科学 本科 (2004)\n\n联系方式略。",
+  "jd": "Research VP — 基础模型实验室（北京 / 上海双中心，向 CTO 汇报）。岗位定位：领导一支 80-120 人规模的研究团队，方向覆盖预训练、对齐、推理优化三大板块。核心职责：1）制定实验室未来 18-24 个月的研究路线图，并对外发布技术报告与开源成果以塑造学术影响力；2）每年至少 3 篇 top-tier 顶会一作或通讯论文产出（团队级别）；3）与产品 / 工程团队对接，将研究成果转化为 2-3 个核心业务能力；4）招聘并培养 senior researcher 与 research scientist；5）作为公司 AI 战略对外发声的主要代表之一。任职要求：博士学位 + 12 年以上研究经验；在大模型 / 对齐 / 推理 / 多模态任一方向有持续顶会产出；至少带过 50 人以上研究团队的经历；具备清晰的研究品味与下注判断力（able to kill projects early）。",
+  "history": [
+    { "q": "李博士你好。我想用第一个问题就直接问最核心的：你在简历里说 2022 年加入了一家国内头部大模型创业公司，担任 founding researcher 负责对齐与安全方向。能不能讲一下，你在那家公司过去两年里，做出的你自己最有判断力的一次研究方向决策？我想听的是你 kill 掉了什么、留下了什么、为什么。" }
+  ],
+  "candidate_last_answer": "好问题，这个问题我可以分两层来回答。\n\n首先要交代一下背景。我 2022 年 6 月加入这家公司，当时整个团队只有 14 个人，CEO 让我直接负责 alignment 方向的搭建。其实 alignment 这个方向我从 2019 年在字节就开始关注了，当时我还组织过一个内部的 reading group，每周读 OpenAI、Anthropic、DeepMind 的对齐论文，最早一批讨论的是 Christiano 2017 那篇 RLHF。说到 RLHF 你知道吗，其实国内最早把 RLHF 跑通的应该是百度，大概 2021 年底就有内部 demo 了，但他们当时没发出来，所以学术界普遍认为是 InstructGPT 2022 年 3 月才把这件事推到主流视野。我记得很清楚 InstructGPT 论文出来那天我正在三亚休假，我在酒店泳池边读完的，读完之后立刻发消息给我当时字节的下属说我们方向得变。\n\n回到 2022 年加入新公司的事。我做的第一个决策其实不是 kill 哪个项目，而是 hire 哪个人。当时有两个候选人，一个是从 MSRA 出来的对齐方向博士，一个是从美国某 lab 回来的 RL 背景的资深工程师。我选了后者，理由是当时阶段我们需要的是能把 pipeline 跑通的人而不是发论文的人。这个决策事后看是对的，那个工程师后来也成为了我们 alignment team 的核心。\n\n讲到 hire，我想顺便说一下我的招聘哲学。我面试过的人累计超过 500 个，我自己总结出来三个'反指标'：第一是简历里 buzzword 密度过高，第二是讲不清楚自己为什么 kill 某个项目，第三是被问到'你最大的失败'的时候只讲外部归因。这三类我一般都不要。\n\n说回 kill 项目这件事。2023 年初我们当时同时在跑三条 alignment 路线：RLHF、DPO 类直接优化、以及一条我们自己探索的基于 process supervision 的路线。到了 2023 年 6 月左右，我做了一个判断 — DPO 那条线虽然在小模型上效果好，但在我们当时主推的 70B 规模上稳定性不够，并且 DPO 的核心 trick 已经被斯坦福那篇论文公开，护城河有限，所以我决定把 DPO 那一组 6 个人合并到 RLHF 主线，process supervision 那条线保留 3 个人继续探索性研究。这个决策当时内部有争议，因为 DPO 那个小组的 lead 是公司早期员工，他个人是想继续做的，我和他单独谈了大概 4 次，最后他接受了 reassignment，现在在我们 RLHF 主线做 reward modeling，做得很好。\n\n顺便说一下 process supervision 这条线，我个人非常 bullish。我认为未来 18 个月这条路线会成为 alignment 的主流方向之一，OpenAI 那篇 'Let's Verify Step by Step' 其实只是冰山一角。我们内部的实验数据 — 因为保密我不能讲具体数字 — 但方向上是非常 promising 的。\n\n哦对了，刚才说到 reading group，我想到一件事 — 2020 年在字节我组织的那个 reading group，前后参加的人累计有 30 多个，其中有 8 个后来去了海外的对齐研究岗位，包括 DeepMind 和 Anthropic 各有 1 个。这件事我觉得是我个人对国内 alignment 社区做的一个不太被看见的贡献。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: kill 掉 DPO 那条线",
+      "must-be-question-type: tradeoff-articulation",
+      "expected-yield: force the candidate back to the specific kill decision with quantitative evidence (eval metrics, compute saved, opportunity cost) — strips away the reading-group and hiring-philosophy tangents and tests whether the kill decision was data-driven or vibes-driven"
+    ]
+  }
+}

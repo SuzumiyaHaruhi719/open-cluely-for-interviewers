@@ -1,0 +1,39 @@
+{
+  "summary": {
+    "fixtures_run": 1,
+    "succeeded": 0,
+    "yield_count": 0,
+    "yield_rate": 0,
+    "fallback_by_block": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E": 0,
+      "F": 0,
+      "G": 0
+    },
+    "latency_ms": {
+      "p50": 0,
+      "p90": 0,
+      "p99": 0,
+      "mean": 0
+    },
+    "errors": [
+      {
+        "id": "fx_0001",
+        "ok": false,
+        "ms": 479773,
+        "error": "This operation was aborted"
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "fx_0001",
+      "ok": false,
+      "ms": 479773,
+      "error": "This operation was aborted"
+    }
+  ]
+}

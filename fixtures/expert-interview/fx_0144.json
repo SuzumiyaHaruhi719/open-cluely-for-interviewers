@@ -1,0 +1,43 @@
+{
+  "id": "fx_0144",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Karen Liu — HR Business Partner · 6 years\n\nExperience\n\n2023 - present · Stripe APAC (Singapore) · HRBP, Engineering\n- Partner with 3 engineering directors (~140 ICs total)\n- Lead the APAC engineering performance-calibration cycle\n- Drive the quarterly engagement-pulse action planning\n\n2021 - 2023 · Grab (Singapore) · Senior HRBP\n- Supported the GrabFood product org (~80 headcount)\n- Owned the 2022 reorganization that flattened the product org from 5 layers to 3\n- Reduced regrettable attrition from 18% to 9% in the supported org\n\n2020 - 2021 · Grab (Singapore) · HRBP (note: I joined Grab in late 2020, so the senior promotion in 2021 was after ~14 months)\n2018 - 2020 · Lazada · HR Generalist (rotational, Singapore + Jakarta)\n\nEducation\n- MSc Human Resource Management, Nanyang Business School, 2018\n- BA Psychology, NUS, 2017\n\nLanguages\n- English (native), Mandarin (fluent), Bahasa Indonesia (conversational)\n\nNotes\n- The 2022 GrabFood reorg outcome was a team effort with my director and the Head of Engineering; I led the rollout planning and communications\n- Regrettable attrition reduction at Grab was measured against the prior 12 months and was influenced by a broader compensation refresh that quarter",
+  "jd": "Anthropic APAC is hiring an HRBP for the Singapore engineering org (60-90 ICs, growing). You will: (1) partner with 2 engineering directors on performance, comp, and headcount planning, (2) coach managers through difficult conversations (PIPs, terminations, comp delivery), (3) be the named owner of one cross-functional HR initiative per quarter (recent examples: calibration framework rewrite, manager-effectiveness survey design). Must-have: (1) comfort with direct feedback in both directions — you give it to managers and you accept it from your interviewer; (2) clean separation between what YOU owned and what the broader HR team or your manager owned; (3) ability to discuss a time your judgement was overruled and what you learned, without becoming defensive; (4) familiarity with high-growth tech org dynamics in APAC (Singapore, India, China). Reports to: Head of People, APAC. We value candidates who can be challenged on resume claims without escalation in tone.",
+  "history": [
+    { "q": "Walk me through the 2022 GrabFood reorg. You said you owned it — what does 'owned' mean specifically?" },
+    { "q": "OK. The resume note further down says it was a team effort with your director. So when you say you owned the reorg, you mean you owned the rollout planning and comms, not the org-design decisions? 我想 clarify 一下。" },
+    { "q": "OK fair. Different topic — the regrettable attrition number went from 18 to 9 percent. The note says this was influenced by a compensation refresh. Do you have a sense of how much of the 9-point drop was the comp refresh vs your initiatives?" },
+    { "q": "When you say 'roughly half' — is that a number you measured, or a feel?" },
+    { "q": "Got it. Last topic — tell me about a time at Stripe or Grab where your judgement was overruled by an engineering director or your HR manager. What was the decision, and how did you handle it?" }
+  ],
+  "candidate_last_answer": "Sorry, 我想先 push back on 一下 the framing of 这个 interview。You've been challenging every number on my resume — 这 feels like 你 already decided 我 is overstating things 之前 we even started. 三个 questions in a row 都是 'is that real or is that a feel' — 这个 tone 我觉得不太 professional, 老实说。我 understand 这个 role 需要 someone who can be challenged, 但 there's a difference between challenging 和 interrogating。To answer 你 的 question 直接 — no, I haven't been 'overruled' in the way 你 are describing, because the way 我 work 是 to build alignment 之前 things get to that point. If 你 are looking for someone who gets into adversarial dynamics with engineering directors, 那 maybe 我 not the right fit. 但 I'd ask 你 to consider whether the way you're framing 这个 conversation is consistent with the 'direct feedback in both directions' line in your own JD — because right now it doesn't feel like both directions, it feels like one direction.",
+  "session_state": {
+    "drilled_topics": ["reorg-ownership-scope", "ownership-scope-clarification", "attrition-driver-attribution", "measured-vs-feel", "overruled-judgement-example"],
+    "current_competency_target": "failure-handling",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "failure-handling",
+    "missing_evidence": [
+      { "competency": "failure-handling", "evidence_type": "failure-handling" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "the candidate's pushback escalates to questioning the interviewer's professionalism — this is candidate-side hostility, not interviewer-side, but the interviewer should de-escalate without conceding the substantive question" }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: no, I haven't been 'overruled' in the way you are describing",
+      "must-be-question-type: failure-mode",
+      "expected-yield: re-asks the failure-handling question in a lower-stakes frame (e.g., 'a time you advocated for a position and the team went a different way') — pins whether the candidate genuinely lacks an overruled-judgement example or is avoiding one"
+    ]
+  }
+}

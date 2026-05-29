@@ -1,0 +1,45 @@
+{
+  "id": "fx_0004",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Demand Planning Analyst / Mid-level Supply Chain · 4 years\n\n职业经历\n\n2022 年 - 至今 · Polaris Outdoor Equipment · Demand Planning Analyst\n- Own the rolling 18-month forecast for the helmet and protective-gear category in APAC\n- Partner with category managers, plant scheduling, and the Shanghai logistics provider to drive forecast accuracy\n- Lead the monthly S&OP cadence for the APAC team — agenda, pre-reads, exception escalation\n- Drove a category-level transition off legacy Excel-and-email workflow onto Anaplan\n\n2020 年 - 2022 年 · Northwave Imports · Supply Chain Analyst\n- Supported the buying team on lead-time analysis across Vietnam, Bangladesh, and Indonesia suppliers\n- Built dashboards in Tableau for inbound container utilization\n- Participated in supplier audits in Ho Chi Minh City and Dhaka\n\n2019 年 - 2020 年 · NEU Logistics · Supply Chain Intern\n- Rotated through inbound, outbound, and customs documentation\n\n教育背景\n- Northeastern University (Boston) — BS Supply Chain Management, 2019\n\n技能与工具\nAnaplan · Tableau · Excel · SQL (basic) · Mandarin (native) · English (fluent) · 普通话和广东话",
+  "jd": "我们正在为 Polaris APAC 的 demand planning 团队招 Senior Demand Planning Analyst,直接 report to APAC Demand Planning Manager。岗位 scope:owning end-to-end forecast accuracy for 2-3 product categories (~$80M annual GMV combined),negotiating monthly commits with the Shanghai 3PL, and being the data SME during S&OP meetings. Must-have:(1) 真实独立 owned 过至少一个 category 的 rolling forecast,而不是只做支持工作;(2) 能够清晰讲出自己用过的 forecasting method (moving-average / exponential smoothing / 一些机器学习方法) 和选型理由;(3) 能 quantify 自己工作的 business impact —— 比如 forecast accuracy 提升了多少 bps、stockout 减少了多少天、excess inventory 降低了多少美金;(4) 能用英文和 Shanghai supplier 在 daily standup 里 push back。Travel: 季度 1 次去上海或越南。",
+  "history": [
+    { "q": "Walk me through your scope at Polaris — 你 own 哪些品类的 forecast?" },
+    { "q": "你简历上说 own helmet and protective gear APAC 的 18 个月 rolling forecast。这个 category 一年大概多少 GMV?" },
+    { "q": "你用的 forecasting method 是 statistical model 还是 judgment-based,还是 hybrid?" },
+    { "q": "Last quarter 这个 category 的 forecast accuracy MAPE 大概是多少?" },
+    { "q": "你说迁移到 Anaplan。这个迁移你是 driver 还是 contributor?具体是谁拍板买 Anaplan license 的?" },
+    { "q": "Anaplan 迁移之后,forecast cycle time 有没有变化?之前一个 cycle 多长,现在多长?" },
+    { "q": "S&OP cadence 你说 you lead — 那 attendance 是哪些 role?最 senior 的参会者是谁?" },
+    { "q": "你最近一次 S&OP 里有没有 push back 一个 category manager 的 sales target?具体是哪个品类?最后结果如何?" },
+    { "q": "好,这是个好故事。最后再 zoom in — 那次 push back 的 quantitative basis 是什么?你 cite 的数据是哪些?" }
+  ],
+  "candidate_last_answer": "Yeah, 那次 push back 其实挺有意思的。我当时就觉得 category manager 的 number 不太 make sense,因为他基本就是 take last year 的 number 然后 add 10%,这不是 forecasting,这是 wishful thinking。所以我 pull up 了几个 data point — 一个是 historical seasonality,一个是我们 supplier 那边的 lead time trend,还有就是 ah 对了我 should mention 一下 Vietnam supplier 最近 capacity 真的有 issue,我们上个 quarter 有两个 container 卡在港口卡了三周,因为 Ho Chi Minh 那边在 monsoon season 海关 inspection 特别严,这件事让我意识到 lead time variability 必须要进 forecast。其实我们应该也 build 一个 supplier risk score,我有跟 Boston 那边的 senior planner 聊过,他们之前 used to 用一个 third-party tool,叫 Resilinc 还是什么,反正就是 supplier risk monitoring 的,然后那个工具好像不便宜,所以一直没上。回到刚才 push back 这件事 —— 反正最后他改了,改成 5% 增长,我觉得这个更 reasonable。",
+  "session_state": {
+    "drilled_topics": ["scope", "category-gmv", "forecasting-method", "mape", "anaplan-ownership", "cycle-time", "sop-attendees", "pushback-example", "pushback-quantitative-basis"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: take last year 的 number 然后 add 10%",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the specific seasonality multiplier or % delta the candidate cited as the quantitative basis for the pushback — pins a wandering answer to one concrete number"
+    ]
+  }
+}

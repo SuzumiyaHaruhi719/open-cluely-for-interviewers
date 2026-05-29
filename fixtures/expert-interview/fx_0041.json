@@ -1,0 +1,40 @@
+{
+  "id": "fx_0041",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "林雨桐 · 产品总监\n\n个人简介：用户增长 / 数据驱动 / 商业化 / AI Native / 平台型产品 / 跨端体验 / B端SaaS / C端社区 / 全链路 / 端到端 / 0到1 / 1到N / 北极星指标 / OKR / 双钻模型 / Jobs-to-be-Done / 用户旅程地图 / 服务设计 / 增长黑客 / AARRR / RFM / LTV / CAC / DAU / MAU / NPS / 用户体验五要素 / 敏捷迭代 / 精益创业 / MVP / Design Sprint。\n\n工作经历：\n2021-至今  某头部短视频平台  电商业务线 产品总监\n2018-2021  某SaaS独角兽  企业服务 高级产品经理 → 产品负责人\n2015-2018  某O2O平台  产品经理\n\n负责领域：直播电商、内容电商、商家中台、达人生态、营销中台、风控、合规、AI推荐、智能客服、组织效能、北极星指标体系。\n\n核心能力：战略规划、商业洞察、用户洞察、技术理解、跨部门协同、向上管理、向下赋能、横向影响力、组织变革、文化建设。\n\n教育：北京大学 工商管理硕士；浙江大学 计算机本科。",
+  "jd": "岗位：产品总监 - 商家增长方向\n\n我们是一家头部内容电商平台，目前正在为商家生态业务线寻找一位产品总监。该岗位向商家业务VP汇报，下辖三个产品团队（商家工作台、商家成长体系、商家营销工具），合计15-20名产品经理。\n\n你将负责：1）定义商家全生命周期的产品战略，包括入驻、冷启动、规模化、品牌化四个阶段的关键产品抓手；2）与算法、运营、销售团队共同制定商家GMV增长的北极星指标拆解方案；3）主导商家工作台的下一代架构升级，需要对工作流、权限体系、多角色协同有深度理解；4）每半年向CEO和COO汇报商家业务的产品健康度。\n\n要求：8年以上产品经验，至少3年总监级别带团队经验；有内容电商、直播电商或交易型平台的商家侧产品经验优先；能够清晰阐述自己主导过的至少一个商家产品从战略到落地的完整链路（含具体GMV或商家留存数据）；具备较强的数据敏感度和商业判断力。",
+  "history": [
+    { "q": "林总您好，先请您挑一个最能代表您过去三年水平的项目讲一下，我们想听具体的业务背景、您的决策、和最后的结果。" },
+    { "q": "您刚才提到\"商家全生命周期的北极星指标体系\"，能不能用一句话告诉我，您团队当前的北极星指标到底是什么？是怎么定义的？" },
+    { "q": "好的。那您说这个指标体系上线后\"显著提升了商家健康度\"，我想问得更具体一点——上线前后，您印象最深的一个数字的变化是什么？" }
+  ],
+  "candidate_last_answer": "这是一个非常好的问题。其实在我们的体系里，单看某一个数字其实意义不大，更重要的是整个体系的协同效应。我们当时是从用户旅程的视角，把商家从入驻到品牌化的全链路打通，让数据真正流动起来，让组织能够围绕北极星形成共识。这个过程中，每一个子指标都有它独立的故事，但更重要的是它们组合在一起形成的飞轮效应。我个人的感受是，相比于纠结某一个具体数字，我们更应该关注的是这套方法论本身的可复用性。",
+  "session_state": {
+    "drilled_topics": ["代表性项目", "北极星指标定义", "具体数字变化"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 上线前后",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 强制候选人给出一个具体的数字（例如商家30日留存从X%到Y%），切断'飞轮'/'方法论'话术，验证其是否真有数据接触"
+    ]
+  }
+}

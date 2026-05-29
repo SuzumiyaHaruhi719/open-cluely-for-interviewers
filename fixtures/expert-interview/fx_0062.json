@@ -1,0 +1,56 @@
+{
+  "id": "fx_0062",
+  "tags": {
+    "industry": "research",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "陈雨桐 (Yutong Chen) — 应用研究科学家\n现职:应用科学家二级,字节跳动 Seed 团队,北京,2022年7月至今。\n  - 担任 long-context attention 子项目的技术负责人,负责架构设计与训练曲线优化。\n  - 一作发表 NeurIPS 2024 论文一篇 (Sparse Routing for 128K Context)。\n同一段经历另一条:应用科学家二级,字节跳动 Seed 团队,2022年7月至今。\n  - 参与 long-context attention 子项目,主要负责数据清洗与评估集构建。\n  - 上述 NeurIPS 2024 论文为四作,前三作为团队 senior researcher 与一位 PhD 实习生。\n更早:研究实习生,微软亚洲研究院 NLC 组,2021年6月-2022年5月。\n教育:清华大学计算机系硕士 2022 / 本科 2019。\n技能:PyTorch, JAX, Megatron-LM, vLLM, Triton kernel 编写。",
+  "jd": "Research Scientist II — Long-context Foundation Models, Aurora AI (深圳/北京双 base)。岗位职责:在我们的 200B 稠密基座之上设计与验证 128K-1M 上下文窗口的训练方案,负责从架构提议、kernel-level profiling、训练曲线监控到最终 ablation 报告的端到端 ownership。需要候选人能够 (a) 独立提出可证伪的研究假设,(b) 在 8x H100 节点规模上跑通完整 ablation,(c) 在内部 paper club 公开为自己的工作辩护——包括承认作者顺序、承认哪些 idea 来自合作者。组内对学术诚信极度敏感:2023 年我们曾因一名 hire 在面试中夸大 first-author 贡献、入职后无法复现而解雇并追回签字费。本岗位汇报给 Head of Research。薪资:90万-140万 base + RSU,股票 vest 4 年。",
+  "history": [
+    { "q": "我们先从你的研究背景开始,简单介绍一下你在字节 Seed 这两年最满意的工作。" },
+    { "q": "你提到了 long-context attention 项目,具体讲一下 sparse routing 这个 idea 是怎么来的?" },
+    { "q": "那 ablation 是你一个人跑的吗?用了多少 GPU,跑了多久?" },
+    { "q": "你说一作的 NeurIPS 论文里,主要的 contribution 是 architecture 还是 training recipe?" },
+    { "q": "OpenReview 上这篇论文的 author response 是谁写的?" },
+    { "q": "Reviewer 2 当时质疑你们的 baseline 选择,你们怎么回应的?" },
+    { "q": "好的,我注意到你的简历里 NeurIPS 2024 这篇论文出现了两次描述——一处写你是一作并主导架构,另一处写你是四作,主要负责数据清洗。OpenReview 上公开的作者顺序是哪一种?" },
+    { "q": "等一下,我想确认——你刚才说'一作主要是 first listed author 的意思,不一定是 main contributor',这个理解和 NeurIPS 的署名 convention 不太一样。你的 advisor 在署名顺序上怎么和你沟通的?" },
+    { "q": "那签 camera-ready 的时候,作者顺序是谁最终拍板的?" },
+    { "q": "你刚才提到 senior researcher 写了大部分 training loop 代码,但简历第一条又写 architecture 是你设计的——architecture 设计和 training loop 实现是两回事,我想确认你是哪一部分的主要贡献者。" },
+    { "q": "我直接问:OpenReview 上这篇论文你是第几作者?请直接告诉我一个数字。" }
+  ],
+  "candidate_last_answer": "你这样问我觉得已经超出正常面试的范畴了。我从头到尾很 cooperative 地回答了你十几个问题,你现在的态度像是在审讯,不是在面试。OpenReview 是公开的,你自己可以查,为什么一定要逼我说一个数字?我从入行到现在没有遇到过这样咄咄逼人的面试官。如果 Aurora 的文化就是这样,那我觉得 我们今天可以到这里结束。我不会在 这种 hostile 环境下继续 perform。",
+  "session_state": {
+    "drilled_topics": [
+      "NeurIPS 2024 论文 authorship",
+      "ablation 实际执行者",
+      "architecture vs training loop 贡献归属",
+      "advisor 沟通"
+    ],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "owner-of-action" },
+      { "competency": "failure-handling", "evidence_type": "failure-handling" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "Candidate threatens to end interview and accuses interviewer of being 'hostile' / '审讯' when asked a direct factual question about OpenReview author position — this is candidate-side escalation, not interviewer misconduct. The interviewer question is appropriate given the resume contradiction and the JD's explicit prior fraud-related termination." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: OpenReview 上这篇论文你是第几作者",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single integer answer for author position, or an explicit refusal to answer, either of which is decision-grade signal on integrity"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "fx_0043",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "黄子轩 / 5 年品牌营销经验 / 上海 / 申请：高级品牌经理（mid 级）\n\n工作经历：\n\n2022.04 — 至今：泡泡玛特 IP 营销组 品牌经理\n- 负责 LABUBU 系列在国内市场的品牌沟通策略\n- 主导多次跨界联名项目（具体合作方因 NDA 不便列出全部）\n- 管理品牌内容预算，与代理商协作产出 campaign\n- 牵头一次品牌危机的对外沟通处理\n\n2020.06 — 2022.03：小红书 商业品牌策划组 高级策划\n- 服务美妆个护类客户的 brief 解读与策略输出\n- 主导多个新锐品牌的冷启动方案\n- 与销售团队配合完成大客户的年框续约支持\n\n2019.07 — 2020.05：奥美中国 上海 客户执行\n- 联合利华日化条线的日常 account 执行\n- 协助资深同事完成季度 review 与 brief 撰写\n\n教育：复旦大学 新闻学院 广告学 本科（2015-2019）\n\n技能：品牌策略 / 跨界联名 / 危机沟通 / Brief 撰写 / 代理商管理 / 消费者洞察\n\n奖项：2023 金投赏 入围 / 2021 虎啸奖 银奖（团队项目）\n\n备注：简历刻意未填写具体数字，希望面谈中详细说明。",
+  "jd": "高级品牌经理 — 潮玩 / IP 衍生品类（上海，6 年以上经验优先，mid-to-senior 均可）。汇报对象：品牌总监。岗位职责：1）独立负责一个 IP 系列（年 GMV 1-3 亿区间）的品牌沟通策略制定与落地；2）每季度规划至少 1 次跨界联名或大型 campaign，从立项到复盘全流程负责；3）管理年度品牌内容预算 1500-2500 万，与 4-6 家代理商协作；4）危机公关一线响应（24 小时内出对外口径草案）；5）与产品、电商、渠道团队协同，确保品牌动作与商业目标对齐。任职要求：5 年以上品牌营销经验，至少 2 年在国内消费品 / 潮玩 / 美妆 / 时尚行业；有完整带过一次跨界联名 case 的经验（从 brief 到上市）；具备危机沟通实操经验（不是理论）；数据敏感，能用 ROI、心智份额、声量、转化漏斗等指标衡量品牌动作。",
+  "history": [
+    { "q": "先讲一下你过去 5 年里你认为最能代表你品牌经理能力的一个项目。" },
+    { "q": "你提到主导跨界联名 — 在最近一年里，挑一个你完全独立负责的联名，从立项讲起。" },
+    { "q": "这个联名你说不便完全披露，能不能告诉我品类和合作品牌的'类型'？以及最终的核心数据：销量、声量、ROI 大致量级？" },
+    { "q": "你说牵头过一次品牌危机的对外沟通 — 是哪类危机？舆情类、产品质量类、还是合规类？" },
+    { "q": "我想往那次危机里挖一层。危机爆发的 24 小时里，你做了哪些决策？请按时间线讲，谁先告诉你出事的、你第一个动作是什么、第一版口径什么时候出的、谁拍板的。" }
+  ],
+  "candidate_last_answer": "嗯……（沉默约 6 秒）……不好意思我整理一下时间线。事情是去年 11 月发生的，具体哪一天我得想一下……应该是 11 月 17 日周五晚上。\n\n（再沉默 3 秒）\n\n好我重新讲。11 月 17 日晚上大概 8 点半，我正在家里，接到我们社媒监测代理商的电话，说微博上有一个粉丝量 80 万左右的潮玩博主发了一条质疑我们某联名款品控的长帖，附了 9 张图，发出来 40 分钟左右已经有 2000+ 转发。我第一个动作是先把帖子完整截屏归档，然后 8 点 45 分在工作群里 @ 了我的总监和供应链负责人，把链接和我的初步判断发上去 — 我的判断是这条帖子大概率会冲上热搜，因为图很清晰、博主有公信力、发布时间又是周五晚上流量高峰。\n\n9 点 10 分，总监回电话，我们三个人（我、总监、供应链）拉了一个临时电话会。供应链确认了批次号，承认确实有一批存在涂装瑕疵，约占该联名总产量的 3% 左右。我在通话里同步起草第一版口径，方向定为'承认 + 召回 + 补偿'，不走否认或冷处理。9 点 50 分第一版口径文档发到决策群，10 点 15 分总监和公关 VP 拍板，10 点 30 分官方微博和小红书账号同步发布致歉与召回声明。次日 11 月 18 日中午 12 点前，我跟客服团队对齐了召回 SOP，并安排了客服侧的话术培训。\n\n复盘下来这次的关键判断有两个：第一，是否承认。当时也有人主张先说'我们正在核查'，但我坚持立刻承认，因为博主的图证据链已经很完整，拖延只会让品牌信任度更差。第二，补偿方案。最终给到的是'全额退款 + 双倍补发 + 后续联名优先购权'，这个方案是我和电商总监在 11 月 18 日上午 10 点之前敲定的。\n\n结果：事件 72 小时内热度自然回落，没有冲上热搜主榜（停在话题榜区域榜）；该联名后续两个 SKU 复购数据未受明显影响；同期我们做了一次品牌好感度小规模调研，相对事件前下降在可接受范围内 — 具体百分点我不太记得准了，但调研报告应该还在我电脑里。",
+  "session_state": {
+    "drilled_topics": [
+      "5-year-representative-project",
+      "independent-collaboration-case",
+      "collaboration-data-disclosure",
+      "crisis-type-classification"
+    ],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "cost-awareness" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 全额退款 + 双倍补发 + 后续联名优先购权",
+      "must-be-question-type: cost-of-decision",
+      "expected-yield: extract the actual financial cost of the recall package and whether the candidate weighed that cost against brand-equity preservation — converts 'I made the right call' narrative into a numeric tradeoff defense"
+    ]
+  }
+}

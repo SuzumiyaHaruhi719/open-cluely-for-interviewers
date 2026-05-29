@@ -1,0 +1,37 @@
+{
+  "id": "fx_0181",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Sophia Liu - Customer Success Manager (Mid-level)\n\nExperience:\n2022 - present  CloudOps SaaS - Senior CSM, Mid-Market segment\n  - Situation: 接手时负责一个 $4.2M ARR 的mid-market book，账户健康度 yellow/red 占比 38%。\n  - Task: 把 yellow/red 比例降到 20% 以下，并把 net retention 从 96% 拉到 105%。\n  - Action: 重新做了 segmentation，把 50 个账户按使用深度+合同到期窗口划成 4 个playbook tier；对 12 个 high-risk accounts 亲自执行 90-day intervention plan；和 PM/Support 一起搭了一个简单的 health-score v2。\n  - Result: 三个季度内 yellow/red 降到 18%，net retention 落在 107%，且 12 个 high-risk 账户里有 9 个续约成功（其中 3 个 expansion）。\n\n2020 - 2022  PaymentsCo - CSM, SMB\n  - S: 团队人均 60 个账户，churn 季度 6.5%。\n  - T: 在不增 headcount 的前提下把 churn 降到 4% 以内。\n  - A: 推动了 onboarding 自动化邮件序列、做了一个 lightweight QBR template、和 ops 一起把 NPS 收集流程整合进产品内。\n  - R: 半年 churn 降到 3.8%，团队人均账户能力提升到 80 个。\n\nEducation: 中山大学 工商管理 学士, 2020.\n\nSkills: Gainsight, Salesforce, Zendesk, Looker, SQL (basic), 中文/English bilingual.",
+  "jd": "Role: Mid-level Customer Success Manager - Mid-Market\n\nWe are a Series C developer-tools SaaS company hiring an experienced CSM for our mid-market segment ($50K-$500K ARR accounts). You will own ~30 accounts across APAC and partner with Sales, Solutions Engineering, Product, and Support to drive net retention and product adoption.\n\n核心职责: 主导账户健康度管理（health scoring, risk identification, churn intervention）; 负责 quarterly business reviews; 在 renewal 60 天前主导 commercial conversations 并在需要时引入 sales；与 PM 反馈产品 roadmap signal。\n\n要求: 3-5 years of customer success / account management experience in B2B SaaS; demonstrated 个人 ownership of at least one high-stakes save 或 expansion 案例（要能讲清楚自己具体做了什么，而不只是团队怎么做的）; bilingual Mandarin/English; comfortable holding commercial conversations with C-level stakeholders at mid-market customers.",
+  "history": [
+    { "q": "Sophia, 你简历上 highlight 的那 12 个 high-risk accounts、9 个成功续约的故事，能不能挑其中一个最难的账户，详细讲一下？我想理解 specifically 是你做了什么动作让它从 red 翻回 green。" }
+  ],
+  "candidate_last_answer": "嗯，那我讲一个最难的。这个账户当时是一家中型 fintech，合同 $180K ARR，距离续约还有 5 个月的时候 health score 已经飘到 red。其实这个 save 是整个 pod 一起做的——我们 CS 团队 leader 一直在 coach 我策略；Solutions Engineer Daniel 帮我们做了非常 thorough 的技术 audit；Support 那边的 escalation manager 帮我们 turnaround 了几个 long-standing tickets；Product 那边的 PM 还专门为这个客户加急了一个 feature。我自己更多是个 coordinator 的角色，把大家拉到一起。最后客户续约还 expansion 了 30%，但 honestly 这真的是团队的功劳，不是我一个人的。我们 pod 的文化就是 nobody saves an account alone。",
+  "session_state": {
+    "drilled_topics": ["high-risk account save story"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: coordinator 的角色",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 强制候选人在团队协作之外，给出一个她个人独立做出且没人替代得了的决定或动作（比如哪次和客户CFO的对话、哪个让步条款的拍板），把'team credit'话术拆解为可验证的个人贡献"
+    ]
+  }
+}

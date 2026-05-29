@@ -1,0 +1,34 @@
+{
+  "id": "fx_0005",
+  "tags": {
+    "industry": "legal",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Senior Corporate Counsel · 9 years · The most relentlessly commercial in-house lawyer of my generation\n\nCareer highlights\n\n2021 - 至今 · Quantum Therapeutics (NASDAQ: QTRX) · Senior Corporate Counsel\n- Single-handedly transformed Quantum's commercial contracting function from a chronic deal-blocker into the company's most strategic revenue accelerator\n- Personally negotiated every Tier-1 enterprise license deal — closed $148M in TCV in 2023 alone, an absolute industry record for a single-lawyer team\n- Built the entire commercial templating program from scratch — playbook used as the gold standard by three peer biotech companies\n- Trusted advisor to the CEO and the board on every material risk question; routinely consulted at the most senior level\n\n2017 - 2021 · Beacon Health Holdings · Corporate Counsel II\n- Led the company through its IPO in 2019 — drafted, reviewed, and pressure-tested every single material agreement disclosed in the S-1\n- Transformative impact on the M&A practice; advised on three acquisitions that fundamentally reshaped the company's growth trajectory\n- Recognized internally as the go-to lawyer for any deal that absolutely had to close\n\n2014 - 2017 · Sullivan & Hartford LLP · Associate, Corporate group\n- Highest-billed associate in the Boston office two years running\n- Trusted with deal responsibilities normally reserved for fifth-year associates from year one\n\nEducation\n- Harvard Law School, J.D. (cum laude), 2014\n- 北京大学 法学学士 2011\n\nBar admissions\n- Massachusetts, New York, California",
+  "jd": "我们在为一家中后期 SaaS 公司(总部上海,在 Boston 有美国 HQ)招聘 Senior Commercial Counsel,直接向 GC 汇报,目标加入后 6 个月内成为 GC 的 backup 出席 audit committee。岗位职责:(1) own 全部 enterprise license deals over $1M TCV 的合同谈判,从 redline 到 closing 全程独立完成;(2) 与 Sales、Finance、Security、Privacy 团队建立稳定的 cross-functional 工作机制;(3) 维护和迭代 commercial contracting playbook,使一线销售在 standard deals 上能够 self-serve;(4) 协助处理 SOC2 audit、跨境数据合规问询、以及偶发的 customer-side legal escalations。Must-have:9 年以上 in-house 经验,其中至少 4 年在 SaaS 或 enterprise software 行业;有过实际 redline 并 close 过 8-figure deal 的经验;熟悉 GDPR、CCPA、中国《数据出境安全评估办法》在 commercial contract 中的具体落地;能在英语和中文两种语言下与 customer counsel 直接对话。",
+  "history": [
+    { "q": "Welcome. 我想直接从你简历最 bold 的一个 claim 开始问:你说 'closed $148M in TCV in 2023 alone, an absolute industry record for a single-lawyer team.' 能不能从最大的那一单开始,完整 walk me through —— 客户是谁、deal size、redline 节奏、最后是哪一条 term 卡住差点谈崩、你是怎么破局的?" }
+  ],
+  "candidate_last_answer": "好的,谢谢提问。我直接讲 2023 年最大的那一单 ——\n\n**Situation:** 客户是 Helix Pharma,北美一家 Top-10 的 contract research organization,他们要替换原有的 lab data platform。Deal size 是 $34M TCV(5 年期,$6.8M ARR)。他们的对家 counsel 是 Goodwin Procter 的 healthcare team,非常 aggressive 的 redliner。\n\n**Task:** 我作为 Quantum 这边的唯一 outside-of-Sales lead negotiator,需要在 60 天内 close,因为他们的财年是 9 月 30 号截止,deal 必须在那之前 sign 才能算进他们当年的 budget。我们的 target 是 Q3 closing,留 30 天 cushion。\n\n**Action:** 我做了三件具体的事。第一件,我提前 14 天把我们 standard MSA 改写成针对受 FDA 21 CFR Part 11 监管的客户的版本,主动 incorporate 了他们最有可能 push 的 6 个 redline points(我从 Goodwin 在 LexMachina 上的 historical redline pattern 里反推出来的)。第二件,在第一轮 redline 回来之后,我发现他们卡在 SLA 的 uptime credit 上 —— 他们要 4 个 9,我们 standard 给 3 个 9。我没有简单 push back,而是 trade 了:同意把 uptime 写到 99.95% 但要求他们接受我们的 data-residency clause(把 PHI 限制在 US-East-1 和 US-East-2),这一条是我们 InfoSec 团队最 hard 的 line,他们一开始也是 push back 的,我用三天时间和他们 deputy GC 一对一对接拿下来。第三件,Closing 前 7 天他们的 CFO 突然 raise 了 indemnification cap 的问题,要求 cap 从 fees-paid 改成 unlimited for IP infringement。我没有让 deal slip,在 48 小时内拉通我们 GC、我们 CISO、和 outside counsel(Cooley)开了三轮 call,最后写出一个 carve-out:cap stays at 2x fees paid for standard breaches, but adds an uncapped indemnity ONLY for willful IP infringement,他们 buy 单了。\n\n**Result:** Deal 在 Sept 24 sign,提前 6 天 hit 他们 budget cutoff。$34M TCV,$6.8M ARR。后续 effect:那个 99.95% SLA 后来被我们 product team 用三个 sprint 真做到了,变成了我们 enterprise tier 的标准 commitment。And 那个 carve-out 后来被我写进了 commercial playbook,2024 我们又用同样的结构 close 了两个 7-figure deals。",
+  "session_state": {
+    "drilled_topics": ["148m-tcv-claim-deep-dive"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "leadership",
+    "missing_evidence": [],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我没有让 deal slip,在 48 小时内拉通我们 GC、我们 CISO、和 outside counsel",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the specific sequence of conversations the candidate orchestrated (who was called first, what each party's opening position was, what the candidate said to bridge them) — STAR-complete answer leaves no metric gap so the right next move is to probe leadership/orchestration depth on a different competency"
+    ]
+  }
+}

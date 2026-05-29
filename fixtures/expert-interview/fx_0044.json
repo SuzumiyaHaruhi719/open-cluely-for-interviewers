@@ -1,0 +1,38 @@
+{
+  "id": "fx_0044",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Jordan Mackey — Future Customer Experience Leader · CX Intern Candidate\n\nKey Achievements\n- Single-handedly revolutionized the customer service operating model at my campus tutoring center, taking NPS from baseline to 'world-class'\n- Architected a chatbot that 'effectively replaced' the front-desk attendant during finals week (200+ interactions handled autonomously)\n- Top-1% communicator per LinkedIn writing assessment\n- Founder & CEO, Mackey Consulting (peer tutoring side hustle, 12 clients, six-figure adjacent growth trajectory)\n\nExperience\n2024 (summer) · WaveTech Audio · Customer Support Intern\n- Owned the support inbox during a critical product launch window\n- Reduced ticket backlog dramatically through 'first-principles workflow redesign'\n- Promoted by manager to handle Tier-2 escalations within first three weeks (unprecedented for intern cohort per recruiter feedback)\n\n2023 - present · Pacific State University Tutoring Center · Lead Front-Desk Associate\n- Drove a paradigm shift in front-desk operations\n- Mentored 4 incoming front-desk associates (effectively functioning as shift lead)\n\nEducation\n- Pacific State University, BA Communications (expected May 2026), GPA 3.4\n\nSkills: Zendesk (self-taught, certified), Intercom, SQL (Codecademy), Notion, 'high-EQ written communication'",
+  "jd": "WaveTech Audio is hiring a Customer Support Intern (returning-intern cohort, Summer 2025). You'll work the live ticket queue Tuesday-Saturday under the Tier-1 Support Lead, with two clear deliverables: (1) handle assigned Zendesk tickets to a 4-hour first-response SLA across email and chat channels, (2) shadow Tier-2 specialists for the final 2 weeks to learn the escalation flow. The role is explicitly hands-on and queue-driven — no project work, no process redesign authority. Must-have: composure under live customer pressure, willingness to follow established macros and runbooks before suggesting changes, honesty when you don't know an answer, ability to accept coaching without defensiveness. We are specifically looking for interns who can tell us about a time something went wrong on their watch and what they personally learned, not just what others did wrong. Reports to: Tier-1 Support Lead. Cohort size: 6 interns.",
+  "history": [
+    { "q": "Welcome back. Tell me about one ticket from last summer at WaveTech that didn't go well — what happened, and what was your part in it?" },
+    { "q": "I hear you on the macro being out of date. But step me through your specific actions on that ticket — what did you do between getting the ticket and the customer escalating?" }
+  ],
+  "candidate_last_answer": "Yeah so honestly the bigger issue was that the macro library was just not maintained. Like, the Tier-1 Lead at the time — I don't want to throw anyone under the bus — but she hadn't updated the firmware-rollback macro since like the previous quarter, and that's a known issue across the team, multiple interns flagged it. So when the customer wrote in, I followed the macro exactly as it was documented, which is what we're trained to do, and the macro had the wrong sequence for the new firmware build. So technically I did everything right per the runbook. The customer escalated because the macro was wrong, not because of what I did. I actually flagged it to my manager afterwards and she agreed the macro needed updating. So if anything that ticket was a process failure, not an execution failure. I think the lesson is more about the team's macro-governance, which I've actually been thinking about as a possible project for this summer if I come back.",
+  "session_state": {
+    "drilled_topics": ["bad-ticket-story", "personal-actions-on-ticket"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "failure-handling", "evidence_type": "failure-handling" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I followed the macro exactly as it was documented",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forces candidate to name a specific moment where they noticed the macro output didn't match the customer's reported firmware version and chose to send it anyway — pins ownership of the execution choice, not the macro authorship"
+    ]
+  }
+}

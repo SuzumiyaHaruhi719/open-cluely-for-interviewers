@@ -19,6 +19,7 @@ const {
   getDashscopeBaseUrl,
   getDefaultInterviewerModel
 } = require('../../../config');
+const { runExpertChain, EXPERT_ITERATION_VERSION } = require('./expert-orchestrator');
 
 const STAGE1_TRIGGER_SCORE = 4;
 const MIN_ANSWER_CHARS = 12;
@@ -106,6 +107,11 @@ function createInterviewerRuntime({ getAppState }) {
     return String(state.dashscopeApiKey || '').trim();
   }
 
+  function getMode() {
+    const state = getAppState() || {};
+    return state.interviewerMode === 'expert' ? 'expert' : 'fast';
+  }
+
   function getContext() {
     const state = getAppState() || {};
     return {
@@ -138,6 +144,37 @@ function createInterviewerRuntime({ getAppState }) {
     return { raw: text, usage, parsed: safeJsonParse(text) };
   }
 
+  async function analyzeCandidateAnswerExpert({ candidateAnswer, questionHistory, emotion }) {
+    const apiKey = getApiKey();
+    const { resumeChunk, jobDescription } = getContext();
+    const state = getAppState() || {};
+    const sessionState = state.interviewerSessionState || null;
+    try {
+      const expertResult = await runExpertChain({
+        apiKey,
+        candidateAnswer,
+        resumeChunk,
+        jobDescription,
+        questionHistory,
+        sessionState
+      });
+      return {
+        mode: 'expert',
+        iterationVersion: expertResult.iterationVersion,
+        output: expertResult.output,
+        blocks: expertResult.blocks,
+        trace: expertResult.trace,
+        fallbackTriggered: expertResult.fallbackTriggered,
+        elapsedMs: expertResult.elapsedMs,
+        emotion,
+        shouldShowFollowUps: Boolean(expertResult.output?.primary_question && !String(expertResult.output.primary_question).startsWith('(no question'))
+      };
+    } catch (error) {
+      console.error('Expert mode failed, returning skipped result:', error);
+      return { mode: 'expert', skipped: true, reason: `expert-chain-error: ${error?.message || 'unknown'}` };
+    }
+  }
+
   async function analyzeCandidateAnswer({ candidateAnswer, questionHistory = [], emotion = null } = {}) {
     const answer = String(candidateAnswer || '').trim();
     if (!answer) {
@@ -151,6 +188,11 @@ function createInterviewerRuntime({ getAppState }) {
     if (!apiKey) {
       return { skipped: true, reason: 'no-dashscope-key' };
     }
+
+    if (getMode() === 'expert') {
+      return analyzeCandidateAnswerExpert({ candidateAnswer: answer, questionHistory, emotion });
+    }
+
     const { resumeChunk, jobDescription } = getContext();
 
     const stage1 = await detectHooks({
@@ -201,7 +243,10 @@ function createInterviewerRuntime({ getAppState }) {
 
   return {
     analyzeCandidateAnswer,
-    isConfigured: () => getApiKey().length > 0
+    isConfigured: () => getApiKey().length > 0,
+    getMode,
+    getFastIterationVersion: () => ITERATION_VERSION,
+    getExpertIterationVersion: () => EXPERT_ITERATION_VERSION
   };
 }
 

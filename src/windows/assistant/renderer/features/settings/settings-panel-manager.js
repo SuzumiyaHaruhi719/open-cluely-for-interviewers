@@ -104,6 +104,7 @@ export function createSettingsPanelManager({
     toggleXfyunKeyVisibilityBtn,
     settingResumeText,
     settingJobDescription,
+    settingInterviewerMode,
     settingWindowOpacity,
     settingWindowOpacityValue,
     settingMicDevice,
@@ -470,6 +471,7 @@ export function createSettingsPanelManager({
                 if (settingXfyunKey) settingXfyunKey.value = settings.xfyunApiKey || '';
                 if (settingResumeText) settingResumeText.value = settings.resumeText || '';
                 if (settingJobDescription) settingJobDescription.value = settings.jobDescription || '';
+                if (settingInterviewerMode) settingInterviewerMode.value = settings.interviewerMode === 'expert' ? 'expert' : 'fast';
                 if (settingWindowOpacity) {
                     settingWindowOpacity.value = normalizeWindowOpacityLevel(settings.windowOpacityLevel);
                 }
@@ -507,6 +509,7 @@ export function createSettingsPanelManager({
                 xfyunApiKey: settingXfyunKey ? settingXfyunKey.value.trim() : '',
                 resumeText: settingResumeText ? settingResumeText.value : '',
                 jobDescription: settingJobDescription ? settingJobDescription.value : '',
+                interviewerMode: settingInterviewerMode && settingInterviewerMode.value === 'expert' ? 'expert' : 'fast',
                 programmingLanguage: settingProgrammingLanguage.value,
                 windowOpacityLevel: normalizeWindowOpacityLevel(settingWindowOpacity?.value)
             };
@@ -549,6 +552,7 @@ export function createSettingsPanelManager({
             settingAsrProvider,
             settingDashscopeAiModel,
             settingProgrammingLanguage,
+            settingInterviewerMode,
             settingWindowOpacity,
             settingMicDevice,
             settingSystemSource

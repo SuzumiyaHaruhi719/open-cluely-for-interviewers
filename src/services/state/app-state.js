@@ -15,7 +15,8 @@ function getDefaultAppState() {
     windowOpacityLevel: 10,
     themePreference: null,
     resumeText: null,
-    jobDescription: null
+    jobDescription: null,
+    interviewerMode: 'fast'
   };
 }
 
@@ -69,6 +70,11 @@ function sanitizeAppState(state) {
     const themePreference = String(state.themePreference ?? '').trim().toLowerCase();
     if (themePreference === 'dark' || themePreference === 'light') {
       nextState.themePreference = themePreference;
+    }
+
+    const interviewerMode = String(state.interviewerMode ?? '').trim().toLowerCase();
+    if (interviewerMode === 'expert' || interviewerMode === 'fast') {
+      nextState.interviewerMode = interviewerMode;
     }
   }
 

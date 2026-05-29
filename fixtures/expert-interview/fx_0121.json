@@ -1,0 +1,39 @@
+{
+  "id": "fx_0121",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Marcus Tate - Staff Product Designer\n\nSummary: 11 years of product design, last 4 focused on enterprise SaaS workflow tools.\n\nExperience:\n2021 - present  Helio (Series D HR-tech) - Staff Product Designer, Onboarding & Lifecycle\n  - Situation: company's new-hire onboarding flow had a 31% drop-off between offer-accept and day-1 readiness, costing Helio ~$4M/yr in delayed time-to-productivity.\n  - Task: redesign the candidate-to-employee transition as a single product surface across web and mobile.\n  - Action: led discovery with 22 customer admins and 47 new hires across 6 enterprise accounts; mapped 14 hand-off points between recruiting, IT, and HRIS; shipped a unified \"first 30 days\" surface in 5 iterative releases.\n  - Result: reduced drop-off from 31% to 12% within two quarters; admin-side ticket volume on onboarding dropped 44%; surface became a reference design adopted by 3 sibling product lines.\n\n2018 - 2021  Stripe-adjacent fintech - Senior Product Designer\n  - S: dispute-management console had 9.3 NPS and a 22-min average task time for the most common dispute path.\n  - T: redesign the console with the operations team's actual workflow in mind.\n  - A: shadowed 6 ops analysts for two full weeks; built a workflow-state model; redesigned around a queue-based primary nav.\n  - R: average task time on the top-3 paths dropped to 9 min; NPS rose to 41; the workflow-state model was reused for two adjacent consoles.\n\n2014 - 2018  Design agency - Product Designer (multiple clients)\n  - S/T/A/R bullets omitted for space; portfolio available on request.\n\nEducation: BFA Industrial Design, RISD, 2014.\n\nTools: Figma, FigJam, Maze, Dovetail, Lyssna, Linear, Notion.",
+  "jd": "Role: Staff Product Designer - Workflow Platform\n\nWe are a Series C B2B SaaS company building workflow software for mid-market operations teams. We are hiring a Staff designer to anchor the platform's core canvas - the surface where every customer spends 60%+ of their day.\n\nResponsibilities: own end-to-end design for the canvas surface and adjacent workflow primitives; partner with two product managers and one design engineer; mentor three mid-level designers without formal management responsibility; set the design quality bar across the platform.\n\nWe care a lot about: depth in workflow / multi-step / state-heavy product design (not just landing pages or marketing surfaces); a portfolio that shows shipped, lived-in work and clear cause-and-effect between design decisions and outcomes; an ability to articulate tradeoffs (especially against engineering cost and against research signal); generous and direct mentorship behavior.\n\nMust-haves: 8+ years of product design; at least one shipped enterprise SaaS surface used daily by 1k+ DAUs; comfort presenting work to a CPO-level audience; experience navigating ambiguity in early-stage product bets.",
+  "history": [
+    { "q": "Marcus, your resume calls out the Helio onboarding redesign — the 31% to 12% drop-off result. Can you walk me through one of the design decisions in that project that was genuinely hard, where you had to choose between two real options?" },
+    { "q": "That's helpful. Now, you mentioned mapping 14 hand-off points between recruiting, IT, and HRIS. Of those 14, were any of them ones you actively chose not to redesign — and if so, why?" },
+    { "q": "Got it. Last one on Helio: the 44% drop in admin-side onboarding tickets — can you share what the absolute ticket volume was before and after, and how you attributed the drop specifically to your redesign rather than to other concurrent changes?" }
+  ],
+  "candidate_last_answer": "Yeah, fair question. So the situation: admin-side onboarding tickets were running at roughly 1,800 per month across our top 40 enterprise accounts before the redesign — that's a number I can share because it was in our public Q3 earnings narrative as a customer-success metric. After two quarters, they were running around 1,000 per month, so the 44% is (1800 - 1000)/1800. I do have to be careful here — the absolute monthly counts at the per-customer level are under NDA from those specific enterprise accounts, so I can't share segmentation by account. On attribution: we ran the redesign as a phased rollout — accounts in cohort A got the new surface in March, cohort B in May, cohort C in July. The drop showed up in each cohort within four to six weeks of their specific cutover, and the slope matched the rollout calendar pretty cleanly. We also held cohort D unchanged through Q2 as a control, and their ticket rate stayed flat at ~450/month. So the action was a phased cohort rollout with one held-out control, and the result was both the directional drop and a control-arm null that gave us confidence the redesign was the dominant cause, not a concurrent CS-team policy change that shipped in April.",
+  "session_state": {
+    "drilled_topics": ["hard design decision tradeoff", "what NOT to redesign", "ticket-volume attribution"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "leadership",
+    "missing_evidence": [
+      { "competency": "leadership", "evidence_type": "owner-of-action" },
+      { "competency": "collaboration", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: cohort D unchanged through Q2 as a control",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 由Staff级'设计师主导A/B/控制组rollout'这一较强ownership信号，转向探查他在跨职能（PM、Eng、CS）中如何获得对照组hold-out的同意，验证Staff级横向领导力"
+    ]
+  }
+}

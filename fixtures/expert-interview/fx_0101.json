@@ -1,0 +1,42 @@
+{
+  "id": "fx_0101",
+  "tags": {
+    "industry": "data",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Priya Anand\nSenior Data Engineer\n\nProfile: Big Data | Real-Time | Streaming | Batch | ETL | ELT | Data Mesh | Data Lakehouse | Data Vault | Medallion Architecture | DataOps | MLOps | Feature Store | Vector DB | Graph DB | Time Series | OLAP | OLTP | HTAP | Cloud Native | Multi-Cloud | Hybrid | Serverless | Containerized.\n\nExperience:\n2022 - present  AdTech Co. - Senior Data Engineer\n  - Owned Kafka -> Flink -> Iceberg pipeline for ad-events stream.\n  - Migrated batch jobs from Airflow + Spark to Dagster + dbt.\n  - Built feature store on top of Feast and Redis.\n\n2020 - 2022  Fintech Startup - Data Engineer\n  - Snowflake, dbt, Fivetran, Looker, Hightouch stack.\n  - Implemented reverse-ETL pipelines to CRM/marketing tools.\n\n2018 - 2020  Consulting Firm - Analytics Engineer\n  - Tableau, Power BI, Alteryx, SQL Server, Azure Synapse.\n\nEducation: B.Tech, Computer Science, NIT, 2018.\n\nSkills (alphabetical): Airflow, Apache Beam, Apache Pulsar, Atlan, Azure Data Factory, BigQuery, Databricks, dbt, Debezium, Delta Lake, Dagster, DuckDB, Flink, Great Expectations, Hadoop, Hudi, Iceberg, Kafka, Kinesis, Looker, Mage, MLflow, Monte Carlo, Prefect, Presto, Redshift, Snowflake, Spark, Starburst, Trino.",
+  "jd": "Role: Mid-level Data Engineer (Streaming Platform)\n\nWe are a B2B SaaS company in the observability space, processing ~2 TB/day of customer telemetry. We are growing our streaming platform team and looking for a hands-on data engineer with strong production experience on Kafka and at least one stream processing engine (Flink, Beam, or Spark Streaming).\n\nWhat you will do: own and operate a critical Kafka -> Flink -> Iceberg pipeline that powers our usage-based billing and real-time customer dashboards; handle on-call rotation for the streaming platform (one week in five); design and ship new aggregation jobs in partnership with product and analytics; contribute to the team's SLO and incident-review culture.\n\nMust-haves: 3-6 years of data engineering experience; at least 18 months of hands-on Kafka in production (not just dev); experience operating a stream processor (Flink strongly preferred) including state management, checkpointing, and backpressure; comfortable being paged at 2 AM and writing a clear postmortem.\n\nNice-to-haves: Iceberg or other lakehouse table formats; cost-aware engineering mindset; experience with billing-grade data correctness.",
+  "history": [
+    { "q": "Priya, thanks for joining. Let's start with your current role. Walk me through the Kafka to Flink to Iceberg pipeline you own — what's the throughput, and what was the trickiest production issue you've personally debugged in the last six months?" },
+    { "q": "Tell me more about that specific incident. What was the symptom, and what did you do first?" },
+    { "q": "So you mentioned checkpoint timeouts. How did you confirm it was checkpointing and not, say, a downstream Iceberg commit issue?" },
+    { "q": "Okay. And what was the fix?" },
+    { "q": "Good. Last question on this thread — after the fix, did you write a postmortem? What did the action items look like, and which ones actually shipped?" }
+  ],
+  "candidate_last_answer": "Yeah, so we wrote a postmortem. Actually that reminds me — postmortem culture at our company is something I've been thinking a lot about, because we kind of inherited it from the SRE team but data engineers operate differently, right? Like, for SRE you have very clear SLOs and error budgets, but for streaming data the correctness dimension is way fuzzier, so the postmortem template doesn't quite map. And actually I've been writing a little internal blog series about this — I think the third post was about how we should evolve our incident-review process to include data-quality lenses, not just availability lenses. Oh and I should also mention, we're trying to adopt Monte Carlo for observability and that's been an interesting journey because their lineage detection has some gaps for our Iceberg tables, so we ended up writing a custom OpenLineage emitter, which actually was kind of fun, I learned a lot about the OpenLineage spec...",
+  "session_state": {
+    "drilled_topics": ["Kafka-Flink-Iceberg pipeline", "incident symptom", "root-cause confirmation", "fix"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "communication",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "failure-handling", "evidence_type": "failure-handling" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: action items actually shipped",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 把候选人从'blog series / Monte Carlo'切线拉回到原问题：postmortem里到底有哪些action items、哪些她个人owned、哪些真的ship了"
+    ]
+  }
+}

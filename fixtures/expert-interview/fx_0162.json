@@ -1,0 +1,58 @@
+{
+  "id": "fx_0162",
+  "tags": {
+    "industry": "design",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "clean-STAR",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Sasha Volkov — Product Design Intern candidate\nEducation: BFA Communication Design, Parsons School of Design, expected May 2026 (currently rising senior).\nDesign Intern, Frame.io (Adobe), Summer 2024.\n  Situation: Review-and-approve workflow had a 23% drop-off at the comment-thread step on mobile.\n  Task: Run a 6-week design sprint to redesign the mobile comment-thread interaction.\n  Action: Conducted 8 user interviews with editors at indie post-houses; produced 4 Figma prototypes; A/B tested 2 in a 1,200-user pilot.\n  Result: Variant B reduced drop-off to 11%; my mentor (Senior Designer Priya Singh) is shipping it as the default in Q3 2025.\nFreelance: 3 visual-identity projects for Brooklyn-based restaurants, 2023-2024.\nTeaching Assistant, Parsons Typography 2 (Spring 2024).\nTools: Figma, FigJam, Principle, After Effects, basic HTML/CSS, basic Swift.",
+  "jd": "Product Design Intern (Summer 2026, 12 weeks) — Hartwell Studio, NYC. Embedded in our Creator Tools team building short-form video tooling for music producers. Interns own one small design problem end-to-end with a Senior Designer mentor. We interview hard on (a) ability to ask sharp clarifying questions when a brief is ambiguous (counter-questions are welcome, even encouraged), AND (b) ability to commit to a position once the brief is clear enough. We watch for borderline-compliance signals — asking endless clarifying questions to avoid taking a design stance is a red flag. We also probe for honest framing of internship contributions: many candidates inflate scope, and we ask anchoring questions to check. Hourly rate: $48/hr, full-time over 12 weeks, NYC housing stipend.",
+  "history": [
+    { "q": "Walk me through the Frame.io comment-thread project — start with the original drop-off problem." },
+    { "q": "Why 23% on mobile specifically? What did the funnel look like on desktop?" },
+    { "q": "Who chose the 6-week sprint length — you, your mentor, or the PM?" },
+    { "q": "Tell me about one of the 8 user interviews that changed your direction." },
+    { "q": "Which variant — A or B — did you personally champion before the test ran?" },
+    { "q": "What was the hypothesis behind variant B's thread-collapse pattern?" },
+    { "q": "How did you handle disagreement with the engineer about gesture conflict on iOS?" },
+    { "q": "Looking back, what would you do differently in the research phase?" },
+    { "q": "We have a brief for you: redesign the 'save draft' interaction for a 90-second video creator tool. The current pattern is an auto-save toast that 60% of users dismiss without reading. You have 5 minutes to talk through your approach. Where do you start?" },
+    { "q": "Okay, you've asked four clarifying questions in a row. Make an assumption on your three open questions and tell me what you'd design." },
+    { "q": "If you had to commit to a single direction right now — toast, modal, or persistent indicator — what would you pick?" },
+    { "q": "What's your reasoning for that pick, in two sentences?" },
+    { "q": "What's the biggest risk of your pick?" },
+    { "q": "How would you test it in week 1?" },
+    { "q": "I want a one-word answer: toast, modal, or persistent indicator?" }
+  ],
+  "candidate_last_answer": "I — okay, I want to give you a one-word answer, but can I just check one thing first? When you say 'persistent indicator,' do you mean like a fixed status pill in the nav bar, or something inline next to the title field? Because my answer depends on that — if it's nav-bar-pill that's actually closer to a toast in my mental model, and if it's inline-title that's a third pattern. I think 'persistent indicator' might be doing a lot of work in your question. I want to commit, I really do, I just want to make sure we're talking about the same shape before I say a word.",
+  "session_state": {
+    "drilled_topics": [
+      "Frame.io comment-thread scope",
+      "variant champion",
+      "save-draft brief approach",
+      "commit-to-direction"
+    ],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "role-fit", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I want a one-word answer: toast, modal, or persistent indicator",
+      "must-be-question-type: teach-back",
+      "expected-yield: a single-word commitment (or an explicit, named refusal to commit) — anything longer than one word is itself the signal"
+    ]
+  }
+}

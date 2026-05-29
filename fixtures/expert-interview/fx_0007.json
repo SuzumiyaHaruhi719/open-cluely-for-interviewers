@@ -1,0 +1,40 @@
+{
+  "id": "fx_0007",
+  "tags": {
+    "industry": "design",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "林清远 · 高级产品设计师 · 7 年经验\n\n个人简介\n我是一名扎根于复杂 B 端产品设计的高级设计师,长期专注在数据可视化、企业级工作流、以及 AI 增强的人机协作界面这三个交叉领域。过去七年里,我的设计实践穿越了从早期初创到大厂的多种环境,在不同的组织密度、汇报关系、资源约束下都积累了系统化的方法论。\n\n职业经历\n\n2023 年 3 月 - 至今 · 鲲鹏数据 · 高级产品设计师 (Senior Product Designer)\n负责公司核心数据探索产品 KunSight 的全部前端设计,包括桌面端可视化构建器、移动端协作视图、以及面向数据工程师的命令面板模块。直接对接 PM 总监和工程总监,在产品委员会拥有 voting member 身份。\n\n2023 年内主要成果:\n- 主导 KunSight 3.0 的端到端重构,从信息架构、交互层、视觉系统三个维度同步推进,把上线后用户在五分钟内构建首张图表的成功率从 47% 提升到 79%\n- 设计公司首个面向 AI 协作助手的对话式数据查询界面 'AskSight',产品上线 6 周内日活渗透率达到 31%,在公司内部成为对外宣讲案例\n- 牵头建立公司设计系统 Compass 2.0 的核心 token 架构和组件库迁移路径,带领 4 个交叉职能小组在三个 sprint 内完成迁移,使工程返工率降低 24%\n- 主持每两周一次的设计评审会议,推动公司从 'PM 单点判断' 文化转向 'PM-设计-工程三方对齐' 的评审机制,得到 VP Product 的明确认可\n\n2020 年 8 月 - 2023 年 2 月 · 银杉科技 · 产品设计师\n这是一家专注于工业互联网的 B 轮初创,我作为团队第二个全职设计师加入,从 1.5 人扩到 5 人的设计团队过程中担任事实上的设计负责人(职级未升)。\n\n核心项目:\n- 工厂车间巡检 App:从 0 设计,服务一线工人和班组长两类角色,上线 9 个月覆盖了 12 家客户工厂,日活工人数 6800+\n- 数据回流 dashboard:面向工厂厂长和总部运营总监两个截然不同的角色,通过角色切换的信息分层把单屏信息密度降低 38%,但关键决策指标可见性提升\n- 工业触屏 HMI 设计指南:制定公司第一版触屏 HMI 设计规范,覆盖在油污、戴手套、强光等真实工厂环境下的设计原则\n\n2018 年 6 月 - 2020 年 7 月 · 蓝栎设计咨询 · 交互设计师\n服务客户包括三大互联网巨头中的两家、两家头部银行的数字化转型团队,以及一家国有能源企业的客户体验改造项目。期间深度参与的项目超过 20 个,横跨金融、能源、零售、教育四大行业。\n\n2017 年 - 2018 年 · UI/UX 设计实习与初级岗位若干\n\n教育背景\n清华大学美术学院 · 信息艺术设计系硕士 · 2018\n同济大学设计与艺术学院 · 工业设计学士 · 2015\n\n荣誉\n- 2024 IDEA 设计奖入围(KunSight 3.0)\n- 2023 公司年度设计奖第一名\n- 2022 红点设计奖(银杉科技工厂巡检 App)",
+  "jd": "我们正在为一家中后期数据可视化 SaaS 公司招聘高级产品设计师,直接向 Head of Design 汇报,加入后将 own 产品线中数据建模与图表编辑器这两个最复杂的模块。要求:(1) 至少 5 年在数据密集型 B 端产品的设计经验,候选人必须能够清晰地讲出自己亲自做过的具体设计决策(交互结构、信息层次、错误处理),并能用数据证明这个决策的效果;(2) 熟悉至少一个公司级的 design system 从 0 到迁移完成的全过程;(3) 能在英文环境下与海外设计同事和工程师直接评审稿件;(4) 在没有 PM 推力的情况下,主动发现产品体验问题并推动修复的真实案例。",
+  "history": [
+    { "q": "你简历里说 KunSight 3.0 上线后五分钟首图成功率从 47% 提到 79%。这个 79% 是怎么测出来的?数据口径是 product analytics 自动埋点,还是用户调研?" },
+    { "q": "好的。那 47% 到 79% 这个跨度,你认为哪一个具体的设计决策贡献最大?" },
+    { "q": "你刚才提到了三个改动 —— 信息架构、交互层、视觉系统。我想 zoom in 到交互层那一项。具体讲一个你认为最关键的交互决策,以及你做这个决策时考虑了哪些 alternative,最后为什么选了它?" }
+  ],
+  "candidate_last_answer": "嗯...这个其实是个挺复杂的话题。设计决策很多时候不是 binary 的,而是一个 holistic 的过程。我们当时确实是考虑了很多 alternative 的,然后最后选了一个最 balanced 的方案。",
+  "session_state": {
+    "drilled_topics": ["79-percent-measurement-method", "biggest-design-decision-contributor", "interaction-layer-key-decision"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "named-tool" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 最后选了一个最 balanced 的方案",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the named alternative the candidate rejected and the specific reason — converts a content-free answer about 'balance' into a comparison between two concrete interaction patterns the candidate prototyped"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "fx_0243",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Bryce Donovan — VP of Sales — 17 yrs B2B SaaS experience — Austin, TX\n\nEXPERIENCE\n\n2022.01 — present: VP of Sales (North America), Tessera Cloud (data observability SaaS, Series-D, ~700 employees)\n- Leads 4 directors, 14 managers, 78 quota-carrying reps across enterprise + commercial + SMB segments\n- 'Grew NA ARR from USD 42M to USD 91M over 24 months' (resume bullet, top section)\n- 'Led the org through a 22% rep headcount reduction in 2023 while maintaining quota attainment' (resume bullet, mid section)\n- 'Hit 118% of annual plan in FY2023' (resume bullet)\n- Note (inconsistency the candidate may not be aware of): elsewhere in the resume he writes 'company achieved net-new ARR of USD 28M in FY2023 vs plan of USD 36M' — which mathematically translates to ~78% of net-new plan, not 118%. Either 118% refers to total ARR including renewals + expansion, or one of the bullets is wrong.\n\n2018.06 — 2021.12: RVP, East, Snowflake (named-accounts, 24 reps, FY revenue 'eight-figures', won 4 of the top 10 NA accounts in his territory)\n\n2014.03 — 2018.05: Sales Director, Tableau (acquired by Salesforce 2019)\n\n2010.07 — 2014.02: Enterprise AE, then Sales Manager, EMC / Dell Technologies\n\n2007.05 — 2010.06: BDR then AE, Oracle\n\nEDUCATION: BSc Business Administration, University of Texas at Austin (2007)\n\nLEADERSHIP PHILOSOPHY: 'Hire athletes. Coach the fundamentals. Trust the playbook.'",
+  "jd": "VP of Sales (Americas) — late-stage data infrastructure company (Series-E, USD 220M total ARR, planning to file S-1 in next 18 months, HQ Palo Alto). Reports to CRO. Inherits 96 quota-carrying reps + 5 directors. Mandate for next 24 months: 1) Add USD 80-110M net-new ARR while keeping CAC payback under 18 months; 2) Bring enterprise segment net dollar retention from 124% to 135%; 3) Build a deal-desk function that currently doesn't exist; 4) Lead the sales-side of S-1 prep — territory disclosures, ASC 606 implications on multi-year deals, pipeline-to-bookings auditability; 5) Be the sales voice in board QBRs. Must-have: 12+ yrs B2B SaaS sales leadership; 5+ yrs at VP+ level; experience leading sales org through either an IPO prep or a major reorg; ability to defend a specific net-new vs total-ARR distinction in front of a board; demonstrated ownership of CAC and NDR metrics, not just bookings.",
+  "history": [
+    { "q": "Welcome. Open question: what is the single hardest thing you've had to do in the last 24 months as VP at Tessera?" },
+    { "q": "OK — the 22% headcount reduction. Walk me through how you decided who to cut." },
+    { "q": "You mentioned the framework had 'performance, segment-fit, and forward potential' weights. What were the actual weights, and who decided them?" },
+    { "q": "Got it. Let's pivot to the numbers. Your resume says NA ARR went from 42M to 91M over 24 months, and FY2023 was 118% of plan. But there's a third line that says net-new ARR in FY2023 was 28M vs a plan of 36M — that's 78% of net-new plan, not 118%. Help me reconcile those." }
+  ],
+  "candidate_last_answer": "Yeah, so look, the 118% number is the total-ARR-plan number, which is how Tessera defined sales plan attainment internally. Net-new is a separate cut. Renewals and expansion get rolled into the total plan because that's how the comp plan was structured — reps got accelerators on expansion as well as on net-new. So when I say 118% I'm using the internal company definition, which is the right one to use in this kind of conversation.\n\nThe 28M net-new versus 36M plan — yeah, that's net-new specifically. It is what it is. The bigger story is that we had a tough year in net-new because of the macro, and we made it up on expansion and on renewal pricing actions. The net result for the company was that we hit plan, which is the thing that matters at my level.\n\nIn terms of how I'd characterize the year overall, I'd say it was a year where I had to play the cards I was dealt. Net-new was harder than anyone expected. Expansion was a bright spot. The team performed under pressure. We came in above plan on the metric that matters. I think that's a story I'm pretty proud of and I think it's a story that translates to what your CRO is looking for in this role.",
+  "session_state": {
+    "drilled_topics": [
+      "hardest-thing-24-months",
+      "headcount-reduction-framework",
+      "framework-weights-ownership"
+    ],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "communication", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: total-ARR-plan number",
+      "must-be-question-type: resume-contradiction-pin",
+      "expected-yield: pin down the specific split of the 118% (what % came from net-new attainment, what % from expansion, what % from price-action-on-renewals) and force the candidate to address whether the resume bullet 'hit 118% of annual plan' would survive an S-1 disclosure review — directly tests integrity and numbers-fluency for an IPO-prep VP role"
+    ]
+  }
+}

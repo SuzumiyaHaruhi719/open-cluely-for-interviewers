@@ -1,0 +1,44 @@
+{
+  "id": "fx_0161",
+  "tags": {
+    "industry": "design",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Rebecca Vance - Director of Design\n\nLeadership profile: 13 years of design experience, 5 as a people manager.\n\nExperience:\n2022 - present  Lumenly (Series B health-tech) - Director of Design\n  - Built the design org from 4 to 17 designers in 18 months.\n  - Built the design org from 4 to 12 designers in 18 months, with 5 contractors rounding out the team.\n  - Defined the company's first design-system roadmap; shipped v1 of the system across web and iOS.\n  - Reduced average feature design-to-ship time from 11 weeks to 6.\n  - Directly mentored 9 ICs; ran weekly design critique that the CPO now attends.\n\n2019 - 2022  Quantum Health Co. - Design Manager -> Senior Design Manager\n  - Managed a team of 6 designers across the clinician-tools area.\n  - Led the design portion of the company's HIPAA-readiness overhaul.\n  - Designed the company's first major mobile app surface (which was actually largely contracted to an external agency, with my team doing review and final QA).\n\n2014 - 2019  Multiple agencies and freelance.\n\nEducation: MFA, SVA, 2014; BA Cognitive Science, Brown, 2012.\n\nSelected speaking: Config 2023 (panel); Clarity 2022 (workshop).",
+  "jd": "Role: Director of Design - Clinical & Provider Experience\n\nWe are a Series C digital-health company building clinical workflow software used by ~40,000 clinicians across U.S. provider networks. We are hiring a Director of Design to lead the Clinical & Provider experience pillar — a 12-15 designer org across product design, content design, and design research.\n\nResponsibilities: own the design vision for clinician-facing surfaces (EHR-integrated workflows, clinical decision support, mobile-first triage tools); manage 3-4 design managers and ~10-12 ICs; partner with the VP of Clinical Product on strategy; represent design at the leadership team table.\n\nWe expect this person to: have a clear, repeatable point of view on how to scale a design org from ~12 to ~20+ without losing quality; have managed managers (not just ICs); be comfortable with the operational rigor of healthcare (HIPAA, clinical safety, accessibility); be a calm, generous, mentor-first leader. We do not want a designer who treats senior interview questions as adversarial.\n\nMust-haves: 4+ years of design management; experience scaling an org through at least one phase of significant growth; clinician or other high-stakes user experience.",
+  "history": [
+    { "q": "Rebecca, your resume mentions building the design org from 4 to 17 in 18 months, and separately, from 4 to 12 with 5 contractors. I'd like to reconcile those two — what's the actual headcount picture today, and how do you usually report it?" },
+    { "q": "I appreciate that. To clarify, the question isn't gotcha — for a Director role, how you talk about your org's size matters because it shapes how we calibrate your management span. So just so I have it clean: at present, how many people are on payroll under you, and how many are contractors?" },
+    { "q": "Got it. Moving on — you said you reduced design-to-ship time from 11 weeks to 6. Was that measured per-feature, per-designer, or rolling average across the team? And what was the comparable timeframe pre-change?" },
+    { "q": "Okay. And on the Quantum Health mobile app — your resume says you designed the company's first major mobile app surface, but also that it was largely contracted to an external agency with your team doing review and final QA. Help me understand the ownership split here." },
+    { "q": "That's helpful. Last question on that project: when you describe the project externally, like in a portfolio or at Config, which framing do you use — the agency-led framing or the in-house framing?" }
+  ],
+  "candidate_last_answer": "Look, I'm going to push back on this line of questioning a little bit. We're now five questions in and four of them have been on my resume wording. I have shipped real product, I have built real teams, and I'm a finalist for this role — I don't think it's a productive use of our 45 minutes to keep relitigating whether I should have said \"led\" or \"contributed to.\" If you have concerns about my honesty, just say so directly and we can address it, but the way you're framing this is honestly a bit insulting given my track record. I work in healthcare design where the stakes are real, not in a domain where I have time for semantic games.",
+  "session_state": {
+    "drilled_topics": ["headcount reconciliation", "design-to-ship metric", "Quantum mobile app ownership split", "external framing of agency-led project"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "the way you're framing this is honestly a bit insulting" }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: which framing do you use",
+      "must-be-question-type: resume-contradiction-pin",
+      "expected-yield: 候选人必须直接回答她在Config 2023上具体如何描述那个mobile app项目（'led'/'designed'/'oversaw with agency'），将敌意防御切换为可验证的事实陈述；面试官也应平静地reframe而非升级"
+    ]
+  }
+}

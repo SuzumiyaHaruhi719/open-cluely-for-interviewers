@@ -1,0 +1,56 @@
+{
+  "id": "fx_0202",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "周文澜 (Wenlan Zhou) — 工程 VP 候选人\n现职:基础架构副总裁,某头部短视频公司,杭州,2020年至今。\n  - 负责存储、网络、调度三个方向的工程团队。\n  - 推动多代异地多活方案的演进。\n  - 主导若干次大规模故障的复盘改进。\n更早:技术总监,蚂蚁金服中间件团队,2015-2020。负责消息中间件与分布式事务方向。\n阿里巴巴 P7,数据库内核,2011-2015。\n本科:浙大计算机 2008,北大软件硕士 2011。",
+  "jd": "工程 VP — 基础架构方向, 远帆科技 (Series E, 上海)。我们是一家正在出海的内容平台,DAU 接近 4 亿。本岗位 report to CTO,直接负责存储、网络、调度三个一级部门的演进路线图、人才规划与 P0 故障问责。我们需要的是一个能把'我们团队做了'翻译成'我具体做了哪些 call、否决了哪些方案、推动了哪些不受欢迎的决定'的人。过去两年我们筛掉了多位 VP 候选人——简历亮眼但深入追问就只剩'我们团队'三个字。本岗位面试会反复多轮追问个人决策,候选人需要在一个问题里就一件事说清楚,不要把多件事打包混在一个回答里。年薪 base 200-350万,股票按 D 轮估值给。",
+  "history": [
+    { "q": "你在公司这五年最自豪的一个技术决策是什么?" },
+    { "q": "异地多活演进有几代?第一代到第二代之间最关键的取舍是什么?" },
+    { "q": "你提到的取舍——延迟一致性 vs 写入吞吐——最后是谁拍的板?" },
+    { "q": "如果让你列出三个你个人否决过的方案,你会列哪三个?" },
+    { "q": "我打断一下,刚才你说'我们团队评估后觉得方案 A 不可行'——具体是你做的判断还是团队 consensus?" },
+    { "q": "存储方向上,你 owner 范围内最近一次 P0 故障是什么?" },
+    { "q": "复盘的 action item 里,你个人 owner 的是哪几条?" },
+    { "q": "调度团队的 lead 上个季度离职了,你怎么决定的接任人选?" },
+    { "q": "你刚提到三个候选人——A、B、C——最后选了 B。这个判断里你最重的权重是什么?" },
+    { "q": "你能不能就 P0 故障那条线,只回答一件事:复盘里你个人改了什么 working agreement?" },
+    { "q": "再具体一点——是 on-call 轮转、变更窗口、还是 review 流程?选一个。" },
+    { "q": "好,那这个 working agreement 改完之后,可量化的指标变化是什么?MTTR? P0 数量? change failure rate?" }
+  ],
+  "candidate_last_answer": "这个问题其实牵扯到几条线我都想跟你 sync 一下,因为它们是耦合的。第一,on-call 轮转我们团队从原来的双周轮调整成了周轮加 shadow 制,这个是存储和调度团队一起推的;第二,变更窗口我们团队把原来的 24x7 改成了核心时段只读 + 变更窗口集中在凌晨 2-5 点,这个是 SRE 团队主导推动的我们配合;第三,review 流程上我们团队引入了双人 review + change advisory,这个是网络团队先试点然后存储团队跟进的。可量化指标这块,我们团队 MTTR 在过去三个季度从大概一个比较高的水位降到了一个比较合理的水位,P0 数量同比也是下降趋势,change failure rate 这块需要看具体口径,我们团队用的是 DORA 的定义,降幅也是显著的。整体来讲我们团队这一年在工程效能上的进展是体系化的,不是单一某一条 working agreement 的功劳。",
+  "session_state": {
+    "drilled_topics": [
+      "异地多活代际取舍",
+      "P0 故障 owner",
+      "调度 lead 接任决策",
+      "working agreement 改动",
+      "可量化指标"
+    ],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 43
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "leadership", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 选一个。",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single named working-agreement change owned personally by the candidate, with a single concrete metric (e.g., MTTR went from N1 min to N2 min) — not a bundled three-line answer"
+    ]
+  }
+}

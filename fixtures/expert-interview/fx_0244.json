@@ -1,0 +1,60 @@
+{
+  "id": "fx_0244",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "李建国 — 工厂运营总监 · 22 年制造管理经验\n\n职业概述\n本人深耕制造业 22 年, 经历了中国制造业从代工出口到自主品牌、从劳动密集到智能制造的完整转型周期。先后服务于消费电子代工、白色家电、新能源汽车三大行业, 累计管理过的工厂总员工数超过 35,000 人。秉持的管理哲学是『精益为本、人本为先、数据为证』。\n\n职业经历\n\n2020 年 3 月 - 至今 · 某新能源车企 (NDA 限制不便具名) · 上海整车工厂运营总监\n职责范围: 主导整车工厂从规划期到 SOP (Start of Production) 再到稳态量产的全生命周期运营。直接管理冲压、焊装、涂装、总装四大车间的车间主任, 间接管理员工约 4,800 人。在我任内主要节点:\n(1) 2020 年 6 月完成厂房交付与设备进场, 较集团原计划提前 3 周；\n(2) 2021 年 1 月首台白车身下线, 较原计划提前 2 周；\n(3) 2021 年 5 月 SOP, 较原计划提前 1 周；\n(4) 2022 年达成年产 18 万辆目标 (集团目标 20 万辆, 因 IPC 芯片短缺未达成, 此项责任不在工厂端)；\n(5) 2023 年达成年产 24 万辆 (集团目标 28 万辆, 因下游订单波动未达成, 此项责任在销售端而非工厂端)；\n(6) 工厂单车制造成本较集团 benchmark (集团内另一工厂) 低 8.4%, 但电耗略高于 benchmark, 主要原因是当地电网谷电时段不匹配, 这是地理位置决定的不可控因素。\n\n安全方面: 2020-2023 年累计发生 OSHA-recordable 事故 11 起, 其中 2022 年 9 月一起冲压车间夹手事故为 lost-time injury (员工恢复后已返岗)。事故率行业可比, 总体趋势向好。\n\n2014 - 2020 年 2 月 · 美的集团 (Midea) 顺德空调事业部 · 工厂副总经理\n负责顺德某空调工厂的运营。任内推动 MES 系统二期上线 (一期是我前任的工作)、推动了智能仓储改造。期间空调旺季 (6-8 月) 准时交付率维持在 96% 以上。\n\n2008 - 2014 · 富士康 · 课长 → 处长, 多基地轮岗 (深圳、太原、郑州)\n负责手机后段组装与品质管理。\n\n2002 - 2008 · 海尔集团青岛 · 班长 → 工段长 → 车间主任\n\n教育\n- 华南理工大学 工业工程硕士 (在职) · 2010\n- 山东大学 机械制造及其自动化学士 · 2002\n\n培训与认证\n- 六西格玛黑带 (摩托罗拉大学认证, 2007)\n- 精益生产高级认证 (TPS 丰田生产方式研修班, 2012, 名古屋)\n- 美的集团内部 MBA · 2018\n\n荣誉\n- 美的集团 2018 年度卓越管理奖\n- 某新能源车企 2021 年 SOP 卓越贡献奖\n- 富士康 2010 年精益改善个人金奖\n\n外部活动\n- 中国汽车工业协会智能制造分会理事\n- 多次受邀在『汽车制造业』『智能制造』等行业杂志撰文",
+  "jd": "理想汽车常州基地招工厂运营总监, 向制造副总裁直接汇报。岗位职责: (1) 全面负责常州基地的整车制造端 KPI——OEE、单车成本、质量 (IPTV 即 incidents-per-thousand-vehicles)、安全；(2) 主导 2025 年 L6 / L7 车型导入与产能爬坡 (目标 30 万辆/年)；(3) 管理 4 个车间主任、约 5,500 一线员工；(4) own 至少一个跨年度的运营改善项目 (精益、自动化、能源管理三选一)。Must-have: (1) 真正 owned 过 SOP 期与稳态期的端到端 KPI, 不是只 own 某一段；(2) 能 articulate 一次明显失败的复盘——必须是『因为我做了 X 所以结果不好』, 不接受全部归因于外部因素；(3) 能给出具体的成本、电耗、IPTV 数字；(4) 对安全事故能直接讲清楚 root cause 和自己的责任。我们对在面试中把所有问题归因给『芯片短缺』『订单波动』『地理位置』的候选人非常警惕——这是过滤项。",
+  "history": [
+    {
+      "q": "我们先聊 2022 年没达成 20 万辆的事。简历写『责任不在工厂端』——你确定整个 8 万辆的 gap 都是芯片问题, 工厂端零责任？"
+    },
+    {
+      "q": "OK。那这 2 万辆里, 工厂端贡献了多少？"
+    },
+    {
+      "q": "你说大概 6,000 辆——那这 6,000 辆的 root cause 是什么？"
+    },
+    {
+      "q": "焊装车间机器人节拍 issue 是稳态量产期出现的, 还是从 SOP 时就有？"
+    }
+  ],
+  "candidate_last_answer": "嗯, 这个事其实要还原一下当时的情况才说得清楚。SOP 那个时间点公司压力非常大, 集团 CEO 亲自盯着, 整车开发的总监们也都在催, 因为如果 SOP 延期对资本市场是有信号的。当时机器人节拍的问题, 焊装车间主任跟我汇报过, 但他给的判断是『可以先 SOP, 后续 ramp-up 阶段通过工艺优化追平』。我是基于他的专业判断做的决策, 这个判断后来证明偏乐观。所以严格说, 一线的判断不够准确, 我作为决策者是『信任了不该信任的判断』。但你要让我说我自己 deep 错在哪——我觉得在那个时间窗口, 任何一个工厂运营总监都会做同样的决策, 因为 SOP 延期的下行风险远大于产能爬坡慢一些的风险。后来集团内部复盘, 制造副总裁也认可我当时的决策框架是 sound 的, 是 execution 层面没跟上。我个人觉得这个事 70% 是车间主任判断失误, 20% 是机器人供应商 (我们用的是某德国品牌, NDA) 没给出准确节拍承诺, 10% 算我信任管理。不能说我没责任, 但主要责任不在我。",
+  "session_state": {
+    "drilled_topics": [
+      "2022-shortfall-attribution",
+      "factory-side-contribution",
+      "6000-vehicle-rca",
+      "robot-tact-time-window",
+      "sop-decision-rationale"
+    ],
+    "current_competency_target": "failure-handling",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "failure-handling",
+    "missing_evidence": [
+      {
+        "competency": "failure-handling",
+        "evidence_type": "failure-handling"
+      },
+      {
+        "competency": "ownership",
+        "evidence_type": "owner-of-action"
+      }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 70% 是车间主任判断失误",
+      "must-be-question-type: failure-mode",
+      "expected-yield: forces candidate to defend or retract the 70/20/10 attribution split — specifically why the operations director (final decision-maker for SOP go-live) bears only 10%. Pins whether the candidate can own a clear majority of a documented failure or continues to externalize"
+    ]
+  }
+}

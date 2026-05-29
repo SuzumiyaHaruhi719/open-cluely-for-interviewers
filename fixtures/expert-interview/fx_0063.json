@@ -1,0 +1,43 @@
+{
+  "id": "fx_0063",
+  "tags": {
+    "industry": "legal",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Daniel Okafor, JD — Corporate / Commercial Counsel — 4 yrs PQE — based in Singapore.\n\nEXPERIENCE\n2023.05 — present: Senior Associate, Allen & Gledhill (Singapore) — Corporate, M&A, Private Equity, Venture Capital, Cross-Border, Joint Ventures, Restructuring, Reorganizations, Spinoffs, Carve-outs, Tender Offers, Take-Privates, Distressed M&A, Roll-ups, Buy-outs, Management Buyouts, MBOs, LBOs, Recapitalizations, Bolt-ons, Stapled Financings, Earnouts, Escrows, W&I Insurance, R&W Insurance, Due Diligence, Vendor DD, Reverse DD, Disclosure Schedules, SPAs, SHAs, LOIs, MOUs, NDAs, Term Sheets, Side Letters, Anti-trust filings, FDI screening, CFIUS, MOFCOM, SAMR.\n\n2020.08 — 2023.04: Associate, WongPartnership LLP — Banking & Finance, Acquisition Finance, Leveraged Finance, Syndicated Lending, Bilateral Lending, ECA Finance, Project Finance, Infrastructure, Energy, Renewables, Real Estate Finance, Trade Finance, Receivables Financing, Securitization, Capital Markets, Debt Capital Markets, DCM, ECM, IPO, REIT, Sukuk, Green Bonds, Sustainability-Linked Loans, ESG, Loan Market Association, LMA, APLMA, ISDA, CSA, Derivatives, Hedging, Restructuring, Insolvency, Schemes of Arrangement.\n\n2019.07 — 2020.07: Trainee, WongPartnership LLP (rotations: Corp / B&F / Disputes).\n\nQUALIFICATIONS: Admitted Singapore (2020). JD, NUS Faculty of Law (2019, second upper). Languages: English (native), Mandarin (working), French (basic).\n\nKEYWORDS: M&A | PE | VC | Joint Ventures | Cross-Border | SPA | SHA | DD | W&I | Escrow | Earnout | Anti-trust | FDI | CFIUS | SAMR | Syndicated | Leveraged | Project Finance | ESG | LMA | ISDA | Restructuring | Schemes of Arrangement | Carve-outs | Spinoffs | Take-Privates.",
+  "jd": "Mid-Level Corporate Counsel (M&A focus) — Singapore-based PE fund (USD 4B AUM, Asia-focused). Reports to General Counsel. The role: 1) Lead-counsel on 2-4 platform investments per year (ticket size USD 50-300M), running SPA / SHA negotiations from term sheet to signing; 2) Coordinate external counsel across 5-8 jurisdictions on cross-border deals; 3) Own the disclosure schedule and DD workstream end-to-end on each deal; 4) Sit on the investment committee as legal voice (advisory, non-voting); 5) Build the deal-execution playbook for the team (currently undocumented). Must-have: 4-6 yrs PQE at a top-tier firm, at least 50% time on buy-side M&A (PE or strategic), able to demonstrate 2+ deals where you were the named lead associate on the SPA. Singapore qualification preferred but not mandatory; HK / NY / English-qualified considered. Not looking for: capital-markets-heavy backgrounds, pure financing lawyers, or candidates without negotiation-table experience.",
+  "history": [
+    { "q": "Your resume is keyword-dense. Pick the two deals from the last 18 months where you were closest to the negotiation table, and tell me which side you sat on." },
+    { "q": "On the buy-side deal you just described — the Indonesia mid-market industrials carve-out — who specifically owned the disclosure schedule? You, the senior partner, or the target's counsel?" },
+    { "q": "Walk me through the most contested point in that SPA negotiation. What was the gap between the two sides at the start, and where did it land?" }
+  ],
+  "candidate_last_answer": "Most contested point was the indemnity cap on tax-related reps. Starting positions: seller offered 10% of EV, 18-month survival, with a single-trigger materiality scrape. Buyer (us) opened at 25% of EV, 36-month survival, double-trigger scrape, and a separate uncapped basket for known tax exposures flagged in DD. Gap was therefore roughly 15 points on cap, 18 months on survival, and the disagreement on the known-exposure carve-out. Landing point: 17.5% cap, 30-month survival (matching the local statute of limitations on tax in that jurisdiction plus 6 months), single-trigger scrape, and a separately negotiated USD 12M specific indemnity escrow for the three known tax items — escrow released tranched over 24 months. I drafted the revised indemnity section between rounds 3 and 4. Partner signed off. Counterparty's tax partner pushed back hardest on the specific indemnity escrow; we held the line because our DD had quantified the downside at USD 9-14M with 70% probability of at least one item triggering — so 12M was defensible and our IC wouldn't have approved less.\n\nCan I ask you something to make sure I'm calibrating this right? When you say 'closest to the negotiation table' — for this role specifically, are you assessing whether I can run the SPA solo without partner sign-off, or whether I can be the senior associate quarterbacking it under a partner? Because the answer changes how I'd frame the next two deals.",
+  "session_state": {
+    "drilled_topics": [
+      "two-recent-deals-negotiation-proximity",
+      "disclosure-schedule-ownership",
+      "spa-most-contested-point"
+    ],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "named-tool" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: USD 12M specific indemnity escrow",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: pin down the candidate's actual authorship of the escrow structure vs partner direction, and whether the 70% probability quant was the candidate's analysis or borrowed from the DD provider"
+    ]
+  }
+}

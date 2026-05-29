@@ -1,0 +1,44 @@
+{
+  "id": "fx_0081",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Wei Zhang, PhD\nStaff Research Scientist\n\nResearch Interests: multi-modal foundation models, retrieval-augmented generation, evaluation of language models.\n\nExperience:\n2022 - present  某大厂 AI Lab, Staff Research Scientist\n  - Co-lead of the alignment and evaluation working group.\n  - Contributed to several internal foundation model releases.\n  - Mentored junior researchers across multiple sub-teams.\n\n2019 - 2022  Postdoctoral Researcher, 国内某Top高校 NLP Lab\n  - Worked on cross-lingual transfer and low-resource MT.\n  - Co-authored several papers at ACL, EMNLP, NeurIPS.\n\n2014 - 2019  PhD in Computer Science, 国内某Top高校\n  - Dissertation on neural sequence modeling.\n\nSelected Publications: (representative)\n  - \"Evaluating multi-step reasoning in pretrained LMs\", ACL findings.\n  - \"Cross-lingual transfer beyond MT\", EMNLP.\n  - \"On the brittleness of evaluation benchmarks\", workshop paper.\n  (full list on Google Scholar)\n\nProfessional Service: reviewer for ACL/EMNLP/NeurIPS.\n\nSkills: PyTorch, JAX, distributed training, evaluation harness design, 学术写作, mentoring.",
+  "jd": "Role: Staff Research Scientist - Foundation Model Evaluation\n\nWe are a frontier AI lab building general-purpose foundation models. We are hiring a Staff-level researcher to lead our evaluation infrastructure and methodology. This person will report to the Head of Alignment Research and is expected to be a senior individual contributor with strong influence across model training, post-training, and product teams.\n\nResponsibilities: (1) Define the next-generation evaluation suite for our pre-training and post-training pipelines, covering capability, safety, and robustness; (2) Lead a small group (3-5 researchers) on evaluation methodology, including the design of held-out benchmarks, agentic task evaluations, and human eval protocols; (3) Partner with the training team to ensure that eval signals drive concrete model decisions; (4) Publish selectively at top venues (NeurIPS, ICML, ICLR, ACL).\n\nRequirements: PhD in CS/ML/Stats or equivalent; 6+ years of post-PhD research experience or staff-level industry track record; first-author publications at top ML/NLP venues; demonstrated experience owning a research agenda end-to-end and influencing engineering decisions; familiarity with both capability evaluation and alignment evaluation is a strong plus.",
+  "history": [
+    { "q": "Wei, 先请你简单介绍一下你这两年在AI Lab最主要的研究方向，最让你觉得有sense of ownership的是哪一块？" },
+    { "q": "好的。你提到 co-lead of the alignment and evaluation working group——能不能 clarify一下，这个 working group的scope具体到哪里？包含哪些子方向？" },
+    { "q": "在你 co-lead 的这段时间里，working group 实际产出的 evaluation suite，你能给我举一个具体例子吗？比如某一个 benchmark 是怎么从立项到落地的？" },
+    { "q": "在那个 benchmark 的设计过程中，你个人 owns 的最关键的一个 design decision 是什么？" },
+    { "q": "Got it. 那个 benchmark 上线之后，它在内部 training team 决策里实际起到了什么作用？有没有一次具体的 release 因为这个 eval 被 delay 或者调整？" },
+    { "q": "你简历上说\"contributed to several internal foundation model releases\"——能不能挑一个 release，讲讲你在里面具体 own 了什么？" },
+    { "q": "我再追问一下：在那次 release 的 final go/no-go 决策会上，是谁拍的板？你是参与决策的人还是 informing 决策的人？" }
+  ],
+  "candidate_last_answer": "嗯，这个事情其实是整个 alignment team 一起做的决策，不是某一个人拍板的。我们 lab 的文化非常 collaborative，每次 release 的 go/no-go 都是 leadership team 加上 alignment、capability、safety 三个 working group 一起 review。我个人更多是把 evaluation 那部分的 signal 准备好，让大家有共同的 base 去讨论。我的 manager 和几位 senior 同事在最终的判断上贡献都非常大，他们的 judgement 比我更成熟。我自己 honestly 来讲，是在那个过程里学习和支持的角色。",
+  "session_state": {
+    "drilled_topics": ["working group scope", "benchmark设计", "design decision owner", "benchmark对release影响", "release贡献", "go/no-go决策"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "leadership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "named-tool" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 在那个过程里学习和支持的角色",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人必须指出他在那次release里独立做出的某一个具体技术或方法判断（即使是小决定），否则Staff级ownership不达标"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "fx_0010",
+  "tags": {
+    "industry": "customer-support",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "李婉清 · 客户支持总监 · 11 年\n\n2022 年至今 · 远音科技 · 客户支持总监\n- 情境:加入时支持团队 60 人,平均处理时长 18 小时,CSAT 73 分,正处于公司从中小客户向中大客户转型期\n- 任务:在 6 个月内把 CSAT 提到 82 分,平均处理时长压缩到 8 小时以内,同时把成本/工单降低 15%\n- 行动:重构二级技术升级 SOP,把工程协作 SLA 从 24 小时压到 4 小时;重新设计坐席激励计划,把首次解决率纳入奖金构成 30% 权重;引入 Zendesk Sunshine 替换 Salesforce Service Cloud\n- 结果:6 个月后 CSAT 达到 84 分超额 2 分,平均处理时长 7.2 小时,成本/工单下降 18%\n\n2018 年-2022 年 · 麦穗 SaaS · 高级支持经理\n- 情境:接手亚太支持团队 22 人,东南亚区域 SLA 持续不达标\n- 任务:把东南亚 P1 工单 4 小时响应达成率从 61% 拉到 90%\n- 行动:协调马尼拉、雅加达两地新增 follow-the-sun 排班;为东南亚客户经理建立 dotted-line 升级通道\n- 结果:6 个月达成 91%,客户流失率从 11% 降到 6%\n\n2014 年-2018 年 · 银曦电子商务 · 客户支持组长\n\n教育: 华南理工大学 信息管理与信息系统学士 2014",
+  "jd": "蓝鲨数据正在为客户支持总监继任者招聘。岗位 own 一个 150 人支持团队和年度 4500 万人民币预算。我们最近有过一起涉及客户数据外泄的事件,目前在内审收尾阶段。候选人面试中需要能清晰讲出自己亲身处理过的 sensitive incident,包括与 PR、Legal、Security 的边界。我们会 explicitly 询问 NDA 与可披露信息的边界 —— 我们理解 NDA 的存在,但希望看到候选人在 NDA 框架内仍能说清自己的判断、动作、和学到的东西,而不是用 NDA 作为不思考的挡箭牌。",
+  "history": [
+    { "q": "请先介绍一下你目前在远音的 scope 和团队结构。" },
+    { "q": "我想 zoom in 在一个具体的事件 —— 过去两年里你处理过的最 sensitive 的一次客户事件。可以是数据相关、合规相关、客诉升级到 PR 层级的,都可以。讲讲你的角色和具体动作。" }
+  ],
+  "candidate_last_answer": "嗯...这个问题不太方便深入讲。我之前公司处理过几次比较 sensitive 的事件,但具体细节都签了 NDA,我不能透露。我可以告诉你的是我是有处理过这类事件的经验的,你可以放心。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "sensitive-incident-experience"],
+    "current_competency_target": "failure-handling",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "failure-handling",
+    "missing_evidence": [
+      { "competency": "failure-handling", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "communication", "evidence_type": "named-tool" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体细节都签了 NDA,我不能透露",
+      "must-be-question-type: teach-back",
+      "expected-yield: the candidate's NDA-safe framework for handling sensitive incidents — what they look for, who they involve, what decisions are theirs — extracts learning from experience without breaching confidentiality, separating real expertise from NDA-as-shield"
+    ]
+  }
+}

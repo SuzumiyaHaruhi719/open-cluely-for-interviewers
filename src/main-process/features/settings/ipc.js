@@ -86,6 +86,7 @@ function registerSettingsIpc({
     const resumeText = typeof appState?.resumeText === 'string' ? appState.resumeText : '';
     const jobDescription = typeof appState?.jobDescription === 'string' ? appState.jobDescription : '';
     const asrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+    const interviewerMode = appState?.interviewerMode === 'expert' ? 'expert' : 'fast';
 
     return {
       asrProvider,
@@ -95,6 +96,7 @@ function registerSettingsIpc({
       xfyunApiKey,
       resumeText,
       jobDescription,
+      interviewerMode,
       hasDashscopeApiKey: dashscopeApiKey.length > 0,
       hasXfyunCredentials: xfyunAppId.length > 0 && xfyunApiKey.length > 0,
       dashscopeAiModels: geminiRuntime.getDashscopeAiModels(),
@@ -147,6 +149,8 @@ function registerSettingsIpc({
       const nextAsrProvider = requestedAsrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
       const nextResumeText = String(settings.resumeText || '').trim();
       const nextJobDescription = String(settings.jobDescription || '').trim();
+      const requestedInterviewerMode = String(settings.interviewerMode || '').trim().toLowerCase();
+      const nextInterviewerMode = requestedInterviewerMode === 'expert' ? 'expert' : 'fast';
       const nextProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(settings.programmingLanguage);
       const nextWindowOpacityLevel = windowController.setWindowOpacityLevel(settings.windowOpacityLevel);
 
@@ -168,7 +172,8 @@ function registerSettingsIpc({
         resumeText: nextResumeText,
         jobDescription: nextJobDescription,
         programmingLanguage: nextProgrammingLanguage,
-        windowOpacityLevel: nextWindowOpacityLevel
+        windowOpacityLevel: nextWindowOpacityLevel,
+        interviewerMode: nextInterviewerMode
       });
 
       setAppEnvironment(updatedEnvironment);

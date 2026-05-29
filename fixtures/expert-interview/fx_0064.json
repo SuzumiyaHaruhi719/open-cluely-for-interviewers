@@ -1,0 +1,37 @@
+{
+  "id": "fx_0064",
+  "tags": {
+    "industry": "product-management",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Priya Anand — Aspiring Product Visionary · APM Candidate\n\nSelected Highlights\n- Founded and scaled StudySync, a campus-wide study-group matching platform, to 'thousands of MAU' within one semester\n- Personally negotiated a partnership with the Tsinghua-Berkeley Shenzhen Institute career services office\n- Featured speaker at the 2024 Pan-Asia Student PM Summit (audience: 400+)\n- Top 1% of Berkeley Product Management Club applicants (selectivity rate: <3%)\n\n经历\n2024 夏 · Tencent · Product Intern (WeChat Pay growth pod)\n- Owned the merchant-onboarding A/B test backlog\n- Shipped the redesigned merchant KYC funnel — single-handedly drove a meaningful conversion lift\n- Worked directly with the WeChat Pay PM lead on Q3 OKRs\n\n2023 - present · StudySync (founder)\n- Built the product from zero, leading a 4-person engineering team\n- Spoke directly with hundreds of student users via 'continuous customer discovery'\n\n2023 暑期 · 红杉资本中国 (Sequoia China) · Investment Intern (sourcing track)\n- Sourced 30+ early-stage consumer deals\n- 'Authored' a Series-A memo that was reviewed by a partner\n\n教育\n- UC Berkeley, BA Cognitive Science (expected May 2026), GPA 3.7\n- 2024 fall exchange: Tsinghua University\n\nSkills: SQL, Figma, Mixpanel, Amplitude, Mandarin (HSK 5), 普通话和广东话\n\nReferences: available on request from 'senior PMs at three FAANG-adjacent companies'",
+  "jd": "Stripe APAC is hiring Product Management Interns for Summer 2025 in the Singapore office. You'll embed with one of three product pods (Connect onboarding, Tax APIs, or Terminal hardware), reporting to a Senior PM. Concrete deliverables: (1) ship one well-scoped feature spec from problem statement through engineering handoff, (2) instrument one product surface and write the analysis memo, (3) run at least 8 customer-discovery calls with merchants in Singapore, Indonesia, or Vietnam. Must-have: ability to scope down rather than scope up — we are skeptical of resumes that claim founder-CEO-level impact without verifiable metrics; ability to describe trade-offs in PM decisions (what did you NOT ship and why); willingness to say 'I don't know' when asked about a metric you haven't measured. Bonus: written Mandarin for merchant interviews. Direct mentorship from the pod's Senior PM, plus weekly cohort sync.",
+  "history": [
+    { "q": "Walk me through one product decision from your Tencent internship — not the outcome, the decision itself. What were you choosing between, and what did you pick?" }
+  ],
+  "candidate_last_answer": "Sure. So the Situation: WeChat Pay 的 merchant KYC funnel had a drop-off problem at step 3, which was the business-license upload step. Conversion from step 2 to step 3 was about 71%, and we needed to get it above 80% before Q3 close. The Task my Senior PM gave me was to scope one experiment for the next sprint. I had two options on the table — Option A was to add an OCR auto-fill where merchants take a photo and we parse the business-license fields. Option B was to add a 'save and come back' button so merchants could finish the step on desktop after starting on mobile. The Action I took was to first pull the data on which step-3 drop-offs were on mobile vs desktop — turned out 64% of drops were on mobile, and within mobile, 78% happened in the first 20 seconds, which suggested friction was about manual typing, not about device-switching. So I picked Option A. The trade-off I 给 my Senior PM articulated was that Option A costs roughly two sprints of engineering versus Option B which is one sprint, but the expected lift from Option A was 4-6 percentage points based on a similar test the Alipay team had run publicly, versus Option B which was probably 1-2 points. The Result: we ran the A/B test for three weeks, OCR auto-fill lifted step-2-to-step-3 conversion from 71% to 76.8%, so 5.8 points, which landed at the top end of my estimate. The funnel didn't hit 80% — that required a follow-up on a different step — so to be honest, my piece worked but the overall OKR was missed.",
+  "session_state": {
+    "drilled_topics": ["decision-tradeoff-tencent"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a similar test the Alipay team had run publicly",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: the specific Alipay case study or source the candidate cited — tests whether the comparable was real or invented, and probes how the candidate validates external benchmarks"
+    ]
+  }
+}

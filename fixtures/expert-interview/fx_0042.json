@@ -1,0 +1,41 @@
+{
+  "id": "fx_0042",
+  "tags": {
+    "industry": "legal",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Margaret 'Meg' Lin — VP, Legal & Compliance candidate\nMost recent: VP Legal, NovaCircuit (Series D semiconductor design, Shanghai + Austin), Mar 2021 – present.\n  - Built compliance function from 0 to 14 people across US and China.\n  - Sole signatory on all export-control filings to BIS for FY22 and FY23.\nAlso listed under same role: VP Legal, NovaCircuit, Mar 2021 – present.\n  - Reports up to the General Counsel, who owns all export-control filings; I review and contribute.\nPrior: Senior Counsel, Holloway & Vance LLP, 2016 – 2021. Securities and cross-border M&A.\nEducation: JD, University of Michigan Law School, 2012. BA Political Science, Fudan, 2009.\nBar admissions: New York, California.",
+  "jd": "VP, Legal & Compliance — Hartman Semiconductor (pre-IPO, Austin TX). You will own the legal function reporting to the CEO, with a dotted line to the Audit Committee. Scope: US export controls (EAR, ITAR adjacent), Chinese subsidiary governance, IP litigation strategy, IPO readiness (S-1 drafting collaboration with outside counsel). The role requires personal accountability for BIS filings — we have a Deferred Prosecution Agreement from 2022 that mandates the VP Legal personally sign and attest. We are looking for someone who is direct, candid under pressure, and willing to say 'I don't know' or 'I was wrong' in front of the board. Prior experience with export-control enforcement actions is mandatory. JD required, US bar admission required, working Mandarin required. Compensation: $380-450k base, equity, board observer seat.",
+  "history": [
+    { "q": "Your resume has two entries for the VP Legal role at NovaCircuit covering the exact same dates — one says you were the sole signatory on BIS export-control filings for the last two fiscal years, the other says the General Counsel owns those filings and you contributed. Given this role personally requires the VP to attest on BIS filings under a DPA, which version is accurate?" }
+  ],
+  "candidate_last_answer": "我觉得 this question 有点 unfair, honestly. You're trying to 抓我的小辫子 on a formatting issue in 一份 resume that 任何 senior lawyer would understand is just 不同 phrasings of the same role. Let me ask you something — does your hiring process really 通过 nitpicking like this, or do you actually want to talk about substance? Because if the bar at Hartman is 'gotcha' questions about wording, I'm not sure 我们是不是 a fit. 我 in twelve years of practice 从来没有 had counsel speak to me like this.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "failure-handling", "evidence_type": "failure-handling" }
+    ],
+    "safety_flags": [
+      { "rule": "hostile-tone", "evidence": "Candidate reframes a substantive contradiction question as 'unfair' and 'gotcha', and asks the interviewer to defend the hiring bar — note this is candidate->interviewer tone, not the reverse. The interviewer question itself is sharp but legitimate given the DPA-attest requirement." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: sole signatory on all export-control filings to BIS",
+      "must-be-question-type: resume-contradiction-pin",
+      "expected-yield: a direct answer to which of the two resume entries is factually accurate regarding BIS signatory authority, before discussing tone"
+    ]
+  }
+}

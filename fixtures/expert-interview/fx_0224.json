@@ -1,0 +1,51 @@
+{
+  "id": "fx_0224",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "周明远 — VP of Engineering · 19 年大规模分布式系统\n\n职业经历\n\n2021 年 8 月 - 至今 · 字节跳动 (ByteDance) · VP of Engineering, 抖音电商技术中台\n职责范围: 抖音电商交易、商品、营销、风控四大技术中台的端到端工程负责人。直接 report to 抖音电商 CTO，间接管理 17 个总监、约 1400 名工程师 (含 SDE、SRE、算法、数据、安全)。在我任内主导/参与的核心项目: (1) 双 11 / 818 等大促级流量场景下交易链路的稳定性建设，2023 年双 11 高峰 QPS 突破 280 万，全链路 P99 < 320ms，SLA 99.995%；(2) 商品中台从单体到 DDD 微服务的拆分，跨 14 个领域服务，历时 18 个月，期间业务零停机；(3) 风控引擎从规则引擎升级到 ML 实时决策引擎，欺诈拦截率提升 38 个百分点，误伤率从 0.42% 降至 0.18%；(4) 工程效能体系建设，包括 CI/CD 全链路平均交付周期从 4.2 天降到 1.6 天，代码评审 SLA P90 从 36 小时降到 9 小时。组织层面: 我推动了职级体系的重新校准，针对历史上抖音电商内部 staff+ 工程师评定偏宽松的问题，2022 年做了一次跨 BU 的横向 calibration，结果约 12% 的 staff 级被建议降级或保级，过程中我承担了大量沟通成本和组织摩擦。\n\n2017 - 2021 年 7 月 · 阿里巴巴 · 资深技术专家 (P9) → 资深技术专家 (P10), 蚂蚁金服 OceanBase 团队\n职责范围: 主导 OceanBase 在分布式事务、HTAP、跨地域容灾三个方向的核心架构演进。在我任内 OceanBase 通过了 TPC-C 7.07 亿 tpmC 世界纪录认证 (2019 年 10 月)。我个人主导了分布式事务模块从两阶段提交到 Paxos 复制状态机融合的架构升级，相关论文发表在 VLDB 2020。同期带过 22 人的核心团队，从 P6 到 P9 各档位都有，期间晋升出 3 位 P8。\n\n2013 - 2017 · 阿里巴巴 · 高级技术专家 (P8), 中间件团队 (RocketMQ / Dubbo)\n负责 RocketMQ 在双 11 场景下的稳定性。2016 年双 11 RocketMQ 峰值 TPS 突破 1750 万，全集群无故障。Dubbo 开源治理工作期间，作为核心 committer 推动了 2.7.x 大版本的发布。\n\n2009 - 2013 · 阿里巴巴 · 技术专家 → 高级技术专家 (P7-P8), 淘宝交易平台\n参与了淘宝交易系统从单体到 SOA 的重构。\n\n2005 - 2009 · 百度 · 工程师 → 高级工程师, 搜索基础架构团队\n\n教育\n- 北京大学计算机系硕士 (高性能计算方向) · 2005\n- 北京大学计算机系学士 · 2002\n\n论文与开源\n- VLDB 2020 (一作): OceanBase 分布式事务架构\n- SIGMOD 2019 (二作): HTAP workload partitioning\n- Apache RocketMQ PMC member (2015 - 2021)\n- Apache Dubbo committer (2014 - 2018)\n\n外部活动\n- ArchSummit 2023 主题演讲: 抖音电商交易稳定性建设\n- QCon 2021 出品人: 数据库与存储专题\n- 多次担任阿里云开发者大会、字节火山引擎峰会演讲嘉宾",
+  "jd": "拼多多 (Pinduoduo) 上海招 VP of Engineering, 主站交易与营销技术。向 CTO 直接汇报, scope 包括交易中台、营销中台、风控中台、推荐链路工程化, 团队规模约 1200 人 (15 个总监)。当前最关键的命题: (1) 拼多多大促场景下 (百亿补贴日、双 11) 交易链路的稳定性与成本平衡——目前 SLA 偏紧但单位成本偏高, 需要在不降级 SLA 的前提下把单位 GMV 成本降 25%；(2) 推荐链路从离线训练到实时增量训练的工程化升级；(3) 海外 (Temu) 与国内交易中台的代码合一与差异化设计。Must-have: (1) 真正 owned 过千人以上工程团队的 P&L 或 OKR；(2) 能在 CTO 面前讲清楚一次明显失败 (而不是『挑战很大但成功了』) 的复盘——拼多多文化对失败案例的真实性要求很高；(3) 能给出具体的 SLA / 成本 / 效能数字, 不接受『大幅提升』；(4) 有过组织级 calibration / 降级处理的经验。",
+  "history": [
+    { "q": "先聊抖音电商的 scope。你 manage 17 个总监、约 1400 工程师, 那你最近一次 1-on-1 cadence 是什么？" },
+    { "q": "OK。2023 双 11 你说峰值 QPS 280 万, 全链路 P99 < 320ms。这个 280 万是包括读路径还是只算下单写路径？" },
+    { "q": "只算下单写路径 280 万——那读路径峰值大概多少？" },
+    { "q": "P99 320ms 是端到端还是只算交易服务内部？" },
+    { "q": "端到端。那从客户端发出 createOrder 到收到 200 响应, 这个链路平均跨多少个服务？" },
+    { "q": "好。商品中台 DDD 拆分历时 18 个月, 你说零停机——零停机的定义是什么？SLA 是 100% 还是接近？" },
+    { "q": "中间有没有出现过任何一次 P0 / P1 事件？" },
+    { "q": "你说有一次 P2 是因为新老路由的 stale cache, RPO 是 9 分钟。这次事件的 RCA 谁写的？" },
+    { "q": "你 cosigned。那这件事的真实问责到了谁的头上？降级处理了吗？" },
+    { "q": "好。风控 ML 引擎那个项目, 你说欺诈拦截率提升 38 个百分点, 误伤率 0.42% 到 0.18%——这两个数字的口径分别是什么？拦截率是 recall 还是 precision？" },
+    { "q": "OK, 拦截率是 recall, 0.42% 误伤是 false-positive-rate。那 baseline 的 precision 和 升级后的 precision 各是多少？" },
+    { "q": "好。换个话题。2022 年你做了那次跨 BU 的 calibration, 大约 12% 的 staff 级被建议降级或保级。这 12% 里, 实际真的降下来的占多少？" },
+    { "q": "29%。剩下 71% 怎么处理的？保级了？" },
+    { "q": "你做这个 calibration 的时候, 有没有出现过一次你自己事后觉得判断错了的个案？也就是说你当时支持降级、事后发现这个人其实不该降？" },
+    { "q": "请讲这个个案。具体什么背景, 你当时为什么支持降级, 后来什么 evidence 让你改判？" },
+    { "q": "你说这位 staff 离开抖音去了腾讯, 在腾讯被定到 12 级 (T4-1) 并很快晋升到 13 级——你这个信息怎么得知的？是他主动告诉你的, 还是其他渠道？" },
+    { "q": "通过共同朋友。OK——那这件事你事后做了什么？有没有 reach out 给他？" },
+    { "q": "Reach out 了, 道了歉, 也写了 reference letter——好。最后一个问题: 你现在还会用 12% 这个 calibration 比例做依据吗, 还是你会重新校准这个比例？" }
+  ],
+  "candidate_last_answer": "我直接回答: 我现在不会再用 12% 这个比例做先验。Situation: 当时我们的 calibration 决定是基于一个隐含假设——即抖音电商内部 staff+ 的『偏宽松』程度和阿里、腾讯、美团这些参照系是均匀偏的, 所以用一个统一的 12% 下浮区间。Task: 我事后用了大约半年时间回看那批被建议降级的人, 看他们后续在内部或外部的实际产出和职级表现。Action: 我做了三件事——(1) 把那 41 个被建议降级的人按业务线、按 evidence 类型 (产品影响 / 技术深度 / 组织影响) 拆开重新打分, (2) 跟其中 9 个我有直接接触的人做了 1on1 复盘, (3) 引入了腾讯、阿里 P8/P9 校准的横向数据做交叉验证。Result: 我发现『偏宽松』在交易和风控两条线确实显著, 但在算法和数据基建两条线是偏紧的, 也就是说统一比例反而错杀了高产出的算法工程师。我刚才提到的那个去腾讯的 staff 就是算法基建线的, 这不是个案, 是结构性误差。所以我现在做 calibration 的方法论变了: 不再用全局比例, 而是按职能线分别建立参照系, 每条线至少需要 5 个外部锚点 (外部数据来自 levels.fyi、内部前同事 reference、招聘市场 offer 数据), 才允许进入 calibration 决议。这个新方法我在 2024 年下半年的一次小范围校准里用过一次, 41 人样本里建议降级的只有 4 人, 全部是交易线, 事后没有再出现误判反馈。我认为前一次的 12% 是我作为 VP 在那一年里最严重的判断失误。",
+  "session_state": {
+    "drilled_topics": ["1on1-cadence", "qps-280m-scope", "read-path-qps", "p99-scope", "service-hop-count", "zero-downtime-definition", "p0-p1-incidents", "rca-author", "accountability-and-demotion", "fraud-metric-definitions", "precision-baseline-vs-new", "calibration-12pct-realization", "remaining-71pct-handling", "individual-misjudgement-case", "case-context", "info-channel", "post-action-reach-out", "calibration-prior-update"],
+    "current_competency_target": "failure-handling",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "failure-handling",
+    "missing_evidence": [],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 41 人样本里建议降级的只有 4 人",
+      "must-be-question-type: metric-pin",
+      "expected-yield: probes whether the 4-person 2024 figure was a real sample or a tidy narrative — asks for the 4 names'職能线 breakdown and the specific external anchors (levels.fyi snapshots, offer data) that justified each demotion, validating the candidate's claim that the new methodology actually works"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "fx_0184",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "王志远 — 制造运营总监 · 业内顶尖良率改善专家 · 14 年\n\n职业概述\n华东地区为数不多同时具备汽车零部件与消费电子两大制造场景实战经验的运营总监。在我经手的每一家工厂，关键产线的良率都从行业中位数水平提升到了行业领先。\n\n职业经历\n\n2021 - 至今 · 立讯精密 (Luxshare) 苏州基地 · 制造运营总监\n- 全面负责 AirPods 代工产线的良率、产能、人效三大核心 KPI\n- 主导了产线从 5G 模组到下一代 AI 终端模组的产线切换 (业内最快交付速度)\n- 团队规模 2000+ 一线员工，6 个生产经理直接汇报\n- 我个人推动的精益改革使产线综合 OEE 提升了 「显著的两位数百分点」\n\n2017 - 2021 · 宁德时代 (CATL) · 制造经理 (动力电池电芯涂布工序)\n- 涂布工序良率从 「行业平均偏下」 提升到 「行业第一梯队」\n- 我的方法论被宁德时代多个基地复制采用\n\n2013 - 2017 · 上海大众 (SAIC Volkswagen) · 高级工艺工程师 (冲压车间)\n- 冲压件不良率改善项目，获 SAIC 集团年度精益奖\n\n2010 - 2013 · 上海大众 · 工艺工程师\n\n教育\n- 上海交通大学 机械工程硕士 · 2010\n- 上海交通大学 机械工程学士 · 2007\n\n荣誉\n- 立讯精密 2023 年度制造卓越奖 (个人奖)\n- 苏州市高层次人才计划 D 类 (2022)\n- 《精益制造》杂志特约撰稿人",
+  "jd": "比亚迪 (BYD) 弗迪电池招制造运营总监 (深圳坑梓基地)，向制造副总裁直接汇报。岗位职责：(1) 负责动力电池 PACK 产线的 OEE、良率、安全三大核心 KPI；(2) 主导产线在 2025 年从磷酸铁锂向钠离子电池的产能切换，规模 2GWh；(3) 管理 1500+ 产线员工、5 个生产经理；(4) 在精益、自动化、MES 系统三个方向各 own 至少一个跨年度项目。Must-have：(1) 真实带过 1000+ 人产线团队的端到端 KPI，不是只 own 工艺或质量单一环节；(2) 谈良率、OEE 时能给出具体的百分点数字，不接受『显著提升』『行业领先』这种话术；(3) 能向制造副总裁讲清楚一次失败的产线切换或良率攻关的复盘；(4) 熟悉电池行业 (锂电、钠电、固态) 的工艺差异。",
+  "history": [
+    { "q": "我们先聊立讯精密。你说全面负责 AirPods 代工产线的良率、产能、人效——具体良率口径是 FPY (一次通过率) 还是 RTY (滚动良率)？" },
+    { "q": "FPY。那 2021 年你接手时 FPY 大概是多少？现在是多少？" },
+    { "q": "嗯。简历写 OEE 提升『显著的两位数百分点』——给一个具体数字，从多少到多少？" },
+    { "q": "94% 到 96% 是 2 个百分点，不是两位数。你之前简历的表述是不是不太准确？" }
+  ],
+  "candidate_last_answer": "嗯我想反过来问一下，你们这边对 OEE 提升的口径是怎么定义的？我刚才说的『两位数』是指相对提升的百分比——94 到 96 绝对值是 2 个百分点，但相对提升是 2.13%，如果再算上我们同期把可用时间损失 (planned downtime) 单独剥出去之后，调整口径下的 OEE 是从 88% 到 96%，那就是 8 个百分点，相对就是 9% 左右。所以你看这个『两位数』的说法取决于你用哪个口径。其实我觉得在 manufacturing operations 这个领域，大家对 OEE 的口径定义本来就是百花齐放的——MES 厂商、咨询公司、各家工厂的内部口径都不一样。所以我想先确认一下你们 BYD 这边在面试时用的是哪个口径，我再具体回答你这个数字。另外，你刚才的问题里有一个 implicit 的 assumption，就是简历的表述应该和绝对数字一致——但简历是 marketing 材料，让招聘方愿意聊下去，真实数字应该在面试中讨论。我觉得这是一个 reasonable 的做法，不知道你怎么看？",
+  "session_state": {
+    "drilled_topics": ["yield-definition-fpy-vs-rty", "fpy-baseline-and-current", "oee-specific-delta", "two-digit-claim-vs-actual"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 简历是 marketing 材料",
+      "must-be-question-type: resume-contradiction-pin",
+      "expected-yield: forces candidate to either defend that resumes can use non-literal metrics (an integrity red flag for a manufacturing director) or retract — pins the integrity posture, not the OEE math"
+    ]
+  }
+}

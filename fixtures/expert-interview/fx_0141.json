@@ -1,0 +1,39 @@
+{
+  "id": "fx_0141",
+  "tags": {
+    "industry": "product-management",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Daniel Okafor - Staff Product Manager\n\nProfile: 9 years of product management across consumer marketplace and developer tools.\n\nExperience:\n2022 - present  Acme Marketplace - Staff PM, Trust & Safety\n  - Solo PM owner of buyer-side risk surfaces; no direct reports.\n  - Led the rollout of a new risk-score model that reduced fraudulent listings reaching buyers by 38% over two quarters.\n  - Managed a cross-functional team of 14 (4 eng, 2 DS, 2 design, plus partners) on the same risk-score initiative.\n\n2020 - 2022  DevTools startup - Senior PM, Developer Onboarding\n  - Owned the developer-onboarding funnel; defined the team's quarterly OKRs.\n  - Did not have direct OKR ownership; OKRs were owned by the head of growth, I executed against them.\n  - Shipped a redesigned signup flow that lifted activation by 22%.\n\n2018 - 2020  Acme Marketplace - PM, Search Quality\n  - Improved query-to-click rate by 11% via a re-ranker change.\n\n2016 - 2018  Consulting firm - Senior Consultant.\n\nEducation: MBA, Booth, 2016; BA Economics, Williams, 2012.\n\nSelected skills: SQL, experimentation design, model-evaluation literacy, stakeholder management.",
+  "jd": "Role: Staff Product Manager - Risk & Integrity Platform\n\nWe are an online marketplace at ~$8B GMV looking for a Staff PM to anchor our Risk & Integrity Platform team. This is a high-trust, high-leverage role that sits at the intersection of ML, policy, and customer experience. You will report to the Director of Trust & Safety and partner with a 12-person engineering team and a 4-person data-science team.\n\nWhat the role does: own the platform-level risk-decisioning surface that every product team integrates with; partner with DS leads to define and ship the next generation of risk models; serve as the go-to PM for the company's incident response on integrity failures; influence policy decisions at the leadership level.\n\nMust-haves: 8+ years of PM experience with at least 3 in risk, fraud, abuse, or related; demonstrated ability to ship ML-driven products in production; experience navigating model-quality tradeoffs against UX and against false-positive cost; comfort being the senior PM voice in cross-functional war-room settings.\n\nNice-to-haves: marketplace, fintech, or social-network experience; familiarity with calibration, precision/recall tradeoffs in policy settings.",
+  "history": [
+    { "q": "Daniel, your resume lists a 38% reduction in fraudulent listings reaching buyers over two quarters. Walk me through the model change behind that, and what your specific role was — were you scoping the change, evaluating it, deciding the launch, or all of the above?" },
+    { "q": "Helpful context. Now I want to dig into a specific tradeoff. A 38% drop in fraudulent listings reaching buyers — at what cost in false positives or seller friction? What's the precision-recall point you launched at, and who decided that was the right point?" }
+  ],
+  "candidate_last_answer": "Yeah, so on the precision-recall question — we landed at roughly 0.82 precision and 0.61 recall at the buyer-surface threshold, which the data-science team and I agreed was the right balance. The seller-friction question is actually a really interesting one and I want to spend a minute on it because it connects to a broader philosophical question I've been wrestling with about marketplace trust. There's a school of thought, and I'd actually point you to a great Stratechery piece from earlier this year, that argues marketplaces should be aggressive on seller friction because the long-run NPS lift among buyers dominates. There's another school — Lenny Rachitsky wrote about this on his newsletter — that says no, you should always optimize for seller LTV because supply is the constraint in most marketplaces. And then there's the EU DMA angle, which is going to force a lot of marketplaces to rethink how they apply integrity friction to different seller classes anyway, and I think Acme is actually about 18 months behind where we should be on that. So when you ask 'who decided' — honestly I think the more interesting question is, in two years, who SHOULD be deciding this? Because right now it's a PM-plus-DS-lead call, but I'd argue it should be a policy-and-legal call...",
+  "session_state": {
+    "drilled_topics": ["model change ownership", "precision-recall tradeoff"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "communication",
+    "missing_evidence": [
+      { "competency": "communication", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "resume-vs-verbal-overclaim" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 0.82 precision and 0.61 recall",
+      "must-be-question-type: cost-of-decision",
+      "expected-yield: 把候选人从'Stratechery / Lenny / DMA'切线拉回，强制说明在他launch的0.82/0.61那一点上，false positives具体每周影响多少个seller（数字），以及这个数字是不是他自己拍板"
+    ]
+  }
+}
