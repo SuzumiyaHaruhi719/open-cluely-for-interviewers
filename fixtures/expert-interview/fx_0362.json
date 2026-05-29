@@ -1,0 +1,48 @@
+{
+  "id": "fx_0362",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "over-bragging",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Staff Clinical Data Engineer — Healthcare Analytics Rockstar\n\nI am widely regarded as one of the strongest clinical data engineers in the region. Over my career I have single-handedly transformed how multiple hospital systems use data, and leaders consistently call me their most indispensable technical hire.\n\nHighlights\n- Personally architected the entire enterprise data warehouse at a 600-bed health system — best-in-class, full stop.\n- Built ML models that I'm told saved countless lives by flagging sepsis earlier than anyone thought possible.\n- Recognized as the go-to expert for HL7/FHIR integration; colleagues say nothing ships without my sign-off.\n- Routinely outperform entire teams; I delivered a project alone that was scoped for six engineers.\n\nExperience\n- Summit Health System — Staff Clinical Data Engineer (2020-present). Lead data engineering for clinical analytics; own ETL from Epic to the warehouse, plus predictive model pipelines.\n- Cedar Valley Medical Center — Senior Data Engineer (2016-2020).\n\nSkills: Epic Clarity/Caboodle, FHIR, HL7, Python, dbt, Snowflake, Airflow, MLOps, HIPAA-compliant pipelines.\n\nEducation: M.S. Biomedical Informatics; B.S. Computer Science.",
+  "jd": "Summit-affiliated Northstar Health is hiring a Staff Clinical Data Engineer to lead the data platform behind clinical decision-support and quality reporting. Reporting to the Director of Data Engineering, you will own the EHR-to-warehouse ingestion (Epic Clarity/Caboodle), the FHIR integration layer, and the pipelines feeding predictive models (including a sepsis early-warning model). You will be accountable for pipeline reliability (data-freshness SLAs), model-input data quality, and regulatory-grade auditability for quality measures. We need an engineer who can speak precisely and calmly about one system they personally built — its design tradeoffs, the metrics it moved, and how they validated correctness — rather than a broad highlight reel. Strong collaboration with clinicians, informaticists, and compliance is essential.",
+  "history": [
+    { "q": "Let's ground this. Walk me through the EHR-to-warehouse pipeline you own at Summit — source, transforms, destination." },
+    { "q": "You say you architected the entire warehouse. What was the data model — star schema, Data Vault, something else?" },
+    { "q": "Tell me about the sepsis early-warning model. What were the model inputs?" },
+    { "q": "How was that model validated clinically before it influenced care?" },
+    { "q": "What was the model's performance — sensitivity, specificity, or alert burden?" },
+    { "q": "Let's slow down and pick ONE system. Take the sepsis pipeline end-to-end: how does data flow from Epic to a clinician alert?" },
+    { "q": "Where in that pipeline is the highest risk of bad data reaching the model, and how do you guard it?" },
+    { "q": "How do you monitor data freshness, and what's your SLA?" },
+    { "q": "Have you ever shipped a data bug that affected a clinical output? What happened?" },
+    { "q": "Walk me through how you caught and fixed it — specifically." },
+    { "q": "Focus just on the sepsis model validation. What did YOU personally do to confirm the inputs were correct before go-live?" }
+  ],
+  "candidate_last_answer": "Okay, so — sorry, there's a lot here — um, validation, right. So there was the sepsis model, but also I was kind of doing the FHIR migration at the same time, and oh, that reminds me of this whole Clarity-to-Caboodle thing we did at Cedar Valley which was a totally separate fire. For sepsis I think we, uh, we looked at the inputs, we did some checks against the source... and then there was the readmissions model too, that one had a labeling issue I caught. And the data-freshness alerting — I built that, sort of, with Airflow sensors, though honestly part of that was a contractor. Sorry, what was the exact question — the sepsis validation specifically? Because there were like three things going on that quarter and they kind of blur together.",
+  "session_state": {
+    "drilled_topics": ["pipeline-overview", "warehouse-data-model", "sepsis-model-inputs", "clinical-validation", "model-performance", "sepsis-end-to-end", "data-quality-risk", "freshness-sla", "data-bug-incident", "bug-fix-walkthrough"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: For sepsis I think we, uh, we looked at the inputs, we did some checks against the source",
+      "must-be-question-type: teach-back",
+      "expected-yield: a single, concrete account of the sepsis-model input validation the candidate personally performed — which fields, what reference he reconciled against, what threshold or test gated go-live — without cross-fading into the FHIR migration, the Caboodle work, or the readmissions model"
+    ]
+  }
+}

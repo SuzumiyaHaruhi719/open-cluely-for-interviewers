@@ -1,0 +1,49 @@
+{
+  "id": "fx_0346",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "VP of Data｜数据平台与数据治理负责人\n\n核心标签：Data Strategy · Lakehouse · Data Mesh · Real-time Streaming · MLOps · Data Governance · Cost Optimization · FinOps · GDPR/CCPA Compliance · Self-service Analytics · Semantic Layer · CDC · Kafka · Spark · Flink · dbt · Snowflake · Databricks · Airflow · Looker · Data Contracts · SLA/SLO · Observability\n\n一句话简介：端到端 data leader，擅长用 data mesh 与 lakehouse 架构推动 enterprise-scale 的 data-driven transformation，落地 self-service analytics 与 governance 闭环。\n\n经历\n现任 某金融科技公司 VP of Data（管理约 80 人，含 platform / governance / analytics 三个 function）。负责 company-wide data platform 重构，主导从传统 EDW 向 lakehouse 迁移，推动 streaming-first 架构与 real-time feature store。\n\n此前 某电商集团 Senior Director, Data Engineering。负责 batch 到 streaming 的 modernization，落地 dbt-based transformation layer 与 data contract 机制。\n\n更早 某 SaaS 公司 数据架构师 / 团队负责人。\n\n关键词成果（buzzword 友好版）：\n- Drove enterprise data transformation，建立 single source of truth\n- Operationalized data mesh，赋能 domain-oriented ownership\n- Championed FinOps，优化 cloud data spend\n- Built scalable real-time pipelines，支撑 sub-second analytics\n- Established data governance framework，保障 compliance-by-design\n\n技能：Spark、Flink、Kafka、Snowflake、Databricks、dbt、Airflow、Terraform、Python、SQL、Scala。",
+  "jd": "We are hiring a VP of Data to own the company's entire data platform, governance, and analytics functions (org of ~90). 这个角色直接向 CTO 汇报，负责 data platform 的 reliability、cost 与 governance，并对两个 board-level 指标负责：platform pipeline freshness SLA（当前 P95 约 40 分钟，目标 5 分钟）与 annual cloud data spend（当前约 1400 万美元，目标在 18 个月内下降 25%）。我们希望候选人 personally 主导过一次大型 lakehouse 或 streaming 迁移，能讲清楚自己在 architecture trade-off、成本归因与跨域 data contract 推行中扮演的具体角色。你将 inherit 一个 freshness 长期不达标的核心管线，以及一桩与某 BI 供应商的合同纠纷。我们尤其关注候选人对自身决策与结果的 ownership，而不是泛泛的团队叙事。",
+  "history": [
+    { "q": "先讲讲你现在的 scope —— 团队规模、你 own 哪些 function、对哪些 metric 负责。" },
+    { "q": "你简历里说主导了从 EDW 到 lakehouse 的迁移。这次迁移最难的一个 architecture decision 是什么？" },
+    { "q": "在那个决策里，具体是你拍的板，还是架构组拍的？你个人的判断是什么？" },
+    { "q": "迁移之后 pipeline freshness 从多少改善到多少？怎么量的？" },
+    { "q": "你提到 streaming-first 架构，Kafka 加 Flink。为什么不用更简单的 micro-batch？" },
+    { "q": "data mesh 落地时，domain 团队不愿意接 ownership，你个人做了什么去推动？" },
+    { "q": "FinOps 那块，你说优化了 cloud data spend，省了多少、靠哪几个动作？" },
+    { "q": "data contract 机制是谁设计的？上线后第一个被它拦下的 breaking change 是什么？" },
+    { "q": "讲一个你判断错了的 architecture 决策，后来怎么纠的？" },
+    { "q": "和那家 BI 供应商的合同纠纷，你亲自参与谈判了吗？争的是什么？" },
+    { "q": "你向 CTO 汇报时，怎么把一个 platform reliability 问题翻译成 business 语言？" },
+    { "q": "好，聚焦到那次成本优化。请你具体讲讲，是你本人做了哪些决策让 cloud data spend 降下来的？" }
+  ],
+  "candidate_last_answer": "Yeah，成本这块我们做得还挺漂亮的。我们团队当时一起 review 了所有的 workload，然后我们把一些 idle 的 cluster 给 right-size 了，也 migrate 了一部分 batch job 到更便宜的 spot instance。我们还一起搭了一套 cost observability 的 dashboard，让每个 domain 都能看到自己的 spend。总之就是大家齐心协力，最后 spend 是降下来了，团队配合得特别好，这是一个非常 collaborative 的 effort，我为我们团队感到骄傲。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "migration-architecture-decision", "decision-ownership", "freshness-measurement", "streaming-vs-microbatch", "data-mesh-adoption", "finops-actions", "data-contract-design", "wrong-decision-recovery", "vendor-dispute", "exec-communication"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 大家齐心协力，最后 spend 是降下来了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人被迫从『我们团队』切换到第一人称，说出他本人亲自做出的某个具体成本决策，例如他个人批准下线哪类 cluster、设定了什么 spot 比例阈值、以及该决策带来的具体省钱金额与时间点"
+    ]
+  }
+}

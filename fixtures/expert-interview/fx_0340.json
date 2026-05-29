@@ -1,0 +1,42 @@
+{
+  "id": "fx_0340",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "吴沛宁\n应聘岗位：Equity Research 实习生\n\n实习经历：\n弘策资本 行研实习生（2024.06-2024.12）\n覆盖消费板块，协助分析师做行业数据搜集、building财务模型、撰写公司点评。\n\n泰盛证券 投行部实习生（2023暑期）\n参与IPO项目的尽调资料整理与底稿编制。\n\n校园经历：\n校投资协会成员，参与stock pitch比赛获院级二等奖。\n\n技能：\nExcel财务建模（DCF、可比公司估值）、Wind/Bloomberg数据库、Python基础数据处理、PPT。\n\n教育背景：\n某高校 金融学 本科在读，预计2026年毕业。GPA 3.7/4.0。\n\n证书：证券从业资格、CFA一级在读。",
+  "jd": "我们正在招聘Equity Research（股票研究）实习生，支持消费板块的卖方研究工作。核心职责：搭建与维护行业及公司financial model；搜集并清洗行业数据；协助撰写深度报告与公司点评；跟踪覆盖标的的财报与关键经营数据。我们希望候选人能就自己亲手做过的建模与分析讲清楚细节——用了什么假设、模型结构如何、得出了什么结论，而不是泛泛而谈对行业或市场的兴趣。要求扎实的会计与估值基础、严谨的数据处理习惯，以及清晰的书面表达。",
+  "history": [
+    { "q": "先介绍一下你在弘策的实习，主要负责消费板块的什么工作？" },
+    { "q": "你提到building财务模型，你独立搭过哪个公司的model？" },
+    { "q": "那个model的核心assumption是什么，比如收入增速怎么定的？" },
+    { "q": "你做的DCF，WACC大概取多少，怎么拆出来的？" },
+    { "q": "就你那个model，从搭建到得出结论，你具体做了哪几步，最后给analyst的结论是什么？" }
+  ],
+  "candidate_last_answer": "说到这个model，我其实特别想聊聊我对整个消费赛道的看法。我觉得现在consumer板块的逻辑变了，年轻人的消费观念跟以前完全不一样了，国货崛起是个huge的趋势，我自己平时也很关注这些品牌。而且我对宏观也很感兴趣，最近一直在看利率和汇率对市场的影响，我觉得做research最重要的是要有大局观和insight。对了，我之前那个stock pitch比赛拿了奖，就是讲一个消费股的，那次经历让我特别确定自己想走research这条路。我真的非常passionate about这个行业。",
+  "session_state": {
+    "drilled_topics": ["弘策实习内容", "独立搭建的model", "核心假设", "WACC拆解"],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "domain-depth", "evidence_type": "named-entity" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我觉得做research最重要的是要有大局观和insight",
+      "must-be-question-type: teach-back",
+      "expected-yield: 把候选人从赛道宏观感想拉回到具体某个公司模型的机制层面，迫使其讲清收入假设的拆分逻辑、WACC的构成与DCF结论，以验证其真实建模能力而非行业兴趣"
+    ]
+  }
+}

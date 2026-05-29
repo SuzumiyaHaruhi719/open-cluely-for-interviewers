@@ -1,0 +1,43 @@
+{
+  "id": "fx_0385",
+  "tags": {
+    "industry": "customer-support",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "客户支持专员\n\n微岚科技 客户支持专员（2023年至今）\n- 负责工单一线响应，处理退换货与账户类咨询\n- 熟悉工单系统与知识库流程\n\n云递物流 客服实习生（2022年）\n- 协助处理电话与在线咨询\n\n技能：工单系统、知识库撰写、基础数据表格\n教育：专科 电子商务",
+  "jd": "微岚科技招聘一名初级客户支持专员，负责在线工单与电话渠道的一线响应。你将处理退换货、账户与基础技术类咨询，遵循升级流程，并维护知识库条目。我们看重能把一次具体问题讲清楚的人：你做了什么、为什么这样做、结果如何。理想候选人响应及时、表达聚焦，遇到拿不准的情况会明确说『我不确定，我去确认』，而不是绕开问题。你需要达成首次响应时长与客户满意度目标，并按规范完成工单记录。",
+  "history": [
+    { "q": "讲一次你处理过的比较棘手的客户投诉。" },
+    { "q": "那次投诉的具体问题是什么，客户最初想要什么？" },
+    { "q": "你当时具体做了哪几步？" },
+    { "q": "最后结果怎么样，客户满意吗？" },
+    { "q": "你说你熟悉升级流程，什么情况下你会升级一个工单？" },
+    { "q": "简短点：就这次投诉，你个人做的关键一步是什么，结果如何？" }
+  ],
+  "candidate_last_answer": "嗯这个让我想起来，其实我们那套工单系统特别难用，说到这个我得提一句，知识库的分类也很乱，我一直想吐槽，对了上次还有个同事离职交接也没做好，所以那阵子特别忙，然后那个投诉嘛，客户是退货的事，不过说到退货政策我们公司改过好几版，每次改我都得重新背一遍，挺折腾的，哦还有物流那边经常甩锅给我们客服，反正那次最后好像是解决了吧，具体我得翻一下记录。",
+  "session_state": {
+    "drilled_topics": ["棘手投诉", "投诉具体问题", "处理步骤", "投诉结果", "升级流程触发条件"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "impact-measurement", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正那次最后好像是解决了吧",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 针对那一次退货投诉，候选人个人采取的具体步骤顺序与最终结果（客户是否满意、是否退成），用一两句话聚焦讲清，而不是跑题到系统难用、同事交接或物流甩锅"
+    ]
+  }
+}

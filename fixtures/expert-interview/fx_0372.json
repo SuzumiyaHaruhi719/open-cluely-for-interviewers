@@ -1,0 +1,43 @@
+{
+  "id": "fx_0372",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "VP of Engineering — Platform & Infrastructure\n\nI am widely regarded as one of the strongest infrastructure leaders of my generation. Over fifteen years I have single-handedly transformed every organization I have touched into a world-class engineering powerhouse.\n\nSelected achievements:\n- Personally architected the migration that took our flagship product from monolith to microservices, an effort universally credited as the gold standard in the industry\n- Built and scaled three engineering organizations from a handful of people to 300+, each one best-in-class\n- Drove platform reliability to legendary levels; under my leadership outages essentially became a thing of the past\n- Recruited the best engineering talent in the market — top performers sought me out specifically\n- Owned a nine-figure infrastructure budget and consistently delivered miracles under it\n- Recognized internally as the person executives called when a project was truly unsalvageable\n\nMost recent: SVP/VP Engineering, Helio Systems (2019-present)\nPrior: VP Platform, Quanta Labs (2015-2019); Director of Engineering, Vector Software (2012-2015)\n\nI don't just lead teams — I redefine what teams believe is possible.",
+  "jd": "Meridian Cloud is hiring a VP of Engineering to own our platform and infrastructure org (roughly 220 engineers across reliability, data platform, developer experience, and core services). Reporting to the CTO, you will own availability SLOs across the fleet, the infrastructure cost line (currently ~$40M/yr), and the multi-year roadmap to consolidate three acquired platforms onto one substrate. We need a leader who can speak precisely about a specific reliability program they ran — the incident that triggered it, the mechanism they changed, and the measured before/after — and who can hold focus on one decision under questioning rather than gesturing at a career of wins. You will partner with Product and Finance on capacity and cost, and present availability and spend to the board quarterly.",
+  "history": [
+    { "q": "Give me your current scope at Helio — org size, budget, and the specific SLOs you own." },
+    { "q": "You say outages 'became a thing of the past.' Pick the single reliability program you're proudest of and tell me what you changed." },
+    { "q": "What was the incident that triggered that program, and what was the availability number before and after?" },
+    { "q": "Stay on that one program for a moment — what was the specific mechanism you changed, technically?" },
+    { "q": "Let's keep it to that reliability effort only. Walk me start to finish through what you, personally, decided and in what order." }
+  ],
+  "candidate_last_answer": "Right, okay, so — there's actually so much here, where do I even start. So the reliability thing, that was huge, but it really ties into the microservices migration I led, which honestly you can't separate the two, and also around that same time I was rebuilding the on-call culture from scratch and recruiting the whole SRE function, and oh — we also stood up a brand new data platform that quarter which was a massive lift. So the reliability program, um, it was kind of everything at once? I mean we changed the deploy pipeline, we changed the observability stack, we changed the org structure, we changed the incident process, we changed the capacity model — it was all happening together and I was driving all of it. And the results were incredible across the board, every metric you can think of. Sorry, what was the specific question again — the mechanism, or the order, or...?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "reliability-program-pick", "trigger-incident-and-before-after", "specific-mechanism"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "execution", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it was kind of everything at once",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a single, ordered sequence of decisions for the one reliability program — the first change made, what it measurably did, then the next — forcing the candidate to isolate that effort from the migration, SRE hiring, and data platform he bundled together"
+    ]
+  }
+}

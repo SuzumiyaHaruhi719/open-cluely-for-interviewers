@@ -1,0 +1,44 @@
+{
+  "id": "fx_0349",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "高级供应链经理｜端到端供应链运营专家\n\n核心能力关键词：S&OP · 需求计划 · 库存优化 · 采购寻源 · 供应商管理 · 物流网络规划 · 精益生产 · 六西格玛 · 成本控制 · 数字化转型 · 风险管理 · 可视化 · 端到端协同 · 战略寻源 · 多级库存 · 服务水平管理\n\n一句话简介：资深供应链负责人，擅长端到端供应链的全局优化与降本增效，推动数字化与精益双轮驱动。\n\n职业经历\n现任 某消费电子公司 高级供应链经理。负责区域供应链的整体运营，统筹需求计划、库存与物流，推动 S&OP 流程的落地与供应商协同的优化。\n\n此前 某制造企业 供应链经理。负责采购寻源与库存管理，主导过精益改善项目。\n\n更早 某第三方物流公司 运营主管。\n\n关键词成果：\n- 推动端到端供应链可视化，提升整体协同效率\n- 主导库存优化项目，显著降低呆滞与持货成本\n- 优化供应商结构，强化供应韧性\n- 落地 S&OP 流程，改善预测与供需匹配\n- 推进物流网络优化，降低履约成本\n\n技能：S&OP、需求预测、库存模型、采购谈判、精益六西格玛、数据分析、ERP 系统。",
+  "jd": "我们正在招聘一名高级供应链经理，负责端到端供应链运营，对预测准确率、库存周转与履约成本三项核心指标负责。该角色需要主导 S&OP 流程、优化多级库存策略并推动供应商协同。我们希望候选人能用具体的项目、具体的数字和具体的决策来说明自己创造的价值，尤其是在库存优化与成本控制上的真实成果。你将接手一条预测长期不准、呆滞库存偏高的产品线。我们尤其看重候选人能否清楚地讲出『你本人做了什么、带来了多少可量化的改善』，而不是停留在流程和概念层面。",
+  "history": [
+    { "q": "先介绍一下你现在负责的供应链 scope —— 覆盖哪些环节、对哪些指标负责。" },
+    { "q": "你简历里写『主导库存优化项目，显著降低呆滞与持货成本』，挑一个具体项目讲讲你做了什么。" },
+    { "q": "这个项目里呆滞库存降了多少、持货成本降了多少？" },
+    { "q": "你说推动了 S&OP 落地，落地前后预测准确率有什么变化？" },
+    { "q": "供应商结构优化，你具体砍掉或新增了哪类供应商？依据是什么？" },
+    { "q": "物流网络优化那块，履约成本的下降是怎么测算出来的？" },
+    { "q": "好，回到那个库存优化项目。请你非常具体地讲一下：是哪条产品线、你当时拍板做了哪个关键决策、最后呆滞金额从多少降到了多少？" }
+  ],
+  "candidate_last_answer": "这个项目我确实主导了，整体效果是挺显著的。不过具体是哪条产品线、具体的金额和当时内部的决策细节，因为我和原公司签了保密协议，涉及到具体的业务数据和供应商信息，这部分我不太方便透露。我只能说，我们当时是从端到端的视角去做的整体优化，把流程、库存策略和供应商协同都梳理了一遍，最后呆滞和成本都有比较明显的改善，整体是一个比较成功的项目。方法论上我是很有信心的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "inventory-project-actions", "deadstock-cost-reduction", "sop-forecast-accuracy", "supplier-restructuring", "logistics-cost-calc"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 因为我和原公司签了保密协议",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 在尊重保密边界的前提下，候选人改用脱敏方式给出可验证的量级——例如呆滞下降的百分比区间、周转天数的改善幅度、他个人拍板的那个决策的性质——而不是继续停留在『方法论很有信心』的空泛表述"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "fx_0330",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "供应链副总裁 ｜ Global Supply Chain ｜ 业界标杆\n\n个人摘要：被誉为供应链转型领域的旗帜性人物，拥有十五年以上 end-to-end 供应链管理经验。所主导的 network redesign 与 S&OP 变革被业内争相效仿，是 CEO 最倚重的运营核心。\n\n工作经历：\n远图制造（2019 至今）——供应链副总裁。统筹 global planning、procurement、logistics 与 manufacturing operations，覆盖 4 个大区、12 个工厂、年度 COGS 约 18 亿美元。亲手缔造了行业领先的 S&OP 体系。\n\n联泰电子（2014-2019）——供应链高级总监。负责 APAC 区域的 demand planning 与 supplier management，打造了无人能及的 supplier scorecard 机制。\n\n核心成就：主导 network redesign 大幅压缩 lead time 与库存；建立了被誉为标杆的 control tower；带领团队穿越多次供应中断危机。\n\n教育背景：清华大学 工业工程 本科；MIT Supply Chain Management 硕士。\n\n技能：S&OP、network optimization、demand planning、supplier negotiation、digital control tower。",
+  "jd": "我们是一家全球制造企业，正在招聘供应链副总裁，向 COO 汇报，统筹 global planning、procurement、logistics 与 manufacturing。该岗位要求候选人能用完整的 STAR 结构讲清一段高难度的供应链变革：当时的 situation 与 target、自己亲手采取的 actions、以及可量化的 result（lead time、inventory turns、fill rate、成本节约等）。我们尤其关注 ownership 边界——哪些是候选人个人决策与推动的，哪些是团队执行的——以及在 disruption 下的 tradeoff 判断。重视真实数字与可核验细节，警惕只有 superlative 没有事实支撑的表达。",
+  "history": [
+    { "q": "先讲讲你在远图的 scope——团队规模、覆盖的工厂数量、你直接 own 的 COGS 量级。" },
+    { "q": "你简历说亲手缔造了行业领先的 S&OP 体系。接手时它是什么状态？" },
+    { "q": "S&OP 这块，你上任后第一个动的是哪个环节？为什么先动它？" },
+    { "q": "讲讲那次 network redesign 的背景——是什么业务问题逼着你做的？" },
+    { "q": "redesign 之前的 lead time 和 inventory 大概在什么水平？" },
+    { "q": "你具体改了什么？工厂布局、还是 DC 网络、还是 sourcing 策略？" },
+    { "q": "这里面哪些决策是你个人拍板的，哪些是团队或 COO 定的？" },
+    { "q": "结果呢？lead time 和 inventory turns 改善了多少，用了多长时间？" },
+    { "q": "fill rate 或 OTIF 有没有相应变化？会不会是压库存牺牲了服务水平？" },
+    { "q": "成本上节约了多少？是 one-time 还是可持续的 run-rate？" },
+    { "q": "讲一次真正的 disruption——某个 supplier 或某条 lane 断了，你怎么处理的？" },
+    { "q": "那次中断你做了哪个 tradeoff？是加急空运扛成本，还是让客户等？" },
+    { "q": "control tower 那套，是买的现成系统还是自己搭的？你个人在里面做了什么？" },
+    { "q": "supplier scorecard 机制，淘汰过供应商吗？最难的一次是怎么决策的？" },
+    { "q": "你团队里有没有你提拔起来、现在独当一面的人？举个例子。" },
+    { "q": "如果让你重做 network redesign，哪个决策你会改？" },
+    { "q": "这些年最让你睡不着的一个供应链风险是什么？" },
+    { "q": "给我一个最完整的故事：一段你从头 own 到尾的供应链变革，situation、你个人的 action、和最硬的 result 数字。" }
+  ],
+  "candidate_last_answer": "好，讲 2021 到 2022 那次 network redesign。Situation：我们北美 fulfillment 全靠两个 mega-DC，疫情期间 East Coast 那个 DC 一旦 disruption，平均 order-to-delivery lead time 冲到 9.5 天，inventory 压到 95 天 DOS，OTIF 只有 82%，客户投诉爆了。Target：董事会给我的硬指标是一年内把 lead time 砍到 5 天以内、OTIF 拉到 95%，且不能净增库存。Action：我个人做了三个关键决策——第一，把单点 mega-DC 拆成『2 大 + 4 个 regional forward DC』的混合网络，这个方案是我顶着 CFO 的成本质疑拍板的；第二，我把 ABC 品类里 top 20% 的 SKU 做了 forward-deploy，长尾留在 mega-DC 集中库存；第三，我亲自带队重谈了两家 3PL 的 SLA，把 regional 履约绑定到 penalty 条款。团队负责执行落地和系统配置，网络结构和 sourcing 策略的取舍是我定的。Result：九个月内 lead time 从 9.5 天降到 4.6 天，OTIF 从 82% 升到 96%，DOS 从 95 天降到 71 天，net inventory 不升反降约 12%，年化物流加库存持有成本节约约 2400 万美元，是可持续的 run-rate 而非一次性。代价是 regional DC 的固定成本一次性增加了约 600 万美元，但 12 个月内就被 carrying cost 的下降覆盖了。",
+  "session_state": {
+    "drilled_topics": ["scope", "sop-initial-state", "sop-first-lever", "redesign-context", "pre-leadtime-inventory", "what-changed", "personal-vs-team-decision", "leadtime-turns-result", "fill-rate-tradeoff", "cost-savings", "disruption-handling", "disruption-tradeoff", "control-tower", "supplier-scorecard", "talent-developed", "redesign-redo", "biggest-risk"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: net inventory 不升反降约 12%",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 候选人解释在新增 4 个 regional forward DC 的情况下净库存还能下降 12% 的具体机制——是靠 SKU forward-deploy 的 pooling 重构、safety-stock 重新分层，还是其中暗含了对长尾 SKU 服务水平的取舍，迫使他暴露这个反直觉数字背后的真实代价或假设"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "fx_0360",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Growth Marketing Manager | Performance • Lifecycle • Demand Gen • Full-Funnel • Omnichannel\n\nData-driven, ROI-obsessed growth marketer leveraging best-in-class martech to scale pipeline and revenue.\n\nCore competencies: SEO, SEM, PPC, CRO, CAC, LTV, ROAS, MQL, SQL, ABM, CRM, CDP, DSP, programmatic, paid social, paid search, retargeting, attribution, marketing automation, email lifecycle, drip nurture, lead scoring, funnel optimization, A/B testing, multivariate testing, landing-page optimization, growth hacking, virality, north-star metrics, cohort analysis, LTV:CAC, payback period.\n\nMartech stack: Google Ads, Meta Ads, TikTok Ads, LinkedIn Ads, HubSpot, Marketo, Salesforce, Segment, Amplitude, Mixpanel, GA4, Looker, Tableau, Optimizely, VWO, Iterable, Braze.\n\nExperience\n- BrightWave SaaS — Growth Marketing Manager (2021-present). Owned paid acquisition and lifecycle for a B2B product. Drove demand, scaled pipeline, optimized full-funnel performance.\n- Lumen Retail — Performance Marketing Specialist (2018-2021). Managed paid search and paid social budgets, executed CRO experiments.\n\nEducation: B.A. Marketing.\n\nCertifications: Google Ads, Meta Blueprint, HubSpot.",
+  "jd": "Helio, a Series B B2B SaaS company, is hiring a Growth Marketing Manager to own paid acquisition and the demand-gen funnel. Reporting to the Director of Growth, you will manage a $2.4M annual paid budget across search, paid social, and ABM, and you'll be accountable for blended CAC (currently $1,180, target $850), MQL-to-SQL conversion (currently 14%, target 22%), and pipeline contribution. We need someone who can take clear personal ownership of channel performance, diagnose why a number moved, and avoid blaming sales, the product, or the market when results miss. You will work cross-functionally with sales and product, run rigorous experiments, and present channel results to the leadership team monthly.",
+  "history": [
+    { "q": "Walk me through what you own at BrightWave — channels, budget, and the metrics you're accountable for." },
+    { "q": "Your resume lists a huge martech stack. Which two tools did you personally configure end-to-end?" },
+    { "q": "What's your blended CAC at BrightWave today, and where was it a year ago?" },
+    { "q": "Tell me about a quarter where CAC went the wrong direction. What happened?" },
+    { "q": "What specifically did you change in your paid accounts in response?" },
+    { "q": "How did MQL-to-SQL conversion trend over that period?" },
+    { "q": "Walk me through one experiment you designed — hypothesis, setup, and result." },
+    { "q": "When pipeline missed target last quarter, what was the root cause you owned?" },
+    { "q": "Give me the single channel decision you made that you'd defend as clearly yours." }
+  ],
+  "candidate_last_answer": "Honestly, when pipeline missed, it really wasn't a paid problem — my channels were hitting their ROAS targets. The issue was that sales let MQLs sit for days before following up, and the product team shipped a pricing change mid-quarter that tanked conversion on the demo page. I delivered the leads; what happened downstream wasn't in my lane. Marketing always ends up holding the bag for a leaky bottom of funnel. Actually, can I ask you something — how does Helio currently split pipeline accountability between marketing and sales? Because that dynamic is usually the real root cause.",
+  "session_state": {
+    "drilled_topics": ["scope-channels-budget", "martech-hands-on", "cac-trend", "cac-regression-cause", "paid-account-changes", "mql-sql-trend", "experiment-design", "pipeline-miss-root-cause"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I delivered the leads; what happened downstream wasn't in my lane",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific action the candidate took within marketing's control to defend pipeline — for example a lead-quality or scoring change, an SLA he negotiated with sales, or a demo-page test he ran — with the resulting metric, instead of attributing the miss to sales follow-up and the product pricing change"
+    ]
+  }
+}

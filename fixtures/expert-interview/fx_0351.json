@@ -1,0 +1,50 @@
+{
+  "id": "fx_0351",
+  "tags": {
+    "industry": "education",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "刘佳怡｜在线教育 课程产品与学习运营经理（mid-level）\n\n关键词：Curriculum Design · Learning Outcomes · Student Retention · Course Completion · A/B Testing · Learning Analytics · LMS · Engagement · Cohort-based Learning · Instructional Design · NPS · Funnel Optimization · Activation · Churn Reduction · EdTech\n\n简介：在线教育从业六年，专注 K12 到成人职业教育的课程产品与学习运营，擅长用 data-driven 的方式提升 completion 与 retention。\n\n经历\n现任 某成人职业教育平台 课程产品经理。负责一条编程入门课程线的产品迭代与 learning operations，core metric 包括 course completion rate、week-4 retention 与 NPS。\n\n此前 某 K12 在线教育公司 学习运营专员，负责 cohort 班级的 engagement 运营与 churn 干预。\n\n更早 教培机构 助教 / 课程助理。\n\n关键词成果：\n- Drove completion rate uplift via curriculum redesign 与 milestone 机制\n- Optimized onboarding funnel，提升 activation\n- Ran A/B tests on engagement nudges，降低 early churn\n- Built learning analytics dashboard，支撑 instructional decision\n\n技能：Instructional Design、A/B Testing、SQL、学习数据分析、LMS 配置、社群运营。",
+  "jd": "We are hiring a mid-level Course Product / Learning Operations Manager for our adult upskilling platform. 这个角色负责一条核心课程线的 completion rate、retention 与 learner NPS，需要主导课程结构的迭代、onboarding 漏斗优化，以及基于 A/B 实验的 engagement 干预。我们希望候选人能讲清楚一次真实的、把某个学习指标显著拉升的项目：当时的 situation、你的 task、你 personally 采取的 action，以及可量化的 result。你将与教研、内容与数据团队协作，因此 instructional 直觉与数据严谨缺一不可。我们尤其看重候选人能否把因果讲扎实——是你的干预带来了提升，而不是其它因素。",
+  "history": [
+    { "q": "先讲讲你现在负责的这条编程入门课程线，team、scope、你 own 哪些 metric。" },
+    { "q": "你简历里说 drove completion rate uplift。挑这一个项目，先讲当时的 situation 是什么？" },
+    { "q": "completion rate 当时是多少？低到什么程度让你决定要动它？" },
+    { "q": "你给自己定的 task 是什么、目标数字是多少？" },
+    { "q": "你怎么诊断出 completion 低的根因？看了哪些数据？" },
+    { "q": "你说加了 milestone 机制，具体是怎么设计的？" },
+    { "q": "这套 redesign 是你一个人定的，还是教研一起定的？你个人决定了哪部分？" },
+    { "q": "你提到跑了 A/B test，实验怎么切的、样本多大？" },
+    { "q": "实验跑了多久、什么时候判定显著的？" },
+    { "q": "最后 completion rate 从多少到多少？week-4 retention 动了吗？" },
+    { "q": "你怎么排除是季节性或生源质量变化导致的提升，而不是你的干预？" },
+    { "q": "这个提升后来 hold 住了吗，还是衰减了？" },
+    { "q": "如果 milestone 机制反而让一部分学员压力过大流失，你怎么权衡？" },
+    { "q": "复盘下来，如果重做一次，你会改哪一步？" },
+    { "q": "好，最后一个。请你把这个项目从头到尾、按时间线完整讲一遍，把关键数字和你本人的动作都串起来。" }
+  ],
+  "candidate_last_answer": "好的。Situation：去年第一季度我接手这条编程入门课时，30 天 course completion 只有 22%，week-4 retention 38%，在公司同类课里垫底。Task：我给自己定的目标是一个季度内把 completion 拉到 35% 以上，同时 retention 不下滑。Action：我先做了 funnel 分析，发现 60% 的流失集中在第 3 到第 5 节、也就是第一次写代码作业那段。于是我做了三件事——第一，把第一个编程作业拆成三个 milestone 小任务，每完成一个就解锁一个 badge；第二，在第 4 节后加了一封自动触发的 progress 邮件 nudge；第三，给卡住超过 48 小时的学员推送 TA 答疑入口。我把这三项打包成一个 A/B 实验，按用户 ID 哈希五五分流，每组约 4200 名新学员，跑了 6 周，在第 5 周末 completion 的差异通过了双尾检验、p 小于 0.05。Result：实验组 30 天 completion 从 22% 升到 34.6%，week-4 retention 从 38% 升到 41%，对照组基本没动；为排除季节性，我还和去年同期 cohort 做了对照，提升幅度一致。这套机制全量后维持了大约两个季度，期间 completion 稳定在 33% 上下，只有轻微衰减。",
+  "session_state": {
+    "drilled_topics": ["course-line-scope", "situation", "baseline-completion", "task-target", "root-cause-diagnosis", "milestone-design", "decision-ownership", "ab-test-split", "test-duration-significance", "result-numbers", "confound-control", "durability", "milestone-stress-tradeoff", "counterfactual-redo"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 按用户 ID 哈希五五分流，每组约 4200 名新学员",
+      "must-be-question-type: mechanism",
+      "expected-yield: 由于答案已经相当完整且可量化，强追问应锁定实验设计的内部效度细节——例如三项干预被打包进同一个实验导致无法区分各自贡献，追问候选人如何归因到 milestone 而非邮件或 TA 推送，以及哈希分流是否可能在同一学员重复入组上产生污染"
+    ]
+  }
+}

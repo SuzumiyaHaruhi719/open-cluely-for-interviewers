@@ -1,0 +1,47 @@
+{
+  "id": "fx_0390",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Operations Intern Candidate\n\nSummary: Detail-oriented operations and supply-chain student seeking a summer internship. Hands-on experience from a warehouse co-op and a campus logistics role. Comfortable with spreadsheets and process documentation.\n\nExperience:\n\nGreenfield Distribution — Operations Co-op (Fall 2024)\n- Worked on the inbound receiving team at a regional distribution center\n- Helped document the putaway process and flag recurring discrepancies\n- Participated in a project to reduce dock-to-stock delays\n- Supported cycle-count activities alongside the inventory team\n\nState University Event Logistics — Student Coordinator (2023–2024)\n- Coordinated equipment and vendor logistics for campus events\n- Built a shared tracking sheet for equipment checkout\n\nClass project — Process improvement case\n- Analyzed a simulated order-fulfillment process and proposed improvements\n\nSkills: Excel, process mapping, basic inventory concepts, communication\nEducation: BS Supply Chain Management, expected 2026; coursework in operations management and logistics",
+  "jd": "We are hiring an Operations Intern for a 12-week summer placement on our fulfillment-operations team. You will support a live process-improvement project, collect and analyze operational data, and present a recommendation at the end. We want interns who can describe a problem precisely, own the part they worked on, and reflect honestly on what they would do differently — not interns who attribute every setback to teammates, systems, or 'the way things were.' You should be able to walk through the specific steps you took, what the data showed, and what you learned. Curiosity about root-cause analysis and a willingness to take responsibility matter more than prior internship count.",
+  "history": [
+    { "q": "Tell me about the dock-to-stock project at Greenfield." },
+    { "q": "What was actually causing the delays?" },
+    { "q": "What was your specific role on that project?" },
+    { "q": "How did you measure the delay before and after the change?" },
+    { "q": "Was there a part of the project that didn't go well?" },
+    { "q": "What do you think caused that part to go poorly?" },
+    { "q": "Which of your own actions contributed to that?" },
+    { "q": "You documented the putaway process — did the team actually adopt your documentation?" },
+    { "q": "If they didn't adopt it, why not?" },
+    { "q": "Looking back, what would you personally have done differently to get it adopted?" }
+  ],
+  "candidate_last_answer": "Honestly, the documentation thing flopped, but that was mostly on the floor team — they just didn't care about following a process, they'd been doing it their own way for years and nobody made them change. The full-timers kind of ignored the intern, which I get, and my supervisor was too busy to back me up. I put the document together exactly like I was asked, I shared it in the team channel, I even printed copies. If leadership had actually enforced it, people would've used it. It wasn't really something I could control as the intern.",
+  "session_state": {
+    "drilled_topics": ["dock-to-stock-project", "delay-cause", "individual-role", "measurement", "what-went-poorly", "poor-part-cause", "own-actions-contribution", "documentation-adoption", "non-adoption-reason"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 30
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "influence-without-authority", "evidence_type": "mechanism" },
+      { "competency": "impact-measurement", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: wasn't really something I could control as the intern",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete action the candidate could have taken to drive adoption (e.g. observing the floor team's actual workflow, co-writing the doc with a senior picker, or surfacing the gap with data to the supervisor) instead of attributing non-adoption to the floor team and leadership"
+    ]
+  }
+}

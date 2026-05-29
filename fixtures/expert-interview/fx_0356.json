@@ -1,0 +1,42 @@
+{
+  "id": "fx_0356",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Senior Director of Curriculum & Learning Design\n\nLearning leader focused on outcomes, equity, and scalable instructional models for K-12 districts.\n\nExperience\n- Riverbend Unified School District — Senior Director, Curriculum (2020-present). Owns K-12 ELA and math curriculum adoption across 41 schools, 28,000 students.\n- Bright Path Charter Network — Director of Academics (2016-2020). Led instructional coaching for 9 campuses.\n- Lincoln Middle School — Instructional Coach, then Assistant Principal (2011-2016).\n\nSelected work\n- Led a district-wide standards-aligned ELA adoption.\n- Built a teacher coaching framework used across the network.\n- Partnered with the assessment office on a new benchmark system.\n\nEducation\n- M.Ed., Curriculum & Instruction, State University.\n- B.A., English.\n\nCredentials: Administrative Services Credential; Single Subject (English).",
+  "jd": "Crestline Public Schools seeks a Senior Director of Curriculum & Instruction to own the academic strategy for a 35,000-student district under a state improvement plan. You will be accountable to the school board for measurable gains in third-grade reading proficiency (currently 41%) and eighth-grade math proficiency (currently 33%) over a three-year window. The role manages a team of 14 content coordinators, a $9M instructional materials budget, and the district's high-dosage tutoring contract. You will lead the next ELA and math adoption cycle, redesign the benchmark assessment calendar, and defend curriculum decisions to parents and the board in public session. We need a leader who can show specific, attributable instructional moves that shifted proficiency, not just program rollouts.",
+  "history": [
+    { "q": "Walk me through your scope at Riverbend — schools, students, and which subjects you own." },
+    { "q": "You led a district-wide ELA adoption. What specifically changed in classrooms after it?" },
+    { "q": "How did you know the adoption actually moved reading proficiency, and by how much?" },
+    { "q": "Tell me about a time the data came back flat or negative. What did you personally change?" },
+    { "q": "Give me one concrete instructional decision you made last year and the proficiency delta it produced." }
+  ],
+  "candidate_last_answer": "Honestly, I think the real unlock here is mindset before metrics. We operationalized a culture of high expectations, we leaned into job-embedded coaching, and we built a true continuous-improvement flywheel that put kids at the center. But let me turn it around on you for a second — when your team thinks about an effective curriculum leader, what does excellence actually look like to you here? I want to make sure I'm speaking to what Crestline values.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "ela-adoption-classroom-change", "proficiency-measurement", "response-to-flat-data"],
+    "current_competency_target": "outcomes-attribution",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-attribution",
+    "missing_evidence": [
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "outcomes-attribution", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: built a true continuous-improvement flywheel that put kids at the center",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single named instructional decision tied to a specific proficiency percentage-point change over a stated period, attributed to what the candidate personally did rather than a cultural slogan"
+    ]
+  }
+}

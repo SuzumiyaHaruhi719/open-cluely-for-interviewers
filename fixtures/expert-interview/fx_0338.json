@@ -1,0 +1,39 @@
+{
+  "id": "fx_0338",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Marcus Bell — Senior HR Business Partner\n\nCore competencies: talent acquisition, talent management, performance management, employee relations, organizational design, organizational development, change management, change leadership, workforce planning, succession planning, compensation, total rewards, benefits, HRIS, Workday, SuccessFactors, DEI, diversity, equity, inclusion, employee engagement, retention, attrition, onboarding, offboarding, L&D, learning and development, leadership development, coaching, mentoring, culture, culture transformation, HR analytics, people analytics, HR metrics, headcount planning, restructuring, RIF, labor relations, compliance, FMLA, ADA, FLSA, EEOC, employee lifecycle, stakeholder management, business partnering, strategic HR, HR strategy.\n\nExperience:\nVertex Logistics — Senior HR Business Partner (2019–present). Partner with two business units (~900 employees) on talent, performance, org design, and employee relations.\nCrestline Retail — HR Manager (2015–2019).\nGladwell Foods — HR Generalist (2011–2015).\n\nEducation: B.A., Human Resources Management. SHRM-SCP certified. SPHR certified.",
+  "jd": "Vertex Logistics seeks a Senior HR Business Partner to support two operating business units (~900 employees combined) across the full employee lifecycle. The role partners directly with business-unit GMs on workforce planning, organizational design, performance calibration, employee relations investigations, and retention. You will own attrition and engagement outcomes for your client groups and be expected to speak concretely — with the specific situation, your own actions, and measured results — about employee-relations cases and org-design changes you have personally led. We are not looking for a recitation of HR competencies; we want evidence of judgment under ambiguity. Familiarity with Workday and a track record handling sensitive investigations is required.",
+  "history": [
+    { "q": "Walk me through your current client groups at Vertex — headcount, the GMs you partner with, and what outcomes you own." },
+    { "q": "Tell me about the most sensitive employee-relations investigation you personally led: what was alleged, what you did, and how it resolved." }
+  ],
+  "candidate_last_answer": "Right, employee relations is so critical. You know, what I've really come to believe is that culture eats strategy for breakfast. At Vertex we've been on this incredible culture transformation journey, and I'm super passionate about DEI — I actually helped stand up two ERGs last year, which was amazing for engagement. And engagement is everything, right? If your engagement scores are healthy, a lot of the ER stuff takes care of itself. I've also been doing a lot of thinking about the future of work, hybrid models, all of that. It's such an exciting time to be in HR honestly.",
+  "session_state": {
+    "drilled_topics": ["current-client-groups"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "domain-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a lot of the ER stuff takes care of itself",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: redirect the candidate off the culture/DEI tangent back to one concrete employee-relations investigation, forcing the allegation, the steps they personally took, and the resolution they decided on"
+    ]
+  }
+}

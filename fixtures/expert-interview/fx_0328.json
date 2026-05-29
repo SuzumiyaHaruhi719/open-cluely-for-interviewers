@@ -1,0 +1,42 @@
+{
+  "id": "fx_0328",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "医疗运营总监 ｜ 连锁医院 ｜ 卓越运营领军者\n\n个人摘要：业内公认的医疗运营专家，拥有十余年大型连锁医疗集团运营管理经验。被誉为最懂精益运营的管理者之一，是高管团队最倚重的核心骨干。所到之处皆能化平庸为卓越，把困难科室打造成标杆样板。\n\n工作经历：\n康元医疗集团（2019 至今）——运营总监。全面统筹集团旗下连锁门诊的运营管理，亲手打造了行业领先的运营体系，被董事会誉为集团的中流砥柱。\n\n仁和健康（2014-2019）——区域运营经理。被同事公认为最值得信赖的运营负责人，主导了多个院区的提质增效项目。\n\n核心成就：构建了无人能及的精益运营标准，显著提升了患者满意度与科室周转效率，缔造了多个被同行争相学习的运营典范。\n\n教育背景：协和医学院 公共卫生硕士。",
+  "jd": "我们是一家全国连锁医疗集团，正在招聘医疗运营总监，向 COO 汇报，负责连锁门诊的运营效率、患者体验与成本管理。该岗位要求候选人能够用具体事例和可量化指标说明自己的贡献：在哪个院区、改了什么流程、患者等候时间或科室周转率从多少变到多少、自己亲手做了哪些决策。我们会对模糊、空泛、只有形容词没有事实的回答进行深挖，期望候选人给出真实、具体、可核验的细节。重视诚实与运营落地能力，警惕只会包装而无实质内容的表达。",
+  "history": [
+    { "q": "你简历里说亲手打造了行业领先的运营体系，能具体说说，是哪个院区、你先动的是哪个流程吗？" },
+    { "q": "你提到显著提升了患者满意度，具体是用什么指标衡量的？改善前后的数值大概是多少？" },
+    { "q": "科室周转效率提升，挑一个院区，告诉我周转率或平均候诊时间从多少变到了多少。" },
+    { "q": "这些改进里，哪一项是你个人拍板推动的，而不是团队或上级的决定？" },
+    { "q": "我需要一个具体的例子：一个院区、一个流程、一个改善前后的数字。你能给我吗？" }
+  ],
+  "candidate_last_answer": "这个嘛，运营这个东西其实是个系统工程，很难用一两个数字去概括。我们一直强调的是精益的理念，是把患者放在中心，是持续改善的文化。每个院区情况都不一样，但核心方法论是相通的。说到底，运营拼的是体系和执行力，我做的事情就是把这套东西沉淀下来、推广开来。满意度肯定是提升了的，大家有目共睹，具体数字我一时也说不上来，反正效果是实打实的。",
+  "session_state": {
+    "drilled_topics": ["operations-system-specificity", "satisfaction-metric", "throughput-before-after", "personal-decision-ownership"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 满意度肯定是提升了的，大家有目共睹，具体数字我一时也说不上来",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 候选人指明一个具体院区、一项他亲手改动的流程，以及患者满意度或科室周转率改善前后的确切数值，把『系统工程』『理念』替换成可核验的单点事实"
+    ]
+  }
+}

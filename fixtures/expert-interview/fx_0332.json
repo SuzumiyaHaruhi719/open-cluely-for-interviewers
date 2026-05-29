@@ -1,0 +1,49 @@
+{
+  "id": "fx_0332",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Rohan Mehta — Director of Engineering, Platform & Reliability\n\nA 10x engineering leader who has single-handedly transformed every organization I've touched. I don't just ship software — I redefine what's possible.\n\nHeadline achievements:\n- Personally architected the migration of a monolith serving 40M MAU to microservices, cutting p99 latency by 70% with zero downtime — an industry first at this scale.\n- Built the best SRE culture in the sector; my org's reliability is widely regarded as world-class.\n- Hand-picked and mentored 12 engineers who are now staff+ — I am, frankly, a talent magnet.\n- Drove cloud cost down 45% in one quarter through sheer force of architectural vision.\n- Turned around a failing payments platform that everyone else had written off.\n\nExperience:\nStripeline Inc. — Director of Engineering, Platform (2020–present). Own reliability, developer platform, and infra cost for a 65-engineer org across 7 teams. Report to the VP of Engineering.\nFernpath Systems — Senior Engineering Manager (2016–2020). Led the checkout and fulfillment groups.\nNimbusData — Staff Engineer (2012–2016).\n\nEducation: B.Tech, Computer Science, IIT Bombay. Speaker at three SREcon tracks. Holder of two patents in distributed consensus.\n\nI am, without exaggeration, the most impactful platform leader you will interview this cycle.",
+  "jd": "Stripeline is hiring a Director of Engineering, Platform & Reliability to own the reliability, developer-experience, and infrastructure-cost charters for a 60+ engineer organization across multiple teams. You will be accountable to the VP of Engineering and to a quarterly operational review with the CTO. Concrete mandates: drive the platform to a 99.95% multi-region SLO (currently 99.9% single-region), reduce mean-time-to-recovery from 47 minutes to under 15, land a developer-platform investment that demonstrably improves deploy frequency, and hold cloud spend flat against 2x projected traffic growth. You will inherit an incident-heavy quarter, an under-instrumented service mesh, and a hiring plan for 14 roles. We expect a leader who can show, with their own decisions and numbers, how they have moved reliability and cost outcomes — not just narrate team accomplishments. Some on-call escalation participation expected during the first two quarters.",
+  "history": [
+    { "q": "Give me the shape of your current org at Stripeline — teams, headcount, what you're directly accountable for." },
+    { "q": "Your resume says you 'personally architected' a monolith-to-microservices migration. Where did the original decomposition strategy come from — you, an architect, an RFC process?" },
+    { "q": "You cite a 70% p99 reduction with zero downtime. What was the p99 before and after, in milliseconds, and on which service?" },
+    { "q": "Let's talk reliability. Pick one major incident in the last year and tell me what happened." },
+    { "q": "What was your personal role in that incident — were you incident commander, or coordinating?" },
+    { "q": "How did you change the system afterward so it couldn't recur?" },
+    { "q": "Switching to cost: you claim a 45% cloud reduction in one quarter. Walk me through the single biggest lever." },
+    { "q": "Did that 45% hold the next quarter, or did it drift back?" },
+    { "q": "Tell me about the developer-platform work — what specifically did your teams build?" },
+    { "q": "How did you measure whether deploy frequency actually improved after that?" },
+    { "q": "Now MTTR. Our target is sub-15 minutes. Describe a concrete program you ran to bring recovery time down." },
+    { "q": "Walk me through that MTTR program end to end: the situation you inherited, what you set out to fix, the specific actions you drove, and the measured result." }
+  ],
+  "candidate_last_answer": "Sure. So the situation was rough — when I joined the platform org, recovery times were all over the place, sometimes north of an hour, and the on-call folks were burning out. My task was clear: I owned reliability, so getting MTTR down was on me. So what I did was, I stood up a proper incident framework — we defined severity levels, we built runbooks for the top failure modes, we wired up better alerting so the right person got paged in seconds instead of minutes, and I ran weekly blameless reviews where we drove every Sev1 to a real action item. I personally chaired those reviews for the first two quarters to set the bar.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "migration-attribution", "latency-numbers", "incident-narrative", "incident-role", "recurrence-prevention", "cost-lever", "cost-durability", "platform-build", "deploy-frequency-measurement", "mttr-program"],
+    "current_competency_target": "outcome-orientation",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "outcome-orientation",
+    "missing_evidence": [
+      { "competency": "outcome-orientation", "evidence_type": "metric" },
+      { "competency": "outcome-orientation", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we drove every Sev1 to a real action item",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual before/after MTTR numbers and the timeframe over which the incident program moved them, since the candidate narrated Situation/Task/Action in detail but gave no measured Result"
+    ]
+  }
+}

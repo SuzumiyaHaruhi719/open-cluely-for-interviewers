@@ -1,0 +1,46 @@
+{
+  "id": "fx_0365",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "HR Business Partner / People Operations\n\nMid-level HRBP supporting engineering and go-to-market orgs at high-growth tech companies.\n\nExperience\n\nVertex Software — HR Business Partner (2020-present)\n- Support an org of 450 employees. (A later line says 'my client group is about 180.')\n- Led the rollout of a new performance-review cycle.\n- Reduced regrettable attrition from 18% to 11%.\n- Elsewhere: 'attrition work is ongoing; no firm baseline was established.'\n- Joined the company in 2020. (Summary line says 'four years at Vertex as of 2026' — implying 2022.)\n\nCloudNine Inc. — People Operations Specialist (2017-2020)\n- Ran onboarding and HRIS administration.\n- 'Owned the full HRIS migration' in one bullet; 'supported the HRIS migration as a contributor' in another.\n\nSkills: HRIS (Workday), performance management, employee relations, comp cycles, engagement surveys.\n\nEducation: B.A. Psychology. SHRM-CP.",
+  "jd": "Helix Bio, a 500-person biotech scale-up, is hiring an HR Business Partner to support R&D and Commercial. Reporting to the Director of People, you will own performance and comp cycles for your client group, advise managers on employee relations, and drive retention initiatives. You'll be accountable for regrettable attrition in your group (currently 16%) and manager-effectiveness scores. We need someone who can articulate what THEY personally did — the specific calls they made, the manager conversations they led, the program they designed — not just what 'the team' accomplished. You'll partner with talent acquisition and total rewards, and you'll handle sensitive ER cases with discretion and sound judgment.",
+  "history": [
+    { "q": "Walk me through your client group at Vertex — size, functions, and what you own." },
+    { "q": "Your resume says both 450 and 180 for your group. Which is your actual client group?" },
+    { "q": "You led a performance-review rollout. What did you specifically design or decide?" },
+    { "q": "Regrettable attrition went 18% to 11% — what drove that, and what was your part?" },
+    { "q": "Tell me about a hard employee-relations case you handled." },
+    { "q": "In that case, what was the specific call YOU made?" },
+    { "q": "Describe a time you disagreed with a manager and had to hold a line." },
+    { "q": "What retention initiative was most yours to own end-to-end?" },
+    { "q": "Give me one decision in the last year that was clearly yours, not the team's." }
+  ],
+  "candidate_last_answer": "Yeah, so on retention, we did a lot of good work as a People team. We rolled out stay interviews, we revamped the onboarding journey, and we partnered closely with managers to act on engagement feedback. We brought attrition down together, and honestly it was a real team effort — comp helped on the rewards side, TA helped backfill faster, and the managers did the hard conversations. We just kept iterating as a group until the numbers moved. I'm proud of what we built collectively.",
+  "session_state": {
+    "drilled_topics": ["client-group-scope", "group-size-contradiction", "perf-rollout-decisions", "attrition-drivers", "er-case", "er-specific-call", "manager-disagreement", "owned-retention-initiative"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We brought attrition down together, and honestly it was a real team effort",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one retention decision the candidate personally owned — a stay-interview insight she acted on, a specific manager she coached, or a program element she designed — with her individual contribution separated from the broader People team's collective work"
+    ]
+  }
+}

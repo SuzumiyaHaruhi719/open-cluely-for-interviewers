@@ -1,0 +1,45 @@
+{
+  "id": "fx_0354",
+  "tags": {
+    "industry": "hr",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "赵敏 — Staff People Partner / 资深 HRBP（组织发展与人才方向）\n\n个人陈述（坦白说，这一段我写得比较自信）：我是公司里公认最能打的 HRBP 之一。过去几年我几乎以一己之力撑起了所在业务线的整个 people agenda——从 org design 到 talent review，从 performance calibration 到 retention，没有一块是我没有 carry 过的。我带过的每一次组织变革都被业务 leader 评价为『教科书级别』，我设计的 talent review 框架后来直接被总部拿去做了全公司的 best practice。说实话，我离开的那条业务线，attrition 在我手里是全公司最低的，没有之一。\n\n经历\n现任 某科技公司 Staff People Partner，支持一条约 800 人的核心业务线，独立负责 org design、talent management、performance 与 employee relations。我习惯直接和业务 VP 平等对话，很多重大的组织决策其实都是我推着业务往前走的。\n\n此前 某互联网公司 资深 HRBP，主导过一次大规模的组织重组，business leader 都说离了我这事根本推不动。\n\n更早 HR 通才岗位起步，但我很快就证明了自己远超同级。\n\n关键成果（我从不谦虚）：\n- 以一己之力设计并落地全业务线的 talent review 体系，被奉为标杆\n- 把所在业务线 attrition 压到全公司最低\n- 主导『教科书级』组织重组，零业务中断\n- 在 performance calibration 上的判断几乎从未被推翻\n\n技能：Org Design、Talent Review、Performance Calibration、Employee Relations、Workforce Planning、Stakeholder Management。",
+  "jd": "We are hiring a Staff People Partner (senior HRBP) to support a ~900-person business line. 这个角色直接和 business VP 协作，独立负责 org design、talent review、performance calibration 与复杂的 employee relations case。我们希望候选人能把自己声称的成果讲到可验证的颗粒度——具体是哪次组织变革、你 personally 做了哪些决定、影响了多少人、留存或敬业度的可量化变化是什么。你将接手一条刚经历重组、士气受损的业务线。我们尤其看重候选人能否区分『我做的』与『团队做的』，以及在缺乏直接职权时如何真正影响业务决策。Self-assured 没问题，但我们需要听到证据而不是形容词。",
+  "history": [
+    { "q": "先讲讲你现在 support 的这条业务线 —— 多少人、你独立 own 哪些 people 模块。" },
+    { "q": "你简历里说『以一己之力设计并落地全业务线的 talent review 体系』。这套体系具体长什么样？" },
+    { "q": "『以一己之力』—— 那 HR leadership 和 business 在设计里扮演了什么角色？哪部分是你一个人定的？" },
+    { "q": "你说它被总部拿去做 best practice，是谁、在什么场合做的这个决定？" },
+    { "q": "你说你那条业务线 attrition 全公司最低，具体数字是多少、和谁比？" },
+    { "q": "讲讲那次『教科书级』的组织重组 —— 影响了多少人、你做的最难的一个决定是什么？" },
+    { "q": "performance calibration 上你说判断几乎没被推翻，举一个你被推翻、而且对方对了的例子。" },
+    { "q": "好，聚焦那次重组。请你具体讲：你 personally 拍板的那个最难的决定是什么，影响了哪些人，结果如何？" }
+  ],
+  "candidate_last_answer": "在我回答这个具体问题之前，我倒想先反问您一句：贵公司这个岗位，到底是想要一个 personally 拍板的 HRBP，还是一个推动业务自己拍板的幕后影响者？因为这两种风格我都能做，但侧重点完全不同。还有，您一直在追问『你一个人做了什么』——我有点好奇，您是不是觉得 HRBP 的价值应该用个人英雄主义来衡量？在我看来真正高阶的 HRBP 恰恰是让功劳归于业务的。所以不如这样，您先告诉我您心目中理想的 People Partner 是什么画像，我再对照着讲我的例子，您看行吗？",
+  "session_state": {
+    "drilled_topics": ["business-line-scope", "talent-review-design", "solo-claim-attribution", "best-practice-adoption", "attrition-benchmark", "reorg-scope-decision", "calibration-overturned-example"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我倒想先反问您一句",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 拒绝候选人把问题反弹回主考，逼其落到那次重组中他本人拍板的一个具体决定——例如他个人定了哪个团队的合并或裁撤、影响了多少具体的人、依据是什么、事后留存或敬业度数字如何变化——用第一人称的可验证事实替代对 HRBP 价值的抽象辩论"
+    ]
+  }
+}

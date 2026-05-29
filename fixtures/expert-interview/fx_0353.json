@@ -1,0 +1,48 @@
+{
+  "id": "fx_0353",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Junior Research Engineer — Applied NLP / Information Retrieval\n\nKeyword profile: NLP · Information Retrieval · Dense Retrieval · Embeddings · RAG · Evaluation · Recall@k · MRR · nDCG · Reranking · Fine-tuning · BERT · Sentence Transformers · FAISS · Vector Search · Data Annotation · Ablation Studies · Reproducibility · PyTorch · Hugging Face · Experiment Tracking\n\nProfile: Early-career research engineer focused on retrieval-augmented systems and rigorous offline evaluation; passionate about reproducible experimentation.\n\nExperience\nCurrent — AI Lab (startup), Junior Research Engineer (~1.5 yrs). Works on a document-retrieval component for an internal RAG product; owns the offline evaluation harness and runs retrieval ablations.\n\nPrior — University NLP group, Research Assistant (~1 yr). Annotation pipeline and baseline reranking models.\n\nKeyword wins:\n- Improved retrieval recall via embedding fine-tuning and hard-negative mining\n- Built reproducible evaluation harness with Recall@k / MRR / nDCG\n- Ran ablations isolating reranker contribution\n\nSkills: PyTorch, Hugging Face, FAISS, sentence-transformers, SQL, experiment tracking.\nEducation: BS in Computer Science.",
+  "jd": "We are hiring a Junior Research Engineer for our retrieval team, working on the dense-retrieval and reranking components behind a production RAG system. This sentence frames the role: you will own offline evaluation, run retrieval ablations, and propose improvements to embedding fine-tuning. We expect you to speak precisely about a real experiment you ran — the situation, your task, the actions you took, and the measured result, including the metric, the dataset, and how you controlled for confounds. You'll collaborate with applied scientists and product engineers, so reproducibility and clear causal reasoning matter as much as raw modeling skill. Tell us about a time you moved a retrieval metric and could prove it was your change.",
+  "history": [
+    { "q": "Tell me about your current role — what does the retrieval component do, and what do you own?" },
+    { "q": "Your resume says you 'improved retrieval recall.' Walk me through that one project — start with the situation." },
+    { "q": "What was the baseline Recall@k, and at what k?" },
+    { "q": "What task did you set yourself — what target were you aiming for?" },
+    { "q": "How did you mine hard negatives? Walk me through the procedure." },
+    { "q": "Did you fine-tune the whole encoder or just part of it? Why?" },
+    { "q": "What was your eval set — how many queries, how were relevance labels obtained?" },
+    { "q": "What did Recall@k become, and did MRR or nDCG move too?" },
+    { "q": "How did you make sure the gain wasn't just train/test leakage from your negative mining?" },
+    { "q": "Which part of this did you do versus a teammate?" },
+    { "q": "What did you try that didn't help?" },
+    { "q": "If you re-ran this, what would you change about the methodology?" },
+    { "q": "Okay, last one — give me the whole thing end to end as a timeline, with the numbers and your specific actions tied together." }
+  ],
+  "candidate_last_answer": "Sure. Situation: our internal RAG product had a retrieval recall ceiling — Recall@20 was stuck at 0.71 on our eval set, and downstream answer quality plateaued because the right passage often wasn't retrieved. Task: I set out to raise Recall@20 to at least 0.80 in one sprint without hurting latency. Action: I fine-tuned only the query encoder of our bi-encoder, kept the document encoder frozen so I wouldn't have to re-embed the 1.2M-doc index, and added hard-negative mining — for each query I pulled the top-50 retrieved passages, dropped any that overlapped the gold passage's doc ID, and sampled 4 hard negatives per positive. I trained with a contrastive loss for 3 epochs. Eval set was 2,400 queries with relevance labels from two annotators (Cohen's kappa 0.78), and I held it fully out of the negative-mining pool to avoid leakage. Result: Recall@20 went from 0.71 to 0.83, MRR@10 from 0.41 to 0.49, nDCG@10 from 0.52 to 0.58; latency was unchanged since the index stayed fixed. The thing that didn't help was unfreezing the doc encoder — it added 0.01 recall but forced a full re-embed, so I dropped it.",
+  "session_state": {
+    "drilled_topics": ["role-scope", "situation", "baseline-recall", "task-target", "hard-negative-procedure", "encoder-finetune-choice", "eval-set-labels", "result-metrics", "leakage-control", "role-attribution", "what-failed", "counterfactual-redo"],
+    "current_competency_target": "research-rigor",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "research-rigor",
+    "missing_evidence": [
+      { "competency": "research-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: dropped any that overlapped the gold passage's doc ID, and sampled 4 hard negatives per positive",
+      "must-be-question-type: mechanism",
+      "expected-yield: a deeper probe of the hard-negative filtering's validity — whether dropping only same-doc-ID overlaps still admitted near-duplicate passages from other docs as false negatives, and how that contamination could inflate the reported Recall@20 gain, forcing the candidate to defend or qualify the 0.71-to-0.83 result"
+    ]
+  }
+}

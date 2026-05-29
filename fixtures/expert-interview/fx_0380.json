@@ -1,0 +1,46 @@
+{
+  "id": "fx_0380",
+  "tags": {
+    "industry": "marketing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Director of Demand Generation\n\nSummary: Full-funnel growth marketer who owns pipeline from first touch to closed-won. Hands-on operator who also scales teams.\n\nExperience:\n\nBrightline SaaS — Director of Demand Generation (2021–present)\n- Led a team of 14 across paid media, lifecycle, and marketing ops\n- Grew marketing-sourced pipeline from $40M to $110M ARR-influenced in 18 months\n- Personally managed the entire paid search and paid social budget ($9M annual)\n- Reduced blended CAC by 35% while tripling MQL volume\n\nBrightline SaaS — Senior Manager, Growth (2019–2021)\n- Owned demand gen for the SMB segment only; did not touch enterprise or field marketing\n- Built the first marketing-ops function and hired the team\n\nNote: In the same period the resume lists managing the 'entire' paid budget AND elsewhere states the paid media manager 'owned all channel spend decisions end to end.'\n\nPivotal Analytics — Growth Marketing Manager (2016–2019)\n- Solo contributor; no direct reports\n- Ran lifecycle email and a small content program\n\nSkills: SFDC, Marketo, Looker, multi-touch attribution, ABM\nEducation: BA Communications, state university",
+  "jd": "Brightline is hiring a Director of Demand Generation to own a $120M pipeline number and a $12M program budget across paid, lifecycle, events, and partner channels. You will manage a team of 16 and partner directly with the VP Sales on pipeline coverage, with weekly reporting to the CRO. We need someone who can speak fluently to multi-touch attribution and defend channel-level CAC and payback in front of the board. The role requires a track record of personally driving a specific channel reallocation that changed pipeline mix, not just managing managers. You will inherit a paid-social program that has plateaued and an attribution model finance does not trust. Expect to rebuild the MQL-to-SQL handoff with sales ops in your first quarter.",
+  "history": [
+    { "q": "Give me your current scope at Brightline — team size, budget, and the pipeline number you carry." },
+    { "q": "Your resume says you personally managed the entire paid budget, but it also describes a paid-media manager who owned all channel spend decisions. Which was it?" },
+    { "q": "Let's take the CAC reduction. Walk me through one specific reallocation decision you made." },
+    { "q": "Who decided to move that budget — you, or the channel manager?" },
+    { "q": "When pipeline grew from $40M to $110M, what part of that growth do you attribute to a decision you owned personally?" },
+    { "q": "Tell me about the paid-social plateau. What did you do about it?" },
+    { "q": "How did you rebuild trust in the attribution model with finance?" },
+    { "q": "Walk me through the single hardest call you made on channel mix last year — the specific tradeoff." },
+    { "q": "I want one decision that was yours alone. What did you personally do, and what was the result?" }
+  ],
+  "candidate_last_answer": "Honestly the wins were a team effort across the board. We looked at the data together, we aligned as a leadership group on where to lean in, and the team executed beautifully. We shifted spend toward the channels that were performing and we pulled back where payback was weak, and as a group we delivered the number. I'm really proud of what we accomplished together — it was never about any one person.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "resume-contradiction-paid-budget", "cac-reallocation", "decision-owner", "pipeline-growth-attribution", "paid-social-plateau", "attribution-finance-trust", "channel-mix-tradeoff"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it was never about any one person",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single channel-reallocation decision the candidate made alone (not as a group), naming the channel moved, the dollar amount, who approved it, and the resulting CAC or pipeline delta"
+    ]
+  }
+}

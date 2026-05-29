@@ -1,0 +1,42 @@
+{
+  "id": "fx_0322",
+  "tags": {
+    "industry": "sales",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "区域销售经理 ｜ B2B SaaS ｜ 大客户开拓 ｜ 顾问式销售 ｜ 全漏斗管理\n\n核心能力关键词：客户关系管理、CRM、Salesforce、销售漏斗、转化率优化、KPI 达成、季度业绩、复杂交易、解决方案销售、向上销售、交叉销售、续约管理、客户成功、谈判技巧、招投标、大客户战略、渠道伙伴、生态合作、数字化转型、增长黑客、私域运营、高净值客户、决策链穿透、价值主张、ROI 测算。\n\n工作经历：\n云启数据（2021至今）——区域销售经理。负责华东区企业级客户拓展，管理一支六人销售小组，覆盖制造与零售行业的中大型客户。连续多个季度超额完成业绩目标，主导多笔复杂交易落地。\n\n聚信科技（2018-2021）——高级销售代表。负责中小客户新签与续约，熟练运用顾问式销售方法论，多次获得季度销售之星。\n\n教育背景：上海对外经贸大学，市场营销专业，本科。\n\n荣誉：2022 年度区域 Top Sales、2020 年度最佳新签代表。",
+  "jd": "我们是一家企业级 SaaS 公司，正在招聘一名区域销售经理，负责华东区大客户的新签与扩张。该岗位需要候选人能够清楚地讲出自己『亲手赢下』的标杆交易：客户是谁（在保密允许范围内）、交易金额量级、销售周期、关键决策人是如何被打动的，以及自己在团队中究竟承担了哪些个人动作而非团队整体功劳。我们尤其关注真实可核验的业绩数字，以及候选人在面对深挖追问时是否能保持开放、诚实、就事论事的沟通态度。我们重视抗压能力，但更重视坦诚——夸大或回避具体细节的候选人不适合这个团队。",
+  "history": [
+    { "q": "你简历里写连续多个季度超额完成业绩，能具体说说最近一个季度的目标是多少、实际完成多少吗？" },
+    { "q": "你提到主导了多笔复杂交易，挑一笔金额最大的，告诉我客户行业、合同金额量级和销售周期。" },
+    { "q": "这笔交易里，决策链上是谁最终拍的板？你个人做了哪个关键动作让对方点头的？" },
+    { "q": "我注意到你一直说『我们团队』，我想确认的是：这笔单子，你自己亲手负责的部分到底是什么？" },
+    { "q": "我不是质疑你的能力，我只是需要一个具体的数字和一个你个人的动作。能给我吗？" }
+  ],
+  "candidate_last_answer": "我感觉您从头到尾就是在挑刺。说实话，做销售的人哪个不是团队作战？非要把功劳拆到某一个人头上，这种问法本身就不专业。我的业绩白纸黑字写在那儿，奖也拿了，您要是信不过，大可以去找我前公司核实，我没必要在这儿自证清白。这种揪着一个数字反复问的面试方式，恕我直言，我见过的好公司都不这么干。",
+  "session_state": {
+    "drilled_topics": ["quarter-target-actual", "largest-deal-size-cycle", "decision-maker-personal-action", "we-vs-i-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "stakeholder-influence", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 做销售的人哪个不是团队作战",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人在最大那笔交易中亲手执行的一个具体动作（例如他本人主导的哪一次关键人会谈或哪一版报价策略），以及与之绑定的合同金额量级，而非以『团队作战』为由继续回避个人归属"
+    ]
+  }
+}

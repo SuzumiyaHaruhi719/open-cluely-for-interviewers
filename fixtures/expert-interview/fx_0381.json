@@ -1,0 +1,44 @@
+{
+  "id": "fx_0381",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Staff Product Designer\n\nProfile: Staff-level product designer specializing in complex B2B workflows and design systems at scale. Twelve years in enterprise SaaS.\n\nNorthgate Logistics Cloud — Staff Product Designer (2020–present)\n- Situation: The dispatch console had a 22% task-abandonment rate and 6 conflicting design patterns across teams.\n- Task: Lead a system-wide redesign and establish a shared component library used by 5 product squads.\n- Action: Ran 18 contextual interviews with dispatchers, built a tokenized design system in Figma, and drove adoption through office hours and a contribution model.\n- Result: Task-abandonment dropped to 9%, design-to-dev handoff time fell 40%, and 4 of 5 squads adopted the library within two quarters.\n\nMeridian Health UX — Senior Product Designer (2016–2020)\n- Situation: Clinicians double-charted because the EHR order flow was unusable on tablets.\n- Task: Redesign the mobile order-entry flow under HIPAA constraints.\n- Action: Co-designed with 9 nurses, prototyped 3 directions, ran moderated tests, partnered with eng on a responsive rebuild.\n- Result: Order-entry time cut from 3.2 to 1.4 minutes; double-charting incidents down 60%.\n\nSkills: Figma, design systems, service blueprinting, accessibility (WCAG 2.1 AA), research ops\nEducation: BFA Interaction Design",
+  "jd": "Northgate is hiring a Staff Product Designer to own the design system and the most complex surface in our platform: the real-time dispatch console used by 4,000 operators. You will set the design direction across 5 squads, mentor senior designers, and be the accountable owner for adoption of the shared component library. We expect a Staff designer to navigate cross-functional friction without escalating every blocker, and to own outcomes even when engineering or PM partners disagree. You will lead the rollout of a major console redesign that previously stalled, partner with a skeptical platform-eng team on tokens, and be measured on task-success rate and library adoption. Strong portfolio of shipped enterprise work and a track record of influencing without authority required.",
+  "history": [
+    { "q": "Walk me through the dispatch-console redesign — your role and the outcome." },
+    { "q": "You drove the component library to 4 of 5 squads. What happened with the fifth?" },
+    { "q": "Tell me about a time a redesign you led stalled or shipped late. What went wrong?" },
+    { "q": "The platform-eng team was skeptical about tokens. How did you bring them along?" },
+    { "q": "When adoption stalled on that fifth squad, what did you personally change in your approach?" },
+    { "q": "Describe the hardest cross-functional conflict on that project and how you resolved it." },
+    { "q": "Looking back, what would you have done differently to get the fifth squad on board?" }
+  ],
+  "candidate_last_answer": "Honestly, the fifth squad was a lost cause from the start — their PM was completely territorial and refused to even look at the system, and engineering on that team kept deprioritizing the migration tickets. I did everything right on my side: I ran the office hours, I shipped the tokens, I documented everything. It really came down to their leadership not holding the team accountable. If the org had just mandated adoption top-down like I asked, it would have been done.",
+  "session_state": {
+    "drilled_topics": ["console-redesign-role", "library-adoption-fifth-squad", "stalled-project", "platform-eng-tokens", "approach-change", "cross-functional-conflict"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "influence-without-authority", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the fifth squad was a lost cause from the start",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete account of what the candidate personally tried with the fifth squad's PM and engineers beyond office hours and docs, what specifically failed, and what they would own differently rather than attributing the failure to others' accountability"
+    ]
+  }
+}

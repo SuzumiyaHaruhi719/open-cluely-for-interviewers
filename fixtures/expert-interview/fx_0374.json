@@ -1,0 +1,50 @@
+{
+  "id": "fx_0374",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Software Engineer | Backend | Distributed Systems | Go | Rust | Postgres | Redis | Kafka | gRPC | Kubernetes | Event Sourcing | CQRS | Sharding | Caching | Rate Limiting | Idempotency | Observability | Tracing | Load Testing | Performance Tuning | High Availability | Disaster Recovery | API Design | OpenAPI | OAuth2 | Multi-Tenancy\n\nSummary: Hands-on staff engineer specializing in high-throughput backend systems, data consistency, and latency-sensitive services.\n\nExperience:\nStaff Software Engineer — Tideflow Payments (2021-present)\n- Tech lead for the ledger and balances service handling millions of transactions per day\n- Designed an idempotency and reconciliation layer to guarantee exactly-once posting\n- Led a sharding effort on the Postgres balances store to scale write throughput\n- Drove latency tuning bringing p99 on the balance-read path down substantially\n\nSenior Software Engineer — Cobalt Systems (2017-2021)\n- Built event-sourced order service with Kafka; owned schema evolution and consumer lag\n- Implemented rate limiting and backpressure for a public API tier\n\nEducation: BS Computer Science. CKAD certified.",
+  "jd": "Lumen Ledger is hiring a Staff Software Engineer to be the technical lead for our money-movement core (ledger, balances, reconciliation) processing high transaction volume with strict consistency requirements. You will own the design and reliability of the posting path, drive a sharding or partitioning strategy as we scale writes, set the bar for idempotency and exactly-once semantics, and lead incident response and the resulting hardening. We want an engineer who takes clear ownership of production outcomes: when a design they led causes an incident, they can name the root cause in their own design, the specific fix, and what they changed to prevent recurrence — without offloading the failure onto adjacent teams. You will mentor senior engineers, own the on-call runbooks for the core, and partner with SRE on SLOs.",
+  "history": [
+    { "q": "Describe your current scope at Tideflow — what the ledger service does and what you own as tech lead." },
+    { "q": "Walk me through the idempotency and reconciliation layer you designed." },
+    { "q": "How do you guarantee exactly-once posting when a client retries after a timeout?" },
+    { "q": "On the Postgres sharding — what was your shard key and why?" },
+    { "q": "What did sharding do to your cross-shard transactions, and how did you handle them?" },
+    { "q": "p99 on the balance-read path — what was it before and after, and what was the change?" },
+    { "q": "Tell me about a production incident on the posting path that your design contributed to." },
+    { "q": "What was the root cause, specifically in the code or design you owned?" },
+    { "q": "How long was the impact, and how many transactions were affected?" },
+    { "q": "What was the fix, and what did you change to prevent recurrence?" },
+    { "q": "How did you handle consumer lag and schema evolution on the Kafka order service at Cobalt?" },
+    { "q": "Describe a design review where you were overruled. What happened next?" },
+    { "q": "Back to that posting incident — be specific about what in your own design caused it, not what other teams did." }
+  ],
+  "candidate_last_answer": "Look, the incident really came down to factors outside my design. The SRE team had set the database connection-pool limits too low, so under load we starved connections and posting backed up. The upstream payments team also sent us a malformed retry storm that nobody warned us about, which my idempotency layer was never speced to handle because the contract they gave us didn't mention it. And honestly the on-call alerting that platform owns didn't fire until we were already an hour in. So while it touched my service, the actual root cause was really the pool config and the bad upstream traffic — the ledger design itself was sound.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "idempotency-reconciliation-design", "exactly-once-on-retry", "shard-key-rationale", "cross-shard-transactions", "p99-before-after", "posting-incident", "incident-root-cause", "incident-impact-scope", "incident-fix-and-prevention", "kafka-consumer-lag", "overruled-design-review"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the ledger design itself was sound",
+      "must-be-question-type: action-attribution",
+      "expected-yield: an admission of a specific weakness in the candidate's own ledger/idempotency design that the incident exposed — e.g. an unhandled retry-storm path or missing backpressure he owned — plus the concrete hardening he made to that code, rather than attributing the outage to pool config, upstream traffic, and alerting owned by other teams"
+    ]
+  }
+}

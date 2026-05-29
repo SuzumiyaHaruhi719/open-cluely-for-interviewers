@@ -1,0 +1,46 @@
+{
+  "id": "fx_0352",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Director of Clinical Operations | Value-Based Care Transformation Leader\n\nKeyword profile: Population Health · Value-Based Care · Care Coordination · Clinical Quality · HEDIS · STAR Ratings · Utilization Management · Care Gaps · Risk Adjustment · HCC Coding · Patient Throughput · Length of Stay · Readmission Reduction · Lean Healthcare · EHR Optimization · Epic · Interdisciplinary Rounds · SDOH · Patient Experience · HCAHPS\n\nSummary: Outcomes-obsessed clinical operations leader who operationalizes value-based care at scale, driving quadruple-aim impact across population health, quality, cost, and experience.\n\nExperience\nCurrent — Regional Health System, Director of Clinical Operations. Owns care coordination and quality across a multi-clinic ambulatory network. Leads HEDIS and STAR improvement, readmission-reduction programs, and EHR workflow optimization.\n\nPrior — Integrated Delivery Network, Manager of Care Management. Stood up care-coordination pods and SDOH screening.\n\nEarlier — Acute care nursing leadership.\n\nSignature outcomes (headline form):\n- Spearheaded value-based care transformation improving quality outcomes\n- Drove readmission reduction through care-coordination redesign\n- Closed care gaps at scale via population-health stratification\n- Elevated patient experience scores through service-excellence initiatives\n\nCredentials: RN, MSN; Lean Six Sigma Green Belt.",
+  "jd": "We are seeking a Director of Clinical Operations to lead care coordination and quality across a 12-clinic ambulatory network. Reporting to the VP of Population Health, this role owns three board-level metrics: 30-day all-cause readmission rate (currently 14.2%, target under 10%), HEDIS composite percentile, and care-gap closure rate for the attributed Medicare Advantage population. You will lead a redesign of the care-coordination model, partner with physician leadership on interdisciplinary rounds, and own EHR workflow optimization in Epic. You will inherit a stalled readmission program and a recent dip in STAR ratings. We need a leader who can describe, in concrete operational terms, exactly what they changed and the measurable outcome — not a recitation of value-based-care talking points.",
+  "history": [
+    { "q": "Walk me through your current scope — clinics, team size, the metrics you own." },
+    { "q": "Your resume says you 'drove readmission reduction.' Pick the single program you led and tell me what it actually was." },
+    { "q": "What was the baseline readmission rate, and what did it become?" },
+    { "q": "What specifically did you change in the care-coordination workflow? Walk me through the new step-by-step." },
+    { "q": "Who did what in that new workflow — the care managers, the pharmacists, the PCPs?" },
+    { "q": "How did you know it was your redesign and not a coding or case-mix change that moved the number?" },
+    { "q": "Tell me about the part that didn't work. What did you try that failed?" },
+    { "q": "How did you get physician buy-in for the new rounding model?" },
+    { "q": "Okay — give me one concrete week in that program. What did you personally do, Monday to Friday, to stand it up?" }
+  ],
+  "candidate_last_answer": "Great question. So at the end of the day, this was all about operationalizing the quadruple aim and meeting patients where they are. My north star was always patient-centricity, so I leaned into a culture of continuous improvement, broke down silos, and drove cross-functional alignment around our shared mission. I'm a firm believer that you transform care by empowering frontline teams and leveraging data to bend the cost curve. We took a holistic, patient-first approach, rallied the troops around our true-north metrics, and really moved the needle on outcomes. It was about doing well by doing good.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "readmission-program-identity", "readmission-baseline-result", "workflow-redesign-steps", "role-attribution", "confound-coding-casemix", "what-failed", "physician-buyin"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: rallied the troops around our true-north metrics, and really moved the needle",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete, de-buzzworded account of what the candidate personally did during one specific week to stand up the readmission program — the actual tasks, who they met with, what artifact or process they created on which day — replacing the rehearsed value-based-care slogans with verifiable operational detail"
+    ]
+  }
+}

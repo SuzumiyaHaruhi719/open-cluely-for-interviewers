@@ -1,0 +1,41 @@
+{
+  "id": "fx_0329",
+  "tags": {
+    "industry": "finance",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "高级量化研究员 ｜ Quant Research ｜ 顶尖选手\n\n个人摘要：业内罕有的全栈型 quant，被前东家誉为 alpha 工厂的核心引擎。在 systematic equity 策略上有无可比拟的实战战绩，是团队公认最能打的研究员。\n\n工作经历：\n弘策资本（2020 至今）——高级量化研究员。负责 mid-frequency systematic equity 策略的 factor research 与 portfolio construction。独立开发并上线了多个 production 因子，被 PM 视为不可或缺的贡献者。\n\n聚宽投资（2017-2020）——量化研究员。负责 alpha signal 挖掘与 backtest pipeline 搭建，缔造了组内最高的 signal 命中率。\n\n核心成就：打造了无人能及的 factor library；主导的策略常年贡献组内顶尖 Sharpe；被誉为最可靠的 production 交付者。\n\n教育背景：上海交通大学 金融工程 硕士；本科 数学。\n\n技能：Python、C++、因子挖掘、组合优化、风险归因。",
+  "jd": "我们是一家中型对冲基金，正在招聘高级量化研究员，负责 systematic equity 策略的 factor research 与 production 落地。该岗位要求候选人能够 precise 且可核验地讲清自己的贡献：哪个因子、用什么数据、out-of-sample 的表现（IC、Sharpe、capacity）、上线后的 live 表现，以及自己个人 vs 团队的分工边界。我们会对简历里的 superlative 措辞深挖，期望候选人剥掉形容词后给出 clean 的事实与数字。重视 intellectual honesty 与 overfitting 风险意识，警惕只有 backtest 光环却经不起追问的候选人。",
+  "history": [
+    { "q": "你简历里说独立开发并上线了多个 production 因子，挑你最有代表性的一个，说说它捕捉的是什么 signal？" },
+    { "q": "这个因子用的是什么数据？in-sample 和 out-of-sample 的 IC 大概各是多少？" },
+    { "q": "上线之后的 live 表现和 backtest 差多少？有没有出现 decay？" },
+    { "q": "factor research 到 production 这条链路里，哪些是你个人写的，哪些是团队或工程同学做的？" },
+    { "q": "剥掉简历里那些『无人能及』的措辞，给我一个你最有把握、敢背书的数字，以及它是怎么衡量的。" }
+  ],
+  "candidate_last_answer": "我最敢背书的是一个 short-term reversal 因子，用的是日频量价加 order-flow imbalance。In-sample IC 大概 0.045，out-of-sample 掉到 0.031，rank-IC 的 t-stat 在 3 以上。上线后头六个月 live 的 IC 约 0.028，比 OOS 又 decay 了一点，主要是 crowding 和 transaction cost 吃掉的，capacity 我估到 4 亿人民币 左右。pipeline 里 factor 逻辑和 backtest 是我写的，execution 那层是工程团队做的。需要我补充的是，这个因子接下来在更高频的 universe 上应该还有 upside，我有把握能再榨出一截 alpha。",
+  "session_state": {
+    "drilled_topics": ["factor-signal", "ic-in-vs-out-sample", "live-vs-backtest-decay", "personal-vs-team-split"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个因子接下来在更高频的 universe 上应该还有 upside",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 候选人对这个 forward-looking 主张的依据——更高频 universe 下 capacity、transaction cost 与 signal decay 会如何变化，他凭什么相信 alpha 不会被成本吃光，以及他是否做过相应的 OOS 验证而非仅凭直觉"
+    ]
+  }
+}

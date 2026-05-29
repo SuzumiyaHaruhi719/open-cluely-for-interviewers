@@ -1,0 +1,40 @@
+{
+  "id": "fx_0324",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Senior Enterprise Account Executive — 负责 APAC 大客户线\n\nNimbus Cloud（2020 至今）：Senior AE，覆盖 financial services 行业的 enterprise 客户。带 named-account list 约 25 家，主打 platform 续约 + upsell。Quota 量级在 $3M ARR 上下，连续两年 club winner。\n\nVertex Analytics（2017-2020）：Account Executive，做 mid-market 新签，主要负责 outbound pipeline 和 POC 推进。\n\n技能：solution selling、MEDDIC、多线程 deal、C-level 关系拓展。\n\n教育：复旦大学 经济学 本科。\n\n备注：擅长把 stalled deal 重新盘活，pipeline conversion 一直是团队 top。",
+  "jd": "Nimbus Cloud is hiring a Senior Enterprise Account Executive for our APAC financial-services segment. You will own a named-account portfolio, drive new logo plus expansion, and carry a multi-million ARR quota. We expect candidates to speak precisely and verifiably about their numbers: actual quota, actual attainment percentage, deal sizes, and sales-cycle length — with the math holding up under scrutiny. The strongest candidates can decompose a headline result into the specific deals and personal actions behind it, and they don't lean on round, grandiose figures they can't substantiate. Honesty about what was team-driven versus self-driven is essential.",
+  "history": [
+    { "q": "You carried roughly $3M ARR quota at Nimbus. What was your actual attainment the last two years, in percentage and dollars?" },
+    { "q": "Pick your single biggest expansion deal in financial services. What was the ARR, and how long was the cycle?" },
+    { "q": "Walk me through the math on that deal — starting ARR, the upsell increment, and what you personally did to land it." }
+  ],
+  "candidate_last_answer": "Look, the numbers speak for themselves. I basically 10x'd my territory — we're talking hundreds of percent over quota, year after year. My biggest deal? I personally closed something north of $40M ARR with one of the largest banks in the region. Honestly I've probably driven nine figures in total pipeline value across my career. Every AE on my team learned conversion from me; I'd say I single-handedly carried the segment.",
+  "session_state": {
+    "drilled_topics": ["quota-attainment", "biggest-deal-arr-cycle"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "credibility-consistency", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I personally closed something north of $40M ARR",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a deal-level reconciliation that exposes whether the $40M ARR figure is real — the bank's starting ARR, the exact upsell increment, the contract term, and how a single deal of that size squares with a ~$3M annual quota"
+    ]
+  }
+}

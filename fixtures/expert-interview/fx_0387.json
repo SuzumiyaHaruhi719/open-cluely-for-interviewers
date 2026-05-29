@@ -1,0 +1,42 @@
+{
+  "id": "fx_0387",
+  "tags": {
+    "industry": "design",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Junior Product Designer\n\nFernpath Apps — Junior Product Designer (2023–present)\n- Designs features for a consumer habit-tracking mobile app\n- Works with one PM and two engineers on a small pod\n\nDesign bootcamp — Capstone (2022)\n- Designed a transit-app concept end to end\n\nSkills: Figma, prototyping, basic user research, design handoff\nEducation: BA Psychology; UX design bootcamp certificate",
+  "jd": "Fernpath is hiring a Junior Product Designer to work on our consumer mobile app alongside a PM and two engineers. You will take features from problem framing through prototyping and handoff, run lightweight usability checks, and incorporate feedback from your pod. We care about how you handle setbacks: when a launch underperforms or a handoff goes sideways, we want a designer who reflects honestly on their own part rather than pointing at engineering or PM. You should be able to walk through a specific design decision, why you made it, and what you learned when it did not land. Growth mindset and receptiveness to critique matter more than years of experience.",
+  "history": [
+    { "q": "Tell me about a feature you designed at Fernpath that shipped." },
+    { "q": "Was there a feature you worked on that underperformed after launch?" },
+    { "q": "What do you think went wrong with that one?" },
+    { "q": "What part of that outcome was connected to a decision you made?" },
+    { "q": "Take a second if you need it — looking back, what would you personally do differently next time?" }
+  ],
+  "candidate_last_answer": "...Um. Sorry, give me a second. ...Okay. Honestly my first instinct is that it wasn't really on the design — the engineers shipped it with the animation cut for performance, and the PM kept changing the requirements late, so the thing that went out wasn't what I designed. But... okay, to actually answer your question — if I'm being fair, I think I would push earlier on getting a usability test scheduled before we built it. I assumed the flow was obvious and I didn't validate it, and that part was on me. I'd insist on testing the empty state next time instead of trusting my gut.",
+  "session_state": {
+    "drilled_topics": ["shipped-feature", "underperforming-feature", "what-went-wrong", "decision-connection", "what-to-do-differently"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "impact-measurement", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I assumed the flow was obvious and I didn't validate it",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete account of the specific design decision the candidate owned (the unvalidated flow), what signal told them post-launch it had failed, and exactly how an earlier usability test would have changed the design — without sliding back to blaming eng or PM"
+    ]
+  }
+}

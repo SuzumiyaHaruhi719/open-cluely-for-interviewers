@@ -1,0 +1,48 @@
+{
+  "id": "fx_0366",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "VP of Manufacturing\n\nManufacturing executive with deep experience leading plant operations and continuous improvement in discrete and process manufacturing.\n\nExperience\n- Granite Industrial — VP of Manufacturing (2018-present). Oversees three plants producing precision components; owns safety, quality, output, and plant P&L.\n- Halcyon Components — Plant Director (2013-2018). Ran a single high-mix facility.\n- Atlas Fabrication — Operations Manager (2009-2013).\n\nSelected scope\n- Multi-site responsibility for OEE, safety, and cost.\n- Led lean transformation efforts across sites.\n- Managed capital projects and capacity expansion.\n\nEducation: B.S. Mechanical Engineering. Lean Six Sigma certified.",
+  "jd": "Ironwood Manufacturing seeks a VP of Manufacturing to lead four plants producing automotive subassemblies. Reporting to the COO, you will own a $220M production budget, safety performance (TRIR), overall equipment effectiveness (currently 62%, target 78%), scrap rate (currently 6.4%, target under 3%), and on-time delivery to OEM customers. You will lead a multi-site lean transformation, a planned capacity expansion at the Ohio plant, and the response to a recent customer quality escape. We need an executive who can describe, with specifics, the operational levers they personally pulled and the measurable results — board members and OEM customers will probe hard. Travel ~45%.",
+  "history": [
+    { "q": "Walk me through your scope at Granite — plants, headcount, and the metrics you own." },
+    { "q": "What's OEE across your sites today, and where was it when you started?" },
+    { "q": "You led a lean transformation. Pick one plant — what specifically changed?" },
+    { "q": "What was the scrap rate before and after at that plant?" },
+    { "q": "Tell me about a serious quality escape to a customer. What happened?" },
+    { "q": "What did you personally do in the first 48 hours of that escape?" },
+    { "q": "How did you contain it, and what was the cost of the escape?" },
+    { "q": "Walk me through a capital project you led — scope, budget, and outcome." },
+    { "q": "What safety metric did you move, and by how much?" },
+    { "q": "Give me one specific operational decision and its measurable result." },
+    { "q": "Pick your single biggest manufacturing win and quantify it for me." }
+  ],
+  "candidate_last_answer": "Look, manufacturing excellence is really about culture and discipline at the end of the day. You drive the right behaviors, you empower the floor, and the numbers follow. I've always operated from a place of operational rigor and continuous improvement. The wins come when the whole system is aligned. But let me ask you this instead — what would success in this role actually look like to your COO in the first year? If you tell me what Ironwood is really optimizing for, I can speak to exactly how I'd approach it.",
+  "session_state": {
+    "drilled_topics": ["scope-plants-headcount", "oee-baseline", "lean-plant-specifics", "scrap-before-after", "quality-escape", "escape-first-48h", "escape-containment-cost", "capital-project", "safety-metric"],
+    "current_competency_target": "outcomes-attribution",
+    "elapsed_minutes": 43
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-attribution",
+    "missing_evidence": [
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: You drive the right behaviors, you empower the floor, and the numbers follow",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one named manufacturing win expressed as a concrete before-and-after number — an OEE, scrap-rate, or cost figure at a specific plant over a stated period — tied to a lever the candidate personally pulled, instead of culture platitudes and a redirected question"
+    ]
+  }
+}

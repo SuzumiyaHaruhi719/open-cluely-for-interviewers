@@ -1,0 +1,49 @@
+{
+  "id": "fx_0368",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Director of Clinical Operations | Multi-site ambulatory network\n\nSummary: Operational leader for a 9-clinic ambulatory group, accountable for patient access, throughput, and quality outcomes across primary and specialty care.\n\nExperience:\nDirector, Clinical Operations — Riverbend Health Partners (2020-present)\n- Owned end-to-end scheduling redesign that cut new-patient wait time from 21 days to 6 days\n- Led the EHR migration from Allscripts to Epic across all sites with zero downtime\n- Managed a team of 140 across MA, RN, and front-desk roles\n\nSenior Manager, Patient Access — Riverbend Health Partners (2018-2020)\n- Ran the centralized call center; improved abandonment rate from 14% to 5%\n- Note: the Epic migration was actually executed by the corporate IT PMO; I represented clinical stakeholders\n\nManager, Front Office Operations — Lakeshore Medical Group (2015-2018)\n- Standardized intake workflows across 4 locations\n- New-patient wait time work began here; the 21-to-6-day result spanned both employers and was largely a payer-mix change, not a process change\n\nEducation: BS Health Administration, MHA in progress\nCertifications: Lean Six Sigma Green Belt (in progress)",
+  "jd": "Riverbend's competitor, Cascade Care Network, seeks a Director of Clinical Operations to own access and throughput for a growing 12-site ambulatory footprint. Reporting to the VP of Operations, you will be accountable for third-next-available-appointment, no-show rate, room utilization, and provider productivity (wRVU per session). You will lead a cross-functional redesign of scheduling templates, partner with revenue cycle on front-end collections, and own the operational readiness for a planned Epic optimization wave. The role manages roughly 120 staff across four pods and requires demonstrated success reducing patient wait times, running a centralized access center, and navigating payer-mix shifts without sacrificing margin. CPHQ or Lean certification preferred. This is a hands-on leadership role, not a steering-committee seat.",
+  "history": [
+    { "q": "Give me your current scope at Riverbend — sites, headcount, and the metrics you personally own." },
+    { "q": "Your resume says you cut new-patient wait time from 21 days to 6. Walk me through exactly what you changed." },
+    { "q": "You also note the wait-time result spanned two employers and was 'largely a payer-mix change.' Which is it — your process redesign or the payer mix?" },
+    { "q": "Let's be precise: of the 15-day reduction, how many days came from scheduling changes you owned versus the payer shift?" },
+    { "q": "On the Epic migration — your summary claims you led it, but a later line says corporate IT executed it. What did you actually own?" },
+    { "q": "Tell me about the centralized call center. How did you get abandonment from 14% to 5%?" },
+    { "q": "What was the no-show rate before and after your scheduling work?" },
+    { "q": "Describe a time a redesign you led missed its target. What happened?" },
+    { "q": "Who on your team was accountable for room utilization, and what did you do when it stalled?" },
+    { "q": "Cascade has a planned Epic optimization wave. Given your migration was IT-led, why should we trust you to own operational readiness?" },
+    { "q": "Let's go back to the no-show project specifically. It missed target by a wide margin. What went wrong and what did you personally do about it?" }
+  ],
+  "candidate_last_answer": "Honestly, the no-show project was set up to fail before I ever touched it. The scheduling vendor we were stuck with had a terrible reminder module, and the front-desk staff I inherited just wouldn't follow the scripts. Finance also pulled the budget for the text-reminder upgrade halfway through, so my hands were tied. And the providers kept double-booking against our templates, which blew up the no-show numbers no matter what we did. So the miss really wasn't on my side of the house.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "wait-time-attribution", "payer-mix-vs-process", "wait-time-decomposition", "epic-ownership", "call-center-abandonment", "no-show-baseline", "redesign-failure", "room-utilization-ownership", "epic-readiness-credibility"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the miss really wasn't on my side of the house",
+      "must-be-question-type: action-attribution",
+      "expected-yield: at least one concrete corrective action the candidate personally took once the no-show project was failing — a specific intervention, who they escalated to, and what measurable change resulted — rather than a list of external parties to blame"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "fx_0361",
+  "tags": {
+    "industry": "customer-support",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "客户支持专员\n\n个人简介：两年在线客服与售后支持经验，熟悉工单系统与多渠道客户沟通。\n\n工作经历\n\n云图科技，客户支持专员，二零二二年至今。\n- 负责处理在线客服咨询，日均接待约八十通会话。\n- 在另一处又写到：日均处理量稳定在一百五十通以上。\n- 一线满意度评分维持在百分之九十二。\n- 后文却写：满意度从未稳定超过百分之八十五。\n- 入职时间在简历抬头写的是二零二二年，自我介绍里又说『我从二零二一年加入云图』。\n\n速达电商，售后客服实习生，二零二一年。\n- 协助处理退换货工单。\n- 独立负责华南区所有退款审核。（另一行写：仅辅助同事，无审批权限。）\n\n技能：Zendesk 工单系统、企业微信、基础数据报表、英语日常沟通。\n\n教育背景：大专，电子商务专业。",
+  "jd": "我们是一家消费电子品牌的客户体验中心，现招聘初级客户支持专员，负责在线及电话渠道的客户咨询与售后处理。岗位向客服组长汇报，主要考核指标包括首次响应时长、一次解决率与客户满意度评分。我们希望候选人能够清楚、聚焦地讲述自己处理过的具体案例：问题是什么、你做了哪几步、结果如何，并能用真实数据支撑。该岗位需要较强的沟通能力、情绪稳定性，以及在高并发会话下保持条理的能力。我们重视回答的针对性，离题或泛泛而谈会影响评估。",
+  "history": [
+    { "q": "先介绍一下你在云图科技的日常工作，日均接待量和你负责的渠道。" },
+    { "q": "你的简历里日均量一处写八十通、一处写一百五十通，到底是多少？" },
+    { "q": "讲一个最近你处理过的、比较棘手的客户投诉，从头到尾你做了什么？" },
+    { "q": "那个客户最后满意吗？你怎么判断的？" },
+    { "q": "如果同样的问题再来一次，你哪一步会做得不一样？" }
+  ],
+  "candidate_last_answer": "嗯这个棘手投诉啊……其实说到这个我就想起来，我们那个工单系统真的特别难用，Zendesk 那个界面改版之后我适应了好久，对了我大专学的是电子商务，当时还做过一个电商的课程项目挺有意思的。然后我们组长人特别好，经常请我们喝奶茶，团队氛围我觉得是我留下来的主要原因。哦说回来那个投诉,大概就是个退款的事吧,客户当时挺激动的,后来好像就……解决了?反正我觉得情绪安抚最重要,你要让客户感觉被重视。话说回来你们这边平时加班多吗?我比较关心工作节奏这块。",
+  "session_state": {
+    "drilled_topics": ["daily-scope", "volume-contradiction", "tough-complaint-walkthrough"],
+    "current_competency_target": "case-handling-specificity",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "case-handling-specificity",
+    "missing_evidence": [
+      { "competency": "case-handling-specificity", "evidence_type": "mechanism" },
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "case-handling-specificity", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 大概就是个退款的事吧,客户当时挺激动的,后来好像就……解决了",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从离题的闲聊拉回到那一次具体退款投诉的处理链路：问题的具体原因、他依次采取的每一步动作、向谁升级、最终如何确认解决，以及客户满意度的判断依据"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "fx_0378",
+  "tags": {
+    "industry": "data",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Senior Data Engineer | Spark | Airflow | dbt | Snowflake | BigQuery | Kafka | Flink | Delta Lake | Iceberg | Data Modeling | Dimensional Modeling | ETL | ELT | CDC | Data Quality | Great Expectations | Lineage | Orchestration | Streaming | Batch | Python | SQL | Scala | Lakehouse | Data Mesh | Governance\n\nProfile: Senior data engineer building reliable batch and streaming pipelines and the warehouse models that sit on top of them.\n\nExperience:\nSenior Data Engineer — Meadowlark Analytics (2021-present)\n- Owned the migration from a nightly batch ETL to a near-real-time CDC pipeline feeding Snowflake\n- Rebuilt the core dbt models and instituted data-quality tests with Great Expectations\n- Led a cost and performance tuning effort on Snowflake warehouses\n\nData Engineer — Sablefish Data (2018-2021)\n- Built Airflow DAGs for batch ingestion; implemented dimensional models for analytics\n- Stood up streaming ingestion with Kafka and Flink for clickstream events\n\nEducation: BS Computer Science. SnowPro certified.",
+  "jd": "Ternpoint is hiring a Senior Data Engineer to own our analytics data platform end to end: CDC ingestion into the lakehouse, the dbt transformation layer, data-quality gating, and the cost/performance of the warehouse. Reporting to the Data Platform lead, you will own a migration from legacy batch to streaming CDC, the SLAs on freshness, and the run-rate of compute. We need an engineer who can give a clean, consistent timeline of a complex migration — what shipped when, in what order, and how long stabilization took — because muddled sequencing is usually a sign the story isn't first-hand. You will partner with analytics and finance, and own the on-call for freshness and pipeline failures.",
+  "history": [
+    { "q": "Describe your current scope at Meadowlark and what you own on the data platform." },
+    { "q": "Walk me through the batch-to-CDC migration. When did it start and when did it finish?" },
+    { "q": "What shipped first — the CDC ingestion, the dbt rebuild, or the data-quality tests?" },
+    { "q": "How long did the CDC pipeline run in parallel with the old batch job before cutover?" },
+    { "q": "When did the data-quality tests with Great Expectations go in, relative to the cutover?" },
+    { "q": "What was the warehouse cost before and after the tuning, and when did the tuning happen?" },
+    { "q": "Tell me about the worst freshness incident during the migration. When was it and how long was the delay?" },
+    { "q": "After cutover, how long until the pipeline was stable enough to decommission the batch job?" },
+    { "q": "Let me line this up: you said CDC shipped before the dbt rebuild, but also that the quality tests gated the dbt models before CDC went live. Which came first?" },
+    { "q": "Give me the sequence one more time, in order, with rough dates — start to stable." }
+  ],
+  "candidate_last_answer": "Right, so — okay, the migration ran about, I want to say, six months? Maybe nine. We shipped the CDC ingestion first, that was Q2. Although, actually, the dbt rebuild had to come first because CDC fed those models, so that was probably Q1. And the quality tests — those gated the dbt models, so they were before the rebuild, but I also remember adding Great Expectations after cutover when we kept getting bad data, so maybe Q3. The cutover itself was... I think we ran parallel for two weeks, but it might've been two months, honestly the batch job hung around for a while. Wait — how would you sequence a migration like this? Where would you have started, the ingestion or the models? I'm curious how you'd order it.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "migration-start-end", "ship-order", "parallel-run-duration", "quality-tests-timing", "warehouse-cost-timing", "worst-freshness-incident", "stabilization-to-decommission", "sequence-contradiction"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "timeline" },
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that was Q2. Although, actually, the dbt rebuild had to come first",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single internally consistent ordering of the migration with anchored quarters — what shipped first, the true parallel-run duration, and where Great Expectations actually landed relative to cutover — resolving the CDC-vs-dbt-vs-quality-tests contradiction instead of letting the candidate turn the question back on the interviewer"
+    ]
+  }
+}

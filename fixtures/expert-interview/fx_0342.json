@@ -1,0 +1,41 @@
+{
+  "id": "fx_0342",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Kevin Zhao（赵）— Brand & Growth Marketing Manager\n\n我是那种能把brand story讲到刷屏、又能把ROI算到小数点后两位的marketer。过去几年我操盘的campaign，几乎个个都是公司内部的标杆案例。\n\nHighlights：\n- 主导一场integrated campaign，single-handedly把品牌的social engagement拉到全行业top tier，被多家媒体report。\n- 我对consumer insight的把握堪称行业一流，做的positioning几乎从不踩空。\n- 带领一个5人growth team，把核心funnel的conversion持续打到best-in-class水平。\n- 我是那种rare的full-stack marketer：strategy、creative、performance、data我全都拿得起来。\n\n工作经历：\n潮野文化（消费品牌）Brand & Growth Marketing Manager（2021至今）。负责brand campaign与performance marketing，带5人团队，管理年度marketing budget约2000万。\n聚光传媒 Marketing Specialist（2018-2021）。\n\n教育：市场营销本科。多次受邀在行业summit分享growth方法论。\n\n一句话：在brand与growth的交叉地带，能两手都硬的人不多，我是其中之一。",
+  "jd": "我们正在招聘一名Brand & Growth Marketing Manager（中级），负责品牌campaign与performance marketing的整体操盘，带领一个小团队。核心职责：制定并执行integrated marketing campaign；统筹performance端的投放与funnel优化，对ROI与conversion负责；基于consumer insight做品牌positioning；建立campaign的measurement框架。我们看重候选人能否褪去buzzword、用具体的决策与可核实的数字讲清楚自己亲历的campaign——target是什么、做了哪些取舍、结果如何归因，而不是一连串包装精美的术语。要求strategy与data两端都能落地。",
+  "history": [
+    { "q": "先讲讲你现在在潮野的scope：团队多大，管多少budget，对哪些指标负责。" },
+    { "q": "你简历里提到那场integrated campaign，它的business objective到底是什么？" },
+    { "q": "你说把social engagement拉到top tier，具体是哪个指标、从多少涨到多少？" },
+    { "q": "这场campaign里，你个人拍板的最关键的一个取舍是什么？" },
+    { "q": "别用框架词——就那场campaign，给我一个你亲手做的决策，它带来的可核实结果是什么，怎么归因的。" }
+  ],
+  "candidate_last_answer": "嗯……（停顿了几秒）抱歉，我组织一下语言。好，不堆术语，就说一件具体的。那场campaign预算有限，我当时面临一个choice：是把钱全压在头部KOL上冲曝光，还是分一半给腰部达人做规模化种草。我拍板选了后者，把大概一半的budget从一个头部主播挪到了二十多个腰部达人。结果是那一个月品牌词的search index涨了大概四成，腰部那批内容的平均互动成本比头部低了一半左右。归因上我们是用上线前后的对比加上没投放的对照地区来看的，不能说百分百干净，但方向上我有把握是这次调整带来的。",
+  "session_state": {
+    "drilled_topics": ["现任scope", "campaign目标", "engagement指标涨幅", "关键取舍"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把大概一半的budget从一个头部主播挪到了二十多个腰部达人",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 候选人在卸下buzzword后给出了一个真实取舍，追问应迫使其量化这次预算重分配的具体数额、两种方案的预期与实际收益对比，以及对照归因的口径，验证判断背后的真实推理而非包装话术"
+    ]
+  }
+}

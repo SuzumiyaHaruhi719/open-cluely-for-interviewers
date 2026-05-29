@@ -1,0 +1,41 @@
+{
+  "id": "fx_0327",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Junior Research Scientist — Machine Learning\n\nObjective: Early-career ML researcher seeking an applied-research role.\n\nExperience:\nAuroraML (Research Intern, 2023–2024): Worked on a recommendation-ranking project. Contributed to a model that improved offline NDCG. In the summary line I describe this as a 6-month internship; in the dates column it shows Jan 2023 – Apr 2023.\n\nUniversity AI Lab (Research Assistant, 2021–2023): Co-authored two workshop papers on graph neural networks. Elsewhere on this resume I list it as 'first-authored three papers.'\n\nPublications: 'two workshop papers' (per Experience) / 'three peer-reviewed publications' (per Highlights).\n\nSkills: PyTorch, JAX, distributed training, experiment design, A/B testing.\n\nEducation: M.S. Computer Science (in progress, expected 2025); the header also states 'M.S. completed 2023.'",
+  "jd": "We are hiring a Junior Research Scientist for our applied-ML team. You will run experiments, report results honestly, and defend your methodology under scrutiny. We expect candidates to be precise and internally consistent about what they did: which metric moved, by how much, on what dataset, and what their specific individual contribution was versus the team's. We probe resume claims closely, including publication counts, authorship, and dates. Inflated or inconsistent claims — especially overstated metrics or authorship — are disqualifying. Intellectual honesty matters more to us than a big headline number.",
+  "history": [
+    { "q": "Your AuroraML line says a 6-month internship, but the dates show Jan–Apr 2023. Which is correct?" },
+    { "q": "On publications — one section says two workshop papers, another says three peer-reviewed. What's the accurate count and your authorship position?" },
+    { "q": "Tell me about the recommendation model. What was the NDCG before and after, on which dataset, and what was your specific contribution?" },
+    { "q": "I just need the clean version: the exact NDCG lift, the dataset, and the part you personally wrote." }
+  ],
+  "candidate_last_answer": "Honestly the impact was massive — we basically doubled the model's performance, NDCG went up by like 200%, and it drove tens of millions in incremental revenue once it shipped. I was pretty much the core of the project; I'd say the whole ranking pipeline ran on my code. The papers, you know, three or two, it's kind of the same thing — they were all major contributions and they've been cited hundreds of times. People in the lab still use my methods as the standard.",
+  "session_state": {
+    "drilled_topics": ["internship-duration-contradiction", "publication-count-authorship", "ndcg-contribution"],
+    "current_competency_target": "credibility-consistency",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "credibility-consistency",
+    "missing_evidence": [
+      { "competency": "credibility-consistency", "evidence_type": "metric" },
+      { "competency": "credibility-consistency", "evidence_type": "named-entity" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: NDCG went up by like 200%",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the actual baseline and post-change NDCG values on a named dataset (exposing whether a 200% lift is real or inflated) and a precise statement of which components of the ranking pipeline the candidate personally wrote versus the team"
+    ]
+  }
+}

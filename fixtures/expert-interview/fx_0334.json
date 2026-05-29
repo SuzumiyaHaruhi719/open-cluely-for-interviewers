@@ -1,0 +1,38 @@
+{
+  "id": "fx_0334",
+  "tags": {
+    "industry": "legal",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Dana Whitfield\nJunior Associate — Corporate Law\n\nExperience:\nHalloran & Pike LLP — First-Year Associate (2024–present)\nSupport the corporate transactions group on M&A and financing deals. Assist with due diligence and document review.\n\nClerkship: Summer Associate, same firm (2023).\n\nEducation:\nJ.D., Georgetown University Law Center (2024).\nB.A., Political Science, University of Michigan (2021).\n\nAdmitted: New York State Bar (2024).\n\nSkills: legal research, contract review, due diligence support, drafting memos.",
+  "jd": "Halloran & Pike's corporate group is seeking a junior associate (0–2 years) to support M&A and financing transactions. Responsibilities include conducting due diligence, drafting and reviewing transaction documents under partner supervision, managing closing checklists, and coordinating with clients and opposing counsel on routine matters. We are looking for someone who can speak concretely about the actual work they have done — which documents they drafted, what they found in diligence, how they handled a tight closing — rather than describing the deal in the abstract. Strong legal research, attention to detail, and the ability to own a discrete workstream are essential. New York Bar admission required.",
+  "history": [
+    { "q": "Tell me about a transaction you worked on recently — your specific role, what you personally handled, and how it closed." }
+  ],
+  "candidate_last_answer": "Sure. So I've been staffed on a few deals since I started, mostly on the corporate side. They're pretty complex transactions — lots of moving parts, lots of stakeholders. I supported the team on diligence and some of the documents. It was a great learning experience and I got good exposure to how deals come together. I think I added value where I could and the deals generally went well.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "domain-depth", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I supported the team on diligence and some of the documents",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single named deal with the specific diligence workstream the candidate personally owned and at least one concrete document they drafted or reviewed, replacing the abstract 'supported the team' framing"
+    ]
+  }
+}

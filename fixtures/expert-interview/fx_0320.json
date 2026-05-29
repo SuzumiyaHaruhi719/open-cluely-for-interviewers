@@ -1,0 +1,41 @@
+{
+  "id": "fx_0320",
+  "tags": {
+    "industry": "legal",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Deputy General Counsel — Commercial & Litigation\n\nPenwick Therapeutics (2019–present): Lead a 9-attorney commercial legal team supporting a $1.4B specialty pharma business. Owned outside-counsel budget of ~$22M/year. Managed three patent-infringement suits and a DOJ subpoena response in 2022.\n\nHale & Brandt LLP (2012–2019): Senior associate, then counsel. Litigation track, product-liability defense for medical-device clients.\n\nEducation: J.D., University of Michigan Law School. B.A. Economics, Rice University.\n\nBar: New York, California.\n\nSelected matters: Lead negotiator on a 2021 co-promotion agreement; first-chair on a 2023 trade-secret arbitration that settled before hearing.",
+  "jd": "Penwick Therapeutics is hiring a Vice President & Associate General Counsel to own the commercial-legal and litigation portfolio reporting to the GC. You will manage a team of 10+, set and defend a $20M+ outside-counsel budget, and serve as the legal lead on bet-the-company patent litigation. The role requires demonstrated ownership of major-matter strategy (not just supervision), direct experience cutting outside-counsel spend through panel consolidation or alternative fee arrangements, and the judgment to advise the board on litigation-vs-settlement tradeoffs with dollar exposure quantified. You will also build the playbook for responding to government inquiries. We need someone who can show specific, attributable decisions they personally made on high-stakes matters.",
+  "history": [
+    { "q": "Tell me about the DOJ subpoena response in 2022 — what was your specific role in shaping the strategy?" },
+    { "q": "Let's talk about the $22M outside-counsel budget. Walk me through one decision you personally made to control or reduce that spend." },
+    { "q": "On the 2023 trade-secret arbitration — you settled before hearing. Take me inside that settle-versus-fight decision and the exposure math." },
+    { "q": "I want a concrete number. When you decided to settle, what was the dollar exposure you were weighing, and what did you authorize?" }
+  ],
+  "candidate_last_answer": "Honestly, what I've learned over the years is that great lawyering is really about relationships and trust. I think the best GCs are the ones who can sit across from a CEO and just be a calm presence in the room. When I think about my philosophy, it comes back to integrity — I always tell my younger associates that reputation is the only currency that matters in this profession. The litigation finance market has gotten so interesting lately too; I was just at a conference where someone gave a fascinating talk on third-party funding trends.",
+  "session_state": {
+    "drilled_topics": ["doj-subpoena-role", "outside-counsel-spend-decision", "arbitration-settle-decision"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: reputation is the only currency that matters in this profession",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the specific dollar exposure range the candidate was weighing in the 2023 trade-secret arbitration and the exact settlement figure they personally authorized, with the reasoning that tipped them from fighting to settling"
+    ]
+  }
+}

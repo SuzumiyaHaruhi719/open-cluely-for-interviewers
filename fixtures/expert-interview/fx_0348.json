@@ -1,0 +1,55 @@
+{
+  "id": "fx_0348",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "陈思齐 — 供应链管理方向 实习生候选人\n应聘岗位：Supply Chain Analyst Intern（需求计划与库存方向）\n在读：工业工程与运筹学 本科大四\n\n个人简介\n我是一名工业工程专业的大四学生，研究兴趣集中在需求预测与库存优化。下面这段是我对自己学习经历和实习经历的完整梳理，希望能让招聘方较为全面地了解我的背景、我做过的事情、以及我在每一段经历里具体承担的角色和学到的东西。\n\n我在本科阶段系统学习了运筹学、随机过程、生产计划与控制、供应链管理、应用统计与数据分析等核心课程，对线性规划、库存模型与排队论这些基础工具掌握得比较扎实。除了课堂学习之外，我还利用课余时间自学了数据分析相关的技能，能够独立完成数据清洗、可视化与基础的预测建模工作。我做事比较喜欢刨根问底，遇到一个结论总想先弄清楚它背后的假设和适用边界，再决定要不要相信它，这种习惯在做分析的时候帮了我不少忙，但有时候也会让我在面对别人给的结论时追问得比较多。\n\n实习经历\n第一段经历 某快消公司 供应链部门 暑期实习生（约三个月）。我所在的小组负责区域仓的补货与库存监控。My main task was 帮助团队梳理 slow-moving SKU 的清单，并搭建一个简单的 inventory dashboard。具体来说，我从 ERP 里导出历史出入库数据，用透视分析算出每个 SKU 的周转天数与呆滞金额，再按品类做了分层，最后把结果做成一个每周自动刷新的看板。这个看板上线后，supervisor 说它帮助小组把每周 review 呆滞库存的时间从大半天压缩到一两个小时。这段经历让我第一次理解到，supply chain 里很多决策的难点不在于算法多复杂，而在于数据口径是否一致、以及一线同事是否真的会用。\n\n第二段经历 校内 运筹学实验室 研究助理（约半年）。我参与了一个关于 demand forecasting 的小课题，主要负责数据预处理与几种 baseline 模型的实现与比较，包括 moving average、exponential smoothing 以及一个简单的回归模型。我们在一个公开的零售销量数据集上做了 backtesting，比较了不同方法在 MAPE 这个指标上的表现。课题里我还负责整理实验记录，把每次实验的参数和结果都记录下来，方便复盘。\n\n课程项目\n在供应链管理课程的 capstone 里，我和三位同学为一家虚拟的电商公司设计了一套补货策略，用 newsvendor 模型确定安全库存水平，并用模拟的方式比较了不同 service level 设置下的缺货率与持货成本之间的 trade-off。我在小组里主要负责建模与仿真部分，也负责把最终结论整理成给『管理层』汇报的 slides。\n\n技能\nExcel 高级建模与透视分析、Python 数据处理与基础预测建模、SQL 基础查询、运筹优化建模。能阅读英文教材与文献。\n\n求职意向\n我希望在实习中参与真实的需求计划或库存优化工作，把课堂上学的模型和企业真实的数据、约束与流程对接起来，看看理论在落地时会遇到哪些我还没想到的问题。",
+  "jd": "We are looking for a Supply Chain Analyst Intern to support our demand planning and inventory team. 实习生将在资深 planner 的指导下，参与需求预测的 backtesting、安全库存参数的复核，以及呆滞库存（slow-moving inventory）的分析与可视化。我们希望候选人具备扎实的运筹与统计基础，熟悉常见的预测方法（moving average、exponential smoothing、newsvendor 等），能够独立处理数据并用 Excel 或 Python 完成分析。这个岗位会接触真实的 ERP 数据与跨部门流程，因此我们尤其看重候选人面对不确定问题时的拆解能力，以及能否清楚地解释自己分析背后的假设。实习期约三个月，表现优秀者有转正机会。",
+  "history": [
+    { "q": "先做个自我介绍，重点讲讲你为什么对需求计划和库存这个方向感兴趣。" },
+    { "q": "你那个 slow-moving SKU 的 dashboard，呆滞金额具体是怎么算的？" },
+    { "q": "你说每周 review 时间从大半天压到一两个小时，这个时间是谁告诉你的？" },
+    { "q": "周转天数你用的是哪种口径，期初期末平均还是别的？" },
+    { "q": "实验室那个课题里，你比较的几个 baseline 哪个 MAPE 最低？" },
+    { "q": "MAPE 在销量有很多零的 SKU 上会失真，你当时注意到这个问题了吗？" },
+    { "q": "capstone 里你用 newsvendor 定安全库存，临界分位数你是怎么取的？" },
+    { "q": "你说做了不同 service level 的 trade-off 比较，能给个具体的数对吗？" },
+    { "q": "如果缺货成本很难估，你这个 newsvendor 还成立吗？" },
+    { "q": "你提到喜欢刨根问底，举个你质疑了别人结论、结果你对了的例子。" },
+    { "q": "dashboard 上线后，有没有一线同事其实不用它？你怎么处理的？" },
+    { "q": "ERP 导出的数据你怎么验证它的口径是对的？" },
+    { "q": "exponential smoothing 的平滑系数你是怎么选的？" },
+    { "q": "假如让你给一个有强季节性的 SKU 做预测，你会怎么改你的方法？" },
+    { "q": "你在 capstone 里负责建模，那需求分布的假设是谁定的、依据是什么？" },
+    { "q": "backtesting 的训练集和测试集你是怎么切的？有没有用滚动窗口？" },
+    { "q": "你觉得你这几段经历里，哪一个分析最经不起推敲？" },
+    { "q": "那我们换个角度。如果给你一批全新的、你完全没见过的 SKU，没有历史销量，你会怎么给它们设第一版的安全库存？" }
+  ],
+  "candidate_last_answer": "嗯，这个问题挺好的，不过在我回答之前，我其实想先反问您一下：您说的『完全没有历史销量』，是指这个 SKU 是全新品类、连相似品都找不到参照，还是只是它本身是新品、但同品类里有可比的 SKU 可以借历史？因为这两种情况下我的做法会完全不一样啊。还有，您这边对这批新品的 service level 目标有没有一个预期？以及前置期 lead time 大概是多少、可不可靠？我觉得不先把这几个边界条件问清楚就直接给参数，反而不够严谨。所以能不能麻烦您先帮我把这个场景的约束说得更具体一点？",
+  "session_state": {
+    "drilled_topics": ["self-intro-motivation", "dead-stock-calc", "time-saving-source", "turnover-definition", "baseline-comparison", "mape-zero-inflation", "newsvendor-critical-ratio", "service-level-tradeoff", "shortage-cost-validity", "skeptic-example", "dashboard-adoption", "erp-data-validation", "smoothing-coefficient", "seasonality-handling", "demand-distribution-assumption", "backtest-split", "weakest-analysis"],
+    "current_competency_target": "problem-decomposition",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "problem-decomposition",
+    "missing_evidence": [
+      { "competency": "problem-decomposition", "evidence_type": "mechanism" },
+      { "competency": "problem-decomposition", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我其实想先反问您一下",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 在给定一个明确假设（无任何可比历史、给定 service level 与 lead time）后，候选人停止反问并真正走完冷启动安全库存的推理链：用什么代理需求来源、如何估需求与不确定度、用 newsvendor 或经验法则给出第一版参数，并说明上线后如何快速纠偏"
+    ]
+  }
+}

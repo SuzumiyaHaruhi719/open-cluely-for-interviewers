@@ -1,0 +1,44 @@
+{
+  "id": "fx_0359",
+  "tags": {
+    "industry": "operations",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "VP of Operations\n\nOperations executive with 15 years scaling fulfillment and field operations for high-growth logistics and retail companies.\n\nSummary: Owned end-to-end operations P&L and led large distributed teams across multiple regions.\n\nExperience\n\nMeridian Logistics — VP of Operations (2019-present)\n- Lead a team of 240 across three distribution centers.\n- Reduced order defect rate from 4.1% to 1.2%.\n- Note in a later bullet: 『Directly manage a lean ops team of roughly 60.』\n- Cut warehouse cost-per-unit by 22% in my first year.\n- Elsewhere: program took 'about three years to fully land.'\n\nNorthgate Retail — Senior Director, Fulfillment (2014-2019)\n- Joined in 2015 to turn around a struggling DC network. (Header says 2014.)\n- Improved on-time shipment from 88% to 97%.\n- A separate line states on-time 'never got above 94% under my tenure.'\n\nApex Freight — Operations Manager (2011-2014)\n- Ran a single-site operation, then 'oversaw four sites nationally.'\n\nEducation: B.S. Industrial Engineering. MBA, Operations concentration.\n\nSkills: WMS implementations, S&OP, network design, Lean/Six Sigma (Black Belt — though one section lists Green Belt).",
+  "jd": "FleetEdge, a same-day delivery company, is hiring a VP of Operations to own fulfillment and last-mile across nine metros. Reporting to the COO, you will own a $140M operating budget, a network of 11 micro-fulfillment sites, and roughly 900 associates plus a contracted driver fleet. Board-level targets: on-time delivery (currently 91%, target 97%), cost-per-delivery (currently $9.40, target $7.10), and defect rate (currently 2.8%, target under 1%). You will inherit an underperforming WMS rollout and a recent spike in damaged-goods claims. We need an operator who owns outcomes personally and can reconcile what actually happened with the numbers — vague or shifting accounts will not survive board scrutiny. Travel ~40%.",
+  "history": [
+    { "q": "Your resume lists both a 240-person team and a '60-person lean team' at Meridian. Which is it, and what's the actual structure?" },
+    { "q": "You cut warehouse cost-per-unit 22% in year one, but also say the program took three years to land. Help me reconcile that." },
+    { "q": "Let's focus on the defect-rate improvement from 4.1% to 1.2%. What did you personally do to drive it?" },
+    { "q": "Walk me through the single biggest operational failure you owned in the last two years." },
+    { "q": "When the WMS rollout slipped at Meridian, who made the call to go live anyway?" },
+    { "q": "What was the damaged-goods or defect spike that resulted, and how big was it?" },
+    { "q": "Tell me about a moment where the failure was clearly yours to own — what did you do in the first week?" }
+  ],
+  "candidate_last_answer": "Look, the WMS thing — that was really the vendor's failure, and frankly IT signed off on a go-live date that operations never agreed to. My team flagged the readiness gaps, but the steering committee overruled us. The defect spike afterward was mostly because the temp-labor agency sent us under-trained pickers during peak, and procurement had locked us into that agency. I inherited a lot of this. If finance had funded the training budget I asked for, we wouldn't have been in that spot at all. So the first week was really about managing the fallout from decisions other people made.",
+  "session_state": {
+    "drilled_topics": ["team-size-contradiction", "cost-timeline-contradiction", "defect-rate-attribution", "biggest-failure", "wms-go-live-decision", "defect-spike-magnitude"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the first week was really about managing the fallout from decisions other people made",
+      "must-be-question-type: action-attribution",
+      "expected-yield: at least one decision the candidate personally made and owned during the WMS failure — a specific corrective action he initiated in week one with a name, date, or measurable result — rather than attributing every cause to the vendor, IT, procurement, the temp agency, and finance"
+    ]
+  }
+}

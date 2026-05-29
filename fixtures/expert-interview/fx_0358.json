@@ -1,0 +1,39 @@
+{
+  "id": "fx_0358",
+  "tags": {
+    "industry": "product-management",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Product Management Intern Candidate\n\nThird-year Information Systems student seeking a summer PM internship. Comfortable with SQL, basic A/B test analysis, and writing PRDs.\n\nExperience\n- Campus Dining App (student project, team of 4) — acted as product lead. Shipped a mobile pre-order feature over one semester.\n- Course project: redesigned a library room-booking flow; ran 6 usability sessions.\n\nSkills\n- SQL, Figma, basic Python (pandas), Amplitude.\n- Wrote PRDs and a simple RICE-style prioritization sheet.\n\nEducation\n- B.S. Information Systems, expected next year. GPA 3.7.\n\nNote: no professional PM experience yet; all work is coursework or student-org projects.",
+  "jd": "Our consumer fintech app is hiring a Summer Product Management Intern to support the Growth pod. You will partner with a senior PM on the new-user onboarding funnel, help write tickets and PRDs, pull funnel data in Amplitude/SQL, and help design and read out at least one A/B test during the internship. We want someone who can speak precisely about what they personally did on a project, how they measured it, and what the result was — clarity and intellectual honesty matter more than scope. Strong candidates can describe a specific metric they moved (or tried to) and explain what they would do differently. This is a 12-week paid internship.",
+  "history": [
+    { "q": "Tell me about the campus dining pre-order feature — what was your role and what did you actually ship?" },
+    { "q": "How did you decide pre-order was worth building over other ideas the team had?" },
+    { "q": "Did you measure whether anyone used it? What happened?" }
+  ],
+  "candidate_last_answer": "Yes, but I'll be honest about the limits. We shipped to about 320 students in a two-week pilot. I instrumented three Amplitude events — order_started, order_submitted, pickup_confirmed. In week one, 47 students started an order but only 19 submitted, so a 40% completion rate. I dug into the drop-off and found the time-slot picker was the main blocker: it defaulted to a slot that was often sold out. I changed the default to the next available slot, and in week two submissions went from 19 to 41. I can't claim long-term retention — the pilot ended with the semester, so I don't have data past two weeks.",
+  "session_state": {
+    "drilled_topics": ["role-and-shipped-scope", "prioritization-rationale"],
+    "current_competency_target": "outcomes-attribution",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-attribution",
+    "missing_evidence": [
+      { "competency": "outcomes-attribution", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I changed the default to the next available slot, and in week two submissions went from 19 to 41",
+      "must-be-question-type: counterfactual",
+      "expected-yield: whether the candidate can reason about confounds — that a default change coincided with week-two familiarity and a different cohort — and what they would have instrumented to isolate the default change as the true cause"
+    ]
+  }
+}

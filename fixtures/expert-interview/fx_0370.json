@@ -1,0 +1,49 @@
+{
+  "id": "fx_0370",
+  "tags": {
+    "industry": "operations",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Senior Operations Manager — Fulfillment & Logistics\n\nProfile: Eight years running distribution-center operations for an e-commerce retailer, focused on throughput, labor planning, and cost-per-unit.\n\nKey results (STAR format):\n- Situation: Peak-season backlog at the Reno DC threatened a 4-day SLA. Task: protect same-week shipping for 40k daily orders. Action: redesigned the pick-pack wave schedule and added a flex labor pool with cross-trained associates. Result: held SLA at 98.6% through peak; overtime spend down 22% year over year.\n- Situation: Cost-per-unit drifting up at 11% YoY. Task: bring it back under plan. Action: renegotiated parcel zone-skip lanes and reslotted the top 500 SKUs by velocity. Result: cost-per-unit reduced from $3.41 to $2.95 over two quarters.\n- Situation: Inventory accuracy at 94%, driving mis-ships. Task: reach 99%+. Action: instituted cycle-count cadence and root-caused scanner drift. Result: accuracy to 99.3% in 5 months; mis-ship rate halved.\n\nExperience:\nSenior Operations Manager — Cardinal Direct (2021-present), Reno DC\nOperations Manager — Cardinal Direct (2018-2021)\nShift Supervisor — Granite Freight (2016-2018)\n\nEducation: BS Industrial Engineering. APICS CPIM certified.",
+  "jd": "Atlas Commerce is hiring a Senior Operations Manager to run our 600k-square-foot Phoenix fulfillment center. You will own the P&L line for labor and transportation, manage 4 shift managers and ~350 associates, and be accountable for units-per-hour, cost-per-unit, on-time-ship, and inventory accuracy. The center is scaling from 25k to 60k orders per day over 12 months ahead of a new marketplace launch. You will lead labor planning across peak, drive a slotting and wave-strategy overhaul, and partner with transportation on carrier mix. We want someone who reasons in specific numbers, can decompose a UPH regression to root cause, and has run a DC through a doubling of volume. Lean/CPIM preferred.",
+  "history": [
+    { "q": "Walk me through your current scope at the Reno DC — volume, headcount, and the metrics you own." },
+    { "q": "Your resume says you held SLA at 98.6% through peak. What was the daily order volume at the peak?" },
+    { "q": "Tell me exactly how the flex labor pool worked — how many associates, cross-trained on what?" },
+    { "q": "On the cost-per-unit work: $3.41 to $2.95. Break that delta into its drivers." },
+    { "q": "How much of that came from zone-skip lanes versus reslotting?" },
+    { "q": "What was the one-time cost or risk of the reslotting, and how long to recoup it?" },
+    { "q": "Inventory accuracy 94% to 99.3% — what was the root cause of the scanner drift?" },
+    { "q": "How did you set the cycle-count cadence — frequency and which SKUs?" },
+    { "q": "Atlas is doubling from 25k to 60k orders a day. How would you stage labor for that ramp?" },
+    { "q": "Suppose UPH drops 8% three weeks into the ramp. How do you decompose that?" },
+    { "q": "What leading indicator would you watch to catch an SLA miss before it happens?" },
+    { "q": "Tell me about a tradeoff between cost and speed you had to make and which you chose." },
+    { "q": "Give me the single number you'd most want on a daily dashboard for this role, and why that one." }
+  ],
+  "candidate_last_answer": "On-time-ship by carrier cutoff, broken out per shift. It's the leakiest point and the earliest signal. If first shift misses its cutoff window even by 30 minutes, the orders cascade into next-day carrier pickups and we eat the SLA and the expedite cost. UPH and cost-per-unit are lagging — I see them at end of day. But cutoff attainment per shift I can see hourly, and one supervisor can act on it in real time before it compounds. That's why I'd put it top-left.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "peak-volume", "flex-labor-design", "cpu-decomposition", "zone-skip-vs-reslot", "reslot-payback", "scanner-root-cause", "cycle-count-cadence", "ramp-staging", "uph-regression-decomp", "leading-indicator", "cost-speed-tradeoff"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: even by 30 minutes, the orders cascade into next-day carrier pickups",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the quantified cost of a 30-minute cutoff slip — the dollar expedite penalty per affected order or per shift, and the threshold of missed orders at which the candidate would escalate or trigger flex labor"
+    ]
+  }
+}

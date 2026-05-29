@@ -1,0 +1,42 @@
+{
+  "id": "fx_0363",
+  "tags": {
+    "industry": "education",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "sparse-200words",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "EdTech Product Marketing Manager\n\nMid-level marketer specializing in growth for online learning platforms.\n\nExperience\n- Lumos Learning (edtech startup) — Product Marketing Manager (2021-present). Own go-to-market for a B2C exam-prep app; run lifecycle email, paid social, and landing-page tests.\n- TutorBridge — Marketing Associate (2019-2021). Managed content and SEO for a tutoring marketplace.\n\nSelected work\n- Launched a referral program for the exam-prep app.\n- Ran onboarding email experiments to improve trial-to-paid conversion.\n- Built the SEO content calendar at TutorBridge.\n\nSkills: lifecycle email, paid social, SEO, A/B testing, Amplitude, basic SQL.\n\nEducation: B.A. Communications.",
+  "jd": "ScholarLeap, a B2C exam-prep app, is hiring a Product Marketing Manager to own activation and monetization for our mobile learning product. Reporting to the Head of Growth, you will run the trial-to-paid funnel, lifecycle messaging, and pricing experiments, and you'll be accountable for trial-to-paid conversion (currently 9%, target 15%) and 90-day retention. We need someone who can describe their own experiments concretely — the hypothesis, the exact change, the sample, and the lift — and stay focused on the question asked. You'll partner with product and data to instrument funnels and present results to leadership. Familiarity with subscription mechanics and app-store dynamics is a plus.",
+  "history": [
+    { "q": "Walk me through the trial-to-paid funnel you own at Lumos — the steps and where users drop." },
+    { "q": "You ran onboarding email experiments. Take me through your best one: hypothesis to result." },
+    { "q": "What was the trial-to-paid conversion before and after that experiment?" },
+    { "q": "How did you size the experiment — sample, duration, significance?" },
+    { "q": "Tell me about an experiment that failed and what you learned." },
+    { "q": "What's the single biggest conversion win you personally drove, with the number?" }
+  ],
+  "candidate_last_answer": "So the biggest win — I really want to give you the number, but I'm under an NDA from Lumos and the conversion figures are considered confidential, so I can't share the specific percentages. What I can say is it was meaningful. And honestly that whole project was wild — we were doing it right as the company was rebranding, and the design team was swamped, and I ended up learning Figma over a weekend just to ship the landing page myself, which was kind of fun. Oh, and that reminds me, the app-store review process held us up for like ten days, app review is such a black box. Anyway, the experiment did well, I just can't put a figure on it under the NDA.",
+  "session_state": {
+    "drilled_topics": ["funnel-overview", "onboarding-experiment-walkthrough", "conversion-before-after", "experiment-sizing", "failed-experiment"],
+    "current_competency_target": "outcomes-attribution",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-attribution",
+    "missing_evidence": [
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "experiment-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm under an NDA from Lumos and the conversion figures are considered confidential",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a way to evidence the result without breaching the NDA — a relative lift, a normalized index, an order-of-magnitude, or the experiment's design and decision rule — so the interviewer can gauge impact without absolute confidential numbers, and to refocus the candidate off the Figma and app-store tangents"
+    ]
+  }
+}

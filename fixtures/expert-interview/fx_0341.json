@@ -1,0 +1,38 @@
+{
+  "id": "fx_0341",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Priya Nair\nManufacturing / Process Engineering Intern\n\nExperience:\nWestbrook Components — Process Engineering Intern (Summer 2024)\nSupported the injection-molding line on a continuous-improvement project. Collected cycle-time data and helped document standard work.\n\nProjects:\nSenior capstone — designed a fixture to reduce part-loading time on a teaching-lab CNC cell.\n\nEducation:\nB.S., Mechanical Engineering, expected 2026. GPA 3.6.\n\nSkills: SolidWorks, basic GD&T, Minitab, lean/5S fundamentals, Python (basic), reading engineering drawings.\n\nCertifications: Lean Six Sigma Yellow Belt (in progress).",
+  "jd": "Westbrook Components is hiring a Process Engineering Intern to support continuous-improvement work on our injection-molding and assembly lines. This is a hands-on role: you will run time studies, analyze scrap and cycle-time data, support root-cause investigations on quality defects, and help implement and document standard work. We want an intern who can talk specifically about what they measured, what they found, and what they changed — not just that they 'helped on a project.' Comfort on the shop floor, basic statistical thinking, and clear documentation habits are essential. Reports to a senior process engineer.",
+  "history": [
+    { "q": "Tell me about your continuous-improvement project at Westbrook — what problem you were attacking, what you personally measured, and what changed as a result." }
+  ],
+  "candidate_last_answer": "Yeah, so it was a continuous-improvement project on the molding line. I worked with the team and we looked at the process and tried to make it more efficient. I helped collect some data and we documented things. It was really interesting to see how a real factory runs, and I think the project made a positive impact overall. I learned a lot about lean and working with operators.",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 3
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "metric" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I helped collect some data and we documented things",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the specific metric the candidate measured (e.g. cycle time or scrap rate), the actual numbers before and after, and the one change they personally contributed, replacing the vague 'collected some data' framing"
+    ]
+  }
+}

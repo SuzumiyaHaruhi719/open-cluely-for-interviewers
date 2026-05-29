@@ -1,0 +1,42 @@
+{
+  "id": "fx_0367",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "产品总监\n\n个人简介：业内公认的顶尖产品负责人。我几乎以一己之力重塑了所在公司的产品方向，多位 CEO 都说我是他们见过最有产品直觉的人。我带过的产品没有一个不成功的。\n\n核心亮点\n- 独自定义并落地了公司的整条增长产品线，行业标杆，无人能及。\n- 我主导的某款产品据说改变了整个细分赛道的格局。\n- 公司上下都知道，重大产品决策没有我点头就推不动。\n- 我一个人扛下了原本需要一整个团队才能完成的战略项目。\n\n工作经历\n- 鸿图互联，产品总监，2020 年至今。负责 C 端核心产品矩阵，带领产品、设计与数据分析团队，主导多条业务线的战略与路线图。\n- startVision 科技，高级产品经理，2016 年至 2020 年。\n\n技能：产品战略、增长、数据驱动决策、用户研究、跨团队协同、商业化。\n\n教育背景：计算机科学本科；MBA。",
+  "jd": "我们是一家头部消费互联网公司，现招聘产品总监，负责 C 端核心产品矩阵的战略与增长。该岗位向 CPO 汇报，管理产品、设计与数据团队，对北极星指标（月活与次留）、商业化收入以及关键功能的转化效率负责。我们希望候选人能够聚焦、具体地讲清楚自己亲手主导的某一个产品决策：当时的判断依据、做了哪些取舍、最终的数据结果如何，而不是泛泛的成功叙事或离题发挥。该岗位需要很强的数据敏感度、跨团队影响力以及在不确定性下做决策的能力。",
+  "history": [
+    { "q": "先介绍一下你在鸿图的产品职责：负责哪些产品线、团队多大、核心指标是什么。" },
+    { "q": "你说独自定义了整条增长产品线，具体讲一个你主导的关键决策。" },
+    { "q": "那个决策上线后，北极星指标（比如次留）变化了多少？" },
+    { "q": "讲一次你判断错了的产品决策，后来怎么纠正的？" },
+    { "q": "如果只让你挑一个最能代表你能力的项目，数据结果是什么？" }
+  ],
+  "candidate_last_answer": "最能代表我的项目啊……其实说到这个我突然想起来，我们当时办公室刚搬到新园区，环境特别好，楼下还有家咖啡馆我天天去。对了我 MBA 那会儿做的一个案例分析跟这个还挺像的，教授当时特别欣赏我的框架。然后我个人特别推崇乔布斯那套产品哲学，我觉得伟大的产品都是关于直觉和品味的。哦那个项目嘛，反正就是个改版,上线之后数据『涨了不少』,具体数我得回去翻一翻。话说回来你们这边的产品团队现在多少人?向 CPO 直接汇报的有几个?我比较好奇你们的组织架构。",
+  "session_state": {
+    "drilled_topics": ["scope-product-lines-team", "key-decision-walkthrough", "north-star-impact"],
+    "current_competency_target": "outcomes-attribution",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "outcomes-attribution",
+    "missing_evidence": [
+      { "competency": "outcomes-attribution", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正就是个改版,上线之后数据『涨了不少』,具体数我得回去翻一翻",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把候选人从乔布斯哲学和办公室闲聊拉回到那次改版本身：到底改了哪个功能、北极星指标（次留或转化）的具体起点和终点数字、统计口径与时间窗口，以及他个人在这个决策中的具体贡献"
+    ]
+  }
+}

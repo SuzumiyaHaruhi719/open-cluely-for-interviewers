@@ -1,0 +1,39 @@
+{
+  "id": "fx_0350",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "王志远｜产品副总裁（VP of Product）\n\n现任 某 B 端 SaaS 公司 产品副总裁，管理约六十人的产品团队，负责公司主力产品线的整体方向与商业化。在职约四年。\n\n此前 某互联网公司 产品总监，负责一条用户增长型产品线。\n\n更早 从产品经理做起，覆盖过工具类与平台类产品。\n\n关注的事：产品战略、商业化定价、平台化与生态、团队梯队建设。\n\n一句话：我相信好的产品决策来自对用户问题足够深的理解，以及对取舍足够诚实的面对。",
+  "jd": "我们正在招聘一名产品副总裁，负责公司核心 SaaS 产品线的战略、路线图与商业化，直接向 CEO 汇报，管理约七十人的产品组织。该角色对净收入留存率、产品线毛利与新模块采纳率三项指标负责，需要主导一次从单点工具到平台化的产品升级，并重建定价体系。你将接手一条增长放缓、定价结构混乱的成熟产品线。我们希望候选人能清楚地讲出自己在重大产品取舍中扮演的具体角色与判断依据，尤其是当数据、销售压力与长期战略相互冲突时，你是如何做决定并对结果负责的。",
+  "history": [
+    { "q": "先讲讲你现在这条主力产品线的 scope —— 团队规模、你对哪些商业指标负责。" },
+    { "q": "你说相信『对取舍足够诚实』。给我讲一个你最近做的、代价很大的产品取舍：当时砍掉了什么、为什么。" }
+  ],
+  "candidate_last_answer": "在我具体讲之前，我想先问问您：贵公司现在更看重的是短期的收入增长，还是长期的平台价值？因为这个前提不一样，我讲的取舍案例的相关性就完全不同。另外，您说的『代价很大』，是指对收入的代价、对团队的代价，还是对客户关系的代价？我做过的取舍在这几个维度上各有不同。所以您能不能先告诉我，您这个职位最希望我擅长哪一类取舍？这样我才好挑一个最贴切的例子讲给您听。",
+  "session_state": {
+    "drilled_topics": ["product-line-scope", "costly-tradeoff-request"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我想先问问您",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 在主考给定一个明确前提（例如就以长期平台价值、对收入的代价为准）后，候选人停止反问，落到一个具体案例：他砍掉了哪个具体功能或模块、用什么判断依据做的决定、付出了多少可量化的收入或客户代价、以及他本人在这个决定中的角色"
+    ]
+  }
+}

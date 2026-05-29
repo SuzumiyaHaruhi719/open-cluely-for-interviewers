@@ -1,0 +1,40 @@
+{
+  "id": "fx_0326",
+  "tags": {
+    "industry": "marketing",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "市场总监 ｜ 品牌与增长 ｜ 消费品行业\n\n个人摘要：约十年市场营销经验，擅长品牌建设、整合营销与数字化增长。曾操盘多个全国性品牌campaign。\n\n工作经历：\n悦野食品（2018-至今）——市场总监。负责品牌、内容、电商与投放，管理团队约 45 人，年度市场预算约 1.2 亿元；（在另一段自我评价中写到所负责的年度预算约为 6000 万元）。\n\n青柠饮品（2014-2018）——高级品牌经理，后晋升市场副总监；（教育与履历栏另写该阶段离职时职位为品牌经理，未提及副总监）。负责新品上市与社交媒体运营。\n\n关键业绩：主导 2021 年品牌焕新项目，使品牌天猫旗舰店月均 GMV 提升约 40%；（业绩备注栏另记为提升约 15%）。曾带领团队完成一次刷屏级 social campaign，全网曝光过亿。\n\n教育背景：中国传媒大学 广告学 本科。",
+  "jd": "我们是一家快速增长的消费品公司，正在招聘市场总监，向 CMO 汇报，统筹品牌、内容、电商与效果投放。该岗位要求候选人能够清晰、前后一致地讲清自己负责的预算规模、团队规模、任职职级与可量化的业绩结果。我们会针对简历中的数字与时间线进行细致核对，期望候选人面对追问时聚焦、克制、就事论事，能用一两句话把关键事实讲清楚，而不是发散到无关话题或反复跑题。",
+  "history": [
+    { "q": "你简历里年度市场预算，一处写 1.2 亿，一处写 6000 万，能先帮我确认真实的预算量级吗？" },
+    { "q": "青柠饮品那段，一处写晋升到市场副总监，另一处又写离职时是品牌经理。你当时实际的职级是什么？" },
+    { "q": "2021 品牌焕新让天猫旗舰店月均 GMV 提升，到底是 40% 还是 15%？基数大概是多少？" },
+    { "q": "我们先聚焦一个问题就好：天猫旗舰店那个 GMV 提升的准确数字，你能给我吗？" }
+  ],
+  "candidate_last_answer": "GMV 这个事儿吧，说来话长。其实我一直觉得，做品牌的人不能只盯着电商那点数字，你看现在整个消费环境，从直播带货到私域，再到这两年特别火的 AI 营销，逻辑都在变。我那会儿还专门带团队去日本考察过他们的便利店陈列，特别有意思，他们对色彩心理学的理解真的很深，我回来还写了一篇上万字的复盘。对了，说到色彩，我们当时换 logo 也纠结了很久，请了三家设计公司比稿，那个过程我能跟你讲一整天……哦你问 GMV 啊，反正就是涨了不少，具体的我得回去翻一下当时的周报，记不太清了。",
+  "session_state": {
+    "drilled_topics": ["budget-contradiction", "title-contradiction", "gmv-uplift-contradiction"],
+    "current_competency_target": "credibility-consistency",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "credibility-consistency",
+    "missing_evidence": [
+      { "competency": "credibility-consistency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正就是涨了不少，具体的我得回去翻一下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 候选人给出 2021 品牌焕新后天猫旗舰店月均 GMV 提升的一个确定数值并说明基数，澄清 40% 与 15% 两处矛盾记录中哪个为真，而不是跑题到考察、比稿等无关叙事来回避"
+    ]
+  }
+}

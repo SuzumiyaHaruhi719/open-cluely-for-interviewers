@@ -1,0 +1,45 @@
+{
+  "id": "fx_0325",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Director of FP&A — World-Class Finance Leader Who Transforms Functions Into Strategic Powerhouses\n\nA visionary, results-obsessed finance executive with an unmatched track record of building best-in-class FP&A organizations that the entire C-suite depends on. Universally regarded as the go-to partner for any decision that touches the P&L.\n\nMeridian Logistics — Director, FP&A (2020–present)\n- Single-handedly rebuilt the company's entire forecasting capability from the ground up\n- Own the consolidated annual operating plan for a $900M revenue business across 11 entities\n- Lead a team of 8 (4 analysts, 2 senior analysts, 2 managers)\n- Drove a multi-year margin-expansion program that the board called transformational\n- Built the 13-week cash-flow model the treasurer now considers indispensable\n\nCrestline Foods — Senior Manager, Finance (2015–2020)\n- The most trusted finance partner the commercial org ever had\n- Led pricing analytics for a $400M portfolio\n\nKessler & Roe (Audit) — 2012–2015\n\nCPA. MBA, Booth. B.S. Accounting, Indiana University.",
+  "jd": "Meridian Logistics seeks a Director of FP&A to own the consolidated operating plan, the forecasting process, and capital-allocation analytics for our $900M business, reporting to the CFO. This is a hands-on leadership role: you will own the annual plan and quarterly reforecasts, partner with business-unit GMs on margin levers, and present the cash and earnings outlook to the board. We are looking for someone who can speak with surgical precision about the numbers they drove — forecast accuracy, specific margin basis points, dollar impacts, and timelines — and who can clearly separate what they personally built from what their team executed. Buzzword-heavy self-promotion without verifiable specifics will not survive our process.",
+  "history": [
+    { "q": "Your resume says you rebuilt forecasting 'from the ground up.' Concretely, what was the state when you arrived and what did you change first?" },
+    { "q": "What was forecast accuracy before and after — and how do you define accuracy?" },
+    { "q": "Walk me through the margin-expansion program. What were the two or three biggest levers?" },
+    { "q": "Quantify the largest lever. Basis points, dollars, and over what period?" },
+    { "q": "Which part of that margin work did you personally own versus your team or the GMs?" },
+    { "q": "Tell me about the 13-week cash model. What decision did it actually change?" },
+    { "q": "Give me a time your forecast was wrong. What missed, and what did you do about it?" },
+    { "q": "How did you present a bad-news quarter to the board? Walk me through one." },
+    { "q": "You said margin work was 'transformational.' Strip the adjective — what's the single hardest number you'd stand behind, and how was it measured?" }
+  ],
+  "candidate_last_answer": "The number I'd stand behind: gross margin went from 22.4% to 25.1% over seven quarters, +270 bps, on the $900M base — roughly $24M of annualized margin. The single biggest lever was repricing the bottom-decile customer cohort, which I owned end-to-end and which contributed about 160 of those bps. We measured it as reported GAAP gross margin, not an adjusted figure, validated against the audited statements. The model itself, I'd add, is now effectively self-sustaining — the team runs it without me, and I expect it to keep compounding even after I leave.",
+  "session_state": {
+    "drilled_topics": ["forecasting-rebuild", "forecast-accuracy", "margin-levers", "largest-lever-quant", "personal-vs-team-ownership", "cash-model-decision", "forecast-miss", "bad-news-board"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I expect it to keep compounding even after I leave",
+      "must-be-question-type: counterfactual",
+      "expected-yield: the candidate's evidence for durability — what specifically makes the repricing margin self-sustaining versus a one-time reset, including any churn or volume tradeoff the bottom-decile repricing created and why the +160 bps won't erode once he departs"
+    ]
+  }
+}

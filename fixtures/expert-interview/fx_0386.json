@@ -1,0 +1,44 @@
+{
+  "id": "fx_0386",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Senior Program Manager, Student Success\n\nLumen Online University — Senior Program Manager (2020–present)\n- Owns retention and intervention programs for ~30,000 online undergraduates\n- Built an early-alert outreach workflow across advising and faculty\n\nBridgeway Community College — Student Success Coordinator (2016–2020)\n- Ran first-year advising and at-risk student outreach\n\nSkills: student information systems, early-alert tooling, advising operations, FERPA-aware data handling\nEducation: MEd Higher Education Administration",
+  "jd": "Lumen Online University is hiring a Senior Program Manager for Student Success to own retention strategy for our 30,000-student online undergraduate population. You will design data-informed early-alert and intervention programs, partner with advising, faculty, and IT, and present retention outcomes to academic leadership. This role handles sensitive student records daily and demands strict FERPA compliance: you must model careful data-sharing practices and clear boundaries around who may access student information and for what purpose. We want a leader who speaks precisely about what they did and how they measured impact, and who treats student-data privacy as non-negotiable. You will own a measurable term-over-term retention target.",
+  "history": [
+    { "q": "Tell me about the early-alert program you built at Lumen." },
+    { "q": "How did you decide which students got flagged for intervention?" },
+    { "q": "Walk me through how student data flowed between advising, faculty, and your team." },
+    { "q": "Who exactly had access to the at-risk student list, and how was that access controlled?" },
+    { "q": "Give me a specific instance where you had to make a judgment call about sharing a student's information." }
+  ],
+  "candidate_last_answer": "Yeah, so — sharing student info, okay, um, there was this one time, this is a good example I think, where a parent called in, really worried, and they wanted to know how their kid was doing, like grades and whether they'd been flagged as at-risk, and normally, you know, FERPA, the student's an adult so technically you're not supposed to, but the parent was paying tuition and was so upset, and I just — I felt for them, so I kind of walked them through where the student stood, the flags and everything, because I figured the family deserved to know, and, um, sorry, I'm rambling, but the point is I try to be human about it, and it mostly works out, I think, usually.",
+  "session_state": {
+    "drilled_topics": ["early-alert-program", "flagging-criteria", "data-flow-advising-faculty", "access-control", "data-sharing-judgment-call"],
+    "current_competency_target": "compliance-judgment",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "compliance-judgment",
+    "missing_evidence": [
+      { "competency": "compliance-judgment", "evidence_type": "mechanism" },
+      { "competency": "compliance-judgment", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "communication-clarity", "evidence_type": "scope" }
+    ],
+    "safety_flags": [
+      { "type": "compliance-risk", "detail": "Candidate describes disclosing an adult student's FERPA-protected records (grades, at-risk flags) to a parent without indicating consent or a release was on file, framing the disclosure as justified because the parent paid tuition." }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: the family deserved to know",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: precisely what the candidate verified before disclosing (whether a signed FERPA release or student consent existed), what records were shared, and whether they recognize the disclosure as a potential violation rather than a discretionary kindness"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "fx_0384",
+  "tags": {
+    "industry": "design",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Aspiring Product Designer | Design Intern Candidate\n\nObjective: A visionary, results-obsessed designer who single-handedly transforms ambiguous problems into award-worthy experiences. I don't just design screens — I redefine entire product categories.\n\nExperience:\n\nCampus Design Studio (student-run agency) — Lead Designer (2024–present)\n- Solely responsible for the most impactful redesign in the studio's history\n- Drove a complete brand overhaul that everyone agreed was a massive success\n- Recognized by faculty as the strongest designer in the cohort\n\nFreelance — Designer (2023–2024)\n- Delivered game-changing designs for three local businesses\n- One client said it was the best work they had ever seen\n\nClass project — Mobile app for campus dining\n- Conceived, designed, and 'shipped' a flawless end-to-end experience\n- Achieved near-perfect usability scores\n\nSkills: Figma (expert), prototyping (expert), user research (expert), visual design (expert), design strategy (expert)\nEducation: BFA Interaction Design, expected 2026\nAwards: Dean's List; 1st place, campus design jam (team of 4)",
+  "jd": "We are hiring a Product Design Intern for a 12-week summer program on our consumer mobile team. You will partner with a senior designer and a PM on a scoped feature, run at least one round of usability testing, and present your work at the end of the internship. We are looking for strong craft, curiosity, and intellectual honesty far more than a polished portfolio: we want interns who can describe what actually happened on a project, including what did not work and what they would change. You will be expected to articulate a clear problem, your specific contribution, and how you measured whether the design helped. Mentorship is core to the role; the best interns ask good questions and take feedback well.",
+  "history": [
+    { "q": "Tell me about a project on your resume you're most proud of." },
+    { "q": "You called the studio rebrand the most impactful in its history — what was the actual problem you were solving?" },
+    { "q": "What was your specific contribution versus the rest of the team?" },
+    { "q": "Walk me through the campus dining app. What was the situation and your goal?" },
+    { "q": "What did you actually do on it — concretely, your steps?" },
+    { "q": "You mentioned near-perfect usability scores. How did you measure that?" },
+    { "q": "Pick the dining app: give me the full story — the problem, your task, what you did, and the result." },
+    { "q": "So what was the result? What changed because of your design?" }
+  ],
+  "candidate_last_answer": "Okay so for the campus dining app — the situation was that students were really frustrated, the existing dining app was confusing and people couldn't find which halls were open or what was being served. My task was to redesign the whole flow so it was simple and fast. So what I did was I interviewed eight students, I mapped out their journey, I sketched a bunch of options, I built a clickable Figma prototype, and I ran a quick test with five classmates and iterated based on what confused them. I really focused on making the 'what's open right now' view the first thing you see.",
+  "session_state": {
+    "drilled_topics": ["proudest-project", "rebrand-problem", "individual-contribution", "dining-app-situation", "dining-app-actions", "usability-measurement", "dining-app-full-star"],
+    "current_competency_target": "impact-measurement",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "impact-measurement",
+    "missing_evidence": [
+      { "competency": "impact-measurement", "evidence_type": "metric" },
+      { "competency": "impact-measurement", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: iterated based on what confused them",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete Result the candidate omitted — what measurably changed after the redesign (e.g. task-completion or time-to-find before vs. after across the 5 testers), or an honest admission that nothing was measured beyond informal reactions"
+    ]
+  }
+}

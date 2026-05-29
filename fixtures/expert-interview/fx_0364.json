@@ -1,0 +1,47 @@
+{
+  "id": "fx_0364",
+  "tags": {
+    "industry": "operations",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "运营副总裁 / VP of Operations\n\n个人简介：资深运营高管，长期负责跨境电商与履约网络的端到端运营，擅长搭建仓配体系、优化 fulfillment 流程并带领大型分布式团队。\n\n工作经历\n\n星瀚跨境电商，VP of Operations，2019 年至今。\n- 负责整体运营，管理仓储、物流、客服与计划团队。\n- 主导了 WMS 系统的替换，把多个仓库迁移到统一平台。\n- 推动了 last-mile 配送的承运商整合，提升了交付体验。\n- 牵头优化了逆向物流流程，缩短了退货处理周期。\n（注：以上均未给出具体的金额、人数、百分比或时间区间。）\n\n华联零售集团，Senior Director of Fulfillment，2014 年至 2019 年。\n- 负责区域履约网络，改善了 on-time shipment 表现。\n- 参与了 S&OP 流程的搭建，加强了销售与运营的协同。\n\n技能：WMS / OMS 实施、network design、S&OP、供应商管理、Lean。\n\n教育背景：工业工程本科；MBA。",
+  "jd": "锐捷即时零售（RapidGo）正在招聘 VP of Operations，负责覆盖多个城市的即时配送与履约网络。该岗位向 COO 汇报，负责运营预算、micro-fulfillment 站点网络以及自营加众包的骑手运力。董事会层面的考核指标包括：on-time delivery（当前 91%，目标 97%）、cost-per-delivery（当前 9.4 元，目标 7.1 元）以及 defect rate（当前 2.8%，目标低于 1%）。候选人需要继承一个进展不顺的 WMS rollout，并应对近期上升的破损索赔。我们需要一位能用精确数字说话、对结果亲自负责的运营操盘手。Travel 约 40%。",
+  "history": [
+    { "q": "先讲讲你在星瀚的 scope：团队规模、你负责的预算和核心 KPI。" },
+    { "q": "你的简历几乎没有数字。先给我一个：现在的 on-time delivery 大概多少？" },
+    { "q": "WMS 替换这个项目，你迁移了几个仓？用了多长时间？" },
+    { "q": "迁移上线那天出过乱子吗？具体怎么处理的？" },
+    { "q": "last-mile 承运商整合，你从几家整合到几家？省了多少成本？" },
+    { "q": "讲一次你亲自做的、对结果负全责的运营决策。" },
+    { "q": "那个决策的 trade-off 是什么？你放弃了什么？" },
+    { "q": "逆向物流优化，退货处理周期从几天降到了几天？" },
+    { "q": "破损索赔如果在你这边上升，你会先查哪个环节？" },
+    { "q": "如果给你那次 WMS 上线打分，满分十分你打几分？" },
+    { "q": "复盘那次 WMS 上线，重来一次你第一周会做什么不同的事？" }
+  ],
+  "candidate_last_answer": "重来一次，第一周我只做一件事：先冻结上线，跑一周的 parallel run。当时我们直接 cutover，结果第一天有约 12% 的拣货任务在新系统里找不到库位，仓库瘫了大半天。如果重来，我会让新旧 WMS 并行跑七天，每天比对两边的 inventory snapshot，差异率压到 0.5% 以下才切。另外我会提前把那批临时拣货员的 SOP 培训从半天加到两天——上线前我砍了这块预算，事后看那是我的判断失误。这两步加起来，本来可以把那一天的 downtime 从大半天压到两小时以内。",
+  "session_state": {
+    "drilled_topics": ["scope-team-budget-kpi", "on-time-baseline", "wms-migration-scope-timeline", "go-live-incident", "carrier-consolidation", "owned-decision", "decision-tradeoff", "reverse-logistics-cycle", "damage-claims-diagnosis", "wms-self-score"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 46
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "outcomes-attribution", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 上线前我砍了这块预算，事后看那是我的判断失误",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 让候选人把当初砍掉培训预算的决策逻辑讲清楚——当时面临的成本压力、他权衡了哪些选项、在什么信息下做的取舍，以及这次复盘后他对类似 cutover 风险的判断标准发生了什么变化"
+    ]
+  }
+}

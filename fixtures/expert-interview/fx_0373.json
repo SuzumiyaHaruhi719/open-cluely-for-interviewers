@@ -1,0 +1,55 @@
+{
+  "id": "fx_0373",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Director of Engineering | Cloud-Native | Distributed Systems | Kubernetes | Microservices | Event-Driven | Kafka | gRPC | Service Mesh | Istio | Observability | OpenTelemetry | SRE | SLO/SLA | Chaos Engineering | Platform Engineering | DevEx | CI/CD | GitOps | ArgoCD | Terraform | IaC | Multi-Cloud | AWS | GCP | Cost Optimization | FinOps | Zero-Trust | DDD | CQRS | gen-AI enablement\n\nProfile: Outcome-driven engineering leader operationalizing best-in-class cloud-native platforms at scale. Force-multiplier for high-performing teams; relentless about velocity, reliability, and developer delight.\n\nExperience:\nDirector of Engineering — Northpeak Cloud (2020-present)\n- Owned a platform engineering org delivering golden paths, self-service infra, and paved-road tooling\n- Championed an SLO-driven reliability culture leveraging error budgets and chaos engineering\n- Drove a cloud cost-optimization initiative across AWS and GCP via FinOps best practices\n- Stood up a service mesh and unified observability with OpenTelemetry\n\nEngineering Manager — Bluegrove Tech (2016-2020)\n- Led microservices decomposition and event-driven architecture with Kafka and gRPC\n- Instituted GitOps delivery with ArgoCD and Terraform-managed infrastructure\n\nEducation: BS Computer Science. Numerous cloud and Kubernetes certifications.",
+  "jd": "Solenoid is hiring a Director of Engineering for our Platform group (~90 engineers across infra, developer experience, and reliability). Reporting to the VP Eng, you will own the paved-road platform roadmap, the org's availability SLOs, and a multi-cloud cost-reduction mandate (target: 18% off the infra run-rate in 12 months without regressing p99 latency). We need someone who can go past the buzzword layer: pick one platform investment, explain the specific developer pain it removed, quantify adoption, and show the before/after on a real metric. You will own hiring and leveling for the group, partner with Product on platform-as-product, and be accountable to Finance for the cost target. Strong opinions on SLOs, golden paths, and cost are expected — backed by specifics, not acronyms.",
+  "history": [
+    { "q": "Walk me through your current org at Northpeak — team count, what they own, and your top-line metrics." },
+    { "q": "You list 'golden paths' and 'paved-road tooling.' Pick one paved road you shipped and describe it." },
+    { "q": "What specific developer pain did that paved road remove? Be concrete." },
+    { "q": "How did you measure adoption of that golden path?" },
+    { "q": "What was the before/after on developer lead time or deploy frequency?" },
+    { "q": "On the FinOps initiative — what was the run-rate before, and what did you target?" },
+    { "q": "Which lever drove the most savings: rightsizing, commitments, or architecture changes?" },
+    { "q": "What did you cut that you later regretted, if anything?" },
+    { "q": "You mention chaos engineering. Describe one game-day and what it actually surfaced." },
+    { "q": "What SLO did you set for the platform, and what was your error-budget policy when it burned?" },
+    { "q": "Tell me about a time the error budget was exhausted. What did you freeze, and who decided?" },
+    { "q": "On the service mesh rollout — what broke, and how long did stabilization take?" },
+    { "q": "How did you justify the mesh's latency overhead to product teams?" },
+    { "q": "Describe a hiring bar decision: a candidate you pushed to reject when others wanted to hire." },
+    { "q": "How do you level a senior engineer versus a staff engineer on your team — what's the line?" },
+    { "q": "Give me a platform decision you got wrong and had to reverse." },
+    { "q": "Solenoid needs 18% cost out without regressing p99. What's your first move in week one?" },
+    { "q": "Let's go back to the paved road. Drop the framing — give me the one number that proves it worked and how you measured it." }
+  ],
+  "candidate_last_answer": "Absolutely — so the way I think about platform-as-product is you meet developers where they are, you remove toil, and you create leverage through golden paths and paved roads. The paved road we shipped was really about operationalizing developer delight and shifting left on reliability, so we drove a step-change in velocity and a flywheel of adoption. It was very much an outcome-driven, SLO-informed motion where we leaned into self-service and reduced cognitive load end to end. The before/after was honestly night and day — teams were just so much more productive, the feedback was overwhelmingly positive, and it became the gold standard internally for how we do platform.",
+  "session_state": {
+    "drilled_topics": ["current-org", "paved-road-pick", "developer-pain", "adoption-measure", "lead-time-before-after", "finops-baseline", "savings-lever", "regretted-cut", "chaos-gameday", "slo-error-budget-policy", "budget-exhaustion-decision", "mesh-breakage", "mesh-latency-justification", "hiring-reject", "leveling-line", "reversed-decision", "cost-week-one"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The before/after was honestly night and day",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single hard number for the paved road — e.g. deploy frequency or lead-time before and after with units, the adoption percentage of eligible teams, and exactly how it was instrumented — stripping away the 'developer delight / flywheel' framing"
+    ]
+  }
+}

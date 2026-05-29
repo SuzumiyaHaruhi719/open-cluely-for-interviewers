@@ -1,0 +1,38 @@
+{
+  "id": "fx_0355",
+  "tags": {
+    "industry": "marketing",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "孙若琳｜初级社交媒体营销专员（Junior Social Media Marketing Specialist）\n\n从业约一年半，负责品牌在主流社交平台的内容运营与日常投放。\n\n经历\n现任 某美妆品牌 社媒运营专员。负责官方账号的内容排期、短视频脚本协作与评论区互动，参与过几次小型话题活动的执行。\n\n此前 某 MCN 机构 实习生，协助账号矩阵的内容上传与基础数据整理。\n\n技能：内容策划、短视频脚本、社媒数据整理、基础投放操作、社群互动。\n\n一句话：我对内容有感觉，做过的账号涨粉都不错。",
+  "jd": "我们正在招聘一名初级社交媒体营销专员，负责品牌社媒账号的内容运营、话题活动执行与基础投放。该角色需要对粉丝增长、互动率与内容转化等指标负责，并能复盘每一次内容或活动的实际效果。我们希望候选人能用具体的数据和具体的动作说明自己的贡献，例如某条内容或某次活动带来了多少增长、你具体做了什么。你将与设计、达人合作与电商团队协作。我们看重的是诚实、可验证的复盘能力——能讲清楚哪些是你的功劳、哪些是平台红利或合作带来的，而不是把所有结果都归到自己身上。",
+  "history": [
+    { "q": "你简历里说『做过的账号涨粉都不错』。挑一个账号，告诉我你接手时的粉丝量、离开时的粉丝量，以及你具体做了什么带来的增长。" }
+  ],
+  "candidate_last_answer": "说实话我觉得这个问题有点是在为难人。涨粉这种事本来就受平台算法、预算、还有那阵子有没有热点影响，哪能像你说的那样一笔一笔算到我头上？你们是不是对初级岗位要求太苛刻了？我做的内容数据确实好，账号确实涨了，这还不够说明问题吗？非要我背出一个精确的数字，我觉得这恰恰说明你们不太懂社媒运营到底是怎么回事。我不太想纠结在这种没意义的数字上。",
+  "session_state": {
+    "drilled_topics": ["follower-growth-attribution"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 哪能像你说的那样一笔一笔算到我头上",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 在不被防御性反弹带偏的前提下，让候选人承认平台红利与个人贡献可以并存，并落到一个具体账号：接手与离开时的粉丝量级、她本人做过的某条具体内容或某次活动、以及她能合理归因到自己的那部分增长"
+    ]
+  }
+}

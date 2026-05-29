@@ -1,0 +1,46 @@
+{
+  "id": "fx_0389",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "VP of Clinical Operations | Transformational Healthcare Executive\n\nProfile: A visionary, award-winning healthcare operations leader with an unmatched track record of turning around underperforming clinical networks. Widely regarded as one of the sharpest operators in the ambulatory space. I deliver world-class outcomes, every time.\n\nMeridian Health Network — VP Clinical Operations (2020–present)\n- Single-handedly transformed a struggling 24-clinic ambulatory network into a top-decile performer\n- Drove patient access wait times down dramatically and pushed quality scores to best-in-class\n- Personally architected the most ambitious EHR optimization in the system's history\n- Led the organization through a flawless multi-site expansion\n\nVantage Care Partners — Senior Director, Operations (2015–2020)\n- Recognized as the go-to turnaround leader for distressed sites\n- Delivered record-breaking throughput improvements across the portfolio\n\nSkills: clinical operations, value-based care, EHR optimization, access/throughput, quality (HEDIS/STARS), staffing models\nCredentials: MHA; Lean Six Sigma Black Belt; frequent conference panelist\nEducation: Master of Health Administration",
+  "jd": "Meridian is seeking a VP of Clinical Operations to own performance across a 24-clinic ambulatory network serving 400,000 patients. You will be accountable to the COO and the board for access (third-next-available appointment), quality (HEDIS gap closure), provider productivity, and operating margin. The role demands an executive who owns outcomes personally, including the failures: we will probe hard on a turnaround that did not go to plan and expect a candid account of your own decisions, not attribution to predecessors, vendors, or staff. You will inherit a stalled EHR optimization, two underperforming sites, and a nurse-staffing shortage. You must be able to present root-cause analysis to the board and defend the specific calls you made. Prior multi-site P&L ownership in a regulated clinical environment required.",
+  "history": [
+    { "q": "Walk me through your current scope at Meridian — sites, patient volume, and the metrics you own." },
+    { "q": "You describe driving wait times down dramatically. Give me the specific before-and-after on third-next-available." },
+    { "q": "Tell me about a clinic in your network that did NOT turn around under your leadership." },
+    { "q": "What was the root cause that the site underperformed?" },
+    { "q": "Which of your own decisions contributed to that site's struggle?" },
+    { "q": "You called the EHR optimization the most ambitious in the system's history — where did it stall and why?" },
+    { "q": "Who owned the EHR optimization timeline that slipped?" },
+    { "q": "On the nurse-staffing shortage, what did you personally decide to do, and what was the result?" },
+    { "q": "I want a failure you own outright: a decision you made that went wrong, and what it cost." }
+  ],
+  "candidate_last_answer": "Look, the site that struggled — that one really wasn't a reflection of my leadership. The previous director left it in a complete mess, the local market was tough, corporate handed me a staffing budget that was frankly unworkable, and the EHR vendor blew every deadline they committed to. I came in and did everything by the book. If the board had given me the headcount I asked for and if the vendor had delivered, that site would be top-decile like the rest. You can't turn around a site when finance and IT are setting you up to fail.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "wait-time-before-after", "non-turnaround-site", "site-root-cause", "own-decisions-contribution", "ehr-stall", "ehr-timeline-owner", "nurse-staffing-action"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that one really wasn't a reflection of my leadership",
+      "must-be-question-type: action-attribution",
+      "expected-yield: at least one decision the candidate personally made at the struggling site that they would now reverse, the operational tradeoff behind it, and what it cost in a concrete metric — rather than attributing the failure to the prior director, finance, and the EHR vendor"
+    ]
+  }
+}
