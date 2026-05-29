@@ -1,0 +1,39 @@
+{
+  "id": "fx_0407",
+  "tags": {
+    "industry": "customer-support",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Director of Customer Support\n\nMeridian Logistics — Director, Support Operations (2019-present). Lead a 70-person support org across two sites covering a B2B shipping platform. Own CSAT, time-to-resolution, and the support tooling budget.\n\nPrior: Cobalt Retail — Support Manager (2015-2019). Ran a 20-agent team for an e-commerce returns desk.\n\nSelected work: Replatformed the ticketing system; stood up a tier-2 escalation path; built the first QA scorecard for the team.\n\nSkills: Zendesk admin, workforce scheduling, escalation management, hiring and coaching.\n\nEducation: BA Communications, Ohio State.",
+  "jd": "Meridian Logistics seeks a Director of Customer Support to lead a 70-person organization serving freight and logistics customers across North America. You will own the operational metrics that the executive team watches weekly: CSAT (currently 81, target 88), median time-to-resolution (currently 9 hours, target 5), and first-contact resolution. You will manage a tooling and headcount budget, partner with Product on deflection and self-service, and be the escalation owner for the largest enterprise accounts. We are looking for a leader who can answer a direct operational question directly — when asked about a specific metric or decision, we expect a specific, on-point answer, not a tour of unrelated initiatives. This role reports to the COO and sits on the weekly operations review.",
+  "history": [
+    { "q": "Walk me through the support org you run at Meridian — headcount, sites, and the metrics you own." },
+    { "q": "Your CSAT is sitting at 81 against a target of 88. Tell me specifically what's holding the score down and what you've done about it in the last quarter." }
+  ],
+  "candidate_last_answer": "You know, CSAT is interesting, but honestly what I'm most proud of is the culture we've built. We started doing these Friday team lunches and a peer-recognition program, and morale has never been higher. I also rolled out a new onboarding deck for new hires that's gotten great feedback, and we redesigned the break room. Oh, and we're piloting a four-day week experiment that I think is really the future of support. People love coming to work now.",
+  "session_state": {
+    "drilled_topics": ["org-scope", "csat-gap-root-cause"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: CSAT is interesting, but honestly what I'm most proud of is the culture",
+      "must-be-question-type: metric-pin",
+      "expected-yield: redirect the candidate back to the specific drivers of the 81-vs-88 CSAT gap and force a concrete diagnosis plus the actions taken last quarter, with at least one number, rather than the unrelated culture initiatives"
+    ]
+  }
+}

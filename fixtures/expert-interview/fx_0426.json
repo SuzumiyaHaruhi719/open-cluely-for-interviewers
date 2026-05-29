@@ -1,0 +1,50 @@
+{
+  "id": "fx_0426",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "clean-STAR",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "吴泽楷 / Mid-level Site Reliability Engineer\n\n个人简介\nSRE 工程师，关注系统稳定性、可观测性与事故响应，习惯用 STAR 的方式复盘自己做过的事。\n\n工作经历\n联云数据 Site Reliability Engineer（2022 年 3 月至今）\n- Situation：核心 API 网关在高峰期频繁出现 5xx，影响下游多个业务\n- Task：负责把网关高峰期错误率压下来并建立可观测能力\n- Action：接入 Prometheus + Grafana 监控，重做了限流与熔断策略，推动灰度发布流程\n- Result：高峰期 5xx 错误率从约 2.3% 降到 0.4%，MTTR 缩短明显\n\n- Situation：一次大规模线上 incident，数据库连接池被打满\n- Task：作为 on-call 主责定位并恢复\n- Action：先扩连接池止血，再排查到一个慢查询，推动加索引与连接复用\n- Result：服务在事故后恢复，并补了告警规则\n\n微启网络 Backend Developer（2020 年至 2022 年）\n- 做过订单服务的开发与维护，参与过一次缓存改造\n\n技能\nKubernetes、Prometheus、Grafana、Go、PostgreSQL、限流熔断、on-call、事故复盘\n\n自我评价\n对线上稳定性比较上心，愿意把事故复盘做扎实。",
+  "jd": "联云数据正在招聘一名中级 SRE（Site Reliability Engineer），负责核心服务的稳定性、可观测性建设与线上事故响应。该岗位要求候选人能就自己处理过的真实事故讲清楚清晰且自洽的时间线：事故什么时候发生、先做了什么止血、之后如何定位根因、最终如何根治与补强。我们参与 on-call 轮值，重在准确的事件时序、可追溯的处置动作与个人职责边界。技术栈以 Kubernetes、Prometheus/Grafana、Go、PostgreSQL 为主。我们尤其看重复盘时序的清晰与一致，因为模糊或自相矛盾的时间线往往意味着对事故理解不深。",
+  "history": [
+    { "q": "先讲讲你在联云的职责范围，主要负责哪些服务的稳定性？" },
+    { "q": "你简历里写了 API 网关高峰期 5xx 的事，先说说当时的 Situation。" },
+    { "q": "那次你给自己定的 Task 是什么？" },
+    { "q": "限流和熔断策略你具体怎么改的？" },
+    { "q": "Prometheus 监控是在改限流之前接的还是之后接的？" },
+    { "q": "5xx 从 2.3% 降到 0.4% 这个数据是怎么统计的，统计窗口多长？" },
+    { "q": "再说那次数据库连接池被打满的 incident——事故是哪天、大概什么时间点开始的？" },
+    { "q": "你作为 on-call 主责，收到告警后第一步做了什么？" },
+    { "q": "你说先扩了连接池止血——那定位到慢查询是在扩连接池之前还是之后？" },
+    { "q": "加索引这个根治动作，是当天就上了，还是事故之后才安排的？" },
+    { "q": "整个事故从开始到服务恢复，前后大概多长时间？" },
+    { "q": "告警规则是这次事故暴露问题后补的，还是事故发生时就已经有了？" },
+    { "q": "这次 incident 里哪些是你做的，哪些是别人做的？" },
+    { "q": "我把时间线理一下：你先说扩连接池止血、再定位慢查询，但刚才又说是先看到慢查询告警才去扩的池子——到底哪个在前？把这次事故从告警到恢复的完整时间线按顺序讲一遍。" }
+  ],
+  "candidate_last_answer": "嗯……（停顿了几秒）让我捋一下，那天有点久了。其实……一开始我说是先扩连接池止血对吧，但又好像是先看到慢查询的告警……不对，等一下。好，我想清楚了，按真实顺序讲：最早是连接池打满的告警先响，大概晚上九点多；我第一步是先把连接池扩容止血，这时候服务先缓过来一点；缓过来之后我才有空去看监控，定位到是一条没走索引的慢查询把连接全占住了；慢查询是『止血之后』才定位到的，不是之前。加索引这个根治动作当晚没敢直接上，是第二天评审完才灰度上的；告警规则也是这次之后才补的。前面我把『看到慢查询』和『扩池子』的先后讲反了，正确的是先扩池止血、后定位慢查询。整个从告警到服务基本恢复大概一个多小时。",
+  "session_state": {
+    "drilled_topics": ["现岗位职责", "网关situation", "网关task", "限流熔断改法", "监控接入时点", "5xx统计口径", "连接池事故时间", "oncall第一步", "止血与定位先后", "加索引时点", "事故总时长", "告警规则时点", "个人职责边界"],
+    "current_competency_target": "problem-solving-process",
+    "elapsed_minutes": 43
+  },
+  "ground_truth": {
+    "competency_target": "problem-solving-process",
+    "missing_evidence": [
+      { "competency": "problem-solving-process", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 一开始我说是先扩连接池止血对吧，但又好像是先看到慢查询的告警",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 钉死事故处置的真实先后顺序——止血、定位根因、根治三步各自的时间点与触发条件，消除自相矛盾，验证候选人对该 incident 的理解是否真实而非事后拼凑"
+    ]
+  }
+}

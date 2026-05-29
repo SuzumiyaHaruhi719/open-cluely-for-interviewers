@@ -1,0 +1,42 @@
+{
+  "id": "fx_0409",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Senior Product Marketing Manager\n\nSummary: Senior product marketer with 8 years launching B2B software. Owns positioning, launch strategy, and sales enablement.\n\nQuillstone Software — Senior Product Marketing Manager (2021-present)\n- Led go-to-market for the company's flagship platform launch, which I personally owned end to end.\n- Drove competitive positioning and the launch narrative across web, sales, and field.\n- Note: the launch was a cross-functional effort; my role was primarily on the messaging workstream.\n- Built the sales enablement kit and ran certification for the field team.\n\nTopanga Labs — Product Marketing Manager (2017-2021)\n- Owned messaging for two product lines.\n- Launched a pricing-and-packaging change; results were strong, though the pricing decision was made by the leadership team and I supported execution.\n\nSkills: positioning, messaging, launch management, sales enablement, competitive intelligence, win/loss analysis.\nEducation: BBA Marketing, University of Texas.",
+  "jd": "Quillstone Software is hiring a Senior Product Marketing Manager to own go-to-market for a major platform line. You will be the directly responsible individual for launch outcomes — positioning, the launch narrative, analyst and sales readiness, and the early adoption metrics that define whether a launch succeeded. You will work cross-functionally with Product, Sales, and Demand Gen, but you will own the launch number and be expected to speak to it without diffusing responsibility. We are looking for someone who, when a launch underperforms, can tell us precisely which of their own decisions they would change. The role is measured on launch-attributed pipeline, sales-team enablement certification rates, and message adoption in the field. Reports to the Director of Product Marketing.",
+  "history": [
+    { "q": "Walk me through your scope at Quillstone and what you owned on the flagship launch." },
+    { "q": "You wrote that you 'personally owned the launch end to end' but also that your role was 'primarily the messaging workstream.' Which was it?" },
+    { "q": "Okay. For the part you did own, what was the launch-attributed pipeline target and did you hit it?" },
+    { "q": "You came in under target. What drove the gap?" },
+    { "q": "How much of that gap would you attribute to the messaging and enablement you owned, versus other factors?" },
+    { "q": "Name one decision in your own workstream — messaging or enablement — that you'd make differently next time." }
+  ],
+  "candidate_last_answer": "Look, the messaging itself tested really well, so I don't think that was the problem. The real issue was that Sales didn't run the plays — they reverted to the old pitch, and enablement attendance was low because their leadership didn't make it mandatory. Product also slipped the GA date twice, which compressed our whole runway. And demand gen underspent on the launch campaign. So if I'm being honest, I'm not sure there's much I'd change in my own work — I delivered what I was responsible for, the dependencies around me are what slipped.",
+  "session_state": {
+    "drilled_topics": ["scope-and-launch-ownership", "ownership-contradiction", "pipeline-target", "gap-drivers", "attribution-split"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm not sure there's much I'd change in my own work",
+      "must-be-question-type: counterfactual",
+      "expected-yield: force the candidate to name one specific decision in their own messaging or enablement workstream they would change — e.g., how they drove enablement adoption or built the field plays — instead of attributing the entire gap to Sales, Product, and Demand Gen"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "fx_0394",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Jordan Avery — Rockstar Data Analyst & Aspiring Data Science Legend\n\nProfile\nA once-in-a-generation analytical mind. In just under two years I have already become the single most indispensable data person at every company lucky enough to have me. I don't just query data — I fundamentally redefine how organizations think about truth itself.\n\nExperience\nBrightline Retail — Junior Data Analyst (2023–present)\n- Personally saved the company millions through dashboards nobody else could have built\n- Singlehandedly rebuilt the entire analytics stack while the senior team 'watched in awe'\n- Recognized company-wide as the go-to expert for literally any data question\n- Built machine learning models that 'changed the trajectory of the business'\n\nClearwater Logistics — Data Analyst Intern (Summer 2022)\n- Was offered a full-time leadership role as an intern (declined to pursue bigger things)\n- Delivered insights the leadership team called 'the best they'd seen in 20 years'\n\nSkills\nSQL, Python, Tableau, Looker, A/B testing, machine learning, deep learning, 'basically everything'\n\nEducation\nB.S. Statistics, State University (2022)",
+  "jd": "Meridian Commerce is hiring a Junior Data Analyst to join our growth analytics pod. You will report to the Analytics Lead and work day-to-day with product managers and marketers to answer concrete questions: which onboarding step is leaking users, whether a pricing test actually moved conversion, and how to size the impact of a new feature. The core of this role is rigor on the small things — writing a correct SQL query, defining a metric precisely, knowing the difference between correlation and causation, and being honest about what a single analysis can and cannot prove. We are NOT looking for someone who claims to have single-handedly transformed a business; we are looking for someone who can take ONE narrow question and trace it end to end: the data source, the query logic, the caveats, and the one decision it actually informed. Strong SQL and clear written communication are required; ML experience is a plus but not the focus.",
+  "history": [
+    { "q": "Pick one analysis you did at Brightline and walk me through it end to end — the question, the data, and the query." },
+    { "q": "Let's slow down on just that first one. What was the exact metric you computed, and how did you define it in SQL?" }
+  ],
+  "candidate_last_answer": "Right, so okay there are actually like three or four projects that all kind of connect here. So first there was the churn model — I built this whole pipeline, super proud of it. But that reminds me, before that I'd also redone the entire marketing attribution dashboard, which honestly was a way bigger deal because leadership was using it daily, and THAT project led into this pricing A/B test thing where I basically discovered we were leaving money on the table. Oh and separately I also automated a finance report that used to take a person two days. So the metric for the churn one — well, it depends which project, because the attribution one had its own metrics too, and the A/B test had conversion lift, and... yeah there's kind of a lot going on, they're all sort of intertwined in my head honestly.",
+  "session_state": {
+    "drilled_topics": ["end-to-end-analysis", "metric-definition-in-sql"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" },
+      { "competency": "execution", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the metric for the churn one — well, it depends which project",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate is forced to isolate the single churn model and state the exact metric it produced and the SQL definition behind it, abandoning the other three stories"
+    ]
+  }
+}

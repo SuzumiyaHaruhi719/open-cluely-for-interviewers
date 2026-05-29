@@ -1,0 +1,44 @@
+{
+  "id": "fx_0396",
+  "tags": {
+    "industry": "design",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "苏屿 — 设计总监 / Director of Design\n\n个人陈述\n我是一名拥有十二年经验的设计总监,过去六年一直在消费级互联网产品领域带领设计团队，覆盖产品设计、用户研究、品牌视觉与设计系统等多个方向。我对设计的理解很简单也很固执：设计不是把界面画得好看，而是要在真实的业务约束之下，替用户把复杂的问题想清楚，再用尽可能轻的交互把它表达出来。这些年我带过最大的一支设计团队接近三十人，里面既有偏交互与体验方向的设计师，也有偏视觉与品牌方向的设计师，还有专门做设计系统与设计工程化的同学。我自己的工作方式是尽量不在评审会上用『我觉得不好看』这种主观判断去否定一个方案，而是逼着团队回到用户与数据本身，去回答这个方案到底解决了谁的什么问题、有没有更轻的实现路径、上线之后我们用什么指标判断它成功还是失败。我特别在意的一件事情是设计团队在公司内部的话语权，因为在很多组织里设计是被当作一个画图的执行环节，是在产品和需求都定死之后才被叫进来的，我花了很多力气去改变这种局面，推动设计在更早的阶段就进入到问题定义的环节里，和产品、研究、数据一起去界定我们到底要解决一个什么样的问题，而不是被动地承接一份已经写好的需求文档。我也比较看重设计师个人的成长，因为设计这个职业很容易陷入到日复一日的需求执行里而停止思考，所以我会刻意给团队里的设计师安排一些需要他们自己去定义问题、自己去推动跨团队协作的项目，让他们在真实的难题里被锻炼出来，而不是永远停留在被指挥的位置上。我始终相信一个好的设计组织，最终拼的不是某一个明星设计师的灵感，而是整支团队稳定地、可被复制地把模糊问题转化为清晰方案的能力。\n\n工作经历\n\nLumio(消费级工具类App)— Director of Design(2020年至今)\n- 从0搭建并管理一支约28人的设计团队,覆盖product design、UX research、brand与design system\n- 主导建立公司第一套统一的design system,把跨端的设计交付效率显著提升\n- 推动设计在产品规划阶段前置介入,参与季度roadmap的优先级讨论\n- 主导一次面向新用户的onboarding重构项目,跨产品、研究、增长多个团队协作\n\nPixelForge(设计与品牌agency)— Design Lead(2016-2020)\n- 带领约8人的小团队,服务多家consumer brand客户\n- 负责从brand strategy到visual identity的完整交付\n\nNorthstar Media — Senior Product Designer(2013-2016)\n- 独立负责多个核心功能模块的交互与视觉设计\n\n能力与方法\n- 设计组织管理、design system搭建、用户研究驱动的设计决策\n- 擅长在业务约束下做取舍,用metric去验证设计假设\n- 熟悉Figma、设计工程化协作流程\n\n教育背景\n美术学院 视觉传达设计 本科\n\n我接下来想做的事\n我希望在下一段经历里进入一个用户规模更大、设计挑战更复杂的平台,继续推动设计组织从执行角色向问题定义角色的转变,也希望能够搭建一套真正可被验证的设计效果衡量体系,让设计这件事在公司里不再只靠审美来辩护,而是能够拿出可被业务方认可的证据。",
+  "jd": "Cobalt 是一家面向中小企业的SaaS公司,正在招聘一名 Director of Design,负责管理一支约25人的设计团队,并向CPO汇报。This role owns product design, design systems, and UX research across our two flagship products. 我们当前面临的最尖锐的问题不是缺少好看的界面,而是设计组织如何在资源有限的情况下做优先级取舍——when everything is 'important', how do you decide what your team does NOT work on。我们希望候选人能够非常具体地讲清楚一个真实的、艰难的设计资源分配或方案取舍决策:面对相互冲突的诉求,你个人是依据什么标准做的判断,放弃了什么,上线之后又用什么指标去验证这个取舍是对的还是错的。我们不需要关于设计哲学的宏大叙述,我们需要一个能被还原到具体决策与具体数字的故事。Strong design leadership与扎实的设计系统经验是必备项。",
+  "history": [
+    { "q": "先讲讲你在Lumio的scope——团队多大、汇报给谁、owns哪几条产品线?" },
+    { "q": "你提到把设计前置到产品规划阶段,我想听一个具体的项目里这件事是怎么发生的。" },
+    { "q": "那个onboarding重构项目,最初要解决的核心用户问题是什么?" },
+    { "q": "这个项目里,你的团队同时面对好几个相互冲突的诉求时,你个人是怎么排优先级的?" },
+    { "q": "具体一点:有没有哪个功能或诉求,是你拍板决定团队这一季度NOT去做的?" },
+    { "q": "你放弃那个诉求的判断标准是什么?为什么是它而不是别的?" },
+    { "q": "onboarding重构上线之后,你用哪个具体指标去判断这个取舍做对了?数字变化是多少?" }
+  ],
+  "candidate_last_answer": "这个问题其实让我想到一个更根本的话题,就是设计这个行业在中国过去十年的地位变迁。你看啊,十年前我们做设计的,基本就是在产品和需求都定死之后被叫进来画图的,设计师在公司里是没有什么话语权的。但是这些年随着体验经济的兴起,整个社会对设计的认知都在升级,从政府提倡的工业设计,到各个大厂成立自己的设计中台,你能明显感觉到设计的价值在被重新发现。我自己其实特别关注这种行业层面的trend,我经常会去看一些海外的design podcast,也会跟同行去聊,大家都在讨论AI对设计workflow的冲击。说到AI,这又是另一个特别值得展开的话题了,我觉得未来三五年设计师的工作方式会被彻底重塑……所以你看,回到你刚才问的那个上线指标,我想说的是,在这样一个大的时代背景下,单纯去看某一个指标其实是有局限性的,我们更应该从整个设计文化演进的高度去理解这件事。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "design-upfront-example", "onboarding-core-problem", "priority-conflict", "deprioritization-decision", "deprioritization-criteria", "post-launch-metric"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 回到你刚才问的那个上线指标,我想说的是",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate is pulled back from the industry-trends digression to name the single post-launch metric for the onboarding rebuild and state its before/after numeric change"
+    ]
+  }
+}

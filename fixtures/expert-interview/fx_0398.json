@@ -1,0 +1,40 @@
+{
+  "id": "fx_0398",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "郑昊 — 销售副总裁(VP of Sales)\n\n职业概述\n一名以结果为导向的销售领导者,长期负责企业级SaaS业务的整体销售增长与团队建设。擅长搭建可规模化的销售组织,推动从中小客户向大型企业客户的战略升级,并在多个高速成长阶段的公司中负责整体营收。\n\n工作经历\n\n远见科技 — 销售副总裁(2020年至今)\n- 全面负责公司的销售组织,管理覆盖直销、渠道与售前的多支团队\n- 主导销售体系从早期的机会主义打法向标准化、流程化的销售方法论转型\n- 推动公司进入多个新的行业垂直市场,搭建相应的销售打法与团队\n- 与市场、产品、客户成功等部门深度协同,优化整体的获客与续约链路\n\n速达网络 — 销售总监(2016-2020)\n- 负责区域销售团队的搭建与管理,带领团队完成既定的增长目标\n- 建立了区域内的关键客户体系与渠道合作网络\n\n卓信软件 — 高级销售经理(2013-2016)\n- 负责重点客户的开拓与维护,逐步成长为团队管理者\n\n核心能力\n- 销售组织搭建与管理、销售方法论落地、跨部门协同、关键客户关系经营\n- 对企业级销售周期与决策链有深入理解,擅长在复杂交易中推动共识\n\n教育背景\n某高校 工商管理 本科",
+  "jd": "Sentra 是一家处于快速扩张期的企业级数据安全公司,正在招聘一名 VP of Sales,全面负责北美与亚太的销售组织。该岗位向CEO直接汇报,管理一支跨直销、渠道与售前共约60人的团队,并对整体的new ARR与net revenue retention负最终责任。我们当前最关心的问题是:候选人能否把『增长』这件事拆解到可被审视的颗粒度——你接手一个团队时的起始ARR是多少、你离开时是多少、增长里有多少来自new logo、有多少来自存量增购、win rate与sales cycle在你的干预下发生了什么样的具体变化。我们会非常具体地追问每一个数字背后的口径与你个人的动作。我们对宏大的、缺乏数字支撑的销售叙事保持高度警惕。理想候选人应具备从0到规模化搭建企业级销售组织的完整经验,并能对自己负责期间的核心business metric如数家珍。",
+  "history": [
+    { "q": "先讲讲你在远见科技的scope:管多大的团队、向谁汇报、对哪些核心指标负责?" },
+    { "q": "你说主导了销售体系从机会主义向标准化的转型,这个转型最关键的一步具体是什么?" },
+    { "q": "我想要数字:你接手远见销售团队那一年的ARR是多少,到现在大概是什么量级?" }
+  ],
+  "candidate_last_answer": "关于增长,我的方法论其实非常成体系。我一直强调三件事:第一是『以客户为中心』的价值销售,第二是『端到端』的销售流程标准化,第三是『数据驱动』的精细化运营。在远见,我把这套打法系统性地落了地,实现了销售组织的『二次飞跃』,完成了从『游击队』到『正规军』的蜕变,真正做到了让增长变得『可预测、可复制、可持续』。可以说,我们打造了一台高效运转的『增长引擎』。至于你说的那个具体的起始ARR数字,这个其实涉及到公司的商业机密,而且单看一个数字也不能完全反映我们整体的战略价值,我更愿意从打法和体系的层面来呈现我所创造的价值。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "transformation-key-step", "starting-arr-pin"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 让增长变得『可预测、可复制、可持续』",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 候选人被迫放下成套口号,给出接手时与当前的具体ARR量级及增长口径(new logo 对比 expansion),或明确承认拿不出该数字"
+    ]
+  }
+}

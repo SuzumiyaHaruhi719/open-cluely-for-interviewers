@@ -1,0 +1,53 @@
+{
+  "id": "fx_0449",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "客户支持实习生候选人 | 关键词:CSAT · FCR · SLA · 工单系统 · 知识库 · 多渠道 · 客户旅程 · 升级流程 · NPS · ticketing · escalation\n\n关键词云\nCustomer Obsession、CSAT、FCR(First Contact Resolution)、AHT(Average Handle Time)、SLA、ticketing、Zendesk、知识库(knowledge base)、宏(macro)、多渠道支持(omnichannel)、in-app chat、邮件工单、升级流程(escalation)、客户旅程、用户反馈闭环、NPS、客户成功、self-service、FAQ 优化。\n\n个人简介\n沟通能力强、有同理心、抗压、细心。希望从客户支持实习起步,深入理解 customer experience 的每个环节。\n\n经历\n- 某 SaaS 公司客户支持实习(去年,part-time):处理 in-app chat 和邮件工单,维护知识库 FAQ,参与升级流程。\n- 校园 IT helpdesk 志愿者:为同学解决账号、设备类问题。\n\n做过的事(高度浓缩)\n- 处理日常 tickets,维护 CSAT。\n- 优化了一批知识库文章,降低重复咨询。\n- 参与一次 SLA 改善的小项目。\n\n技能:Zendesk、邮件/在线客服沟通、FAQ 撰写、基础数据看板。\n教育:信息管理与信息系统 本科在读。",
+  "jd": "我们为 SaaS 产品的客户支持团队招聘一名客户支持实习生(part-time),向支持团队 lead 汇报,负责处理 in-app chat 与邮件工单、维护知识库、并参与升级流程(escalation)的跟进。这是一个学习型岗位,我们更看重候选人能否把一个具体的支持场景讲完整——背景、目标、你做了什么、结果如何,而不是只堆 CSAT、FCR、SLA 这些缩写。日常工作包括响应客户工单、撰写和优化 knowledge base 文章、整理常见问题数据。我们会重点考察:你处理过的一个具体难缠 case 的完整经过、你优化知识库时的具体动作、以及你引用的任何指标(如重复咨询下降)是怎么衡量的。要求:在读学生,沟通清晰有同理心,熟悉基础工单工具,做事细致。",
+  "history": [
+    { "q": "先做个自我介绍,讲讲你在那家 SaaS 公司的支持实习主要负责什么。" },
+    { "q": "你简历里堆了很多缩写,CSAT、FCR、SLA。先解释一下,在你的实习里 FCR 具体是怎么定义和统计的?" },
+    { "q": "你每天大概处理多少个 ticket?in-app chat 和邮件的比例大概是多少?" },
+    { "q": "讲一个你印象最深的难缠 case。客户当时遇到的具体问题是什么?" },
+    { "q": "这个 case 一开始是分给你的,还是从别的同事那边 escalate 给你的?" },
+    { "q": "你说维护知识库。优化文章之前,你怎么知道哪些文章是最该优化的?" },
+    { "q": "你提到优化 FAQ 让重复咨询下降。这个『下降』你是用什么数据看出来的?" },
+    { "q": "升级流程(escalation)里,什么样的 case 该升级、什么该自己扛,你们的判断标准是什么?" },
+    { "q": "有没有过一次你本该升级但没升级、或者升级早了的情况?后来怎么样?" },
+    { "q": "CSAT 打分,如果一个客户给了你差评,你们流程上会怎么跟进?" },
+    { "q": "你写知识库文章时,怎么平衡『写得详细』和『用户没耐心看长文』?" },
+    { "q": "in-app chat 同时几个会话压过来,你怎么决定先回哪个?" },
+    { "q": "和研发团队打交道时,你怎么把一个客户的模糊抱怨翻译成研发能排查的问题?" },
+    { "q": "实习期间你觉得自己在客户支持上最大的成长是什么?" },
+    { "q": "如果遇到一个你完全不知道答案、知识库里也没有的问题,你会怎么处理?" },
+    { "q": "回到那个难缠 case——你最后到底是怎么把它解决的?完整说一下你做的动作。" },
+    { "q": "那这个 case 最后客户的反馈怎么样?有没有给 CSAT 评分,或者你怎么确认他真的满意了?" }
+  ],
+  "candidate_last_answer": "这个 case 我记得很清楚。Situation 是有个客户用我们的 in-app chat,说他的数据导出功能一直 timeout,导了好几次都失败,情绪已经很急了。Task 是我得在不让他更恼火的前提下尽快定位问题。Action 这块我做了挺多:我先安抚他,让他别急,然后一步步引导他描述操作路径,自己也在测试账号里复现了一遍,确认确实是大数据量导出会超时;接着我查了知识库发现没有相关文章,就把复现步骤、报错截图、还有客户的账号信息整理成一个工单,按 escalation 流程升级给了研发,并且跟客户同步说『我们已经在查了,会持续更新进度』。整个过程我跟得很紧,研发那边的进展我也第一时间转达给客户。",
+  "session_state": {
+    "drilled_topics": ["intro", "fcr-definition", "ticket-volume-mix", "hard-case-problem", "case-assignment", "kb-prioritization", "repeat-query-metric", "escalation-criteria", "escalation-misjudgment", "csat-followup", "kb-length-tradeoff", "chat-prioritization", "dev-translation", "biggest-growth", "unknown-question-handling", "hard-case-resolution-actions"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 研发那边的进展我也第一时间转达给客户",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forces the missing Result of an otherwise complete STAR — what the actual outcome was: whether the export-timeout was fixed and how long it took end to end, and the concrete signal (a CSAT score, the customer's reply, a resolved ticket) that confirms the customer was satisfied rather than just kept informed"
+    ]
+  }
+}

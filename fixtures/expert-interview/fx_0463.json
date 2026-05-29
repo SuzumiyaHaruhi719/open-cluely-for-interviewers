@@ -1,0 +1,54 @@
+{
+  "id": "fx_0463",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "李婷 — 客户支持组长\n杭州 | 客服经验 5 年\n\n工作经历\n微橙网络 — 客户支持组长, 2022 至今\n- 带一个 8 人的在线客服小组,负责电商平台的售后咨询\n- 跟进客诉升级与疑难工单\n\n海贝商城 — 高级客服专员, 2019-2022\n- 处理退换货、投诉与平台规则咨询\n\n技能: 工单系统、客诉处理、话术培训、排班\n教育: 大专 / 电子商务",
+  "jd": "某电商平台招聘『客户支持主管(Team Lead / 中级)』,带 10 人左右的售后客服团队,向客服经理汇报。岗位对团队的核心服务指标负责:首次响应时长、解决时长、客户满意度(CSAT)与客诉升级率。我们寻找能讲清楚『某一个指标在你手上从多少改善到多少、你具体做了哪一步动作』的务实管理者,而非只会描述日常职责的候选人。面试会就你带团队期间的具体事件、具体数字与你个人的管理动作逐层追问。要求:三年以上客服经验、一年以上带团队经验、扎实的客诉处理与团队管理能力、清晰的数据意识。",
+  "history": [
+    { "q": "先简单介绍一下你现在带的团队:几个人、负责什么、汇报给谁。" },
+    { "q": "你们组现在的首次响应时长大概是多少?" },
+    { "q": "这个响应时长是你接手后改善的吗?接手时大概是多少?" },
+    { "q": "CSAT 你们现在什么水平?是怎么统计的?" },
+    { "q": "讲一次你印象最深的客诉升级事件,背景是什么?" },
+    { "q": "那次客诉,客户最不满的点到底是什么?" },
+    { "q": "你当时第一时间做了什么?" },
+    { "q": "这个事最后是怎么解决的?客户接受了吗?" },
+    { "q": "你说你做了话术培训。具体培训了什么内容、多久一次?" },
+    { "q": "培训之后,有没有哪个指标变好了?比如满意度或者重复来访率?" },
+    { "q": "排班这块你怎么安排的?高峰期人手不够时你怎么处理?" },
+    { "q": "组里如果有一个客服满意度一直垫底,你会怎么带?" },
+    { "q": "你处理过最棘手的一个工单是什么?为什么棘手?" },
+    { "q": "客诉升级率这个指标,你们组大概是多少?有没有被要求压降?" },
+    { "q": "你刚提到培训。我想知道一个具体数字:培训前后满意度到底差了多少?" },
+    { "q": "我们聚焦一下那次最严重的客诉升级。从你介入到关闭,一共花了多长时间?" },
+    { "q": "就那一单,如果重来一次,你个人会更早做哪一个动作?为什么?" }
+  ],
+  "candidate_last_answer": "啊那一单……如果重来的话,我可能会……怎么说呢,就是会更早一点介入吧。因为当时其实我手上还有别的事,然后那个客户一开始是普通工单,后来才升级的,我没第一时间注意到。然后那个……我想说的是,其实我们组平时也挺忙的,有时候一个人要看好几个会话,所以……嗯。如果重来,我应该会让组员碰到这种苗头就先标记一下?但是具体多早算早我也说不太准,因为每个客诉情况不一样嘛。不好意思我有点紧张,我刚才是不是没说到点上?那一单大概……反正拖了挺久的,具体多久我记不太清了。",
+  "session_state": {
+    "drilled_topics": ["team-scope", "first-response-time", "frt-baseline", "csat-definition", "escalation-incident", "customer-pain-point", "first-response-action", "incident-resolution", "training-content", "training-impact-metric", "scheduling-peak", "low-performer-coaching", "hardest-ticket", "escalation-rate"],
+    "current_competency_target": "incident-ownership",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "incident-ownership",
+    "missing_evidence": [
+      { "competency": "incident-ownership", "evidence_type": "timeline" },
+      { "competency": "incident-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "process-improvement", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 但是具体多早算早我也说不太准,因为每个客诉情况不一样嘛",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a concrete escalation-detection mechanism and timeline — what specific trigger or rule would have made her or her team flag that ticket earlier, and roughly how many hours sooner — converting the vague 『介入得更早』 into a verifiable, repeatable process change with a time anchor"
+    ]
+  }
+}

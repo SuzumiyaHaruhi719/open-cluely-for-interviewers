@@ -1,0 +1,38 @@
+{
+  "id": "fx_0401",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "方启 — 运营总监(Director of Operations)\n\n核心经历\n- 在 鲜行到家(生鲜即时零售)负责城市运营,管理覆盖仓储、配送与履约的整体运营体系\n- 同一段经历的另一处又写到:主要负责的是平台的商家运营与活动策划\n- 2019年加入鲜行到家,担任运营总监\n- 另一行写到:在鲜行到家的任职时间为2021年至今,此前在另一家公司任运营经理\n- 带领的团队规模约为120人\n- 简历另一处写团队规模约为25人\n\n业绩\n- 主导华东区域的履约体系优化,把准时送达率从行业平均水平提升到区域第一\n- 另一处材料里,同一项目被描述为一个尚在试点、覆盖三个站点的小规模实验\n- 推动仓配一体化改造,显著降低了单均履约成本\n\n能力\n- 城市运营管理、履约与供应链协同、运营流程优化、团队管理\n\n教育背景\n某高校 物流管理 本科",
+  "jd": "潮汐速配 是一家即时零售履约平台,正在招聘一名 运营总监,负责一座核心城市的端到端履约运营,向区域总经理汇报,统筹仓储、配送调度与站点管理三个板块。我们当前最关心的是候选人在关键运营决策上的个人判断与个人担当:不是『团队拿到了什么结果』,而是当准时率、履约成本、骑手运力之间发生剧烈冲突时,YOU个人拍板了什么、放弃了什么、为这个决定承担了什么后果。我们会持续追问到个人动作的层面,并会特别留意候选人是否能把『我们』与『我』清晰地区分开。理想候选人应具备城市级履约体系的完整管理经验,并能对自己负责的核心运营指标给出真实、可被还原的口径。我们对含糊的、全程以『我们』包裹的叙述保持警惕。",
+  "history": [
+    { "q": "先讲讲你在鲜行到家最艰难的一次运营决策——背景是什么,以及在那个决定上,具体是你个人拍的板还是团队一起定的?" }
+  ],
+  "candidate_last_answer": "那次其实是大促期间运力严重不足,我们当时面临一个很艰难的取舍。不过这个决定真的是我们团队一起做出来的,我们运营、调度、还有站长团队,大家一起开会讨论,最后我们达成一致,决定优先保障准时率、临时上调骑手补贴。整个过程我们都是集体决策的,我们这个团队的文化就是这样,我们不太强调谁是那个拍板的人,我们更看重的是我们一起把这个仗打赢。所以你要说是谁个人拍的板,我觉得这个问题本身可能不太适用于我们的协作方式,因为我们真的是一个高度协同的整体。",
+  "session_state": {
+    "drilled_topics": ["hardest-ops-decision-and-owner"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "execution", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你要说是谁个人拍的板,我觉得这个问题本身可能不太适用于我们的协作方式",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人被迫从集体决策的叙述中分离出他本人在那次大促运力取舍中的具体主张与最终判断——他个人支持哪个方案、说了什么、若意见与团队相左时如何处理"
+    ]
+  }
+}

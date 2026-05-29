@@ -1,0 +1,41 @@
+{
+  "id": "fx_0399",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "VP of Supply Chain — The Operator Who Turns Chaos Into Clockwork\n\nProfile\nWidely regarded as one of the sharpest supply-chain minds in the consumer-goods world. I have never met a broken network I couldn't fix. Where others see constraints, I see opportunities, and I have a near-legendary reputation for walking into a failing operation and making it hum within weeks.\n\nExperience\nApex Consumer Brands — VP Supply Chain (2019–present)\n- Single-handedly rescued a collapsing distribution network that 'no one else could save'\n- Transformed the company into a best-in-class logistics powerhouse admired across the industry\n- Built the most resilient supply chain in the category, full stop\n- Renowned internally as the person executives call when everything is on fire\n\nGlobal Foods Co. — Senior Director, Logistics (2015–2019)\n- Turned the worst-performing region into the crown jewel of the network\n- Personally negotiated carrier contracts that 'rewrote the rules' of the category\n\nNorthport Distribution — Operations Manager (2011–2015)\n- Rose rapidly on the strength of an unmatched instinct for operational excellence\n\nSkills\nNetwork design, S&OP, demand planning, carrier negotiation, warehouse automation, inventory optimization, the rare ability to 'just make it work'\n\nEducation\nB.S. Industrial Engineering",
+  "jd": "Harbor Goods is hiring a VP of Supply Chain to own end-to-end fulfillment for a $400M consumer-products business across four DCs. You will report to the COO and own service level, landed cost, and inventory health. We are coming off a brutal year: on-time-in-full sat at 82% against a 95% target, days-of-inventory ballooned, and an expedited-freight habit blew the logistics budget. We need a leader who can take ONE specific failure — a missed peak, a botched DC transition, a carrier blowup — and walk us through exactly what they personally diagnosed, what they decided week by week, and what the measurable result was. We are not interested in reputation or sweeping claims of rescue; we want the mechanics of a single hard call and the number that moved. Deep S&OP and network-design experience required; comfort presenting recovery plans to the board is essential.",
+  "history": [
+    { "q": "Give me your current scope at Apex — DCs, headcount, the cost and service metrics you own." },
+    { "q": "You say you rescued a 'collapsing distribution network.' Pick that one event and tell me what was actually breaking." },
+    { "q": "What did you personally diagnose as the root cause in the first week?" },
+    { "q": "Walk me through the single most important corrective action you took, and what metric it moved — with the before and after numbers." }
+  ],
+  "candidate_last_answer": "Okay so, the network, right, it was — there was a lot going on, honestly. The root cause was, well, it was kind of multifactorial, you had the carrier side but also the DC side, and inventory, and, um, sorry, let me back up. So the metric — we were tracking a bunch of things, OTIF obviously, and cost, and, you know, I'm trying to remember the exact starting number, it was bad, it was definitely bad, like it had really fallen off. And then we, uh, we did a few things, I led the team through it, and it got a lot better, meaningfully better, I just — the precise before-and-after figure is escaping me right now, but trust me the turnaround was dramatic, everyone talked about it. Does that... is that the kind of thing you're looking for?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "rescue-event-specifics", "root-cause-week-one", "corrective-action-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the precise before-and-after figure is escaping me right now",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate is forced to commit to a single concrete metric (e.g. OTIF or expedited-freight spend) with an actual starting value and post-action value, rather than asserting an unquantified dramatic turnaround"
+    ]
+  }
+}

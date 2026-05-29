@@ -1,0 +1,50 @@
+{
+  "id": "fx_0438",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Law Student (2L) | Legal Research | Contract Review | Due Diligence | Litigation Support | Compliance\n\nDetail-oriented 2L seeking a summer legal internship, with exposure across corporate, litigation, and compliance workstreams. Proven ability to leverage legal research databases and deliver high-quality work product under tight deadlines.\n\nSkills: Westlaw | LexisNexis | Bluebook Citation | Legal Memoranda | Contract Drafting | Contract Review | Due Diligence | Document Review | Discovery | E-Discovery | Cite-Checking | Case Law Analysis | Statutory Interpretation | Regulatory Compliance | NDA Review | Microsoft Word | Redlining\n\nExperience:\n- Legal Intern, mid-size corporate law firm (last summer): supported M&A due diligence document review; cite-checked briefs; drafted NDA first cuts.\n- Research Assistant to a faculty member: researched and summarized case law for a law review article.\n- Member, Moot Court; Staff Editor, student law journal.\n\nEducation: J.D. candidate (expected next year); B.A. Political Science.",
+  "jd": "Our corporate legal team hires summer interns to support a fast-paced transactional and compliance practice. You will: assist with due-diligence document review on M&A deals, prepare first drafts of routine agreements (NDAs, vendor contracts), cite-check and proof memos, and help maintain the contracts database. We value interns who are meticulous, own their work product, communicate proactively when something is unclear or at risk, and reflect honestly on mistakes — accuracy in this work is non-negotiable, and how you handle an error matters as much as avoiding one. You'll be supervised by an associate and get real exposure to deal teams. Strong legal research, careful writing, and sound judgment about when to flag versus proceed are essential.",
+  "history": [
+    { "q": "Tell me about the due-diligence work you did last summer — what was your actual role on the deal?" },
+    { "q": "Walk me through how you reviewed a set of contracts for the data room. What were you looking for?" },
+    { "q": "You drafted NDA first cuts. What terms did you focus on, and what did you tend to get wrong?" },
+    { "q": "Describe your cite-checking process. How did you catch a bad or misquoted citation?" },
+    { "q": "Tell me about a time you found something material in due diligence. What did you do with it?" },
+    { "q": "How did you prioritize when you had more documents than time before a deadline?" },
+    { "q": "When you weren't sure whether a clause was a problem, what did you do?" },
+    { "q": "Tell me about a piece of feedback from the supervising associate that stuck with you." },
+    { "q": "Describe a moment you disagreed with how something was being handled. What did you do?" },
+    { "q": "Now tell me about a mistake you made on that internship — something in your work product that was wrong." },
+    { "q": "Who caught it, and at what stage — before or after it went to the client or deal team?" },
+    { "q": "What was the actual consequence, and what did you change in how you work afterward?" },
+    { "q": "Let's stay on that. You said the error wasn't really your fault — but it was your work product. What part of it was within your control to prevent?" }
+  ],
+  "candidate_last_answer": "Honestly, I don't think that one was really on me. The associate gave me a template that was already outdated, so I was working off a bad starting point — if the precedent doc had been current, the wrong clause never would've been in there. And the timeline was unrealistic; they dumped forty documents on me at 6pm and wanted the review by morning, so mistakes are kind of inevitable when you're set up like that. Also nobody told me that particular jurisdiction had a different rule, and I'm a 2L, I'm not expected to know every state's nuances. So when it got flagged later, yeah it was in my draft, but the system around me kind of failed me. I'd say the real fix is the firm needs better templates and more realistic deadlines for interns.",
+  "session_state": {
+    "drilled_topics": ["dd-role", "contract-review-method", "nda-drafting-terms", "cite-check-process", "material-finding", "deadline-prioritization", "uncertain-clause-escalation", "associate-feedback", "disagreement-handling", "the-mistake", "who-caught-it", "consequence-and-change"],
+    "current_competency_target": "ownership-accountability",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "ownership-accountability",
+    "missing_evidence": [
+      { "competency": "ownership-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "ownership-accountability", "evidence_type": "mechanism" },
+      { "competency": "professional-judgement", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the system around me kind of failed me",
+      "must-be-question-type: action-attribution",
+      "expected-yield: cut past the outdated-template/unrealistic-deadline blame and force one concrete thing within his own control he failed to do — e.g. not verifying the clause against current law, not flagging that the template might be stale, or not telling the associate the timeline made careful review impossible — i.e. an owned action, not a system critique"
+    ]
+  }
+}

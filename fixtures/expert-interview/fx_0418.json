@@ -1,0 +1,53 @@
+{
+  "id": "fx_0418",
+  "tags": {
+    "industry": "customer-support",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "林小满 / Junior Customer Support Specialist\n\n个人简介\n刚入行一年多，但我敢说自己是同期里最强的一个 support agent，几乎没有我搞不定的 ticket。客户都点名要我接单，team lead 私下也说我是组里的天花板。\n\n工作经历\n好享购 跨境电商 客服专员（2023 年 6 月至今）\n- 一个人扛起了整条 live chat 线，CSAT 长期保持全组第一\n- 我重写的 macro 模板被全公司直接拿去当标准，省了无数人的时间\n- 几乎是凭一己之力把退款纠纷的 escalation 压了下来\n- 各种 SOP 都是我推动定的，没有我流程根本跑不起来\n\n技能\nZendesk、Intercom、live chat、macro 编写、退款处理、客户情绪安抚\n\n自我评价\n学习能力 top tier，抗压能力拉满，基本上交给我的事没有掉过链子，是那种 leader 可以完全放心的人。",
+  "jd": "好享购正在招聘一名初级客户支持专员（Junior CS Specialist），主要负责 live chat 与邮件工单的一线响应、退款与物流问题处理，以及 macro 模板的日常维护。我们希望候选人能就自己经手的具体场景讲清楚：一次真实的疑难工单是怎么一步步处理的、CSAT 或 first-response-time 这类指标自己实际是多少、遇到拿不准的 case 时如何升级。岗位向客服 team lead 汇报，重在踏实、可追溯、能聚焦在问题本身，而不是泛泛地自我评价。",
+  "history": [
+    { "q": "先简单介绍下你在好享购这一年多主要负责哪一块？" },
+    { "q": "你说自己 CSAT 全组第一，具体数值大概是多少？怎么统计的？" },
+    { "q": "讲一个最近你处理过的疑难 ticket，从接到到关闭的完整过程。" },
+    { "q": "遇到自己拿不准的 case，你一般怎么判断要不要 escalate？" },
+    { "q": "你重写的 macro 模板，当时是发现了什么问题才去改的？" },
+    { "q": "那套 macro 上线之后，对响应时间或者重复提问有没有可衡量的影响？" },
+    { "q": "一次客户情绪很激动的退款投诉，你具体是怎么安抚和处理的？" },
+    { "q": "你平时的 first-response-time 大概在什么水平？" },
+    { "q": "live chat 同时来好几个会话时，你怎么排优先级？" },
+    { "q": "有没有哪次你判断失误、把事情处理砸了的经历？" },
+    { "q": "你说推动定了不少 SOP，挑一个具体说说你在里面做了什么？" },
+    { "q": "和物流或产品团队交接时，你一般怎么把信息讲清楚？" },
+    { "q": "Zendesk 和 Intercom 你更熟哪个，平时主要用哪些功能？" },
+    { "q": "如果同一个客户反复因为同一个问题回来，你会怎么处理？" },
+    { "q": "回到那个疑难 ticket——客户最初提交的具体诉求到底是什么？" },
+    { "q": "就那一单，你接手后第一步具体做了什么动作？给我讲那一步就行。" }
+  ],
+  "candidate_last_answer": "对，说到这个我就想起来，其实我觉得我们整个跨境电商行业现在最大的问题是物流时效，你看现在海外仓的布局、还有清关那一块，简直是一团乱。我之前还研究过亚马逊的 FBA 模式，觉得特别有意思，如果公司能学一学，从供应链源头去优化，那客服这边压力自然就小了。我一直觉得做客服不能只盯着 ticket，要有大局观，要从战略层面看问题，这才是真正能创造价值的地方。",
+  "session_state": {
+    "drilled_topics": ["现岗位职责", "csat口径", "疑难ticket全过程", "升级判断", "macro改动动机", "macro影响", "退款投诉处理", "frt水平", "会话排优先级", "判断失误经历", "sop贡献", "跨团队交接", "工具熟练度", "重复客户处理", "疑难ticket初始诉求"],
+    "current_competency_target": "problem-solving-process",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "problem-solving-process",
+    "missing_evidence": [
+      { "competency": "problem-solving-process", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 做客服不能只盯着 ticket，要有大局观",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从行业宏观议论拉回到那一张具体工单，逼出他接手后第一步的实际操作及后续步骤序列，验证一线处理能力是否真实存在"
+    ]
+  }
+}

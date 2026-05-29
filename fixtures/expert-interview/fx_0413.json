@@ -1,0 +1,37 @@
+{
+  "id": "fx_0413",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "数据平台总监（Director of Data Platform）\n\n简介：12 年数据领域经验，带过数据工程、数据平台与 analytics 团队，主导过从 batch ETL 向 real-time data platform 的演进。\n\n云图数据 — Director of Data Platform（2019 至今）\n- 负责公司数据平台的整体 roadmap，团队覆盖 data engineering、platform 与 BI。\n- 主导把核心数仓从 Hadoop 迁移到 lakehouse 架构（Spark + Iceberg），统一了离线与近实时链路。\n- 推动建立 data governance 与 data quality 体系，落地了 metrics layer 与血缘追踪。\n- 与算法、业务团队协作，支撑了实验平台和核心 dashboard 的数据供给。\n\n微澜科技 — Data Engineering Manager（2015-2019）\n- 带 data engineering 小组，负责 pipeline 的稳定性与 SLA。\n- 引入 Airflow 做调度编排，重构了若干 legacy ETL 任务。\n\n技能：Spark、Flink、Iceberg/Hudi、Kafka、data modeling、data governance、团队管理。\n说明：本简历偏重职责描述，未列具体量化指标。\n教育：计算机硕士。",
+  "jd": "云图数据招聘数据平台总监（Director of Data Platform），向 CTO 汇报，负责数据平台战略、团队管理与跨部门数据供给。该岗位需要对平台的 reliability、成本与交付效率负责，并能用具体数字说清楚每一项改造带来的影响——例如 pipeline SLA 达成率、查询性能提升幅度、存储与计算成本的下降、数据质量事故的减少。面试中我们会要求候选人直接回答关于指标与个人决策的问题，而不是把问题反抛给面试官。我们寻找的是能把一句『迁移到 lakehouse 提升了效率』拆成口径清晰的度量、并能讲清楚个人在其中具体决策的领导者。岗位需要有大规模数据平台从 0 到 1 或重大演进的实战经验。",
+  "history": [
+    { "q": "你简历里说主导了从 Hadoop 到 lakehouse 的迁移,我想先听一个硬指标:这次迁移在查询性能或成本上,具体带来了多少量化的提升?before/after 各是多少?" }
+  ],
+  "candidate_last_answer": "这个问题挺好的,不过我反过来想问一下你们——你们现在内部衡量 data platform 成功更看重的是 cost 还是 performance?因为口径不一样,我给的数字侧重点会完全不同。而且说实话,你们觉得对一个 Director 来说,纠结到小数点后的 before/after 数字真的有意义吗?战略方向不是更重要?你们团队平时是怎么看这件事的?",
+  "session_state": {
+    "drilled_topics": ["lakehouse-migration-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 纠结到小数点后的 before/after 数字真的有意义吗",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 不接受反问,把候选人拉回 lakehouse 迁移本身,逼出一个具体的 before/after 数字——查询性能提升百分比或成本下降幅度,以及对应的口径和样本范围"
+    ]
+  }
+}

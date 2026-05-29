@@ -1,0 +1,53 @@
+{
+  "id": "fx_0443",
+  "tags": {
+    "industry": "design",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "夏一鸣 | 初级 UI/UX 设计师(毕业 1 年,但能力远超年限)\n\n自我评价\n我是那种『天生的设计直觉 + 极致执行力』型选手。入行才一年,但我做的每个项目几乎都成了团队标杆。同事都说我是『一个人顶一个组』。我对像素的偏执、对体验的洞察,是很多资深设计师都没有的。\n\n代表战绩(均为本人主导)\n- 独立操刀公司 App 首页改版,上线后日活直接翻倍,老板在全员会上点名表扬。\n- 重做了注册流程,转化率从行业平均水平一路飙到『遥遥领先』,据说是公司历史最高。\n- 设计的一个营销活动页,单页带来千万级曝光,刷爆了朋友圈。\n- 我做的设计规范,后来全公司都在用,可以说是我一个人定义了团队的设计语言。\n\n技能:Figma(精通到可以教别人)、交互设计、视觉设计、用户洞察(顶尖水平)。\n教育:数字媒体艺术 本科。\n\n一句话:给我舞台,我能给你惊喜。",
+  "jd": "我们为消费类 App 招聘一名初级 UI/UX 设计师,向资深设计师 / 设计主管汇报,参与日常界面设计、设计规范维护与可用性测试支持。这是一个成长型岗位,我们更看重扎实的基本功、清晰的设计思考过程,以及对自己工作真实贡献的诚实表达,而不是夸大的成绩。我们会重点考察:你在一个具体项目里到底做了哪一部分、哪些指标是你能直接归因的、以及你如何区分『团队的成果』和『你个人的贡献』。要求有作品集,熟练使用 Figma,能讲清楚至少一个完整项目的设计决策过程。欢迎应届或 1-2 年经验的设计师。",
+  "history": [
+    { "q": "先做个自我介绍,讲讲你毕业一年主要做了哪些类型的设计工作。" },
+    { "q": "你简历里说独立操刀了 App 首页改版。当时团队一共几个人参与?你具体负责哪一块?" },
+    { "q": "你说上线后日活翻倍。改版前后日活的绝对数字大概是多少?" },
+    { "q": "日活翻倍这个结果,除了你的改版,同期有没有其他因素,比如投放、活动、版本功能?" },
+    { "q": "首页改版你做了哪些具体的设计决策?挑一个你最得意的细节说说。" },
+    { "q": "这个细节你是怎么验证它有效的?有做可用性测试或者 A/B 吗?" },
+    { "q": "再说注册流程。你说转化率『遥遥领先』,具体是从百分之多少到百分之多少?" },
+    { "q": "这个转化率数字是你自己看的埋点,还是数据团队给的口径?" },
+    { "q": "注册流程的改动,是你一个人定的方案,还是和产品、研发一起讨论的?" },
+    { "q": "那个营销活动页你说千万级曝光。曝光主要靠设计,还是靠投放和渠道?" },
+    { "q": "你说设计规范全公司都在用,是你一个人写的,还是在已有规范上补充?" },
+    { "q": "作为入行一年的设计师,你觉得自己目前最欠缺、最需要补的是什么?" },
+    { "q": "讲一次你的设计方案被否掉的经历。对方为什么否,你怎么应对的?" },
+    { "q": "如果资深设计师 review 你的稿子,给了和你完全相反的意见,你会怎么处理?" },
+    { "q": "回到首页改版,如果让你诚实地拆分,这个『日活翻倍』里你个人的贡献占多少?" },
+    { "q": "那除掉投放和功能上线的影响,你觉得纯粹由你的设计带来的提升,大概是个什么量级?" }
+  ],
+  "candidate_last_answer": "这个嘛,我觉得至少有个七八成是我设计带来的吧。你想啊,首页是用户第一眼看到的东西,设计不行其他都白搭。投放那些我觉得最多算锦上添花。所以那次日活从大概几千一下冲到上万,我个人感觉至少八成的功劳在我这个改版上,甚至可能更多,九成都不夸张。反正那段时间老板看我的眼神都不一样了,我觉得这就很能说明问题了。具体数字我没去抠,但凭感觉肯定是我占大头。",
+  "session_state": {
+    "drilled_topics": ["intro", "homepage-team-role", "dau-absolute", "dau-confounders", "design-decision", "decision-validation", "signup-conversion-range", "metric-source", "signup-ownership", "campaign-exposure-source", "design-system-authorship", "self-gap", "rejected-design", "senior-disagreement", "personal-contribution-split"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我个人感觉至少八成的功劳在我这个改版上",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forces the candidate to substantiate the '80-90% of the DAU lift was my design' claim with an actual measurement method — pins whether any isolation of the design effect (holdout, A/B, before/after with confounders controlled) was ever done, or whether the entire figure is a gut feeling with no data behind it"
+    ]
+  }
+}

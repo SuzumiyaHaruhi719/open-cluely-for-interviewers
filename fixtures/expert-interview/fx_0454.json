@@ -1,0 +1,45 @@
+{
+  "id": "fx_0454",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "医疗事业部副总裁 / VP, 数字医疗与院端运营\n\n核心标签: 价值医疗、分级诊疗、DRG/DIP 支付改革、互联网医院、医共体、智慧病房、医疗大数据、患者全生命周期管理、闭环管理、降本增效、提质增效、多院区一体化、学科共建、医工结合、AI 辅助诊断、合规与医保控费、精益运营、数字化转型操盘手\n\n个人简介\n\n深耕医疗健康赛道十五年的复合型运营操盘手,擅长以患者为中心、以价值为导向,打通『医、药、险、健、管』全链路,赋能院端实现高质量发展。曾主导多家三甲医院的数字化转型与精益运营变革,推动学科建设、医保控费与患者体验的协同提升,打造可复制、可推广的标杆样板。深度理解政策导向,能够将顶层设计转化为可落地的运营抓手,实现从战略到执行的闭环。\n\n工作经历\n\n康桥医疗集团 — 数字医疗事业部 VP, 2019 至今\n- 统筹集团旗下多院区的数字化转型与院端精益运营,搭建一体化运营管理体系\n- 主导互联网医院、智慧病房、AI 辅助诊断等创新项目的顶层设计与落地推广\n- 牵头 DRG/DIP 支付改革下的医保控费与病种结构优化,推动提质增效\n- 构建患者全生命周期管理闭环,提升患者满意度与复诊黏性\n\n仁和健康科技 — 运营总监, 2014-2019\n- 负责区域医共体建设与分级诊疗体系落地\n- 推动医疗大数据平台建设,赋能临床决策与运营管理\n\n教育与资质: 协和医学院 公共卫生硕士;清华经管 EMBA;高级经济师\n\n荣誉: 多次获评集团『年度数字化转型标杆操盘手』",
+  "jd": "某头部医疗集团诚聘『数字医疗与院端运营副总裁(VP)』,直接向集团 COO 汇报,统管 6 家直属医院的运营提质与数字化转型。该岗位对真实的运营结果负责:你需要主导 DRG/DIP 支付改革落地后的病种结构调整与医保控费,对每家医院的次均费用、平均住院日、CMI(病例组合指数)等核心指标负有明确的数字目标。我们寻找的是真正下场操盘、能讲清楚『某一个具体指标在你手上从多少变到多少、你做了哪一步关键动作』的领导者,而非停留在概念与方法论层面的演讲者。面试中我们会反复追问具体院区、具体时间、具体数字与具体决策归属。要求:十年以上医疗运营经验、深刻理解医保支付政策、有多院区一体化管理实操经验、并能向董事会清晰汇报。",
+  "history": [
+    { "q": "先请你用三分钟讲一下你现在在康桥的实际管理范围——管几家院区、汇报给谁、对哪些指标直接负责。" },
+    { "q": "你简历里写了 DRG/DIP 支付改革下的医保控费。挑一家具体医院,讲讲改革落地前后你做了什么。" },
+    { "q": "那家医院的次均费用,改革前后大概是什么水平?有没有一个具体数字?" },
+    { "q": "你提到病种结构优化。具体优化了哪几个病种?是怎么决定砍哪个、保哪个的?" },
+    { "q": "互联网医院这个项目,是你牵头从零搭的,还是接手已有的?你个人负责哪一块?" },
+    { "q": "智慧病房听起来很大。落地到一个具体科室,护士的工作流到底发生了什么变化?" },
+    { "q": "假设某家院区的平均住院日一直降不下来,你会先查哪里、先动哪一步?" },
+    { "q": "我们再聚焦一下。就那家做 DRG 的医院,CMI 在你任内有没有变化?从多少到多少?" }
+  ],
+  "candidate_last_answer": "嗯……CMI 这个指标,对,这个其实是一个非常综合的指标,它背后涉及到病种、涉及到收治结构、也涉及到医生的诊疗行为,所以它不是说……怎么讲呢,它不是一个孤立的东西。我们当时其实做了很多工作,比如说学科共建、比如说病案首页的质控、还有医保的沟通,这些都是相关联的。然后那个……我刚才想说的是,因为我们是多院区一起推的,所以单看一家可能……反正整体上是往好的方向走的。具体那个数字我得回去再确认一下,因为时间有点久了,而且我们当时关注的维度其实挺多的,不只是这一个。",
+  "session_state": {
+    "drilled_topics": ["management-scope", "drg-reform-specifics", "cost-per-visit-number", "case-mix-restructuring", "internet-hospital-ownership", "smart-ward-workflow", "length-of-stay-diagnosis"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体那个数字我得回去再确认一下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete CMI figure (before-and-after, or at least a directional magnitude and the year) for one named hospital, plus which one operational lever the candidate personally drove that moved it — forcing him off the multi-hospital, multi-dimension hedge into one verifiable number"
+    ]
+  }
+}

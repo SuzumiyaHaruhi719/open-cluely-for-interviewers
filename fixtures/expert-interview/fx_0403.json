@@ -1,0 +1,37 @@
+{
+  "id": "fx_0403",
+  "tags": {
+    "industry": "customer-support",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Senior Customer Support Specialist\n\nSummary\nSenior support specialist for a B2B SaaS platform, handling complex technical escalations and acting as a point of contact for high-value accounts. Experienced in triaging incidents, partnering with engineering on root-cause analysis, and improving team-level processes and documentation.\n\nExperience\nClearwave Software — Senior Support Specialist (2021–present)\n- Own escalations for enterprise accounts and serve as the bridge to engineering during incidents\n- Lead the team's knowledge-base improvement efforts and onboarding of new agents\n- Contribute to macro and workflow design in the ticketing system\n\nBrightports — Support Specialist (2018–2021)\n- Handled tier-1 and tier-2 tickets across email and live chat\n- Recognized for consistently strong customer feedback\n\nSkills\nTechnical troubleshooting, escalation management, Zendesk, knowledge-base authoring, cross-functional coordination with engineering\n\nEducation\nB.A. Communications",
+  "jd": "Tideline is hiring a Senior Customer Support Specialist to own complex escalations and drive process improvements for our enterprise support team. You will report to the Support Manager and partner closely with engineering on incident resolution. Beyond handling hard tickets well, we want someone who can identify a recurring failure pattern and actually fix it at the source — reducing repeat contacts, not just resolving them one by one. In the interview we will dig into a single concrete improvement you drove: the problem you spotted, what you did, how you measured the outcome, and crucially how you know the result was caused by your change rather than by something else happening at the same time. Strong technical troubleshooting and a track record of process improvement are required.",
+  "history": [
+    { "q": "Tell me about a recurring support problem you spotted and fixed at the source — what was the situation, what did you do, and what was the result?" }
+  ],
+  "candidate_last_answer": "Sure. Situation: last year about a third of our enterprise escalations were the same SSO login failure after customers rotated their identity-provider certificates — it was our single biggest driver of repeat contacts. Task: my manager asked me to own getting that volume down within the quarter. Action: I pulled three months of tickets in Zendesk, confirmed 31% traced to that one cause, then I wrote a self-serve troubleshooting guide, built a proactive in-app banner that fired when we detected an expired cert, and ran a short training for the tier-1 team. Result: over the next two months those SSO tickets dropped from about 140 a month to around 45, roughly a 68% reduction, and our repeat-contact rate on enterprise fell by 9 points. The proactive banner alone deflected most of it — I could see the correlation in the weekly volumes.",
+  "session_state": {
+    "drilled_topics": ["recurring-problem-star"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The proactive banner alone deflected most of it — I could see the correlation in the weekly volumes",
+      "must-be-question-type: counterfactual",
+      "expected-yield: the candidate is pushed past correlation to isolate the banner's specific contribution — whether the guide, banner, and training were rolled out separately or together, and how they would rule out a confound like a coincident product fix or seasonal dip"
+    ]
+  }
+}

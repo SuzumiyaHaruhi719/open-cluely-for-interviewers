@@ -1,0 +1,51 @@
+{
+  "id": "fx_0423",
+  "tags": {
+    "industry": "hr",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Dana Okonkwo\nStaff People Partner / Senior HR Business Partner\n\nSummary\nStrategic HR partner supporting fast-scaling engineering and go-to-market orgs. Deep experience in performance management, org design, and complex employee-relations cases.\n\nExperience\nBrightpath Software — Staff People Partner (Mar 2021 – present)\n- Sole HRBP for a 450-person engineering org\n- (Elsewhere I describe the same org as 250 people — the two figures don't match)\n- Led the annual performance-calibration process across multiple cohorts\n- Managed sensitive ER investigations end-to-end\n- Drove a manager-enablement program that I both 'designed from scratch' and 'inherited and scaled' in different lines below\n\nMeridian Retail Group — HR Business Partner (2017 – 2021)\n- Supported store-operations leaders across a regional footprint\n- States I 'reduced attrition by 30%' in the summary but '15%' in the detail section\n- Ran open-enrollment and benefits communications\n\nEducation\nB.A., Organizational Psychology\nSHRM-CP certified (year listed as 2018 in one place, 2020 in another)\n\nSkills\nPerformance management, org design, employee relations, compensation planning, HRIS (Workday), change management",
+  "jd": "Brightpath Software is hiring a Staff People Partner to support a scaling engineering organization. The role owns performance calibration, org design, and end-to-end employee-relations casework, partnering directly with senior engineering leaders. We expect candidates to speak precisely and consistently about their scope and their results: how many people they actually support, what a specific ER case involved and how they resolved it, what measurable change a program drove. Comfort with Workday reporting and the ability to keep sensitive situations confidential while still being concrete about your own actions are essential. This role reports to the Director of People.",
+  "history": [
+    { "q": "Tell me about your current scope at Brightpath — how big is the org you support?" },
+    { "q": "Your resume says 450 people in one place and 250 in another. Which is it, and what do you actually cover?" },
+    { "q": "Walk me through how you run performance calibration across engineering cohorts." },
+    { "q": "Tell me about one ER investigation you led end-to-end. What was the situation?" },
+    { "q": "How did that investigation resolve, and what was your specific role in the outcome?" },
+    { "q": "The manager-enablement program — did you design it from scratch or inherit it? Your resume says both." },
+    { "q": "What measurable change did that program drive for managers?" },
+    { "q": "At Meridian, you list attrition reduction as both 30% and 15%. What was the real number?" },
+    { "q": "How did you actually measure that attrition change and attribute it to your work?" },
+    { "q": "How do you partner with a senior engineering leader who disagrees with a calibration outcome?" },
+    { "q": "Describe a time you had to deliver hard feedback to a manager about their own behavior." },
+    { "q": "What's your approach to keeping an ER case confidential while still documenting it properly?" },
+    { "q": "How do you use Workday reporting in your day-to-day?" },
+    { "q": "Back to that ER case — what was the specific allegation and what did your investigation conclude?" }
+  ],
+  "candidate_last_answer": "You know, that ER question really gets at something I'm passionate about, which is the future of work more broadly. I've been doing a lot of thinking lately about how AI is going to reshape the entire HR function — like, are we even going to need traditional performance reviews in five years? I read this fascinating piece about psychological safety and the four-day workweek, and I genuinely believe the companies that win the talent war are the ones rethinking the employee experience from first principles. We should really be talking about culture as a competitive moat, not just casework. That's where I think the real strategic value of People partnering lives.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "headcount-contradiction", "calibration-process", "er-case-situation", "er-resolution-role", "program-origin-contradiction", "program-impact", "attrition-number-contradiction", "attrition-measurement", "calibration-disagreement", "hard-feedback", "confidentiality"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "problem-solving-process", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We should really be talking about culture as a competitive moat",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: pulls the candidate off the future-of-work tangent back to the concrete ER case, forcing the specific allegation, the steps she personally took to investigate, and the documented conclusion — testing whether she actually owned real casework"
+    ]
+  }
+}

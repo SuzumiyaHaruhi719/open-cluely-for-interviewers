@@ -1,0 +1,50 @@
+{
+  "id": "fx_0450",
+  "tags": {
+    "industry": "data",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "MARCUS DELANEY — Data Analyst / Analytics Engineer (mid-level, ~5 years)\n\nSUMMARY\nMid-level data professional with experience across analytics and data engineering. Note: the title bar reads 'Senior Data Scientist' but the body describes analyst and BI work; the summary says '5 years of experience' while the timeline below adds up to about 3.5.\n\nEXPERIENCE\nData Analyst — RetailCo (current, '2 years' per the role header, though the dates listed span 14 months)\n- Built and maintained dashboards in Looker for the merchandising team.\n- 'Led the migration of our entire data warehouse to Snowflake' (elsewhere on the resume: 'supported the Snowflake migration as one of four contributors').\n- Wrote dbt models for the sales mart.\n- 'Reduced dashboard load time by 90%' (a later bullet says 'by roughly half').\n\nData Analyst — FinServ Startup (prior, ~18 months)\n- Owned weekly KPI reporting for the leadership team.\n- 'Built our first churn model' — but the skills section lists 'no production ML experience, exploratory only.'\n- Maintained the Fivetran connectors.\n\nSKILLS\nSQL (strong), Python (pandas; states 'no production ML experience, exploratory only'), dbt, Looker, Snowflake, Fivetran. Statistics: regression, A/B testing basics.\n\nEDUCATION\nB.S. Economics. Self-taught SQL and dbt.\n\nNOTE TO READER: I'm aware a couple of the figures in here are inconsistent across versions of this resume; happy to clarify any of them in person.",
+  "jd": "We are hiring a mid-level Analytics Engineer for our data platform team, reporting to the Analytics Engineering lead. You will own dbt models for core business domains, maintain data quality and tests, and partner with analysts and stakeholders to ship trustworthy metrics. We work in Snowflake + dbt + Looker. In the interview we go deep on ownership and precision: we will ask you to separate what you personally built from what your team built, to put real numbers and timeframes on your claims, and to reconcile anything on your resume that looks inconsistent. We value candidates who are calm and precise under follow-up questioning and who would rather say 'I contributed this part' than overclaim. Requirements: 3+ years in analytics/analytics engineering, strong SQL, hands-on dbt, and comfort being pinned down on the specifics of your own work.",
+  "history": [
+    { "q": "Let's start with your current role at RetailCo. What do you own day to day?" },
+    { "q": "Your resume title says Senior Data Scientist but the work reads like analytics engineering. How would you describe your actual level and focus?" },
+    { "q": "The summary says five years of experience; the dated roles look closer to three and a half. Help me reconcile that." },
+    { "q": "Tell me about the Snowflake migration. One bullet says you led the whole thing, another says you were one of four contributors. Which is it?" },
+    { "q": "On that migration, what specifically did you build or own, as opposed to your teammates?" },
+    { "q": "You list a dashboard load-time improvement as both 90% and 'roughly half.' What was the real number and how did you measure it?" },
+    { "q": "Walk me through one dbt model you wrote end to end for the sales mart." },
+    { "q": "How do you test your dbt models? Give a concrete example of a test you added and what it caught." },
+    { "q": "At the FinServ startup you list 'built our first churn model' but also 'no production ML experience.' What did you actually build?" },
+    { "q": "Was that churn work ever used to make a decision, or did it stay exploratory?" },
+    { "q": "How do you handle it when a stakeholder disputes a number your dashboard is showing?" },
+    { "q": "Tell me about a time your data was wrong in production. How did you find out and what did you do?" },
+    { "q": "What's your process for making sure a metric definition stays consistent across dashboards?" },
+    { "q": "Let's go back to the load-time claim. I still don't have a clear number. Concretely: before how many seconds, after how many seconds, and how did you measure it?" }
+  ],
+  "candidate_last_answer": "Yeah, no, totally fair, sorry — the load time, right. So, um, okay, the thing is dashboards are kind of tricky because load time depends on a lot of stuff, like the warehouse warm-up, caching, whether someone already ran the query, you know how it is. And honestly Looker has this whole thing with persistent derived tables, PDTs, which, side note, are a bit of a pain to manage, we had a whole saga with that. But yeah so the dashboard — I think it was the merchandising one, or maybe it was the sales one, they kind of blur together — it used to be slow, like noticeably slow, people would complain in standup, which, by the way, is sort of how I found out a lot of these issues, just people grumbling. Um. So I did some stuff with the dbt models, materialized some things, and it got a lot faster. The 90% number, I think that came from one really bad dashboard, and the 'half' was maybe more of an average? I don't totally remember how I measured it, to be honest, I think I just kind of eyeballed it before and after, or maybe Looker logged it somewhere. Sorry, I know that's not super precise.",
+  "session_state": {
+    "drilled_topics": ["current-ownership", "title-vs-level", "years-reconcile", "migration-lead-vs-contributor", "migration-personal-scope", "loadtime-claim-first-pass", "dbt-model-walkthrough", "dbt-testing", "churn-model-reality", "churn-decision-use", "stakeholder-dispute", "prod-data-wrong", "metric-consistency"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I just kind of eyeballed it before and after",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cuts through the rambling and filler to force a single committed answer — the actual before-seconds and after-seconds for one named dashboard and the concrete measurement method (Looker query logs, a stopwatch, a profiler), revealing whether the load-time improvement was ever measured at all or was an eyeballed guess restated as 90%"
+    ]
+  }
+}

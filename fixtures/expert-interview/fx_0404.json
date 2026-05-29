@@ -1,0 +1,44 @@
+{
+  "id": "fx_0404",
+  "tags": {
+    "industry": "marketing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Director of Demand Generation\n\nSummary: Performance marketing leader with 11 years building pipeline-generating programs across B2B SaaS. Owns the full funnel from paid acquisition to MQL-to-SQL conversion.\n\nFenwick Analytics — Director, Demand Generation (2020-present)\n- Situation: Inherited a flat pipeline contributing 22% of net-new ARR with rising blended CAC.\n- Task: Grow marketing-sourced pipeline to 40% of net-new ARR within 18 months without increasing budget.\n- Action: Rebuilt the paid mix away from broad-match search toward intent-based ABM; instrumented multi-touch attribution in the CRM; launched a lifecycle nurture with 9 segmented tracks.\n- Result: Marketing-sourced pipeline reached 41% of net-new ARR in 16 months; blended CAC down 19%; MQL-to-SQL conversion up from 14% to 23%.\n\nBrightline Software — Senior Manager, Growth Marketing (2016-2020)\n- Situation: Webinar program produced volume but low sales acceptance.\n- Task: Improve lead quality feeding the SDR team.\n- Action: Introduced lead scoring with sales, killed three low-fit channels, reallocated spend to partner co-marketing.\n- Result: Sales-accepted lead rate rose from 31% to 52%; SDR meeting-set rate up 27%.\n\nSkills: paid search/social, ABM (6sense), marketing attribution, HubSpot/Marketo, SQL for funnel analysis.\nEducation: BA Economics, University of Michigan.",
+  "jd": "Fenwick Analytics is hiring a Director of Demand Generation to own marketing-sourced pipeline for a $90M ARR B2B analytics platform. You will lead a team of nine across paid media, lifecycle, and marketing operations, and you will be jointly accountable with the VP of Sales for a shared pipeline number. The role owns a $6M annual program budget and is measured on marketing-sourced pipeline coverage (target 3.5x of the new-business quota), blended CAC, and MQL-to-SQL conversion. You will partner closely with a newly hired RevOps team that is mid-migration from one CRM to another, and you will inherit an attribution model that sales does not currently trust. We need someone who can diagnose where the funnel actually breaks, hold a hard line on lead quality with sales, and tell us honestly what is and is not working in their own programs. Reports to the CMO.",
+  "history": [
+    { "q": "Walk me through your current scope at Fenwick — team, budget, and the pipeline number you own." },
+    { "q": "Your resume says marketing-sourced pipeline hit 41% of net-new ARR. What was the single biggest driver of that?" },
+    { "q": "You mentioned the ABM shift. How did you decide which accounts to target, and who made that call?" },
+    { "q": "Last quarter — did you hit your marketing-sourced pipeline target? Yes or no, and by how much?" },
+    { "q": "You missed by 18%. Talk me through what happened." },
+    { "q": "When you say the data was unreliable — what specifically was wrong, and what did you do about it?" },
+    { "q": "Setting the CRM aside, what would you have done differently in your own programs last quarter?" }
+  ],
+  "candidate_last_answer": "Honestly, a lot of it came down to things outside my team's control. RevOps was mid-migration and the attribution model was a mess, so the numbers we were reporting on were basically garbage going in. Sales kept changing the qualification criteria on us, so leads that were MQLs one week were getting bounced the next. And finance held our budget flat while raising the quota, which is just not a realistic ask. If those three things had been stable, we'd have hit the number — my programs were fine.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "pipeline-driver", "abm-targeting-ownership", "target-attainment", "miss-root-cause", "data-reliability"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: my programs were fine",
+      "must-be-question-type: action-attribution",
+      "expected-yield: at least one concrete change the candidate themselves would have made to their own programs last quarter, separated from the RevOps/sales/finance factors they blamed, with a specific lever and expected pipeline impact"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "fx_0447",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "温知遥 | 数据分析实习生候选人 | 统计学大三在读\n\n个人简介\n热爱数据、希望成为一名数据分析师的统计学在读学生。\n\n经历\n- 某电商公司数据分析实习(去年暑期):参与用户增长团队的数据分析工作,独立负责一个留存分析项目。\n  (备注:在同一份简历的技能时间线里,该实习又写为『协助导师完成报表,以打杂为主』。)\n- 校园数据社团成员:做过一次关于校园消费的数据可视化。\n\n项目\n- 用户留存分析:用 SQL 和 Python 完成了完整的留存模型搭建,产出了驱动决策的洞察。\n  (备注:项目周期一处写『为期三个月』,另一处写『大概做了两周』。)\n\n技能时间线\n- SQL:简历顶部写『精通』,技能详情处写『刚入门,会写简单查询』。\n- Python:写『熟练使用 pandas 做数据清洗』,但项目描述里又说『数据都是导师清洗好给我的』。\n- 统计:学过回归与假设检验。\n\n教育:统计学专业,大三在读。",
+  "jd": "我们为数据团队招聘一名数据分析实习生,向资深数据分析师汇报,参与用户行为数据的取数、清洗、分析与可视化。这是一个学习型岗位,我们更看重候选人对自己真实经历的诚实描述、以及能否把一个具体分析讲清楚,而不是简历上漂亮但前后对不上的措辞。日常工作包括写 SQL 取数、用 Python 做基础清洗与分析、整理分析结论。我们会重点考察:你在过往实习里到底独立做了哪一部分、你说的留存分析具体是怎么定义和计算的、以及你简历里前后不一致的表述背后的真实情况。要求:统计、数学、计算机或相关专业在读;会写基础 SQL;了解 Python 数据处理;诚实、细致、有学习意愿。",
+  "history": [
+    { "q": "你简历里这个留存分析项目,前后表述有点对不上——一处说独立搭建、为期三个月,一处又说以打杂为主、大概两周。能不能先帮我厘清:这个项目你到底独立负责了哪些部分,持续了多久?" }
+  ],
+  "candidate_last_answer": "嗯……这个项目其实挺综合的,我做了挺多东西的。时间嘛,差不多就是那段时间一直在弄,具体多久我记不太清了,反正投入了不少精力。独立的部分也有不少,主要就是数据分析这一块,该做的我都参与了。导师也带着我,所以是合作完成的吧。总之我学到了很多,对留存分析的整个流程都有了了解。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution", "evidence_type": "timeline" },
+      { "competency": "execution", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体多久我记不太清了,反正投入了不少精力",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: forces the candidate to commit to one concrete timeline and one concrete scope statement that resolves the resume contradiction — roughly how many weeks they actually worked on it and which specific steps (writing the retention SQL, defining the cohort, cleaning data) they did themselves versus the mentor, instead of hiding behind 'a lot' and 'I participated'"
+    ]
+  }
+}

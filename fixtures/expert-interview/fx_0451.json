@@ -1,0 +1,44 @@
+{
+  "id": "fx_0451",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "DANIELA ROSS — Director of Sales | Enterprise SaaS\n\nSUMMARY\nEnterprise sales leader with 14 years' experience building and scaling field sales teams. Currently Director of Sales at a Series-D infrastructure-software company, owning a $42M new-business number across a team of 26 (4 managers, 22 AEs/SDRs).\n\nSELECTED ACHIEVEMENTS (STAR)\n\nTurnaround of an underperforming enterprise segment\n- Situation: Inherited an enterprise segment at 61% of plan with 30% rep attrition and a broken forecasting cadence.\n- Task: Return the segment to >100% of plan within four quarters and cut regretted attrition below 12%.\n- Action: Rebuilt the qualification standard (MEDDPICC), instituted a weekly deal-inspection cadence, replaced two of four managers, and rolled out a new comp plan that paid for multi-year and multiproduct.\n- Result: Segment finished the four quarters at 112% of plan; regretted attrition fell to 9%; average deal size grew 38%.\n\nNew-logo motion build-out\n- Situation: Company was over-reliant on expansion; net-new logos had stalled.\n- Task: Stand up a dedicated new-logo motion.\n- Action: Carved out a hunter team, built an outbound SDR pod, and partnered with marketing on ABM for a named-account list.\n- Result: New-logo ACV grew from 18% to 41% of total bookings over 18 months.\n\nPartner/channel pilot\n- Situation: No formal channel motion existed.\n- Task: Pilot a partner-sourced pipeline.\n- Action: Signed three regional SIs and built a deal-registration process.\n- Result: Partner-sourced pipeline reached 22% of new pipeline within a year.\n\nSKILLS: enterprise sales leadership, forecasting, comp design, MEDDPICC, territory & quota design, ABM, channel.\nEDUCATION: B.A. Political Science; MBA.",
+  "jd": "We are hiring a Director of Sales to lead our enterprise new-business org (reporting to the CRO) across a team of roughly 25, owning a $40M+ number. You will own forecasting accuracy, segment turnaround, comp and territory design, and the build-out of new-logo and channel motions. In the interview we drill hard on the sequence and causality of your claims: when you describe a turnaround, we will ask exactly what you changed, in what order, and over which quarters, because the order in which a leader sequences comp changes, manager changes, and process changes reveals how they actually think. We value leaders who can lay out a clean, consistent timeline of their actions and the lagged results, and who don't contradict themselves under questioning. Requirements: 8+ years enterprise SaaS sales with 3+ years leading managers, demonstrated segment turnaround with real numbers, and command of forecasting and comp design.",
+  "history": [
+    { "q": "Walk me through your current scope — team, number, and how you're tracking against plan this year." },
+    { "q": "Let's go deep on the enterprise turnaround. Set the scene: when you inherited it, what state was it in?" },
+    { "q": "You changed several things — comp, managers, qualification, inspection cadence. In what order did you actually do them, and why that order?" },
+    { "q": "When did you roll out the new comp plan relative to replacing the two managers?" },
+    { "q": "How long after the comp change did you start to see deal size move?" },
+    { "q": "The segment hit 112% over four quarters. Which quarter was the inflection, and what drove it specifically?" },
+    { "q": "Were the two managers you replaced gone before or after the first full quarter under the new cadence?" },
+    { "q": "Just to lock the sequence: walk me quarter by quarter, Q1 through Q4, what changed and what the number did." }
+  ],
+  "candidate_last_answer": "Sure. So in Q1 the very first thing I did was roll out the new comp plan, because comp drives behavior — that was day one, basically. And the deal-size lift from the comp change showed up almost immediately, within that first quarter, we saw average deal size jump. Now, the comp plan itself we actually designed after we'd already seen two strong quarters of multiproduct deals, so it was really a response to that momentum. The two managers — I replaced them in Q1 as well, right at the start, before the new cadence. Although, thinking about it, the cadence is what exposed that those two managers weren't going to make it, so the manager changes came after we'd been running the weekly inspections for a quarter or two. And the 112% — that was really a Q2 inflection, driven by the comp plan, which by then we'd been running for about three quarters. So yeah, Q1 comp and manager changes, immediate deal-size lift, Q2 inflection.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "turnaround-initial-state", "change-ordering", "comp-vs-manager-timing", "comp-to-dealsize-lag", "inflection-quarter", "manager-timing-vs-cadence"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 37
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the comp plan itself we actually designed after we'd already seen two strong quarters",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: forces the candidate to resolve a direct self-contradiction — they claim the comp plan was rolled out on day one of Q1 yet also that it was designed in response to two prior strong quarters, and that managers were replaced both at the start of Q1 and only after a quarter or two of the new cadence; pins one consistent quarter-by-quarter sequence and exposes whether the turnaround story is real or reconstructed"
+    ]
+  }
+}

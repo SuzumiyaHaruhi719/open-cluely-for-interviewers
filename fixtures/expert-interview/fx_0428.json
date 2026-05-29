@@ -1,0 +1,46 @@
+{
+  "id": "fx_0428",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "李雨桐 — 数据科学方向实习候选人\n复旦大学 统计学本科 大三在读 (GPA 3.7/4.0)\n\n项目经历:\n- 校园外卖配送时长预测: 用 Python + scikit-learn 做 gradient boosting,RMSE 从 baseline 8.2 分钟降到 5.6 分钟\n- 微博情感分析课程作业: fine-tune 一个 BERT-base,在 2 万条标注数据上做三分类\n\n技能: Python, pandas, SQL, 基础 PyTorch, A/B test 概念\n实习: 某本地 SaaS 公司数据分析实习 2 个月,主要写 SQL 报表\n语言: 中文母语,英语 CET-6\n求职意向: 推荐系统 / 数据科学实习",
+  "jd": "我们的推荐算法组招聘一名数据科学实习生,base 上海,每周到岗 4 天,实习期至少 5 个月。You will work alongside senior DS on the feed-ranking pipeline. Responsibilities: run offline experiments on candidate retrieval models, build feature-engineering scripts in Python/Spark, and help analyze A/B test readouts (CTR, dwell-time, retention). 要求: 扎实的概率统计基础,熟悉至少一种 ML 框架,能独立写干净的 SQL。Bonus: 接触过 ranking / CTR 预估,了解 offline-online metric gap。导师会带你跑完一个完整的 model iteration cycle。",
+  "history": [
+    { "q": "先做个自我介绍吧,讲讲你最近做的那个外卖配送时长预测项目。" },
+    { "q": "你说 RMSE 从 8.2 降到 5.6,这个 baseline 是怎么定的?" },
+    { "q": "gradient boosting 你具体用的哪个实现?调了哪些超参?" },
+    { "q": "Feature 这块你都构造了哪些?哪个 feature 贡献最大?" },
+    { "q": "How did you validate the model — what was your train/test split?" },
+    { "q": "如果让你把这个模型上线,你担心 offline 和 online 指标对不齐,你会怎么先验证一下?" },
+    { "q": "你提到那个 BERT 情感分析,2 万条数据 fine-tune,大概跑了多久?用的什么硬件?" },
+    { "q": "Let's talk about the recommendation side. 你理解的 CTR 预估和你做的回归任务,核心区别在哪?" },
+    { "q": "假设线上 A/B test 显示新的 retrieval 模型 CTR 涨了 1.2% 但 dwell-time 跌了,你会怎么判断要不要上?" }
+  ],
+  "candidate_last_answer": "我会先看这 1.2% 的 CTR 提升是不是统计显著,看置信区间有没有跨 0。然后 dwell-time 下跌我会拆开看:是所有用户都跌,还是某一个 segment 拖的。如果是点击了但停留短,可能是 clickbait-y 的内容被推上来了,那 CTR 涨了反而是坏信号。我会再看次留和 7 日留存,because long-term retention 比单次 CTR 更重要。如果 retention 没掉甚至涨了,我倾向小流量再观察一周;如果 retention 也跌,我会建议不上。",
+  "session_state": {
+    "drilled_topics": ["delivery-time-project", "baseline-definition", "gbm-hyperparams", "feature-engineering", "validation-split", "offline-online-gap", "bert-finetune", "ctr-vs-regression"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" },
+      { "competency": "data-rigor", "evidence_type": "metric" },
+      { "competency": "data-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 是某一个 segment 拖的",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete method for the segment cut — which dimension she would slice on first (new vs returning, content category, device), what minimum sample size per segment she needs for the dwell-time delta to be trustworthy, and how she would decide a segment is 『dragging』 versus noise"
+    ]
+  }
+}

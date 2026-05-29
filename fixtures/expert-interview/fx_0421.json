@@ -1,0 +1,39 @@
+{
+  "id": "fx_0421",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵明轩 / Backend Software Engineer\n\n个人简介\n后端工程师，主要做 Go 和 Java 微服务，熟悉 Kubernetes 和云原生那一套，平时也接触一些 observability 和性能调优的活儿。\n\n工作经历\n捷云科技 Backend Engineer（2021 年至今）\n- 负责订单与支付链路的微服务开发与维护\n- 参与了一次从单体到 microservices 的拆分项目\n- 推动接入了 distributed tracing，帮助团队定位线上问题\n- 做过一些 API 的 latency 优化和数据库 query 调优\n- 参与 on-call，处理过线上 incident\n\n微速网络 Software Engineer（2019 年至 2021 年）\n- 做过内部 CMS 和后台管理系统的开发\n- 写过一些 batch job 和数据同步脚本\n\n技能\nGo、Java、Kubernetes、gRPC、PostgreSQL、Redis、Kafka、distributed tracing、CI/CD\n\n自我评价\n喜欢把系统搞稳定，对线上问题比较敏感，愿意深挖根因。",
+  "jd": "捷云科技正在招聘一名中级后端工程师（Mid-level Backend Engineer），负责订单与支付核心链路的微服务开发、稳定性建设与性能优化。我们希望候选人能就自己做过的具体工程问题讲清楚：一次真实的 latency 优化是怎么定位和解决的、改动前后的 p99 大概是多少、引入 distributed tracing 时自己具体负责哪一块。岗位参与 on-call，需要能聚焦在具体的技术细节与个人贡献上，而不是泛泛而谈架构理念或行业趋势。技术栈以 Go、Kubernetes、gRPC、PostgreSQL、Kafka 为主。",
+  "history": [
+    { "q": "你提到做过 API latency 优化，挑一次具体说说：当时哪个接口慢、你怎么定位的、改完 p99 从多少降到多少？" },
+    { "q": "你们从单体拆成 microservices 那次，你个人具体负责哪几个服务的拆分，遇到的最大技术难点是什么？" }
+  ],
+  "candidate_last_answer": "说到 microservices 我就有很多想法，其实我一直觉得现在整个行业过度迷信微服务了。你看好多公司盲目拆服务，结果搞出一堆 distributed system 的复杂度，分布式事务、服务治理、链路追踪全是坑。我最近在研究 service mesh 和 eBPF，觉得这才是未来方向。还有现在大家都在聊的 platform engineering，我觉得内部开发者体验才是真正该投入的地方。其实架构这东西，理念和哲学比具体实现更重要，想清楚边界比写代码重要多了。",
+  "session_state": {
+    "drilled_topics": ["latency优化具体案例"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 理念和哲学比具体实现更重要",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把候选人从行业理念议论拉回那次具体拆分，逼出他个人负责的服务边界、拆分时遇到的具体技术难点及解决步骤，验证工程实现能力而非泛泛的架构观点"
+    ]
+  }
+}

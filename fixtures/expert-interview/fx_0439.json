@@ -1,0 +1,48 @@
+{
+  "id": "fx_0439",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Aisha Mensah — VP of Data\n\nSummary: 16 years building data organizations and platforms, from first data hire to VP owning data engineering, analytics, and ML platform. Led teams up to 70 across data eng, analytics, and ML infra.\n\nSelected accomplishments (STAR)\n\nVP Data, fintech marketplace (2020-present)\n- Situation: Analytics was a bottleneck — every metric debated, no single source of truth, 3-week lead time for new dashboards, ML models hand-deployed.\n- Task: Build a trusted data platform and a self-serve analytics culture; make data a driver, not a reporting function.\n- Action: Stood up a governed semantic layer and a modern lakehouse, instituted data contracts between producers and consumers, built a feature store and CI/CD for ML, and reorganized into embedded analytics partners plus a central platform team.\n- Result: Dashboard lead time from 3 weeks to 2 days; metric-definition disputes effectively eliminated via the semantic layer; model deploy time from weeks to hours; data platform uptime to 99.9%.\n\nDirector of Data Engineering, e-commerce (2016-2020)\n- Situation: Nightly batch pipelines fragile, frequent SLA breaches.\n- Task: Modernize the pipeline and improve reliability.\n- Action: Migrated to an orchestrated, tested pipeline with data-quality checks and lineage.\n- Result: Pipeline SLA adherence from 82% to 99%; data incidents down sharply.\n\nLead Data Engineer, ad-tech (2012-2016) — Built real-time event pipelines at scale.\n\nSkills: data platform strategy, lakehouse/warehouse, semantic layer, data governance & contracts, ML platform/MLOps, org design, stakeholder leadership.\nEducation: M.S. Computer Science.",
+  "jd": "A scaled fintech (data-rich, regulated) seeks a VP of Data to own data engineering, analytics, governance, and the ML platform, reporting to the CTO and leading ~60 people. The mandate: make data trustworthy and fast — a governed single source of truth, self-serve analytics that doesn't bottleneck on a central team, and an ML platform that gets models to production reliably and compliantly. You'll own data-platform reliability, data quality, and the governance posture that satisfies auditors. We want a leader who can speak concretely about the hard tradeoffs — centralization vs embedding, governance vs speed, build vs buy — and who can show, with specifics, how a platform decision changed delivery or reliability. You will present data strategy and risk to the executive team and the board's risk committee.",
+  "history": [
+    { "q": "Give me the headline on your current role — scope, team, what you own." },
+    { "q": "You built a governed semantic layer. What problem was it actually solving, concretely?" },
+    { "q": "How did the semantic layer 'eliminate' metric disputes — what's the mechanism that makes a definition stick?" },
+    { "q": "Data contracts between producers and consumers — what's in a contract, and what happens when one is violated?" },
+    { "q": "Dashboard lead time went 3 weeks to 2 days. What specifically was eating the three weeks before?" },
+    { "q": "On org design — you embedded analysts and kept a central platform team. Where did you draw the line?" },
+    { "q": "Tell me about a build-vs-buy call you made on the platform. What did you decide and why?" },
+    { "q": "In a regulated shop, governance can fight speed. Give me a real moment that tension bit you." },
+    { "q": "Model deploy went from weeks to hours. What in the old process took weeks?" },
+    { "q": "Tell me about a data incident that hit a downstream consumer. Root cause and fix?" },
+    { "q": "Centralization versus embedding is the eternal data-org debate. Make the specific case for where you landed and the cost you accepted — no platitudes." }
+  ],
+  "candidate_last_answer": "Love this question, because org design is really where the magic happens. My philosophy is simple: meet teams where they are while maintaining centralized leverage. It's the classic hub-and-spoke — you want federated agility with centralized governance, the best of both worlds. I'm a firm believer in treating data as a product, empowering domain teams to own their data while the platform team provides paved roads and guardrails. At the end of the day it's about balance, about enabling self-serve at scale without sacrificing trust. So we landed on a model that gave us the autonomy-alignment sweet spot — federated where it makes sense, centralized where it matters. It's really about the right operating model for the right context.",
+  "session_state": {
+    "drilled_topics": ["vp-data-scope", "semantic-layer-problem", "metric-dispute-mechanism", "data-contracts", "dashboard-lead-time-cause", "embed-vs-central-line", "build-vs-buy", "governance-vs-speed", "model-deploy-bottleneck", "data-incident-root-cause"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 39
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "data-platform-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: federated where it makes sense, centralized where it matters",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: strip the hub-and-spoke buzzwords and force one concrete boundary decision — a specific capability she deliberately centralized versus embedded, the real cost or pain she knowingly accepted by choosing that side, and how she'd know if she drew the line wrong"
+    ]
+  }
+}

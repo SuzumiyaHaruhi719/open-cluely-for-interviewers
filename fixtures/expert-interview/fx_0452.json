@@ -1,0 +1,53 @@
+{
+  "id": "fx_0452",
+  "tags": {
+    "industry": "finance",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "资深量化风控分析师 / Senior Quant Risk Analyst\n\n工作经历\n\n海桐资本 (Haitong-adjacent multi-strategy fund) — Senior Risk Analyst, 2020 至今\n- 负责股票多空与宏观策略的市场风险监控，搭建日内 VaR 与压力测试框架\n- 主导 counterparty exposure 的监测体系，覆盖 prime broker 与 OTC 衍生品台账\n- 与 portfolio managers 一起复盘大额回撤事件，参与 risk limit 的设定与调整\n- 推动 stress-testing pipeline 从 Excel 迁移到 Python + internal risk engine\n\n前程证券 — Risk Analyst, 2017-2020\n- 参与信用债组合的风险敞口分析与评级迁移监测\n- 协助构建 liquidity coverage 的内部报表，对接 treasury 团队\n\n技能: Python, SQL, kdb+/q (基础), Monte Carlo 模拟, factor risk models (Barra), Bloomberg PORT\n教育: 复旦大学 金融工程硕士 / 数学与应用数学本科\n证书: FRM (持证), CFA Level II passed\n\n备注: 简历未列具体数值业绩，面试中可展开。",
+  "jd": "我们是一家管理规模约 80 亿美元的多策略对冲基金，正在招聘一名 Senior Market Risk Analyst，向 Head of Risk 汇报。你将负责跨股票、信用与宏观策略的市场风险度量，拥有 VaR/ES 模型的方法论 ownership，并在 limit breach 发生时主导 root-cause 分析。该岗位需要你独立产出每日风险报告、设计并校准 stress scenarios、并直接与 PM 就 risk budget 进行谈判。我们尤其看重在真实回撤事件中『谁做了什么决定』的清晰度——我们会深入追问你个人(而非团队)在某次具体 drawdown 中的判断与行动。要求 5 年以上买方风险经验、扎实的 derivatives 定价与 Greeks 直觉、以及能向 investment committee 清晰汇报的能力。",
+  "history": [
+    { "q": "先用两分钟介绍一下你现在在海桐的 scope——覆盖哪些策略、汇报给谁、每天产出什么。" },
+    { "q": "你提到搭建了日内 VaR 框架。具体用的是 historical simulation 还是 parametric?为什么选这个?" },
+    { "q": "你们的 VaR 用的是多长的 lookback window、什么置信度?这个参数是谁定的?" },
+    { "q": "说一个你们 VaR 模型 backtesting 出现 exception 的情况——一年大概几次 breach?" },
+    { "q": "换个话题。讲一次你印象最深的大额回撤事件,背景是什么?" },
+    { "q": "那次回撤,触发的直接原因是什么?是某个 factor、某个 position,还是流动性?" },
+    { "q": "回撤发生当天,风控这边第一时间做了什么动作?" },
+    { "q": "你刚说『我们决定降仓』——这个降仓的决定是谁拍板的?你在里面扮演什么角色?" },
+    { "q": "降了多少仓?是按 notional、按 VaR 贡献、还是按某个 sector 来砍的?" },
+    { "q": "PM 当时同意降仓吗?如果有分歧,分歧点在哪、最后怎么解决的?" },
+    { "q": "这次事件之后,你们的 risk limit 或者 stress scenario 有没有调整?具体改了什么?" },
+    { "q": "stress-testing 从 Excel 迁到 Python 那个项目,是你主导还是参与?你写了哪部分代码?" },
+    { "q": "迁移之后,跑一轮全组合 stress 的时间从多少缩短到多少?" },
+    { "q": "你跟 treasury 对接 liquidity 报表那段,你个人负责的是哪一块?" },
+    { "q": "回到那次回撤。如果让你重来一次,你个人会更早做哪个动作?" },
+    { "q": "我想听得更具体。那次降仓的决策链条里,哪一步是你独立判断、不依赖别人的?" }
+  ],
+  "candidate_last_answer": "其实风控从来不是一个人的事情,所以那次 drawdown 我们是作为一个 team 一起 handle 的。我们一起看了 exposure,我们一起跟 PM 沟通,然后我们一起决定先把最 risky 的 position 降下来。整个过程大家配合得很好,risk team 跟 trading desk 是一起扛过来的,最后我们把回撤控制住了。我觉得这种 collaboration 才是真正 work 的地方。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "var-methodology", "var-parameters", "backtesting-exceptions", "drawdown-narrative", "drawdown-trigger", "first-response-action", "deleveraging-decision-owner", "stress-migration-ownership", "liquidity-reporting-scope"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们一起决定先把最 risky 的 position 降下来",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific personal action the candidate alone owned in that deleveraging decision — what he personally recommended, to whom, and what number (notional or VaR contribution) he put forward, distinct from what the team did collectively"
+    ]
+  }
+}

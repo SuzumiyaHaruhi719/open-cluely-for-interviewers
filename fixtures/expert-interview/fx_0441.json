@@ -1,0 +1,40 @@
+{
+  "id": "fx_0441",
+  "tags": {
+    "industry": "design",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "设计总监 | 用户体验 · 设计体系 · 增长设计 · 服务设计 · 品牌升级 · 设计领导力\n\n关键词矩阵\n以用户为中心、设计驱动增长、端到端体验、跨端一致性、设计语言、组件化、原子设计、设计中台、可访问性、情感化设计、数据驱动设计、设计度量、北极星指标、A/B 实验、用户旅程地图、服务蓝图、设计冲刺、双钻模型、敏捷协作、设计赋能、跨职能协同、利益相关方管理、设计文化、心智模型、信息架构、交互范式、视觉锤、品牌资产、设计系统治理。\n\n履历\n- 现任:某互联网平台 设计总监(管理约 30 人,含交互、视觉、用户研究、设计工程)。\n- 曾任:某电商 高级设计经理;某 SaaS 公司 体验设计负责人。\n\n履历亮点(高度浓缩)\n- 搭建覆盖全平台的设计体系,赋能多业务线提效。\n- 主导多次品牌升级与体验重构,提升核心转化与留存。\n- 推动设计度量体系,让设计价值可被量化、可被看见。\n- 建设设计文化,打造高绩效、有梯队的设计团队。\n\n工具:Figma、设计 Token、可用性测试、埋点分析。\n教育:视觉传达设计 本科。",
+  "jd": "我们在为核心产品线招聘一名设计总监,带领约 25-30 人的设计团队(交互、视觉、用户研究、设计工程),向产品 VP 汇报。你将负责跨端设计体系的治理与落地、关键业务流程的体验重构、以及设计与产品/研发的协作机制建设。我们处在一个体验口碑承压、设计体系采纳率不高、设计与研发还原度长期被吐槽的阶段,需要一位能直面问题、对结果负责的设计领导者。我们特别关注:当一个设计项目没有达到预期目标时,你如何复盘、你个人承担了什么、以及你从中改了什么机制。要求 8 年以上设计经验、3 年以上团队管理,有从 0 到 1 搭建并推广设计体系的实战经验。",
+  "history": [
+    { "q": "先介绍一下你现在带的团队结构,以及你作为设计总监最核心的三件事是什么。" },
+    { "q": "你简历里反复提到『设计体系』和『赋能业务线提效』。挑一个业务线,讲讲这套体系实际落地到什么程度,采纳率多少?" },
+    { "q": "讲一个反例吧——一个你主导、但最后没达到预期目标的设计项目。当时发生了什么,你怎么复盘的?" }
+  ],
+  "candidate_last_answer": "这个我印象很深,是去年那次首页改版。说实话那个项目结果确实不理想,转化没涨反而掉了一点。但坦白讲,问题主要不在设计这边。一是产品经理需求反复横跳,排期都排了三次了还在改方向;二是研发还原度太差,我们 Figma 标得清清楚楚,上线出来间距、配色全走样,这能怪设计吗?三是数据团队埋点埋错了,前两周的 A/B 数据根本不能用,等于白跑。我们设计团队该出的稿、该做的可用性测试一个没落,该交付的都交付了。所以我一直跟我老板讲,这个锅不该设计背。",
+  "session_state": {
+    "drilled_topics": ["team-structure", "design-system-adoption", "failed-project-retro"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "collaboration", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个锅不该设计背",
+      "must-be-question-type: action-attribution",
+      "expected-yield: forces the candidate off blaming PM/dev/data and onto their own contribution — what they as design director could have done differently (e.g. lock scope, set up a design-dev handoff QA gate, validate the experiment design before launch), surfacing whether they take any personal ownership of a failed outcome"
+    ]
+  }
+}

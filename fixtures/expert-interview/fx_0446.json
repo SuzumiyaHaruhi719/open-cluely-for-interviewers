@@ -1,0 +1,41 @@
+{
+  "id": "fx_0446",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "蒋立群 | 制造业工艺工程师(中级)| 6 年汽车零部件冲压/焊装经验\n\n个人标签\n我是车间里那种『救火队长』式的工程师,哪里有难啃的工艺问题,哪里就有我。我处理过的疑难杂症数都数不过来,几乎每次重大质量危机都是我顶上去搞定的。同事都说,有我在,产线就稳。\n\n核心战绩(本人主导)\n- 一手攻克某车型门内板冲压开裂难题,良率从惨不忍睹一路拉到行业顶尖,被评为年度技术标兵。\n- 主导焊装线节拍优化,产能大幅提升,据说创了厂里历史纪录。\n- 我设计的防错(防呆)方案,后来成了全厂标杆,各车间都来抄。\n- 处理过无数次客户投诉,每次都化险为夷,客户对我个人评价极高。\n\n履历\n- 现任:某汽车零部件厂 工艺工程师(冲压 + 焊装)。\n- 曾任:某五金制品厂 工艺技术员。\n\n技能:冲压工艺、焊装夹具、SPC、8D 报告、CPK 分析、模具调试。\n教育:材料成型及控制工程 本科。\n\n一句话:别人搞不定的,交给我。",
+  "jd": "我们为汽车零部件工厂招聘一名中级工艺工程师(冲压/焊装方向),向工艺主管汇报,负责量产工艺的稳定性、质量异常的根因分析与整改、以及产线节拍与良率的持续改善。我们正处在某主力车型良率波动、客户投诉偏多的阶段,需要一位能扎到具体问题里、用数据和工艺机理讲清楚『为什么』和『怎么改』的工程师。我们会重点考察:面对一个具体的质量异常(如冲压开裂),你的根因分析过程、你采取的具体工艺对策、以及你如何用 SPC/CPK 验证改善效果。要求:5 年以上冲压或焊装工艺经验,熟练使用 8D、SPC、CPK 等质量工具,有量产问题闭环的实战经验。",
+  "history": [
+    { "q": "先讲讲你现在负责的工艺范围,以及你在产线上最核心的职责。" },
+    { "q": "你简历里说一手攻克了门内板冲压开裂。先说说开裂当时的良率大概是多少,目标拉到了多少?" },
+    { "q": "门内板开裂这个问题,你的根因分析是怎么做的?最后定位到的根因是什么?" },
+    { "q": "针对那个根因,你具体调了哪些工艺参数或者改了什么模具结构?" },
+    { "q": "改完之后,你是用什么数据证明良率真的稳住了?CPK 做到了多少?" }
+  ],
+  "candidate_last_answer": "说到 CPK 这些,我突然想跟你聊聊我对咱们整个国产汽车工业的看法。你看现在新能源这么火,合资品牌都被打得节节败退,这其实背后是咱们整个供应链的崛起。我前阵子去看了几个新势力的工厂,那个自动化程度真的是震撼,一体压铸直接把几十个零件干成一个。我就在想,我们这种传统冲压焊装的工艺,未来会不会被颠覆?我觉得作为工程师得有这种行业大局观。还有就是现在年轻人都不愿意进车间了,我们这行招人特别难,这也是个大问题。哎,说远了,反正我觉得制造业这几年变化太快了,得不断学习才行。",
+  "session_state": {
+    "drilled_topics": ["scope", "door-panel-yield-numbers", "rootcause-analysis", "process-countermeasure", "cpk-verification"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我突然想跟你聊聊我对咱们整个国产汽车工业的看法",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cuts off the industry-trend tangent and forces the candidate back to the exact asked question — the specific CPK value achieved after the fix and the sample/timeframe it was measured over, revealing whether the door-panel improvement was actually validated with process-capability data or just asserted"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "fx_0415",
+  "tags": {
+    "industry": "finance",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Quantitative Risk Analyst | FRM | CFA\n\nCore competencies: VaR, CVaR, Expected Shortfall, Monte Carlo simulation, historical simulation, stress testing, scenario analysis, counterparty credit risk, CVA/DVA/FVA, XVA, market risk, liquidity risk, IRRBB, FRTB, SA-CCR, Basel III/IV, IFRS 9, ECL modeling, backtesting, P&L attribution, Greeks, delta-gamma, factor models, PCA, GARCH, copulas, model validation, SR 11-7, Python, R, SQL, kdb+/q, Bloomberg, MATLAB, time-series, model risk governance.\n\nExperience:\nSterling Capital Markets — Staff Quantitative Risk Analyst (2020-present). Sit on the market-risk methodology function supporting the trading desks. Work spans VaR methodology, FRTB readiness, stress-testing frameworks, and model validation across rates and FX books.\n\nHarbor & Co. — Risk Analyst (2016-2020). Supported counterparty credit risk and XVA analytics for the derivatives desk; contributed to SA-CCR implementation and CVA reporting.\n\nEducation: MS Financial Engineering. Certifications: FRM, CFA, PRM.",
+  "jd": "Sterling Capital Markets is hiring a Staff Quantitative Risk Analyst for the market-risk methodology team supporting our rates and FX trading desks. This is a senior individual-contributor role: you will personally own methodology decisions, defend them to model validation and the regulator, and be the named author of the changes you make. Responsibilities include enhancing the VaR/Expected Shortfall framework, leading the desk's FRTB internal-models work, designing stress scenarios, and remediating model-validation findings. In interviews we probe hard on individual contribution — we need you to articulate which methodology choices you personally made, the tradeoff you reasoned through, and what you specifically owned, not what 'the team' delivered. Strong candidates pair deep quantitative depth with the ability to take clear personal accountability. Reports to the Head of Market Risk Methodology.",
+  "history": [
+    { "q": "Tell me about your role on the market-risk methodology team at Sterling and the books you cover." },
+    { "q": "Your resume lists FRTB readiness. Describe a specific methodology change you made on the VaR or Expected Shortfall framework." },
+    { "q": "On that change — what was the key modeling tradeoff, and who made the final call on it?" }
+  ],
+  "candidate_last_answer": "So on the Expected Shortfall move under FRTB, that was really a team effort across methodology and validation. We collectively decided to go with the reduced-set ES with the liquidity-horizon scaling, and we worked through the tradeoffs together as a group. The calibration was something the team landed on after a lot of joint discussion. I wouldn't want to single out any one person's decision — it was very much a 'we' thing, and the whole methodology team deserves the credit for getting it over the line with validation.",
+  "session_state": {
+    "drilled_topics": ["methodology-role-scope", "frtb-es-change", "es-tradeoff-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I wouldn't want to single out any one person's decision",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to name the specific ES methodology choice they personally made and defended — e.g., the liquidity-horizon bucketing or calibration window they set and the tradeoff they reasoned through — rather than attributing the whole decision to the team"
+    ]
+  }
+}

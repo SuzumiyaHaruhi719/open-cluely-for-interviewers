@@ -1,0 +1,49 @@
+{
+  "id": "fx_0461",
+  "tags": {
+    "industry": "design",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "高远 — 设计副总裁 (VP of Design)\n北京 | 设计管理经验 14 年\n\n职业概述\n本人从业 14 年,设计管理经验丰富。带过的最大团队是 60 人;不过在另一段描述里,我也曾提到核心团队精简到 20 人时反而效率最高,这两个阶段都是我职业生涯的高峰。\n\n工作经历\n\n星澜科技 — VP of Design, 2020 至今\n- 负责公司全线产品的设计与品牌体验\n- 从 0 搭建了公司的设计体系与设计团队\n- 备注: 我于 2020 年加入星澜并从零组建团队;另一处材料里写的是 2019 年加入并接手了一支成熟团队——以加入当年的实际情况为准。\n\n云图互娱 — 设计总监, 2015-2020\n- 主导多款游戏与社区产品的视觉与交互设计\n- 团队规模约 40 人(也有材料写约 25 人)\n\n沐界设计 — 高级设计师 / 设计经理, 2011-2015\n- 从执行设计成长为带小团队的管理者\n\n核心成果\n- 主导星澜旗舰产品改版,上线后用户活跃显著提升(具体提升幅度在不同汇报里口径不一,30% 与 50% 均出现过)\n- 建立设计度量体系,把设计评审周期『大幅缩短』\n\n教育: 某美术学院 设计学硕士;视觉传达本科\n技能: 设计战略、团队管理、设计体系、品牌、用户体验",
+  "jd": "某综合性科技公司招聘『设计副总裁(VP of Design)』,向 CPO 汇报,统管产品设计、品牌与设计运营,团队规模 50 人以上。我们寻找的是能对设计结果与组织建设同时负责、并且叙述前后一致、经得起追问的设计领导者。面试中我们会逐项核对简历里的关键事实(加入时间、团队规模、成果口径),并要求候选人正面、聚焦地回答问题——我们尤其关注候选人是否会在被追问具体事实时偏离话题、用宏大叙事回避正面回应。要求:十年以上设计经验、五年以上 40 人规模团队管理经验、可量化的体验与业务成果、清晰一致的事实陈述能力。",
+  "history": [
+    { "q": "先讲讲你现在在星澜的范围:团队多大、汇报给谁、负责哪些产品线。" },
+    { "q": "我注意到简历里你加入星澜的时间写了两个版本——2019 和 2020。到底是哪一年?" },
+    { "q": "那你到底是从零组建团队,还是接手了一支成熟团队?这两种情况差别很大。" },
+    { "q": "你说带过最大团队 60 人,但又说 20 人时效率最高。星澜现在实际是多少人?" },
+    { "q": "旗舰产品改版后活跃提升,简历里 30% 和 50% 都出现过。准确的数字是多少、口径是什么?" },
+    { "q": "我们先把数字放一边。那次改版,你个人做的最关键的一个设计决策是什么?" },
+    { "q": "改版前你们做了哪些用户研究来支撑方向?" },
+    { "q": "云图那段团队规模也有 40 和 25 两个版本,哪个是你直接管理的人数?" },
+    { "q": "你说设计评审周期『大幅缩短』。从多久缩短到多久?你改了流程里的哪一步?" },
+    { "q": "回到星澜旗舰改版。如果活跃真的提升了,你怎么确认是设计带来的,而不是同期运营活动?" },
+    { "q": "我想听一个具体的设计决策本身,而不是行业趋势。就说改版里那个最关键的决策。" },
+    { "q": "我再问一次,很简单:那次改版,你亲手拍板的、最关键的一个设计选择,具体是什么?" }
+  ],
+  "candidate_last_answer": "其实我觉得吧,设计这个事情,关键不在于某一个孤立的决策,而在于一个组织的设计文化和审美水位。你看现在整个行业,AI 正在重塑设计的生产方式,未来三到五年,设计师的角色会发生根本性的变化,这是我一直在思考的命题。我经常跟团队讲,我们要做的不是某一个界面,而是要建立一种『设计的世界观』。所以回到你的问题,我更愿意从这个高度去看——一个真正优秀的设计领导者,应该是在塑造趋势,而不是纠结于某一次改版里的某一个按钮怎么放。这才是 VP 该有的格局。",
+  "session_state": {
+    "drilled_topics": ["xinglan-scope", "join-year-contradiction", "build-vs-inherit", "team-size-contradiction", "activation-metric-discrepancy", "key-design-decision", "pre-redesign-research", "yuntu-team-size", "review-cycle-improvement", "design-vs-ops-attribution", "key-decision-retry"],
+    "current_competency_target": "decision-specificity",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "decision-specificity",
+    "missing_evidence": [
+      { "competency": "decision-specificity", "evidence_type": "owner-of-action" },
+      { "competency": "decision-specificity", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 一个真正优秀的设计领导者,应该是在塑造趋势,而不是纠结于某一次改版里的某一个按钮怎么放",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: one concrete design decision the candidate personally made in the flagship redesign — the specific problem, the options he weighed, what he chose and why — dragging him off the 『shaping trends / design worldview』 abstraction back to a verifiable account of his own hands-on judgement"
+    ]
+  }
+}

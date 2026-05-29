@@ -1,0 +1,44 @@
+{
+  "id": "fx_0397",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Director of Product Management | Outcome-Driven | Data-Informed | Customer-Obsessed | 0-to-1 & Scale\n\nCore competencies: PLG, SLG, OKRs, JTBD, RICE, ICE, KANO, North Star Metric, AARRR, MAU/DAU/WAU, NRR, GRR, CAC/LTV, activation, retention, monetization, experimentation, A/B testing, MVP, MLP, discovery, dual-track agile, continuous discovery, opportunity solution trees, roadmapping, prioritization, stakeholder alignment, cross-functional leadership, GTM, PMF, TAM/SAM/SOM, platform thinking, API-first, ecosystem strategy, AI/ML productization, LLM, RAG, embeddings, vector search, prompt engineering, agentic workflows.\n\nExperience\nVertex SaaS — Director of Product (2021–present)\n- Drove North Star Metric uplift through full-funnel AARRR optimization and rigorous experimentation cadence\n- Operationalized OKRs and RICE-based prioritization across a tri-squad pod model\n- Spearheaded AI/ML-powered platform capabilities leveraging LLM + RAG to unlock net-new ARR\n- Championed PLG motion to complement enterprise SLG, lifting activation and NRR\n\nQuantum Apps — Group Product Manager (2018–2021)\n- Led JTBD-driven discovery and dual-track agile to ship MLP iterations against PMF signals\n- Aligned cross-functional stakeholders to a unified North Star and outcome-based roadmap\n\nNimbus — Senior Product Manager (2015–2018)\n- Owned activation & retention surface area; ran continuous discovery and opportunity solution trees\n\nEducation: MBA; B.S. Computer Science\nTools: Amplitude, Mixpanel, Looker, LaunchDarkly, Productboard, Jira",
+  "jd": "Strata is hiring a Director of Product to own our self-serve growth surface (activation and retention) for a developer-tools platform. You will report to the VP of Product and lead three squads. The work is concrete: we have an activation rate of 41% (signup to first meaningful action within 7 days) that has been flat for three quarters, and we need it moving. We want a leader who can take ONE bet, articulate the hypothesis behind it, name the metric it targets, describe the experiment design, and tell us — with numbers — whether it worked and what they did when it didn't. We are deliberately allergic to buzzword-driven narratives; reciting frameworks (RICE, JTBD, OKRs) is not evidence. The interview will repeatedly ask you to ground claims in a single decision, a single metric, and a single result. Strong experimentation literacy and self-serve growth experience required.",
+  "history": [
+    { "q": "Give me your current scope at Vertex — squads, what surface you own, who you report to." },
+    { "q": "Pick the single most important activation bet you made in the last year. What was the hypothesis?" },
+    { "q": "What was the one metric that bet targeted, and what was its baseline before you started?" },
+    { "q": "How did you design the experiment — control, exposure, sample, duration?" },
+    { "q": "What did the experiment read out? Give me the before and after numbers." },
+    { "q": "If it didn't move, what did you personally do next — kill it, iterate, or double down?" },
+    { "q": "Let's nail one number down: post-iteration, where did that activation metric actually land?" }
+  ],
+  "candidate_last_answer": "So this is a great question and it actually connects to a broader philosophy I have about activation, which I think a lot of PMs get wrong, by the way — there's this whole debate in the product community about whether activation should even be a single metric or a constellation, and I have strong opinions there. It reminds me of a talk I gave at a conference last year about the death of the funnel, which got a ton of engagement on LinkedIn. And honestly the deeper issue is org design — you can't really fix activation without fixing how squads are incentivized, which gets into Conway's Law, and I could talk for an hour about how we restructured our pods around JTBD. So in terms of where the metric landed... you know, it's hard to give one number because activation is really a system, and I'd argue the more interesting story is the cultural shift we drove toward experimentation as a discipline.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "activation-hypothesis", "target-metric-baseline", "experiment-design", "experiment-readout", "iteration-decision", "final-metric-pin"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it's hard to give one number because activation is really a system",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate is forced off the philosophy tangent to state the single post-iteration activation rate as a number and how it compared to the 41% baseline"
+    ]
+  }
+}

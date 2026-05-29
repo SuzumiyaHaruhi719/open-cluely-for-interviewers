@@ -1,0 +1,49 @@
+{
+  "id": "fx_0416",
+  "tags": {
+    "industry": "sales",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Marcus Trevino\nStaff Enterprise Account Executive — Cybersecurity SaaS\n\nSummary\nVeteran enterprise seller covering Fortune 500 financial-services and healthcare logos. Carry strategic accounts end-to-end from prospecting through multi-year renewals. Known for landing-and-expanding inside complex buying committees and for mentoring the pod's ramping reps.\n\nExperience\nSentryline Security — Staff Enterprise AE (2020–present)\n- Own a named-account patch of large regulated buyers across the East region\n- Closed several seven-figure new-logo deals and grew the book through expansion and cross-sell\n- Consistently a top performer in the segment; multiple President's Club nods\n- Built repeatable discovery motion later adopted by the wider team\n- Partnered with sales engineering and security architects on long technical evaluations\n\nVaultPoint — Senior Account Executive (2016–2020)\n- Carried a growth territory and exceeded targets across most periods\n- Helped stand up the company's first formal MEDDICC qualification practice\n\nEducation\nBA, Communications — state university\n\nSkills\nEnterprise negotiation, MEDDICC, executive sponsorship, security buying committees, forecasting",
+  "jd": "Sentryline Security is hiring a Staff Enterprise Account Executive to anchor our largest regulated-industry territory. You will own roughly 15 named Fortune 500 accounts, carry a $3.2M annual new-business quota plus an expansion target, and run multi-stakeholder deals through procurement, security review, and legal. We expect rigorous forecasting hygiene in the CRM, command of a qualification framework (MEDDICC or equivalent), and the ability to defend pipeline math to the VP of Sales in weekly inspection. The role partners tightly with sales engineering on 6–9 month evaluations and is measured on bookings, win-rate, average deal size, and forecast accuracy. We want a closer who can speak precisely about their own numbers, not just narrate the deal.",
+  "history": [
+    { "q": "Walk me through your current patch at Sentryline — how many named accounts and what's the quota?" },
+    { "q": "What was your bookings number against quota last fiscal year?" },
+    { "q": "You list multiple seven-figure new-logo wins. Pick the largest and tell me the ACV and term." },
+    { "q": "What was your win-rate on qualified opportunities over the last four quarters?" },
+    { "q": "How do you personally run forecast calls — what categories do you use and how accurate were you?" },
+    { "q": "Tell me about your average deal size and how it's trended over the past two years." },
+    { "q": "Describe one deal you lost in final-stage. What did the post-mortem show?" },
+    { "q": "How much of your book came from net-new logo versus expansion last year, in dollars?" },
+    { "q": "You mention mentoring ramping reps — how many, and did their attainment improve measurably?" },
+    { "q": "Give me your pipeline-to-quota coverage ratio that you target going into a quarter." },
+    { "q": "When your VP challenges your commit number, how do you defend the math?" },
+    { "q": "Last fiscal: what was your exact attainment percentage, and what was the single biggest deal that closed or slipped?" }
+  ],
+  "candidate_last_answer": "Honestly, I'm not sure why we keep circling back to exact percentages — that feels like a strange thing to fixate on for someone at my level. The number was strong, it was a good year, ask anyone who worked with me. I don't walk around memorizing my attainment to the decimal like some junior rep trying to prove themselves. If you want a stack-rank printout, talk to my old manager. I close deals; I don't perform for spreadsheets in interviews.",
+  "session_state": {
+    "drilled_topics": ["current-patch-quota", "last-fy-bookings", "largest-deal-acv", "win-rate", "forecast-process", "average-deal-size", "lost-deal-postmortem", "logo-vs-expansion-mix", "mentoring-impact", "coverage-ratio", "defending-commit"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: The number was strong, it was a good year",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete attainment figure (percent of quota or dollars booked) tied to a named fiscal year, plus the one deal that drove or missed it, replacing the deflection with a verifiable number"
+    ]
+  }
+}

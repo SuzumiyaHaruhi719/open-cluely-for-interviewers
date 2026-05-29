@@ -1,0 +1,38 @@
+{
+  "id": "fx_0402",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "李沐 — 初级产品经理(Junior Product Manager)\n\n联系方式:muli@example.com\n\n个人简介\n一年产品经验,目前在一家工具类App公司负责用户增长相关的功能模块。\n\n工作经历\n云笺科技 — 产品经理(2023年至今)\n- 负责新用户注册与引导流程的迭代\n- 参与一次注册转化率优化的项目,与设计、研发协作\n- 维护功能需求文档,跟进版本上线与基础数据复盘\n\n技能\nAxure、Figma基础、SQL基础、数据复盘\n\n教育背景\n某高校 信息管理与信息系统 本科",
+  "jd": "微澜科技 正在招聘一名 初级产品经理,加入我们的用户增长小组,负责注册与新手引导环节的具体迭代。该岗位向增长产品负责人汇报,日常与设计、研发、数据团队紧密协作。我们最看重的不是宏大的产品观,而是候选人能否把一个很小的功能改动讲清楚:你当时要解决的具体问题是什么、你提出的方案是什么、上线后用哪个指标验证、数据是涨了还是跌了、你从中学到了什么。我们希望候选人在被追问细节时能正面回答,而不是把问题反抛回来。理想候选人具备扎实的执行力、对数据的基本敏感度,以及如实复盘的诚实态度。",
+  "history": [
+    { "q": "讲一个你负责过的最小的功能改动:你要解决什么具体问题、上线后用哪个指标验证、数据变化是多少?" }
+  ],
+  "candidate_last_answer": "嗯……这个问题挺大的。我反过来想先请教您一下,您觉得对于一个像我这样刚入行一年的产品经理来说,您更看重的到底是单个功能的数据结果,还是我对产品的整体sense呢?因为我觉得很多时候一个改动的数据涨跌其实受很多外部因素影响,不一定能完全说明问题。所以在我具体展开之前,我想先了解一下您的评判标准是什么,这样我也好知道该重点讲哪一块,您看可以吗?",
+  "session_state": {
+    "drilled_topics": ["smallest-feature-change-and-metric"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "metric" },
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我反过来想先请教您一下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 候选人被迫停止反问,正面给出那一次注册转化率优化里他负责的具体改动、上线后用以验证的单一指标及其前后数值变化"
+    ]
+  }
+}

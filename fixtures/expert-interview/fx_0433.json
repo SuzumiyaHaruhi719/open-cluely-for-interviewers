@@ -1,0 +1,38 @@
+{
+  "id": "fx_0433",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵梦­洁 — HR 业务伙伴(HRBP)\n\n工作经历:\n某中型互联网公司 HRBP(二零一九至今)\n- 支持研发与产品两条业务线,负责招聘、绩效、员工关系和组织发展\n- 主导过部门的年度绩效校准会,推动绩效结果的公平性\n- 处理过多起复杂的员工关系事件,包括绩效改进计划和离职协商\n- 参与设计了研发团队的职级体系和晋升标准\n- 组织过多场新员工融入和团队建设活动\n\n某快消公司 招聘专员(二零一七至二零一九)\n- 负责校园招聘和社会招聘,覆盖市场和销售岗位\n- 维护招聘渠道,优化面试流程\n\n技能:招聘、绩效管理、员工关系、组织发展、劳动法基础\n教育:某高校 人力资源管理 学士",
+  "jd": "我们是一家成长期的科技公司,正在寻找一位资深 HRBP,支持研发体系约两百人的团队,向 HRD 汇报。核心职责包括:作为业务负责人的人力资源顾问,深度参与组织设计和人才盘点;主导绩效管理全流程,确保校准的公平与一致;处理复杂员工关系事件并控制法律风险;推动关键岗位的人才梯队建设。我们尤其看重候选人能用具体的数据和案例说明自己的影响——比如你经手的绩效改进计划成功率、关键岗位的招聘周期、核心人才的保留率。我们需要一个既懂业务又懂人、能在棘手的员工关系场景里做出专业判断的伙伴。",
+  "history": [
+    { "q": "你简历里提到处理过多起复杂的员工关系事件,包括绩效改进计划。挑一个你印象最深的 PIP 案例,讲讲你具体怎么处理的,最后结果如何?" }
+  ],
+  "candidate_last_answer": "说到员工关系,我觉得现在年轻一代员工真的跟以前很不一样了。我最近一直在研究 Z 世代的职场心理,看了好几本关于代际差异的书。你看现在很多九五后、零零后,他们更看重工作的意义感和情绪价值,不像我们那时候。我还专门去参加了一个关于职场心理健康的线上论坛,讲得特别好,里面提到组织氛围、心理安全感这些概念。我觉得 HR 未来的角色一定会越来越偏向员工的心理顾问。还有我们公司去年搞团建,我组织大家去做了一次户外拓展,效果特别好,大家关系都拉近了不少。其实做 HR 最重要的就是有同理心,要真正关心人。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "employee-relations-judgement",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "employee-relations-judgement",
+    "missing_evidence": [
+      { "competency": "employee-relations-judgement", "evidence_type": "scope" },
+      { "competency": "employee-relations-judgement", "evidence_type": "owner-of-action" },
+      { "competency": "outcome-orientation", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 现在很多九五后、零零后",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: 把候选人从代际感想的泛谈拉回到具体的 PIP 案例——逼她说出一个真实的 PIP:这名员工的具体绩效问题是什么、她制定了哪些可衡量的改进目标、PIP 周期多长、她本人做了哪些动作、最终是改善留任还是离职"
+    ]
+  }
+}

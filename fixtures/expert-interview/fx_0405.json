@@ -1,0 +1,40 @@
+{
+  "id": "fx_0405",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "资深员工级后端工程师（Staff Engineer）\n\n个人简介：业内顶尖的分布式系统专家，10 年大规模高并发架构经验，主导过多个公司级核心项目，被公认为团队技术天花板。\n\n核心成就：\n- 独自设计并落地了支撑日均百亿级请求的交易撮合引擎，性能业界领先，无人能及\n- 一手打造了公司最关键的支付清结算链路，零事故运行三年，堪称行业标杆\n- 主导服务网格（Service Mesh）改造，将全站延迟砍掉一大半，效果惊艳全公司\n- 多次在内部技术评审中力压众人，方案被高层钦点为唯一标准\n- 被誉为『救火队长』，凡是最难啃的骨头最后都交到我手上\n\n工作经历：\n星澜科技 — 资深后端工程师（2019 至今）：负责交易与支付核心系统的架构演进。\n宏图网络 — 高级后端工程师（2015-2019）：参与电商订单系统建设。\n\n技能：Go、Java、分布式事务、消息队列、服务网格、高可用架构设计。\n教育：某重点大学计算机科学与技术学士。",
+  "jd": "星澜科技正在招聘一名资深员工级后端工程师（Staff Engineer），负责交易与支付核心系统的架构演进。该岗位需要独立主导跨团队的大型技术项目，从问题定义、方案设计到落地交付全程负责，并对最终的稳定性与性能指标承担端到端责任。我们关注的不是你所在团队做了什么，而是你个人在其中扮演了什么角色、做了哪些关键决策、承担了哪些技术风险。岗位需要与支付、风控、清结算等多个团队深度协作，推动技术标准统一，并在重大故障中担任技术指挥。理想候选人能清晰地讲清楚某一个具体项目里『哪一部分是我亲手设计的』『哪个权衡是我拍板的』，而不是笼统地描述团队成果。汇报对象为技术总监。",
+  "history": [
+    { "q": "请讲一下你在星澜目前负责的范围，以及你个人在交易撮合引擎里具体承担的部分。" },
+    { "q": "你简历里说服务网格改造把全站延迟砍掉一大半，这个项目里哪些关键设计决策是你本人做的？" },
+    { "q": "那次延迟优化中，你个人遇到的最难的技术权衡是什么，最后是你怎么拍板的？" }
+  ],
+  "candidate_last_answer": "这块其实是我们团队一起做的，大家配合得特别好。当时我们一起讨论了好几个方案，最后我们达成一致，选了基于 sidecar 的灰度上线策略。延迟数据是我们团队一起盯下来的，整个链路也是我们一起梳理的。说实话很难讲哪个决策是某一个人拍的，因为我们就是个特别讲究协作的团队，功劳都是大家的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "service-mesh-decision-ownership", "latency-tradeoff"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很难讲哪个决策是某一个人拍的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 一个只属于候选人本人的具体技术决策——他亲手设计或拍板的某个 sidecar 灰度细节、参数或回滚条件，以及他个人为此承担的风险，而非团队集体成果"
+    ]
+  }
+}

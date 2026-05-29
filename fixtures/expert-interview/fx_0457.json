@@ -1,0 +1,51 @@
+{
+  "id": "fx_0457",
+  "tags": {
+    "industry": "marketing",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周岚 — 市场营销副总裁 (VP of Marketing)\n上海 | 12 年消费品牌与增长营销经验\n\n职业摘要\n\n增长导向的市场负责人,擅长用数据驱动的方式管理品牌与效果营销的预算配置。带过最大团队 45 人,管理过最高年度营销预算 2.3 亿人民币。下面用 STAR 方式列出几个有代表性的成果。\n\n核心成果 (STAR)\n\n1) 新品类冷启动\n- 情境(S): 2022 年公司推出一条全新的功能性食品线,品类认知近乎为零。\n- 任务(T): 在 6 个月内做到月销过 2000 万,且 CAC 控制在 80 元以内。\n- 行动(A): 我把预算按 5:3:2 拆给内容种草、效果投放与私域复购;主导搭建了从达人内容到落地页的转化漏斗,并建立每周的 CAC/ROI 复盘机制。\n- 结果(R): 第 5 个月月销突破 2300 万,CAC 稳定在 72 元,复购率 31%。\n\n2) 营销费率优化\n- 情境(S): 接手时整体营销费率(营销费用/收入)高达 28%,董事会要求压降。\n- 任务(T): 一年内把费率压到 20% 以内,同时不牺牲营收增速。\n- 行动(A): 我砍掉了 3 个 ROI 长期为负的投放渠道,把预算集中到 2 个高效渠道,并重谈了头部代理的服务费结构。\n- 结果(R): 12 个月内费率从 28% 降到 19.5%,同期营收同比仍增长 24%。\n\n3) 品牌重塑\n- 情境(S): 老品牌形象老化,25-35 岁人群渗透率低。\n- 任务(T): 提升年轻人群心智份额与自然流量占比。\n- 行动(A): 主导一次完整的品牌焕新,重做视觉与 slogan,联合三位代言人做整合传播。\n- 结果(R): 半年内品牌搜索指数提升 60%,自然流量占比从 22% 升到 38%。\n\n工作经历\n青禾食品集团 — VP Marketing, 2020 至今\n沐光消费品牌 — 市场总监, 2016-2020\n蓝程广告 — 客户群总监, 2013-2016\n\n教育: 中欧国际工商学院 MBA;南京大学 新闻传播学学士",
+  "jd": "某快速增长的消费品集团招聘『市场营销副总裁(VP)』,向 CEO 汇报,统管品牌、效果营销与用户增长三大职能,对全公司的营销 ROI 与新客增长直接负责。我们寻找的是真正对数字负责、并且经得起追问的市场领导者:你需要讲清楚某一次具体的预算决策——你砍掉了什么、押注了什么、依据是什么、结果如何归因。我们的面试风格直接,会对简历里的每一个亮眼数字做归因层面的深挖(到底是你的动作带来的,还是大盘红利、还是同期其他因素)。我们尤其关注候选人面对质疑时的反应——能否把『结论的可信度』和『个人的面子』分开。要求:十年以上营销经验、有管理过亿级预算与跨职能团队的经验、扎实的归因与数据分析能力。",
+  "history": [
+    { "q": "先讲讲你现在在青禾的管理范围:管哪几个职能、团队多大、对哪些北极星指标负责。" },
+    { "q": "你简历第一个 case 是功能性食品冷启动。先说说这个品类当时的市场环境。" },
+    { "q": "你说 6 个月做到月销 2300 万。这里面有多少是付费投放拉来的,多少是自然增长?" },
+    { "q": "CAC 72 元这个数,是只算了媒介费,还是把达人内容、制作、人力都摊进去了?" },
+    { "q": "复购率 31% 是怎么定义的——同一用户 30 天内再买,还是 90 天?口径是什么?" },
+    { "q": "第二个 case,费率从 28% 降到 19.5%。同期营收还涨了 24%,这个增长里大盘贡献多少?" },
+    { "q": "你砍掉的那 3 个 ROI 为负的渠道,分别是什么渠道?当初是谁决定上这些渠道的?" },
+    { "q": "重谈代理服务费那块,你具体谈下来了几个点?对方为什么愿意让?" },
+    { "q": "品牌焕新那个 case,品牌搜索指数涨 60%——这个时间段有没有叠加大的促销或代言人热搜?" },
+    { "q": "自然流量占比从 22% 到 38%,分母变了吗?会不会是付费降了所以自然占比被动变高?" },
+    { "q": "回到冷启动。月销 2300 万的那个月,有没有赶上大促节点,比如 618 或双 11?" },
+    { "q": "我想确认一下归因方法。你们当时有没有做过 holdout 或者 incrementality 测试来验证投放的真实增量?" },
+    { "q": "如果没有做增量测试,那你怎么能确定 CAC 72 这个数反映的是真实的获客成本,而不是被自然流量稀释过的?" },
+    { "q": "我换个方式问:把大盘增长和促销节点都剔除掉之后,你个人那套打法到底贡献了多少净增量?能量化吗?" }
+  ],
+  "candidate_last_answer": "我感觉你从头到尾就是想证明我的数字是假的,这有点没意思。你做过一线营销吗?在真实业务里,根本不可能每个动作都做干净的 holdout,客户的钱不是用来给你做实验的。这些数字都是财务和数据团队认可、写进董事会汇报的,你现在坐在这儿质疑增量,我倒想问你——按你的标准,这个行业里有几个人能给你拿出所谓的『纯净增量』?我不接受这种预设我在吹牛的问法。",
+  "session_state": {
+    "drilled_topics": ["management-scope", "category-context", "paid-vs-organic-split", "cac-definition", "repurchase-definition", "revenue-growth-attribution", "cut-channels-owner", "agency-fee-renegotiation", "brand-search-confounders", "organic-share-denominator", "promo-timing", "incrementality-method"],
+    "current_competency_target": "attribution-rigor",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "attribution-rigor",
+    "missing_evidence": [
+      { "competency": "attribution-rigor", "evidence_type": "mechanism" },
+      { "competency": "attribution-rigor", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 根本不可能每个动作都做干净的 holdout",
+      "must-be-question-type: teach-back",
+      "expected-yield: how the candidate actually separated her own playbook's net incremental contribution from market tailwinds and promo spikes — what proxy method, directional split, or reasoning she used in lieu of a clean holdout — moving her off the defensive deflection to a substantive account of her attribution thinking"
+    ]
+  }
+}

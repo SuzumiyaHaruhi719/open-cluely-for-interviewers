@@ -1,0 +1,53 @@
+{
+  "id": "fx_0422",
+  "tags": {
+    "industry": "legal",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Priya Nandakumar\nJunior Associate — Commercial Contracts\n\nProfile\nFirst-year associate but honestly already operating well above my level. Partners routinely hand me their most sensitive matters because they trust my judgment more than associates with twice my experience. I'm the person the team turns to when a deal is on fire.\n\nExperience\nHartwell & Crane LLP — Junior Associate (2024–present)\n- Single-handedly carried the contract review workstream on a major M&A deal\n- Drafted SaaS agreements that the partners said were the cleanest they'd seen from any associate\n- Spotted issues senior associates missed; basically the last line of defense on the team\n- Trusted with direct client contact on high-stakes negotiations\n\nLincoln Park Legal Clinic — Law Clerk (summer 2023)\n- Handled landlord-tenant matters largely on my own\n\nEducation\nJ.D., regional law school (2024)\nB.A., Political Science\n\nSkills\nContract drafting, due diligence, redlining, legal research (Westlaw), client communication, M&A support",
+  "jd": "Hartwell & Crane LLP seeks a Junior Associate for our Commercial Contracts group. The role supports partners on M&A due diligence, SaaS and vendor agreement drafting, and contract-review workstreams under tight deadlines. We expect a first-year to speak precisely about the work they actually performed: which clauses they redlined, what issue they flagged and why it mattered, how they escalated uncertainty to a supervising attorney. We value candor about the boundaries of a junior's role over self-promotion. Strong Westlaw research skills and meticulous attention to indemnification, limitation-of-liability, and IP-assignment provisions are required.",
+  "history": [
+    { "q": "Tell me about your role at Hartwell & Crane — what's your day-to-day on the contracts team?" },
+    { "q": "You say you 'single-handedly carried' a contract-review workstream on an M&A deal. Walk me through what that actually involved." },
+    { "q": "On that deal, roughly how many contracts did you review, and over what period?" },
+    { "q": "Give me one specific issue you flagged that you think mattered. What was the clause?" },
+    { "q": "Who reviewed your redlines before they went to the client?" },
+    { "q": "Describe a limitation-of-liability provision you negotiated. What was the ask and the landing point?" },
+    { "q": "When you hit something you weren't sure about, how did you escalate it?" },
+    { "q": "You mention direct client contact on high-stakes negotiations — what was your actual role in the room?" },
+    { "q": "Tell me about an indemnification clause you drafted and the reasoning behind your language." },
+    { "q": "How do you organize a due-diligence review so nothing slips?" },
+    { "q": "Walk me through how you'd use Westlaw to research a novel IP-assignment question." },
+    { "q": "Was there a time a partner corrected your work substantively? What was it?" },
+    { "q": "How do you track open issues across multiple contracts in one deal?" },
+    { "q": "What's the difference between a representation and a warranty, in your own words?" },
+    { "q": "Let's go back to that one issue you flagged. What was the exact clause and what was wrong with it?" },
+    { "q": "Just that clause — name the provision and tell me the specific risk it created for the client." }
+  ],
+  "candidate_last_answer": "Okay so, the clause, right — there were honestly so many, it's kind of hard to, um, pick just one, because the whole deal was super intense and I was juggling like a million things at once and barely sleeping that week, which, you know, is just how it is on M&A. And I remember there was definitely something about, like, the liability section, or maybe it was the indemnity part — they kind of blur together after a while, especially when you're reviewing that many documents — and I flagged it because something felt off, you know that instinct you get? My roommate's also in law and we were actually just talking about how you develop that gut sense over time. Anyway, the partner was really happy I caught it, I think. Sorry, what was the exact question again?",
+  "session_state": {
+    "drilled_topics": ["day-to-day-role", "carried-workstream-reality", "contract-volume", "issue-flagged", "redline-reviewer", "lol-negotiation", "escalation-process", "client-room-role", "indemnification-drafting", "dd-organization", "westlaw-research", "partner-correction", "issue-tracking", "rep-vs-warranty", "specific-clause-recall"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "named-entity" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it's kind of hard to, um, pick just one",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a single named contract provision (e.g. the specific limitation-of-liability or indemnification clause), the precise defect she identified, and the concrete client risk it created — cutting through the rambling to test whether real substantive review occurred"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0455",
+  "tags": {
+    "industry": "design",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "林知遥 — UI/UX 设计实习生候选人\n大三在读 / 视觉传达设计专业 / 期望 2026 暑期实习\n\n个人陈述\n\n我是一名极具天赋和创造力的设计师,虽然还是学生,但我的作品已经达到了行业资深水准。我独立主导并完成了多个完整的产品设计,从 0 到 1 打造了具有颠覆性体验的 App。我对设计有着近乎偏执的追求,我相信我能为任何团队带来质的飞跃。我的设计屡获好评,被很多人称为『天才级别』的作品。\n\n项目经历\n\n校园二手交易 App『拾光』(独立项目)\n- 我一个人完成了从用户调研、信息架构、交互设计到高保真视觉的全部工作\n- 重新定义了校园二手交易的体验,我的设计让交易效率提升了好几倍\n- 这个项目是我们专业近几年最好的作品之一\n\n某连锁咖啡品牌 点单小程序(课程合作项目)\n- 主导了整体的视觉风格与交互流程\n- 我的方案最终被老师评为全班第一\n\n独立设计探索\n- 长期在设计社区分享作品,积累了一定的关注\n- 自学了 Figma、Sketch、Principle、AE,熟练程度远超同龄人\n\n技能: Figma(精通)、交互设计、用户研究、动效设计、设计系统、品牌视觉\n\n获奖: 校级设计大赛奖项;专业课程多次最高分\n\n教育: 某美术学院 视觉传达设计 (大三在读)",
+  "jd": "我们是一家成长期消费 App 公司,招聘『产品设计实习生』,跟随一位资深设计师在真实产品迭代中学习与产出。实习生会参与具体功能模块的交互与视觉设计、参加可用性测试、并在设计评审中接受反馈。我们不要求你有完整的工作经验,但我们非常看重:你能否把一个具体设计决策讲清楚——你当时面对的真实问题是什么、你为什么这么设计、有没有用任何方式验证过它。我们更欣赏诚实、具体、愿意承认『这块我还没想清楚』的候选人,而不是把学生作业说成颠覆行业的成果。面试会聚焦你简历里的项目,逐一追问真实的细节与你个人的贡献。",
+  "history": [
+    { "q": "先放松一点。简单介绍一下你自己,以及你为什么想做产品设计实习。" },
+    { "q": "你简历里说『拾光』是你一个人从 0 到 1 完成的。先讲讲这个 App 到底解决了什么问题?" },
+    { "q": "你写到设计让『交易效率提升了好几倍』。这个『好几倍』是怎么算出来的?" },
+    { "q": "在做交互之前,你做了哪些用户调研?访谈了几个人、问了什么?" },
+    { "q": "二手交易里最难设计的一步是什么?比如发布商品还是议价沟通?" },
+    { "q": "你的设计有没有给真实用户用过?哪怕是同学试用、给过你什么反馈?" },
+    { "q": "咖啡点单那个项目是课程合作。你具体负责哪部分,跟同组的人怎么分工的?" },
+    { "q": "回到『拾光』。如果现在让你重做发布商品这个流程,你会先改哪一步、为什么?" }
+  ],
+  "candidate_last_answer": "啊这个……发布商品的流程,对,我当时其实想了挺多的,因为发布嘛它涉及到拍照、然后填信息、还有定价,这几步……怎么说呢。我一开始是想做得很简洁,但后来又觉得信息要全一点,所以就……反正我改了好几版。然后那个……如果现在重做的话,我可能会……嗯,我觉得拍照那一步可以更智能一点?但是具体怎么改我还没有特别想好,因为说实话当时主要是赶作业,然后又要兼顾视觉好看,所以有些地方可能没有那么……就是没有真的去验证过。不好意思我有点紧张,我再想想啊。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "shiguang-problem", "efficiency-claim", "user-research-depth", "hardest-interaction", "real-user-feedback", "coffee-project-contribution"],
+    "current_competency_target": "design-rigor",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "design-rigor",
+    "missing_evidence": [
+      { "competency": "design-rigor", "evidence_type": "mechanism" },
+      { "competency": "design-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "communication-clarity", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我可能会……嗯,我觉得拍照那一步可以更智能一点?但是具体怎么改我还没有特别想好",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete, step-by-step redesign of the publish-item flow — what specific change to the photo step, what problem it solves, and how the candidate would check it works — converting the vague 『make it smarter』 into a reasoned design decision and revealing whether she can think through a flow at all"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "fx_0458",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "verbose-1500words"
+  ,
+    "edge_case": null
+  },
+  "resume": "Daniel Reyes\nJunior Financial Analyst — 2 years experience\ndaniel.reyes@email.com | Chicago, IL\n\nPROFILE\n\nI am a junior financial analyst with two years of experience in FP&A and corporate finance at a mid-market manufacturing company. My day-to-day work centers on the monthly close cycle, building and maintaining budget-versus-actual reports, supporting the rolling forecast, and producing the variance commentary that goes up to the divisional CFO. I am comfortable living in spreadsheets, I know my way around the ERP reporting module, and I have started picking up Power BI to automate some of the manual reporting we still do by hand. I see myself growing into a senior FP&A or corporate-development role over the next few years, and I am looking for a team where I can take on more ownership of a forecast and learn from people who model better than I do today.\n\nEXPERIENCE\n\nLakeshore Industrial Components — Junior Financial Analyst — 2023 to present (Chicago)\nLakeshore is a mid-market manufacturer of industrial fasteners and fittings with roughly $400M in revenue across three plants. I sit in the corporate FP&A team of four and support the operations and supply-chain functions.\n- Own the monthly budget-versus-actual reporting pack for the operations group. I pull actuals from the ERP, reconcile them against the budget, and write the variance commentary explaining why each cost line came in over or under plan.\n- Support the quarterly rolling forecast. I gather inputs from the plant controllers, load them into the consolidation model, and help the senior analyst stitch the divisional view together.\n- Maintain the headcount and labor-cost tracker, which feeds the largest controllable cost line in the operations budget.\n- Built a set of Power BI dashboards to replace three legacy Excel reports that used to take a full day each to refresh manually. I mapped the source tables in the ERP, rebuilt the logic in the data model, and added drill-through pages so the plant controllers could self-serve their own cost lines instead of emailing me for cuts of the data. The refresh is now scheduled, though I still sanity-check the numbers every cycle because the ERP occasionally posts late journal entries that throw the comparison off.\n- Participate in the monthly business review where the operations VP and the divisional CFO walk through performance. I prepare the supporting deck, build the bridge that walks from prior-month to current-month margin, and field detail questions on the variances. I have learned to anticipate the two or three questions leadership always asks and to bring the backup schedule for each one rather than promising to follow up afterward.\n\nKEY PROJECT — THE Q3 FORECAST MISS\n\nThe project I get asked about most is a forecast miss in Q3 of last year, where the operations group came in materially over the cost forecast I had helped produce, and the divisional CFO was caught off guard in the board pre-read. I was one of the analysts closest to the numbers. The miss centered on raw-material cost inflation and an overtime spike at one plant that the forecast had not captured. There was a lot of back-and-forth afterward about how the inputs had been gathered, who had signed off on the assumptions, and why the early-warning signals had not surfaced. It was a formative experience and I learned a great deal about how forecasts break in practice.\n\nINTERNSHIP — Cardinal Bank — Summer Analyst (Commercial Banking) — Summer 2022\n- Spread financial statements for middle-market credit clients and built supporting schedules for relationship managers.\n- Helped prepare credit memos and learned the basics of covenant analysis.\n\nSKILLS\n\nFinancial modeling (intermediate), Excel (advanced — index/match, dynamic arrays, basic VBA), Power BI (developing), ERP reporting (NetSuite-style), variance analysis, budget-vs-actual reporting, rolling forecasts, and presentation prep for senior stakeholders. I am comfortable explaining numbers to non-finance partners — I sit with the operations team and translate a margin variance into the operational decisions that actually drove it, like an overtime call or a material substitution. I am working on becoming faster and more independent in my modeling, and specifically on building forecasts that flex with their key drivers rather than hard-coding assumptions cell by cell, which is a habit I picked up early and am trying to unlearn. I also want to get better at pressure-testing the inputs other people hand me instead of taking them at face value.\n\nWHAT I AM LOOKING FOR\n\nA junior-to-mid FP&A or corporate-finance role on a team that takes forecasting seriously and gives analysts real ownership of a piece of the model. I want to work somewhere with strong mentorship — I learn fastest when a senior person is willing to tear apart my work and show me how they would do it. I am especially interested in companies where finance is close to operational decision-making rather than just keeping score after the fact.\n\nEDUCATION\n\nBBA, Finance — University of Illinois Urbana-Champaign, 2022. Relevant coursework in corporate finance, financial modeling, and managerial accounting. Graduated with honors.\n\nADDITIONAL\n\nI am currently a Level I candidate for the CFA program. References available on request, including my current senior analyst and the operations VP I support.",
+  "jd": "Harbor Capital Partners is hiring a Financial Analyst to join the FP&A team supporting our portfolio operations group. This is a hands-on role: you will own a slice of the consolidated forecast, build and maintain operating models, write variance commentary for the CFO, and partner directly with operating teams to pressure-test their assumptions. We work in a fast, accountable culture — when a forecast misses, we run a blameless but rigorous post-mortem, and we expect analysts to own their part of the model rather than point at upstream inputs. We are specifically looking for candidates who can talk honestly about a time their work was wrong: what they personally got wrong, what they would change in their own process, and what they did to prevent a repeat. Requirements: 1-3 years FP&A or banking experience, strong Excel/modeling, comfort presenting to senior finance leaders, and a genuinely ownership-oriented mindset. CFA progress is a plus.",
+  "history": [
+    { "q": "Thanks for coming in. Walk me through your current role at Lakeshore — what do you own week to week?" },
+    { "q": "You own the operations budget-vs-actual pack. Take me through how you build the variance commentary each month." },
+    { "q": "Let's talk about the Q3 forecast miss you mention. First, just the facts — how big was the miss versus the forecast?" },
+    { "q": "What were the two or three biggest drivers of the gap?" },
+    { "q": "You helped produce that forecast. Which part of the model or inputs were you personally responsible for?" },
+    { "q": "The overtime spike at one plant — was that captured anywhere in the assumptions you loaded?" },
+    { "q": "Walk me through how the raw-material inflation assumption got set. Who provided it and how did you challenge it?" },
+    { "q": "When the actuals started coming in over plan, at what point did you personally notice, and what did you do?" },
+    { "q": "In the post-mortem, what did the team conclude was the root cause?" },
+    { "q": "Forget the team's conclusion for a second. What did YOU personally get wrong in your own part of the work?" },
+    { "q": "Concretely — what's one thing in your own process you changed afterward so this couldn't happen again on your piece?" }
+  ],
+  "candidate_last_answer": "Honestly, I don't think the miss was really on me. The plant controllers are the ones who send up the input assumptions, and they lowballed the overtime numbers — I just loaded what they gave me into the model. And the senior analyst was the one who signed off on the raw-material inflation assumption, not me, so that wasn't my call either. If the early-warning signals didn't surface, that's kind of a process gap that's above my level. I mean, I'm a junior analyst, I can only work with the inputs people hand me. If anything, the controllers should've been more careful about what they submitted.",
+  "session_state": {
+    "drilled_topics": ["current-role", "variance-commentary-process", "miss-magnitude", "miss-drivers", "personal-model-ownership", "overtime-assumption-capture", "rawmat-assumption-challenge", "actuals-detection-timing", "postmortem-root-cause"],
+    "current_competency_target": "ownership-and-accountability",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "ownership-and-accountability",
+    "missing_evidence": [
+      { "competency": "ownership-and-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" },
+      { "competency": "process-improvement", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I just loaded what they gave me into the model",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one specific thing the candidate personally could have done differently within his own scope — e.g. flagging the implausible overtime input, building a sensitivity range, or escalating the divergence earlier — and the concrete process change he made, forcing him off blaming the controllers and senior analyst onto his own accountability"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "fx_0425",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Roberto Salazar\nDirector of Manufacturing Operations\n\nProfile\nTransformational operations leader who turns struggling plants into world-class facilities. Wherever I go, output goes up and waste goes down — it's simply what I do. I'm widely regarded as one of the strongest lean operators in the region.\n\nExperience\nApex Precision Components — Director of Manufacturing (2019–present)\n- Personally transformed a failing 600-person plant into the company's flagship\n- Single-handedly drove a lean transformation that everyone said was impossible\n- Slashed scrap, crushed downtime, and rebuilt the entire production culture\n- The reason the plant hits its numbers, full stop\n\nFordham Industrial — Plant Operations Manager (2014–2019)\n- Ran a multi-line assembly operation and made it the best in the network\n- Led continuous-improvement efforts that delivered massive savings\n\nEducation\nB.S., Industrial Engineering\nLean Six Sigma Black Belt\n\nSkills\nLean manufacturing, Six Sigma, OEE improvement, TPM, value-stream mapping, S&OP, plant P&L",
+  "jd": "Apex Precision Components seeks a Director of Manufacturing Operations to own a multi-line plant's P&L, safety, quality, and throughput. The role is accountable for OEE, scrap rate, on-time delivery, and labor productivity, and partners with supply chain on S&OP. We expect a leader who can speak with precision about specific initiatives they personally led: the baseline metric, the intervention, the mechanism by which it worked, and the verified result over a defined timeframe. We want concrete operational detail and honest attribution of what was a team effort versus an individual contribution — not sweeping self-description. Reports to the VP of Operations.",
+  "history": [
+    { "q": "Tell me about the plant you run at Apex — headcount, lines, and the metrics you own." },
+    { "q": "You describe a lean transformation you 'single-handedly drove.' Pick one specific initiative and walk me through it." },
+    { "q": "What was the baseline OEE or scrap rate before that initiative, and what did it become?" },
+    { "q": "What specifically did you change on the floor to move that number — the actual mechanism?" },
+    { "q": "Over what timeframe did the improvement land, and how much of it was you versus your team?" }
+  ],
+  "candidate_last_answer": "Right, so the mechanism — well, you have to understand, lean is really a philosophy before it's a toolset, and that's something most people get wrong. It goes all the way back to Toyota, and honestly if you read Ohno's original writing, it's almost spiritual, it's about respect for people. Which reminds me, I once toured a plant in Nagoya — incredible experience, the discipline on that floor, the 5S was immaculate, I still think about the way they ran their andon cords. And you know what's funny, my mentor early in my career, this old plant manager named Gus, he used to say culture eats strategy for breakfast, and I've carried that with me through every facility. People always want to talk about the tools, the kanban, the SMED, but the real work is hearts and minds. I could honestly talk about this all day — there's so much depth to it once you've lived it the way I have.",
+  "session_state": {
+    "drilled_topics": ["plant-scope", "specific-initiative", "baseline-vs-result", "mechanism-of-change"],
+    "current_competency_target": "problem-solving-process",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "problem-solving-process",
+    "missing_evidence": [
+      { "competency": "problem-solving-process", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: lean is really a philosophy before it's a toolset",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: cuts off the lean-philosophy tangent and forces the concrete floor-level change — which line, what process or layout was altered, the baseline-to-result number and timeframe — to test whether a real operational intervention occurred"
+    ]
+  }
+}

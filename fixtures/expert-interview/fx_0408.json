@@ -1,0 +1,42 @@
+{
+  "id": "fx_0408",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Director of Clinical Operations\n\nProfile: Healthcare operations leader with 13 years running ambulatory and multi-site clinic operations. Track record of improving patient access, throughput, and care-team workflows in value-based settings.\n\nValencia Health Network — Director, Clinical Operations (2018-present)\n- Lead operations for a network of outpatient clinics; accountable for patient access, appointment throughput, and care-team staffing.\n- Drove a scheduling redesign that meaningfully reduced patient wait times and improved provider utilization.\n- Stood up a centralized intake function that shortened the time from referral to first appointment.\n- Partnered with quality leadership to improve gap-closure on preventive care measures.\n\nCedar Point Medical Group — Operations Manager (2013-2018)\n- Managed front-office and back-office operations for several primary-care sites.\n- Led the rollout of a new EHR workflow and an associated staff-training program.\n\nSkills: clinic operations, patient access/scheduling, EHR workflow (Epic), care-team staffing models, value-based care metrics, regulatory compliance.\nEducation: MHA, University of Washington; BS Nursing.",
+  "jd": "Valencia Health Network is hiring a Director of Clinical Operations to own access and throughput across a 12-clinic ambulatory network in a value-based contracting environment. You will be accountable to the VP of Operations for hard, measurable targets: third-next-available appointment, no-show rate, provider panel utilization, referral-to-first-visit cycle time, and cost-per-visit. The role manages a multi-site operations team and partners with clinical quality on HEDIS gap closure. We are specifically looking for a leader who quantifies their impact — when asked what a change delivered, we expect numbers (percentage-point movements, days reduced, dollars) and the timeframe, not a narrative of activity. You will present operational results monthly to the network's executive committee. This role reports to the VP of Operations.",
+  "history": [
+    { "q": "Give me the shape of your role at Valencia — how many clinics, what operational metrics are you accountable for?" },
+    { "q": "You led a scheduling redesign. What was the measurable change in patient wait time, and over what period?" },
+    { "q": "Let's quantify the centralized intake work — how many days did referral-to-first-visit drop, from what to what?" },
+    { "q": "What was the no-show rate before and after your interventions?" },
+    { "q": "On provider utilization — give me the before and after numbers." },
+    { "q": "Pick the one initiative you're proudest of and give me the hard metric: the number, and the timeframe it moved over." }
+  ],
+  "candidate_last_answer": "Oh, that's a great one, and it really takes me back. So this redesign — it actually reminds me of when I first started in healthcare, I was a floor nurse and we had this charge nurse, Diane, who completely changed how I think about workflow. And that whole experience got me into operations in the first place. And you know, the clinic we did this at, it's in this beautiful old building downtown, the architecture is incredible, there's this stained-glass atrium. The staff there are some of the most dedicated people I've ever worked with — one of our MAs, she'd been there 22 years. We threw her a retirement party last spring, it was wonderful. Anyway, healthcare is really a people business at the end of the day, that's what I always come back to.",
+  "session_state": {
+    "drilled_topics": ["role-scope", "scheduling-wait-time", "intake-cycle-time", "no-show-rate", "provider-utilization"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it really takes me back",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cut off the personal-history tangent and force a single hard metric for the proudest initiative — a before-and-after number plus the timeframe it moved over — rather than a story about people and the building"
+    ]
+  }
+}

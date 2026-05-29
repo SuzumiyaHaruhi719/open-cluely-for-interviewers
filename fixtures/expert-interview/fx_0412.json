@@ -1,0 +1,55 @@
+{
+  "id": "fx_0412",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Senior Research Scientist — Machine Learning\n\nProfile: World-class ML researcher and one of the most cited voices in applied recommendation systems. Repeatedly delivered industry-defining breakthroughs that reshaped how the field thinks about ranking.\n\nHelios AI — Senior Research Scientist (2020-present)\n- Single-handedly invented a novel ranking architecture that became the gold standard across the company and, frankly, the industry.\n- My models drove unprecedented, record-shattering engagement gains that no team has come close to replicating.\n- Authored the most influential internal paper in company history; it is required reading for every new hire.\n- Mentored dozens of scientists, nearly all of whom credit me as the single biggest reason for their success.\n\nNimbus Research Lab — Research Scientist (2016-2020)\n- Built best-in-class models that crushed every baseline by enormous margins.\n- Won every internal award available, multiple years running.\n\nSkills: deep learning, learning-to-rank, sequence models, large-scale training, causal inference.\nPublications: numerous top-venue papers (NeurIPS, ICML, KDD).\nEducation: PhD Machine Learning, top-5 program.",
+  "jd": "Helios AI seeks a Senior Research Scientist for our recommendation and ranking team. You will design, train, and ship models that affect core engagement and revenue metrics for hundreds of millions of users, and you will be expected to defend your results with rigor: exact offline metrics, online A/B lift with confidence intervals, the baseline you beat, and the slice analysis behind any headline number. We work in a culture of intellectual honesty — claims like 'record-shattering gains' mean nothing here without the methodology, the experiment design, and the caveats. Strong candidates can distinguish their individual contribution from their team's, state the actual deltas, and explain exactly how an improvement was measured and validated. This role partners with product and engineering and reports to the Director of ML Research.",
+  "history": [
+    { "q": "Give me an overview of your work at Helios — your team and your focus area." },
+    { "q": "You say you 'invented a novel ranking architecture.' Describe the core technical idea in one or two sentences." },
+    { "q": "What was the baseline you compared against?" },
+    { "q": "What was the offline metric and the delta — exact numbers?" },
+    { "q": "Did this ship to production? What was the online A/B result?" },
+    { "q": "What engagement metric, and over what population and duration?" },
+    { "q": "You said 'record-shattering.' Record relative to what prior result, with what number?" },
+    { "q": "What was the confidence interval on that online lift?" },
+    { "q": "Were there segments where the model underperformed the baseline?" },
+    { "q": "Who else worked on this model, and what did they own versus you?" },
+    { "q": "What was the training data scale and the compute footprint?" },
+    { "q": "How did you guard against the offline-online metric gap?" },
+    { "q": "What was the single hardest technical obstacle, and how did you solve it?" },
+    { "q": "Did the gains hold up over the following two quarters, or did they decay?" },
+    { "q": "If you had to put one defensible number on your individual impact, what is it?" },
+    { "q": "How was that number attributed specifically to you rather than the team or concurrent changes?" },
+    { "q": "What's the methodology behind that attribution — holdouts, decomposition, something else?" },
+    { "q": "Give me the exact figure, the measurement method, and the one caveat you'd flag to a skeptical reviewer." }
+  ],
+  "candidate_last_answer": "Honestly, the impact was just astronomical — we're talking easily a 10x improvement in engagement, basically overnight, and I'd say I personally drove well north of 90% of that. The model was so far ahead of anything else that there really aren't any caveats worth mentioning; it just worked, across the board, for everyone. People still talk about it. I don't have the exact confidence interval in front of me, but trust me, it was off the charts — the biggest lift anyone at the company had ever seen, by a mile.",
+  "session_state": {
+    "drilled_topics": ["helios-overview", "core-idea", "baseline", "offline-delta", "shipped-ab", "engagement-metric", "record-claim", "confidence-interval", "underperforming-segments", "team-attribution", "data-and-compute", "offline-online-gap", "hardest-obstacle", "gain-durability", "individual-impact-number", "attribution-method", "attribution-methodology"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: easily a 10x improvement in engagement, basically overnight",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force a defensible, exact figure — the precise offline metric and delta, the online lift with its confidence interval, and the measurement method — replacing the unverifiable 10x/90%/off-the-charts claims, or an admission that the numbers can't be substantiated"
+    ]
+  }
+}

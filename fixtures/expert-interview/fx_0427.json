@@ -1,0 +1,42 @@
+{
+  "id": "fx_0427",
+  "tags": {
+    "industry": "product-management",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Kelsey Mraz — Product Manager\n\nFinch Payments (2022–present), Product Manager\n- Own the merchant-onboarding flow\n- Shipped a KYC redesign and a self-serve dashboard\n\nNimbus Apps (2020–2022), Associate PM\n- Supported the mobile checkout team\n\nSkills: roadmapping, A/B testing, SQL, user research, Jira\nB.S., Information Systems",
+  "jd": "Finch Payments is hiring a Product Manager to own the merchant-onboarding experience end-to-end. You will set the roadmap, define success metrics (activation rate, time-to-first-transaction, onboarding drop-off), run experiments, and coordinate engineering, design, compliance, and risk. We expect a PM who owns outcomes: when a launch underperforms, you can explain what you decided, what you'd do differently, and what was within your control — not just what other teams did wrong. Strong analytical chops (SQL, experiment design) and the ability to navigate compliance constraints are required. Reports to the Group PM, Growth.",
+  "history": [
+    { "q": "Tell me about the merchant-onboarding flow you own at Finch — what are the key metrics?" },
+    { "q": "Walk me through the KYC redesign. What problem were you solving and what did you ship?" },
+    { "q": "What happened to your activation rate or drop-off after the KYC redesign launched?" },
+    { "q": "It sounds like it underperformed. What did your post-launch analysis show?" },
+    { "q": "Setting aside the other teams — what would you, as the PM, have done differently?" }
+  ],
+  "candidate_last_answer": "Look, the redesign itself was solid — the real issue was that engineering shipped it three sprints late and cut two of the validation steps I'd speced without telling me, so the flow went out half-baked. Compliance also kept moving the goalposts on what fields we had to collect, which wrecked the funnel. And design gave me mocks that tested poorly. Honestly if those teams had just executed what I laid out, the activation numbers would've been fine. I did my part — the spec was right. It's hard to own a result when everyone around you drops the ball.",
+  "session_state": {
+    "drilled_topics": ["onboarding-metrics", "kyc-redesign-scope", "post-launch-metric", "post-launch-analysis"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I did my part — the spec was right",
+      "must-be-question-type: counterfactual",
+      "expected-yield: forces the candidate past blaming engineering, compliance, and design to name one decision within her own control she would change — a scope cut she should have caught, a metric she failed to guard, or an escalation she didn't make — revealing genuine ownership"
+    ]
+  }
+}

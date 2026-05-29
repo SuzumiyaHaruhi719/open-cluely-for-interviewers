@@ -1,0 +1,45 @@
+{
+  "id": "fx_0434",
+  "tags": {
+    "industry": "education",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Priya Raman — Instructional Designer / Learning Experience Designer\n\nExperience:\nLearning Experience Designer, corporate L&D team (2020-present)\n- Designed and built onboarding and compliance learning paths for a distributed workforce\n- Partnered with SMEs to translate dense policy material into scenario-based e-learning\n- Migrated legacy slide-based courses into an interactive LMS format\n- Ran learner feedback sessions and iterated on course design\n\nCurriculum Developer, online course provider (2017-2020)\n- Developed self-paced courses in data and analytics topics for adult learners\n- Wrote assessments and built rubrics aligned to learning objectives\n- Collaborated with video and production teams on multimedia lessons\n\nSkills: instructional design (ADDIE, backward design), Articulate Storyline, LMS administration, assessment design, SME facilitation\nEducation: M.Ed. Learning Design & Technology",
+  "jd": "We are hiring a mid-level Instructional Designer for our learning-and-development org supporting a 4,000-person enterprise. You'll own end-to-end design of learning programs — needs analysis, design, build, and crucially measuring whether the learning changed on-the-job behavior. We care a lot about impact evidence: completion is table stakes; we want designers who instrument for knowledge gain, behavior change, and business outcome (Kirkpatrick L2-L4). You will partner with SMEs and business stakeholders, defend design decisions with learning science, and run iterative improvements based on assessment data. Strong candidates can point to a specific program where they measured learning impact, not just delivery. Tools: Storyline/Rise, an enterprise LMS, basic data analysis of assessment results.",
+  "history": [
+    { "q": "Tell me about a learning program you designed end to end — pick the one you're proudest of." },
+    { "q": "For that compliance path, how did you do the needs analysis up front?" },
+    { "q": "How did you measure whether learners actually gained knowledge, beyond completion?" },
+    { "q": "Did you track whether the training changed anything on the job — behavior or a business metric?" },
+    { "q": "Walk me through a time learner feedback made you redesign something specific." },
+    { "q": "How do you handle an SME who insists on cramming in content learners don't need?" },
+    { "q": "What's your assessment philosophy — how do you write an item that tests understanding, not recall?" },
+    { "q": "Take that scenario-based compliance course — what was the measurable impact, in numbers if you have them?" }
+  ],
+  "candidate_last_answer": "You know, what I find really fascinating these days is the whole shift toward AI in learning. I've been reading so much about generative AI tutors and adaptive learning — I think it's going to completely transform our field. I actually just finished a great podcast series on the future of work and how skills are becoming the new currency. And it ties into this bigger conversation about lifelong learning, right? Like, the half-life of a skill keeps shrinking. I'm also really passionate about accessibility and universal design for learning, which I think doesn't get enough attention. There's so much happening in the space — it's honestly an exciting time to be an instructional designer.",
+  "session_state": {
+    "drilled_topics": ["flagship-program", "needs-analysis", "knowledge-gain-measurement", "behavior-change-tracking", "feedback-driven-redesign", "sme-content-pushback", "assessment-philosophy"],
+    "current_competency_target": "impact-measurement",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "impact-measurement",
+    "missing_evidence": [
+      { "competency": "impact-measurement", "evidence_type": "metric" },
+      { "competency": "impact-measurement", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it's honestly an exciting time to be an instructional designer",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pull her off the AI/future-of-work tangent and back to the specific compliance course — force one concrete impact number (pre/post score delta, pass rate, or a downstream behavior/violation metric) and how she instrumented it, since she has now twice avoided giving any figure"
+    ]
+  }
+}

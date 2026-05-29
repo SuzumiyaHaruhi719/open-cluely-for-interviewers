@@ -1,0 +1,50 @@
+{
+  "id": "fx_0424",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "孙佳怡 / Staff Research Scientist — NLP & LLM\n\n核心标签\nLLM / Transformer / RLHF / RAG / fine-tuning / instruction-tuning / distillation / quantization / inference optimization / vLLM / embedding / retrieval / evaluation / benchmark / SFT / DPO / LoRA / multilingual / 大模型 / 预训练 / 对齐 / 推理加速 / 检索增强 / 模型压缩 / 数据飞轮\n\n个人简介\n资深研究科学家，专注大语言模型的 alignment、retrieval-augmented generation 与 inference 优化，做过从 data pipeline 到 production serving 的端到端 research-to-product 工作。\n\n工作经历\n智核 AI 研究院 Staff Research Scientist（2021 年至今）\n- 负责对话产品底层 LLM 的 fine-tuning 与 alignment 研究\n- 主导一个 RAG 检索增强项目，显著降低了 hallucination\n- 推动 inference 优化，做过 quantization 与 serving 层的 latency 调优\n- 带 2 名初级研究员，负责课题拆解与 code review\n\n云脑科技 Research Engineer（2018 年至 2021 年）\n- 做过多语言文本分类与 embedding 检索系统\n- 参与内部 evaluation benchmark 的搭建\n\n技能\nPyTorch、Transformers、vLLM、RAG、RLHF/DPO、LoRA、distillation、quantization、retrieval、evaluation\n\n自我评价\n既能做扎实的 research，也愿意把模型推到 production，对指标和 ablation 比较较真。",
+  "jd": "智核 AI 研究院正在招聘一名资深研究科学家（Staff Research Scientist），负责对话产品底层大语言模型的 alignment 与 retrieval-augmented generation 研究，并推动从研究到上线的落地。该岗位要求候选人能就自己主导的项目讲清楚完整链条：面对的具体问题、采用的技术方案、为什么这样设计、最终在 hallucination 率、准确率或 latency 等指标上拿到的可量化结果以及 ablation 证据。岗位需要做严谨的离线评测与线上对照实验，并能向研究负责人清晰陈述技术取舍。技术栈以 PyTorch、Transformers、vLLM、RAG、DPO/LoRA 为主。",
+  "history": [
+    { "q": "先介绍下你在智核现在主要负责哪一块研究？" },
+    { "q": "你简历里关键词很多，挑一个你最有把握的项目，我们深入聊。" },
+    { "q": "就说那个 RAG 项目——当时产品上遇到的核心问题是什么？" },
+    { "q": "你给这个项目定的目标和评测指标是什么？" },
+    { "q": "整体的检索增强方案你是怎么设计的？检索这一层用了什么？" },
+    { "q": "为什么选这套检索方案，而不是直接用更大的模型或纯 prompt 工程？" },
+    { "q": "hallucination 你是怎么量化评测的？用了什么 benchmark 或标注？" },
+    { "q": "最终 hallucination 率从多少降到多少？还有哪些指标受影响？" },
+    { "q": "有没有做 ablation？哪个组件贡献最大？" },
+    { "q": "上线后线上对照实验的结果和离线评测一致吗？" },
+    { "q": "latency 这块，引入检索后是不是变慢了？你怎么权衡的？" },
+    { "q": "这个项目里你个人具体写了哪部分、决策了哪部分？" },
+    { "q": "带的两个初级研究员，你怎么拆解任务、怎么把关质量？" },
+    { "q": "如果让你重做一次，哪一步你会改？" },
+    { "q": "你说『显著降低了 hallucination』——『显著』具体是多大的量级，统计上站得住吗？" }
+  ],
+  "candidate_last_answer": "好。Situation：我们对话产品在涉及公司内部知识的问题上 hallucination 很严重，用户问 specific 的产品政策，模型经常一本正经地编。Task：我的目标是把基于内部知识库这类问题的 hallucination 率压下来，同时 latency 不能明显恶化，我们设的红线是 p95 增加不超过 200ms。Action：我设计了一套 RAG，retrieval 层用 dense embedding（bge 系列）加 BM25 的 hybrid，再接一个 cross-encoder 做 rerank，prompt 里强制要求模型只能基于检索到的 passage 作答、给不出依据就回答不知道；我还自己标了一个 600 条的内部问答评测集，用人工加 LLM-as-judge 双重打分。Result：在这个评测集上 hallucination 率从 31% 降到 9%，answer accuracy 从 62% 升到 84%，p95 latency 只增加了约 140ms，线上 A/B 的用户负反馈率也降了差不多一半。Ablation 显示 rerank 那一层贡献最大，去掉它 hallucination 会回弹到 18% 左右。整体来看效果是非常显著的，基本解决了这个问题。",
+  "session_state": {
+    "drilled_topics": ["现岗位职责", "选定项目", "rag核心问题", "目标与指标", "检索方案设计", "方案取舍", "hallucination量化", "结果数字", "ablation", "线上线下一致性", "latency权衡", "个人贡献边界", "带教方式", "复盘改进"],
+    "current_competency_target": "research-depth",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "research-depth",
+    "missing_evidence": [
+      { "competency": "research-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 整体来看效果是非常显著的，基本解决了这个问题",
+      "must-be-question-type: teach-back",
+      "expected-yield: 在已有 31%→9% 数字之上，逼候选人讲清『显著』的统计置信度——评测集 600 条的标注一致性、LLM-as-judge 与人工打分的吻合度、置信区间或显著性检验，验证结论是否经得起方法论推敲而非口头强调"
+    ]
+  }
+}

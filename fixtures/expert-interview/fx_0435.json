@@ -1,0 +1,48 @@
+{
+  "id": "fx_0435",
+  "tags": {
+    "industry": "operations",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Greg Halloran — VP Operations\n\n12+ years in operations leadership across e-commerce fulfillment and last-mile delivery.\n\n- VP Operations, regional e-commerce fulfillment (2019-present): own 3 distribution centers, ~900 staff, P&L for fulfillment cost.\n- Director of Ops, 3PL provider (2015-2019): ran client onboarding and warehouse productivity programs.\n- Ops Manager, retail DC (2011-2015).\n\nFocus areas: warehouse throughput, labor planning, cost-per-unit, SLA/on-time performance, safety.\nEducation: B.S. Industrial Engineering. Lean Six Sigma Black Belt.",
+  "jd": "High-growth retailer seeks a VP of Operations to own a multi-site fulfillment network (4 DCs, ~1,200 associates) reporting to the COO. You will own cost-per-unit-shipped, on-time-ship SLA, peak-season readiness, and a safety record under heavy scrutiny. The immediate mandate: take 12% out of fulfillment cost-per-unit over 18 months without breaking the 98% on-time SLA, while integrating a new WMS and absorbing 30% volume growth. We need an operator who can be specific about the levers — labor model, slotting, automation ROI, carrier mix — and who can tell a crisp before/after story with numbers. You will present peak readiness and cost programs to the executive team. Calm under operational fire is essential.",
+  "history": [
+    { "q": "Give me the shape of your current role — sites, headcount, the cost number you own." },
+    { "q": "What's your current cost-per-unit-shipped, and where was it when you started?" },
+    { "q": "Pick the single biggest lever you pulled on cost. Walk me through it." },
+    { "q": "When you changed the labor model, what specifically changed — shifts, flex staffing, productivity standards?" },
+    { "q": "How did you protect on-time SLA while taking out cost?" },
+    { "q": "Tell me about a peak season that went sideways. What happened?" },
+    { "q": "You've done a WMS-adjacent change before — how did you de-risk the cutover?" },
+    { "q": "Talk about your safety record. Any serious incident, and what you changed after?" },
+    { "q": "How do you decide whether an automation investment pays back?" },
+    { "q": "Carrier mix — give me a decision where you shifted volume between carriers and why." },
+    { "q": "Let's get concrete: that biggest cost lever — what was the cost-per-unit before and after, and over how many months?" }
+  ],
+  "candidate_last_answer": "Right, so, okay — the cost-per-unit thing, that's, um, that's a great question. So there were a lot of moving parts, honestly, and it's funny because peak that year was insane, we had a whole thing with one of the carriers, but anyway. So the labor model — we did a bunch there, and slotting, slotting was huge, I keep meaning to pull the exact slide. Before and after... I want to say it came down meaningfully, like it was a good chunk, I'd have to check the deck for the exact number but it was real, the CFO was happy. Over how many months — it was kind of a rolling thing, you know, some of it landed fast and some of it took a while, and then peak kind of muddied the numbers for a quarter. Sorry, what was the second part of your question?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cost-per-unit-baseline", "biggest-lever", "labor-model-change", "sla-protection", "peak-failure", "wms-cutover", "safety-record", "automation-payback", "carrier-mix-decision"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "operational-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: like it was a good chunk, I'd have to check the deck for the exact number",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cut through the rambling and force a single committed number — the before and after cost-per-unit (even a best-estimate range) and the specific number of months, plus which lever (labor vs slotting) actually drove most of the delta, so the vague 『good chunk』 becomes a verifiable figure"
+    ]
+  }
+}

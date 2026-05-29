@@ -1,0 +1,46 @@
+{
+  "id": "fx_0430",
+  "tags": {
+    "industry": "education",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Maya Okonkwo\nB.A. Education & Psychology (junior), State University — GPA 3.6\n\nExperience:\n- Volunteer tutor, City Literacy Project (1 year): 1:1 reading tutoring for 3rd-5th graders\n- Summer camp counselor, STEM day camp (2 summers): led groups of ~12 kids, ages 8-10\n- Peer note-taker, campus disability services\n\nProjects:\n- Designed a 4-week phonics mini-curriculum for my tutoring kids as a course project\n\nSkills: lesson planning basics, Google Classroom, behavior management (camp setting), Spanish (conversational)\nSeeking: curriculum/instructional design internship at an ed-tech company",
+  "jd": "EdTech startup seeks a Curriculum Design Intern (paid, 12 weeks, hybrid) to support our K-5 literacy product team. You will: help draft and revise lesson content aligned to state standards, write formative assessment items, observe classroom pilots and synthesize teacher feedback, and assist the learning-science team in tagging content to skill progressions. We are looking for someone curious about how kids actually learn to read, comfortable taking feedback and iterating fast, and able to write clearly for both teachers and 7-year-olds. Bonus: any tutoring experience, familiarity with the science of reading, or basic data literacy (reading a simple item-analysis report). You'll be mentored by a senior learning designer and ship real content used in classrooms.",
+  "history": [
+    { "q": "Tell me about your tutoring experience — who were the kids and what were you actually teaching?" },
+    { "q": "You built a 4-week phonics mini-curriculum. Walk me through how you sequenced it." },
+    { "q": "How did you know whether a kid had actually learned a phonics skill versus just memorized that day's words?" },
+    { "q": "One of your students plateaus for three weeks — same errors. What do you do?" },
+    { "q": "What does 'science of reading' mean to you, in your own words?" },
+    { "q": "We pilot a lesson and 8 of 20 kids miss the same assessment item. How would you start figuring out why?" },
+    { "q": "Say the teacher feedback and the assessment data disagree — teacher loves the lesson, scores are flat. Which do you trust?" },
+    { "q": "How would you write the same instruction differently for a teacher versus directly for a 7-year-old?" },
+    { "q": "Imagine we ask you to revise a lesson that's testing poorly. Where do you start — the content, the assessment item, or the sequencing?" }
+  ],
+  "candidate_last_answer": "Hmm, before I answer that, can I ask you something first? When you say the lesson is 'testing poorly' — do you mean the kids are getting the assessment questions wrong, or do you mean teachers are complaining it's hard to teach, or that engagement is low? Because those would send me in completely different directions. And second — is the assessment item itself something we've validated, or is it possible the item is just badly written and the lesson is actually fine? I guess what I'm getting at is, I wouldn't want to start revising the content if the real problem is a bad test question. So what would you say the actual signal is here?",
+  "session_state": {
+    "drilled_topics": ["tutoring-context", "curriculum-sequencing", "skill-mastery-check", "plateau-intervention", "science-of-reading", "item-failure-diagnosis", "teacher-vs-data", "audience-adapted-writing"],
+    "current_competency_target": "instructional-design-judgement",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "instructional-design-judgement",
+    "missing_evidence": [
+      { "competency": "instructional-design-judgement", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "data-rigor", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I wouldn't want to start revising the content if the real problem is a bad test question",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: pin her to actually commit to a diagnostic sequence — granting that the item is validated and scores are genuinely low, what is the first concrete thing she inspects, what would distinguish a sequencing problem from a content-clarity problem, and what evidence would make her stop and change course"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "fx_0448",
+  "tags": {
+    "industry": "sales",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "MID-MARKET ACCOUNT EXECUTIVE | SaaS | B2B | Quota Carrier | Hunter & Farmer\n\nKEYWORDS: MEDDIC, MEDDPICC, BANT, Challenger Sale, SPIN, Sandler, value selling, solution selling, consultative selling, land-and-expand, net revenue retention, logo acquisition, pipeline generation, multithreading, champion building, mutual action plan, discovery, qualification, forecasting, Salesforce, Outreach, Gong, Clari, ZoomInfo, Salesloft, ABM, outbound cadence, social selling, quota attainment, ACV, ARR, win rate, sales cycle compression.\n\nPROFILE\nResults-driven, quota-crushing closer with a relentless hunter mentality and a consultative, customer-first approach. I run a disciplined MEDDPICC-qualified pipeline and consistently overachieve through rigorous discovery and value-based selling.\n\nEXPERIENCE\nMid-Market Account Executive — Horizon SaaS Co. (3 years, current)\n- Carry a $1.1M annual ACV quota across a mid-market territory (200-1500 employee accounts).\n- Consistently exceed quota through full-cycle selling, multithreaded deals, and disciplined forecasting.\n- Build champions, run mutual action plans, and compress sales cycles via tight qualification.\n\nSales Development Representative → Account Executive — Beacon Analytics (2 years prior)\n- Promoted from SDR after exceeding outbound pipeline targets.\n- Sourced and closed net-new logos in a competitive analytics market.\n\nSKILLS: Salesforce, Outreach, Gong, Clari, MEDDPICC, value selling, forecasting, negotiation.\nEDUCATION: B.A. Communications.",
+  "jd": "We are hiring a Mid-Market Account Executive for our B2B SaaS sales team, reporting to a Mid-Market Sales Manager. You will own a net-new and expansion quota in a defined territory, run full-cycle deals, and forecast accurately in Salesforce/Clari. We use MEDDPICC as our qualification standard but care far more about whether you can actually apply it on a real deal than whether you can recite it. In interviews we go deep on one specific deal: we will ask you to walk through the metrics, the economic buyer, the decision criteria, the competition, and exactly what you personally did to move it — and we will keep drilling until we hit specifics. We want sellers who speak in concrete numbers and named situations, not frameworks and adjectives. Requirements: 3+ years closing B2B SaaS deals, demonstrated quota attainment with real figures, and the ability to dissect a deal you ran without hiding behind methodology jargon.",
+  "history": [
+    { "q": "Tell me about your current territory — segment, quota, and how you did against it last year." },
+    { "q": "You list MEDDPICC heavily. Pick your most recent closed-won deal and let's walk it through that framework, starting with the Metrics — what was the customer's quantified business case?" },
+    { "q": "Who was the Economic Buyer on that deal, by role, and how many conversations did you personally have with them?" },
+    { "q": "What were the Decision Criteria the customer actually used to choose you over the alternative?" },
+    { "q": "Who was the competition, and what specifically did you do to win against them?" },
+    { "q": "What was the ACV and the length of the sales cycle on that deal?" },
+    { "q": "You mentioned you built a champion. Name the person's role and tell me one specific thing they did internally on your behalf." },
+    { "q": "Walk me through the single hardest moment in that deal — the point where you nearly lost it." },
+    { "q": "What did you personally do at that moment to save it? Not the team — you." },
+    { "q": "Let's talk forecasting. How did you call this deal in Clari in the quarter before it closed, and were you right?" },
+    { "q": "Give me the actual numbers: what was your quota attainment percentage last year?" },
+    { "q": "Of that attainment, how much was net-new logo versus expansion?" },
+    { "q": "Tell me about a deal you lost last year and the real reason you lost it." },
+    { "q": "What would the customer who chose your competitor say was the deciding factor?" },
+    { "q": "If I called your sales manager, what's the one thing they'd say you need to improve?" },
+    { "q": "Last one on that won deal: give me the customer's name, the buyer's title, and one number from their business case — just so I can picture the actual deal." }
+  ],
+  "candidate_last_answer": "Right, so the way I'd frame it is this was a textbook land-and-expand motion executed with surgical MEDDPICC discipline. I really leaned into a value-based, customer-first narrative and built deep multithreaded champion alignment across the buying committee. It was all about quantifying the pain, aligning to their strategic priorities, and co-creating a compelling event through a mutual action plan. I'd say the deal is a great proof point for my consultative, hunter-farmer approach and my ability to drive urgency through rigorous qualification. Honestly it's a masterclass in running a tight, well-qualified cycle end to end.",
+  "session_state": {
+    "drilled_topics": ["territory-attainment", "meddpicc-metrics", "economic-buyer", "decision-criteria", "competition-win-action", "acv-and-cycle", "champion-named-action", "hardest-moment", "personal-save-action", "clari-forecast-accuracy", "attainment-pct", "newlogo-vs-expansion", "lost-deal-reason", "competitor-deciding-factor", "manager-feedback"],
+    "current_competency_target": "communication",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "communication",
+    "missing_evidence": [
+      { "competency": "communication", "evidence_type": "named-entity" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a textbook land-and-expand motion executed with surgical MEDDPICC discipline",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: strips away the rehearsed methodology buzzwords and forces one concrete, falsifiable detail about the actual deal — the customer/company name, the buyer's specific title, and at least one real number from their business case — exposing whether a real deal exists behind the framework recitation or only polished sales-speak"
+    ]
+  }
+}

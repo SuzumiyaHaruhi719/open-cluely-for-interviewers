@@ -1,0 +1,50 @@
+{
+  "id": "fx_0460",
+  "tags": {
+    "industry": "design",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "VP of Design & Experience | 16+ years architecting world-class, human-centered design organizations\n\n- Visionary design leader who operationalizes design thinking, service design, and systems thinking to deliver delightful, frictionless, end-to-end experiences at enterprise scale\n- Built and scaled best-in-class, cross-functional design orgs spanning product design, UX research, content design, and design ops\n- Champion of design-led transformation, democratized design systems, and a culture of radical user empathy\n- Drove paradigm-shifting omnichannel experience strategy across web, mobile, and emerging surfaces\n- Stakeholder-aligned storyteller; partners fluidly with Product, Engineering, and the C-suite to unlock strategic value\n- Evangelist for accessibility-first, inclusive, and ethically grounded design practices\n- Deep fluency in design maturity models, North Star frameworks, OKRs, and experience-led growth\n- Frequent keynote speaker on the future of human-centered design\n\nExperience\nLumen Digital — VP, Design & Experience (2021-present)\nVertex Software — Senior Director, Product Design (2017-2021)\nPrior: design leadership roles across consumer and enterprise SaaS\n\nEducation: MFA, Interaction Design; BFA, Visual Communication\nSkills: design systems, service design, design ops, qualitative & quantitative research, design strategy, org design, executive storytelling.",
+  "jd": "Lumen-scale enterprise SaaS company seeks a VP of Design to lead a 70-person design organization (product design, research, content, design ops) reporting to the Chief Product Officer. You will own design quality and velocity across the platform, the maturity of the design system, and the org's operating model. We are looking for a leader who owns outcomes — including failures. In this interview we go deep on a design initiative that did not land: what the leader personally decided, where their own judgment was wrong, and what they changed in their leadership. We are wary of executives who attribute failures to engineering, leadership churn, or 'the org.' Requirements: 12+ years design experience with 5+ leading orgs of 40+, a track record of measurable experience and business impact, and demonstrated accountability for results.",
+  "history": [
+    { "q": "Let's start with scope at Lumen — org size, structure, who you report to, what you own." },
+    { "q": "Your resume mentions 'design-led transformation.' Pick one concrete initiative and tell me what it actually was." },
+    { "q": "You launched a new design system. What problem was it solving and what was the adoption target?" },
+    { "q": "Six months in, what was the actual adoption rate across product teams?" },
+    { "q": "That's below target. Walk me through why adoption stalled." },
+    { "q": "You said engineering didn't prioritize the migration. Did design publish a migration path and tokens they could actually use?" },
+    { "q": "Whose decision was it to ship the system before the migration tooling was ready?" },
+    { "q": "As the VP, what was your role in that sequencing decision?" },
+    { "q": "Did you have a metric for design-system health, and did you review it regularly?" },
+    { "q": "When adoption flatlined, what did you personally do to course-correct?" },
+    { "q": "Looking back, what part of this was a failure of your own leadership specifically?" },
+    { "q": "Take your time. I'm asking for the decision YOU made that you'd now make differently." },
+    { "q": "So name it concretely: what did you personally get wrong, and what did you change in how you lead as a result?" }
+  ],
+  "candidate_last_answer": "...... (long pause) Okay. Let me actually answer that. For a while my honest reaction was that this was an engineering-prioritization problem and a leadership-churn problem — we lost two eng directors mid-rollout, and I do think that hurt us. But if I'm being straight with you: I shipped the system before the migration tooling was ready because I wanted the launch milestone, and that was my call, not engineering's. I told myself adoption would follow the announcement. It didn't. What I changed is that I now refuse to declare a platform 'launched' until the adoption path is paved and there's a health metric on the dashboard before, not after, the announcement.",
+  "session_state": {
+    "drilled_topics": ["org-scope", "transformation-initiative", "design-system-target", "actual-adoption-rate", "stall-reasons", "migration-tooling-gap", "sequencing-decision-owner", "vp-role-in-sequencing", "health-metric-review", "course-correction-action"],
+    "current_competency_target": "leadership-accountability",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "leadership-accountability",
+    "missing_evidence": [
+      { "competency": "leadership-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "leadership-accountability", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: my honest reaction was that this was an engineering-prioritization problem and a leadership-churn problem",
+      "must-be-question-type: counterfactual",
+      "expected-yield: now that the candidate has named his own miscall (shipping before tooling for the milestone), the concrete counterfactual — what he would have sequenced or traded off differently, and how his new 『paved path + health metric first』 rule would have changed the actual outcome — pinning the recovered admission to a verifiable leadership change rather than letting it slide back to blaming churn"
+    ]
+  }
+}

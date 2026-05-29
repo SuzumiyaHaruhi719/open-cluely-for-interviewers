@@ -1,0 +1,48 @@
+{
+  "id": "fx_0442",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "罗思齐 | 资深课程研发(Staff Curriculum Designer)\n\n在线教育公司,负责 K12 数学课程体系研发,8 年经验。\n\n经历\n- 现任某在线教育公司资深课程设计师,主导小学高年级数学课程线。\n- 牵头一套自适应练习题库的难度分层标准。\n- 带 3 名初级教研,负责课程评审与质量把关。\n\n做过的事\n- 重构小学数学单元结构,按知识点图谱重新编排。\n- 设计随堂诊断与错题归因机制。\n- 参与教师授课脚本规范的制定。\n\n技能:课程设计、知识图谱、教研管理、A/B 内容测试。\n教育:课程与教学论硕士。",
+  "jd": "我们为在线教育的教研中台招聘一名资深课程研发(Staff 级),向教研负责人汇报,作为小学数学课程线的技术与方法负责人。你将牵头知识点图谱与难度分层标准的制定、自适应练习的内容策略、以及教研团队的课程评审机制。我们正处在续报率承压、课程完课率参差的阶段,需要一位能用数据驱动课程迭代、并能讲清自己具体做了什么、效果如何的资深教研。我们特别看重:面对一个具体的课程指标问题(如完课率下滑),你如何定位原因、设计干预、并衡量结果。要求 6 年以上课程研发经验,有自适应/分层课程的实战经验。",
+  "history": [
+    { "q": "先讲讲你现在负责的课程线范围,以及你作为 Staff 级教研最核心的职责。" },
+    { "q": "你说牵头了自适应练习的难度分层标准,这个标准具体是怎么定义难度的?" },
+    { "q": "难度分层的依据是经验判断还是有数据支撑?用了哪些数据?" },
+    { "q": "我们聚焦一个具体问题:假设某个单元的完课率明显低于平均,你会怎么排查原因?" },
+    { "q": "好,假设你定位到是某节课的练习题太难导致弃课,你会怎么验证这个假设?" },
+    { "q": "你提到错题归因机制,它具体是怎么把一道错题映射到知识点薄弱项的?" },
+    { "q": "带 3 个初级教研,你怎么保证他们产出的课程质量一致?评审标准是什么?" },
+    { "q": "讲一个你主导、并且明确提升了某个指标的课程改版。指标从多少到多少?" },
+    { "q": "那次改版里,哪个具体的设计决策是起最大作用的?为什么?" },
+    { "q": "如果完课率提升了但续报没动,你会怎么解读这个现象?" },
+    { "q": "回到刚才那道太难的练习题——你打算怎么改它的难度,改完怎么知道有没有用?" }
+  ],
+  "candidate_last_answer": "说到练习题难度,其实我特别想聊聊我们整个行业现在的困境。你看现在双减之后,家长的焦虑反而更重了,大家都在抢那个所谓的优质师资。我之前看一篇报告说,现在小学生平均睡眠时间都不够,这背后其实是整个教育评价体系的问题。我觉得真正的教育应该是培养孩子的内驱力,而不是刷题。我自己也有孩子,我特别能理解家长那种既想减负又怕掉队的心态。所以我一直在想,我们做课程的人,是不是应该承担更多的社会责任,去引导一种更健康的学习观,而不只是盯着完课率这种冷冰冰的数字。",
+  "session_state": {
+    "drilled_topics": ["scope", "difficulty-tiering-definition", "data-basis", "completion-diagnosis", "hypothesis-validation", "error-attribution", "team-quality-bar", "metric-improving-revision", "key-decision", "completion-vs-renewal"],
+    "current_competency_target": "execution",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "execution",
+    "missing_evidence": [
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们做课程的人,是不是应该承担更多的社会责任",
+      "must-be-question-type: teach-back",
+      "expected-yield: pulls the candidate back from the macro education-policy/social-responsibility tangent to the concrete asked task — the specific change they would make to that one over-hard practice item and the exact metric/experiment (e.g. completion rate before/after, error-rate threshold) they would use to verify it worked"
+    ]
+  }
+}

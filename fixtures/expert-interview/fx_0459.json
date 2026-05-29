@@ -1,0 +1,40 @@
+{
+  "id": "fx_0459",
+  "tags": {
+    "industry": "legal",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Priya Nair — Senior Litigation Associate\nNew York, NY | priya.nair@email.com\n\nExperience\nVoss & Hartley LLP — Senior Associate, Commercial Litigation, 2019-present\n- Member of trial and case teams on commercial disputes, breach-of-contract, and trade-secret matters\n- Drafted dispositive motions, managed discovery, and prepared witnesses\n- Worked on a recent trade-secret matter that resolved favorably\n\nKline Barrett — Associate, 2016-2019\n- Litigation and pre-trial work for technology and financial-services clients\n\nEducation\nColumbia Law School, J.D., 2016\nNYU, B.A. Political Science, 2013\n\nAdmissions: New York; S.D.N.Y.; E.D.N.Y.\nSkills: e-discovery management, motion practice, deposition prep, mediation support.",
+  "jd": "Voss-tier litigation boutique seeks a Senior Litigation Associate (commercial disputes) on partnership track. You will run matters with real autonomy: own discovery strategy, take and defend depositions, draft and argue motions, and be the day-to-day client contact. We are evaluating for genuine individual ownership — partners need to know what YOU did on a matter, not what the team did. In the interview we drill hard on personal attribution: which strategic calls were yours, which arguments you drafted, which witnesses you personally prepared. Requirements: 6+ years commercial litigation, first-chair or significant second-chair trial exposure, strong writing, and the judgment to run a matter with limited supervision.",
+  "history": [
+    { "q": "Welcome. Tell me about the trade-secret matter on your resume — what was at stake and what was your role?" },
+    { "q": "You said the team handled discovery. I want your piece specifically: which part of the discovery strategy did you personally own?" },
+    { "q": "Let's go to the dispositive motion. Walk me through the single strongest argument and tell me who drafted it." }
+  ],
+  "candidate_last_answer": "Sure — so honestly there were a few matters running at once and we did great work across all of them. On the trade-secret case we built a really strong record and we won the key motion; on a separate breach-of-contract matter that same quarter we got a favorable settlement after we deposed their CFO; and we also handled an emergency TRO for a fintech client where we managed to get the injunction narrowed. In all three the team really pulled together — we divided the work, we kept the client calm, and we delivered. I'm proud of what we accomplished as a group across that whole stretch.",
+  "session_state": {
+    "drilled_topics": ["trade-secret-role", "discovery-ownership", "dispositive-motion-author"],
+    "current_competency_target": "individual-ownership",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "individual-ownership",
+    "missing_evidence": [
+      { "competency": "individual-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "legal-craft", "evidence_type": "mechanism" },
+      { "competency": "individual-ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we built a really strong record and we won the key motion",
+      "must-be-question-type: action-attribution",
+      "expected-yield: on the trade-secret matter specifically, the one strategic call or brief section the candidate personally authored and owned — narrowing her from three blended 『we』 stories to a single first-person account with a verifiable individual contribution"
+    ]
+  }
+}

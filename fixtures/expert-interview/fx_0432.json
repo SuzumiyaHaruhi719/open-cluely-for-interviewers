@@ -1,0 +1,53 @@
+{
+  "id": "fx_0432",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Daniel Reyes — VP of Sales\n\nSummary: 15 years in enterprise B2B SaaS sales, scaling revenue orgs from early-stage through growth. Built and led teams up to 80 quota-carriers plus SEs and SDRs.\n\nSelected accomplishments (STAR)\n\nVP Sales, Cloud security platform (2020-present)\n- Situation: Company at $22M ARR, flat net retention, no formal sales methodology, reps freelancing their process.\n- Task: Build a repeatable enterprise motion and re-accelerate growth toward a Series-D raise.\n- Action: Implemented MEDDICC across the org, restructured into pods (AE + SE + SDR), stood up a deal-desk for pricing governance, and rebuilt the comp plan to reward multi-year and expansion.\n- Result: Grew ARR from $22M to $61M over ~3 years; net revenue retention from 104% to 121%; win-rate on competitive deals from 31% to 44%.\n\nSr. Director of Sales, HR-tech SaaS (2016-2020)\n- Situation: Mid-market segment underperforming, 60% of reps missing quota.\n- Task: Fix mid-market productivity.\n- Action: Re-segmented territories on data, introduced a 30-60-90 ramp, and cut a bloated SKU set.\n- Result: Rep attainment from 40% to 72% of reps at quota; segment ARR up 2.3x in three years.\n\nRegional Sales Manager, infrastructure software (2011-2016)\n- Built and led a 9-person team in the West region; consistently 110%+ of regional target.\n\nSkills: enterprise sales methodology (MEDDICC), forecasting, comp design, pipeline analytics, sales leadership.\nEducation: B.S. Business Administration.",
+  "jd": "Late-stage SaaS company ($90M ARR, scaling to IPO) seeks a VP of Sales to own global new-logo and expansion revenue, reporting to the CRO. You will lead ~70 quota-carriers across three regions, own the number quarter to quarter, and bring forecasting discipline that survives board scrutiny. We need a leader who can: install a repeatable methodology that actually changes rep behavior (not just a CRM field), get forecast accuracy inside +/-5%, drive net revenue retention above 120%, and partner with product/marketing on a credible expansion motion. You will inherit a team with strong top-of-funnel but weak close rates and a forecast that has missed three of the last four quarters. We value leaders who speak in specifics — pipeline math, cohort retention, win/loss mechanics — over frameworks and slogans.",
+  "history": [
+    { "q": "Give me the headline on your current role — scope, number you own, team size." },
+    { "q": "You grew ARR from $22M to $61M. How much of that was new logo versus expansion?" },
+    { "q": "You rolled out MEDDICC. What specifically changed in how a rep ran a deal day to day?" },
+    { "q": "How did you know MEDDICC adoption was real and not just reps filling in fields?" },
+    { "q": "Net retention went 104% to 121%. What drove the expansion — seats, upsell tier, cross-sell?" },
+    { "q": "Walk me through one specific competitive deal you personally helped win." },
+    { "q": "What was your forecast accuracy quarter to quarter, and how did you measure it?" },
+    { "q": "The pod model — AE plus SE plus SDR. How did you handle credit and comp friction inside a pod?" },
+    { "q": "Tell me about a quarter you missed. What happened and what did you change?" },
+    { "q": "The deal-desk — what decisions did it actually own versus advise on?" },
+    { "q": "In the HR-tech role, attainment went 40% to 72% of reps at quota. Re-segmentation or ramp — which mattered more?" },
+    { "q": "You cut a 'bloated SKU set.' How many SKUs, and how did you decide what to kill?" },
+    { "q": "Let's get concrete on forecasting. Describe your weekly forecast process — the actual cadence and inputs." },
+    { "q": "If your number this quarter is at risk in week 7 of 13, what are the first three things you do?" },
+    { "q": "Our forecast has missed three of four quarters. In your first 90 days, what would you actually inspect first?" },
+    { "q": "Skip the framework — give me the single most important leading indicator you'd put on your dashboard day one, and why that one." }
+  ],
+  "candidate_last_answer": "Great question, and I love that you're pushing for specificity, because that's exactly how I operate. Look, at the end of the day, sales is about predictable, repeatable, scalable revenue execution. My north star is always pipeline coverage, conversion velocity, and rep productivity — those are the three pillars. I'm a huge believer in inspecting the funnel, driving accountability, and creating a high-performance culture where A-players win. So day one I'd be laser-focused on the metrics that matter, building a single source of truth, and instrumenting the business end to end so we're data-driven, not gut-driven. It's all about rigor, cadence, and execution discipline.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "new-vs-expansion-split", "meddicc-behavior-change", "meddicc-adoption-proof", "expansion-driver", "competitive-deal", "forecast-accuracy", "pod-comp-friction", "missed-quarter", "deal-desk-authority", "ramp-vs-segmentation", "sku-rationalization", "weekly-forecast-process", "at-risk-quarter-actions", "first-90-days-inspection"],
+    "current_competency_target": "forecasting-rigor",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "forecasting-rigor",
+    "missing_evidence": [
+      { "competency": "forecasting-rigor", "evidence_type": "mechanism" },
+      { "competency": "forecasting-rigor", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: pipeline coverage, conversion velocity, and rep productivity — those are the three pillars",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force him to drop the three-pillar slogan and name exactly ONE leading indicator, give its precise definition and the numeric threshold he'd alert on, and explain why he'd trust it earlier than the others to predict a forecast miss"
+    ]
+  }
+}

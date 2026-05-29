@@ -1,0 +1,48 @@
+{
+  "id": "fx_0406",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "金融实习生候选人\n\n教育：财经大学金融学大三在读，预计明年毕业。绩点 3.8。\n\n实习：和顺证券研究所，行业研究实习生（去年暑期，三个月）。协助分析师覆盖新能源板块，整理了 14 家公司的财务模型，独立完成两份行业数据周报。\n\n校园：院投资研究社副社长，组织过一次模拟交易比赛，参与 40 人。\n\n技能：Excel 财务建模、Wind 取数、Python 基础（pandas 做数据清洗）、估值方法（DCF、可比公司）。\n\n证书：证券从业资格已通过。\n\n自我评价：做事仔细，喜欢把数字算清楚再下结论。",
+  "jd": "和顺证券研究所招聘行业研究实习生，主要协助分析师完成新能源与电力设备板块的覆盖工作。日常职责包括：维护和更新公司财务模型、从 Wind 等数据源取数并校验、撰写行业数据跟踪周报、整理产业链上下游价格信息。我们希望候选人对数字敏感、做事严谨，能把一个估值假设讲清楚来源和逻辑，而不是套模板。面试中我们会重点考察你对基本财务概念和估值方法的真实理解，以及你能否清晰、精确地说明自己做过的具体工作。每周到岗至少四天，实习期三个月，表现优秀者可获得返聘机会。汇报对象为板块首席分析师。",
+  "history": [
+    { "q": "先简单介绍一下你在和顺证券实习时具体负责的工作。" },
+    { "q": "你说整理了 14 家公司的财务模型，这些模型主要更新哪些部分？" },
+    { "q": "做新能源板块覆盖时，你取数主要看哪几个核心指标？" },
+    { "q": "你的数据周报里，最常跟踪的产业链价格是什么？" },
+    { "q": "讲一下你怎么校验从 Wind 取来的数据，避免用错？" },
+    { "q": "如果一家公司的毛利率突然环比跳升，你会先怀疑什么？" },
+    { "q": "你提到会用 DCF，能说一下折现率你一般怎么取？" },
+    { "q": "可比公司估值里，新能源你更倾向用哪个倍数，为什么？" },
+    { "q": "你独立完成的那两份周报，结论是什么，分析师采纳了吗？" },
+    { "q": "用 Python 做数据清洗时，你处理过最麻烦的一类脏数据是什么？" },
+    { "q": "现在请你估一个简单的，一家年净利 2 亿、增速 15% 的公司，你大概怎么给区间？" },
+    { "q": "如果给你 15 倍 PE，对应市值多少？再说一句你这个倍数的依据。" }
+  ],
+  "candidate_last_answer": "净利 2 亿、给 15 倍 PE，对应市值就是 30 亿。依据是这家增速 15%，PEG 正好接近 1，处在行业可比区间的中位偏下，比较保守；如果后面验证产能释放确定性高，我会把倍数上调到 18 倍左右，对应 36 亿。",
+  "session_state": {
+    "drilled_topics": ["internship-scope", "model-maintenance", "coverage-metrics", "supply-chain-price", "data-validation", "margin-anomaly", "dcf-discount-rate", "comparable-multiple", "weekly-report-conclusion", "python-cleaning", "valuation-range"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 处在行业可比区间的中位偏下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 让候选人说出他所谓行业可比区间的具体上下界倍数和样本公司，以及他把 15 倍判定为中位偏下所依据的真实数据来源，验证这是真实计算还是套话"
+    ]
+  }
+}

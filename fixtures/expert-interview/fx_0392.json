@@ -1,0 +1,44 @@
+{
+  "id": "fx_0392",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "陈衡 — 资深企业级销售经理 / Senior Enterprise Account Executive\n\n个人简介\n我是一名拥有九年企业级软件销售经验的资深销售经理，专注于为大型制造业与零售业客户提供数字化转型相关的SaaS解决方案。过去几年我的工作重心一直放在新签客户的获取以及存量客户的续约与增购上面，常年负责华东与华南区域的重点战略客户。我习惯于和客户的采购、财务、信息技术以及业务一线的多个部门同时打交道，因为我始终认为企业级的大单从来都不是一个人拍板决定的，而是需要在客户内部搭建起一张支持你的关系网络，让每一个关键决策人都能在自己的角度上看到这套方案能够带来的价值。我个人比较擅长的是在销售周期偏长、决策链条偏复杂的项目里保持节奏，推动客户一步一步往前走，而不是在某一个环节上卡住之后就放任项目停滞。我也比较看重和售前、客户成功、产品这几个团队之间的协作，因为我相信一个销售如果只盯着签单而不管后续交付与客户体验，最终是没有办法在一个客户身上做出长期的复购与口碑的。我对自己的要求是既要把当季度的指标完成好，也要为未来几个季度的管道储备打下基础，所以我每个礼拜都会花固定的时间去梳理自己的客户名单，判断哪些客户处在什么阶段，下一步应该推动什么动作，这种相对体系化的工作习惯帮助我在过去几年里保持了比较稳定的业绩输出，也让我在团队内部逐渐承担起一部分新人带教与方法论沉淀的职责，我很享受把自己踩过的坑总结成可以复用的经验分享给团队里更年轻的同事这件事情。\n\n工作经历\n\nCloudReach Software — Senior Enterprise Account Executive(2020年至今)\n- 负责华东大区12家战略级制造业客户的整体销售，年度quota约为4.5M USD ARR\n- 连续三年达成或超额完成个人指标，最高一年达成率约132%\n- 主导过一个跨度长达11个月、合同金额约1.8M ARR的灯塔客户项目，带领由售前、解决方案架构师与客户成功组成的virtual team完成从POC到签约的全过程\n- 把所在区域的net revenue retention从大约105%提升到了约118%\n- 作为团队内部的mentor,带教过4名新入职的junior AE\n\nNorthbridge Tech — Account Executive(2017-2020)\n- 负责中型零售与快消客户的新签业务,quota约为1.8M ARR\n- 三年中有两年进入公司的President's Club\n- 推动公司在该细分行业从零到一搭建了第一批参考客户与case study\n\nApex Systems — Sales Development Representative / Account Executive(2015-2017)\n- 从SDR起步,负责outbound线索开发,后晋升为AE独立负责小型客户\n- 单季度最高self-sourced pipeline约900K\n\n技能与方法论\n- 熟悉MEDDICC、Challenger Sale等企业级销售方法论,并在实际项目中长期使用\n- 擅长multi-threading,即在客户内部同时维护多个决策人与影响者的关系\n- 熟练使用Salesforce、Gong、Outreach等销售工具进行pipeline管理与会话分析\n- 具备较强的跨部门协作能力,能够调动售前、产品、法务、财务等资源共同推进复杂交易\n\n教育背景\n上海某高校 市场营销专业 本科\n\n关于我未来的期待\n我希望在下一段职业里能够进入一个产品力更强、客户量级更大的平台,去挑战金额更高、决策更复杂的enterprise deal,同时也希望逐步从一个纯粹的individual contributor向带领小团队的方向过渡,把自己这些年沉淀下来的打法系统性地复制给更多的人。我对自己接下来想要从事的工作的核心诉求是:平台要有足够好的产品与品牌作为支撑,团队要有相对健康的协作文化,管理者要愿意在方法论层面和我一起打磨,而不是单纯地用结果来施压。我相信只要把过程做扎实,结果是水到渠成的事情。",
+  "jd": "CloudReach 的核心竞争对手 Vantage Data Platform 正在招聘一名 Senior Enterprise Account Executive,负责北美西区的大型制造与物流客户。This role owns a $3.2M ARR quota across roughly 8 named strategic accounts, with an explicit mandate to grow net revenue retention from the current 109% toward 125% within 18 months. 你将直接向 Regional Sales Director 汇报,并被要求与售前、solutions engineering、customer success 以及 partner 团队紧密协作,common-thread 一个动辄 6 到 12 个月的复杂销售周期。我们希望候选人能够熟练运用 MEDDICC 或类似的 qualification framework,在每一个 deal 上清晰地识别 economic buyer、decision criteria 与 paper process。The ideal candidate has personally closed at least one single deal above $1M ARR, has a track record of multi-threading across procurement, finance, IT and the business, and can speak precisely to how they advanced a stalled deal. 我们重视的是可被验证的、具体到动作层面的销售功力,而不是宏观的、口号式的方法论描述。差旅约占 30%。",
+  "history": [
+    { "q": "先聊聊你现在在 CloudReach 的scope:quota多少、负责几个named account、你owns哪些核心指标?" },
+    { "q": "你简历里提到那个11个月、1.8M ARR的灯塔项目,我想deep dive一下——deal最开始是怎么进来的?" },
+    { "q": "在那个项目里,谁是真正的economic buyer?你是怎么identify出来的?" },
+    { "q": "你提到net revenue retention从105%提升到了118%,这个数字具体是怎么算出来的?分子分母是什么?" },
+    { "q": "讲一个具体的例子:某个deal在中途stall住了,你当时是怎么把它重新推动起来的?" },
+    { "q": "好,那在那个stalled deal里,你personally做的第一个动作是什么?不是团队,是你自己。" },
+    { "q": "我再问得具体一点:那一周里,你给客户内部的哪个具体的人、打了什么电话或者发了什么邮件,说了什么?" }
+  ],
+  "candidate_last_answer": "嗯……对,这个问题挺好的,就是……其实当时那个deal stall住的原因有很多啦,客户内部的reorg、budget freeze、还有他们IT那边的安全review,反正就是各种各样的因素叠加在一起。然后我那一周……怎么说呢,我其实做了挺多事情的,我先是把整个account的relationship map又重新过了一遍,然后呢……哦对,我还约了我们的VP一起,因为有时候level要match嘛。然后那个champion呢,他其实人挺好的,我们关系一直不错,平时也会聊一些工作以外的东西,他家小孩跟我家小孩差不多大……扯远了扯远了。反正那一周我就是,你懂的,就是各种沟通各种push,邮件电话微信都用上了,具体说哪一封邮件我还真有点记不太清了,但反正最后是把它给盘活了,这个我印象很深。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "lighthouse-deal-origin", "economic-buyer-id", "nrr-calculation", "stalled-deal-recovery", "personal-first-action"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "named-entity" },
+      { "competency": "execution", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体说哪一封邮件我还真有点记不太清了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人被迫说出在那一周里他本人(而非团队)向某个具名决策人发起的一个具体动作——一封邮件、一通电话或一次会议——以及其内容与触发的客户反应"
+    ]
+  }
+}

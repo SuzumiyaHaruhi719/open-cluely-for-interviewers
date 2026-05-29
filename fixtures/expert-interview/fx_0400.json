@@ -1,0 +1,45 @@
+{
+  "id": "fx_0400",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Staff Counsel — Commercial & Privacy\n\nSummary\nIn-house attorney supporting commercial contracting and data-privacy matters for a B2B technology company. Day-to-day work spans SaaS agreements, DPAs, vendor diligence, and advising product and sales teams on data-handling questions.\n\nExperience\nNorthwind Software — Staff Counsel, Commercial & Privacy (2020–present)\n- Lead negotiator on enterprise SaaS and data-processing agreements\n- Advise product teams on privacy-by-design questions and data-retention practices\n- Partner with security on incident-response and breach-notification assessments\n- Manage outside counsel on select disputes and regulatory inquiries\n\nMeridian Legal Group — Associate, Technology Transactions (2016–2020)\n- Drafted and negotiated technology licensing and services agreements for varied clients\n- Supported privacy compliance projects (GDPR readiness, CCPA mapping)\n\nSkills\nCommercial contracting, GDPR/CCPA, DPAs, vendor risk, incident response, cross-functional advising\n\nEducation\nJ.D.; B.A. Political Science\nBar admission: active, in good standing",
+  "jd": "Veriform is hiring Staff Counsel (Commercial & Privacy) to support a fast-moving product and sales organization. You will report to the GC and be the primary legal partner for data-processing agreements, vendor diligence, and privacy advice to product teams. The role demands sound judgment under pressure: sales will push to close, product will push to ship, and you must be the person who can say no — and explain exactly why — when a data practice crosses a legal or ethical line. We want to understand how you reason through a genuinely hard call where business urgency collides with a compliance obligation: what the obligation was, what you advised, who you escalated to, and what the documented outcome was. We are specifically interested in candidates who hold the line cleanly rather than rationalizing shortcuts. Strong privacy fluency (GDPR/CCPA) and contract-negotiation experience required.",
+  "history": [
+    { "q": "Tell me about your current scope at Northwind — what matters you own and who you advise." },
+    { "q": "Walk me through one data-processing agreement negotiation where the other side pushed hard on a term you couldn't give." },
+    { "q": "Now tell me about a time business urgency collided with a privacy obligation. What was the obligation?" },
+    { "q": "What did you specifically advise in that moment — did you green-light it or hold the line?" },
+    { "q": "Who did you escalate to, and was your advice documented anywhere?" },
+    { "q": "Let me ask directly: did the company end up processing that data before the DPA was actually signed?" }
+  ],
+  "candidate_last_answer": "Well, let me turn that around on you — in your experience, isn't it pretty standard in this industry to start onboarding the data while the paper is still being finalized? Honestly, everyone does it; the DPA was 'basically agreed' and just sitting in signature, so I told the team it was fine to go ahead and start ingesting the customer records, because realistically holding up the launch over a signature formality would've been commercially insane. I figured the risk was theoretical. But I'm curious what you'd have done — would you really have blocked a major launch over a contract that was ninety-percent signed?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "dpa-negotiation-hardterm", "urgency-vs-obligation", "advice-given", "escalation-and-documentation", "processing-before-signature"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity-compliance", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [
+      "candidate admits advising the team to begin processing customer data before the data-processing agreement was executed, and rationalizes it as standard practice"
+    ],
+    "top_question_traits": [
+      "must-anchor-on: it was fine to go ahead and start ingesting the customer records",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the candidate is forced to stop deflecting with a counter-question and lay out the actual sequence — when data ingestion began relative to signature, exactly what they advised, whether they escalated to the GC, and how the legal exposure was assessed"
+    ]
+  }
+}

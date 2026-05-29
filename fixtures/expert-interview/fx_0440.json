@@ -1,0 +1,44 @@
+{
+  "id": "fx_0440",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "黄澜 | Director of Market Risk，某股份制银行金融市场部\n\n概要\n- 12年市场风险与资金业务管理经验，覆盖利率、外汇、信用债组合的风险计量与限额管理。\n- 主导搭建全行 FRTB(Fundamental Review of the Trading Book) 内部模型法落地，参与监管验收。\n\n核心经历(STAR 结构)\n\n经历一 — 交易簿资本节约\n- Situation：2023年监管要求交易簿按 FRTB 新规计提资本，初版标准法测算资本占用上升约 38%。\n- Task：作为项目负责人，目标是在合规前提下把资本占用增幅控制在 15% 以内。\n- Action：组织前中后台联合工作组，重新划分 trading desk 边界，对 12 个 risk factor 做可建模性测试(NMRF 分析)，推动 8 个交易台申请内部模型法。\n- Result：内模法覆盖约 70% 的交易簿，资本占用增幅最终降到 11%，节约监管资本约 2.4 亿元。\n\n经历二 — VaR 模型回测整改\n- Situation：2022年 VaR 模型在压力期出现连续 6 次回测突破(backtesting exception)，触及监管黄区。\n- Task：30 天内完成根因分析并提交整改方案。\n- Action：拆解 P&L attribution，定位到 FX 期权 vega 风险因子映射缺失；引入随机波动率项，重做 250 天历史模拟。\n- Result：回测突破回落到绿区(全年 2 次)，监管验收一次通过。\n\n经历三 — 限额体系重构\n- Situation：原限额按单一名义额度管理，无法捕捉组合相关性。\n- Task：建立基于 Expected Shortfall 的多维限额框架。\n- Action：联合 IT 上线实时限额监控，设定 desk 级 ES 限额与集中度限额。\n- Result：限额穿透率从月均 14 次降到 3 次，无一笔超限敞口过夜。\n\n技能：FRTB、VaR/ES、Counterparty Credit Risk、Python(风险计量脚本)、监管报送\n\n教育：金融学硕士；FRM 持证。",
+  "jd": "我们正在为金融市场部招聘一名市场风险总监(Director, Market Risk)，直接向首席风险官汇报，统管交易簿与资金业务的风险计量、限额与监管资本。你将负责 FRTB 内模法的持续合规、VaR/ES 模型的验证与回测整改、以及衍生品交易对手信用风险(CVA)的管理。该岗位需要主导与监管的现场验收沟通，牵头一支约 15 人的中台团队，并在投委会层面就资本占用与风险偏好做汇报。我们尤其看重候选人能用具体数字说明其在资本节约、模型整改时间线、以及个人在跨部门项目中的实际决策角色。要求 10 年以上市场风险经验，持有 FRM 或同等资质，有内模法落地与监管验收的第一手经验。",
+  "history": [
+    { "q": "先讲讲你现在在金融市场部的职责范围——团队规模、你直接负责的风险条线和你向谁汇报。" },
+    { "q": "你简历里写主导了 FRTB 内模法落地。这个项目你具体的角色是什么?是你拍板交易台边界划分的吗?" },
+    { "q": "内模法覆盖了大约 70% 的交易簿——剩下 30% 为什么走标准法?这个取舍是怎么定的?" },
+    { "q": "我们聊聊那次 VaR 回测连续突破。你说定位到 FX 期权 vega 因子映射缺失,这个根因是怎么排查出来的?" },
+    { "q": "整改方案你说 30 天内提交。那从突破触发到监管验收通过,完整的时间线是怎样的?" },
+    { "q": "引入随机波动率项之后,你怎么验证模型没有过拟合、在下一个压力期还稳得住?" },
+    { "q": "再说说限额重构。给我讲一个具体的场景:某个交易台快要触及 ES 限额时,你的实时系统和你本人分别做了什么动作?" }
+  ],
+  "candidate_last_answer": "这个场景其实挺典型的。Situation 是去年 Q3 美债利率单日跳了快 20bp,我们一个利率 swap desk 的 ES 当天逼近限额。Task 很明确,就是不能让它过夜超限。我们的实时系统当时是这么设计的:盘中每 15 分钟刷新一次 desk 级 ES,触及 80% 软限额就弹预警给台长和中台,触及 95% 就自动锁仓不让加仓。那次系统在 88% 的时候就把预警推出来了,中台同事盯着盘面,台长那边也收到了 alert,整个 escalation 链路是跑通的。所以这套机制设计上是能兜住的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "frtb-ownership", "model-vs-standard-tradeoff", "var-backtesting-rootcause", "remediation-timeline", "overfitting-validation"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 中台同事盯着盘面,台长那边也收到了 alert",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete account of what the candidate personally decided and did at the 88% alert moment — did they authorize the lock, call the desk head, override a hedge — versus what the system and other people did, since the Result (whether the desk actually stayed under limit and how) is entirely missing from the STAR"
+    ]
+  }
+}

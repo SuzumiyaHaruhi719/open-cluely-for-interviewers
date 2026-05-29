@@ -1,0 +1,51 @@
+{
+  "id": "fx_0395",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "黄敏 — Senior HRBP / 高级人力资源业务伙伴\n\nContact: minhuang@example.com\n\nSummary\n8年HR经验,目前在一家约1200人的fintech公司做Senior HRBP,support两条业务线。\n\nExperience\nFinPeak — Senior HRBP (2021–present)\n- Partner with two business-line VP on org design and headcount planning\n- Drive年度performance calibration与talent review流程\n- Support一次约8%的reduction in force项目\n\nMomentum Tech — HRBP (2018–2021)\n- Owned employee relations cases for a 400-person engineering org\n- Ran onboarding与engagement survey的follow-up\n\nBrightHR Consulting — HR Generalist (2016–2018)\n- Recruiting coordination与基础comp&ben administration\n\nSkills\nOrg design, performance management, ER, workforce planning, stakeholder management\n\nEducation\nMA, Human Resource Management",
+  "jd": "Helix Bio 正在招聘一名 Senior HRBP,支持我们快速扩张的commercial与R&D两个组织(合计约900人)。This person reports to the Head of People and partners directly with two functional VPs. 你将主导year-end performance calibration、succession planning,并在必要时operationalize组织调整(包括偶发的involuntary exits)。我们想深入了解的是候选人在高难度People决策上的个人judgment与个人ownership:不是『团队做了什么』,而是当一个棘手的case摆在你面前——比如一位高绩效但行为有问题的manager,或者一次必须由你亲自传达的裁员沟通——YOU personally决定了什么、说了什么、承担了什么后果。我们会反复追问到个人动作与个人判断的层面。Strong ER background与扎实的组织设计能力是必备项。",
+  "history": [
+    { "q": "Give me your current scope — which orgs you support, headcount, who you report to." },
+    { "q": "你support过一次8% RIF,先讲讲那次RIF的整体背景和触发原因。" },
+    { "q": "在那次RIF里,scoping谁走谁留的标准是谁定的?" },
+    { "q": "好,标准之外,有没有某一个具体的人选,是你personally建议加上或者拿掉的?" },
+    { "q": "Walk me through one termination conversation you yourself delivered in that RIF." },
+    { "q": "那场谈话里,对方情绪激动的时候,你个人说了什么去handle?" },
+    { "q": "Switch topic:那位高绩效但行为有问题的manager,case是怎么到你这里的?" },
+    { "q": "你个人对这位manager的判断是什么?你建议留还是不留?" },
+    { "q": "你把这个判断recommend给business VP的时候,是你一个人去谈的吗?" },
+    { "q": "VP当时push back了吗?如果有,你个人是怎么回应的?" },
+    { "q": "Year-end calibration里,有没有某一个rating是你personally坚持改掉的?" },
+    { "q": "那次你改rating的依据是什么?是你自己的判断还是别人给的data?" },
+    { "q": "到目前为止你讲的几乎都是『我们』,我想听一个『我』——哪个决定是你独自拍板的?" },
+    { "q": "就那个高绩效manager的最终结果,到底是谁做的最后决定?" }
+  ],
+  "candidate_last_answer": "嗯,关于那个manager最后的结果,其实我们是作为一个team一起make的decision。我们HR这边、business VP、还有skip-level leader,我们大家坐下来一起align,然后we reached a consensus说还是给他一个improvement的机会。整个过程我们都是很collaborative的,we didn't want任何一个人去背这个责任,所以最终是we这个group共同owns这个outcome。我觉得在HR这个角色里,我们本来就不应该是那个单独拍板的人,我们更多是facilitate大家一起达成共识,这也是我们team一直以来的working style。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "rif-context", "rif-criteria-owner", "rif-personal-selection", "termination-conversation", "emotional-handling", "manager-case-intake", "manager-judgment", "vp-recommendation", "vp-pushback", "calibration-rating-change", "rating-change-basis", "personal-ownership-probe"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "communication", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we这个group共同owns这个outcome",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the candidate is forced to name the single recommendation or decision she personally made on the manager case — her own stated position and the words she used — separated from the group consensus"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "fx_0436",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Senior Supply Chain Manager | End-to-End Planning | S&OP | Demand-Driven MRP | Lean | Six Sigma\n\nResults-oriented supply chain professional with deep cross-functional expertise spanning demand planning, supply planning, inventory optimization, procurement, logistics, and S&OP orchestration. Proven track record leveraging data-driven methodologies to drive best-in-class service levels and working-capital efficiency.\n\nCore competencies: Demand Forecasting | Statistical Modeling | Safety Stock Optimization | MEIO | DDMRP | Sales & Operations Planning | Sales & Operations Execution | Supplier Relationship Management | Logistics & Distribution | Network Optimization | SAP IBP | Kinaxis RapidResponse | o9 | Power BI | SQL | Lean Manufacturing | Six Sigma Green Belt | Continuous Improvement | KPI Dashboards | Cross-Functional Leadership\n\nExperience:\nSenior Supply Chain Manager, consumer electronics (2019-present) — Own end-to-end planning for a $400M product portfolio; lead monthly S&OP; drive inventory and service-level programs.\nSupply Chain Manager, CPG (2015-2019) — Demand & supply planning, supplier scorecards, distribution optimization.\nDemand Planner, industrial goods (2012-2015).\n\nEducation: B.S. Supply Chain Management. APICS CPIM, CSCP certified.",
+  "jd": "We are seeking a Senior Supply Chain Manager to own end-to-end planning for a fast-scaling consumer hardware business, reporting to the Director of Supply Chain. You will run S&OP, own forecast accuracy and inventory health, and balance service level against working capital across a global supplier base with long lead times. The mandate: lift forecast accuracy (currently MAPE ~38% at the SKU-week level), reduce excess-and-obsolete inventory, and protect a 97% line-fill target through demand volatility and component constraints. We want a planner who can be specific about methodology — how they segment SKUs, set safety stock, run the S&OP consensus, and make the service-vs-cash tradeoff. You will defend planning decisions to commercial and finance leadership.",
+  "history": [
+    { "q": "Describe your current end-to-end planning scope — portfolio size, what you own, who you partner with." },
+    { "q": "What's your current SKU-level forecast accuracy, and how do you measure it — MAPE, bias, at what aggregation?" },
+    { "q": "Walk me through one change you made that actually improved forecast accuracy." },
+    { "q": "How do you segment your SKUs for planning — and what do you do differently across segments?" },
+    { "q": "How do you set safety stock today? Give me the actual method, not the tool name." },
+    { "q": "Tell me about a stockout that hit service level. What was the root cause and what did you change?" },
+    { "q": "Describe your monthly S&OP cycle — the steps and who owns each one." },
+    { "q": "Give me a specific S&OP meeting where demand and supply disagreed. How was it resolved, and by whom?" },
+    { "q": "How do you handle the tradeoff between line-fill and excess inventory when a component is constrained?" },
+    { "q": "Tell me about an excess-and-obsolete write-down you were close to. What drove it?" },
+    { "q": "When forecast and the sales team's number diverge, whose number goes into the plan and why?" },
+    { "q": "Walk me through a supplier capacity constraint you had to plan around." },
+    { "q": "What single planning KPI do you watch most closely day to day?" },
+    { "q": "Our SKU-week MAPE is around 38%. Where would you start — segmentation, the statistical model, or the consensus process?" }
+  ],
+  "candidate_last_answer": "Before I tell you where I'd start, I'd actually want to turn it around and ask you a few things — because 38% MAPE at SKU-week could mean very different problems. First: what's your MAPE at the SKU-month and category level? If it's fine at category but blows up at SKU-week, that's a mix/timing problem, not a model problem. Second: how much of the portfolio is new products with no history versus mature SKUs? And third: is the 38% volume-weighted or simple-average across SKUs, because a few low-volume long-tail SKUs can wreck a simple average. Honestly, wouldn't you agree it's premature for me to say 'fix the model' before we know which of those it is? So — what do those cuts actually look like on your side?",
+  "session_state": {
+    "drilled_topics": ["e2e-planning-scope", "forecast-accuracy-measure", "accuracy-improvement-change", "sku-segmentation", "safety-stock-method", "stockout-root-cause", "sop-cycle-steps", "sop-conflict-resolution", "fill-vs-excess-tradeoff", "eo-writedown", "forecast-vs-sales-number", "supplier-capacity-constraint", "top-kpi"],
+    "current_competency_target": "planning-methodology",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "planning-methodology",
+    "missing_evidence": [
+      { "competency": "planning-methodology", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: wouldn't you agree it's premature for me to say 'fix the model'",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: grant him every clarifying answer (38% is volume-weighted at SKU-week, ~25% of portfolio is new products, category-level MAPE is healthy) and then force him to actually commit to a diagnostic sequence and the first concrete intervention he would make, exposing whether he has a real methodology behind the clarifying questions"
+    ]
+  }
+}

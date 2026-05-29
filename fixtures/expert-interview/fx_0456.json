@@ -1,0 +1,48 @@
+{
+  "id": "fx_0456",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "verbose-1500words"
+  ,
+    "edge_case": null
+  },
+  "resume": "陈维 (Wei Chen) — Staff Commercial Counsel / 资深商业法务\n联系方式: wei.chen.legal@email.com | 上海 (可支持跨时区)\n\n个人概述\n\n我是一名专注于跨境商业合同与数据合规的资深企业法务,目前在一家全球化的 SaaS 公司担任 Staff Counsel,直接支持销售、产品与采购三条业务线。我的工作风格是『把法务做成业务的加速器,而不是刹车』:我相信法律风险不是用来吓唬业务的,而是要被量化、被分级、被写进可执行的条款里。过去八年,我处理过的合同类型涵盖企业级 SaaS 订阅协议、数据处理协议 (DPA)、跨境数据传输安排、经销与代理协议、以及若干起合同争议的庭外和解。我尤其擅长在中美欧三地不同的监管框架之间帮业务找到一条既合规又能成交的路径。我的母语是中文,英文是我的工作语言,绝大多数合同谈判与跨境内部沟通都用英文完成。\n\n我对法务这个职能有一个比较固执的看法:法务的价值不在于说『不行』,而在于说清楚『如果要行,需要满足哪些条件、承担哪些风险、谁来承担』。下面是我具体做过的事情。\n\n工作经历\n\nMeridian Cloud (全球 SaaS 公司) — Staff Commercial Counsel, 2021 至今\n负责 EMEA 与 APAC 区域的商业合同 review 与谈判,并 owns 公司的数据合规框架。\n- Lead negotiator on enterprise SaaS 订阅协议,单笔合同金额从 ARR 几十万到数百万美金不等;我负责把销售争取来的商业条款翻译成可承受的法律风险,并在 liability cap、indemnification、data-processing 条款上守住底线。\n- 主导重构了公司的 DPA 模板与 SCC (standard contractual clauses) 体系,应对 Schrems II 之后的跨境数据传输要求;我把原先一份冗长的模板拆成了模块化的条款库,让销售团队在常见场景下可以 self-serve。\n- 处理过两起 enterprise 客户的合同争议:一起是 SLA 未达标引发的 service-credit 争议,一起是客户主张我方 data breach 通知不及时。两起最终都以庭外和解结案。\n- 与 product 团队共建了一套 『privacy-by-design』 的内部 review 流程,在新功能上线前评估数据合规影响。\n\n泓远律师事务所 — Associate (公司业务组), 2016-2021\n- 为科技与消费类客户提供跨境投融资、商业合同与合规咨询\n- 参与多起 cross-border M&A 的 legal due diligence,负责合同与合规模块\n- 起草并 review 大量中英文双语商业合同\n\n专业能力与方法论\n\n我处理合同的核心方法是风险分级:对每一个争议条款,我会问三个问题——发生的概率有多大、一旦发生损失有多大、这个风险应该由哪一方承担。我不喜欢用模糊的措辞掩盖没想清楚的问题,凡是写进合同的义务,我都要求自己能说清楚触发条件和救济方式。在跨境数据合规上,我习惯先画出数据流向图,确认数据在哪里采集、传到哪里、谁是 controller、谁是 processor,然后再倒推需要哪些合同安排和技术措施。我也很重视与业务的沟通节奏:与其在最后一刻否决一个交易,不如在早期就把红线讲清楚,让业务带着约束去设计方案。\n\n领域: 企业级 SaaS 合同、DPA 与跨境数据传输、GDPR/PIPL 合规、商业争议庭外和解、经销与代理协议、跨境投融资尽调。\n\n语言: 中文(母语)、English (working proficiency, 谈判与起草均可)。\n\n资质与教育: 中国法律职业资格;美国纽约州律师考试 passed;华东政法大学法学学士;某海外院校 LL.M. (国际商法方向)。\n\n关于我想找的角色\n\n我希望加入一家把法务当作战略伙伴的公司,在那里我可以继续 owns 跨境合同与数据合规的体系建设,而不只是被动地 review 文件。我对纯粹流程性、不需要判断的法务工作兴趣不大;我更想要那种需要在商业目标与法律风险之间做真实权衡的岗位。",
+  "jd": "We are hiring a Staff Commercial Counsel for a fast-growing global SaaS company. This role reports to the General Counsel and owns end-to-end commercial contracting for the APAC region, plus the company's cross-border data-transfer framework. 你将独立负责 enterprise 客户的合同谈判(从 NDA 到 master subscription agreement)、DPA 体系的维护、以及在 limit/indemnification 等关键条款上代表公司守住底线。我们寻找的是能够『下场做判断』的法务——能讲清楚某一次具体谈判中你在某个条款上让了什么、守了什么、为什么这么权衡,以及最终的商业结果。面试会深入追问真实案例中的具体决策与归属,我们不接受停留在原则层面的回答,也会留意候选人是否用反问来回避正面回答。Requirements: 8+ 年商业合同经验、跨境数据合规(GDPR/PIPL/SCC)实操、强谈判能力、以及向业务清晰传达风险的能力。",
+  "history": [
+    { "q": "先介绍一下你现在在 Meridian 的 scope——支持哪几条业务线、owns 哪些合规体系、汇报给谁。" },
+    { "q": "你说自己是 enterprise SaaS 订阅协议的 lead negotiator。挑一笔你印象最深的合同,讲讲背景和金额量级。" },
+    { "q": "那笔合同里,客户在 liability cap 上的诉求是什么?你方的底线在哪?" },
+    { "q": "最后 liability cap 落在什么水平?是你拍板的,还是要上报 GC?" },
+    { "q": "indemnification 那一块,你做了什么让步、又守住了什么?" },
+    { "q": "换到数据合规。Schrems II 之后你重构 DPA 模板,具体把哪些条款模块化了?" },
+    { "q": "你提到那起客户主张我方 data breach 通知不及时的争议。事实层面,我方到底是不是通知晚了?" },
+    { "q": "那起争议最终庭外和解,和解的对价大概是什么量级?是谁主导谈的?" },
+    { "q": "privacy-by-design 那个 review 流程,有没有哪一次你真的拦下了一个产品功能?" },
+    { "q": "回到那笔大额合同的 liability cap。当时如果客户坚持不接受你的底线,你准备怎么办——是放弃这单,还是有备选方案?" }
+  ],
+  "candidate_last_answer": "这个问题其实挺有意思的,但在我回答之前,我想先反问你一句:你们公司现在对一笔战略性大客户的 liability cap,内部到底有没有一个明确的 risk appetite?因为说实话,如果连这个 appetite 都没定义清楚,那我作为 counsel 怎么权衡『放弃还是让步』就没有意义了对吧?所以我更好奇的是——在你们这边,这种 cap 的最终决定权到底是法务的,还是商业团队的?你先告诉我这个,我才好说我会怎么做。",
+  "session_state": {
+    "drilled_topics": ["meridian-scope", "flagship-contract", "liability-cap-positions", "cap-decision-owner", "indemnification-tradeoff", "dpa-modularization", "breach-notice-facts", "settlement-magnitude", "privacy-review-block"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 35
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "negotiation", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你先告诉我这个,我才好说我会怎么做",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the candidate's own contingency reasoning in that specific deal — what fallback he actually prepared (e.g. carve-outs, super-cap for data breach, walk-away threshold) and how he weighed losing the deal against the exposure — forcing him past the question-reversal back to a concrete account of his own judgement"
+    ]
+  }
+}
