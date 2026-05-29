@@ -1,0 +1,45 @@
+{
+  "id": "fx_0618",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Daniel Osei\nSenior Talent Acquisition Partner\n\nProfile\nSenior recruiter with eight years of full-cycle technical recruiting experience across high-growth software companies. Trusted partner to engineering and product hiring managers, with a focus on building diverse, high-quality pipelines and improving the candidate experience.\n\nExperience\n\nNimbus Software — Senior Talent Acquisition Partner (2021–present)\n- Own full-cycle recruiting for backend, platform, and data engineering roles\n- Partner with engineering directors on headcount planning and interview design\n- Drove improvements to the structured-interview rubric and debrief process\n- Coach junior recruiters on sourcing and candidate management\n\nVertex Labs — Technical Recruiter (2018–2021)\n- Recruited for full-stack and mobile engineering teams\n- Built sourcing campaigns and managed the ATS pipeline end to end\n- Supported employer-branding efforts at university and meetup events\n\nApex Talent Group — Recruiting Coordinator / Recruiter (2016–2018)\n- Coordinated interviews and progressed into a full recruiter role\n\nEducation\nB.A., Organizational Communication — State University (2016)\n\nSkills\nFull-cycle recruiting, structured interviewing, sourcing (LinkedIn Recruiter, Boolean), stakeholder management, ATS (Greenhouse), employer branding, DEI-focused hiring.",
+  "jd": "Nimbus Software is hiring a Senior Talent Acquisition Partner to own full-cycle recruiting for our engineering org during a critical scaling year. Reporting to the Head of Talent, you will partner with engineering directors on hiring plans, run a high-quality structured-interview process, and own your funnel metrics end to end. We are looking for a recruiter who takes ownership of results: when an offer is declined or a req goes cold, you can explain the specific calls you made and what you would do differently — not just point at the hiring manager or the market. Requirements: (1) demonstrated ownership of a recruiting funnel, with the ability to talk through your own decisions; (2) fluency in funnel and quality metrics (pass-through rates, time-to-fill, offer-accept rate, source effectiveness); (3) genuine partnership with demanding hiring managers. Current challenges: a stalled platform-engineering search, a recent dip in offer-accept rate, and inconsistent interviewer calibration. We value self-aware recruiters who own their part of a miss.",
+  "history": [
+    { "q": "Tell me about your current scope at Nimbus — which teams you recruit for and how many reqs you carry." },
+    { "q": "Walk me through a recent search that stalled or went cold. Which role was it, and how long was it open?" },
+    { "q": "On that platform-engineering search — what was your sourcing strategy, and how did the pipeline look at each stage?" },
+    { "q": "You mentioned offer-accept rate dipped. Tell me about a specific offer that got declined recently." },
+    { "q": "When that candidate declined, what reason did they give, and what did you do once you heard it?" },
+    { "q": "Looking at that declined offer, what part of the process do you think you personally could have handled differently?" },
+    { "q": "You improved the structured-interview rubric. What specifically was wrong with the old debrief, and what did you change?" },
+    { "q": "Let's go back to that declined offer. Setting the hiring manager and the comp band aside — what was the one thing in your own control, as the recruiter, that you'd do differently next time?" }
+  ],
+  "candidate_last_answer": "Honestly, that one wasn't really on me. The candidate was great and I ran a clean process, but the hiring manager dragged his feet on the debrief for over a week, which killed our momentum. By the time we got the offer out, the candidate had two other offers in hand. And let's be real — our comp band was just not competitive for that level; recruiting can't fix a broken comp philosophy. So if anything I'd say the lesson is that the business needs to move faster and pay market, because I did my part. The market for platform engineers is brutal right now and that's just the reality we're up against.",
+  "session_state": {
+    "drilled_topics": ["nimbus-scope", "stalled-search-duration", "platform-sourcing-pipeline", "declined-offer-specifics", "decline-reason-response", "personal-process-improvement", "rubric-debrief-change", "own-controllable-lever"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that one wasn't really on me",
+      "must-be-question-type: counterfactual",
+      "expected-yield: one recruiter-controlled action the candidate would change — e.g., setting a debrief SLA with the hiring manager up front, pre-closing the candidate on competing offers earlier, or flagging the comp gap before the offer stage — forcing a concrete self-owned lever instead of blaming the hiring manager, comp band, and the market"
+    ]
+  }
+}

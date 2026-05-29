@@ -1,0 +1,40 @@
+{
+  "id": "fx_0677",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Associate Product Manager — Customer-Obsessed · Outcome-Driven · Agile · Data-Informed · Lifecycle Owner\n\nEnergetic Associate PM passionate about building delightful, user-centric experiences. Skilled in agile delivery, backlog management, user stories, acceptance criteria, sprint planning, stakeholder alignment, roadmapping, MVP definition, discovery, and design thinking. Fluent in OKRs, KPIs, North-Star metrics, A/B testing, and rapid iteration.\n\nExperience\nTrailhead Apps — Associate Product Manager (2022-present)\n- Drove the mobile notifications roadmap to boost engagement and retention.\n- Wrote crisp user stories and partnered closely with design and engineering squads.\n- Championed a data-informed, customer-obsessed approach to prioritization.\n- Ran discovery interviews and synthesized insights into actionable requirements.\n\nLumen Labs — Product Intern (2021)\n- Supported competitive analysis and helped shape the MVP scope for a new feature.\n\nEducation\nBA, Human-Computer Interaction.\n\nSkills\nJira, Figma, Amplitude, SQL (basic), user research, agile, roadmapping, A/B testing, OKRs.",
+  "jd": "We are hiring an Associate Product Manager to own push and in-app notifications for our consumer mobile app (3M MAU). You'll own the notification roadmap, define and instrument events, design experiments to lift engagement without increasing opt-outs, and partner with design, engineering, and lifecycle marketing. We expect APMs to take clear personal ownership of prioritization decisions and to be able to defend them with reasoning, not just framework names. You'll present experiment readouts to the product lead every sprint. The strongest candidates can describe a specific decision they made, the data behind it, the alternative they rejected, and what they'd do differently — and can do so without turning the question back on the interviewer.",
+  "history": [
+    { "q": "Tell me about the mobile notifications roadmap you drove at Trailhead. Pick one decision you personally made and walk me through it." },
+    { "q": "What signal told you that was the right notification to prioritize over the others?" },
+    { "q": "Let me make it concrete: a specific notification you shipped — what did you decide, and what was the engagement-versus-opt-out tradeoff you weighed?" }
+  ],
+  "candidate_last_answer": "That's a good question — before I answer, can I ask what you mean by 'tradeoff' here? Like, are you looking for the business tradeoff or the technical one? Because honestly it depends a lot on the context. And what would you say is the right way to think about opt-outs versus engagement in a case like this — is there a benchmark you'd expect me to hit? I ask because in my experience every company weighs that differently, so I'd want to understand how you'd frame it before I commit to one answer. How do you all usually look at it here?",
+  "session_state": {
+    "drilled_topics": ["notification-decision-setup", "prioritization-signal", "engagement-vs-optout-hypothetical"],
+    "current_competency_target": "decision-ownership",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "decision-ownership",
+    "missing_evidence": [
+      { "competency": "decision-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "decision-ownership", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: can I ask what you mean by 'tradeoff' here",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete decision the candidate actually owned — naming the specific notification they shipped, the engagement-vs-opt-out tradeoff they personally weighed, and the alternative they rejected, rather than redirecting the framing question back to the interviewer"
+    ]
+  }
+}

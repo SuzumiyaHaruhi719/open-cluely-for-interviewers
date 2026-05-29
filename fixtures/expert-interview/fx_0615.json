@@ -1,0 +1,48 @@
+{
+  "id": "fx_0615",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "吴启然 · 资深公司法务（Staff Counsel, Commercial）\n\n执业 9 年 · 中国执业律师资格\n\n联壹科技 (2020-至今) · Staff Counsel\n- Lead 商业合同与数据合规\n- 支持 SaaS 销售与采购的合同谈判\n\n方达律师事务所 (2015-2020) · 律师\n- 公司与并购组,做过几单跨境 M&A\n\n技能:商业合同、数据合规(PIPL/GDPR)、合同谈判、争议解决\n\n教育:中国政法大学 法学硕士 2015 · 法学学士 2013",
+  "jd": "联壹科技招聘 Staff Counsel(商业方向),向法务负责人汇报,owns SaaS 商业合同、数据处理协议(DPA)与跨境数据合规。你将作为业务的法务伙伴,在合同谈判中平衡法律风险与商业速度。我们要找的人能讲清具体的 trade-off:为了拿下一个大客户,你在哪个条款上让步、守住了哪条底线、为什么;一个 DPA 谈判里你如何在 PIPL 跨境要求和客户诉求之间取舍。岗位要求:(1) 对商业合同的风险分配(责任上限、赔偿、SLA、数据条款)有 hands-on 的谈判经验;(2) 能清楚区分『可让的』和『不可让的』,并讲清判断依据;(3) 在数据合规上有实操。当前挑战:大客户合同里责任上限的拉锯、跨境数据传输的合规路径选择。",
+  "history": [
+    { "q": "先介绍一下你在联壹的 scope —— 你 owns 哪些类型的合同和合规事务?" },
+    { "q": "讲一个你最近主导谈判的大客户合同。客户是哪类、合同量级大概多少?" },
+    { "q": "那份合同里,对方在责任上限(liability cap)上的初始诉求是什么?你方的底线是什么?" },
+    { "q": "最后责任上限谈到了什么水平?你是用什么 leverage 谈下来的?" },
+    { "q": "为了守住责任上限,你在哪个其它条款上做了让步?" },
+    { "q": "DPA 方面 —— 这个客户涉及跨境数据传输,你选了哪条合规路径(标准合同 / 安全评估 / 认证)?为什么?" },
+    { "q": "如果监管口径收紧,你选的那条路径有什么 fallback?这个你在合同里怎么 hedge 的?" },
+    { "q": "谈判里有没有哪个条款,业务想让你松口但你坚持不让?具体是哪条?" },
+    { "q": "事后回看,你让步的那个条款,有没有在履约中真的给公司带来风险敞口?" },
+    { "q": "你和业务负责人在风险偏好上有分歧时,怎么 resolve?举个具体例子。" },
+    { "q": "这单合同从开始谈到签署,用了多久?哪个环节最耗时?" },
+    { "q": "好,聚焦一下 trade-off。你说为了守住责任上限,在『数据泄露通知时限』上从 24 小时让到了 72 小时。再往深一层问:这个让步,你当时评估的最坏情况是什么,你又是凭什么判断这个最坏情况是可接受的?" }
+  ],
+  "candidate_last_answer": "对,这个让步我当时是算过账的。最坏情况是:发生数据泄露,我们晚 48 小时通知客户,导致客户的下游合规义务(比如他们对终端用户的告知)被压缩,客户可能据此向我们索赔。我判断它可接受,基于三点:第一,合同里我们的整体责任上限已经锁死在年费的 2 倍,这个 48 小时延迟带来的增量损失被这个 cap 兜住;第二,我们的事件响应 SLA 内部实际能做到 24 小时内发现并通报,72 小时是给的 buffer,真实触发延迟通知的概率很低;第三,作为对价,我在『数据出境的合规路径变更通知义务』上让对方接受了我们单方调整权。所以我让的是一个低概率、被 cap 兜底、且换回了另一个我更看重条款的时限,而不是一个无对价的裸让步。",
+  "session_state": {
+    "drilled_topics": ["counsel-scope", "deal-client-size", "liability-cap-positions", "cap-final-leverage", "concession-tradeoff", "dpa-crossborder-path", "regulatory-fallback-hedge", "non-negotiable-clause", "concession-actual-exposure", "risk-appetite-disagreement", "deal-cycle-time", "breach-notice-tradeoff-depth"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "legal-procedure-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个 48 小时延迟带来的增量损失被这个 cap 兜住",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the deeper second-order reasoning behind assuming the liability cap absorbs the 48-hour-delay loss — whether the cap actually covers a downstream-customer indemnity claim arising from the late notice (an indirect/third-party loss) versus only direct losses, and what carve-outs or super-caps for data-breach liability would break that assumption — testing whether the precise account holds one layer past the rehearsed answer"
+    ]
+  }
+}

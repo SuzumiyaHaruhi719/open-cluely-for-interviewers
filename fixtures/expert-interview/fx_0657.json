@@ -1,0 +1,50 @@
+{
+  "id": "fx_0657",
+  "tags": {
+    "industry": "product-management",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Marcus Webb\nmarcus.webb.pm@email.com\n\nObjective: Product Management Intern.\n\nEducation\nB.S. Computer Science, expected 2026. Coursework: HCI, Databases, Intro to Statistics.\n\nProjects\n- Lead PM, FlashCard study app (course capstone, team of 5): scoped features, wrote PRD, ran weekly standups. Shipped to TestFlight with 60 beta users.\n- Hackathon: built a campus parking finder; placed 3rd of 22 teams.\n\nExperience\n- Product Intern, Loop Logistics (summer 2024): supported the PM team on a driver-app redesign. Wrote user stories, attended sprint planning, helped triage bug reports.\n\nSkills\nFigma, Jira, SQL (basic), A/B testing concepts, user interviews.",
+  "jd": "Loop Logistics is hiring a Product Management Intern for our Driver Experience pod (returning candidates welcome). Interns own a small but real slice of the roadmap end to end: you will define a problem, write the PRD, partner with two engineers and a designer, and ship at least one feature to production during the internship. You will be expected to run your own user interviews, define success metrics before launch, and present a launch retro to the pod. We care most about ownership: when something slips or a launch underperforms, we want a PM who can clearly articulate what they themselves could have done differently, not who is at fault. You will be coached by a senior PM and present your retro to the Director of Product at the end of the term. Comfort with ambiguity, written communication, and basic data analysis (SQL or spreadsheets) are required.",
+  "history": [
+    { "q": "Welcome back. Last summer you supported the driver-app redesign. What part of it did you personally own?" },
+    { "q": "You wrote user stories — walk me through one story that turned out to be wrong, and how you found out." },
+    { "q": "Let's go to your capstone FlashCard app. You were lead PM. What was the one feature you fought hardest to include?" },
+    { "q": "You shipped to 60 beta users. How many were still active after two weeks?" },
+    { "q": "If retention was low, what do you think caused it?" },
+    { "q": "You said the engineers were slow. What did you, as the PM, do to unblock them?" },
+    { "q": "Walk me through how you scoped the capstone. Who decided what made the cut for the TestFlight build?" },
+    { "q": "The build shipped late, you mentioned. Tell me the timeline — when was it due, when did it actually ship?" },
+    { "q": "What was the single biggest reason it slipped past the deadline?" },
+    { "q": "Looking back at that slip, what is one thing you specifically would do differently next time?" },
+    { "q": "You keep pointing to the designer and the engineers. I want to hear about you — what was your part in the delay?" },
+    { "q": "Let me ask it plainly: as the lead PM, what decision of yours contributed to the late ship?" },
+    { "q": "One concrete example of your own mistake on that project — just one. Can you give me that?" }
+  ],
+  "candidate_last_answer": "Honestly, I don't think it was really on me. I had the PRD done early and the plan was solid — the problem was the designer kept changing the mockups at the last minute, and one of our engineers basically checked out for the last two weeks because he had other classes. I was kind of stuck waiting on them. If they had just delivered what they committed to, we would have shipped on time. I mean, I can only do so much when other people don't pull their weight, you know?",
+  "session_state": {
+    "drilled_topics": ["internship-ownership", "wrong-user-story", "capstone-feature-fight", "beta-retention", "retention-cause", "engineer-unblock", "scoping-decision-owner", "ship-timeline", "slip-root-cause", "what-would-do-differently", "own-part-in-delay", "own-decision-contribution"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I can only do so much when other people don't pull their weight",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a specific decision or action the candidate personally controlled (a scope call, a missed escalation, a deadline they set) rather than continued attribution of the slip to the designer and engineer"
+    ]
+  }
+}

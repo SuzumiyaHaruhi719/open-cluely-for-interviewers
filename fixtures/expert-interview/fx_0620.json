@@ -1,0 +1,43 @@
+{
+  "id": "fx_0620",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "陈昊 | Junior Backend Engineer | 2 年经验 (Shanghai)\n\n个人简介：业界顶尖的 10x engineer，单枪匹马把公司核心支付系统的性能推到行业天花板。精通一切主流技术栈，是团队公认的救火队长和架构权威。\n\n技能：Java / Spring Boot / Kafka / Redis / Kubernetes / gRPC / 全栈无死角\n\n工作经历：\n- 即时优惠 (InstaDeal) — Backend Engineer (2023.06 - 至今)\n  · 主导设计并重写了订单服务，把 P99 延迟从 400ms 降到 80ms\n  · 一个人扛起整个 checkout 链路的稳定性，大促零事故\n  · 推动团队全面迁移到微服务，被 CTO 点名表扬\n- 校园云 (CampusCloud) — Backend Intern (2022.07 - 2023.05)\n  · 负责优惠券模块的开发与上线\n\n教育：某大学 计算机科学 本科 (2018-2022)",
+  "jd": "InstaDeal 招聘一名初级后端工程师，加入订单与支付平台团队。你将在资深工程师的指导下，负责订单服务的功能迭代、bug 修复与接口开发，参与日常 on-call 轮值。我们使用 Java + Spring Boot，消息队列用 Kafka，缓存用 Redis，服务部署在 Kubernetes 上。我们期望候选人具备扎实的数据结构与并发基础，能清楚说明自己写过的代码、做过的取舍，以及在故障排查中扮演的具体角色。这个岗位重视诚实、可验证的贡献描述，而非头衔包装。汇报对象为订单平台 Tech Lead。",
+  "history": [
+    { "q": "Hi 陈昊，先简单介绍一下你在 InstaDeal 订单服务里负责的具体模块吧。" },
+    { "q": "你简历里写把订单服务 P99 从 400ms 降到 80ms。这个 optimization 具体是你做的哪一部分？" },
+    { "q": "降到 80ms 用了什么手段？是加缓存、改 query，还是调整了线程模型？" },
+    { "q": "你提到大促『一个人扛起整个 checkout 链路』。当时团队里还有谁，你和他们怎么分工的？" },
+    { "q": "那次大促有没有出过任何告警或者降级？你当时具体做了什么操作？" },
+    { "q": "好，我想具体确认一下：那次 P99 优化里，profiling 是你自己跑的吗？你定位到的瓶颈在哪一行代码或哪个组件？" }
+  ],
+  "candidate_last_answer": "嗯……这个问题其实挺有意思的。我先反问您一下，您这边定义的 profiling 是指 APM 那种 trace，还是 JVM 层面的 flame graph？因为不同 scope 下答案完全不一样。而且说实话，瓶颈在哪一行代码这种事，真的有那么重要吗?我觉得作为工程师，更应该看 the big picture 而不是抠某一行。您面过这么多人，难道不觉得纠结单行代码有点 micromanage 吗?",
+  "session_state": {
+    "drilled_topics": ["module-scope", "p99-optimization-ownership", "optimization-mechanism", "peak-traffic-team-split", "incident-actions"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 瓶颈在哪一行代码这种事，真的有那么重要吗",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to stop deflecting and name the specific component/query/code path he personally profiled and changed, with the concrete bottleneck he found, instead of reframing the question as micromanagement"
+    ]
+  }
+}

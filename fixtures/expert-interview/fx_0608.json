@@ -1,0 +1,54 @@
+{
+  "id": "fx_0608",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "VP of Sales | 15+ years building hyper-growth revenue engines and category-defining GTM motions\n\n- Relentless revenue leader who consistently overdelivers against aggressive quota in fast-paced, high-velocity environments\n- Architected world-class enterprise sales playbooks that unlock outsized pipeline and durable ARR expansion\n- Built and scaled high-performing, quota-crushing teams across AMER, EMEA, and APAC\n- Trusted C-suite partner; orchestrates value-based selling motions that resonate at the board level\n- Pioneered data-driven forecasting rigor and best-in-class pipeline hygiene across the full funnel\n- Champion of MEDDICC, command-of-the-message, and consultative land-and-expand strategies\n- Drove transformational logo acquisition and net-revenue-retention excellence at scale\n- Passionate evangelist for sales enablement, RevOps alignment, and customer-obsessed selling\n\nMost recent: Heliosphere SaaS — VP of Sales, Enterprise (2021-present)\nPrior: Brightline Analytics — Regional VP, Mid-Market (2017-2021)\nPrior: Quanta Systems — Director of Sales (2014-2017)",
+  "jd": "Heliosphere SaaS is hiring a VP of Sales to own a $90M ARR enterprise book and scale it to $150M over eight quarters. Reporting to the CRO, you will lead a 70-person org (6 directors, ~50 AEs, plus SDR and SE pods) across two theaters. You will own the number end to end: quota setting, territory design, forecast accuracy (we currently call the quarter within ±18% and need ±5%), and pipeline coverage discipline (today 2.4x, target 3.5x). You must have personally carried and closed seven-figure enterprise deals, run a rigorous weekly forecast cadence, and rebuilt a comp plan that changed rep behavior. We are coming off two consecutive missed quarters, a 31% AE attrition spike, and a forecasting credibility problem with the board. Your first 90 days will require a deal-by-deal pipeline scrub and a written diagnosis of why we missed. Comfort presenting to the board and ~40% travel required.",
+  "history": [
+    { "q": "Start with your current scope at Heliosphere — book size, team structure, and the exact metrics you own." },
+    { "q": "Your resume says you 'consistently overdeliver against aggressive quota.' What was your team's attainment last fiscal year, by quarter?" },
+    { "q": "You mentioned ±18% forecast accuracy is a problem here. What was your own forecast accuracy at Heliosphere, and how did you measure it?" },
+    { "q": "Walk me through your weekly forecast cadence. Who attends, what artifacts do you inspect, and what triggers a deal moving categories?" },
+    { "q": "Tell me about a single seven-figure deal you personally closed. Name the customer, the ACV, and the sales cycle length." },
+    { "q": "In that deal, what was the specific moment it almost died, and what did you personally do to save it?" },
+    { "q": "You said you 'rebuilt a comp plan that changed rep behavior.' What was the old plan, what was the new plan, and what specifically changed?" },
+    { "q": "What behavior metric moved after the comp change, and by how much, over what period?" },
+    { "q": "Let's talk about a miss. Describe a quarter you came up short. What was the number, and what was the gap?" },
+    { "q": "What did your root-cause analysis of that miss conclude, in concrete terms?" },
+    { "q": "Pipeline coverage here is 2.4x and we want 3.5x. How did you personally drive coverage in a prior role — what levers did you pull?" },
+    { "q": "AE attrition here spiked to 31%. Have you managed through attrition like that? What was your regrettable-attrition rate and what drove it?" },
+    { "q": "When you've taken over an underperforming team before, what did you do in your literal first two weeks?" },
+    { "q": "Give me a forecasting call you got badly wrong. What did you commit to the CRO, and what actually landed?" },
+    { "q": "If I called your last CRO, what would they say is the single biggest revenue problem you fixed?" },
+    { "q": "Last one: this role demands ±5% forecast accuracy on a $90M book. Give me a concrete example of how you'd diagnose a deal that a rep insists is commit but you suspect is air." }
+  ],
+  "candidate_last_answer": "Honestly, forecasting is part art, part science. You develop a feel for it over the years. I'd lean into my experience and my gut, talk to the rep, get a vibe for the deal, and apply the right level of healthy skepticism. At the end of the day it's about inspecting the deal and asking the hard questions, holding people accountable to their commits. I've always had a strong nose for which deals are real. It's about leadership and instinct as much as anything — you just know.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "team-attainment-by-quarter", "own-forecast-accuracy", "forecast-cadence", "named-seven-figure-deal", "deal-save-moment", "comp-plan-rebuild", "behavior-metric-delta", "missed-quarter-gap", "miss-root-cause", "pipeline-coverage-levers", "regrettable-attrition", "first-two-weeks-turnaround", "blown-forecast-call", "cro-reference-check", "deal-qualification-method"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: apply the right level of healthy skepticism",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete deal-inspection method with named qualification criteria and a numeric threshold — e.g., which MEDDICC fields gate a commit, what coverage or close-date-slip percentage flips a deal out of commit — replacing 'gut feel' with an auditable rule that produces ±5% accuracy"
+    ]
+  }
+}

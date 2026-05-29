@@ -1,0 +1,51 @@
+{
+  "id": "fx_0630",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "self-contradictory",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Daniel Roth — Senior Product Manager (B2B SaaS, Fintech)\n8 years in product\n\nCurrent: Ledgerwise — Senior PM, Payments (Jan 2022 – present)\n- Own the payments and reconciliation product area for a mid-market accounting platform.\n- Led the launch of an instant-payouts feature used by 12,000 businesses.\n- Note: also lists elsewhere on resume that instant-payouts reached 3,000 businesses in year one.\n- Drove a 40% increase in payment volume; a later bullet states the same initiative drove a 25% increase.\n- Team: led a squad of 6 engineers; summary section says \"managed cross-functional teams of 20+.\"\n\nPrior: PayStream — Product Manager (2018 – Dec 2021)\n- Owned onboarding funnel; \"reduced time-to-first-transaction from 9 days to 2 days.\"\n- Tenure listed as 2018–2021 here, but summary header says \"5 years at PayStream.\"\n\nPrior: FinhanceCo — Associate PM (2016 – 2018)\n- Supported a billing-migration project.\n\nSkills: roadmapping, A/B experimentation, SQL, stakeholder management, pricing.\nEducation: B.A. Economics.",
+  "jd": "We are hiring a Senior Product Manager for our payments platform. You will own a core product area end-to-end: discovery, roadmap, launch, and post-launch iteration, partnering with engineering, design, risk, and go-to-market. We expect crisp ownership of metrics — you should be able to state, without contradiction, what you shipped, the real adoption and revenue numbers, and your specific role versus the team's. Our interview panel probes resume claims directly and follows inconsistencies until they resolve. Strong candidates separate their individual decisions from team outcomes and speak in verifiable specifics.",
+  "history": [
+    { "q": "Daniel, walk me through the payments area you own at Ledgerwise today." },
+    { "q": "Let's go deep on instant-payouts. What was the core customer problem you were solving?" },
+    { "q": "What was your specific role on it — were you the sole PM, or one of several?" },
+    { "q": "Your resume says instant-payouts reached 12,000 businesses in one place and 3,000 in another. Which is right?" },
+    { "q": "And the payment-volume lift — one bullet says 40%, another says 25%. Walk me through the real number." },
+    { "q": "How did you measure that volume lift — what was the baseline and the window?" },
+    { "q": "Your summary says you managed cross-functional teams of 20-plus, but the role bullet says a squad of 6. Which describes instant-payouts?" },
+    { "q": "Let's talk discovery. What did customer research tell you before you scoped the feature?" },
+    { "q": "What did you decide to cut from v1, and why?" },
+    { "q": "What was the riskiest assumption, and how did you de-risk it before launch?" },
+    { "q": "After launch, what surprised you in the data?" },
+    { "q": "What did you do in response to that surprise — what shipped next?" },
+    { "q": "Tell me one decision on instant-payouts you'd make differently now." },
+    { "q": "So focus me on instant-payouts only: end to end, what was the situation, your goal, your specific actions, and the actual result with numbers?" }
+  ],
+  "candidate_last_answer": "Sure. Situation: mid-market businesses waited days for payouts and churned over it. My goal was to get money to them same-day. What I did: I scoped the feature, ran the pricing model, and aligned risk and ops — though honestly a lot of the same muscles showed up in the onboarding-funnel work at PayStream where I cut time-to-first-transaction to 2 days, and even in the billing migration at FinhanceCo I did similar stakeholder wrangling, so I tend to bundle those. On instant-payouts specifically I drove discovery, wrote the spec, and pushed risk to approve faster limits. We launched it and adoption ramped. As for the actual final numbers — the businesses count and the exact volume lift — I'd want to pull the dashboard before I commit to a figure, since those bullets clearly don't agree.",
+  "session_state": {
+    "drilled_topics": ["payments-scope", "instant-payouts-problem", "pm-role", "adoption-number-conflict", "volume-lift-conflict", "measurement-method", "team-size-conflict", "discovery", "v1-cuts", "riskiest-assumption", "post-launch-surprise", "response-action", "would-do-differently"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "product-judgement", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd want to pull the dashboard before I commit to a figure",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one committed adoption number and one committed volume-lift number for instant-payouts specifically, with baseline and window — resolving the 12,000-vs-3,000 and 40%-vs-25% contradictions and separating this one feature from the bundled PayStream/FinhanceCo stories"
+    ]
+  }
+}

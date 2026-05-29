@@ -1,0 +1,41 @@
+{
+  "id": "fx_0621",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Priya Nair — Software Engineering Intern Candidate\nB.S. Computer Science, expected 2026 | University of Washington | GPA 3.8\n\nProjects (STAR-structured):\n- Campus Ride-Share Matcher (course capstone)\n  Situation: 200-student class needed carpool matching for a field trip; manual sign-up sheet was chaotic.\n  Task: I owned the matching service for a 4-person team.\n  Action: Built a Python service that grouped riders by geo-proximity using a k-d tree; exposed a Flask endpoint; wrote 22 unit tests.\n  Result: Matched 180 students into 41 cars in under 2 seconds; instructor adopted it for the next two cohorts.\n\n- Library Seat Tracker (hackathon, 24h)\n  Situation: Students couldn't find open study seats during finals.\n  Task: Lead the backend for a 3-person team.\n  Action: Wrote a Node/Express API backed by Redis pub/sub for live seat counts; deployed on Render.\n  Result: 300 sign-ups in the first week; won 2nd place out of 18 teams.\n\nSkills: Python, JavaScript, SQL, Git, basic Docker.\nCoursework: Data Structures, Operating Systems, Databases, Algorithms.",
+  "jd": "Our team is hiring a Software Engineering Intern for a 12-week summer program on the Platform Infrastructure team. You will pair with a mentor engineer and ship at least one production change during the internship. Day to day you will read existing service code, write tests, fix scoped bugs, and present a final project to the team. We work primarily in Python and Go, deploy on Kubernetes, and value interns who can clearly explain the reasoning behind their own code decisions — what they tried, what they ruled out, and why. No prior industry experience required, but we expect you to speak concretely about projects listed on your resume.",
+  "history": [
+    { "q": "Welcome, Priya. Let's start with your ride-share matcher. Why did you pick a k-d tree for the matching?" },
+    { "q": "You wrote 22 unit tests — what was the trickiest edge case you had to cover?" },
+    { "q": "When you say it matched 180 students in under 2 seconds, how did you actually measure that 2-second number?" },
+    { "q": "Walk me through what specifically you would change about that matcher if you rebuilt it today." }
+  ],
+  "candidate_last_answer": "Yeah, um, I think I'd probably just make it better overall. Like, the architecture could be cleaner and the code could be more optimized. I'd use best practices and maybe more modern tools. Honestly it worked fine, so it's hard to say — I'd just generally improve the performance and make it more scalable if I had more time.",
+  "session_state": {
+    "drilled_topics": ["kdtree-choice", "test-edge-cases", "latency-measurement-method"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'd just generally improve the performance and make it more scalable",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete named bottleneck in the existing k-d tree design (e.g. rebalancing cost, dynamic inserts, memory) and the specific alternative data structure or change she would make, with the tradeoff that motivates it"
+    ]
+  }
+}

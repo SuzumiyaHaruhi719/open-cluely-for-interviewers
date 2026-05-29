@@ -1,0 +1,43 @@
+{
+  "id": "fx_0648",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Senior Account Executive — Mid-Market SaaS\n\nProfile: Eight years in B2B software sales with a focus on mid-market HR and payroll platforms. Consistent top-quartile performer who thrives in fast-moving, transactional cycles.\n\nPeoplebase (Mar 2021 – present) — Senior Account Executive\n- Carry a $1.4M annual quota in the mid-market segment; finished last year at 118% of plan.\n- Closed our largest mid-market deal of the year, a $310K ACV three-year contract with a regional restaurant group, in a 6-week sales cycle.\n- Note: average sales cycle in this segment is around 5 months, and most of my deals run a full two to three quarters from first meeting to close.\n- Promoted to Senior AE within my first year after joining as an AE in early 2021.\n\nWorkstream HR (2019 – 2021) — Account Executive\n- Owned the SMB segment (sub-50 employee accounts), high-velocity transactional motion, typical deal closed in under 30 days.\n- Built the entire mid-market motion from scratch and personally closed several six-figure enterprise deals here.\n- Consistently exceeded quota; in 2020 I delivered 140% of plan.\n- Also note: 2020 was a rebuild year for me and I finished slightly under quota as I ramped into the new territory.\n\nLedgerWise (2016 – 2019) — Sales Development Rep → Account Executive\n- Started as an SDR, promoted to closing AE after 18 months.\n- Generated the pipeline that the enterprise team closed.\n\nEducation: B.A. Communications.\nSkills: Salesforce, Outreach, MEDDIC, consultative selling, transactional velocity selling.",
+  "jd": "Cadenza is hiring a Senior Account Executive for our mid-market segment ($30K–$120K ACV, companies of 50–500 employees). You will own a $1.3M new-business quota, manage a pipeline through a typical three-to-five-month sales cycle, and run disciplined MEDDIC qualification in Salesforce. We are looking for a closer who can tell a crisp, consistent story about their own deals: how long their cycles actually run, which segment they truly excel in (velocity SMB versus more consultative mid-market), and a track record they can defend under scrutiny. You will partner with an SDR and a solutions consultant, forecast weekly, and be expected to model good pipeline hygiene for a growing team. We value candidates who are precise about their own numbers and timelines — we will dig in.",
+  "history": [
+    { "q": "Give me the quick version of your background and what you're carrying at Peoplebase today." },
+    { "q": "You mention a 6-week cycle on your biggest deal but a 5-month segment average. Which is the real picture of how you sell?" },
+    { "q": "Tell me about that $310K restaurant-group deal — when did it start, and walk me through the milestones to close." },
+    { "q": "You were promoted to Senior AE in your first year. When exactly did you join, and when was the promotion?" },
+    { "q": "At Workstream, was your strength the sub-30-day SMB motion or building the mid-market enterprise motion? Those are pretty different muscles." },
+    { "q": "Let's pin down 2020 at Workstream — did you finish at 140% of plan or slightly under quota? Your resume says both. Which year was which, and what actually happened?" }
+  ],
+  "candidate_last_answer": "Yeah, 2020 — okay so 2020 was the year I, right, so I joined Workstream in 2019, and then 2020 I was crushing it, 140%, but that might have been because the new territory came in 2020, or was it 2021... no, the mid-market build was 2020, and that's why I finished under quota that year, because I was ramping. But I also hit 140%. I think what happened is the first half of 2020 I was on SMB and doing great, like 140% pace, and then mid-year they moved me to build mid-market, so the back half I was under. So both are kind of true depending on which half you look at. Or it might have been 2019 that was the 140% year, honestly the years blur together.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cycle-length-discrepancy", "flagship-deal-timeline", "promotion-timing", "segment-strength"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: honestly the years blur together",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: force the candidate to commit to one defensible attainment figure for a single named year at Workstream — stating whether it was 140% or below plan and what segment he carried during that exact year — instead of claiming both are simultaneously true"
+    ]
+  }
+}

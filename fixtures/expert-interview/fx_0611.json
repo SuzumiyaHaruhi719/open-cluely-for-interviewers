@@ -1,0 +1,49 @@
+{
+  "id": "fx_0611",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "黄思远 · 供应链计划专员（Supply Chain Planner）\n\n个人简介\n两年半快消行业供应链计划经验,专注于需求预测、补货计划与库存优化。熟悉 SAP APO 与 Excel 高阶建模。\n\n工作经历\n\n2022 年 9 月 - 至今 · 优鲜食品 · 供应链计划专员\nSituation: 公司华东区某爆款酸奶单品长期面临断货与积压并存的问题,门店缺货率高达 12%,同时区域仓临期报废率约 4%。\nTask: 我被指派负责该单品的需求预测与补货策略重构,目标是把缺货率降到 5% 以下,同时把报废率控制在 2% 以内。\nAction: 我重建了基于历史销量 + 促销日历的周度预测模型,引入安全库存动态调整,并和区域销售对齐促销前置期。\nResult: 三个月内缺货率从 12% 降到 4.5%,报废率从 4% 降到 1.8%,该单品区域 GMV 环比提升约 9%。\n\n2021 年 3 月 - 2022 年 8 月 · 佳和日用 · 供应链管培生\n- 轮岗经历:需求计划、仓储运营、采购支持三个模块各四个月\n- 参与年度 S&OP 流程的数据准备工作\n\n教育背景\n上海对外经贸大学 物流管理 学士 2021\n\n技能\n- SAP APO、Excel(高阶函数与数据建模)、Power BI\n- 需求预测、安全库存模型、补货计划",
+  "jd": "优鲜食品招聘供应链计划专员(成长型岗位),加入华东区需求与补货计划团队。Reports to 计划经理。你将负责一组快消单品的需求预测、补货与库存健康管理,在促销与季节波动下平衡缺货与报废。我们希望候选人:(1) 能讲清一个完整项目的时间线 —— 什么时候发现问题、什么时候上线模型、什么时候看到结果,前后因果要对得上;(2) 真正理解需求预测与安全库存的权衡,讲得清促销前置期是怎么和销售对齐的;(3) 能量化结果(缺货率、报废率、预测准确度 WMAPE),并讲清口径。当前团队挑战是大促期间的预测准确度,以及一次预测模型上线后的效果复盘。这个岗位有计划经理带,但需要你对自己负责的单品有清晰的端到端掌控。",
+  "history": [
+    { "q": "先介绍一下你在优鲜负责的范围 —— 你管多少个单品,核心 KPI 是什么?" },
+    { "q": "你简历里那个酸奶单品的项目讲得很完整。先说说,你是什么时候开始接手这个单品的?" },
+    { "q": "那个 12% 的缺货率,是你接手之前就有的数据,还是你接手后测出来的?" },
+    { "q": "你重建的周度预测模型,大概是什么时候上线的?" },
+    { "q": "模型上线之后,多久开始看到缺货率下降的效果?" },
+    { "q": "你提到和区域销售对齐促销前置期。这个对齐动作是在模型上线之前做的,还是之后?" },
+    { "q": "安全库存动态调整 —— 你具体是按什么变量来调的?调整逻辑是你设计的吗?" },
+    { "q": "那个三个月把缺货率从 12% 降到 4.5% 的三个月,是从什么时间点算到什么时间点?" },
+    { "q": "报废率从 4% 到 1.8%,这个改善和缺货率改善是同一个三个月吗?还是后面才出来的?" },
+    { "q": "预测准确度方面,你用 WMAPE 还是别的指标?上线前后分别是多少?" },
+    { "q": "GMV 环比提升 9%,这个 9% 是和哪个月比?是模型上线那个月之后吗?" },
+    { "q": "好,我想把这个项目的时间线彻底理清楚。你能不能按月份顺序,从接手到看到结果,完整复述一遍关键节点?" }
+  ],
+  "candidate_last_answer": "好的,我捋一下。我大概是 2023 年 3 月接手这个单品的,接手之后先做了诊断,发现缺货率 12%。然后我 2023 年 1 月就把周度预测模型上线了,上线之后效果很快,大概一个月就看到缺货率往下走。促销前置期的对齐其实是最后才做的,差不多 2023 年 5 月才和销售聊。但奇怪的是结果在 2 月份就已经出来了,缺货率降到 4.5%。所以整个三个月差不多就是从 3 月到 5 月这样吧 —— 嗯,反正模型上线、对齐销售、看到结果,这几件事时间上有点交叉,我现在快速回忆可能顺序有点乱,但每一件事我确实都做了。",
+  "session_state": {
+    "drilled_topics": ["sku-scope", "takeover-date", "stockout-baseline-source", "model-golive-date", "effect-lag", "promo-alignment-timing", "safety-stock-logic-ownership", "three-month-window", "waste-rate-timing", "forecast-accuracy-metric", "gmv-comparison-baseline", "full-timeline-recap"],
+    "current_competency_target": "timeline-discipline",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "timeline-discipline",
+    "missing_evidence": [
+      { "competency": "timeline-discipline", "evidence_type": "timeline" },
+      { "competency": "execution", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我 2023 年 1 月就把周度预测模型上线了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single internally consistent chronology — pinning the model go-live to a date that comes after the March takeover and before the result, forcing the candidate to resolve the impossible 'took over in March but launched in January, results appeared in February' contradiction with a verifiable month-by-month sequence"
+    ]
+  }
+}

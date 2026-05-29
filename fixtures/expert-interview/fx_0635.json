@@ -1,0 +1,38 @@
+{
+  "id": "fx_0635",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "高级研究科学家（材料方向）\n\n现任：晶源新材料研究院 高级研究员\n方向：固态电解质与锂电池界面。\n经历：参与一项国家级电池材料专项，负责其中界面稳定性子课题；带过两名研究助理；发表论文若干，含一篇一作。\n技能：电化学阻抗、XRD、第一性原理计算。\n教育：材料学博士。",
+  "jd": "我们招聘一名高级研究科学家（Senior 级），向研究总监汇报，独立牵头固态电池界面方向的一个研究子课题。核心职责：定义研究问题与技术路线、设计并执行关键实验、指导一到两名初级研究人员、将研究结论转化为可申请的专利或可量产的工艺建议、在内部评审与外部会议上汇报成果。我们关注候选人能否清楚说明在过往课题中自己个人提出的科学假设与关键实验设计，能否量化研究成果的影响（如界面阻抗下降幅度、循环寿命提升），并能在结果不确定时独立做出技术判断。要求：材料、化学或物理博士，三年以上电池或固态电解质相关研究经验。",
+  "history": [
+    { "q": "你简历里提到在那个国家级专项里负责界面稳定性子课题。能不能先讲讲，这个子课题里最核心的科学问题是你提出的，还是课题组定好的？另外你个人具体做了哪些实验设计？" }
+  ],
+  "candidate_last_answer": "这个子课题是我们整个课题组一起推进的成果。方向是组里定的，实验方案也是大家开会一起讨论出来的，我主要是配合执行，跟着团队一起把活干完。我们组氛围特别好，导师把关，几位同事都很厉害，所以很多关键的想法其实是集体智慧的结晶，很难说是某一个人的。我觉得能在这样一个团队里贡献一份力量，本身就挺好的。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "research-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 很多关键的想法其实是集体智慧的结晶，很难说是某一个人的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人提出的某个具体科学假设或亲自设计的关键实验，包括为什么是这样设计、当时的备选方案是什么，从而把个人贡献从集体功劳中剥离出来"
+    ]
+  }
+}

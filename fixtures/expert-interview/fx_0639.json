@@ -1,0 +1,39 @@
+{
+  "id": "fx_0639",
+  "tags": {
+    "industry": "legal",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "法律实习生（Legal Intern）\n\n教育：法学院在读，预计明年毕业，GPA 3.7。\n\n实习经历：\n方达律师事务所 — 公司业务组 实习（近期）\n- 协助 due diligence，整理 target 公司的合同与工商资料。\n- 在 partner 指导下起草 NDA 与服务协议的初稿。\n- 检索并整理某 cross-border 交易的监管法规。\n\n校园经历：\n- 模拟法庭 (moot court) 校队成员，负责一方的书状写作。\n- 法律援助中心志愿者，处理过劳动争议 intake。\n\n技能：法律检索（Westlaw / 北大法宝）、合同审阅、英文法律文书。",
+  "jd": "我们正在招聘一名法律实习生（Intern 级），向资深律师汇报，参与公司业务组的日常法律工作。核心职责：协助尽职调查与资料整理、在律师指导下起草基础商业协议、进行法律检索与案例分析、协助准备交易交割文件。我们期望候选人能够完整讲述自己在某次实习任务中的具体过程与产出，能够说明自己做出的判断及其依据，并展现严谨的工作态度。要求：法学院在读或应届，具备扎实的法律检索能力，英文读写流利，对公司法或交易业务有兴趣。",
+  "history": [
+    { "q": "先简单介绍下你在方达的实习：在哪个组、主要做什么、谁指导你。" },
+    { "q": "你提到协助过一次 due diligence。当时这个项目大概是什么类型的交易？" },
+    { "q": "挑你做的某一项具体任务，完整讲讲：当时的情况、你的任务、你具体做了什么、最后交付了什么结果。" }
+  ],
+  "candidate_last_answer": "好的，我讲合同梳理这一项。当时的情况是，target 公司有一百多份各类 commercial contract，partner 要在两周内给客户一份风险清单。我的任务是负责其中供应商类合同的 review。我具体做了三件事：第一，我先和带教律师确认了五个重点 risk 维度，包括 change of control、排他条款和违约责任；第二，我按这五个维度做了一张 Excel 追踪表，把四十多份供应商合同逐条标注，凡是触发 change of control 通知义务的我都单独标红；第三，我发现有三份合同里藏着 client 没注意到的排他性条款，会影响交易后的整合，我写了一段 memo 提示风险。结果是，我这部分的清单被直接并入了交付给客户的最终 due diligence report，partner 还特意说那三条排他条款的提示很关键。",
+  "session_state": {
+    "drilled_topics": ["internship-scope", "deal-type"],
+    "current_competency_target": "attention-to-detail",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "attention-to-detail",
+    "missing_evidence": [
+      { "competency": "attention-to-detail", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我发现有三份合同里藏着 client 没注意到的排他性条款",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: 那三份合同里排他性条款的具体内容与措辞，候选人是如何在四十多份合同中识别出它们的（检索词、比对方法），以验证这是真实的细致工作而非笼统描述"
+    ]
+  }
+}

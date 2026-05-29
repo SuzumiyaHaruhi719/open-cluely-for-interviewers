@@ -1,0 +1,53 @@
+{
+  "id": "fx_0668",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "VP, Treasury & Capital Markets\n\nProfile\nTreasury executive with leadership across liquidity management, funding strategy, and interest-rate risk for a mid-size commercial bank. Owned the firm's relationship with rating agencies and chaired the Asset-Liability Committee (ALCO). Built and led a team spanning treasury operations, FTP, and market risk.\n\nExperience\nMeridian Federal Bank — VP, Treasury & Capital Markets (2019-present)\n- Lead the ALCO process and quarterly interest-rate-risk reporting to the board risk committee.\n- Restructured the wholesale funding mix and reduced reliance on brokered deposits.\n- Stood up an intraday liquidity monitoring capability ahead of a regulatory exam.\n- Managed the firm's first subordinated debt issuance and the investor roadshow.\n- Oversaw funds-transfer-pricing (FTP) policy and its allocation to the business lines.\n\nHarborline Savings — Director, Balance Sheet Management (2014-2019)\n- Ran the investment portfolio strategy and hedging program for rate risk.\n- Partnered with the CFO on the annual capital plan and stress-testing submission.\n\nEarlier — Senior Analyst roles in bank treasury and ALM advisory.\n\nEducation\nMBA, Finance. BA, Economics. CFA charterholder.\n\nSkills\nALM, FTP, liquidity risk, IRRBB, deposit modeling, securitization, rating-agency relations.",
+  "jd": "Our regional bank ($40B assets) is hiring a VP of Treasury to own funding, liquidity, and interest-rate-risk management as we scale toward the $50B regulatory threshold. Reporting to the Treasurer, you will run ALCO, own the FTP framework, lead wholesale-funding strategy, and present interest-rate-risk and liquidity positions to the board risk committee. You will manage the investment portfolio and hedging program (the bank carries roughly $9B in AFS securities), lead the next capital-markets issuance, and prepare the treasury components of the enhanced prudential standards we will face above $50B. You will inherit a deposit base that has grown rapidly but is increasingly rate-sensitive, an under-built deposit-behavior model, and an upcoming liquidity-focused regulatory exam. The ideal candidate has crossed a regulatory asset threshold before, has owned IRRBB measurement end-to-end, and can defend modeling assumptions to both auditors and examiners.",
+  "history": [
+    { "q": "Give me the shape of your current role: what you own, team size, and who you report to." },
+    { "q": "Your resume says you 'restructured the wholesale funding mix.' What did the mix look like before and after?" },
+    { "q": "Why was reducing brokered deposits the right move at that moment?" },
+    { "q": "Walk me through how your ALCO actually runs — cadence, who's in the room, what decisions it makes." },
+    { "q": "Tell me about the subordinated debt issuance you managed. What was the size and the coupon?" },
+    { "q": "How did you decide on the issuance size relative to the capital need?" },
+    { "q": "Let's go to interest-rate risk. How do you measure IRRBB today?" },
+    { "q": "What were your key deposit-behavior assumptions, and how did you validate them?" },
+    { "q": "An examiner challenges your deposit beta assumption as too low. How do you respond?" },
+    { "q": "Tell me about a time your rate-risk position was wrong and it cost the bank." },
+    { "q": "Now the deposit-behavior model. Walk me through the specific project to improve it." },
+    { "q": "What was the situation that made the old model inadequate?" },
+    { "q": "What exactly did you change in the methodology, and what was the result on your risk numbers?" },
+    { "q": "Who owned the build — you, a vendor, or the model-risk team? What was your personal role?" },
+    { "q": "Give me the full story of the deposit-model rebuild: the trigger, what you set out to do, and what you did." }
+  ],
+  "candidate_last_answer": "Sure. The situation was that our deposit base had shifted a lot after the rate cycle turned, and the old non-maturity-deposit model was basically a static decay assumption that nobody trusted anymore — examiners had flagged it the prior cycle. So the task I set for myself was clear: get us to a behaviorally segmented model we could actually defend to the risk committee and the regulators. We needed to stop guessing on deposit betas and surge balances. That was the goal going in, and the whole team understood it was the priority that year.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "funding-mix-restructure", "brokered-deposit-rationale", "alco-process", "sub-debt-issuance", "issuance-sizing", "irrbb-measurement", "deposit-assumptions", "examiner-challenge", "rate-risk-miss", "deposit-model-project", "model-trigger"],
+    "current_competency_target": "execution-rigor",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "execution-rigor",
+    "missing_evidence": [
+      { "competency": "execution-rigor", "evidence_type": "owner-of-action" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: get us to a behaviorally segmented model we could actually defend",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the concrete steps the candidate personally executed to build the segmented deposit model — what data and segmentation logic they chose, how betas/surge balances were estimated, and the before/after change in a specific risk metric (e.g. EVE or NII sensitivity)"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "fx_0610",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "林子骞 · 后端开发工程师（Junior Backend Engineer）\n\n个人简介\n两年后端开发经验,主要做 Java + Spring Boot 的微服务,熟悉 MySQL、Redis、Kafka。对高并发和分布式系统有浓厚兴趣。\n\n工作经历\n\n2023 年 7 月 - 至今 · 速达物流科技 · 后端开发工程师\n- 独立负责订单服务（Order Service）的设计与开发,从 0 到 1 搭建\n- 同时也提到:订单服务是团队已有的 legacy 系统,我主要做维护和迭代\n- 主导了一次数据库从单库到分库分表的迁移,sharding key 选的是 user_id\n- QPS 峰值从 800 提升到约 5000,P99 latency 从 1.2s 降到 200ms\n- 入职时间 2023 年 7 月,但订单服务重构项目我写的是 2023 年 3 月启动并参与全程\n\n技能\n- 语言:Java(熟练)、Go(了解一点点,但简历技能条写的是精通)\n- 中间件:Kafka、RabbitMQ、Redis\n- 工具:Git、Docker、Jenkins\n\n教育背景\n华中科技大学 软件工程 学士 2023",
+  "jd": "速达物流科技招聘一名后端开发工程师（Junior 偏成长型），加入订单与履约平台团队。Reports to 技术负责人。你将参与订单服务、库存服务的开发与维护,在高并发场景下保障系统稳定。我们希望候选人:(1) 能清楚讲明白自己亲手写过的代码 —— 哪部分是你设计的,哪部分是你实现的,而不是团队成果的笼统描述;(2) 对分库分表、缓存、消息队列等有真实的踩坑经验,能讲清 sharding key 的选型权衡和迁移过程中遇到的具体问题;(3) 能量化自己工作的影响(QPS、延迟、错误率),并且讲得清这些数字是怎么测出来的。我们团队目前的挑战是订单服务在大促期间的稳定性,以及一次未完成的分库分表迁移的收尾。这个岗位会有资深工程师带,但需要你对自己写过的东西有 ownership。",
+  "history": [
+    { "q": "先介绍一下你在速达负责的订单服务 —— 你具体做哪些部分?" },
+    { "q": "你简历里一处写订单服务是你从 0 到 1 搭的,另一处又写它是 legacy 系统你做维护。到底是哪种情况?" },
+    { "q": "你说订单服务重构 2023 年 3 月启动你全程参与,但入职是 7 月。这个时间怎么对得上?" },
+    { "q": "好,先放一放时间线。说说那次分库分表迁移 —— 当时为什么要做?触发的痛点是什么?" },
+    { "q": "sharding key 你选了 user_id。当时还考虑过哪些其它候选 key?为什么排除了它们?" },
+    { "q": "用 user_id 做 sharding,有没有热点问题?比如某些大客户的订单量特别大,你怎么处理?" },
+    { "q": "迁移过程中,存量数据是怎么从单库搬到分片库的?这一步是你做的吗?" },
+    { "q": "迁移期间新老库的双写和数据一致性怎么保证的?这部分代码谁写的?" },
+    { "q": "你说 QPS 从 800 到 5000,P99 从 1.2s 到 200ms。这些数字是在什么场景、用什么工具压测出来的?" },
+    { "q": "这个 5000 QPS 是单机还是整个集群的口径?压测环境和生产环境一致吗?" },
+    { "q": "迁移上线那天,有没有出过问题?有没有回滚预案?" },
+    { "q": "你技能条写 Go 精通,但简历正文又写只了解一点点。你实际用 Go 写过生产代码吗?" },
+    { "q": "假设现在让你重新做一次这个迁移,你会改变哪个具体决策?" },
+    { "q": "这个迁移项目里,除了你之外还有谁参与?你和资深工程师的分工边界在哪?" },
+    { "q": "好,我们具体一点。就说那次迁移上线 —— 你能不能完整讲一遍:当时的目标是什么、你具体做了哪几件事、最后结果如何?" },
+    { "q": "你刚讲了做了什么和结果,但我没听到当时具体的目标和约束。再补一下:那次迁移上线,业务上有没有给你明确的时间窗口或者稳定性指标?" }
+  ],
+  "candidate_last_answer": "嗯,那次迁移上线我做的事情挺具体的:我先写了一个数据迁移脚本,把存量订单按 user_id 分片灌到新库,然后配置了双写,灰度了大概一周,逐步把读流量切到新库。最后结果也不错,P99 从 1.2s 降到 200ms,大促当天也扛住了。但你问的那个时间窗口和稳定性指标 —— 说实话我当时主要是 focus 在 technical 实现上,业务那边到底有没有给一个硬性的 deadline 或者 SLA,我现在确实想不太起来了,可能是我们 team lead 在对接,我没太关注那一层。",
+  "session_state": {
+    "drilled_topics": ["order-service-scope", "resume-contradiction-0to1-vs-legacy", "timeline-march-vs-july", "migration-trigger", "sharding-key-alternatives", "hotspot-handling", "data-backfill-ownership", "dual-write-consistency-ownership", "qps-latency-measurement", "qps-scope-single-vs-cluster", "rollback-plan", "go-skill-overclaim", "migration-counterfactual", "team-division-of-labor", "full-star-recap", "task-constraint-gap"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "execution", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 可能是我们 team lead 在对接,我没太关注那一层",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the specific target/constraint the candidate personally operated under — the actual deadline date or SLA threshold for the migration and how the candidate knew it — closing the missing Task/constraint part of the STAR and clarifying whether ownership was real or just implementation handed down by the lead"
+    ]
+  }
+}

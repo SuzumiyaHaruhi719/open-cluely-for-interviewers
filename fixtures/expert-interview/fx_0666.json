@@ -1,0 +1,54 @@
+{
+  "id": "fx_0666",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "高建国 · 大客户销售总监\n\n职业概述\n十五年企业级软件销售与销售管理经验,长期负责大客户(KA)直销与渠道并行的业务体系,带过华东与华南两个大区。擅长复杂大单的策略制定、销售团队的体系化建设、以及与客户高层的关系经营。\n\n工作经历\n\n2020 年至今 · 鼎峰软件 · 大客户销售总监\n- 负责华东大区企业级产品的整体销售,管理一支多层级的销售团队\n- 主导搭建公司的大客户销售方法论与打单流程体系\n- 牵头多个标杆型大客户的战略签约,推动客户从单点采购走向整体合作\n- 与市场、售前、交付多团队协同,构建端到端的客户经营闭环\n\n2015 - 2020 · 云汇科技 · 销售经理 → 高级销售经理\n- 从一线大客户经理成长为团队负责人,带过一个区域销售小组\n- 负责若干重点行业客户的开拓与持续经营\n\n2009 - 2015 · 某 IT 公司 · 销售代表 → 资深销售\n- 从一线销售做起,逐步覆盖中大型客户\n\n教育背景\n某重点大学 市场营销学士\n\n技能与认证\n- 大客户销售策略、复杂大单管理\n- 销售团队建设与人才培养\n- 解决方案式销售(Solution Selling)方法论\n\n自我评价\n- 以结果为导向,擅长在高压环境下带领团队冲刺目标;注重客户关系的长期经营",
+  "jd": "我们是一家企业级 SaaS 公司,现招聘一名大客户销售总监,向销售 VP 汇报,负责一个重点大区的整体业绩与团队管理。核心职责:(1) owning 大区的销售目标,对 pipeline、win rate、客单价等核心指标负责;(2) 带领并培养一支大客户销售团队,建立可复制的打单方法论;(3) 亲自参与并主导战略级大单的策略制定与高层关系经营;(4) 与售前、市场、交付等部门高效协同。我们在面试中特别看重:候选人能否把一个自己亲自主导的具体大单从头讲清楚 —— 客户是谁、单子多大、关键节点上自己做了什么决策、最后结果如何,而不是停留在方法论和漂亮话上。硬性要求:十年以上企业级销售经验,其中三年以上团队管理;有亲自 close 过大单的实操经历;能用具体数字和事实支撑自己的业绩主张。",
+  "history": [
+    { "q": "先介绍一下你在鼎峰现在负责的业务范围 —— 大区、团队规模、你直接背的指标。" },
+    { "q": "你简历里反复提到『大客户销售方法论』,能不能用一句话说清楚,这套方法论到底解决了什么具体问题?" },
+    { "q": "这套方法论落地之后,你们大区的 win rate 或者客单价有没有具体变化?" },
+    { "q": "你说推动客户『从单点采购走向整体合作』,挑一个最典型的客户,这个客户原来买什么、后来买了什么?" },
+    { "q": "这个客户的整体合作,合同金额量级大概是多少?分几年?" },
+    { "q": "在这个单子里,哪个关键节点是你个人拍板的?具体是什么决策?" },
+    { "q": "你提到和售前、交付协同,在这个单子里,有没有出现过内部意见不一致的时候?你怎么处理的?" },
+    { "q": "我想听一个更具体的 —— 这个大单推进过程中,客户那边最大的一次反对意见是什么?" },
+    { "q": "你当时具体说了什么、做了什么,把这个反对意见化解掉的?" },
+    { "q": "这个单子从第一次接触到最后签约,大概花了多长时间?中间有没有差点谈崩的时刻?" },
+    { "q": "你带团队的时候,怎么判断一个销售该不该继续投入资源去追一个大单?你的标准是什么?" },
+    { "q": "举个例子:有没有过你叫停某个销售正在追的单子?当时是基于什么判断?" },
+    { "q": "回到你那套方法论 —— 它和市面上常见的解决方案式销售有什么不一样的地方?" },
+    { "q": "你说你『擅长在高压下带团队冲刺』,讲一个具体的季度:当时差多少、你做了什么、最后补上没有?" },
+    { "q": "好,我们聚焦。就你刚才那个标杆客户的大单,请你完整讲一遍:客户是谁、单子多大、你个人在关键节点做了什么、最后结果。" },
+    { "q": "你讲的还是偏方法论。我要的是这一个单子的具体事实 —— 客户名称量级、你拍板的那个决策、签约金额。能给我吗?" },
+    { "q": "最后一次机会把这个单子讲实:就一个数字、就一个你亲自做的决策、就一个结果。" }
+  ],
+  "candidate_last_answer": "我理解你想要的颗粒度。我这么说吧 —— 真正的大客户经营,核心是『以客户为中心、以价值为导向、以结果为闭环』。我在这个标杆客户上,本质上做的就是『把握节奏、经营关系、撬动高层、整合资源』这四件事。我始终坚持一个理念:销售不是卖产品,而是经营信任。所以我在关键节点上,做的最重要的一件事就是『站在客户的战略视角去对齐价值』,把我们的方案上升到客户的顶层规划里去。结果当然是非常正向的,客户对我们的认可度、合作的深度、续约的意愿都达到了一个新的高度。这套打法是可复制、可沉淀、可规模化的,这也是我最大的价值所在。至于你说的具体金额和决策细节,我觉得方法论本身比单一数字更能说明问题。",
+  "session_state": {
+    "drilled_topics": ["current-scope-region-team", "methodology-one-liner", "winrate-acv-change", "single-point-to-whole-customer", "contract-magnitude-years", "personal-decision-node", "internal-disagreement-handling", "biggest-objection", "objection-resolution-action", "deal-cycle-length", "resource-investment-criteria", "called-off-a-deal-example", "methodology-vs-solution-selling", "high-pressure-quarter", "benchmark-deal-full-recount", "concrete-facts-demand", "last-chance-one-number"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 49
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我觉得方法论本身比单一数字更能说明问题",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: the actual customer name (or anonymized industry + revenue tier), the signed contract value, and one specific decision the candidate personally made on this single deal — converting rehearsed methodology language into a verifiable named instance"
+    ]
+  }
+}

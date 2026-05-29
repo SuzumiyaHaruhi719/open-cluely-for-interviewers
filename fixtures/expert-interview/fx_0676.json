@@ -1,0 +1,43 @@
+{
+  "id": "fx_0676",
+  "tags": {
+    "industry": "education",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "初中数学教师（初级）\n\n师范院校数学教育专业毕业，持初中数学教师资格证，从教两年。\n\n经历\n阳光中学 — 数学教师（2022年至今）\n负责两个初二班级的数学教学与班级管理，参与备课组的单元测验命题。\n带过一轮中考冲刺辅导。\n\n技能\n课堂教学、分层作业设计、错题分析、家校沟通。",
+  "jd": "我们是一所民办初中，招聘初级数学教师，承担初中两个班级的数学教学、作业与测验设计、以及对后进生的针对性辅导。我们看重候选人能用具体、聚焦的方式复盘自己的教学：一个班的成绩怎么变化、你针对哪类学生用了什么具体方法、效果如何。面试中希望你回答紧扣问题、不跑题，能在有限时间里讲清一件事的来龙去脉。岗位需配合年级组统一进度与考核。",
+  "history": [
+    { "q": "先说说你现在带的两个班，整体数学情况怎么样？" },
+    { "q": "你提到分层作业，具体是怎么分层的？" },
+    { "q": "针对班里基础薄弱的学生，你用过什么具体办法？" },
+    { "q": "那一轮中考冲刺辅导，你带的学生成绩有变化吗？" },
+    { "q": "错题分析你是怎么做的，多久做一次？" },
+    { "q": "我们就聚焦一件事：你带过的某一个后进生，你具体怎么帮他、用了多久、最后提了多少分，按顺序讲清楚。" }
+  ],
+  "candidate_last_answer": "说到这个学生，他其实挺有意思的，他家就住学校后门那条街，他爸妈是做小吃生意的，每天忙到很晚，所以这孩子放学基本没人管——你说现在家庭教育是不是个大问题？我有时候觉得我们当老师的不光是教书，还得管心理。哦对了说到心理，我们学校上学期还请了个心理讲座，讲青春期的，那个老师讲得特别好，我记了好多笔记。然后呢这孩子他特别喜欢打篮球，我有时候陪他打两局拉近关系……哎你看我又扯远了。反正我对他是挺上心的，方法嘛就是平时多关注多鼓励，具体提了多少分我得翻翻记录，大概是有进步的。我们班的整体氛围其实也跟这个有关，班风好了大家成绩自然……",
+  "session_state": {
+    "drilled_topics": ["two-classes-overview", "tiered-homework", "weak-student-method", "exam-prep-result", "error-analysis-cadence", "single-student-focus"],
+    "current_competency_target": "instructional-impact",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "instructional-impact",
+    "missing_evidence": [
+      { "competency": "instructional-impact", "evidence_type": "mechanism" },
+      { "competency": "instructional-impact", "evidence_type": "metric" },
+      { "competency": "instructional-impact", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体提了多少分我得翻翻记录，大概是有进步的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a focused, on-topic account of the one struggling student — the specific intervention method used, over what period, and the actual score change before vs. after — cutting through the tangents to establish whether a measurable teaching outcome exists"
+    ]
+  }
+}

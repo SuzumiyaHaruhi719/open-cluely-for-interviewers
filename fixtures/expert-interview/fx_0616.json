@@ -1,0 +1,50 @@
+{
+  "id": "fx_0616",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "孙亦辰 · 金融分析实习候选人\n\n个人简介\n金融学硕士在读(预计明年毕业),本科金融工程。对股权研究与估值建模有浓厚兴趣,希望加入买方或卖方研究团队实习。\n\n教育背景\n上海财经大学 金融学 硕士在读 · 预计 2027 年毕业\n上海财经大学 金融工程 学士 2025\n\n相关经历\n\n华兴证券 · 研究所 · 行业研究实习生(去年暑期)\n- 协助分析师做消费行业的资料搜集与公司基本面整理\n- 参与过几家上市公司的调研纪要整理\n- 用 Excel 搭建过简单的可比公司估值表\n- 协助撰写过行业周报的部分章节\n\n学校经历\n- 投资研究社团成员,参与过校内股票模拟投资比赛\n- 上过公司金融、财务报表分析、计量经济学等课程\n\n技能\n- Excel 建模、Wind 资讯、基础 Python\n- 财务报表分析、DCF / 可比公司估值(课堂与实习接触)\n\n语言\n- 中文母语 · 英语六级",
+  "jd": "我们正在为券商研究所消费组招聘行业研究实习生,向资深分析师汇报。你将协助覆盖消费板块的公司基本面研究、估值建模、调研纪要与报告撰写。我们希望候选人:(1) 对自己做过的估值模型有真正的理解 —— 能讲清 DCF 的关键假设(增长率、WACC、永续增长)是怎么定的,而不是套模板;(2) 能用具体数字说话 —— 你看过的公司收入、毛利、估值倍数大概什么量级;(3) 面对追问能展现独立思考,而不是把问题抛回给面试官。当前团队需要能快速上手、对数字敏感、并且愿意为自己的判断负责的实习生。这个岗位强度较大,需要主动学习。",
+  "history": [
+    { "q": "先介绍一下你在华兴证券研究所实习时具体做了什么。" },
+    { "q": "你说搭过可比公司估值表。当时选了哪几家可比公司?选取标准是什么?" },
+    { "q": "可比公司估值你主要看哪个倍数?PE、PS 还是 EV/EBITDA?为什么?" },
+    { "q": "你整理过基本面的那家消费公司,它大概的收入规模和毛利率是什么量级?" },
+    { "q": "如果让你给这家公司做个 DCF,你的永续增长率会怎么取?依据是什么?" },
+    { "q": "WACC 你会怎么估?权益成本那块你用什么方法?" },
+    { "q": "假设这家公司的估值倍数明显高于同行,你会怎么解读?是高估还是有溢价理由?" },
+    { "q": "你参加过模拟投资比赛。讲一个你当时下注、结果做对了的标的,逻辑是什么?" },
+    { "q": "那讲一个你做错的标的 —— 当时的判断错在哪?" },
+    { "q": "调研纪要整理时,分析师最看重纪要里的哪类信息?你怎么判断哪些该记?" },
+    { "q": "你说接触过 DCF。DCF 对哪个假设最敏感?你怎么验证这个敏感性?" },
+    { "q": "如果一家公司收入在涨但经营性现金流持续为负,你会担心什么?" },
+    { "q": "好,我们具体一点。回到 DCF 的永续增长率 —— 假设你给这家消费公司取了 3%,但行业整体在萎缩,这个 3% 还合理吗?你会怎么调整?" }
+  ],
+  "candidate_last_answer": "嗯……这个问题挺好的。不过我想先反问您一下:您说的『行业整体在萎缩』,是指收入端的萎缩还是利润端的萎缩呢?而且您这边定义的永续增长率,通常是参考名义 GDP 还是参考行业的长期复合增速?其实我觉得这个问题的答案很大程度上取决于您们研究所内部的估值规范是怎么定的 —— 不知道您能不能先告诉我,你们一般是怎么处理萎缩行业的永续假设的?我想了解了您的框架之后,再来回答会更准确一些。",
+  "session_state": {
+    "drilled_topics": ["huaxing-internship-scope", "comparable-selection-criteria", "valuation-multiple-choice", "company-revenue-margin-scale", "terminal-growth-basis", "wacc-cost-of-equity-method", "premium-vs-overvaluation", "winning-stock-thesis", "losing-stock-mistake", "research-note-judgment", "dcf-sensitivity-assumption", "revenue-up-cashflow-negative", "terminal-growth-shrinking-industry"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个问题的答案很大程度上取决于您们研究所内部的估值规范是怎么定的",
+      "must-be-question-type: counterfactual",
+      "expected-yield: the candidate's own independent reasoning for a terminal growth rate in a shrinking industry — forcing them to commit to a specific number and justify it (e.g., capping terminal growth at or below long-run industry CAGR, or modeling a fade period) instead of deflecting the judgment back onto the interviewer's framework"
+    ]
+  }
+}

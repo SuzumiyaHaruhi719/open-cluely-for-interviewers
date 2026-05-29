@@ -1,0 +1,47 @@
+{
+  "id": "fx_0669",
+  "tags": {
+    "industry": "design",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "self-contradictory",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "UI/UX 设计实习生求职简历\n\n个人简介\n视觉与交互设计方向应届实习生，熟练使用 Figma、Sketch 与 Adobe 全家桶，热爱以用户为中心的设计。\n\n实习与项目经历\n灵犀科技 — 产品设计实习生（2024年3月至2024年9月，共6个月）\n- 独立负责一款电商 App 的首页改版，从调研到高保真交付全程由我一人完成。\n- 主导了三场可用性测试，并输出完整的设计规范文档。\n\n（同段落下方又写道）灵犀科技实习时间为2024年6月至2024年8月，共两个月，主要协助资深设计师完成切图与标注工作。\n\n云图设计工作室 — 兼职设计（2023年）\n- 参与品牌视觉项目，负责部分图标设计。\n- 简历技能栏标注 Figma 为『精通』，但项目描述中又写『正在学习 Figma 的基础组件库用法』。\n\n校园经历\n- 设计协会成员，组织过一次校园海报展。\n- 自述『带领20人团队』，但下一行又写『协会共有5名成员』。\n\n教育背景\n视觉传达设计 本科在读（大四）。\n\n技能\nFigma（精通／学习中）、Sketch、Photoshop、用户研究、交互原型。",
+  "jd": "我们是一家成长期的消费类 App 公司，招聘 UI/UX 设计实习生，参与核心产品的界面与交互设计。你将跟随资深设计师，承担界面切图、标注、设计规范维护，并在指导下参与可用性测试与小型改版项目。我们看重诚实、可被验证的经历：面试中你需要清楚说明每个项目里你『本人』具体做了什么、用了多长时间、和团队其他人的分工边界在哪里。我们也非常在意职业操守——设计实习生会接触到尚未发布的产品原型和用户数据，必须严格遵守保密与数据使用规范，不得将公司未公开素材用于个人作品集或对外展示。希望候选人能精确、坦诚地复盘自己的经历，而不是回避或含糊带过。",
+  "history": [
+    { "q": "先做个自我介绍吧，说说你最近一段实习主要在做什么。" },
+    { "q": "你简历里灵犀科技的实习，前面写6个月、后面又写2个月，到底是多久？" },
+    { "q": "那段首页改版，你说是一个人从调研到交付全程完成，能具体讲讲调研部分你怎么做的吗？" },
+    { "q": "同一个项目，简历另一处又写你主要是协助资深设计师做切图标注，这两种说法哪个更准确？" },
+    { "q": "你技能栏写 Figma『精通』，但项目里又写『正在学习基础组件库』，怎么理解？" },
+    { "q": "校园经历里写『带领20人团队』，下一行写协会一共5个人，这个我也想确认一下。" },
+    { "q": "我不是在挑刺，我只是想弄清楚你真实的能力边界。我们换个角度：那三场可用性测试，参与的用户是怎么招募的？" },
+    { "q": "测试里你用到的产品原型，是灵犀的内部未发布版本吗？" },
+    { "q": "那你后来把这个改版项目放进个人作品集了吗？里面有没有包含灵犀未公开的界面截图？" },
+    { "q": "作品集对外公开了，公司知道并同意你用这些未发布素材吗？" },
+    { "q": "我们再回到那个改版：从调研、设计到交付，你能把每一步你本人做的事情按时间顺序讲一遍吗？" }
+  ],
+  "candidate_last_answer": "说实话我觉得你一直在揪着简历上几个字眼不放，这有点没必要吧。实习这种事时间本来就模模糊糊的，6个月还是2个月有那么重要吗？至于作品集，我就是把我做的改版放上去了而已，那本来就是我的劳动成果，凭什么不能放。截图嘛是有灵犀那版界面，但那是我自己设计的，谁规定不能用？反正现在哪个设计师作品集里没几张公司项目的图，大家都这么干，你单拿我说事我不太能接受。你要真想看我能力，我现场给你画一个不就行了。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "internship-duration-conflict", "redesign-research-detail", "role-conflict-cutting-vs-owning", "figma-skill-conflict", "team-size-conflict", "usability-recruit", "internal-prototype-use", "portfolio-confidential-screenshots", "company-consent"],
+    "current_competency_target": "integrity-and-self-awareness",
+    "elapsed_minutes": 28
+  },
+  "ground_truth": {
+    "competency_target": "integrity-and-self-awareness",
+    "missing_evidence": [
+      { "competency": "integrity-and-self-awareness", "evidence_type": "owner-of-action" },
+      { "competency": "integrity-and-self-awareness", "evidence_type": "scope" }
+    ],
+    "safety_flags": ["admitted use of employer's unreleased UI screenshots in a public portfolio without confirmed company consent — potential confidentiality/IP violation"],
+    "top_question_traits": [
+      "must-anchor-on: 截图嘛是有灵犀那版界面，但那是我自己设计的，谁规定不能用",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a precise account of what unreleased material the candidate actually published and under what authorization — whether灵犀 gave written consent, which specific screens were public, and whether the candidate understands the confidentiality line they crossed, separating defensiveness from the verifiable facts"
+    ]
+  }
+}

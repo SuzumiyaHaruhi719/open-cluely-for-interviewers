@@ -1,0 +1,52 @@
+{
+  "id": "fx_0672",
+  "tags": {
+    "industry": "healthcare",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "sparse-200words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "临床研究助理（CRA）实习生\n\n医学相关专业大四在读，应聘临床研究助理实习岗。\n\n经历\n仁和临床研究中心 — 实习生（2024年暑期）\n协助监查员整理受试者知情同意书与病例报告表（CRF），参与一个II期项目的现场资料核对。\n\n校园\n参加过 GCP 培训并获得证书；担任医学社团干事。\n\n技能\nGCP、CRF 核查、知情同意流程、Excel、医学英语。",
+  "jd": "我们是一家临床试验受托研究机构（CRO），招聘临床研究助理（CRA）实习生，协助监查员完成项目现场监查、源数据核查（SDV）、知情同意核对与 CRF 质疑处理。你将在指导下参与 II/III 期项目，严格遵循 GCP 与方案要求。我们看重诚实、具体、可被核实的描述：希望候选人讲清自己在某个项目里亲手做了什么、核对了多少份文件、发现并上报了什么问题，而不是堆砌流程术语或用漂亮的套话带过。岗位需要极强的细节意识与合规意识。",
+  "history": [
+    { "q": "先简单介绍一下你这段在仁和的实习吧。" },
+    { "q": "你说参与了 II 期项目的现场资料核对，那个项目是什么适应症？" },
+    { "q": "知情同意书核对，你具体看的是哪几项？" },
+    { "q": "你大概核对了多少份知情同意？" },
+    { "q": "CRF 核查时你发现过哪些类型的问题？" },
+    { "q": "发现问题后，按流程你应该怎么处理？" },
+    { "q": "有没有哪一次是你本人发现并上报了一个具体的数据差异？" },
+    { "q": "SDV 是什么，你做的时候核对的源文件包括哪些？" },
+    { "q": "你提到 GCP，能说一条你在现场真正用到的 GCP 原则吗？" },
+    { "q": "监查员对你的工作有没有提出过返工？是什么情况？" },
+    { "q": "整个暑期你独立完成的、不需要别人复核的部分是什么？" },
+    { "q": "你觉得自己这段实习最大的不足是什么？" },
+    { "q": "如果让你独立负责一个现场的知情同意核对，你会怎么安排？" },
+    { "q": "我注意到你回答里术语很多，但具体动作很少。我们具体点：那一次知情同意核对，你到底逐项核了什么？" },
+    { "q": "再聚焦一次：把你亲手核对那批知情同意的过程，一步一步、带上你发现的具体问题讲给我听。" }
+  ],
+  "candidate_last_answer": "我始终秉持以患者为中心、以质量为生命线的核心理念，全流程闭环地把控知情同意核查的每一个关键节点，确保合规性与数据完整性的双重赋能。我会以终为始，前置质量意识，对每一份文件做到严丝合缝的精细化管理。其实我想反问您一句——在您看来，一名优秀的 CRA 在知情同意核查上最不可妥协的素养到底是什么？您觉得我刚才描述的这套质量闭环理念，是不是已经契合了贵司对实习生的核心期待？",
+  "session_state": {
+    "drilled_topics": ["internship-intro", "indication", "ic-checklist-items", "ic-count", "crf-issue-types", "issue-handling-process", "self-found-discrepancy", "sdv-source-docs", "gcp-applied", "rework-from-monitor", "independent-work", "self-weakness", "independent-plan", "term-heavy-probe"],
+    "current_competency_target": "concrete-execution-detail",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "concrete-execution-detail",
+    "missing_evidence": [
+      { "competency": "concrete-execution-detail", "evidence_type": "mechanism" },
+      { "competency": "concrete-execution-detail", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 全流程闭环地把控知情同意核查的每一个关键节点",
+      "must-be-question-type: teach-back",
+      "expected-yield: a step-by-step account of what the candidate physically checked on each informed-consent form — which fields, what a real discrepancy looked like, and how many forms — stripping away the rehearsed buzzwords and the deflecting counter-question to reveal whether any concrete hands-on work occurred"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "fx_0622",
+  "tags": {
+    "industry": "customer-support",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "林雅婷 | 高级客服专员 | 3 年在线客服与客户成功经验\n\n自我评价：天生的客户体验大师，凭一己之力把团队满意度拉到全公司第一。客户问题到我这里没有解决不了的，是同事眼中的『金牌救火员』和团队灵魂人物。\n\n工作经历：\n- 速达物流 (SuDa Logistics) 客服中心 — 高级客服专员 (2023.03 - 至今)\n  · 负责处理高优先级与升级类工单，主导多起重大客诉的危机公关\n  · 推动团队 CSAT 从 82 分提升到 91 分，行业领先\n  · 牵头优化退款话术，大幅降低二次投诉\n- 优选商城 (YouXuan Mall) — 客服专员 (2021.05 - 2023.02)\n  · 负责售后咨询、退换货处理与差评安抚\n\n技能：工单系统 (Zendesk)、客诉危机处理、话术设计、跨部门协调\n教育：某职业技术学院 工商管理 大专 (2018-2021)",
+  "jd": "速达物流客服中心招聘高级客服专员，负责处理升级类与高优先级客户工单，参与重大客诉的处理与跟进，并协助沉淀客服话术与知识库。我们使用 Zendesk 工单系统，要求候选人能清楚说明在每一次客诉处理中『自己』具体做了什么、做了哪些判断、与哪些部门如何协作。本岗位看重个人责任归属与可复盘的真实贡献，而非笼统的团队成绩。汇报对象为客服中心主管，需参与轮班。",
+  "history": [
+    { "q": "雅婷你好，先讲讲你现在在速达物流客服中心负责的工单类型和日常职责吧。" },
+    { "q": "你简历里说主导了多起重大客诉的危机公关，先挑印象最深的一起讲讲背景。" },
+    { "q": "那起客诉里，客户最初的诉求是什么？升级到你这里时已经到了什么程度？" },
+    { "q": "你刚才说『我们安抚了客户』，具体到你个人，你说了哪些话、做了哪个动作？" },
+    { "q": "退款方案是谁拍板的？你在里面提了什么建议，最后采纳了吗？" },
+    { "q": "你提到 CSAT 从 82 提升到 91，这里面哪一部分是你直接负责推动的？" },
+    { "q": "优化退款话术这件事，是你一个人写的初稿，还是团队一起出的？你写了哪几条？" },
+    { "q": "跨部门协调那块，你具体对接的是哪个部门的谁？你发起了哪次沟通？" },
+    { "q": "如果那次危机公关里没有你，结果会有什么不同？" },
+    { "q": "我想听一个只属于你个人的决定：有没有一次，是你独自判断、独自拍板处理的客诉？" },
+    { "q": "那再具体一点——那一次，从客户找上你到问题关闭，你亲手做了哪几步？" }
+  ],
+  "candidate_last_answer": "其实我们团队一直配合得特别好，所以很多事情都是大家一起完成的。那一单也是这样，我们一起讨论了方案，然后我们把客户安抚下来了，客服组和售后组也都帮了忙。我觉得功劳真的不能算在我一个人头上，我们是一个整体，结果好都是团队的功劳。要说哪几步，反正就是我们一起把它处理完了，客户最后挺满意的。",
+  "session_state": {
+    "drilled_topics": ["job-scope", "crisis-case-background", "customer-demand-escalation", "personal-words-actions", "refund-decision-owner", "csat-personal-contribution", "refund-script-authorship", "cross-team-contact", "counterfactual-without-you", "solo-owned-case"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "communication", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正就是我们一起把它处理完了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force her to name the individual steps she alone performed in one specific case — the exact words she said, the specific action she took, and the decision she personally made — stripping away the collective 『我们』 framing"
+    ]
+  }
+}

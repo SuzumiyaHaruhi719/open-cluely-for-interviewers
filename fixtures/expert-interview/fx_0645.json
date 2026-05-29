@@ -1,0 +1,49 @@
+{
+  "id": "fx_0645",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Director of Enterprise Sales | The #1 closer every org I've ever touched has been lucky to have\n\n- Legendary quota-crusher: 14 consecutive quarters at or above plan, often blowing past 200%\n- Single-handedly turned around three underperforming regions into top-of-leaderboard powerhouses\n- Closed the largest deal in company history (twice, at two different companies)\n- Universally regarded by every CRO I've worked for as their most trusted lieutenant\n- Built and personally mentored dozens of reps who all went on to become top performers\n- Master of the room: I've never lost a deal I personally took to the table\n- Relentless, unstoppable, and frankly the hardest worker anyone has met\n\nVoltline SaaS (2021–present) — Director, Enterprise Sales (West)\nDataCrest (2018–2021) — Senior Enterprise AE → Regional Sales Manager\nProcuro (2015–2018) — Enterprise Account Executive\n\nEducation: BBA, Marketing.",
+  "jd": "Voltline is hiring a Director of Enterprise Sales to lead a team of 9 enterprise AEs and 2 sales managers covering net-new logo acquisition in the $250K+ ACV segment. You will own a $22M new-business number, report to the VP of Sales, and be measured on attainment, pipeline coverage (target 3.5x), win rate on competitive deals, and ramp time for new hires. The role requires rigorous forecasting discipline (we run a weekly commit/best-case/pipeline cadence in Clari), the ability to coach MEDDICC qualification, and a track record of building repeatable enterprise motions — not just hero selling. You will partner with Marketing on ABM targeting and with Solutions Engineering on technical wins. We're looking for an operator who can scale a team's output, not just carry a bag personally.",
+  "history": [
+    { "q": "Tell me about your current team at Voltline — headcount, the number you carry, and how you're tracking this year." },
+    { "q": "Your resume says 200%+ attainment frequently. Pick your most recent full year and give me the actual number you closed against quota." },
+    { "q": "How much of that number came from your own sourced deals versus your team's?" },
+    { "q": "Walk me through your forecasting cadence. How do you decide what goes in 'commit' versus 'best case'?" },
+    { "q": "Tell me about a deal you forecasted as commit that slipped. What happened?" },
+    { "q": "You mention coaching reps. Take one specific rep who was underperforming — what was their problem and what did you do?" },
+    { "q": "Did that rep hit quota after your intervention? Over what period?" },
+    { "q": "How do you run MEDDICC on a competitive deal? Give me a real example where you found the economic buyer late." },
+    { "q": "What's your team's win rate on competitive deals right now, and how does that compare to a year ago?" },
+    { "q": "Tell me about a deal you personally lost. What did you learn?" },
+    { "q": "Marketing hands you an ABM list and says it's high-intent. You disagree. How do you handle that conversation?" },
+    { "q": "Let's go specific: one rep, ramping new, is at 40% of quota in month five. Take me week by week through exactly how you'd intervene this month." }
+  ],
+  "candidate_last_answer": "So week by week — okay, so the thing about ramp is, it reminds me of this rep I had back at DataCrest, brilliant kid, came from a totally non-sales background, actually he'd been a competitive swimmer, which is wild because the discipline thing really does carry over, and I've got this whole theory about athletes in sales that I could talk about for an hour. Anyway, and then there's the whole question of comp plans, because honestly half the time when a rep is at 40% it's because the comp plan is misaligned, and don't even get me started on how Finance designs these things without ever talking to sales — that's a war I've been fighting my entire career, at three different companies. And territories, territories are another thing, because if you give a ramping rep a junk patch you're setting them up to fail. So there's a lot going on here.",
+  "session_state": {
+    "drilled_topics": ["current-team", "personal-attainment", "self-vs-team-sourced", "forecast-cadence", "slipped-commit-deal", "rep-coaching-specifics", "rep-outcome", "meddicc-competitive", "win-rate-trend", "personal-loss", "marketing-abm-conflict"],
+    "current_competency_target": "people-management",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "people-management",
+    "missing_evidence": [
+      { "competency": "people-management", "evidence_type": "owner-of-action" },
+      { "competency": "people-management", "evidence_type": "timeline" },
+      { "competency": "execution-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: there's a lot going on here",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete week-by-week coaching plan for the one under-ramping rep — what the candidate inspects in week one, the specific intervention in week two, the leading indicator he'd check, and the decision point on whether to keep or exit the rep — with no tangents"
+    ]
+  }
+}

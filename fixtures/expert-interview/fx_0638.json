@@ -1,0 +1,49 @@
+{
+  "id": "fx_0638",
+  "tags": {
+    "industry": "research",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "研究副总裁 (VP of Research) — AI / Machine Learning\n\nProfile: 负责一家 AI 公司的 research organization，方向覆盖 large language models、multimodal 与 reinforcement learning。带领多个 research team，对接 product 与 infra，把前沿研究转化为可落地的能力。\n\nExperience:\nNimbus AI — VP of Research（近年至今）\n- 统筹整个 research org，下设 foundation model、alignment 与 applied research 三个 group。\n- 主导一代旗舰 foundation model 的训练策略与 roadmap，决定 data mixture 与 scaling 方向。\n- 推动 alignment 团队建立 RLHF 与 red-teaming 流程。\n- 与 infra 团队协同优化大规模 training 的稳定性。\n- 代表公司与外部学术机构建立 research collaboration。\n\n此前：Helix Labs — Director of Research（前一阶段）\n- 带领 applied ML 团队把 recommendation 模型从离线实验推到线上。\n- 负责 research hiring，搭建早期团队。\n\n教育：computer science 博士，研究方向 representation learning。论文若干，含若干顶会一作。",
+  "jd": "我们正在招聘一名研究副总裁（VP of Research），向 CTO 汇报，全面负责公司 AI research organization 的方向、人才与交付。核心职责：定义 foundation model 与 alignment 的研究 roadmap、统筹 data 与 training 策略、领导多个 research group（合计数十人）、把研究成果转化为产品能力、负责 senior research 人才的招聘与培养、对外建立学术合作。我们关注候选人能否清楚说明在关键技术决策（如 data mixture、scaling、alignment 方法选择）中自己个人的判断与依据，能否量化研究成果对模型能力或产品指标的实际影响，并能在高度不确定的前沿领域独立做出取舍。要求：机器学习相关博士，具备领导大型 research 组织与旗舰模型训练的实战经验。",
+  "history": [
+    { "q": "先讲讲你在 Nimbus 的 scope：research org 多少人、几个 group、向谁汇报、你个人 own 哪些核心决策。" },
+    { "q": "你说主导了旗舰 foundation model 的训练策略。在 data mixture 上，你个人拍板的最关键的一个决定是什么？" },
+    { "q": "为什么是这个 mixture？当时有哪些备选方案被你否掉了？" },
+    { "q": "scaling 方向上，你是怎么决定模型参数规模和训练 token 量的配比的？依据是什么？" },
+    { "q": "alignment 团队建 RLHF 流程，这个决定是你提的还是团队提的？你个人介入到什么程度？" },
+    { "q": "red-teaming 流程具体长什么样？你们怎么定义一次 red-team 算成功？" },
+    { "q": "和 infra 协同优化 training 稳定性，最棘手的一次 failure 是什么？根因是什么？" },
+    { "q": "你在 Helix 把 recommendation 模型推到线上，那次上线前你做的最关键的离线验证是什么？" },
+    { "q": "research hiring 方面，你定的 senior researcher 的 bar 是什么？" },
+    { "q": "回到旗舰模型。这一代模型相比上一代，在能力上最大的提升体现在哪个 benchmark？" },
+    { "q": "这个提升，你们内部是怎么 attribute 的——是 data、scaling 还是 method 带来的？" },
+    { "q": "如果让你诚实评估，这一代模型里哪个决策事后看是错的？" },
+    { "q": "我们聚焦那个 data mixture 决策：你已经讲清了背景、你的判断和动作。现在请告诉我，上线后这个决策在哪个具体指标上、提升了多少？" }
+  ],
+  "candidate_last_answer": "这个 data mixture 决策我可以讲得比较细。背景是上一代模型在 reasoning 和 code 上明显偏弱，我判断问题出在 pretraining 的 data 配比，code 和 math 的占比太低。所以我的任务是重新设计这一代的 mixture。我做的动作很明确：我推动把 code 的占比从个位数提高到一个显著更高的水平，同时增加了高质量的 math 与 reasoning 语料，并且引入了一套 data quality filtering 的 pipeline，把低质网页数据的权重压下去。我还亲自定了几个 ablation，让团队在小模型上先验证不同配比的效果再 scale up。整个方向是我拍板的。至于上线之后嘛……反正团队和 product 那边的反馈都挺正面的，方向是对的，大家普遍觉得这一代在 reasoning 上强了不少。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "data-mixture-decision", "mixture-alternatives", "scaling-ratio", "rlhf-ownership", "red-team-definition", "training-failure-rootcause", "offline-validation", "senior-bar", "benchmark-improvement", "improvement-attribution", "wrong-decision"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 55
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "research-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正团队和 product 那边的反馈都挺正面的，方向是对的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: data mixture 决策上线后在某个具体 benchmark 或产品指标上的量化提升（改前改后数值或提升幅度），补上候选人省略的 Result，验证『方向对了』之外是否真有可衡量的能力增益"
+    ]
+  }
+}

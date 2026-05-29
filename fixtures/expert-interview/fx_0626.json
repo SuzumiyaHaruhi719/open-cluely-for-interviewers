@@ -1,0 +1,41 @@
+{
+  "id": "fx_0626",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "黄志强 | 数据平台总监 (Director of Data Platform) | 14 年数据领域经验\n\n个人简介：业内罕见的数据战略大师，一手缔造了公司从零到一的数据中台帝国。无论是技术架构还是组织变革，都是说一不二的定海神针，被誉为 『数据界的扫地僧』。\n\n工作经历：\n- 云启科技 (YunQi Tech) — 数据平台总监 (2020 - 至今)\n  · 从零搭建覆盖全集团的数据中台，支撑日均千亿级事件处理\n  · 主导数据治理体系，被董事会评为年度最佳变革项目\n  · 管理 40 人的数据平台与数据治理团队，全权负责平台预算\n- 速购集团 (SuGou Group) — 数据架构负责人 (2015 - 2020)\n  · 主导数据仓库到湖仓一体的演进\n\n技能：数据中台、数据治理、Spark / Flink / Iceberg、团队管理、数据战略\n教育：某理工大学 计算机 硕士 (2008 - 2011)",
+  "jd": "云启科技招聘数据平台总监，负责集团级数据中台的架构演进、数据治理体系建设与团队管理。该岗位直接向 CTO 汇报，全权负责数据平台预算与 40 人团队，并对数据质量、平台稳定性与治理落地的可量化成果负责，需定期向董事会汇报。我们在面试中会就具体的治理决策、踩过的坑、以及个人在其中扮演的角色进行深入追问；岗位看重能用具体事实和数据说明问题的候选人，而非笼统的战略叙事。",
+  "history": [
+    { "q": "志强你好，先讲讲你在云启搭建数据中台时，最初要解决的核心痛点是什么？" },
+    { "q": "你说数据治理体系拿了董事会年度最佳，能不能讲一个治理落地里你亲自处理的最棘手的冲突？" },
+    { "q": "我想聚焦在那次冲突本身：当时是哪个业务团队不愿意接入治理规范，你具体怎么推动的？" },
+    { "q": "我再把问题收窄一下——就那一次，你跟那个业务负责人谈判时，你做了什么让步，对方又松口了什么？" }
+  ],
+  "candidate_last_answer": "说到这个我就想起来，其实数据治理在国内整个行业都是个老大难问题。你看现在 AI 大模型这么火，大家都在抢着做 data for AI，但底层数据质量根本跟不上，这是个系统性的困局。我最近还在读一本讲组织行为学的书，里面讲到 Conway 定律，特别有意思，组织架构最终会投射到系统架构上。所以我一直觉得，做数据这行，技术只是表层，真正难的是人和文化。你看硅谷那些公司……对了，你们公司现在数据团队的文化氛围怎么样?我挺关心这个的。",
+  "session_state": {
+    "drilled_topics": ["data-platform-painpoint", "governance-conflict-case", "specific-team-resistance"],
+    "current_competency_target": "stakeholder-influence",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "stakeholder-influence",
+    "missing_evidence": [
+      { "competency": "stakeholder-influence", "evidence_type": "owner-of-action" },
+      { "competency": "stakeholder-influence", "evidence_type": "named-entity" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你们公司现在数据团队的文化氛围怎么样",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: pull him back from industry musings to the one concrete governance negotiation — the specific business owner who resisted, the exact concession he offered, and what the counterparty conceded — that he keeps drifting away from"
+    ]
+  }
+}

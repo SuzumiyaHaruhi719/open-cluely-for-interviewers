@@ -1,0 +1,49 @@
+{
+  "id": "fx_0631",
+  "tags": {
+    "industry": "operations",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "郑思远 | 资深运营专家 (Staff Operations Specialist) | 履约与仓配运营 8 年\n\n关键词：履约运营 / 仓储管理 / WMS / 拣货 / 分拣 / 出库时效 / 准时率 / 人效 / UPH / 库存准确率 / 波次 / 越库 / 逆向物流 / 退货 / SLA / 标准作业 SOP / 精益改善 / 现场管理 / 排班 / 产能规划 / 成本 / 异常处理 / 数据看板\n\n工作经历：\n- 极速达 (JiSuDa) 履约中心 — 资深运营专家 (2021 - 至今)\n  · 负责华东区域履约中心的出库时效、人效与准时率改善\n  · 关键词：UPH、波次优化、SOP、现场改善、排班、产能\n- 万仓供应链 (WanCang SCM) — 运营主管 (2017 - 2021)\n  · 负责仓内拣货分拣流程与逆向退货处理\n  · 关键词：WMS、库存准确率、越库、逆向物流\n\n技能：WMS 运营、波次与拣选策略、精益改善、SQL 取数、Excel 建模、现场管理\n教育：工业工程 本科 (2013 - 2017)",
+  "jd": "极速达履约中心招聘资深运营专家，负责区域履约中心的出库时效、人效 (UPH) 与准时率改善，主导现场流程优化与标准作业落地。岗位要求熟悉 WMS、波次与拣选策略，能用数据驱动改善并量化结果。面试中我们会就一个具体的时效或人效改善项目深入追问：问题定位、你的具体动作、踩过的坑、以及量化效果。汇报对象为履约中心总监，需常驻现场。",
+  "history": [
+    { "q": "思远你好，先讲讲你在极速达履约中心负责的范围。" },
+    { "q": "关键词里有 UPH，挑一个你主导的人效改善项目讲讲。" },
+    { "q": "改善前 UPH 是多少？你怎么定位到瓶颈的？" },
+    { "q": "瓶颈定位在拣货行走，你具体怎么确认是行走而不是其他环节？" },
+    { "q": "你做了哪些具体动作来减少行走？" },
+    { "q": "波次策略具体怎么改的？原来怎么分波，改成什么？" },
+    { "q": "改了波次会不会影响订单时效或拉长等待？你怎么权衡的？" },
+    { "q": "这套改动在 WMS 里怎么落地执行的？" },
+    { "q": "现场作业员一开始接受吗？有没有抵触？" },
+    { "q": "最终 UPH 和准时率分别改善到多少，用了多久？" },
+    { "q": "这里面哪部分是你个人推动，哪部分靠团队？" },
+    { "q": "如果再做一次，哪一步你会改？" }
+  ],
+  "candidate_last_answer": "我做了三步。第一，用 WMS 的拣货任务日志拉了两周数据，按动作拆解，发现单均拣货 7.2 分钟里有约 4 分钟是行走，确认瓶颈在行走而非扫描或包装。第二，把原来的单单拣货改成按区域聚合的多单波次，一个波次合并 8 到 12 个订单同区拣选，并重排了高频 SKU 到靠近打包台的黄金货位。第三，为防止波次合并拉长单均等待，我设了 15 分钟的波次封顶时间，超时强制放行。落地是在 WMS 里配了波次规则和货位热力图，配合改了拣货路径。结果是华东中心 UPH 从 62 件每小时提到 89 件，准时率从 94.5% 提到 99.1%，整个过程大概用了七周。坦白讲货位重排那步前两周反而掉过效率，因为作业员不熟新货位，是我每天跟早会同步热力图、贴了导引标识才稳住的。",
+  "session_state": {
+    "drilled_topics": ["fulfillment-scope", "uph-project-pick", "baseline-and-bottleneck", "bottleneck-confirmation", "actions-to-cut-walking", "wave-strategy-change", "wave-vs-cycletime-tradeoff", "wms-execution", "worker-resistance", "final-metrics", "personal-vs-team"],
+    "current_competency_target": "operational-execution",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "operational-execution",
+    "missing_evidence": [
+      { "competency": "operational-execution", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "people-leadership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 货位重排那步前两周反而掉过效率",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: how he judged the short-term UPH dip from slotting changes was worth the long-term gain — what guardrail or stop-loss he set, how he decided not to roll back during the bad two weeks, and what specifically he did each morning to recover worker familiarity"
+    ]
+  }
+}

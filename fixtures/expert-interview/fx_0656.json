@@ -1,0 +1,51 @@
+{
+  "id": "fx_0656",
+  "tags": {
+    "industry": "sales",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Priya Raghunathan\nRising Junior, B.S. Marketing — State University (GPA 3.6)\nSeeking: Summer Sales Development Representative Internship\n\nEXPERIENCE\n\nCampus Brand Ambassador — Bolt Energy Drinks (Sep 2024 - present)\n- Situation: Bolt wanted on-campus trial but had zero presence at my university.\n- Task: Hit 1,200 product samples distributed and 300 email sign-ups in one semester.\n- Action: Ran 9 tabling events, recruited 4 fellow ambassadors, built a referral sheet.\n- Result: Distributed 1,460 samples and collected 388 emails; ranked #2 of 40 campus teams nationally.\n\nFront Desk Associate — Riverside Fitness Club (Jun 2023 - Aug 2024)\n- Situation: Club's membership-tour-to-signup rate was stuck around 18%.\n- Task: Improve conversion of walk-in tours during my Saturday shifts.\n- Action: Built a 3-question intake script and a follow-up text template for no-shows.\n- Result: My Saturday tour-to-join rate reached 31% over 4 months; manager adopted the script club-wide.\n\nTreasurer — Collegiate Sales & Marketing Club (2023 - 2024)\n- Situation: Club fundraising had fallen to $400/year.\n- Task: Triple the annual fundraising to fund a regional case competition trip.\n- Action: Cold-emailed 22 local businesses for sponsorship using a one-page deck I designed.\n- Result: Raised $1,350 from 6 sponsors; funded a 5-person trip.\n\nSKILLS\nSalesforce (Trailhead 6 badges), Outreach.io basics, cold email, Google Sheets, HubSpot CRM (course project)\n\nEDUCATION\nB.S. Marketing, expected May 2026. Relevant coursework: Professional Selling, Consumer Behavior, Sales Analytics.",
+  "jd": "Meridian SaaS is hiring a Summer Sales Development Representative (SDR) Intern for our 12-week program in our Austin office. SDR interns sit inside the outbound pipeline team and are measured like full-time SDRs from week three. Responsibilities: run 40+ cold outbound touches per day (calls, email, LinkedIn) against a named-account list, book qualified discovery meetings for Account Executives, log every activity in Salesforce, and run A/B tests on email subject lines. You will own a personal target of 8 qualified meetings booked by end of program. We want someone who can show, with numbers, that they have personally moved a conversion or outreach metric before — even in a campus or part-time setting. You will be coached weekly on objection handling and call recordings will be reviewed with you. Strong candidates are coachable, specific about their own contribution, and comfortable being measured. No prior B2B sales required, but you must be able to walk us through exactly what you did and what happened as a result.",
+  "history": [
+    { "q": "Thanks for coming in. Tell me what drew you to a sales development role specifically, versus marketing or general business." },
+    { "q": "Your resume lists the Bolt ambassador role. Walk me through how you actually got those 388 email sign-ups." },
+    { "q": "Of those 9 tabling events, which single one performed best, and why do you think it did?" },
+    { "q": "You said you recruited 4 other ambassadors. What did you personally do to keep them showing up to events?" },
+    { "q": "Let's talk about the fitness club. You moved tour-to-join from 18% to 31% on your shifts. What was actually in your 3-question intake script?" },
+    { "q": "How did you know the script caused the lift, and not just the type of person who walks in on a Saturday?" },
+    { "q": "What did the follow-up text to no-shows actually say? Give me the wording you used." },
+    { "q": "Now the sponsorship work — you cold-emailed 22 businesses and 6 said yes. Walk me through the email that worked best." },
+    { "q": "Of those 22, how many actually replied at all, and how many did you have to follow up with more than once?" },
+    { "q": "Cold outreach here is 40+ touches a day and a lot of rejection. Tell me about a time you kept going after repeated 'no's. What specifically did you do?" },
+    { "q": "When you hit that wall of rejection, did you change anything about your approach — and if so, what exactly did you change?" },
+    { "q": "How do you personally handle hearing 'we're not interested' ten times in a row? Walk me through your actual routine." },
+    { "q": "Give me a concrete example. One specific day or week where you faced a lot of rejection — what did you do differently on day two versus day one?" },
+    { "q": "I want one real story with specifics: the situation, what you tried first, what you changed, and the result. Can you give me that?" }
+  ],
+  "candidate_last_answer": "Yeah, totally. I think for me it really comes down to mindset and resilience. Like, you can't let the no's get to you, you just have to stay positive and keep pushing forward. I'm a really persistent person, so when things get hard I just kind of dig deep and remind myself why I'm doing it. I think attitude is everything in sales, honestly. So I'd just keep grinding and trust the process, and eventually the yeses come.",
+  "session_state": {
+    "drilled_topics": ["motivation-for-sdr", "bolt-email-signups", "best-tabling-event", "ambassador-management", "intake-script-content", "causation-vs-selection", "no-show-text-wording", "best-sponsorship-email", "reply-vs-followup-rate", "resilience-after-rejection", "approach-change", "rejection-routine", "specific-day-two-change"],
+    "current_competency_target": "resilience",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "resilience",
+    "missing_evidence": [
+      { "competency": "resilience", "evidence_type": "mechanism" },
+      { "competency": "resilience", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I just kind of dig deep and remind myself why I'm doing it",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one concrete instance of rejection (a specific account, day, or outreach streak) and the exact behavioral change the candidate made between attempts, rather than a restatement of positive mindset"
+    ]
+  }
+}

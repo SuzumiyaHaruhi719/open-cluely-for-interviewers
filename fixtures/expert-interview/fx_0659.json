@@ -1,0 +1,39 @@
+{
+  "id": "fx_0659",
+  "tags": {
+    "industry": "operations",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Daniela Ortiz — Senior Operations Manager\n12 years in high-volume fulfillment and last-mile operations\n\nSUMMARY\nResults-driven operations leader who owns end-to-end P&L and drives measurable throughput gains. Hands-on builder who also operates purely at the strategy layer and delegates all execution.\n\nEXPERIENCE\n\nSenior Operations Manager — Crestline Fulfillment (2020 - present)\n- Own a 350,000 sq ft fulfillment center running 3 shifts, ~520 associates.\n- Reduced cost-per-unit-shipped by 22% over two years.\n- Note: managed a peak team of 180 associates across a single shift.\n- Led the WMS migration from legacy to Manhattan Active in 2022.\n- Personally redesigned the pick-path; also credit the entire floor team as the true owners of every improvement.\n\nOperations Manager — Vector Logistics (2016 - 2020)\n- Ran inbound dock operations; cut dock-to-stock time from 14 hours to 6 hours.\n- Started at Vector in 2017 after leaving my prior role in 2016.\n- Managed 3 direct reports; also stated I had 11 direct reports at this role.\n\nShift Supervisor — Pinnacle Distribution (2013 - 2016)\n- Supervised night shift pick-and-pack.\n- Promoted to salaried supervisor in year one; also note I was an hourly lead for the first three years.\n\nEDUCATION\nB.A. Supply Chain Management, 2013\nLean Six Sigma Green Belt (and elsewhere listed as Black Belt)\n\nSKILLS\nWMS (Manhattan), labor planning, S&OP, continuous improvement, vendor management.",
+  "jd": "Crestline Fulfillment is hiring a Senior Operations Manager to run one of our largest fulfillment centers (3 shifts, 500+ associates, full site P&L). This role reports to the Regional Director and is accountable for site-level throughput, cost-per-unit, safety (TRIR), and associate retention. You will lead a layer of shift managers and area supervisors, own the annual labor plan, and drive continuous-improvement initiatives on the floor. We are screening hard for personal ownership: when we discuss an improvement you led, we want to hear what you decided and did, not only what the team accomplished. You should be able to defend the specific numbers on your resume and reconcile any apparent inconsistencies. Must-have: 8+ years in fulfillment or distribution operations, direct experience leading a WMS migration, and a track record of measurable cost or throughput improvement with clear personal accountability.",
+  "history": [
+    { "q": "Let's start with Crestline. Your resume says you reduced cost-per-unit-shipped by 22% over two years. Walk me through the single biggest lever behind that — and what you personally decided to do." },
+    { "q": "You mentioned redesigning the pick-path during the WMS migration. Tell me specifically: what was your call, and what did you do versus what the team did?" }
+  ],
+  "candidate_last_answer": "Yeah, the pick-path work was a great team effort. We looked at the heat maps together, we ran a few pilots on second shift, and we just kept iterating until we landed on a layout that worked. The floor team really owned it — they're the ones who know the building. We aligned as a group, we tested as a group, and honestly the credit goes to them. We hit the cost numbers because everyone pulled in the same direction. I'm really proud of what we built together.",
+  "session_state": {
+    "drilled_topics": ["cost-per-unit-lever", "pickpath-personal-vs-team"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We aligned as a group, we tested as a group, and honestly the credit goes to them",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the one decision the candidate alone made on the pick-path redesign (which layout to adopt, when to stop iterating, what tradeoff she accepted) stated in the first person, separating her contribution from the team's"
+    ]
+  }
+}

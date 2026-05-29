@@ -1,0 +1,45 @@
+{
+  "id": "fx_0644",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "VP of Engineering — Platform & Infrastructure\n\nProfile: 16 years building distributed systems and leading multi-team engineering orgs. Currently own a 140-person platform org across reliability, developer experience, and data infrastructure.\n\nFlowscale (2020–present) — VP Engineering, Platform\n- Situation: 平台可用性长期卡在 99.5%,跨 7 个产品团队的发布事故频发。Task: 把核心 API 的可用性带到 99.95% 并把 MTTR 压到 30 分钟以内。\n- Action: 主导建立 SRE function,推动 error-budget policy,重写 deploy pipeline 引入渐进式 canary,设立 incident command 流程。\n- Result: 12 个月内可用性从 99.5% 提升到 99.97%,MTTR 从 110 分钟降到 22 分钟,P1 incident 数量同比下降 64%。\n\nNimbusData (2016–2020) — Director of Engineering\n- Situation: 数据管道每天延迟 6–8 小时,下游 BI 团队无法及时拿到数据。Task: 把端到端延迟压到 1 小时内。\n- Action: 用 Kafka + Flink 重构 batch pipeline 为 streaming,引入 schema registry 治理。\n- Result: 延迟从 7 小时降到 40 分钟,pipeline 运维工单下降 50%。\n\nSkills: Kubernetes, Go, distributed consensus, SLO/error-budget governance, org design.\nEducation: B.S. Computer Science, 上海交通大学.",
+  "jd": "Flowscale is hiring a VP of Engineering to own the Platform & Infrastructure organization (≈150 engineers across reliability, developer productivity, and data). You will report to the CTO and be accountable for company-wide availability SLOs (target 99.99% on tier-0 services), the internal developer platform adopted by 600+ engineers, and an annual infrastructure budget of $24M. Immediate mandate: lead the migration off a single-cloud dependency to a multi-region active-active posture within 18 months, while holding the line on a flat headcount. You will partner with Product and Finance on capacity planning and own the on-call and incident-management culture across the company. We need a leader who has personally driven a measurable step-change in reliability at 100+ engineer scale, can articulate the tradeoffs of error-budget enforcement, and has navigated at least one major cloud or platform migration end to end.",
+  "history": [
+    { "q": "Give me the shape of your current org at Flowscale — team count, reporting lines, and what each pillar owns." },
+    { "q": "You took availability from 99.5% to 99.97%. Walk me through the single highest-leverage change you personally drove." },
+    { "q": "Error-budget policy is easy to write and hard to enforce. Tell me about a release you actually blocked because the budget was spent." },
+    { "q": "How did the product teams react when you started gating their deploys?" },
+    { "q": "Let's talk about the multi-region migration in this role. How would you sequence an active-active cutover on tier-0 services?" },
+    { "q": "What's the failure mode you'd worry about most during that cutover, and how would you de-risk it?" },
+    { "q": "On budget: you'd inherit a flat-headcount mandate and a $24M infra spend. Where would you find the first 10% of savings?" },
+    { "q": "Here's a hard one — you've got an error budget fully burned mid-quarter on a tier-0 service, but the CRO says a contractually-committed feature ships Friday or we lose a $4M renewal. What do you actually do?" }
+  ],
+  "candidate_last_answer": "That's a great question, and honestly it's the kind of tension I live in every day. But let me turn it around on you for a second — when you say the renewal is at risk, what's the actual contractual language? Is it a hard go-live date or a 『commercially reasonable efforts』 clause? And before I answer, how mature is your incident tooling — can you even ship a hotfix safely if the budget's blown? Because I'd argue the real question isn't 『do I override the budget』,it's 『why is your org forcing me to choose』. So tell me — how does your current leadership team frame that tradeoff?",
+  "session_state": {
+    "drilled_topics": ["org-structure", "reliability-step-change", "error-budget-enforcement", "product-pushback", "multi-region-sequencing", "cutover-risk", "infra-cost-savings"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "decisiveness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: why is your org forcing me to choose",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: force the candidate to stop deflecting and commit to a concrete decision — ship-or-block — under the stated constraints, naming who he'd align with, what he'd tell the CRO, and the specific risk he'd accept on a tier-0 service"
+    ]
+  }
+}

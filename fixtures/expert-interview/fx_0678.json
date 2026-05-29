@@ -1,0 +1,40 @@
+{
+  "id": "fx_0678",
+  "tags": {
+    "industry": "research",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "研发总监 / 实验室负责人\n\n材料科学博士，十余年企业研发管理经验，现任某新材料公司研发总监，统筹电池材料方向的预研与产业化。\n\n经历\n远景新材料 — 研发总监（2017年至今）\n负责正极材料研发路线规划、专利布局与产学研合作，带领跨学科团队。\n\n中科院某所 — 副研究员（2010年-2017年）\n从事锂电材料基础研究。\n\n技能\n研发战略、专利布局、团队管理、产学研合作、项目立项。",
+  "jd": "我们是一家电池材料企业，招聘研发总监，负责正极材料的中长期技术路线、预研到中试的推进、专利与知识产权布局，以及产学研合作的落地。我们看重能讲清具体决策与个人贡献的领导者：哪一条技术路线是你拍板的、为什么、放弃了什么备选、最后量产或中试结果如何。面试中我们会追问到很细，希望候选人用事实和数字复盘，而不是用愿景和口号包装。岗位直接向 CTO 汇报，并对研发预算与团队绩效负责。",
+  "history": [
+    { "q": "先讲讲你在远景作为研发总监，主要对哪些结果负责。" },
+    { "q": "过去三年里，有一条由你拍板的正极材料技术路线，能讲讲当时是怎么决策的吗？" },
+    { "q": "我想听具体的：那次路线选择，你放弃的备选方案是什么，最后中试结果如何？" }
+  ],
+  "candidate_last_answer": "作为研发总监，我始终以前瞻性的战略视野，引领团队穿越技术的无人区，打造从0到1的硬核创新护城河。在路线决策上，我坚持顶层设计与底层逻辑的双轮驱动，以终为始，赋能团队实现技术与商业的深度耦合。我们对标行业最高标准，构建了全方位、立体化的专利壁垒，持续夯实第二增长曲线。可以说，这条路线的成功，本质上是我们组织能力与创新文化厚积薄发的必然结果，也是我对技术信仰的一次坚定践行。",
+  "session_state": {
+    "drilled_topics": ["director-accountability", "route-decision-rationale", "rejected-alternative-and-pilot-result"],
+    "current_competency_target": "decision-ownership",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "decision-ownership",
+    "missing_evidence": [
+      { "competency": "decision-ownership", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "decision-ownership", "evidence_type": "named-entity" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 引领团队穿越技术的无人区，打造从0到1的硬核创新护城河",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: the concrete cathode technology route the candidate actually chose (named chemistry/system), the specific alternative rejected, the technical reason for the call, and the pilot/scale-up numbers — replacing the slogans with verifiable decision content"
+    ]
+  }
+}

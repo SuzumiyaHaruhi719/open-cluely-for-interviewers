@@ -1,0 +1,37 @@
+{
+  "id": "fx_0663",
+  "tags": {
+    "industry": "product-management",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "周一帆 · Staff Product Manager(增长与商业化方向)\n\n概述\n11 年产品经验,专注 B2B SaaS 与平台型产品的 growth 和 monetization。带过 platform team,也做过纯 0-1 的新业务孵化。\n\n工作经历\n\n2021 年至今 · 云栖数据(企业级 SaaS) · Staff PM,Growth & Monetization\n- 负责公司 self-serve 增长漏斗和 pricing/packaging,直接对 net revenue retention 负责\n- 主导一次 pricing 改版,把 NRR 从 108% 提升到 121%(注:另一处材料里写的是从 112% 到 119%)\n- 带一个 6 人的 cross-functional pod(2 eng、1 design、1 data、1 PMM),同时声明自己是纯 individual contributor、不带任何直接下属\n- 上线 usage-based billing 模块,覆盖 80% 的 active accounts(他处又写覆盖率为 60%)\n\n2018 - 2021 · 蜂巢云 · Senior PM\n- 负责 onboarding 和 activation,把新用户 7 日 activation rate 从 31% 提升到 44%\n- 该阶段 title 写作 Senior PM,但任职时间一处写 2018 起、一处写 2019 起\n\n2014 - 2018 · 某互联网公司 · PM → Senior PM\n- 从 0 做过一个面向中小商家的 SaaS 工具,MAU 做到 12 万\n\n教育背景\n某 985 高校 计算机科学学士 2013\n\n技能\n- 增长实验设计(A/B test、holdout、incrementality 测量)\n- pricing & packaging、monetization 模型\n- SQL、Amplitude、数据驱动决策",
+  "jd": "我们是一家 PLG(product-led growth)模式的 B2B SaaS 公司,现招聘一名 Staff Product Manager,owning growth 和 monetization。这个岗位向 VP Product 汇报,需要 partner with engineering、data science、PMM 和 finance。核心职责:(1) own self-serve funnel 和 pricing/packaging strategy,直接对 NRR 和 self-serve revenue 负责;(2) 设计并跑严谨的 growth experiments,能讲清 incrementality 是怎么测的、guardrail metrics 是什么;(3) 主导 pricing 改版这类高风险变更,能完整复盘 situation/task/action/result 以及背后的 tradeoff;(4) 在 staff 层面 influence without authority,带动 cross-functional pod。Must-have:8 年以上产品经验,有过 owning monetization 或 pricing 的实操经验,能拿出可验证的 NRR 或 revenue 数据,并且能解释清楚自己 resume 上任何看起来不一致的数字。",
+  "history": [
+    { "q": "你简历上 pricing 改版的 NRR 数字有两个版本 —— 一处写 108% 到 121%,一处写 112% 到 119%。先别急着解释口径,我想听这次 pricing 改版本身:从头到尾 walk me through 一下。" },
+    { "q": "你提到 usage-based billing,coverage 一处写 80% 一处写 60%。这两个数字分别指什么口径?" },
+    { "q": "这次 pricing 改版,最大的 risk 是什么?你做了哪些 guardrail?" },
+    { "q": "给我讲一个最具体的 —— 这次改版里,有没有哪个 segment 的客户反弹很大?你当时具体怎么决策、怎么处理的?完整讲一遍 situation、task、action、result。" }
+  ],
+  "candidate_last_answer": "好,我讲最硬的那个 case —— 我们 mid-market segment 的反弹。\n\n**Situation:** pricing 改版要从纯 seat-based 转成 seat + usage hybrid。Mid-market 这个 segment 占我们 self-serve revenue 的 42%,是基本盘。新模型 model 出来,大概有 18% 的 mid-market accounts 在迁移后年费会涨 25% 以上,这部分客户的 churn risk 最高。\n\n**Task:** 我作为 owning 这次改版的 PM,要在不伤害 NRR 的前提下完成迁移,我给自己定的 guardrail 是:mid-market 的 gross churn 环比不能超过迁移前的 1.5 倍,同时整体 NRR 要净增。迁移窗口我定了 8 周。\n\n**Action:** 我做了三件事。第一,我没有一刀切,而是设计了一个 grandfather + ramp 的机制:对那 18% 涨价超过 25% 的 accounts,第一年只涨 10%,第二年再 ramp 到目标价,我和 finance 一起 model 了这个 ramp 对当年 recognized revenue 的影响,确认可接受。第二,我跑了一个 holdout experiment —— 留了 10% 的 mid-market accounts 暂不迁移作为 control,用来测 incrementality,避免把自然增长误算成改版效果。第三,迁移前我和 PMM、CS 一起做了一轮定向沟通,给 top 50 ARR 的 mid-market 客户做了一对一的 value review,而不是只发 email。\n\n**Result:** 8 周窗口内迁移完成,mid-market gross churn 是迁移前的 1.2 倍,低于我设的 1.5 倍 guardrail。holdout 那组对比下来,这次改版对 mid-market 的 net expansion 贡献是 +9 个百分点的 incremental NRR(剔除了自然增长)。整体 self-serve NRR 我这边记的是从 108% 到 121% —— 简历上 112% 到 119% 那个版本是早期 draft 用了未剔除 one-time credit 的口径,我后来 reconcile 过,正确口径是 108 到 121。",
+  "session_state": {
+    "drilled_topics": ["pricing-revamp-walkthrough", "usage-billing-coverage-definition", "pricing-risk-guardrails", "mid-market-pushback-star"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这次改版对 mid-market 的 net expansion 贡献是 +9 个百分点的 incremental NRR",
+      "must-be-question-type: metric-pin",
+      "expected-yield: how the +9pp incremental figure was actually computed from the 10% holdout — the sample size of the control, the measurement window, and the statistical confidence — to verify the incrementality claim rather than accept it, since the STAR answer is otherwise complete"
+    ]
+  }
+}

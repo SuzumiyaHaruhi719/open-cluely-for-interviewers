@@ -1,0 +1,43 @@
+{
+  "id": "fx_0643",
+  "tags": {
+    "industry": "customer-support",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "客户成功与支持副总裁 (VP of Customer Support & Success)\n\n个人简介\n我是一名在客户支持与客户成功领域深耕十五年的管理者，负责过从初创团队到千人规模全球客服组织的搭建与运营。我的核心信念是，客户支持不应该被当成一个纯粹的成本中心来管理，而应该成为驱动留存与续费的增长引擎。我擅长把模糊的客户体验目标拆解成可度量的运营指标，再用清晰的流程、合理的工具与有战斗力的团队把这些指标真正推动起来。我同样关注一线员工的体验，因为我深信只有被善待的客服才能持续地善待客户，员工的满意度与客户的满意度之间存在着非常直接的因果关系，这一点在我管理的每一个组织里都被反复验证过。\n\n工作经历\n\n云联科技 (CloudLink) — VP of Customer Support & Success（近年至今）\n我向首席运营官汇报，全面负责一个分布在三个国家、约六百人的全球支持组织，覆盖 technical support、customer success 与 support operations 三条线。我直接管理七位 director 与 senior manager，对整个支持组织的 P&L 负责，包括人力成本、工具采购与外包预算。\n- 我接手时，整个组织最大的问题是各区域各自为政，没有统一的口径与流程，客户在不同渠道得到的答复经常自相矛盾。我做的第一件事是建立统一的 knowledge base 与 escalation 流程，把原本分散在各地的处理标准收敛成一套全球通用的 playbook。\n- 我主导了一次完整的 CCaaS 平台替换，把老旧的、彼此割裂的工单与呼叫系统整合到一个统一平台，打通了 ticketing、telephony 与 chat 的数据，让我们第一次能够端到端地看清一个客户的完整旅程。这个项目跨越多个季度，涉及数据迁移与全员再培训。\n- 我重新设计了团队的绩效与排班体系，引入基于预测的 workforce management，根据历史话务量与季节性波动来安排班次，缓解了长期存在的高峰期人手不足问题。\n- 我推动支持组织从被动响应转向主动服务，和 product 团队合作建立了一套基于客户健康分的预警机制，让 customer success 团队能够在客户出现流失征兆之前主动介入。\n- 我非常重视一线团队的体验与成长，建立了清晰的职业发展通道与认证体系，让客服不再是一份看不到前途的工作。\n\n锐捷网络 (RuiJet) — Senior Director, Global Support（前一阶段）\n我向 VP 汇报，负责一个约三百人的支持组织，覆盖企业级网络产品的技术支持。\n- 我建立了公司第一套真正意义上的 SLA 体系与 tiered support 分层，把简单问题挡在一线、把复杂问题快速升级到专家组。\n- 我牵头与多家 BPO 外包商谈判多年期合同，在保证质量的前提下优化整体的服务成本结构。\n- 我搭建了支持组织的数据看板，让管理层第一次能够用数据而不是直觉来讨论客服的表现。\n\n方寸软件 (FangCun) — Support Manager（早期阶段）\n这是我第一个真正的管理岗位，从一个十几人的小团队带起，学会了如何在资源有限的情况下平衡客户满意度、响应速度与团队的可持续性，这段经历为我后来的规模化管理打下了底子。\n\n技能与方法\nCCaaS 平台选型与替换、knowledge management、escalation 流程设计、workforce management 与排班预测、SLA 与 tiered support 体系、BPO 外包管理与谈判、customer health score 与主动留存、支持数据分析与看板、一线团队的职业发展设计。我相信支持组织的价值在于被信任，而信任来自一致的体验、透明的指标与持续被善待的员工，而不是来自某一次的救火与英雄主义。\n\n教育\n工商管理本科。多项客户体验与服务管理相关的专业认证。",
+  "jd": "我们正在招聘一名客户支持与成功副总裁（VP 级），向首席运营官汇报，全面负责一个分布在多个国家、约六百人的全球支持组织。核心职责：制定并落地全球统一的支持战略与流程、主导 CCaaS 平台的选型与替换、负责支持组织的 P&L 与外包管理、用客户健康分驱动主动留存、设计绩效与 workforce management 体系、向董事会量化支持组织对留存与续费的业务贡献。我们关注候选人能否清楚说明在某项重大变革（如平台替换或流程统一）中自己个人的判断、动作与取舍，能否量化举措带来的可衡量结果（如 CSAT、解决时长、cost-per-contact 或留存的改善），并能在追问下补全事实而非停留在描述。要求：十二年以上支持或客户成功管理经验，具备大型全球团队与 CCaaS 替换的实战经验，能向董事会汇报。",
+  "history": [
+    { "q": "先讲讲你在云联的 scope：组织多少人、分布在哪些地区、向谁汇报、你个人 own 哪些核心指标。" },
+    { "q": "你接手时说各区域各自为政。能不能量化一下当时的混乱程度——比如同一个问题在不同渠道答复不一致的比例大概有多高？" },
+    { "q": "建统一 knowledge base 和 escalation 流程，这件事里你个人具体做了什么、哪些是团队做的？" },
+    { "q": "那次 CCaaS 平台替换，最难的一个技术或组织决策是什么？" },
+    { "q": "平台替换涉及数据迁移，你怎么保证迁移过程中历史工单数据不丢、不串？" },
+    { "q": "客户健康分预警那套机制，健康分是怎么算出来的？输入了哪些信号？" },
+    { "q": "我们聚焦 CCaaS 替换这件事：你已经讲了背景、你的判断和动作。现在请告诉我，平台替换之后，在哪个具体指标上、改善了多少？" }
+  ],
+  "candidate_last_answer": "好，CCaaS 替换这件事我可以讲得比较完整。当时的 situation 是，我们的 ticketing、telephony 和 chat 是三套互不相通的老系统，数据完全割裂，一个客户打过电话又发了工单，我们根本对不上，agent 每次都要让客户重复一遍问题，体验很差。我的 task 是把它们整合到一个统一的 CCaaS 平台上，打通端到端的数据。我做的 action 很具体：第一，我亲自带队做了 vendor 选型，定了三个硬性标准——开放的 API、原生的 omnichannel、以及可接受的 migration 路径，最后从五家里选定了一家；第二，我决定不做 big-bang 切换，而是按区域分批迁移，先在话务量最小的区域试点，跑通了再推下一个；第三，迁移期间我让新老系统并行了一段时间做数据比对。这个项目我个人是 sponsor，关键节点都是我拍板的。至于上线之后的效果嘛……反正客户和一线 agent 的反馈都明显变好了，大家普遍觉得终于不用来回切系统、让客户重复问题了，体验上是实打实的提升。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "fragmentation-quantification", "kb-personal-vs-team", "ccaas-hardest-decision", "data-migration-integrity", "health-score-inputs"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "impact-orientation", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正客户和一线 agent 的反馈都明显变好了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: CCaaS 平台替换上线后在某个具体指标上的量化改善（如 CSAT、平均解决时长、转接率或 cost-per-contact 的改前改后数值），补上候选人省略的 Result，验证『反馈变好』背后是否有真实可衡量的业务收益"
+    ]
+  }
+}

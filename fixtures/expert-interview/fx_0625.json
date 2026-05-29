@@ -1,0 +1,43 @@
+{
+  "id": "fx_0625",
+  "tags": {
+    "industry": "research",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Dr. Elena Vasquez — Research Scientist (Computational Biology)\nPh.D. Bioinformatics, 2018 | 5 years industry research\n\nExperience (STAR-structured):\n- Helix Therapeutics — Research Scientist II (2020–present)\n  Situation: Lead-optimization team's variant-effect predictions had high false-positive rates, wasting wet-lab cycles.\n  Task: I owned rebuilding the variant-effect prediction pipeline.\n  Action: Replaced the legacy heuristic scorer with a gradient-boosted model trained on 1.2M annotated variants; added cross-validation and a calibration step.\n  Result: Cut false-positive rate from 31% to 12%; saved an estimated 400 wet-lab assays/year.\n\n- Genomatic Labs — Postdoctoral Researcher (2018–2020)\n  Situation: No reproducible workflow for RNA-seq differential expression across the lab.\n  Task: Build a standardized pipeline.\n  Action: Authored a Snakemake workflow with pinned environments; documented and trained 6 scientists.\n  Result: Adopted lab-wide; cut per-analysis setup from 2 days to 2 hours.\n\nSkills: Python, R, scikit-learn, Snakemake, statistics, model calibration.\nPublications: 9 peer-reviewed, including 2 first-author in computational-biology venues.",
+  "jd": "We are hiring a Research Scientist for our computational biology group to own predictive modeling that directly informs wet-lab prioritization. You will be accountable for the statistical validity of models that decide which experiments get run, so we probe methodology hard: train/test leakage, calibration, baseline comparisons, and how you validate that a metric improvement is real rather than an artifact. The panel deliberately pressure-tests claims; we want scientists who can defend their methodology calmly and concretely. You will collaborate with wet-lab leads and present results to a scientific review board.",
+  "history": [
+    { "q": "Your resume says you cut the false-positive rate from 31% to 12%. How did you split train and test to be sure that wasn't leakage?" },
+    { "q": "Were any variants from the same gene present in both train and test sets? Gene-level splitting matters here." },
+    { "q": "What baseline did you compare the gradient-boosted model against — the old heuristic, or a simpler logistic baseline too?" },
+    { "q": "How did you validate the calibration step actually held on out-of-distribution variants?" },
+    { "q": "When you say 'saved 400 wet-lab assays a year', who computed that estimate and from what denominator?" },
+    { "q": "I want to come back to the split. If variants from the same gene leaked across train and test, your 12% could be optimistic. Did you check that specifically, yes or no?" }
+  ],
+  "candidate_last_answer": "Look, I've published nine papers, so with respect I think I understand cross-validation. This feels like you're trying to catch me out rather than have a real conversation. Fine — on the variant pipeline we did random k-fold, and separately on the RNA-seq Snakemake work I trained six people and it got adopted lab-wide, and I also reviewed two manuscripts last quarter, so methodology is sort of my whole career. Did I do a gene-level split? I don't see why that's the gotcha you're fixated on. The model worked, the wet-lab leads were happy, and frankly I'm not going to relitigate a 2021 cross-validation scheme line by line.",
+  "session_state": {
+    "drilled_topics": ["train-test-split", "gene-level-leakage", "baseline-comparison", "calibration-validation", "assay-savings-denominator"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "scientific-integrity", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "analytical-rigor", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: on the variant pipeline we did random k-fold",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a direct yes/no on whether splitting was gene-level vs. variant-level random k-fold, and if random, an acknowledgment that same-gene leakage could inflate the 12% figure — cutting through the credentials defense and the bundled unrelated stories"
+    ]
+  }
+}

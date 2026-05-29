@@ -1,0 +1,51 @@
+{
+  "id": "fx_0612",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "陈维 · Staff Software Engineer\n\nPlatform / Infra · 11 年经验\n\n云图科技 (2020-至今) · Staff Engineer, Platform\n- Lead 平台团队的 service mesh 和 multi-tenancy 方向\n- 负责内部 PaaS 的架构演进\n\n图灵数据 (2015-2020) · Senior Engineer\n- 做过 distributed storage 和 scheduling\n\n云帆网络 (2013-2015) · Backend Engineer\n\n技能:Go, Kubernetes, gRPC, Envoy, 分布式系统\n\n教育:浙江大学 计算机科学 学士 2013",
+  "jd": "云图科技招聘 Staff Software Engineer 加入平台团队,Reports to 平台架构总监。你将担任内部 PaaS 与 service mesh 方向的技术负责人,owns 多租户隔离、跨集群流量治理与平台 SLA。我们要找的是能讲清架构决策 why 的人:为什么选 Envoy 而不是别的 sidecar、多租户隔离在控制面还是数据面做、一次跨集群故障的 root cause 和你拍板的修复方案。岗位要求:(1) 对 service mesh 的控制面/数据面有 hands-on 的深度,讲得清具体 trade-off;(2) 能量化平台影响(SLA、p99、跨集群故障恢复时间);(3) 作为 Staff 能讲清自己 personally 主导过的架构权衡,而不是泛泛而谈。当前挑战:多租户场景下的 noisy-neighbor 问题,以及一次 mesh 控制面雪崩后的稳定性重建。",
+  "history": [
+    { "q": "先介绍一下你在云图的 scope —— 你作为 Staff 主导哪些方向?" },
+    { "q": "你简历写 lead service mesh 方向。当初为什么选 Envoy 作为 data plane?对比过哪些方案?" },
+    { "q": "多租户隔离,你们是在控制面做还是数据面做?这个决策是你拍的吗?" },
+    { "q": "noisy-neighbor 问题,你具体用什么机制来限制单租户对共享资源的占用?" },
+    { "q": "讲一次你主导处理的跨集群故障。当时的 symptom 是什么?" },
+    { "q": "那次故障的 root cause 最后定位到什么?是谁定位出来的?" },
+    { "q": "你拍板的修复方案是什么?为什么选这个而不是其它?" },
+    { "q": "mesh 控制面雪崩那次,blast radius 有多大?影响了多少服务和多少流量?" },
+    { "q": "雪崩之后你做了哪些具体的架构改动来防止 recurrence?" },
+    { "q": "你提到 owns 平台 SLA。当前 SLA 是多少?p99 大概什么水平?" },
+    { "q": "作为 Staff,你怎么影响其它团队采纳你的平台标准?举一个具体例子。" },
+    { "q": "如果让你重新设计多租户隔离,你会改哪个具体的决策?" },
+    { "q": "你和平台架构总监在技术方向上有过分歧吗?具体哪次,怎么 resolve 的?" },
+    { "q": "好,聚焦一下。就说 Envoy 这个选型 —— 给我一个具体的技术 trade-off:Envoy 在哪个维度赢了备选方案,又在哪个维度让你付出了代价?" }
+  ],
+  "candidate_last_answer": "嗯,Envoy 这个选型其实是个挺自然的选择。It's pretty much the industry standard,生态也好,大家都在用,踩坑的人多,文档也全。所以从 maturity 和 community 的角度看,它肯定是 the right call。Trade-off 的话……其实任何技术选型都有 trade-off 嘛,有得必有失,关键还是看团队的 context 和 long-term 的方向。我觉得我们当时综合考虑下来,Envoy 是最 balanced 的选择,所以就定了它。",
+  "session_state": {
+    "drilled_topics": ["staff-scope", "envoy-selection-rationale", "multitenancy-control-vs-data-plane", "noisy-neighbor-mechanism", "cross-cluster-incident-symptom", "incident-root-cause-owner", "fix-decision-rationale", "control-plane-cascade-blast-radius", "post-incident-architecture-changes", "platform-sla-p99", "cross-team-influence", "multitenancy-counterfactual", "disagreement-with-director", "envoy-concrete-tradeoff"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 任何技术选型都有 trade-off 嘛,有得必有失",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: one concrete, named technical trade-off — a specific dimension (e.g., memory footprint per sidecar, xDS config-push latency, WASM extensibility) where Envoy beat a named alternative and a specific dimension where it cost them — replacing 'industry standard, everyone uses it' with an engineer's first-hand cost/benefit on a real axis"
+    ]
+  }
+}

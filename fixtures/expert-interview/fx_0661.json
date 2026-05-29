@@ -1,0 +1,55 @@
+{
+  "id": "fx_0661",
+  "tags": {
+    "industry": "hr",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "ROSALIND AYERS\nDirector of People Operations | Talent, Culture & Org Design\n\nPROFILE\nPeople-operations leader with experience scaling HR functions across hypergrowth and turnaround environments. Known for building managers, redesigning performance systems, and steering organizations through change with empathy and rigor.\n\nEXPERIENCE\n\nDirector, People Operations — Cobalt Health Tech (current)\n- Lead the People function for a multi-site organization spanning clinical, engineering, and commercial teams.\n- Rebuilt the performance-management framework and the leveling model from the ground up.\n- Drove a company-wide reduction-in-force and a subsequent re-hiring ramp, partnering closely with Legal and Finance.\n- Stood up the first DEI council and a manager-enablement curriculum.\n- Own the annual engagement-survey cycle and the resulting action-planning process.\n\nSenior HR Business Partner — Vanguard Robotics\n- Supported the R&D and Operations orgs through a period of rapid headcount growth.\n- Led compensation-band redesign and the rollout of a new HRIS.\n- Coached senior leaders through difficult performance and restructuring decisions.\n\nHR Manager — Trillium Retail Group\n- Managed employee relations, investigations, and the early-career hiring program.\n- Introduced the first structured onboarding journey.\n\nEDUCATION\nM.A. Industrial-Organizational Psychology\nB.A. Sociology\nSHRM-SCP certified\n\nNOTE: Resume intentionally omits headcount figures, RIF percentages, retention deltas, and survey scores; candidate prefers to discuss outcomes in narrative form.",
+  "jd": "Cobalt Health Tech is hiring a Director of People Operations to own the full employee lifecycle for a 900-person, multi-site company going through a major reorganization. Reporting to the CHRO, you will lead a team of HRBPs and People Ops specialists, run the performance and compensation cycles, and serve as the senior People partner on sensitive organizational changes including restructures and reductions in force. We need a leader who can reconstruct, with precision, the sequence and timing of a complex change they led — when decisions were made, in what order communications went out, and how legal and manager-enablement steps were sequenced relative to employee notifications. We care deeply about getting the chronology right, because in RIFs and reorgs, order and timing are legal and ethical obligations, not just project hygiene. Must-have: prior ownership of an end-to-end RIF, experience redesigning performance or leveling systems, and the judgment to handle confidential, high-stakes change at scale.",
+  "history": [
+    { "q": "Let's start broad. Describe the scope of the People function you lead at Cobalt today." },
+    { "q": "You rebuilt the performance-management framework. What was broken about the old one?" },
+    { "q": "Walk me through the reduction-in-force you led. What was the trigger and what was the overall scope?" },
+    { "q": "When did the decision to do the RIF actually get made, relative to the quarter you executed it?" },
+    { "q": "Which came first: finalizing the selection criteria, or notifying managers that a RIF was happening?" },
+    { "q": "How long was the gap between the leadership decision and the day employees were notified?" },
+    { "q": "Did Legal review the selection list before or after managers had their calibration conversations?" },
+    { "q": "You mentioned a re-hiring ramp afterward. How soon after the RIF did backfilling start?" },
+    { "q": "Wasn't there a hiring freeze in place? How did the freeze and the re-hiring ramp overlap in time?" },
+    { "q": "Let's pin the sequence: freeze, RIF notifications, then re-hiring — is that the order, or did re-hiring approvals predate the notifications?" },
+    { "q": "Switching topics — the DEI council. When did you stand it up relative to the RIF?" },
+    { "q": "And the manager-enablement curriculum — was that before or after the leveling redesign?" },
+    { "q": "Did the engagement survey run before or after the RIF, and did the action planning reflect the RIF or precede it?" },
+    { "q": "You said earlier the survey informed the RIF criteria, but also that the survey ran after notifications. Which is it?" },
+    { "q": "Let me give you a moment. I'd like you to reconstruct the whole change program on a single timeline — quarter by quarter." },
+    { "q": "Take your time. Start with the earliest event and walk forward in order." },
+    { "q": "Specifically: in which quarter did Legal sign off, and in which quarter did the first employee notification go out?" },
+    { "q": "One more pin: did the leveling redesign land before or after the RIF, and how many months separated them?" }
+  ],
+  "candidate_last_answer": "Okay. [long pause] ... Let me actually slow down and get this right, because I was conflating two things. The leveling redesign came first — that was the spring. The RIF decision was made the following quarter, in the summer. Legal signed off on the selection criteria in that same quarter, before any manager calibration happened — I had it backwards earlier when I said calibration came first. The first employee notifications went out roughly six weeks after Legal's sign-off, so still within that summer quarter. The hiring freeze was already in place by then; the re-hiring ramp didn't start until the fall, after the freeze was lifted, so re-hiring approvals did not predate notifications — I misspoke on that. The engagement survey ran in the fall too, after the RIF, which means it could not have informed the selection criteria; what informed the criteria was the prior performance cycle, not the survey. So the clean order is: leveling in spring, RIF decision and Legal sign-off in summer, notifications six weeks later, then freeze lifted and re-hiring plus the survey in the fall.",
+  "session_state": {
+    "drilled_topics": ["people-function-scope", "old-perf-framework-gaps", "rif-trigger-scope", "rif-decision-timing", "criteria-vs-manager-notify-order", "decision-to-notify-gap", "legal-review-timing", "rehire-ramp-timing", "freeze-vs-rehire-overlap", "freeze-rif-rehire-sequence", "dei-council-timing", "enablement-vs-leveling-order", "survey-timing-vs-rif", "survey-criteria-contradiction", "full-timeline-reconstruction", "earliest-event-forward", "legal-signoff-vs-notify-quarter", "leveling-vs-rif-gap"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "timeline" },
+      { "competency": "domain-knowledge", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: what informed the criteria was the prior performance cycle, not the survey",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: confirmation that the now-corrected chronology holds under one more probe — naming the specific input (performance cycle) that drove RIF selection and locking the Legal-signoff-before-notification ordering with a concrete interval"
+    ]
+  }
+}

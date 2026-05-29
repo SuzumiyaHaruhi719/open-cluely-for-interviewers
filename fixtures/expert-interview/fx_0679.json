@@ -1,0 +1,45 @@
+{
+  "id": "fx_0679",
+  "tags": {
+    "industry": "design",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "高级产品设计师简历\n\n职业概述\n我是一名拥有八年经验的高级产品设计师，专注于 B 端复杂系统与数据类产品的体验设计。过去几年我深度参与了多款企业级 SaaS 产品的设计工作，覆盖从早期概念探索、信息架构梳理、交互设计到设计系统建设的完整链路。我擅长把复杂的业务流程与海量信息转化为清晰、可用、可扩展的界面，并在跨团队协作中推动设计语言的统一与体验一致性。我的工作方法强调以用户研究为起点，用数据与可用性测试来验证设计假设，并通过持续迭代来打磨细节。我相信好的设计不仅是视觉上的美观，更是在真实业务场景下帮助用户高效完成任务、降低认知负荷的系统性解决方案。\n\n工作经历\n智简科技 — 高级产品设计师（2020年至今）\n在智简，我所在的设计团队负责公司核心数据分析平台的整体体验设计。这段时间我们一起完成了平台的设计系统从无到有的建设，统一了组件库、设计规范与交互模式，并推动研发侧落地了对应的前端组件。我们也共同主导了平台核心工作台的一次大改版，重新梳理了信息架构，优化了高频任务的操作路径。在这个过程中，我们与产品、研发、数据团队保持紧密协作，通过多轮用户访谈与可用性测试来验证方案。我们的设计系统上线后，团队内部的设计与开发协作效率得到了明显提升，新功能的界面交付也更加一致和规范。\n\n维度互联 — 产品设计师（2017年-2020年）\n在维度互联，我参与了一款面向中小企业的客户管理（CRM）产品的设计工作。我们团队负责该产品的交互与视觉设计，期间我们一起推进了移动端的体验优化、表单填写流程的简化以及数据可视化模块的设计。我们习惯于深入业务一线，理解销售人员的真实使用场景，再把这些洞察转化为具体的设计改进。这段经历让我对 B 端用户的工作流程和效率诉求有了更深的理解，也锻炼了我在多方需求之间做平衡的能力。\n\n初阳设计 — 初级设计师（2016年-2017年）\n我从一名初级设计师起步，在团队中承担界面视觉与切图标注的基础工作，参与了多个项目的视觉规范制定，逐步建立了对设计流程与团队协作的基本认知。\n\n核心能力\nB 端复杂系统体验设计、信息架构、交互设计、设计系统与组件库建设、用户研究与可用性测试、数据可视化设计、跨团队协作与设计落地推动。我尤其擅长在业务复杂、利益相关方众多的环境中，帮助团队收敛设计方向、建立统一的设计语言。\n\n教育背景\n视觉传达设计 本科；交互设计方向相关进修课程若干。\n\n设计理念\n我始终相信，设计的价值在于让复杂变得简单，让用户在真实场景中更高效、更从容地完成任务。我希望加入一家真正重视体验、愿意为长期价值投入的团队，与大家一起把产品体验打磨到极致。",
+  "jd": "我们是一家企业级数据产品公司，招聘高级产品设计师，负责核心数据分析平台的体验设计与设计系统建设。你将主导复杂工作台的信息架构与交互设计、推动设计系统在研发侧落地，并通过用户研究与可用性测试驱动迭代。我们高度看重个人贡献的可识别性：在团队成果中，哪一部分是你『本人』的判断、你独立做出的设计决策、你亲手推动解决的难题。面试中我们会反复追问『你』而不是『我们』，希望候选人能清晰区分自己的贡献与团队的贡献，并对自己的设计决策给出理由。岗位需与产品、研发深度协作。",
+  "history": [
+    { "q": "先讲讲你在智简的设计工作，主要负责哪条产品线。" },
+    { "q": "你们做了设计系统从0到1的建设，这里面你本人主导的是哪一块？" },
+    { "q": "核心工作台改版，最难的设计问题是什么？" },
+    { "q": "在那次改版里，有哪个关键设计决策是你个人拍板的？" },
+    { "q": "信息架构重新梳理，具体的分类逻辑是谁定的？" },
+    { "q": "可用性测试里发现的最大问题是什么，是谁主导解决的？" },
+    { "q": "和研发推动组件落地时，遇到阻力时是你去谈的吗？" },
+    { "q": "我注意到你一直说『我们』。我们就锁定一件事：那次工作台改版里，纯粹由你一个人做出的、可以署你名字的设计决策，是哪一个，你当时怎么想的？" }
+  ],
+  "candidate_last_answer": "嗯，这个改版确实是我们团队一起做下来的。我们当时一起讨论了很多方案，信息架构也是我们几个设计师和产品一起碰出来的，可用性测试也是我们团队一块跟进的。要说哪个决策是我一个人拍的，其实我们做事比较扁平，基本都是集体讨论、一起对齐，很少有谁单独拍板这种情况。我们的氛围就是大家一起把方案打磨好，所以更多是团队的功劳吧。真要说我个人，我可能就是在这个过程里和大家一起出力，把我们共同的方案往前推。反正最后的结果是我们一起做出来的，我觉得这种协作本身就挺好的。",
+  "session_state": {
+    "drilled_topics": ["product-line-scope", "design-system-personal-part", "workbench-hardest-problem", "workbench-personal-decision", "ia-classification-owner", "usability-issue-owner", "dev-pushback-negotiation"],
+    "current_competency_target": "individual-contribution",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "individual-contribution",
+    "missing_evidence": [
+      { "competency": "individual-contribution", "evidence_type": "owner-of-action" },
+      { "competency": "individual-contribution", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 要说哪个决策是我一个人拍的，其实我们做事比较扁平",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a single design decision the candidate personally owned in the workbench redesign — what they decided over a named alternative and their reasoning — forcing them off the collective 『我们』 framing so the interviewer can assess individual capability rather than team output"
+    ]
+  }
+}

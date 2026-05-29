@@ -1,0 +1,49 @@
+{
+  "id": "fx_0627",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "吴敏 | 高级供应链经理 | 9 年供应链与计划经验\n\n关键词：S&OP / 需求计划 / 库存优化 / 安全库存 / VMI / 供应商管理 / MRP / ERP (SAP) / APS / 采购策略 / 物流网络 / 牛鞭效应 / 服务水平 / 周转率 / 缺货率 / 履约率 / 精益 / 六西格玛 / 多级库存 / 协同预测 / CPFR / 端到端可视化\n\n工作经历：\n- 恒丰消费品 (HengFeng FMCG) — 高级供应链经理 (2021 - 至今)\n  · 负责全国 6 大区域仓的需求计划、库存优化与 S&OP 流程主持\n  · 关键词：库存周转、安全库存模型、服务水平、缺货率、SAP APO\n- 锐驰电子 (RuiChi Electronics) — 供应链计划经理 (2017 - 2021)\n  · 负责电子元器件采购计划与供应商交付管理\n  · 关键词：MRP、VMI、供应商管理、提前期、缺料\n- 通联物流 (TongLian Logistics) — 计划专员 (2015 - 2017)\n\n技能：SAP APO / IBP、Excel 高级建模、Python 数据分析、S&OP、库存优化、供应商谈判\n教育：某财经大学 物流管理 本科 (2011 - 2015)",
+  "jd": "恒丰消费品招聘高级供应链经理，主导全国区域仓的需求计划、库存优化与 S&OP 流程，并负责关键品类的缺货率与库存周转改善。岗位需要熟练使用 SAP APO / IBP，具备安全库存建模与多级库存优化经验，能跨销售、生产、采购协同。面试中我们会就一个具体的库存或缺货改善项目深入追问：背景、你的目标、你具体做了哪些动作、最终量化结果如何。汇报对象为供应链总监。",
+  "history": [
+    { "q": "吴敏你好，先讲讲你在恒丰负责的需求计划和 S&OP 范围吧。" },
+    { "q": "你简历关键词里有『缺货率』，挑一个你主导的缺货改善项目讲讲。" },
+    { "q": "这个项目最初的背景是什么？当时缺货率有多高，影响了什么？" },
+    { "q": "你当时给自己定的目标是什么？是公司压下来的，还是你自己定的？" },
+    { "q": "那你具体做了哪些动作？一步步讲。" },
+    { "q": "你提到重做了安全库存模型，原来用的是什么方法，你改成了什么？" },
+    { "q": "调整安全库存会不会反而推高库存？你怎么平衡缺货和周转的？" },
+    { "q": "这套调整你是怎么落到 SAP APO 里去执行的？" },
+    { "q": "跨部门那块，销售和生产配合吗？有没有阻力？" },
+    { "q": "最终结果呢？缺货率和周转分别变成多少，用了多久？" },
+    { "q": "这个结果里有多少是你个人推动的，有多少靠团队？" },
+    { "q": "如果再做一次，你会改哪一步？" }
+  ],
+  "candidate_last_answer": "背景是这样：2022 年 Q1，我们核心饮料品类在华南区缺货率到了 8.5%，导致大客户罚款和断货下架，销售团队天天投诉。目标是我跟总监一起定的——半年内把这个品类缺货率压到 3% 以下，同时库存周转不能恶化。我做了三件事：第一，把安全库存从固定天数法（统一压 21 天）改成基于需求变异和提前期的动态模型，按 SKU 分级设服务水平，A 类设 98%、C 类设 90%；第二，针对长提前期的进口原料，跟两家供应商谈成了 VMI 加周补货，把有效提前期从 45 天压到 28 天；第三，在 SAP APO 里重配了这套参数并设了异常预警。为了不推高库存，我对 C 类和长尾 SKU 反而调低了安全库存，腾出来的库存额度给 A 类。结果是：华南区该品类缺货率从 8.5% 降到 2.7%，用了大概五个月；整体库存周转还从 6.1 次提升到 6.8 次。坦白说销售一开始不配合预测协同，是我拉着销售总监开了三次对齐会才把协同预测推下去的。",
+  "session_state": {
+    "drilled_topics": ["dp-sop-scope", "stockout-project-pick", "project-background", "goal-ownership", "actions-step-by-step", "safety-stock-method-change", "stockout-vs-turnover-tradeoff", "sap-apo-execution", "cross-team-resistance", "final-metrics", "personal-vs-team"],
+    "current_competency_target": "operational-execution",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "operational-execution",
+    "missing_evidence": [
+      { "competency": "operational-execution", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "stakeholder-influence", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 是我拉着销售总监开了三次对齐会才把协同预测推下去的",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: what specifically happened across those three alignment meetings — what sales objected to, what data or concession she brought to each, and what changed between meeting one and meeting three that finally got buy-in"
+    ]
+  }
+}

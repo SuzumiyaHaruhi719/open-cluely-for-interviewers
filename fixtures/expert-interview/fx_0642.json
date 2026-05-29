@@ -1,0 +1,54 @@
+{
+  "id": "fx_0642",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "工程总监 | 平台架构 · 高并发 · 团队规模化\n\n关键词：分布式系统、微服务、服务网格、云原生、Kubernetes、高可用、高并发、稳定性治理、容量规划、SRE、可观测性、监控告警、性能优化、限流熔断、灰度发布、DevOps、CICD、技术中台、业务中台、领域驱动设计 DDD、事件驱动架构、消息队列、缓存、分库分表、数据一致性、容灾、多活、降本增效、研发效能、敏捷、OKR、技术战略、架构治理、团队管理、人才梯队、跨团队协作。\n\n履历：\n寰宇科技 — 工程总监（近年至今），负责交易平台与基础架构，管理多个工程团队。\n前序：捷云网络 — 高级技术经理，主导核心系统重构。\n核心标签：架构专家、稳定性守护者、技术管理者、降本能手、业务赋能者。\n教育：计算机科学本科。",
+  "jd": "我们正在招聘一名工程总监（Director 级），向技术副总裁汇报，负责核心交易平台与基础架构的技术战略、稳定性与团队建设。核心职责：定义平台架构演进方向、负责高并发场景下的稳定性治理与容量规划、领导多个工程团队（合计数十人）、推动研发效能与降本增效、对关键技术决策的取舍负责、向管理层量化技术投入的业务回报。我们期望候选人能够清楚说明在重大架构或稳定性决策中自己个人的判断、取舍与代价，能够用具体数字支撑简历上的能力标签，并能在面对追问时正面给出事实而非反问或回避。要求：十年以上后端工程经验，具备大型分布式系统架构与团队规模化管理的实战经验。",
+  "history": [
+    { "q": "先讲讲你在寰宇科技的职责：负责哪些系统、团队多少人、向谁汇报、你个人 own 哪些核心决策。" },
+    { "q": "简历里『稳定性治理』是个高频词。挑一次重大故障，告诉我当时影响面有多大、持续了多久。" },
+    { "q": "那次故障的根因最终定位到哪里？" },
+    { "q": "复盘之后你个人推动落地的最关键的一个改进是什么？" },
+    { "q": "你提到高并发。你们交易系统的峰值 QPS 大概是多少？是在什么场景下打到峰值的？" },
+    { "q": "为了扛住这个峰值，你在架构上做的最关键的一个决策是什么？" },
+    { "q": "分库分表这个事，你们当时的分片键是怎么选的？为什么？" },
+    { "q": "选这个分片键，你放弃了什么？有没有带来跨分片查询的代价？" },
+    { "q": "你简历里写『降本增效』。一个具体数字：你主导的某次降本，省了多少？" },
+    { "q": "那次降本，你是怎么在成本和稳定性之间做权衡的？" },
+    { "q": "多活架构是你推的吗？当时为什么决定要做多活，而不是主备？" },
+    { "q": "多活带来的数据一致性问题，你们是怎么解决的？" },
+    { "q": "团队规模化方面，你接手时团队多少人，后来扩到多少？你怎么保证扩张中代码质量不塌？" },
+    { "q": "你带的团队里，有没有一次重要的技术决策，事后证明你判断错了？" },
+    { "q": "如果让你诚实评价，你管理上最大的短板是什么？" },
+    { "q": "我们聚焦那次重大故障复盘：请你把根因、你个人拍板的那个改进、以及它之后的效果，用具体事实讲清楚。" },
+    { "q": "你刚才把问题转回来问我了。我再问一次，请正面回答：那次故障复盘里，你个人做的那个决策，具体是什么、效果如何？" }
+  ],
+  "candidate_last_answer": "我先反问你一个问题：你们这个岗位，对工程总监的定位到底是更偏架构还是更偏管理？因为这直接决定了我该讲哪一类的决策。说实话，在我看来，一个真正成熟的技术 leader，复盘的价值不在于某一个具体改进，而在于建立起一套机制。你们公司现在有没有成型的故障复盘文化？SRE 体系搭起来了吗？如果连这个底座都没有，那我讲再多某一次的改进其实意义也不大。所以我想先了解清楚你们的现状，再来谈我能带来什么，你觉得呢？",
+  "session_state": {
+    "drilled_topics": ["current-scope", "incident-blast-radius", "incident-rootcause", "incident-key-improvement", "peak-qps", "peak-architecture-decision", "sharding-key-choice", "sharding-tradeoff", "cost-reduction-metric", "cost-stability-tradeoff", "multi-active-rationale", "consistency-solution", "team-scaling-quality", "wrong-decision", "management-weakness", "incident-postmortem-focus"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 58
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我先反问你一个问题",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人在那次故障复盘后亲自拍板并推动落地的某个具体改进（如某项限流策略、某个架构改动），及其改前改后的可衡量效果，迫使其停止反问、正面交出个人决策与结果"
+    ]
+  }
+}

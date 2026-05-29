@@ -1,0 +1,48 @@
+{
+  "id": "fx_0633",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "医疗运营副总裁 | 行业公认的医疗服务转型领军人物\n\n- 二十年医疗健康行业履历，一手缔造了多家区域龙头医院集团的卓越运营体系，被业内誉为『流程再造的标杆』。\n- 凭借无与伦比的战略眼光，主导的患者体验革命让旗下医院满意度长期稳居全省第一，无人能及。\n- 所到之处，皆能化腐朽为神奇：接手的每一家亏损机构无一例外在我手中扭亏为盈。\n- 业界顶尖的精益医疗专家，亲手打造的就诊流程被三十余家同行争相效仿。\n- 与卫健委、医保局高层关系深厚，是政策落地最值得信赖的桥梁。\n- 多次受邀在全国性医院管理峰会担任主旨演讲嘉宾，影响力辐射全行业。\n\n最近任职：康宁医疗集团 运营副总裁（2020 至今），统管六家三级医院。\n此前：仁济健康 运营总监（2015-2020）。",
+  "jd": "我们正在为一家三级医院集团招聘运营副总裁（VP 级），向首席运营官汇报，全面负责集团内六家医院的运营效率、患者安全与成本管控。核心职责：制定并落地门急诊与住院流程优化方案、主导医保控费与药耗成本管理、推动医疗质量与患者安全指标改善、统筹多院区资源调配、领导一支约一百二十人的运营管理团队。我们关注的董事会级指标包括：平均住院日、门诊次均费用、手术室周转效率、患者满意度与不良事件发生率。要求候选人能够清晰说明自己在关键改善中的个人角色与决策，能够量化运营改进的财务与质量影响，并具备在强监管环境下推动跨科室变革的实战经验。",
+  "history": [
+    { "q": "请概述你在康宁医疗的职责：管几家医院、团队规模、直接汇报对象，以及你个人负责的核心指标。" },
+    { "q": "简历里说你接手的每一家亏损机构都扭亏为盈。挑一家最有代表性的，告诉我接手时它的财务状况。" },
+    { "q": "那家医院扭亏，最关键的一两个动作是什么？" },
+    { "q": "你刚才一直用『我们』。具体到那个降本动作，是你提出的，还是团队里某个人提出的？" },
+    { "q": "平均住院日的改善，从几天降到几天？用了多长时间？" },
+    { "q": "在推动缩短平均住院日时，临床科室一定有阻力。你个人是怎么处理某一位反对的科主任的？" },
+    { "q": "说说患者满意度全省第一这件事，你们是怎么测量满意度的？数据来源是什么？" },
+    { "q": "门诊流程再造被三十多家同行效仿，这个『三十多家』的数字你是怎么知道的？" },
+    { "q": "我们聚焦一件事：在那次门诊流程再造里，哪个具体决策是你一个人拍板、并且承担后果的？" },
+    { "q": "再追问一句，那个决策如果失败，损失会落在谁头上？你当时怎么评估这个风险？" },
+    { "q": "请给我一个只属于你个人的判断时刻：在所有这些项目里，有没有一次，是你独自做了一个别人都不同意、但事后证明正确的决定？请讲这一次。" }
+  ],
+  "candidate_last_answer": "我们团队在这方面一直做得很扎实。说实话，医院运营从来不是某一个人的功劳，我们是一个非常有战斗力的集体。流程再造也好，控费也好，都是大家一起群策群力的结果。我们的中层很给力，临床科室也很配合，所以很多改善都是水到渠成。要说独自拍板，我觉得这种说法不太符合我们的文化，我们一直强调的是团队作战，荣誉归于整个团队。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "turnaround-baseline", "turnaround-key-action", "we-vs-i-cost-action", "los-improvement-metric", "clinical-resistance-handling", "satisfaction-measurement", "imitation-count-source", "personal-decision-ownership", "decision-risk-bearer"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "leadership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 要说独自拍板，我觉得这种说法不太符合我们的文化",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 一个由候选人本人单独做出、并需独自承担后果的具体决策，包括决策内容、当时反对的声音、以及候选人个人承担的风险，而非归于团队的集体功劳"
+    ]
+  }
+}

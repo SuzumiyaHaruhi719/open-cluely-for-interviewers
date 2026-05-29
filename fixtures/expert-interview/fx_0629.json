@@ -1,0 +1,38 @@
+{
+  "id": "fx_0629",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "孙立国 | 数据科学总监 (Director of Data Science) | 12 年数据科学与算法经验\n\n个人简介：天生的算法领袖，带过的每一支团队都从平庸蜕变为顶尖战队。商业嗅觉与技术深度兼备，是公司增长背后真正的操盘手，业界公认的 『增长黑客之王』。\n\n工作经历：\n- 优途出行 (YouTu Mobility) — 数据科学总监 (2021 - 至今)\n  · 全面负责定价、补贴与增长算法体系，直接对 GMV 增长负责\n  · 管理 25 人数据科学团队，统筹算法策略与实验平台\n  · 主导动态定价模型升级，被誉为公司增长引擎\n- 快购科技 (KuaiGou Tech) — 高级算法经理 (2016 - 2021)\n  · 主导推荐与营销算法\n\n技能：动态定价、因果推断、A/B 实验、增长策略、团队管理、机器学习\n教育：统计学 硕士 (2009 - 2012)",
+  "jd": "优途出行招聘数据科学总监，全面负责定价、补贴与增长算法体系，直接对 GMV 与补贴 ROI 负责，管理 25 人团队。岗位要求候选人能坦诚复盘失败项目：发生了什么、自己作为负责人的决策责任在哪里、从中学到了什么。我们在面试中会重点考察 ownership 与归因的诚实度——把失败简单归咎于他人或外部因素的候选人不适合这个直接对结果负责的岗位。汇报对象为 CEO。",
+  "history": [
+    { "q": "立国你好。直接切入：讲一个你主导但最终失败或没达预期的项目，重点说说你自己作为负责人，决策上哪里出了问题。" }
+  ],
+  "candidate_last_answer": "失败的项目……要说有的话，那次动态定价改版算一个，但说实话主要不怪我。当时是产品团队需求给得乱七八糟，PRD 改了五版；数据团队那边给的特征数据质量也很差，埋点一堆缺失；上线后效果不好，运营又没配合好放量节奏。我作为总监，方向和模型设计其实都是对的，是下面执行的人没跟上，加上老板当时催得急，硬压了一个不合理的 deadline。所以这个锅真不能算我头上，换谁来这个配置都做不成。我能做的都做了，剩下的确实是别的团队掉链子。",
+  "session_state": {
+    "drilled_topics": ["failed-project-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 3
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "leadership", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个锅真不能算我头上，换谁来这个配置都做不成",
+      "must-be-question-type: action-attribution",
+      "expected-yield: as the director who owned the project, what decision was his own to make and got wrong — what he could have done about the shifting PRD, the bad feature data, or the unrealistic deadline, rather than attributing the failure entirely to other teams"
+    ]
+  }
+}

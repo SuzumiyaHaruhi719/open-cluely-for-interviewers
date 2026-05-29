@@ -1,0 +1,43 @@
+{
+  "id": "fx_0624",
+  "tags": {
+    "industry": "education",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "周悦 | EdTech Product / Curriculum Intern 候选人 | 大三在读\n\n个人标签：天才型 curriculum designer，凭一人之力让一门课的 completion rate 翻倍，是教授和同学公认的 『超新星』。任何教学难题到我手里都能秒变 scalable solution。\n\n项目经历：\n- 校内 K12 编程公益课 (志愿者项目) — 课程设计 & 助教 (2024.02 - 2024.06)\n  · 重新设计了 Scratch 入门模块，把单元 completion rate 从 48% 提到 79%\n  · 设计了 weekly quiz 的自动反馈机制\n- 大学 MOOC 助教团 — Teaching Assistant (2023.09 - 2024.01)\n  · 负责 discussion forum 答疑与作业批改\n\n技能：课程设计、Scratch / Python 教学、A/B testing 基础、Notion / Figma\n教育：某师范大学 教育技术学 本科在读 (2022 - 2026 预计)",
+  "jd": "我们是一家 K12 在线教育公司，招聘一名课程产品实习生 (Curriculum Product Intern)，加入低龄编程课程团队。你将在课程负责人指导下，参与单元教学设计、学习数据分析，以及小范围的 A/B 改版实验。我们看重候选人能否用 specific、可验证的方式说明自己做过的教学改动：改了什么、依据什么数据、效果如何衡量。岗位日常涉及 Scratch / Python 入门课程内容与 completion rate、quiz pass rate 等指标。汇报对象为课程团队 lead，实习期 3-6 个月。",
+  "history": [
+    { "q": "周悦你好，先讲讲你那门 K12 编程公益课里，你具体负责设计哪一块？" },
+    { "q": "你把 Scratch 入门模块的 completion rate 从 48% 提到 79%。你改了什么？" },
+    { "q": "这个 48% 到 79% 是怎么测的？是同一批学生前后对比，还是两批不同学生？" },
+    { "q": "你提到设计了 weekly quiz 的 auto-feedback，feedback 具体反馈什么内容给学生？" },
+    { "q": "在这门课里，哪一部分明确是你独立完成的，哪一部分是和别人合作的？" },
+    { "q": "如果让你诚实评估：这个 completion rate 的提升，有多少能归因到你的改版，而不是别的因素？" }
+  ],
+  "candidate_last_answer": "说实话不能全算我头上。我做的改动是把第一节课从『讲语法』改成『让孩子 5 分钟内拖出一个能动的小猫』，把抽象概念后置——这一块我有 before/after 的 funnel 数据，drop-off 主要发生在第一节，改完后第一节 completion 从 61% 到 88%。但整体 48% 到 79% 里，我估计有一部分是因为那一期换了更积极的两位志愿者带课，retention 本来就会高。所以保守说，我的改版大概贡献了一半多一点，其余是带课老师和样本差异的影响。",
+  "session_state": {
+    "drilled_topics": ["design-scope", "completion-rate-change", "measurement-method", "quiz-feedback-content", "solo-vs-collab"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "analytical-rigor", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我估计有一部分是因为那一期换了更积极的两位志愿者带课",
+      "must-be-question-type: counterfactual",
+      "expected-yield: how she would actually isolate her redesign's effect from the confounding volunteer-quality change — whether she had any control group, held-out cohort, or any way to attribute the lift rather than guessing 『一半多一点』"
+    ]
+  }
+}

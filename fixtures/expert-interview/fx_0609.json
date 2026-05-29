@@ -1,0 +1,45 @@
+{
+  "id": "fx_0609",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "周明轩 · 高级人力资源业务伙伴（HRBP）\n\n职业概述\n八年人力资源从业经验,聚焦于互联网与高科技行业的组织发展与人才管理。长期作为研发与产品线的 HRBP,深度参与团队搭建、绩效管理、组织诊断与人才盘点工作。\n\n工作经历\n\n2020 年 3 月 - 至今 · 云栖科技 · 高级 HRBP\n- 支持公司核心研发事业群,服务对象覆盖多个产品与技术团队\n- 主导事业群年度绩效管理流程的落地与校准\n- 负责关键岗位的人才盘点与继任计划设计\n- 参与多次组织架构调整中的人员安置与沟通工作\n- 推动新人入职体验优化,降低试用期流失\n\n2016 年 6 月 - 2020 年 2 月 · 启航网络 · HRBP\n- 负责中型业务线的招聘、培训与员工关系工作\n- 协助业务负责人完成团队从初创到规模化的人员扩张\n- 设计并推行了业务线的内部晋升评审机制\n\n2014 年 7 月 - 2016 年 5 月 · 恒益咨询 · 人力资源专员\n- 从事招聘执行、入职管理与基础人事运营工作\n\n教育背景\n中国人民大学 劳动与社会保障 学士 2014\n\n技能与认证\n- 国家二级人力资源管理师\n- 熟悉绩效管理、组织发展、人才盘点等模块\n- 擅长跨部门沟通与业务伙伴关系建设",
+  "jd": "云栖科技正在为核心研发事业群招聘一名高级 HRBP。该岗位向事业群 HRD 汇报,作为 600 余人研发组织的核心 HR 伙伴,需要独立承接绩效管理、组织诊断、人才盘点与关键人才保留等工作。我们要找的人必须能够拿出可量化的结果:你设计或优化过的绩效流程覆盖了多少人、校准会议把绩效分布的偏差收敛到什么程度、你主导的保留动作把关键岗位的后悔流失率降低了多少个百分点。岗位的核心挑战是:研发团队对现行绩效制度信任度低、跨团队人才流动不畅、以及今年关键技术岗位的主动离职率明显上升。我们希望候选人能讲清楚自己亲手做过的具体动作,而不是停留在方法论层面。需要有从组织诊断到落地执行的全链路实操经验。",
+  "history": [
+    { "q": "先介绍一下你在云栖的职责范围 —— 你支持的研发组织有多少人,你独立负责哪些模块?" },
+    { "q": "你简历里说主导了事业群的绩效校准。能不能讲一下你具体是怎么设计这个校准流程的?" },
+    { "q": "校准会上如果两个团队负责人对同一个人的评价分歧很大,你作为 HRBP 具体怎么处理?" },
+    { "q": "你提到做了关键岗位的人才盘点。盘点之后,实际产出了哪些可执行的动作?" },
+    { "q": "今年研发的关键技术岗主动离职率上升,你做过哪些具体的保留动作?效果怎么样?" },
+    { "q": "你说推动了新人入职体验优化降低了试用期流失。优化前后试用期流失大概是什么水平?" },
+    { "q": "你支持的团队对现行绩效制度信任度不高,你做过什么来改善这个信任问题?" },
+    { "q": "好,我们聚焦一下。就拿今年那个主动离职率上升的关键岗位 —— 从你发现问题到采取行动,你个人做的第一件具体的事是什么?" }
+  ],
+  "candidate_last_answer": "其实关键人才保留这件事,我一直信奉的是『以人为本、价值共创』的理念。我会从组织、机制、文化三个维度去做系统性的赋能闭环 —— 先做组织诊断,再做精准的人才画像,然后通过全方位的关怀体系去提升员工的获得感和归属感。我特别强调要打造一个有温度的、可持续的人才生态,让每一位核心人才都能感受到组织的真诚。所以我做的第一件事,本质上就是回到以人为本这个初心,去倾听、去共情、去赋能,把人才保留从一个被动的动作变成一种主动的文化沉淀。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "calibration-design", "calibration-conflict-handling", "talent-review-actions", "retention-actions-effect", "onboarding-attrition-baseline", "performance-trust-improvement", "first-concrete-action"],
+    "current_competency_target": "outcomes",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "outcomes",
+    "missing_evidence": [
+      { "competency": "outcomes", "evidence_type": "owner-of-action" },
+      { "competency": "outcomes", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 回到以人为本这个初心,去倾听、去共情、去赋能",
+      "must-be-question-type: teach-back",
+      "expected-yield: a single concrete first action with the named person or role spoken to, the date or week it happened, and what the candidate did next — replacing the 『以人为本』 buzzword stack with one auditable, time-stamped retention move and its observed result"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "fx_0634",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "资深制造工艺工程师\n\n职业概述：长期从事汽车零部件冲压与焊装产线的工艺优化与质量改进工作，熟悉精益生产与六西格玛方法，参与过多个新产线导入与产能爬坡项目。\n\n工作经历：\n安远汽车部件 — 资深工艺工程师（近年至今）\n- 负责冲压车间的工艺参数优化与稳定性改进。\n- 参与新车型零部件的产线导入与试生产。\n- 主导若干质量问题的根因分析与整改。\n- 推动产线节拍优化，提升整体生产效率。\n\n华泰精密 — 工艺工程师（前一阶段）\n- 负责焊装夹具的工艺验证与改进。\n- 协助处理客户端质量投诉并落实纠正措施。\n- 参与设备稼动率提升项目。\n\n技能：精益生产、六西格玛（绿带）、FMEA、SPC、PFMEA、AutoCAD、注塑与冲压工艺。\n教育：机械工程本科。",
+  "jd": "我们正在招聘一名资深制造工艺工程师（Staff 级），向制造工程经理汇报，独立负责冲压与焊装产线的工艺稳定性、质量改进与产能提升。核心职责：主导工艺参数优化以降低废品率、牵头重大质量问题的根因分析与纠正措施、负责新车型零部件的产线导入与产能爬坡、运用 SPC 与六西格玛方法驱动持续改进、与供应商和质量部门协同解决批量质量问题。我们期望候选人能够用具体数据说明每一项改进的基线、目标与实际结果（如废品率从多少降到多少、节拍缩短多少秒、稼动率提升多少），并能清晰描述自己在跨部门改进中的个人贡献与决策依据。要求：本科及以上机械或材料相关专业，五年以上汽车制造工艺经验。",
+  "history": [
+    { "q": "先介绍一下你现在的岗位：负责哪条产线、向谁汇报、团队怎么协作。" },
+    { "q": "你简历里提到推动产线节拍优化。挑一个具体项目，说说当时节拍是多少秒？" },
+    { "q": "优化之后节拍降到了多少秒？" },
+    { "q": "为了降这个节拍，你具体改了哪个工艺参数或者工位布局？" },
+    { "q": "你说主导了若干质量问题的根因分析。挑印象最深的一次，告诉我那个缺陷的具体表现是什么。" },
+    { "q": "那次根因最后定位到哪个环节？是设备、参数，还是来料？" },
+    { "q": "整改之后，那个缺陷的发生率从多少降到了多少？" },
+    { "q": "冲压车间废品率，你接手时大概是什么水平？" },
+    { "q": "你做了哪些动作去降废品率？" },
+    { "q": "降到多少了？用了多久？" },
+    { "q": "新车型产线导入那个项目，产能爬坡的目标是每天多少件？" },
+    { "q": "爬坡过程中最大的瓶颈工位是哪个？你怎么发现的？" },
+    { "q": "你提到用 SPC 做监控。你具体盯的是哪几个关键特性？控制限怎么设的？" },
+    { "q": "焊装夹具的工艺验证，你是怎么判断一套夹具合格的？验收标准是什么？" },
+    { "q": "和供应商一起解决批量质量问题时，你个人做的最关键的一件事是什么？" },
+    { "q": "在所有这些改进里，哪一个是你自己独立提出并推动落地的，而不是跟着项目走的？" },
+    { "q": "那这个项目，给公司带来的实际收益大概是多少？哪怕是个量级也行。" },
+    { "q": "我们就聚焦节拍优化这一件事：请你把当时改的那个参数、改前改后的具体数值、以及效果，一项一项说清楚。" }
+  ],
+  "candidate_last_answer": "这个嘛，节拍优化其实就是一个不断打磨、持续改进的过程。我们一直在想办法让产线跑得更顺一点、更稳一点。具体来说就是发现问题、分析问题、解决问题，然后再观察效果。数据当然是有的，只是时间有点久了，具体数字我一下子记不太清了。反正整体效果是不错的，产线确实比以前顺畅了很多，大家也都比较认可。工艺优化嘛，本来就是一个细水长流的活儿，不是一蹴而就的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "cycle-time-baseline", "cycle-time-result", "cycle-time-parameter", "defect-symptom", "root-cause-location", "defect-rate-change", "scrap-baseline", "scrap-actions", "scrap-result", "ramp-target", "bottleneck-station", "spc-characteristics", "fixture-acceptance", "supplier-key-action", "independent-initiative", "project-roi"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体数字我一下子记不太清了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 节拍优化项目中被修改参数的具体名称、改前与改后的确切数值（秒或参数值）、以及由此带来的可量化效果，迫使候选人给出至少一个真实数字而非泛泛而谈"
+    ]
+  }
+}

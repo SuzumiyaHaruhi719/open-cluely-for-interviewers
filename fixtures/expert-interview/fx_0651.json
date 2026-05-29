@@ -1,0 +1,37 @@
+{
+  "id": "fx_0651",
+  "tags": {
+    "industry": "legal",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "初级法务 / Junior Legal Counsel\n\n关键词:合同审查 contract review、商务合同 commercial contracts、NDA、SaaS 协议、DPA、数据合规 data compliance、GDPR、个人信息保护法 PIPL、隐私政策 privacy policy、合规 compliance、知识产权 IP、商标 trademark、争议解决 dispute resolution、尽职调查 due diligence、公司治理 corporate governance、股权 equity、劳动法 labor law、法律风险 legal risk、internal counsel、外部律师 outside counsel 协调、legal research、Westlaw、合同模板 contract template、电子签 e-signature、DocuSign、法律意见书 legal memo。\n\n恒安律所(2023年至今)—— 法务专员(支持公司客户法务团队)\n- 参与商务合同 contract review、NDA、SaaS subscription agreement 审查。\n- 参与数据合规 data compliance 项目,涉及 PIPL、GDPR 相关工作。\n- 协助 due diligence 与 legal research。\n\n明诚科技(2022年实习)—— 法务实习生 Legal Intern\n- 协助合同模板整理、电子签流程、商标 trademark 申请材料准备。\n\n技能:contract review、data compliance、legal research、Westlaw、DocuSign、中英文合同。\n教育背景:法学学士(LL.B.),通过国家法律职业资格考试。",
+  "jd": "我们正在招聘一名初级法务(Junior Legal Counsel),支持一家 SaaS 公司的商务合同与数据合规工作。岗位职责包括:独立完成标准商务合同(NDA、SaaS subscription agreement、DPA)的 first-pass review,识别并 flag 关键风险条款,维护合同模板库,支持 PIPL/GDPR 下的数据合规事项,并与 outside counsel 协调。我们希望候选人能讲清楚自己『亲手做了什么』——在一个具体的合同或合规项目里,哪一条风险是你本人识别并提出修改的,你给出的具体意见是什么。我们很在意 individual ownership,因为这个岗位需要你独立扛事,而不是只在团队里打下手。岗位向法务负责人汇报。",
+  "history": [
+    { "q": "讲一个你参与过的合同审查或数据合规项目,重点说说你本人在里面具体负责了什么、做了哪些判断。" }
+  ],
+  "candidate_last_answer": "好的。我们团队去年做了一个比较大的 SaaS 客户的 DPA 和 data compliance 项目。当时我们要帮客户把一批跨境数据传输的协议梳理一遍,确保符合 PIPL 和 GDPR。我们团队分工合作,review 了一批合同,识别了一些跨境传输和数据留存方面的风险点,然后我们一起出了修改意见,也和 outside counsel 做了对接。整个项目我们配合得很好,最后客户那边也挺满意的。我觉得我们团队在 data compliance 这块的能力是很强的,这个项目我们完成得很顺利。",
+  "session_state": {
+    "drilled_topics": ["project-personal-contribution"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们团队分工合作,review 了一批合同",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 逼候选人从『我们』切换到『我』——说出在这个 DPA 项目里他本人亲手 review 了哪一份合同、亲自识别并提出修改的是哪一条具体风险条款(如某条跨境传输或数据留存条款)、他给出的修改意见原话是什么"
+    ]
+  }
+}

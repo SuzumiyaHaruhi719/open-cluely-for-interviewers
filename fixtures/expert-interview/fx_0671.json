@@ -1,0 +1,46 @@
+{
+  "id": "fx_0671",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "资深制造工艺工程师\n\n概述\n汽车零部件行业资深工艺工程师，负责注塑与装配产线的工艺改善、良率提升与设备稼动率管理。担任精益改善小组核心成员，推动现场 SPC 与 SMED 落地。\n\n工作经历\n恒久精密制造 — 资深工艺工程师（2018年至今）\n- 负责一条核心注塑产线的工艺参数优化与良率改善。\n- 主导多次模具调试与换型时间缩短项目。\n- 推动产线 SPC 监控体系建立，参与稼动率提升专项。\n- 处理客户端质量投诉，组织根因分析与8D报告。\n\n华翔零部件 — 工艺工程师（2014年-2018年）\n- 负责装配工位的标准作业与防错（Poka-Yoke）设计。\n- 参与新产品试产（PPAP）的工艺验证。\n\n教育背景\n机械工程 本科。\n\n技能\n注塑工艺、SPC、SMED、8D、PFMEA、精益生产、模具调试。",
+  "jd": "我们是一家为新能源车企供货的精密注塑件制造商，招聘资深工艺工程师，负责核心注塑产线的良率、稼动率与换型效率改善。你将主导工艺参数优化、SPC 体系深化、SMED 换型项目，并牵头客户质量投诉的根因分析与8D。我们高度看重对数据的精确把握：候选人需要能讲清每一项改善的基线、改善幅度、达成时间，以及自己在项目中相对团队的具体分工。理想人选在被追问数字与个人贡献时，能坦诚、精确地复盘，而不是回避、含糊或把问题挡回去。该岗位需直接对接客户 SQE 与产线主管。",
+  "history": [
+    { "q": "先讲讲你现在这条注塑产线的整体情况，你具体负责哪些事。" },
+    { "q": "你说主导了良率改善，改善之前良率是多少，改善之后到多少？" },
+    { "q": "这个良率提升大概用了多长时间达成的？" },
+    { "q": "换型时间缩短的项目，原来换一次模多久，现在多久？" },
+    { "q": "SMED 里你本人具体改了哪些动作，哪些是你做的、哪些是别人做的？" },
+    { "q": "SPC 监控体系建立后，你们的 Cpk 或不良率有没有可量化的变化？" },
+    { "q": "客户投诉那块，最近一次8D的根因是什么，纠正措施是什么？" },
+    { "q": "我感觉这些数字你都说得比较模糊，是没记住，还是当时就没量化？" },
+    { "q": "我们具体点：就拿良率改善这一个项目，基线、目标、你做的动作、最后达成的数字，按顺序讲一遍。" }
+  ],
+  "candidate_last_answer": "你问得太细了，这些数字我哪可能随时背在脑子里。良率肯定是提上去了，不然客户早就投诉了，这还用我证明吗？具体几个点我记不清了，反正改善是实打实的。你一直追着数字问，是不是觉得我在编？我干这行十年了，现场的东西我比报表清楚得多，数字那是质量部门管的，又不是我天天盯的。你要是非要一个精确的数字，那我现在也只能跟你说大概，说出来你又说我不准，那这怎么聊？反正项目是我推的，结果是好的，这点我不接受被质疑。",
+  "session_state": {
+    "drilled_topics": ["line-scope", "yield-baseline-after", "yield-timeline", "changeover-before-after", "smed-personal-actions", "spc-cpk-change", "8d-root-cause", "vague-numbers-probe"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "execution-rigor", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 良率肯定是提上去了，不然客户早就投诉了，这还用我证明吗",
+      "must-be-question-type: metric-pin",
+      "expected-yield: at least one concrete number on the yield-improvement project — the baseline yield %, the post-improvement yield %, and the timeframe — forcing the candidate past the deflection so the interviewer can tell whether the engineer actually owns the data or is hiding a lack of measured results"
+    ]
+  }
+}

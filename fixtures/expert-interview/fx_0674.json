@@ -1,0 +1,47 @@
+{
+  "id": "fx_0674",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 10,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Junior Data Analyst\n\nObjective\nData analyst early in my career, focused on marketing and product analytics. Comfortable in SQL and Python, building dashboards, and partnering with growth teams on experiments.\n\nExperience\nBrightloop (DTC e-commerce) — Data Analyst (2023-present)\n- Support the growth team with funnel analysis, retention reporting, and weekly KPI dashboards.\n- Helped run an A/B test on the checkout flow and analyzed the results.\n- Built a churn-flagging query that the lifecycle team uses for win-back campaigns.\n- Maintain the marketing-attribution dashboard and answer ad-hoc questions from stakeholders.\n\nClearwater Analytics Bootcamp — Capstone (2022)\n- Built a customer-segmentation project using clustering on a public retail dataset.\n\nEducation\nBA, Statistics.\n\nSkills\nSQL, Python (pandas), Looker, basic experimentation, dbt (learning).",
+  "jd": "We're hiring a Data Analyst for our growth team at a fast-moving consumer subscription company. You'll own funnel and retention reporting, partner with product managers and lifecycle marketers to design and read out A/B tests, and build the dashboards leadership uses to track acquisition and churn. You'll write production-grade SQL, contribute to our dbt models, and be expected to clearly explain the methodology and timeline of any experiment you run — when it started, how long it ran, what the stopping rule was, and how you reached significance. We value analysts who are precise about cause and effect and careful not to call a result before the data supports it. This is a great role for someone early-career who wants strong mentorship on experimentation rigor and analytics engineering.",
+  "history": [
+    { "q": "Tell me what you own day-to-day on the Brightloop growth team." },
+    { "q": "You mentioned a checkout A/B test. What was the hypothesis?" },
+    { "q": "What was the primary metric you were moving?" },
+    { "q": "Who designed the test — you, the PM, or someone else?" },
+    { "q": "How did you decide the sample size or how long to run it?" },
+    { "q": "Walk me through the result. What did you conclude and what shipped?" },
+    { "q": "How confident were you in significance, and how did you check it?" },
+    { "q": "Tell me about the churn-flagging query — what signals does it use?" },
+    { "q": "How did the lifecycle team act on those flags?" },
+    { "q": "I want the timeline of that checkout test, start to finish: when it launched, when you looked at data, when you called it, and when the change shipped." }
+  ],
+  "candidate_last_answer": "Right, so we launched the test — I think it was a two-week test. We rolled out the winning variant first to make sure the pipeline was clean, and then a few days after that we kicked off the experiment properly. I remember I checked the numbers pretty early, like the first or second day, and the variant was already winning, so we more or less knew where it was headed. Then it ran for the two weeks. The PM shipped the change, and I'd say it was maybe a week before launch that we hit significance, so by the time we actually started the test it was already pretty clear. We did the readout at the end either way.",
+  "session_state": {
+    "drilled_topics": ["day-to-day-scope", "test-hypothesis", "primary-metric", "test-ownership", "sample-size-decision", "test-result", "significance-check", "churn-query-signals", "lifecycle-action"],
+    "current_competency_target": "experimentation-rigor",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "experimentation-rigor",
+    "missing_evidence": [
+      { "competency": "experimentation-rigor", "evidence_type": "timeline" },
+      { "competency": "experimentation-rigor", "evidence_type": "mechanism" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We rolled out the winning variant first to make sure the pipeline was clean, and then a few days after that we kicked off the experiment properly",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a coherent, ordered timeline that resolves the contradiction of shipping the winning variant before the experiment started and 'hitting significance a week before the test began' — pinning the actual launch date, the analysis date, the stopping rule, and the ship date so the interviewer can tell whether the result was real or read prematurely"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "fx_0617",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "赵承宇 · 产品总监（Director of Product）\n\n职业亮点\n- 十二年产品管理经验,资深产品战略操盘手,擅长从 0 到 1 打造爆款、引爆增长飞轮\n- 端到端主导多条业务线的产品战略,深度赋能跨部门协同,打通增长全链路\n- 数据驱动的增长黑客,精通用户增长、漏斗优化、北极星指标体系搭建\n- 以用户为中心,极致打磨产品体验,持续引领行业创新范式\n- 卓越的跨团队领导力,凝聚研发、设计、运营、市场,高效闭环交付\n- 战略视野与落地能力兼备,深谙商业本质,赋能组织实现指数级增长\n\n工作经历\n2021 年 6 月 - 至今 · 鲸跃科技 · 产品总监\n- 全面操盘公司核心增长产品线,引领用户规模与商业化双增长\n- 搭建数据驱动的产品决策体系,赋能团队高效迭代\n\n2017 年 3 月 - 2021 年 5 月 · 风行网络 · 高级产品经理 / 产品负责人\n- 主导多个明星产品的从 0 到 1,打造现象级用户增长\n\n2013 年 7 月 - 2017 年 2 月 · 多家互联网公司产品岗\n\n教育背景\n北京大学 工商管理硕士 · 清华大学 信息管理 学士\n\n荣誉\n- 多次获评公司年度优秀产品负责人 · 行业产品创新论坛特邀分享嘉宾",
+  "jd": "鲸跃科技招聘产品总监,向 CPO 汇报,负责核心增长产品线的战略与落地。我们要找的人能为结果负责,尤其是能讲清在一个失败或不及预期的项目里,自己作为产品负责人到底做了什么决策、哪些是自己的判断失误。岗位要求:(1) 能清楚区分『我的决策』和『外部因素』,在复盘失败时不回避个人责任;(2) 数据驱动,北极星指标、漏斗、留存能讲清口径和真实数字;(3) 跨团队领导力,能讲清和研发、设计、运营协同中自己如何拍板与取舍。当前挑战:核心产品线增长放缓、一次重点项目上线后留存不及预期、以及跨团队协同效率问题。我们尤其看重 candidate 在面对不利结果时的 ownership 与自省能力。",
+  "history": [
+    { "q": "先介绍一下你在鲸跃的职责 —— 你操盘的产品线规模、核心指标、团队结构。" },
+    { "q": "你简历提到搭建了数据驱动的产品决策体系。你们这条产品线的北极星指标是什么?当前大概什么水平?" },
+    { "q": "讲一个你去年主导、但结果不及预期的项目。当时的目标是什么,实际差多少?" },
+    { "q": "这个项目里,产品方向和优先级是谁拍板的?哪些是你个人的决策?" },
+    { "q": "你说留存不及预期。你做复盘的时候,定位到的核心原因是什么?" },
+    { "q": "如果让你重来一次,你自己在产品决策上会改哪一步?" },
+    { "q": "好,我想听得更具体。就这个项目 —— 抛开外部因素,纯粹是你作为产品总监做的决策里,哪一个是你现在回看觉得自己判断错了的?" }
+  ],
+  "candidate_last_answer": "说实话,这个项目结果不理想,但客观讲真的不是产品策略的问题。我的产品方向其实是完全正确的,数据和用户调研都支持。问题主要出在几个地方:第一,研发团队的交付质量和节奏跟不上,排期一拖再拖,上线的时候很多核心功能是被砍掉的阉割版;第二,运营团队的拉新策略太粗放,拉来的用户质量很差,根本不是我们的目标人群,留存自然就低;第三,说白了公司当时资源也没给到位,本来应该配的增长团队迟迟没到位。所以如果非要说我有什么『判断错误』,可能就是我太相信兄弟团队能 deliver 了 —— 我应该早点意识到他们的能力跟不上我的产品规划。",
+  "session_state": {
+    "drilled_topics": ["product-line-scope", "north-star-metric-level", "underperforming-project-gap", "decision-ownership", "retention-root-cause", "personal-decision-counterfactual", "own-misjudgment-isolation"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "failure-handling", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我太相信兄弟团队能 deliver 了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one product decision the candidate personally made and personally got wrong — the specific call (scope cut, target-segment definition, launch-readiness gate) that was his own judgment, not the dev or ops team's failure — converting blame-shifting into a single owned misjudgment with what he would decide differently"
+    ]
+  }
+}

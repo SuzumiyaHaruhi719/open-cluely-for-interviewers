@@ -1,0 +1,43 @@
+{
+  "id": "fx_0614",
+  "tags": {
+    "industry": "hr",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "梁惠珊 · 人力资源总监（HR Director, Talent & Org Development）\n\n职业概述\n十四年人力资源管理经验,聚焦科技与互联网公司的组织发展、人才发展与文化建设。最近五年担任 HR Director,主导过多个 company-wide 的人才与文化项目。\n\n工作经历\n\n2021 年 2 月 - 至今 · 星辰互联 · HR Director, Talent & Org Development\nSituation: 公司两年内从 1200 人扩张到 4000 人,中层管理者大量从一线提拔,management bench 薄弱,员工敬业度(engagement)调研得分从 78 跌到 64。\nTask: 我被 CHRO 指派牵头一个 company-wide 的 leadership development + engagement 重建项目,目标是一年内把 engagement 拉回 75 以上,并建立 manager capability 框架。\nAction: 我设计了三层 leadership pipeline(新晋经理、中层、高潜),上线了基于行为锚定的 manager 评估,重做了 engagement 调研的 action-planning 闭环,并亲自带了首批 60 名新晋经理的 cohort。\nResult: 一年后 engagement 回升到 76,manager effectiveness 分项提升 14 分,关键人才 12 个月后悔流失率从 11% 降到 6%。\n\n2016 年 5 月 - 2021 年 1 月 · 弘图科技 · 高级 HR 经理 / OD 负责人\n- 搭建公司首个 competency model 和 talent review 机制,覆盖 800 人\n- 主导一次 reorg 中的组织设计与岗位重估\n\n2011 年 7 月 - 2016 年 4 月 · 各科技公司 HR generalist / OD 岗位\n\n教育背景\n香港中文大学 组织心理学 硕士 2011 · 中山大学 人力资源管理 学士 2009\n\n认证\n- ICF ACC 教练认证 · Hogan 测评认证 · SHRM-SCP",
+  "jd": "星辰互联招聘 HR Director(Talent & Org Development 方向),向 CHRO 汇报,负责 4000 人规模公司的 leadership development、人才发展与敬业度(engagement)体系。我们要找的人必须:(1) 主导过 company-wide 的 leadership pipeline 或文化重建项目,能讲清自己 personally 做的设计与落地,而不只是挂名 sponsor;(2) 能拿出经得起追问的量化结果 —— engagement 分数用的是哪家供应商的工具、口径是什么、样本量多大、是否可被第三方验证,而不是空泛的百分比;(3) 对 manager capability 框架有真实的 hands-on 设计经验。当前挑战:公司快速扩张后中层能力参差、engagement 区域差异大、以及高潜人才保留承压。我们尤其看重候选人能否清晰区分『我做的』和『团队做的』,以及数据的真实出处。",
+  "history": [
+    { "q": "先介绍一下你在星辰的 scope —— 你负责的 talent & OD 体系覆盖多少人,向谁汇报?" },
+    { "q": "你简历里那个 engagement 重建项目讲得很完整。先说说,这个 engagement 调研用的是哪家供应商的工具?" },
+    { "q": "你说一年内 engagement 从 64 回到 76。这个 12 分的提升,样本量多大?参与率是多少?" },
+    { "q": "你亲自带了首批 60 名新晋经理 cohort。这个 cohort 的具体形式是什么?你 personally 投入了多少时间?" },
+    { "q": "manager effectiveness 提升 14 分 —— 这是从 engagement 调研里拆出来的分项,还是另一套评估?口径是什么?" },
+    { "q": "好,聚焦数据可信度。你说 engagement 76 分、manager 提升 14 分、后悔流失从 11% 到 6% —— 这些数字如果让 CHRO 或第三方来 verify,具体查哪个系统、哪份报告?" }
+  ],
+  "candidate_last_answer": "这些数字绝对是 rock solid 的。我可以很负责任地说,engagement 从 64 拉到 76 这个成果,是被整个 leadership team 一致认可的标志性成果,甚至 CEO 在 all-hands 上都专门点名表扬过。manager effectiveness 提升 14 分,这在整个行业里都是 top-tier 的水平 —— 据我了解,行业平均一年能提升 3 到 4 分就算很不错了,我们做到 14 分基本是断层领先。后悔流失从 11% 砍到 6%,直接给公司省了至少几千万的 replacement cost。至于你问的具体系统和报告 —— 这些数据当然都在我们 HR 的 dashboard 里,反正 every number 我都能背得出来,这些都是经得起检验的硬核成果,整个 HR 圈子都知道我们这个项目是标杆。",
+  "session_state": {
+    "drilled_topics": ["talent-od-scope", "engagement-vendor-tool", "engagement-sample-participation", "manager-cohort-format-time", "manager-effectiveness-metric-definition", "data-verifiability-source"],
+    "current_competency_target": "integrity",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "integrity",
+    "missing_evidence": [
+      { "competency": "integrity", "evidence_type": "named-entity" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "outcomes", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 据我了解,行业平均一年能提升 3 到 4 分就算很不错了",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: the named survey vendor and the specific report or dashboard ID, sample size, and participation rate behind the 14-point and engagement claims — plus the source of the 『industry average 3-4 points』 benchmark — converting grand 'rock solid, industry-leading' assertions into a verifiable artifact the CHRO could pull"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "fx_0653",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Staff Product Designer\n\nMaplewave (2021–present) — Staff Product Designer\n- Lead designer on the core checkout and payments experience.\n- Drove a checkout redesign and partnered with PM and engineering.\n\nTidepool Health (2018–2021) — Senior Product Designer\n- Owned the patient onboarding flow.\n- Ran usability sessions and shipped a design-system contribution.\n\nForma Studio (2016–2018) — Product Designer\n- Worked across web and mobile for early-stage clients.\n\nSkills: Figma, design systems, interaction design, prototyping, user research, accessibility.\nEducation: B.F.A. in Interaction Design.",
+  "jd": "Cobalt is hiring a Staff Product Designer to own the end-to-end checkout and payments experience for our marketplace. You will be the design lead across a cross-functional pod (PM, two engineers, a researcher), set the interaction and visual direction, and be accountable for measurable conversion and error-rate improvements at the checkout step. We expect a Staff designer to articulate the specific design decisions they made and why, to tie design changes to concrete metrics (conversion lift, drop-off reduction, support-ticket reduction), and to show how they navigated tradeoffs against engineering constraints. This is a high-scrutiny role: we will ask you to go deep on one project and defend the rationale behind individual choices. You will also help raise the bar on our design system and mentor mid-level designers.",
+  "history": [
+    { "q": "Give me a quick overview of your current role at Maplewave and the surface you own." },
+    { "q": "You led a checkout redesign. What was the core problem you were solving?" },
+    { "q": "What did the data say was wrong with the old checkout before you touched it?" },
+    { "q": "Walk me through the single biggest design decision you made in that redesign." },
+    { "q": "Why that choice over the alternative? What was the tradeoff?" },
+    { "q": "How did engineering constraints shape the final design?" },
+    { "q": "What was the conversion or drop-off number before, and after you shipped?" },
+    { "q": "How did you isolate that the change came from your design and not something else?" },
+    { "q": "Tell me about a usability finding that surprised you and changed the design." },
+    { "q": "How many rounds of testing did you run, and with how many users?" },
+    { "q": "What did you contribute to the design system out of this work?" },
+    { "q": "Where did you disagree with the PM, and how did it resolve?" },
+    { "q": "What part of the redesign didn't work, and what did you do about it?" },
+    { "q": "How do you mentor a mid-level designer through a decision like this?" },
+    { "q": "If you ran this project again, what would you change?" },
+    { "q": "What's the one metric you're proudest of moving, and by how much?" },
+    { "q": "Let's get concrete on that. Take the single most impactful screen you redesigned in checkout — tell me exactly what you changed on it and what specific number that one change moved." }
+  ],
+  "candidate_last_answer": "Yeah, so the checkout work was really about reducing friction and creating a more delightful, intuitive experience for the user. I'm a big believer in meeting users where they are. So we looked at the whole flow holistically, simplified things, made it cleaner, and the result was a much better experience overall. It moved the needle for sure. Design is really about empathy at the end of the day, and I think that came through in the final product.",
+  "session_state": {
+    "drilled_topics": ["current-role", "checkout-problem", "old-checkout-data", "biggest-decision", "decision-tradeoff", "eng-constraints", "before-after-numbers", "attribution", "usability-finding", "testing-rounds", "design-system-contribution", "pm-disagreement", "what-didnt-work", "mentoring", "redo-learnings", "proudest-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 54
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: It moved the needle for sure",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate off generic 'reducing friction' language and onto one concrete screen-level change — exactly what UI element he altered and the specific before/after number (conversion %, drop-off, or error rate) that single change produced"
+    ]
+  }
+}

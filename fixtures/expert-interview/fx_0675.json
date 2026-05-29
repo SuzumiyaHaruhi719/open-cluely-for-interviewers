@@ -1,0 +1,40 @@
+{
+  "id": "fx_0675",
+  "tags": {
+    "industry": "product-management",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Product Manager | Growth · Monetization · Platform · 0-to-1 · Data-Driven · Agile · Cross-Functional\n\nResults-oriented, data-driven Product Manager with a proven track record of delivering customer-obsessed, outcome-based roadmaps. Adept at stakeholder management, OKRs, experimentation, A/B testing, funnel optimization, North-Star metrics, PLG, GTM, and full product lifecycle ownership. Strong in user research, JTBD, prioritization frameworks (RICE, MoSCoW), and agile delivery (Scrum, Kanban).\n\nExperience\nNimbusPay — Product Manager, Growth (2021-present)\n- Drove growth initiatives across activation, retention, and monetization funnels.\n- Owned the onboarding experience and led cross-functional squads to deliver impactful outcomes.\n- Leveraged data-driven insights and rapid experimentation to optimize key conversion metrics.\n- Partnered with design, engineering, marketing, and analytics stakeholders end-to-end.\n\nStacklane — Associate Product Manager (2019-2021)\n- Supported roadmap planning, backlog grooming, and sprint ceremonies.\n- Synthesized customer feedback into actionable, high-impact product requirements.\n\nEducation\nBS, Information Systems.\n\nSkills\nSQL, Amplitude, Mixpanel, Figma, Jira, A/B testing, SQL, roadmapping, OKRs, PLG, GTM, experimentation.",
+  "jd": "We're looking for a mid-level Product Manager to own activation and onboarding for our B2B fintech product. You'll be accountable for a specific North-Star input metric (percentage of new accounts reaching first successful payment within 7 days), run a steady cadence of experiments, and partner with design, engineering, and growth marketing. We want a PM who can move past buzzwords and talk specifically: what you changed, why you prioritized it, what the baseline was, and what moved. You'll own the activation funnel end-to-end, define and instrument the events, and present results to the head of product every two weeks. Strong candidates are precise about their own contribution versus the team's, and can defend a prioritization call with reasoning rather than a framework name.",
+  "history": [
+    { "q": "Your resume lists a lot of growth work at NimbusPay. Pick the single activation project you're proudest of and set it up for me — what was the situation?" },
+    { "q": "What were you specifically trying to move, and what was the baseline?" },
+    { "q": "Walk me through what you actually built and shipped, step by step." }
+  ],
+  "candidate_last_answer": "So the situation was our activation was lagging — new accounts would sign up but a lot of them never got to their first payment, which is our key activation moment. The task was clear: I owned getting more of those new accounts activated in their first week. So what I did was I dug into the funnel in Amplitude, found that the biggest drop-off was at the bank-connection step, and I led a cross-functional squad to redesign that step — we added a progress indicator, pre-filled some fields, and introduced a fallback manual-entry path when the instant connection failed. We ran it as an experiment and rolled it out. It was a real team effort across design and eng and we shipped it in about six weeks.",
+  "session_state": {
+    "drilled_topics": ["activation-project-setup", "target-metric-baseline"],
+    "current_competency_target": "outcome-ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "outcome-ownership",
+    "missing_evidence": [
+      { "competency": "outcome-ownership", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We ran it as an experiment and rolled it out",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result of the STAR — the actual change in the 7-day first-payment activation rate (baseline vs. post-launch), the experiment's lift and whether it was significant, so the interviewer can judge real impact rather than a described build"
+    ]
+  }
+}

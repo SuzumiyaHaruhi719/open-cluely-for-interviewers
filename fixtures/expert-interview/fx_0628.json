@@ -1,0 +1,55 @@
+{
+  "id": "fx_0628",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵文渊 | 资深研究员 (Staff Research Scientist) | 材料与电池方向\n\n研究方向：固态电解质、锂金属负极、电池界面表征与寿命建模\n\n工作经历：\n- 新源能源研究院 (XinYuan Energy Institute) — 资深研究员 (2019 - 至今)\n  · 负责固态电池界面课题，带领一个跨表征与建模的小组\n  · 推动若干界面改性方案的验证与中试转化\n  · 与产线团队协作，参与多代电芯样品的迭代\n- 国立材料实验室 — 副研究员 (2014 - 2019)\n  · 从事锂金属负极的失效机理研究\n\n技能：电化学表征 (EIS / CV)、原位 XRD、第一性原理计算、寿命建模、跨团队协作\n发表：在材料与能源类期刊发表论文若干，含数篇通讯作者\n教育：材料科学与工程 博士 (2009 - 2014)",
+  "jd": "新源能源研究院招聘资深研究员，负责固态电池界面方向的课题规划与团队带领，推动实验室成果向中试与产线转化。岗位要求能清晰说明自己主导的关键技术决策、量化的实验结果与改进幅度、以及在跨团队转化中的具体角色。面试中我们会反复追问具体数据：循环寿命提升了多少、界面阻抗降到多少、良率改善多少等。我们重视能用确切数字支撑结论的研究者。汇报对象为研究院技术副院长。",
+  "history": [
+    { "q": "文渊你好，先讲讲你现在在新源主导的固态电池界面课题大方向。" },
+    { "q": "你说带领一个跨表征与建模的小组，这个组多少人，你负责哪部分？" },
+    { "q": "界面改性方案里，你最得意的一个技术路线是什么？" },
+    { "q": "这个改性方案解决的核心问题是界面阻抗，还是循环稳定性？" },
+    { "q": "改性之后，界面阻抗大概从多少降到了多少？" },
+    { "q": "循环寿命这块呢？改性前后循环多少圈后容量保持率是多少？" },
+    { "q": "这些数据是在什么测试条件下拿到的？倍率、温度、截止电压？" },
+    { "q": "你提到推动了中试转化，转化的是哪一个具体方案？" },
+    { "q": "中试阶段良率或一致性有没有量化的改善？" },
+    { "q": "和产线团队协作时，你具体对接谁，你负责拍板哪些参数？" },
+    { "q": "多代电芯样品迭代，你主导了哪几代，每一代主要改了什么？" },
+    { "q": "你做的第一性原理计算，结论和实验表征对得上吗？有没有不一致的地方？" },
+    { "q": "我注意到你一直没给具体数字。就界面阻抗这一项，你记得任何一个量级的数据吗？" },
+    { "q": "那循环寿命，哪怕是个大概区间，比如多少圈后还有多少容量？" },
+    { "q": "好，换个角度：这个课题里，有没有哪一个结果是你可以拍胸脯说『确切是我做出来的』？" },
+    { "q": "这个结果当时是怎么验证的？谁复现过？" },
+    { "q": "如果副院长问你这个课题最硬的一个量化成果是什么，你会报哪个数字？" },
+    { "q": "我再给你一次机会具体化：随便挑一个你最熟的指标，给我一个确切的数值和它的测试条件。" }
+  ],
+  "candidate_last_answer": "这个……怎么说呢，数据其实都在组里的报告里，具体数值我一时半会儿真记不太清了。反正改性之后界面是明显变好的，阻抗降了不少，循环也更稳定了，整体效果是比较显著的。寿命那边也是有提升的，趋势很正向。中试那边产线同事也反馈说一致性好了一些。总之这个方向我们做得还是挺扎实的，结论是站得住脚的，只是具体到某一个数字，我得回去翻一下记录才能给你准确的。",
+  "session_state": {
+    "drilled_topics": ["interface-topic", "team-structure", "favorite-route", "problem-type", "interface-impedance", "cycle-life", "test-conditions", "pilot-transfer-which", "pilot-yield", "production-contact", "cell-generations", "dft-vs-experiment", "any-impedance-number", "any-cyclelife-range", "definitively-yours", "verification", "hardest-metric"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "metric" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体数值我一时半会儿真记不太清了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete number with its test condition — e.g. interface impedance from X to Y Ω·cm², or capacity retention Z% after N cycles at a stated rate/temperature — forcing him off the 『降了不少 / 趋势正向』 hand-waving onto one verifiable datum he owns"
+    ]
+  }
+}

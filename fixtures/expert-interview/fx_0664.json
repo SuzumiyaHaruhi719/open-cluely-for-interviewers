@@ -1,0 +1,53 @@
+{
+  "id": "fx_0664",
+  "tags": {
+    "industry": "hr",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "JORDAN ELLISON\nHuman Resources Intern Candidate | Talent Acquisition · Employee Engagement · HRIS · DEI · Onboarding · Workforce Analytics\n\nKEYWORD PROFILE\nFull-cycle recruiting, candidate sourcing, ATS (Greenhouse, Lever), HRIS (Workday, BambooHR), employee engagement, onboarding, offboarding, DEI initiatives, employer branding, talent pipeline, people analytics, HR compliance, FMLA, FLSA, EEO, performance management, compensation benchmarking, employee relations, change management, stakeholder management, Boolean search, LinkedIn Recruiter, candidate experience, interview coordination, OKRs, KPIs, total rewards, learning & development, succession planning.\n\nEDUCATION\nB.A. Human Resource Management, expected 2026 — Glenmore State University. SHRM Student Member. Coursework: Staffing & Selection, Compensation, Employment Law, Organizational Behavior, HR Analytics.\n\nEXPERIENCE\n\nTalent Acquisition Intern — Summit Staffing Partners (Summer 2024)\n- Supported full-cycle recruiting and candidate sourcing across multiple requisitions; leveraged ATS (Greenhouse) and Boolean search for talent pipeline development.\n- Coordinated interview scheduling, candidate experience touchpoints, and offer-stage logistics; championed employer branding on social channels.\n- Contributed to a campus-hiring initiative and a DEI sourcing effort; tracked KPIs and recruiting funnel metrics in a dashboard.\n\nHR Office Assistant — Glenmore State University, People & Culture (2023 - 2024, part-time)\n- Assisted with onboarding, offboarding, HRIS (BambooHR) data entry, and HR compliance documentation.\n- Supported an employee-engagement survey rollout and an L&D workshop series.\n\nStudent Org — VP of Recruitment, Pre-HR Society\n- Drove member recruitment, stakeholder management, and event coordination; introduced an OKR-based planning cadence.\n\nSKILLS\nGreenhouse, Lever, Workday, BambooHR, Excel, LinkedIn Recruiter, people analytics, DEI, employee engagement, change management, employment law fundamentals.",
+  "jd": "Summit Staffing Partners is hiring an HR / Talent Acquisition Intern (returning interns welcome) to support our internal recruiting team for a 12-week term. The intern helps drive full-cycle recruiting support: sourcing, interview coordination, candidate communication, and offer logistics, plus a defined project on improving one stage of the recruiting funnel. You will own a small piece of a real requisition pipeline and present results to the talent team. We screen for clarity and honesty about your actual contribution and the sequence of what you did: when we ask about a process you supported, we want a clean, ordered account of the steps, what happened first, and where you personally fit in. Vague or contradictory chronology is a red flag in a coordination-heavy role. Requirements: progress toward an HR or business degree, familiarity with an ATS, strong organization and written communication, and comfort working with hiring data. Prior recruiting exposure preferred.",
+  "history": [
+    { "q": "Welcome back. Last summer you supported recruiting at Summit. Of all those keywords on your resume, what did you actually spend most of your time doing?" },
+    { "q": "Let's take the campus-hiring initiative. Walk me through how it ran, start to finish." },
+    { "q": "When did the campus events happen relative to when the requisitions opened — before or after?" },
+    { "q": "You mentioned a DEI sourcing effort. Did that start before or after the campus initiative?" },
+    { "q": "Which came first in the funnel work: building the dashboard, or collecting the recruiting metrics it displayed?" },
+    { "q": "You said you tracked funnel KPIs. When in the summer did you start tracking — week one, or later?" },
+    { "q": "For a single candidate you helped move through, what was the order of steps from sourcing to offer?" },
+    { "q": "You just said the offer went out before the onsite interview. Can you re-walk that candidate's sequence?" },
+    { "q": "Did you screen candidates before or after the recruiter did the first phone screen?" },
+    { "q": "Let's pin the campus initiative timeline: kickoff, events, then sourcing follow-up — is that the order, or did sourcing precede the events?" },
+    { "q": "You earlier said events came after reqs opened, but also that the DEI effort fed candidates into the events that happened first. Which is it?" },
+    { "q": "Switching to the engagement survey at the university. When did that run relative to the L&D workshops?" },
+    { "q": "Was the survey designed before or after you saw the workshop attendance data?" },
+    { "q": "You said the survey informed the workshops, and also that the survey came after the workshops. Help me reconcile that." },
+    { "q": "I'd like a clean answer: take the Summit campus-hiring initiative and lay out every step in order, with rough weeks." },
+    { "q": "Specifically, in which week did sourcing start, and in which week did the first campus event happen?" }
+  ],
+  "candidate_last_answer": "Okay so for the campus thing... I think sourcing kind of started first? Or maybe the events were first, because we needed candidates to invite. Actually, the events were probably week three or four, and sourcing was... around then too, hard to say exactly. The DEI sourcing I'm pretty sure fed into the events, but the events also might have come before we really ramped DEI, so those two sort of overlapped. The reqs — I said earlier they opened before the events, but honestly the campus events might have been to build a pipeline before any specific req, so maybe events came first and reqs after. I keep going back and forth because it all happened pretty fast and I was jumping between things, so the exact week-by-week order is a bit fuzzy for me.",
+  "session_state": {
+    "drilled_topics": ["actual-time-spent", "campus-initiative-walkthrough", "events-vs-reqs-order", "dei-vs-campus-order", "dashboard-vs-metrics-order", "kpi-tracking-start", "candidate-step-order", "offer-vs-onsite-contradiction", "screen-vs-phonescreen-order", "campus-sequence-pin", "events-dei-reqs-contradiction", "survey-vs-workshop-timing", "survey-design-vs-attendance", "survey-workshop-contradiction", "full-campus-timeline", "sourcing-vs-event-week"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "domain-knowledge", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: maybe events came first and reqs after",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single committed ordering of sourcing, campus events, and requisition openings with at least one concrete week anchor, forcing the candidate out of the overlapping back-and-forth into one defensible chronology"
+    ]
+  }
+}

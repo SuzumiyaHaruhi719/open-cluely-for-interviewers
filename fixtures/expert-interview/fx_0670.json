@@ -1,0 +1,52 @@
+{
+  "id": "fx_0670",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Staff Software Engineer — Clinical Data Platform\n\nSummary\nStaff engineer on a clinical-data platform serving an EHR-integrated patient-monitoring product. Focus on HL7/FHIR ingestion, alerting reliability, and de-identification pipelines. Technical lead for the team that owns the real-time vitals stream consumed by bedside alerting.\n\nExperience\nVantaCare Health — Staff Software Engineer (2020-present)\n- Situation: bedside alerting had a p99 ingest-to-alert latency of 14s during peak ICU load, above the 5s clinical SLA. Task: bring p99 under 5s without dropping messages. Action: re-architected the HL7 ingestion path from a synchronous DB-write model to a partitioned Kafka pipeline keyed by unit, added backpressure, and moved de-dup to a windowed stream operator. Result: p99 fell to 3.1s and message loss went from ~0.4% to under 0.01% over a 6-month measured window.\n- Situation: a FHIR ingestion bug silently dropped ~2% of observation resources with non-UTF8 payloads. Task: find and fix without a full reprocessing outage. Action: added a dead-letter queue, a schema-validation gate, and a backfill job. Result: recovered 11 days of data and cut silent drops to zero, verified by a reconciliation count.\n- Mentored 4 engineers; ran the platform's on-call and incident-review process.\n\nNorthside Medical Software — Senior Engineer (2016-2020)\n- Built the de-identification service (Safe Harbor + expert-determination support) used across analytics exports.\n\nEducation\nBS, Computer Science.\n\nSkills\nJava, Kafka, FHIR/HL7v2, Postgres, stream processing, on-call leadership.",
+  "jd": "We are hiring a Staff Software Engineer to lead reliability and architecture for our clinical-data ingestion platform, which powers real-time alerting in hospital ICUs and step-down units. You will own the ingestion path from HL7v2/FHIR sources through to the alerting engine, where latency and message-loss directly affect patient safety. Responsibilities: set the technical direction for the streaming architecture, drive down tail latency under peak load, lead incident reviews for ingestion outages, and own the de-identification pipeline used for downstream analytics and research exports (subject to HIPAA Safe Harbor / expert determination). You will be the senior technical voice partnering with clinical informatics on alert-fatigue and SLA definitions. We expect rigor on measurement: you should be able to reason about p99 latency, message-loss budgets, and the safety implications of dropped or delayed observations. Prior healthcare or other safety-critical streaming experience strongly preferred.",
+  "history": [
+    { "q": "Give me the one-line version of what your team owns and where you sit technically." },
+    { "q": "Walk me through the bedside-alerting latency problem. What was the starting state?" },
+    { "q": "Why was the synchronous DB-write model the bottleneck specifically?" },
+    { "q": "Why Kafka partitioned by unit rather than, say, by patient or a single topic?" },
+    { "q": "How did backpressure interact with your clinical SLA — couldn't it just delay alerts instead?" },
+    { "q": "Where did you move de-duplication, and why a windowed operator?" },
+    { "q": "What was the measured result, and over what window?" },
+    { "q": "How did you confirm message loss actually dropped rather than just being hidden?" },
+    { "q": "Now the FHIR silent-drop bug. How did you even discover it was happening?" },
+    { "q": "Walk me through the fix — dead-letter queue, schema gate, backfill. In what order?" },
+    { "q": "How did you avoid a reprocessing outage while backfilling 11 days?" },
+    { "q": "What was the reconciliation count actually comparing?" },
+    { "q": "Tell me about a tradeoff you made on the de-identification service." },
+    { "q": "If a clinician says alerts feel slower after your change, how do you investigate?" },
+    { "q": "What's the single riskiest assumption in your current ingestion architecture?" },
+    { "q": "If you had to cut your p99 in half again tomorrow, where would you look first and why?" }
+  ],
+  "candidate_last_answer": "I'd look at the de-dup window first. Right now it's a fixed 2s tumbling window, and that 2s is a floor on latency for any message that lands early in a window — it can't emit until the window closes. So roughly half my remaining p99 budget is sitting in that window, not in compute or network. I'd test a session-based or punctuated window that emits as soon as it's confident a duplicate won't arrive, keyed on the source message ID plus observation timestamp. Second place I'd look is the JVM GC pauses on the alerting consumers; I've seen 200-400ms pauses correlate with the p99 spikes in our traces. I would not touch the Kafka partitioning — that's not where the time is.",
+  "session_state": {
+    "drilled_topics": ["team-scope", "latency-starting-state", "db-write-bottleneck", "partition-key-choice", "backpressure-sla", "dedup-placement", "measured-result", "loss-verification", "silent-drop-discovery", "fix-ordering", "backfill-no-outage", "reconciliation", "deid-tradeoff", "clinician-complaint-debug", "riskiest-assumption"],
+    "current_competency_target": "technical-depth",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "technical-depth",
+    "missing_evidence": [
+      { "competency": "technical-depth", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a session-based or punctuated window that emits as soon as it's confident a duplicate won't arrive",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the candidate to surface the correctness risk of emitting before the dedup window closes — how a late-arriving duplicate would be handled (downstream idempotency vs. a duplicate alert), and the latency-vs-safety tradeoff that makes this acceptable or not in an ICU alerting context"
+    ]
+  }
+}

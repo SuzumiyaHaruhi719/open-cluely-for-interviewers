@@ -1,0 +1,49 @@
+{
+  "id": "fx_0658",
+  "tags": {
+    "industry": "legal",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "林思远 · 初级法务专员\n\n求职意向:公司法务岗(合同与合规方向)\n\n工作经历\n\n2023 年 8 月 - 至今 · 远帆科技(消费电子) · 法务专员\n- 负责日常商务合同的审核与归档,涵盖采购、销售、保密协议三大类\n- 协助资深法务处理一起供应商违约纠纷,从立案到调解全程参与\n- 参与公司数据合规自查项目,梳理用户协议与隐私政策的更新\n- 维护合同台账,跟进各业务部门的合同到期与续签提醒\n\n2022 年 7 月 - 2023 年 7 月 · 某律师事务所 · 实习律师助理\n- 协助合伙人处理多起商事诉讼的证据整理与法律检索\n- 起草过起诉状、答辩状、代理词等基础诉讼文书\n- 参与尽职调查项目,负责目标公司的合同与诉讼信息梳理\n\n教育背景\n华政 法律硕士(法学)2022\n某省属高校 法学学士 2019\n\n职业资格\n- 已通过国家统一法律职业资格考试(A 证)\n- 英语六级\n\n技能\n- 熟悉合同审查流程与常见风险点识别\n- 熟练使用 Alpha、北大法宝等法律检索工具\n- 基础的英文合同阅读能力",
+  "jd": "我们是一家成长期的消费电子公司,现招聘一名初级到中级的公司法务,加入法务与合规团队,向法务总监汇报。岗位职责:(1) 独立负责采购、销售、保密、服务类合同的全流程审查,从收到业务需求、识别风险、出具修改意见到归档台账;(2) 跟进供应商及客户纠纷的处理,能够清晰复盘自己在每个阶段做了什么、时间节点如何;(3) 支持公司数据合规与个人信息保护的常态化工作;(4) 与采购、销售、产品等业务部门高效协作。我们特别看重候选人能否把一件经手过的纠纷或项目的时间线讲清楚 —— 什么时候发生、自己在哪个节点介入、各步骤的先后顺序。硬性要求:已通过法律职业资格考试;有 1 年以上公司法务或律所相关经验;做事有条理、对时间线和事实顺序敏感。",
+  "history": [
+    { "q": "先简单介绍一下你在远帆科技的日常工作,主要负责哪几类合同?" },
+    { "q": "你简历里提到协助处理过一起供应商违约纠纷,能讲讲这件事的大致背景吗?" },
+    { "q": "这起纠纷最早是怎么暴露出来的?是业务部门先发现,还是对方先发来函件?" },
+    { "q": "你是在哪个时间节点介入的?是立案前就参与了,还是立案之后才接手?" },
+    { "q": "从你介入到最后调解结束,大概经历了多长时间?" },
+    { "q": "中间有没有发过律师函?如果发了,是在调解之前还是之后发的?" },
+    { "q": "你刚才说先调解、后发函,但又提到立案。能不能把『立案、发函、调解』这三步的先后顺序再理一遍?" },
+    { "q": "那这起纠纷最后是和解结案,还是法院判决结案的?" },
+    { "q": "我们换个话题。说说你参与的那个数据合规自查项目,你具体负责哪一块?" },
+    { "q": "这个自查项目是从什么时候启动的?在供应商纠纷之前还是之后?" },
+    { "q": "你提到更新了用户协议和隐私政策,这两份文件是同时更新上线的,还是分先后?" },
+    { "q": "好,回到供应商纠纷这件事。我想请你从头到尾、按时间顺序,一步一步把整个过程再讲一遍 —— 哪一步在前,哪一步在后。" }
+  ],
+  "candidate_last_answer": "好的,我尽量理一下。这件事大概是去年的事……最开始呢,其实是我们先去调解了一轮,然后才发现对方违约比较严重,所以后来就立案了。哦不对,应该是先收到对方律师函,我们才意识到问题。立案这个事我记得是在调解中间某个时候做的,因为调解一直谈不拢。律师函的话……我印象里我们好像发过两次,第一次是在立案之前,第二次记不太清了,可能是和解快谈成的时候。整体上从头到尾差不多小半年吧,但具体哪个月做哪一步我真的有点记混了,因为那段时间我同时还在跟数据合规的项目,两条线有点交叉。反正最后是调解结案的,我比较确定。",
+  "session_state": {
+    "drilled_topics": ["daily-contract-scope", "supplier-dispute-background", "how-dispute-surfaced", "when-candidate-engaged", "dispute-duration", "demand-letter-timing", "sequence-clarification", "resolution-type", "compliance-project-scope", "compliance-project-start", "policy-update-sequence", "full-chronological-recount"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "domain-knowledge", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 立案这个事我记得是在调解中间某个时候做的",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single unambiguous ordering of the立案/发函/调解 steps with at least one concrete time anchor (a month or relative marker), forcing the candidate to commit to one sequence instead of three contradictory ones"
+    ]
+  }
+}
