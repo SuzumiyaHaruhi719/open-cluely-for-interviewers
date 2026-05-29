@@ -1,0 +1,55 @@
+{
+  "id": "fx_0825",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "林思远 — 产品设计师（中级）\n\n摘要\n四年 B 端 SaaS 产品设计经验，擅长把模糊的业务问题拆解为可验证的设计假设，并用数据闭环验证。习惯用 STAR 方式复盘项目：明确背景与目标、定义自己的任务、记录具体动作、量化结果。\n\n工作经历\n云策数据（2022 至今）— 产品设计师\n- 背景：公司的数据看板配置流程跳出率高达百分之六十二；目标：把新建看板的完成率提升到百分之八十。\n- 任务：我独立负责看板创建流程的重新设计，覆盖从模板选择到字段映射四个步骤。\n- 动作：做了八场可用性测试，把四步压缩为两步，引入智能字段推荐；与两名前端、一名后端排期联调。\n- 结果：上线六周后完成率从百分之三十八升到百分之七十九，跳出率降到百分之二十一。\n\n速联科技（2020–2022）— 交互设计师\n- 背景：移动端开户表单放弃率高；任务：负责表单分步改版；动作：引入进度指示与实时校验；结果：放弃率下降十八个百分点。\n\n技能\nFigma、用户访谈、可用性测试、A/B 实验设计、设计系统维护、Design Token",
+  "jd": "我们在为一家成长期的 B 端数据分析 SaaS 公司招聘一名中级产品设计师，向设计负责人汇报，与产品经理、前端工程师紧密协作。该岗位的核心职责是优化『从注册到首个有价值看板』的激活漏斗，目前新用户在看板配置环节的完成率只有四成左右，是公司北极星指标最大的瓶颈。我们希望候选人能独立主导端到端的体验改版：做用户研究定位流失节点、提出设计假设、设计 A/B 实验、并与工程团队一起把方案落地上线。我们重视能用定量数据证明设计影响力的人，而不仅仅是交付漂亮的界面。要求三年以上 B 端产品设计经验，能熟练撰写实验文档并独立跑可用性测试。",
+  "history": [
+    { "q": "先简单介绍一下你自己，以及你现在在云策数据的角色。" },
+    { "q": "你简历里最突出的是那个看板创建流程的项目。先说说当时的背景，为什么要做这件事？" },
+    { "q": "这个项目里，哪一部分是你个人负责的，哪一部分是团队其他人做的？" },
+    { "q": "你提到做了八场可用性测试，能讲讲测试是怎么设计的吗？" },
+    { "q": "从测试里你得到的最关键的一个洞察是什么？" },
+    { "q": "你说把四步压缩成两步，具体砍掉了哪两步、为什么敢砍？" },
+    { "q": "智能字段推荐这个功能，背后的逻辑是你定义的吗？还是产品给的需求？" },
+    { "q": "上线之后完成率从百分之三十八到百分之七十九——这个数据是怎么统计的，口径是什么？" },
+    { "q": "有没有哪个指标是不升反降，或者有副作用的？" },
+    { "q": "如果让你重做一次，你会改哪里？" },
+    { "q": "我们换个话题。说一个你和工程团队有分歧、最后没按你的方案走的例子。" },
+    { "q": "那次分歧里，你是怎么判断该坚持还是该让步的？" },
+    { "q": "你平时怎么维护设计系统？团队多大，你负责哪块？" },
+    { "q": "好。现在我想压一个具体的：你最近一个独立负责、并且能量化结果的项目，从开始到拿到结果，用了多长时间？结果具体是多少？" },
+    { "q": "你刚才说『感觉是有效果的』，我想要一个数字——是哪个指标，从多少到多少？" },
+    { "q": "那这个数字是上线后多久测的？有没有做显著性检验？" },
+    { "q": "好,我再给你一次机会把这个项目讲清楚:背景、你的任务、你做的动作、最后的量化结果,四块，尽量具体。" }
+  ],
+  "candidate_last_answer": "好的好的……那个项目啊,就是,呃,背景的话其实挺典型的,就是用户进来之后那个流程有点绕,然后……然后我就想说要不要优化一下。任务嘛,基本上就是我在跟,当然产品也有参与,我们一起。动作的话我做了不少,访谈也做了,原型也改了好几版,跟开发也聊了很多次,中间还赶上一次大版本……结果嘛,我印象里是变好了的,那个指标,呃,是完成率还是激活率我得想一下,反正是往上走的,具体多少我现在脑子有点乱,可能要回去对一下数据,不过我可以很肯定地说效果是有的,大家反馈都挺正面的。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "dashboard-project-context", "personal-vs-team", "usability-test-design", "key-insight", "step-reduction-rationale", "feature-ownership", "metric-methodology", "side-effects", "redo-reflection", "engineering-conflict", "conflict-judgement", "design-system", "recent-owned-project", "metric-pin-attempt", "significance-test"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "experiment-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 是完成率还是激活率我得想一下",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the exact metric name plus its before and after values, the time elapsed from launch to measurement, and whether significance testing was run — forcing the candidate to commit to one number instead of hedging between two metrics"
+    ]
+  }
+}

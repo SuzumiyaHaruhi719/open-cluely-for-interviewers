@@ -1,0 +1,43 @@
+{
+  "id": "fx_0860",
+  "tags": {
+    "industry": "finance",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Senior Credit Risk Manager — commercial lending and portfolio analytics\n\nExperience\nMeridian Trust Bank — Senior Credit Risk Manager (2020-present)\n- Own the credit risk framework for the middle-market commercial portfolio\n- Built and maintain the internal risk-rating model and the quarterly stress-testing process\n- Partner with the CCO and treasury on capital allocation and reserve methodology\n- Led the migration from a legacy scorecard to a behavioral PD model\n- Chair the monthly credit committee and present watchlist deterioration to the board risk subcommittee\n\nHarbor National — Credit Risk Analyst, then Lead Analyst (2015-2020)\n- Supported underwriting on syndicated deals and covenant monitoring\n- Rebuilt the early-warning indicator dashboard used by relationship managers\n\nSkills: PD/LGD/EAD modeling, IFRS 9 / CECL provisioning, SAS, Python, stress testing, covenant analysis\nEducation: MS Financial Engineering; CFA charterholder",
+  "jd": "Meridian is hiring a Senior Credit Risk Manager to own the loss-forecasting and provisioning function for a $4B commercial real estate and middle-market book. You will own the CECL allowance methodology end to end, defend assumptions to internal audit and external regulators, and lead the quarterly stress-testing cycle including the severely-adverse scenario. The role requires hands-on PD/LGD modeling, the ability to translate macro overlays into reserve impact, and a track record of getting a model through MRM validation. You will manage two analysts, present to the credit committee monthly, and partner with finance on the reserve walk that lands in the 10-Q. We need someone who can both build the model and explain a single basis-point move in coverage to the audit committee.",
+  "history": [
+    { "q": "Walk me through the CECL methodology you own today — segmentation, the loss drivers, and how the macro overlay flows into the allowance." },
+    { "q": "Tell me about a quarter where coverage moved materially. What drove the basis-point change and how did you defend it?" },
+    { "q": "Describe the PD model migration on your resume. What was the old approach, what did you build, and how did MRM react?" },
+    { "q": "Give me a specific stress-testing decision — a scenario assumption you set that others disagreed with." },
+    { "q": "When internal audit challenged one of your reserve assumptions, what was the assumption and how did you resolve it?" },
+    { "q": "Let's get concrete on the model migration. What was the single hardest validation finding you had to remediate, and what did you change in the model to close it?" }
+  ],
+  "candidate_last_answer": "Honestly the thing I'm most proud of from that whole period was how the team came together culturally. We'd been pretty siloed, risk on one side and the lending desk on the other, and I really pushed to get us all in the same room every week. I started a Friday knowledge-share where analysts present a deal, and morale shot up. We even did an offsite that quarter. People started trusting the risk function instead of seeing us as the department of no, and I think that cultural shift is the real legacy I left there.",
+  "session_state": {
+    "drilled_topics": ["cecl-methodology", "coverage-movement", "pd-model-migration", "stress-scenario-judgement", "audit-challenge"],
+    "current_competency_target": "model-validation-rigor",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "model-validation-rigor",
+    "missing_evidence": [
+      { "competency": "model-validation-rigor", "evidence_type": "mechanism" },
+      { "competency": "model-validation-rigor", "evidence_type": "named-entity" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: that cultural shift is the real legacy I left there",
+      "must-be-question-type: teach-back",
+      "expected-yield: redirect the candidate off the culture tangent back to the specific MRM validation finding — naming the model assumption that failed and the exact change made to the PD model to remediate it"
+    ]
+  }
+}

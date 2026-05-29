@@ -1,0 +1,49 @@
+{
+  "id": "fx_0884",
+  "tags": {
+    "industry": "finance",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Senior Financial Analyst | The undisputed go-to numbers brain for a $4B asset manager\n\n- Single-handedly transformed the entire FP&A function into a world-class, board-trusted machine\n- Built the firm's flagship liquidity model from scratch — now the gold standard every desk copies\n- Closed-loop owner of monthly close, forecasting, and variance — nobody touches the P&L without my sign-off\n- Recognized internally as the smartest analyst in the room three years running\n- Saved the firm millions through sheer rigor that others simply could not match\n- Deep mastery of DCF, LBO, three-statement modeling, Bloomberg, FactSet, SQL, Python\n\nExperience:\nMeridian Capital Partners — Senior Financial Analyst (2021-present)\n- Own the 13-week cash flow forecast and the quarterly board deck for the CFO\n- Lead analyst on a fund restructuring touching $900M AUM\nNorthbridge Advisory — Financial Analyst (2019-2021)\n- Supported deal teams on buy-side diligence and post-merger integration models\n\nEducation: B.S. Finance, State University, 2019. CFA Level II candidate.",
+  "jd": "Meridian Capital Partners is hiring a mid-level Financial Analyst for our portfolio-monitoring team. You will own the 13-week cash-flow forecast across eight portfolio companies, run monthly variance analysis against covenant thresholds, and prepare the liquidity section of the quarterly LP report. The role works directly with the controller and the deal team; you must be able to explain, line by line, how a forecast was built and defend an assumption when a partner challenges it. We need someone who can reconcile a model to actuals, flag a covenant breach early, and write a clear variance commentary. Required: 3-5 years FP&A or buy-side analyst experience, advanced Excel, and comfort with SQL for pulling actuals. You will be tested on a live modeling case during the loop.",
+  "history": [
+    { "q": "Tell me about your current role at Meridian and what you own day to day." },
+    { "q": "Your resume says you 『built the firm's flagship liquidity model from scratch.』 Walk me through how that model is structured." },
+    { "q": "What are the top three drivers in that 13-week cash-flow forecast?" },
+    { "q": "How do you reconcile the forecast back to actuals at month-end?" },
+    { "q": "Tell me about a time your forecast was wrong. What did you miss?" },
+    { "q": "Walk me through how you'd catch a covenant breach before it happens." },
+    { "q": "On the $900M fund restructuring — what was your specific piece of the analysis?" },
+    { "q": "How do you decide which assumptions to stress-test in a liquidity scenario?" },
+    { "q": "Describe a moment a partner challenged one of your assumptions. How did you defend it?" },
+    { "q": "What's the most common mistake you see junior analysts make in a three-statement model?" },
+    { "q": "If actuals came in 15% below your forecast, what's the first thing you check?" },
+    { "q": "Let's go deeper on variance commentary. Give me one specific month where the variance surprised you and what you wrote in the commentary." }
+  ],
+  "candidate_last_answer": "对,variance commentary 这块我其实特别有感触。说到 variance,我最近一直在想我们整个 team 的 culture 问题。你看,我们 office 在金融区,通勤特别久,大家压力都很大,所以我一直在推动一个 wellness initiative,组织大家周五一起做 mindfulness,顺便聊聊行业趋势。我觉得 a strong analyst 不只是会算数,更要懂得 build relationships,understand the bigger picture。其实这跟 forecasting 是相通的,都是关于人和 trust 的。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "liquidity-model-structure", "forecast-drivers", "reconciliation", "forecast-miss", "covenant-detection", "restructuring-role", "stress-test-selection", "assumption-defense", "junior-mistakes", "variance-first-check"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "communication-clarity", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我最近一直在想我们整个 team 的 culture 问题",
+      "must-be-question-type: metric-pin",
+      "expected-yield: redirect the candidate off the wellness-culture tangent back to a single named month, the actual-vs-forecast variance number, the driver that caused it, and the exact commentary they wrote"
+    ]
+  }
+}

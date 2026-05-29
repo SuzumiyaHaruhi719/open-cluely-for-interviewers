@@ -1,0 +1,40 @@
+{
+  "id": "fx_0843",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Dr. Helena Soto\nSenior Research Scientist — Computational Biology\n\nExperience\nVireo Therapeutics — Senior Research Scientist, 2018-present. Lead computational work for a target-discovery program.\n\nUniversity of Greycliff — Postdoctoral Fellow, 2014-2018.\n\nFocus\n- Genomic data pipelines and statistical modeling\n- Cross-functional work with wet-lab and clinical teams\n- Mentoring junior scientists\n\nSelected work\n- Built the analysis pipeline behind a published target-discovery study\n- Co-author on several peer-reviewed papers\n\nEducation\nPhD, Computational Biology\nBSc, Biochemistry\n\nPublications and references available on request.",
+  "jd": "Vireo Therapeutics seeks a Senior Research Scientist to lead computational analysis across our target-discovery portfolio. You will own end-to-end study design, build and validate analysis pipelines, and be accountable for the rigor and reproducibility of results that feed go/no-go decisions. You will collaborate with wet-lab and clinical teams and present findings to the research leadership team. We need a scientist who can reconstruct the precise chronology of a project under questioning — when a hypothesis was formed, when data arrived, when an analysis was run, and when a decision was made — because reproducibility depends on an accurate timeline. Requirements: PhD in computational biology or related field, 6+ years post-PhD, deep statistical and pipeline-engineering skill, and demonstrated ownership of a discovery program from hypothesis to validated result.",
+  "history": [
+    { "q": "Tell me about the target-discovery study you led the computational analysis for. What was the core question?" },
+    { "q": "Walk me through the project chronology — when did you form the hypothesis, when did the data come in, and when did you run the key analysis?" },
+    { "q": "When did the wet-lab validation happen relative to your computational findings?" },
+    { "q": "So just to get the sequence straight: did the validation experiment start before or after you'd finalized the analysis?" }
+  ],
+  "candidate_last_answer": "Right, so the validation — we actually started the wet-lab validation in Q1, which was before we ran the main analysis, but the analysis is what generated the hypothesis we were validating, and that came together over the summer. So the validation kicked off after the findings, in Q3, though the assay design predated the data, which arrived in Q2. I think the hypothesis was basically locked by Q1, or maybe it was after the Q2 data — honestly the experiment ran before the analysis finished but confirmed it afterward.",
+  "session_state": {
+    "drilled_topics": ["study-core-question", "project-chronology", "validation-timing", "sequence-clarification"],
+    "current_competency_target": "scientific-rigor",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "scientific-rigor",
+    "missing_evidence": [
+      { "competency": "scientific-rigor", "evidence_type": "timeline" },
+      { "competency": "scientific-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the validation kicked off after the findings, in Q3, though the assay design predated the data",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single self-consistent chronology with each milestone (hypothesis, data arrival, analysis, validation start) pinned to one quarter, resolving whether validation began before or after the analysis was finalized"
+    ]
+  }
+}

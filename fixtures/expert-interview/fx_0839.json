@@ -1,0 +1,44 @@
+{
+  "id": "fx_0839",
+  "tags": {
+    "industry": "product-management",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "陈晓彤 — Product Management Intern Candidate\n\n个人简介\n一名极具产品天赋的候选人,在校期间就被公认为最懂用户的产品人。我主导的每一个项目都取得了巨大成功,被导师评价为天生的产品经理,有着无与伦比的产品 sense 和领导力。\n\n经历\n星河科技 — Product Intern (2024暑期)\n- 独立主导了一款现象级 app 的核心功能改版,大幅提升了用户活跃\n- 凭一己之力推动整个团队对齐,被全组视为不可替代的核心\n\n校园创业项目 — 创始人 & CEO\n- 从0到1打造了校园最受欢迎的产品,用户增长突破想象\n- 带领团队斩获多个顶级创业大赛冠军\n\n技能\nproduct strategy, user research, 数据分析, Figma, SQL, 增长黑客\n\n教育\n工商管理在读 (本科)",
+  "jd": "星河科技招聘产品经理实习生 (Product Management Intern)。You will support a PM pod on a consumer growth product. 实习生的职责包括:participate in user research, help write PRDs, analyze funnel and retention data, and assist with A/B test readouts. We are looking for someone early in their product journey who can be specific about what they actually did — which feature, which metric moved, what the experiment showed, and what their personal contribution was versus the team's. 我们更看重 clarity 和 ownership,而不是头衔。要求:在读本科或硕士,对消费级产品有热情,基础的数据分析能力 (会看 funnel、retention),熟悉 SQL 或 Figma 优先。每周到岗至少3天。",
+  "history": [
+    { "q": "先聊聊你在星河的实习。你说独立主导了核心功能改版,具体是哪个功能?" },
+    { "q": "这个改版你说大幅提升了用户活跃 —— 活跃是用什么指标衡量的?DAU 还是别的?" },
+    { "q": "改版前后这个指标的具体数字是多少?提升了多大幅度?" },
+    { "q": "在这个项目里,哪些部分是你个人做的,哪些是团队其他人做的?" },
+    { "q": "你提到做了 user research,你访谈了多少用户?有什么具体发现改变了产品决策?" },
+    { "q": "改版的想法是怎么来的?是基于数据、用户反馈,还是别的?" },
+    { "q": "如果让你重新做一次这个项目,你会改变什么?" }
+  ],
+  "candidate_last_answer": "嗯,如果重新做的话,我觉得我会做得更好。这个改版其实就是一次很全面的 optimization,我们 focus 在用户体验上,然后整体提升了产品。具体来说就是把核心功能打磨得更好,让用户更喜欢用。reading research 那部分也很重要,我们做了很多用户洞察。总之就是一个很成功的项目,我学到了很多产品 sense。",
+  "session_state": {
+    "drilled_topics": ["feature-identification", "activity-metric-definition", "before-after-numbers", "personal-vs-team-contribution", "user-research-depth", "idea-origin", "counterfactual-improvement"],
+    "current_competency_target": "product-specificity",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "product-specificity",
+    "missing_evidence": [
+      { "competency": "product-specificity", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个改版其实就是一次很全面的 optimization",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete description of what the feature change actually was, the specific user problem it solved, and the candidate's own decisions — forcing past the generic 『optimization / improved the product』 framing"
+    ]
+  }
+}

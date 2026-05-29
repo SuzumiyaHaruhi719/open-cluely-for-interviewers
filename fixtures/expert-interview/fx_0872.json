@@ -1,0 +1,48 @@
+{
+  "id": "fx_0872",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "VP of Operations｜精益制造 / Lean Manufacturing｜OEE｜TPM｜Six Sigma Black Belt｜SMED｜Kaizen｜APQP｜PPAP｜S&OP｜MRP/ERP (SAP PP-PI)｜Industry 4.0｜MES｜SPC｜Poka-Yoke｜Value Stream Mapping｜Cost-Down｜供应链韧性\n\n- 现任 某汽车零部件集团 VP Operations，统管 5 家工厂、2,400 名员工、annual output 约 RMB 18 亿\n- 主导 multi-site OEE 提升项目，导入 MES + SPC 实现实时监控，supply chain digitalization 端到端打通\n- world-class lean operator，深度 fluent 于 OEE / FPY / scrap rate / on-time-delivery 等 KPI\n- 推动 TPM 全员生产维护、SMED 快速换模、Kaizen 持续改善文化落地\n- cross-functional 协同 R&D / quality / SCM，端到端 owns P&L 与 capex 决策\n- 主导两座工厂 greenfield 建设及一次 brownfield 产线搬迁，zero major safety incident\n- thought leader，行业峰会常驻讲者，话题聚焦 smart factory 与 carbon-neutral manufacturing\n\nMost recent: 长江精密 (Yangtze Precision) — VP Operations (2020-present)\nPrior: 华域动力 (Huayu Powertrain) — Senior Director, Plant Operations (2016-2020)",
+  "jd": "我们正在招聘一位 VP of Manufacturing，负责一家 tier-1 汽车电子供应商的全国 6 座工厂运营，直接向 COO 汇报，full P&L ownership 约 RMB 25 亿。核心目标：把集团 average OEE 从 68% 提升到 82%，把 customer PPM (defective parts per million) 从 450 降到 80，把 on-time-delivery 从 91% 提升到 99% 以内 18 个月。该岗位需要 proven track record of MES/Industry-4.0 replatforming、一次以上 plant consolidation 或 line relocation 经验，以及与 OEM 客户在 quality escape 事件中直接谈判的经历。你将 inherit 一个正在进行的客户 quality recall 以及一座 utilization 仅 54% 的亏损工厂。需要能直接面对 board 与客户 SQE team，且有过 10% 以上 humane workforce restructuring 的经验。Travel ~40%。",
+  "history": [
+    { "q": "先讲讲你现在在长江精密的 scope — 工厂数、人数、你直接 own 的 P&L 和核心 KPI。" },
+    { "q": "你简历里写了 multi-site OEE 提升。挑一座工厂，告诉我 baseline OEE 是多少，你做了什么。" },
+    { "q": "那座工厂的 OEE 从多少提升到多少，用了多长时间?" },
+    { "q": "OEE 拆成 availability、performance、quality 三个 loss，哪一块是你最大的瓶颈，为什么?" },
+    { "q": "你导入 MES 的时候,最大的 organizational resistance 来自哪里,你怎么处理的?" },
+    { "q": "换个话题。讲一次你亲自处理的 customer quality escape — 客户是谁,问题是什么。" },
+    { "q": "那次 escape 的 root cause 是什么? 你们怎么 contain 的?" },
+    { "q": "containment 之后,你做了什么 systemic 的改动防止 recurrence?" },
+    { "q": "讲讲那次 line relocation — 你是怎么 minimize downtime 的?" },
+    { "q": "relocation 期间产线停了多久? 对 customer delivery 有什么影响?" },
+    { "q": "假设你接手那座 54% utilization 的亏损工厂,头 90 天你具体会做哪三件事?" }
+  ],
+  "candidate_last_answer": "头 90 天我会做三件事，按优先级。第一，week 1-2 先做 constraint analysis：我会亲自蹲 3 个班次，用 OEE 数据定位是 demand 不足还是 internal loss——如果是 availability loss，多半是换模和 breakdown，那是可控的。第二,week 3-6 把那座厂的 product mix 重新 allocate,把高 margin、量稳定的 SKU 从其他过载工厂转 20% 进来,先把 utilization 拉到 70% 以上、止血。第三,week 7-12 才动结构:如果两班制下 utilization 还上不去,我会从两班并一班,大概减 15% 间接人力,direct labor 通过 natural attrition 消化,不强裁。我不会第一周就裁人,因为还没看清是结构问题还是 loading 问题。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "oee-improvement-specifics", "oee-timeline", "oee-loss-bottleneck", "mes-change-management", "quality-escape", "escape-root-cause", "escape-systemic-fix", "line-relocation", "relocation-downtime"],
+    "current_competency_target": "execution-planning",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "execution-planning",
+    "missing_evidence": [
+      { "competency": "execution-planning", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把高 margin、量稳定的 SKU 从其他过载工厂转 20% 进来",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the second-order cost of pulling 20% volume out of already-overloaded plants — whether those source plants tip past capacity, the changeover/qualification cost of moving SKUs, and how the candidate quantified that the receiving plant's margin gain outweighs the donor plants' disruption"
+    ]
+  }
+}

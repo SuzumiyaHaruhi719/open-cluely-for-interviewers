@@ -1,0 +1,40 @@
+{
+  "id": "fx_0885",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "供应链管理实习生候选人 | 物流与运营方向\n\n教育背景:\n华东物流大学 供应链管理专业 本科大四在读 预计明年毕业\n主修课程:运筹学、库存管理、采购与供应、物流信息系统\n\n实习经历:\n顺达供应链有限公司 仓储运营实习生（去年六月至去年九月,共三个月)\n- 参与华东区域配送中心的日常拣货与盘点工作\n- 协助主管优化拣货路径,帮助团队提升了出库效率\n- 简历摘要处写明:在顺达累计实习超过一年,深度负责整个区域的库存调度\n\n校园项目:\n校学生会物资部 部长\n- 负责管理学生活动的物料采购与发放\n\n技能:Excel 数据透视表、SQL 基础查询、ERP 系统基本操作\n自我评价:做事踏实,但简历另一处又写到自己更擅长对外谈判与供应商关系拓展\n语言:普通话母语,英语四级",
+  "jd": "顺达供应链有限公司招聘供应链运营实习生,工作地点为华东区域配送中心。岗位职责:协助仓储团队完成每日拣货、复核与库存盘点;在主管指导下参与拣货路径优化的数据整理;记录并上报异常订单。我们希望候选人能讲清楚自己在过往实习或项目中具体做过什么、解决了什么问题、结果如何量化。要求:供应链、物流或相关专业在读;熟练使用 Excel;做事细致、有责任心;每周可到岗至少四天,实习期不少于三个月。本岗位为基础执行岗,不涉及独立的区域库存调度决策。",
+  "history": [
+    { "q": "先简单介绍一下你在顺达供应链那段实习,你具体负责哪些工作?" },
+    { "q": "你简历里一处写实习三个月,另一处又写累计超过一年并负责整个区域的库存调度,哪个是准确的?" },
+    { "q": "你说协助主管优化了拣货路径,能讲讲当时是什么情况、你做了什么吗?" },
+    { "q": "那次优化最后效果怎么样?有没有具体的数字?" }
+  ],
+  "candidate_last_answer": "当时配送中心的拣货效率不太理想,订单一多,拣货员经常来回跑冤枉路,我们主管让我帮忙看看数据。我就把上个月的拣货记录导出来,用 Excel 透视表统计了每个货位被拣的频率,发现高频商品被放在了仓库最里面。于是我提了个建议,把高频商品挪到离打包区最近的货架。后来主管采纳了,拣货员普遍反映走路少了,大家都觉得顺手很多。",
+  "session_state": {
+    "drilled_topics": ["internship-scope", "resume-contradiction", "picking-route-situation"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 拣货员普遍反映走路少了,大家都觉得顺手很多",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a quantified result for the picking-route change — e.g. percent drop in pick walking distance, lines-per-hour before vs after, or how the candidate actually measured the improvement instead of relying on workers' subjective impressions"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "fx_0824",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "陈伟 — 制造业精益生产工程师 / Process Improvement Engineer\n\n■ 行业公认的 Lean / Six Sigma 专家，主导过多条产线的世界级转型，OEE 提升幅度业内罕见\n■ 单枪匹马把某 SMT 产线的 scrap rate 从两位数降到行业标杆水平，被工厂奉为标准模板\n■ 精通 Kaizen、TPM、SMED、Value Stream Mapping，是同事眼中『救火队长』般的存在\n■ 我推动的 continuous improvement 文化让整个车间脱胎换骨，管理层多次点名表扬\n\n工作经历\n华东精密电子（2020 至今）— Process Improvement Engineer\n- 负责 SMT 与组装车间的 yield 与 throughput 改善项目\n- 带领跨部门 Kaizen workshop，覆盖 quality、equipment、planning 三个团队\n\n东海汽车零部件（2017–2020）— Manufacturing Engineer\n- 参与冲压车间 changeover 优化，应用 SMED 方法\n\n技能: Minitab, SPC, FMEA, 8D, A3 problem solving, Tableau",
+  "jd": "我们正在为一家二线城市的汽车电子工厂招聘一名 Process Improvement Engineer（中级），向 Plant Operations Manager 汇报。该岗位负责贴片（SMT）与最终组装两条主力产线的良率与节拍改善，需要独立主导根因分析（DOE / Fishbone）并把改善固化为标准作业。我们当前的痛点是：某高混合产线的 first-pass yield 卡在 91%，line changeover 平均耗时 47 分钟，OEE 约 68%。理想候选人能用数据（Minitab / SPC）驱动决策，能在车间一线带动操作工执行 SMED 与 Kaizen，并能量化每个项目对 scrap cost 和产能的具体影响。需要三年以上一线制造工程经验，熟悉 IATF 16949 体系。",
+  "history": [
+    { "q": "先介绍一下你现在在华东精密负责的范围吧——哪几条产线，团队多大，你直接负责什么指标？" },
+    { "q": "你简历里说把某条 SMT 产线的 scrap rate『从两位数降到行业标杆』。具体是哪条线？降之前和降之后的数字分别是多少？" },
+    { "q": "那个改善项目里，root cause 你是怎么定位的？用了什么方法？" },
+    { "q": "我想听一个你亲手做的 changeover 优化案例。你具体改了什么动作？" },
+    { "q": "好,那换一个角度——你说你推动了整个车间的 continuous improvement 文化。能不能给一个最近三个月里你独立负责、并且能量化结果的项目?" },
+    { "q": "那这个项目的 first-pass yield，从多少提升到了多少？花了多长时间？" }
+  ],
+  "candidate_last_answer": "嗯……这个 yield 的事情，怎么说呢,其实当时情况挺复杂的,因为那段时间我们又赶一个大客户的订单,然后 planning 那边天天催,equipment 又老是出问题,我基本上是哪里有火往哪里扑。yield 嘛,我感觉是有提升的,具体……具体数字我得回去翻一下 report,因为中间换过统计口径。然后那个 SMED 我也在推,不过操作工配合度你懂的,新来的 line leader 又不太熟……反正挺多事的,我觉得整体是往好的方向走,大概提升了……应该有不少吧,that improvement was pretty solid 我觉得。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "scrap-rate-claim", "root-cause-method", "changeover-case", "recent-owned-project"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "root-cause-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 大概提升了……应该有不少吧",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a single concrete first-pass-yield number (before and after percentages) for the one project the candidate owned, plus the elapsed time to achieve it, separating it from the firefighting narrative"
+    ]
+  }
+}

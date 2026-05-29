@@ -1,0 +1,50 @@
+{
+  "id": "fx_0850",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "工程总监 / 后端与平台方向\n\n个人简介：拥有多年大型互联网平台的研发与团队管理经验，长期负责高并发交易系统与基础架构的演进，带领多个团队完成从单体到微服务的架构升级。\n\n工作经历：\n星汉云科技 —— 工程总监（近年至今）\n负责支付与交易中台的整体技术架构与团队管理，管理多个后端小组以及一个稳定性保障团队，推动核心链路的服务化改造与容灾建设，主导多次大型活动的稳定性护航工作，与产品和业务团队紧密配合保障关键业务的持续可用。\n\n聚力网络 —— 高级技术经理（数年）\n负责电商订单系统的研发与维护，带领团队完成订单链路的重构，参与多次大促的备战与扩容，建立了一套服务监控与告警的体系，提升了系统的可观测性。\n\n初鸣科技 —— 资深后端工程师（数年）\n参与社交产品后端的开发，负责消息推送与关系链存储等核心模块，积累了分布式系统的实战经验。\n\n技能：分布式系统、微服务架构、高可用设计、稳定性治理、团队管理与人才培养\n教育：某重点高校 计算机科学与技术 本科",
+  "jd": "我们正在招聘一位工程总监，向技术副总裁汇报，负责支付与交易方向的后端与平台团队（约四十人，含多个研发小组与一支稳定性团队）。该岗位需要对核心交易链路的可用性、性能与研发交付节奏负全责，能够亲自主导关键架构决策，并在重大故障中担任技术指挥。我们希望候选人有从零到一搭建稳定性体系、主导大规模微服务拆分、以及带领团队度过大促高峰的实战经验。你需要重建一支士气低落、交付延期的团队，修复一个频繁出现线上故障的核心系统，并向管理层清晰汇报技术债与架构演进路线。我们尤其看重候选人在关键决策与故障处置中所承担的个人责任，而不仅仅是团队的整体成绩。需要具备跨团队协作与人才梯队培养的能力。",
+  "history": [
+    { "q": "先介绍一下你现在在星汉云的职责 —— 团队规模、你负责哪条业务线、技术栈大概是什么样的。" },
+    { "q": "你简历里提到主导了支付中台的服务化改造。这个改造的背景是什么？当时遇到的核心问题是什么？" },
+    { "q": "在那次服务化拆分里，最关键的架构决策是哪一个？是谁拍的板？" },
+    { "q": "拆分过程中有没有踩过坑、出过线上事故？讲一次。" },
+    { "q": "那次事故是怎么定位和恢复的？你当时在里面扮演什么角色？" },
+    { "q": "你提到做了容灾建设。具体是哪种容灾方案，同城双活还是异地多活？为什么这么选？" },
+    { "q": "大促护航你参与过几次？挑印象最深的一次讲讲。" },
+    { "q": "那次大促之前，你个人做了哪些准备工作？" },
+    { "q": "稳定性团队是你从无到有搭起来的吗？讲讲组建过程。" },
+    { "q": "团队交付延期的问题，你是怎么处理的？" },
+    { "q": "和产品、业务团队有过冲突吗？举个例子。" },
+    { "q": "回到那次最严重的线上故障 —— 故障定级、影响范围、恢复时长大概是什么情况？" },
+    { "q": "我想听得更具体一点：那次故障从发现到恢复，是你个人做出了哪几个关键判断？请把『你自己做的决定』讲清楚。" }
+  ],
+  "candidate_last_answer": "嗯，那次故障确实比较严重。不过我想说的是，我们团队整体的应急能力是很强的。当时大家都顶上去了，监控同学很快发现了异常，值班的兄弟们一起拉群定位，运维同学配合做了切流，最后我们一起把它扛过去了。我觉得这就是团队的力量，平时我们沉淀了很多预案，所以关键时刻大家配合得很默契。事后我们一起做了复盘，团队也都成长了很多。整个过程我们配合得非常好，这是大家共同的成果。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "payment-platform-context", "key-architecture-decision", "incident-occurrence", "incident-recovery-role", "disaster-recovery-choice", "peak-traffic-experience", "personal-prep", "stability-team-buildout", "delivery-delay-handling", "cross-team-conflict", "incident-severity"],
+    "current_competency_target": "incident-ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "incident-ownership",
+    "missing_evidence": [
+      { "competency": "incident-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "incident-ownership", "evidence_type": "metric" },
+      { "competency": "incident-ownership", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 最后我们一起把它扛过去了",
+      "must-be-question-type: action-attribution",
+      "expected-yield: cut through the collective 『我们』 framing to extract the specific decisions the candidate personally made as incident commander — e.g. who called the traffic cutover, on whose authority, and the recovery-time / blast-radius numbers attached to those calls"
+    ]
+  }
+}

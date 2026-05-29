@@ -1,0 +1,55 @@
+{
+  "id": "fx_0852",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Junior Financial Analyst\n\nSummary: Recent finance graduate with one year of experience supporting an FP&A team, eager to grow into a corporate finance role.\n\nExperience:\n- Meridian Retail Group — Financial Analyst I (just over a year)\n  - Supported the monthly close and helped prepare management reporting decks\n  - Built and maintained budget-vs-actual variance trackers in Excel\n  - Assisted senior analysts with the annual operating-plan rollup\n  - Helped reconcile intercompany balances and flag discrepancies\n- Lakeside Bank — Finance Intern (one summer)\n  - Shadowed the treasury team and helped tidy cash-position spreadsheets\n\nSkills: Excel (pivot tables, lookups), basic SQL, PowerPoint, variance analysis, NetSuite (basic)\nCertifications: CFA Level I candidate\nEducation: Midtown University, B.S. Finance",
+  "jd": "Our corporate FP&A team is hiring a Junior Financial Analyst to support monthly close, variance analysis, and management reporting. Reporting to a Senior Analyst, you will own portions of the budget-vs-actual process, help build the quarterly forecast, and prepare slides for the monthly business review. We expect you to be able to walk through a specific variance you investigated — what drove it, how you quantified it, and what you recommended. Strong Excel is required; SQL is a plus. The ideal candidate answers questions directly and grounds their reasoning in specific numbers and concrete examples rather than general statements about finance. This is an in-office role with a clear path to Senior Analyst within two to three years.",
+  "history": [
+    { "q": "Tell me a bit about your year at Meridian — what does your day-to-day look like?" },
+    { "q": "Which part of the monthly close do you personally own?" },
+    { "q": "Walk me through how you build a budget-vs-actual variance tracker." },
+    { "q": "Tell me about a specific variance you caught that turned out to matter." },
+    { "q": "What was the dollar size of that variance?" },
+    { "q": "How did you figure out what was driving it?" },
+    { "q": "Who did you take that finding to, and what did they do with it?" },
+    { "q": "Let's talk about the operating-plan rollup. What was your piece of it?" },
+    { "q": "How long did the rollup take end to end?" },
+    { "q": "Tell me about the intercompany reconciliation work." },
+    { "q": "What's the trickiest discrepancy you had to chase down?" },
+    { "q": "How comfortable are you in SQL — give me an example query you wrote." },
+    { "q": "What would you do if the numbers in two reports didn't tie out the day before a board deck was due?" },
+    { "q": "Tell me about a time you had to explain a financial result to a non-finance person." },
+    { "q": "Why are you looking to leave Meridian?" },
+    { "q": "What do you want to be doing in three years?" },
+    { "q": "Let's go back to that variance you mentioned. I still don't have the number — how big was it in dollars, and over what period?" },
+    { "q": "One more time, just the specifics on that variance: the dollar amount, the time period, and the single biggest driver. Can you give me those three things?" }
+  ],
+  "candidate_last_answer": "Yeah, so honestly what I love about variance analysis is the storytelling part of it. Like, a number on its own doesn't mean anything — it's about the narrative you build around it for the business. I actually think the most underrated skill in finance is communication, and that's something I've really been working on. I've been reading a lot about data visualization too, and I think dashboards are the future of FP&A. At Meridian we were still really Excel-heavy, which is fine, but I'm excited about tools like Power BI. I'd love to bring more of that modern toolkit to a team.",
+  "session_state": {
+    "drilled_topics": ["day-to-day", "close-ownership", "variance-tracker-build", "specific-variance", "variance-size", "variance-driver", "finding-escalation", "operating-plan-piece", "rollup-duration", "intercompany-recon", "trickiest-discrepancy", "sql-example", "tie-out-deadline", "explaining-to-nonfinance", "leaving-reason", "three-year-goal", "variance-size-retry"],
+    "current_competency_target": "quantitative-rigor",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "quantitative-rigor",
+    "missing_evidence": [
+      { "competency": "quantitative-rigor", "evidence_type": "metric" },
+      { "competency": "quantitative-rigor", "evidence_type": "timeline" },
+      { "competency": "quantitative-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: what I love about variance analysis is the storytelling part of it",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate off the storytelling/tooling tangent and back onto the three concrete data points already asked for twice — the dollar size of the variance, the time period it spanned, and the single largest driver — testing whether any real quantitative work sits behind the narrative"
+    ]
+  }
+}

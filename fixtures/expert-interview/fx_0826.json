@@ -1,0 +1,38 @@
+{
+  "id": "fx_0826",
+  "tags": {
+    "industry": "finance",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Marcus Delroy — Senior Credit Risk Manager\n\nProfile\nSenior risk leader with deep expertise in retail and SME credit portfolios, model governance, and IFRS 9 expected-credit-loss provisioning. Known for translating regulatory complexity into board-ready decisions.\n\nExperience\nMeridian Retail Bank — Senior Credit Risk Manager (2021–present)\n- Owned the unsecured lending scorecard rebuild; reduced early-stage delinquency (30+ DPD) from 4.1% to 2.6% within the first year.\n- Led a team of 9 analysts across model development and validation.\n- Sat as voting member of the Model Risk Committee.\n\nNote: In the role summary above I led model development; in practice my mandate was strictly second-line validation and I was explicitly walled off from building the models I reviewed.\n\nHarborline Financial — Credit Risk Analyst (2017–2021)\n- Supported IFRS 9 staging logic and ECL computation.\n- Built challenger models in Python (logistic regression, gradient boosting).\n\nEducation: MSc Financial Engineering. FRM certified.\nSkills: SAS, Python, IFRS 9, Basel III, scorecard development, model validation.",
+  "jd": "A mid-size retail bank is hiring a Senior Credit Risk Manager to own model governance across its unsecured lending book (credit cards and personal loans, ~$3.2B exposure). Reporting to the Chief Risk Officer, you will chair the model validation function, sign off on scorecard redevelopments, and defend methodology to the regulator during the upcoming thematic review. Critical: this is a second-line role — the post-holder must maintain strict independence from model development to satisfy SR 11-7 / model-risk-management expectations. We need someone who can articulate exactly where the line sits between challenge and build, who has personally written validation findings that were escalated to a model risk committee, and who can quantify portfolio impact (delinquency, loss rates, provisioning) of governance decisions. FRM or equivalent required; hands-on IFRS 9 ECL experience essential.",
+  "history": [
+    { "q": "Your resume says at Meridian you 'owned the unsecured lending scorecard rebuild' and reduced 30+ DPD delinquency from 4.1% to 2.6% — but the note just below says your mandate was strictly second-line validation, walled off from building the models you reviewed. Walk me through what you actually did on that scorecard: did you build it, or validate it?" }
+  ],
+  "candidate_last_answer": "Great question, and I think it really speaks to the value I bring as a true end-to-end risk partner. Look, at the end of the day I was the driving force behind that scorecard's success — I orchestrated the outcome, I was the connective tissue across dev and validation, I championed the rebuild from ideation through to deployment. Whether you call that 'build' or 'validate' is almost semantics; I think of myself as someone who owns the result and moves the needle on portfolio quality. I operated at the intersection of governance and delivery, and frankly that 4.1 to 2.6 number is the kind of outcome I consistently deliver wherever I sit.",
+  "session_state": {
+    "drilled_topics": ["build-vs-validate-contradiction"],
+    "current_competency_target": "independence-integrity",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "independence-integrity",
+    "missing_evidence": [
+      { "competency": "independence-integrity", "evidence_type": "owner-of-action" },
+      { "competency": "independence-integrity", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Whether you call that 'build' or 'validate' is almost semantics",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a concrete decomposition of which specific tasks on the scorecard the candidate personally performed versus reviewed, forcing him to admit whether he crossed the second-line independence boundary and who actually built the model that produced the 4.1-to-2.6 delinquency improvement"
+    ]
+  }
+}

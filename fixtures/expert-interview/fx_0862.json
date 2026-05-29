@@ -1,0 +1,39 @@
+{
+  "id": "fx_0862",
+  "tags": {
+    "industry": "product-management",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "VP Product\n\nLattice Mobility (2021-present) — VP Product\nOwn the rider and driver apps for a regional ride-hailing platform. Lead a group of 4 PMs and a design lead.\n\nFleetwise (2017-2021) — Director of Product, then Senior Director\nOwned the dispatch and pricing products. Launched surge pricing v2 and the driver-incentive engine.\n\nEarlier: PM roles at two logistics startups.\n\nSkills: marketplace pricing, experimentation, roadmap ownership, cross-functional leadership.\nEducation: BS Computer Science.",
+  "jd": "We are looking for a VP of Product to own our two-sided marketplace — riders and drivers — for a fast-growing mobility company. You will set product strategy across pricing, matching, and driver supply, manage a team of 6+ PMs, and own the core marketplace health metrics: rider conversion, driver utilization, and contribution margin per trip. The role partners closely with data science on the pricing and matching algorithms and with operations on supply growth. We need someone who has shipped pricing or incentive systems in a marketplace at scale, can reconstruct exactly how a launch sequenced quarter by quarter, and can defend the causal read on whether a launch moved a metric versus seasonality.",
+  "history": [
+    { "q": "Walk me through the surge pricing v2 launch at Fleetwise — what problem it solved and how you sequenced the rollout." },
+    { "q": "Let's pin the timeline. When did surge v2 ship relative to the driver-incentive engine, and how did you isolate each one's effect on contribution margin?" }
+  ],
+  "candidate_last_answer": "So the way it went — we shipped the driver-incentive engine first, in Q2, and that's what gave us the margin lift. Then surge v2 came later. Although, actually, now that I think about it, surge v2 was the thing that funded the incentives, so that had to come first, that was Q1. Right, so surge launched in Q3 after we saw the incentive data, and the incentives were already running by Q1. The margin numbers we reported in the Q2 board deck were really the combined effect of both, even though the second one hadn't fully rolled out yet.",
+  "session_state": {
+    "drilled_topics": ["surge-v2-rollout", "launch-sequencing-and-attribution"],
+    "current_competency_target": "execution-sequencing",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "execution-sequencing",
+    "missing_evidence": [
+      { "competency": "execution-sequencing", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: surge launched in Q3 after we saw the incentive data, and the incentives were already running by Q1",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: force a single consistent quarter-by-quarter sequence for surge v2 vs the incentive engine and a clean attribution of which launch drove the margin lift, exposing whether the candidate can reconstruct the real order of events"
+    ]
+  }
+}

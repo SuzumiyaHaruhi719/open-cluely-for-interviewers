@@ -1,0 +1,41 @@
+{
+  "id": "fx_0833",
+  "tags": {
+    "industry": "customer-support",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "over-bragging",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "黄振宇 — 客户成功与支持副总裁 / VP of Customer Success & Support\n\n个人品牌\n■ 业内公认的 CX 转型操盘手,经我手的支持组织无一不脱胎换骨,被多家公司奉为标杆\n■ 一手缔造了行业领先的 support-led growth 模式,把成本中心打造成利润引擎,这种成就业内屈指可数\n■ 我所到之处,CSAT、NPS、留存率全线飙升,团队战斗力被彻底激活\n■ 资深思想领袖,常受邀在行业峰会分享『下一代客户体验』的顶层设计\n\n经历\n星海云服（2020 至今）— VP, Customer Success & Support\n- 统管全球四地客服与 CS 团队,负责续约、NRR 与支持成本\n领途软件（2015–2020）— Senior Director, Global Support\n- 主导 CCaaS 平台替换与 BPO 整合\n\n技能: CCaaS, BPO 管理, NRR, churn 预测, QBR, journey mapping, support-led growth, AI deflection",
+  "jd": "我们正在为一家全球化 SaaS 公司招聘客户成功与支持副总裁(VP, Customer Success & Support),向 CCO 汇报,统管四地(上海、新加坡、都柏林、奥斯汀)约四百人的客服与 CS 组织,全面负责续约率、NRR、支持成本(cost-per-contact)与 CSAT。本岗位需要候选人有清晰的优先级判断力——在资源有限时,能讲清楚为什么先做某一件事、它单独带来了什么可量化的结果,而不是把一堆动作打包成一段宏大叙事。我们会重点考察:给一个具体场景,候选人能否聚焦于单一决策并量化其独立影响。要求十年以上大规模支持/CS 管理经验,有 CCaaS 替换与 BPO 谈判实操经验,能在董事会层面陈述指标。差旅约百分之三十。",
+  "history": [
+    { "q": "先讲讲你在星海云服的 scope——团队规模、你负责的核心指标。" },
+    { "q": "你简历里说『把成本中心打造成利润引擎』。我只想听一件事:你做的哪一个单一决策,最直接地降低了 cost-per-contact?" },
+    { "q": "我打断一下——我现在只关心 cost-per-contact 这一个指标,这一个决策。它单独带来了多少美元或百分比的下降?在多长时间内?" },
+    { "q": "好,我再聚焦一次:就 AI deflection 这一件事,deflection rate 从多少到多少,cost-per-contact 单独因此降了多少?给我这一个数字就行。" }
+  ],
+  "candidate_last_answer": "这个问题特别好,但要讲清楚 cost-per-contact,我得把整盘棋一起讲,因为它们是联动的——你看,first 我们上了 AI deflection,bot 接管了一线咨询;but 与此同时呢,我还同步推了 BPO 的整合,把三家供应商砍到一家,单价直接谈下来;哦对,还有一件更重要的事,我重做了整个 knowledge base 和 self-service,这个对 NRR 的拉动是惊人的,续约那块我们…顺便说一句,我那套 journey mapping 的方法论后来还在新加坡峰会上分享过,反响特别好;另外团队文化我也重塑了,士气这东西你别小看……所以你问 cost-per-contact 单独降了多少——它不是孤立的,deflection、BPO、KB 这几件事叠在一起,效果是指数级的,整体 support cost 我感觉是大幅优化了,具体到 AI 那一项单独的数字,真的很难拆开来给你算。",
+  "session_state": {
+    "drilled_topics": ["vp-scope", "single-cost-decision", "isolate-cpc-impact", "ai-deflection-isolated-number"],
+    "current_competency_target": "prioritization-judgement",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "prioritization-judgement",
+    "missing_evidence": [
+      { "competency": "prioritization-judgement", "evidence_type": "metric" },
+      { "competency": "prioritization-judgement", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体到 AI 那一项单独的数字,真的很难拆开来给你算",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the isolated cost-per-contact impact of the AI-deflection decision alone — a single deflection-rate change and the dollar or percentage reduction attributable to it specifically, forcing the candidate to decompose the bundled narrative into one attributable number"
+    ]
+  }
+}

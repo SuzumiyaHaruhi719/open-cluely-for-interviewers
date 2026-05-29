@@ -1,0 +1,50 @@
+{
+  "id": "fx_0855",
+  "tags": {
+    "industry": "marketing",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "over-bragging",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "Junior Growth Marketer ——『增长奇才』/ 数据驱动型营销人\n\n个人简介：一位天赋异禀的增长营销人，年纪轻轻便已操盘多个『现象级』campaign，被同事公认为团队里最懂用户增长的人。我对增长有着近乎偏执的热爱，几乎以一己之力重塑了所在团队的获客逻辑。\n\n经历：\n- BloomBox 电商 — Growth Marketing Specialist (近两年)\n  · 独自负责 paid social 的 campaign 投放与优化,堪称团队的『ROI 守门人』\n  · 主导多个爆款活动,贡献了团队绝大部分的新增用户\n  · 自学搭建了一套归因看板,被领导誉为『部门级标杆』\n- 校园创业项目 — 联合创始人（在校期间）\n  · 一手打造了一个覆盖数千名学生的社群\n\n技能：Meta Ads、Google Ads、A/B testing、归因分析、用户增长(自评:专家级)\n教育：某高校 市场营销 本科",
+  "jd": "我们在为消费品牌的增长团队招聘一名 Junior Growth Marketer,向 Growth Lead 汇报,负责 paid social(主要是 Meta 与 TikTok Ads)的日常投放、A/B testing 与 campaign 复盘。你将拥有一部分获客预算的执行权,需要每周产出 campaign 报告,并能清晰讲述你做过的一次具体优化:背景、目标、你采取的动作、以及量化结果。我们重视脚踏实地、能用数据说话的候选人 —— 比起自我标榜,我们更想听到真实、可追溯的 STAR 案例。岗位不负责整体增长战略制定,但表现优秀者有机会快速成长。要求熟悉至少一个主流广告平台,理解 CAC、ROAS、CVR 等核心指标。",
+  "history": [
+    { "q": "先简单介绍下你在 BloomBox 的角色,平时主要负责哪些渠道?" },
+    { "q": "你简历里说自己是团队的『ROI 守门人』,这个说法具体指什么?" },
+    { "q": "你提到主导了多个爆款活动。挑一个最有代表性的,讲讲背景。" },
+    { "q": "那个 campaign 当时的目标是什么?有没有具体的 KPI?" },
+    { "q": "预算大概多少?投在哪些平台?" },
+    { "q": "你具体做了哪些优化动作?能不能讲讲过程?" },
+    { "q": "你提到自学搭了一套归因看板,当时用的什么归因模型?" },
+    { "q": "为什么选这个归因模型,而不是 last-click?" },
+    { "q": "A/B testing 你一般怎么设计?样本量怎么定?" },
+    { "q": "讲一次你的 test 结果和你预期相反的经历。" },
+    { "q": "那次和预期相反之后,你做了什么调整?" },
+    { "q": "校园创业那个社群,你具体负责什么?" },
+    { "q": "回到 BloomBox 那个代表性 campaign —— 我想听完整的:目标、预算、你的动作、最后的结果数字。" },
+    { "q": "(候选人停顿了几秒)别急,慢慢来。就把那一个 campaign 从头到尾、带上数字讲清楚就行。" }
+  ],
+  "candidate_last_answer": "……（停顿了几秒,喝了口水）不好意思,我刚才有点紧张,我重新理一下。Situation 是去年 Q3,BloomBox 一款新出的护肤礼盒库存积压,CAC 一直压不下来,大概在 180 块。Task 是我领到的目标:在不增加总预算的前提下,把这款礼盒的 CAC 降到 120 以内,并且月底前清掉积压。Action 我做了三件事:第一,把 Meta 的 broad targeting 换成基于老客 LTV 的 lookalike;第二,重做了三组 creative,主打『送礼场景』而不是成分,跑 A/B test;第三,把预算从表现差的 TikTok 系列里抽了 30% 挪到跑赢的 Meta lookalike。Result 是四周内 CAC 降到了 105,ROAS 从 1.8 提到 2.6,礼盒月底清仓还超卖了一批,这个 case 后来被我做成了团队的复盘模板。",
+  "session_state": {
+    "drilled_topics": ["current-role", "roi-gatekeeper-claim", "campaign-background", "campaign-kpi", "campaign-budget", "optimization-actions", "attribution-model", "attribution-choice", "ab-test-design", "surprising-test-result", "post-surprise-adjustment", "campus-community-role", "full-campaign-walkthrough"],
+    "current_competency_target": "growth-execution",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "growth-execution",
+    "missing_evidence": [
+      { "competency": "growth-execution", "evidence_type": "owner-of-action" },
+      { "competency": "growth-execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把预算从表现差的 TikTok 系列里抽了 30% 挪到跑赢的 Meta lookalike",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: pressure-test the now-coherent STAR story for true ownership — what signal told the candidate the TikTok set was losing, on what day they made the reallocation call, and whether that decision was theirs alone or the Growth Lead's, separating real execution from the resume's self-styled 『增长奇才』 framing"
+    ]
+  }
+}

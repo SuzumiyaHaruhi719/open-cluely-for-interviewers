@@ -1,0 +1,52 @@
+{
+  "id": "fx_0874",
+  "tags": {
+    "industry": "customer-support",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "王雪｜高级客户支持经理\n所在地：上海｜从业八年\n\n职业摘要\n资深客户体验与支持运营专家，擅长搭建从零到一的客服体系、设计服务标准、并通过数据驱动持续优化满意度与效率。\n\n工作经历\n极星科技（2021 年 3 月至今）— 高级客户支持经理\n- 从零搭建了一支四十人的多渠道客服团队，覆盖电话、在线和邮件三个渠道\n- 把团队的客户满意度（CSAT）从七十二分提升到九十一分\n- 主导了客服系统从 Zendesk 到自研工单平台的迁移\n- 注：本岗位为我加入时公司唯一的客服管理岗，团队由我独立组建\n\n云栈网络（2018 年 6 月至 2021 年 2 月）— 客户支持主管\n- 管理一支十二人的在线客服小组\n- 负责制定一线客服的服务话术与升级流程\n- 在职期间团队首次响应时间从十二分钟降到四分钟\n\n个人成就补充\n- 在极星科技任职期间（2021 至今），我同时还在云栈网络兼任客服顾问，每周投入约二十小时，帮助原团队完成了第二次系统升级\n- 三年内（2021 至 2024）累计为公司节省客服成本约八百万元\n- 我带过的最大团队规模达到一百二十人，分布在三个城市\n\n技能\n客服体系搭建、SLA 设计、CSAT/NPS 指标管理、工单系统配置、团队培训、质检体系、排班与人力规划。\n\n教育\n华东师范大学，传播学学士（2014 至 2018）。",
+  "jd": "我们是一家快速增长的 SaaS 公司，正在寻找一位高级客户支持经理，负责管理一支约三十五人的多渠道支持团队（在线、邮件、电话），直接向客户成功总监汇报。核心职责包括：制定并持续优化服务等级协议（SLA）、把团队 CSAT 从当前的八十一分稳定提升到九十分以上、把工单平均解决时长从十四小时压缩到六小时以内、并建立一套可量化的质检与绩效体系。我们期望候选人有从零或从小规模搭建客服团队的经验、扎实的数据分析能力、以及一次以上客服系统平台迁移的实操经历。你需要在高增长、流程尚不完善的环境下推动标准化，并能直接面对一线客服的招聘、培训与梯队建设。",
+  "history": [
+    { "q": "先讲讲你在极星科技现在带的团队 — 多少人、覆盖哪些渠道、你直接负责哪些指标。" },
+    { "q": "你说从零搭建了四十人团队。最早的前五个人你是怎么招进来的，标准是什么?" },
+    { "q": "CSAT 从七十二提到九十一，这个九十一是什么口径? 月度还是季度，样本量多大?" },
+    { "q": "提升 CSAT 你做的最关键的一件事是什么?" },
+    { "q": "Zendesk 迁到自研平台 — 为什么要自研? 迁移踩了什么坑?" },
+    { "q": "迁移期间工单有没有丢? 一线客服的适应你怎么处理的?" },
+    { "q": "我注意到你简历写在极星任职期间还在云栈兼职顾问，每周二十小时。这两边的时间你是怎么安排的?" },
+    { "q": "你简历一处说极星团队四十人，另一处说带过最大一百二十人分布三个城市。这一百二十人是哪段经历?" },
+    { "q": "云栈那段你写的是十二人团队主管，那一百二十人和云栈、极星分别是什么关系?" },
+    { "q": "三年省八百万客服成本 — 这个数字是怎么算出来的，基线是什么?" },
+    { "q": "换个角度。讲一次你处理过的、升级到你这里的最棘手的客户投诉。" },
+    { "q": "那次投诉最后的结果是什么? 客户留下来了吗?" },
+    { "q": "你怎么设计一线客服的质检标准的? 抽检比例多少?" },
+    { "q": "如果我们这边 CSAT 卡在八十一上不去,你接手头三十天会先看什么?" },
+    { "q": "你刚才说会先看数据。具体是哪几个数据,你怎么判断问题出在哪个环节?" }
+  ],
+  "candidate_last_answer": "这个问题非常好，其实我有一套非常成熟的方法论，我把它叫做『客户之声闭环飞轮』。第一步是全渠道倾听，我会建立一个三百六十度的数据中台，把所有触点的声音都汇聚起来；第二步是赋能一线，通过精细化运营和敏捷迭代去打磨每一个服务触点；第三步是数据驱动决策，用北极星指标牵引整个组织。我始终相信，客户体验的本质是一种价值共创，是把以客户为中心的理念真正落到组织的毛细血管里。我过往每一段经历都验证了这套打法的有效性，无论在哪个平台都能快速复制成功。",
+  "session_state": {
+    "drilled_topics": ["current-team-scope", "early-hiring", "csat-definition", "csat-key-lever", "platform-migration-rationale", "migration-data-integrity", "concurrent-consulting-time", "team-size-contradiction", "120-person-claim", "cost-saving-math", "hardest-escalation", "escalation-outcome", "qa-sampling-design"],
+    "current_competency_target": "diagnostic-rigor",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "diagnostic-rigor",
+    "missing_evidence": [
+      { "competency": "diagnostic-rigor", "evidence_type": "mechanism" },
+      { "competency": "diagnostic-rigor", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我把它叫做『客户之声闭环飞轮』",
+      "must-be-question-type: teach-back",
+      "expected-yield: forcing the candidate to drop the rehearsed buzzword framework and name the concrete first three data cuts she would actually pull when CSAT is stuck at 81 — which metric, at which channel/stage, and the specific decision rule that tells her where the breakdown is"
+    ]
+  }
+}

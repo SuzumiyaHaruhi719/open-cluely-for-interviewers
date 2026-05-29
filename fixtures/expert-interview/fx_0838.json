@@ -1,0 +1,48 @@
+{
+  "id": "fx_0838",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "李伟 — 后端工程师 (Backend Engineer)\n\n概述\n后端工程师，主要做高并发服务和分布式系统，熟悉 Go 和 Java。在订单和支付链路上有一些经验，做过服务拆分和性能优化。\n\n工作经历\n云图科技 — Backend Engineer (2021至今)\n- 负责订单服务的开发和维护，参与了从单体到 microservices 的拆分\n- 做过 latency 优化，引入了 Redis 缓存和 message queue 削峰\n- 参与 on-call，处理过线上的 incident\n\n启明网络 — 初级后端工程师 (2018-2021)\n- 写过 REST API 和一些 batch job\n- 维护 MySQL 数据库，做过慢查询优化\n\n技能\nGo, Java, Redis, Kafka, MySQL, Kubernetes, gRPC\n\n教育\n计算机科学学士",
+  "jd": "云图科技正在招聘一名中级后端工程师 (Mid-level Backend Engineer)，加入订单与支付平台团队。You will own a slice of our order-processing services and be responsible for reliability, latency, and capacity. 职责包括：设计和实现高并发服务、参与微服务拆分、优化关键链路的 p99 latency、做容量规划。We expect you to reason quantitatively — to tell us the throughput a service handles, the p99 before and after your change, the error budget you operate against, and the trade-offs you made between consistency and availability. 你需要参与 on-call，能独立定位和解决线上 incident。要求：3年以上后端经验，扎实的 Go 或 Java，熟悉 Redis、Kafka、Kubernetes，能用数据说话。",
+  "history": [
+    { "q": "先聊聊你在云图的 scope —— 你具体 own 哪些 order 相关的服务？" },
+    { "q": "你提到参与了从单体到 microservices 的拆分，这个拆分是谁主导的？你个人负责哪一块？" },
+    { "q": "拆分订单服务时，你怎么划分 service boundary 的？依据是什么？" },
+    { "q": "你说做过 latency 优化。优化前的 p99 是多少？" },
+    { "q": "引入 Redis 缓存之后，p99 降到了多少？throughput 有变化吗？" },
+    { "q": "缓存会带来一致性问题，你们用的是哪种 cache 策略？怎么处理 stale data？" },
+    { "q": "Message queue 削峰那块，峰值 QPS 大概是多少，queue 的 backlog 你怎么监控？" },
+    { "q": "讲一次你 on-call 时处理的线上 incident,从 alert 到 mitigation 你做了什么？" },
+    { "q": "那次 incident 的 root cause 最后定位到是什么？" },
+    { "q": "你们团队的 error budget 是怎么定的？你 own 的服务 SLO 是多少？" },
+    { "q": "如果让你在 strong consistency 和 availability 之间选,你在订单场景会怎么 trade-off？" },
+    { "q": "回到 metrics —— 你刚才一直没给具体数字,你 own 的订单服务现在 p99 和 QPS 到底是多少?" }
+  ],
+  "candidate_last_answer": "嗯……这个数字其实我得反问一下你,你们这边定义 p99 是按哪个时间窗口算的?是 1分钟还是 5分钟的 rolling window?因为不同的 aggregation 算出来差很多。而且我想先问问,你们更看重 p99 还是 p999?Honestly,我觉得脱离 context 单纯报一个 latency 数字意义不大,所以你能不能先告诉我你们 production 现在的 baseline 是多少,这样我才好对齐。",
+  "session_state": {
+    "drilled_topics": ["order-service-scope", "monolith-split-ownership", "service-boundary-rationale", "latency-before", "cache-latency-after", "cache-consistency", "queue-peak-qps", "incident-handling", "incident-root-cause", "error-budget-slo", "consistency-availability-tradeoff", "concrete-latency-numbers"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个数字其实我得反问一下你",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a specific p99 and QPS figure for the order service the candidate personally owned (even an approximate range with a stated time window), instead of deflecting by interrogating the interviewer about aggregation definitions"
+    ]
+  }
+}

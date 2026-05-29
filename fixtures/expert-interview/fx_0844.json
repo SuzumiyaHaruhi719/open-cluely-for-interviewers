@@ -1,0 +1,44 @@
+{
+  "id": "fx_0844",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Sasha Lindqvist — Product Designer (Mid-level)\n\nA visionary product designer whose work has fundamentally redefined how users experience digital products. Widely regarded as a once-in-a-generation design talent with an instinctive grasp of what users want before they know it themselves.\n\nEXPERIENCE\nLumina Apps — Product Designer (2021-present)\n- Single-handedly elevated the entire product's design language and set a new industry benchmark\n- Owned the most critical redesign in company history; universally credited with the resulting growth\n- Recognized across the org as the definitive voice on user experience\n\nPixelforge Studio — UX/UI Designer (2018-2021)\n- Crafted breathtaking interfaces for flagship clients that drew widespread acclaim\n- Became the studio's most requested designer within months\n\nSKILLS\nFigma, design systems, interaction design, prototyping, user research, a relentless pursuit of perfection\n\nEDUCATION\nBFA, Interaction Design\n\nPORTFOLIO\nAvailable on request — though the work speaks for itself.",
+  "jd": "Lumina Apps is hiring a mid-level Product Designer for our core consumer app team. You will own design for a key product surface end to end: framing the problem, exploring concepts, partnering with PM and engineering, running usability tests, and shipping. We want a designer who can articulate the specific design decisions they made and why — which alternative they rejected, what a usability test actually revealed, and how a metric (task success, time-on-task, conversion) responded. We value clear reasoning and evidence over polish-talk and self-promotion. You will present rationale to stakeholders and defend trade-offs between user needs and business constraints. Requirements: 3-5 years in product design, strong Figma and systems thinking, and demonstrated impact you can describe in concrete, decision-level detail.",
+  "history": [
+    { "q": "You describe a redesign as 'the most critical in company history.' Which product surface was it, concretely?" },
+    { "q": "What was the specific user problem you were trying to solve with that redesign?" },
+    { "q": "Walk me through one design decision and the alternative you rejected — why did you pick the one you shipped?" },
+    { "q": "Did you run usability testing on it? What did the test actually reveal that surprised you?" },
+    { "q": "How many users did you test with, and what was the task you asked them to do?" },
+    { "q": "Which metric were you trying to move, and what happened to it after launch?" },
+    { "q": "Where did engineering or PM push back, and how did you resolve the trade-off?" },
+    { "q": "Strip away the framing for me — name the single concrete change you made and the evidence it worked." }
+  ],
+  "candidate_last_answer": "Honestly, the whole redesign was a holistic reimagining of the experience. I approached it with a deep user-centered philosophy, obsessing over every pixel and every interaction until it felt truly intuitive and delightful. It was about crafting a seamless, best-in-class experience that elevated the entire product. The evidence is really in how beloved the design became — it set a new bar. I'd say my superpower is intuiting what users need, so the change was really a thousand small decisions all in service of that vision.",
+  "session_state": {
+    "drilled_topics": ["redesign-surface", "user-problem", "decision-vs-alternative", "usability-finding", "test-sample-and-task", "metric-impact", "stakeholder-pushback", "single-concrete-change"],
+    "current_competency_target": "design-decision-rigor",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "design-decision-rigor",
+    "missing_evidence": [
+      { "competency": "design-decision-rigor", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: the change was really a thousand small decisions all in service of that vision",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: one specific design change, the concrete alternative rejected and why, and the usability or metric evidence it worked — cutting through the 『holistic reimagining / every pixel』 polish-talk to a single defensible decision"
+    ]
+  }
+}

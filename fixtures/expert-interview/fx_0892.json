@@ -1,0 +1,47 @@
+{
+  "id": "fx_0892",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Junior Accountant — Accounts Payable & Month-End Close\n\nFairmont Logistics — Junior Accountant (2 years)\n- Process ~600 vendor invoices/month; own the 3-way match exceptions queue\n- Prepare AP accruals and reconcile the AP subledger to the GL at month-end\n- Reduced unmatched-invoice backlog as part of a process cleanup\n\nGreenfield Retail — AP Clerk (1 year)\n- Entered invoices and processed weekly check runs\n\nEducation: B.S. Accounting. CPA candidate (passed FAR, REG).\nSkills: NetSuite, Excel (XLOOKUP, pivot tables), 3-way matching, GL reconciliation.",
+  "jd": "Fairmont Logistics is hiring a Junior Accountant for the AP and close team. You will own the 3-way match exception queue, prepare AP accruals, and reconcile the AP subledger to the GL each month. We expect tight, specific answers: how you cleared a backlog, what a reconciliation difference turned out to be, how you decide an invoice is safe to release. Required: 1-3 years AP experience, NetSuite or comparable ERP, and a precise grasp of accruals and the 3-way match. The loop includes a reconciliation exercise where you explain your work step by step.",
+  "history": [
+    { "q": "Describe your current AP responsibilities at Fairmont." },
+    { "q": "Walk me through how the 3-way match works in your process." },
+    { "q": "What's the most common reason an invoice lands in your exception queue?" },
+    { "q": "How do you decide an exception is safe to release for payment?" },
+    { "q": "Tell me about the unmatched-invoice backlog cleanup you mentioned." },
+    { "q": "How do you prepare the AP accrual at month-end?" },
+    { "q": "Walk me through reconciling the AP subledger to the GL." },
+    { "q": "Tell me about a reconciliation difference you had to chase down." },
+    { "q": "What did that difference turn out to be?" },
+    { "q": "How do you avoid duplicate payments?" },
+    { "q": "On that backlog cleanup — give me the starting number, what you changed, and where it ended up." }
+  ],
+  "candidate_last_answer": "When I started, the unmatched queue was about 340 invoices, some over 60 days old. I sorted them by root cause and found roughly 70% were price mismatches under five dollars caused by freight rounding. I proposed a tolerance threshold of five dollars in NetSuite for that vendor group, which auto-cleared those. The rest I worked manually, oldest first, about 30 a day. Over six weeks the queue dropped to under 50, and we held it there with a weekly review.",
+  "session_state": {
+    "drilled_topics": ["ap-scope", "3way-match-mechanism", "exception-common-cause", "release-decision", "backlog-cleanup-intro", "accrual-prep", "subledger-reconciliation", "reconciliation-chase", "reconciliation-rootcause", "duplicate-prevention"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I proposed a tolerance threshold of five dollars in NetSuite for that vendor group",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: who approved the five-dollar tolerance and what control risk it introduced — whether the candidate considered that auto-clearing sub-five-dollar mismatches could mask a systematic pricing error, and what compensating check they added"
+    ]
+  }
+}

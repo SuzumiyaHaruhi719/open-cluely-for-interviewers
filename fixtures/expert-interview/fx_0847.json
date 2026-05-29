@@ -1,0 +1,37 @@
+{
+  "id": "fx_0847",
+  "tags": {
+    "industry": "hr",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "周雅琴 —— 高级人力资源经理（HRBP）\n\n概述\n高级 HRBP，负责业务部门的组织发展、人才管理与员工关系，做过组织重组、绩效体系落地与关键人才保留。\n\n工作经历\n晨曦科技 —— 高级 HR 经理（2019至今）\n负责研发与产品线的 HRBP 工作，支持过一次约两百人团队的组织调整，主导了绩效与晋升体系的落地，处理过多起复杂员工关系问题。\n\n华盛集团 —— HR 经理（2014-2019）\n负责招聘、培训与薪酬，搭建过区域的人才梯队。\n\n技能\n组织发展、人才管理、绩效管理、员工关系、薪酬、招聘\n\n教育\n人力资源管理 本科",
+  "jd": "晨曦科技招聘高级 HRBP，支持研发与产品业务线，负责组织发展、人才盘点、绩效与员工关系。核心职责：作为业务负责人的人力伙伴，推动组织设计与团队健康度提升；主导关键岗位的人才保留与继任计划；落地绩效与晋升机制；独立处理复杂员工关系与离职风险。我们看重能聚焦回答、用具体案例和数据说话的候选人：你在某次组织调整中具体做了什么、留住了哪些关键人、用了什么手段、结果如何。要求：8年以上 HR 经验，含资深 HRBP 经历，熟悉组织发展与绩效体系，沟通与判断力强。",
+  "history": [
+    { "q": "你支持过一次约两百人团队的组织调整。在那次调整里，为了保住关键人才，你个人具体做了什么？" }
+  ],
+  "candidate_last_answer": "这个问题特别好，其实说到人才保留，我最近一直在思考一个更大的命题，就是后疫情时代整个职场的心理契约都变了。你看现在的年轻员工，他们对工作意义的诉求和十年前完全不一样，这背后其实是代际价值观的迁移，我还专门读了几本组织行为学的书。再加上现在远程办公普及，团队的归属感建设面临全新的挑战，这又牵扯到企业文化怎么重塑的问题。说实话，我觉得 HR 这个职业本身都在被重新定义，光是 AI 对招聘的冲击就够我们聊一整天了……",
+  "session_state": {
+    "drilled_topics": ["关键人才保留的个人行动"],
+    "current_competency_target": "talent-retention-execution",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "talent-retention-execution",
+    "missing_evidence": [
+      { "competency": "talent-retention-execution", "evidence_type": "owner-of-action" },
+      { "competency": "talent-retention-execution", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我最近一直在思考一个更大的命题",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 在那次两百人组织调整中，候选人为保留关键人才亲自采取的具体动作（识别了哪些关键人、用了什么保留手段、结果如何），把回答从职场宏观趋势拉回到个人行为"
+    ]
+  }
+}

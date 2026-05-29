@@ -1,0 +1,43 @@
+{
+  "id": "fx_0887",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "self-contradictory",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "初级产品经理候选人 | C 端工具类产品\n\n工作经历:\n云图科技 产品经理（入职一年三个月)\n- 负责一款日程管理 App 的提醒功能模块\n- 主导了提醒功能从零到一的设计与上线\n- 简历另一段又写:入职后主要承接已有功能的迭代与 bug 跟进,尚未独立负责过从零到一的项目\n- 与设计、研发协作,推动两个版本迭代\n\n实习经历:\n微澜信息 产品实习生（六个月)\n- 参与用户访谈记录整理与竞品分析\n\n教育背景:综合大学 信息管理专业 本科\n技能:Axure 原型、SQL 取数、A/B 测试基础、需求文档撰写\n自评:数据驱动决策。但另一处又写自己更偏好凭借用户同理心和直觉做判断\n语言:普通话,英语六级",
+  "jd": "云图科技招聘初级产品经理,负责日程管理 App 的核心功能迭代。岗位职责:基于数据与用户反馈定义需求优先级;撰写清晰的需求文档并跟进研发落地;设计并解读 A/B 实验结果;对上线功能的核心指标负责。我们希望候选人在回答时能讲清楚一个具体功能的来龙去脉:你为什么做这个决策、数据是怎么支撑的、最后指标怎么变。要求:一年以上产品相关经验或扎实的实习经历;熟悉基本的数据分析与实验方法;逻辑清晰、表达聚焦。",
+  "history": [
+    { "q": "先介绍一下你在云图科技负责的提醒功能模块。" },
+    { "q": "你简历一处说主导了提醒功能从零到一,另一处又说还没独立负责过从零到一的项目,实际情况是哪种?" },
+    { "q": "那在提醒功能的迭代里,你独立做主的最大一个决策是什么?" },
+    { "q": "这个决策当时是基于什么数据或用户反馈?" },
+    { "q": "你提到做过 A/B 测试,能说说其中一个实验的设计和结论吗?" },
+    { "q": "这个实验最后对核心指标的影响有多大?" },
+    { "q": "好,我们聚焦一点:就这个提醒功能的实验,你当时具体看的核心指标是哪一个,实验前后这个数字变化了多少?" }
+  ],
+  "candidate_last_answer": "嗯……（停顿了几秒)这个……让我想一下当时的具体数字。……好,我想起来了。当时我们最关注的核心指标是『提醒的次日打开率』,就是用户点开提醒进入 App 的比例。实验前大概是百分之二十二,我们把提醒文案从纯时间改成带任务标题之后,实验组提到了百分之二十九,持续观察了两周比较稳定。不过说到提醒这件事,我后来一直在思考通知这个赛道的演化,你看现在大厂都在做智能聚合通知,还有手表端的震动提醒，甚至以后 AR 眼镜可能都会改变整个交互范式,我觉得这个方向特别值得长期投入,我们团队其实也聊过要不要往这个方向延伸……",
+  "session_state": {
+    "drilled_topics": ["reminder-module-scope", "resume-contradiction", "biggest-independent-decision", "decision-data-basis", "ab-experiment-design", "ab-metric-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我后来一直在思考通知这个赛道的演化",
+      "must-be-question-type: mechanism",
+      "expected-yield: cut off the AR/smart-notification industry tangent and pin the experiment's rigor — sample size, how randomization was done, whether the 22%-to-29% lift was statistically significant, and what guardrail metrics they checked before shipping"
+    ]
+  }
+}

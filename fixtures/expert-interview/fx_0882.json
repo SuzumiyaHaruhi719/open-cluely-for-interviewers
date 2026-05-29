@@ -1,0 +1,38 @@
+{
+  "id": "fx_0882",
+  "tags": {
+    "industry": "sales",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "RACHEL DONOVAN\nSenior Account Executive | Boston, MA | rachel.donovan@example.com\n\nSUMMARY\nSenior enterprise AE with 9 years closing complex B2B SaaS deals. Consistent President's Club performer.\n\nEXPERIENCE\nSummitGrid (data-infrastructure SaaS) — Senior Account Executive (2021 to present)\n- Carry a $1.4M annual quota selling into enterprise data teams; average deal size $85K ACV.\n- Closed $2.1M in new ARR in my first full year, 150% of quota.\n- Note: territory is net-new logos only; I do not handle renewals or expansion.\n- Landed our largest-ever deal, a $1.2M three-year contract with a Fortune 100 retailer.\n\nClearSpan Analytics — Account Executive (2017 to 2021)\n- Mid-market AE, $900K quota, sold BI dashboards to companies under 1,000 employees.\n- Note: this was a full-cycle role — I owned new business, renewals, and upsell for my book.\n\nAdditional context\n- Across my SummitGrid tenure, roughly 60% of my closed revenue came from expanding and renewing existing accounts that I personally grew over multiple years.\n- My average sales cycle is 3 weeks from first call to signature.\n- I primarily sell to mid-market companies in the 50-to-200 employee range.\n\nSKILLS\nEnterprise sales, MEDDIC, multi-threaded deals, Salesforce, executive negotiation, value selling.\n\nEDUCATION\nB.A. Economics, Boston College (2012 to 2016).",
+  "jd": "We're hiring a Senior Enterprise Account Executive to sell our data-platform product into Fortune 1000 accounts. You'll own net-new logo acquisition and land-and-expand within named enterprise accounts, run multi-threaded deals with 6-to-12-month sales cycles, navigate procurement and security review, and forecast accurately. We expect 7+ years of B2B SaaS sales with a track record of closing six-figure-plus ACV deals, a rigorous qualification methodology (MEDDIC or similar), and the ability to speak precisely about your own pipeline math and deal mechanics. You'll report to the VP of Sales and carry a seven-figure quota. We value reps whose self-reported numbers hold up under scrutiny.",
+  "history": [
+    { "q": "Before we get into specific deals — your resume says your SummitGrid territory is net-new logos only, but it also says about 60% of your closed revenue came from renewals and expansion. And it lists a 3-week average sales cycle while also describing 6-to-12-month enterprise deals. Help me reconcile that. Which is it?" }
+  ],
+  "candidate_last_answer": "Right, yeah, so — okay, that's a fair question, um. So the net-new thing, that's, that was mostly true, I mean it depends how you count it, because some of those net-new logos I then, you know, grew them, so in my head that's still kind of net-new but also expansion, so the 60% is... hmm. And the cycle, okay, so three weeks, that was — I think that number is from ClearSpan actually, the mid-market stuff moved really fast, but at SummitGrid it's longer, definitely longer, the enterprise ones can be six months, sometimes more, so maybe I, uh, maybe that got mixed up on the resume. And sorry, the third thing was — what was the third thing? The 50-to-200, yeah, so I sell to, it's a range, honestly it varies a lot, I've done some big ones and some smaller, so I just kind of put a number. I should probably clean that up.",
+  "session_state": {
+    "drilled_topics": ["resume-contradiction-reconciliation"],
+    "current_competency_target": "integrity-calibration",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "integrity-calibration",
+    "missing_evidence": [
+      { "competency": "integrity-calibration", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: in my head that's still kind of net-new but also expansion, so the 60% is",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forcing a clean numeric split of SummitGrid closed ARR into genuinely net-new logo revenue versus expansion/renewal revenue, with the actual percentage and dollar figures, instead of the hand-waving 'it depends how you count it' that papers over the resume's net-new-only claim"
+    ]
+  }
+}

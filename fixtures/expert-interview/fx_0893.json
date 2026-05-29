@@ -1,0 +1,49 @@
+{
+  "id": "fx_0893",
+  "tags": {
+    "industry": "data",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "数据科学总监 / Director of Data Science\n\n工作经历:\n寰宇电商 数据科学总监(任职四年)\n- 组建并管理数据科学与算法团队,横跨推荐、风控、增长三个方向\n- 主导搭建公司的统一特征平台与实验平台\n- 推动推荐系统从规则引擎向深度模型的整体升级\n- 与业务、工程、产品多方协作,落地多个核心模型\n\n领航科技 高级数据科学家 / 团队负责人(任职三年)\n- 负责广告点击率预估模型的迭代\n- 带领小组完成反作弊模型的从零搭建\n\n教育背景:计算机科学硕士,统计学学士\n技能:机器学习、推荐系统、A/B 实验设计、Spark、Python、SQL、团队管理\n备注:简历通篇以职责描述为主,几乎没有写明任何具体的业务指标提升数字、模型效果或团队规模。",
+  "jd": "寰宇电商招聘数据科学总监,负责推荐、风控与增长三条线的算法团队。岗位职责:制定数据科学技术路线;对核心模型的线上业务指标负责;搭建可复用的特征与实验基础设施;向 CTO 汇报关键指标。我们会非常具体地追问:某个模型上线前后的核心指标(如 GMV、CTR、留存)到底变化了多少、口径是什么、是怎么通过实验严格归因的、你个人在其中的决策是什么。要求:数据科学或机器学习方向资深背景,有大规模推荐或风控系统落地经验,能用扎实的实验证据说话,反对靠拍脑袋的数字。",
+  "history": [
+    { "q": "先介绍一下你在寰宇电商带的团队和负责的三条线。" },
+    { "q": "你主导的推荐系统从规则到深度模型的升级,整体目标是什么?" },
+    { "q": "这次升级你个人最关键的一个技术决策是什么?" },
+    { "q": "你们的特征平台解决了之前什么样的痛点?" },
+    { "q": "推荐升级是怎么做线上实验的?分桶怎么分的?" },
+    { "q": "升级之后,核心业务指标到底动了多少?" },
+    { "q": "风控这条线,反作弊模型上线后拦截效果怎么样?" },
+    { "q": "增长方向你们做过最成功的一个模型是什么?" },
+    { "q": "这些指标提升,你是怎么排除掉大促、季节性这些干扰的?" },
+    { "q": "团队规模具体多大?你直接带几个人?" },
+    { "q": "如果让你说一个最拿得出手的、可被验证的成果,是哪个?" },
+    { "q": "我们就聚焦推荐升级:你说 GMV 提升明显,具体提升了百分之多少、是哪个口径、用什么实验严格归因的?" }
+  ],
+  "candidate_last_answer": "推荐升级这块效果是非常炸裂的。我可以负责任地说,这次升级直接让整个平台的 GMV 翻了一倍还多,推荐位的点击率也差不多涨了三倍,用户留存基本是行业天花板的水平。这些都是我亲自带着团队打出来的成果,业界很多公司想复制都复制不了。具体的实验报告和口径细节当时是团队在维护,我作为总监主要是把握大方向,数字我记得就是这么夸张,反正高层看了都非常震撼。",
+  "session_state": {
+    "drilled_topics": ["team-three-lines", "recsys-upgrade-goal", "key-technical-decision", "feature-platform-painpoint", "recsys-experiment-design", "core-metric-movement", "antifraud-effect", "growth-best-model", "confounder-control", "team-size", "most-verifiable-result"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这次升级直接让整个平台的 GMV 翻了一倍还多",
+      "must-be-question-type: metric-pin",
+      "expected-yield: puncture the inflated 『GMV doubled, CTR tripled』 claims by forcing the experiment design behind them — the control/treatment split, the absolute baseline values, the measurement window, and what the candidate personally produced versus what the team maintained"
+    ]
+  }
+}

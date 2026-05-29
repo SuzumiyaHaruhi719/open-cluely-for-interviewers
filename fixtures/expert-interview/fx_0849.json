@@ -1,0 +1,52 @@
+{
+  "id": "fx_0849",
+  "tags": {
+    "industry": "marketing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Marketing Intern Candidate — Junior / University Senior\n\nObjective: A motivated final-year communications student seeking a summer marketing internship to apply classroom learning to real campaigns.\n\nExperience:\n- Campus Eats (student food-delivery club) — Social Media Volunteer (school year)\n  - Helped run the club's Instagram and TikTok accounts\n  - Wrote captions and scheduled posts for weekly promotions\n  - Helped organize a campus pop-up event with local restaurants\n- Riverside Cafe — Part-time Barista (two summers)\n  - Helped promote seasonal drinks with in-store signage\n- University Marketing Society — General Member\n  - Attended workshops on content strategy and brand voice\n\nProjects:\n- Class capstone: built a mock go-to-market plan for a fictional skincare brand\n- Personal blog reviewing local coffee shops; grew a small following\n\nSkills: Canva, basic Google Analytics, Instagram/TikTok, copywriting, event support\nEducation: State University, B.A. Communications (expected next year)",
+  "jd": "Our consumer brand team is hiring a Summer Marketing Intern to support the social and content marketing pod. You'll report to an Associate Brand Manager and work alongside the social media coordinator. Responsibilities: drafting post copy, scheduling content across Instagram/TikTok, pulling weekly engagement reports, supporting one campus activation event end-to-end, and assisting with influencer outreach. We're looking for someone organized who can keep a content calendar straight, communicate clear timelines, and recount what they did and when with precision. No paid-media budget ownership is expected. This is a 12-week paid internship; strong interns may receive a return offer. We value candidates who can walk us through a project chronologically and explain the sequence of decisions they made.",
+  "history": [
+    { "q": "Thanks for coming in. To start, tell me what drew you to marketing as a field." },
+    { "q": "Walk me through your role with Campus Eats — what were you actually responsible for?" },
+    { "q": "How often did you post, and who decided what went up?" },
+    { "q": "Tell me about the campus pop-up event you helped organize." },
+    { "q": "What was your specific task on that event?" },
+    { "q": "Did you track how the event performed in any way?" },
+    { "q": "Let's talk about your capstone go-to-market plan. What was the product?" },
+    { "q": "What channels did your plan recommend, and why?" },
+    { "q": "Tell me about your coffee blog — how did you grow the following?" },
+    { "q": "Which of these experiences taught you the most about deadlines?" },
+    { "q": "Have you ever had two things due at once? How did you handle it?" },
+    { "q": "Let's go deeper on the pop-up. Take me through the timeline from when planning started to event day." },
+    { "q": "So just to make sure I follow — when did you actually lock in the restaurant partners relative to promotion?" },
+    { "q": "And when did the social promotion for the event begin?" },
+    { "q": "Okay. Walk me one more time, step by step, through the order things happened for that pop-up — start to finish." }
+  ],
+  "candidate_last_answer": "Right, so the order was — okay, we kicked off planning about two weeks before the event. And then we started promoting on Instagram pretty early, I think like three weeks out, so people had time to see it. Then we confirmed the restaurant partners, which happened after the promotion started going, maybe the week of the event? And then actually the kickoff meeting was sort of in the middle of all that. So the posts went up first, then planning, then we locked partners. I think. The event itself was great though, lots of people showed up.",
+  "session_state": {
+    "drilled_topics": ["motivation", "campus-eats-role", "posting-cadence", "popup-event", "event-task", "event-metrics", "capstone-product", "capstone-channels", "blog-growth", "deadline-learning", "competing-deadlines", "popup-timeline", "partner-lockin-timing", "promo-start-timing"],
+    "current_competency_target": "project-sequencing",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "project-sequencing",
+    "missing_evidence": [
+      { "competency": "project-sequencing", "evidence_type": "timeline" },
+      { "competency": "project-sequencing", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: So the posts went up first, then planning, then we locked partners",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: force the candidate to reconcile the self-contradictory sequence (promotion three weeks out vs. planning kickoff two weeks out vs. partners locked the week of) into one consistent dated chronology, exposing whether they actually understand the order of events they participated in"
+    ]
+  }
+}

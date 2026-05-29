@@ -1,0 +1,42 @@
+{
+  "id": "fx_0829",
+  "tags": {
+    "industry": "finance",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "赵敏 — 初级财务分析师 / FP&A Analyst\n\n核心技能关键词\n财务建模、三表联动、估值、DCF、可比公司分析、预算编制、滚动预测、差异分析、月度结账、管理报表、Power BI、Excel 高级函数、VBA、SQL、Python、数据可视化、KPI 体系、成本管控、现金流预测、ERP、用友、SAP、IFRS、税务筹划、内部控制、商业智能、数据驱动决策、降本增效、闭环管理、精细化运营、业财融合、敏捷预算、预算赋能、价值创造、战略协同\n\n工作经历\n弘信消费金融（2023 至今）— FP&A Analyst\n- 负责月度管理报表编制与各事业部预算差异分析\n- 搭建滚动预测模型，支持管理层经营决策\n- 参与年度预算编制流程，对接五个业务部门\n\n实习经历\n中和证券（2022 暑期）— 行业研究实习生\n- 协助分析师完成消费板块上市公司可比分析\n\n教育背景\n财经大学 会计学学士；通过 CPA 两科、CFA 一级",
+  "jd": "我们正在为一家持牌消费金融公司招聘一名初级 FP&A 分析师，向财务经理汇报，支持公司各业务条线的预算与经营分析。核心职责包括：月度结账与管理报表编制、预算差异分析、滚动预测模型维护，以及为业务部门提供数据支持。我们看重的不是堆砌工具关键词，而是候选人能否讲清楚一个自己真正主导的分析项目——背景是什么、你的任务是什么、你具体做了哪些动作、最后产生了什么可量化的结果或被采纳的决策。要求会计或财务相关本科，扎实的 Excel 建模能力，有消费金融或银行业经验者优先，CPA / CFA 进度是加分项。我们希望候选人对自己报表里的每一个数字都能负责。",
+  "history": [
+    { "q": "先自我介绍一下，重点说说你现在在弘信消金负责什么。" },
+    { "q": "你简历里技能写得很全。挑一个你最熟、并且在真实工作里用得最多的，给我讲个例子。" },
+    { "q": "就说你搭的那个滚动预测模型吧——当时为什么要搭这个模型，是谁提出的需求？" },
+    { "q": "你在这个模型里具体负责哪一部分？是你独立搭的还是跟着别人做的？" },
+    { "q": "模型搭建过程中你做了哪些具体的动作？比如数据从哪来、逻辑怎么设计？" },
+    { "q": "那这个模型上线之后，效果怎么样？有没有哪个预测帮管理层做了某个具体决策，或者预测准确率提升了多少？" }
+  ],
+  "candidate_last_answer": "嗯，背景是这样的：当时各事业部的预测口径不统一，月底经常对不上，财务经理就希望有一个能自动滚动的预测模型，这个任务主要是交给我来牵头的。我做的动作挺具体的：先把过去十二个月的实际数从用友里导出来，按产品线拆开，然后用 Excel 加 Power Query 搭了一个能自动更新的滚动预测，逻辑上是先做趋势外推再叠加业务部门给的增长假设，我还专门做了一个差异分析的看板。整个搭下来大概花了三周。至于效果嘛……模型是按时上线了,管理层也在用,具体提升了多少准确率或者帮他们做了哪个决策,这个我还真没特别去统计过,反正大家都说挺好用的。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "strongest-skill-example", "model-motivation", "personal-ownership", "concrete-actions", "result-quantification"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个我还真没特别去统计过",
+      "must-be-question-type: metric-pin",
+      "expected-yield: at least one concrete result of the rolling-forecast model — either a forecast-accuracy improvement number or one specific management decision the model actually drove — completing the missing R of an otherwise solid STAR story"
+    ]
+  }
+}

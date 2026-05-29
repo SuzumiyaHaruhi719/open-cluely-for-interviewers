@@ -1,0 +1,45 @@
+{
+  "id": "fx_0831",
+  "tags": {
+    "industry": "operations",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Tyler Brooks — Operations Intern Candidate\n\nKeywords: process optimization, supply chain, logistics, inventory management, demand planning, S&OP, lean, Six Sigma, Kaizen, continuous improvement, KPI dashboards, SQL, Excel, Tableau, Power BI, ERP, NetSuite, warehouse management, fulfilment, last-mile, route optimization, vendor management, procurement, cost reduction, throughput, cycle time, OTIF, data-driven, stakeholder management, cross-functional, agile, project management.\n\nProfile\nThird-year operations management student seeking a summer operations internship. Hard-working, detail-oriented, and a fast learner.\n\nExperience\nCampus Dining Services — Student Shift Lead (part-time, 2023–present)\n- Helped coordinate staffing and inventory for a 200-seat dining hall.\n- Tracked waste and supply usage in spreadsheets.\n\nGreenleaf Logistics — Operations Intern (summer 2023)\n- Shadowed the warehouse team and helped with cycle counts.\n- Built a small dashboard tracking inbound shipment delays.\n\nProjects\n- Class capstone: a route-optimization simulation for a hypothetical last-mile fleet.\n\nEducation: BS Operations Management (in progress), GPA 3.5.",
+  "jd": "We're hiring an Operations Intern to support our regional fulfilment team for the summer. You'll work alongside warehouse and demand-planning staff on real projects: cycle-count accuracy, inbound dock scheduling, and a small process-improvement project you'll own end to end and present at the end of the internship. We value interns who can take direct feedback, iterate quickly, and own mistakes without getting defensive — operations is a feedback-rich environment where things break daily and the best people treat a critique as data, not an attack. You'll get hands-on exposure to our WMS and demand-planning tools. We're looking for an operations, supply-chain, or industrial-engineering student, basic spreadsheet and data skills, and most importantly the right attitude toward learning and coaching. This interview will probe how you handle feedback and ambiguity.",
+  "history": [
+    { "q": "Tell me about your operations internship at Greenleaf last summer." },
+    { "q": "You built a dashboard tracking inbound shipment delays. Walk me through how you decided what to put on it." },
+    { "q": "Did anyone use that dashboard to make a decision? What happened to it after you left?" },
+    { "q": "Your resume lists a lot of tools — S&OP, NetSuite, Six Sigma. Which of these have you actually used hands-on versus learned about in class?" },
+    { "q": "On the route-optimization capstone, what assumptions did your simulation make, and where would they break in the real world?" },
+    { "q": "Tell me about a time you got critical feedback on your work. What was it and what did you do?" },
+    { "q": "It sounds like you felt the feedback was unfair. Setting aside whether it was fair — what part of it, if any, was correct?" },
+    { "q": "I'm not trying to attack you. I'm asking because how you process feedback matters a lot in this role. Can you name one thing you'd do differently?" },
+    { "q": "Let me ask plainly: is there anything in that situation you'd own as your own mistake?" }
+  ],
+  "candidate_last_answer": "Honestly? No. I've thought about it and I don't think I did anything wrong there. The feedback was basically my manager covering for the fact that the data I was given was garbage — and now you're sitting here pushing me to 'admit a mistake' like there has to be one, which feels like kind of a gotcha. Why does it have to be on me? If you give someone bad inputs and then critique the output, that's on the process, not the intern. I find it a little unfair that this whole interview seems built around getting me to say I screwed up. I stand by my work. I'm not going to manufacture some fake mea culpa just because that's the answer you clearly want to hear.",
+  "session_state": {
+    "drilled_topics": ["greenleaf-internship", "dashboard-design", "dashboard-impact", "tools-real-vs-class", "capstone-assumptions", "feedback-example", "feedback-correct-part", "one-thing-different", "own-the-mistake"],
+    "current_competency_target": "coachability",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "coachability",
+    "missing_evidence": [
+      { "competency": "coachability", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I'm not going to manufacture some fake mea culpa",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a lower-stakes concrete instance where the candidate can identify even one specific thing within their own control they would change — testing whether the defensiveness is universal or situational, and whether any genuine self-reflection exists beneath the hostility"
+    ]
+  }
+}

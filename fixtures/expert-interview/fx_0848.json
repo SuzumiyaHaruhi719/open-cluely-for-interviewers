@@ -1,0 +1,40 @@
+{
+  "id": "fx_0848",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Director of Enterprise Sales — SaaS / 网络安全方向\n\n负责北亚区大客户销售团队管理，带领 AE 与 SE 团队完成 net-new logo 拓展与 existing account 的 upsell。\n\n工作经历：\n- CloudShield Technologies — Director, Enterprise Sales (2020 至今)\n  · 管理一支跨 region 的销售团队，覆盖金融、制造、互联网三大行业\n  · 主导多个 strategic account 的谈判与 close，推动 platform deal 的落地\n  · 与 marketing、product、CS 协作，搭建 pipeline generation 的闭环\n  · 引入 MEDDICC 销售方法论，规范团队的 deal qualification 流程\n- Vantage Software — Senior Enterprise AE (2016-2020)\n  · 负责华东区 enterprise segment 的直销，主攻大型国企与民营龙头\n  · 多次完成 flagship deal，建立 C-level 关系网络\n\n技能：enterprise selling、forecasting、team coaching、partner ecosystem 运营\n教育：复旦大学 工商管理硕士 (MBA)",
+  "jd": "我们正在寻找一位 Director of Enterprise Sales，向 VP of Sales 汇报，负责领导一支约 25 人的大客户销售团队（含 AE 与 SE）。该岗位拥有完整的 region quota 责任，需要对 net-new ARR、renewal rate、以及 average deal size 负责。我们希望候选人具备在网络安全或基础设施类 SaaS 领域、带领团队从 8 位数 ARR 增长到更高量级的实操经验，能够亲自参与 7 位数 strategic deal 的谈判，建立可预测的 forecasting 节奏，并能与 channel/partner 团队协同放大覆盖。你需要重建一个流失严重的销售团队，修复一个连续两个季度 miss quota 的 region，并向董事会汇报 pipeline health。需要能熟练运用 MEDDICC 或类似方法论，并有跨文化团队管理经验。Travel 约 40%。",
+  "history": [
+    { "q": "先聊聊你现在在 CloudShield 的 scope —— 团队多大、你负责哪个 region 的 quota、过去一年的 attainment 大概什么水平？" },
+    { "q": "你提到带团队 close 了几个 strategic platform deal。挑你个人深度参与的那一单，告诉我 deal size、销售周期、以及你具体在谈判里做了什么、最后怎么 close 的。" }
+  ],
+  "candidate_last_answer": "嗯，说到 strategic deal,我其实最想强调的是我们团队 culture 的建设。我特别相信 enterprise selling 是一个 team sport,所以这几年我花了很多精力去做 coaching,每周都有 deal review,还组织了 quarterly 的 sales kickoff,大家士气特别高。另外我也很重视 partner ecosystem,我觉得未来 cybersecurity 这个赛道一定是 platform play,谁能把 ecosystem 做起来谁就赢。所以我一直在跟几个大的 SI 谈合作框架,长期来看这个 motion 会非常 powerful。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "strategic-deal-specificity"],
+    "current_competency_target": "deal-execution",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "deal-execution",
+    "missing_evidence": [
+      { "competency": "deal-execution", "evidence_type": "metric" },
+      { "competency": "deal-execution", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "deal-execution", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我其实最想强调的是我们团队 culture 的建设",
+      "must-be-question-type: action-attribution",
+      "expected-yield: pull the candidate back from team-culture generalities to the one strategic deal asked about — forcing a concrete deal size, sales-cycle length, and the specific negotiation moves the candidate personally made to close it"
+    ]
+  }
+}

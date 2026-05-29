@@ -1,0 +1,37 @@
+{
+  "id": "fx_0886",
+  "tags": {
+    "industry": "education",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "中学数学教师 / 教研组成员\n\n明德中学 初中数学教师（任教五年)\n- 任教初一至初三,带过三届毕业班\n- 担任备课组长两年,负责单元测验命题与错题分析\n- 设计了一套分层作业方案,在所带班级试行\n\n育才教育 兼职辅导老师（任教两年)\n- 负责小班数学辅导,跟踪学生月考成绩变化\n\n教育背景:师范大学 数学与应用数学专业 本科\n证书:高级中学教师资格证(数学)\n技能:命题与组卷、错题数据整理、家长沟通\n自评:关注学生薄弱点,习惯用数据看教学效果",
+  "jd": "明德中学招聘初中数学教师一名,要求具备三年以上一线教学经验。岗位职责:承担初中数学日常教学;参与备课组的单元命题与试卷分析;针对班级整体薄弱知识点设计针对性练习;与家长保持有效沟通。我们看重候选人能否用具体证据说明自己的教学干预带来了什么变化,而不是泛泛而谈。要求:数学相关专业本科及以上;持有相应学科教师资格证;有班级成绩数据分析经验者优先。",
+  "history": [
+    { "q": "你简历里提到设计了一套分层作业方案,能讲讲它具体是怎么做的、效果如何吗?" }
+  ],
+  "candidate_last_answer": "我把班级按上一次单元测的得分分成三档。基础档只做课本例题的同类变式,中间档加两道综合应用,拔高档再加一道压轴题的拆解步骤。这样布置了一个学期。期末时基础档学生的及格率从百分之六十八提到百分之八十一,而拔高档的平均分基本没掉,说明没有因为减量而拖慢尖子生。我每两周根据小测重新调一次分档。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 基础档学生的及格率从百分之六十八提到百分之八十一",
+      "must-be-question-type: counterfactual",
+      "expected-yield: whether the pass-rate gain is attributable to the tiered-homework design itself versus confounders (a new unit, more class time, regression to the mean) — force the candidate to explain how they isolated the intervention's effect"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "fx_0842",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "赵明浩 —— 前端工程师（中级）\n\n概述\n中级前端工程师，主要负责企业级中后台和 C 端 Web 应用的开发，熟悉 React 技术栈，做过性能优化和组件库建设。\n\n工作经历\n翰海互联 —— 前端工程师（2021至今）\n- 负责公司核心 SaaS 控制台的前端开发与维护\n- 参与了一次大版本的前端架构升级，推动了组件库的统一\n- 做过首屏加载性能优化，参与了前端监控体系的搭建\n\n微岩科技 —— 初级前端工程师（2019-2021）\n- 负责活动页和营销页的开发\n- 维护过公司的 H5 模板库\n\n技能\nReact, TypeScript, Webpack, Vite, Node.js, 微前端, 性能优化\n\n教育\n软件工程 本科",
+  "jd": "翰海互联招聘中级前端工程师，加入核心 SaaS 控制台团队。岗位职责：负责中后台核心模块的前端开发，参与前端架构演进与组件库建设，主导首屏与交互性能优化，搭建并维护前端监控与告警。我们希望候选人能用数据说清楚自己的工作：优化前后首屏时间是多少、bundle 体积降了多少、监控覆盖了哪些核心指标、你个人主导了哪一部分。我们看重工程深度和量化能力，不喜欢只讲方法论和架构名词的人。要求：3年以上前端经验，扎实的 React 与 TypeScript，理解浏览器渲染与性能优化原理，有组件库或微前端经验优先。",
+  "history": [
+    { "q": "先讲讲你在翰海负责的 SaaS 控制台，你具体 own 哪些模块？" },
+    { "q": "你提到参与了一次前端架构升级，这次升级解决的核心问题是什么？" },
+    { "q": "这次架构升级是谁主导的？你个人负责哪一块？" },
+    { "q": "你说做过首屏性能优化，优化前的首屏时间大概是多少？" },
+    { "q": "你具体做了哪些优化手段？优化后首屏时间降到多少？" },
+    { "q": "抛开架构名词，就告诉我一个你亲手改的、有明确数字提升的优化点。" }
+  ],
+  "candidate_last_answer": "这个其实要从整体架构来看。我们做的是一套体系化的前端性能治理方案——从工程化层面统一了构建，通过微前端做了应用解耦，再配合组件库的标准化和按需加载，整体上把研发效率和用户体验都拉了一个台阶。我个人比较注重的是架构的可演进性和工程规范的落地，所以这套方案是高内聚、可持续的。性能提升其实是水到渠成的结果。",
+  "session_state": {
+    "drilled_topics": ["控制台模块范围", "架构升级核心问题", "升级主导权归属", "首屏优化前基线", "优化手段与结果", "亲手改的量化优化点"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 23
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 性能提升其实是水到渠成的结果",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 一个候选人亲手改动的具体优化点及其首屏时间或 bundle 体积的前后数字，戳破『体系化治理』的架构话术，逼出可归因到个人的量化结果"
+    ]
+  }
+}

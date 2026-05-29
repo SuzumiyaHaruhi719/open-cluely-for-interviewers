@@ -1,0 +1,45 @@
+{
+  "id": "fx_0876",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "clean-STAR",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "Marcus Yeh｜Investment Banking Summer Analyst 候选人\n香港中文大学 量化金融专业 大三｜预计 2027 毕业｜GPA 3.85/4.0｜CFA Level I 已通过\n\n实习经历\n中金公司 (CICC) 投行部 TMT 组（2025 暑期）— Off-cycle Intern\n- Situation：组里在做一个半导体公司的 pre-IPO 融资，需要快速搭一个可比公司估值模型\n- Task：我负责整理 12 家 comparable companies 的财务数据并搭建 trading comps\n- Action：我从 Capital IQ 拉数据，统一口径做了 EV/EBITDA 和 EV/Revenue 的 multiples，标注了每家公司的 calendarization 调整\n- Result：模型被 associate 直接用进了 pitch book，可比公司中位数 multiple 测算误差经 VP 复核在 ±0.3x 以内\n\n香港某 PE 精品基金（2024 寒假）— Research Intern\n- Situation：基金在看一个消费零售的 buyout 标的\n- Task：我负责做行业 desktop research 和初步的 LBO 模型框架\n- Action：搭了一个 5-year LBO，做了 entry/exit multiple 和 leverage 的 sensitivity table\n- Result：base case 测出 IRR 约 23%，我的 sensitivity 分析被纳入投委会一页纸材料\n\n技能\nFinancial modeling (DCF / LBO / Comps)、Excel (含 VBA 基础)、Capital IQ、Bloomberg Terminal、PowerPoint pitch book。\n语言：中文、英文流利、粤语母语。\n\n荣誉\n校级 stock-pitch 比赛冠军（2024），书院 dean's list（2023、2024）。",
+  "jd": "We are recruiting a Summer Analyst for our Investment Banking Division (IBD), supporting the M&A and capital-markets coverage teams. 实习生 responsibilities include: 搭建和维护 financial models (DCF, comparable companies, precedent transactions), 制作 pitch books 和 client materials, 做 industry/company research, 以及支持 live deal 的 day-to-day execution. We look for penultimate-year students with strong accounting/finance fundamentals, meticulous attention to detail, the ability to work long hours under deadline, and at least one prior finance internship where you owned a deliverable end-to-end. 该岗位 reports to a deal-team associate. Strong performers receive return offers. This is a 10-week 全职 summer program.",
+  "history": [
+    { "q": "Walk me through your CICC internship — 那个半导体 pre-IPO 的项目你具体负责什么。" },
+    { "q": "你搭的那个 trading comps,12 家可比公司你是怎么选的? 选 comp 的标准是什么?" },
+    { "q": "你提到做了 calendarization 调整。能解释一下 calendarization 是什么,为什么要做吗?" },
+    { "q": "EV/EBITDA 和 EV/Revenue,对一家还没盈利的半导体公司,你更看哪个,为什么?" },
+    { "q": "那个 PE 的 LBO,你说 base case IRR 是 23%。这个 IRR 主要由哪几个 driver 决定?" },
+    { "q": "如果 exit multiple 比 entry 低 1 倍,你那个 IRR 会怎么变? 大概什么量级?" },
+    { "q": "DCF 里面,terminal value 一般占 enterprise value 的多大比例? 这说明什么问题?" },
+    { "q": "WACC 里的 cost of equity 你会怎么估? 用什么模型,beta 从哪来?" },
+    { "q": "好,问个开放的:你觉得一个好的 pitch book,最重要的一页是哪一页,为什么?" }
+  ],
+  "candidate_last_answer": "嗯……这个问题挺有意思的,在我回答之前,我其实很好奇——在你们 team 的实践里,你们觉得最重要的是哪一页? 是 valuation football field 还是 strategic rationale? 因为我做过的几个项目里感觉都不太一样。比如 CICC 那个半导体 pre-IPO,大家最盯的是 comps 那页;但我在 PE 那边做 buyout 的时候,投委会其实最关心 LBO 的 returns bridge;然后我之前打 stock-pitch 比赛拿冠军那次,评委又说最打动他们的是 catalyst 那一页。所以我自己也没完全想清楚,想先听听你的看法,这样我也能学到东西。",
+  "session_state": {
+    "drilled_topics": ["cicc-project-scope", "comp-selection", "calendarization-concept", "ebitda-vs-revenue-multiple", "lbo-irr-drivers", "exit-multiple-sensitivity", "terminal-value-share", "cost-of-equity-method"],
+    "current_competency_target": "valuation-judgement",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "valuation-judgement",
+    "missing_evidence": [
+      { "competency": "valuation-judgement", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "valuation-judgement", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 在我回答之前,我其实很好奇",
+      "must-be-question-type: teach-back",
+      "expected-yield: closing the question-reversal escape and the three-story scatter by forcing the candidate to commit to ONE most-important pitch-book page and defend WHY with a reasoned argument, rather than deflecting the judgement back to the interviewer and listing what different audiences happened to care about"
+    ]
+  }
+}

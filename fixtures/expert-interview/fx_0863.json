@@ -1,0 +1,40 @@
+{
+  "id": "fx_0863",
+  "tags": {
+    "industry": "marketing",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Staff Growth Marketing Lead | 增长营销专家\n\n核心能力 / Core competencies:\nGrowth Hacking · Performance Marketing · Full-funnel Optimization · CAC/LTV Modeling · Marketing Mix Modeling (MMM) · Multi-touch Attribution (MTA) · Paid Social · SEM · SEO · ASO · Programmatic · CRM Lifecycle · Marketing Automation · A/B Testing · Incrementality Testing · Retention Loops · Referral Engines · Cohort Analysis · LTV:CAC · ROAS · CPA · CPL · Marketo · HubSpot · Braze · Appsflyer · GA4 · Looker · SQL · Funnel Analytics · Brand Lift · Conversion Rate Optimization (CRO)\n\n经历 / Experience:\n云图科技 Staff Growth Marketing Lead（2021至今）—— 负责 paid acquisition 与 lifecycle marketing，统管七位数月度 media budget。\n潮汐传媒 Senior Growth Marketer（2018-2021）—— 主导 performance campaign 的 buildout 与 scale。\n教育：市场营销学士。",
+  "jd": "我们正在招聘一名 Staff Growth Marketing Lead，负责一款消费级 App 的全漏斗增长。You will own paid acquisition across paid social and SEM, the lifecycle/CRM program, and the incrementality testing roadmap, with full ownership of a seven-figure monthly media budget. 这个岗位需要候选人能独立设计并落地 incrementality experiment、对 CAC 与 blended ROAS 负最终责任，并能在 leadership review 上清楚说明自己个人（而非团队）在某次关键增长突破中具体做了什么决策。任职要求：五年以上增长营销经验，精通 MTA/MMM 取舍，有从零搭建 retention loop 的实战经验。",
+  "history": [
+    { "q": "先讲讲你现在在云图的 scope：你直接 own 哪些 channel、media budget 多大、向谁汇报。" },
+    { "q": "你简历上 keyword 很多。挑一个你最有代表性的 incrementality test，告诉我你具体设计了什么、怎么读 result。" },
+    { "q": "那次 CAC 的下降，具体是你做了哪个决策带来的？Walk me through your personal call。" }
+  ],
+  "candidate_last_answer": "嗯，那次 CAC 优化其实是我们整个 growth team 一起干出来的成果。We restructured the whole bidding strategy，然后 we 把预算重新分配到高 ROAS 的 channel，we also 上线了一套新的 lifecycle flow。整个团队配合得非常好，大家一起 review data、一起 iterate，最后 we 把 blended CAC 降了差不多三成。真的是 a team effort，我觉得功劳应该归于整个 squad，我们每个人都贡献了很多。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "incrementality-test-design", "cac-decision-ownership"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-sequencing", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我觉得功劳应该归于整个 squad",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to separate their personal decision from the team's — naming the one bidding or budget call they individually made and owned, rather than the collective 『we』 narrative"
+    ]
+  }
+}

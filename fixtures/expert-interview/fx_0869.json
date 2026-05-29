@@ -1,0 +1,53 @@
+{
+  "id": "fx_0869",
+  "tags": {
+    "industry": "data",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "clean-STAR",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "数据工程师 — 数据平台与实时管道\n\n星汉数据 数据工程师（2021年至今）\n- 情境：业务方依赖的离线报表延迟严重，核心指标常常要到次日中午才能产出，影响运营决策。\n- 任务：把核心业务指标的产出时效从 T+1 提升到准实时，并降低数据管道的故障率。\n- 行动：参与设计并落地了基于 Flink 的实时计算链路，重构了 Kafka 到数仓的写入逻辑，引入数据质量监控与告警，搭建了指标口径统一的指标平台。\n- 结果：核心指标延迟从平均十四小时降到五分钟以内，管道月度故障次数从十一次降到两次，支撑了七条业务线的实时看板。\n\n云启科技 初级数据工程师（2019至2021）\n- 负责 ETL 任务的开发与维护，支持数据分析团队的取数需求。\n\n技能：Flink、Spark、Kafka、Hive、ClickHouse、Airflow、Python、SQL、数据建模、数据质量治理。\n教育：计算机科学学士。",
+  "jd": "我们诚聘一名数据工程师,加入数据平台团队,负责实时数据管道与指标平台的建设。你将参与实时计算链路的设计与落地,owner 数据质量监控体系,并支撑多条业务线的实时看板。我们希望候选人能清楚说明在一个具体项目里,自己个人(而非团队)负责了哪一块、做了哪个关键的技术决策、以及用什么指标衡量了效果。任职要求:三年以上数据工程经验,熟悉 Flink/Kafka/数仓建模,有实时链路从零搭建或重构的实战经验,能独立排查并解决线上数据故障。",
+  "history": [
+    { "q": "先做个自我介绍,讲讲你目前在星汉负责的范围。" },
+    { "q": "你简历里实时链路这个项目,先讲讲背景:之前为什么是 T+1?" },
+    { "q": "这个项目的目标是谁定的,你在里面是什么角色?" },
+    { "q": "基于 Flink 的实时链路,整体架构是怎样的?" },
+    { "q": "Kafka 到数仓的写入逻辑,你重构了哪一部分?" },
+    { "q": "数据质量监控,具体监控哪些指标?" },
+    { "q": "延迟从 14 小时降到 5 分钟,这个延迟是怎么定义和测的?" },
+    { "q": "管道故障从 11 次降到 2 次,主要是哪类故障被消除了?" },
+    { "q": "指标口径统一,你怎么处理历史上不一致的口径?" },
+    { "q": "线上出过一次比较严重的数据故障吗?怎么排查的?" },
+    { "q": "选 Flink 而不是别的方案,这个决策是谁做的?" },
+    { "q": "ClickHouse 在你们链路里扮演什么角色?" },
+    { "q": "你和业务方在指标口径上有过分歧吗?" },
+    { "q": "如果重做一次,你会改架构里的哪一点?" },
+    { "q": "Airflow 和 Flink 在你们这边是怎么分工的?" },
+    { "q": "好,聚焦到 Flink 这条链路:这里面到底哪一块是你一个人设计并写完的?哪个关键技术决策是你拍板的?具体说,别用『我们』。" }
+  ],
+  "candidate_last_answer": "嗯……（停顿了几秒）抱歉,我想一下怎么讲比较准确……好。其实这条链路是我们整个数据平台团队一起做出来的。架构方案是我们组一起评审定的,Flink 的选型是我 leader 拍的板,我主要是跟着大家一起把 Kafka 那块的写入和监控做掉。说实话很多关键决策都是团队讨论出来的,我们配合得很好,每个人都补位。延迟和故障率的改善是大家共同的成果,我个人在里面就是出了一份力,不太好说哪一块完全是我一个人的功劳,毕竟是 team work。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "pipeline-background", "project-role", "flink-architecture", "kafka-rewrite", "data-quality-monitoring", "latency-definition", "failure-reduction", "metric-standardization", "incident-troubleshooting", "flink-decision", "clickhouse-role", "metric-disagreement", "architecture-redo", "airflow-flink-split"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-specificity", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 不太好说哪一块完全是我一个人的功劳,毕竟是 team work",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate past the 『team work』 deflection to name the one component they personally designed and coded end to end and the single technical decision they owned, separating it from the leader's Flink call and the group review"
+    ]
+  }
+}

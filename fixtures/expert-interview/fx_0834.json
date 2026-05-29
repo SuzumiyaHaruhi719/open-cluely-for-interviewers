@@ -1,0 +1,38 @@
+{
+  "id": "fx_0834",
+  "tags": {
+    "industry": "customer-support",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Jordan Ellis — Customer Support Associate\n\nSummary\nCustomer support associate with two years of experience in high-volume SaaS support, known for top-tier individual CSAT and fast resolution times.\n\nExperience\nPlexi (project-management SaaS) — Customer Support Associate (2022–present)\n- Maintained a personal CSAT of 96% and the fastest average handle time on the team.\n- Handled Tier 1 chat and email for billing, onboarding, and integrations questions.\n- Recognized as 'Agent of the Quarter' twice.\n\nNote on metrics: the 96% CSAT figure is the whole team's number, not mine individually — my own CSAT was around 82% and below the team median for most of last year, which is partly why I'm looking to move.\n\nQuora Cafe (retail) — Barista (2020–2022)\n- Customer-facing service in a fast-paced environment.\n\nSkills: Zendesk, live chat, email support, billing basics, de-escalation.\nEducation: Associate degree, Communications.",
+  "jd": "We're hiring a Customer Support Associate for our SaaS billing and onboarding queue. Reporting to a Support Team Lead, you'll handle Tier 1 chat and email and be measured on individual CSAT, first-response time, and resolution quality. We value candidates who represent their own track record accurately — in support, the difference between a team metric and a personal metric matters, and we'd rather hear a modest honest number than an inflated one. This interview is short and direct: we'll ask you to ground the claims on your resume in specifics about what was yours versus the team's. We're looking for one to two years of support experience, comfort with a help-desk tool like Zendesk, and clear, honest communication. Coaching is a big part of this role, so self-awareness about where you're strong and where you're still growing is essential.",
+  "history": [
+    { "q": "Your resume leads with a 96% CSAT and 'fastest handle time on the team,' but the note underneath says 96% was the team's number and your personal CSAT was around 82% and below median. Which figure actually represents your individual performance?" },
+    { "q": "I hear you — but I do need a straight answer before we go on: what was your own individual CSAT last year, roughly?" }
+  ],
+  "candidate_last_answer": "Can I ask you something first — when you say 'individual CSAT,' do you mean the rolling twelve-month average or just my best quarter? Because honestly, isn't a single agent's CSAT kind of a noisy metric anyway? What weight does your team even put on it versus things like resolution quality? I guess what I'm really asking is: why does the exact number matter so much to you here, when arguably the team result is what the customer actually experiences? Maybe you can tell me what number would even be 'good enough' in your eyes, and we can go from there?",
+  "session_state": {
+    "drilled_topics": ["team-vs-individual-csat-contradiction", "individual-csat-direct-ask"],
+    "current_competency_target": "honesty-self-representation",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "honesty-self-representation",
+    "missing_evidence": [
+      { "competency": "honesty-self-representation", "evidence_type": "metric" },
+      { "competency": "self-awareness", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: why does the exact number matter so much to you here",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the candidate's own individual CSAT figure stated plainly, cutting through the reversed questions to test whether they will own the lower personal number from their resume note rather than hide behind the team metric"
+    ]
+  }
+}

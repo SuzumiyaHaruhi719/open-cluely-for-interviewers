@@ -1,0 +1,48 @@
+{
+  "id": "fx_0879",
+  "tags": {
+    "industry": "sales",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Tyler Brooks — Sales Development Representative\nDallas, TX | tyler.brooks@example.com | (469) 555-0148\n\nExperience\nVertaCloud (B2B SaaS, HR-tech) — SDR (2023–present)\n- Situation: New SDR team building outbound pipeline for a mid-market HRIS product.\n- Task: Own outbound prospecting for the Southwest territory, hit 15 qualified meetings/month.\n- Action: Built a 6-touch email+call+LinkedIn cadence; segmented by company headcount; A/B tested subject lines.\n- Result: Averaged 22 qualified meetings/month (147% of quota); sourced pipeline that closed into multiple deals.\n\nCollegiate Apparel Co. (2022, part-time) — Inside Sales Rep\n- Situation: Campus bookstore reselling licensed apparel.\n- Task: Convert inbound web leads to phone orders.\n- Action: Followed a call script, upsold bundles.\n- Result: Top converter on a 5-person team for two quarters.\n\nSkills\nOutbound prospecting, Salesforce, Outreach.io, cold calling, discovery calls, LinkedIn Sales Navigator.\n\nEducation\nB.B.A. Marketing, University of North Texas (2018–2022).",
+  "jd": "We're hiring a Sales Development Representative (SDR) to generate qualified pipeline for our account-executive team at a fast-growing B2B SaaS company. You'll run outbound prospecting (email, phone, social), qualify inbound leads, book discovery meetings, and hand off to AEs with clean notes in Salesforce. We look for 1–2 years of SDR or comparable sales experience, a metrics-driven mindset, resilience to rejection, and the ability to articulate exactly how you built pipeline and what converted. You'll report to an SDR manager and hit a monthly meetings-booked quota. We value reps who know their own numbers cold.",
+  "history": [
+    { "q": "Tell me about your SDR role at VertaCloud — what's the product and who's your buyer?" },
+    { "q": "You averaged 22 qualified meetings a month. How does your company define a 'qualified' meeting?" },
+    { "q": "What was your meeting-to-opportunity conversion rate?" },
+    { "q": "Walk me through your 6-touch cadence — what's touch one versus touch six?" },
+    { "q": "Which channel actually booked the most meetings for you — email, call, or LinkedIn?" },
+    { "q": "What was your cold-call connect rate, roughly?" },
+    { "q": "You said you A/B tested subject lines. What was your best-performing one and its open rate?" },
+    { "q": "Of the pipeline you sourced, what dollar amount actually closed?" },
+    { "q": "How do you know that closed revenue traces back to your sourced meetings specifically?" },
+    { "q": "Tell me about a quarter you missed quota. What happened?" },
+    { "q": "Let's get specific on impact. Across your time at VertaCloud, what's the total revenue you'd say you're responsible for?" }
+  ],
+  "candidate_last_answer": "Honestly, I'd say I've driven north of three million in revenue for VertaCloud, easy. Maybe more. Every deal that came through the Southwest basically had my fingerprints on it, so when you add it all up it's massive — I was single-handedly carrying a huge chunk of the team's number. My meetings converted at like an insane rate, way above everybody else, and my emails were getting open rates most reps would kill for. I don't have the exact Salesforce figures in front of me, but trust me, leadership knew I was the engine. If you talk to anyone there they'll tell you the pipeline basically would've collapsed without me.",
+  "session_state": {
+    "drilled_topics": ["role-product-buyer", "qualified-meeting-definition", "meeting-to-opp-rate", "cadence-structure", "best-channel", "cold-call-connect-rate", "subject-line-ab-test", "closed-dollar-amount", "attribution-logic", "missed-quota-quarter"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity-calibration", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I've driven north of three million in revenue for VertaCloud, easy",
+      "must-be-question-type: metric-pin",
+      "expected-yield: forcing the candidate to decompose the unverifiable $3M+ claim into auditable units — how many meetings he sourced, what share became closed-won opportunities, average deal size, and the Salesforce attribution that ties specific closed deals to his sourced meetings rather than the whole territory's revenue"
+    ]
+  }
+}

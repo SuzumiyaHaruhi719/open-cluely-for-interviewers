@@ -1,0 +1,54 @@
+{
+  "id": "fx_0846",
+  "tags": {
+    "industry": "sales",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Devon Okafor — Account Executive (Mid-Market)\n\nKEYWORDS\nSaaS sales, mid-market, enterprise, MEDDPICC, BANT, Challenger, value selling, pipeline generation, outbound, inbound, quota attainment, ARR, ACV, win rate, sales cycle, forecasting, CRM hygiene, multithreading, champion building, mutual action plan, land-and-expand, net revenue retention, discovery, demo, negotiation, closing\n\nEXPERIENCE\nHelixCloud — Account Executive, Mid-Market (2021-present)\n- Carry a mid-market quota selling a SaaS platform; full-cycle from prospecting to close\n- Apply MEDDPICC and value selling across multithreaded enterprise deals\n- Maintain CRM hygiene and accurate forecasting through the pipeline\n\nBrightWave Software — Sales Development Rep (2019-2021)\n- Outbound prospecting, qualified inbound leads, booked discovery meetings for AEs\n\nSKILLS\nMEDDPICC, Challenger, BANT, value selling, forecasting, CRM (Salesforce), multithreading\n\nEDUCATION\nBA, Communications",
+  "jd": "HelixCloud is hiring a Mid-Market Account Executive to run full-cycle SaaS deals from prospecting to close. You will own a quota, generate pipeline, run disciplined discovery, multithread across buying committees, and forecast accurately. We want an AE who can answer the question asked, crisply: what your quota was, what you attained, your win rate, your average deal size and cycle length, and the one deal mechanic that made a specific win happen. We value time discipline in a sales conversation — getting to the point — as much as we value the result. You will partner with SEs and sales leadership and keep CRM data clean. Requirements: 2-4 years closing SaaS deals, fluency with a qualification framework (MEDDPICC/BANT/Challenger), and a track record you can quantify.",
+  "history": [
+    { "q": "Let's start with your number at HelixCloud — what's your annual quota?" },
+    { "q": "And your attainment against it last year?" },
+    { "q": "What's your average deal size, in ACV?" },
+    { "q": "What's your typical sales cycle length, in days?" },
+    { "q": "What's your win rate from qualified opportunity to closed-won?" },
+    { "q": "You list MEDDPICC — in your last big win, who was the economic buyer and how did you confirm it?" },
+    { "q": "Tell me about that deal: what was the compelling event that drove urgency?" },
+    { "q": "How many stakeholders did you multithread across in that account?" },
+    { "q": "Where did the deal nearly stall, and what did you do?" },
+    { "q": "What did the procurement or negotiation phase look like — any discounting?" },
+    { "q": "How did you build the champion, and what did they do for you internally?" },
+    { "q": "What was the mutual action plan — did the customer actually commit to dates?" },
+    { "q": "How accurate was your forecast on that deal — did it close in the quarter you called?" },
+    { "q": "Across your whole pipeline, how do you decide what to forecast as commit versus best-case?" },
+    { "q": "Give me a deal you lost and the real reason you lost it." },
+    { "q": "What would you have done differently on that lost deal?" },
+    { "q": "Back to mechanics: in that big win, what was the single move that most advanced the deal?" },
+    { "q": "We're tight on time — in one or two sentences, just name that single deal-advancing move." }
+  ],
+  "candidate_last_answer": "Yeah, totally — so the single move, okay. But it's funny, because this whole deal reminds me of something that happened earlier in my career at BrightWave, where I was an SDR, and there was this whole saga with a prospect who ghosted us for like three months and then came back, and it taught me so much about persistence — and actually that ties into how I think about the buyer's journey generally, you know, because buyers today are so much more informed than they were five years ago, there's all this research showing they're 70% through the process before they even talk to sales, which honestly is a whole conversation about how the SDR role is changing, and don't even get me started on AI in prospecting right now, because I have a lot of thoughts there too...",
+  "session_state": {
+    "drilled_topics": ["quota", "attainment", "acv", "sales-cycle", "win-rate", "economic-buyer", "compelling-event", "multithreading-count", "deal-stall", "negotiation-discount", "champion-building", "mutual-action-plan", "forecast-accuracy", "commit-vs-bestcase", "lost-deal", "lost-deal-counterfactual", "single-deal-advancing-move", "name-the-move-concisely"],
+    "current_competency_target": "deal-mechanics",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "deal-mechanics",
+    "missing_evidence": [
+      { "competency": "deal-mechanics", "evidence_type": "mechanism" },
+      { "competency": "communication-discipline", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: this whole deal reminds me of something that happened earlier in my career at BrightWave",
+      "must-be-question-type: teach-back",
+      "expected-yield: the one specific deal-advancing move in the big win stated in a sentence or two, forcing the candidate off the SDR-era tangent and back onto the concrete mechanic actually asked for"
+    ]
+  }
+}

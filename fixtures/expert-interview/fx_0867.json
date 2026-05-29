@@ -1,0 +1,50 @@
+{
+  "id": "fx_0867",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "Director of Academic Programs — higher-ed and online learning\n\nBrightpath University (online division) — Director of Academic Programs (2019-present)\n- Own the academic program portfolio for the online college: program design, faculty governance, and accreditation readiness\n- Led the launch of several new online degree programs and a competency-based learning track\n- Partner with the provost and enrollment on program viability and student outcomes\n- Chair the curriculum committee and manage relationships with the regional accreditor\n\nMeridian College — Associate Dean, then Assistant Provost (2013-2019)\n- Oversaw general-education redesign and the assessment program\n- Built the institutional learning-outcomes framework\n\nPrior: faculty roles in the humanities; department chair for three years.\n\nFocus areas: program design, accreditation, faculty governance, student retention, assessment, online pedagogy\nEducation: PhD; certificate in higher-ed leadership",
+  "jd": "Brightpath is seeking a Director of Academic Programs to own the academic quality and growth of our online degree portfolio. You will lead program design and launch, drive accreditation readiness with our regional accreditor, and partner with enrollment and student success on retention and completion outcomes. The role owns program-level metrics — completion rate, term-to-term persistence, and time-to-degree — and is accountable for defending program viability to the cabinet. We need a leader who can speak precisely to what they personally drove on a program launch, the concrete retention or completion numbers they moved, and the specific accreditation decisions they navigated. Strong candidates can stay on the question and give specifics rather than philosophy.",
+  "history": [
+    { "q": "Tell me about your current scope at Brightpath — the portfolio you own and who you report to." },
+    { "q": "Walk me through one online program you launched end to end. What was the program?" },
+    { "q": "What was the enrollment target for that program, and did it hit?" },
+    { "q": "Tell me about the competency-based track. What problem was it solving?" },
+    { "q": "How did you measure whether the CBE track improved student outcomes?" },
+    { "q": "Describe a specific accreditation challenge you navigated with your regional accreditor." },
+    { "q": "What was the accreditor's specific concern, and what did you change?" },
+    { "q": "Give me a retention number you personally moved and how." },
+    { "q": "Tell me about a program you decided to sunset. What drove the call?" },
+    { "q": "How do you handle faculty resistance to a curriculum change?" },
+    { "q": "What's a program-viability decision you got wrong?" },
+    { "q": "Walk me through your relationship with the provost on a contested decision." },
+    { "q": "Let's get concrete on retention. For the competency-based track specifically: what was term-to-term persistence before, what was it after, and what exact intervention of yours moved it?" }
+  ],
+  "candidate_last_answer": "Persistence is such a fascinating topic and honestly it connects to this whole philosophy I've developed over the years about the student journey. You know, when I was a department chair back in the day, I had this one student — brilliant kid, first-gen, reminded me a lot of myself actually — and that experience really shaped how I think about belonging and mattering in the online space. And that got me reading all the Tinto literature, and then I went to this conference in 2016, incredible keynote, changed my whole frame on retention as an ecosystem rather than a number. As for the actual persistence figures on the CBE track, I'd have to be careful there — those specific numbers are covered under an NDA from Brightpath, so I can't share the exact before-and-after. But philosophically, retention is really about the whole human.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "program-launch", "enrollment-target", "cbe-track-rationale", "cbe-outcomes-measurement", "accreditation-challenge", "accreditor-concern", "retention-number", "program-sunset", "faculty-resistance", "viability-mistake", "provost-relationship"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-specificity", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: retention as an ecosystem rather than a number",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pull the candidate back from the personal-philosophy tangent and the NDA hedge to a usable persistence answer — even a directional range or the specific intervention mechanism for the CBE track — without requiring confidential exact figures"
+    ]
+  }
+}

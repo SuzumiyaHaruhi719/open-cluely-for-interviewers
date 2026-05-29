@@ -1,0 +1,42 @@
+{
+  "id": "fx_0854",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "VP of Data & Analytics\n\n概述：负责公司数据平台、数据科学与 BI 团队的整体战略与交付，向 CTO 汇报，管理约 60 人的组织。\n\n经历：\n- Lumina Commerce — VP, Data & Analytics (2021 至今)\n  · Situation: 接手时数据团队分散在各业务线，没有统一的 data warehouse，report 口径混乱。\n  · Task: 在 18 个月内建成统一的 data platform，并把 self-serve analytics 覆盖率从约 15% 提升到 60%。\n  · Action: 主导从 legacy ETL 迁移到 ELT（Snowflake + dbt），建立 data contract 与 SLA，组建 platform/DS/BI 三条线。\n  · Result: 统一仓库上线后，核心 dashboard 的 data freshness 从 T+1 缩短到近实时（小时级），self-serve 覆盖率达到 58%，团队 ad-hoc 取数请求下降约 40%。\n- Northgate Media — Director of Data Science (2017-2021)\n  · 带领 DS 团队搭建 churn 预测与 LTV 模型,支撑 marketing 的预算分配决策。\n- Apex Mobile — Senior Data Scientist (2014-2017)\n\n技能：data platform 架构、Snowflake/dbt、experimentation、团队搭建、data governance\n教育：理工科院校 统计学硕士",
+  "jd": "我们正在寻找一位 VP of Data & Analytics，向 CTO 汇报，负责一个约 50 人的数据组织（含 data platform、data science、analytics engineering 与 BI）。该岗位拥有数据战略、平台投资与团队建设的完整责任，需要对 data platform 的可靠性、self-serve analytics 的普及率、以及关键业务模型的落地效果负责。我们希望候选人有从零或半成品状态搭建现代 data stack（如 Snowflake/dbt/实时管道）的实操经验，能在 platform 迁移中清晰权衡 build-vs-buy、成本与交付速度，并能用具体数字和时间线说明其决策与结果。你需要整合分散在各 BU 的数据职能，建立 data governance 与 SLA 体系，并向高管层汇报数据投资回报。我们尤其看重候选人在关键 tradeoff 上的判断质量。",
+  "history": [
+    { "q": "先讲讲你现在在 Lumina 的 scope —— 团队规模、组织结构、以及你向谁汇报。" },
+    { "q": "你简历里写了 18 个月建成统一 data platform。先说说接手时最大的痛点是什么？" },
+    { "q": "从 legacy ETL 迁移到 Snowflake + dbt 的 ELT,这个 build-vs-buy 是怎么决策的？" },
+    { "q": "迁移过程中 self-serve 覆盖率从 15% 到 58%,这个数字是怎么测出来的？口径是什么？" },
+    { "q": "迁移这么大的动作,你是怎么控制风险、保证业务不中断的？" },
+    { "q": "我想深入问一个 tradeoff:你提到 data freshness 从 T+1 做到了小时级。为什么是小时级而不是做真正的 real-time streaming?这中间你权衡了什么?" }
+  ],
+  "candidate_last_answer": "因为对我们的 use case 来说,真正的 sub-second streaming 是 over-engineering。我们做了一个量化判断:核心 dashboard 的消费者是运营和 finance,他们的决策周期是『按天』和『按小时』的,小时级 freshness 已经覆盖了 95% 的场景。而上 streaming 要额外引入 Kafka + Flink 这套栈,预估每年 infra 成本增加约 40 万人民币,还要再招两个 streaming 方向的工程师,team 当时撑不起这个 maintenance burden。所以我们用 micro-batch(dbt 每 30 分钟跑一次增量)先把 80% 的价值拿到手,把 real-time 留给后续真正需要它的 fraud 和 risk 场景再单独立项。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "platform-pain-point", "build-vs-buy-decision", "self-serve-metric-definition", "migration-risk-control", "freshness-tradeoff"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 把 real-time 留给后续真正需要它的 fraud 和 risk 场景再单独立项",
+      "must-be-question-type: counterfactual",
+      "expected-yield: probe the boundary of an otherwise-sharp answer — under what concrete trigger (latency SLA, fraud-loss threshold, data volume) the candidate would actually greenlight the streaming stack they deferred, testing whether the deferral was a reasoned threshold or a convenient cost dodge"
+    ]
+  }
+}

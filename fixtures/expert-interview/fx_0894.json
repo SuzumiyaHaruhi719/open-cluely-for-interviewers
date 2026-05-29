@@ -1,0 +1,40 @@
+{
+  "id": "fx_0894",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Junior Backend Engineer\n\nSkills: Java, Spring Boot, Python, Node.js, TypeScript, REST, GraphQL, gRPC, PostgreSQL, MySQL, MongoDB, Redis, Kafka, RabbitMQ, Docker, Kubernetes, AWS (EC2, S3, RDS, Lambda), Terraform, CI/CD, GitHub Actions, microservices, event-driven architecture, DDD, TDD, unit testing, integration testing, JUnit, Mockito, observability, Prometheus, Grafana, distributed systems, caching, message queues.\n\nExperience:\nNimbus Retail Tech — Junior Backend Engineer (1.5 years)\n- Work on the order-service team; contribute to REST APIs and Kafka consumers\n- Wrote unit and integration tests; participate in on-call rotation\nStudent / Bootcamp projects\n- Built a URL shortener and a chat app\n\nEducation: B.S. Computer Science.\nCertifications: AWS Certified Developer Associate.",
+  "jd": "Nimbus Retail Tech is hiring a Junior Backend Engineer for the order-service team. You will build and maintain REST endpoints, write Kafka consumers for order events, and add tests. We value engineers who can explain their own code clearly and calmly — in the loop we will pick one thing from your experience and ask you to go deep on the mechanism: how a consumer handles a failure, why you chose a data structure, what happens under retry. Required: 1-2 years backend experience, solid Java or similar, comfort with relational databases, and the ability to reason about a system out loud without losing the thread. We care more about depth of understanding than buzzword breadth.",
+  "history": [
+    { "q": "Tell me about the order-service work you do at Nimbus." },
+    { "q": "You listed Kafka. Walk me through a consumer you've actually written." },
+    { "q": "What happens in that consumer if processing a message fails partway through?" },
+    { "q": "Let's go deep on exactly one thing: when your Kafka consumer fails mid-message, walk me step by step through what happens to the offset and how a duplicate is prevented." }
+  ],
+  "candidate_last_answer": "Right, yeah, so the offset, um — OK so basically Kafka has offsets, which track where you are in the partition, and so when you consume you kind of move forward, and... sorry, let me back up. So we use consumer groups, and there's auto-commit, I think ours might be on, or maybe we turned it off, I'd have to check the config honestly. And for duplicates, um, idempotency is the big thing everyone talks about, so you want your processing to be idempotent, which we sort of do with the database, like we check if the order exists first usually. There's also dead letter queues which I know are a best practice. I get a little fuzzy on the exact commit timing, it's one of those things I keep meaning to really nail down.",
+  "session_state": {
+    "drilled_topics": ["order-service-scope", "kafka-consumer-walkthrough", "consumer-failure-handling"],
+    "current_competency_target": "domain-depth",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "domain-depth",
+    "missing_evidence": [
+      { "competency": "domain-depth", "evidence_type": "mechanism" },
+      { "competency": "domain-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: auto-commit, I think ours might be on, or maybe we turned it off",
+      "must-be-question-type: teach-back",
+      "expected-yield: settle the candidate and force a concrete mechanism — what their service's commit configuration actually is, the precise ordering of offset commit relative to DB write, and exactly how the existence check enforces idempotency under a redelivery"
+    ]
+  }
+}

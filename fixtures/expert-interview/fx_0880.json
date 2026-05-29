@@ -1,0 +1,40 @@
+{
+  "id": "fx_0880",
+  "tags": {
+    "industry": "healthcare",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "林佳怡 Jiayi Lin — 临床数据经理 / Clinical Data Manager\n上海 | jiayi.lin@example.com\n\n经历\n某 CRO 公司 (2020–今) — Clinical Data Manager\n- 负责 Phase II/III 肿瘤试验的 data management，带 4 人 team\n- 主导 2 个 oncology 项目的 EDC build (Medidata Rave) 与 database lock\n- 写 DMP、data validation specs，做 SAE reconciliation\n\n某药企 (2017–2020) — CRA / 临床监查员\n- site monitoring，source data verification\n\n技能\nEDC (Medidata Rave)、SDTM、CDISC、SAS (基础)、query management、GCP。\n\n证书\nGCP 认证；CCDM (Certified Clinical Data Manager)。\n\n教育\n复旦大学，公共卫生硕士 (2015–2017)；生物科学学士 (2011–2015)。",
+  "jd": "某创新药企招聘一位资深临床数据经理（Staff-level Clinical Data Manager），负责多个肿瘤管线试验的端到端数据管理。岗位职责：主导 EDC 系统搭建与 database lock、撰写 DMP 与 edge-check specs、管理 query 与 data cleaning、做 SAE/AE reconciliation、并跨 biostatistics、clinical operations、pharmacovigilance 协作。我们期望候选人有 5 年以上 CDM 经验、独立带过至少两个 study 到 database lock、熟悉 CDISC 标准与 GCP，并能在 timeline 压力下保证 data quality。该岗位向数据管理总监汇报，需 mentor 初级 DM。",
+  "history": [
+    { "q": "先讲讲你现在负责的 oncology 试验 — 几个项目、什么 phase、你 team 多大。" },
+    { "q": "你主导过 2 个项目的 database lock。挑最近一个,讲讲 lock 之前你最担心的 data issue 是什么。" },
+    { "q": "那次 lock 前的 SAE reconciliation,你和 PV team 之间有没有出现过对不上的 case? 具体怎么 resolve 的?" }
+  ],
+  "candidate_last_answer": "嗯……SAE reconciliation 这块……其实那次,怎么说呢,就是 PV 那边的 safety database 和我们 EDC 里的记录,有几个 case 的 onset date 对不上,然后……嗯,我当时其实有点慌,因为快到 lock 了嘛,然后我就……我先把所有 mismatch 的 case 列了个表,啊不对,其实是我们 team 一个同事先列的,我后来 review 的……然后我们就一个一个去 query site,但是有的 site 回得特别慢,我就……反正那段时间天天加班,我记得有个 case 是因为 site 把 hospitalization 的日期填成了出院日期……抱歉我有点紧张,我想想啊……最后是都对齐了的,具体几个 case 我一下记不太清了,大概……三四个吧? 总之 lock 是按时完成的。",
+  "session_state": {
+    "drilled_topics": ["oncology-study-scope", "pre-lock-data-concern", "sae-reconciliation-mismatch"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "diagnostic-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 啊不对,其实是我们 team 一个同事先列的,我后来 review 的",
+      "must-be-question-type: action-attribution",
+      "expected-yield: separating what the candidate personally did from what her teammate did on the SAE reconciliation — who actually identified the onset-date mismatches, who drove the site queries, and what specifically she owned versus reviewed, cutting through the nervous self-correction"
+    ]
+  }
+}

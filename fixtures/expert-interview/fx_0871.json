@@ -1,0 +1,54 @@
+{
+  "id": "fx_0871",
+  "tags": {
+    "industry": "education",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "self-contradictory",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Director of Student Success — K-12 charter network\n\nSummit Rise Charter Network — Director of Student Success (2018-present)\n- Own student outcomes across the network's schools: intervention programs, attendance, and graduation rate\n- Network size: 9 schools (a later line says 12 schools)\n- Raised the network graduation rate from 71% to 94% (elsewhere stated as reaching 88%)\n- Launched a multi-tiered intervention (MTSS) program and a data-driven early-warning system\n\nHorizon Public Schools — Assistant Director of Curriculum (2013-2018)\n- Led literacy intervention and the benchmark assessment program\n\nSummary: 10 years in education leadership (timeline below totals ~12 years); led student success for a network of 12 schools; grew graduation rate by over 20 points.\nFocus: MTSS, attendance, graduation, assessment, family engagement\nEducation: EdD; principal certification",
+  "jd": "Summit Rise seeks a Director of Student Success to own outcomes across our K-12 charter network. You will lead our multi-tiered intervention system, the early-warning/attendance program, and graduation initiatives, partnering with principals on school-level execution. The role owns network metrics — graduation rate, chronic-absenteeism rate, and the share of students on-track — and is accountable for defending those numbers to the board and authorizer. We need a leader who can speak precisely and consistently to baselines and gains, attribute their personal interventions, and ground big claims in verifiable, auditable data. Candidates should answer the question asked with specifics.",
+  "history": [
+    { "q": "Tell me about your current scope at Summit Rise — how many schools and who you report to." },
+    { "q": "Your resume lists both 9 and 12 schools. How many are actually in the network you serve?" },
+    { "q": "You cite the grad rate going to 94% in one place and 88% in another. What's the real current number?" },
+    { "q": "What was the graduation rate the year before you started the interventions?" },
+    { "q": "Walk me through the MTSS program. What did you actually stand up?" },
+    { "q": "What was the early-warning system flagging, and on what data?" },
+    { "q": "Pick one school. What was its grad rate before and after?" },
+    { "q": "What specific intervention moved that school's number?" },
+    { "q": "How did you isolate your program's effect from demographic or policy changes?" },
+    { "q": "Tell me about chronic absenteeism — what was the baseline rate?" },
+    { "q": "What did you personally do to move attendance?" },
+    { "q": "Describe a school where the intervention did not work." },
+    { "q": "How do you handle a principal who resists the MTSS model?" },
+    { "q": "What's a student-success decision you got wrong?" },
+    { "q": "How do you present these numbers to your authorizer?" },
+    { "q": "Your summary says 10 years but the timeline totals 12. Which is right?" },
+    { "q": "Let's ground the headline claim. The network graduation rate — give me the exact baseline year, the exact starting rate, the current rate, the denominator of students, and the data source the authorizer audits. Precisely." }
+  ],
+  "candidate_last_answer": "Honestly the numbers speak for themselves — we took a network that was basically failing and turned it into one of the highest-performing in the entire state, top 1% easily, maybe the best turnaround anyone's ever seen at this scale. Graduation is essentially 100% now across the board, chronic absenteeism is virtually eliminated, every single student is on-track. But let me turn it around on you for a second: in your experience interviewing leaders, how often do you actually see someone deliver outcomes at this level? Because I'd argue what we did is pretty much unprecedented, and I'm curious whether you've seen anyone post numbers like ours.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "school-count-contradiction", "grad-rate-contradiction", "grad-baseline-year", "mtss-program", "early-warning-data", "school-level-grad", "school-intervention", "causal-isolation", "absenteeism-baseline", "attendance-personal-action", "failed-intervention", "principal-resistance", "wrong-decision", "authorizer-presentation", "tenure-contradiction"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 53
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Graduation is essentially 100% now across the board",
+      "must-be-question-type: metric-pin",
+      "expected-yield: refuse the deflecting counter-question and force the inflated 『essentially 100%』 claim down to auditable specifics — exact baseline year and rate, current rate, the student denominator, and the authorizer-verifiable data source"
+    ]
+  }
+}

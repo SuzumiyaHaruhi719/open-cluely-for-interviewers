@@ -1,0 +1,49 @@
+{
+  "id": "fx_0870",
+  "tags": {
+    "industry": "data",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Senior Data Scientist — arguably the most impactful DS hire my company has ever made\n\nNova Retail Analytics (2020-present) — Senior Data Scientist\n- Single-handedly built the demand-forecasting system that the entire merchandising org now runs on\n- My models are universally regarded as the gold standard across the company\n- Credited by leadership with saving the company millions, full stop\n- The go-to person for any hard modeling problem; other teams line up for my time\n\nDataForge (2017-2020) — Data Scientist\n- Built best-in-class churn and recommendation models that crushed every baseline\n- Mentored junior scientists who all credit me with their growth\n\nSkills: forecasting, causal inference, ML engineering, A/B testing, Python, PyTorch, SQL, Spark, MLOps\nEducation: MS Statistics; numerous Kaggle finishes",
+  "jd": "Nova is hiring a Senior Data Scientist to own demand forecasting for our retail merchandising organization. You will own the forecasting models end to end — feature engineering, model selection, backtesting, and the production pipeline — and partner with merchandising and supply chain on inventory decisions. The role is accountable for forecast accuracy (WAPE/bias) and its downstream impact on stockouts and markdown. We want a scientist who can give a complete account of a project: the business situation, the goal, exactly what they built and decided, and the measured accuracy and business result. Strong candidates quantify the result precisely rather than asserting impact.",
+  "history": [
+    { "q": "Tell me about your current role at Nova and what you own." },
+    { "q": "Your resume says you 'single-handedly built' the forecasting system. Let's start with the business problem it solved." },
+    { "q": "What was the forecasting approach before you arrived?" },
+    { "q": "What model class did you choose, and why that over the alternatives?" },
+    { "q": "How did you do feature engineering for demand seasonality and promotions?" },
+    { "q": "How did you backtest it — what was your validation scheme?" },
+    { "q": "What accuracy metric did you optimize, and what was the baseline?" },
+    { "q": "How did the forecast connect to actual inventory decisions?" },
+    { "q": "Tell me about a time the model failed in production. What happened?" },
+    { "q": "Who else contributed to the system, and what did they do?" },
+    { "q": "How did you get merchandising to trust and adopt the forecasts?" },
+    { "q": "What's a modeling decision you later regretted?" },
+    { "q": "Give me the full story on impact: the situation, your goal, what you built, and the measured result — forecast accuracy before and after, and the dollar or stockout impact. Numbers, please." }
+  ],
+  "candidate_last_answer": "Sure. The situation was that merchandising was forecasting demand in spreadsheets, gut-feel plus last year's sales, so stockouts and markdowns were both bad. My goal was to build a proper statistical forecasting system the org could actually trust and run on. So I built it: I went with a gradient-boosted model on engineered features — lagged sales, promo calendars, price, weather, holiday flags — and I set up a rolling-origin backtest by SKU-store, and I wired it into the weekly replenishment run with a monitoring layer. I owned the whole thing end to end. It became the system the merchandising org runs on today, and honestly it's some of the best work I've done. People across the company point to it as the model to beat.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "business-problem", "prior-approach", "model-choice", "feature-engineering", "backtest-scheme", "accuracy-metric", "inventory-connection", "production-failure", "contributors", "adoption", "regretted-decision"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 43
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it's some of the best work I've done",
+      "must-be-question-type: metric-pin",
+      "expected-yield: supply the missing Result of an otherwise complete STAR answer — the actual forecast accuracy (WAPE/bias) before and after and the downstream stockout or markdown impact in numbers, since the candidate gave a strong S/T/A but closed on self-praise with no figure"
+    ]
+  }
+}

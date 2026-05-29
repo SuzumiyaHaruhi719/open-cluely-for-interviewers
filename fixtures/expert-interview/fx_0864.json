@@ -1,0 +1,56 @@
+{
+  "id": "fx_0864",
+  "tags": {
+    "industry": "healthcare",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Clinical Operations Manager | 临床运营\n\n仁和医疗集团 Clinical Operations Manager（2020-至今）\n- 负责三家门诊中心的 patient throughput 与 care-team scheduling\n- 主导 EHR 从 legacy 系统迁移到 Epic 的 rollout（注：另一段经历中写为 Cerner）\n- 把平均 patient wait time 从 45 分钟降到 18 分钟\n- 团队规模：直接管理 12 名 care coordinator（简历摘要处又写 8 名）\n\n康泰诊所 Operations Lead（2017-2020）\n- Owned front-desk operations 与 referral management\n- 在职期间院区从 2 家扩张到 5 家\n\n摘要：拥有 6 年临床运营经验(下方时间线累计为 8 年),领导过一支 8 人团队,主导过一次全院 EHR 上线。\n技能:Lean healthcare、patient flow optimization、EHR implementation、HIPAA compliance、staff scheduling。\n教育:公共卫生硕士(MPH)。",
+  "jd": "我们诚聘一名 Clinical Operations Manager,负责一家多院区门诊网络的运营效率。You will own patient throughput, care-team scheduling, and the operational side of an EHR optimization, partnering with clinical leadership on access and wait-time targets. 这个岗位需要候选人对 patient flow 数据有 hands-on 的掌握,能清楚说明自己主导过哪个具体系统的上线、团队到底多大、关键指标的真实 baseline 与改善幅度。任职要求:四年以上临床或医疗运营经验,熟悉 EHR implementation 与 HIPAA 合规,能在不依赖套话的情况下讲清楚一次真实的流程改造。",
+  "history": [
+    { "q": "先做个自我介绍,讲讲你目前在仁和的角色和你负责的院区数量。" },
+    { "q": "你简历里 EHR 迁移一处写 Epic、一处写 Cerner,到底上线的是哪一个系统?" },
+    { "q": "团队规模也有出入——摘要写 8 人,正文写 12 人,你直接管理的到底是几个人?" },
+    { "q": "patient wait time 从 45 分钟降到 18 分钟,这个 baseline 是怎么测的?" },
+    { "q": "讲一次你在 EHR 上线时遇到的最大阻力,你具体怎么处理的?" },
+    { "q": "care-team scheduling 你做了什么具体改动?" },
+    { "q": "你提到 throughput 提升,用的是哪个 metric 口径?" },
+    { "q": "康泰那段院区从 2 家扩到 5 家,你在扩张里负责哪一块?" },
+    { "q": "HIPAA 合规方面你踩过什么坑?" },
+    { "q": "Lean 在你的工作里具体长什么样?举个例子。" },
+    { "q": "你和 clinical leadership 出现分歧时,举一个例子。" },
+    { "q": "wait time 的改善里,排班和分诊各自贡献了多少?" },
+    { "q": "上线 Epic 还是 Cerner,training 是你设计的吗?" },
+    { "q": "你说 6 年经验,但时间线加起来是 8 年,差异在哪?" },
+    { "q": "referral management 你优化了哪个环节?" },
+    { "q": "如果让你重做一次 EHR 上线,你会改什么?" },
+    { "q": "你最近一个季度最在意的运营指标是什么?" },
+    { "q": "好,具体讲讲那次 EHR 上线——到底是哪个系统、你个人负责哪一块、上线后第一个月的真实指标变化。Don't give me the elevator pitch,给我细节。" }
+  ],
+  "candidate_last_answer": "Great question。So at the end of the day,我的 philosophy 就是 patient-centric、data-driven、outcome-obsessed。我们做的是一次 best-in-class 的 EHR transformation,真正做到了 seamless integration 和 end-to-end optimization。It was a journey,我们 leveraged 了 cross-functional synergy,drove operational excellence,然后 unlocked 了巨大的 efficiency gain。整个 rollout 就是教科书级别的 change management,我把 clinical 和 ops 完美 align 在一起,实现了 win-win。This is exactly the kind of value I bring to the table。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "ehr-system-contradiction", "team-size-contradiction", "wait-time-baseline", "ehr-resistance", "scheduling-changes", "throughput-metric", "expansion-role", "hipaa", "lean-example", "leadership-conflict", "wait-time-attribution", "training-ownership", "tenure-contradiction", "referral-optimization", "ehr-redo", "recent-metric"],
+    "current_competency_target": "execution-specificity",
+    "elapsed_minutes": 51
+  },
+  "ground_truth": {
+    "competency_target": "execution-specificity",
+    "missing_evidence": [
+      { "competency": "execution-specificity", "evidence_type": "named-entity" },
+      { "competency": "execution-specificity", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们做的是一次 best-in-class 的 EHR transformation",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: cut through the buzzword packaging and force one concrete fact — the actual EHR product name (Epic vs Cerner), the candidate's specific workstream, and a real first-month metric change with its baseline"
+    ]
+  }
+}

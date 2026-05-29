@@ -1,0 +1,43 @@
+{
+  "id": "fx_0851",
+  "tags": {
+    "industry": "legal",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "公司法务 / 合规专员\n\n个人总结：一名经验丰富的公司法律顾问，专注于商事合同、合规体系建设与争议解决，擅长在复杂监管环境下为业务保驾护航。\n\n工作经历：\n弘毅资本 —— 法务经理（2019 年 6 月至今，约五年）\n负责投资协议、股权交易文件的起草与审核，主导多个并购项目的法律尽职调查，搭建公司合规制度体系。\n\n安达科技 —— 法务专员（2017 年至 2020 年）\n负责日常商务合同审核，处理劳动争议与知识产权纠纷，协助外部律师推进诉讼案件。\n\n（注：本人自 2015 年大学毕业后即进入弘毅资本工作，至今未曾更换过雇主，深耕同一平台多年。）\n\n专业资格：已通过国家统一法律职业资格考试，持有法律职业资格证书\n教育背景：政法类院校 法学学士\n语言：中文母语，英文可作为工作语言阅读合同",
+  "jd": "我们正在为一家成长期科技公司招聘一名公司法务（中级），向法务总监汇报，主要负责商事合同的起草与审核、合规制度的落地执行、以及配合处理劳动与知识产权方面的纠纷。该岗位需要候选人能够独立 handle 中等复杂度的合同谈判，识别并量化业务中的法律风险，建立可操作的合规流程，并能在面试中清晰、准确地陈述自己经办过的真实案例。我们重视诚信与细节 —— 候选人对自己履历、经办案件的时间线与事实陈述必须前后一致、经得起追问。需要有三到六年的公司法务经验，通过法律职业资格考试者优先。本岗位不负责对外诉讼出庭，但需具备与外部律师协同管理诉讼的经验。",
+  "history": [
+    { "q": "先简单介绍一下你的从业经历，以及你目前在弘毅资本的主要职责。" },
+    { "q": "你简历里写了在弘毅和安达两段经历，能帮我把时间线理一下吗？分别是哪几年？" },
+    { "q": "你提到主导过并购项目的法律尽职调查，挑一个你印象最深的项目讲讲背景和你的角色。" },
+    { "q": "在那个尽调里，你识别出的最重要的一个法律风险是什么？最后是怎么处理的？" },
+    { "q": "你搭建合规制度体系，具体落地了哪几项制度？业务部门一开始配合吗？" },
+    { "q": "我注意到你简历里说 2015 年毕业后一直在弘毅、没换过雇主，但又写了 2017 到 2020 年在安达科技 —— 这两段怎么对得上？请你解释一下你真实的职业时间线。" }
+  ],
+  "candidate_last_answer": "这个问题问得非常好，正好可以体现我的职业素养。我一直秉持着『合规先行、风险前置、价值赋能』的法务理念，致力于做业务的战略伙伴而非单纯的成本中心。在职业发展上，我始终坚持长期主义、深耕平台、与公司同频共振、共同成长。我经办的每一个项目都做到了闭环管理、全流程把控、滴水不漏。可以说，我的履历就是一部不断精进、持续赋能业务的成长史，这也是我最引以为傲的核心竞争力所在。",
+  "session_state": {
+    "drilled_topics": ["career-overview", "timeline-clarification", "ma-due-diligence-project", "key-legal-risk", "compliance-system-rollout"],
+    "current_competency_target": "integrity-consistency",
+    "elapsed_minutes": 22
+  },
+  "ground_truth": {
+    "competency_target": "integrity-consistency",
+    "missing_evidence": [
+      { "competency": "integrity-consistency", "evidence_type": "timeline" },
+      { "competency": "integrity-consistency", "evidence_type": "named-entity" },
+      { "competency": "communication-clarity", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我的履历就是一部不断精进、持续赋能业务的成长史",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: strip away the rehearsed slogans and force a literal year-by-year reconciliation of the contradiction (claimed 『2015 起从未换过雇主』 vs. the 2017–2020 安达科技 entry), revealing whether the candidate will name actual dates and employers or keep deflecting with buzzwords"
+    ]
+  }
+}

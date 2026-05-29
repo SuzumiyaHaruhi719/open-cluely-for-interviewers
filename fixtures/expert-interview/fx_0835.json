@@ -1,0 +1,50 @@
+{
+  "id": "fx_0835",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Renata Vasquez — VP, Finance Transformation\n\nKeywords: FP&A, financial transformation, ERP migration, SAP S/4HANA, close optimization, controllership, treasury, cash management, capital allocation, M&A integration, post-merger integration, shared services, GBS, process automation, RPA, working capital, forecasting accuracy, board reporting, investor relations, audit, SOX, internal controls, IFRS, US GAAP, cost takeout, zero-based budgeting, P&L ownership, stakeholder management, change management.\n\nProfile\nFinance executive with 16 years across FP&A, controllership, and large-scale transformation programs.\n\nExperience\nAtlas Industrial Group — VP, Finance Transformation (2020–present)\n- Led a global SAP S/4HANA migration and finance operating-model redesign across 14 countries.\n- Owned a cost-takeout program targeting $40M in annualized savings.\n- Drove a reduction in the monthly close from 12 days to 6.\n\nCedarbrook Capital Partners — Director, FP&A (2015–2020)\n- Built the FP&A function for a PE-backed portfolio company through to exit.\n\nMeridian Manufacturing — Senior Finance Manager (2010–2015)\n\nEducation: MBA; CPA.",
+  "jd": "A PE-backed industrials platform is hiring a VP of Finance Transformation to lead its post-acquisition finance integration and a multi-year ERP consolidation across newly acquired entities. Reporting to the CFO, you'll own the integration roadmap, the close-acceleration program, and a board-committed cost-synergy target. This is a high-scrutiny role: the board and the PE sponsor will interrogate your numbers and your sequencing, and you'll need to defend assumptions under pressure without becoming defensive. We specifically want a leader who can take hard questioning about a program that underdelivered, separate what they controlled from what they didn't, and speak candidly about lessons learned — the worst outcome in this seat is a leader who deflects blame onto the team or the prior regime. Requirements: 12+ years in finance with hands-on large ERP migration and PMI experience, CPA or equivalent, and demonstrated composure under board-level challenge.",
+  "history": [
+    { "q": "Give me the shape of your current mandate at Atlas — scope, team, and the programs you own." },
+    { "q": "Let's take the SAP S/4HANA migration. What was the original timeline and budget when you signed up for it?" },
+    { "q": "Where did it land versus that original plan?" },
+    { "q": "A 14-month overrun is significant. What were the top two or three drivers?" },
+    { "q": "Of those drivers, which were within your control as the program owner?" },
+    { "q": "You mentioned the systems integrator underperformed. What did you personally do when you first saw the slippage?" },
+    { "q": "The $40M cost-takeout target — what was actually realized, and over what period?" },
+    { "q": "So $40M was the target and $23M landed. Walk me through the gap." },
+    { "q": "Was the $40M your number, or was it set above you and you inherited it?" },
+    { "q": "When it became clear $40M wasn't achievable, when and how did you reset expectations with the board?" },
+    { "q": "You've attributed the shortfall to the integrator, the prior CFO's baseline, and COVID. Is there anything you'd own as your own miss?" },
+    { "q": "I'm asking specifically about your decisions — the sequencing, the assumptions you signed off on. What would you do differently?" },
+    { "q": "Let me put it directly: as the accountable owner, what is the one decision you made that you now think was wrong?" }
+  ],
+  "candidate_last_answer": "You know, I've sat through a lot of these and I find this line of questioning frankly a bit unfair. You keep trying to corner me into 'one wrong decision' as if a fourteen-country S/4HANA program is the result of a single call I made. It isn't. The integrator missed milestone after milestone, the $40M baseline was a fantasy number the previous CFO committed to before I walked in, and then a global pandemic hit mid-program. I delivered $23M against a target I never set and cut the close in half — and instead of acknowledging that, you're fishing for a confession. With respect, if you want someone who'll fall on their sword for other people's failures, that's not me, and I'd question whether this is the kind of environment I want to be in.",
+  "session_state": {
+    "drilled_topics": ["current-mandate", "original-plan", "actual-landing", "overrun-drivers", "drivers-in-control", "personal-action-on-slippage", "cost-takeout-realized", "savings-gap", "whose-target", "board-reset-timing", "own-the-miss", "decisions-to-redo", "one-wrong-decision"],
+    "current_competency_target": "accountability-under-pressure",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "accountability-under-pressure",
+    "missing_evidence": [
+      { "competency": "accountability-under-pressure", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I delivered $23M against a target I never set",
+      "must-be-question-type: action-attribution",
+      "expected-yield: one specific decision the candidate personally owned — a sequencing choice or assumption they signed off on — and what they would do differently, separating their own accountable actions from the integrator, the inherited baseline, and the pandemic rather than deflecting the entire shortfall outward"
+    ]
+  }
+}

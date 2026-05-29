@@ -1,0 +1,39 @@
+{
+  "id": "fx_0883",
+  "tags": {
+    "industry": "design",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "高远｜高级产品设计师 (Senior Product Designer)\n所在地：深圳｜从业七年｜作品集：gaoyuan.design\n\n个人简介\n专注 B 端 SaaS 与数据可视化的高级产品设计师，擅长把复杂业务流程转化为清晰高效的界面。\n\n工作经历\n某云计算厂商（2021 年至今）— 高级产品设计师\n- 独立负责云监控控制台的整体设计，从 0 到 1 主导了这款产品的全部界面\n- 注：该产品我加入时已上线两年，我接手的是改版工作\n- 主导了设计系统（Design System）的搭建，覆盖三条产品线\n- 把控制台的核心任务完成率从百分之六十提升到百分之八十五\n\n某电商平台（2018 年至 2021 年）— 产品设计师\n- 负责商家工作台的体验设计\n- 注：我在这家公司主要做的是 C 端的用户增长方向，负责 App 首页改版\n- 主导了一次大促活动页的设计，转化率提升明显\n\n技能\n交互设计、设计系统、数据可视化、用户研究、Figma、原型设计、设计走查。\n我同时也是团队里唯一的视觉设计师，所有的视觉规范都由我一人制定。\n（另注：我们团队有一个三人的视觉设计小组，我是其中之一。）\n\n教育\n广州美术学院，视觉传达设计学士（2014 至 2018）。",
+  "jd": "某 B 端 SaaS 公司招聘一位高级产品设计师，负责数据类后台产品的体验设计。岗位职责包括：独立负责一到两条产品线的端到端交互设计、参与并推动设计系统建设、通过用户研究和数据验证设计决策、与产品和研发紧密协作落地。我们期望候选人有五年以上 B 端或复杂系统的设计经验、扎实的交互与信息架构功底、能用数据说明设计带来的价值、并能在需求模糊时主动定义问题。该岗位向设计负责人汇报。",
+  "history": [
+    { "q": "你简历里关于云监控控制台,一处写『从 0 到 1 主导全部界面』,一处又写『我加入时产品已上线两年,做的是改版』。到底是哪种?" },
+    { "q": "好,那我们聚焦改版。你说核心任务完成率从六十提到八十五 — 这个『核心任务』具体指用户在控制台里完成什么操作?" }
+  ],
+  "candidate_last_answer": "嗯,核心任务……其实说到这个我特别想聊聊设计师的成长这个话题。我最近一直在想,我们这一代设计师其实挺焦虑的,AI 出来之后,Figma 里那些 AI 插件越来越强,我前阵子还去参加了一个设计行业的大会,好多人都在聊这个,氛围特别热烈。我个人觉得吧,设计师未来的核心竞争力肯定不在画图本身,而在于对业务的理解。我本科是广美的,我们老师当年就特别强调设计的人文性,这点我一直记到现在。哦,你问的是核心任务对吧,嗯……反正就是控制台里那些常用的操作啦,用户进来要做的那些事,我们当时整体体验做了优化,数据就上去了。",
+  "session_state": {
+    "drilled_topics": ["resume-zero-to-one-contradiction", "core-task-definition"],
+    "current_competency_target": "design-impact-clarity",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "design-impact-clarity",
+    "missing_evidence": [
+      { "competency": "design-impact-clarity", "evidence_type": "scope" },
+      { "competency": "design-impact-clarity", "evidence_type": "metric" },
+      { "competency": "diagnostic-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 反正就是控制台里那些常用的操作啦",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: pinning the candidate to name the one specific core task whose completion rate she claims moved from 60% to 85%, how that completion rate was instrumented and measured, and what concrete design change drove it — cutting through the AI/广美/人文 tangent and the vague 'those common operations' non-answer"
+    ]
+  }
+}

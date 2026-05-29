@@ -1,0 +1,50 @@
+{
+  "id": "fx_0877",
+  "tags": {
+    "industry": "product-management",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周琳｜初级产品经理\n所在地：杭州｜从业一年半｜邮箱：lin.zhou@example.com\n\n工作经历\n某本地生活服务平台（2023 年 7 月至今）— 产品经理（商家端方向）\n核心负责商家后台的『营销工具』模块。\n- 情境：商家普遍反映平台的优惠券创建流程太复杂，新商家首次创券的放弃率高达百分之四十\n- 任务：我负责重构优惠券创建流程，目标是把首次创券完成率提升到百分之七十五以上\n- 行动：我做了二十次商家访谈定位卡点，把原来七步的表单重构成三步引导式流程，并加了一个『推荐券模板』入口让新手一键套用\n- 结果：改版后首次创券完成率从百分之六十提升到百分之八十一，新商家首券创建的平均耗时从九分钟降到三分钟\n\n- 情境：营销工具的券核销数据分散在三个看板，商家看不懂 ROI\n- 任务：我负责设计一个统一的『营销效果』数据页\n- 行动：我和数据团队定义了四个核心指标，做了低保真原型并做了五轮可用性测试\n- 结果：上线后该页面周活商家数增长百分之六十，相关客服工单下降三成\n\n技能\n需求分析、用户访谈、PRD 撰写、Axure/Figma 原型、A/B 实验设计、SQL 取数（基础）、数据看板设计。\n\n教育\n浙江大学，工业设计学士（2019 至 2023）。",
+  "jd": "某互联网公司招聘一名初级产品经理，负责商家侧或用户侧某一核心功能模块的迭代。岗位职责包括：通过用户研究和数据分析定位需求、撰写清晰的 PRD、与设计和研发协作推动需求落地、设计并解读 A/B 实验、对所负责模块的核心指标负责。我们希望候选人有一到三年产品经验、至少独立负责过一个完整功能从需求到上线的闭环、数据敏感、沟通清晰、能在资源有限时做出合理的优先级取舍。该岗位向高级产品经理汇报。",
+  "history": [
+    { "q": "先讲讲你现在负责的营销工具模块,以及你最有代表性的一个项目。" },
+    { "q": "优惠券那个项目,你说首次创券放弃率有百分之四十。这个数据你是怎么得到的?" },
+    { "q": "你做了二十次商家访谈。访谈里最出乎你意料的一个卡点是什么?" },
+    { "q": "七步砍成三步,你具体砍掉或合并了哪些步骤? 有没有商家其实需要的步骤被你砍了?" },
+    { "q": "完成率从六十提到八十一,有没有可能只是因为你把流程藏起来了、但实际券质量变差了?" },
+    { "q": "那个『推荐券模板』,模板是谁定的? 怎么保证推荐的券对商家真的有效?" },
+    { "q": "换到数据页那个项目。你定义的四个核心指标是哪四个,为什么是这四个?" },
+    { "q": "五轮可用性测试,有没有哪一轮的结果让你推翻了之前的设计?" },
+    { "q": "这两个项目都偏优化存量。如果让你从零做一个新功能,你的流程会有什么不同?" },
+    { "q": "假设营销工具下个季度只能做一件事,你会怎么排优先级?" },
+    { "q": "和研发资源冲突的时候,你怎么说服他们优先做你的需求?" },
+    { "q": "讲一次你的判断后来被数据证明是错的经历。" },
+    { "q": "回到那个数据页:上线后周活涨了六成,你怎么确认是你的设计带来的,而不是大盘自然增长?" }
+  ],
+  "candidate_last_answer": "这个问题问得特别好,因为归因这件事真的太重要了。其实说到归因,我想先聊聊我对产品经理这个职业的理解——我一直觉得 PM 最难的就是分清楚『相关』和『因果』。我大学是学工业设计的,那段经历对我影响特别大,我们当时有个老师特别强调用户研究的科学性,他经常带我们去做田野观察,我记得有一次我们为了研究老年人怎么用菜市场的电子秤,在菜场蹲了整整一个下午,那种一手观察的震撼到现在我都记得。后来我做产品也一直保留这个习惯,喜欢泡在一线。哦对了,说到菜市场,我现在做的本地生活其实和那个挺像的……扯远了。回到周活这个事,我当时确实是看了一下大盘,嗯,大盘那段时间整体也在涨,所以严格说我可能没有完全把自然增长剔除干净,但我觉得我的设计肯定是起了作用的,因为客服工单同时降了三成嘛。",
+  "session_state": {
+    "drilled_topics": ["module-scope-flagship-project", "abandon-rate-source", "interview-surprise-painpoint", "step-reduction-detail", "completion-vs-quality", "template-effectiveness", "data-page-metrics", "usability-test-pivot", "zero-to-one-difference", "next-quarter-prioritization", "eng-resource-negotiation", "wrong-judgement-story"],
+    "current_competency_target": "data-causal-reasoning",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "data-causal-reasoning",
+    "missing_evidence": [
+      { "competency": "data-causal-reasoning", "evidence_type": "mechanism" },
+      { "competency": "data-causal-reasoning", "evidence_type": "metric" },
+      { "competency": "communication", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我可能没有完全把自然增长剔除干净",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: cutting through the工业设计/菜市场 tangent and forcing a concrete causal-isolation method — whether she ran a holdout/control group, compared against a non-exposed cohort, or looked at pre/post trend deltas, instead of leaning on the co-moving customer-ticket drop as proof of causation"
+    ]
+  }
+}

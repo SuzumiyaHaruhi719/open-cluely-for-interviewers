@@ -1,0 +1,47 @@
+{
+  "id": "fx_0891",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Senior Brand Marketing Manager / 品牌负责人\n\n炽橙传媒 (Chicheng Media) — Senior Brand Manager (2021-present)\n- 负责一个 FMCG 饮料品牌的 brand campaign 与 social\n- Led a Q3 rebranding push,owned creative brief 与 KOL 投放\n- 管理 agency 与 200万 的 media budget\n\n白鹭数字 (Bailu Digital) — Brand Marketing Specialist (2018-2021)\n- 协助 campaign 执行与 content 排期\n\n技能 / Skills: brand positioning, creative brief, KOL/红人投放, social listening, 小红书 + 抖音 运营, GA4 基础\n教育: B.A. 广告学\nLanguages: 中文母语, English fluent",
+  "jd": "炽橙传媒 (Chicheng Media) is hiring a Senior Brand Marketing Manager to own a flagship FMCG beverage brand. You will own brand-health metrics (aided awareness, consideration), lead seasonal campaigns from brief to in-market, and manage agency + KOL budgets. We need someone who can connect a creative decision to a measurable brand or business outcome — and who, when asked about a specific campaign, stays on that campaign rather than drifting into industry philosophy. Required: 5+ years brand marketing, China social fluency (小红书/抖音), and the discipline to defend a budget allocation with brand-tracking data. The loop probes one campaign deeply: brief, spend, lift.",
+  "history": [
+    { "q": "介绍一下你在炽橙负责的饮料品牌,你具体 own 哪些东西?" },
+    { "q": "你提到 led 了一个 Q3 rebranding push,当时的 objective 是什么?" },
+    { "q": "这个 rebranding 的 creative brief 是你怎么定方向的?" },
+    { "q": "200万 的 media budget 你是怎么 split 到各个 channel 的?" },
+    { "q": "KOL 投放你是按什么标准选红人的?" },
+    { "q": "campaign 上线后,aided awareness 有没有动?" },
+    { "q": "你们的 brand tracking 是怎么做的,多久测一次?" },
+    { "q": "如果让你重新分配那 200万,你会怎么调?" },
+    { "q": "这个 campaign 里有没有哪个 creative 是 underperform 的?" },
+    { "q": "你怎么判断是 creative 的问题还是 targeting 的问题?" },
+    { "q": "我们就盯住这个 Q3 campaign:campaign 前后,aided awareness 这个数字具体从多少变到多少,你是怎么 attribute 到这次投放的?" }
+  ],
+  "candidate_last_answer": "嗯,aided awareness 这个我得先说说我对整个 brand building 的理解。其实我一直觉得,现在的 marketing 已经不是过去那种 awareness 游戏了。你看现在 consumer 的注意力越来越碎片化,Z 世代根本不吃硬广那一套,整个行业都在往 community 和 content co-creation 走。我最近还在研究 AI generated content 会怎么颠覆 creative 这个环节,以后 agency 的角色可能都要重新定义。我觉得作为一个 senior marketer,最重要的是看清这种 macro trend,而不是纠结于某一个 campaign 的 single metric……",
+  "session_state": {
+    "drilled_topics": ["brand-scope", "rebranding-objective", "creative-brief-direction", "media-budget-split", "kol-selection", "awareness-movement", "brand-tracking-cadence", "budget-reallocation", "underperforming-creative", "creative-vs-targeting"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 36
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我最近还在研究 AI generated content 会怎么颠覆 creative 这个环节",
+      "must-be-question-type: metric-pin",
+      "expected-yield: shut down the macro-trend / AIGC tangent and force the specific Q3 numbers — the aided-awareness figure before and after the campaign and the method used to attribute the movement to this spend"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0841",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Marcus Bramley\nDirector of Product\n\nExperience\nFernlake Health (digital health platform) — Director of Product, 2019-present. Lead a product group of four PMs across patient-engagement and provider-tools areas.\n\nClearfield Systems — Senior Product Manager, 2014-2019. Owned the scheduling product.\n\nWhat I focus on\n- Portfolio strategy and roadmap prioritization\n- Coaching and growing PMs\n- Working with engineering and design leads on delivery\n- Outcome metrics over output\n\nEducation\nBS, Information Systems\n\nSelected results\n- Grew patient-engagement adoption meaningfully over two years\n- Reorganized the roadmap process to a quarterly outcome-based model\n\nReferences available on request.",
+  "jd": "Fernlake Health is hiring a Director of Product to own our patient-engagement portfolio and lead a team of senior PMs. You will set multi-quarter strategy, make hard prioritization calls across competing initiatives, and be accountable for portfolio-level outcomes (activation, retention, and clinical engagement metrics). You will coach PMs through ambiguity, partner with engineering and design directors on delivery trade-offs, and represent the portfolio to the executive team. We need a leader who can stay on the question under pressure — who answers the prioritization or trade-off actually asked rather than retreating to philosophy. You will own resourcing decisions across squads and defend why one bet won funding over another. Requirements: 8+ years in product including 3+ leading PMs, experience owning a portfolio P&L or outcome target, and a track record of difficult prioritization in a regulated or healthcare context.",
+  "history": [
+    { "q": "You lead four PMs across patient-engagement and provider-tools. Walk me through how your portfolio is currently structured." },
+    { "q": "Tell me about the hardest prioritization call you made in the last year — two initiatives, one budget." },
+    { "q": "For that call, what was the actual decision criterion? Why did one win over the other?" },
+    { "q": "Who pushed back on that decision, and how did you handle the disagreement?" },
+    { "q": "Let's get concrete on the trade-off: what did the team you defunded lose, and what was the cost of that?" },
+    { "q": "What outcome metric were you betting would move, and by how much?" },
+    { "q": "Did it actually move? What did the data show three months later?" },
+    { "q": "If the bet hadn't paid off, what was your fallback plan?" },
+    { "q": "Back to the specific question: for that one prioritization call, what was the single criterion that tipped it?" }
+  ],
+  "candidate_last_answer": "You know, this connects to something I feel really strongly about, which is the role of product leadership in healthcare more broadly. I think our whole industry has lost sight of the patient. Everyone's chasing engagement metrics, but are we actually improving outcomes? That's the question that keeps me up at night. I was at a conference last month and a clinician said something that really stuck with me about how software has changed the doctor-patient relationship, and honestly I think that's the conversation we should all be having. Prioritization frameworks are fine, but they're downstream of values.",
+  "session_state": {
+    "drilled_topics": ["portfolio-structure", "hardest-prioritization-call", "decision-criterion", "handling-pushback", "defunding-cost", "outcome-bet-magnitude", "did-it-move", "fallback-plan", "tipping-criterion"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "decision-ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: Prioritization frameworks are fine, but they're downstream of values",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the single concrete decision criterion that tipped the specific two-initiative prioritization call, walking the actual sequence of how the candidate weighed them, rather than drifting into industry philosophy"
+    ]
+  }
+}

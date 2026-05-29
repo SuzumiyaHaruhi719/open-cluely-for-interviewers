@@ -1,0 +1,48 @@
+{
+  "id": "fx_0858",
+  "tags": {
+    "industry": "customer-support",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Customer Support Team Lead | Customer-obsessed, results-oriented, data-driven support professional\n\n- Passionate, high-energy support leader who consistently delivers world-class, customer-centric experiences\n- Proven track record of driving operational excellence and elevating team performance across the board\n- Skilled in stakeholder management, cross-functional collaboration, and continuous process improvement\n- Deep expertise in CSAT, NPS, SLA adherence, first-contact resolution, and ticket-deflection best practices\n- Champion of a coaching-first culture; empowers agents to exceed expectations every single day\n- Adept at leveraging Zendesk, Intercom, and Salesforce Service Cloud to optimize the support funnel\n- Self-starter and team player who thrives in fast-paced, high-growth environments\n\nExperience:\n- Nimbus SaaS — Support Team Lead (current)\n- Orchard Tools — Senior Support Agent (prior)\n- Started in a tier-1 contact-center role\n\nSkills: Zendesk, Intercom, Salesforce, macro design, QA scorecards, escalation handling\nEducation: Community college, A.A. Business",
+  "jd": "We're hiring a Customer Support Team Lead to manage a team of 10 agents in a high-growth SaaS environment, reporting to the Support Manager. You'll own queue health, SLA adherence, coaching cadence, and QA scoring, and you'll partner with product on escalations. We expect you to walk through a specific operational problem you fixed — what the metric was before, what you changed, and what it became after, with real numbers. The strongest candidates answer the question asked directly and back their claims with concrete before/after data rather than general statements about being customer-obsessed. Experience administering Zendesk and running QA scorecards is required. This role has a path to Support Manager.",
+  "history": [
+    { "q": "Tell me about your team at Nimbus — how many agents, what channels, what do you own day to day?" },
+    { "q": "Your resume leans hard on 'operational excellence.' Pick one operational problem you actually fixed." },
+    { "q": "What was the metric before you touched it?" },
+    { "q": "What specifically did you change?" },
+    { "q": "And what did the metric become after — with a number?" },
+    { "q": "How long did that improvement take to show up?" },
+    { "q": "You mention QA scorecards. Walk me through how yours is built." },
+    { "q": "Tell me about a time an agent disagreed with their QA score. How did you handle it?" },
+    { "q": "Describe your coaching cadence — how often, what format?" },
+    { "q": "How do you decide when to escalate a ticket to product versus handling it in-team?" },
+    { "q": "Let's circle back. That operational fix — give me the before number, the after number, and how long it took. Just those three." }
+  ],
+  "candidate_last_answer": "So here's the thing — I really believe support is the heartbeat of the company. Every ticket is a chance to create a raving fan, and that mindset is what I try to instill in my team. I'm super into the idea of support as a growth lever, not a cost center, and I've been geeking out on how AI deflection is going to reshape the whole space. Honestly I think the team leads who win in the next few years are the ones who lean into automation and treat their agents more like product specialists. That's the philosophy I lead with — it's all about culture and mindset.",
+  "session_state": {
+    "drilled_topics": ["team-scope", "operational-problem-pick", "metric-before", "what-changed", "metric-after", "time-to-impact", "qa-scorecard-build", "qa-score-disagreement", "coaching-cadence", "escalation-decision"],
+    "current_competency_target": "operational-results",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "operational-results",
+    "missing_evidence": [
+      { "competency": "operational-results", "evidence_type": "metric" },
+      { "competency": "operational-results", "evidence_type": "timeline" },
+      { "competency": "operational-results", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: support is the heartbeat of the company",
+      "must-be-question-type: metric-pin",
+      "expected-yield: shut down the culture-and-AI tangent and extract the three concrete data points already asked for — the before metric, the after metric, and the time-to-impact — testing whether a real operational result sits behind the 'operational excellence' branding"
+    ]
+  }
+}

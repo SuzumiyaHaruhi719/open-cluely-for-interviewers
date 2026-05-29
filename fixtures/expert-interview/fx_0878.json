@@ -1,0 +1,51 @@
+{
+  "id": "fx_0878",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Priya Nair — Software Engineer (Backend)\nSan Jose, CA | priya.nair@example.com | github.com/pnair\n\nExperience\nMidscale Logistics SaaS — Software Engineer I (2023–present)\n- Backend on the shipment-tracking service (Go, Postgres, Kafka).\n- Owned the carrier-webhook ingestion pipeline; ~4M events/day.\n- Cut p99 ingestion latency from 1.8s to 240ms.\n- On-call rotation, one of six engineers.\n\nCampus Food-Delivery App (2022, capstone) — Backend lead\n- Node/Express + Redis; handled 500 concurrent orders in load test.\n\nSkills\nGo, Python, Postgres, Kafka, Redis, Docker, basic Kubernetes, gRPC.\n\nEducation\nB.S. Computer Science, San Jose State University (2019–2023).",
+  "jd": "We're hiring a Backend Software Engineer (early-career) for our payments-platform team. You'll work in Go and Postgres on services that move money, build and operate idempotent APIs, write integration tests, and participate in an on-call rotation. We expect 1–3 years of backend experience, comfort reasoning about concurrency and failure modes, the ability to debug a production incident, and at least one project where you owned a service end-to-end. You'll report to a senior engineer and collaborate closely with SRE. Strong candidates show clear thinking about correctness under retries and partial failure.",
+  "history": [
+    { "q": "Tell me about the carrier-webhook ingestion pipeline you own — what does it actually do?" },
+    { "q": "You cut p99 from 1.8s to 240ms. What was the bottleneck?" },
+    { "q": "How did you confirm the bottleneck was there and not somewhere else?" },
+    { "q": "Carriers retry webhooks. How do you handle duplicate events?" },
+    { "q": "Walk me through your idempotency key — what's in it, where is it stored?" },
+    { "q": "What happens if the same event arrives twice within milliseconds, before the first commits?" },
+    { "q": "Your pipeline writes to Postgres and produces to Kafka. How do you keep those two consistent?" },
+    { "q": "So if the Kafka produce fails after the Postgres commit, what's the state, and how do you recover?" },
+    { "q": "Tell me about a production incident on this pipeline that you personally debugged." },
+    { "q": "What was the root cause of that incident?" },
+    { "q": "What did you change so it couldn't happen again?" },
+    { "q": "If event volume 10x'd tomorrow to 40M/day, what breaks first?" },
+    { "q": "How would you find out where it breaks rather than guessing?" },
+    { "q": "Let's go concrete. A carrier sends events out of order — a 'delivered' before 'in-transit'. How does your pipeline handle that today?" },
+    { "q": "You said you sequence on the carrier's event timestamp. What if two events share the exact same timestamp?" }
+  ],
+  "candidate_last_answer": "Today, same-timestamp events are a real gap. I sequence on the carrier's event_timestamp, and when two share it, my ordering is non-deterministic — whichever Kafka partition consumer commits first wins. In practice I've seen it on about 0.2% of shipments, mostly bulk scans. My current mitigation is a secondary sort on the carrier's monotonic sequence_id when they send one, but maybe a third of carriers don't. For those, I fall back to event_timestamp plus the received_at server time, which isn't authoritative but breaks ties. I haven't fully solved it; the correct fix is a per-shipment state machine that rejects illegal transitions regardless of arrival order, and I scoped that but haven't built it yet.",
+  "session_state": {
+    "drilled_topics": ["pipeline-scope", "latency-bottleneck", "bottleneck-verification", "duplicate-handling", "idempotency-key-design", "concurrent-duplicate-race", "postgres-kafka-consistency", "produce-failure-recovery", "incident-debug", "incident-root-cause", "incident-prevention", "10x-scale-failure", "scale-investigation-method", "out-of-order-events"],
+    "current_competency_target": "correctness-under-failure",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "correctness-under-failure",
+    "missing_evidence": [
+      { "competency": "correctness-under-failure", "evidence_type": "mechanism" },
+      { "competency": "execution-planning", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: a per-shipment state machine that rejects illegal transitions regardless of arrival order, and I scoped that but haven't built it yet",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: forcing the candidate to design the state machine he scoped but never built — the concrete state set, which transitions are legal/illegal, where the state lives so concurrent consumers don't race on it, and why that approach beats his current timestamp-plus-received_at tie-break"
+    ]
+  }
+}

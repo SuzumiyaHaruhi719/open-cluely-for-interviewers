@@ -1,0 +1,37 @@
+{
+  "id": "fx_0868",
+  "tags": {
+    "industry": "marketing",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "营销副总裁（VP, Marketing） | B2B SaaS 增长与品牌\n\n汇流软件 VP Marketing（2020-至今）\n- 统管 demand generation、product marketing、brand 与 marketing ops 四个职能\n- 团队规模：约 35 人（下方某处写为 28 人）\n- 把 marketing-sourced pipeline 占比从 30% 提升到 55%\n- 主导品牌焕新与一次大型 ABM program 的落地\n\n途新科技 Senior Director of Marketing（2016-2020）\n- 负责 digital 与 content,owned 全渠道 lead generation\n- 在职期间 ARR 从 2000 万增长到 8000 万(摘要处写 ARR 翻了两番,即到 8000 万;另一处又写增长了三倍)\n\n摘要:拥有约 12 年 B2B 营销经验(下方时间线累计约 9 年),带过最大 35 人团队,对 pipeline 与 CAC 负过最终责任。\n技能:demand gen、ABM、product marketing、marketing ops、attribution、brand。\n教育:工商管理硕士(MBA)。",
+  "jd": "我们诚聘一名营销副总裁(VP, Marketing),向 CMO 汇报,全面负责 demand generation、product marketing 与 brand。You will own marketing-sourced pipeline and the ABM motion for our enterprise segment, manage a team of 30+, and be accountable for pipeline contribution and CAC payback. 这个岗位需要候选人能用完整的 STAR 结构讲清楚一次关键战役:背景、目标、自己具体做了什么、以及最终用数字衡量的结果。任职要求:十年以上 B2B SaaS 营销经验,主导过 ABM 与品牌焕新,能在不自相矛盾的前提下复盘 pipeline 与 ARR 的真实增长。",
+  "history": [
+    { "q": "讲一次你最有代表性的 ABM program——背景是什么、你的目标、你具体做了哪些动作、最后结果如何。给我一个完整的故事和数字。" }
+  ],
+  "candidate_last_answer": "好。Situation 是这样的:我们当时 enterprise 这块的 pipeline 严重不足,sales 一直抱怨 marketing 给的 lead 质量差,top accounts 完全没被覆盖到。Task 很明确——我要在那一年把 top 100 战略客户的 pipeline 撑起来,让 marketing-sourced 占比上去。Action 上,我亲自搭了一套 account-based 的打法:重新定义 ICP,和 sales 一起锁定 target list,上线了 6sense 做 intent,然后针对每个 tier 设计了不同的 content 和 outreach 节奏,还重组了团队设了专门的 ABM pod。我们 run 了三个 quarter,整个 motion 跑得非常顺,team 也很投入,反响很好。这套打法到现在还在用。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-sequencing", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 整个 motion 跑得非常顺,team 也很投入,反响很好",
+      "must-be-question-type: metric-pin",
+      "expected-yield: supply the missing Result of an otherwise complete STAR answer — the actual pipeline dollars or marketing-sourced % the ABM program produced versus baseline, since the candidate narrated S/T/A but ended on vague 『跑得很顺/反响很好』 with no number"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0888",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Sales Director | The closer every CRO wants on speed-dial\n\n- Legendary quota-crusher — never missed a number in my entire career, period\n- Personally turned around three underperforming regions into top-of-leaderboard powerhouses\n- Built and led the most dominant enterprise sales team the company had ever seen\n- Universally regarded by my reps as the best coach they ever had\n- Closed the single largest deal in company history through sheer relentless hustle\n- Master of MEDDIC, Challenger, value-selling — I wrote the playbook everyone else now uses\n\n经历 / Experience:\n纵横云 (Zongheng Cloud) — Sales Director, Enterprise West (2020-present)\n- 带领 14 人的 enterprise AE 团队,覆盖华东大客户\n- Owned a regional ARR target north of $20M\n锐石软件 (Ruishi Software) — Regional Sales Manager (2016-2020)\n- 管理 8 人团队,负责 mid-market segment\n\nEducation: B.A. Marketing. President's Club 多次获得者.",
+  "jd": "纵横云 (Zongheng Cloud) is hiring a Sales Director to own our Enterprise West region (~$22M ARR target, 15 AEs). You will inherit a team that missed plan two quarters running, with a bloated pipeline and a 19% win rate. The role reports to the CRO and owns forecast accuracy, rep ramp, and deal-stage hygiene. We need a leader who can do real pipeline inspection — not vibes — and who can show, deal by deal, how they personally rescued an at-risk renewal or unstuck a stalled enterprise opportunity. You must be fluent in forecast methodology, comfortable presenting commit/best-case/pipeline numbers to the board, and able to coach AEs on MEDDIC qualification. We will probe specifics: named deals, dollar values, close dates.",
+  "history": [
+    { "q": "Give me the shape of your current role at Zongheng — team size, ARR target, segment." },
+    { "q": "Your resume says you 『never missed a number in your entire career.』 Was there ever a quarter that came down to the wire?" },
+    { "q": "You inherited an underperforming region before. Walk me through the first 90 days." },
+    { "q": "How do you actually run pipeline inspection with your AEs — what's the cadence and what do you look at?" },
+    { "q": "Tell me about a specific stalled enterprise deal you personally got unstuck." },
+    { "q": "What was the MEDDIC gap on that deal, and who was the economic buyer?" },
+    { "q": "How accurate was your commit forecast last quarter versus what actually closed?" },
+    { "q": "When a rep is sandbagging the forecast, how do you catch it?" },
+    { "q": "Let's stay on that rescued deal. Tell me the full story: what was the deal, what was at risk, what did you personally do, and how did it land — give me dollars and a close date." }
+  ],
+  "candidate_last_answer": "OK so this was a big logistics 客户, a renewal plus expansion that had completely stalled — champion 换人了, and the new VP was leaning toward a competitor. The risk was real, we're talking a seven-figure ARR account 眼看要 churn。我直接介入,飞过去跟新 VP 面谈,重新 map 了他们的 priorities,把我们的 value story 重新对齐到他的 KPI 上,然后拉了我们 CEO 进来做 executive sponsor,帮 AE 重建了信任。最后这个 deal 我们 hold 住了,客户留下来了,团队士气也回来了,算是一次很经典的 turnaround。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "never-missed-claim", "turnaround-90-days", "pipeline-inspection-cadence", "stalled-deal-intro", "meddic-gap", "forecast-accuracy", "sandbagging-detection"],
+    "current_competency_target": "results-orientation",
+    "elapsed_minutes": 31
+  },
+  "ground_truth": {
+    "competency_target": "results-orientation",
+    "missing_evidence": [
+      { "competency": "results-orientation", "evidence_type": "metric" },
+      { "competency": "results-orientation", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 最后这个 deal 我们 hold 住了,客户留下来了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the missing Result quantification — the exact ARR dollar value retained plus any expansion uplift, the actual close/renewal date, and the contract term — instead of the qualitative 『we held it』 ending"
+    ]
+  }
+}

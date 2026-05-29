@@ -1,0 +1,45 @@
+{
+  "id": "fx_0873",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "李志强（Zhiqiang Li）\n资深制造工艺工程师 / Staff Process Engineer\n邮箱：zli.process@example.com｜所在地：苏州工业园区\n\n个人简介\n我是一名拥有九年汽车动力总成与精密机加工经验的资深工艺工程师，长期专注于发动机缸体与变速箱壳体的高节拍加工产线。我擅长把一条新产线从工艺规划、设备选型、夹具设计、刀具寿命管理一直带到量产爬坡稳定，并且在量产阶段持续推动节拍优化、刀具成本下降以及不良率控制。我习惯用数据说话，凡是产线的每一次改动我都会用试验设计和过程能力分析去验证，而不是凭经验拍脑袋。我也带过五到八人的工艺小组，帮助年轻工程师建立起从问题定义到根因分析再到对策验证的完整闭环思维。在我看来，一名优秀的工艺工程师不仅要懂机械加工，还要懂数据、懂设备的电气与液压、懂质量体系，更要懂如何在产量压力和质量底线之间做出务实的取舍。这些年我最大的体会是，真正能落地的改善往往不是某一个惊艳的大招，而是把许多看似不起眼的小改善持续叠加，最终在节拍、成本和稳定性上形成质变。我始终相信，制造现场是检验一切工艺方案的唯一标准，任何脱离现场实际的优化都只是纸面文章，所以我每天都会花大量时间待在产线旁边，观察设备状态、倾听操作工的反馈、记录每一次异常停机的真实原因，并把这些一手信息转化为可执行的改善清单。\n\n工作经历\n奇瑞捷豹路虎动力总成（2019 年至今）— Staff Process Engineer\n我负责一条变速箱壳体的高节拍 CNC 加工产线，这条产线由十二台卧式加工中心、两台清洗机和一套在线测量站组成，设计节拍为每件四十五秒，年产能约三十二万件。我主导了这条产线从设备进场调试到量产爬坡的全过程，在爬坡阶段我们遇到的最大问题是某道深孔加工工序的刀具寿命极不稳定，最短只能加工六十件就崩刃，严重拖慢了节拍并推高了刀具成本。我带着团队系统地拆解了这个问题，先用过程能力分析锁定了变异来源，再通过切削参数的试验设计找到了进给量、转速和冷却压力的最佳组合，同时联合刀具供应商重新设计了刀片的断屑槽几何形状，最终把这道工序的平均刀具寿命从六十件提升到了三百二十件，单件刀具成本下降了大约百分之四十，整线综合不良率也从百分之三点二降到了百分之零点九。除此之外，我还推动了换型快速切换的改善，把这条产线的换型时间从原来的一百一十分钟压缩到了三十五分钟，使得这条原本只能跑单一品种的产线具备了多品种小批量混线生产的柔性。在这个过程中，我深刻体会到工艺工程师必须把现场数据、设备机理和供应商资源三者结合起来，单靠任何一方都无法真正根治问题。\n\n上汽通用五菱（2015 年至 2019 年）— 工艺工程师\n我负责发动机缸体的加工工艺维护与持续改善，主要工作是处理量产产线的日常工艺异常、推动节拍优化和刀具成本下降。在这四年里，我最有成就感的一个项目是针对缸体顶面铣削工序的表面粗糙度超差问题，这个问题困扰了产线很久，导致大量返工。我没有简单地更换刀具了事，而是从机床主轴的动平衡、刀盘的跳动、工件的装夹刚性三个维度逐一排查，最终发现根因是夹具的某个支撑点在长期使用后出现了微小的磨损塌陷，导致工件在高速铣削时产生了肉眼难以察觉的振动。我重新设计了这个支撑结构并增加了定期检测，彻底消除了这个长期顽疾。这段经历让我养成了不迷信表象、一定要追到物理根因的工作习惯。我也是在这家公司第一次开始带新人，逐渐意识到把自己的经验体系化、可传授，比单打独斗解决问题更有长期价值。\n\n核心技能\n机加工艺规划与设备选型、夹具与刀具设计、切削参数优化、试验设计（DOE）、过程能力分析（CPK / SPC）、快速换型（SMED）、刀具寿命管理、根因分析（8D / 5Why / 鱼骨图）、在线测量与防错（Poka-Yoke）、质量体系（IATF 16949）。\n\nTechnical stack：AutoCAD、UG NX、Minitab、SAP PP module、Mastercam，以及常见的 CNC 控制系统如 Fanuc 与 Siemens 840D。\n\n教育背景\n哈尔滨工业大学，机械制造及其自动化，工学学士（2011 至 2015）。\n\n自我评价\n我是一个非常重视细节和数据的人，但我也清楚地知道制造现场永远充满了教科书里没有的变量，所以我既尊重数据也尊重经验，更尊重一线操作工的直觉。我希望未来能在一个更大的平台上，把我这些年积累的工艺方法论系统化地推广出去，帮助更多产线实现节拍、成本和质量的同步提升。",
+  "jd": "某新能源汽车电驱动系统制造商正在招聘一名 Staff Process Engineer，负责电机定子与转子的精密加工及装配产线工艺。岗位核心职责包括：主导新产线的工艺规划与设备选型，量产阶段持续推动 cycle-time 优化与 scrap reduction，把目标产线的 FPY (first-pass yield) 从当前 92% 提升到 98% 以上，并把单件加工成本下降 15%。我们期望候选人有扎实的 DOE 与 SPC 功底、SMED 快速换型经验，以及独立带过工艺改善项目并量化交付结果的经历。你将与设备、质量、生产和供应商团队 cross-functional 协作，并需要每天 hands-on 待在现场。该岗位向制造工程经理汇报，不带直接下属但需要技术 mentor 两名初级工程师。",
+  "history": [
+    { "q": "先介绍一下你现在在奇瑞捷豹路虎负责的那条变速箱壳体产线 — 设备构成、节拍和年产能。" },
+    { "q": "你简历里提到深孔工序刀具寿命从 60 件提到 320 件。你是怎么定位到根因的?" },
+    { "q": "那次你用 DOE 调了进给、转速和冷却压力 — 具体的实验是怎么设计的,做了几轮?" },
+    { "q": "你说联合供应商重新设计了断屑槽几何。这个改动在断屑和排屑之间有没有 tradeoff?" },
+    { "q": "换型时间从 110 分钟压到 35 分钟,你具体砍掉了哪些 internal 换型动作?" },
+    { "q": "我们这个岗位是电机定子转子的精密加工,和你做的缸体壳体很不一样。你觉得你的方法论怎么迁移过来?" },
+    { "q": "定子绕组和铁芯的加工对振动和热变形非常敏感,你做缸体时处理振动的经验,哪一部分是可以直接用的?" },
+    { "q": "如果让你来把一条电机产线的 FPY 从 92% 提到 98%,你头一个月会先看哪些数据?" }
+  ],
+  "candidate_last_answer": "说到 FPY 提升,其实我特别想先聊聊团队文化这件事。我在五菱带新人的时候最大的感触是,很多产线的问题根本不是技术问题,是人的问题——operator 不愿意上报异常,工程师之间各扫门前雪。我后来花了很大精力去搭建一个无指责的复盘机制,每周开一次 Kaizen 会,谁报上来的问题最多还有奖励。说实话这套软性的东西比任何 DOE 都重要,我觉得一个 manager 最核心的价值就是塑造这种氛围。对了,我最近还在自学一些 Python,想做点产线数据看板,虽然跟这个岗位关系不大,但我觉得未来 smart factory 肯定是这个方向。",
+  "session_state": {
+    "drilled_topics": ["current-line-scope", "tool-life-root-cause", "doe-design", "chipbreaker-tradeoff", "smed-internal-elements", "methodology-transfer", "vibration-experience-transfer"],
+    "current_competency_target": "process-yield-improvement",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "process-yield-improvement",
+    "missing_evidence": [
+      { "competency": "process-yield-improvement", "evidence_type": "mechanism" },
+      { "competency": "process-yield-improvement", "evidence_type": "metric" },
+      { "competency": "execution-planning", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这套软性的东西比任何 DOE 都重要",
+      "must-be-question-type: teach-back",
+      "expected-yield: a concrete first-month diagnostic plan for lifting motor-line FPY — which specific yield-loss data streams (defect Pareto by station, SPC on stator winding/core dimensions, scrap categorization) the candidate would pull and how he'd prioritize them, rather than the team-culture tangent and the unsubstantiated 'soft stuff beats DOE' claim he drifted into"
+    ]
+  }
+}

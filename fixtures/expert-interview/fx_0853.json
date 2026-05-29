@@ -1,0 +1,51 @@
+{
+  "id": "fx_0853",
+  "tags": {
+    "industry": "finance",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Director of Corporate Finance & Treasury | Value-creation-obsessed finance leader\n\n- Best-in-class steward of enterprise capital who operationalizes data-driven, value-accretive treasury strategies at scale\n- Architected world-class liquidity frameworks and capital-allocation playbooks across complex multi-entity structures\n- Trusted partner to the CFO and board; fluent in EBITDA, FCF, WACC, leverage covenants, and other mission-critical levers\n- Spearheaded transformational debt-refinancing and hedging programs that de-risked the balance sheet end-to-end\n- Champion of finance digital transformation, leveraging next-gen analytics to unlock actionable insight\n- Builder of high-performing, cross-functional finance teams aligned around shareholder-value creation\n- Recognized thought leader on ESG-linked financing and the future of corporate treasury\n\nExperience:\n- Helios Industrial Holdings — Director, Corporate Finance & Treasury (current)\n- Crestline Manufacturing — Senior Manager, Treasury (prior)\n- Began career in audit at a Big Four firm",
+  "jd": "We are seeking a Director of Corporate Finance & Treasury to own capital structure, liquidity, and risk management for a multi-entity industrial group reporting to the CFO. You will lead debt facilities and refinancing, FX and interest-rate hedging, the rolling cash forecast, and rating-agency relationships. The role carries direct accountability for covenant compliance, the cost of capital, and a treasury team of roughly twelve. We need someone who can speak in specifics: the exact terms of a refinancing they led, the basis-point impact of a hedge, the dollar size of a facility. You will inherit a near-term maturity wall and a covenant that is tightening. The successful candidate translates strategy into concrete, quantified decisions and can be pinned to numbers and timelines under questioning. CPA or CFA preferred.",
+  "history": [
+    { "q": "Give me the shape of your current role at Helios — team size, what sits under treasury, who you report to." },
+    { "q": "You mention a transformational debt refinancing. Walk me through one you personally led." },
+    { "q": "What were the original terms versus the refinanced terms — rate, tenor, size?" },
+    { "q": "What drove the timing of that refinancing?" },
+    { "q": "Tell me about the hedging program you built. What exposure were you hedging?" },
+    { "q": "What instruments did you use, and what was the notional?" },
+    { "q": "How did you measure whether the hedge actually reduced risk?" },
+    { "q": "Walk me through how you run the cash forecast — cadence, horizon, accuracy." },
+    { "q": "Tell me about a covenant you came close to breaching. What did you do?" },
+    { "q": "How do you manage the rating-agency relationship — give me a specific interaction." },
+    { "q": "Describe a capital-allocation decision you influenced. What was the call?" },
+    { "q": "Where did you have to push back on the CFO or board? Give an example." },
+    { "q": "Let's return to the refinancing. I still don't have the numbers — original rate, new rate, facility size, tenor. Walk me through those four." },
+    { "q": "Last time on this: just the hard terms of that refinancing — old rate, new rate, dollar size, and the tenor. Can you state them?" }
+  ],
+  "candidate_last_answer": "Look, I think where I really add value at the director level is being a true strategic partner to the CFO. Treasury isn't a back-office function anymore — it's a value-creation engine. I'm passionate about elevating the finance function and building a culture of ownership across the team. And honestly, the most important thing in this market is relationships: with your banks, with the rating agencies, with the board. I've always believed that if you invest in those relationships, the deals take care of themselves. That's the philosophy I'd bring here — I'm a relationship-first, strategy-first finance leader.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "refinancing-overview", "refinancing-terms", "refinancing-timing", "hedging-exposure", "hedging-notional", "hedge-effectiveness", "cash-forecast-process", "covenant-near-breach", "rating-agency-interaction", "capital-allocation-call", "cfo-board-pushback", "refinancing-terms-retry"],
+    "current_competency_target": "capital-markets-fluency",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "capital-markets-fluency",
+    "missing_evidence": [
+      { "competency": "capital-markets-fluency", "evidence_type": "metric" },
+      { "competency": "capital-markets-fluency", "evidence_type": "timeline" },
+      { "competency": "capital-markets-fluency", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: if you invest in those relationships, the deals take care of themselves",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cut past the relationship-and-philosophy deflection to extract the four hard refinancing terms asked for twice — original rate, new rate, facility dollar size, and tenor — establishing whether the candidate actually led the deal or only narrates strategy"
+    ]
+  }
+}

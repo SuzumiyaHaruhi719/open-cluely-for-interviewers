@@ -1,0 +1,49 @@
+{
+  "id": "fx_0832",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 12,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周凯 — 销售副总裁 / VP of Sales (Enterprise SaaS, APAC)\n\n概述\n十四年企业级 SaaS 销售与团队管理经验，擅长从零搭建大区销售体系、设计销售流程与 comp plan，并用 STAR 方式复盘每一个关键战役。\n\n经历\n云枢科技（2021 至今）— VP of Sales, Greater China\n- Situation：公司进入中国市场两年,ARR 停滞在六千万人民币,大客户续约率只有七成。\n- Task：我被聘来重建大客户销售团队并把净收入留存（NRR）拉回到行业水平。\n- Action：重构了从 SDR 到 AE 到 CSM 的漏斗,引入 MEDDICC 销售方法论,重新设计了 comp plan,并亲自带头拿下三个标杆客户。\n- Result：两年内 ARR 从六千万增长到一点六亿,NRR 从九十二提升到一百一十八,团队从二十二人扩到四十人。\n\n捷讯软件（2016–2021）— Senior Sales Director\n- Situation：华东区新设；Task：从零组建团队；Action：招募并培训首批十名 AE,建立 pipeline review 机制；Result：三年做到区域年营收破亿。\n\n领程系统（2011–2016）— Enterprise Account Executive\n- 连续三年超额完成 quota,最高达成率百分之一百六十。\n\n技能: MEDDICC, Salesforce, comp plan design, forecasting, channel/渠道, QBR, 大客户管理",
+  "jd": "我们是一家进入扩张期的企业级 SaaS 公司,正在为大中华区招聘一名销售副总裁（VP of Sales）,向全球 CRO 汇报,全面负责大区的 new logo 获取与 net revenue retention。该岗位需要重建并扩张一支三十人以上的销售团队,设计销售流程与激励方案,并对季度 forecast 的准确性负责。我们目前的痛点是大客户续约率波动、forecast 经常 miss、销售流程不统一。面试中我们会深入复盘候选人亲自操盘过的一个 turnaround 战役——尤其会追问关键事件发生的先后顺序:是先换了打法还是先换了人?哪个动作在前、产生了什么结果、又是在什么时点拿到的。我们看重能把复杂 turnaround 的时间线讲得清清楚楚、并对每个数字与时点负责的领导者。要求十年以上企业 SaaS 销售管理经验,有从零或重建大区的成功案例。",
+  "history": [
+    { "q": "先讲讲你在云枢的整体盘子——团队多大、负责的 ARR 和核心指标。" },
+    { "q": "你接手时,公司给你的最核心的一个 mandate 是什么?" },
+    { "q": "你简历里写 ARR 两年从六千万到一点六亿。先说说你刚接手那会儿,最大的问题是什么?" },
+    { "q": "你做了好几件事:重构漏斗、引入 MEDDICC、改 comp plan、亲自拿标杆客户。这几件事里,你最先动的是哪一件?" },
+    { "q": "comp plan 的调整,是在你重建团队之前还是之后?" },
+    { "q": "那三个标杆客户是你亲自拿下的——那是在新 comp plan 生效前还是生效后签的?" },
+    { "q": "MEDDICC 的导入,团队多久才真正用起来?中间有没有反复?" },
+    { "q": "NRR 从九十二到一百一十八,这个提升主要发生在哪个阶段——是换打法那一年,还是换完人之后?" },
+    { "q": "我们把关键事件排个序:重建团队、改 comp plan、导入 MEDDICC、签下标杆客户。按真实发生顺序排一下。" },
+    { "q": "你刚才说标杆客户是在新 comp plan 之后签的,但前面又说你『一接手就亲自带头拿下了三个标杆客户』来稳住军心——这两个时点对不上,到底哪个在前?" },
+    { "q": "好,那 NRR 的拐点呢?你前面说是换打法那年,后面又归因到换完人之后——能不能定一个?" },
+    { "q": "我需要你给我一条清楚的时间线:第几个月做了什么、什么时候出的结果。慢慢来,但要前后一致。" }
+  ],
+  "candidate_last_answer": "好,我理解您要的是一条干净的 timeline……老实讲被您这么一追,我自己也得捋一下。大方向是没错的:接手、重建、换打法、出结果。但具体先后……那三个标杆客户,我印象里是我一进来就推的,因为得先 quick win 稳住信心;可 comp plan 改完才是真正放量,所以也可能是改完之后才 close 的,这两个 deal 在我脑子里有点重叠了。NRR 的拐点也是,换打法和换人其实是 overlap 的,MEDDICC 大概是中间某个 quarter 起来的,具体是 Q2 还是 Q3 我得回去查 Salesforce。所以您问哪个在前——说真的,turnaround 那两年很多动作是并行的,我很难给您一个特别 clean 的单线顺序,it kind of all happened together。",
+  "session_state": {
+    "drilled_topics": ["overall-book", "core-mandate", "initial-problem", "first-lever", "comp-plan-timing", "lighthouse-deal-timing", "meddicc-adoption", "nrr-inflection", "sequence-ordering", "lighthouse-contradiction", "nrr-attribution-contradiction", "clean-timeline-request"],
+    "current_competency_target": "turnaround-sequencing",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "turnaround-sequencing",
+    "missing_evidence": [
+      { "competency": "turnaround-sequencing", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这两个 deal 在我脑子里有点重叠了",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single committed sequence anchoring whether the three lighthouse deals closed before or after the new comp plan took effect, and which lever (new playbook vs new people) drove the NRR inflection, tied to specific quarters rather than 'it all happened together'"
+    ]
+  }
+}

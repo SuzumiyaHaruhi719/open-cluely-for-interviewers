@@ -1,0 +1,51 @@
+{
+  "id": "fx_0889",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "Senior Growth Marketing Manager\n\nCore competencies: demand generation, performance marketing, paid social, paid search, SEO, SEM, ABM, lifecycle marketing, marketing automation, lead scoring, attribution modeling, MQL/SQL pipeline, CAC, LTV, ROAS, MER, conversion rate optimization, A/B testing, funnel optimization, growth loops, product-led growth, retention, churn reduction, cohort analysis, omnichannel, martech stack, HubSpot, Marketo, Salesforce, GA4, Looker, Segment, Braze, Iterable, Mixpanel, Amplitude, SQL, dbt.\n\nExperience:\nBrightwave SaaS — Senior Growth Marketing Manager (2021-present)\n- Own paid acquisition budget across paid search, paid social, and display\n- Partner with sales on MQL-to-SQL handoff and pipeline reporting\n- Drive lifecycle and retention programs via Braze\nLumen Apps — Growth Marketing Manager (2018-2021)\n- Ran performance campaigns and CRO experiments\n\nEducation: B.A. Communications.\nCertifications: Google Ads, HubSpot Inbound, Meta Blueprint.",
+  "jd": "Brightwave SaaS is hiring a Senior Growth Marketing Manager to own a $6M annual paid-acquisition budget across search, social, and display. You will be accountable for blended CAC (currently $410, target $320), MQL volume, and MQL-to-pipeline conversion. The role works daily with RevOps and finance; you must be able to defend channel allocation with attribution data, explain why a campaign was killed or scaled, and walk through a CRO experiment end to end. We need someone who reasons in numbers: budget shifts, incrementality, payback period. Required: 5+ years performance marketing, deep GA4/Looker fluency, and a track record of moving CAC with specific, attributable decisions. The loop includes a budget-allocation case.",
+  "history": [
+    { "q": "Walk me through the paid-acquisition budget you own at Brightwave — total spend and channel split." },
+    { "q": "What's your current blended CAC, and how has it trended over the last year?" },
+    { "q": "Tell me about a specific channel you scaled. Why that one?" },
+    { "q": "What attribution model do you use, and why?" },
+    { "q": "Describe a campaign you killed. What signal made you pull it?" },
+    { "q": "How do you think about incrementality versus last-touch credit?" },
+    { "q": "Tell me about a CRO experiment you ran end to end." },
+    { "q": "What was the lift, and how did you confirm it wasn't noise?" },
+    { "q": "How do you decide budget allocation across search, social, and display?" },
+    { "q": "What's your payback period target, and how do you calculate it?" },
+    { "q": "When CAC spiked, what was the root cause and what did you do?" },
+    { "q": "How do you partner with RevOps on the MQL-to-pipeline handoff?" },
+    { "q": "What's one number you're most proud of moving, and by how much?" },
+    { "q": "Let's get concrete. Pick the single decision that most moved CAC last year — tell me the before number, what you changed, and the after number." }
+  ],
+  "candidate_last_answer": "Honestly, moving CAC is all about staying close to the data and being relentless about optimization. It's a constant process — you test, you learn, you iterate. I'd say the biggest thing is just being disciplined and channel-agnostic, letting the performance tell you where to lean in. We made a lot of smart adjustments over the year and the efficiency definitely improved. It's really about the holistic approach more than any one silver bullet.",
+  "session_state": {
+    "drilled_topics": ["budget-split", "cac-trend", "channel-scale", "attribution-model", "campaign-kill", "incrementality", "cro-experiment", "cro-lift-confirmation", "budget-allocation", "payback-calc", "cac-spike-rootcause", "revops-handoff", "proudest-number"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We made a lot of smart adjustments over the year and the efficiency definitely improved",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force one concrete decision with a before-CAC number, the specific change made, and the after-CAC number — replacing the 『efficiency definitely improved』 hand-wave with an attributable figure"
+    ]
+  }
+}

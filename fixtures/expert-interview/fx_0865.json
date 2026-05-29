@@ -1,0 +1,53 @@
+{
+  "id": "fx_0865",
+  "tags": {
+    "industry": "design",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "Junior Product Designer — the designer who single-handedly redefined the entire product experience\n\nPixelforge (2023-present) — Junior Product Designer\n- Personally owned the complete redesign of the flagship mobile app, widely regarded internally as the best work the company has ever shipped\n- My onboarding flow alone is credited with transforming the company's activation numbers\n- Routinely praised by leadership as the most talented designer on the team despite being the most junior\n- Drove a design-system overhaul that the entire org now depends on\n\nFreelance (2022-2023)\n- Delivered award-worthy brand and product work for a dozen startups, every one of them thrilled\n\nSkills: Figma, prototyping, user research, design systems, interaction design, a relentless eye for perfection\nEducation: BFA Interaction Design (graduated top of my cohort)",
+  "jd": "We're hiring a Junior Product Designer to join a 6-person product design team working on our consumer mobile app. You'll partner with a senior designer and a PM on features across onboarding and core flows, contribute to our design system, and run lightweight usability sessions. We care less about a flashy portfolio narrative and more about understanding what you specifically did on a project versus what the team did, how you incorporated critique, and how you measured whether a design change actually helped users. This is a growth role: we want someone coachable who can articulate their own concrete contribution and what they learned.",
+  "history": [
+    { "q": "Tell me about yourself and what you're working on at Pixelforge right now." },
+    { "q": "Your resume says you 'single-handedly redefined' the app. Let's start with the redesign — what was the scope?" },
+    { "q": "Who else was on that redesign with you?" },
+    { "q": "What part of the redesign did you personally design, screen by screen?" },
+    { "q": "Walk me through the onboarding flow you mentioned. What was the original flow?" },
+    { "q": "What specific change did you make to onboarding?" },
+    { "q": "You said it transformed activation — what was activation before and after?" },
+    { "q": "How did you know your change caused that, versus other things shipping at the same time?" },
+    { "q": "Tell me about the design-system overhaul. What did you own in it?" },
+    { "q": "How did you handle a piece of critique you disagreed with on that project?" },
+    { "q": "Describe a usability session you ran. What did you learn?" },
+    { "q": "What's one design decision you got wrong and had to redo?" },
+    { "q": "How do you work with engineers when a design is hard to build?" },
+    { "q": "What did the senior designer on your team do versus what you did?" },
+    { "q": "If I asked your PM what your single biggest contribution was, what would they say?" },
+    { "q": "Let's get specific on the onboarding win. What did YOU personally do — the exact screens, the exact decision — and how did you measure the result? Not the team, you." }
+  ],
+  "candidate_last_answer": "Yeah, so the onboarding win was really a whole-team thing when I'm honest about it. We sat down together, we mapped the funnel, we decided to cut a couple of steps, and we shipped it. The senior designer drove a lot of the structure and the PM owned the metrics, and we all kind of iterated as a group. I was definitely in the room for all of it and contributed to the discussions. It's hard to point to one screen and say that was just me, because design is so collaborative — we won as a team and I'm proud of what we did together.",
+  "session_state": {
+    "drilled_topics": ["self-intro", "redesign-scope", "redesign-team", "personal-screens", "onboarding-original", "onboarding-change", "activation-numbers", "causal-attribution", "design-system-ownership", "critique-handling", "usability-session", "wrong-decision", "eng-collaboration", "senior-vs-self", "pm-perspective"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-specificity", "evidence_type": "scope" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: It's hard to point to one screen and say that was just me",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the junior candidate to name one concrete screen or interaction they personally designed and the specific decision they owned, separating their individual contribution from the senior designer's and PM's, given the resume's 『single-handedly』 claim"
+    ]
+  }
+}

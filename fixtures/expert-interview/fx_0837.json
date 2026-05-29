@@ -1,0 +1,40 @@
+{
+  "id": "fx_0837",
+  "tags": {
+    "industry": "legal",
+    "level": "senior",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Priya Raman — Senior Counsel, Commercial & Privacy\n\nSummary\nSenior commercial lawyer with experience advising SaaS and fintech clients on data privacy, vendor contracts, and regulatory matters. Comfortable owning negotiations end to end and partnering with product and security teams.\n\nExperience\nMeridian Pay (fintech) — Senior Counsel, Commercial (2020-present)\n- Lead counsel for the company's vendor and partnership agreements\n- Built the privacy program and advised on GDPR and CCPA obligations\n- Supported the legal workstream during a financing round and a secondary fundraise\n- Managed outside counsel relationships across litigation and regulatory matters\n\nHale & Whitford LLP — Associate, Technology Transactions (2015-2020)\n- Drafted and negotiated SaaS, licensing, and data-processing agreements for technology clients\n- Advised on privacy compliance and breach-response readiness\n\nEducation\nJD, Eastfield University School of Law\nBA, Political Science\n\nAdmissions: State Bar (active). Languages: English, Tamil.",
+  "jd": "Meridian Pay is seeking a Senior Commercial Counsel to lead negotiations on our highest-value vendor, partnership, and enterprise customer agreements. Reporting to the General Counsel, you will own complex data-processing and information-security terms, push back on unfavorable indemnity and liability provisions, and set negotiation playbooks the broader team can reuse. You will partner with security, finance, and product to quantify risk and make principled trade-offs under deadline pressure. We expect a senior lawyer who can articulate not just what position to take but why, who can defend a concession with a clear rationale, and who measures their own effectiveness (cycle time, deviation from playbook, risk retired). Requirements: JD and active bar admission, 7+ years including significant in-house technology or fintech experience, deep fluency in GDPR/CCPA and SaaS contracting.",
+  "history": [
+    { "q": "You led vendor and partnership agreements at Meridian Pay. Tell me about the single most contested negotiation you personally ran." },
+    { "q": "On that deal, what was the specific liability or indemnity position you were fighting for, and where did you land?" },
+    { "q": "How do you decide when a concession is acceptable versus a walk-away? Give me your actual framework." },
+    { "q": "How do you measure whether you're an effective negotiator — what numbers do you track on cycle time or risk retired?" }
+  ],
+  "candidate_last_answer": "Well, that's an interesting question — but let me ask you something first: how does this team currently define negotiator effectiveness? Because honestly, I think the premise is a little flawed. What metric do you actually use here? In my view, if you're reducing good commercial judgment to a cycle-time dashboard, you're measuring the wrong thing entirely. So before I answer, I'd genuinely like to understand what you're optimizing for.",
+  "session_state": {
+    "drilled_topics": ["most-contested-negotiation", "liability-position-outcome", "concession-framework", "effectiveness-metrics"],
+    "current_competency_target": "self-measurement-rigor",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "self-measurement-rigor",
+    "missing_evidence": [
+      { "competency": "self-measurement-rigor", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: how does this team currently define negotiator effectiveness",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete account of which metrics the candidate personally tracked on their own negotiations (e.g., cycle time, deviation from playbook, indemnity caps achieved) rather than redirecting the question back to the interviewer"
+    ]
+  }
+}

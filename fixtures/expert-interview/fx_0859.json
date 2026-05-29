@@ -1,0 +1,41 @@
+{
+  "id": "fx_0859",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "self-contradictory",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Senior Supply Chain Manager — 供应链 / S&OP 方向\n\n概述：资深供应链管理者，负责 end-to-end 的 planning、procurement 与 logistics,擅长在波动需求下平衡 inventory 与 service level。\n\n经历：\n- Stellar Consumer Goods — Senior Supply Chain Manager (2019 至今)\n  · 负责区域 S&OP 流程,管理 demand planning 与 supply planning 团队\n  · 主导一个 ERP(SAP)上线项目,优化 procurement-to-pay 流程\n  · 简历亮点:把 on-time-in-full(OTIF)从 82% 提升到 95%\n  · 另一处写到:在我任内 OTIF 始终稳定维持在 90% 以上,从未跌破\n- Harbor Logistics — Supply Chain Analyst (2015-2019)\n  · 负责 inventory 分析与 supplier 绩效跟踪\n\n技能:S&OP、demand planning、SAP、supplier management、inventory optimization\n教育:供应链管理 硕士",
+  "jd": "我们正在招聘一位 Senior Supply Chain Manager,向供应链总监汇报,负责区域 end-to-end 的 S&OP、procurement 与 logistics。该岗位需要对 OTIF、inventory turns、forecast accuracy 与采购成本负责,能亲自主导跨职能的 S&OP 节奏,并在面试中清晰、一致地陈述自己经办项目的真实数据与时间线。我们重视诚信与 ownership —— 候选人对履历中的指标(如 OTIF 改善幅度)必须前后一致,且在谈到失败或未达标时能正视自己的责任,而非一味归咎于他人或外部因素。需要有主导 ERP/S&OP 转型的实操经验,以及供应商谈判与库存优化的扎实背景。",
+  "history": [
+    { "q": "先讲讲你在 Stellar 的 scope —— 负责哪个区域、管多大团队、S&OP 节奏是怎么跑的。" },
+    { "q": "我注意到你简历里 OTIF 有两处说法:一处说从 82% 提升到 95%,另一处说一直稳定在 90% 以上从未跌破。这两个怎么统一?真实情况是哪个?" },
+    { "q": "你主导的那个 SAP 上线项目,最后是按时按预算交付的吗?讲讲结果。" },
+    { "q": "听起来这个 ERP 项目没完全达到预期。具体哪里出了问题?你自己在其中负有哪部分责任?" }
+  ],
+  "candidate_last_answer": "说实话,那个 SAP 项目的延期真的不能怪我。主要是 IT 团队的 implementation 一直拖,consultant 也不靠谱,需求来回改;采购部门那边数据质量又特别差,master data 一塌糊涂。我这边 planning 的部分其实是最早 ready 的。说到这儿我倒想反问你一句 —— 在你们公司,如果一个跨部门项目因为别的团队掉链子而延期,这个锅通常是算到 project sponsor 头上,还是各个 function 各自背?我挺好奇你们这边是怎么定责的,因为这直接影响我怎么回答你这个问题。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "otif-contradiction", "erp-delivery-outcome", "erp-failure-ownership"],
+    "current_competency_target": "accountability",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "accountability",
+    "missing_evidence": [
+      { "competency": "accountability", "evidence_type": "owner-of-action" },
+      { "competency": "accountability", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "integrity-consistency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 那个 SAP 项目的延期真的不能怪我",
+      "must-be-question-type: action-attribution",
+      "expected-yield: decline to answer the reversed question and hold the candidate on their own accountability — forcing them to name what they, as the senior manager owning the S&OP/planning side, could have done differently on the SAP project, instead of distributing blame to IT, consultants, and procurement"
+    ]
+  }
+}

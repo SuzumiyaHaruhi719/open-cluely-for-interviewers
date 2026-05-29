@@ -1,0 +1,42 @@
+{
+  "id": "fx_0890",
+  "tags": {
+    "industry": "finance",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Staff Risk Analyst — Credit & Counterparty Risk\n\nSummary: Eight years across credit risk modeling and counterparty exposure at a mid-size commercial bank. Owned the PD/LGD model recalibration for the C&I portfolio.\n\nExperience:\nPiedmont Trust Bank — Staff Risk Analyst (2019-present)\n- Led the annual recalibration of the probability-of-default model for commercial & industrial lending\n- One bullet states: independently owned and signed off on the final model validation\n- A later bullet states: model validation is handled entirely by an independent second-line team; I only provide inputs\n- Built counterparty exposure dashboards in Python and Tableau\n- Presented quarterly risk appetite metrics to the CRO\nHarborline Financial — Senior Credit Analyst (2014-2019)\n- Underwrote middle-market C&I credits; managed a watchlist of stressed names\n\nEducation: M.S. Financial Engineering; B.S. Statistics. FRM certified.",
+  "jd": "Piedmont Trust Bank seeks a Staff Risk Analyst for the credit-risk team. You will own the annual PD/LGD recalibration for the C&I book, document model assumptions to satisfy SR 11-7 model-risk governance, and respond to second-line validation findings. The role requires a precise understanding of where your responsibility ends and where independent validation begins — you will be asked to draw that line explicitly. You must explain a recalibration methodology step by step, justify a segmentation choice, and describe how you handled a validation finding you disagreed with. Required: 6+ years credit-risk modeling, strong statistics, Python, and familiarity with model-risk-management regulatory expectations.",
+  "history": [
+    { "q": "Walk me through your role on the PD model recalibration at Piedmont." },
+    { "q": "Your resume says in one place you independently signed off on validation, and in another that validation is owned entirely by second line. Which is it?" },
+    { "q": "Take me through the recalibration methodology — what are the actual steps, start to finish?" },
+    { "q": "How did you segment the C&I portfolio, and why that segmentation?" },
+    { "q": "Tell me about a validation finding you disagreed with and how you handled it." },
+    { "q": "Let's pin the governance line precisely: on the most recent recalibration, what specifically did you produce, and what specifically did the independent validation team do — who signed the final approval memo?" }
+  ],
+  "candidate_last_answer": "Great question, and it really gets to the heart of robust model-risk governance, which I'm deeply passionate about. At the end of the day, my philosophy is that effective challenge is a team sport — it's about driving a culture of ownership and accountability across the three lines of defense. I always say risk is everyone's job. So I partner cross-functionally, I bring a best-in-class lens to the model lifecycle, and I make sure we're all rowing in the same direction toward a defensible, audit-ready outcome. That's the muscle I've built over my career.",
+  "session_state": {
+    "drilled_topics": ["recalibration-role", "resume-contradiction-signoff", "recalibration-methodology", "segmentation-choice", "validation-disagreement"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "domain-depth", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: effective challenge is a team sport",
+      "must-be-question-type: action-attribution",
+      "expected-yield: strip the 『risk is everyone's job』 packaging and force a concrete RACI — exactly which artifacts the candidate produced, what independent validation produced, and the named role that signed the final approval memo on the last recalibration"
+    ]
+  }
+}

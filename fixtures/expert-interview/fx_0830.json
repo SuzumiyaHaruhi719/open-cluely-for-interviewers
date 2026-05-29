@@ -1,0 +1,42 @@
+{
+  "id": "fx_0830",
+  "tags": {
+    "industry": "finance",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "孙岚 — 投资银行暑期实习候选人 / IBD Summer Analyst Candidate\n\n关键词与技能\nFinancial Modeling、DCF、LBO、Comparable Company Analysis、Precedent Transactions、Merger Model、accretion/dilution、估值、尽职调查、pitch book、information memorandum、Bloomberg、Capital IQ、FactSet、VBA、Python、PowerPoint、Excel、行业研究、资本市场、并购、IPO、再融资、债券承销、路演、估值建模、财务尽调、商业尽调、价值创造、协同效应、交易执行、deal sourcing\n\n个人简介\n我是一名金融工程专业大三学生,对一级市场和并购交易有强烈兴趣,自学完成过多个估值建模练习,熟悉从搭建三表模型到 DCF 与 LBO 的完整流程。我相信细节决定成败,也乐于在高强度环境下快速学习。\n\n经历\n睿石投资（2024 寒假）— 行研实习\n- 协助团队整理消费与医疗赛道的可比公司数据\n- 参与一份 pitch book 的部分模块制作\n\n校园经历\n金融建模协会 副会长；曾带队参加估值建模大赛进入复赛\n\n教育: 金融工程专业，大三在读，GPA 3.7/4.0",
+  "jd": "我们投行部（IBD）招聘暑期分析师实习生（Summer Analyst），主要支持消费与医疗团队的交易执行与项目准备工作。日常工作包括：搭建和维护财务模型（三表、DCF、可比公司、并购模型）、制作 pitch book 与行业材料、整理尽职调查清单、以及处理大量需要极高准确度的数据核对工作。投行是一个细节零容错的环境——一个模型里的勾稽错误、一页 pitch 里的过时数据，都可能直接影响到客户面前的可信度。我们想找的是能把『准确』当成本能、遇到不确定时主动核实而不是想当然的人。要求金融、会计或相关专业在读，扎实的 Excel 建模基础，对资本市场有真实的热情。本次面试我们会重点考察你处理细节与压力的方式。",
+  "history": [
+    { "q": "先简单介绍下你自己，以及你为什么想做投行。" },
+    { "q": "你简历里 LBO、merger model 这些都写了。你自己真正从头搭到尾过哪一个？" },
+    { "q": "在睿石那段行研实习里，你具体负责的是哪部分数据？" },
+    { "q": "投行的工作非常强调零容错。给我讲一个你因为粗心或疏忽导致出错的经历，以及你后来怎么改的。" },
+    { "q": "我理解你可能觉得这个问题不好答,但我还是想听一个真实的、你自己犯错的具体例子。" },
+    { "q": "那换个方式问:上次你交出去的东西被别人挑出错误,是什么情况?" }
+  ],
+  "candidate_last_answer": "这个……说实话我想先反问您一下:贵公司这边对实习生在 attention to detail 这块,具体是怎么定义『出错』的标准的?因为我觉得有些错是 typo 级别的,有些是 modeling logic 的错,这两种性质完全不一样对吧?还有,我其实挺好奇,像我这个阶段的 intern,您们更看重的是 zero error 的结果,还是发现错误之后 fix 的能力?如果能先了解您们的评判维度,我可能更好举例子。所以能不能麻烦您先讲讲,您心目中一个『细节做得好』的实习生大概是什么样的?",
+  "session_state": {
+    "drilled_topics": ["self-intro-motivation", "model-built-end-to-end", "research-internship-scope", "mistake-and-correction", "mistake-retry", "caught-error-by-others"],
+    "current_competency_target": "attention-to-detail",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "attention-to-detail",
+    "missing_evidence": [
+      { "competency": "attention-to-detail", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我想先反问您一下",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a real first-person example of a specific mistake the candidate personally made and what they concretely did to fix it, redirecting them off the reversed question and onto owning a concrete instance"
+    ]
+  }
+}

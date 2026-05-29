@@ -1,0 +1,50 @@
+{
+  "id": "fx_0856",
+  "tags": {
+    "industry": "sales",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 13,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "VP of Sales — B2B SaaS / GTM 负责人\n\n概述：负责公司全球销售组织的搭建与 scaling,管理 enterprise、commercial 与 SDR 多个团队,向 CRO 汇报。\n\n经历：\n- Vertex Analytics — VP of Sales (2020 至今)\n  · 负责整个 sales org 的 quota 设定、forecasting 与 GTM 策略\n  · 主导从 founder-led sales 到规模化销售团队的转型\n  · 重构了 sales comp plan,推动 enterprise 与 commercial 的分层运营\n  · 与 marketing 共建 pipeline,与 CS 协同 net revenue retention\n- Brightwave Software — Senior Director of Sales (2016-2020)\n  · 负责北美 commercial segment,带领团队完成 region 的快速扩张\n- 早期在多家成长期公司担任 enterprise AE 与 sales manager\n\n技能:GTM strategy、sales org 搭建、forecasting、comp design、cross-functional alignment\n教育:商科院校 本科",
+  "jd": "我们正在招聘一位 VP of Sales,向 CRO 汇报,负责一个约 80 人的全球销售组织(含 enterprise、commercial、SDR 与 sales ops)。该岗位拥有全公司 new ARR 与 net revenue retention 的核心责任,需要亲自主导 GTM 战略、forecasting 节奏与 comp plan 设计,并能用具体数字说明历史业绩(如 ARR 增长曲线、win rate、quota attainment、ramp time)。我们希望候选人有把销售团队从早期规模 scaling 到更大量级的实操经验,能在 board 面前清晰拆解 pipeline 与 forecast。你需要修复一个连续 miss 的 segment,重建 sales comp 的信任,并整合一个并购进来的销售团队。我们尤其看重候选人能否把战略落到可量化、可追溯的执行结果上,而不是停留在方法论层面。",
+  "history": [
+    { "q": "先讲讲你在 Vertex 的 scope —— sales org 多大、分几条线、你向谁汇报。" },
+    { "q": "你提到主导了 founder-led sales 到规模化的转型,这个转型的起点是什么状态?" },
+    { "q": "转型这两年,new ARR 的增长大概是什么曲线?给我几个 milestone 数字。" },
+    { "q": "你重构了 comp plan。改之前和改之后,核心差异是什么?" },
+    { "q": "comp 改革之后,团队的 attainment 分布有没有变化?" },
+    { "q": "enterprise 和 commercial 分层运营,两条线的 ACV 和 sales cycle 分别是什么量级?" },
+    { "q": "你怎么做 forecasting?用什么方法、准确率如何?" },
+    { "q": "讲一个你 forecast 严重 miss 的季度,后来怎么复盘的。" },
+    { "q": "和 marketing 共建 pipeline,你们的 SLA 和 MQL-to-SQL 转化大概什么水平?" },
+    { "q": "带团队最难的一次人员调整是什么?" },
+    { "q": "你怎么看一个 rep 该不该被 PIP?" },
+    { "q": "回到增长数字 —— 我到现在还没听到具体的 ARR 数。给我接手时和现在的 ARR,以及 CAGR。" },
+    { "q": "最后再确认一次:接手时 ARR、当前 ARR、以及这期间的 quota attainment,就这三个数,能报一下吗?" }
+  ],
+  "candidate_last_answer": "你知道吗,我觉得 VP of Sales 这个岗位,数字只是结果,真正重要的是你怎么 build 一支有 winning culture 的队伍。我这些年最大的体会是,销售管理的本质是激励和信任。我特别喜欢带年轻 rep,看他们从 struggling 到 closing 第一个大单,那种成就感是任何数字都换不来的。我也一直在思考 AI 会怎么改变 sales,我觉得未来 SDR 这个角色可能会被重新定义,sales 团队的形态会有根本性的变化。这些 trend 才是我们做 leader 真正应该 obsess 的东西。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "transition-starting-state", "arr-growth-curve", "comp-plan-redesign", "attainment-distribution", "segment-acv-cycle", "forecasting-method", "forecast-miss-retro", "marketing-sla", "hardest-people-change", "pip-philosophy", "arr-numbers-retry"],
+    "current_competency_target": "revenue-results",
+    "elapsed_minutes": 43
+  },
+  "ground_truth": {
+    "competency_target": "revenue-results",
+    "missing_evidence": [
+      { "competency": "revenue-results", "evidence_type": "metric" },
+      { "competency": "revenue-results", "evidence_type": "timeline" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 数字只是结果,真正重要的是你怎么 build 一支有 winning culture 的队伍",
+      "must-be-question-type: metric-pin",
+      "expected-yield: refuse the culture-and-trends deflection and pin the three revenue numbers already requested twice — ARR at takeover, current ARR, and quota attainment over the period — establishing whether the candidate actually drove quantifiable revenue growth or only philosophizes about leadership"
+    ]
+  }
+}

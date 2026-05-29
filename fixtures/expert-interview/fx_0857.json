@@ -1,0 +1,38 @@
+{
+  "id": "fx_0857",
+  "tags": {
+    "industry": "healthcare",
+    "level": "mid",
+    "language": "mixed",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Clinical Operations Specialist — 医院运营 / patient flow 方向\n\nMercy Valley Hospital — Clinical Ops Specialist (2021 至今)\n负责 outpatient department 的 patient flow 优化与排班协调,跟进 throughput 与 wait-time 指标。\n\nRiver City Clinic — Care Coordinator (2018-2021)\n协调 referral 流程,管理患者预约与随访。\n\n技能:patient scheduling、Epic EHR、流程改进(Lean basics)、跨科室协调\n证书:Certified in Healthcare Quality (CPHQ) 在考\n教育:护理管理 本科",
+  "jd": "我们在为一家区域医院招聘一名 Clinical Operations Specialist(中级),向 Ops Manager 汇报,负责 outpatient 部门的 patient flow、排班与 throughput 改进。你需要用数据说明你做过的一次具体流程改进:背景、你的动作、以及对 wait-time 或 throughput 的量化影响。我们重视能直接、具体回答问题的候选人,能讲清自己在跨科室协调中扮演的角色,并理解 HIPAA 等合规要求。要求熟悉 Epic 或同类 EHR,有流程改进(Lean/PDSA)基础者优先。岗位不负责临床诊疗决策,但需与临床团队紧密协作。",
+  "history": [
+    { "q": "你简历里提到优化了 outpatient 的 patient flow。挑一次具体的改进,讲讲背景、你做了什么、以及对 wait-time 的影响。" }
+  ],
+  "candidate_last_answer": "嗯……在我具体展开之前,我其实挺想先了解一下,咱们这个岗位现在 outpatient 的 bottleneck 主要在哪个环节?是 check-in、provider 端还是 discharge?还有,你们现在用的是哪一版 Epic?我之所以问,是因为 patient flow 的优化很 context-dependent,我想确认一下我讲的 case 跟你们的痛点 match 不 match。你能先跟我 share 一下现状吗?",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "process-improvement",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "process-improvement",
+    "missing_evidence": [
+      { "competency": "process-improvement", "evidence_type": "metric" },
+      { "competency": "process-improvement", "evidence_type": "mechanism" },
+      { "competency": "process-improvement", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 在我具体展开之前,我其实挺想先了解一下",
+      "must-be-question-type: action-attribution",
+      "expected-yield: politely decline to be redirected and re-pose the original ask, forcing the candidate to commit to one concrete past patient-flow improvement — the specific bottleneck they tackled, the action they personally took, and the wait-time delta — rather than fishing for the interviewer's context first"
+    ]
+  }
+}

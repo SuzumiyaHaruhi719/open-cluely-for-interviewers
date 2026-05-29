@@ -1,0 +1,45 @@
+{
+  "id": "fx_0828",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Daniel Okafor — Backend Software Engineer\n\nSummary\nBackend engineer focused on distributed systems, event-driven services, and reliability. I enjoy untangling production incidents and improving system resilience.\n\nExperience\n\nQuill Systems — Backend Engineer (current)\n- Work on the order-processing platform: a set of Go services behind Kafka, handling checkout, inventory reservation, and fulfilment events.\n- Led the migration of our inventory-reservation service from a synchronous REST design to an event-driven model to reduce checkout latency and improve resilience during traffic spikes.\n- Owned an incident response after a major outage during a flash sale, did the root-cause analysis, and drove the remediation work afterward.\n- Improved our on-call runbooks and added circuit breakers around the payment provider integration.\n\nVellum Labs — Software Engineer\n- Built internal tooling and REST APIs for a logistics product.\n- Contributed to the move from a monolith toward services.\n\nSkills: Go, Kafka, PostgreSQL, Redis, Kubernetes, distributed tracing, incident response.\nEducation: BSc Computer Science.",
+  "jd": "We're hiring a mid-level Backend Engineer for the order-platform team at a high-growth e-commerce company. The team owns checkout, inventory reservation, and fulfilment as event-driven Go services on Kafka, and is judged on reliability during peak events (flash sales, holiday traffic) where order volume can spike many times over baseline. You'll design and ship services, own your code in production, and participate in a follow-the-sun on-call rotation. We care a lot about how engineers reason about failure: we'll dig into a real incident you handled and expect you to explain the sequence of events, what you changed, and in what order. Strong candidates can clearly separate what they did during an incident from what they did afterward as remediation, and can articulate the trade-offs of moving from synchronous to asynchronous designs. Requirements: 3+ years backend experience, solid Go or a comparable language, hands-on Kafka or another streaming platform, and real production on-call experience.",
+  "history": [
+    { "q": "Give me an overview of the order-processing platform you work on at Quill and your role on it." },
+    { "q": "You led the migration of inventory reservation from synchronous REST to event-driven. What problem were you actually solving?" },
+    { "q": "Walk me through the flash-sale outage. Start from the moment you got paged — what did you see first?" },
+    { "q": "So at the point you got paged, was the event-driven migration already live in production, or were you still on the synchronous design?" },
+    { "q": "What was the actual root cause of the outage?" },
+    { "q": "You mentioned circuit breakers around the payment provider. Did you add those before the outage or as part of the remediation afterward?" },
+    { "q": "Let's nail the sequence: migration, outage, circuit breakers, runbook changes. Put those four in the order they actually happened." },
+    { "q": "Okay — but a minute ago you said the migration was what caused the reservation backlog during the sale, and just now you said the migration happened after the outage as part of remediation. Which one is it?" }
+  ],
+  "candidate_last_answer": "Right, yeah, let me — okay so the timeline is a little fuzzy for me now that you press on it. So I think what happened is the outage hit during the flash sale, and at that time we were partly migrated — like the read path was event-driven but the reservation write was still synchronous, or maybe it was the other way around. The circuit breakers I'm pretty sure went in first, actually, because that's what kept the payment provider from cascading… although now that I say it, the cascade is sort of why we added them, so maybe that was after. And the migration, I led that, but whether the backlog was the old synchronous design or the new event-driven one that hadn't fully baked — honestly both feel right depending on how I think about it. The runbook changes were definitely last. Or around the same time as the breakers.",
+  "session_state": {
+    "drilled_topics": ["platform-overview", "migration-motivation", "outage-first-symptoms", "migration-state-at-page", "root-cause", "circuit-breaker-timing", "sequence-ordering", "timeline-contradiction"],
+    "current_competency_target": "incident-reasoning",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "incident-reasoning",
+    "missing_evidence": [
+      { "competency": "incident-reasoning", "evidence_type": "timeline" },
+      { "competency": "incident-reasoning", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: whether the backlog was the old synchronous design or the new event-driven one that hadn't fully baked",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: a single committed ordering of events — what state the reservation service was actually in (synchronous vs event-driven) at the moment the flash-sale backlog occurred, and whether the circuit breakers and migration came before or after the outage, anchored to concrete reference points rather than 'both feel right'"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "fx_0875",
+  "tags": {
+    "industry": "hr",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "13+",
+    "history_length": 18,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "陈思远｜人力资源实习生候选人\n中国人民大学 劳动人事学院 人力资源管理专业 大三在读｜预计 2027 年毕业\n邮箱：siyuan.chen@example.edu｜GPA 3.8/4.0\n\n实习与项目经历\n字节跳动 招聘部（2025 年 6 月至 8 月）— 校园招聘实习生\n- 情境：部门同时推进三所高校的暑期宣讲会，前期简历筛选完全靠人工，平均每份简历处理三分钟，积压严重\n- 任务：我被指派负责优化简历初筛流程，目标是在不增加人手的情况下把处理积压清掉\n- 行动：我设计了一套结构化的初筛打分表，把岗位 JD 拆成五个硬性维度并设定权重，培训了两名兼职同学按表打分，并用一个共享表格做双人交叉复核\n- 结果：单份简历平均处理时间从三分钟降到一分钟，三周内处理了约一千二百份简历，初筛一致性（两人打分吻合率）达到百分之八十九\n\n校学生职业发展协会（2024 年 9 月至今）— 活动部副部长\n- 情境：协会每年的春季招聘双选会到场企业逐年下滑，上一年只来了十八家\n- 任务：负责今年企业邀约，目标是把到场企业数提升回三十家以上\n- 行动：我整理了过去三年合作企业名单，按行业分层，设计了一封带往年学生去向数据的邀约邮件，并安排部员一对一电话跟进\n- 结果：今年双选会到场企业三十四家，同比增长百分之八十九，参与学生满意度问卷得分四点六分（满分五分）\n\n技能\n结构化面试设计、招聘数据分析、Excel 数据透视、问卷设计、活动组织。\n语言：中文母语，英语 CET-6（590 分）。\n\n荣誉\n校级一等奖学金（2024、2025），院辩论赛冠军（2024）。",
+  "jd": "某互联网公司人力资源部招聘一名招聘运营（Recruiting Operations）实习生，主要支持校园招聘与社会招聘的流程协调工作。岗位职责包括：协助简历初筛与候选人信息维护、协调面试官与候选人的日程、整理招聘漏斗数据并制作周报、参与宣讲会与招聘活动的现场执行。我们希望候选人是大三或研一在读、对人力资源有明确兴趣、细心且数据敏感、有学生组织或实习中独立推动过一件事并拿到结果的经历。每周到岗至少四天，实习期不少于三个月。该岗位向高级招聘经理汇报，表现优秀者有转正机会。",
+  "history": [
+    { "q": "先做个自我介绍，重点说说你为什么想做招聘运营这个方向。" },
+    { "q": "你在字节做的简历初筛优化，最初的积压有多严重，是谁让你来做这件事的?" },
+    { "q": "你说设计了一套结构化打分表 — 那五个维度具体是什么，权重怎么定的?" },
+    { "q": "权重是你自己拍的，还是和带教导师对齐过?" },
+    { "q": "你培训了两名兼职同学打分。你怎么保证他们俩打分标准一致?" },
+    { "q": "你提到吻合率百分之八十九。剩下不吻合的那百分之十一，你们怎么处理的?" },
+    { "q": "处理时间从三分钟降到一分钟,会不会牺牲了筛选质量? 你怎么验证的?" },
+    { "q": "三周一千二百份简历,最后这些人里有多少进了面试,你跟踪了吗?" },
+    { "q": "换到协会那件事。到场企业从十八家提到三十四家,你觉得最起作用的一招是什么?" },
+    { "q": "那封带学生去向数据的邀约邮件 — 数据是你自己整理的吗? 企业的反馈是什么?" },
+    { "q": "电话跟进的时候,被企业拒绝最多的理由是什么? 你怎么应对?" },
+    { "q": "这两段经历都跟招聘有关,如果让你选一件你最自豪的,是哪件,为什么?" },
+    { "q": "招聘运营有很多琐碎重复的工作,比如约面、维护信息。你怎么看待这种重复性工作?" },
+    { "q": "假设面试官临时放鸽子,候选人已经在路上了,你现场会怎么处理?" },
+    { "q": "你做周报会关注哪些招聘漏斗指标? 为什么是这几个?" },
+    { "q": "如果发现某个环节的转化率突然掉了一半,你会先怀疑什么?" },
+    { "q": "再讲一个具体的:你在打分表项目里,有没有哪个维度后来发现设计得不好、改过的?" },
+    { "q": "你刚说改过『相关经历』这个维度。当时是怎么发现它有问题的,具体改成了什么?" }
+  ],
+  "candidate_last_answer": "有的。情境是这样：我最早把『相关经历』设成了权重最高的一个维度，占百分之三十，想法是有相关实习的同学更靠谱。任务是带教导师让我每周复盘一次打分表的有效性。行动上，我做了一个对照：把第一周通过初筛但最终面试没过的二十几个人调出来看，发现里面超过一半都是『相关经历』打了高分、但其他维度很弱的同学，等于这个维度把一些只是简历好看的人捞了上来。我就把『相关经历』的权重从百分之三十降到百分之十五，把省出来的权重加到了『岗位匹配的具体技能』上。结果是改了之后第二周和第三周，初筛通过的人里进入二面的比例从大概四成提升到了六成五，导师也认可这个调整。这件事让我明白权重不能拍脑袋，得用结果数据反过来校准。",
+  "session_state": {
+    "drilled_topics": ["self-intro-motivation", "screening-backlog-context", "scoring-dimensions", "weight-alignment", "rater-consistency", "disagreement-handling", "quality-vs-speed", "funnel-tracking", "association-key-lever", "invite-email-data", "phone-rejection-handling", "proudest-pick", "repetitive-work-attitude", "interviewer-noshow-scenario", "weekly-report-metrics", "conversion-drop-diagnosis", "weight-redesign-existence"],
+    "current_competency_target": "self-reflection-iteration",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "self-reflection-iteration",
+    "missing_evidence": [
+      { "competency": "self-reflection-iteration", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "diagnostic-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 进入二面的比例从大概四成提升到了六成五",
+      "must-be-question-type: metric-pin",
+      "expected-yield: pinning down whether the 40%-to-65% second-round conversion lift is a real measured number or an approximation — the actual sample size behind it (only weeks 2-3 of one cohort), whether two weeks is enough signal, and whether the weight change alone caused it versus other concurrent factors"
+    ]
+  }
+}

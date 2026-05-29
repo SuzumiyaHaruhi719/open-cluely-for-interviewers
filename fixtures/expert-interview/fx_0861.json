@@ -1,0 +1,40 @@
+{
+  "id": "fx_0861",
+  "tags": {
+    "industry": "legal",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "法务总监 — 集团合规与争议解决\n\n恒晟科技集团 法务总监（2019年至今）\n- 情境：集团进入东南亚市场时缺乏统一的合同与合规体系，三个区域各自为战，合同模板不统一，违约风险高。\n- 任务：在十二个月内搭建覆盖六国的合规与合同管理框架，并把对外纠纷的平均处理周期压下来。\n- 行动：牵头制定标准合同库，引入合同生命周期管理系统，组建八人法务团队，建立与外部律所的分级合作机制，并亲自主导两起跨境仲裁。\n- 结果：标准合同覆盖率从百分之四十提升到百分之九十二，重大合同评审周期从平均二十一天缩短到九天，两起仲裁均以和解结案，为集团挽回约四千三百万元。\n\n方圆律师事务所 资深律师（2013至2019）\n- 专注公司并购与跨境投资，主办二十余起境外收购的法律尽调与交割。\n\n执业资格：中国法律职业资格、香港事务律师；教育：法学硕士。",
+  "jd": "本集团诚聘法务总监一名，向集团总法律顾问汇报，统管国内外合规、合同、知识产权与争议解决四大板块。该职位负责搭建并运营覆盖全球十二个法律实体的合规体系，主导重大商业纠纷与跨境仲裁策略，管理一支二十人的法务团队及年度外部律师费预算。我们需要候选人既能从零搭建合规流程，又能在董事会层面解释单一重大诉讼的风险敞口与拨备影响。任职要求：十年以上公司法务经验，至少主导过三起标的额过亿的跨境争议，熟悉数据合规与反垄断监管，能独立面对监管问询与审计委员会。",
+  "history": [
+    { "q": "请先介绍你目前在恒晟的职责范围：团队规模、管辖的法律实体、你直接负责的预算。" },
+    { "q": "你简历里写到主导两起跨境仲裁并和解结案，挑其中一起，讲讲争议焦点和你的具体谈判策略。" },
+    { "q": "你说重大合同评审周期从二十一天压到九天，这个数字是怎么算出来的，分母是哪些合同？" }
+  ],
+  "candidate_last_answer": "这么说吧，那套合规体系上线之后效果是颠覆性的。坦率讲，我们集团从那以后基本就再也没有发生过任何合规风险了，诉讼率直接归零，对外纠纷下降了百分之九十九以上。我个人经手的每一起案子无一败诉，胜诉率百分之百。监管那边对我们的评价是全行业标杆，好几家同行都派人来我们这儿取经学习。可以说我一手把集团的法律风险彻底清零了。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "arbitration-strategy", "contract-cycle-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 诉讼率直接归零，对外纠纷下降了百分之九十九以上",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force the candidate to ground the grandiose 『零风险/99%下降/百分之百胜诉』 claims in a verifiable baseline — the actual case count before and after, the denominator, and the time window, exposing whether the numbers are real or inflated"
+    ]
+  }
+}
