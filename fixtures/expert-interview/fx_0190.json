@@ -1,0 +1,46 @@
+{
+  "id": "fx_0190",
+  "tags": {
+    "industry": "research",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Dr. Elena Vasquez\nResearch Scientist, Climate Modeling\n\nResearch Scientist, Atmospheric Systems Lab (2020–present)\n- Develop ML emulators for regional climate downscaling.\n- Lead author on 4 peer-reviewed papers.\n\nPostdoctoral Fellow, National Climate Center (2018–2020)\n- Built statistical bias-correction methods for precipitation forecasts.\n\nPhD, Atmospheric Science (2018).\n\nSkills: Python, PyTorch, climate model output, statistical downscaling, scientific writing.",
+  "jd": "Senior Research Scientist, Climate ML. You will lead development of machine-learning emulators that accelerate regional climate projections, validate them against physics-based models, and publish. We need someone who can state precisely how much speedup or accuracy their methods delivered, against which baseline, and on what validation set. You will collaborate with domain scientists and present results that withstand peer review. Required: PhD, strong publication record, rigor about baselines and uncertainty quantification, and the ability to separate genuine, measured gains from optimistic claims.",
+  "history": [
+    { "q": "Give me an overview of your emulator work — what problem does it solve?" },
+    { "q": "Which physics-based model are you emulating, and at what spatial resolution?" },
+    { "q": "What's the baseline you compare against for accuracy?" },
+    { "q": "You mentioned a speedup. Speedup relative to what, on what hardware?" },
+    { "q": "How do you validate the emulator generalizes to unseen climate regimes?" },
+    { "q": "What error metric do you report, and what's the actual number?" },
+    { "q": "Did the emulator ever fail badly on a case? Tell me about it." },
+    { "q": "How did the reviewers of your last paper push back on the accuracy claims?" },
+    { "q": "Put a number on the real-world impact of your emulator. How much compute or time did it actually save a downstream user?" }
+  ],
+  "candidate_last_answer": "Honestly the impact has been massive — we're talking a 1000x speedup across the board, and our emulator is basically as accurate as the full physics model, like 99% accuracy on everything. I'd say we've saved the field millions of compute hours and the method is now used by basically everyone doing regional climate work. It's been a total game-changer for the entire community.",
+  "session_state": {
+    "drilled_topics": ["emulator-overview", "target-model-resolution", "accuracy-baseline", "speedup-reference", "generalization-validation", "error-metric", "failure-case", "reviewer-pushback", "real-world-impact"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "research-rigor", "evidence_type": "scope" },
+      { "competency": "research-rigor", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: like 99% accuracy on everything",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a defensible error number (e.g., RMSE in the model's physical units) on a named held-out region or climate regime, with the specific baseline and the conditions under which accuracy degrades — collapsing the unverifiable 99%/1000x/millions claims into one measured figure"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "fx_0216",
+  "tags": {
+    "industry": "design",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "林佳怡 — 初级产品设计师（UI/UX）\n\n求职意向：消费类 App 产品设计师\n工作年限：1 年 8 个月\n\n工作经历\n小柚出行 — 初级交互设计师（2023.09 至今）\n- 情境：打车 App 的乘客端首页改版项目，目标是提升新用户首单转化。\n- 任务：负责首页信息架构梳理与下单按钮的交互方案。\n- 行动：用 Figma 输出 3 版高保真原型，组织 8 名真实用户做可用性测试，根据录屏把下单入口从二级页提到首屏。\n- 结果：改版后首屏下单点击率从 19% 提升到 27%，A/B 实验跑了两周。\n\n好食记 — 设计实习生（2023.02 至 2023.08）\n- 情境：餐饮点评 App 的评价提交流程废弃率偏高。\n- 任务：协助主设计师定位评价表单的流失环节。\n- 行动：梳理漏斗埋点，提出把 5 星评分前置、长文本改为选填的方案。\n- 结果：评价提交完成率从 41% 提升到 55%。\n\n技能：Figma、Sketch、用户访谈、可用性测试、设计规范维护\n教育：某综合性大学 视觉传达设计 本科（2019–2023）"
+,
+  "jd": "我们正在为一款月活千万级的消费类社交 App 招聘初级产品设计师，向设计负责人汇报。你将负责核心信息流与发布流程的交互与视觉设计，独立产出从线框到高保真的完整方案，并参与设计规范的维护。我们期望候选人能讲清楚自己在具体项目里『做了什么、为什么这么做、带来了什么可量化的变化』，而不仅是套用流程术语。岗位要求：熟练使用 Figma；具备至少一段完整的 0 到 1 或改版项目经验；能基于埋点数据和用户测试反推设计决策；能与产品经理、研发就方案的取舍展开讨论。我们会重点考察数据归因的严谨度，以及候选人对自己个人贡献边界的诚实表述。",
+  "history": [
+    { "q": "先做个自我介绍吧，重点讲一下你目前在小柚出行负责哪一块。" },
+    { "q": "你简历里提到首页改版，能具体说说这个项目最初要解决什么问题吗？" },
+    { "q": "在这个改版里，哪些部分是你独立完成的，哪些是团队一起做的？" },
+    { "q": "你提到组织了 8 名用户做可用性测试，测试是怎么设计的？你从录屏里具体看到了什么？" },
+    { "q": "把下单入口从二级页提到首屏，这个决策当时有没有反对意见？你怎么说服研发的？" },
+    { "q": "下单点击率从 19% 到 27%，这个数据是怎么统计口径定义的？分母是什么？" },
+    { "q": "A/B 实验跑了两周，对照组和实验组的样本量大概多少？显著性怎么判断的？" },
+    { "q": "除了点击率，这次改版对最终的下单转化或者首单 GMV 有没有影响？" },
+    { "q": "那你能不能用一个最具体的数字，说清楚这次改版到底给业务带来了多大价值？" }
+  ],
+  "candidate_last_answer": "这次改版可以说是直接带来了上千万的增量收入，我们整个用户体验在行业里都是断层领先的。点击率提升带动了转化全面起飞，老板说这是过去一年体验侧最关键的一次突破。具体的转化数字我手上没有，但影响力肯定是非常巨大的，基本上奠定了首页后续的设计方向。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "redesign-problem", "personal-vs-team", "usability-test-method", "stakeholder-persuasion", "metric-definition", "ab-test-rigor", "downstream-conversion"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 26
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 直接带来了上千万的增量收入",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 候选人必须给出这上千万收入的具体计算口径——是谁算的、用什么公式从点击率推到 GMV、时间窗口多长，从而暴露这个数字是否是其本人能负责的真实归因"
+    ]
+  }
+}

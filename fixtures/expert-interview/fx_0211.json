@@ -1,0 +1,46 @@
+{
+  "id": "fx_0211",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "吴泽宇\n资深研究员 / 计算机视觉\n上海\n\n个人简介\n业内顶尖的计算机视觉研究员，我所在团队的研究成果是行业公认的标杆。我们做的检测模型一度是该领域的天花板，被大量后续工作引用和模仿。我对视觉领域的理解处在最前沿。\n\n工作经历\n\n寰宇智能 资深研究员 二零二零年至今\n- 我们团队主导了新一代目标检测框架的研究，业内影响力巨大\n- 我们的模型在多个权威榜单上拿到过第一\n- 我们推动了检测技术在自动驾驶感知中的落地，意义重大\n- 我们发表了多篇顶会论文，被广泛引用\n\n灵犀科技 研究员 二零一七年至二零二零年\n- 参与了团队的图像分割研究\n- 我们的工作显著提升了分割精度\n\n技能\n目标检测、图像分割、模型压缩、大规模训练。\n\n教育背景\n计算机科学 博士。\n\n求职意向\n寻找一个能让我和顶尖团队一起继续做最前沿视觉研究的资深岗位。",
+  "jd": "我们是一家自动驾驶公司的感知研究团队，正在招聘一名资深计算机视觉研究员，向感知技术负责人汇报。这是一个 IC 主导的岗位，你将独立 own 一个感知子方向（例如目标检测或多传感器融合）的研究与落地，对线上感知指标负责。我们尤其看重候选人在团队成果中的『个人贡献边界』：哪些关键想法、关键决策、关键代码是你本人做出的，而不是团队的集体成果。面试中我们会反复追问『你个人具体做了什么』，请准备好把自己从团队里清晰地区分出来，并用具体的技术决策来证明你的贡献。",
+  "history": [
+    { "q": "先讲讲你在寰宇的角色 —— 你在那个检测框架项目里具体是什么定位？" },
+    { "q": "这个新一代检测框架，最核心的技术创新点是什么？" },
+    { "q": "在这个创新点上，从想法到落地，你个人主导了哪一部分？" },
+    { "q": "你提到模型在榜单上拿了第一。为了冲榜，你个人做了哪些关键的工程或算法决策？" },
+    { "q": "这个框架在自动驾驶感知落地时遇到的最大工程难题是什么？" },
+    { "q": "那个难题最终是谁解决的、怎么解决的？你在其中扮演什么角色？" },
+    { "q": "如果让你指出这个项目里『只有你能做、换个人就做不出来』的那部分贡献，是什么？" },
+    { "q": "你和团队里其他研究员的分工边界在哪里？哪些决策是你拍板的？" },
+    { "q": "我换个方式问：把团队拿掉，只说你一个人 —— 这个项目里署你名的核心工作到底是什么？" }
+  ],
+  "candidate_last_answer": "其实我一直觉得这种成果很难、也不该拆到个人头上，我们是一个高度协作的团队。这个检测框架是我们一起做出来的，从立项到调优都是大家共同的智慧结晶。我们一起讨论方向，一起跑实验，一起复盘，那段时间我们几乎天天泡在一起。要说核心贡献，我觉得是我们团队整体的氛围和默契，是我们共同营造的那种敢想敢试的文化让这个项目成功的。我很难说哪一部分是我一个人的功劳，因为我们从来不这么算账，所有的成果都属于这个团队。",
+  "session_state": {
+    "drilled_topics": ["huanyu-role", "framework-innovation", "personal-contribution-on-innovation", "leaderboard-decisions", "deployment-challenge", "challenge-ownership", "unique-contribution", "decision-boundary"],
+    "current_competency_target": "individual-contribution",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "individual-contribution",
+    "missing_evidence": [
+      { "competency": "individual-contribution", "evidence_type": "owner-of-action" },
+      { "competency": "individual-contribution", "evidence_type": "mechanism" },
+      { "competency": "technical-depth", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我很难说哪一部分是我一个人的功劳",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force the candidate to name one concrete artifact that is demonstrably his own — a specific module he wrote, a design decision he personally made and can defend, or a bug only he diagnosed — so the panel can separate his individual technical contribution from the team's collective credit"
+    ]
+  }
+}

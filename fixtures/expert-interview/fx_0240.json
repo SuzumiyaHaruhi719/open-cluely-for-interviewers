@@ -1,0 +1,43 @@
+{
+  "id": "fx_0240",
+  "tags": {
+    "industry": "legal",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "罗维城 — 法务副总裁\n\n工作经历\n恒拓集团（2018 至今）法务副总裁\n- 负责集团合规、合同与争议解决\n- 管理一支约十五人的法务团队\n- 主导多起重大并购与跨境合规项目\n\n方圆律师事务所（2010-2018）合伙人\n- 公司业务与争议解决方向\n\n教育背景\n法学硕士；执业律师资格\n\n技能\n并购法律事务、合规体系、合同管理、争议解决、跨部门协作",
+  "jd": "我们是一家正在推进海外扩张的集团，招聘法务副总裁。该岗位向总法律顾问汇报，负责集团合规体系、重大合同与争议解决。我们希望候选人在描述过往重大项目时，能清楚地界定自己个人的判断与决策，而不是笼统地用『我们团队』来描述功劳。理想候选人能讲清楚在一次复杂并购或合规危机中，哪一个关键判断是他本人做出的、依据是什么、承担了什么风险。我们重视个人担当与决策的可追溯性。",
+  "history": [
+    { "q": "先介绍一下你在恒拓的职责范围和团队。" },
+    { "q": "你主导过多起并购，挑一个最复杂的讲讲背景。" },
+    { "q": "那个项目里最棘手的法律风险点是什么？" },
+    { "q": "面对这个风险，最终的处理方案是怎么定的？" },
+    { "q": "这个方案是谁拍板的，依据是什么？" },
+    { "q": "如果方案出了问题，谁来承担后果？" },
+    { "q": "我想听你个人的判断：那个关键决策，是你本人做的吗，你当时怎么想的？" }
+  ],
+  "candidate_last_answer": "这个项目能成，靠的是我们整个团队的努力。我们一起研究了交易结构，我们和外部律所反复讨论，我们也和业务部门多次对齐。方案是我们集体智慧的结果，大家分工配合得很好，团队里每个人都很专业。要说关键决策，那也是我们团队共同推动出来的，很难说是某一个人的功劳。",
+  "session_state": {
+    "drilled_topics": ["职责范围", "并购背景", "风险点", "处理方案", "拍板人", "后果承担"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 那也是我们团队共同推动出来的，很难说是某一个人的功劳",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 一个由他本人单独做出的具体法律判断或决策（例如选择某种交易结构、对某项风险点的取舍），以及他当时的依据和承担的个人风险，把笼统的『我们团队』拆解为可归属到他个人的决策"
+    ]
+  }
+}

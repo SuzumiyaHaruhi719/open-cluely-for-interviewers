@@ -1,0 +1,43 @@
+{
+  "id": "fx_0169",
+  "tags": {
+    "industry": "healthcare",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "医疗运营总监 / 连锁门诊运营负责人\n\n经历\n某连锁口腔医疗集团 — 运营总监（2019 至今）\n- 简历摘要写『全面负责全国 28 家门店的运营与 P&L』；下方履历里又写『我主要分管华东 9 家直营店,加盟店由加盟事业部独立运营』。\n- 主导过一次门店标准化改造,客户满意度和复诊率据称都有提升\n- 摘要写『three 年内把单店月均营收翻了一倍』；明细处写『单店月均营收从约 45 万增长到约 60 万』(实际约 33% 增长,与翻倍不符)\n- 重建了医助和咨询师的绩效考核体系\n\n之前\n某医美机构 — 区域运营经理（2015—2019）\n- 负责华南区门店的日常运营与拓店\n\n关于离职时间:摘要写在某口腔集团任职至今,但另一处工作时间线写的是 2019—2023,与『至今』矛盾。\n\n技能:连锁门店运营、P&L 管理、绩效体系设计、医疗合规基础、拓店选址\n教育:本科 工商管理,EMBA 在读",
+  "jd": "我们招聘一名医疗运营总监,负责连锁口腔/医美门店的运营与盈亏。你将统筹多家门店的运营标准化、绩效体系、获客与复诊运营,直接对区域 P&L 负责。我们在面试中会非常关注两点:第一,你简历里的数字和职责描述是否前后一致——比如你到底管多少家店、营收增长到底是多少;第二,你能否把一个运营结果清楚地归因到你个人的某个具体决策上。岗位需要你在被追问时保持聚焦,用事实澄清而不是绕开。Base 上海,需要出差巡店。",
+  "history": [
+    { "q": "先讲讲你现在的 scope——你简历摘要说全面负责全国 28 家门店,但下面又写主要分管华东 9 家直营店。你到底实际管多少家、管的是哪部分?" },
+    { "q": "营收这块也有点对不上:摘要写三年单店月均营收翻倍,明细写从 45 万到 60 万。到底是翻倍还是 33%?哪个数字准?" },
+    { "q": "好,那我们聚焦你确实管的那 9 家直营店。那次门店标准化改造,你个人主导的是哪一块?" },
+    { "q": "你说复诊率提升了,提升前后分别是多少?用什么口径统计的?" },
+    { "q": "绩效考核体系重建,你改了什么?医助和咨询师的考核指标具体怎么变的?" },
+    { "q": "回到那 33% 的营收增长——这里面有多少能归到你的标准化改造,有多少是开新店或大盘自然增长?你怎么拆的?" }
+  ],
+  "candidate_last_answer": "这个归因的问题问得好,不过说实话单店营收增长这个事,你很难精确拆开,因为它是个系统工程。诶我突然想到,其实现在整个口腔行业的逻辑都变了——以前是靠种植牙的高客单撑利润,现在集采一来种植牙价格被打下来一大截,大家都在往正畸和儿牙转,这个赛道的 toC 获客成本最近涨得特别离谱,抖音上一个有效线索都要小两百块了。我最近一直在研究私域和会员体系怎么提复购,我觉得这才是未来连锁口腔的护城河。对了你们集团现在儿牙这块布局了吗?另外 EMBA 我快读完了,做了不少行业研究,要不要我分享下我对这个行业未来五年的判断?反正那个营收增长吧,标准化肯定是有贡献的,具体多少比例真不好说。",
+  "session_state": {
+    "drilled_topics": ["scope-contradiction-stores", "revenue-growth-contradiction", "standardization-ownership", "revisit-rate-numbers", "performance-system-redesign", "revenue-attribution"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 27
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "outcomes", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 标准化肯定是有贡献的,具体多少比例真不好说",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete decomposition of the 33% single-store revenue growth — how much the candidate attributes to his standardization program versus new-store ramp or market tailwind, with a same-store baseline or before/after comparison, instead of drifting into industry commentary"
+    ]
+  }
+}

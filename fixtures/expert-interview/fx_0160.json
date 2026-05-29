@@ -1,0 +1,40 @@
+{
+  "id": "fx_0160",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "初级研究员 / 应届硕士\n\n研究方向：计算机视觉 — 医学影像分割\n\n硕士课题（2022—2024）\n- 情境：科室现有的肝脏 CT 分割模型在小病灶上的 Dice 只有 0.71，临床医生反馈漏检多。\n- 任务：在不增加标注预算的前提下，把小病灶 Dice 提升到 0.80 以上。\n- 行动：复现了一篇 nnU-Net 基线，自己设计了一个针对小目标的加权损失和一套在线难例挖掘策略，做了五折交叉验证。\n- 结果：小病灶 Dice 从 0.71 提升到 0.83，整体 Dice 提升 4 个点；工作整理成一篇会议短文，本人一作。\n\n实习\n某 AI 医疗公司 — 算法实习（2023 暑期）\n- 参与一个肺结节检测项目的数据清洗与评测脚本编写\n\n技能：PyTorch、医学影像预处理、交叉验证、统计显著性检验\n教育：硕士 模式识别，本科 软件工程",
+  "jd": "我们招聘一名初级研究员，加入医学影像团队，主攻分割与检测方向。你将复现 SOTA 基线、设计改进方法、并对结果做严谨的统计评测。我们非常看重方法的严谨性：消融实验是否完整、改进是否有统计显著性、以及你能否清楚区分『哪些提升来自你的方法』和『哪些来自调参或数据』。岗位需要你接受同行的质疑，并用证据而不是情绪回应。日常和临床医生、工程团队协作。要求：扎实的深度学习基础，能独立跑通从基线到消融的完整实验闭环。",
+  "history": [
+    { "q": "讲讲你硕士课题——小病灶 Dice 从 0.71 到 0.83，你具体做了哪两个改动？" },
+    { "q": "你说有加权损失和在线难例挖掘两个改动。你做没做消融，分别拆开看每个改动各自贡献了多少 Dice？" },
+    { "q": "那 0.71 到 0.83 这个提升，你有没有报告置信区间或者做显著性检验？还是单次跑的结果？" }
+  ],
+  "candidate_last_answer": "你这个问题问得有点奇怪。消融当然是科研常识，我难道会不知道吗？我五折交叉验证都做了，0.83 是五折的平均，这还不够严谨？你非要追问每个改动单独贡献多少，那篇会议短文版面就那么点，审稿人都没揪着这个不放，你怎么比审稿人还严格。显著性检验那种东西本来就是锦上添花，我的提升幅度摆在那儿，12 个点的相对提升还需要 p 值来证明吗？我感觉你是不是对我这个方向不太了解，才会问这种问题。",
+  "session_state": {
+    "drilled_topics": ["thesis-two-changes", "ablation-decomposition", "statistical-significance"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "analytical-rigor", "evidence_type": "metric" },
+      { "competency": "technical-depth", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你非要追问每个改动单独贡献多少",
+      "must-be-question-type: teach-back",
+      "expected-yield: a real ablation decomposition — the Dice contribution of the weighted loss alone versus the online hard-example mining alone versus both combined, ideally with per-fold variance, demonstrating the candidate actually isolated each lever rather than only reporting the combined 0.83"
+    ]
+  }
+}

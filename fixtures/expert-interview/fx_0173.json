@@ -1,0 +1,46 @@
+{
+  "id": "fx_0173",
+  "tags": {
+    "industry": "hr",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "陈思远 — 招聘与人才发展经理\n\n个人简介\n资深 HR 从业者，专注于技术招聘与雇主品牌建设，擅长搭建从校招到社招的全流程招聘体系，推动面试官培训与人才盘点落地。\n\n工作经历\n招聘与人才发展经理 — 星澜科技（互联网，约一千二百人），2021 年至今\n- 负责技术与产品线的招聘，搭建结构化面试流程与面试官认证机制\n- 主导校园招聘项目，覆盖多所高校，建立校园大使与实习转正通道\n- 推动雇主品牌内容与候选人体验优化，降低 offer 流失\n\n高级招聘专员 — 云图信息，2018 至 2021\n- 承接研发岗位招聘，建立人才库与内推机制\n- 协助搭建招聘数据看板，跟踪各环节转化\n\n技能\n结构化面试、人才盘点、雇主品牌、Excel 数据分析、Greenhouse、Moka。\n\n教育背景\n人力资源管理本科 — 华东师范大学，2018。",
+  "jd": "星澜科技招聘一名招聘与人才发展经理，负责技术与产品线的端到端招聘，并对核心招聘指标负责：到岗周期、offer 接受率、首年留存率与单一岗位招聘成本。我们希望候选人能用具体数据说明自己做过什么，而不是停留在『大幅提升』『显著优化』这样的表述。你需要独立搭建结构化面试与面试官认证体系，主导校招项目，并向 HRD 汇报漏斗各环节的转化率与改进措施。我们尤其看重：能清晰区分『你个人做的动作』与『团队/平台带来的结果』，并能解释一个指标改善背后的真实机制与时间线。该岗位带一名招聘协调员。",
+  "history": [
+    { "q": "先介绍一下你在星澜目前负责的招聘范围，团队规模和你被考核的核心指标。" },
+    { "q": "你提到搭建了结构化面试流程，具体是从零搭的还是在已有基础上改的？你做了哪几步？" },
+    { "q": "面试官认证机制是怎么设计的？通过和不通过的标准分别是什么？" },
+    { "q": "校招项目里，你个人具体负责哪一块？哪些是你拍板的？" },
+    { "q": "offer 流失这块，你做了什么动作，改善了多少？" },
+    { "q": "到岗周期这个指标，改善前后分别是多少天？你怎么测的？" },
+    { "q": "你刚才说的这些数字，数据口径是谁定义的？取数是你自己做的吗？" },
+    { "q": "如果让你只挑一个最能代表你能力的招聘指标改善，你会挑哪个？" },
+    { "q": "那就具体讲讲这个你最自豪的指标：改善了多少、用了多长时间、归因到你哪个动作？" }
+  ],
+  "candidate_last_answer": "那肯定是招聘效率这块。我接手之后，整个团队的招聘效率基本上翻了好几倍，到岗周期我们做到了行业领先水平，offer 接受率也是断崖式提升，基本上想要的人我们都能拿下。可以说我一个人就把整条招聘线的产能拉满了，季度交付几乎是原来的三四倍，老板都说这是公司历史上招聘最快的一段时间。具体数字我得回去翻后台，但反正是非常夸张的一个增长。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "structured-interview-build", "interviewer-certification", "campus-ownership", "offer-attrition", "time-to-fill-measurement", "data-definition-ownership", "proudest-metric-pick"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 招聘效率基本上翻了好几倍，到岗周期我们做到了行业领先水平",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 把『翻了好几倍』『断崖式提升』拆成可核对的真实数字——到岗周期改善前后各是多少天、offer 接受率从几到几、在多长时间内、以及哪部分是她个人动作而非平台或团队带来的"
+    ]
+  }
+}

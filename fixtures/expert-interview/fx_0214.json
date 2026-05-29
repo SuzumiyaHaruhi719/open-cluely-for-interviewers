@@ -1,0 +1,54 @@
+{
+  "id": "fx_0214",
+  "tags": {
+    "industry": "education",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "郑书航\nStaff 学习科学专家 / 自适应学习负责人\n北京\n\n个人简介\n专注于自适应学习与学习效果测量的资深专家，长期工作在学习科学与产品的交叉地带。\n\n工作经历\n\n智学未来 自适应学习负责人 二零一九年至今\n- 作为公司学习科学方向的最高个人贡献者，主导了自适应学习引擎的设计\n- 我亲自设计了知识点掌握度的测量模型（基于项目反应理论 IRT）\n- 同时，我们团队是集体决策的，所有模型选型都是大家投票决定的，我只是其中一员\n- 推动了 A B 实验体系，用随机对照来验证学习效果\n- （注）关于自适应引擎，准确地说，核心算法是外部供应商提供的，我们做的是集成与调参\n\n方寸教育 学习产品专家 二零一六年至二零一九年\n- 负责学习路径设计\n- 这段时间我主要做的是定性的教研工作，几乎不涉及任何数据建模或统计\n- 同时，我在这段时间搭建了公司第一个基于 IRT 的能力测量体系，这是我最核心的技术成果\n\n技能\n自适应学习、IRT 测量模型、学习效果评估、A B 实验、学习路径设计。\n\n教育背景\n教育技术学 硕士。\n\n求职意向\n寻找一个 Staff 级别的学习科学岗位，能 own 自适应学习与效果测量的核心方法。",
+  "jd": "我们是一家自适应学习公司，正在招聘一名 Staff 学习科学专家，向首席学习官汇报，作为学习效果测量与自适应算法的最高个人贡献者（IC）。你将 own 我们的掌握度测量模型与自适应推题策略，并通过严格的随机对照实验证明学习效果。我们尤其看重候选人能否清楚地讲出自己在测量模型上的个人技术决策，以及如何用因果实验验证效果。面试中我们会针对你简历里的具体成果做深入、反复的追问，请准备好把『你本人做的』和『团队做的』『供应商做的』清楚地区分开来，并讲清楚一个你亲自主导的测量或实验项目的完整细节。",
+  "history": [
+    { "q": "先讲讲你在智学未来的角色 —— 你是独立 IC 还是团队集体决策？" },
+    { "q": "你简历里写你『亲自设计了基于 IRT 的掌握度测量模型』，先讲讲这个模型要解决什么问题。" },
+    { "q": "你选了哪一种 IRT 模型，单参数、双参数还是三参数？为什么是这个？" },
+    { "q": "这个选择是你个人做的，还是你说的『团队投票』决定的？" },
+    { "q": "模型的参数是怎么估计的？你用的什么方法？" },
+    { "q": "你怎么验证这个测量模型本身是有效的 —— 信度和效度是怎么评估的？" },
+    { "q": "你简历又提到核心算法其实是外部供应商提供的。那 IRT 这部分到底是你做的还是供应商做的？" },
+    { "q": "如果是供应商的算法，你说的『亲自设计测量模型』具体指什么？" },
+    { "q": "我们说回方寸教育 —— 你说那段时间几乎不涉及数据建模，但又说搭了第一个 IRT 体系，这两个怎么同时成立？" },
+    { "q": "那个 IRT 体系到底是在方寸还是在智学未来搭的？时间线我有点对不上。" },
+    { "q": "好，先放下履历的矛盾。讲讲那个 A B 实验体系 —— 你们随机化的单位是什么，学生还是班级？" },
+    { "q": "随机到学生还是班级，对你们的统计推断有什么影响？你是怎么处理的？" },
+    { "q": "你们用什么指标衡量学习效果？后测分数、掌握度增量，还是别的？" },
+    { "q": "这个学习效果的提升，你是怎么排除掉是『多做题』本身、而不是自适应策略带来的？" },
+    { "q": "在整个自适应项目里，哪个技术决策是只有你做、署你名的？" },
+    { "q": "我换个方式：把团队和供应商都拿掉，纯粹你一个人的技术贡献，是哪一块？" },
+    { "q": "我再直接问一次：那个掌握度测量模型,IRT 的参数选择和估计,到底是不是你本人做的?是就说是,不是就说不是。" }
+  ],
+  "candidate_last_answer": "您这个问题问得其实挺有意思的，我反而想先请教您一下：在您看来,一个 Staff 级别的学习科学专家,对一个测量模型的『 ownership 』到底应该怎么定义?是必须自己从零推导公式、自己写参数估计的代码,才算是你做的?还是说,能够判断该选哪种模型、能看懂供应商的实现、能验证它在我们场景下是否成立,这种把控力也算是 ownership ?因为我觉得在工业界,真正稀缺的能力是后者而不是前者。所以我想先理解您这边的标准是什么,我们对齐了 ownership 的定义,我再回答您那个『 是不是我本人做的 』的问题会更有意义。",
+  "session_state": {
+    "drilled_topics": ["zhixue-role", "irt-problem", "irt-model-choice", "choice-ownership", "parameter-estimation", "reliability-validity", "vendor-vs-self", "design-meaning", "fangcun-contradiction", "irt-timeline", "randomization-unit", "inference-impact", "outcome-metric", "ruling-out-more-practice", "personal-decision", "pure-individual-contribution"],
+    "current_competency_target": "individual-contribution",
+    "elapsed_minutes": 52
+  },
+  "ground_truth": {
+    "competency_target": "individual-contribution",
+    "missing_evidence": [
+      { "competency": "individual-contribution", "evidence_type": "owner-of-action" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "credibility", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我反而想先请教您一下",
+      "must-be-question-type: action-attribution",
+      "expected-yield: refuse the definitional deflection and pin the literal fact — did he personally choose and estimate the IRT model parameters, yes or no — and if his ownership was integration/validation rather than design, get him to say so plainly and describe exactly what he validated, resolving the resume's self-contradiction"
+    ]
+  }
+}

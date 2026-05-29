@@ -1,0 +1,37 @@
+{
+  "id": "fx_0165",
+  "tags": {
+    "industry": "sales",
+    "level": "director",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Sales Director, Enterprise SaaS | 大客户销售总监 | 14 years\n\n经历\n某 SaaS 公司 — Sales Director, Greater China（2020 至今）\n- 负责大中华区 enterprise 新签与续约，带一支 quota-carrying 的 AE 团队\n- 推动了从 transactional sales 到 value-based selling 的转型，重写了 discovery 和 MEDDICC 流程\n- 拿下过几个 logo 级别的标杆客户，缩短了大单的 sales cycle\n- 重建了和 CS 团队的 handoff 机制，降低了首年流失\n\n之前\n某软件公司 — Regional Sales Manager（2016—2020）\n- 带华东区团队，连续多个季度超额\n\n（注：本人习惯讲过程和打法，简历里刻意没堆数字，具体业绩面谈时按 NDA 范围披露。）\n\n技能：MEDDICC、enterprise pipeline 管理、跨部门协作、团队 coaching\n教育：本科 国际贸易",
+  "jd": "We are hiring an Enterprise Sales Director to own new-logo and expansion revenue for our Greater China region. You will lead a team of 8 quota-carrying AEs, own a number north of $20M ARR, and report to the VP of APAC Sales. 这个岗位 needs someone who has personally run large, multi-stakeholder enterprise deals end to end and can prove it with specifics: deal size, cycle length, win rates, and the exact play that turned a stalled deal around. We are migrating the team to MEDDICC and value-based selling, so prior experience driving that methodology change is a strong plus. 我们会 deep-dive 一个你亲手 close 的大单——the situation, your task, the actions you personally took, and the quantified result. Vague process talk won't clear the bar.",
+  "history": [
+    { "q": "Pick the single enterprise deal you're proudest of closing — give me the full story: situation, your specific task, what you personally did, and the quantified result." }
+  ],
+  "candidate_last_answer": "好,我讲一个去年华南一家股份制银行的单子。Situation: 这家银行原本是我们竞品的老客户,合同还有 14 个月才到期,采购明确说短期没有 switch 的预算,deal 一度 stall 了快两个季度。Task: 我的目标是在这个财年内把它从 closed-lost 的边缘拉回来,signed 一个三年期的 enterprise 合同,合同金额 target 是 ARR 280 万人民币。Action: 我自己做了三件事——第一,我绕开采购,直接和他们 CIO 跑了一次 value workshop,用 MEDDICC 把 economic buyer 和 metrics 重新 align 到他们的『信创替换』KPI 上;第二,我设计了一个 phased migration 的报价,先上一个不和现有合同冲突的模块,把 switching cost 摊到 18 个月;第三,我拉了我们 CS 负责人一起,给了一个写进合同的 onboarding SLA。Result: 这个单子在 5 个月内 signed,首年 ARR 195 万、三年 total 290 万,比 target 还高;sales cycle 从行业平均的 11 个月压到了 5 个月;而且这家银行第二年又 expand 了两个模块。",
+  "session_state": {
+    "drilled_topics": [],
+    "current_competency_target": "outcomes",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "outcomes",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我绕开采购,直接和他们 CIO 跑了一次 value workshop",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the reasoning and risk behind deliberately bypassing procurement to reach the CIO — why the candidate judged that the right move, what could have backfired, how he handled procurement afterward, and confirmation this was his own call rather than a team play"
+    ]
+  }
+}

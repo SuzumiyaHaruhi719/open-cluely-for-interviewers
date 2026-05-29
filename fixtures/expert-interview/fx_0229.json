@@ -1,0 +1,42 @@
+{
+  "id": "fx_0229",
+  "tags": {
+    "industry": "data",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "郑亦凡 — 初级数据分析师\n\n求职意向：业务数据分析（电商方向）\n工作年限：1 年 6 个月\n\n经历\n速购电商 — 数据分析师（2023.11 至今）\n- 情境：复购率连续两个季度下滑，业务方想知道原因。\n- 任务：负责拆解复购下滑，定位关键人群与环节。\n- 行动：用 SQL 拉取近半年订单与用户行为数据，做了 RFM 分层，结合留存曲线定位到『首单后 30 天内无第二次触达』的人群流失最严重，输出分析报告并提了 3 条召回建议。\n- 结果：基于建议上线的定向召回活动，使目标人群 30 天复购率从 8% 提升到 13%。\n\n明数咨询 — 数据分析实习生（2023.03 至 2023.09）\n- 协助搭建零售客户的销售看板（Tableau）。\n\n技能：SQL、Python（pandas）、Tableau、A/B 实验、RFM / 留存分析\n教育：某理工大学 统计学 本科",
+  "jd": "我们为一家电商公司招聘初级数据分析师，向数据分析负责人汇报，负责用户与交易数据的分析、指标拆解与业务建议。你将独立完成从取数、分析到结论输出的闭环，并对分析结论的严谨性负责。岗位要求：SQL 熟练；能讲清一次完整的分析项目——业务问题、分析方法、关键结论与带来的可量化影响；面对追问能直接给出方法与数据，而不是反过来盘问面试官的需求。我们会考察候选人在被深挖分析口径与归因时，是正面拆解、还是习惯性地把问题抛回来。",
+  "history": [
+    { "q": "先介绍下你自己，重点说说你在速购电商做的分析工作。" },
+    { "q": "复购率下滑这个项目，业务方最初给你的问题是怎么描述的？" },
+    { "q": "你做了 RFM 分层，分层的阈值是怎么定的？为什么这么切？" },
+    { "q": "你定位到『首单后 30 天无第二次触达』流失最严重，这个结论是怎么从数据里得出来的？" },
+    { "q": "召回活动让目标人群复购率从 8% 到 13%，你怎么确认这 5 个点是召回带来的，而不是大盘自然波动？" },
+    { "q": "那你有没有设对照组？如果没有，你怎么排除其他同期活动的干扰？" }
+  ],
+  "candidate_last_answer": "你说的对照组，是指严格的 A/B 随机对照，还是业务上常用的历史同期对比？这两个在我们这种场景下要求不一样。而且你们更看重的是统计意义上的因果，还是业务上能用的相关性结论？我反过来想确认一下你们团队平时做这类归因，是有完整的实验平台，还是主要靠观测数据？你把这个背景告诉我，我才知道该按哪个标准回答你这个对照组的问题。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "business-problem-framing", "rfm-thresholds", "churn-conclusion-derivation", "causal-attribution"],
+    "current_competency_target": "research-rigor",
+    "elapsed_minutes": 20
+  },
+  "ground_truth": {
+    "competency_target": "research-rigor",
+    "missing_evidence": [
+      { "competency": "research-rigor", "evidence_type": "mechanism" },
+      { "competency": "research-rigor", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 你说的对照组，是指严格的 A/B 随机对照",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 不被候选人的反问带偏，逼其直接交代这次召回分析究竟有没有设对照组、用了哪种具体方法排除大盘干扰，从而暴露其归因严谨度与是否在用反问掩盖方法缺失"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fx_0170",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Customer Support Intern Candidate — 3rd-year Communications major\n\nCampus IT Help Desk — Student Assistant (Sep 2024 – present)\n- Situation: incoming students flooded the help desk every September with the same Wi-Fi and printing setup problems, creating 30+ minute queues.\n- Task: my supervisor asked me to reduce repeat questions during orientation week.\n- Action: I wrote a one-page illustrated quick-start guide for the three most common issues, posted QR codes at the front desk, and walked new students through self-service before they joined the queue.\n- Result: front-desk supervisor said the queue felt noticeably shorter; the guide is still in use this year.\n\nResidence Hall Front Desk — Work Study (2023–2024)\n- Handled package pickup, visitor sign-in, and after-hours noise complaints for a 400-resident building.\n- Logged maintenance requests and escalated urgent ones to the duty manager.\n\nSkills: friendly written and verbal communication, basic ticketing tools, calm under pressure, quick to document recurring issues.\nEducation: B.A. Communications, expected 2026. Relevant coursework: interpersonal communication, intro to data analysis.",
+  "jd": "We're hiring a Customer Support Intern for a 12-week summer program on our consumer-app support team. You'll shadow senior agents, handle a starter queue of email and chat tickets under supervision, and help keep our help-center articles current. No prior professional experience required — we hire for attitude, clear writing, and the ability to describe specifically what you did and what actually happened as a result. In the interview we'll ask you to walk through one thing you improved, and we'll push for concrete details: what you measured, the before and after, and how you knew it worked. Comfort with ambiguity and a genuine curiosity about customers matter more than a polished resume.",
+  "history": [
+    { "q": "Tell me about the quick-start guide you made at the IT help desk — what problem were you solving?" },
+    { "q": "How did you decide which three issues to put on the guide? Did you look at any data?" },
+    { "q": "You said the queue 'felt shorter.' Is there any actual number — wait time, ticket count, anything you measured before and after?" },
+    { "q": "Walk me through what you personally did, step by step, the week you rolled it out." }
+  ],
+  "candidate_last_answer": "Honestly it just kind of came together. I noticed people kept asking the same stuff, so I figured a guide would help, and it did. Everyone seemed happier and my supervisor was really positive about it. I'm a people person, so I just care about making the experience better, you know? I didn't really track numbers or anything like that, but you could just tell it was working — the vibe at the desk was a lot calmer after.",
+  "session_state": {
+    "drilled_topics": ["guide-problem", "issue-selection-data", "before-after-metric", "rollout-personal-actions"],
+    "current_competency_target": "analytical-rigor",
+    "elapsed_minutes": 12
+  },
+  "ground_truth": {
+    "competency_target": "analytical-rigor",
+    "missing_evidence": [
+      { "competency": "analytical-rigor", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I didn't really track numbers or anything like that, but you could just tell it was working",
+      "must-be-question-type: metric-pin",
+      "expected-yield: any concrete proxy the intern could have observed — queue length at a given time, number of repeat questions, how many people scanned the QR code — turning 『the vibe was calmer』 into at least one observable before/after signal and the specific steps she personally took during rollout"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fx_0172",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Priya Venkataraman — Growth Marketing Manager\n\nSUMMARY\nDemand-generation marketer with 6 years across B2B SaaS. Owns paid acquisition, lifecycle email, and landing-page conversion. Comfortable running multivariate tests and partnering with sales on pipeline targets.\n\nEXPERIENCE\nGrowth Marketing Manager — Loftwell (project-management SaaS), 2022–present\n- Situation: inbound MQL volume had plateaued at ~1,400/month while CAC crept up 22% YoY.\n- Task: lift qualified pipeline 30% within two quarters without growing paid budget.\n- Action: rebuilt the paid-search account into intent-tiered campaigns, launched a 5-email nurture for trial signups, and ran an A/B test on the pricing page CTA.\n- Result: MQL-to-SQL rate rose from 18% to 27%; blended CAC fell 14% over six months; pricing-page test lifted trial starts 9%.\n\nDemand Gen Specialist — Brightloom Analytics, 2019–2022\n- Situation: webinar program drove volume but few opportunities.\n- Task: convert webinar attendees into sales conversations.\n- Action: built a scoring model with sales ops, added a post-webinar SDR handoff SLA, retargeted no-shows.\n- Result: webinar-sourced opportunities grew 2.1x; attendee-to-meeting rate hit 11%.\n\nSKILLS\nGoogle Ads, HubSpot, Marketo, GA4, Optimizely, SQL (basic), Looker.\n\nEDUCATION\nBA, Communications — University of Washington, 2019.",
+  "jd": "Loftwell is hiring a Growth Marketing Manager to own paid acquisition and conversion across our self-serve and sales-assisted funnels. You will set and hit quarterly pipeline targets, run a disciplined experimentation roadmap (landing pages, ad creative, lifecycle email), and report CAC, MQL-to-SQL conversion, and payback to the VP of Marketing. We expect fluency in attribution: you should be able to defend which channel actually drove a result versus which one merely touched it. You will partner daily with sales development and own the trial-to-paid nurture. The ideal candidate has shipped at least one statistically sound A/B test that changed a roadmap decision, and can explain the guardrail metrics they watched. This is an individual-contributor role with one marketing-ops report dotted-line.",
+  "history": [
+    { "q": "Tell me about the scope you own at Loftwell today — channels, budget, and the metric you're held to." },
+    { "q": "You list MQL-to-SQL moving from 18% to 27%. Walk me through what specifically you changed first." },
+    { "q": "How did you isolate the paid-search rebuild from the nurture email — how do you know which one moved the rate?" },
+    { "q": "Let's talk about the pricing-page A/B test. What was the hypothesis and how did you size the test?" },
+    { "q": "What guardrail metrics did you watch on that test to make sure you weren't hurting downstream revenue?" },
+    { "q": "Tell me about a test that failed or came back inconclusive. What did you do?" },
+    { "q": "Now the trial-CTA experiment — give me the structure: variants, traffic split, and the call you made." },
+    { "q": "Walk me through that pricing-page test end to end: what you tested, how long it ran, and how you decided it won." }
+  ],
+  "candidate_last_answer": "So the pricing page was a big one for me. The situation was that trial starts had been flat, and I really wanted to get the CTA working harder. So my task was to lift trial starts off that page. What I did was test a benefit-led headline against the old feature-led one, swapped the button copy, and pointed both at the same signup flow. And it worked — we saw trial starts go up about 9% and rolled the winner out to everyone.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "mql-sql-first-change", "channel-isolation", "pricing-test-hypothesis", "guardrail-metrics", "failed-test", "trial-cta-structure"],
+    "current_competency_target": "experimentation-rigor",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "experimentation-rigor",
+    "missing_evidence": [
+      { "competency": "experimentation-rigor", "evidence_type": "mechanism" },
+      { "competency": "experimentation-rigor", "evidence_type": "timeline" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it worked — we saw trial starts go up about 9% and rolled the winner out",
+      "must-be-question-type: teach-back",
+      "expected-yield: the missing Result rigor — how long the test ran, the traffic split, the sample size or significance threshold, and the exact decision rule she used to call a 9% lift a real win rather than noise"
+    ]
+  }
+}

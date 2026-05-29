@@ -1,0 +1,38 @@
+{
+  "id": "fx_0227",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Marcus Reilly — Manufacturing / Process Engineer\n\nExperience\nKessler Components (2021–present) — Process Engineer II\n- Owns continuous improvement on a CNC machining line (aluminum housings).\n- Ran kaizen events; worked on cycle-time and scrap reduction.\n- Coordinated with maintenance on a few line-changeover projects.\n\nApex Tooling (2018–2021) — Manufacturing Engineer\n- Supported tooling and fixture design for a stamping cell.\n- Helped roll out 5S across two shifts.\n\nEducation\nBS, Mechanical Engineering (2018)\n\nSkills\nLean, Six Sigma (Green Belt), SPC, CAD (SolidWorks), root-cause analysis, PFMEA",
+  "jd": "We are hiring a mid-level Process Engineer for a high-mix CNC machining plant, reporting to the Manufacturing Engineering Manager. You will own throughput and quality on two machining cells, lead structured problem-solving (kaizen, A3, root-cause), and drive measurable improvements in cycle time, scrap, and OEE. Requirements: you can walk an interviewer through one specific improvement you personally led — the baseline number, what you changed, and the result. We expect concrete data (cycle-time seconds, scrap PPM, OEE points) and a clear account of your individual contribution versus the team's. Vague 'we improved efficiency' answers without specifics will be probed hard.",
+  "history": [
+    { "q": "Tell me about one specific continuous-improvement project you personally led on your CNC line — what was the baseline, what did you change, and what was the measurable result?" }
+  ],
+  "candidate_last_answer": "Yeah, so we did a bunch of continuous improvement work on the line and it really helped. We ran some kaizen events, looked at the process, and made things more efficient overall. The team did a great job and management was happy with where we ended up. I don't have the exact numbers in front of me, but it was a solid improvement and the line definitely ran better afterward.",
+  "session_state": {
+    "drilled_topics": ["ci-project-specificity"],
+    "current_competency_target": "execution-detail",
+    "elapsed_minutes": 5
+  },
+  "ground_truth": {
+    "competency_target": "execution-detail",
+    "missing_evidence": [
+      { "competency": "execution-detail", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: made things more efficient overall",
+      "must-be-question-type: metric-pin",
+      "expected-yield: force one concrete before/after number on a single named project (cycle-time seconds, scrap PPM, or OEE points) plus the specific change the candidate personally made, exposing whether any real improvement exists behind the vague framing"
+    ]
+  }
+}

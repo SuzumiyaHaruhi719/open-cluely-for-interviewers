@@ -1,0 +1,53 @@
+{
+  "id": "fx_0212",
+  "tags": {
+    "industry": "healthcare",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 16,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Sofia Marchetti\nMPH Candidate — Health Policy & Management\nBoston, MA\n\nObjective\nDriven, mission-oriented public health student seeking a summer internship in healthcare operations or quality improvement, where I can leverage my passion for patient-centered care to drive impactful, data-informed outcomes.\n\nEducation\nMaster of Public Health, Health Policy & Management — expected 2027\nB.A. Biology, minor in Statistics — 2025\n\nExperience\n\nUniversity Hospital — Quality Improvement Intern (academic practicum) — Spring 2026\n- Supported a care-coordination team on a patient-readmission reduction initiative\n- Helped synthesize stakeholder feedback into actionable insights\n- Contributed to a workflow-mapping exercise for the discharge process\n- Collaborated cross-functionally with nursing and case management\n\nCampus Health Promotion Office — Peer Health Educator — 2024 to 2025\n- Facilitated wellness workshops for undergraduate students\n- Developed outreach materials promoting preventive health behaviors\n\nResearch Assistant — Epidemiology Lab — 2023 to 2024\n- Assisted with literature reviews and data cleaning for a chronic-disease study\n- Coded survey responses and maintained the study database\n\nSkills\nStakeholder engagement, data-informed decision-making, quality improvement methodology, Excel, basic R, survey design, health communication.\n\nLeadership\nVice President, Graduate Public Health Association.",
+  "jd": "Riverside Health System is hiring a Summer Operations & Quality Improvement Intern to support our care-coordination team. Reporting to a QI program manager, you will help with an ongoing readmissions-reduction project: pulling and cleaning data, sitting in on discharge-process workflow mapping, and helping turn findings into a small change idea the team can test. This is a hands-on learning role; we do not expect prior healthcare operations experience, but we do expect curiosity and honesty about what you do and don't yet know. The strongest interns we've had can describe concretely what they personally did on a project — even a small task — rather than speaking in generalities. In the interview we will probe past the buzzwords to find out what you actually touched, decided, and learned.",
+  "history": [
+    { "q": "Tell me what drew you to a healthcare operations and quality internship specifically." },
+    { "q": "Your practicum mentions a readmissions initiative. What was the team trying to accomplish?" },
+    { "q": "What was your specific task on that initiative — what were you personally assigned?" },
+    { "q": "You mention 'workflow-mapping for the discharge process.' Describe what a workflow map actually is, in your words." },
+    { "q": "What did you personally contribute to that map — did you draw it, interview people, take notes?" },
+    { "q": "Walk me through one thing the map revealed about the discharge process." },
+    { "q": "You wrote 'synthesized stakeholder feedback into actionable insights.' Who were the stakeholders, concretely?" },
+    { "q": "Give me one actual insight that came out of that feedback — a specific finding, not a category." },
+    { "q": "Did the team turn any of that into a change they tested? What was the change?" },
+    { "q": "What was your role when that change idea was being decided — were you in the room, and what did you say?" },
+    { "q": "Tell me about a moment on the project where you were confused or didn't know how to do something." },
+    { "q": "How did you handle that confusion — what did you actually do next?" },
+    { "q": "What's one thing you'd do differently if you joined that project again from day one?" },
+    { "q": "In the epi lab you 'cleaned data.' What did cleaning mean there — give me a concrete example of a problem you fixed in the data." },
+    { "q": "Let's go back to the discharge map. Pick the single most concrete task you did on it and describe it step by step." },
+    { "q": "I want one specific, concrete thing you did with your own hands on the readmissions project. Not a skill, not a value — one task. What was it?" }
+  ],
+  "candidate_last_answer": "Absolutely, and I think what really defines my contribution is that I brought a holistic, patient-centered lens to everything we did. I'm super passionate about driving impactful outcomes through data-informed, cross-functional collaboration, so I was always making sure we kept the patient at the center and engaged our stakeholders authentically. I think my biggest value-add was operationalizing empathy and translating insights into action items that moved the needle on the patient journey. I really tried to leverage synergies across the care continuum and champion a culture of continuous improvement throughout the whole initiative.",
+  "session_state": {
+    "drilled_topics": ["motivation", "readmissions-goal", "personal-task", "workflow-map-definition", "map-contribution", "map-finding", "stakeholders-named", "concrete-insight", "tested-change", "role-in-decision", "confusion-moment", "handling-confusion", "do-differently", "data-cleaning-example", "discharge-map-step-by-step"],
+    "current_competency_target": "concrete-ownership",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "concrete-ownership",
+    "missing_evidence": [
+      { "competency": "concrete-ownership", "evidence_type": "owner-of-action" },
+      { "competency": "concrete-ownership", "evidence_type": "named-entity" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: my biggest value-add was operationalizing empathy",
+      "must-be-question-type: action-attribution",
+      "expected-yield: strip the rehearsed buzzwords and pin one literal task she did with her own hands on the readmissions project — a document she opened, a person she interviewed, a cell she corrected — to determine whether there is any concrete work under the polished language"
+    ]
+  }
+}

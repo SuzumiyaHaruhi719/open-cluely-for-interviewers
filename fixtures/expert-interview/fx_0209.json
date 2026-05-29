@@ -1,0 +1,39 @@
+{
+  "id": "fx_0209",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "staff",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Marcus Adeyemi\nStaff Supply Chain Planner — Demand & Inventory\nAtlanta, GA\n\nSummary\nSupply chain planning lead with deep experience in demand forecasting, inventory optimization, and S&OP for omnichannel retail and consumer goods. I sit at the seam between commercial and operations, translating demand signal into a plan the network can actually execute. Known for building the planning muscle on teams that previously ran on spreadsheets and gut feel.\n\nExperience\n\nHarbor & Pine (omnichannel home goods) — Staff Demand Planner — 2020 to present\n- Own the demand forecast and replenishment policy across the full assortment, partnering with merchandising, finance, and the DC operations team\n- Led the migration from a spreadsheet-based forecast to a statistical demand planning system, including segmentation of SKUs by demand volatility\n- Redesigned safety-stock policy to differentiate by service-level tier rather than a flat days-of-supply rule\n- Stood up the monthly S&OP cadence, chairing the demand review and reconciling the consensus forecast with finance's revenue plan\n- Drove a project to reduce excess and obsolete inventory on a long-tail of slow-moving SKUs\n\nFleetwood Distribution — Senior Inventory Analyst — 2016 to 2020\n- Managed replenishment for a regional distribution network\n- Built the team's first SKU-location segmentation and reorder-point logic\n- Partnered with procurement on supplier lead-time variability\n\nSkills\nDemand forecasting (statistical and consensus), inventory optimization, safety-stock modeling, S&OP facilitation, SKU segmentation, supplier lead-time analysis, advanced Excel, working SQL, exposure to demand-planning platforms.\n\nEducation\nB.S. Industrial Engineering.\n\nWhat I'm looking for\nA staff-level planning role where the forecast actually drives the buy and the network plan, and where there's appetite to mature the S&OP process rather than just firefight stockouts.",
+  "jd": "Brightline Goods is hiring a Staff Demand & Inventory Planner to own end-to-end demand planning for our growing DTC and wholesale channels. Reporting to the Director of Supply Chain, you will own the consensus forecast, safety-stock and replenishment policy, and the demand side of our S&OP process. We are scaling fast and our service levels and working-capital efficiency are both under pressure: we carry too much of the wrong inventory and still stock out on hero SKUs. We want someone who can show, concretely, how they moved a forecast-accuracy or inventory metric — MAPE/forecast bias, inventory turns, fill rate, or excess-and-obsolete dollars — through a specific, repeatable change in policy or process. In the interview we will dig into one project in detail: what you changed, how you measured it, the timeline, and what you personally decided. We value tight, on-point answers; this is an operating role.",
+  "history": [
+    { "q": "Give me your current scope at Harbor & Pine — what do you own and who do you partner with?" },
+    { "q": "You led a redesign of safety-stock policy from flat days-of-supply to service-level tiers. Walk me through exactly what you changed and what it moved." }
+  ],
+  "candidate_last_answer": "Right, so the safety-stock redesign — okay, but to really understand it you have to understand the whole mess we inherited, and honestly it goes back to the WMS, which is a whole saga. So when I joined, the DC was on this ancient WMS, and there's actually a funny story about the cutover weekend where the barcode scanners all died and we were hand-counting pallets until 2am, which, by the way, is when I learned never to schedule a go-live on a long weekend — lesson for life. And that ties into the broader thing about how our network was set up, because originally we had three DCs but then there was this whole reshuffle when we acquired a regional player, and the integration of their SKUs into our masters was its own nightmare, the duplicate-SKU cleanup alone took months. Oh and the procurement team at the time, don't get me started, lead times from our Asia suppliers were all over the place because of the port congestion that year, everyone remembers that. So all of that is the backdrop. Anyway the safety-stock thing — we basically moved off the flat rule. We should also talk about the S&OP cadence at some point because that's where a lot of this actually got decided, the demand review meetings were a whole culture-change exercise...",
+  "session_state": {
+    "drilled_topics": ["current-scope", "safety-stock-redesign"],
+    "current_competency_target": "process-impact",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "process-impact",
+    "missing_evidence": [
+      { "competency": "process-impact", "evidence_type": "metric" },
+      { "competency": "process-impact", "evidence_type": "mechanism" },
+      { "competency": "focus-directness", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: we basically moved off the flat rule",
+      "must-be-question-type: mechanism",
+      "expected-yield: pull the candidate out of the WMS/port-congestion tangents and back to the safety-stock change itself — how he set service-level tiers, what inputs (demand volatility, lead-time variability) drove each tier, and which inventory or fill-rate metric moved as a result, with a number and a timeframe"
+    ]
+  }
+}

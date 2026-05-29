@@ -1,0 +1,39 @@
+{
+  "id": "fx_0207",
+  "tags": {
+    "industry": "design",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "林文静\nStaff 产品设计师 / 设计负责人\n深圳\n\n个人简介\n资深产品设计师，专注于企业级 SaaS 产品的设计体系与复杂工作流设计。曾独立负责多条产品线的设计，也带过设计团队。\n\n工作经历\n\n云栖软件 设计负责人 二零一九年至今\n- 作为团队唯一的设计师，独立支撑了整个数据分析产品线的设计工作\n- 同时，作为设计负责人，管理一支八人的设计团队，负责团队的招聘、培养和绩效\n- 主导了公司设计系统从零到一的搭建，覆盖全部三条产品线\n- 入职第一年就把产品的核心工作流走查满意度从很低的水平提升到了行业领先\n\n（注：上一段履历中关于入职时间存在不同表述）我于二零二零年加入云栖，负责设计系统建设。\n\n微澜科技 高级交互设计师 二零一六年至二零一九年\n- 负责 B 端控制台的交互设计\n- 该阶段我主要做的是可视化方向的设计，几乎不涉及表单与工作流\n- 同时在这段时间里，我把公司复杂表单的填写效率做到了业界最高水平\n\n技能\n复杂工作流设计、设计系统、B 端可视化、设计团队管理、可用性走查。\n\n教育背景\n设计学 本科。\n\n求职意向\n寻找一个 Staff 级别的设计岗位，既能深耕复杂 B 端工作流，也能带团队建设设计文化。",
+  "jd": "我们是一家企业级数据平台公司，正在招聘一名 Staff 产品设计师，向设计总监汇报，作为公司复杂工作流设计的最高个人贡献者（IC）。你将负责我们最核心、也最复杂的数据建模与作业编排工作流的设计，并在横向上影响整个设计系统的演进。这是一个偏 IC 的岗位，但我们希望你能通过设计评审和体系建设影响其他设计师。我们尤其看重候选人对真实业务指标的掌控：你做过的设计到底把哪个可衡量的指标移动了多少、基线是什么、怎么测的。面试中我们会针对你简历里的具体成果做深入追问，请准备好用可核实的数字讲清楚你的影响力。",
+  "history": [
+    { "q": "先聊聊你在云栖的角色 —— 你是独立 IC 还是带团队？你具体负责哪条产品线？" },
+    { "q": "你简历里写『核心工作流走查满意度从很低提升到行业领先』，给我一个具体的数字：基线是多少，提升到多少，怎么测的？" }
+  ],
+  "candidate_last_answer": "这个成果我印象很深，效果是颠覆性的。我们的核心工作流走查满意度基本上是从行业垫底直接做到了行业第一，满意度差不多翻了三倍，任务完成率提升了百分之两百多，用户的操作时长直接砍掉了一大半。可以说我一个人重新定义了这个品类的工作流体验标准，后来好几家友商都来抄我们的设计。具体的基线数字我一时记不太清了，但那个提升幅度绝对是行业里前所未有的，整个产品的口碑都因为这次改版彻底翻盘了。",
+  "session_state": {
+    "drilled_topics": ["yunqi-role-clarification", "workflow-satisfaction-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "mechanism" },
+      { "competency": "credibility", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 满意度差不多翻了三倍，任务完成率提升了百分之两百多",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a concrete, verifiable baseline and measurement method for the satisfaction and completion-rate claims — the actual before/after numbers, the instrument used to measure走查 satisfaction, the sample, and the timeframe — exposing whether the 3x / 200%+ figures are real or fabricated given she 'cannot recall' the baseline"
+    ]
+  }
+}

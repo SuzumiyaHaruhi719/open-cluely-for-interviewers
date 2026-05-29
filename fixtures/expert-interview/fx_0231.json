@@ -1,0 +1,42 @@
+{
+  "id": "fx_0231",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "4-7",
+    "history_length": 6,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "黄思齐 — 供应链管理实习生候选人\n\n在校：某大学 物流管理 大四\n求职意向：供应链计划 / 采购实习生\n\n实习经历\n捷运物流 — 供应链运营实习生（2024.06 至 2024.09）\n- 在采购计划组协助日常物料跟单与到货异常处理。\n- 参与一个仓库库存盘点优化的小组项目。\n- 协助维护供应商交期跟踪表。\n\n校内\n- 物流协会成员，参与组织一次校园供应链案例赛。\n\n技能：Excel、基础 SQL、ERP 基础操作\n教育：物流管理 本科（在读）",
+  "jd": "我们为供应链团队招聘一名计划 / 采购方向实习生，向供应链计划经理汇报，支持物料跟单、到货异常处理与库存数据维护。岗位要求：细致、主动，能讲清楚自己在某个小组项目里个人具体承担了什么、做了哪些动作、带来什么结果，而不是只用『我们』笼统带过。我们很看重实习生能否清楚区分团队成果与个人贡献——只会说团队做了什么、却讲不出自己那一份的候选人会被持续追问。",
+  "history": [
+    { "q": "先简单介绍下你自己，以及在捷运物流实习时所在的组。" },
+    { "q": "你提到参与了一个库存盘点优化的小组项目，这个项目要解决什么问题？" },
+    { "q": "在这个小组里，你个人具体负责的是哪一块？" },
+    { "q": "你说的『优化』，落到你手上是哪些具体动作？" },
+    { "q": "盘点准确率或者效率有没有变化？这个结果里有你直接贡献的部分吗？" },
+    { "q": "能不能讲一件只有你做、别人没做的具体的事？" }
+  ],
+  "candidate_last_answer": "我们这个小组当时一起把盘点流程梳理了一遍，大家分工合作，最后整体效率确实提上去了。我们一起讨论方案，一起跑数据，组长带着我们一步步推进，盘点准确率也是我们共同努力的结果。要说具体哪件事只有我一个人做的，其实我们都是一起完成的，很难拆开说谁做了哪一块。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "project-problem", "personal-scope", "concrete-actions", "result-attribution"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 16
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "execution-detail", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 其实我们都是一起完成的，很难拆开说谁做了哪一块",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 突破候选人的『我们』话术，逼其指认一个只有他本人执行的具体动作（哪张表、哪步流程、哪段数据），从而把个人贡献从团队成果中剥离出来"
+    ]
+  }
+}

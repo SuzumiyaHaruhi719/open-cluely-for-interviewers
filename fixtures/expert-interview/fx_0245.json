@@ -1,0 +1,39 @@
+{
+  "id": "fx_0245",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Kevin 吴 — VP of Data Platform\n\n经历\nNova 出行（2021 至今）VP, Data Platform\n- 负责 data lakehouse 与 real-time pipeline\n- 带 platform、analytics 两个 team\n\nByteflow（2017-2021）Director, Data Eng\n- 搭建 streaming 架构与 feature store\n\n教育\n计算机 本科\n\n技能\nSpark、Flink、Kafka、data governance、SLA 管理、团队 leadership",
+  "jd": "Nova 出行正在招聘 VP of Data Platform。该岗位 report 给 CTO，负责 lakehouse、real-time pipeline 与全公司的 data SLA。我们近期有过几次 pipeline 大面积 delay，导致下游 BI 与 ML 模型停摆。我们希望候选人在被追问 incident 细节时，能 calm 地基于数据复盘 root cause，讲清楚自己的判断与改进，而不是把追问当成 attack。理想候选人对 platform reliability 有 owner 心态，能用具体的 SLA、MTTR 数字说话，并坦诚自己在架构或容量决策上的失误。",
+  "history": [
+    { "q": "先介绍一下你在 Nova 负责的 data platform scope 和团队。" },
+    { "q": "上个季度那次 pipeline 大面积 delay，root cause 是什么，你怎么处理的？" }
+  ],
+  "candidate_last_answer": "你一上来就问 incident，是不是已经认定是我 platform 的问题了？做 data 这行的人都懂，pipeline 偶尔 delay 是 industry norm，上游 schema 乱改、流量突然 spike，这些哪个是我能完全 control 的？你要是没真正 run 过一个 lakehouse，可能很难理解这里面的复杂度。与其揪着这个 incident，你不如先告诉我你们到底想要什么样的 reliability,标准在哪。",
+  "session_state": {
+    "drilled_topics": ["platform-scope", "pipeline-incident"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 7
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "integrity-consistency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: pipeline 偶尔 delay 是 industry norm",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 在不被敌意话术带偏的前提下，让他给出那次 delay 的具体 root cause、MTTR 与受影响时长，以及由他本人在架构或容量决策上可控的那一部分失误和事后改进，把『industry norm』的辩解转为可核验事实与自我归因"
+    ]
+  }
+}

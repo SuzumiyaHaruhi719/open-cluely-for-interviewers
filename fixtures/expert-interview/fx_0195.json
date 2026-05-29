@@ -1,0 +1,39 @@
+{
+  "id": "fx_0195",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "周仲恺 — 资深知识产权法务（Staff级,10年）\n杭州 | zhou.zhongkai@mail.com\n\n代表性项目(STAR)\n专利侵权应诉 · 某硬件公司(2021)\n背景:公司核心产品被竞品以发明专利起诉,索赔人民币8000万,且对方申请了诉中行为保全(禁售)。\n任务:作为内部牵头法务,负责应诉策略、外部律所协调与无效宣告。\n行动:我在收到起诉状后第一时间组织技术比对,锁定权利要求中的非必要技术特征作为不侵权抗辩;同步向国家知识产权局提起专利无效宣告;并准备保全异议材料。\n结果:行为保全被驳回,产品未停售;专利部分权利要求被宣告无效;案件最终以对方撤诉结束,公司零赔付。\n\n商业秘密维权 · 某软件公司(2018)\n背景:核心算法工程师离职后疑似带走源码加入竞品。\n任务:主导取证与维权。\n行动:我固定电子证据、申请证据保全,并提起侵害商业秘密之诉。\n结果:法院判决竞品停止使用并赔偿,公司核心资产得到保护。\n\n资质:法学硕士;法律职业资格;专利代理师\n技能:专利诉讼、无效宣告、商业秘密、证据保全、外部律所管理",
+  "jd": "我们正在招聘一名Staff级知识产权法务,负责专利诉讼、无效宣告与商业秘密维权。该岗位要求候选人能清晰复盘一个案件的完整时间线:每一步法律动作的先后顺序、节点之间的因果关系,以及自己在关键时点的判断。我们会重点考察候选人对案件程序节奏的把握——什么时候提无效、什么时候应对保全、撤诉发生在哪个节点——因为程序顺序往往决定胜负。需要扎实的专利诉讼经验和缜密的程序逻辑。",
+  "history": [
+    { "q": "请聚焦那起8000万索赔的专利侵权应诉。先讲讲案件背景和你牵头的范围。" },
+    { "q": "我想把这个案子的时间线捋清楚:从你收到起诉状,到提无效、应对禁售保全、再到对方撤诉,这几步的先后顺序具体是怎样的?" }
+  ],
+  "candidate_last_answer": "好的。这个案子其实是对方先撤诉了,我们才松了口气,然后我才不慌不忙地去提的专利无效宣告。对了,行为保全那个禁售令——其实禁售是在专利被宣告无效之后法院才下的,但因为专利已经无效了,所以禁售也就自然没效力了。收到起诉状大概是2021年年中吧,无效宣告的决定我记得是在我们组织技术比对之前就出来了,反正几个关键节点都办成了,结果就是零赔付。具体哪个月在前哪个月在后我得翻档案,但大方向就是这样。",
+  "session_state": {
+    "drilled_topics": ["patent-case-background-scope", "case-timeline-sequence"],
+    "current_competency_target": "legal-procedure-rigor",
+    "elapsed_minutes": 10
+  },
+  "ground_truth": {
+    "competency_target": "legal-procedure-rigor",
+    "missing_evidence": [
+      { "competency": "legal-procedure-rigor", "evidence_type": "timeline" },
+      { "competency": "legal-procedure-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 禁售是在专利被宣告无效之后法院才下的",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 各程序节点的真实先后顺序与大致日期(收到起诉状、提无效宣告、应对行为保全、保全裁定、撤诉),解开候选人自相矛盾的叙述——若禁售在专利无效后才下、撤诉又在提无效之前,逻辑无法自洽,迫使其给出可核对的程序时间线"
+    ]
+  }
+}

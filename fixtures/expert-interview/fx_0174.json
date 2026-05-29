@@ -1,0 +1,53 @@
+{
+  "id": "fx_0174",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "timeline-confused",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "林小满 — 数据科学实习生候选人\n\n核心技能关键词\nPython、SQL、Pandas、NumPy、Scikit-learn、TensorFlow、PyTorch、Spark、Hadoop、Hive、机器学习、深度学习、自然语言处理、计算机视觉、推荐系统、特征工程、数据可视化、Tableau、Power BI、A/B 测试、统计建模、回归分析、聚类、XGBoost、随机森林、数据清洗、ETL、Airflow、Kafka、Docker、Git、Linux、大数据、数据挖掘、用户画像、Look-alike、因果推断、时间序列。\n\n项目经历\n用户流失预测项目（课程项目）\n- 关键词：随机森林、XGBoost、特征工程、ROC-AUC、SMOTE、网格搜索、交叉验证\n- 用公开电信流失数据集训练模型，对比多种算法表现。\n\n电商推荐系统（个人项目）\n- 关键词：协同过滤、矩阵分解、召回、排序、嵌入、冷启动、离线评估\n- 基于公开数据复现一个简单的召回加排序流程。\n\n销售数据看板（实验室助研）\n- 关键词：Tableau、SQL、指标体系、漏斗、留存、DAU、可视化\n- 协助整理实验室合作方的销售数据并搭建看板。\n\n教育背景\n统计学本科在读（大三）— 南京大学，预计 2026 毕业。\nGPA 3.7/4.0。相关课程：机器学习、数据库系统、概率论、回归分析。",
+  "jd": "我们的数据团队招收一名数据科学实习生，主要支持用户增长方向的离线分析与建模。日常工作包括：用 SQL 取数、做特征工程、跑基线模型、参与 A/B 实验的指标分析，并把结论整理成可复用的文档。我们不期待实习生独立上线复杂模型，但非常看重你能否清楚讲明白一个项目的真实时间线——先做了什么、卡在哪、后来怎么解决、最终交付了什么。面试中我们会反复追问项目里各个环节发生的先后顺序，请确保你能把自己做过的事讲得前后一致。需要扎实的 Python 与 SQL 基础，理解过拟合、交叉验证与基本的实验评估。",
+  "history": [
+    { "q": "先自我介绍一下，重点讲你最近做的一个数据项目。" },
+    { "q": "你简历里关键词很多，先聚焦用户流失预测这个项目，它是课程作业还是个人发起的？" },
+    { "q": "这个项目大概是什么时候做的？持续了多久？" },
+    { "q": "你用的什么数据集？数据量多大，有没有自己做清洗？" },
+    { "q": "特征工程具体做了哪几个特征？为什么选这些？" },
+    { "q": "你说用了 SMOTE，是在划分训练测试集之前还是之后做的过采样？" },
+    { "q": "随机森林和 XGBoost 哪个效果更好？你用什么指标比的？" },
+    { "q": "交叉验证的折数是多少？网格搜索调了哪些超参数？" },
+    { "q": "这个项目你是一个人做还是组队？你具体负责哪部分？" },
+    { "q": "再说推荐系统那个，它和流失预测哪个是先做的？" },
+    { "q": "推荐系统的离线评估你用的什么指标？召回和排序分别怎么做的？" },
+    { "q": "你提到冷启动，具体遇到了什么问题，怎么处理的？" },
+    { "q": "实验室那个销售看板，是在这两个项目之前还是之后？" },
+    { "q": "看板里你定义了哪些指标？口径是你定的还是合作方给的？" },
+    { "q": "如果让你重做流失预测项目，你会先改哪一步？" },
+    { "q": "你刚才几次提到的时间顺序我有点没对上，能不能把三个项目按时间从早到晚再理一遍？" },
+    { "q": "那请你把这三个项目按真实时间线从最早到最近重新讲一遍，每个大概在哪个学期、花了多久。" }
+  ],
+  "candidate_last_answer": "嗯……让我想想。流失预测应该是大二下做的，不对，是大三上的课程项目，但其实我大一的时候就已经在做推荐系统了，所以推荐系统更早。可是推荐系统里用到的嵌入是我学了流失预测之后才会的……所以可能流失预测又在前面。实验室看板嘛，是去年暑假做的，但去年暑假我记得也在弄推荐系统，可能是同时？反正三个项目时间上有点交叉，先后顺序我一时半会儿理不太清，大概就是这样。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "churn-project-origin", "churn-duration", "dataset-cleaning", "feature-engineering", "smote-ordering", "model-comparison", "cv-and-gridsearch", "team-vs-solo", "project-ordering", "recsys-eval", "cold-start", "dashboard-timing", "dashboard-metrics", "churn-redo", "timeline-reconcile"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 三个项目时间上有点交叉，先后顺序我一时半会儿理不太清",
+      "must-be-question-type: timeline-pin",
+      "expected-yield: 逼出三个项目互相矛盾说法之外的一条可核对真实时间线——每个项目对应哪个学期、各持续多久、嵌入技能到底是哪个项目先学到的，从而判断他对自己经历的掌握度与诚实度"
+    ]
+  }
+}

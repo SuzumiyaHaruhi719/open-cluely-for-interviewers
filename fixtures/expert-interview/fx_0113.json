@@ -1,0 +1,39 @@
+{
+  "id": "fx_0113",
+  "tags": {
+    "industry": "tech-engineering",
+    "level": "junior",
+    "language": "mixed",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "初级后端工程师 | Junior Backend Engineer\n\n求职意向：后端 / 平台方向\n\n工作经历\n某电商创业公司 — 后端工程师（2023.07 至今）\n- 负责订单服务的开发与维护，主要写 Java 和 Spring Boot\n- 简历摘要里写『独立负责支付网关的全部设计与上线』，但项目经历里又写『支付相关改动主要由 senior 主导，我负责联调和补单元测试』\n- 参与一次大促的稳定性保障，QPS 峰值据称扛住了 50k\n\n技能\n- 语言：Java（熟练）、Python（了解）\n- 摘要自评 Kubernetes『精通，独立运维生产集群』；技能明细处又写『只在测试环境用过 kubectl，生产由 SRE 管』\n- 数据库：MySQL、Redis\n\n教育\n- 普通本科，计算机科学，2023 届\n\n备注：英文版 résumé 写的入职时间是 2022.07，中文版写 2023.07，两处不一致。",
+  "jd": "We are hiring a Junior Backend Engineer for our order-and-payments platform team. You will work mostly in Java/Spring Boot under the guidance of senior engineers, owning small-to-medium features end to end: writing the service code, the tests, and the runbooks. Day to day you will touch MySQL and Redis, ship behind feature flags, and participate in on-call shadowing. We care less about how senior your title sounds and more about whether you can describe precisely what you personally did versus what the team did. Honesty about scope is a hard requirement — we have a debugging-heavy interview and we will check whether your stories hold together. 本岗位 base 在上海，hybrid 三天到岗。Nice to have: exposure to Kubernetes (test env is fine), payment-gateway concepts, high-QPS event experience.",
+  "history": [
+    { "q": "你简历摘要写『独立负责支付网关的全部设计与上线』，但下面项目经历又写『支付改动主要由 senior 主导』。这两处对不上，你能澄清一下你在支付网关里到底 own 了哪一部分吗？" },
+    { "q": "另外英文版写 join date 是 2022.07、中文版写 2023.07，K8s 也是一处写精通、一处写只用过测试环境——能解释下这些不一致吗？" }
+  ],
+  "candidate_last_answer": "说实话我觉得你们是在故意挑刺。简历就是个 summary，谁的简历不会写得漂亮一点？那个支付网关我肯定是深度参与了的，design review 我都在场，怎么就不算我 own？你非要抠『独立』两个字，那 OK，但实际工作里哪有什么事情是一个人完全独立做的。日期那个就是模板没改干净，K8s 我写精通是因为我自学过很多,这些 detail 真的有那么重要吗?面试不应该看能力吗,我感觉这种问法对 junior 不太公平。",
+  "session_state": {
+    "drilled_topics": ["payment-gateway-ownership-contradiction", "resume-inconsistencies"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "ownership", "evidence_type": "scope" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: design review 我都在场，怎么就不算我 own",
+      "must-be-question-type: action-attribution",
+      "expected-yield: a concrete decomposition of what the candidate personally wrote or decided on the payment gateway versus what the senior owned — a specific file, module, or design choice they authored, not mere attendance at a review"
+    ]
+  }
+}

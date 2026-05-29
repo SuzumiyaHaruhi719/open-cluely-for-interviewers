@@ -1,0 +1,40 @@
+{
+  "id": "fx_0198",
+  "tags": {
+    "industry": "data",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "sparse-200words",
+    "edge_case": null
+  },
+  "resume": "Tyler Brooks\nData Science Intern Candidate | CS + Stats, Junior\ntyler.brooks@university.edu\n\nPROJECTS\nChurn Prediction (course capstone, 2024)\n- Built a model predicting customer churn on a public telecom dataset.\n- Reported 92% accuracy.\n\nKaggle: Housing Prices\n- Top 30% finish; feature engineering and gradient boosting.\n\nClub Data Team\n- Built dashboards for the student entrepreneurship club.\n\nSKILLS\nPython, pandas, scikit-learn, SQL, matplotlib.\n\nEDUCATION\nBS Computer Science & Statistics (expected 2026), GPA 3.7.",
+  "jd": "Data Science Intern for a consumer fintech team. You'll work on classification and forecasting problems alongside senior data scientists, and you're expected to reason carefully about evaluation: the right metric for the problem, class imbalance, leakage, and what a number actually means. We probe candidates on the fundamentals of model evaluation, not just tooling. We value intellectual humility — interns who can hear a critique of their methodology, engage with it, and improve. Required: solid Python and ML basics, and a thoughtful, non-defensive approach to feedback on your work.",
+  "history": [
+    { "q": "Tell me about your churn-prediction capstone — what was the dataset and the target variable?" },
+    { "q": "You reported 92% accuracy. What was the base rate of churn in that dataset?" },
+    { "q": "If churn is rare, accuracy can be high just by predicting 'no churn' for everyone. How did you guard against that — did you look at precision/recall or AUC?" },
+    { "q": "I'm just trying to understand the evaluation. For an imbalanced target, why might accuracy alone be misleading here?" }
+  ],
+  "candidate_last_answer": "Look, I don't really get why you're hammering on this. 92% is 92% — that's a strong number and I'm not going to apologize for it. I followed the standard process we were taught, the model worked, and frankly I think this line of questioning is kind of a gotcha. Accuracy is a totally legitimate metric, everybody uses it. If you wanted precision and recall you could have just said so, but I don't see why my project should be picked apart over one number when it clearly performed well.",
+  "session_state": {
+    "drilled_topics": ["capstone-dataset-target", "base-rate-of-churn", "imbalance-guard-metrics", "why-accuracy-misleading"],
+    "current_competency_target": "evaluation-rigor",
+    "elapsed_minutes": 14
+  },
+  "ground_truth": {
+    "competency_target": "evaluation-rigor",
+    "missing_evidence": [
+      { "competency": "evaluation-rigor", "evidence_type": "mechanism" },
+      { "competency": "evaluation-rigor", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 92% is 92% — that's a strong number",
+      "must-be-question-type: teach-back",
+      "expected-yield: whether the candidate can set defensiveness aside and explain, on a hypothetical 90%-no-churn dataset, what accuracy a trivial always-predict-no-churn model would get and why precision/recall or AUC is the right lens — revealing genuine understanding of imbalance versus a memorized number"
+    ]
+  }
+}

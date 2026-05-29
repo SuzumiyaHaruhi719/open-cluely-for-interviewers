@@ -1,0 +1,51 @@
+{
+  "id": "fx_0197",
+  "tags": {
+    "industry": "finance",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "吴启南\n财务分析经理 / FP&A(6年经验)\n广州 | wu.qinan@mail.com\n\n职业概述\n专注企业财务规划与分析,负责年度预算、滚动预测与经营分析,支持业务决策与管理层汇报。\n\n工作经历\n某消费品公司 FP&A经理(2020至今)\n- 负责集团年度预算编制、月度滚动预测与经营分析\n- 主导预测模型搭建与业务部门的预算对齐\n- 向CFO及业务负责人提供财务洞察\n\n某快消企业 高级财务分析师(2017-2020)\n- 负责成本分析与毛利管理\n- 参与预算与差异分析\n\n教育:会计学学士;CPA(部分科目);CMA\n技能:预算预测、经营分析、财务建模、成本分析、Excel、BI工具",
+  "jd": "我们正在招聘一名FP&A经理,负责预算、滚动预测与经营分析。该岗位需要候选人复盘一次预测严重偏差或预算失准的经历:当时的假设是什么、自己在建模与对齐过程中做了哪些判断、偏差暴露后如何归因与改进。我们重视责任担当——希望候选人在复盘失误时讲清楚自己模型或沟通上的问题,而不是把偏差全部推给业务部门、市场环境或数据质量。需要扎实的财务建模与预测经验,以及用数据闭环复盘的习惯。",
+  "history": [
+    { "q": "先整体介绍一下你在FP&A的职责。" },
+    { "q": "你负责的滚动预测,大概的颗粒度和频率是怎样的?" },
+    { "q": "预测模型的核心假设主要由谁来定?" },
+    { "q": "有没有一次预测和实际差得比较大的经历?" },
+    { "q": "那次偏差大概体现在哪个科目?收入还是成本?" },
+    { "q": "偏差被发现是在哪个环节?月度复盘还是季度结账?" },
+    { "q": "当时模型里那个出问题的假设,是你自己设的还是业务给的?" },
+    { "q": "你向CFO汇报这个偏差时,是怎么解释的?" },
+    { "q": "事后这个预测流程有没有做调整?谁主导的?" },
+    { "q": "如果只看你自己负责的建模环节,你觉得哪里可以做得更好?" },
+    { "q": "你提到业务给的数据不准——你在接收这些数据时有没有做校验?" },
+    { "q": "下一次类似预测,你会在自己的流程里加什么控制点?" },
+    { "q": "除了数据问题,模型本身的结构有没有可以改进的地方?" },
+    { "q": "回到那次大偏差——抛开业务和数据,单看你自己做预测的这个环节,你当时的哪一个判断事后看是错的?" }
+  ],
+  "candidate_last_answer": "说实话那次偏差真不能全算在我头上。模型框架是没问题的,核心假设——比如销量增长和价格——都是业务部门拍给我的,我只是按他们的口径往模型里填。结果业务的销量预测严重乐观,市场又突然下行,这谁能料到;再加上ERP里导出来的历史数据本身就有重分类的错误,口径乱七八糟。所以预测偏这么多,根子在业务给的假设太激进和数据质量太差上,我这边的建模逻辑其实是按标准流程走的,该有的勾稽都有。真要说,流程上的责任更多在前端的数据和业务那一侧。",
+  "session_state": {
+    "drilled_topics": ["fpa-scope", "forecast-granularity-frequency", "assumption-ownership", "big-forecast-miss", "miss-line-item", "miss-detection-point", "faulty-assumption-source", "cfo-explanation", "process-change-owner", "own-modeling-improvement", "data-validation-on-intake", "future-control-point", "model-structure-improvement", "personal-judgment-error"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 44
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 根子在业务给的假设太激进和数据质量太差上",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人在建模或假设把关环节做的那一个可控决策——是否对业务给的激进假设提出过质疑或做过敏感性分析、是否对ERP数据做过校验,把归因从业务和数据拉回到他自己,并配上偏差的实际幅度数字"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "fx_0178",
+  "tags": {
+    "industry": "marketing",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "numbers-missing",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "孙佳怡 — 市场营销实习生候选人\n\n个人简介\n市场营销在读，热爱品牌与内容，关注新消费与社媒种草，具备较强的策划与执行热情，希望在实习中深入参与品牌增长。\n\n实习与项目经历\n社媒运营实习 — 一家新消费茶饮品牌，2024 暑期\n- 参与小红书与抖音的内容排期与种草投放协作\n- 协助跟进达人合作与活动落地\n\n校园营销大使 — 某互联网公司校园项目，2023\n- 在校内组织线下活动，做品牌曝光与拉新\n- 协助内容产出与社群运营\n\n课程项目 — 整合营销传播方案（小组）\n- 为一个虚拟新品牌做了一份从定位到投放的传播策划\n\n技能\n小红书运营、抖音内容、文案、Keynote、基础数据分析、社群运营。\n\n教育背景\n市场营销本科在读（大三）— 中山大学，预计 2026 毕业。",
+  "jd": "我们为品牌市场团队招聘一名市场营销实习生，主要支持社媒种草与活动落地。我们更看重你能否把『你到底做了什么、产生了什么具体效果』讲清楚，而不是堆砌『品效合一』『全域增长』『心智占领』这类术语。日常工作包括：协助内容排期、跟进达人合作、整理投放后的数据复盘。我们尊重你对前实习单位数据保密的要求，但希望你能在脱敏前提下讲清自己的真实动作与思考。面试中我们会反复追问细节：某条内容是谁定的选题、某次投放你具体负责哪一步、效果你是怎么看的。需要踏实、细致，能把一件小事做扎实。",
+  "history": [
+    { "q": "先简单介绍一下你自己，以及你最想在这份实习里做的事。" },
+    { "q": "茶饮品牌那段实习，你具体负责哪一块？一周大概做什么？" },
+    { "q": "种草投放这块，选题和达人是谁定的？你在里面做了什么动作？" },
+    { "q": "你提到协助活动落地，能不能讲一个具体的活动，你那次到底干了什么？" },
+    { "q": "投放完之后你们怎么看效果？你看哪些数？" },
+    { "q": "校园大使那段，你印象最深的一次拉新活动，效果怎么样？" },
+    { "q": "别用那些大词，就用大白话讲一件你亲手做完、能说清前因后果的小事。" }
+  ],
+  "candidate_last_answer": "好的。我觉得我做的事核心是『品效合一』和『全域种草』的闭环打法，本质上是在帮品牌做『用户心智占领』。我的方法论是先做『人群资产沉淀』，再通过『内容场域』撬动『私域转化飞轮』，实现『品牌势能』的指数级释放。至于具体那次投放的选题机制和数据复盘的明细，因为涉及前公司的保密协议，我不太方便讲具体的，但整体上就是一套很完整的增长方法论，我执行得还是比较到位的。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "tea-brand-scope", "seeding-ownership", "event-specifics", "post-campaign-metrics", "campus-recruit-result"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 18
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 先做『人群资产沉淀』，再通过『内容场域』撬动『私域转化飞轮』",
+      "must-be-question-type: teach-back",
+      "expected-yield: 剥掉术语外壳，逼她用大白话讲清一条具体内容从选题到发布她本人到底做了哪一步——在不触碰 NDA 明细的前提下，验证她是真做过还是只会背方法论"
+    ]
+  }
+}

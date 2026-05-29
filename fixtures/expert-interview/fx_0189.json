@@ -1,0 +1,38 @@
+{
+  "id": "fx_0189",
+  "tags": {
+    "industry": "design",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Marcus Oviedo — Product Designer (5 yrs)\nPortland, OR | marcus.oviedo@mail.com | portfolio: ovi.design\n\nPRODUCT DESIGNER — Tessera Health (2021–present)\nSituation: The patient-onboarding flow had a 41% drop-off at insurance entry and support tickets about it were the #1 contact driver.\nTask: I was asked to redesign onboarding to cut drop-off without adding engineering scope beyond one quarter.\nAction: I ran 8 moderated usability sessions, mapped the failure points, prototyped three alternative insurance-capture patterns in Figma, and ran an unmoderated test (n=120) to pick a winner. I paired daily with two engineers to keep the design buildable and wrote the spec myself.\nResult: Drop-off at insurance entry fell from 41% to 19% in the first month post-launch; onboarding-related tickets dropped 34%. The pattern was adopted as a design-system component.\n\nPRODUCT DESIGNER — Loop Commerce (2019–2021)\nSituation: Checkout conversion on mobile lagged desktop by 12 points.\nTask: Improve mobile checkout conversion in one quarter.\nAction: I audited the funnel, hypothesized that the address step caused friction, designed an autofill-first single-page step, and A/B tested it against control.\nResult: Mobile checkout conversion rose 7 points; the variant shipped to 100% of traffic.\n\nSKILLS\nFigma, prototyping, usability testing, design systems, accessibility (WCAG AA), light HTML/CSS, qualitative + quantitative research.\n\nEDUCATION\nBFA Interaction Design, 2018.",
+  "jd": "We're hiring a Product Designer (mid-level) for our Growth team at a B2C subscription app. You will own end-to-end design for activation and retention experiments: framing the problem, running research, designing flows, and partnering with PMs and engineers to ship and measure. We expect designers who can articulate exactly what they tested, what they learned, and how a specific design decision moved a specific metric. You'll work in a rapid experiment cadence (a test every 2–3 weeks), so crisp problem definition and tight measurement matter as much as visual craft. Required: a portfolio with measurable outcomes, fluency in modern design and prototyping tools, and the ability to defend design decisions with evidence rather than taste.",
+  "history": [
+    { "q": "Your Tessera onboarding redesign cut insurance-entry drop-off from 41% to 19%. Walk me through the specific design decision that drove the biggest share of that improvement — what exactly did you change and why did it work?" }
+  ],
+  "candidate_last_answer": "Yeah, that project was a great example of user-centered design. Really it came down to deeply understanding the user and removing friction from the experience. We simplified things, made the flow more intuitive, and just generally reduced cognitive load for people. Good design is about empathy at the end of the day, so once we really put the user first, the numbers kind of followed.",
+  "session_state": {
+    "drilled_topics": ["onboarding-redesign-key-decision"],
+    "current_competency_target": "design-rationale",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "design-rationale",
+    "missing_evidence": [
+      { "competency": "design-rationale", "evidence_type": "mechanism" },
+      { "competency": "research-rigor", "evidence_type": "metric" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: removing friction from the experience",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the single concrete UI change (e.g., the specific insurance-capture pattern that won the n=120 test), the mechanism by which it reduced drop-off, and the before/after number attributable to that one change rather than the project overall"
+    ]
+  }
+}

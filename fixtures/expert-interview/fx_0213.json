@@ -1,0 +1,40 @@
+{
+  "id": "fx_0213",
+  "tags": {
+    "industry": "marketing",
+    "level": "staff",
+    "language": "mixed",
+    "answer_quality": "team-credit-only",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "黄思琪 / Siqi Huang\nStaff 增长营销经理（Growth Marketing）| 深圳\n\n个人简介\n增长营销负责人，专注于 B 端 SaaS 的 demand generation 与全漏斗增长。擅长用结构化的方式拆解增长问题，并对 pipeline 和 CAC 负责。\n\n工作经历\n\n云图 SaaS — Staff Growth Marketing Manager — 2021 至今\n\n项目一：付费渠道结构性重构\n- Situation：公司的 paid acquisition 严重依赖单一渠道，CAC 持续上涨且 pipeline 质量下滑。\n- Task：我负责重新设计付费渠道组合，目标是在不增加总预算的前提下降低 blended CAC 并提升 SQL 数量。\n- Action：我搭建了渠道级的 attribution 模型，砍掉了三个 ROI 为负的渠道，把预算重新分配到表现好的 channel，并和销售一起重新定义了 MQL 到 SQL 的 handoff 标准。\n- Result：blended CAC 在两个季度内下降了约 28%，SQL 数量同期增长了约 35%，且 pipeline 质量（SQL 到 opportunity 转化率）也有提升。\n\n项目二：官网转化优化\n- Situation：官网的 demo request 转化率长期偏低。\n- Task：我牵头官网的 conversion rate optimization。\n- Action：我设计了一系列 A B 测试，重做了核心落地页的信息架构与 CTA。\n- Result：demo request 转化率提升了约 40%。\n\n瀚思科技 — Growth Marketing Manager — 2018 至 2021\n- 负责 content 与 SEO 驱动的 inbound 增长，主导了博客与资源中心的搭建，自然流量在一年内翻倍。\n\n技能\nDemand generation、paid acquisition、marketing attribution、CRO、SEO、marketing automation、pipeline 分析。\n\n教育背景\n市场营销 本科。\n\n求职意向\n寻找一个 Staff 级别的增长岗位，能 own 全漏斗增长并对 pipeline 负责。",
+  "jd": "我们是一家 B 轮 B 端 SaaS 公司，正在招聘一名 Staff Growth Marketing Manager，向 marketing VP 汇报，负责 demand generation 全漏斗增长并对 pipeline 与 CAC 直接负责。你将 own paid 与 inbound 渠道组合、官网转化、以及与销售的 lead handoff。我们尤其关注候选人在团队成果中的个人决策边界：哪些渠道决策、哪些预算分配、哪些实验是你本人拍板的。面试中我们会反复追问『这个决策是你做的还是团队做的』，请准备好清晰地区分你个人的贡献。",
+  "history": [
+    { "q": "先讲讲你在云图的 scope —— 你 own 哪些渠道，对哪些 metric 负责？" },
+    { "q": "你简历里第一个项目是付费渠道重构，blended CAC 降了 28%。这个渠道组合的决策是怎么做出来的？" },
+    { "q": "你提到砍掉了三个 ROI 为负的渠道 —— 砍哪几个、保留哪几个，这个决定具体是谁拍板的？" }
+  ],
+  "candidate_last_answer": "这个决策其实是我们一起做的，我们团队当时一起看了 attribution 的数据，然后大家一起讨论 align 出来要砍哪些渠道。我们和销售也一起对齐了 handoff 的标准，整个过程 highly collaborative，是大家共同 own 的一个 outcome。最后我们一起决定把预算挪到表现好的 channel，这个结果是我们整个 growth team 加上销售一起 drive 出来的。要说是谁拍的板，其实我们更像是一个 consensus，没有谁是单独决定的。",
+  "session_state": {
+    "drilled_topics": ["yuntu-scope", "channel-mix-decision", "which-channels-cut-owner"],
+    "current_competency_target": "individual-contribution",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "individual-contribution",
+    "missing_evidence": [
+      { "competency": "individual-contribution", "evidence_type": "owner-of-action" },
+      { "competency": "individual-contribution", "evidence_type": "named-entity" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 要说是谁拍的板，其实我们更像是一个 consensus",
+      "must-be-question-type: action-attribution",
+      "expected-yield: force her to name the specific channels she personally recommended cutting and the ROI threshold she applied, separating her individual analytical judgement from the team's consensus framing and revealing whether she drove the cut decision or merely participated"
+    ]
+  }
+}

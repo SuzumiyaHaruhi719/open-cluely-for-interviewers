@@ -1,0 +1,54 @@
+{
+  "id": "fx_0230",
+  "tags": {
+    "industry": "legal",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "nervous-rambling",
+    "history_length_bucket": "13+",
+    "history_length": 17,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "冯子轩 — 法务总监（公司法律事务负责人）\n\n概述\n十二年公司法务经验，覆盖商业合同、合规、知识产权与争议解决，曾负责跨境并购与数据合规体系搭建。\n\n经历\n恒泰集团 — 法务总监（2019 至今）\n- 带领法务团队支持集团商业合同与合规。\n- 简历摘要写：团队规模 12 人；详细段落又写：直接管理 6 人，加上外部律师约 12 人。\n- 主导一起重大商业合同纠纷，简介写『为公司挽回损失约 3000 万元』，另一处写『争议标的约 3000 万元』（口径不一致）。\n- 牵头数据合规体系搭建以应对个人信息保护相关要求。\n\n锦诚律师事务所 — 资深律师（2013 至 2019）\n- 任职起始时间一处写 2013，另一处写 2014。\n- 从事公司业务与商事诉讼。\n\n教育：某政法大学 法律硕士（J.M.）\n资格：法律职业资格证书",
+  "jd": "我们为一家集团公司招聘法务总监，向总法律顾问汇报，统管商业合同、合规、知识产权与争议解决。你将带领法务团队，并对重大纠纷的处理结果与合规体系的有效性负责。岗位要求：有亲自主导重大商业纠纷的经验；能就一起具体案件清晰还原案情、自己的策略、关键节点与最终结果（含金额口径），表述前后一致、抓得住重点；在长时间深度追问下仍能条理清晰，而不是越说越散、跑题或前后矛盾。我们会用多轮追问考察候选人在压力下的结构化表达与事实一致性。",
+  "history": [
+    { "q": "先请你介绍一下目前在恒泰集团的法务总监职责，以及团队规模。" },
+    { "q": "你简历里团队规模写了两个数，先帮我确认一下你直接管理的是几个人？" },
+    { "q": "好，我们聚焦那起重大商业合同纠纷。先讲讲案情背景。" },
+    { "q": "这起纠纷的争议标的和最终挽回的损失，分别是多少？口径上能澄清一下吗？" },
+    { "q": "你作为法务总监，在这个案子里个人主导了哪些关键决策？" },
+    { "q": "为什么当时选择走诉讼而不是先尝试和解？" },
+    { "q": "对方的核心主张是什么？你们抗辩的法律依据落在哪几条？" },
+    { "q": "案件经历了几个阶段？关键的时间节点是怎样的？" },
+    { "q": "中间有没有出现过对你们不利的转折？你是怎么应对的？" },
+    { "q": "外部律师和你的内部团队是怎么分工的？哪些是你自己拍板的？" },
+    { "q": "最终结果是判决、调解还是和解？拿到了多少？什么时候执行到位的？" },
+    { "q": "这 3000 万的数字，是判决书载明的金额，还是你们内部估算的避免损失？" },
+    { "q": "如果重来一次，你会在哪个节点做不同的决定？" },
+    { "q": "这个案子对你后来搭建合规体系有什么影响？" },
+    { "q": "你刚才提到的几个时间点好像和前面说的对不上，能再把时间线理一遍吗？" },
+    { "q": "我们回到最关键的一点：请你用三句话，讲清这个案子里你个人最核心的一个贡献。" },
+    { "q": "就一句话——你到底为公司确定地拿回了多少钱？" }
+  ],
+  "candidate_last_answer": "这个……我理解您想要一个特别干脆的数字，但这个案子其实牵扯特别多。您知道吗，当时光是证据交换那一轮就来回折腾了好几个月，对方换了两次代理人，中间还涉及到一个关联交易的问题，说起来这个关联交易又跟我们另一个项目有点关系……总之吧，3000 万这个数我一直在说，但您问是判决还是估算，严格讲呢，判决主文支持的部分和我们内部算的避免损失不完全是一回事，前者好像是一千多万，后者……哎我刚才是不是把这两个数说混了？您别急，我捋一捋啊，反正核心意思是为公司挽回了很大一笔，具体到底是确定拿回的那个数，我得回去翻一下卷宗才能跟您讲准。",
+  "session_state": {
+    "drilled_topics": ["role-and-team-size", "team-size-reconciliation", "case-background", "dispute-amount-discrepancy", "personal-key-decisions", "litigation-vs-settlement", "legal-grounds", "case-timeline", "adverse-turns", "internal-external-division", "outcome-type", "amount-basis", "counterfactual", "compliance-impact", "timeline-reconciliation", "core-contribution-summary"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "communication-structure", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 判决主文支持的部分和我们内部算的避免损失不完全是一回事",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 切断候选人的发散与跑题，逼其给出唯一确定的判决主文金额（约一千多万）这个数，并与简历『挽回 3000 万』的口径对齐，从而暴露其数字一致性与是否能在压力下结构化作答"
+    ]
+  }
+}

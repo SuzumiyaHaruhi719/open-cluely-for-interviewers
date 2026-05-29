@@ -1,0 +1,39 @@
+{
+  "id": "fx_0114",
+  "tags": {
+    "industry": "marketing",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": "reverses-question"
+  },
+  "resume": "增长营销经理（中级）\n\n求职方向：用户增长 / 内容营销\n\n经历\n某在线教育公司 — 增长营销（2021 至今）\n- 负责短视频投放与私域转化\n- 主导过一次暑期获客活动，注册成本从 38 元降到 22 元\n- 搭建了企业微信社群的自动化触达流程\n\n之前\n某 MCN 机构 — 内容运营（2019—2021）\n- 负责 3 个账号的内容排期与数据复盘\n\n技能：抖音/小红书投放、SQL 基础、A/B 测试、社群运营\n\n教育：本科，市场营销，2019 届",
+  "jd": "我们正在招聘一名中级增长营销经理，负责教育类产品的全渠道获客与转化。你将拥有月度获客预算约 200 万元，统筹抖音、小红书的内容投放与企业微信私域运营，对注册成本（CAC）和首单转化率两个核心指标负责。我们希望你能讲清楚每一次活动里你『自己』做了哪些具体决策、用什么数据判断投放策略、以及结果是否可归因。岗位需要和内容、产品、数据团队紧密协作。Base 北京，需要能独立跑通一次完整的获客 campaign，并在复盘时把动作、数据、归因讲清楚。",
+  "history": [
+    { "q": "讲讲你那次暑期获客活动——背景是什么，你具体负责哪一块，最后注册成本怎么从 38 降到 22 的？" },
+    { "q": "你说降到了 22 元，那这个下降里有多少是你的投放策略带来的、有多少是大盘或季节性因素？你是怎么做归因的？" }
+  ],
+  "candidate_last_answer": "那次活动背景是暑期是我们的旺季，公司给了我一个把 CAC 打下来的目标，我当时负责整个投放侧的策略。我做的动作主要是重新切了人群包，把素材从两条扩到了八条做轮播测试，然后把预算往 ROI 高的渠道倾斜。最后注册成本确实从 38 降到了 22。不过说到归因这块——其实我想反问你一下，你们现在内部是怎么定义『可归因』的？是看 last-click 还是有做 MTA 模型？因为不同口径下我这个数字的解读完全不一样，我想先对齐一下你们的标准再回答。",
+  "session_state": {
+    "drilled_topics": ["summer-acquisition-campaign-scope", "cac-attribution"],
+    "current_competency_target": "outcomes",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "outcomes",
+    "missing_evidence": [
+      { "competency": "outcomes", "evidence_type": "metric" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "outcomes", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 其实我想反问你一下，你们现在内部是怎么定义『可归因』的",
+      "must-be-question-type: counterfactual",
+      "expected-yield: a concrete counterfactual estimate of how much of the 38→22 CAC drop the candidate attributes to her own levers versus seasonality — ideally a held-out or baseline comparison, a number, and the method she used, rather than turning the attribution question back on the interviewer"
+    ]
+  }
+}

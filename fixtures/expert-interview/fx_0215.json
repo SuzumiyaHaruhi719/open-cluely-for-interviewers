@@ -1,0 +1,46 @@
+{
+  "id": "fx_0215",
+  "tags": {
+    "industry": "product-management",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "孙启明\n高级产品经理\n北京\n\n个人概述\n我是一名高级产品经理，过去六年专注于 B 端 SaaS 与企业协作工具的产品工作。我习惯从真实的业务问题出发，先把问题想清楚，再去定义产品方案，而不是被需求列表推着走。我相信一个好的产品经理的核心价值，不在于写了多少需求文档，而在于能不能在信息不全、资源有限、各方诉求冲突的情况下，做出当下最合理的判断，并对这个判断的结果负责。我做过从零到一的新产品，也做过成熟产品的深度优化，对完整的产品生命周期都有亲身经历。我尤其看重数据，习惯自己去看留存曲线和漏斗，而不是等数据分析师给我一份周报。\n\n工作经历\n\n协同云科技 高级产品经理 二零二一年至今\n我负责公司核心的项目协作产品线，这条线服务的是中大型企业的项目管理场景，团队里有研发、设计、数据各方的同事和我一起工作，我向产品总监汇报。\n这段时间我主导的最重要的一个项目，是把我们的任务管理模块从一个简单的清单工具，升级为支持复杂依赖关系和自动化流转的工作流引擎。这个项目的起点是我们发现大客户在续约时反复提到我们的产品撑不住他们真实的项目复杂度，于是我牵头做了这次重构。我从需求定义、方案设计、到分阶段上线全程负责，中间涉及到大量与客户、销售、研发之间的协调和取舍。这个项目最终上线了，但坦率地说，上线后的初期数据并不如预期，采用率的爬坡比我们计划的要慢，这中间有很多值得复盘的地方。\n我还负责过产品的定价与打包策略的一次调整，把原来单一的版本拆分成了面向不同规模客户的三个套餐，这次调整对客单价是有正向影响的。\n\n微启软件 产品经理 二零一八年至二零二一年\n我在这家公司负责的是企业内部的审批与表单产品。我主导了审批流配置能力的产品设计，让原本需要研发硬编码的审批流程变成业务方可以自己配置的能力。这段经历让我第一次完整体会到，一个看似简单的功能背后，往往牵扯着权限、合规、和历史数据迁移的复杂性，不能只看表面的交互。我也在这段时间养成了上线后紧盯数据、快速迭代的习惯。\n\n早期经历\n二零一六年到二零一八年我在一家创业公司做产品助理，参与过一款面向中小企业的轻量 CRM 的早期工作。这段经历让我理解了资源极度有限时如何做减法，也让我对从零做产品的不确定性有了心理准备。\n\n技能\n产品需求定义、方案设计与取舍、数据分析（留存、漏斗、转化）、定价与打包、跨团队协作、客户访谈与需求挖掘。我能独立完成从问题定义到上线复盘的完整闭环。\n\n教育背景\n某高校 信息管理与信息系统 本科。\n\n求职意向\n我希望加入一个真正以用户和业务结果为导向的产品团队，担任高级或资深产品经理，负责一条有真实复杂度的产品线。我看重的是一个能让产品经理对结果负责、而不是只做需求传话筒的环境。",
+  "jd": "我们是一家企业协作 SaaS 公司，正在招聘一名高级产品经理，向产品负责人汇报，独立 own 一条核心产品线的端到端工作：从问题定义、方案设计、到上线后的数据复盘与迭代。我们尤其看重候选人面对『不及预期的结果』时的复盘能力 —— 当一个你主导的项目没达到目标，你如何归因、你承担了哪部分责任、你从自己的决策里学到了什么。我们不希望听到把问题全部归咎于研发、设计或市场的回答。面试中我们会针对一个你主导但结果不理想的项目深入追问，请准备好诚实地剖析你自己的判断失误。",
+  "history": [
+    { "q": "先讲讲你在协同云的 scope —— 你 own 哪条产品线，和哪些角色协作？" },
+    { "q": "你提到主导了任务管理到工作流引擎的重构。先讲讲你当初是怎么定义这个问题的。" },
+    { "q": "这个工作流引擎的核心方案，你做了哪些关键的产品决策？" },
+    { "q": "你说上线后初期数据不如预期 —— 具体哪个指标没达到？目标是多少，实际是多少？" },
+    { "q": "采用率爬坡慢，你当时是怎么定位原因的？" },
+    { "q": "在这些原因里，哪些是和你自己的产品决策直接相关的？" },
+    { "q": "如果重来一次，你在需求定义或方案设计上会做哪个不同的决定？" },
+    { "q": "你刚才提到的原因大多在别的团队。我想听的是：你自己这次最大的判断失误是什么？" },
+    { "q": "我再直接一点：把研发、设计、市场都放一边，纯粹是你这个产品负责人的责任，你做错了什么？" }
+  ],
+  "candidate_last_answer": "说实话这个项目复盘下来，我觉得我自己的方案其实是没问题的，问题主要出在执行环节。研发那边排期一再延误，把我原本规划好的分阶段上线节奏全打乱了，本来该先上的核心能力被往后压了两个月。设计同学交付的引导流程也不够好，新功能那么复杂，结果引导做得很简陋，用户根本不知道怎么用。市场那边也没怎么配合,该做的客户沟通和培训都没跟上,大客户根本不知道我们上了这个能力。我觉得如果这几方能按我最初的计划执行,采用率不会是这个样子。要说我自己的问题,可能就是我太相信他们能执行到位了吧,我应该盯得更紧一点。",
+  "session_state": {
+    "drilled_topics": ["xietongyun-scope", "problem-definition", "key-product-decisions", "missed-metric", "adoption-root-cause", "self-related-causes", "what-would-change", "biggest-personal-misjudgment"],
+    "current_competency_target": "ownership-accountability",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "ownership-accountability",
+    "missing_evidence": [
+      { "competency": "ownership-accountability", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我觉得我自己的方案其实是没问题的，问题主要出在执行环节",
+      "must-be-question-type: counterfactual",
+      "expected-yield: cut through the blame on engineering/design/marketing and force one product-design decision he himself got wrong — e.g. scoping the workflow engine too complex or failing to design for adoption — making him own a specific judgement error rather than redistributing fault to others' execution"
+    ]
+  }
+}

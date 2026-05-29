@@ -1,0 +1,41 @@
+{
+  "id": "fx_0205",
+  "tags": {
+    "industry": "hr",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "inflated-metrics",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "陈立伟 / Liwei Chen\nVP of People（人力资源副总裁）| 上海\n\n个人简介\n人力资源领域的资深 leader，专注于高速增长 tech 公司的组织能力建设与人才战略。带过多个跨国 HR 团队，主导过从招聘、绩效到 talent development 的全链条体系搭建。相信 people strategy 是业务战略的一部分，而不是支持职能。\n\n工作经历\n\nNova 科技（跨境电商 SaaS）— VP of People — 2020 至今\n- 负责全公司的 HR 体系，覆盖招聘、绩效管理、薪酬、组织发展、员工关系等模块\n- 重新设计了绩效管理框架，从传统的 KPI 转向 OKR 结合 calibration 的模式\n- 推动了 employer branding 项目，显著提升了公司在校园和社招市场的影响力\n- 搭建了 leadership development 项目，为公司培养了一批中高层管理者\n- 在公司快速扩张期主导了多地办公室的团队组建\n\n瀚海互联网 — HR Director — 2016 至 2020\n- 负责技术线的 HRBP 团队，支撑研发组织的人才需求\n- 主导了多次组织架构调整与人才盘点\n- 建立了校招体系，与多所高校建立了合作关系\n\n早期经历\n2010 至 2016 在一家咨询公司做组织与人才咨询，服务过多家大型企业客户。\n\n技能与专长\n组织设计、talent management、绩效体系、薪酬框架、employer branding、leadership development、跨文化团队管理。\n\n教育背景\n某知名高校 人力资源管理 硕士。\n\n求职意向\n希望加入一家处在 scale-up 阶段的科技公司，担任 HR 一号位，把 people strategy 真正做成业务的 driver。",
+  "jd": "我们（一家 B 轮 fintech 公司，约 600 人）正在寻找一位 VP of People / CHRO，直接向 CEO 汇报，进入核心管理团队。这个岗位将 own 全公司的 people strategy：包括 headcount planning、绩效与薪酬体系、organization design、talent development，以及在快速增长中保持文化的一致性。我们今年计划从 600 人扩张到约 1000 人，其中研发与销售是重点。我们尤其关注候选人在 attrition 控制、关键岗位 succession planning、以及高速扩张期 hiring quality 把控上的真实打法。我们需要一个能用数据说话、能为董事会解释 people metrics（regrettable attrition、time-to-fill、internal mobility rate 等）的 leader，而不是只谈理念。面试中我们会深入追问具体的数字、时间线和你个人的决策。",
+  "history": [
+    { "q": "先聊聊你在 Nova 的 scope —— 团队多大，你直接 own 哪些 people metrics？" },
+    { "q": "你提到把绩效从 KPI 转向 OKR plus calibration，这个改革你个人具体做了什么？" },
+    { "q": "Nova 在快速扩张期，你是怎么控制 attrition 和 hiring quality 的？给我一个具体的数字。" },
+    { "q": "你刚才说 employer branding 显著提升了影响力 —— 用什么指标衡量的『显著』？" }
+  ],
+  "candidate_last_answer": "这个 employer branding 项目其实是我最自豪的成果之一。坦白说效果是 transformational 的 —— 我们的雇主品牌影响力几乎翻了十倍，offer accept rate 提升了大概 300%，校招的简历投递量增长了好几个数量级，candidate quality 也是行业 top tier。整个 talent market 都开始把 Nova 当成 dream company，我们的 employer NPS 应该是全行业最高的之一。这些都是我带着团队一起 drive 出来的 massive impact，可以说从根本上重塑了公司在人才市场的 positioning。",
+  "session_state": {
+    "drilled_topics": ["nova-scope", "okr-transition-ownership", "attrition-hiring-quality", "employer-branding-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "credibility", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 雇主品牌影响力几乎翻了十倍，offer accept rate 提升了大概 300%",
+      "must-be-question-type: metric-pin",
+      "expected-yield: a defensible baseline and measurement method for the inflated figures — what the offer-accept rate actually was before and after, how it was measured, over what period, and what specifically she did versus the team, forcing her to either substantiate or retract the 10x / 300% claims"
+    ]
+  }
+}

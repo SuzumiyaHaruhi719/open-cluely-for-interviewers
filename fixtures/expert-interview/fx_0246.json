@@ -1,0 +1,38 @@
+{
+  "id": "fx_0246",
+  "tags": {
+    "industry": "research",
+    "level": "junior",
+    "language": "en",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "Daniel Osei\nResearch Assistant — Computational Biology\n\nObjective: A junior research scientist role in genomics or ML-for-bio.\n\nExperience\nHelix Genomics Lab (2023-present) — Research Assistant\n- Summary line: Led the lab's single-cell RNA-seq analysis pipeline end to end and mentored two junior students.\n- Detail bullet: Assisted a postdoc with parts of the single-cell analysis; contributed scripts under her direction.\n- Ran QC and clustering on roughly 40 datasets (one section); elsewhere the resume states 'contributed to ~12 datasets'.\n- First author on a methods paper (header); listed as third author in the publications section.\n\nUniversity Research Project (2022)\n- Built a small variant-calling benchmark for a capstone\n\nEducation\nBSc Bioinformatics (2023)\n\nSkills\nPython, R, scanpy, Seurat, variant calling, statistics",
+  "jd": "Helix Genomics is hiring a Junior Research Scientist for our computational biology team. Reporting to a senior scientist, you will run single-cell RNA-seq analyses, maintain reproducible pipelines, and contribute to methods papers. We expect candidates to describe their own contributions precisely — exactly which steps they personally performed versus what they assisted with — and to reconcile any discrepancies between how their role is summarized and the underlying detail. We value intellectual honesty about authorship and scope, tight and specific answers, and reproducible, well-documented analysis work.",
+  "history": [
+    { "q": "Tell me about your role on the single-cell pipeline at Helix — what did you personally do?" },
+    { "q": "Your resume summary says you 'led the pipeline end to end,' but a detail line says you assisted a postdoc under her direction. Which is accurate?" }
+  ],
+  "candidate_last_answer": "The detail line is accurate; the summary overstates it and I should fix that. Concretely: the postdoc, Dr. Lin, owned the pipeline design and the clustering parameters. I personally wrote the QC and doublet-removal scripts in scanpy, ran them on 12 of the datasets, and documented the parameters in our shared repo. I did not lead it end to end, and on the methods paper I'm third author, not first — the header on my resume is a typo I'll correct.",
+  "session_state": {
+    "drilled_topics": ["pipeline-role", "lead-vs-assist-contradiction"],
+    "current_competency_target": "integrity-consistency",
+    "elapsed_minutes": 6
+  },
+  "ground_truth": {
+    "competency_target": "integrity-consistency",
+    "missing_evidence": [
+      { "competency": "integrity-consistency", "evidence_type": "scope" },
+      { "competency": "ownership", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: ran them on 12 of the datasets",
+      "must-be-question-type: named-entity-pin",
+      "expected-yield: a precise, verifiable boundary of his own contribution — which specific QC and doublet-removal steps he authored versus what Dr. Lin designed, and how the 12-dataset figure reconciles with the resume's '~40 datasets' claim — confirming the scope of his honest correction"
+    ]
+  }
+}

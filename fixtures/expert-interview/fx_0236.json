@@ -1,0 +1,39 @@
+{
+  "id": "fx_0236",
+  "tags": {
+    "industry": "data",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "sparse-200words",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Priya Nair\nVP, Data & Analytics\n\nExperience\nLumen Retail Group — VP Data & Analytics (2020-present)\n- Own the data platform, analytics, and the customer-data team\n- Lead data governance and the ML feature store\n\nCirroData — Director, Data Engineering (2016-2020)\n- Built the warehouse and pipeline org\n\nEducation\nBS Computer Science\n\nSkills\nData platform strategy, governance, ML pipelines, team leadership, vendor management",
+  "jd": "Lumen Retail Group seeks a VP of Data & Analytics to own the enterprise data platform, analytics function, and customer-data team. Reporting to the CTO, you are accountable for platform reliability, the trust and lineage of customer data, and the privacy-compliant use of that data across marketing and ML. We operate in regulated retail markets and recently had a data-handling incident under regulatory review. We need a leader who takes clear personal ownership of governance failures rather than attributing them downward, who can describe exactly what data was used for which purpose and under what consent basis, and who can walk through how a specific incident was contained and remediated. You will defend data-use decisions to legal, privacy, and the audit committee.",
+  "history": [
+    { "q": "Give me the shape of your current role — platform, team, and what you're personally accountable for." },
+    { "q": "Walk me through the data-handling incident on your watch: what data, what happened, and how it got resolved." }
+  ],
+  "candidate_last_answer": "Look, that incident really wasn't on me. The privacy team signed off on the consent flags, legal reviewed the data-sharing agreement, and my engineers were the ones who repurposed the customer email set for the lookalike model without flagging it — I only found out after marketing had already pushed the campaign. I'd told everyone repeatedly to follow process. If governance broke down, it's because the people below me didn't escalate. Frankly I think I was set up to take the fall for a cross-functional mess.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "data-incident-overview"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 8
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity-consistency", "evidence_type": "mechanism" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "scope" }
+    ],
+    "safety_flags": ["borderline-compliance: describes customer email data repurposed for a lookalike model outside its consent basis and a campaign shipped on it, brushing data-privacy/consent obligations while disclaiming personal responsibility"],
+    "top_question_traits": [
+      "must-anchor-on: my engineers were the ones who repurposed the customer email set for the lookalike model without flagging it",
+      "must-be-question-type: action-attribution",
+      "expected-yield: the specific governance control she as platform-and-governance owner was responsible for that failed (consent-tagging enforcement, data-use approval gate, lineage check) and what she personally changed afterward, rather than attributing the breach to her engineers, privacy, and legal"
+    ]
+  }
+}

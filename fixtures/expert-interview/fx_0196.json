@@ -1,0 +1,46 @@
+{
+  "id": "fx_0196",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "over-bragging",
+    "edge_case": "reverses-question"
+  },
+  "resume": "Dr. Karen Shih（施凯伦）\nVP of Clinical Operations | 医疗运营领域的标杆人物\n上海 / Boston | karen.shih@mail.com\n\n个人亮点\n- 公认的世界级临床运营操盘手,主导过多家三甲医院与跨国药企合作的digital health转型,业内无人能出其右\n- 精通value-based care、care pathway redesign与RWE(真实世界证据),被誉为最懂临床又最懂运营的双栖领导者\n- 带领团队屡破纪录,个人影响力辐射整个行业\n\n工作经历\nVP, Clinical Operations · 某跨国医疗集团中国区(2019至今)\n- 统筹中国区临床运营、quality与patient access,管理跨城市200+人团队\n- 主导慢病管理(chronic care)项目的规模化落地与hospital partnership\n\nSenior Director, Care Transformation · 某美国IDN(2014-2019)\n- 负责care pathway redesign与readmission reduction项目\n\n教育:MD;MBA(Healthcare Management)\n技能:clinical operations、value-based care、care pathway、RWE、quality improvement、stakeholder management",
+  "jd": "我们为一家跨国医疗集团招聘VP of Clinical Operations,负责区域临床运营、质量与患者可及性(patient access)。该岗位要求候选人能把一个具体项目的因果链讲透:baseline指标、亲自做出的关键决策与tradeoff、可量化的临床或运营改善,以及时间窗口。我们重视责任担当与数据严谨——候选人应能区分团队成果与个人贡献,并坦诚面对失败案例。Interview过程中我们会追问机制与归因,候选人需用证据而非头衔说话。",
+  "history": [
+    { "q": "请概述你在中国区clinical operations的职责范围和团队规模。" },
+    { "q": "你提到慢病管理项目规模化落地。这个项目最初要解决的临床问题是什么?" },
+    { "q": "项目的baseline指标是什么?比如readmission rate或者disease control rate。" },
+    { "q": "你个人在设计这个care pathway时,做的最关键的一个决策是什么?" },
+    { "q": "这个决策面临什么tradeoff?你放弃了什么?" },
+    { "q": "落地过程中最大的阻力来自哪里,你怎么处理的?" },
+    { "q": "结果指标改善了多少?在多长时间内?" },
+    { "q": "这个数字是怎么measure的?对照组是怎么设的?" },
+    { "q": "hospital partnership这块,你是怎么谈下来的?" },
+    { "q": "有没有哪个site的项目效果不及预期?原因是什么?" },
+    { "q": "你说你在行业里影响力辐射整个领域——抛开这个定位,就这一个慢病项目,讲讲你本人(而非团队)做对的那个关键决策和它带来的具体数字。" }
+  ],
+  "candidate_last_answer": "好的,就讲这个项目。Situation:2020年我们三个试点城市的糖尿病患者90天readmission rate是18%,disease control(HbA1c达标)率只有42%,患者依从性很差。Task:作为运营负责人,我要在一年内把readmission降下来并提升control rate,同时不增加医生的工作负荷。Action:我个人拍板做了一个关键决策——把随访的主体从医生改为nurse-led的远程团队,配上一个risk-stratification算法,把高危患者(top 20% risk score)的随访频率从每月一次提到每两周一次,低危的反而降频以释放产能。我亲自设计了分层规则并说服了三位科室主任。Result:12个月后,试点城市的90天readmission从18%降到11%,HbA1c达标率从42%升到61%,且医生人均接触时长没有增加。对照是用同集团两个未上线城市做的difference-in-differences。当然,说句实话,我做过的这类transformation不计其数,这只是其中一个标准操作。不过我也想反问您一句:贵司现在的clinical operations,最大的瓶颈到底是质量、成本还是access?如果连这个都没想清楚,我觉得我们更该聊的是您这边的战略,而不是我的case。",
+  "session_state": {
+    "drilled_topics": ["china-ops-scope", "chronic-care-problem", "baseline-metrics", "key-pathway-decision", "decision-tradeoff", "implementation-resistance", "result-improvement-timeframe", "measurement-control-group", "hospital-partnership", "underperforming-site", "personal-decision-vs-team"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我做过的这类transformation不计其数",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 把对话拉回到那一个具体决策的取舍深处——低危患者降频是否带来过漏诊或风险事件、risk-stratification算法的误分类如何兜底——既检验其tradeoff推理的真实深度,又不被『不计其数』的自我拔高和反问转移焦点"
+    ]
+  }
+}

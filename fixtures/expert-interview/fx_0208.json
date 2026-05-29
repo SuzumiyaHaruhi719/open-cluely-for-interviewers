@@ -1,0 +1,52 @@
+{
+  "id": "fx_0208",
+  "tags": {
+    "industry": "education",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "over-bragging",
+    "edge_case": null
+  },
+  "resume": "高志远\n资深课程产品负责人 / 教研专家\n杭州\n\n个人简介\n我是在线教育行业公认的顶级课程操盘手之一，业内提到 K12 数理思维课程的标杆设计，绕不开我做的那几门课。我打造的明星课程是公司历史上最成功的产品，没有之一。我对教研、内容、和增长的理解远超同行，带过的团队个个都成了行业抢手的人才。\n\n工作经历\n\n知言教育 高级课程产品负责人 二零一九年至今\n- 主导设计了公司的旗舰数理思维课程体系，业内公认的天花板级产品\n- 我一手定义了这门课的教研标准，后来成了整个行业模仿的对象\n- 带领教研团队，团队产出的内容质量是市场上最高的\n- 推动了课程与 AI 个性化推荐的结合，引领了行业方向\n\n睿思学堂 课程负责人 二零一六年至二零一九年\n- 负责语文素养课程的整体设计\n- 我做的课在续费率上是当时全公司最高的，几乎无人能及\n\n技能\n课程体系设计、教研管理、学习科学、续费与转化、内容质量把控。在这些方面我自认在行业里属于第一梯队。\n\n教育背景\n教育学 硕士。\n\n求职意向\n寻找一个能让我继续操盘顶级课程产品的高级岗位，最好是能给我足够大的舞台去定义一个品类的标准。",
+  "jd": "我们是一家在线素质教育公司，正在招聘一名资深课程产品负责人，向教研副总裁汇报，负责我们一条核心课程线的端到端设计与迭代。你将 own 课程的教研框架、内容质量标准、以及与学习效果相关的核心指标（完课率、阶段测评通过率、续费率）。我们尤其关注候选人能否把『好课』拆解成可衡量、可复现的设计决策，而不是停留在『我做的课最好』这种说法。面试中我们会针对一门你亲自主导的课，深入追问它的具体设计取舍、效果数据、以及你个人在其中的决策。请准备好就一门具体课程讲清楚来龙去脉。",
+  "history": [
+    { "q": "先聊聊你在知言的角色和你负责的课程线。" },
+    { "q": "选一门你最自豪的课，先讲讲它要解决的核心学习问题是什么。" },
+    { "q": "这门课的目标用户是谁？他们原来在哪个环节学得最吃力？" },
+    { "q": "你说你定义了这门课的教研标准 —— 这个标准具体包含哪些可衡量的维度？" },
+    { "q": "课程的完课率是多少？你是怎么测的？" },
+    { "q": "完课率这个数，改版前后分别是多少？" },
+    { "q": "阶段测评的通过率呢？有没有和对照组比较过？" },
+    { "q": "你提到和 AI 个性化推荐结合，这个具体是怎么做的，你个人做了什么？" },
+    { "q": "这个 AI 推荐上线后,对完课率或测评通过率有没有可量化的影响？" },
+    { "q": "我们先回到这门课本身。它的续费率改版前后是多少？" },
+    { "q": "续费率的提升，你怎么排除掉是大盘或营销带来的，而不是课程本身？" },
+    { "q": "在设计这门课时，你做过哪个最艰难的取舍？放弃了什么、保留了什么？" },
+    { "q": "那个取舍背后，你依据的是什么数据或用户证据？" },
+    { "q": "如果只让你归因到一个最关键的设计决策，是哪一个？为什么是它？" },
+    { "q": "我再问一次那个具体问题：这门旗舰课的完课率,改版前的基线到底是多少？请给我一个数字。" }
+  ],
+  "candidate_last_answer": "说到完课率啊，其实我觉得我们整个行业对完课率的理解都太狭隘了。你看现在大家都在卷 AI、卷大模型，但教育的本质从来不是技术，而是对人的理解。我最近在读一本关于认知科学的书，特别有启发，里面讲到学习动机的底层逻辑,我觉得这才是真正值得整个行业去思考的东西。我还经常受邀去各种教育峰会做分享，去年那场行业大会我的演讲反响特别热烈，好多同行都来加我微信。说实话现在市面上真正懂教研的人太少了,大部分公司做课都是在堆量。我一直觉得做教育要有情怀，要对得起孩子和家长，这也是我做了这么多年课最大的坚持。",
+  "session_state": {
+    "drilled_topics": ["zhiyan-role", "course-problem", "target-user", "pedagogy-standard", "completion-rate-method", "completion-rate-baseline", "assessment-pass-rate", "ai-personalization-detail", "ai-impact", "renewal-rate", "renewal-attribution", "hardest-tradeoff", "tradeoff-evidence", "key-decision-attribution"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 48
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "focus-directness", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我们整个行业对完课率的理解都太狭隘了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: cut through the philosophical tangent and force a single concrete number — the actual pre-revamp completion-rate baseline for the flagship course and how it was measured — making clear the panel will not accept industry musings in place of the specific figure asked for repeatedly"
+    ]
+  }
+}

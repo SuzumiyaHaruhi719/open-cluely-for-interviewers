@@ -1,0 +1,52 @@
+{
+  "id": "fx_0199",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "zh",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "孙逸飞\n工业工程实习生候选人 | 机械工程大三\n苏州 | sun.yifei@university.edu\n\n关键词\n精益生产 / Lean / 六西格玛 / 5S / Kaizen / 价值流图VSM / 看板Kanban / 防错Poka-yoke / TPM / OEE / SMED / 标准作业 / 八大浪费 / PDCA / DMAIC / 现场管理 / 持续改善 / 工业4.0 / 数字化车间 / 智能制造\n\n经历\n某汽车零部件厂 暑期实习(2024)\n- 参与产线改善小组,学习精益生产工具的现场应用\n- 协助记录工时与产线数据\n\n校园项目\n- 课程项目中用VSM分析过一个模拟生产流程\n\n竞赛\n- 全国大学生工程实践竞赛参与\n\n技能:AutoCAD、基础SolidWorks、Excel、精益工具理论、Minitab入门\n教育:机械工程学士在读(预计2026)",
+  "jd": "我们为汽车零部件工厂招聘工业工程实习生,参与产线效率改善与现场管理。我们不看重背诵了多少精益术语,而看重候选人能否就实习中亲身参与的一件小事讲清楚:你具体观察到什么问题、动手做了什么、用了什么方法、带来了什么可衡量的变化(哪怕很小)。面试中我们会反复请候选人把名词换成动作和数字。要求:工业工程或机械背景,愿意扎到现场,以及实事求是、不堆砌概念的表达习惯。",
+  "history": [
+    { "q": "先自我介绍一下,以及你为什么想做工业工程方向。" },
+    { "q": "你简历里精益的关键词很多,我们具体聊。你暑期实习在哪条产线?" },
+    { "q": "那条产线生产什么零件?节拍大概多少?" },
+    { "q": "你说参与了改善小组,你在小组里具体的角色是什么?" },
+    { "q": "你提到学习了VSM,你们当时画的价值流图发现了什么瓶颈?" },
+    { "q": "针对那个瓶颈,小组提出的改善动作是什么?" },
+    { "q": "这些动作里,有没有哪个是你自己动手做或者提议的?" },
+    { "q": "你记录的工时数据,后来用来做什么分析了?" },
+    { "q": "改善之后那个工序的节拍或者OEE有变化吗?" },
+    { "q": "你提到5S,现场实际推行时遇到的最大阻力是什么?" },
+    { "q": "Poka-yoke在你那条线有具体的例子吗?" },
+    { "q": "如果让你只挑一个你真正参与并看到效果的改善,是哪个?" },
+    { "q": "那个改善前后,有没有任何一个可衡量的数字,哪怕是节省了几秒、减少了几步?" },
+    { "q": "这个数字是你亲自测量的吗?怎么测的?" },
+    { "q": "好,别再用术语了——就用大白话讲:那一个改善里,你本人站在产线旁边,具体动手做了哪一件事,前后差别是多少?" }
+  ],
+  "candidate_last_answer": "好的。其实整个实习我都是秉持着持续改善和精益思想在做事的。我们小组以PDCA为闭环,运用VSM识别价值流,聚焦消除八大浪费,通过标准作业和现场5S去拉动效率提升,本质上是一个端到端的Kaizen赋能过程。我深刻理解到精益的核心是以人为本、全员参与,要打造一种持续改善的文化。所以那个改善它不是单点的,而是系统性的提质增效——把看板、防错和TPM这些工具有机结合,实现了流程的整体优化和价值的最大化。",
+  "session_state": {
+    "drilled_topics": ["self-intro-motivation", "internship-line", "part-and-takt", "role-in-team", "vsm-bottleneck", "improvement-actions", "personal-contribution", "time-data-analysis", "takt-oee-change", "5s-resistance", "pokayoke-example", "single-real-improvement", "measurable-number", "who-measured-it", "plain-language-personal-action"],
+    "current_competency_target": "hands-on-rigor",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "hands-on-rigor",
+    "missing_evidence": [
+      { "competency": "hands-on-rigor", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "hands-on-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 而是系统性的提质增效",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 候选人本人在产线旁亲手做的那一件具体动作(例如挪动了某个料盒、改了某步取放顺序)以及一个可衡量的前后差值(节省几秒或减少几步),逼其放弃PDCA/VSM/Kaizen等术语堆砌,给出第一人称的动手细节"
+    ]
+  }
+}

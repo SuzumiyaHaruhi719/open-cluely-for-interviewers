@@ -1,0 +1,40 @@
+{
+  "id": "fx_0194",
+  "tags": {
+    "industry": "operations",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "over-packaged",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Daniel Reyes\nDirector of Operations | Scaling teams and systems for high-growth companies\nAtlanta, GA | daniel.reyes@mail.com\n\nEXPERIENCE\nDirector of Operations — Brightline Logistics (2020–present)\n- Lead operations across fulfillment, customer ops, and vendor management for a fast-growing 3PL.\n- Drove a multi-warehouse expansion and stood up a new operating cadence across sites.\n- Built and scaled the ops leadership team; introduced a tiered daily-management system.\n- Partner with finance and product on capacity planning and process automation.\n\nSenior Operations Manager — Cartwheel Retail (2016–2020)\n- Ran regional fulfillment operations and led continuous-improvement initiatives.\n- Implemented lean practices and a new WMS rollout across the region.\n\nEDUCATION\nMBA, Operations & Supply Chain\nBS, Industrial Engineering\n\nSKILLS\nOperations strategy, lean/continuous improvement, S&OP, vendor management, team leadership, process design.",
+  "jd": "Director of Operations for a scaling logistics company. You will own multi-site fulfillment performance, the operating cadence, and continuous-improvement programs, and you'll be accountable to the COO for service-level and cost outcomes. We need a leader who can move from frameworks to specifics: name the exact process you changed, the mechanism behind the gain, the metric it moved, and the timeframe. In this interview we will repeatedly ask you to replace buzzwords with concrete actions and numbers. Required: track record running multi-site operations, fluency in lean methods, and the discipline to tie every initiative to a measured result.",
+  "history": [
+    { "q": "Walk me through the multi-warehouse expansion you led at Brightline — what was the operating problem you were solving?" },
+    { "q": "You mentioned a 'tiered daily-management system.' Concretely, what did that system consist of, day to day?" },
+    { "q": "Let's get specific about results. Pick the single initiative you're proudest of and tell me what metric it moved and by how much." }
+  ],
+  "candidate_last_answer": "Absolutely. So my whole operating philosophy is about creating a culture of operational excellence through disciplined execution and a relentless bias for action. What I did was install a best-in-class continuous-improvement engine — we drove alignment top to bottom, broke down silos, and really empowered the frontline to own their KPIs. It's all about that virtuous cycle of accountability and visibility. When you get the operating rhythm right and unlock the team's potential, performance takes care of itself across the board.",
+  "session_state": {
+    "drilled_topics": ["warehouse-expansion-problem", "tiered-daily-management-detail", "proudest-initiative-metric"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 13
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "process-design", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: performance takes care of itself across the board",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one named operational metric (e.g., units-per-labor-hour, on-time-ship %, or cost-per-order), its before and after value, the timeframe, and the specific process change that caused it — forcing a concrete number out of the rehearsed operating-excellence language"
+    ]
+  }
+}

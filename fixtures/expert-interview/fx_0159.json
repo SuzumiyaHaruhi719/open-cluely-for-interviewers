@@ -1,0 +1,45 @@
+{
+  "id": "fx_0159",
+  "tags": {
+    "industry": "healthcare",
+    "level": "vp",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "VP, Clinical Operations & Value-Based Care | 医疗运营高管 | 20+ years\n\n核心标签 / Buzzword cloud:\n- Patient-centric transformation, population health, value-based care, risk-bearing contracts, ACO enablement\n- Operational excellence, Lean Six Sigma, throughput optimization, capacity command center\n- Care-model redesign, interdisciplinary care teams, social determinants of health (SDOH)\n- Digital health, RPM, virtual-first, AI-enabled triage, clinical decision support\n- Quadruple Aim, HEDIS, STAR ratings, readmission reduction, length-of-stay optimization\n- Stakeholder alignment, physician engagement, change management, enterprise scale\n\n经历\n某区域医疗集团 — VP Clinical Operations（2019 至今）\n- 负责 9 家医院的临床运营、quality 和 value-based care 合同\n某医院网络 — Senior Director, Care Transformation（2014—2019）\n\n证书：RN, MBA, Lean Six Sigma Black Belt\n关键词：throughput、LOS、readmission、HCC coding、capacity management、care navigation",
+  "jd": "We are recruiting a VP of Clinical Operations to lead value-based care delivery across a 9-hospital system carrying risk on roughly 180,000 attributed lives. You will own the medical-cost-ratio (MCR) on those contracts, the 30-day readmission rate (currently 15.8%, target sub-12%), and average length of stay across med-surg units. 这个岗位 reports to the COO，直接管理 a 600-person clinical-ops org 和 four hospital COOs。我们需要 someone who can speak in specifics: which intervention moved which metric, on what timeline, with what dollar impact on total cost of care. You will negotiate risk-bearing contracts with two regional payers and stand up a capacity command center. Buzzwords are easy; we are screening hard for whether you can attribute a concrete operational result to a concrete decision you personally made.",
+  "history": [
+    { "q": "Give me your current scope — hospitals, attributed lives, the contracts and metrics you actually own." },
+    { "q": "你简历上 value-based care 和 risk-bearing contracts 写了很多。Pick one risk contract you personally led and tell me the structure." },
+    { "q": "On that contract, what was the MCR when you took it over and where is it now?" },
+    { "q": "Your resume lists readmission reduction. Walk me through one specific intervention that moved the readmission rate." },
+    { "q": "What was the readmission number before and after, and over what period?" },
+    { "q": "You list a 'capacity command center' — what did you actually build, and what decision did it change day to day?" },
+    { "q": "Pick the single intervention you're proudest of and attribute the dollar impact on total cost of care to it. Be specific." }
+  ],
+  "candidate_last_answer": "Yeah, so 这块我特别有感触。归根结底 value-based care 就是要 align incentives，把 patient 放在 center。我一直相信 operational excellence 和 quality 是不矛盾的——you do the right thing for the patient, the economics follow。我们当时是 system-wide 地去推 care-model redesign，engage 了所有的 stakeholders，physician buy-in 也做得很扎实。所以那个 impact 是 substantial 的，是 transformational 的。具体哪一个 intervention 我觉得很难单独拎出来，因为它是一个 holistic 的 transformation，everything works together，你没办法 isolate 某一个 lever。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "risk-contract-structure", "mcr-trajectory", "readmission-intervention", "readmission-numbers", "capacity-command-center", "dollar-impact-attribution"],
+    "current_competency_target": "outcomes",
+    "elapsed_minutes": 29
+  },
+  "ground_truth": {
+    "competency_target": "outcomes",
+    "missing_evidence": [
+      { "competency": "outcomes", "evidence_type": "metric" },
+      { "competency": "outcomes", "evidence_type": "owner-of-action" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" },
+      { "competency": "outcomes", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 具体哪一个 intervention 我觉得很难单独拎出来",
+      "must-be-question-type: metric-pin",
+      "expected-yield: one named intervention isolated from the 『holistic transformation』 with a before/after metric (readmission rate or MCR), the time period, and a defensible dollar impact on total cost of care attributable to that single lever"
+    ]
+  }
+}

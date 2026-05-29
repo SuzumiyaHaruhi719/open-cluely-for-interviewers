@@ -1,0 +1,39 @@
+{
+  "id": "fx_0191",
+  "tags": {
+    "industry": "supply-chain",
+    "level": "mid",
+    "language": "zh",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "over-bragging",
+    "edge_case": "multi-task-in-one-answer"
+  },
+  "resume": "陈志远 — 供应链经理（7年经验）\n上海 | chen.zhiyuan@mail.com\n\n核心优势\n- 行业顶尖的供应链操盘手，主导过多个千万级别的降本项目，是公司公认的『救火队长』\n- 精通端到端供应链管理，从采购、计划到物流无所不通，被誉为最懂数据的运营专家\n- 带领团队屡创佳绩，多次拿下集团年度最佳，个人能力远超同级\n\n工作经历\n某快消品公司 供应链经理（2021至今）\n- 负责华东区域的需求计划与库存管理，统筹三个仓配中心\n- 推动S&OP流程落地，打通销售与供应的信息壁垒\n\n某电子制造企业 高级采购专员（2017-2021）\n- 负责关键物料的采购与供应商管理\n- 参与年度降本谈判\n\n技能：S&OP、需求预测、库存优化、供应商管理、SAP、数据分析",
+  "jd": "我们正在招聘一名供应链经理，负责区域需求计划、库存健康度与供应商交付管理。该岗位要求候选人能清晰说明自己在某一个具体项目里『做了什么、用什么方法、拿到什么结果』，而不是泛泛而谈。我们重视聚焦：希望候选人针对一个问题讲透因果链，包括当时的库存或服务水平基线、采取的具体动作、以及可量化的改善幅度和时间窗口。需要扎实的预测与库存优化经验、跨部门协同能力，以及用数据支撑决策的习惯。",
+  "history": [
+    { "q": "你在简历里写推动了S&OP流程落地。先聚焦一件事：选一个你主导的库存优化项目，讲讲当时的问题、你的具体做法和结果。" },
+    { "q": "我们就盯住这个库存周转的项目——你刚才提到周转天数下降了，请把这一个项目的基线、你个人做的关键动作、以及前后数字讲清楚，先别讲别的项目。" }
+  ],
+  "candidate_last_answer": "对，库存这块我太有发言权了。其实那个周转项目只是其中一个，我顺便也讲讲别的——同一时期我还主导了供应商整合，把华东的供应商从四十多家砍到二十家,谈判那叫一个激烈;然后我们仓配中心也做了重新布局，对了说到仓库，那年双十一备货特别夸张，我连着加了好几个通宵,物流那边差点崩掉,我还临时去调了运力;另外S&OP我也是从零搭起来的,销售老不配合，开会经常吵起来。库存周转我记得是从挺高降到挺低的，反正改善很明显，团队还拿了奖。哎其实供应链最难的是人,你得会跟各个部门周旋,这一点我真是深有体会。",
+  "session_state": {
+    "drilled_topics": ["sop-and-inventory-project", "inventory-turnover-causal-chain"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "timeline" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 库存周转我记得是从挺高降到挺低的",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 仅针对库存周转这一个项目的确切基线与结果数字（周转天数从X降到Y）、改善发生的时间窗口，以及候选人本人（而非团队）做的那个关键动作，迫使其放弃跳到其他项目的发散叙述"
+    ]
+  }
+}

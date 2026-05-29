@@ -1,0 +1,48 @@
+{
+  "id": "fx_0171",
+  "tags": {
+    "industry": "healthcare",
+    "level": "mid",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 11,
+    "resume_type": "numbers-missing",
+    "edge_case": null
+  },
+  "resume": "Clinical Quality Improvement Specialist — acute care, 6 years\n\nRegional Medical Center — QI Specialist, Med-Surg & Telemetry (2021–present)\n- Led a sepsis-bundle compliance initiative across two units, partnering with nursing and the hospitalist group.\n- Ran root-cause analyses after adverse events and facilitated the unit's daily safety huddle.\n- Built audit tools to track hand-hygiene and bundle adherence; reported up to the quality committee.\n- Coached charge nurses on documentation and helped redesign the discharge workflow to reduce delays.\n\nCommunity Hospital — Staff RN, Progressive Care (2018–2021)\n- Bedside care on a 28-bed PCU; charge nurse rotation.\n\nNote: I tend to describe outcomes qualitatively — improvements were real but I don't keep a personal stat sheet, and a lot of the data lived in the hospital's quality dashboards I no longer have access to.\n\nCredentials: RN, BSN; CPHQ in progress.\nSkills: PDSA cycles, root-cause analysis, audit tool design, sepsis bundles, staff coaching, EHR documentation workflows.",
+  "jd": "We are seeking a Clinical Quality Improvement Specialist for a 400-bed acute-care hospital, sitting within the quality department and reporting to the Director of Quality. You will lead bundle-compliance and harm-reduction initiatives, run PDSA cycles, facilitate RCAs after safety events, and present results to the quality committee. We value people who can quantify their impact: what the compliance or harm rate was before, what it became, over what period, and how the improvement was attributed to the intervention rather than to confounders. The interview will probe for those specifics and for how you handle being questioned on your evidence. CPHQ preferred; collaborative, data-grounded, and open to challenge are must-haves.",
+  "history": [
+    { "q": "Tell me about the sepsis-bundle initiative — what was the compliance problem on those two units when you started?" },
+    { "q": "What was bundle compliance at baseline, as a percentage?" },
+    { "q": "And after your intervention — what did compliance get to, and over what time period?" },
+    { "q": "Walk me through the actual intervention. What did you change about the workflow?" },
+    { "q": "Did the compliance improvement translate into a clinical outcome — sepsis mortality, length of stay, anything?" },
+    { "q": "How did you separate your intervention's effect from other things happening on the unit at the same time?" },
+    { "q": "Your audit tool — how many charts did you sample, and how often?" },
+    { "q": "You mention the data lived in dashboards you no longer access. Can you reconstruct even a rough before-and-after number?" },
+    { "q": "Let's try the hand-hygiene work instead. What was the adherence rate before and after there?" },
+    { "q": "I'm hearing a lot of qualitative description. For this role I need to know you can speak to a number — can you give me one hard figure from any of these projects?" },
+    { "q": "I'm not trying to corner you — I'm asking for one concrete before-and-after metric you personally tracked. Can you give me that?" }
+  ],
+  "candidate_last_answer": "With respect, I think you're putting way too much weight on numbers here. Quality improvement isn't a spreadsheet — it's culture change, it's getting nurses to actually believe in the bundle, and you can't reduce that to a single figure. I've told you the improvements were real. The fact that I don't have the exact percentage memorized doesn't mean the work didn't happen, and frankly the way you keep hammering on this one point makes me wonder if you understand how QI actually works on a real unit. The dashboards belonged to the hospital. I'm not going to make up a number just to satisfy a checkbox.",
+  "session_state": {
+    "drilled_topics": ["sepsis-baseline-problem", "baseline-compliance", "post-compliance-timeline", "workflow-intervention", "clinical-outcome-link", "confounder-separation", "audit-sampling", "metric-reconstruction", "hand-hygiene-numbers", "any-hard-figure", "one-before-after-metric"],
+    "current_competency_target": "outcomes",
+    "elapsed_minutes": 33
+  },
+  "ground_truth": {
+    "competency_target": "outcomes",
+    "missing_evidence": [
+      { "competency": "outcomes", "evidence_type": "metric" },
+      { "competency": "outcomes", "evidence_type": "timeline" },
+      { "competency": "analytical-rigor", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I don't have the exact percentage memorized doesn't mean the work didn't happen",
+      "must-be-question-type: metric-pin",
+      "expected-yield: at least one defensible before/after figure or a credible reconstructed range for sepsis-bundle or hand-hygiene compliance with its time window, and an honest account of how the gain was separated from confounders — pushing past the deflection to whether any quantified evidence exists at all"
+    ]
+  }
+}

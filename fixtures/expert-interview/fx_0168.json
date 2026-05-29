@@ -1,0 +1,42 @@
+{
+  "id": "fx_0168",
+  "tags": {
+    "industry": "legal",
+    "level": "senior",
+    "language": "mixed",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "4-7",
+    "history_length": 5,
+    "resume_type": "verbose-1500words",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "资深公司法律顾问 / Senior Corporate Counsel — 数据合规与跨境交易方向 | 11 years PQE\n\n个人概述\n我是一名执业十一年的公司法律顾问，主要专注于数据合规、跨境数据传输以及商业合同谈判。过去几年我把大部分精力放在了企业出海与数据出境合规上，深度参与过多个涉及个人信息保护的合规项目。我习惯把复杂的法律风险拆解成业务团队听得懂的语言，也乐于在交易早期就介入，把合规要求嵌进产品和商务流程里，而不是等到最后一刻才做救火式的审查。以下是我比较完整的从业经历，我尽量把每段经历里我个人主导的部分、面对的具体法律问题以及最终的处理结果讲清楚，方便面试官判断我的实际贡献。\n\n工作经历一：某出海电商集团 资深法务（2020 年至今）\n背景：公司在东南亚和欧洲同时扩张，面临 GDPR 和当地数据本地化要求的双重压力，同时集团内部缺乏统一的数据出境合规框架。\n我主导的部分：我牵头搭建了集团的个人信息出境合规体系，独立负责把 PIPL 项下的标准合同（SCC）落地到二十多个跨境数据传输场景，并主导了一次覆盖三个事业部的数据保护影响评估（DPIA）。在一起欧洲监管机构的问询中，我作为对外法律接口，协调外部律所完成了书面答复。\n面对的具体问题：最棘手的是集团内部多个主体之间的数据流转，既要满足 PIPL 的出境路径，又要兼顾 GDPR 下的传输机制，两套规则的口径并不完全一致。\n结果：我们在监管要求的时间窗口内完成了合规整改，那次欧洲监管问询最终以不处罚结案，集团也第一次有了一套可复用的跨境数据传输模板。\n\n工作经历二：某跨国科技公司 法务经理（2016—2020）\n背景：负责亚太区的商业合同与隐私合规支持。\n我主导的部分：我负责区域内重大商业合同的谈判与审查，并搭建了合同审查的分级机制，把高风险条款的审查标准文档化。我还独立处理过一起数据泄露事件的内部调查与对外通知。\n结果：合同审查周期明显缩短，数据泄露事件在法定时限内完成了监管报告，未引发后续诉讼。\n\n工作经历三：某律师事务所 律师（2013—2016）\n背景：综合商事与公司业务。\n我做的部分：参与并购尽职调查、合同起草、以及一般公司治理事务的咨询。\n结果：积累了扎实的交易文件起草和尽调功底。\n\n专业技能\n合规领域：PIPL、GDPR、跨境数据传输（SCC / 认证 / 安全评估）、DPIA、数据泄露应急响应。\n交易能力：enterprise 商业合同谈判、风险条款分级、合同模板体系搭建。\n沟通：能把法律风险翻译成业务语言，习惯在交易早期介入。\n语言：中文母语，英文为工作语言，可直接处理英文合同与监管问询。\n\n证书与教育：法律职业资格证书；某政法大学 法学硕士；本科 法学。\n\n自我评价：我倾向于做『业务的合作者』而不是『说不的部门』，但在数据合规这种红线问题上我会坚持底线。我希望加入一个真正把合规当作长期能力来建设的团队。",
+  "jd": "We are hiring a Senior Corporate Counsel focused on data compliance and cross-border data transfer for a fast-growing company expanding across China, the EU, and Southeast Asia. 这个岗位 reports to the GC and partners closely with product, security, and the business teams. You will own the cross-border data-transfer program end to end: PIPL standard contracts (SCC), security assessments, DPIAs, and the company's response to regulator inquiries. We need someone who can speak precisely about decisions they personally made — which legal mechanism they chose for a given data flow, why they chose it over the alternative, and how it survived scrutiny. 面试会 deep-dive 一个你亲手处理过的跨境数据合规项目,我们想听 the specific legal judgment calls, not a tour of the regulations. Strong drafting, regulator-facing experience, and the ability to stay on the question are expected.",
+  "history": [
+    { "q": "Walk me through your current scope — the cross-border data program you built and which parts you personally owned." },
+    { "q": "你简历里提到把 PIPL 的 SCC 落地到二十多个跨境传输场景。Pick the hardest one and tell me the specific data flow." },
+    { "q": "For that flow, you had both PIPL and GDPR in play. Which transfer mechanism did you choose on each side, and why that one over the alternatives?" },
+    { "q": "你说那次欧洲监管问询最后 unfortunately 结果是不处罚结案——take me inside your written response. What was the regulator's core concern and how did you frame the answer?" },
+    { "q": "Be concrete on the legal judgment: was there a moment you had to pick between a defensible-but-slower path and a faster-but-riskier one? What did you personally decide?" }
+  ],
+  "candidate_last_answer": "嗯…………（停顿了几秒）……不好意思我想一下,这个 case 细节有点久了。……好,我想起来了。那个关键的判断点是这样的:当时业务方想用『单独同意』作为出境的唯一合法性基础,因为最快,但我判断单靠同意撑不住,因为我们那个场景同意的可撤回性会让整个数据流处于不稳定状态。所以我坚持走 SCC 加安全评估这条更慢但更稳的路。其实说到『同意』这个话题我特别有感触——你看现在整个隐私行业对同意的滥用真的很严重,什么都弹一个 consent banner,我之前还专门研究过欧洲那边对 dark pattern 的执法趋势,GDPR 和 ePrivacy 之间的关系其实特别微妙,我可以跟你聊聊 cookie 同意的演变史……对了你们公司现在 consent management 用的是自研还是第三方的 CMP?这个选型其实很影响后面的合规架构。",
+  "session_state": {
+    "drilled_topics": ["current-scope", "hardest-data-flow", "transfer-mechanism-choice", "regulator-response", "legal-judgment-tradeoff"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 24
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "technical-depth", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 单靠同意撑不住,因为我们那个场景同意的可撤回性会让整个数据流处于不稳定状态",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the full legal tradeoff reasoning behind rejecting consent for SCC-plus-security-assessment — the specific data-flow facts that made consent's revocability fatal, what concrete risk the slower path mitigated, who signed off, and the cost of the delay, instead of drifting into the cookie-consent tangent"
+    ]
+  }
+}

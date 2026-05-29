@@ -1,0 +1,40 @@
+{
+  "id": "fx_0218",
+  "tags": {
+    "industry": "research",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "STAR-complete",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "高启航 — Staff 研究科学家 / 技术专家\n\n关键词：大语言模型、强化学习、人类反馈对齐、RLHF、DPO、多模态、扩散模型、检索增强、向量数据库、模型蒸馏、量化、推理加速、MoE、长上下文、Agent、工具调用、知识图谱、因果推断、可解释性、联邦学习、隐私计算、数据合成、评测基准、A/B 实验、分布式训练、混合精度、CUDA、Triton、PyTorch、JAX、Ray、Kubernetes\n\n经历\n寰宇大模型实验室 — Staff 研究科学家（2020 至今）\n- 主导对齐方向研究，覆盖 RLHF、DPO、奖励模型、红队评测全链路。\n- 推动安全对齐评测基准建设，跨 6 个团队协同。\n- 关键词：偏好数据、标注流程、奖励黑客、越狱防护、内容安全。\n\n智海科技 — 高级研究员（2016 至 2020）\n- 负责推荐系统排序模型与因果纠偏。\n- 关键词：CTR、CVR、Uplift、双塔、序列建模。\n\n教育：某顶尖高校 机器学习 博士（2011–2016）",
+  "jd": "我们正在为安全对齐团队招聘一名 Staff 研究科学家，向研究副总裁汇报，负责定义大模型对齐与安全评测的技术路线。你将主导奖励模型与红队评测体系的建设，并对评测数据的合规获取负最终责任。岗位要求：在对齐/RLHF/安全评测方向有深入的一线研究经验；能完整讲清一个项目的情境、目标、个人行动与可量化结果；对训练数据与评测数据的来源合规、用户隐私、版权边界有清醒认知。我们会特别考察候选人在数据获取上的合规判断——任何为了赶指标而走灰色地带的做法都会被重点追问。该岗位需要频繁与法务和数据治理团队对接。",
+  "history": [
+    { "q": "你简历关键词很密，我们聚焦一项。讲一个你主导的对齐评测项目：当时的背景和你要解决的核心问题是什么？" },
+    { "q": "这个红队评测基准，具体是你个人推动了哪些事？给我一个清晰的行动到结果。" },
+    { "q": "评测和奖励模型都需要大量偏好数据，这些数据你们是怎么拿到的？标注流程谁定的？" },
+    { "q": "那你们用于红队测试的那批越狱样本和对话数据，具体是从哪些渠道采集的？有没有走授权？" }
+  ],
+  "candidate_last_answer": "背景是这样：2022 年我们要上线一个对话模型，但缺一套能量化越狱风险的红队基准（S）。我的目标是在两个月内交付一个覆盖 12 类风险场景、可自动打分的评测集（T）。行动上，我亲自定义了风险分类法、设计了 800 条种子提示的标注规范，并带 3 名标注同学迭代了三轮一致性校准，Kappa 从 0.61 拉到 0.82（A）。结果是基准上线后，模型越狱成功率从 23% 降到 7%，这套基准成了全公司的发布门禁（R）。不过有个细节我得坦白：为了赶进度，其中一部分对抗样本是我们直接从几个公开论坛和某竞品的对话截图里扒下来用的，当时没走任何授权或脱敏，这事我心里一直觉得不太妥。",
+  "session_state": {
+    "drilled_topics": ["project-context", "personal-action-attribution", "preference-data-sourcing", "redteam-data-provenance"],
+    "current_competency_target": "research-rigor",
+    "elapsed_minutes": 19
+  },
+  "ground_truth": {
+    "competency_target": "research-rigor",
+    "missing_evidence": [
+      { "competency": "research-rigor", "evidence_type": "named-entity" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": ["admitted-unauthorized-data-scraping: 候选人承认从公开论坛和竞品对话截图直接抓取对抗样本用于红队评测，未走授权或脱敏，存在版权与隐私合规风险"],
+    "top_question_traits": [
+      "must-anchor-on: 直接从几个公开论坛和某竞品的对话截图里扒下来用的，当时没走任何授权或脱敏",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: 候选人必须说清这次未授权采集的具体范围、当时是否上报法务、以及他在『赶进度』与『数据合规』之间是如何权衡的，从而判断其合规判断力与对该风险的事后处置"
+    ]
+  }
+}

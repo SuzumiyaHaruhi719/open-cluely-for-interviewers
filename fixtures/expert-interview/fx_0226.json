@@ -1,0 +1,40 @@
+{
+  "id": "fx_0226",
+  "tags": {
+    "industry": "hr",
+    "level": "vp",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "4-7",
+    "history_length": 4,
+    "resume_type": "numbers-missing",
+    "edge_case": "silent-then-recovered"
+  },
+  "resume": "孙弘毅 — 人力资源副总裁（HRVP）\n\n概述\n超过十五年人力资源管理经验，覆盖组织发展、人才战略、薪酬绩效与文化建设，曾在快速扩张与组织收缩两类周期中主导大规模组织变革。\n\n经历\n云图互联 — 人力资源副总裁（2020 至今）\n- 主导集团组织架构调整与干部梯队建设。\n- 推动绩效体系从 KPI 向 OKR 转型，重塑了考核与激励机制。\n- 牵头一次覆盖多个事业部的组织优化（含人员精简）项目。\n- 负责雇主品牌与员工敬业度提升计划。\n（注：简历通篇为定性描述，未给出团队规模、优化比例、敬业度分数、离职率等任何量化指标。）\n\n恒新集团 — 人力资源总监（2014 至 2020）\n- 搭建集团级招聘与培训体系。\n- 主导薪酬体系的市场对标与重构。\n\n教育：某大学 人力资源管理 硕士\n理念：相信组织的活力来自机制设计与文化牵引的结合。",
+  "jd": "我们为一家正在做组织调整的集团公司招聘人力资源副总裁，向 CEO 汇报，统管组织发展、人才、薪酬绩效与文化。公司刚经历一次较大规模的组织优化，员工士气与敬业度受到冲击，关键人才流失上升。岗位要求：有亲自主导组织变革与人员精简的实战经验；能就一次效果不及预期的变革，坦诚复盘自己的判断与责任，而不是把失败归因给业务部门、市场或下属；对敬业度、离职率、人均效能等指标有量化掌控。我们会重点考察候选人在谈及失败时，是承担责任还是习惯性甩锅。",
+  "history": [
+    { "q": "你主导过那次跨事业部的组织优化，先讲讲当时的背景和你的目标。" },
+    { "q": "优化之后，关键人才流失和员工敬业度有没有受到影响？具体数据是什么？" },
+    { "q": "如果说这次优化有不及预期的地方，你觉得问题出在哪？" },
+    { "q": "我想听的是你个人的判断和责任——在这件事里，你自己有没有哪一步是做错或者可以做得更好的？" }
+  ],
+  "candidate_last_answer": "（沉默了几秒）……让我想一下怎么说比较准确。其实吧，要说没做好的地方，主要还是业务线那边配合度不够，他们的一号位对名单一直摇摆，HRBP 在执行层面也没完全领会我的意图，节奏被拖慢了。还有就是大环境不好，留人本来就难。当然了，回过头看，我个人也不是完全没有可以提升的地方，但客观讲这件事的卡点真的更多是在业务和外部环境，不全是 HR 能控制的。",
+  "session_state": {
+    "drilled_topics": ["reorg-context", "attrition-engagement-metrics", "what-went-wrong"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 17
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "self-awareness", "evidence_type": "tradeoff-reasoning" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 主要还是业务线那边配合度不够",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 把候选人从甩锅给业务线和大环境拉回到他自己——逼出他个人在这次组织优化中具体做错或可改进的一个决策点，从而检验其责任担当与自我反省的真实度"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "fx_0220",
+  "tags": {
+    "industry": "marketing",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "1-3",
+    "history_length": 1,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "钱思颖 — 资深增长营销经理\n\n方向：用户增长与效果投放（电商 / 内容平台）\n\n经历\n潮汐内容科技 — 资深增长经理（2021 至今）\n- 负责拉新与召回的全渠道投放，管理年度预算。\n- 简历摘要写：年度投放预算 4000 万元；详细经历段落又写：负责的预算约 8000 万元。\n- 主导一次双十一大促的增长策略，新增注册用户『翻了一倍多』。\n- 把获客成本（CAC）从 60 元降到 38 元（另一处写降到 45 元）。\n\n微光电商 — 增长营销经理（2017 至 2021）\n- 负责信息流投放与 ROI 优化。\n- 任职起始时间一处写 2017，另一处写 2018。\n- 把投放 ROI 从 1.8 提升到 2.6。\n\n技能：信息流投放、A/B 实验、归因分析、用户分层、SQL\n教育：某财经大学 市场营销 本科",
+  "jd": "我们为一家高速增长的内容电商平台招聘资深增长营销经理，向增长负责人汇报，负责拉新、召回与付费转化的全链路增长。你将独立管理八位数级别的年度投放预算，并对获客成本与投放回报负直接责任。岗位要求：有大盘投放的实操经验；能精确还原一次具体增长战役里自己的策略、预算分配与可量化结果；对获客成本、回报率、归因口径等核心指标有清晰一致的表述。我们会重点核对候选人陈述的数字与简历记录之间是否自洽，也会考察候选人在被追问时是直接回答、还是习惯性地把问题抛回给面试官。",
+  "history": [
+    { "q": "你简历里关于预算和获客成本的数字前后有两个版本，先帮我对齐一下：你在潮汐内容科技实际管的年度预算到底是多少，CAC 是从 60 降到 38 还是 45？" }
+  ],
+  "candidate_last_answer": "这个得看你们怎么定义『管理预算』了，是按我审批的口径算，还是按团队整体盘子算？而且 CAC 这个指标，你们更关心的是大促期间的瞬时值还是全年平均？不同口径出来的数自然不一样。我反问一句，你们现在这个岗位最头疼的到底是拉新成本还是留存？把这个说清楚，我才好告诉你哪个数字对你们更有参考意义。",
+  "session_state": {
+    "drilled_topics": ["resume-number-reconciliation"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 4
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "numbers-fluency", "evidence_type": "scope" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 这个得看你们怎么定义『管理预算』了",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 不被候选人的反问带偏，逼其在自己选定的单一口径下给出确定的预算金额与 CAC 数值，从而暴露简历两版数字哪个为真、其对自己管辖盘子的真实掌握度"
+    ]
+  }
+}

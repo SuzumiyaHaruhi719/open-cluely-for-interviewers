@@ -1,0 +1,38 @@
+{
+  "id": "fx_0193",
+  "tags": {
+    "industry": "hr",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "concise-precise",
+    "history_length_bucket": "1-3",
+    "history_length": 2,
+    "resume_type": "keyword-stuffed",
+    "edge_case": null
+  },
+  "resume": "赵明轩\n人力资源总监 | 战略型HR领导者 | 组织发展专家\n深圳 | zhao.mingxuan@mail.com\n\n关键词标签\n战略人力资源 / 组织设计 / 人才发展 / 绩效管理 / 薪酬激励 / 继任计划 / 雇主品牌 / 员工敬业度 / OKR / 干部管理 / 三支柱 / HRBP / OD / 人才盘点 / 文化建设 / 数字化HR / 全面薪酬 / 领导力发展 / 变革管理 / 劳动关系\n\n工作经历\n某科技集团 人力资源总监（2019至今）\n- 主导集团组织设计、人才盘点与继任计划体系建设\n- 搭建HRBP三支柱模型,推动业务驱动的人力资源转型\n- 负责薪酬激励、绩效管理与高潜人才发展\n\n某制造上市公司 HR高级经理 → HRD（2013-2019）\n- 负责招聘、培训、绩效与员工关系全模块\n\n教育：人力资源管理硕士\n证书:高级人力资源管理师、SHRM-SCP\n技能:组织诊断、人才测评、薪酬设计、数据分析、劳动法",
+  "jd": "我们正在为快速扩张的科技公司招聘人力资源总监,负责组织能力建设、人才梯队与绩效薪酬体系。该岗位要求候选人能用数据和具体机制说明自己做过的事:做了什么干预、为什么这样设计、改善了哪个可量化的指标、在什么时间窗口内。我们不看重堆砌的专业名词,而看重一个能把因果链讲透、把个人贡献讲清楚的实战派。需要扎实的组织发展、继任计划与薪酬激励经验,以及用敬业度、留存率等硬指标驱动决策的能力。",
+  "history": [
+    { "q": "你简历里关键词很多。我们具体一点:挑一个你主导的、有明确数字结果的人力项目,讲讲它解决了什么问题。" },
+    { "q": "你刚提到关键岗位的留存率提升了。把这个项目讲透:基线是多少、你设计了什么干预、最后数字是多少、用了多长时间?" }
+  ],
+  "candidate_last_answer": "好。2022年我们核心研发岗的12个月主动离职率是26%,是当时最大的人才风险。我做了三件事:第一,把研发的薪酬带宽对标外部75分位,对23名高潜做了定向调薪;第二,推行双通道晋升,让技术骨干不必转管理也能晋级;第三,给每位核心员工配了季度的发展对话和明确的晋升路标。一年后,也就是2023年底,这批岗位的主动离职率降到11%,高潜群体降到6%。其中我判断双通道晋升是贡献最大的一项,因为离职面谈里最高频的原因是『看不到技术路线的成长空间』。",
+  "session_state": {
+    "drilled_topics": ["pick-a-quantified-hr-project", "retention-causal-chain"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "people-analytics", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我判断双通道晋升是贡献最大的一项",
+      "must-be-question-type: counterfactual",
+      "expected-yield: 候选人如何把留存改善归因到双通道晋升而非同时发生的调薪——是否做了分群对比或时间错位验证,以及如果只能保留三项干预中的一项他会保留哪一项、放弃哪一项及代价,检验其归因的严谨性而非事后叙事"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "fx_0225",
+  "tags": {
+    "industry": "hr",
+    "level": "intern",
+    "language": "mixed",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "陈雨桐 — HR 实习生候选人（校园招聘方向）\n\n求职意向：Talent Acquisition Intern\n在校：某师范大学 人力资源管理 大三\n\n项目 / 实习经历\n微禾科技 — Recruiting Intern（2024.07 至 2024.09）\n- Situation：校招季 HR 团队需要在两周内筛完 600+ 份产品岗简历。\n- Task：负责简历初筛与候选人 outreach。\n- Action：基于岗位 JD 拆出 5 条 screening criteria，用 Excel 搭了一个打分表，给每份简历打分排序。\n- Result：把进入面试的候选人 pass rate 从历史的 22% 提到 34%，HR mentor 反馈初筛质量明显变好。\n\n校学生职业发展中心 — 学生助理（2023.09 至今）\n- 协助组织 3 场 campus career fair，对接 12 家企业。\n- 负责候选人信息录入与面试 schedule 协调。\n\n技能：Excel、问卷设计、候选人沟通、ATS（Greenhouse 基础操作）\n证书：人力资源管理师（三级，备考中）",
+  "jd": "我们的 People 团队正在招聘一名 Talent Acquisition Intern，向资深招聘经理汇报，支持技术岗与产品岗的校园招聘全流程。You will own resume screening、candidate outreach、面试安排与 candidate experience 的日常执行。岗位要求：细心、responsive，能讲清楚自己在某个具体招聘任务里『做了什么、依据什么标准、带来了什么可衡量的结果』；对数据（pass rate、time-to-schedule 等）有基本的量化意识。我们尤其看重 intern 能否把自己真实做过的事讲具体——含糊其辞、只说『学到很多』而讲不出 specifics 的回答会被持续追问。",
+  "history": [
+    { "q": "先简单介绍一下你自己，以及为什么想做 talent acquisition 这个方向？" },
+    { "q": "你在微禾科技那段实习，能讲讲当时团队面临的具体情况吗？" },
+    { "q": "你提到自己拆了 5 条 screening criteria，具体是哪 5 条？怎么定出来的？" },
+    { "q": "那个 Excel 打分表是怎么设计的？每一条标准是怎么打分加权的？" },
+    { "q": "pass rate 从 22% 提到 34%，这个数据你是怎么算出来、又是怎么确认是你的初筛带来的？" },
+    { "q": "在 candidate outreach 这块，你具体发了多少条触达、用的什么话术、回复率大概多少？" },
+    { "q": "如果让你举一个最能体现你个人贡献的细节，你会讲哪一件具体的事？" }
+  ],
+  "candidate_last_answer": "嗯……其实那段实习我真的学到了超级多东西，对整个 recruiting 的流程有了很 general 的了解。具体某一件事的话，我觉得就是整体上帮 team 提升了效率吧，大家配合得也挺好的。outreach 那块我也发了挺多的，反正就是按照 mentor 教的去做，candidate 体验感觉还不错。要说特别 specific 的细节，一时还真想不太起来。",
+  "session_state": {
+    "drilled_topics": ["self-intro", "internship-context", "screening-criteria", "scoring-rubric-design", "pass-rate-attribution", "outreach-volume"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "execution-detail", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 整体上帮 team 提升了效率吧",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 逼候选人放弃笼统的『提升效率』，说出一件她本人亲手做的、可验证的具体事（哪份简历、哪条 outreach、哪个数字），从而判断其个人贡献是否真实存在"
+    ]
+  }
+}

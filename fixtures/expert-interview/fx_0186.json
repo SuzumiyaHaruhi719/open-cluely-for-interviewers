@@ -1,0 +1,51 @@
+{
+  "id": "fx_0186",
+  "tags": {
+    "industry": "customer-support",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "verbose-1500words",
+    "edge_case": null
+  },
+  "resume": "Jordan Albright\nCustomer Support Intern Candidate\nAustin, TX\n\nOBJECTIVE\nThird-year communications student looking for a customer-support internship where I can learn how a real support organization runs day to day. I like helping people work through frustrating problems, I am comfortable on the phone and in chat, and I want to understand the metrics and tooling behind good support, not just the front-line conversation. I tend to be the person friends come to when something breaks, and I have learned that patience and clear writing matter more than knowing every answer up front.\n\nEXPERIENCE\n\nResident Advisor — University Housing, 2023 to present\nI am responsible for a floor of about forty first-year students. A large part of the role is essentially front-line support: students come to me with everything from roommate conflicts to lockouts to mental-health concerns, and I have to triage what I can handle myself versus what needs to go to professional staff or campus safety. I run a monthly floor meeting, I am on a rotating on-call schedule for the building, and I document incidents in the housing system so that the next person on shift has context. Over the past year I have handled a steady stream of after-hours issues, and I have gotten much better at staying calm when someone is upset and at writing up what happened clearly so it does not get lost in a handoff. I think this is the closest thing I have to real support experience, because the core skill is the same: listen, figure out the actual problem, solve what you can, and escalate cleanly when you cannot.\n\nBarista and Shift Lead — Greenline Coffee, 2022 to 2023\nI started as a barista and was promoted to shift lead after about eight months. As shift lead I opened and closed the store, handled the cash drawer, and dealt with customer complaints when a drink was wrong or an order was slow. The busiest mornings taught me how to keep a friendly tone even when there is a line out the door and everything is behind. I also trained two new hires on the espresso machine and on how we talk to customers. The part I am proudest of is that I got good at de-escalating upset customers — usually by acknowledging the problem first, remaking the drink without arguing, and making sure they left feeling taken care of rather than dismissed.\n\nVolunteer — Campus IT Help Desk, Fall 2022\nI volunteered one semester at the student help desk, where I helped classmates with password resets, wifi connection problems, and printing issues. This was my first taste of structured support: there was a ticketing system, a short script for verifying identity before a password reset, and an escalation path to full-time staff for anything hardware-related. I learned that a lot of support is knowing the right question to ask first, and that writing a clear ticket note saves the next person a lot of time. I also saw how much faster things go when the knowledge base is actually accurate, because half the questions were repeats that a good article could have answered, and I started flagging the ones that were missing or out of date so the staff could fix them.\n\nCLASS PROJECTS AND ACTIVITIES\nService-Design Course Project — My group studied the support experience of a local utility company and proposed improvements to their phone tree and their email response templates. I focused on rewriting the canned email responses to be warmer and clearer, and on mapping where customers tended to drop off or call back. We presented to the class and, informally, to a contact at the company.\nStudent Government — I served one year as a class representative, which mostly meant collecting complaints from students and trying to get them in front of the right administrator. It was good practice at being the middle person who has to manage expectations on both sides.\n\nSKILLS\nClear written and verbal communication, calm under pressure, basic ticketing-system familiarity, de-escalation, conflict triage, comfortable learning new software quickly, some experience with spreadsheets for tracking.\n\nWHAT I AM LOOKING TO LEARN\nI want to understand how support teams measure themselves — things like response time, resolution time, and customer satisfaction — and how they decide what to escalate and what to fix at the source. I am hoping for an internship where I can shadow experienced agents, take real tickets under supervision, and start to see the whole system rather than just individual conversations. I learn fastest by doing and then getting honest feedback, and I am not afraid to ask questions when I do not understand something. I am also genuinely interested in the unglamorous parts of support work, like keeping notes consistent across a handoff and noticing when the same issue keeps coming back, because those are the things that quietly make a team faster over time.\n\nEDUCATION\nBA, Communications (in progress) — University of Texas at Austin, expected 2026. Relevant coursework: service design, professional writing, intro statistics.",
+  "jd": "Our consumer-software company is hiring customer-support interns to work alongside our front-line team. You will take real customer conversations over chat and email under the guidance of a senior agent, learn our ticketing and knowledge-base tools, and contribute to improving our help content. We care most about communication and judgment: can you understand what a frustrated customer actually needs, solve what you can, and escalate cleanly when you cannot? In interviews we will ask for specific stories and we will probe for the full arc — what the situation was, what you were responsible for, what you personally did, and crucially how it turned out and how you knew. Interns who do well here are curious about the metrics behind support and are comfortable getting direct feedback. No prior software-support experience required, but you should be able to show you have handled upset people calmly and written clearly under pressure.",
+  "history": [
+    { "q": "Tell me a bit about yourself and why customer support interests you." },
+    { "q": "Your RA role sounds support-heavy — what kinds of issues do students bring you?" },
+    { "q": "Walk me through how you decide what to handle yourself versus escalate to professional staff." },
+    { "q": "Tell me about a specific after-hours incident you handled. What happened?" },
+    { "q": "At the coffee shop, how did you typically handle an upset customer?" },
+    { "q": "Give me a specific time a customer was really angry — what did you do?" },
+    { "q": "What did you change about how you trained the two new hires after that?" },
+    { "q": "At the IT help desk, what was the identity-verification step before a password reset, and why did it matter?" },
+    { "q": "Tell me about a ticket you couldn't resolve — how did you hand it off?" },
+    { "q": "In your service-design project, what specifically did you rewrite in the email templates?" },
+    { "q": "How did you know your rewritten templates were actually better?" },
+    { "q": "Describe a time you had to manage expectations between two sides who both wanted different things." },
+    { "q": "When you take feedback that you got something wrong, how do you usually react?" },
+    { "q": "What's one support metric you're curious about, and why?" },
+    { "q": "Tell me about one full story where you turned an upset person around — the situation, what you owned, exactly what you did, and how it ended." }
+  ],
+  "candidate_last_answer": "Sure. So this was at Greenline — it was a really busy Saturday morning, the line was out the door, and a regular customer got the wrong drink for the second time that week. She was pretty upset and kind of raised her voice. As the shift lead on duty, it was on me to handle it rather than the barista who made it. So what I did was step out from behind the counter, apologize without making excuses, ask her exactly what she'd ordered, and remake it myself right away while keeping the rest of the line moving. I also comped her drink. I really focused on staying calm and making her feel heard instead of rushed.",
+  "session_state": {
+    "drilled_topics": ["self-intro", "ra-issue-types", "escalation-judgment", "afterhours-incident", "coffee-deescalation-general", "angry-customer-specific", "training-change", "identity-verification", "unresolved-ticket-handoff", "template-rewrite", "manage-expectations", "feedback-reaction", "curious-metric"],
+    "current_competency_target": "communication-clarity",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "communication-clarity",
+    "missing_evidence": [
+      { "competency": "communication-clarity", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "timeline" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I really focused on staying calm and making her feel heard instead of rushed",
+      "must-be-question-type: teach-back",
+      "expected-yield: the missing Result — how the interaction actually ended, whether the customer left satisfied or came back, and any signal she used to know her approach worked, since she narrated Situation/Task/Action but stopped before the outcome"
+    ]
+  }
+}

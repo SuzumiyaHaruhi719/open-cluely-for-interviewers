@@ -1,0 +1,45 @@
+{
+  "id": "fx_0247",
+  "tags": {
+    "industry": "customer-support",
+    "level": "director",
+    "language": "zh",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "8-12",
+    "history_length": 8,
+    "resume_type": "numbers-missing",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "高敏 — 客户服务总监\n\n个人简介\n十一年客户服务与体验管理经验，覆盖电商与金融科技两个行业，擅长大型客服中心的搭建与精细化运营。\n\n工作经历\n惠通金融科技（2020 至今）客户服务总监\n- 负责全国客服中心的整体运营与团队管理\n- 推动智能客服与人工坐席的协同体系\n- 主导客户满意度提升专项与投诉治理\n\n乐选电商（2015-2020）客服高级经理\n- 负责大促客服保障与外包团队管理\n- 搭建质检与培训体系\n\n技能\n客服运营、团队管理、智能客服落地、质检体系、投诉治理、跨部门协同\n\n教育背景\n工商管理 本科",
+  "jd": "我们是一家金融科技公司，招聘客户服务总监。该岗位向 COO 汇报，负责全国客服中心运营，对满意度、解决率、人力成本与投诉合规负责。我们近期满意度有过下滑，也面临智能客服上线后效果不及预期的质疑。我们希望候选人在被追问具体数据与失误时，能冷静、就事论事地复盘，给出可核验的指标与自己的改进动作，而不是把追问当成冒犯，也不是用模糊话术回避。在不便透露受保护数据时，应能说明替代性的佐证方式。我们重视压力下的成熟沟通与对结果的担当。",
+  "history": [
+    { "q": "先介绍一下你在惠通负责的客服中心规模和职责。" },
+    { "q": "你推动的智能客服与人工协同，落地后解决率有变化吗？" },
+    { "q": "满意度下滑那段时间，具体掉了多少，原因是什么？" },
+    { "q": "你做了哪些动作去止跌？" },
+    { "q": "智能客服上线后效果不及预期，问题出在哪？" },
+    { "q": "投诉治理专项，治理前后的投诉量对比大概是什么数字？" },
+    { "q": "外包团队的质量你怎么考核，达标线是多少？" },
+    { "q": "我想要个具体数字：你接手到现在，整体满意度从多少到了多少？" }
+  ],
+  "candidate_last_answer": "你怎么一直在追着数字问？我们公司的满意度、解决率这些都是核心运营数据，我签了保密协议，对外一个字都不能讲，这是基本的职业操守，难道你希望我违约吗？再说了，做客服管理的都知道，满意度受太多外部因素影响，产品出问题、政策变了，都会拉低分数，这根本不是客服一个部门能扛的。你这种只盯着数字的问法，恕我直言，挺外行的。",
+  "session_state": {
+    "drilled_topics": ["中心规模", "智能客服解决率", "满意度下滑幅度", "止跌动作", "智能客服问题", "投诉治理对比", "外包考核"],
+    "current_competency_target": "numbers-fluency",
+    "elapsed_minutes": 34
+  },
+  "ground_truth": {
+    "competency_target": "numbers-fluency",
+    "missing_evidence": [
+      { "competency": "numbers-fluency", "evidence_type": "metric" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity-consistency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 我签了保密协议，对外一个字都不能讲",
+      "must-be-question-type: metric-pin",
+      "expected-yield: 在尊重保密边界的前提下，让她给出可披露口径的相对量级或区间（例如满意度提升的百分点区间、解决率的变化方向与幅度）或替代佐证，并指出止跌中由她本人负责的具体动作，把『一个字都不能讲』的回避转为可被追问的事实"
+    ]
+  }
+}

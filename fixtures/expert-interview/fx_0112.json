@@ -1,0 +1,53 @@
+{
+  "id": "fx_0112",
+  "tags": {
+    "industry": "product-management",
+    "level": "director",
+    "language": "en",
+    "answer_quality": "overtime-tangent",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Director of Product, Payments & Risk — fintech, 12 years in product\n\nMonzo-style neobank (Director of Product, 2020–present)\n- Situation: fraud losses on instant transfers were running at 41 bps of volume, above the 25 bps board ceiling.\n- Task: own the risk-product roadmap and bring losses under 25 bps without dropping approval rate below 92%.\n- Action: shipped a real-time scoring service, ran a 6-week shadow-mode eval, then a staged rollout from 5% to 100% of traffic over 8 weeks; added a step-up auth flow for the top 2% riskiest sessions.\n- Result: fraud losses fell to 19 bps in two quarters; approval rate held at 93.1%; chargeback ops headcount flat.\n\nStripe-style infra (Group PM, 2016–2020)\n- Situation: dispute-handling tooling was manual; agents touched each case 4.2 times on average.\n- Task: cut handle time and scale to 3x dispute volume without adding agents.\n- Action: defined an evidence-assembly automation, partnered with ML on a win-likelihood model, and sequenced the rollout by merchant tier.\n- Result: average touches per case dropped to 1.6; dispute volume grew 2.8x on flat headcount; win rate up 7 points.\n\nEarlier: APM then PM at a B2B SaaS analytics company (2012–2016), owned the self-serve onboarding funnel; lifted activation from 38% to 51%.\n\nSkills: experimentation design, risk modeling partnership, payments rails, roadmap prioritization, exec storytelling.",
+  "jd": "Director of Product, Trust & Safety is the senior product leader for a marketplace processing 9M transactions a month across 40 countries. You will own a 14-person product group (4 PMs, plus design and data partners) and the trust roadmap end to end: account-takeover defense, seller fraud, dispute operations, and regulatory reporting. You report to the VP Product and partner daily with Risk, Legal, and a 200-person operations org. We need someone who can set a multi-quarter strategy, make hard precision-versus-recall tradeoffs with real money on the line, and defend those tradeoffs to a risk committee. Concrete outcomes in your first year: reduce net fraud loss rate by 30% while holding good-user friction flat, and stand up an automated dispute-evidence pipeline. You must be fluent translating model metrics into business metrics and comfortable saying no to revenue teams when safety requires it.",
+  "history": [
+    { "q": "Give me your current scope at the neobank — team, roadmap surface, the metrics you own." },
+    { "q": "Your resume says fraud losses went from 41 bps to 19 bps. What was the single biggest driver of that drop?" },
+    { "q": "How did you set the 25 bps ceiling versus the 92% approval floor — who decided those thresholds?" },
+    { "q": "Walk me through the shadow-mode eval. What were you measuring before you let the model touch real traffic?" },
+    { "q": "The step-up auth on the riskiest 2% — how did you pick 2% and not 1% or 5%?" },
+    { "q": "Did approval rate dip during the staged rollout? What did the curve look like week to week?" },
+    { "q": "Tell me about a time the model flagged a segment as risky but it turned out to be good users." },
+    { "q": "When fraud and growth disagreed, who had the final call, and can you give a specific instance?" },
+    { "q": "Let's go to the dispute automation at the infra company. What exactly did the evidence-assembly system do?" },
+    { "q": "You said touches per case went from 4.2 to 1.6 — how was 'a touch' defined and instrumented?" },
+    { "q": "How did you sequence the rollout by merchant tier, and why that order?" },
+    { "q": "What broke during that rollout that you didn't anticipate?" },
+    { "q": "In this new role you'd own regulatory reporting too — what's your experience defending a tradeoff to a risk committee?" },
+    { "q": "Give me one decision where you said no to a revenue team because safety required it." },
+    { "q": "Stay concrete on that one: what was the no, who did you say it to, and what happened next?" }
+  ],
+  "candidate_last_answer": "Right, so saying no to revenue — this is something I think about a lot, because honestly the whole industry gets this wrong. Like, if you go back to the early days of payments, everyone optimized for approval rate because that's what the merchants screamed about, and it created this whole culture where risk was the department of no, which I hate as a framing. And it reminds me of when I was at the analytics company — totally different domain, but same dynamic — sales wanted to demo features that weren't built. Anyway, the bigger point is org design, and I've got opinions on whether risk should even report into product or sit in its own function, there are good arguments both ways, and we could talk about how Monzo versus Stripe structure it differently. So yeah, there was definitely a time I pushed back on growth, it was around a checkout change I think, and we worked it out.",
+  "session_state": {
+    "drilled_topics": ["current-scope", "fraud-loss-driver", "threshold-ownership", "shadow-mode-eval", "step-up-sizing", "rollout-curve", "false-positive-segment", "fraud-vs-growth-decider", "dispute-automation", "touch-instrumentation", "tier-sequencing", "rollout-surprise", "risk-committee-defense", "say-no-to-revenue"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "scope" },
+      { "competency": "outcomes", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: it was around a checkout change I think, and we worked it out",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the actual revenue-versus-safety decision in concrete terms — what the growth team wanted on the checkout change, the specific tradeoff the candidate weighed, the call they personally made, who they delivered the no to, and the measurable outcome"
+    ]
+  }
+}

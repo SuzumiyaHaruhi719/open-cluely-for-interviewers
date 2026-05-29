@@ -1,0 +1,54 @@
+{
+  "id": "fx_0167",
+  "tags": {
+    "industry": "hr",
+    "level": "junior",
+    "language": "zh",
+    "answer_quality": "off-topic",
+    "history_length_bucket": "13+",
+    "history_length": 15,
+    "resume_type": "keyword-stuffed",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "初级 HR / 人力资源专员\n\n核心关键词：招聘全流程、Boss直聘、猎聘、人才漏斗、ATS、employer branding、入离职管理、六大模块、OKR、人才盘点、HRBP、薪酬福利、背景调查、劳动合同、员工关系、人才数据分析、组织发展、文化建设\n\n经历\n某互联网公司 — 招聘专员（2023 至今）\n- 负责技术与运营岗的简历筛选、初面安排、offer 跟进\n- 维护 ATS,日常更新候选人状态,做招聘漏斗周报\n- 参与校招宣讲与 employer branding 活动\n- 配合 HRBP 做新人入职与试用期跟进\n\n某外包公司 — 人事助理（2022—2023）\n- 负责考勤、社保、劳动合同归档\n\n技能标签:Excel、招聘渠道运营、面试协调、背调流程、薪酬核算基础、员工关系处理\n教育:本科 人力资源管理,2022 届",
+  "jd": "我们招聘一名初级招聘专员（Recruiter），负责技术和职能岗位的全流程招聘协调。你将做简历初筛、安排面试、跟进 offer、维护 ATS 数据并产出招聘漏斗分析。我们尤其看重候选人在背景调查和候选人信息处理上的合规意识：在收集和核实候选人信息时，必须遵守劳动法和个人信息保护的相关规定，不得越界获取候选人隐私。面试中我们会用情境题考察你对合规边界的判断。岗位要求做事有条理、对数据负责、对候选人信息严格保密。Base 深圳。",
+  "history": [
+    { "q": "先介绍下你现在招聘专员的工作——主要招哪些岗位、你负责流程的哪几个环节？" },
+    { "q": "你做简历初筛,筛选的标准是谁定的?你自己有判断空间吗?" },
+    { "q": "安排面试时你怎么协调面试官和候选人的时间冲突?举个具体例子。" },
+    { "q": "你维护的那个招聘漏斗周报,里面有哪些指标?给谁看?" },
+    { "q": "offer 跟进环节,如果候选人临时要加薪,你一般怎么处理?" },
+    { "q": "你简历里关键词写了很多,挑一个你最熟的模块,讲讲你实际做过什么。" },
+    { "q": "校招宣讲那次,你具体负责哪一块?" },
+    { "q": "和 HRBP 配合做试用期跟进,你做的是哪部分?" },
+    { "q": "外包那段做考勤社保,有没有遇到过数据出错的情况?怎么处理的?" },
+    { "q": "我们这个岗位很看重合规。先问个基础的:你理解的候选人信息保密,边界在哪里?" },
+    { "q": "好,那来个情境题:招聘里你一般怎么做背景调查,流程是什么?" },
+    { "q": "如果一个候选人没有授权你联系他的前公司,你会怎么做?" },
+    { "q": "再具体一点:你做过的背调里,信息都是通过什么渠道拿到的?" },
+    { "q": "假设业务方很急,让你『想办法』核实候选人的真实离职原因,但候选人没授权,你会怎么办?" },
+    { "q": "我想听你亲手做过的一次背调——你具体是怎么核实候选人信息的,有没有拿到授权?" }
+  ],
+  "candidate_last_answer": "哦背调啊,说到这个我想起来一个事——其实我觉得现在招聘最大的问题是渠道太卷了,Boss 上的简历质量越来越差,我都在琢磨要不要去学点 employer branding 的打法。对了你们公司做不做雇主品牌的短视频?我个人对内容运营还挺感兴趣的。背调的话……反正流程上就是要核实嘛。之前有一次业务方催得急,那个候选人没签授权书,我就直接加了他前主管的微信问了一下离职原因,反正问到了就行,业务方挺满意的。诶不过说回来,我最近在想要不要考个人力资源管理师证,你觉得这个证书现在还有含金量吗?",
+  "session_state": {
+    "drilled_topics": ["current-scope", "screening-criteria", "interview-coordination", "funnel-report", "offer-negotiation", "keyword-deep-dive", "campus-recruiting", "probation-followup", "attendance-data-errors", "confidentiality-boundary", "background-check-process", "no-authorization-scenario", "info-channels", "pressure-scenario", "hands-on-background-check"],
+    "current_competency_target": "compliance-judgement",
+    "elapsed_minutes": 38
+  },
+  "ground_truth": {
+    "competency_target": "compliance-judgement",
+    "missing_evidence": [
+      { "competency": "compliance-judgement", "evidence_type": "mechanism" },
+      { "competency": "compliance-judgement", "evidence_type": "owner-of-action" },
+      { "competency": "honesty-calibration", "evidence_type": "named-entity" }
+    ],
+    "safety_flags": [
+      { "type": "compliance-violation", "detail": "在被调查对象未签署授权书的情况下，应聘者主动绕过授权流程，私加对方前主管微信打探离职原因，构成未授权获取候选人个人信息的违规操作" }
+    ],
+    "top_question_traits": [
+      "must-anchor-on: 我就直接加了他前主管的微信问了一下离职原因,反正问到了就行",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: a direct accounting of the unauthorized background-check action — whether the candidate recognizes that contacting the prior manager without a signed authorization breached candidate-privacy/compliance rules, what the correct procedure should have been, and whether they would do it again, cutting through the off-topic drift back to the actual violation"
+    ]
+  }
+}

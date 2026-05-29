@@ -1,0 +1,46 @@
+{
+  "id": "fx_0234",
+  "tags": {
+    "industry": "finance",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "counter-question",
+    "history_length_bucket": "8-12",
+    "history_length": 9,
+    "resume_type": "sparse-200words",
+    "edge_case": "borderline-compliance"
+  },
+  "resume": "Marcus Tan\nVP, Markets & Structuring\n\nExperience\nMeridian Capital Partners — VP, Structured Products (2019-present)\n- Run a structuring desk for fixed-income derivatives serving institutional clients\n- Built and priced bespoke rate and credit structures\n\nHalcyon Bank — Associate, Rates Trading (2015-2019)\n- Made markets in interest-rate swaps\n\nEducation\nMSc Financial Engineering\n\nSkills\nDerivatives pricing, term sheets, client coverage, P&L management",
+  "jd": "Meridian Capital Partners is hiring a VP, Markets & Structuring to lead a structured-products desk covering institutional clients across rates and credit. Reporting to the Head of Markets, you own desk P&L, pricing discipline, and the control relationship with risk and compliance. You will be accountable for revenue, the quality of trade documentation, and adherence to suitability and best-execution obligations. We expect a candidate who can describe specific deals they priced and the exact tradeoffs they made, who keeps a clean line between aggressive commercial behavior and the firm's conduct rules, and who can speak precisely about how they handled a situation where a client pushed for something the control functions were uneasy about. You must be comfortable defending pricing and conduct decisions to the desk head, to risk, and to internal audit.",
+  "history": [
+    { "q": "Walk me through your current desk — products, client types, and what you personally own." },
+    { "q": "Pick one structured trade you priced and take me through the economics." },
+    { "q": "What was the single biggest pricing tradeoff on that trade?" },
+    { "q": "How do you size desk P&L versus what's really client franchise value?" },
+    { "q": "Tell me about a deal where risk or compliance pushed back on you." },
+    { "q": "What did you personally do when they pushed back?" },
+    { "q": "Give me a concrete case where a client asked for something that made the control functions uneasy." },
+    { "q": "Walk me through exactly how that suitability question got resolved, step by step." },
+    { "q": "When the client wanted to move a chunk of the notional before the documentation was finalized, what did you actually decide?" }
+  ],
+  "candidate_last_answer": "Honestly, can I ask you something first? Before I answer — what's your firm's actual risk appetite here? Because the right answer totally depends on that. Like, are you asking me whether I'd let a good client trade ahead of the paperwork being fully buttoned up? Wouldn't you, if it were a top-three account and the economics were locked? Let me put it back to you: where would you personally draw that line? I find people who say they'd never bend are usually the ones who've never carried a real book.",
+  "session_state": {
+    "drilled_topics": ["desk-scope", "trade-economics", "pricing-tradeoff", "pnl-vs-franchise", "control-pushback", "personal-response", "suitability-case", "suitability-resolution"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 41
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "integrity-consistency", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": ["borderline-compliance: candidate floats letting a client trade notional ahead of finalized documentation and frames refusal to bend as inexperience, brushing best-execution/suitability conduct rules"],
+    "top_question_traits": [
+      "must-anchor-on: whether I'd let a good client trade ahead of the paperwork being fully buttoned up",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: the actual decision he made in that specific situation — did the notional move before documentation or not, who signed off, and what the control function's position was — rather than a deflected hypothetical thrown back at the interviewer"
+    ]
+  }
+}

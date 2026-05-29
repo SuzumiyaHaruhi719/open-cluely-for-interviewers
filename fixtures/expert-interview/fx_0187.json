@@ -1,0 +1,43 @@
+{
+  "id": "fx_0187",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "intern",
+    "language": "en",
+    "answer_quality": "defensive-hostile",
+    "history_length_bucket": "4-7",
+    "history_length": 7,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Tyler Brennan — Manufacturing Engineering Intern Candidate\n\nSUMMARY\nMechanical engineering junior seeking a manufacturing/process engineering internship. Hands-on with CAD, basic GD&T, and shop-floor data; eager to apply lean concepts learned in coursework to a real line.\n\nEXPERIENCE\nProcess Improvement Project (Junior Design Course) — 2024\n- Situation: a campus makerspace 3D-print farm had long queue times and frequent failed prints.\n- Task: reduce average job turnaround and print-failure rate over a semester.\n- Action: logged failures by cause, standardized the bed-prep checklist, and rescheduled jobs by estimated print time.\n- Result: failure rate dropped from ~22% to ~12%; average turnaround improved noticeably over the term.\n\nManufacturing Floor Intern — Riverton Plastics (summer 2023)\n- Situation: injection-molding cell had inconsistent cycle times.\n- Task: help the line lead document and stabilize the process.\n- Action: time-studied the cell, built a simple SPC chart for cycle time, flagged an out-of-spec cooling setting.\n- Result: cycle-time variation narrowed after the cooling fix; documented the standard work.\n\nSKILLS\nSolidWorks, basic GD&T, time studies, intro SPC, Excel, lean concepts (5S, value-stream basics).\n\nEDUCATION\nBS Mechanical Engineering (in progress) — Ohio State University, expected 2026.",
+  "jd": "Riverton Plastics is hiring a manufacturing engineering intern to support our injection-molding and assembly lines. You will run time studies, help maintain SPC charts, support continuous-improvement events, and assist engineers with root-cause analysis on quality issues. We value interns who can describe their work precisely and who can take direct, sometimes blunt, technical feedback without getting defensive — the shop floor is a place where senior engineers will challenge your numbers and your assumptions, and the best interns treat that as how they learn. You should be comfortable saying 'I don't know' and showing your reasoning. Strong candidates can walk through a real improvement they made at the mechanism level, including how they verified the result. Safety-first mindset and willingness to learn on the floor required.",
+  "history": [
+    { "q": "Tell me about the 3D-print-farm project — what problem were you solving?" },
+    { "q": "You say failure rate went from 22% to 12% — how exactly did you measure failure rate?" },
+    { "q": "Of the three changes — failure logging, the bed-prep checklist, the rescheduling — which one actually drove the failure-rate drop?" },
+    { "q": "How do you know it was the checklist and not just normal variation week to week?" },
+    { "q": "At Riverton, you flagged an out-of-spec cooling setting — how did you confirm it was actually out of spec?" },
+    { "q": "What was the cooling value before and after, and what did the SPC chart show?" },
+    { "q": "Let's go back to the print-farm numbers — walk me through, data point by data point, how you got 12%, because that's a claim I'd want to verify." }
+  ],
+  "candidate_last_answer": "Honestly, I feel like you're really hammering on this one number. Look, I tracked the failed prints in a spreadsheet over the semester and it went down, okay? I'm not going to pretend I ran some formal statistical study on it — it was a class project, not a Six Sigma black-belt thesis. The point is it clearly got better after the checklist, and I think nitpicking the exact methodology kind of misses what I actually accomplished. I don't really get why we're spending this much time on a 3D-printer project when I'm here for a manufacturing role.",
+  "session_state": {
+    "drilled_topics": ["printfarm-problem", "failure-rate-measurement", "biggest-lever", "checklist-vs-variation", "cooling-confirmation", "cooling-before-after"],
+    "current_competency_target": "experimentation-rigor",
+    "elapsed_minutes": 21
+  },
+  "ground_truth": {
+    "competency_target": "experimentation-rigor",
+    "missing_evidence": [
+      { "competency": "experimentation-rigor", "evidence_type": "mechanism" },
+      { "competency": "numbers-fluency", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: I tracked the failed prints in a spreadsheet over the semester and it went down, okay?",
+      "must-be-question-type: metric-pin",
+      "expected-yield: the concrete denominator and method behind the 22%-to-12% claim — how many total prints, how failures were defined and counted, and over what window — pushing past the defensiveness to see whether the number is real or hand-waved"
+    ]
+  }
+}

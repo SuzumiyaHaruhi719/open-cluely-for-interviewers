@@ -1,0 +1,40 @@
+{
+  "id": "fx_0217",
+  "tags": {
+    "industry": "research",
+    "level": "senior",
+    "language": "zh",
+    "answer_quality": "vague-empty",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "self-contradictory",
+    "edge_case": null
+  },
+  "resume": "周明远 — 资深研究科学家（自然语言处理方向）\n\n概述：8 年工业界 NLP 研究经验，主攻大规模预训练与检索增强生成。\n\n经历\n云栖智能研究院 — 资深研究员（2021.04 至今）\n- 主导多语言检索增强问答系统的研究，相关成果落地到企业搜索产品。\n- 简介里写：以第一作者身份在 ACL 2022 发表论文一篇。\n- 个人经历段落又写：该 ACL 2022 论文为第二作者，第一作者是组里的实习生。\n- 带过一个 5 人研究小组。\n\n蓝鲸科技 — 研究员（2017.07 至 2021.03）\n- 参与对话系统的意图识别模型研发。\n- 任职时间一处写 2017–2021，另一处写 2018 年入职，存在不一致。\n- 负责把意图识别准确率从 82% 提升到 89%（一处写提升到 91%）。\n\n教育：某理工大学 计算机科学 硕士（2014–2017）\n技能：PyTorch、分布式训练、信息检索、提示工程",
+  "jd": "我们的前沿研究团队正在招聘一名资深研究科学家，方向为检索增强生成（RAG）与大模型评测，向首席科学家汇报。你将独立定义研究课题、设计实验、并推动核心方法在产品中的落地。我们期望候选人能精确还原自己在某项研究中的角色：研究假设是怎么提出的、实验是谁设计的、关键指标是如何度量与归因的。岗位要求：在 ACL/EMNLP/NeurIPS 等会议有第一作者论文；能讲清楚一项工作从假设到验证的完整链路；对实验严谨性与可复现性有强要求。我们尤其关注候选人陈述与简历记录之间是否自洽，以及他能否把『团队成果』与『个人贡献』清晰区分开。",
+  "history": [
+    { "q": "你简历里 ACL 2022 那篇论文，前后写的作者顺序不太一致，能澄清一下你具体是第几作者、负责哪部分吗？" },
+    { "q": "先不纠结署名。就这篇 RAG 的工作，你提出的核心研究假设是什么？" },
+    { "q": "那这个假设具体是怎么通过实验来验证的？关键的实验设计是谁主导的？" }
+  ],
+  "candidate_last_answer": "这个嘛，主要还是大家一起做的，整体上我们做了很多探索性的工作，方向把握得比较准。实验这块就是按照常规的流程推进，该跑的都跑了，结果也符合预期。具体细节有点久了记不太清了，反正最后效果是不错的，落地也挺顺利的。",
+  "session_state": {
+    "drilled_topics": ["authorship-discrepancy", "research-hypothesis", "experiment-design-ownership"],
+    "current_competency_target": "research-rigor",
+    "elapsed_minutes": 11
+  },
+  "ground_truth": {
+    "competency_target": "research-rigor",
+    "missing_evidence": [
+      { "competency": "research-rigor", "evidence_type": "mechanism" },
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "research-rigor", "evidence_type": "metric" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 该跑的都跑了，结果也符合预期",
+      "must-be-question-type: chain-of-decisions",
+      "expected-yield: 候选人必须还原从研究假设到验证的具体实验链路——具体跑了哪个对照实验、用什么指标、由谁设计，从而暴露他对这项工作的真实参与深度与个人决策"
+    ]
+  }
+}

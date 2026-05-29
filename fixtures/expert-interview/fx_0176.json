@@ -1,0 +1,39 @@
+{
+  "id": "fx_0176",
+  "tags": {
+    "industry": "manufacturing",
+    "level": "vp",
+    "language": "en",
+    "answer_quality": "STAR-partial",
+    "history_length_bucket": "1-3",
+    "history_length": 3,
+    "resume_type": "clean-STAR",
+    "edge_case": null
+  },
+  "resume": "Daniel Okafor — VP of Manufacturing Operations\n\nSUMMARY\nPlant and multi-site operations leader, 17 years in automotive and industrial components. Owns P&L, safety, quality, and throughput across plants. Track record of lean transformations and capacity ramps.\n\nEXPERIENCE\nVP Manufacturing Operations — Hartwell Drivetrain Systems, 2019–present\n- Situation: a new EV-component line was missing takt time and OEE was stuck at 58% against an 80% target, threatening a key OEM launch.\n- Task: bring the line to launch-readiness OEE within three quarters while holding scrap below 2%.\n- Action: stood up a daily tiered-accountability huddle, led a changeover-reduction (SMED) program on the two bottleneck cells, and renegotiated a supplier quality agreement on the failing casting.\n- Result: OEE reached 81% in 9 months, scrap fell from 4.1% to 1.6%, and the OEM launch shipped on time; line contributed an incremental ~$30M annualized revenue.\n\nPlant Manager — Continental Forge Works, 2014–2019\n- Situation: recordable injury rate above corporate threshold.\n- Task: cut recordables and stabilize quality.\n- Action: rebuilt the safety observation program and added layered process audits.\n- Result: TRIR dropped from 4.8 to 1.9 over two years; PPM defects halved.\n\nSKILLS\nLean/TPS, Six Sigma (MBB), SMED, OEE, S&OP, supplier quality, P&L ownership.\n\nEDUCATION\nBS Mechanical Engineering — Purdue University; MBA — Kelley School of Business.",
+  "jd": "Hartwell Drivetrain Systems seeks a VP of Manufacturing Operations to own three plants supplying EV drivetrain components to two major OEMs. You will be accountable for plant P&L, safety (TRIR), quality (PPM), and throughput (OEE), and you will lead an upcoming capacity doubling tied to a customer award. The role requires someone who can describe an operational turnaround at the mechanism level: not just that OEE improved, but exactly which constraint you attacked first, what you traded off to do it, and how you sustained the gain after the kaizen team left. You will present to the board on launch readiness and own supplier-quality escalations. Prior experience executing a capacity ramp under a fixed OEM start-of-production date is essential. The role reports to the COO and carries ~250 indirect headcount.",
+  "history": [
+    { "q": "Give me the headline on the EV-component line turnaround — where OEE started, where it landed, and over what period." },
+    { "q": "Of the things you did — the huddle, the SMED program, the supplier-quality renegotiation — which one moved OEE the most, and how did you know?" },
+    { "q": "Walk me through that turnaround as a full story: the constraint you hit first, the call you made, what it cost you, and how you held the gain." }
+  ],
+  "candidate_last_answer": "Sure. The situation was an EV line stuck at 58% OEE with an OEM launch on the line, and my task was to get it launch-ready — north of 80% — within three quarters. So what I did was put in a daily tiered huddle so problems surfaced fast, I ran SMED on the two bottleneck cells to kill changeover losses, and I went back to the casting supplier and tightened the quality agreement. We hit 81% in about nine months and the launch shipped. Honestly the team did a phenomenal job rallying around it.",
+  "session_state": {
+    "drilled_topics": ["oee-headline", "biggest-lever"],
+    "current_competency_target": "judgement-tradeoffs",
+    "elapsed_minutes": 9
+  },
+  "ground_truth": {
+    "competency_target": "judgement-tradeoffs",
+    "missing_evidence": [
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "ownership", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: We hit 81% in about nine months and the launch shipped",
+      "must-be-question-type: tradeoff-probe",
+      "expected-yield: the missing tradeoff and sustain mechanism — which constraint he attacked first and why, what he gave up (capex, takt, another line's capacity) to do it, and the specific control he put in to hold 81% after the kaizen team disbanded"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "fx_0192",
+  "tags": {
+    "industry": "legal",
+    "level": "staff",
+    "language": "zh",
+    "answer_quality": "deflective-blame",
+    "history_length_bucket": "13+",
+    "history_length": 14,
+    "resume_type": "numbers-missing",
+    "edge_case": "cites-NDA"
+  },
+  "resume": "林婉清\n资深企业法务（Staff级，11年经验）\n北京 | linwanqing@mail.com\n\n职业概述\n资深商务与合规法务，专注跨境并购、商业合同与争议解决。曾在大型科技公司与律师事务所任职，长期支持业务一线，熟悉数据合规与反垄断审查。\n\n工作经历\n某互联网集团 高级法务经理 / 法务负责人（2018至今）\n- 负责集团重大商务合同审查、并购交易法律支持与对外争议处理\n- 牵头多起跨境收购的法律尽调与交割\n- 协调外部律所、监管沟通与内部业务部门\n\n某红圈律所 资深律师（2013-2018）\n- 从事公司并购与商事诉讼业务\n- 服务多家上市公司客户\n\n教育与资质\n法学硕士；中国法律职业资格；具备并购与合规专项培训背景\n\n技能：跨境并购、合同管理、合规审查、争议解决、监管沟通、外部律所管理",
+  "jd": "我们正在招聘一名Staff级资深法务，负责重大交易与争议事项的法律把控。该岗位需要候选人能够复盘自己亲自处理过的一个具体案件：交易或纠纷的背景、自己提出的法律判断与谈判策略、关键节点的取舍，以及最终结果。我们理解部分信息受保密协议约束，候选人可在不披露当事方与商业秘密的前提下，讲清楚自己的分析逻辑、风险判断和个人贡献。我们重视责任担当：希望候选人在复盘失败或受挫的项目时，能讲清楚自己的判断而非把责任推给业务、外部律所或监管。",
+  "history": [
+    { "q": "请整体介绍一下你在集团法务的职责范围。" },
+    { "q": "你牵头过的跨境收购里，挑一个最复杂的,讲讲交易结构。" },
+    { "q": "那笔交易的法律尽调中,你发现的最大风险是什么?" },
+    { "q": "你当时给业务方的核心法律建议是什么?" },
+    { "q": "监管沟通这块,你具体负责到什么程度?" },
+    { "q": "有没有一笔交易最终没能交割或者结果不理想?" },
+    { "q": "那笔失败的交易里,事后复盘,问题出在哪个环节?" },
+    { "q": "你刚才提到尽调有遗漏,这个遗漏是谁负责的范围?" },
+    { "q": "如果重来一次,在你自己的职责内,你会怎么做不一样?" },
+    { "q": "争议解决方面,讲一个你主导的诉讼或仲裁。" },
+    { "q": "那个案子里你提出的关键抗辩思路是什么?" },
+    { "q": "结果如何,赔付或和解的大致区间能讲吗?" },
+    { "q": "外部律所在那个案子里的作用和你的分工是怎样的?" },
+    { "q": "回到那笔没交割的并购——抛开保密的当事方信息,就讲你个人当时的法律判断:你判断对了还是判断错了,错在哪?" }
+  ],
+  "candidate_last_answer": "这个案子涉及保密协议,具体的当事方、金额和条款我没办法透露,这是NDA的硬性约束。不过我可以说,那笔交易没交割主要不是法律层面的问题。说实话当时业务部门给的信息就不完整,他们一直催着要快,尽调时间被压得很短;外部律所那边的尽调报告也做得不够细,有些点没挖到;后来监管的口径又突然收紧,这个谁也没料到。所以从结果看,问题更多是出在业务的节奏和外部律所的执行上,我们法务能做的判断在当时的信息条件下已经做了。",
+  "session_state": {
+    "drilled_topics": ["legal-scope", "deal-structure", "diligence-risk", "core-legal-advice", "regulatory-comms", "failed-deal", "post-mortem-root-cause", "diligence-gap-ownership", "what-would-do-differently", "litigation-lead", "key-defense-theory", "settlement-range", "outside-counsel-split", "personal-legal-judgment"],
+    "current_competency_target": "ownership",
+    "elapsed_minutes": 47
+  },
+  "ground_truth": {
+    "competency_target": "ownership",
+    "missing_evidence": [
+      { "competency": "ownership", "evidence_type": "owner-of-action" },
+      { "competency": "judgement-tradeoffs", "evidence_type": "tradeoff-reasoning" },
+      { "competency": "legal-risk-analysis", "evidence_type": "mechanism" }
+    ],
+    "safety_flags": [],
+    "top_question_traits": [
+      "must-anchor-on: 问题更多是出在业务的节奏和外部律所的执行上",
+      "must-be-question-type: action-attribution",
+      "expected-yield: 在不违反NDA的前提下,候选人本人当时做出的那一个具体法律判断——是判断对还是判断错、错在自己分析链条的哪一步,把归因从业务方和外部律所拉回到候选人自身的可控决策"
+    ]
+  }
+}
