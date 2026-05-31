@@ -32,6 +32,9 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
     let cardEl = null;
     let fillEl = null;
     let labelEl = null;
+    let tokensEl = null;
+    let totalInput = 0;
+    let totalOutput = 0;
     let rafId = null;
     let creepFrom = 0;   // fraction
     let creepTo = 0;     // fraction
@@ -76,23 +79,44 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
         rafId = requestAnimationFrame(creepTick);
     }
 
+    function updateTokens() {
+        if (!tokensEl) return;
+        const total = totalInput + totalOutput;
+        if (total <= 0) {
+            tokensEl.textContent = '';
+            return;
+        }
+        tokensEl.textContent = `${total.toLocaleString()} tok`;
+        tokensEl.title = `输入 ${totalInput.toLocaleString()} · 输出 ${totalOutput.toLocaleString()} tokens`;
+    }
+
     function remove() {
         stopCreep();
         if (cardEl && cardEl.parentNode) cardEl.parentNode.removeChild(cardEl);
-        cardEl = null; fillEl = null; labelEl = null; activeRequestId = null;
+        cardEl = null; fillEl = null; labelEl = null; tokensEl = null; activeRequestId = null;
+        totalInput = 0; totalOutput = 0;
     }
 
     function start({ requestId } = {}) {
         remove(); // clear any stale card
         activeRequestId = requestId != null ? String(requestId) : null;
+        totalInput = 0;
+        totalOutput = 0;
 
         const shouldScroll = nearBottom();
         cardEl = document.createElement('div');
         cardEl.className = 'chat-message interviewer-coach-message lane-ai chat-progress-card is-indeterminate';
 
+        // Head row: phase label (left) + running token spend (right).
+        const head = document.createElement('div');
+        head.className = 'chat-progress__head';
         labelEl = document.createElement('div');
         labelEl.className = 'chat-progress__label';
         labelEl.textContent = '生成追问中…';
+        tokensEl = document.createElement('div');
+        tokensEl.className = 'chat-progress__tokens';
+        tokensEl.textContent = '';
+        head.append(labelEl, tokensEl);
 
         const bar = document.createElement('div');
         bar.className = 'chat-progress__bar';
@@ -100,7 +124,7 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
         fillEl.className = 'chat-progress__fill';
         bar.appendChild(fillEl);
 
-        cardEl.append(labelEl, bar);
+        cardEl.append(head, bar);
         chatMessagesElement.appendChild(cardEl);
         if (shouldScroll && isAutoScrollEnabled()) {
             chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
@@ -116,6 +140,14 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
 
         // First real event upgrades from indeterminate to determinate.
         cardEl.classList.remove('is-indeterminate');
+
+        // Accumulate token spend as each phase completes (real-time-ish: token
+        // usage is only known when a block returns).
+        if (evt.tokens) {
+            totalInput += Number(evt.tokens.input) || 0;
+            totalOutput += Number(evt.tokens.output) || 0;
+            updateTokens();
+        }
 
         if (evt.status === 'start') {
             labelEl.textContent = bound.label;

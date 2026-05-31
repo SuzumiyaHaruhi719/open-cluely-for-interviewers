@@ -39,6 +39,13 @@ test('emits start+done for all 6 phases in order, even when blocks fall back', a
   // 'start' of phase N precedes 'done' of phase N precedes 'start' of phase N+1.
   const seq = events.map((e) => `${e.phase}:${e.status}`);
   assert.deepStrictEqual(seq, EXPECTED_PHASES.flatMap((p) => [`${p}:start`, `${p}:done`]));
+
+  // Every 'done' event carries a token spend with numeric input/output (0 here
+  // since the stub returns null usage — the shape is what the renderer reads).
+  for (const e of events.filter((x) => x.status === 'done')) {
+    assert.ok(e.tokens && typeof e.tokens.input === 'number' && typeof e.tokens.output === 'number',
+      `done event for ${e.phase} must carry numeric tokens`);
+  }
 });
 
 test('a throwing onProgress never breaks the chain', async () => {

@@ -416,12 +416,28 @@ async function runExpertChain({
 
   const TOTAL_PHASES = 6;
   const PHASE_INDEX = { answer: 1, gaps: 2, pool: 3, rank: 4, safety: 5, render: 6 };
+  // Sum input/output token usage across one or more block results' traces.
+  // Used to report per-phase token spend on the 'done' progress event.
+  function traceTokens(...results) {
+    let input = 0;
+    let output = 0;
+    for (const result of results) {
+      for (const e of (result?.trace || [])) {
+        if (e && e.usage) {
+          input += Number(e.usage.input_tokens) || 0;
+          output += Number(e.usage.output_tokens) || 0;
+        }
+      }
+    }
+    return { input, output };
+  }
   // Progress callback must NEVER throw into the chain — a broken UI callback
-  // can't be allowed to fail a generation. Wrapped here once.
-  function emitProgress(phase, status) {
+  // can't be allowed to fail a generation. Wrapped here once. `tokens` (on
+  // 'done' events) is the { input, output } spend for the phase just finished.
+  function emitProgress(phase, status, tokens = null) {
     if (typeof onProgress !== 'function') return;
     try {
-      onProgress({ phase, index: PHASE_INDEX[phase], total: TOTAL_PHASES, status });
+      onProgress({ phase, index: PHASE_INDEX[phase], total: TOTAL_PHASES, status, tokens });
     } catch (_) { /* progress is best-effort; swallow */ }
   }
 
@@ -441,7 +457,7 @@ async function runExpertChain({
   });
   const [aResult, cResult] = await Promise.all([aPromise, cPromise]);
   traces.push(...aResult.trace, ...cResult.trace);
-  emitProgress('answer', 'done');
+  emitProgress('answer', 'done', traceTokens(aResult, cResult));
 
   const blockA = aResult.ok ? aResult.data : blockAFallback();
   if (!aResult.ok) fallbackTriggered.push('A');
@@ -459,7 +475,7 @@ async function runExpertChain({
   traces.push(...bResult.trace);
   const blockB = bResult.ok ? bResult.data : blockBFallback();
   if (!bResult.ok) fallbackTriggered.push('B');
-  emitProgress('gaps', 'done');
+  emitProgress('gaps', 'done', traceTokens(bResult));
 
   // D — depends on A, B, C
   emitProgress('pool', 'start');
@@ -480,7 +496,7 @@ async function runExpertChain({
   traces.push(...dResult.trace);
   const blockD = dResult.ok ? dResult.data : blockDFallback();
   if (!dResult.ok) fallbackTriggered.push('D');
-  emitProgress('pool', 'done');
+  emitProgress('pool', 'done', traceTokens(dResult));
 
   // E — depends on D, B, C
   emitProgress('rank', 'start');
@@ -502,7 +518,7 @@ async function runExpertChain({
   traces.push(...eResult.trace);
   const blockE = eResult.ok ? eResult.data : blockEFallback(blockD);
   if (!eResult.ok) fallbackTriggered.push('E');
-  emitProgress('rank', 'done');
+  emitProgress('rank', 'done', traceTokens(eResult));
 
   // Resolve primary + alternative candidates from E's top_2_ids ∩ D.candidates
   const candById = new Map((blockD.candidates || []).map((c) => [c.id, c]));
@@ -530,7 +546,7 @@ async function runExpertChain({
   traces.push(...fResult.trace);
   const blockF = fResult.ok ? fResult.data : blockFFallback();
   if (!fResult.ok) fallbackTriggered.push('F');
-  emitProgress('safety', 'done');
+  emitProgress('safety', 'done', traceTokens(fResult));
 
   // If safety verdict is block, swap to alternative; if alternative also fails
   // (e.g. both contain a hard regex hit), G enters fallback.
@@ -551,6 +567,7 @@ async function runExpertChain({
 
   // G — final render
   let blockG;
+  let gTokens = { input: 0, output: 0 };
   emitProgress('render', 'start');
   if (!chosenPrimary) {
     blockG = blockGFallback({ primary: null, alternative: null });
@@ -573,8 +590,9 @@ async function runExpertChain({
     traces.push(...gResult.trace);
     blockG = gResult.ok ? gResult.data : blockGFallback({ primary: chosenPrimary, alternative: chosenAlt });
     if (!gResult.ok) fallbackTriggered.push('G');
+    gTokens = traceTokens(gResult);
   }
-  emitProgress('render', 'done');
+  emitProgress('render', 'done', gTokens);
 
   // ─── Block H — auto context consolidation (NON-BLOCKING) ──────────────────
   // The follow-up question (blockG) is already finalized above. We now fold the
