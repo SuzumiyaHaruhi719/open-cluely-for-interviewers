@@ -394,7 +394,18 @@ async function runExpertChain({
   jobDescription = '',
   questionHistory = [],
   sessionState = null,
-  abortSignal = null
+  abortSignal = null,
+  // Block H — optional callback invoked (off the critical path) once session
+  // consolidation resolves. Receives the updated session-state object. Provided
+  // in addition to result.sessionStatePromise so callers can either await the
+  // promise or react via callback, whichever is cleaner. See the integration
+  // note in interviewer-runtime.js for how the runtime persists it.
+  onSessionState = null,
+  // Optional per-phase progress callback. Invoked with
+  // { phase, index, total, status } at each of the 6 user-visible phase
+  // boundaries (status: 'start' | 'done'). Best-effort and never allowed to
+  // throw into the chain — see emitProgress below.
+  onProgress = null
 } = {}) {
   if (!apiKey) {
     throw new Error('Expert mode requires DashScope API key');
@@ -403,7 +414,19 @@ async function runExpertChain({
   const traces = [];
   const fallbackTriggered = [];
 
+  const TOTAL_PHASES = 6;
+  const PHASE_INDEX = { answer: 1, gaps: 2, pool: 3, rank: 4, safety: 5, render: 6 };
+  // Progress callback must NEVER throw into the chain — a broken UI callback
+  // can't be allowed to fail a generation. Wrapped here once.
+  function emitProgress(phase, status) {
+    if (typeof onProgress !== 'function') return;
+    try {
+      onProgress({ phase, index: PHASE_INDEX[phase], total: TOTAL_PHASES, status });
+    } catch (_) { /* progress is best-effort; swallow */ }
+  }
+
   // A ∥ C — parallel
+  emitProgress('answer', 'start');
   const aPromise = callBlock({
     blockId: 'A',
     apiKey,
@@ -418,6 +441,7 @@ async function runExpertChain({
   });
   const [aResult, cResult] = await Promise.all([aPromise, cPromise]);
   traces.push(...aResult.trace, ...cResult.trace);
+  emitProgress('answer', 'done');
 
   const blockA = aResult.ok ? aResult.data : blockAFallback();
   if (!aResult.ok) fallbackTriggered.push('A');
@@ -425,6 +449,7 @@ async function runExpertChain({
   if (!cResult.ok) fallbackTriggered.push('C');
 
   // B — depends on A
+  emitProgress('gaps', 'start');
   const bResult = await callBlock({
     blockId: 'B',
     apiKey,
@@ -434,8 +459,10 @@ async function runExpertChain({
   traces.push(...bResult.trace);
   const blockB = bResult.ok ? bResult.data : blockBFallback();
   if (!bResult.ok) fallbackTriggered.push('B');
+  emitProgress('gaps', 'done');
 
   // D — depends on A, B, C
+  emitProgress('pool', 'start');
   const dResult = await callBlock({
     blockId: 'D',
     apiKey,
@@ -453,8 +480,10 @@ async function runExpertChain({
   traces.push(...dResult.trace);
   const blockD = dResult.ok ? dResult.data : blockDFallback();
   if (!dResult.ok) fallbackTriggered.push('D');
+  emitProgress('pool', 'done');
 
   // E — depends on D, B, C
+  emitProgress('rank', 'start');
   const eResult = await callBlock({
     blockId: 'E',
     apiKey,
@@ -473,6 +502,7 @@ async function runExpertChain({
   traces.push(...eResult.trace);
   const blockE = eResult.ok ? eResult.data : blockEFallback(blockD);
   if (!eResult.ok) fallbackTriggered.push('E');
+  emitProgress('rank', 'done');
 
   // Resolve primary + alternative candidates from E's top_2_ids ∩ D.candidates
   const candById = new Map((blockD.candidates || []).map((c) => [c.id, c]));
@@ -486,6 +516,7 @@ async function runExpertChain({
     ...runHardRules(alternative?.question || '')
   ];
 
+  emitProgress('safety', 'start');
   const fResult = await callBlock({
     blockId: 'F',
     apiKey,
@@ -499,6 +530,7 @@ async function runExpertChain({
   traces.push(...fResult.trace);
   const blockF = fResult.ok ? fResult.data : blockFFallback();
   if (!fResult.ok) fallbackTriggered.push('F');
+  emitProgress('safety', 'done');
 
   // If safety verdict is block, swap to alternative; if alternative also fails
   // (e.g. both contain a hard regex hit), G enters fallback.
@@ -519,6 +551,7 @@ async function runExpertChain({
 
   // G — final render
   let blockG;
+  emitProgress('render', 'start');
   if (!chosenPrimary) {
     blockG = blockGFallback({ primary: null, alternative: null });
     fallbackTriggered.push('G');
@@ -541,6 +574,45 @@ async function runExpertChain({
     blockG = gResult.ok ? gResult.data : blockGFallback({ primary: chosenPrimary, alternative: chosenAlt });
     if (!gResult.ok) fallbackTriggered.push('G');
   }
+  emitProgress('render', 'done');
+
+  // ─── Block H — auto context consolidation (NON-BLOCKING) ──────────────────
+  // The follow-up question (blockG) is already finalized above. We now fold the
+  // just-finished round into a persistent session state for the NEXT turn's
+  // Block C — but we must NOT add latency to returning blockG to the renderer.
+  // So we kick off consolidateSessionState() WITHOUT awaiting it, attach the
+  // promise to the result as `sessionStatePromise`, and (if provided) invoke
+  // `onSessionState` when it resolves. consolidateSessionState NEVER throws —
+  // it resolves to the (normalized) prior state on any failure — so the
+  // .then/.catch here is belt-and-suspenders only.
+  //
+  // Lazy require breaks the require cycle: session-consolidator.js requires this
+  // module at its top level, so importing it lazily here (after this module has
+  // finished initializing) avoids a partial-exports circular load.
+  const renderedQuestion = blockG?.primary_question || '';
+  let sessionStatePromise = Promise.resolve(sessionState);
+  try {
+    const { consolidateSessionState } = require('./session-consolidator');
+    sessionStatePromise = consolidateSessionState({
+      apiKey,
+      priorState: sessionState,
+      candidateAnswer,
+      renderedQuestion,
+      resumeChunk,
+      jobDescription,
+      questionHistory
+    });
+  } catch (err) {
+    // Failure to even start consolidation (e.g. module load error) must not
+    // affect the returned question. Fall back to the prior state.
+    console.error('Block H failed to start; keeping prior session state:', err?.message || err);
+  }
+
+  if (typeof onSessionState === 'function') {
+    sessionStatePromise
+      .then((nextState) => { try { onSessionState(nextState); } catch (_) { /* caller's handler error must not surface */ } })
+      .catch(() => { /* consolidateSessionState never rejects; defensive only */ });
+  }
 
   return {
     iterationVersion: EXPERT_ITERATION_VERSION,
@@ -548,12 +620,22 @@ async function runExpertChain({
     blocks: { A: blockA, B: blockB, C: blockC, D: blockD, E: blockE, F: blockF, G: blockG },
     trace: traces,
     fallbackTriggered,
-    elapsedMs: Date.now() - startedAt
+    elapsedMs: Date.now() - startedAt,
+    // Resolves (never rejects) with the consolidated interviewerSessionState for
+    // the next turn. The caller should persist it via app-state + emit
+    // `session-context-updated` to the renderer (see interviewer-runtime.js).
+    sessionStatePromise
   };
 }
 
 module.exports = {
   runExpertChain,
   EXPERT_ITERATION_VERSION,
-  BLOCK_MODELS
+  BLOCK_MODELS,
+  // Exported for reuse by Block H (session-consolidator.js) so it shares this
+  // module's DashScope transport, connect-timeout dispatcher tweak, curl escape
+  // hatch, safe-JSON parser, and Flash model id rather than re-implementing them.
+  dashscopeChat,
+  safeJsonParse,
+  FLASH_MODEL
 };
