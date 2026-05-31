@@ -106,6 +106,16 @@ function createEventActions(ipcRenderer) {
     label: 'onClearFromMobile'
   });
 
+  const onSessionContext = createEventListener(ipcRenderer, {
+    channel: 'session-context-updated',
+    label: 'onSessionContext'
+  });
+
+  const onInterviewerProgress = createEventListener(ipcRenderer, {
+    channel: 'interviewer-progress',
+    label: 'onInterviewerProgress'
+  });
+
   return {
     onScreenshotTakenStealth,
     onAnalysisStart,
@@ -127,7 +137,9 @@ function createEventActions(ipcRenderer) {
     onTriggerAskAi,
     onSttDebug: (callback) => rawOnSttDebug((data) => callback(data || {})),
     onMobileServerStatus,
-    onClearFromMobile
+    onClearFromMobile,
+    onSessionContext,
+    onInterviewerProgress
   };
 }
 
