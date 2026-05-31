@@ -101,7 +101,35 @@ async function dashscopeChat({ apiKey, model, prompt, system, temperature, maxTo
   throw lastErr || new Error('DashScope request failed');
 }
 
-function createInterviewerRuntime({ getAppState }) {
+// `saveSessionState` and `sendToRenderer` are OPTIONAL collaborators. When
+// start-application.js wires them in, Block H's consolidated state is persisted
+// to disk and pushed to the renderer; when omitted (current call site), the
+// runtime still updates the in-memory appState so the next turn's Block C sees
+// it — it just isn't durable across app restarts. This keeps the existing
+// `createInterviewerRuntime({ getAppState })` call working unchanged.
+function createInterviewerRuntime({ getAppState, saveSessionState = null, sendToRenderer = null }) {
+  // Durable persistence of Block H output. No-op unless start-application.js
+  // passes saveSessionState (see INTEGRATION NOTE in analyzeCandidateAnswerExpert).
+  function persistSessionState(nextState) {
+    if (typeof saveSessionState !== 'function') return;
+    try {
+      saveSessionState(nextState);
+    } catch (error) {
+      console.error('Failed to persist interviewerSessionState:', error?.message || error);
+    }
+  }
+
+  // Renderer notification so the right-rail "Session context (auto)" panel can
+  // refresh. No-op unless start-application.js passes sendToRenderer.
+  function notifySessionContextUpdated(nextState) {
+    if (typeof sendToRenderer !== 'function') return;
+    try {
+      sendToRenderer('session-context-updated', nextState);
+    } catch (error) {
+      console.error('Failed to emit session-context-updated:', error?.message || error);
+    }
+  }
+
   function getApiKey() {
     const state = getAppState() || {};
     return String(state.dashscopeApiKey || '').trim();
@@ -144,10 +172,14 @@ function createInterviewerRuntime({ getAppState }) {
     return { raw: text, usage, parsed: safeJsonParse(text) };
   }
 
-  async function analyzeCandidateAnswerExpert({ candidateAnswer, questionHistory, emotion }) {
+  async function analyzeCandidateAnswerExpert({ candidateAnswer, questionHistory, emotion, requestId = null }) {
     const apiKey = getApiKey();
     const { resumeChunk, jobDescription } = getContext();
     const state = getAppState() || {};
+    // Block C input: the persisted consolidation from the PREVIOUS turn's
+    // Block H (app-state.interviewerSessionState). On the first turn this is
+    // null and Block C falls back to its default — which is exactly the loop
+    // Block H closes on subsequent turns.
     const sessionState = state.interviewerSessionState || null;
     try {
       const expertResult = await runExpertChain({
@@ -156,10 +188,46 @@ function createInterviewerRuntime({ getAppState }) {
         resumeChunk,
         jobDescription,
         questionHistory,
-        sessionState
+        sessionState,
+        // Block H persistence — invoked OFF the critical path once consolidation
+        // resolves (never throws). We mutate the live app-state object in place
+        // so the NEXT turn's `getAppState().interviewerSessionState` (read above)
+        // sees the consolidated value within this app session.
+        //
+        // INTEGRATION NOTE (for start-application.js / orchestrator owner):
+        // This only updates the IN-MEMORY appState reference. For durable
+        // disk persistence and to notify the renderer, the runtime needs two
+        // collaborators passed into createInterviewerRuntime():
+        //   1. saveSessionState(nextState)  → saveAppState(app, { interviewerSessionState: nextState })
+        //   2. sendToRenderer('session-context-updated', nextState)
+        // Both are out of scope for this slice (start-application.js is owned
+        // elsewhere). See the report's INTEGRATION NOTE for exact wiring.
+        onSessionState: (nextState) => {
+          if (nextState && typeof nextState === 'object') {
+            const liveState = getAppState();
+            if (liveState && typeof liveState === 'object') {
+              liveState.interviewerSessionState = nextState;
+            }
+            persistSessionState(nextState);
+            notifySessionContextUpdated(nextState);
+          }
+        },
+        // Forward per-phase progress to the renderer so the chat-stream progress
+        // card can advance. No-op unless sendToRenderer is wired (it is — see
+        // start-application.js). requestId correlates the events to the card that
+        // started this analysis.
+        onProgress: (evt) => {
+          if (typeof sendToRenderer !== 'function') return;
+          try {
+            sendToRenderer('interviewer-progress', { requestId, ...evt });
+          } catch (error) {
+            console.error('Failed to emit interviewer-progress:', error?.message || error);
+          }
+        }
       });
       return {
         mode: 'expert',
+        requestId,
         iterationVersion: expertResult.iterationVersion,
         output: expertResult.output,
         blocks: expertResult.blocks,
@@ -171,11 +239,11 @@ function createInterviewerRuntime({ getAppState }) {
       };
     } catch (error) {
       console.error('Expert mode failed, returning skipped result:', error);
-      return { mode: 'expert', skipped: true, reason: `expert-chain-error: ${error?.message || 'unknown'}` };
+      return { mode: 'expert', skipped: true, requestId, reason: `expert-chain-error: ${error?.message || 'unknown'}` };
     }
   }
 
-  async function analyzeCandidateAnswer({ candidateAnswer, questionHistory = [], emotion = null } = {}) {
+  async function analyzeCandidateAnswer({ candidateAnswer, questionHistory = [], emotion = null, requestId = null } = {}) {
     const answer = String(candidateAnswer || '').trim();
     if (!answer) {
       return { skipped: true, reason: 'empty-answer' };
@@ -190,7 +258,7 @@ function createInterviewerRuntime({ getAppState }) {
     }
 
     if (getMode() === 'expert') {
-      return analyzeCandidateAnswerExpert({ candidateAnswer: answer, questionHistory, emotion });
+      return analyzeCandidateAnswerExpert({ candidateAnswer: answer, questionHistory, emotion, requestId });
     }
 
     const { resumeChunk, jobDescription } = getContext();
