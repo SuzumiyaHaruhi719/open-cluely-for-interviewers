@@ -62,7 +62,7 @@ Required output — strict JSON only.
 {
   "primary_question": "<the primary candidate's question, verbatim — unless safety_verdict='rewrite' in which case rephrase to neutral framing while preserving anchors>",
   "alternative_question": "<the alternative candidate's question, verbatim — or empty string if none>",
-  "rationale_for_interviewer": "<ONE sentence teaching the principle: 'This probes ${nextComp} by pinning the candidate on a specific anchor — without a number/named entity, the answer remains unfalsifiable.'>",
+  "rationale_for_interviewer": "<ONE sentence teaching the interviewer what this question REVEALS about the candidate — e.g. 'This probes ${nextComp}: by forcing them to name the alternative they rejected, you learn whether the redesign reflected real judgment or luck.' Focus on the judgment/trait surfaced, NOT on extracting a datum.>",
   "anchor_quotes": ["<each substring quoted in primary_question, verbatim>"],
   "expected_evidence_yield": "<the primary candidate's expected_yield, copied verbatim>",
   "iteration_version": "${EXPERT_ITERATION_VERSION}"

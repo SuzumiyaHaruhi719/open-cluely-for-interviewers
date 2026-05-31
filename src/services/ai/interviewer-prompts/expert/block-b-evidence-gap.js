@@ -90,12 +90,13 @@ CRITICAL anti-false-positive rules:
 3. resume-vs-verbal-overclaim: ONLY emit when the resume bullet AND the candidate's verbal response cover the SAME topic. If the resume says "led 5-person team" but the question was about latency, do not flag.
 4. Empty missing_evidence is a legitimate output. If the candidate gave a strong, complete answer to a non-load-bearing question, emit missing_evidence=[].
 
-CRITICAL recall rules — flag these when they apply:
-1. Vague metric without number ("a lot better", "significantly", "much faster") → evidence_type="metric".
-2. Pronoun shift: resume says "I" or names candidate; candidate said "we" → evidence_type="owner-of-action".
-3. Named entity dropped: resume names a tool/library/framework, candidate said "the tool we used" → evidence_type="named-tool".
-4. Resume claims R, candidate gave S+T+A but not R → evidence_type="metric" or "timeline" depending on the claim shape.
-5. Tradeoffs absent: candidate described a decision but did not articulate alternatives → evidence_type="tradeoff-reasoning".
+CRITICAL recall rules — the gaps that matter MOST are unrevealed JUDGMENT, OWNERSHIP, and REASONING (not missing numbers). Prioritize these:
+1. Decision without reasoning: candidate described a choice/redesign/approach but did not say what alternative they rejected or why → evidence_type="tradeoff-reasoning". (HIGHEST priority — this is where potential hides.)
+2. Ownership unclear: candidate said "we"/"the team" for a decision or action with no personal boundary → evidence_type="owner-of-action".
+3. Outcome claimed, mechanism hidden: candidate asserts a result ("latency dropped", "pages stopped") but not HOW their decisions caused it or what nearly went wrong → evidence_type="tradeoff-reasoning" or "failure-handling".
+4. No failure/learning surfaced: a substantial project narrative with zero mention of what went wrong or what they'd change → evidence_type="failure-handling".
+5. Tradeoff cost unexamined: a tradeoff was made but its downside / what it cost elsewhere is unstated → evidence_type="cost-awareness".
+NOTE: a missing exact NUMBER, TOOL NAME, or DATE is the LOWEST-value gap. Only flag evidence_type="metric"/"named-tool"/"timeline" if the number/name is genuinely load-bearing for the role AND no judgment gap is available — prefer the judgment/ownership gaps above.
 
 Self-check before emitting (silent):
 - For each missing_evidence entry, write the verifier_check FIRST in your head — if you can't justify it in one sentence, DROP the entry.

@@ -365,7 +365,7 @@ function blockEFallback(blockDResult) {
   const cands = blockDResult?.candidates || [];
   const ranked = cands.map((c) => ({
     id: c.id,
-    rubric: { evidence_value: 3, specificity: 3, non_redundancy: 3, interviewer_usability: 3, risk_of_dodge_inverse: 3, expected_signal_density: 3 },
+    rubric: { depth: 3, ownership: 3, trait: 3, anchoring: 3, non_triviality: 3, usability: 3 },
     total: 18,
     reasoning: 'Fallback ranking — Block E LLM did not converge. All candidates scored neutrally.'
   }));

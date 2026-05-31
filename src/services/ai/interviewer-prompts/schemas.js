@@ -170,14 +170,14 @@ const BLOCK_SCHEMAS = {
         types: {
           id: 'string',
           rubric: {
-            required: ['evidence_value', 'specificity', 'non_redundancy', 'interviewer_usability', 'risk_of_dodge_inverse', 'expected_signal_density'],
+            required: ['depth', 'ownership', 'trait', 'anchoring', 'non_triviality', 'usability'],
             types: {
-              evidence_value: 'integer:1-5',
-              specificity: 'integer:1-5',
-              non_redundancy: 'integer:1-5',
-              interviewer_usability: 'integer:1-5',
-              risk_of_dodge_inverse: 'integer:1-5',
-              expected_signal_density: 'integer:1-5'
+              depth: 'integer:1-5',
+              ownership: 'integer:1-5',
+              trait: 'integer:1-5',
+              anchoring: 'integer:1-5',
+              non_triviality: 'integer:1-5',
+              usability: 'integer:1-5'
             }
           },
           total: 'number',

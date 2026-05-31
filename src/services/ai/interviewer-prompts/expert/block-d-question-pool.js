@@ -46,7 +46,11 @@ function buildBlockD({
   const nextComp = blockCResult?.next_competency_target || 'technical-depth';
   const shouldPivot = blockCResult?.should_pivot ? 'YES — open a new topic' : 'NO — drill the current topic';
 
-  return `Role: You are the QUESTION-POOL block. Produce EXACTLY 5 follow-up question candidates for the interviewer. Diversity is mandatory: at least 3 distinct question_types across the 5 candidates. You do NOT rank — that is the next block's job. Your two jobs: (1) diversity, (2) anchoring.
+  return `Role: You are the QUESTION-POOL block. Produce EXACTLY 5 follow-up question candidates for the interviewer. You do NOT rank — that is the next block's job.
+
+THE MISSION — probe the PERSON, not the datum. A great follow-up makes the candidate reveal durable potential and work traits: their judgment, the alternatives they weighed, what they personally owned, what broke and what they learned, what they'd do differently. A BAD follow-up asks for a fact a transcript could already hold (an exact number, a tool name, a date). "How much exactly did p99 drop?" is the failure you must avoid — the answer is a datum and reveals nothing about the candidate. Instead probe the DECISION behind the datum.
+
+Your three jobs: (1) depth — every question forces reasoning/ownership/trait revelation; (2) diversity — ≥3 distinct question_types; (3) anchoring — quote the candidate's own words so the question can't be asked of anyone else.
 
 [Block A claims]
 ${claimsStr}
@@ -93,29 +97,40 @@ Required output — strict JSON only, no markdown fences, no prose.
       "question_type": ${asJsonList(QUESTION_TYPES)},
       "anchors": ["<exact substring quoted in the question — must literally appear in the question above>"],
       "fills_evidence_gap": "<the missing_evidence competency this question targets, or 'pivot' if Block C signaled pivot, or 'overclaim' / 'contradiction' if probing B's flags>",
-      "expected_yield": "<one phrase: the specific data the candidate would have to produce to answer well, e.g. 'a numeric p99 in ms', 'a named alternative considered', 'who actually wrote the code'>"
+      "expected_yield": "<one phrase naming the JUDGMENT or TRAIT the answer would reveal — e.g. 'the reasoning behind choosing async over sync and the failure mode they anticipated', 'whether the redesign call was theirs alone or the team's', 'how they prioritized when reliability and cost collided'. NEVER a bare datum like 'a number in ms'.>"
     }
   ]
 }
 
+THE DEPTH SET (strongly prefer these question_types):
+- counterfactual — "if you'd had half the time/budget, what would you have cut first, and why?"
+- tradeoff-articulation — "an async queue trades consistency for latency; what nearly broke because of that, and how did you catch it?"
+- failure-mode — "what part of that design did you get wrong first, and what did fixing it teach you?"
+- chain-of-decisions — "walk me through the call you agonized over most — what was the option you rejected?"
+- cost-of-decision — "what did that choice cost you elsewhere that you only saw later?"
+- teach-back — "how would you explain to a new hire why the obvious approach here is wrong?"
+- action-attribution — "inside that 'we', what was the one decision that was yours alone, and what did you stake on it?"
+- hypothetical — used to expose judgment, not trivia.
+
+THE PIN SET (DEPRECATED — avoid): metric-pin, timeline-pin, named-entity-pin. A pure number/name/date pin is the failure mode. At MOST 1 of the 5 candidates may use a pin type, and ONLY as a doorway to reasoning (it must continue "…and what did that let you conclude / decide / change?"). The other 4+ MUST come from the depth set.
+
 Hard rules — violations cause Block E to score 0 and trigger a single repair:
 1. EXACTLY 5 candidates. Not 4. Not 6.
-2. At least 3 DISTINCT question_type values across the 5. Use the diversity to attack the gap from different angles — e.g. metric-pin + named-entity-pin + action-attribution + counterfactual + chain-of-decisions for a single competency.
+2. At least 3 DISTINCT question_type values across the 5, and at least 4 of the 5 drawn from the depth set above.
 3. Every question must contain at least one anchor (3+ contiguous words) quoted in single-quotes from either the candidate answer or the resume. The anchors array must list those exact spans.
-4. If Block C said pivot=YES, AT LEAST 2 candidates must open a new topic (use the JD + an undrilled resume topic as anchor). The other candidates may still probe gaps from prior questions for the interviewer to choose between drilling and pivoting.
-5. If Block B emitted overclaim_flags, AT LEAST 1 candidate must be question_type="resume-contradiction-pin" anchored on a resume_claim substring.
-6. If Block B emitted contradictions, AT LEAST 1 candidate must surface the contradiction with both sides quoted.
-7. Forbidden framings (these invite qualitative dodges): "what factors", "what signals", "what set them apart", "how did you decide" (without a forced specific), "what was your approach", "tell me more". A question must demand ONE OF: (a) a NUMBER / order-of-magnitude commitment; (b) a NAMED person / tool / library / dataset; (c) a DATE / version / commit / PR id; (d) a COUNTERFACTUAL ("what would have happened if X"); (e) a TRADEOFF ("what did you choose NOT to do and why").
-8. expected_yield is concrete: "a numeric latency in ms", not "details about the system".
-9. Never repeat or paraphrase a prior question.
+4. Every question must force ONE OF: (a) a DECISION + the alternative they rejected + why; (b) a TRADEOFF + its cost or what broke; (c) a FAILURE/mistake + what it taught; (d) a personal OWNERSHIP boundary inside a "we"; (e) a COUNTERFACTUAL judgment; (f) a PRIORITIZATION call under conflict. If the complete, honest answer to your question is a single number, name, date, or yes/no — it is FORBIDDEN, rewrite it to probe the decision behind that datum.
+5. If Block C said pivot=YES, AT LEAST 2 candidates must open a new topic (use the JD + an undrilled resume topic as anchor), still as depth-set questions.
+6. If Block B emitted overclaim_flags or contradictions, AT LEAST 1 candidate must surface it — but as a judgment probe ("you said X here and Y on your resume — walk me through what actually happened"), NOT a gotcha pin.
+7. Never repeat or paraphrase a prior question.
 
 Style:
 - Speakable by an interviewer: <=35 words per question, conversational tone.
-- No "now let's switch" preamble. Open by quoting the anchor, then ask.
+- Open by quoting the anchor, then ask the depth question. No "now let's switch" preamble.
 
 Self-check before emitting (silent):
-- Count question_types — must be >=3 distinct.
-- For each candidate, find its anchor substring in either the answer or the resume. If even one fails, fix that candidate.
+- For EACH candidate: if its complete answer could be a single number/name/date/yes-no, REWRITE it to probe the reasoning, tradeoff, ownership, or lesson behind it.
+- Count question_types — must be >=3 distinct, with >=4 from the depth set.
+- For each candidate, find its anchor substring in the answer or resume. If even one fails, fix that candidate.
 - If pivot=YES, count pivot-opening candidates — must be >=2.
 
 Emit only the JSON object.`;

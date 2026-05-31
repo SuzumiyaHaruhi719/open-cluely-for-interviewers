@@ -31,9 +31,11 @@ function buildBlockE({
   const nextComp = blockCResult?.next_competency_target || 'technical-depth';
   const pivot = blockCResult?.should_pivot ? 'YES' : 'NO';
 
-  return `Role: You are the RANK-SCORE block — the Pro-tier reasoner of the chain. You score 5 follow-up candidates on a 6-dim rubric and pick the top 2 the interviewer should see. You are deliberately the slowest, deepest block.
+  return `Role: You are the RANK-SCORE block — the deep reasoner of the chain. You score 5 follow-up candidates on a 6-dim rubric and pick the top 2 the interviewer should see.
 
-You MUST think step-by-step in the reasoning field for each candidate. Do NOT skip reasoning. Your reasoning is the audit trail that downstream evaluators read.
+WHAT MAKES A QUESTION WIN: it forces the candidate to reveal durable POTENTIAL and WORK TRAITS — judgment, the alternatives they weighed, what they personally owned, what broke and what they learned. A question whose honest answer is a single number, name, or date is WEAK no matter how "specific" — pinning "how much did p99 drop" reveals nothing about the person. Reward depth and trait-revelation; punish fact-pins.
+
+You MUST think step-by-step in the reasoning field for each candidate. Do NOT skip reasoning.
 
 [Job description — defines what evidence is valuable]
 \`\`\`
@@ -67,12 +69,12 @@ ${candidatesStr}
 
 Six-dimension rubric — score EACH dim as integer 1-5 per candidate.
 
-1. evidence_value (1=closes no gap; 5=closes a critical missing-evidence entry tied to next_competency_target)
-2. specificity (1=open-ended "tell me more"; 5=demands a specific number / named entity / date / counterfactual)
-3. non_redundancy (1=paraphrases a prior question or another candidate; 5=opens a wholly distinct angle)
-4. interviewer_usability (1=clunky, hard to speak aloud, >35 words; 5=natural conversational sentence the interviewer can drop in)
-5. risk_of_dodge_inverse (1=easy to dodge with "we focused on quality"; 5=structurally pinning — order-of-magnitude commitment, named-entity, contradiction-quote)
-6. expected_signal_density (1=yields a vague qualitative answer; 5=yields a falsifiable, anchored data point in <30 seconds of candidate speech)
+1. depth (1=answerable with a fact/yes-no; 5=cannot be answered without walking through real reasoning — a decision + the rejected alternative, a tradeoff + its cost, a failure + its diagnosis)
+2. ownership (1=indifferent to who did what; 5=structurally forces a personal "I decided/did/risked" answer, not "we")
+3. trait (1=reveals only information; 5=the answer is a window into a durable work trait — handling ambiguity, conflict, failure, prioritization, influence, judgment, learning)
+4. anchoring (1=generic, askable of anyone; 5=tightly tied to a specific thing THIS candidate said, can't be answered with a canned story)
+5. non_triviality (1=fundamentally a fact-pin — its answer is a number/name/date; 5=the value is in the reasoning, not any datum)
+6. usability (1=clunky, >35 words, hard to speak; 5=natural conversational sentence the interviewer can drop in)
 
 Required output — strict JSON only.
 {
@@ -80,15 +82,15 @@ Required output — strict JSON only.
     {
       "id": "q1",
       "rubric": {
-        "evidence_value": <1-5>,
-        "specificity": <1-5>,
-        "non_redundancy": <1-5>,
-        "interviewer_usability": <1-5>,
-        "risk_of_dodge_inverse": <1-5>,
-        "expected_signal_density": <1-5>
+        "depth": <1-5>,
+        "ownership": <1-5>,
+        "trait": <1-5>,
+        "anchoring": <1-5>,
+        "non_triviality": <1-5>,
+        "usability": <1-5>
       },
       "total": <sum of the 6 dims, integer 6-30>,
-      "reasoning": "<3-5 sentence chain-of-thought: (a) which gap or pivot this candidate addresses; (b) which dim it scores highest on and why; (c) which dim it scores lowest on and why; (d) verifier sentence — re-state one rubric dim's score and confirm the score against the candidate text.>"
+      "reasoning": "<3-5 sentence chain-of-thought: (a) what judgment/trait this question would reveal; (b) its strongest dim and why; (c) its weakest dim and why; (d) verifier sentence — re-state one rubric dim's score and confirm against the candidate text.>"
     }
   ],
   "top_2_ids": ["<best id>", "<second best id>"]
@@ -98,16 +100,17 @@ Hard rules:
 1. ranked must contain ALL 5 candidates. No dropping.
 2. total must equal the sum of the 6 dim scores exactly.
 3. top_2_ids must contain TWO DISTINCT ids that exist in ranked[].id.
-4. Tie-break for top-1: highest total wins. If tied, prefer higher non_redundancy. If still tied, prefer higher evidence_value.
-5. Tie-break for top-2: among the remaining 4, highest total wins, with same non-redundancy / evidence-value tie-break, but PREFER a candidate with a different question_type than top-1 (gives the interviewer two angles, not two copies).
-6. reasoning MUST include a verifier sentence — re-read one of your rubric scores and confirm against the candidate text. If on verification you change your mind, change the score before emitting.
+4. A candidate scoring non_triviality<=2 (a fact-pin) MUST NOT be top-1 unless every other candidate also scores non_triviality<=2. Never let "how much exactly"-style pins win.
+5. Tie-break for top-1: highest total wins. If tied, prefer higher depth, then higher trait.
+6. Tie-break for top-2: among the remaining 4, highest total wins (same depth/trait tie-break), but PREFER a different question_type than top-1 so the interviewer gets two distinct angles.
+7. reasoning MUST include a verifier sentence — re-read one rubric score and confirm against the candidate text. If you change your mind on verification, change the score before emitting.
 
 Thinking scaffold (do this silently before emitting):
-Step 1: For each candidate, list the gap or pivot it claims to address and check that against Block B / Block C.
-Step 2: For each candidate, score the 6 dims. Do not anchor to other candidates — score absolutely against the rubric.
-Step 3: Recompute totals. Sort. Apply tie-breaks.
-Step 4: For the top-2, write the reasoning paragraph. Include the verifier sentence.
-Step 5: Re-check that top_2_ids has 2 distinct ids and both exist in ranked.
+Step 1: For each candidate, ask "if the candidate answered honestly, would I learn how they THINK/DECIDE/OWN, or just a datum?" Score depth + non_triviality from that.
+Step 2: Score all 6 dims absolutely against the rubric, not relative to other candidates.
+Step 3: Recompute totals. Sort. Apply rule 4 (demote fact-pins), then tie-breaks.
+Step 4: Write reasoning for the top-2 incl. the verifier sentence.
+Step 5: Re-check top_2_ids has 2 distinct ids that exist in ranked.
 
 Emit only the JSON object.`;
 }
