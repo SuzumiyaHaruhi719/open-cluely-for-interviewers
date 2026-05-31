@@ -20,6 +20,7 @@ const {
   getDefaultInterviewerModel
 } = require('../../../config');
 const { runExpertChain, EXPERT_ITERATION_VERSION } = require('./expert-orchestrator');
+const { logExpertRun } = require('./expert-run-logger');
 
 const STAGE1_TRIGGER_SCORE = 4;
 const MIN_ANSWER_CHARS = 12;
@@ -225,6 +226,17 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
           }
         }
       });
+      // Per-run debug log: each block's model, purpose, duration, ok/fallback,
+      // attempts, token usage. Console summary + logs/generate-q.jsonl. Wrapped
+      // so logging can never affect the returned result.
+      try {
+        logExpertRun({
+          requestId,
+          trace: expertResult.trace,
+          fallbackTriggered: expertResult.fallbackTriggered,
+          elapsedMs: expertResult.elapsedMs
+        });
+      } catch (_) { /* logging is best-effort */ }
       return {
         mode: 'expert',
         requestId,
