@@ -119,6 +119,12 @@ Hard rules — violations cause Block E to score 0 and trigger a single repair:
 2. At least 3 DISTINCT question_type values across the 5, and at least 4 of the 5 drawn from the depth set above.
 3. Every question must contain at least one anchor (3+ contiguous words) quoted in single-quotes from either the candidate answer or the resume. The anchors array must list those exact spans.
 4. Every question must force ONE OF: (a) a DECISION + the alternative they rejected + why; (b) a TRADEOFF + its cost or what broke; (c) a FAILURE/mistake + what it taught; (d) a personal OWNERSHIP boundary inside a "we"; (e) a COUNTERFACTUAL judgment; (f) a PRIORITIZATION call under conflict. If the complete, honest answer to your question is a single number, name, date, or yes/no — it is FORBIDDEN, rewrite it to probe the decision behind that datum.
+4a. FORBIDDEN FORMS (rewrite if any apply):
+   - YES/NO openings: "did you", "was there", "have you", "有没有", "是不是", "能不能", "是否". Open with "what" / "how" / "walk me through" instead.
+   - NAME-ONLY: a question whose answer is just naming a thing (which decision, which symptom, which tool, which step, WHICH BUDGET YOU CUT) WITHOUT forcing the candidate to RECONSTRUCT THE WEIGHING. It is NOT enough to ask "what alternative did you reject and why", nor "which X did you give up" — a candidate satisfies those by labeling. The strongest form opens with "walk me through" and forces a short REASONING WALK: the option that was genuinely tempting, what made it tempting, why it was ultimately wrong, and what the chosen path cost. Demand the reasoning sequence, not a label or a single named cost. CRITICAL: "what it cost" means a CONSEQUENCE or TRADEOFF (what broke, who pushed back, what you had to sacrifice) — NEVER phrase it as "what metric/number did it cost" or "in terms of a specific metric", which collapses back into a fact-pin.
+   - LIST-ONLY: "what are the two/three steps", "what factors", "which ones" — enumeration without reasoning. Force the reasoning behind the choice instead.
+4b. OWNERSHIP questions (for "we"/team-credit answers): must force the candidate's PERSONAL call AND the weighing behind it — e.g. "inside that 'we', what was the one call that was yours alone, and what did making it cost you — what did you have to give up or what nearly went wrong?" Naming the decision + an alternative is NOT enough; force the cost/tension.
+4c. CONTRADICTION / inconsistent-timeline cases: do NOT merely ask the candidate to "reconcile" or "explain the inconsistency" (that is clarification, not depth). Ask what judgment or tradeoff produced the discrepancy, or what they'd do differently now that they see it.
 5. If Block C said pivot=YES, AT LEAST 2 candidates must open a new topic (use the JD + an undrilled resume topic as anchor), still as depth-set questions.
 6. If Block B emitted overclaim_flags or contradictions, AT LEAST 1 candidate must surface it — but as a judgment probe ("you said X here and Y on your resume — walk me through what actually happened"), NOT a gotcha pin.
 7. Never repeat or paraphrase a prior question.
@@ -129,6 +135,9 @@ Style:
 
 Self-check before emitting (silent):
 - For EACH candidate: if its complete answer could be a single number/name/date/yes-no, REWRITE it to probe the reasoning, tradeoff, ownership, or lesson behind it.
+- For EACH candidate: does it open with a yes/no form, or ask only to NAME/LIST something? If so, REWRITE.
+- DEPTH TEST (the bar most candidates miss): could the candidate fully answer by just NAMING a decision and an alternative? If yes, it is too shallow — REWRITE so answering REQUIRES reconstructing the weighing: what they gave up, what it cost elsewhere, what nearly broke, or why the tempting option was wrong. Demand the trade, not the label.
+- For EACH ownership candidate: can it be answered with "we"? If so, REWRITE to force the personal call + its reasoning together.
 - Count question_types — must be >=3 distinct, with >=4 from the depth set.
 - For each candidate, find its anchor substring in the answer or resume. If even one fails, fix that candidate.
 - If pivot=YES, count pivot-opening candidates — must be >=2.
