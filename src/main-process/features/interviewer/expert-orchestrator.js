@@ -92,7 +92,10 @@ const BLOCK_MODELS = {
   B: FLASH_MODEL,
   C: FLASH_MODEL,
   D: FLASH_MODEL,
-  E: PRO_MODEL,
+  // EXPERIMENT (latency): E was PRO_MODEL (deep CoT) and dominated the chain at
+  // ~255s / 61% of total. Trying FLASH to see the latency↓ vs ranking-quality
+  // trade-off. Revert to PRO_MODEL if the top-2 question selection degrades.
+  E: FLASH_MODEL,
   F: FLASH_MODEL,
   G: FLASH_MODEL
 };
