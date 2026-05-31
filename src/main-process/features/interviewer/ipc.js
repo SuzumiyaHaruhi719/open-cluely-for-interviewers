@@ -10,11 +10,13 @@ function registerInterviewerIpc({ ipcMain, interviewerRuntime }) {
         ? payload.emotion.confidence
         : null;
       const emotion = emotionTag ? { tag: emotionTag, confidence: emotionConfidence } : null;
+      const requestId = payload && payload.requestId != null ? String(payload.requestId) : null;
 
       const result = await interviewerRuntime.analyzeCandidateAnswer({
         candidateAnswer,
         questionHistory,
-        emotion
+        emotion,
+        requestId
       });
 
       return { success: true, ...result };
