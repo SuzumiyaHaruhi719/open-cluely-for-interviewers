@@ -30,6 +30,9 @@ function createAssistantWindow({
     maxHeight: height,
     x,
     y,
+    // Branded taskbar / window icon (mic glyph on a dark indigo-glow tile).
+    // app.getAppPath() = repo root in dev, app dir when packaged.
+    icon: path.join(app.getAppPath(), 'assets', 'app-icon.ico'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -44,16 +47,15 @@ function createAssistantWindow({
     },
     frame: false,
     transparent: true,
-    alwaysOnTop: true,
-    skipTaskbar: true,
+    alwaysOnTop: false,
+    skipTaskbar: false,
     resizable: true,
-    minimizable: false,
+    minimizable: true,
     maximizable: false,
-    closable: false,
+    closable: true,
     focusable: true,
     show: false,
     opacity: windowOpacity,
-    type: 'toolbar',
     acceptFirstMouse: false,
     disableAutoHideCursor: true,
     enableLargerThanScreen: false,
@@ -64,7 +66,7 @@ function createAssistantWindow({
     // is behind it. Dev paints a dark solid backdrop so the window is
     // unmistakably visible on Win11 where transparent+content-protection
     // sometimes composes to a blank rectangle on certain GPU drivers.
-    backgroundColor: nodeEnv === 'development' ? '#1a1a2e' : '#00000000'
+    backgroundColor: '#00000000'
   });
 
   const htmlPath = path.join(__dirname, 'renderer.html');
@@ -136,13 +138,11 @@ function createAssistantWindow({
       visibleOnFullScreen: true,
       skipTransformProcessType: true
     });
-    mainWindow.setAlwaysOnTop(true, 'pop-up-menu', 1);
     app.dock.hide();
     mainWindow.setHiddenInMissionControl(true);
   } else if (process.platform === 'win32') {
     console.log('Applying Windows stealth settings');
-    mainWindow.setSkipTaskbar(true);
-    mainWindow.setAlwaysOnTop(true, 'pop-up-menu');
+    mainWindow.setSkipTaskbar(false);
     mainWindow.setAppDetails({
       appId: 'SystemProcess',
       appIconPath: '',
@@ -183,7 +183,11 @@ function createAssistantWindow({
       const app = document.getElementById('app');
       if (app) {
         app.style.visibility = 'visible';
-        app.style.display = 'flex';
+        // The rebuilt shell is a CSS grid (.app-shell { display:grid }). Do NOT
+        // force 'flex' here — an inline flex overrides the grid and lays the
+        // titlebar + 3-pane body out side-by-side (broken layout + the drag
+        // region ends up unreachable). Match the stylesheet.
+        app.style.display = 'grid';
         console.log('App container made visible');
       }
 
