@@ -83,10 +83,16 @@ function registerSettingsIpc({
       : geminiRuntime.getDefaultDashscopeAiModel();
     const xfyunAppId = typeof appState?.xfyunAppId === 'string' ? appState.xfyunAppId : '';
     const xfyunApiKey = typeof appState?.xfyunApiKey === 'string' ? appState.xfyunApiKey : '';
+    // Volcengine ASR creds (staged — returned raw so the Settings UI can show
+    // them; nothing consumes them for capture yet).
+    const volcAppId = typeof appState?.volcAppId === 'string' ? appState.volcAppId : '';
+    const volcAccessToken = typeof appState?.volcAccessToken === 'string' ? appState.volcAccessToken : '';
+    const volcResourceId = typeof appState?.volcResourceId === 'string' ? appState.volcResourceId : '';
     const resumeText = typeof appState?.resumeText === 'string' ? appState.resumeText : '';
     const jobDescription = typeof appState?.jobDescription === 'string' ? appState.jobDescription : '';
     const asrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
-    const interviewerMode = appState?.interviewerMode === 'expert' ? 'expert' : 'fast';
+    const interviewerMode = ['expert', 'customize'].includes(appState?.interviewerMode) ? appState.interviewerMode : 'fast';
+    const activePipelineId = typeof appState?.activePipelineId === 'string' ? appState.activePipelineId : null;
 
     return {
       asrProvider,
@@ -94,9 +100,13 @@ function registerSettingsIpc({
       dashscopeAiModel,
       xfyunAppId,
       xfyunApiKey,
+      volcAppId,
+      volcAccessToken,
+      volcResourceId,
       resumeText,
       jobDescription,
       interviewerMode,
+      activePipelineId,
       hasDashscopeApiKey: dashscopeApiKey.length > 0,
       hasXfyunCredentials: xfyunAppId.length > 0 && xfyunApiKey.length > 0,
       dashscopeAiModels: geminiRuntime.getDashscopeAiModels(),
@@ -145,6 +155,12 @@ function registerSettingsIpc({
       const nextDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(settings.dashscopeAiModel);
       const nextXfyunAppId = String(settings.xfyunAppId || '').trim();
       const nextXfyunApiKey = String(settings.xfyunApiKey || '').trim();
+      // Volcengine ASR creds (staged). Persisted raw alongside the other
+      // provider keys; the offline ASR seam will read these once a 'volcengine'
+      // provider lands (see settings-panel-manager.js seam comment).
+      const nextVolcAppId = String(settings.volcAppId || '').trim();
+      const nextVolcAccessToken = String(settings.volcAccessToken || '').trim();
+      const nextVolcResourceId = String(settings.volcResourceId || '').trim();
       const requestedAsrProvider = String(settings.asrProvider || '').trim().toLowerCase();
       const nextAsrProvider = requestedAsrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
       const nextResumeText = String(settings.resumeText || '').trim();
@@ -169,6 +185,9 @@ function registerSettingsIpc({
         dashscopeAiModel: nextDashscopeAiModel,
         xfyunAppId: nextXfyunAppId,
         xfyunApiKey: nextXfyunApiKey,
+        volcAppId: nextVolcAppId,
+        volcAccessToken: nextVolcAccessToken,
+        volcResourceId: nextVolcResourceId,
         resumeText: nextResumeText,
         jobDescription: nextJobDescription,
         programmingLanguage: nextProgrammingLanguage,

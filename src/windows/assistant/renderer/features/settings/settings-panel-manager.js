@@ -1,9 +1,58 @@
+// Settings panel manager — AUTO-SAVE.
+//
+// There is no manual Save button: every field persists on change. Selects,
+// toggles and the opacity range save on `change` (an atomic user action, no
+// debounce). Text inputs and textareas debounce on `input` (~500ms) so we
+// don't write on every keystroke, and also flush on `change` (fires on blur).
+//
+// A subtle aria-live "Saved ✓" pip confirms each write. The onSettingsSaved
+// callback still fires after every successful save so the renderer can refresh
+// API-key availability / UI state — the same side-effects the old click-Save
+// flow produced.
+//
+// SEAM — offline ASR provider (Volcengine / 火山引擎):
+//   The offline interview path currently runs on the existing mic→Paraformer
+//   pipeline. Once the Volcengine creds below (volcAppId / volcAccessToken /
+//   volcResourceId) are set, offline ASR should switch to a 'volcengine'
+//   provider (a future ASR-router change). These fields only capture + persist
+//   the creds; no client connects to Volcengine yet.
+//
+// Field groups (each dep is optional; a missing element is skipped):
+//   - API keys:        DashScope key, Xfyun app-id + key (masked, show/hide)
+//   - Volcengine ASR:  volc app-id + access-token (masked, show/hide) + resource-id
+//   - ASR provider:    paraformer | xfyun  (toggles the provider sub-groups)
+//   - AI model:        DashScope model select
+//   - Interviewer mode: fast | expert
+//   - Programming lang: select
+//   - Audio devices:   mic + system source (reuses the preserved helpers)
+//   - Theme:           light | dark  (persisted via onThemeChange, NOT save-settings)
+//   - Stealth:         hide-from-screen-capture toggle (via setStealth)
+//   - Window opacity:  1..10 range
+//
+// PRESERVED EXPORTS (do not rename or change signatures):
+//   - localStorage keys MIC_DEVICE_STORAGE_KEY / SYSTEM_SOURCE_STORAGE_KEY
+//   - getSelectedMicDeviceId, getSelectedSystemSourceValue,
+//     parseSystemSourceSelection  (module-level named exports)
+//   - populateSystemSourceOptions — kept as a factory-internal helper (it
+//     closes over settingSystemSource) AND re-exposed on the returned manager
+//     object, preserving its original name and one-arg(devices) behavior.
+
 function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 }
 
 export const MIC_DEVICE_STORAGE_KEY = 'open-cluely.audioDevice.mic';
 export const SYSTEM_SOURCE_STORAGE_KEY = 'open-cluely.audioDevice.system';
+
+// Debounce window for text/textarea inputs. Selects/toggles bypass this and
+// save immediately on `change`.
+const TEXT_INPUT_SAVE_DEBOUNCE_MS = 500;
+// How long the "Saved ✓" pip stays visible after a successful write.
+const SAVED_PIP_VISIBLE_MS = 1600;
+// Settings close exit-animation duration. MUST match the `.is-closing` exit
+// keyframes in settings.css (--dur-2 ≈ 180ms); 200 gives the animation room to
+// finish before the panel is display:none'd.
+const SETTINGS_CLOSE_MS = 200;
 
 const LOOPBACK_LABEL_PATTERNS = [
     /stereo mix/i,
@@ -102,6 +151,10 @@ export function createSettingsPanelManager({
     settingXfyunAppId,
     settingXfyunKey,
     toggleXfyunKeyVisibilityBtn,
+    settingVolcAppId,
+    settingVolcAccessToken,
+    toggleVolcAccessTokenVisibilityBtn,
+    settingVolcResourceId,
     settingResumeText,
     settingJobDescription,
     settingInterviewerMode,
@@ -111,9 +164,17 @@ export function createSettingsPanelManager({
     settingSystemSource,
     refreshAudioDevicesBtn,
     openSoundSettingsBtn,
+    // Optional new deps (all guarded — manager works if any are absent):
+    settingTheme,            // <select>/<input> light|dark, OR a custom toggle
+    settingStealthToggle,    // checkbox: hide-from-screen-capture
+    settingsStatusIndicator, // element where "Saving…/Saved ✓" is announced
+    saveBtn,                 // legacy manual Save button — auto-save makes it
+                             // redundant; if present we repurpose it to flush.
     applySettingsShortcutConfig,
     showFeedback,
-    onSettingsSaved
+    onSettingsSaved,
+    onThemeChange,           // (theme) => void — persist + apply theme
+    setStealth               // (enabled) => void|Promise — toggle stealth
 }) {
     function normalizeWindowOpacityLevel(value) {
         const parsedValue = Number.parseInt(String(value ?? ''), 10);
@@ -126,6 +187,35 @@ export function createSettingsPanelManager({
     function updateWindowOpacityValueLabel(value) {
         if (!settingWindowOpacityValue) return;
         settingWindowOpacityValue.textContent = `${normalizeWindowOpacityLevel(value)}/10`;
+    }
+
+    // ---- "Saving… / Saved ✓" status indicator -------------------------------
+    // Subtle, aria-live. We never surface a toast for routine auto-saves (that
+    // belonged to the old manual flow); the pip is the sole confirmation. We
+    // do still call showFeedback on *errors* so a failed save is loud.
+    let savedPipTimer = null;
+
+    function setStatusIndicator(state) {
+        // state: 'idle' | 'saving' | 'saved' | 'error'
+        if (!settingsStatusIndicator) return;
+        if (savedPipTimer) {
+            clearTimeout(savedPipTimer);
+            savedPipTimer = null;
+        }
+        settingsStatusIndicator.dataset.state = state;
+        if (state === 'saving') {
+            settingsStatusIndicator.textContent = 'Saving…';
+        } else if (state === 'saved') {
+            settingsStatusIndicator.textContent = 'Saved ✓';
+            savedPipTimer = setTimeout(() => {
+                savedPipTimer = null;
+                setStatusIndicator('idle');
+            }, SAVED_PIP_VISIBLE_MS);
+        } else if (state === 'error') {
+            settingsStatusIndicator.textContent = 'Save failed';
+        } else {
+            settingsStatusIndicator.textContent = '';
+        }
     }
 
     function setApiKeyFieldVisibility(inputElement, toggleButton, providerName, visible) {
@@ -444,6 +534,93 @@ export function createSettingsPanelManager({
         });
     }
 
+    // Theme + stealth read from their own IPC paths, not save-settings:
+    //   - theme persists via onThemeChange → set-theme-preference IPC.
+    //   - stealth toggles via setStealth → toggleStealth IPC (which also flips
+    //     setContentProtection live). save-settings round-trips the *existing*
+    //     hideFromScreenCapture value, so it must not own the toggle.
+    function readThemeValue() {
+        if (!settingTheme) return null;
+        if (settingTheme.type === 'checkbox') {
+            return settingTheme.checked ? 'dark' : 'light';
+        }
+        const value = String(settingTheme.value || '').trim().toLowerCase();
+        return value === 'dark' ? 'dark' : 'light';
+    }
+
+    function applyThemeToControl(theme) {
+        if (!settingTheme) return;
+        const normalized = theme === 'dark' ? 'dark' : 'light';
+        if (settingTheme.type === 'checkbox') {
+            settingTheme.checked = normalized === 'dark';
+        } else {
+            settingTheme.value = normalized;
+        }
+    }
+
+    function bindThemeControl() {
+        if (!settingTheme) return;
+        settingTheme.addEventListener('change', () => {
+            const theme = readThemeValue();
+            try {
+                onThemeChange?.(theme);
+            } catch (error) {
+                console.error('Failed to apply theme change:', error);
+            }
+            // Theme has its own persistence; reflect the same pip so the user
+            // still gets the "Saved ✓" confirmation.
+            setStatusIndicator('saved');
+        });
+    }
+
+    function bindStealthControl() {
+        if (!settingStealthToggle) return;
+        settingStealthToggle.addEventListener('change', () => {
+            const enabled = Boolean(settingStealthToggle.checked);
+            try {
+                const maybePromise = setStealth?.(enabled);
+                if (maybePromise && typeof maybePromise.catch === 'function') {
+                    maybePromise.catch((error) => {
+                        console.error('Failed to toggle stealth:', error);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to toggle stealth:', error);
+            }
+            setStatusIndicator('saved');
+        });
+    }
+
+    // Interviewer mode is a segmented two-button toggle (Fast / Expert), NOT a
+    // <select>. `settingInterviewerMode` is the container; the active button
+    // carries .is-active + aria-checked. These helpers read / set / bind it.
+    function getInterviewerMode() {
+        if (!settingInterviewerMode) return 'fast';
+        const active = settingInterviewerMode.querySelector('.mode-segmented__btn.is-active');
+        const m = active && active.dataset.mode;
+        return (m === 'expert' || m === 'customize') ? m : 'fast';
+    }
+
+    function setInterviewerMode(mode) {
+        if (!settingInterviewerMode) return;
+        const normalized = (mode === 'expert' || mode === 'customize') ? mode : 'fast';
+        settingInterviewerMode.querySelectorAll('.mode-segmented__btn').forEach((btn) => {
+            const isActive = btn.dataset.mode === normalized;
+            btn.classList.toggle('is-active', isActive);
+            btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+    }
+
+    function bindInterviewerModeToggle() {
+        if (!settingInterviewerMode) return;
+        settingInterviewerMode.querySelectorAll('.mode-segmented__btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                setInterviewerMode(btn.dataset.mode);
+                saveSettings();
+            });
+        });
+    }
+
     async function openSettings() {
         if (!settingsPanel) return;
 
@@ -469,13 +646,26 @@ export function createSettingsPanelManager({
                 if (settingDashscopeKey) settingDashscopeKey.value = settings.dashscopeApiKey || '';
                 if (settingXfyunAppId) settingXfyunAppId.value = settings.xfyunAppId || '';
                 if (settingXfyunKey) settingXfyunKey.value = settings.xfyunApiKey || '';
+                if (settingVolcAppId) settingVolcAppId.value = settings.volcAppId || '';
+                if (settingVolcAccessToken) settingVolcAccessToken.value = settings.volcAccessToken || '';
+                if (settingVolcResourceId) settingVolcResourceId.value = settings.volcResourceId || '';
                 if (settingResumeText) settingResumeText.value = settings.resumeText || '';
                 if (settingJobDescription) settingJobDescription.value = settings.jobDescription || '';
-                if (settingInterviewerMode) settingInterviewerMode.value = settings.interviewerMode === 'expert' ? 'expert' : 'fast';
+                setInterviewerMode(settings.interviewerMode);
                 if (settingWindowOpacity) {
                     settingWindowOpacity.value = normalizeWindowOpacityLevel(settings.windowOpacityLevel);
                 }
                 updateWindowOpacityValueLabel(settings.windowOpacityLevel);
+
+                // Theme: prefer the persisted app-state preference; if null,
+                // leave the control at its current (renderer-resolved) value.
+                if (settingTheme && (settings.themePreference === 'dark' || settings.themePreference === 'light')) {
+                    applyThemeToControl(settings.themePreference);
+                }
+                // Stealth reflects the live environment flag.
+                if (settingStealthToggle) {
+                    settingStealthToggle.checked = Boolean(settings.hideFromScreenCapture);
+                }
             }
         } catch (error) {
             console.error('Failed to load settings:', error);
@@ -483,19 +673,44 @@ export function createSettingsPanelManager({
 
         setApiKeyFieldVisibility(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope', false);
         setApiKeyFieldVisibility(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei', false);
+        setApiKeyFieldVisibility(settingVolcAccessToken, toggleVolcAccessTokenVisibilityBtn, 'Volcengine', false);
+        setStatusIndicator('idle');
 
-        await refreshAudioDeviceOptions();
-
+        // Show the panel IMMEDIATELY. Audio-device enumeration is deferred and
+        // intentionally NOT awaited: listAudioProcesses spawns the loopback
+        // sidecar .exe and getDesktopSources enumerates screens — both are slow
+        // (often >1s with HDR/dxgi retries), and awaiting them here made the
+        // panel appear only AFTER they finished (the "opens slowly" lag). The
+        // device dropdowns now fill in a beat later, in the background.
+        settingsPanel.classList.remove('is-closing');
         settingsPanel.classList.remove('hidden');
+
+        refreshAudioDeviceOptions().catch((error) => {
+            console.warn('Audio device enumeration failed:', error);
+        });
     }
 
+    // Closing plays an exit animation (scrim fades + dialog scales/drops away)
+    // before the panel is display:none'd. .is-closing triggers the exit
+    // keyframes; we hide only after they finish (SETTINGS_CLOSE_MS matches the
+    // CSS exit duration). Previously the panel just snapped shut with no motion.
+    let closeTimer = null;
     function closeSettings() {
-        if (settingsPanel) settingsPanel.classList.add('hidden');
         setApiKeyFieldVisibility(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope', false);
         setApiKeyFieldVisibility(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei', false);
+        setApiKeyFieldVisibility(settingVolcAccessToken, toggleVolcAccessTokenVisibilityBtn, 'Volcengine', false);
+        if (!settingsPanel || settingsPanel.classList.contains('hidden')) return;
+        if (closeTimer) clearTimeout(closeTimer);
+        settingsPanel.classList.add('is-closing');
+        closeTimer = setTimeout(() => {
+            closeTimer = null;
+            settingsPanel.classList.add('hidden');
+            settingsPanel.classList.remove('is-closing');
+        }, SETTINGS_CLOSE_MS);
     }
 
     async function saveSettings() {
+        setStatusIndicator('saving');
         try {
             if (!settingProgrammingLanguage || settingProgrammingLanguage.options.length === 0) {
                 throw new Error('Programming languages are not configured.');
@@ -507,12 +722,19 @@ export function createSettingsPanelManager({
                 dashscopeAiModel: settingDashscopeAiModel ? settingDashscopeAiModel.value : '',
                 xfyunAppId: settingXfyunAppId ? settingXfyunAppId.value.trim() : '',
                 xfyunApiKey: settingXfyunKey ? settingXfyunKey.value.trim() : '',
-                resumeText: settingResumeText ? settingResumeText.value : '',
-                jobDescription: settingJobDescription ? settingJobDescription.value : '',
-                interviewerMode: settingInterviewerMode && settingInterviewerMode.value === 'expert' ? 'expert' : 'fast',
+                volcAppId: settingVolcAppId ? settingVolcAppId.value.trim() : '',
+                volcAccessToken: settingVolcAccessToken ? settingVolcAccessToken.value.trim() : '',
+                volcResourceId: settingVolcResourceId ? settingVolcResourceId.value.trim() : '',
+                interviewerMode: getInterviewerMode(),
                 programmingLanguage: settingProgrammingLanguage.value,
                 windowOpacityLevel: normalizeWindowOpacityLevel(settingWindowOpacity?.value)
             };
+            // resumeText / jobDescription are no longer owned by Settings — they
+            // belong to the active interview (resume via the rail dropzone, JD via
+            // the rail input). Only include them if a legacy field still exists,
+            // so auto-save can never clobber the per-interview values.
+            if (settingResumeText) settings.resumeText = settingResumeText.value;
+            if (settingJobDescription) settings.jobDescription = settingJobDescription.value;
 
             const result = await window.electronAPI.saveSettings(settings);
 
@@ -525,15 +747,19 @@ export function createSettingsPanelManager({
                 // Auto-save fires on every field change, so we don't pop a
                 // toast on success and don't close the panel — both were
                 // side-effects of the old click-Save-then-close flow. The
-                // user closes the panel explicitly via the close button.
+                // user closes the panel explicitly via the close button. The
+                // "Saved ✓" pip is the confirmation instead.
+                setStatusIndicator('saved');
                 onSettingsSaved?.({ ...settings, micDeviceId, systemSourceValue });
                 return { success: true, settings: { ...settings, micDeviceId, systemSourceValue } };
             }
 
+            setStatusIndicator('error');
             showFeedback?.(`Failed to save: ${result.error}`, 'error');
             return { success: false, error: result.error || 'Failed to save settings' };
         } catch (error) {
             console.error('Failed to save settings:', error);
+            setStatusIndicator('error');
             showFeedback?.('Failed to save settings', 'error');
             return { success: false, error: error.message || 'Failed to save settings' };
         }
@@ -544,15 +770,36 @@ export function createSettingsPanelManager({
     // and textareas debounce on `input` so we don't write on every keystroke;
     // we also save on `change` (fires on blur) to flush whatever's pending.
     //
+    // Theme and stealth are intentionally NOT in these lists — they persist
+    // through their own IPC (see bindThemeControl / bindStealthControl) and
+    // must not be written through save-settings.
+    //
     // The existing onSettingsSaved callback (wired by the renderer) refreshes
     // API-key availability and UI state, so auto-save side-effects match what
     // the old manual Save button used to do.
+    let saveTimer = null;
+
+    function flushSave() {
+        if (saveTimer) {
+            clearTimeout(saveTimer);
+            saveTimer = null;
+        }
+        saveSettings();
+    }
+
+    function queueSave() {
+        if (saveTimer) clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+            saveTimer = null;
+            saveSettings();
+        }, TEXT_INPUT_SAVE_DEBOUNCE_MS);
+    }
+
     function bindAutoSave() {
         const immediateFields = [
             settingAsrProvider,
             settingDashscopeAiModel,
             settingProgrammingLanguage,
-            settingInterviewerMode,
             settingWindowOpacity,
             settingMicDevice,
             settingSystemSource
@@ -562,19 +809,13 @@ export function createSettingsPanelManager({
             el.addEventListener('change', () => { saveSettings(); });
         });
 
-        let saveTimer = null;
-        const queueSave = () => {
-            if (saveTimer) clearTimeout(saveTimer);
-            saveTimer = setTimeout(() => { saveTimer = null; saveSettings(); }, 600);
-        };
-        const flushSave = () => {
-            if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
-            saveSettings();
-        };
         const debouncedFields = [
             settingDashscopeKey,
             settingXfyunAppId,
             settingXfyunKey,
+            settingVolcAppId,
+            settingVolcAccessToken,
+            settingVolcResourceId,
             settingResumeText,
             settingJobDescription
         ];
@@ -585,20 +826,39 @@ export function createSettingsPanelManager({
         });
     }
 
+    // The manual Save button is removed from the UI; auto-save is the sole
+    // persistence mechanism. If a legacy button element is still wired in, we
+    // repurpose its click to flush any pending debounced write (and add an
+    // accessible hint) rather than leaving a dead control.
+    function bindLegacySaveButton() {
+        if (!saveBtn) return;
+        saveBtn.addEventListener('click', (event) => {
+            event?.preventDefault?.();
+            flushSave();
+        });
+    }
+
     bindApiKeyVisibilityToggle(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope');
     bindApiKeyVisibilityToggle(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei');
+    bindApiKeyVisibilityToggle(settingVolcAccessToken, toggleVolcAccessTokenVisibilityBtn, 'Volcengine');
     bindAsrProviderToggle();
+    bindInterviewerModeToggle();
     bindRefreshAudioDevices();
     bindOpenSoundSettings();
+    bindThemeControl();
+    bindStealthControl();
     bindAutoSave();
+    bindLegacySaveButton();
 
     return {
         normalizeWindowOpacityLevel,
         updateWindowOpacityValueLabel,
+        setStatusIndicator,
         openSettings,
         closeSettings,
         saveSettings,
         refreshAudioDeviceOptions,
+        populateSystemSourceOptions,
         getSelectedMicDeviceId,
         getSelectedSystemSourceValue,
         parseSystemSourceSelection

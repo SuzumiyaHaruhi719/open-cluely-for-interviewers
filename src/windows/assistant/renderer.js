@@ -5,6 +5,7 @@ import { buildFilteredAiContextBundle as buildAiContextBundle } from './renderer
 import { updateMessageAiToggleUi as syncMessageAiToggleUi } from './renderer/features/ai-context/toggle-ui.js';
 import { createChatUiManager } from './renderer/features/chat/chat-ui-manager.js';
 import { createProgressCard } from './renderer/features/chat/progress-card.js';
+import { createPipelineStudio } from './renderer/features/pipeline/pipeline-studio.js';
 import { createWindowAdjustmentManager } from './renderer/features/layout/window-adjustments.js';
 import { setupEventListeners as setupEventListenersModule } from './renderer/features/listeners/event-listeners.js';
 import { setupIpcListeners as setupIpcListenersModule } from './renderer/features/listeners/ipc-listeners.js';
@@ -265,7 +266,7 @@ async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
 
         interviewerProgressCard.finish(requestId);
 
-        if (response.mode === 'expert') {
+        if (response.mode === 'expert' || response.mode === 'custom') {
             if (response.shouldShowFollowUps) {
                 renderExpertFollowUp(response.output, response.tokensUsed, response.elapsedMs);
             } else {
@@ -736,6 +737,41 @@ const interviewerProgressCard = createProgressCard({
     isAutoScrollEnabled
 });
 let interviewerRequestSeq = 0;
+
+// ── Customize mode + Pipeline Studio (SP2/SP3) ──────────────────────────────
+let activePipelineId = null;
+const customizeRowEl = document.getElementById('customize-row');
+const customizePipelineSelect = document.getElementById('customize-pipeline-select');
+const openStudioBtn = document.getElementById('open-pipeline-studio');
+const pipelineStudio = createPipelineStudio({
+    api: window.electronAPI,
+    showFeedback: (m, t) => showFeedback(m, t),
+    onUsed: (id, name) => {
+        activePipelineId = id;
+        interviewerMode = 'customize';
+        paintModeIndicator();
+        refreshCustomizePicker();
+        showFeedback(`Using pipeline: ${name}`, 'success');
+    }
+});
+async function refreshCustomizePicker() {
+    if (!customizePipelineSelect || !window.electronAPI?.pipelineList) return;
+    const r = await window.electronAPI.pipelineList();
+    const items = (r && r.pipelines) || [];
+    customizePipelineSelect.innerHTML = items.map((p) => `<option value="${p.id}">${p.builtin ? '★ ' : ''}${p.name}</option>`).join('');
+    if (activePipelineId) customizePipelineSelect.value = activePipelineId;
+}
+function setupPipelineStudio() {
+    if (openStudioBtn) openStudioBtn.addEventListener('click', () => pipelineStudio.open(activePipelineId || ''));
+    if (customizePipelineSelect) {
+        customizePipelineSelect.addEventListener('change', async () => {
+            const id = customizePipelineSelect.value;
+            const r = await window.electronAPI.pipelineSetActive({ id });
+            if (r && r.success) { activePipelineId = id; interviewerMode = 'customize'; paintModeIndicator(); showFeedback('Active pipeline set', 'success'); }
+            else showFeedback(`Failed: ${r && r.error}`, 'error');
+        });
+    }
+}
 const settingsPanelManager = createSettingsPanelManager({
     settingsPanel,
     settingDashscopeAiModel,
@@ -1421,6 +1457,7 @@ async function init() {
     setupJobDescriptionInput();
     setupSessionContextPanel();
     setupInterviewerProgressListener();
+    setupPipelineStudio();
     if (SEED_SAMPLE_INTERVIEW) seedSampleInterview();
     // Components are mounted now, so reflect any persisted resume/JD from the
     // settings we loaded above (loadShortcutConfig runs before the components
@@ -1652,9 +1689,12 @@ function applyApiKeyAvailabilityFromSettings(settings) {
 // Track the interviewer mode from settings so the topbar pill + new-session
 // `mode` stay in sync with what the backend orchestrator will actually run.
 function applyInterviewerModeFromSettings(settings) {
-    const mode = settings && settings.interviewerMode === 'expert' ? 'expert' : 'fast';
-    interviewerMode = mode;
+    const m = settings && settings.interviewerMode;
+    interviewerMode = (m === 'expert' || m === 'customize') ? m : 'fast';
+    if (settings && typeof settings.activePipelineId === 'string') activePipelineId = settings.activePipelineId;
     paintModeIndicator();
+    if (customizeRowEl) customizeRowEl.classList.toggle('is-visible', interviewerMode === 'customize');
+    if (interviewerMode === 'customize') refreshCustomizePicker();
 }
 
 function paintModeIndicator() {
@@ -1663,7 +1703,7 @@ function paintModeIndicator() {
         modeIndicatorEl.setAttribute('title', `Interviewer mode: ${interviewerMode}`);
     }
     if (modeIndicatorLabel) {
-        modeIndicatorLabel.textContent = interviewerMode === 'expert' ? 'Expert' : 'Fast';
+        modeIndicatorLabel.textContent = interviewerMode === 'expert' ? 'Expert' : (interviewerMode === 'customize' ? 'Customize' : 'Fast');
     }
 }
 

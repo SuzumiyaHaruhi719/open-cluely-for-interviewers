@@ -1,0 +1,114 @@
+/* Pipeline Studio (SP3) — full-window node editor overlay. Colours from the
+ * shared tokens (--ai/--bg/--fg/--hairline); no hard-coded palette. */
+.pipeline-studio {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg, #0d0f14);
+  color: var(--fg, #e7e9ee);
+  font-family: var(--font-body, system-ui);
+}
+.pipeline-studio.hidden { display: none; }
+
+.ps-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--hairline, #232838);
+  background: color-mix(in srgb, var(--ai) 6%, var(--bg-elev, #14171f));
+}
+.ps-title { font-weight: 700; color: var(--ai); margin-right: 8px; }
+.ps-spacer { flex: 1; }
+.ps-select, .ps-input {
+  background: var(--bg-elev, #14171f);
+  color: var(--fg);
+  border: 1px solid var(--hairline, #232838);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.ps-input { width: 160px; }
+.ps-btn {
+  background: var(--bg-elev, #14171f);
+  color: var(--fg);
+  border: 1px solid var(--hairline, #232838);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ps-btn:hover { border-color: color-mix(in srgb, var(--ai) 50%, var(--hairline)); }
+.ps-btn--primary { background: var(--ai); border-color: var(--ai); color: white; }
+
+.ps-body { flex: 1; display: flex; min-height: 0; }
+
+.ps-palette {
+  width: 160px;
+  flex: none;
+  border-right: 1px solid var(--hairline, #232838);
+  padding: 10px 8px;
+  overflow-y: auto;
+}
+.ps-palette__title { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-subtle, #8a90a0); margin-bottom: 8px; }
+.ps-palette__item {
+  display: flex; justify-content: space-between; align-items: center; gap: 6px;
+  width: 100%; margin-bottom: 6px; padding: 7px 8px;
+  background: var(--bg-elev, #14171f); border: 1px solid var(--hairline, #232838);
+  border-radius: 6px; color: var(--fg); cursor: pointer; font-size: 12px; text-align: left;
+}
+.ps-palette__item:hover { border-color: var(--ai); }
+.ps-palette__type { font-size: 10px; color: var(--ai); opacity: .8; }
+
+.ps-canvas-wrap { flex: 1; min-width: 0; overflow: hidden; }
+.ps-canvas {
+  position: relative; width: 100%; height: 100%;
+  overflow: auto;
+  background-image: radial-gradient(color-mix(in srgb, var(--hairline) 60%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.ps-wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.ps-wire { fill: none; stroke: var(--ai); stroke-width: 2; opacity: .75; }
+
+.ps-node {
+  position: absolute; width: 168px;
+  background: color-mix(in srgb, var(--ai) 5%, var(--bg-elev, #14171f));
+  border: 1px solid color-mix(in srgb, var(--ai) 30%, var(--hairline));
+  border-radius: 8px; user-select: none;
+}
+.ps-node.is-selected { border-color: var(--ai); box-shadow: 0 0 0 1px var(--ai); }
+.ps-node__hdr { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; font-size: 12px; font-weight: 600; cursor: grab; border-bottom: 1px solid var(--hairline); }
+.ps-node__del { background: none; border: none; color: var(--fg-subtle); cursor: pointer; font-size: 11px; }
+.ps-node__del:hover { color: #ff6b6b; }
+.ps-node__id { padding: 2px 8px; font-size: 10px; color: var(--fg-subtle, #8a90a0); }
+.ps-node__ports { display: flex; justify-content: space-between; padding: 4px 0 8px; }
+.ps-ports-in { display: flex; flex-direction: column; gap: 3px; }
+.ps-port { display: flex; align-items: center; gap: 4px; font-size: 9px; color: var(--fg-subtle); cursor: crosshair; padding: 1px 4px; }
+.ps-port--out { flex-direction: row; align-self: flex-end; }
+.ps-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ai); border: 2px solid var(--bg); }
+.ps-port--in .ps-dot { margin-left: -10px; }
+.ps-port--out .ps-dot { margin-right: -10px; }
+.ps-portlbl { white-space: nowrap; }
+
+.ps-config { width: 280px; flex: none; border-left: 1px solid var(--hairline); padding: 12px; overflow-y: auto; }
+.ps-config__empty { color: var(--fg-subtle); font-size: 12px; }
+.ps-config__title { font-size: 13px; margin: 0 0 10px; color: var(--ai); }
+.ps-config__id { font-size: 10px; color: var(--fg-subtle); font-weight: 400; }
+.ps-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; font-size: 11px; color: var(--fg-subtle); }
+.ps-field--row { flex-direction: row; align-items: center; gap: 8px; }
+.ps-field select, .ps-field input, .ps-field textarea {
+  background: var(--bg-elev, #14171f); color: var(--fg); border: 1px solid var(--hairline); border-radius: 5px; padding: 5px 7px; font-size: 12px; font-family: inherit;
+}
+.ps-field textarea { resize: vertical; font-family: var(--font-mono, monospace); font-size: 11px; }
+.ps-muted { color: var(--fg-subtle); }
+
+.ps-status { padding: 6px 12px; border-top: 1px solid var(--hairline); font-size: 11px; min-height: 16px; color: var(--fg-subtle); }
+.ps-status[data-kind="ok"] { color: #57d9a3; }
+.ps-status[data-kind="error"] { color: #ff7a7a; }
+
+/* The Customize segment + active-pipeline picker in settings. */
+.customize-row { display: none; gap: 8px; margin-top: 8px; align-items: center; }
+.customize-row.is-visible { display: flex; }
+.customize-select { flex: 1; }

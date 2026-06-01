@@ -5,29 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interviewer Copilot</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Component partials (own their own rules; styles.css must not duplicate them). -->
+  <link rel="stylesheet" href="renderer/features/history/history-sidebar.css">
+  <link rel="stylesheet" href="renderer/features/audio/channel-control.css">
+  <link rel="stylesheet" href="renderer/features/resume/resume-dropzone.css">
+  <link rel="stylesheet" href="renderer/features/chat/chat.css">
+  <link rel="stylesheet" href="renderer/features/context/session-context.css">
+  <link rel="stylesheet" href="renderer/features/session/interview-type.css">
+  <link rel="stylesheet" href="renderer/features/settings/settings.css">
+  <link rel="stylesheet" href="renderer/features/pipeline/studio.css">
 </head>
 <body>
-  <div id="app" class="glass-container">
-    <div class="window-resize-handle resize-handle-n" data-resize-handle="n" aria-hidden="true"></div>
-    <div class="window-resize-handle resize-handle-e" data-resize-handle="e" aria-hidden="true"></div>
-    <div class="window-resize-handle resize-handle-s" data-resize-handle="s" aria-hidden="true"></div>
-    <div class="window-resize-handle resize-handle-w" data-resize-handle="w" aria-hidden="true"></div>
-    <div class="window-resize-handle resize-handle-ne" data-resize-handle="ne" aria-hidden="true"></div>
-    <div class="window-resize-handle resize-handle-se" data-resize-handle="se" aria-hidden="true"></div>
-    <div class="window-resize-handle resize-handle-sw" data-resize-handle="sw" aria-hidden="true"></div>
-    <div class="window-resize-handle resize-handle-nw" data-resize-handle="nw" aria-hidden="true"></div>
+  <div id="app" class="app-shell">
 
-    <!-- Drag handle (top bar) -->
-    <div class="drag-handle">
-      <button id="close-app-btn" class="close-app-btn" aria-label="Close">&times;</button>
-    </div>
+    <!-- ╔══ Custom frameless title bar (drag region) ══╗ -->
+    <header id="titlebar" class="titlebar">
+      <div class="titlebar__brand">
+        <span class="titlebar__logo" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+          </svg>
+        </span>
+        <span class="titlebar__title">Interviewer Copilot</span>
+      </div>
 
-    <!-- Main toolbar -->
-    <div class="main-interface">
-      <div class="status-section">
-        <div class="status-dot" aria-hidden="true"></div>
-        <span class="timer">00:00</span>
-        <div class="screenshot-count" id="screenshot-count">0</div>
+      <div class="titlebar__status">
         <button id="mobile-server-pill" class="mobile-server-pill off" type="button" title="Mobile companion status">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="6" y="2" width="12" height="20" rx="2"/>
@@ -37,308 +41,362 @@
         </button>
       </div>
 
-      <div class="content-section">
-        <div class="action-buttons">
-          <div id="transcription-control" class="transcription-control">
-            <button id="transcription-toggle" class="action-btn transcription-btn" type="button" aria-label="Toggle transcription">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 10v4" />
-                <path d="M7 7v10" />
-                <path d="M11 4v16" />
-                <path d="M15 7v10" />
-                <path d="M19 10v4" />
-              </svg>
-            </button>
-            <div id="transcription-sources" class="transcription-sources" role="group" aria-label="Transcription sources">
-              <button id="source-system-toggle" class="source-toggle source-system selected" type="button" aria-label="Toggle host audio">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-                </svg>
-              </button>
-              <button id="source-mic-toggle" class="source-toggle source-mic" type="button" aria-label="Toggle microphone">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="Take screenshot">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
-            </svg>
-          </button>
-
-          <button id="analyze-btn" class="action-btn primary-btn" type="button">Ask AI</button>
-          <button id="screen-ai-btn" class="action-btn primary-btn" type="button">Screen AI</button>
-
-          <!-- Secondary actions tucked into a dropdown menu -->
-          <div class="more-menu" id="more-menu">
-            <button id="more-menu-btn" class="action-btn icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="5" cy="12" r="1.6"/>
-                <circle cx="12" cy="12" r="1.6"/>
-                <circle cx="19" cy="12" r="1.6"/>
-              </svg>
-            </button>
-            <div id="more-menu-panel" class="more-menu-panel hidden" role="menu">
-              <button id="suggest-btn" class="more-menu-item" type="button" role="menuitem">Suggest reply</button>
-              <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">Meeting notes</button>
-              <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">Insights</button>
-              <div class="more-menu-separator" role="separator"></div>
-              <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">Clear session</button>
-            </div>
-          </div>
-
-          <div class="utility-buttons">
-            <button id="theme-toggle-btn" class="action-btn icon-btn theme-toggle-btn" type="button" aria-label="Toggle theme" aria-pressed="false">
-              <svg class="theme-toggle-icon theme-toggle-icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12.25 2.1a1 1 0 0 0-.92 1.34 8.5 8.5 0 0 1-9.88 11.22 1 1 0 0 0-1.08 1.52A11 11 0 1 0 12.25 2.1z" />
-              </svg>
-              <svg class="theme-toggle-icon theme-toggle-icon-sun" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2" />
-                <path d="M12 20v2" />
-                <path d="m4.93 4.93 1.41 1.41" />
-                <path d="m17.66 17.66 1.41 1.41" />
-                <path d="M2 12h2" />
-                <path d="M20 12h2" />
-                <path d="m6.34 17.66-1.41 1.41" />
-                <path d="m19.07 4.93-1.41 1.41" />
-              </svg>
-            </button>
-
-            <button id="settings-btn" class="action-btn icon-btn" type="button" aria-label="Settings">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
-              </svg>
-            </button>
-
-            <button id="hide-btn" class="action-btn icon-btn" type="button" aria-label="Hide">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Transcription Monitor — collapsed by default -->
-    <div id="transcription-monitor" class="transcription-monitor is-collapsed">
-      <button id="monitor-toggle" class="monitor-toggle" type="button" aria-expanded="false" aria-controls="monitor-details">
-        <span class="monitor-pill" id="monitor-master-state">Idle</span>
-        <span class="monitor-source-inline">
-          <span class="monitor-source-dot" id="monitor-status-system" data-state="off" aria-label="Host"></span>
-          <span class="monitor-source-mini-label">Host</span>
-        </span>
-        <span class="monitor-source-inline">
-          <span class="monitor-source-dot" id="monitor-status-mic" data-state="off" aria-label="Mic"></span>
-          <span class="monitor-source-mini-label">Mic</span>
-        </span>
-        <span class="monitor-toggle-caret" aria-hidden="true">›</span>
-      </button>
-      <div id="monitor-details" class="monitor-details">
-        <div class="monitor-source-grid">
-          <div class="monitor-source-row">
-            <span class="monitor-source-label">Host</span>
-            <span id="monitor-live-system" class="monitor-live-text">No transcript yet</span>
-          </div>
-          <div class="monitor-source-row">
-            <span class="monitor-source-label">Mic</span>
-            <span id="monitor-live-mic" class="monitor-live-text">No transcript yet</span>
-          </div>
-        </div>
-        <div id="monitor-log-list" class="monitor-log-list"></div>
-      </div>
-    </div>
-
-    <!-- Chat -->
-    <div id="chat-container" class="chat-container">
-      <div class="chat-header">
-        <span class="chat-title">Interviewer Copilot</span>
-      </div>
-      <div id="chat-messages" class="chat-messages"></div>
-      <div id="chat-composer" class="chat-composer">
-        <textarea
-          id="chat-manual-input"
-          class="chat-manual-input"
-          rows="1"
-          placeholder="Add a note to the context..."
-          aria-label="Manual context input"
-        ></textarea>
-        <button
-          id="chat-autoscroll-toggle"
-          class="chat-autoscroll-toggle"
-          type="button"
-          aria-pressed="true"
-          title="Toggle auto-scroll"
-        >&#x21E9;</button>
-        <button id="chat-manual-send" class="chat-manual-send" type="button">Add</button>
-      </div>
-      <div id="chat-resize-handle" class="chat-resize-handle" aria-hidden="true"></div>
-    </div>
-
-    <!-- Status text for feedback -->
-    <div id="status-text" class="status-text" style="display: none;">Ready</div>
-
-    <!-- Legacy results panel (kept hidden) -->
-    <div id="results-panel" class="results-panel hidden">
-      <div class="results-header">
-        <div class="results-title">
-          <span class="ai-response-icon">&#x2728;</span>
-          <span>AI Response</span>
-        </div>
-        <div class="results-actions">
-          <button id="close-results" class="close-btn" aria-label="Close response">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="results-content">
-        <div id="result-text" class="result-text"></div>
-      </div>
-    </div>
-
-    <!-- Settings -->
-    <div id="settings-panel" class="settings-panel hidden">
-      <div class="settings-header">
-        <span class="settings-title">Settings</span>
-        <button id="close-settings" class="close-btn" aria-label="Close settings">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/>
+      <div class="titlebar__controls">
+        <button id="toggle-rail-btn" class="titlebar__btn" type="button" aria-label="Toggle right panel" aria-pressed="false" title="Collapse / expand the right panel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="15" y1="4" x2="15" y2="20"></line>
           </svg>
         </button>
+        <button id="btn-min" class="titlebar__btn" type="button" aria-label="Minimize">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button id="btn-close" class="titlebar__btn titlebar__btn--danger" type="button" aria-label="Close">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
       </div>
-      <div class="settings-body">
-        <!-- API key -->
-        <section class="settings-section">
-          <h3 class="settings-section-title">API key</h3>
-          <div class="settings-group">
-            <label class="settings-label" for="setting-dashscope-key">DashScope key</label>
-            <div class="settings-input-row">
-              <input type="password" id="setting-dashscope-key" class="settings-input" placeholder="sk-..." />
-              <button
-                type="button"
-                id="toggle-dashscope-key-visibility"
-                class="settings-input-toggle"
-                aria-label="Show DashScope API key"
-                aria-pressed="false"
-              >Show</button>
-            </div>
-            <p class="settings-helper-text">One key drives AI, Paraformer ASR, and the interviewer copilot. Get it at <code>dashscope.console.aliyun.com</code>.</p>
-          </div>
-        </section>
+    </header>
 
-        <!-- AI model -->
-        <section class="settings-section">
-          <h3 class="settings-section-title">AI model</h3>
-          <div class="settings-group">
-            <label class="settings-label" for="setting-dashscope-ai-model">Model</label>
-            <select id="setting-dashscope-ai-model" class="settings-input"></select>
-            <p class="settings-helper-text"><code>deepseek-v4-pro</code> deepest reasoning · <code>deepseek-v4-flash</code> fastest · <code>qwen3-vl-*</code> required for screenshots.</p>
-          </div>
-          <div class="settings-group">
-            <label class="settings-label" for="setting-programming-language">Programming language</label>
-            <select id="setting-programming-language" class="settings-input"></select>
-          </div>
-        </section>
+    <!-- ╔══ Three-pane body ══╗ -->
+    <div class="layout">
 
-        <!-- Speech recognition -->
-        <section class="settings-section">
-          <h3 class="settings-section-title">Speech recognition</h3>
-          <div class="settings-group">
-            <label class="settings-label" for="setting-asr-provider">Provider</label>
-            <select id="setting-asr-provider" class="settings-input">
-              <option value="paraformer">DashScope Paraformer (recommended)</option>
-              <option value="xfyun">Xunfei RTASR (科大讯飞)</option>
-            </select>
-            <p class="settings-helper-text" id="paraformer-settings-group">Streams via <code>paraformer-realtime-8k-v2</code> using the DashScope key above.</p>
+      <!-- ── SIDEBAR: chat history ── -->
+      <aside id="sidebar" class="sidebar">
+        <button id="btn-new-interview" type="button"></button>
+        <div id="session-list" class="history-list" role="list" aria-label="Interview history"></div>
+        <div class="sidebar__footer">
+          <button id="btn-settings" class="sidebar__settings-btn" type="button" aria-label="Settings">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>Settings</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- ── MAIN: live interview ── -->
+      <main id="main" class="main">
+        <!-- Topbar: session title · Fast/Expert · REC · actions -->
+        <div id="topbar" class="topbar">
+          <div class="topbar__lead">
+            <span id="session-title" class="topbar__title">New interview</span>
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="timer">00:00</span>
           </div>
-          <div id="xfyun-settings-group" class="hidden">
-            <div class="settings-group">
-              <label class="settings-label" for="setting-xfyun-appid">Xunfei AppID</label>
-              <input type="text" id="setting-xfyun-appid" class="settings-input" placeholder="from console.xfyun.cn" />
-            </div>
-            <div class="settings-group">
-              <label class="settings-label" for="setting-xfyun-key">Xunfei API key</label>
-              <div class="settings-input-row">
-                <input type="password" id="setting-xfyun-key" class="settings-input" placeholder="real-time ASR service key" />
-                <button
-                  type="button"
-                  id="toggle-xfyun-key-visibility"
-                  class="settings-input-toggle"
-                  aria-label="Show Xunfei API key"
-                  aria-pressed="false"
-                >Show</button>
+
+          <div class="topbar__meta">
+            <span id="mode-indicator" class="mode-indicator" data-mode="fast" title="Interviewer mode">
+              <span class="mode-indicator__dot" aria-hidden="true"></span>
+              <span id="mode-indicator-label" class="mode-indicator__label">Fast</span>
+            </span>
+            <span id="rec-indicator" class="rec-indicator" data-state="idle" role="status" aria-live="polite">
+              <span class="rec-indicator__dot" aria-hidden="true"></span>
+              <span id="rec-indicator-label" class="rec-indicator__label">Idle</span>
+            </span>
+            <span class="screenshot-count" id="screenshot-count" title="Screenshots captured">0</span>
+          </div>
+
+          <div class="topbar__actions action-buttons">
+            <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="Take screenshot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+              </svg>
+            </button>
+            <button id="analyze-btn" class="action-btn primary-btn" type="button">Ask AI</button>
+            <button id="screen-ai-btn" class="action-btn" type="button">Screen AI</button>
+            <button id="generate-question-btn" class="action-btn" type="button">Generate Q</button>
+
+            <div class="more-menu" id="more-menu">
+              <button id="more-menu-btn" class="action-btn icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>
+                </svg>
+              </button>
+              <div id="more-menu-panel" class="more-menu-panel hidden" role="menu">
+                <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">Meeting notes</button>
+                <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">Insights</button>
+                <div class="more-menu-separator" role="separator"></div>
+                <button id="theme-toggle-btn" class="more-menu-item theme-toggle-btn" type="button" role="menuitem" aria-pressed="false" aria-label="Toggle theme">
+                  <span class="theme-toggle-label-dark">Light theme</span>
+                  <span class="theme-toggle-label-light">Dark theme</span>
+                </button>
+                <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">Clear session</button>
               </div>
-              <p class="settings-helper-text">Enable "实时语音转写" in the Xunfei console.</p>
             </div>
           </div>
+        </div>
 
-          <div class="settings-group">
-            <div class="settings-label-row">
-              <label class="settings-label" for="setting-mic-device">Microphone (your voice)</label>
-              <button type="button" id="refresh-audio-devices-btn" class="settings-input-toggle" aria-label="Refresh audio device list">Refresh</button>
+        <!-- Transcription monitor — collapsed strip under the topbar -->
+        <div id="transcription-monitor" class="transcription-monitor is-collapsed">
+          <button id="monitor-toggle" class="monitor-toggle" type="button" aria-expanded="false" aria-controls="monitor-details">
+            <span class="monitor-pill" id="monitor-master-state">Idle</span>
+            <span class="monitor-source-inline">
+              <span class="monitor-source-dot" id="monitor-status-system" data-state="off" aria-label="Candidate / computer audio"></span>
+              <span class="monitor-source-mini-label">Candidate</span>
+            </span>
+            <span class="monitor-source-inline">
+              <span class="monitor-source-dot" id="monitor-status-mic" data-state="off" aria-label="You / microphone"></span>
+              <span class="monitor-source-mini-label">You</span>
+            </span>
+            <span class="monitor-toggle-caret" aria-hidden="true">›</span>
+          </button>
+          <div id="monitor-details" class="monitor-details">
+            <div class="monitor-source-grid">
+              <div class="monitor-source-row">
+                <span class="monitor-source-label">Candidate</span>
+                <span id="monitor-live-system" class="monitor-live-text">No transcript yet</span>
+              </div>
+              <div class="monitor-source-row">
+                <span class="monitor-source-label">You</span>
+                <span id="monitor-live-mic" class="monitor-live-text">No transcript yet</span>
+              </div>
             </div>
-            <select id="setting-mic-device" class="settings-input">
-              <option value="">System default microphone</option>
-            </select>
+            <div id="monitor-log-list" class="monitor-log-list"></div>
           </div>
-          <div class="settings-group">
-            <div class="settings-label-row">
-              <label class="settings-label" for="setting-system-source">System audio (candidate's voice)</label>
-              <button type="button" id="open-sound-settings-btn" class="settings-input-toggle" aria-label="Open Windows sound settings">OS sound</button>
-            </div>
-            <select id="setting-system-source" class="settings-input">
-              <option value="">Windows default loopback (recommended)</option>
-            </select>
-            <p class="settings-helper-text">Loopback follows the Windows default playback device. To switch outputs, use <strong>OS sound</strong> above and set the desired output as default. If you have Stereo Mix / VB-Audio installed, it shows up here as a direct capture target.</p>
+        </div>
+
+        <!-- Live transcript stream -->
+        <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="Live transcript"></div>
+
+        <!-- Composer: two channel boxes + manual context input -->
+        <div id="composer" class="composer">
+          <div class="composer__channels">
+            <div id="channel-computer" class="composer__channel"></div>
+            <div id="channel-mic" class="composer__channel"></div>
+          </div>
+          <div id="chat-composer" class="chat-composer">
+            <textarea
+              id="chat-manual-input"
+              class="chat-manual-input"
+              rows="1"
+              placeholder="Add a note to the context…"
+              aria-label="Manual context input"
+            ></textarea>
+            <button
+              id="chat-autoscroll-toggle"
+              class="chat-autoscroll-toggle"
+              type="button"
+              aria-pressed="true"
+              title="Toggle auto-scroll"
+            >&#x21E9;</button>
+            <button id="chat-manual-send" class="chat-manual-send" type="button">Add</button>
+          </div>
+        </div>
+      </main>
+
+      <!-- ── RIGHT RAIL: resume / JD / session context ── -->
+      <aside id="right-rail" class="right-rail">
+        <section class="rail-section" id="resume-section">
+          <h2 class="rail-section__title">Resume</h2>
+          <div class="rail-section__body">
+            <div id="resume-dropzone"></div>
+            <div id="resume-chat"></div>
           </div>
         </section>
 
-        <!-- Interviewer context -->
-        <section class="settings-section">
-          <h3 class="settings-section-title">Interviewer context</h3>
-          <div class="settings-group">
-            <label class="settings-label" for="setting-interviewer-mode">Interviewer mode</label>
-            <select id="setting-interviewer-mode" class="settings-input">
-              <option value="fast">Fast (2-stage flash · default)</option>
-              <option value="expert">Expert (7-block · A∥C→B→D→E→F→G)</option>
-            </select>
-            <p class="settings-helper-text">Fast = the champion 3-stage chain (low-latency follow-ups). Expert = 7-block deep pipeline with anchored claim extraction, CoVe gap audit, six-dim rank/score, and safety audit. Expert is slower (4-8 s) but materially better follow-ups.</p>
-          </div>
-          <div class="settings-group">
-            <label class="settings-label" for="setting-resume-text">Candidate resume</label>
-            <textarea id="setting-resume-text" class="settings-input settings-textarea" rows="6" placeholder="Paste the candidate's resume — bullets, projects, metrics."></textarea>
-          </div>
-          <div class="settings-group">
-            <label class="settings-label" for="setting-job-description">Job description</label>
-            <textarea id="setting-job-description" class="settings-input settings-textarea" rows="5" placeholder="Paste the JD so the copilot prioritises relevant hooks."></textarea>
-          </div>
+        <section class="rail-section">
+          <h2 class="rail-section__title">
+            <label for="jd-input">Job description</label>
+          </h2>
+          <textarea
+            id="jd-input"
+            class="jd-input"
+            rows="5"
+            placeholder="Paste the JD so the copilot prioritises relevant hooks…"
+            aria-label="Job description"
+          ></textarea>
         </section>
 
-        <!-- Appearance & shortcuts -->
-        <section class="settings-section">
-          <h3 class="settings-section-title">Window</h3>
-          <div class="settings-group">
-            <div class="settings-label-row">
-              <label class="settings-label" for="setting-window-opacity">Opacity</label>
-              <span id="setting-window-opacity-value" class="settings-value-chip">10/10</span>
+        <section class="rail-section rail-section--grow">
+          <h2 class="rail-section__title">Session context <span class="rail-section__tag">auto</span></h2>
+          <div id="session-context"></div>
+        </section>
+      </aside>
+    </div>
+
+    <!-- Status text for transient feedback (kept off-grid, fixed) -->
+    <div id="status-text" class="status-text" style="display: none;">Ready</div>
+
+    <!-- Legacy results panel (kept hidden; close-results listener still wired) -->
+    <div id="results-panel" class="results-panel hidden">
+      <div class="results-header">
+        <div class="results-title"><span>AI Response</span></div>
+        <div class="results-actions">
+          <button id="close-results" class="close-btn" aria-label="Close response">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="results-content"><div id="result-text" class="result-text"></div></div>
+    </div>
+
+    <!-- ╔══ Settings (auto-save modal) ══╗ -->
+    <div id="settings-panel" class="settings-panel hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="settings-dialog">
+        <div class="settings-header">
+          <h2 id="settings-title" class="settings-title">Settings</h2>
+          <span id="settings-status" class="settings-status" data-state="idle" role="status" aria-live="polite"></span>
+          <button id="close-settings" class="settings-close" type="button" aria-label="Close settings">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="settings-body">
+          <!-- Interviewer mode — prominent glowing segmented toggle (Fast / Expert) -->
+          <section class="settings-section settings-section--mode">
+            <h3 class="settings-section__title">Interviewer mode</h3>
+            <div class="mode-segmented" id="setting-interviewer-mode" role="radiogroup" aria-label="Interviewer mode">
+              <button type="button" class="mode-segmented__btn" data-mode="fast" role="radio" aria-checked="true">
+                <span class="mode-segmented__glow" aria-hidden="true"></span>
+                <span class="mode-segmented__top">
+                  <span class="mode-segmented__dot" aria-hidden="true"></span>
+                  <span class="mode-segmented__label">Fast</span>
+                </span>
+                <span class="mode-segmented__desc">Low-latency 2-stage follow-ups · default</span>
+              </button>
+              <button type="button" class="mode-segmented__btn" data-mode="expert" role="radio" aria-checked="false">
+                <span class="mode-segmented__glow" aria-hidden="true"></span>
+                <span class="mode-segmented__top">
+                  <span class="mode-segmented__dot" aria-hidden="true"></span>
+                  <span class="mode-segmented__label">Expert</span>
+                </span>
+                <span class="mode-segmented__desc">7-block deep pipeline · slower, sharper</span>
+              </button>
+              <button type="button" class="mode-segmented__btn" data-mode="customize" role="radio" aria-checked="false">
+                <span class="mode-segmented__glow" aria-hidden="true"></span>
+                <span class="mode-segmented__top">
+                  <span class="mode-segmented__dot" aria-hidden="true"></span>
+                  <span class="mode-segmented__label">Customize</span>
+                </span>
+                <span class="mode-segmented__desc">Build your own block pipeline · drag &amp; connect</span>
+              </button>
             </div>
-            <input type="range" id="setting-window-opacity" class="settings-range" min="1" max="10" step="1" value="10" />
-          </div>
-          <div class="settings-group">
-            <label class="settings-label">Keyboard shortcuts</label>
-            <div id="settings-shortcuts-list" class="settings-shortcuts-list"></div>
-            <p class="settings-helper-text">Read-only. Edit <code>src/config.js</code> to customize.</p>
-          </div>
-        </section>
+            <div class="customize-row" id="customize-row">
+              <select id="customize-pipeline-select" class="settings-input customize-select" aria-label="Active pipeline"></select>
+              <button type="button" id="open-pipeline-studio" class="action-btn">Open Studio</button>
+            </div>
+          </section>
 
-        <button id="save-settings-btn" class="save-settings-btn">Save settings</button>
+          <!-- API key -->
+          <section class="settings-section">
+            <h3 class="settings-section__title">API key</h3>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-dashscope-key">DashScope key</label>
+              <div class="settings-key-row">
+                <input type="password" id="setting-dashscope-key" class="settings-input settings-input--mono" placeholder="sk-..." />
+                <button type="button" id="toggle-dashscope-key-visibility" class="settings-key-toggle" aria-label="Show DashScope API key" aria-pressed="false">Show</button>
+              </div>
+              <p class="settings-field__desc">One key drives AI, Paraformer ASR, and the interviewer copilot. Get it at <code>dashscope.console.aliyun.com</code>.</p>
+            </div>
+          </section>
+
+          <!-- AI model -->
+          <section class="settings-section">
+            <h3 class="settings-section__title">AI model</h3>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-dashscope-ai-model">Model</label>
+              <select id="setting-dashscope-ai-model" class="settings-select"></select>
+              <p class="settings-field__desc"><code>deepseek-v4-pro</code> deepest reasoning · <code>deepseek-v4-flash</code> fastest · <code>qwen3-vl-*</code> required for screenshots.</p>
+            </div>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-programming-language">Programming language</label>
+              <select id="setting-programming-language" class="settings-select"></select>
+            </div>
+          </section>
+
+          <!-- Speech recognition -->
+          <section class="settings-section">
+            <h3 class="settings-section__title">Speech recognition</h3>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-asr-provider">Provider</label>
+              <select id="setting-asr-provider" class="settings-select">
+                <option value="paraformer">DashScope Paraformer (recommended)</option>
+                <option value="xfyun">Xunfei RTASR (科大讯飞)</option>
+              </select>
+              <p class="settings-field__desc" id="paraformer-settings-group">Streams via <code>paraformer-realtime-8k-v2</code> using the DashScope key above.</p>
+            </div>
+            <div id="xfyun-settings-group" class="settings-field hidden">
+              <div class="settings-field">
+                <label class="settings-field__label" for="setting-xfyun-appid">Xunfei AppID</label>
+                <input type="text" id="setting-xfyun-appid" class="settings-input" placeholder="from console.xfyun.cn" />
+              </div>
+              <div class="settings-field">
+                <label class="settings-field__label" for="setting-xfyun-key">Xunfei API key</label>
+                <div class="settings-key-row">
+                  <input type="password" id="setting-xfyun-key" class="settings-input settings-input--mono" placeholder="real-time ASR service key" />
+                  <button type="button" id="toggle-xfyun-key-visibility" class="settings-key-toggle" aria-label="Show Xunfei API key" aria-pressed="false">Show</button>
+                </div>
+                <p class="settings-field__desc">Enable "实时语音转写" in the Xunfei console.</p>
+              </div>
+            </div>
+
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-mic-device">Microphone (your voice)</label>
+              <select id="setting-mic-device" class="settings-select">
+                <option value="">System default microphone</option>
+              </select>
+            </div>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-system-source">System audio (candidate's voice)</label>
+              <select id="setting-system-source" class="settings-select">
+                <option value="">Windows default loopback (recommended)</option>
+              </select>
+              <p class="settings-field__desc">Loopback follows the Windows default playback device. Use <strong>OS sound</strong> to switch outputs. Stereo Mix / VB-Audio show up here as direct capture targets.</p>
+            </div>
+            <div class="settings-actions">
+              <button type="button" id="refresh-audio-devices-btn" class="settings-btn" aria-label="Refresh audio device list">Refresh devices</button>
+              <button type="button" id="open-sound-settings-btn" class="settings-btn" aria-label="Open Windows sound settings">OS sound</button>
+            </div>
+          </section>
+
+          <!-- Offline ASR · Volcengine (staged; not yet connected) -->
+          <section class="settings-section">
+            <h3 class="settings-section__title">线下语音转写 · 火山引擎 (Volcengine ASR)</h3>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-volc-appid">AppID</label>
+              <input type="text" id="setting-volc-appid" class="settings-input" placeholder="from console.volcengine.com" />
+            </div>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-volc-access-token">Access Token</label>
+              <div class="settings-key-row">
+                <input type="password" id="setting-volc-access-token" class="settings-input settings-input--mono" placeholder="Volcengine access token" />
+                <button type="button" id="toggle-volc-access-token-visibility" class="settings-key-toggle" aria-label="Show Volcengine access token" aria-pressed="false">Show</button>
+              </div>
+            </div>
+            <div class="settings-field">
+              <label class="settings-field__label" for="setting-volc-resource-id">Resource ID</label>
+              <input type="text" id="setting-volc-resource-id" class="settings-input" placeholder="e.g. volc.bigasr.sauc.duration" />
+              <p class="settings-field__desc">线下面试的语音转写。留空 → 线下暂用默认 ASR(Paraformer)。</p>
+            </div>
+          </section>
+
+          <!-- Appearance -->
+          <section class="settings-section">
+            <h3 class="settings-section__title">Appearance</h3>
+            <div class="settings-toggle-row">
+              <span class="settings-toggle-row__text">
+                <span class="settings-field__label">Dark theme</span>
+                <span class="settings-field__desc">Near-black control-room palette. Light theme is a work in progress.</span>
+              </span>
+              <label class="settings-switch">
+                <input type="checkbox" id="setting-theme-toggle" aria-label="Dark theme" />
+                <span class="settings-switch__track"></span>
+              </label>
+            </div>
+            <div class="settings-field">
+              <span class="settings-field__label" id="setting-window-opacity-label">Window opacity</span>
+              <div class="settings-range-row">
+                <input type="range" id="setting-window-opacity" class="settings-range" min="1" max="10" step="1" value="10" aria-labelledby="setting-window-opacity-label" />
+                <span id="setting-window-opacity-value" class="settings-range-value">10/10</span>
+              </div>
+            </div>
+            <div class="settings-field">
+              <span class="settings-field__label">Keyboard shortcuts</span>
+              <div id="settings-shortcuts-list" class="settings-shortcuts-list"></div>
+              <p class="settings-field__desc">Read-only. Edit <code>src/config.js</code> to customize.</p>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
 
@@ -354,17 +412,79 @@
       </div>
     </div>
 
+    <!-- ╔══ New-interview type picker (online vs offline) ══╗ -->
+    <div id="interview-type-modal" class="interview-type-modal hidden" role="dialog" aria-modal="true" aria-labelledby="interview-type-title">
+      <div class="interview-type-card-wrap" role="document">
+        <div class="interview-type-head">
+          <h2 id="interview-type-title" class="interview-type-title">开始新面试 / New interview</h2>
+          <p class="interview-type-subtitle">选择面试形式 · Choose the interview format</p>
+          <button id="interview-type-close" class="interview-type-close" type="button" aria-label="Cancel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="interview-type-options" role="group" aria-label="Interview format">
+          <button class="interview-type-option" type="button" data-interview-type="online" data-accent="candidate">
+            <span class="interview-type-option__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </span>
+            <span class="interview-type-option__body">
+              <span class="interview-type-option__title">线上面试 / Online</span>
+              <span class="interview-type-option__desc">远程面试 · 电脑音频(候选人) + 麦克风(你)</span>
+            </span>
+          </button>
+          <button class="interview-type-option" type="button" data-interview-type="offline" data-accent="interviewer">
+            <span class="interview-type-option__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/>
+              </svg>
+            </span>
+            <span class="interview-type-option__body">
+              <span class="interview-type-option__title">线下面试 / Offline</span>
+              <span class="interview-type-option__desc">现场面试 · 仅房间麦克风 + 简历</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Loading overlay -->
     <div id="loading-overlay" class="loading-overlay hidden">
       <div class="loading-content">
-        <div class="analyzing-icon">&#x1F9E0;</div>
-        <div class="loading-text">Analyzing...</div>
+        <div class="analyzing-icon" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10"/>
+          </svg>
+        </div>
+        <div class="loading-text">Analyzing…</div>
       </div>
     </div>
 
     <!-- Emergency overlay -->
     <div id="emergency-overlay" class="emergency-overlay hidden">
       <div class="emergency-message">HIDDEN</div>
+    </div>
+
+    <!-- Pipeline Studio (SP3 2D editor) — full-window overlay -->
+    <div id="pipeline-studio" class="pipeline-studio hidden" role="dialog" aria-modal="true" aria-label="Pipeline Studio">
+      <header class="ps-topbar">
+        <span class="ps-title">Pipeline Studio</span>
+        <select id="ps-library" class="ps-select" aria-label="Pipeline"></select>
+        <input id="ps-name" class="ps-input" placeholder="Pipeline name" />
+        <span class="ps-spacer"></span>
+        <button id="ps-validate" class="ps-btn" type="button">Validate</button>
+        <button id="ps-save" class="ps-btn" type="button">Save</button>
+        <button id="ps-use" class="ps-btn ps-btn--primary" type="button">Use this</button>
+        <button id="ps-export" class="ps-btn" type="button">Export</button>
+        <button id="ps-close" class="ps-btn" type="button" aria-label="Close">✕</button>
+      </header>
+      <div class="ps-body">
+        <aside class="ps-palette" id="ps-palette"></aside>
+        <div class="ps-canvas-wrap"><div class="ps-canvas" id="ps-canvas"><svg class="ps-wires" id="ps-wires"></svg></div></div>
+        <aside class="ps-config" id="ps-config"><div class="ps-config__empty">Select a block to configure it.</div></aside>
+      </div>
+      <footer class="ps-status" id="ps-status"></footer>
     </div>
   </div>
 
