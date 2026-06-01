@@ -413,7 +413,12 @@ function blockGFallback({ primary, alternative }) {
 
 // ─── Orchestrator main entry ────────────────────────────────────────────────
 
-async function runExpertChain({
+// runExpertChain now delegates to the generic pipeline engine running the
+// EXPERT_PRESET (see the wrapper near the bottom of this file). The original
+// hand-wired chain is preserved below as runExpertChainLegacy and is the
+// equivalence oracle for test/pipeline-expert-equivalence.test.js — the engine
+// must keep reproducing it byte-for-byte.
+async function runExpertChainLegacy({
   apiKey,
   candidateAnswer,
   resumeChunk = '',
@@ -672,8 +677,65 @@ async function runExpertChain({
   };
 }
 
+// Delegating entry point: build the candidate context, run the EXPERT_PRESET on
+// the generic engine, then attach Block H (session consolidation) off the
+// critical path exactly as the legacy chain did. Returns the same shape the
+// runtime consumes. The engine require is lazy to avoid a load-time require cycle
+// (engine → block-types → this module).
+async function runExpertChain({
+  apiKey,
+  candidateAnswer,
+  resumeChunk = '',
+  jobDescription = '',
+  questionHistory = [],
+  sessionState = null,
+  abortSignal = null,
+  onSessionState = null,
+  onProgress = null
+} = {}) {
+  if (!apiKey) {
+    throw new Error('Expert mode requires DashScope API key');
+  }
+  const { runPipeline } = require('../../../services/ai/pipeline/pipeline-engine');
+  const { EXPERT_PRESET } = require('../../../services/ai/pipeline/presets');
+
+  const context = { candidateAnswer, resumeChunk, jobDescription, questionHistory, sessionState };
+  const result = await runPipeline({ pipeline: EXPERT_PRESET, apiKey, context, abortSignal, onProgress });
+  const blockG = result.output;
+
+  // ─── Block H — auto context consolidation (NON-BLOCKING) ──────────────────
+  // Identical to the legacy path: kick off consolidation WITHOUT awaiting, attach
+  // the promise, and invoke onSessionState when it resolves. Never throws.
+  const renderedQuestion = blockG && blockG.primary_question ? blockG.primary_question : '';
+  let sessionStatePromise = Promise.resolve(sessionState);
+  try {
+    const { consolidateSessionState } = require('./session-consolidator');
+    sessionStatePromise = consolidateSessionState({
+      apiKey, priorState: sessionState, candidateAnswer, renderedQuestion, resumeChunk, jobDescription, questionHistory
+    });
+  } catch (err) {
+    console.error('Block H failed to start; keeping prior session state:', err && err.message ? err.message : err);
+  }
+  if (typeof onSessionState === 'function') {
+    sessionStatePromise
+      .then((nextState) => { try { onSessionState(nextState); } catch (_) { /* caller handler error must not surface */ } })
+      .catch(() => { /* consolidateSessionState never rejects; defensive only */ });
+  }
+
+  return {
+    iterationVersion: EXPERT_ITERATION_VERSION,
+    output: blockG,
+    blocks: result.blocks,
+    trace: result.trace,
+    fallbackTriggered: result.fallbackTriggered,
+    elapsedMs: result.elapsedMs,
+    sessionStatePromise
+  };
+}
+
 module.exports = {
   runExpertChain,
+  runExpertChainLegacy,
   EXPERT_ITERATION_VERSION,
   BLOCK_MODELS,
   // Exported for reuse by Block H (session-consolidator.js) so it shares this
@@ -681,5 +743,20 @@ module.exports = {
   // hatch, safe-JSON parser, and Flash model id rather than re-implementing them.
   dashscopeChat,
   safeJsonParse,
-  FLASH_MODEL
+  FLASH_MODEL,
+  // ── Exported for the generic pipeline engine (src/services/ai/pipeline/) ──
+  // The engine reuses the legacy per-block defaults + fallback synthesizers so a
+  // pipeline that re-expresses Expert reproduces today's behavior exactly.
+  BLOCK_TEMPERATURES,
+  BLOCK_MAX_TOKENS,
+  BLOCK_THINKING,
+  BLOCK_TIMEOUTS_MS,
+  REQUEST_TIMEOUT_MS,
+  blockAFallback,
+  blockBFallback,
+  blockCFallback,
+  blockDFallback,
+  blockEFallback,
+  blockFFallback,
+  blockGFallback
 };
