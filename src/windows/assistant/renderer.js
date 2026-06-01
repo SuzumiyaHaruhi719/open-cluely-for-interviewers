@@ -1676,14 +1676,29 @@ function applyApiKeyAvailabilityFromSettings(settings) {
         hasAiConfigured = String(settings.dashscopeApiKey ?? '').trim().length > 0;
     }
 
-    // Paraformer reuses the DashScope key; Xunfei needs its own pair.
+    // Paraformer reuses the DashScope key; Xunfei + Doubao need their own creds.
     if (settings.asrProvider === 'xfyun') {
         hasAsrConfigured = settings.hasXfyunCredentials === true
             || (String(settings.xfyunAppId ?? '').trim().length > 0
                 && String(settings.xfyunApiKey ?? '').trim().length > 0);
+    } else if (settings.asrProvider === 'volc') {
+        hasAsrConfigured = String(settings.volcAppId ?? '').trim().length > 0
+            && String(settings.volcAccessToken ?? '').trim().length > 0;
     } else {
         hasAsrConfigured = hasAiConfigured;
     }
+
+    paintAsrIndicator(settings.asrProvider);
+}
+
+// Topbar pill showing which speech-to-text engine is active.
+const ASR_PROVIDER_NAMES = { paraformer: 'Paraformer', xfyun: 'Xunfei', volc: 'Doubao' };
+function paintAsrIndicator(provider) {
+    const el = document.getElementById('asr-indicator');
+    const label = document.getElementById('asr-indicator-label');
+    const key = ['paraformer', 'xfyun', 'volc'].includes(provider) ? provider : 'paraformer';
+    if (el) { el.dataset.asr = key; el.setAttribute('title', `Speech-to-text: ${ASR_PROVIDER_NAMES[key]}`); }
+    if (label) label.textContent = ASR_PROVIDER_NAMES[key];
 }
 
 // Track the interviewer mode from settings so the topbar pill + new-session

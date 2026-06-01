@@ -170,7 +170,8 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
         }
 
         if (evt.status === 'start') {
-            labelEl.textContent = bound.label;
+            // Show which model this phase runs on (e.g. "排序打分 · deepseek-v4-flash").
+            labelEl.textContent = evt.model ? `${bound.label} · ${evt.model}` : bound.label;
             // Creep across most of this segment over an estimated time; a slow
             // phase (rank/E) keeps inching forward instead of dead-stopping.
             const ceiling = bound.start + (bound.end - bound.start) * CREEP_CEILING;

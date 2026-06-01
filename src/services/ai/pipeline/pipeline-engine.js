@@ -77,14 +77,17 @@ async function runPipeline({ pipeline, apiKey, context = {}, abortSignal = null,
   // Phase grouping (by block-type phase). totalPhases = distinct phases, ordered.
   const phaseMap = new Map();
   for (const n of nodes) {
-    const ph = registry[n.type].phase || { id: n.id, index: 1 };
-    if (!phaseMap.has(ph.id)) phaseMap.set(ph.id, { id: ph.id, index: ph.index, total: 0, remaining: 0, started: false, input: 0, output: 0 });
+    const type = registry[n.type];
+    const ph = type.phase || { id: n.id, index: 1 };
+    if (!phaseMap.has(ph.id)) phaseMap.set(ph.id, { id: ph.id, index: ph.index, total: 0, remaining: 0, started: false, input: 0, output: 0, models: new Set() });
     const p = phaseMap.get(ph.id); p.total += 1; p.remaining += 1;
+    p.models.add(n.model || (type.defaults && type.defaults.model) || '');
   }
   const totalPhases = phaseMap.size;
   function emit(ph, status, tokens) {
     if (typeof onProgress !== 'function') return;
-    try { onProgress({ phase: ph.id, index: ph.index, total: totalPhases, status, tokens: tokens || null }); } catch (_) { /* best-effort */ }
+    const model = [...ph.models].filter(Boolean).join('/');
+    try { onProgress({ phase: ph.id, index: ph.index, total: totalPhases, status, tokens: tokens || null, model }); } catch (_) { /* best-effort */ }
   }
 
   const outputs = {};
