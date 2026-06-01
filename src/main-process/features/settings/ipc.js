@@ -90,7 +90,7 @@ function registerSettingsIpc({
     const volcResourceId = typeof appState?.volcResourceId === 'string' ? appState.volcResourceId : '';
     const resumeText = typeof appState?.resumeText === 'string' ? appState.resumeText : '';
     const jobDescription = typeof appState?.jobDescription === 'string' ? appState.jobDescription : '';
-    const asrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+    const asrProvider = ['xfyun', 'volc'].includes(appState?.asrProvider) ? appState.asrProvider : 'paraformer';
     const interviewerMode = ['expert', 'customize'].includes(appState?.interviewerMode) ? appState.interviewerMode : 'fast';
     const activePipelineId = typeof appState?.activePipelineId === 'string' ? appState.activePipelineId : null;
 
@@ -149,7 +149,7 @@ function registerSettingsIpc({
       const appEnvironment = getAppEnvironment();
       const previousAsrProvider = (() => {
         const current = getAppState();
-        return current?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+        return ['xfyun', 'volc'].includes(current?.asrProvider) ? current.asrProvider : 'paraformer';
       })();
       const nextDashscopeApiKey = String(settings.dashscopeApiKey || '').trim();
       const nextDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(settings.dashscopeAiModel);
@@ -162,11 +162,11 @@ function registerSettingsIpc({
       const nextVolcAccessToken = String(settings.volcAccessToken || '').trim();
       const nextVolcResourceId = String(settings.volcResourceId || '').trim();
       const requestedAsrProvider = String(settings.asrProvider || '').trim().toLowerCase();
-      const nextAsrProvider = requestedAsrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+      const nextAsrProvider = ['xfyun', 'volc'].includes(requestedAsrProvider) ? requestedAsrProvider : 'paraformer';
       const nextResumeText = String(settings.resumeText || '').trim();
       const nextJobDescription = String(settings.jobDescription || '').trim();
       const requestedInterviewerMode = String(settings.interviewerMode || '').trim().toLowerCase();
-      const nextInterviewerMode = requestedInterviewerMode === 'expert' ? 'expert' : 'fast';
+      const nextInterviewerMode = ['expert', 'customize'].includes(requestedInterviewerMode) ? requestedInterviewerMode : 'fast';
       const nextProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(settings.programmingLanguage);
       const nextWindowOpacityLevel = windowController.setWindowOpacityLevel(settings.windowOpacityLevel);
 

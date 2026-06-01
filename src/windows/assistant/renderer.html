@@ -312,6 +312,7 @@
               <select id="setting-asr-provider" class="settings-select">
                 <option value="paraformer">DashScope Paraformer (recommended)</option>
                 <option value="xfyun">Xunfei RTASR (科大讯飞)</option>
+                <option value="volc">Doubao streaming (豆包 / 火山引擎)</option>
               </select>
               <p class="settings-field__desc" id="paraformer-settings-group">Streams via <code>paraformer-realtime-8k-v2</code> using the DashScope key above.</p>
             </div>
@@ -349,9 +350,9 @@
             </div>
           </section>
 
-          <!-- Offline ASR · Volcengine (staged; not yet connected) -->
+          <!-- Doubao / Volcengine streaming ASR credentials (selectable above as Provider). -->
           <section class="settings-section">
-            <h3 class="settings-section__title">线下语音转写 · 火山引擎 (Volcengine ASR)</h3>
+            <h3 class="settings-section__title">豆包 / 火山引擎 语音转写 (Doubao ASR)</h3>
             <div class="settings-field">
               <label class="settings-field__label" for="setting-volc-appid">AppID</label>
               <input type="text" id="setting-volc-appid" class="settings-input" placeholder="from console.volcengine.com" />
@@ -366,7 +367,7 @@
             <div class="settings-field">
               <label class="settings-field__label" for="setting-volc-resource-id">Resource ID</label>
               <input type="text" id="setting-volc-resource-id" class="settings-input" placeholder="e.g. volc.bigasr.sauc.duration" />
-              <p class="settings-field__desc">线下面试的语音转写。留空 → 线下暂用默认 ASR(Paraformer)。</p>
+              <p class="settings-field__desc">在线豆包流式语音识别。在上方 Provider 选 “Doubao streaming” 即用这里的凭证。例: <code>volc.seedasr.sauc.duration</code></p>
             </div>
           </section>
 

@@ -35,7 +35,7 @@ function sanitizeAppState(state) {
 
   if (state && typeof state === 'object' && !Array.isArray(state)) {
     const asrProvider = String(state.asrProvider ?? '').trim().toLowerCase();
-    if (['paraformer', 'xfyun'].includes(asrProvider)) {
+    if (['paraformer', 'xfyun', 'volc'].includes(asrProvider)) {
       nextState.asrProvider = asrProvider;
     }
 

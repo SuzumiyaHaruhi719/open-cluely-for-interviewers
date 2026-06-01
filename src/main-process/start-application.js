@@ -27,6 +27,7 @@ const { createScreenshotManager } = require('./features/assistant/screenshot-man
 const { registerAssistantIpc } = require('./features/assistant/ipc');
 const { createParaformerService } = require('../services/paraformer/service');
 const { createXfyunRtasrService } = require('../services/xfyun-rtasr/service');
+const { createVolcengineAsrService } = require('../services/volcengine-asr/service');
 const { createAsrRouter } = require('../services/asr-router');
 const { registerAsrIpc } = require('../services/asr-ipc');
 const { registerSettingsIpc } = require('./features/settings/ipc');
@@ -126,14 +127,27 @@ async function startApplication() {
     sendToRenderer
   });
 
+  const volcengineAsrService = createVolcengineAsrService({
+    WebSocket,
+    desktopCapturer,
+    getVolcCredentials: () => ({
+      appId: appState?.volcAppId || '',
+      accessToken: appState?.volcAccessToken || '',
+      resourceId: appState?.volcResourceId || ''
+    }),
+    getGeminiService: () => geminiRuntime.getService(),
+    sendToRenderer
+  });
+
   const asrService = createAsrRouter({
     providers: {
       paraformer: paraformerService,
-      xfyun: xfyunRtasrService
+      xfyun: xfyunRtasrService,
+      volc: volcengineAsrService
     },
     getAsrProvider: () => {
       const p = appState?.asrProvider;
-      return p === 'xfyun' ? 'xfyun' : 'paraformer';
+      return (p === 'xfyun' || p === 'volc') ? p : 'paraformer';
     }
   });
 
