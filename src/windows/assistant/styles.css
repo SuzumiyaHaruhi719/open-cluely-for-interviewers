@@ -1696,6 +1696,14 @@ body.rail-collapsed .right-rail {
    driven by the titlebar #toggle-rail-btn). No width-based auto-hide — it fought
    the manual toggle and clipped the control at small sizes. */
 
+/* Narrow window: drop the right rail (résumé / session-context) so the
+   conversation + topbar get the room. Widen the window to bring it back. */
+@media (max-width: 1000px) {
+  :root { --rail-w: 0px; }
+  .layout { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
+  .right-rail { display: none; }
+}
+
 @media (max-width: 900px) {
   :root { --sidebar-w: 64px; }
   .layout { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
