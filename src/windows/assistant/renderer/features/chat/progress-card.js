@@ -33,6 +33,9 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
     let fillEl = null;
     let labelEl = null;
     let tokensEl = null;
+    let timerEl = null;
+    let timerStart = 0;
+    let timerId = null;
     let totalInput = 0;
     let totalOutput = 0;
     let rafId = null;
@@ -79,6 +82,12 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
         rafId = requestAnimationFrame(creepTick);
     }
 
+    function stopTimer() { if (timerId != null) { clearInterval(timerId); timerId = null; } }
+    function updateTimer() {
+        if (!timerEl) return;
+        timerEl.textContent = `⏱ ${((performance.now() - timerStart) / 1000).toFixed(1)}s`;
+    }
+
     function updateTokens() {
         if (!tokensEl) return;
         const total = totalInput + totalOutput;
@@ -92,8 +101,9 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
 
     function remove() {
         stopCreep();
+        stopTimer();
         if (cardEl && cardEl.parentNode) cardEl.parentNode.removeChild(cardEl);
-        cardEl = null; fillEl = null; labelEl = null; tokensEl = null; activeRequestId = null;
+        cardEl = null; fillEl = null; labelEl = null; tokensEl = null; timerEl = null; activeRequestId = null;
         totalInput = 0; totalOutput = 0;
     }
 
@@ -107,16 +117,26 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
         cardEl = document.createElement('div');
         cardEl.className = 'chat-message interviewer-coach-message lane-ai chat-progress-card is-indeterminate';
 
-        // Head row: phase label (left) + running token spend (right).
+        // Head row: phase label (left) + live timer & running token spend (right).
         const head = document.createElement('div');
         head.className = 'chat-progress__head';
         labelEl = document.createElement('div');
         labelEl.className = 'chat-progress__label';
         labelEl.textContent = '生成追问中…';
+        const meta = document.createElement('div');
+        meta.className = 'chat-progress__meta';
+        timerEl = document.createElement('div');
+        timerEl.className = 'chat-progress__timer';
+        timerEl.textContent = '⏱ 0.0s';
         tokensEl = document.createElement('div');
         tokensEl.className = 'chat-progress__tokens';
         tokensEl.textContent = '';
-        head.append(labelEl, tokensEl);
+        meta.append(timerEl, tokensEl);
+        head.append(labelEl, meta);
+        // Live elapsed timer — ticks until finish/fail.
+        timerStart = performance.now();
+        stopTimer();
+        timerId = setInterval(updateTimer, 100);
 
         const bar = document.createElement('div');
         bar.className = 'chat-progress__bar';

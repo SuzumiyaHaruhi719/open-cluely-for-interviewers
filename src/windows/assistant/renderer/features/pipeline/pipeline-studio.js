@@ -196,7 +196,8 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
       selectedId = nodeEl.dataset.node; renderConfig();
       canvas.querySelectorAll('.ps-node').forEach((n) => n.classList.toggle('is-selected', n.dataset.node === selectedId));
       const node = pipeline.nodes.find((n) => n.id === selectedId);
-      drag = { id: selectedId, dx: ev.clientX - (node.pos.x), dy: ev.clientY - (node.pos.y) };
+      if (!node.pos) node.pos = { x: 40, y: 40 };
+      drag = { id: selectedId, dx: ev.clientX - node.pos.x, dy: ev.clientY - node.pos.y };
       ev.preventDefault();
     } else { connecting = null; setStatus(''); }
   });
