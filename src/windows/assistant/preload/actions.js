@@ -249,7 +249,7 @@ function createInvokeActions(ipcRenderer) {
     resumeChat: invokeWithFallback(ipcRenderer, {
       channel: 'resume-chat',
       label: 'resumeChat',
-      transformArgs: (args) => [{ messages: args[0]?.messages }],
+      transformArgs: (args) => [{ messages: args[0]?.messages, model: args[0]?.model || null }],
       fallback: (error) => ({ success: false, error: error.message })
     }),
 

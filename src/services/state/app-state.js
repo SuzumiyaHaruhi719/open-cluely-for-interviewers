@@ -9,6 +9,8 @@ function getDefaultAppState() {
     asrProvider: null,
     dashscopeApiKey: null,
     dashscopeAiModel: null,
+    resumeChatModel: null,
+    outputLanguage: null,
     xfyunAppId: null,
     xfyunApiKey: null,
     // Volcengine (火山引擎) ASR — STAGED, not yet connected. These are stored so
@@ -44,6 +46,16 @@ function sanitizeAppState(state) {
 
     if (typeof state.dashscopeAiModel === 'string' && state.dashscopeAiModel.trim()) {
       nextState.dashscopeAiModel = state.dashscopeAiModel.trim();
+    }
+
+    if (typeof state.resumeChatModel === 'string') {
+      const resumeChatModel = state.resumeChatModel.trim();
+      nextState.resumeChatModel = resumeChatModel || null;
+    }
+
+    if (typeof state.outputLanguage === 'string') {
+      const outputLanguage = state.outputLanguage.trim().toLowerCase();
+      nextState.outputLanguage = (outputLanguage === 'zh' || outputLanguage === 'en') ? outputLanguage : null;
     }
 
     if (typeof state.xfyunAppId === 'string') {

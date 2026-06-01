@@ -98,6 +98,8 @@ function registerSettingsIpc({
       asrProvider,
       dashscopeApiKey,
       dashscopeAiModel,
+      resumeChatModel: typeof appState?.resumeChatModel === 'string' ? appState.resumeChatModel : null,
+      outputLanguage: typeof appState?.outputLanguage === 'string' ? appState.outputLanguage : null,
       xfyunAppId,
       xfyunApiKey,
       volcAppId,
@@ -143,6 +145,8 @@ function registerSettingsIpc({
       if (has('volcResourceId')) patch.volcResourceId = String(settings.volcResourceId || '').trim();
       if (has('resumeText')) patch.resumeText = String(settings.resumeText || '').trim();
       if (has('jobDescription')) patch.jobDescription = String(settings.jobDescription || '').trim();
+      if (has('resumeChatModel')) patch.resumeChatModel = String(settings.resumeChatModel || '').trim() || null;
+      if (has('outputLanguage')) { const l = String(settings.outputLanguage || '').trim().toLowerCase(); patch.outputLanguage = (l === 'zh' || l === 'en') ? l : null; }
       if (has('asrProvider')) {
         const r = String(settings.asrProvider || '').trim().toLowerCase();
         patch.asrProvider = ['xfyun', 'volc'].includes(r) ? r : 'paraformer';

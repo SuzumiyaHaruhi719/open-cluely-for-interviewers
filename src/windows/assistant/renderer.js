@@ -653,6 +653,7 @@ const saveSettingsBtn = null;
 const settingsStatusIndicator = document.getElementById('settings-status');
 const settingStealthToggle = document.getElementById('setting-stealth-toggle');
 const settingDashscopeAiModel = document.getElementById('setting-dashscope-ai-model');
+const settingOutputLanguage = document.getElementById('setting-output-language');
 const settingAsrProvider = document.getElementById('setting-asr-provider');
 const paraformerSettingsGroup = document.getElementById('paraformer-settings-group');
 const xfyunSettingsGroup = document.getElementById('xfyun-settings-group');
@@ -853,6 +854,7 @@ function setupPipelineStudio() {
 const settingsPanelManager = createSettingsPanelManager({
     settingsPanel,
     settingDashscopeAiModel,
+    settingOutputLanguage,
     settingAsrProvider,
     paraformerSettingsGroup,
     xfyunSettingsGroup,

@@ -211,8 +211,21 @@ function registerResumeIpc({ ipcMain, app, getAppState, setAppState, saveAppStat
         return { success: false, error: 'AI service unavailable.' };
       }
       const prompt = buildResumeChatPrompt(resumeText, payload?.messages);
-      const reply = await service.generateText(prompt);
-      const text = String(reply || '').trim();
+      // Model precedence: the per-chat picker (payload.model) → the persisted
+      // resumeChatModel → the global Fast-mode model. When a specific model is
+      // chosen and a key is present, call dashscopeChat directly so this chat can
+      // use a different model than the rest of the app; otherwise fall back to the
+      // shared service (global model).
+      const chosenModel = String(payload?.model || state.resumeChatModel || state.dashscopeAiModel || '').trim();
+      const apiKey = String(state.dashscopeApiKey || '').trim();
+      let text = '';
+      if (chosenModel && apiKey) {
+        const { dashscopeChat } = require('../interviewer/expert-orchestrator');
+        const { text: out } = await dashscopeChat({ apiKey, model: chosenModel, prompt, temperature: 0.4, maxTokens: 1200, timeoutMs: 60000 });
+        text = String(out || '').trim();
+      } else {
+        text = String(await service.generateText(prompt) || '').trim();
+      }
       if (!text) {
         return { success: false, error: 'Empty reply from AI.' };
       }

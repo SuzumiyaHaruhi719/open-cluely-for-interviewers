@@ -141,6 +141,7 @@ function setStoredValue(key, value) {
 export function createSettingsPanelManager({
     settingsPanel,
     settingDashscopeAiModel,
+    settingOutputLanguage,
     settingAsrProvider,
     paraformerSettingsGroup,
     xfyunSettingsGroup,
@@ -575,6 +576,11 @@ export function createSettingsPanelManager({
                     settings.dashscopeAiModel || settings.defaultDashscopeAiModel
                 );
 
+                if (settingOutputLanguage) {
+                    const ol = String(settings.outputLanguage || '').toLowerCase();
+                    settingOutputLanguage.value = (ol === 'zh' || ol === 'en') ? ol : '';
+                }
+
                 const activeAsrProvider = settings.asrProvider || 'paraformer';
                 if (settingAsrProvider) settingAsrProvider.value = activeAsrProvider;
                 updateAsrProviderVisibility(activeAsrProvider);
@@ -653,6 +659,7 @@ export function createSettingsPanelManager({
                 volcAccessToken: settingVolcAccessToken ? settingVolcAccessToken.value.trim() : '',
                 volcResourceId: settingVolcResourceId ? settingVolcResourceId.value.trim() : '',
                 interviewerMode: getInterviewerMode(),
+                outputLanguage: settingOutputLanguage ? settingOutputLanguage.value : '',
                 windowOpacityLevel: normalizeWindowOpacityLevel(settingWindowOpacity?.value)
             };
             // resumeText / jobDescription are no longer owned by Settings — they
@@ -724,6 +731,7 @@ export function createSettingsPanelManager({
         const immediateFields = [
             settingAsrProvider,
             settingDashscopeAiModel,
+            settingOutputLanguage,
             settingWindowOpacity,
             settingMicDevice,
             settingSystemSource

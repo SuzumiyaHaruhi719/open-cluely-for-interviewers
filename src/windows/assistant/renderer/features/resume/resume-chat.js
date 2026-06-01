@@ -26,6 +26,7 @@ export function createResumeChat({ rootEl }) {
   rootEl.innerHTML = `
     <div class="resume-chat__header">
       <span class="resume-chat__title">Ask about this résumé</span>
+      <select class="resume-chat__model" aria-label="简历对话模型" title="此简历对话使用的模型（选完自动保存）"></select>
       <button type="button" class="resume-chat__clear" aria-label="Clear résumé chat">Clear</button>
     </div>
     <div class="resume-chat__messages" role="log" aria-live="polite"></div>
@@ -40,6 +41,27 @@ export function createResumeChat({ rootEl }) {
   const inputEl = rootEl.querySelector('.resume-chat__input');
   const sendEl = rootEl.querySelector('.resume-chat__send');
   const clearEl = rootEl.querySelector('.resume-chat__clear');
+  const modelEl = rootEl.querySelector('.resume-chat__model');
+
+  // Populate the model picker from the configured DashScope models. The chosen
+  // model is specific to this résumé chat (persisted as resumeChatModel) and
+  // defaults to the global Fast-mode model when unset.
+  async function populateModels() {
+    if (!modelEl || !window.electronAPI?.getSettings) return;
+    try {
+      const s = await window.electronAPI.getSettings();
+      const models = Array.isArray(s?.dashscopeAiModels) ? s.dashscopeAiModels : [];
+      if (!models.length) { modelEl.style.display = 'none'; return; }
+      const selected = s?.resumeChatModel || s?.dashscopeAiModel || s?.defaultDashscopeAiModel || models[0];
+      modelEl.innerHTML = models.map((m) => `<option value="${m}">${m}</option>`).join('');
+      modelEl.value = models.includes(selected) ? selected : models[0];
+    } catch (_) { /* leave empty; send() falls back to the global model */ }
+  }
+
+  // Auto-save on change (no Save button — same contract as the settings panel).
+  modelEl?.addEventListener('change', () => {
+    window.electronAPI?.saveSettings?.({ resumeChatModel: modelEl.value }).catch(() => {});
+  });
 
   function renderMessages() {
     messagesEl.replaceChildren();
@@ -78,7 +100,7 @@ export function createResumeChat({ rootEl }) {
     renderMessages();
     setPending(true);
     try {
-      const result = await window.electronAPI?.resumeChat?.({ messages });
+      const result = await window.electronAPI?.resumeChat?.({ messages, model: modelEl?.value || null });
       if (result && result.success) {
         messages.push({ role: 'assistant', content: String(result.reply || '') });
       } else {
@@ -134,5 +156,6 @@ export function createResumeChat({ rootEl }) {
   }
 
   renderMessages();
+  populateModels();
   return { reset };
 }

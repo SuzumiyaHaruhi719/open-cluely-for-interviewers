@@ -693,6 +693,7 @@ async function runPipelineChain({
   candidateAnswer,
   resumeChunk = '',
   jobDescription = '',
+  outputLanguage = '',
   questionHistory = [],
   sessionState = null,
   abortSignal = null,
@@ -707,7 +708,7 @@ async function runPipelineChain({
   }
   const { runPipeline } = require('../../../services/ai/pipeline/pipeline-engine');
 
-  const context = { candidateAnswer, resumeChunk, jobDescription, questionHistory, sessionState };
+  const context = { candidateAnswer, resumeChunk, jobDescription, outputLanguage, questionHistory, sessionState };
   const result = await runPipeline({ pipeline, apiKey, context, abortSignal, onProgress });
   const blockG = result.output;
 

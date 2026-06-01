@@ -108,7 +108,7 @@ const BLOCK_TYPES = {
       }
       return { chosenPrimary, chosenAlt, safetyVerdict: verdict.verdict || 'pass' };
     },
-    build: (ctx, inputs, body, derived) => buildBlockG({ primaryCandidate: derived.chosenPrimary, alternativeCandidate: derived.chosenAlt, blockBResult: inputs.gaps, blockCResult: inputs.state, safetyVerdict: derived.safetyVerdict, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, promptBody: body }),
+    build: (ctx, inputs, body, derived) => buildBlockG({ primaryCandidate: derived.chosenPrimary, alternativeCandidate: derived.chosenAlt, blockBResult: inputs.gaps, blockCResult: inputs.state, safetyVerdict: derived.safetyVerdict, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, outputLanguage: ctx.outputLanguage, promptBody: body }),
     fallback: (_ctx, _inputs, derived) => blockGFallback({ primary: derived && derived.chosenPrimary, alternative: derived && derived.chosenAlt })
   },
   // Generic free-LLM block (defined for SP2/SP3; not used by the Expert preset).

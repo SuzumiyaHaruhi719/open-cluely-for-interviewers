@@ -163,9 +163,12 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
 
   function getContext() {
     const state = getAppState() || {};
+    const lang = String(state.outputLanguage || '').toLowerCase();
     return {
       resumeChunk: typeof state.resumeText === 'string' ? state.resumeText : '',
-      jobDescription: typeof state.jobDescription === 'string' ? state.jobDescription : ''
+      jobDescription: typeof state.jobDescription === 'string' ? state.jobDescription : '',
+      // 'zh' | 'en' force the final question's language (Block G); '' = auto (verbatim).
+      outputLanguage: (lang === 'zh' || lang === 'en') ? lang : ''
     };
   }
 
@@ -195,7 +198,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
 
   async function analyzeViaPipeline({ pipeline, mode = 'expert', candidateAnswer, questionHistory, emotion, requestId = null }) {
     const apiKey = getApiKey();
-    const { resumeChunk, jobDescription } = getContext();
+    const { resumeChunk, jobDescription, outputLanguage } = getContext();
     const state = getAppState() || {};
     // Block C input: the persisted consolidation from the PREVIOUS turn's
     // Block H (app-state.interviewerSessionState). On the first turn this is
@@ -209,6 +212,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
         candidateAnswer,
         resumeChunk,
         jobDescription,
+        outputLanguage,
         questionHistory,
         sessionState,
         // Block H persistence — invoked OFF the critical path once consolidation

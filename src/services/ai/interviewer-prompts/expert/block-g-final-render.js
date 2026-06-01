@@ -14,6 +14,20 @@ const EXPERT_ITERATION_VERSION = 'expert_v1_2026-05-29';
 // is appended after this in buildBlockG, so it applies even when overridden.
 const DEFAULT_BODY = `Role: You are the FINAL-RENDER block — pure template. You take the chosen primary question (and optional alternative) and emit the interviewer-facing JSON. No new content. No new analysis.`;
 
+// Output-language directive. 'auto'/null keeps the question verbatim in whatever
+// language it was generated (default). 'zh'/'en' render the interviewer-facing
+// framing in that language while keeping (a) quoted candidate phrases verbatim in
+// their original language (they're real quotes) and (b) technical terms / tool &
+// product names / acronyms / metrics in original form.
+function languageDirective(outputLanguage) {
+  const lang = String(outputLanguage || '').toLowerCase();
+  if (lang !== 'zh' && lang !== 'en') return '';
+  const name = lang === 'zh' ? 'CHINESE (简体中文)' : 'ENGLISH';
+  return `\n=== OUTPUT LANGUAGE — MANDATORY ===
+You MUST write primary_question, alternative_question, and rationale_for_interviewer in ${name}. If the selected question is currently in another language, TRANSLATE it into natural, fluent ${name} — this translation is REQUIRED and is explicitly NOT "new content" (it overrides the verbatim rule for the question's framing). Preserve meaning exactly; do not add or drop ideas. Two things stay in their ORIGINAL form: (1) any candidate phrase inside single quotes — keep it verbatim in the language the candidate used (it is a real quote); (2) technical terms, tool/framework/product names, acronyms, and metric units. anchor_quotes must be the substrings actually present in the rendered primary_question.
+=== END OUTPUT LANGUAGE ===\n`;
+}
+
 function buildBlockG({
   primaryCandidate = null,
   alternativeCandidate = null,
@@ -22,6 +36,7 @@ function buildBlockG({
   safetyVerdict = 'pass',
   candidateAnswer = '',
   resumeChunk = '',
+  outputLanguage = null,
   promptBody = null
 } = {}) {
   const primary = primaryCandidate || { question: '(no primary candidate)', anchors: [], expected_yield: '', question_type: 'unknown' };
@@ -40,7 +55,7 @@ function buildBlockG({
   // conditional appended after the body, so it applies whether or not the body is
   // overridden. The candidate payload + output schema + rules below are the frame.
   return `${promptBody || DEFAULT_BODY} ${rewriteHint}
-
+${languageDirective(outputLanguage)}
 [Primary candidate selected by ranker]
 question: ${primary.question}
 type: ${primary.question_type}
@@ -77,7 +92,7 @@ Required output — strict JSON only.
 }
 
 Hard rules:
-1. Do NOT add new content, anchors, or rationales. The only freedom you have is rephrasing under safety_verdict='rewrite'.
+1. Do NOT add new content, anchors, or rationales. The only transformations allowed: rephrasing under safety_verdict='rewrite', AND translating into the OUTPUT LANGUAGE when that directive is set above (translation there is REQUIRED, not optional, and is not considered new content).
 2. anchor_quotes must list the substrings actually present in primary_question, in order.
 3. iteration_version must be exactly "${EXPERT_ITERATION_VERSION}".
 4. If primaryCandidate is missing (orchestrator fallback case), emit primary_question="(no question available — Expert mode fallback to Fast mode)" with empty anchors and a rationale stating the fallback. The orchestrator handles the actual fallback to Fast mode; this branch is the schema-compliant placeholder.

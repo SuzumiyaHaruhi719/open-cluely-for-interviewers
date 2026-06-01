@@ -388,6 +388,19 @@
   color: var(--fg-subtle);
 }
 
+/* Per-chat model picker — compact, pushed to the right next to Clear. */
+.resume-chat__model {
+  margin-left: auto;
+  max-width: 130px;
+  font-size: 10px;
+  padding: 2px 6px;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .resume-chat__clear {
   padding: 2px 8px;
   border: none;
