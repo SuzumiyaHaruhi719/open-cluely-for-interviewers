@@ -12,7 +12,9 @@ const env = { ...process.env };
 delete env.ELECTRON_RUN_AS_NODE;
 
 const args = ['.', ...process.argv.slice(2)];
-const child = spawn(electronBinary, args, { stdio: 'inherit', env });
+// windowsHide stops a stray console window from being created on Windows; stdio
+// is inherited so logs still flow to the launching terminal.
+const child = spawn(electronBinary, args, { stdio: 'inherit', env, windowsHide: true });
 
 child.on('exit', (code, signal) => {
   if (signal) {

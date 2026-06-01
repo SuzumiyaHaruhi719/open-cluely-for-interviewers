@@ -12,9 +12,47 @@
 // to 16 kHz so the bytes match the format the ASR providers already expect
 // from the renderer's microphone / system path.
 
+const { spawn } = require('child_process');
+const iconv = require('iconv-lite');
+
 const SIDECAR_SAMPLE_RATE = 44100;
 const SIDECAR_CHANNELS = 2;
 const TARGET_SAMPLE_RATE = 16000;
+
+// The application-loopback package enumerates windows by spawning its
+// ProcessList.exe sidecar and parsing stdout. The sidecar prints window
+// titles in the console's active code page (e.g. cp936/GBK on a zh-CN
+// machine), but the package calls stdout.setEncoding('utf8'), so non-ASCII
+// titles arrive as mojibake. We bypass getActiveWindowProcessIds() and spawn
+// the same exe ourselves, reading stdout as a Buffer and decoding it from the
+// system code page. Lines are "pid;hwnd;title", matching the sidecar format.
+const PROCESS_LIST_LINE_PARTS = 3;
+const PROCESS_LIST_TIMEOUT_MS = 5000;
+
+// System ANSI code page -> iconv-lite encoding name. cp936 (GBK) is the
+// default on zh-CN Windows; the others cover the common East-Asian locales
+// whose sidecar output would otherwise be misdecoded. Defaults to GBK because
+// that is the locale this capture path is most often used on; ASCII-only
+// output decodes identically under any of these so the default is safe.
+const ACP_TO_ENCODING = {
+  936: 'gbk', // Simplified Chinese (GBK / GB2312 / GB18030 superset)
+  950: 'big5', // Traditional Chinese
+  932: 'shiftjis', // Japanese
+  949: 'euc-kr', // Korean
+  65001: 'utf8' // already UTF-8, decode as-is
+};
+
+function resolveConsoleEncoding() {
+  // Node has no binding for GetACP(), and the sidecar emits no BOM, so we
+  // can't auto-detect the code page reliably. Default to GBK (the locale this
+  // capture path is overwhelmingly used on); allow an explicit override via
+  // OPEN_CLUELY_SIDECAR_ACP for other East-Asian locales without a rebuild.
+  const acp = Number(process.env.OPEN_CLUELY_SIDECAR_ACP);
+  if (Number.isInteger(acp) && ACP_TO_ENCODING[acp]) {
+    return ACP_TO_ENCODING[acp];
+  }
+  return 'gbk';
+}
 
 // Min duration of mono int16 samples we accumulate before flushing to ASR.
 // 100ms @ 16k mono = 1600 samples = 3200 bytes. Matches the renderer's
@@ -69,6 +107,73 @@ function downsampleInt16(monoBuffer, inRate, outRate) {
   return out;
 }
 
+// Spawn the package's ProcessList.exe and decode its stdout from the system
+// code page instead of UTF-8. Returns the same shape as
+// getActiveWindowProcessIds() — [{ processId, hwnd, title }] — with correctly
+// decoded titles. Throws on spawn failure / timeout so the caller can fall
+// back to the package's (mojibake-prone) enumeration.
+function listWindowsViaProcessList(exePath, logger) {
+  return new Promise((resolve, reject) => {
+    let child;
+    try {
+      // windowsHide prevents a console window from flashing up on each enumeration
+      // (the source picker calls this at startup). detached is removed: it created
+      // a new console window on Windows and isn't needed — this is a short-lived,
+      // awaited process that child.kill() cleans up on timeout.
+      child = spawn(exePath, { windowsHide: true, stdio: ['ignore', 'pipe', 'ignore'] });
+    } catch (spawnError) {
+      reject(spawnError);
+      return;
+    }
+
+    const chunks = [];
+    let settled = false;
+
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      try { child.kill(); } catch (_) {}
+      reject(new Error('ProcessList.exe timed out'));
+    }, PROCESS_LIST_TIMEOUT_MS);
+
+    function finish(fn, value) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      fn(value);
+    }
+
+    // Collect raw bytes; decoding as UTF-8 here would reintroduce the bug.
+    child.stdout.on('data', (buf) => chunks.push(buf));
+    child.on('error', (err) => finish(reject, err));
+    child.stdout.on('close', () => {
+      const encoding = resolveConsoleEncoding();
+      let text;
+      try {
+        text = iconv.decode(Buffer.concat(chunks), encoding);
+      } catch (decodeError) {
+        logger.warn(`process-loopback: failed to decode ProcessList output as ${encoding}:`, decodeError.message);
+        finish(reject, decodeError);
+        return;
+      }
+      const windows = [];
+      for (const rawLine of text.split('\n')) {
+        const line = rawLine.replace('\r', '');
+        const parts = line.split(';');
+        if (parts.length < PROCESS_LIST_LINE_PARTS) continue;
+        const [processId, hwnd, ...rest] = parts;
+        // Titles can legitimately contain ';', so rejoin everything after the
+        // hwnd field rather than dropping it (the package keeps only the third
+        // field and discards such titles).
+        const title = rest.join(';');
+        if (processId === undefined || hwnd === undefined) continue;
+        windows.push({ processId, hwnd, title });
+      }
+      finish(resolve, windows);
+    });
+  });
+}
+
 function createProcessLoopbackService({ asrService, sendToRenderer, logger = console }) {
   let appLoopback = null;
   let active = null; // { pid, startedAt, leftoverMono, framesEmitted }
@@ -99,7 +204,18 @@ function createProcessLoopbackService({ asrService, sendToRenderer, logger = con
       return { supported: false, processes: [], reason: 'sidecar-missing' };
     }
     try {
-      const windows = await al.getActiveWindowProcessIds();
+      // Enumerate by spawning ProcessList.exe ourselves and decoding stdout
+      // from the system code page; this yields correct non-ASCII (e.g.
+      // Chinese / Japanese) titles. al.getActiveWindowProcessIds() spawns the
+      // same exe but decodes as UTF-8, producing mojibake — so it's only a
+      // fallback if our own spawn fails (e.g. binary path can't be resolved).
+      let windows;
+      try {
+        windows = await listWindowsViaProcessList(al.getProcessListBinaryPath(), logger);
+      } catch (decodeFallbackError) {
+        logger.warn('process-loopback: GBK-aware enumerate failed, falling back to package:', decodeFallbackError.message);
+        windows = await al.getActiveWindowProcessIds();
+      }
       // Deduplicate by processId so users see one entry per app, not per
       // window. Prefer the longest title since it usually has more context
       // (e.g. "Discord — channel #foo" vs "Discord").
