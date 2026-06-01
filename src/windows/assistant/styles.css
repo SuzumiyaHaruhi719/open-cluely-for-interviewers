@@ -431,6 +431,8 @@ body.stealth-on .app-shell { opacity: 0.92; }
   align-items: center;
   gap: 8px;
   min-width: 0;
+  /* Title yields space first (it ellipsizes) so the meta + actions stay intact. */
+  flex: 0 1 auto;
 }
 
 /* Session title in display font for hierarchy — truncates cleanly. */
@@ -477,6 +479,11 @@ body.stealth-on .app-shell { opacity: 0.92; }
   align-items: center;
   gap: 8px;
   margin-left: auto;
+  /* Meta pills are informational — they shrink/clip before the action buttons,
+     and the least-critical ones hide on a narrow window (media queries below). */
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
 }
 
 /* ── Fast / Expert mode indicator ────────────────────────────────────────── */
@@ -655,6 +662,10 @@ body.stealth-on .app-shell { opacity: 0.92; }
   display: flex;
   align-items: center;
   gap: 6px;
+  /* Never shrink/clip the action buttons (Generate Q is the primary action).
+     The title + meta yield space first; see flex rules + the narrow-window
+     media queries below. */
+  flex: 0 0 auto;
 }
 
 /* Base action button.
@@ -1692,6 +1703,28 @@ body.rail-collapsed .right-rail {
   .sidebar__settings-btn { justify-content: center; }
 
   .composer__channels { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── Narrow-window topbar: shed informational pills so the action buttons
+ *    (Ask AI / Screen AI / Generate Q) are never truncated. Priority to drop,
+ *    least-critical first: REC + screenshot count → ASR engine → timer →
+ *    mode-pill label (dot stays). The action buttons never shrink. ───────────── */
+@media (max-width: 860px) {
+  .topbar { gap: 8px; padding: 10px 12px; }
+  #rec-indicator,
+  #screenshot-count { display: none; }
+}
+@media (max-width: 740px) {
+  .topbar__lead .timer { display: none; }
+  #asr-indicator { display: none; }
+  .topbar__title { max-width: 18ch; }
+}
+@media (max-width: 620px) {
+  /* Keep the mode dot (Fast/Expert colour) but drop its text label, and tighten
+     the action buttons so the trio + more-menu still fit. */
+  #mode-indicator .mode-indicator__label { display: none; }
+  .topbar__actions { gap: 4px; }
+  .topbar__actions .action-btn { padding-left: 8px; padding-right: 8px; }
 }
 
 /* ── Motion policy ───────────────────────────────────────────────────────────
