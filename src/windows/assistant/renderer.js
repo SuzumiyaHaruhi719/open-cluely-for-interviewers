@@ -6,6 +6,7 @@ import { updateMessageAiToggleUi as syncMessageAiToggleUi } from './renderer/fea
 import { createChatUiManager } from './renderer/features/chat/chat-ui-manager.js';
 import { createProgressCard } from './renderer/features/chat/progress-card.js';
 import { createPipelineStudio } from './renderer/features/pipeline/pipeline-studio.js';
+import { INTERVIEW_SAMPLES, getInterviewSample } from './renderer/features/session/interview-samples.js';
 import { createWindowAdjustmentManager } from './renderer/features/layout/window-adjustments.js';
 import { setupEventListeners as setupEventListenersModule } from './renderer/features/listeners/event-listeners.js';
 import { setupIpcListeners as setupIpcListenersModule } from './renderer/features/listeners/ipc-listeners.js';
@@ -361,24 +362,33 @@ async function handleGenerateQuestionClick() {
     }
 }
 
-// Dev convenience: seed a short sample interview so Generate Q can be tested
-// immediately without a live transcript. Idempotent — only seeds when the chat
-// is empty. Flip SEED_SAMPLE_INTERVIEW to false to disable.
-const SEED_SAMPLE_INTERVIEW = true;
-function seedSampleInterview() {
-    if (!chatMessagesElement) return;
-    if (chatMessagesArray.length > 0) return; // don't clobber a real session
-    // Candidate lane depends on interview type: online → computer-audio
-    // ('voice-system' / Candidate), offline → shared room mic ('voice-mic').
-    const candidateType = activeInterviewType === 'offline' ? 'voice-mic' : 'voice-system';
-    const turns = [
-        { type: 'voice-mic', text: 'Tell me about a recent project where you owned the technical design.' },
-        { type: candidateType, text: 'Sure. I led the migration of our payments service from a monolith to microservices. We had reliability issues during peak traffic, so I redesigned the order pipeline and introduced an async queue. After the rollout, p99 latency dropped a lot and the on-call pages basically stopped.' }
-    ];
-    for (const t of turns) {
-        chatUiManager.addChatMessage(t.type, t.text);
-        if (t.type === 'voice-mic') pushInterviewerQuestion(t.text);
+// Seed a chosen sample interview into the live chat: sets résumé/JD and injects
+// the transcript turns (interviewer → "You" mic lane; candidate → computer-audio
+// lane online, room-mic lane offline). Interviewer turns also feed the question
+// history so Generate Q has prior context. Called from createSessionWithType when
+// a sample is picked in the new-interview modal.
+async function seedInterviewSample(sample) {
+    if (!sample || !chatMessagesElement) return;
+    // Populate per-interview context (résumé + JD) so follow-ups are well-anchored.
+    try { await window.electronAPI?.saveSettings?.({ resumeText: sample.resume || '', jobDescription: sample.jd || '' }); } catch (_) { /* non-fatal */ }
+    if (resumeDropzone && sample.resume) resumeDropzone.setText(sample.resume);
+    if (jobDescriptionInput) jobDescriptionInput.value = sample.jd || '';
+
+    const candidateType = (sample.interviewType === 'offline' || activeInterviewType === 'offline') ? 'voice-mic' : 'voice-system';
+    for (const turn of (sample.turns || [])) {
+        const type = turn.speaker === 'interviewer' ? 'voice-mic' : candidateType;
+        chatUiManager.addChatMessage(type, turn.text);
+        if (turn.speaker === 'interviewer') pushInterviewerQuestion(turn.text);
     }
+}
+
+// Populate the new-interview modal's sample dropdown once.
+function populateInterviewSampleOptions() {
+    const sel = document.getElementById('interview-sample-select');
+    if (!sel) return;
+    const opts = ['<option value="">空白 / Blank (no transcript)</option>']
+        .concat(INTERVIEW_SAMPLES.map((s) => `<option value="${s.id}">${s.name}</option>`));
+    sel.innerHTML = opts.join('');
 }
 
 const transcriptBufferManager = createTranscriptBufferManager({
@@ -1034,8 +1044,10 @@ function handleNewSession() {
 // `interviewType` is 'online' | 'offline' (the store sanitizes + defaults to
 // 'online'). Mirrors the old handleNewSession body, plus applies the format to
 // the live UI (body.offline-mode + mic relabel).
-async function createSessionWithType(interviewType) {
-    const type = interviewType === 'offline' ? 'offline' : 'online';
+async function createSessionWithType(interviewType, sampleId = null) {
+    const sample = sampleId ? getInterviewSample(sampleId) : null;
+    // A picked sample defines its own interview format; otherwise use the card.
+    const type = (sample ? sample.interviewType : interviewType) === 'offline' ? 'offline' : 'online';
     try {
         const title = `Interview · ${new Date().toLocaleString('en-US', {
             month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
@@ -1063,10 +1075,12 @@ async function createSessionWithType(interviewType) {
         // Crossfade the (now empty) transcript in. No stagger — there are no
         // lines to cascade; the container just fades the placeholder in.
         swapChatContent(() => clearTranscriptUi());
+        // Seed the chosen sample (résumé/JD + transcript) into the fresh interview.
+        if (sample) await seedInterviewSample(sample);
         sessionContextPanel?.update(session.interviewerSessionState || null);
         historySidebar?.setActive(session.id);
         await historySidebar?.refresh();
-        showFeedback(type === 'offline' ? '线下面试已开始 / Offline interview started' : 'New interview started', 'success');
+        showFeedback(sample ? `样本已载入 / Sample loaded: ${sample.name}` : (type === 'offline' ? '线下面试已开始 / Offline interview started' : 'New interview started'), 'success');
         addMonitorLog('info', 'session-new', 'Created interview session', null, {
             id: session.id,
             mode: interviewerMode,
@@ -1140,8 +1154,10 @@ function setupInterviewTypeModal() {
 
     function chooseOption(optionEl) {
         const type = optionEl?.dataset?.interviewType === 'offline' ? 'offline' : 'online';
+        const sampleSel = document.getElementById('interview-sample-select');
+        const sampleId = sampleSel && sampleSel.value ? sampleSel.value : null;
         closeInterviewTypeModal();
-        createSessionWithType(type);
+        createSessionWithType(type, sampleId);
     }
 
     options.forEach((optionEl, index) => {
@@ -1458,7 +1474,7 @@ async function init() {
     setupSessionContextPanel();
     setupInterviewerProgressListener();
     setupPipelineStudio();
-    if (SEED_SAMPLE_INTERVIEW) seedSampleInterview();
+    populateInterviewSampleOptions();
     // Components are mounted now, so reflect any persisted resume/JD from the
     // settings we loaded above (loadShortcutConfig runs before the components
     // exist, so the reflection has to happen here).
