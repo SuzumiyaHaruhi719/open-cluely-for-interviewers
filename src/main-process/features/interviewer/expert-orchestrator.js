@@ -677,12 +677,14 @@ async function runExpertChainLegacy({
   };
 }
 
-// Delegating entry point: build the candidate context, run the EXPERT_PRESET on
+// Pipeline-aware entry point: build the candidate context, run ANY pipeline on
 // the generic engine, then attach Block H (session consolidation) off the
-// critical path exactly as the legacy chain did. Returns the same shape the
-// runtime consumes. The engine require is lazy to avoid a load-time require cycle
-// (engine → block-types → this module).
-async function runExpertChain({
+// critical path exactly as the legacy chain did. Used by Expert mode (with
+// EXPERT_PRESET) and Customize mode (with the user's active pipeline). Returns
+// the same shape the runtime consumes. The engine require is lazy to avoid a
+// load-time require cycle (engine → block-types → this module).
+async function runPipelineChain({
+  pipeline,
   apiKey,
   candidateAnswer,
   resumeChunk = '',
@@ -694,13 +696,15 @@ async function runExpertChain({
   onProgress = null
 } = {}) {
   if (!apiKey) {
-    throw new Error('Expert mode requires DashScope API key');
+    throw new Error('Expert/custom mode requires DashScope API key');
+  }
+  if (!pipeline) {
+    throw new Error('runPipelineChain requires a pipeline');
   }
   const { runPipeline } = require('../../../services/ai/pipeline/pipeline-engine');
-  const { EXPERT_PRESET } = require('../../../services/ai/pipeline/presets');
 
   const context = { candidateAnswer, resumeChunk, jobDescription, questionHistory, sessionState };
-  const result = await runPipeline({ pipeline: EXPERT_PRESET, apiKey, context, abortSignal, onProgress });
+  const result = await runPipeline({ pipeline, apiKey, context, abortSignal, onProgress });
   const blockG = result.output;
 
   // ─── Block H — auto context consolidation (NON-BLOCKING) ──────────────────
@@ -723,7 +727,7 @@ async function runExpertChain({
   }
 
   return {
-    iterationVersion: EXPERT_ITERATION_VERSION,
+    iterationVersion: pipeline.version || EXPERT_ITERATION_VERSION,
     output: blockG,
     blocks: result.blocks,
     trace: result.trace,
@@ -733,8 +737,16 @@ async function runExpertChain({
   };
 }
 
+// Thin Expert entry point — runs the built-in EXPERT_PRESET through the shared
+// pipeline chain. Unchanged signature/return for existing callers.
+async function runExpertChain(args = {}) {
+  const { EXPERT_PRESET } = require('../../../services/ai/pipeline/presets');
+  return runPipelineChain({ ...args, pipeline: EXPERT_PRESET });
+}
+
 module.exports = {
   runExpertChain,
+  runPipelineChain,
   runExpertChainLegacy,
   EXPERT_ITERATION_VERSION,
   BLOCK_MODELS,

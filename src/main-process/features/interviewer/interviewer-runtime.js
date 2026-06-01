@@ -19,8 +19,10 @@ const {
   getDashscopeBaseUrl,
   getDefaultInterviewerModel
 } = require('../../../config');
-const { runExpertChain, EXPERT_ITERATION_VERSION } = require('./expert-orchestrator');
+const { runPipelineChain, EXPERT_ITERATION_VERSION } = require('./expert-orchestrator');
 const { logExpertRun } = require('./expert-run-logger');
+const presetLibrary = require('../../../services/ai/pipeline/preset-library');
+const { EXPERT_PRESET } = require('../../../services/ai/pipeline/presets');
 
 const STAGE1_TRIGGER_SCORE = 4;
 const MIN_ANSWER_CHARS = 12;
@@ -108,7 +110,7 @@ async function dashscopeChat({ apiKey, model, prompt, system, temperature, maxTo
 // runtime still updates the in-memory appState so the next turn's Block C sees
 // it — it just isn't durable across app restarts. This keeps the existing
 // `createInterviewerRuntime({ getAppState })` call working unchanged.
-function createInterviewerRuntime({ getAppState, saveSessionState = null, sendToRenderer = null }) {
+function createInterviewerRuntime({ getAppState, saveSessionState = null, sendToRenderer = null, pipelinesDir = null }) {
   // Durable persistence of Block H output. No-op unless start-application.js
   // passes saveSessionState (see INTEGRATION NOTE in analyzeCandidateAnswerExpert).
   function persistSessionState(nextState) {
@@ -138,7 +140,25 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
 
   function getMode() {
     const state = getAppState() || {};
-    return state.interviewerMode === 'expert' ? 'expert' : 'fast';
+    if (state.interviewerMode === 'expert') return 'expert';
+    if (state.interviewerMode === 'customize') return 'customize';
+    return 'fast';
+  }
+
+  // The active custom pipeline for Customize mode — resolved from the library by
+  // app-state.activePipelineId, falling back to the Expert preset if unset/invalid.
+  function getActivePipeline() {
+    const state = getAppState() || {};
+    const id = state.activePipelineId;
+    if (id) {
+      try {
+        const p = presetLibrary.getPipeline(id, pipelinesDir || undefined);
+        if (p) return p;
+      } catch (error) {
+        console.error('Failed to load active pipeline, falling back to Expert:', error?.message || error);
+      }
+    }
+    return EXPERT_PRESET;
   }
 
   function getContext() {
@@ -173,7 +193,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     return { raw: text, usage, parsed: safeJsonParse(text) };
   }
 
-  async function analyzeCandidateAnswerExpert({ candidateAnswer, questionHistory, emotion, requestId = null }) {
+  async function analyzeViaPipeline({ pipeline, mode = 'expert', candidateAnswer, questionHistory, emotion, requestId = null }) {
     const apiKey = getApiKey();
     const { resumeChunk, jobDescription } = getContext();
     const state = getAppState() || {};
@@ -183,7 +203,8 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     // Block H closes on subsequent turns.
     const sessionState = state.interviewerSessionState || null;
     try {
-      const expertResult = await runExpertChain({
+      const expertResult = await runPipelineChain({
+        pipeline,
         apiKey,
         candidateAnswer,
         resumeChunk,
@@ -249,7 +270,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
         }
       }
       return {
-        mode: 'expert',
+        mode,
         requestId,
         tokensUsed: { input: tokInput, output: tokOutput, total: tokInput + tokOutput },
         iterationVersion: expertResult.iterationVersion,
@@ -262,8 +283,8 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
         shouldShowFollowUps: Boolean(expertResult.output?.primary_question && !String(expertResult.output.primary_question).startsWith('(no question'))
       };
     } catch (error) {
-      console.error('Expert mode failed, returning skipped result:', error);
-      return { mode: 'expert', skipped: true, requestId, reason: `expert-chain-error: ${error?.message || 'unknown'}` };
+      console.error(`${mode} pipeline failed, returning skipped result:`, error);
+      return { mode, skipped: true, requestId, reason: `pipeline-error: ${error?.message || 'unknown'}` };
     }
   }
 
@@ -281,8 +302,12 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
       return { skipped: true, reason: 'no-dashscope-key' };
     }
 
-    if (getMode() === 'expert') {
-      return analyzeCandidateAnswerExpert({ candidateAnswer: answer, questionHistory, emotion, requestId });
+    const mode = getMode();
+    if (mode === 'expert') {
+      return analyzeViaPipeline({ pipeline: EXPERT_PRESET, mode: 'expert', candidateAnswer: answer, questionHistory, emotion, requestId });
+    }
+    if (mode === 'customize') {
+      return analyzeViaPipeline({ pipeline: getActivePipeline(), mode: 'custom', candidateAnswer: answer, questionHistory, emotion, requestId });
     }
 
     const { resumeChunk, jobDescription } = getContext();

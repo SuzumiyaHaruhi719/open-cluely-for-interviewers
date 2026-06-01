@@ -11,12 +11,22 @@ function getDefaultAppState() {
     dashscopeAiModel: null,
     xfyunAppId: null,
     xfyunApiKey: null,
+    // Volcengine (火山引擎) ASR — STAGED, not yet connected. These are stored so
+    // the offline interview path can later switch its ASR to a 'volcengine'
+    // provider once an access token is available. Empty → null. No client reads
+    // them yet; offline currently runs on the existing mic→Paraformer pipeline.
+    volcAppId: null,
+    volcAccessToken: null,
+    volcResourceId: null,
     programmingLanguage: null,
     windowOpacityLevel: 10,
     themePreference: null,
     resumeText: null,
     jobDescription: null,
-    interviewerMode: 'fast'
+    interviewerMode: 'fast',
+    interviewerSessionState: null,
+    activePipelineId: null,
+    activeSessionId: null
   };
 }
 
@@ -48,6 +58,24 @@ function sanitizeAppState(state) {
       nextState.xfyunApiKey = xfyunApiKey || null;
     }
 
+    // Volcengine ASR creds (staged). Same trim → empty→null contract as the
+    // other provider keys; no validation beyond string/trim because no client
+    // consumes them yet.
+    if (typeof state.volcAppId === 'string') {
+      const volcAppId = state.volcAppId.trim();
+      nextState.volcAppId = volcAppId || null;
+    }
+
+    if (typeof state.volcAccessToken === 'string') {
+      const volcAccessToken = state.volcAccessToken.trim();
+      nextState.volcAccessToken = volcAccessToken || null;
+    }
+
+    if (typeof state.volcResourceId === 'string') {
+      const volcResourceId = state.volcResourceId.trim();
+      nextState.volcResourceId = volcResourceId || null;
+    }
+
     if (typeof state.resumeText === 'string') {
       const resumeText = state.resumeText.trim();
       nextState.resumeText = resumeText || null;
@@ -73,8 +101,28 @@ function sanitizeAppState(state) {
     }
 
     const interviewerMode = String(state.interviewerMode ?? '').trim().toLowerCase();
-    if (interviewerMode === 'expert' || interviewerMode === 'fast') {
+    if (interviewerMode === 'expert' || interviewerMode === 'fast' || interviewerMode === 'customize') {
       nextState.interviewerMode = interviewerMode;
+    }
+
+    // Active custom pipeline id for Customize mode (resolved against the preset
+    // library at run time). Null = fall back to the Expert preset.
+    if (typeof state.activePipelineId === 'string') {
+      const activePipelineId = state.activePipelineId.trim();
+      nextState.activePipelineId = activePipelineId || null;
+    }
+
+    // Expert Block H consolidation output. Persisted as-is when it's a plain
+    // object (array/scalar shapes are rejected → stays null). Block H owns the
+    // field shape; the sanitizer only guards the object|null contract so a
+    // corrupt file can't poison the next turn's Block C input.
+    if (state.interviewerSessionState && typeof state.interviewerSessionState === 'object' && !Array.isArray(state.interviewerSessionState)) {
+      nextState.interviewerSessionState = state.interviewerSessionState;
+    }
+
+    if (typeof state.activeSessionId === 'string') {
+      const activeSessionId = state.activeSessionId.trim();
+      nextState.activeSessionId = activeSessionId || null;
     }
   }
 
