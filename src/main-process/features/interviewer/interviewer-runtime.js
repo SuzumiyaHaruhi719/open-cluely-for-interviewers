@@ -312,6 +312,14 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
 
     const { resumeChunk, jobDescription } = getContext();
 
+    // Fast mode runs on the default interviewer model (both stages). Report it via
+    // the progress channel so the card shows the model, like Expert/Customize do.
+    const fastModel = getDefaultInterviewerModel();
+    const fastStartedAt = Date.now();
+    if (typeof sendToRenderer === 'function') {
+      try { sendToRenderer('interviewer-progress', { requestId, phase: 'fast', index: 1, total: 1, status: 'start', model: fastModel }); } catch (_) { /* best-effort */ }
+    }
+
     const stage1 = await detectHooks({
       jobDescription,
       resumeChunk,
@@ -325,6 +333,9 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     const pivotSignal = parsed.pivot_signal === true;
 
     const result = {
+      mode: 'fast',
+      requestId,
+      model: fastModel,
       iterationVersion: ITERATION_VERSION,
       stage1: {
         raw: stage1.raw,
@@ -354,6 +365,14 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
       };
       result.shouldShowFollowUps = Boolean(stage2.parsed?.questions?.length);
     }
+
+    // Token + elapsed totals for the finished-card footer (same shape as Expert).
+    const u1 = stage1.usage || {};
+    const u2 = (result.stage2 && result.stage2.usage) || {};
+    const tokInput = (Number(u1.input_tokens) || 0) + (Number(u2.input_tokens) || 0);
+    const tokOutput = (Number(u1.output_tokens) || 0) + (Number(u2.output_tokens) || 0);
+    result.tokensUsed = { input: tokInput, output: tokOutput, total: tokInput + tokOutput };
+    result.elapsedMs = Date.now() - fastStartedAt;
 
     return result;
   }

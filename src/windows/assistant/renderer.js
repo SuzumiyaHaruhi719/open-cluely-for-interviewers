@@ -156,7 +156,7 @@ async function persistCoachQuestion(text) {
     }
 }
 
-function renderInterviewerCoachMessage(stage2Parsed, stage1Parsed) {
+function renderInterviewerCoachMessage(stage2Parsed, stage1Parsed, meta = null) {
     const questions = Array.isArray(stage2Parsed?.questions) ? stage2Parsed.questions : [];
     if (questions.length === 0) return;
 
@@ -181,6 +181,15 @@ function renderInterviewerCoachMessage(stage2Parsed, stage1Parsed) {
     if (typeof score === 'number') headerBits.push(`score ${score}`);
     if (direction) headerBits.push(direction);
     const header = headerBits.length ? `_(${headerBits.join(' · ')})_` : '';
+
+    // Cost footer: model · elapsed · tokens (parity with the Expert follow-up card).
+    if (meta) {
+        const bits = [];
+        if (meta.model) bits.push(`🧠 ${meta.model}`);
+        if (Number(meta.elapsedMs) > 0) bits.push(`⏱ ${(Number(meta.elapsedMs) / 1000).toFixed(1)}s`);
+        if (meta.tokensUsed && Number(meta.tokensUsed.total) > 0) bits.push(`🪙 ${Number(meta.tokensUsed.total).toLocaleString()} tokens`);
+        if (bits.length) lines.push(`*${bits.join(' · ')}*`);
+    }
 
     const body = (header ? `${header}\n\n` : '') + lines.join('\n');
     addChatMessage('interviewer-coach', body);
@@ -274,7 +283,7 @@ async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
                 addMonitorLog('info', 'interviewer', 'Expert chain produced no high-confidence follow-up', 'system');
             }
         } else if (response.shouldShowFollowUps && response.stage2?.parsed) {
-            renderInterviewerCoachMessage(response.stage2.parsed, response.stage1?.parsed);
+            renderInterviewerCoachMessage(response.stage2.parsed, response.stage1?.parsed, { model: response.model, tokensUsed: response.tokensUsed, elapsedMs: response.elapsedMs });
         } else {
             addMonitorLog('info', 'interviewer', `Stage1 score ${response.stage1?.parsed?.score ?? '?'} — no follow-up emitted`, 'system');
         }

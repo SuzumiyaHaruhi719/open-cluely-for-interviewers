@@ -156,7 +156,12 @@ export function createProgressCard({ chatMessagesElement, isAutoScrollEnabled = 
         const reqId = evt.requestId != null ? String(evt.requestId) : null;
         if (activeRequestId != null && reqId != null && reqId !== activeRequestId) return; // stale
         const bound = BOUNDS[evt.phase];
-        if (!bound) return;
+        if (!bound) {
+            // Non-Expert phase (e.g. Fast mode's single 'fast' event): no weighted
+            // segment, but still surface the model in the indeterminate label.
+            if (evt.model && labelEl) labelEl.textContent = `生成追问中… · ${evt.model}`;
+            return;
+        }
 
         // First real event upgrades from indeterminate to determinate.
         cardEl.classList.remove('is-indeterminate');
