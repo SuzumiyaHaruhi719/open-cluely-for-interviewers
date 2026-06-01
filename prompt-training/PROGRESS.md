@@ -127,6 +127,23 @@ equal-weighted total; don't pick smoother/better-anchored over deeper. Principle
 (selector←objective), not judge-gaming. Judge with judge.js (apples-to-apples vs
 84.3%). Last principled lever; after this → honest final report + ship.
 
+### ITER6 result (committed 9be0add) — BEST: 84.3% → 87.9% on 140 (same judge)
+mean 87.1, 0 fact-pins selected. E-selection alignment captured real headroom.
+App restarted with new prompts (live). Obsidian note written.
+
+## FINAL HONEST STANDING
+- Pass-rate (PTES ≥80): baseline 14.3% → **87.9%** validated on 140 fixtures (14%
+  of corpus). 6x improvement, principled (philosophy rewrite + selector alignment),
+  no judge-gaming.
+- Literal "every question >80" NOT met (17/140 below 80). NOT faked.
+- WHY not 100%: (a) judge threshold noise at temp 0 is real (same Q scored 23 vs
+  100) → some good Qs dip under 80 by measurement, not quality; (b) oracle best-of-5
+  = ~98%, so generation is near-ceiling — residual is E imperfectly selecting + the
+  noise floor. (c) iter5 proved more D-complexity regresses. Chasing literal 100%
+  = overfitting the judge or de-noising the measurement, neither = better questions.
+- Levers left if user wants more: average N judge runs (de-noise the metric),
+  raise candidate count >5 (higher best-of-N), or a regenerate-weakest second pass.
+
 ### Judge calibration (validated, honest)
 Smoke audit of judge.js vs my own read:
 - fx_0001 "how many FTEs redeployed" (number-pin) → 10/100, depth0 nontriv0. Correct.
