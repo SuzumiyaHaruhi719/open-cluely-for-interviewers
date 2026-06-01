@@ -10,6 +10,10 @@
 
 const EXPERT_ITERATION_VERSION = 'expert_v1_2026-05-29';
 
+// Default editable instruction body (static role text). The runtime rewriteHint
+// is appended after this in buildBlockG, so it applies even when overridden.
+const DEFAULT_BODY = `Role: You are the FINAL-RENDER block — pure template. You take the chosen primary question (and optional alternative) and emit the interviewer-facing JSON. No new content. No new analysis.`;
+
 function buildBlockG({
   primaryCandidate = null,
   alternativeCandidate = null,
@@ -32,11 +36,10 @@ function buildBlockG({
     ? 'IMPORTANT: Safety Audit flagged this question for rewrite — rephrase to remove leading/unprofessional framing while preserving the anchor and the demanded evidence.'
     : '';
 
-  // Editable instruction body (role/mission); the candidate payload + output
-  // schema + hard rules below are the fixed FRAME. rewriteHint stays in the body
-  // because it conditions how the renderer should phrase under a safety rewrite.
-  const defaultBody = `Role: You are the FINAL-RENDER block — pure template. You take the chosen primary question (and optional alternative) and emit the interviewer-facing JSON. No new content. No new analysis. ${rewriteHint}`;
-  return `${promptBody || defaultBody}
+  // Editable body = the static role text (DEFAULT_BODY). rewriteHint is a runtime
+  // conditional appended after the body, so it applies whether or not the body is
+  // overridden. The candidate payload + output schema + rules below are the frame.
+  return `${promptBody || DEFAULT_BODY} ${rewriteHint}
 
 [Primary candidate selected by ranker]
 question: ${primary.question}
@@ -82,4 +85,4 @@ Hard rules:
 Emit only the JSON object.`;
 }
 
-module.exports = { buildBlockG, EXPERT_ITERATION_VERSION };
+module.exports = { buildBlockG, EXPERT_ITERATION_VERSION, DEFAULT_BODY };

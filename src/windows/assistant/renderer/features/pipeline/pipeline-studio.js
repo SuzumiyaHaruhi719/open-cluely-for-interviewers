@@ -158,8 +158,9 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
         <input type="number" id="ps-f-budget" value="${isOn ? (thinking.budget_tokens || 1024) : 1024}" min="0" step="256" ${isOn ? '' : 'disabled'} style="width:80px" />
       </label>
       <label class="ps-field ps-field--row"><span>Temp</span><input type="number" id="ps-f-temp" value="${node.temperature != null ? node.temperature : (t.defaults.temperature != null ? t.defaults.temperature : 0.2)}" step="0.05" min="0" max="1" style="width:80px" /></label>
-      <label class="ps-field"><span>Prompt body (overrides the role/mission; schema fixed)</span>
-        <textarea id="ps-f-body" rows="8" placeholder="(default)">${escapeAttr(node.promptBody || '')}</textarea>
+      <label class="ps-field"><span>Prompt body — the default is shown; edit to fine-tune (schema/inputs stay fixed). Leave unchanged to use the default.</span>
+        <textarea id="ps-f-body" rows="10">${escapeAttr(node.promptBody != null ? node.promptBody : (t.defaultBody || ''))}</textarea>
+        <button type="button" id="ps-f-reset" class="ps-btn" style="align-self:flex-start;margin-top:4px">Reset to default</button>
       </label>`;
     el('ps-f-model').addEventListener('change', (ev) => { node.model = ev.target.value; render(); });
     el('ps-f-think').addEventListener('change', (ev) => {
@@ -168,7 +169,14 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
     });
     el('ps-f-budget').addEventListener('change', (ev) => { if (node.thinking && node.thinking.type === 'enabled') node.thinking.budget_tokens = Number(ev.target.value) || 1024; });
     el('ps-f-temp').addEventListener('change', (ev) => { node.temperature = Number(ev.target.value); });
-    el('ps-f-body').addEventListener('change', (ev) => { node.promptBody = ev.target.value.trim() || undefined; render(); });
+    el('ps-f-body').addEventListener('change', (ev) => {
+      const val = ev.target.value;
+      const def = (t.defaultBody || '');
+      // Unchanged from the default → store nothing (engine uses the builder default).
+      node.promptBody = (val.trim() === def.trim() || val.trim() === '') ? undefined : val;
+      render();
+    });
+    el('ps-f-reset').addEventListener('click', () => { node.promptBody = undefined; renderConfig(); render(); });
   }
 
   // ── Canvas interactions (event delegation) ──────────────────────────────────

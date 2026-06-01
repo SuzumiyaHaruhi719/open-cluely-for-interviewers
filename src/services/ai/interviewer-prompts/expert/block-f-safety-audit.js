@@ -38,6 +38,8 @@ function asJsonList(arr) {
   return arr.map((v) => `"${v}"`).join(' | ');
 }
 
+const DEFAULT_BODY = `Role: You are the SAFETY-AUDIT block. Two layers run on this audit: regex (already done — see findings below) and you (the soft-rule LLM). Your job: (a) confirm regex hits are real violations or downgrade them if context exonerates them; (b) catch soft violations regex misses (leading framing, condescension, irrelevance to role, private-personal-life probing without explicit keyword).`;
+
 function buildBlockF({ candidateQuestions = [], regexHits = [], jobDescription = '', promptBody = null } = {}) {
   // candidateQuestions is the top-2 selected by Block E, in order
   const qStr = candidateQuestions.length
@@ -48,9 +50,7 @@ function buildBlockF({ candidateQuestions = [], regexHits = [], jobDescription =
     ? regexHits.map((h, i) => `${i + 1}. rule=${h.rule} evidence="${h.evidence}"`).join('\n')
     : '(no regex hits)';
 
-  // Editable instruction body (role/mission); inputs + schema + verdict rules frame.
-  const defaultBody = `Role: You are the SAFETY-AUDIT block. Two layers run on this audit: regex (already done — see findings below) and you (the soft-rule LLM). Your job: (a) confirm regex hits are real violations or downgrade them if context exonerates them; (b) catch soft violations regex misses (leading framing, condescension, irrelevance to role, private-personal-life probing without explicit keyword).`;
-  return `${promptBody || defaultBody}
+  return `${promptBody || DEFAULT_BODY}
 
 [Job description — defines what is on-topic vs. irrelevant]
 \`\`\`
@@ -101,4 +101,4 @@ Regex confirmation rules:
 Emit only the JSON object.`;
 }
 
-module.exports = { buildBlockF, runHardRules };
+module.exports = { buildBlockF, runHardRules, DEFAULT_BODY };

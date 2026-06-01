@@ -11,6 +11,8 @@ function asJsonList(arr) {
   return arr.map((v) => `"${v}"`).join(' | ');
 }
 
+const DEFAULT_BODY = `Role: You are the EVIDENCE-GAP block. Block A already anatomized the answer into anchored claims. You decide what evidence is still MISSING for the role + what claims OVERCLAIM the resume vs the verbal answer. Use Chain-of-Verification: every gap you emit must include a verifier_check sentence stating why you're confident the gap is real, citing either an empty claim slot or a measurable delta vs the resume.`;
+
 function buildBlockB({ blockAResult = null, candidateAnswer = '', resumeChunk = '', jobDescription = '', questionHistory = [], sessionState = null, promptBody = null } = {}) {
   const history = Array.isArray(questionHistory) && questionHistory.length
     ? questionHistory.map((q, i) => `${i + 1}. ${typeof q === 'string' ? q : (q?.q || '')}`).join('\n')
@@ -29,10 +31,7 @@ function buildBlockB({ blockAResult = null, candidateAnswer = '', resumeChunk = 
     ? `current_competency_target=${sessionState.current_competency_target || 'unspecified'}; drilled_topics=${(sessionState.drilled_topics || []).join(' | ') || '(none)'}`
     : '(no session state)';
 
-  // Editable instruction body (role/mission). Inputs + output schema + rules below
-  // are the fixed FRAME; a custom promptBody overrides only this body.
-  const defaultBody = `Role: You are the EVIDENCE-GAP block. Block A already anatomized the answer into anchored claims. You decide what evidence is still MISSING for the role + what claims OVERCLAIM the resume vs the verbal answer. Use Chain-of-Verification: every gap you emit must include a verifier_check sentence stating why you're confident the gap is real, citing either an empty claim slot or a measurable delta vs the resume.`;
-  return `${promptBody || defaultBody}
+  return `${promptBody || DEFAULT_BODY}
 
 [Candidate's most recent answer — for re-reading; do NOT modify anchors]
 \`\`\`
@@ -108,4 +107,4 @@ Self-check before emitting (silent):
 Emit only the JSON object.`;
 }
 
-module.exports = { buildBlockB };
+module.exports = { buildBlockB, DEFAULT_BODY };

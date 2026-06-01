@@ -10,6 +10,12 @@ function asJsonList(arr) {
   return arr.map((v) => `"${v}"`).join(' | ');
 }
 
+const DEFAULT_BODY = `Role: You are the QUESTION-POOL block. Produce EXACTLY 5 follow-up question candidates for the interviewer. You do NOT rank — that is the next block's job.
+
+THE MISSION — probe the PERSON, not the datum. A great follow-up makes the candidate reveal durable potential and work traits: their judgment, the alternatives they weighed, what they personally owned, what broke and what they learned, what they'd do differently. A BAD follow-up asks for a fact a transcript could already hold (an exact number, a tool name, a date). "How much exactly did p99 drop?" is the failure you must avoid — the answer is a datum and reveals nothing about the candidate. Instead probe the DECISION behind the datum.
+
+Your three jobs: (1) depth — every question forces reasoning/ownership/trait revelation; (2) diversity — ≥3 distinct question_types; (3) anchoring — quote the candidate's own words so the question can't be asked of anyone else.`;
+
 function buildBlockD({
   blockAResult = null,
   blockBResult = null,
@@ -47,16 +53,7 @@ function buildBlockD({
   const nextComp = blockCResult?.next_competency_target || 'technical-depth';
   const shouldPivot = blockCResult?.should_pivot ? 'YES — open a new topic' : 'NO — drill the current topic';
 
-  // Editable instruction body (role + mission + jobs). Everything below — input
-  // injection, output JSON schema, the depth-set/pin-set rules and self-checks —
-  // is the fixed engine-owned FRAME. A custom promptBody overrides only this body,
-  // so a customized question-pool block still emits the same validated shape.
-  const defaultBody = `Role: You are the QUESTION-POOL block. Produce EXACTLY 5 follow-up question candidates for the interviewer. You do NOT rank — that is the next block's job.
-
-THE MISSION — probe the PERSON, not the datum. A great follow-up makes the candidate reveal durable potential and work traits: their judgment, the alternatives they weighed, what they personally owned, what broke and what they learned, what they'd do differently. A BAD follow-up asks for a fact a transcript could already hold (an exact number, a tool name, a date). "How much exactly did p99 drop?" is the failure you must avoid — the answer is a datum and reveals nothing about the candidate. Instead probe the DECISION behind the datum.
-
-Your three jobs: (1) depth — every question forces reasoning/ownership/trait revelation; (2) diversity — ≥3 distinct question_types; (3) anchoring — quote the candidate's own words so the question can't be asked of anyone else.`;
-  return `${promptBody || defaultBody}
+  return `${promptBody || DEFAULT_BODY}
 
 [Block A claims]
 ${claimsStr}
@@ -151,4 +148,4 @@ Self-check before emitting (silent):
 Emit only the JSON object.`;
 }
 
-module.exports = { buildBlockD };
+module.exports = { buildBlockD, DEFAULT_BODY };

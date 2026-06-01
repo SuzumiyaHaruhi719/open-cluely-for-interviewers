@@ -7,13 +7,13 @@
 // swap) lives in the safety-audit / final-render `prepare` hooks — the engine
 // itself stays generic (it only resolves typed edges + runs nodes).
 
-const { buildBlockA } = require('../interviewer-prompts/expert/block-a-answer-anatomy');
-const { buildBlockB } = require('../interviewer-prompts/expert/block-b-evidence-gap');
-const { buildBlockC } = require('../interviewer-prompts/expert/block-c-state-update');
-const { buildBlockD } = require('../interviewer-prompts/expert/block-d-question-pool');
-const { buildBlockE } = require('../interviewer-prompts/expert/block-e-rank-score');
-const { buildBlockF, runHardRules } = require('../interviewer-prompts/expert/block-f-safety-audit');
-const { buildBlockG } = require('../interviewer-prompts/expert/block-g-final-render');
+const { buildBlockA, DEFAULT_BODY: A_BODY } = require('../interviewer-prompts/expert/block-a-answer-anatomy');
+const { buildBlockB, DEFAULT_BODY: B_BODY } = require('../interviewer-prompts/expert/block-b-evidence-gap');
+const { buildBlockC, DEFAULT_BODY: C_BODY } = require('../interviewer-prompts/expert/block-c-state-update');
+const { buildBlockD, DEFAULT_BODY: D_BODY } = require('../interviewer-prompts/expert/block-d-question-pool');
+const { buildBlockE, DEFAULT_BODY: E_BODY } = require('../interviewer-prompts/expert/block-e-rank-score');
+const { buildBlockF, runHardRules, DEFAULT_BODY: F_BODY } = require('../interviewer-prompts/expert/block-f-safety-audit');
+const { buildBlockG, DEFAULT_BODY: G_BODY } = require('../interviewer-prompts/expert/block-g-final-render');
 
 const orch = require('../../../main-process/features/interviewer/expert-orchestrator');
 const {
@@ -128,6 +128,19 @@ const BLOCK_TYPES = {
 // Serializable metadata for the editor palette / Customize UI (the registry
 // entries hold functions, which can't cross IPC). Defaults' thinking is reported
 // as a simple flag + budget the UI can toggle.
+// Default editable instruction body per type — shown in the editor so users can
+// fine-tune the default rather than start from a blank textarea.
+const DEFAULT_BODIES = {
+  anatomy: A_BODY,
+  'state-update': C_BODY,
+  'evidence-gap': B_BODY,
+  'question-pool': D_BODY,
+  'rank-score': E_BODY,
+  'safety-audit': F_BODY,
+  'final-render': G_BODY,
+  llm: ''
+};
+
 function blockTypeMeta() {
   return Object.entries(BLOCK_TYPES).map(([id, t]) => ({
     id,
@@ -135,6 +148,7 @@ function blockTypeMeta() {
     schemaId: t.schemaId,
     inputs: (t.inputs || []).map((p) => ({ name: p.name, type: p.type, optional: Boolean(p.optional) })),
     outputType: t.outputType,
+    defaultBody: DEFAULT_BODIES[id] || '',
     defaults: {
       model: t.defaults.model,
       thinking: t.defaults.thinking,

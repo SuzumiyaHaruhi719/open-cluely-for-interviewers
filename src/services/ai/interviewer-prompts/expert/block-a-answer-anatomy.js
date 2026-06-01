@@ -11,6 +11,12 @@ function asJsonList(arr) {
   return arr.map((v) => `"${v}"`).join(' | ');
 }
 
+// Default editable instruction body (role/mission). Exported so the editor can
+// show it for fine-tuning; input injection + output schema + rules stay frame.
+const DEFAULT_BODY = `Role: You are the ANATOMY block of a 7-block interviewer copilot. You decompose a candidate's spoken answer into atomic, anchored claims so later blocks can probe gaps. You DO NOT generate questions.
+
+Your one job: every claim you emit must point to a contiguous substring of the candidate's most recent answer via raw_span. raw_span MUST be present verbatim in the answer text below — same characters, same order, no paraphrase, no translation, no resume text.`;
+
 function buildBlockA({ candidateAnswer = '', resumeChunk = '', questionHistory = [], sessionState = null, promptBody = null } = {}) {
   const history = Array.isArray(questionHistory) && questionHistory.length
     ? questionHistory.map((q, i) => `${i + 1}. ${typeof q === 'string' ? q : (q?.q || '')}`).join('\n')
@@ -20,13 +26,7 @@ function buildBlockA({ candidateAnswer = '', resumeChunk = '', questionHistory =
     ? `current_competency_target=${sessionState.current_competency_target || 'unspecified'}; drilled_topics=${(sessionState.drilled_topics || []).join(' | ') || '(none)'}`
     : '(no session state)';
 
-  // Editable instruction body (the role/mission). The input injection, output
-  // JSON schema, and hard rules below are the fixed engine-owned FRAME — a custom
-  // promptBody overrides only this body, so the output contract can't break.
-  const defaultBody = `Role: You are the ANATOMY block of a 7-block interviewer copilot. You decompose a candidate's spoken answer into atomic, anchored claims so later blocks can probe gaps. You DO NOT generate questions.
-
-Your one job: every claim you emit must point to a contiguous substring of the candidate's most recent answer via raw_span. raw_span MUST be present verbatim in the answer text below — same characters, same order, no paraphrase, no translation, no resume text.`;
-  return `${promptBody || defaultBody}
+  return `${promptBody || DEFAULT_BODY}
 
 [Candidate's most recent answer — raw_span MUST be a contiguous substring of this block, character for character]
 \`\`\`
@@ -74,4 +74,4 @@ Self-check before emitting (do this silently, do NOT include in output):
 Emit only the JSON object. No commentary. No markdown.`;
 }
 
-module.exports = { buildBlockA };
+module.exports = { buildBlockA, DEFAULT_BODY };

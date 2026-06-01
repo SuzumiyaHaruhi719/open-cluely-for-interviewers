@@ -48,6 +48,8 @@ function renderPriorState(sessionState) {
   return lines.length ? lines.join('\n') : '(no prior session state)';
 }
 
+const DEFAULT_BODY = `Role: You are the STATE-UPDATE block. Decide what the interviewer should drill next and whether to pivot off the current topic. Pure function — your only inputs are (prior state, history, current answer, JD).`;
+
 function buildBlockC({ candidateAnswer = '', questionHistory = [], sessionState = null, jobDescription = '', promptBody = null } = {}) {
   const history = Array.isArray(questionHistory) && questionHistory.length
     ? questionHistory.map((q, i) => `${i + 1}. ${typeof q === 'string' ? q : (q?.q || '')}`).join('\n')
@@ -55,9 +57,7 @@ function buildBlockC({ candidateAnswer = '', questionHistory = [], sessionState 
 
   const prior = renderPriorState(sessionState);
 
-  // Editable instruction body (role/mission); inputs + schema + rules are frame.
-  const defaultBody = `Role: You are the STATE-UPDATE block. Decide what the interviewer should drill next and whether to pivot off the current topic. Pure function — your only inputs are (prior state, history, current answer, JD).`;
-  return `${promptBody || defaultBody}
+  return `${promptBody || DEFAULT_BODY}
 
 [Prior session state]
 ${prior}
@@ -115,4 +115,4 @@ Self-check before emitting (silent):
 Emit only the JSON object.`;
 }
 
-module.exports = { buildBlockC };
+module.exports = { buildBlockC, DEFAULT_BODY };
