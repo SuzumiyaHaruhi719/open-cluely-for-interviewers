@@ -159,11 +159,14 @@ function ensureAppStateDir(app) {
 
 function writeAppStateFile(app, state) {
   ensureAppStateDir(app);
-  fs.writeFileSync(
-    getAppStatePath(app),
-    `${JSON.stringify(state, null, 2)}\n`,
-    'utf8'
-  );
+  // Atomic write: serialize to a temp file then rename over the real one. A
+  // crash/kill mid-write leaves EITHER the intact old file OR the fully-written
+  // new one — never a half-written/corrupt file that would load as empty defaults
+  // and wipe the user's API keys.
+  const finalPath = getAppStatePath(app);
+  const tmpPath = `${finalPath}.${process.pid}.tmp`;
+  fs.writeFileSync(tmpPath, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
+  fs.renameSync(tmpPath, finalPath);
 }
 
 function loadAppState(app) {
@@ -184,6 +187,14 @@ function loadAppState(app) {
     return sanitizedState;
   } catch (error) {
     console.error('Failed to load app state:', error);
+    // The file is unreadable/corrupt. Preserve it (don't let it be silently
+    // overwritten with defaults) so the user's settings can be recovered, then
+    // fall back to defaults for this run.
+    try {
+      if (fs.existsSync(appStatePath)) {
+        fs.copyFileSync(appStatePath, `${appStatePath}.corrupt-${Date.now()}`);
+      }
+    } catch (_) { /* best-effort backup */ }
     return getDefaultAppState();
   }
 }
