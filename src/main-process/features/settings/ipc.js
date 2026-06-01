@@ -151,24 +151,48 @@ function registerSettingsIpc({
         const current = getAppState();
         return ['xfyun', 'volc'].includes(current?.asrProvider) ? current.asrProvider : 'paraformer';
       })();
-      const nextDashscopeApiKey = String(settings.dashscopeApiKey || '').trim();
-      const nextDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(settings.dashscopeAiModel);
-      const nextXfyunAppId = String(settings.xfyunAppId || '').trim();
-      const nextXfyunApiKey = String(settings.xfyunApiKey || '').trim();
-      // Volcengine ASR creds (staged). Persisted raw alongside the other
-      // provider keys; the offline ASR seam will read these once a 'volcengine'
-      // provider lands (see settings-panel-manager.js seam comment).
-      const nextVolcAppId = String(settings.volcAppId || '').trim();
-      const nextVolcAccessToken = String(settings.volcAccessToken || '').trim();
-      const nextVolcResourceId = String(settings.volcResourceId || '').trim();
-      const requestedAsrProvider = String(settings.asrProvider || '').trim().toLowerCase();
-      const nextAsrProvider = ['xfyun', 'volc'].includes(requestedAsrProvider) ? requestedAsrProvider : 'paraformer';
-      const nextResumeText = String(settings.resumeText || '').trim();
-      const nextJobDescription = String(settings.jobDescription || '').trim();
-      const requestedInterviewerMode = String(settings.interviewerMode || '').trim().toLowerCase();
-      const nextInterviewerMode = ['expert', 'customize'].includes(requestedInterviewerMode) ? requestedInterviewerMode : 'fast';
-      const nextProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(settings.programmingLanguage);
-      const nextWindowOpacityLevel = windowController.setWindowOpacityLevel(settings.windowOpacityLevel);
+      const has = (k) => Object.prototype.hasOwnProperty.call(settings, k);
+      const current = getAppState() || {};
+
+      // CRITICAL: build a patch from ONLY the fields present in this payload.
+      // A partial save (e.g. {resumeText, jobDescription} when starting an
+      // interview, or {interviewerMode} from the mode toggle) must NEVER blank
+      // the fields it omits — doing so wiped the user's API keys repeatedly.
+      const patch = {};
+      if (has('dashscopeApiKey')) patch.dashscopeApiKey = String(settings.dashscopeApiKey || '').trim();
+      if (has('xfyunAppId')) patch.xfyunAppId = String(settings.xfyunAppId || '').trim();
+      if (has('xfyunApiKey')) patch.xfyunApiKey = String(settings.xfyunApiKey || '').trim();
+      if (has('volcAppId')) patch.volcAppId = String(settings.volcAppId || '').trim();
+      if (has('volcAccessToken')) patch.volcAccessToken = String(settings.volcAccessToken || '').trim();
+      if (has('volcResourceId')) patch.volcResourceId = String(settings.volcResourceId || '').trim();
+      if (has('resumeText')) patch.resumeText = String(settings.resumeText || '').trim();
+      if (has('jobDescription')) patch.jobDescription = String(settings.jobDescription || '').trim();
+      if (has('asrProvider')) {
+        const r = String(settings.asrProvider || '').trim().toLowerCase();
+        patch.asrProvider = ['xfyun', 'volc'].includes(r) ? r : 'paraformer';
+      }
+      if (has('interviewerMode')) {
+        const r = String(settings.interviewerMode || '').trim().toLowerCase();
+        patch.interviewerMode = ['expert', 'customize'].includes(r) ? r : 'fast';
+      }
+
+      // Side-effecting settings (active model / language / opacity): apply + persist
+      // only when present; otherwise keep current so a partial save is a no-op here.
+      let nextDashscopeAiModel = current.dashscopeAiModel;
+      if (has('dashscopeAiModel')) {
+        nextDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(settings.dashscopeAiModel);
+        patch.dashscopeAiModel = nextDashscopeAiModel;
+      }
+      let nextProgrammingLanguage = geminiRuntime.getActiveProgrammingLanguage();
+      if (has('programmingLanguage')) {
+        nextProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(settings.programmingLanguage);
+        patch.programmingLanguage = nextProgrammingLanguage;
+      }
+      if (has('windowOpacityLevel')) {
+        patch.windowOpacityLevel = windowController.setWindowOpacityLevel(settings.windowOpacityLevel);
+      }
+
+      const nextAsrProvider = patch.asrProvider !== undefined ? patch.asrProvider : previousAsrProvider;
 
       const updatedEnvironment = saveApplicationEnvironment(app, {
         hideFromScreenCapture: appEnvironment.hideFromScreenCapture,
@@ -179,21 +203,7 @@ function registerSettingsIpc({
         nodeOptions: appEnvironment.nodeOptions
       });
 
-      const updatedAppState = saveAppState(app, {
-        asrProvider: nextAsrProvider,
-        dashscopeApiKey: nextDashscopeApiKey,
-        dashscopeAiModel: nextDashscopeAiModel,
-        xfyunAppId: nextXfyunAppId,
-        xfyunApiKey: nextXfyunApiKey,
-        volcAppId: nextVolcAppId,
-        volcAccessToken: nextVolcAccessToken,
-        volcResourceId: nextVolcResourceId,
-        resumeText: nextResumeText,
-        jobDescription: nextJobDescription,
-        programmingLanguage: nextProgrammingLanguage,
-        windowOpacityLevel: nextWindowOpacityLevel,
-        interviewerMode: nextInterviewerMode
-      });
+      const updatedAppState = saveAppState(app, patch);
 
       setAppEnvironment(updatedEnvironment);
       setAppState(updatedAppState);
@@ -207,7 +217,7 @@ function registerSettingsIpc({
       console.log('Settings saved to:', updatedEnvironment.envPath);
       console.log('Applied DashScope AI model:', nextDashscopeAiModel);
       console.log('Applied programming language:', nextProgrammingLanguage);
-      console.log(`Applied window opacity level: ${nextWindowOpacityLevel}/10`);
+      if (patch.windowOpacityLevel !== undefined) console.log(`Applied window opacity level: ${patch.windowOpacityLevel}/10`);
 
       geminiRuntime.initializeDashscopeService(nextDashscopeAiModel, nextProgrammingLanguage);
 
