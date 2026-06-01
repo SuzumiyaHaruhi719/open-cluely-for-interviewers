@@ -237,9 +237,21 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
           elapsedMs: expertResult.elapsedMs
         });
       } catch (_) { /* logging is best-effort */ }
+      // Total token spend for this follow-up (sum across all block attempts in
+      // the trace — the accurate figure, incl. repairs). Shown on the rendered
+      // follow-up card so the interviewer sees the cost after generation.
+      let tokInput = 0;
+      let tokOutput = 0;
+      for (const e of (expertResult.trace || [])) {
+        if (e && e.usage) {
+          tokInput += Number(e.usage.input_tokens) || 0;
+          tokOutput += Number(e.usage.output_tokens) || 0;
+        }
+      }
       return {
         mode: 'expert',
         requestId,
+        tokensUsed: { input: tokInput, output: tokOutput, total: tokInput + tokOutput },
         iterationVersion: expertResult.iterationVersion,
         output: expertResult.output,
         blocks: expertResult.blocks,

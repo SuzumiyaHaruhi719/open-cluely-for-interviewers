@@ -190,7 +190,7 @@ function renderInterviewerCoachMessage(stage2Parsed, stage1Parsed) {
 // Render an Expert-chain follow-up (Block G output): the primary question as a
 // question card (with the anchor quote it drills into), plus a compact coach
 // line carrying the interviewer rationale + the alternative phrasing.
-function renderExpertFollowUp(output) {
+function renderExpertFollowUp(output, tokensUsed = null) {
     const primary = String(output?.primary_question || '').trim();
     if (!primary) return;
 
@@ -204,6 +204,11 @@ function renderExpertFollowUp(output) {
     const extra = [];
     if (alternative) extra.push(`**备选追问** ${alternative}`);
     if (rationale) extra.push(`*${rationale}*`);
+    // Total token spend for this follow-up, shown muted after the card.
+    if (tokensUsed && Number(tokensUsed.total) > 0) {
+        const t = tokensUsed;
+        extra.push(`*🪙 本次追问消耗 ${Number(t.total).toLocaleString()} tokens（输入 ${Number(t.input).toLocaleString()} · 输出 ${Number(t.output).toLocaleString()}）*`);
+    }
     if (extra.length) {
         const body = extra.join('\n');
         addChatMessage('interviewer-coach', body);
@@ -259,7 +264,7 @@ async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
 
         if (response.mode === 'expert') {
             if (response.shouldShowFollowUps) {
-                renderExpertFollowUp(response.output);
+                renderExpertFollowUp(response.output, response.tokensUsed);
             } else {
                 addMonitorLog('info', 'interviewer', 'Expert chain produced no high-confidence follow-up', 'system');
             }
