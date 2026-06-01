@@ -17,7 +17,8 @@ function buildBlockG({
   blockCResult = null,
   safetyVerdict = 'pass',
   candidateAnswer = '',
-  resumeChunk = ''
+  resumeChunk = '',
+  promptBody = null
 } = {}) {
   const primary = primaryCandidate || { question: '(no primary candidate)', anchors: [], expected_yield: '', question_type: 'unknown' };
   const alt = alternativeCandidate || null;
@@ -31,7 +32,11 @@ function buildBlockG({
     ? 'IMPORTANT: Safety Audit flagged this question for rewrite — rephrase to remove leading/unprofessional framing while preserving the anchor and the demanded evidence.'
     : '';
 
-  return `Role: You are the FINAL-RENDER block — pure template. You take the chosen primary question (and optional alternative) and emit the interviewer-facing JSON. No new content. No new analysis. ${rewriteHint}
+  // Editable instruction body (role/mission); the candidate payload + output
+  // schema + hard rules below are the fixed FRAME. rewriteHint stays in the body
+  // because it conditions how the renderer should phrase under a safety rewrite.
+  const defaultBody = `Role: You are the FINAL-RENDER block — pure template. You take the chosen primary question (and optional alternative) and emit the interviewer-facing JSON. No new content. No new analysis. ${rewriteHint}`;
+  return `${promptBody || defaultBody}
 
 [Primary candidate selected by ranker]
 question: ${primary.question}

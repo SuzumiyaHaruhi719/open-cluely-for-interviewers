@@ -38,7 +38,7 @@ function asJsonList(arr) {
   return arr.map((v) => `"${v}"`).join(' | ');
 }
 
-function buildBlockF({ candidateQuestions = [], regexHits = [], jobDescription = '' } = {}) {
+function buildBlockF({ candidateQuestions = [], regexHits = [], jobDescription = '', promptBody = null } = {}) {
   // candidateQuestions is the top-2 selected by Block E, in order
   const qStr = candidateQuestions.length
     ? candidateQuestions.map((q, i) => `${i + 1}. id=${q.id || `q${i + 1}`} type=${q.question_type || 'unknown'}\n   Q: ${q.question}`).join('\n\n')
@@ -48,7 +48,9 @@ function buildBlockF({ candidateQuestions = [], regexHits = [], jobDescription =
     ? regexHits.map((h, i) => `${i + 1}. rule=${h.rule} evidence="${h.evidence}"`).join('\n')
     : '(no regex hits)';
 
-  return `Role: You are the SAFETY-AUDIT block. Two layers run on this audit: regex (already done — see findings below) and you (the soft-rule LLM). Your job: (a) confirm regex hits are real violations or downgrade them if context exonerates them; (b) catch soft violations regex misses (leading framing, condescension, irrelevance to role, private-personal-life probing without explicit keyword).
+  // Editable instruction body (role/mission); inputs + schema + verdict rules frame.
+  const defaultBody = `Role: You are the SAFETY-AUDIT block. Two layers run on this audit: regex (already done — see findings below) and you (the soft-rule LLM). Your job: (a) confirm regex hits are real violations or downgrade them if context exonerates them; (b) catch soft violations regex misses (leading framing, condescension, irrelevance to role, private-personal-life probing without explicit keyword).`;
+  return `${promptBody || defaultBody}
 
 [Job description — defines what is on-topic vs. irrelevant]
 \`\`\`

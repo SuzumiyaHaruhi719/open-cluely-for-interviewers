@@ -16,7 +16,8 @@ function buildBlockE({
   candidateAnswer = '',
   resumeChunk = '',
   jobDescription = '',
-  questionHistory = []
+  questionHistory = [],
+  promptBody = null
 } = {}) {
   const candidates = blockDResult?.candidates || [];
   const candidatesStr = candidates.length
@@ -31,11 +32,15 @@ function buildBlockE({
   const nextComp = blockCResult?.next_competency_target || 'technical-depth';
   const pivot = blockCResult?.should_pivot ? 'YES' : 'NO';
 
-  return `Role: You are the RANK-SCORE block — the deep reasoner of the chain. You score 5 follow-up candidates on a 6-dim rubric and pick the top 2 the interviewer should see.
+  // Editable instruction body (role + scoring philosophy). The rubric definitions,
+  // input injection, output JSON schema, and selection rules below are the fixed
+  // FRAME; a custom promptBody overrides only this body.
+  const defaultBody = `Role: You are the RANK-SCORE block — the deep reasoner of the chain. You score 5 follow-up candidates on a 6-dim rubric and pick the top 2 the interviewer should see.
 
 WHAT MAKES A QUESTION WIN: it forces the candidate to reveal durable POTENTIAL and WORK TRAITS — judgment, the alternatives they weighed, what they personally owned, what broke and what they learned. A question whose honest answer is a single number, name, or date is WEAK no matter how "specific" — pinning "how much did p99 drop" reveals nothing about the person. Reward depth and trait-revelation; punish fact-pins.
 
-You MUST think step-by-step in the reasoning field for each candidate. Do NOT skip reasoning.
+You MUST think step-by-step in the reasoning field for each candidate. Do NOT skip reasoning.`;
+  return `${promptBody || defaultBody}
 
 [Job description — defines what evidence is valuable]
 \`\`\`

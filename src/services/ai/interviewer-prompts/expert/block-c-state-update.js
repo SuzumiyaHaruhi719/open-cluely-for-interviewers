@@ -48,14 +48,16 @@ function renderPriorState(sessionState) {
   return lines.length ? lines.join('\n') : '(no prior session state)';
 }
 
-function buildBlockC({ candidateAnswer = '', questionHistory = [], sessionState = null, jobDescription = '' } = {}) {
+function buildBlockC({ candidateAnswer = '', questionHistory = [], sessionState = null, jobDescription = '', promptBody = null } = {}) {
   const history = Array.isArray(questionHistory) && questionHistory.length
     ? questionHistory.map((q, i) => `${i + 1}. ${typeof q === 'string' ? q : (q?.q || '')}`).join('\n')
     : '(no prior questions)';
 
   const prior = renderPriorState(sessionState);
 
-  return `Role: You are the STATE-UPDATE block. Decide what the interviewer should drill next and whether to pivot off the current topic. Pure function — your only inputs are (prior state, history, current answer, JD).
+  // Editable instruction body (role/mission); inputs + schema + rules are frame.
+  const defaultBody = `Role: You are the STATE-UPDATE block. Decide what the interviewer should drill next and whether to pivot off the current topic. Pure function — your only inputs are (prior state, history, current answer, JD).`;
+  return `${promptBody || defaultBody}
 
 [Prior session state]
 ${prior}
