@@ -133,7 +133,7 @@ Use Notes to produce a shareable record at the end of a meeting or interview deb
 
 ### Requirements
 
-- Windows 10/11 is the primary development target for this repo.
+- Windows 10/11 is the primary development target; **macOS is supported** too (see [Running on macOS](#running-on-macos)).
 - Node.js `20.x`+ is recommended (the environment was prepared around `20.20.1`; the eval scripts also run under Node 24).
 - npm `10+`
 - One **Aliyun DashScope** API key — powers all hosted AI (DeepSeek V4 + Qwen 3.x on the Anthropic-shape endpoint); configured in the in-app Settings UI.
@@ -186,6 +186,22 @@ This app depends on native modules. If `npm ci` fails with `node-gyp` or Visual 
 ```powershell
 winget install --id Microsoft.VisualStudio.2022.BuildTools --exact --accept-package-agreements --accept-source-agreements --override "--passive --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
 ```
+
+### Running on macOS
+
+The app runs on macOS (Apple Silicon + Intel). It is platform-guarded throughout — Windows-only per-process audio loopback is disabled on macOS and the affected features fall back gracefully (no native modules to rebuild; everything is pure-JS or shells out to OS tools).
+
+```bash
+npm install
+npm run dev          # launch from source
+npm run build:mac    # package a .app into dist/
+```
+
+macOS specifics:
+
+- **System-audio capture needs a virtual loopback device.** macOS has no built-in equivalent of Windows' WASAPI/per-process loopback. Install [BlackHole](https://github.com/ExistentialAudio/BlackHole) (`brew install blackhole-2ch`), route system output through it, and pick it under **Settings → Audio devices**. The microphone works natively without any extra setup.
+- **Permissions:** on first launch, grant **Microphone** and **Screen Recording** (System Settings → Privacy & Security) so transcription and screenshots work.
+- Optional: `brew install switchaudio-osx` enables in-app audio-output switching.
 
 ## Configuration
 
