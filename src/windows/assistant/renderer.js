@@ -367,13 +367,20 @@ async function handleGenerateQuestionClick() {
 // lane online, room-mic lane offline). Interviewer turns also feed the question
 // history so Generate Q has prior context. Called from createSessionWithType when
 // a sample is picked in the new-interview modal.
-async function seedInterviewSample(sample) {
-    if (!sample || !chatMessagesElement) return;
-    // Populate per-interview context (résumé + JD) so follow-ups are well-anchored.
+// Set the sample's résumé/JD (async; order-independent). Separate from turn
+// injection because the transcript must be injected inside swapChatContent's
+// (async) clear callback — otherwise the clear fires after the seed and wipes it.
+async function applySampleContext(sample) {
+    if (!sample) return;
     try { await window.electronAPI?.saveSettings?.({ resumeText: sample.resume || '', jobDescription: sample.jd || '' }); } catch (_) { /* non-fatal */ }
     if (resumeDropzone && sample.resume) resumeDropzone.setText(sample.resume);
     if (jobDescriptionInput) jobDescriptionInput.value = sample.jd || '';
+}
 
+// Inject the sample's transcript turns into the (already-cleared) chat. SYNC, so
+// it can run inside the swap callback right after clearTranscriptUi.
+function injectSampleTurns(sample) {
+    if (!sample || !chatMessagesElement) return;
     const candidateType = (sample.interviewType === 'offline' || activeInterviewType === 'offline') ? 'voice-mic' : 'voice-system';
     for (const turn of (sample.turns || [])) {
         const type = turn.speaker === 'interviewer' ? 'voice-mic' : candidateType;
@@ -1074,9 +1081,10 @@ async function createSessionWithType(interviewType, sampleId = null) {
         applyInterviewType(session.interviewType || type);
         // Crossfade the (now empty) transcript in. No stagger — there are no
         // lines to cascade; the container just fades the placeholder in.
-        swapChatContent(() => clearTranscriptUi());
-        // Seed the chosen sample (résumé/JD + transcript) into the fresh interview.
-        if (sample) await seedInterviewSample(sample);
+        // Clear the transcript, then (in the same async swap callback) inject the
+        // sample turns so the swap's clear can't wipe them. Résumé/JD set separately.
+        swapChatContent(() => { clearTranscriptUi(); if (sample) injectSampleTurns(sample); });
+        if (sample) await applySampleContext(sample);
         sessionContextPanel?.update(session.interviewerSessionState || null);
         historySidebar?.setActive(session.id);
         await historySidebar?.refresh();
