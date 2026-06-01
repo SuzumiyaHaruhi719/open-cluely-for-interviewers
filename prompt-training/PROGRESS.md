@@ -73,6 +73,60 @@ NOTE on the bar: literal 100% across 1000 is bounded by generator tail + judge
 threshold noise near 80; will report the TRUE pass-rate + residual analysis, not
 fake 100%. Uncommitted: iter4 Block D edits (commit after validation).
 
+### ITER4 result (committed 2b00122) — 84 fixtures: 92.9% pass, mean 88.2, depth24.1
+Progression: 14.3 → 71.4 → 78.6 → 90.5 → 92.9%. 6 fails: one regression (fx_0194
+"cost in terms of a metric" → fact-pin, 35), rest borderline 62-76. Micro-fix:
+"cost" must be a CONSEQUENCE not a metric (committed).
+
+### FINAL VALIDATION (in progress, bg bvk3hssuk) — 140 fixtures (per-bucket 10)
+For a robust headline pass-rate on 14% of the corpus. Judge after gen completes
+(don't run concurrently — API contention). Then: restart app w/ new prompts for
+live test, update Obsidian note, honest final report (true pass-rate + residual
+failure analysis; not faking literal 100%).
+
+### FINAL140 result (iter4 prompts, 140 fixtures) — 84.3% pass, mean 87.9
+HONEST robust headline: 118/140 ≥80. depth23.9 own18.6 trait21.5 anch14.4 nontriv9.5.
+(84-sample's 92.9% was optimistic — overlapped tuning set.) 22 fails mostly good
+questions (~73) hitting perfectionist depth/trait bar + threshold noise. 2 fixable
+systematic: counterfactual-naming (fx_0271 55), timeline→root-cause+process-fix.
+trait(21.5/25) is 2nd bottleneck. NOT faking 100% — 84.3% is the true number.
+
+### ITER5 (in progress, bg bc0wuz1m5, same 140) — trait-lift + 2 residual fixes
+Block D: TRAIT VEINS (≥2 of 5 candidates mine failure/conflict/ambiguity/correction
+when present); counterfactual must probe the PRINCIPLE not name a cut; contradiction/
+timeline must surface the wrong ASSUMPTION + how thinking changed, not a process patch.
+After this: honest final report; if ceiling, say so (don't overfit judge / degrade
+usability). Then restart app w/ new prompts + Obsidian note.
+
+### ITER5 result — 81.4% (REGRESSED from iter4 84.3%) → REVERTED
+Trait-vein/counterfactual-principle/timeline-assumption edits traded one failure
+pattern for another (fx_0018 name-pin 32, fx_0004 false-premise). Confirms Block D
+complexity is TAPPED OUT. Reverted to iter4 (committed 2b00122) = best = 84.3%/140.
+
+### SELECTION DIAGNOSTIC (in progress, bg b1t4u16xe + select-diagnostic.js)
+Hypothesis: is Block E picking the best of D's 5 candidates, or passing over better
+ones? gen-questions.js now captures d_candidates; select-diagnostic.js judges all 5
++ primary, reports primary-pass vs best-of-5-pass and how often E left >=8 pts on
+the table. If E is the bottleneck, fixing SELECTION raises the number cleanly
+(no D-complexity regression). 56 fixtures (per-bucket 4).
+
+### SELECTION DIAGNOSTIC result — reframes the bottleneck
+On 56 fixtures, judging ALL 5 of D's candidates:
+- BEST-of-5 (oracle): 98.2% pass, mean 97 → **D generation is excellent; a ≥80
+  question almost always EXISTS.**
+- PRIMARY (E's pick): mean 92 (this compact judge runs leaner/noisier than judge.js).
+- **E passed over a clearly better candidate (≥8pts) in 25% of cases.**
+- Caught judge variance (fx_0008 identical Q scored 23 vs 100) → hard-80 pass-rate
+  is partly measurement noise.
+CONCLUSION: bottleneck is SELECTION (E), not generation. Root cause: E ranks by
+equal-weighted 6-dim total, but PTES weights depth(30)+trait(25)=55%. Misaligned.
+
+### ITER6 (in progress, bg b2glm19hi, 140) — align E selection to depth+trait
+Block E rule 5: top-1 = highest (depth+trait) among non_triviality>=3, NOT highest
+equal-weighted total; don't pick smoother/better-anchored over deeper. Principled
+(selector←objective), not judge-gaming. Judge with judge.js (apples-to-apples vs
+84.3%). Last principled lever; after this → honest final report + ship.
+
 ### Judge calibration (validated, honest)
 Smoke audit of judge.js vs my own read:
 - fx_0001 "how many FTEs redeployed" (number-pin) → 10/100, depth0 nontriv0. Correct.

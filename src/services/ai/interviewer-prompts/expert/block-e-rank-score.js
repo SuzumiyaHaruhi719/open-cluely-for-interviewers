@@ -101,8 +101,8 @@ Hard rules:
 2. total must equal the sum of the 6 dim scores exactly.
 3. top_2_ids must contain TWO DISTINCT ids that exist in ranked[].id.
 4. A candidate scoring non_triviality<=2 (a fact-pin) MUST NOT be top-1 unless every other candidate also scores non_triviality<=2. Never let "how much exactly"-style pins win.
-5. Tie-break for top-1: highest total wins. If tied, prefer higher depth, then higher trait.
-6. Tie-break for top-2: among the remaining 4, highest total wins (same depth/trait tie-break), but PREFER a different question_type than top-1 so the interviewer gets two distinct angles.
+5. SELECTION OBJECTIVE (this is what the interviewer actually values): top-1 is the candidate that best reveals the candidate's POTENTIAL — i.e. the HIGHEST (depth + trait) sum, among candidates with non_triviality>=3. depth and trait matter far more than usability or anchoring polish. Do NOT pick a smoother or better-anchored question over a meaningfully deeper one. Break ties by total, then by ownership.
+6. Tie-break for top-2: among the remaining candidates, again highest (depth + trait) with non_triviality>=3, but PREFER a different question_type than top-1 so the interviewer gets two distinct angles.
 7. reasoning MUST include a verifier sentence — re-read one rubric score and confirm against the candidate text. If you change your mind on verification, change the score before emitting.
 
 Thinking scaffold (do this silently before emitting):

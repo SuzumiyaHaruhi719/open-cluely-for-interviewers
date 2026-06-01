@@ -81,6 +81,9 @@ async function runOne(apiKey, file) {
       sessionState: fixture.session_state
     });
     const out = r.output || {};
+    const dCandidates = (r.blocks && r.blocks.D && Array.isArray(r.blocks.D.candidates))
+      ? r.blocks.D.candidates.map((c) => ({ id: c.id, question: c.question, question_type: c.question_type }))
+      : [];
     return {
       id: fixture.id,
       ok: true,
@@ -91,6 +94,7 @@ async function runOne(apiKey, file) {
       alternative_question: out.alternative_question || '',
       anchor_quotes: out.anchor_quotes || [],
       rationale: out.rationale_for_interviewer || '',
+      d_candidates: dCandidates,
       fallbacks: r.fallbackTriggered || []
     };
   } catch (e) {
