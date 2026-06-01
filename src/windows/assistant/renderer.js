@@ -38,13 +38,6 @@ import { createTranscriptBufferManager } from './renderer/features/assembly-ai/t
 let screenshotsCount = 0;
 let isAnalyzing = false;
 let stealthHideTimeout = null;
-const THEME_STORAGE_KEY = 'assistant-theme';
-const THEME_LIGHT = 'light';
-const THEME_DARK = 'dark';
-// Dark is the default because the light theme leaves several panels
-// (settings, monitor) with white text on a 92%-white glass background.
-// The full contrast pass lives under `body.theme-dark` in styles.css.
-let activeTheme = THEME_DARK;
 const AI_CONTEXT_CHAR_BUDGET = 12000;
 const messageStore = createMessageStore();
 let chatMessagesArray = messageStore.getMessages();
@@ -84,75 +77,74 @@ function pushInterviewerQuestion(text) {
 // failed — callers must tolerate null and skip persistence rather than throw.
 async function ensureActiveSession() {
     if (activeSessionId) return activeSessionId;
+    // Coalesce concurrent callers. createSession is async, and ASR finalizes
+    // several transcript lines in quick succession — without this guard each
+    // line that arrives before the first create resolves would spawn its OWN
+    // session, fragmenting the conversation across many 1-message sessions.
+    if (activeSessionCreation) return activeSessionCreation;
     if (!window.electronAPI?.createSession) return null;
-    try {
-        const title = `Interview · ${new Date().toLocaleString('en-US', {
-            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-        })}`;
-        const result = await window.electronAPI.createSession({ title, mode: interviewerMode, interviewType: activeInterviewType });
-        const session = result?.session;
-        if (!result?.success || !session) return null;
-        activeSessionId = session.id;
-        setSessionTitle(session.title);
-        // Keep the live format aligned with the persisted record (no-ops when it
-        // already matches the active type).
-        applyInterviewType(session.interviewType === 'offline' ? 'offline' : 'online');
-        sessionContextPanel?.update(session.interviewerSessionState || null);
-        await historySidebar?.refresh();
-        historySidebar?.setActive(activeSessionId);
-        addMonitorLog('info', 'session-auto', 'Started interview session on first activity', null, {
-            id: activeSessionId,
-            mode: interviewerMode,
-            interviewType: session.interviewType || activeInterviewType
-        });
-        return activeSessionId;
-    } catch (error) {
-        console.error('ensureActiveSession failed:', error);
-        return null;
-    }
+    activeSessionCreation = (async () => {
+        try {
+            const title = `Interview · ${new Date().toLocaleString('en-US', {
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            })}`;
+            const result = await window.electronAPI.createSession({ title, mode: interviewerMode, interviewType: activeInterviewType });
+            const session = result?.session;
+            if (!result?.success || !session) return null;
+            activeSessionId = session.id;
+            setSessionTitle(session.title);
+            // Keep the live format aligned with the persisted record (no-ops when it
+            // already matches the active type).
+            applyInterviewType(session.interviewType === 'offline' ? 'offline' : 'online');
+            sessionContextPanel?.update(session.interviewerSessionState || null);
+            await historySidebar?.refresh();
+            historySidebar?.setActive(activeSessionId);
+            addMonitorLog('info', 'session-auto', 'Started interview session on first activity', null, {
+                id: activeSessionId,
+                mode: interviewerMode,
+                interviewType: session.interviewType || activeInterviewType
+            });
+            return activeSessionId;
+        } catch (error) {
+            console.error('ensureActiveSession failed:', error);
+            return null;
+        } finally {
+            activeSessionCreation = null;
+        }
+    })();
+    return activeSessionCreation;
 }
 
-// Append one finalized transcript line to the active session. system→candidate
-// (the person being interviewed, teal lane); mic→interviewer (the user asking,
-// amber lane). No-ops during replay so loading a past interview never re-writes
-// its own transcript; swallows persistence errors so the live UI is unaffected.
-async function persistTranscriptLine(source, text) {
-    if (isReplayingSession) return;
-    const trimmed = String(text || '').trim();
-    if (!trimmed) return;
+// The ordered conversation for the active interview — the SINGLE source of truth
+// for persistence. Transcripts (shown via the transcription manager's live bubble,
+// not the message store) and AI follow-up cards are both appended here as they
+// happen, then the whole array is saved to the session (full replace). One array,
+// one writer → cannot fragment, race, or drop a line. Reset on new interview;
+// re-hydrated from the record on session load.
+let liveConversation = [];
+
+function recordConversationTurn(turn) {
+    if (isReplayingSession) return;          // loading a past session must not re-record it
+    if (!turn || !String(turn.text || '').trim()) return;
+    liveConversation.push({ ...turn, text: String(turn.text).trim(), ts: turn.ts || Date.now() });
+    void persistConversationNow();
+}
+
+// Persist the full conversation to the active session (full replace). Written
+// immediately per turn — turns are infrequent (transcripts ~every few seconds,
+// follow-ups ~every 30s), so there's no need to debounce, and writing now (rather
+// than on a timer) means the turn lands in the session that was active WHEN it
+// happened — a later navigation can't redirect a pending write to the wrong
+// session. No-op during replay or when empty.
+async function persistConversationNow() {
+    if (isReplayingSession || !liveConversation.length) return;
+    const snapshot = liveConversation.slice();
     try {
         const id = await ensureActiveSession();
         if (!id) return;
-        await window.electronAPI?.appendToSession?.(id, {
-            role: source === 'system' ? 'candidate' : 'interviewer',
-            source,
-            kind: 'transcript',
-            text: trimmed,
-            ts: Date.now()
-        });
+        await window.electronAPI?.setSessionMessages?.(id, snapshot);
     } catch (error) {
-        console.error('persistTranscriptLine failed:', error);
-    }
-}
-
-// Append one AI follow-up / coach card to the active session as a coach
-// question record so it round-trips through renderQuestionCard() on reload.
-// Same replay guard + error-swallowing contract as persistTranscriptLine.
-async function persistCoachQuestion(text) {
-    if (isReplayingSession) return;
-    const trimmed = String(text || '').trim();
-    if (!trimmed) return;
-    try {
-        const id = await ensureActiveSession();
-        if (!id) return;
-        await window.electronAPI?.appendToSession?.(id, {
-            role: 'coach',
-            kind: 'question',
-            text: trimmed,
-            ts: Date.now()
-        });
-    } catch (error) {
-        console.error('persistCoachQuestion failed:', error);
+        console.error('persistConversationNow failed:', error);
     }
 }
 
@@ -193,9 +185,7 @@ function renderInterviewerCoachMessage(stage2Parsed, stage1Parsed, meta = null) 
 
     const body = (header ? `${header}\n\n` : '') + lines.join('\n');
     addChatMessage('interviewer-coach', body);
-    // Persist the rendered coach card so it round-trips on session reload.
-    // Fire-and-forget: persistence must never block or break the live render.
-    persistCoachQuestion(body);
+    recordConversationTurn({ role: 'coach', kind: 'question', text: body });
 }
 
 // Render an Expert-chain follow-up (Block G output): the primary question as a
@@ -209,13 +199,20 @@ function renderExpertFollowUp(output, tokensUsed = null, elapsedMs = null) {
         ? String(output.anchor_quotes[0] || '').trim()
         : '';
     chatUiManager.renderQuestionCard({ question: primary, anchor });
+    // Record the generated follow-up so it persists + restores on session reload.
+    // (This path — Expert/Customize — renders via renderQuestionCard directly, so
+    // it needs its own record call; the Fast path records in renderInterviewerCoachMessage.)
+    recordConversationTurn({ role: 'coach', kind: 'question', text: primary });
 
     const rationale = String(output?.rationale_for_interviewer || '').trim();
     const alternative = String(output?.alternative_question || '').trim();
-    const extra = [];
-    if (alternative) extra.push(`**备选追问** ${alternative}`);
-    if (rationale) extra.push(`*${rationale}*`);
-    // Cost line: elapsed time + total token spend for this follow-up, shown muted.
+    // Persistable part (alternative follow-up + rationale) — survives reload. The
+    // cost line below is runtime-only and intentionally NOT persisted (it would be
+    // stale/misleading on a re-opened session).
+    const persistParts = [];
+    if (alternative) persistParts.push(`**备选追问** ${alternative}`);
+    if (rationale) persistParts.push(`*${rationale}*`);
+    const extra = persistParts.slice();
     const costBits = [];
     if (Number(elapsedMs) > 0) costBits.push(`⏱ 耗时 ${(Number(elapsedMs) / 1000).toFixed(1)}s`);
     if (tokensUsed && Number(tokensUsed.total) > 0) {
@@ -223,11 +220,10 @@ function renderExpertFollowUp(output, tokensUsed = null, elapsedMs = null) {
         costBits.push(`🪙 ${Number(t.total).toLocaleString()} tokens（输入 ${Number(t.input).toLocaleString()} · 输出 ${Number(t.output).toLocaleString()}）`);
     }
     if (costBits.length) extra.push(`*${costBits.join(' · ')}*`);
-    if (extra.length) {
-        const body = extra.join('\n');
-        addChatMessage('interviewer-coach', body);
-        persistCoachQuestion(body);
-    }
+    if (extra.length) addChatMessage('interviewer-coach', extra.join('\n'));
+    // Record the alternative + rationale so BOTH the follow-up and the candidate
+    // follow-up round-trip on session reload (not just the primary).
+    if (persistParts.length) recordConversationTurn({ role: 'coach', kind: 'question', text: persistParts.join('\n') });
 }
 
 async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
@@ -395,6 +391,12 @@ function injectSampleTurns(sample) {
         const type = turn.speaker === 'interviewer' ? 'voice-mic' : candidateType;
         chatUiManager.addChatMessage(type, turn.text);
         if (turn.speaker === 'interviewer') pushInterviewerQuestion(turn.text);
+        // Record so the seeded sample transcript persists with the interview.
+        recordConversationTurn({
+            role: turn.speaker === 'interviewer' ? 'interviewer' : 'candidate',
+            source: turn.speaker === 'interviewer' ? 'mic' : 'system',
+            kind: 'transcript', text: turn.text
+        });
     }
 }
 
@@ -448,10 +450,13 @@ const transcriptBufferManager = createTranscriptBufferManager({
             pushInterviewerQuestion(text);
         }
 
-        // Persist this finalized line into the active interview record (lazily
-        // creating the session on first activity). Fire-and-forget so the live
-        // transcript/analysis path above is never blocked by disk I/O.
-        persistTranscriptLine(source, text);
+        // Record this finalized line in the conversation (system→candidate teal
+        // lane; mic→interviewer amber lane), which lazily creates + saves the
+        // session. Fire-and-forget so the live path is never blocked by disk I/O.
+        recordConversationTurn({
+            role: source === 'system' ? 'candidate' : 'interviewer',
+            source, kind: 'transcript', text
+        });
 
         addMonitorLog('info', 'final-flush', 'Merged transcript committed', source, {
             reason,
@@ -638,7 +643,6 @@ const recIndicatorLabel = document.getElementById('rec-indicator-label');
 const suggestBtn = document.getElementById('suggest-btn');
 const notesBtn = document.getElementById('notes-btn');
 const insightsBtn = document.getElementById('insights-btn');
-const themeToggleBtn = document.getElementById('theme-toggle-btn');
 
 // Settings elements
 const settingsBtn = document.getElementById('btn-settings');
@@ -647,10 +651,8 @@ const closeSettingsBtn = document.getElementById('close-settings');
 // Auto-save: no manual Save button in the new settings surface.
 const saveSettingsBtn = null;
 const settingsStatusIndicator = document.getElementById('settings-status');
-const settingThemeToggle = document.getElementById('setting-theme-toggle');
 const settingStealthToggle = document.getElementById('setting-stealth-toggle');
 const settingDashscopeAiModel = document.getElementById('setting-dashscope-ai-model');
-const settingProgrammingLanguage = document.getElementById('setting-programming-language');
 const settingAsrProvider = document.getElementById('setting-asr-provider');
 const paraformerSettingsGroup = document.getElementById('paraformer-settings-group');
 const xfyunSettingsGroup = document.getElementById('xfyun-settings-group');
@@ -693,6 +695,7 @@ let sessionContextPanel = null;
 // Active interview session + current interviewer mode (fast | expert). The mode
 // drives both the topbar indicator and the mode stamped on new sessions.
 let activeSessionId = null;
+let activeSessionCreation = null; // in-flight createSession promise (coalesces concurrent ensureActiveSession callers)
 let interviewerMode = 'fast';
 // Active interview FORMAT (online | offline). Online = dual-channel (computer
 // audio = candidate + mic = you). Offline = in-person, ONE room microphone
@@ -767,7 +770,10 @@ let interviewerRequestSeq = 0;
 // ── Customize mode + Pipeline Studio (SP2/SP3) ──────────────────────────────
 let activePipelineId = null;
 const customizeRowEl = document.getElementById('customize-row');
-const customizePipelineSelect = document.getElementById('customize-pipeline-select');
+const customizeTemplatesEl = document.getElementById('customize-templates');
+const customizeAiInput = document.getElementById('customize-ai-input');
+const customizeAiGenerateBtn = document.getElementById('customize-ai-generate');
+const customizeAiHint = document.getElementById('customize-ai-hint');
 const openStudioBtn = document.getElementById('open-pipeline-studio');
 const pipelineStudio = createPipelineStudio({
     api: window.electronAPI,
@@ -777,31 +783,76 @@ const pipelineStudio = createPipelineStudio({
         interviewerMode = 'customize';
         paintModeIndicator();
         refreshCustomizePicker();
-        showFeedback(`Using pipeline: ${name}`, 'success');
+        showFeedback(`已启用: ${name}`, 'success');
     }
 });
-async function refreshCustomizePicker() {
-    if (!customizePipelineSelect || !window.electronAPI?.pipelineList) return;
-    const r = await window.electronAPI.pipelineList();
-    const items = (r && r.pipelines) || [];
-    customizePipelineSelect.innerHTML = items.map((p) => `<option value="${p.id}">${p.builtin ? '★ ' : ''}${p.name}</option>`).join('');
-    if (activePipelineId) customizePipelineSelect.value = activePipelineId;
+
+// Pick a pipeline as the active Customize pipeline (also flips mode to customize).
+async function selectPipeline(id, name) {
+    const r = await window.electronAPI.pipelineSetActive({ id });
+    if (r && r.success) {
+        activePipelineId = id;
+        interviewerMode = 'customize';
+        paintModeIndicator();
+        renderTemplateCards(lastPipelineList);
+        showFeedback(`已启用模板: ${name || id}`, 'success');
+    } else {
+        showFeedback(`启用失败: ${r && r.error}`, 'error');
+    }
 }
+
+let lastPipelineList = [];
+function renderTemplateCards(items) {
+    if (!customizeTemplatesEl) return;
+    customizeTemplatesEl.innerHTML = (items || []).map((p) => {
+        const active = p.id === activePipelineId ? ' customize-card--active' : '';
+        const badge = p.builtin ? '<span class="customize-card__badge">模板</span>' : '<span class="customize-card__badge customize-card__badge--user">自定义</span>';
+        const desc = p.blurb ? `<div class="customize-card__desc">${escapeHtml(p.blurb)}</div>` : '';
+        return `<button type="button" class="customize-card${active}" role="option" aria-selected="${p.id === activePipelineId}" data-id="${escapeHtml(p.id)}" data-name="${escapeHtml(p.name)}">
+            <div class="customize-card__top">${escapeHtml(p.name)}${badge}</div>${desc}</button>`;
+    }).join('');
+    customizeTemplatesEl.querySelectorAll('.customize-card').forEach((el) => {
+        el.addEventListener('click', () => selectPipeline(el.dataset.id, el.dataset.name));
+    });
+}
+
+async function refreshCustomizePicker() {
+    if (!customizeTemplatesEl || !window.electronAPI?.pipelineList) return;
+    const r = await window.electronAPI.pipelineList();
+    lastPipelineList = (r && r.pipelines) || [];
+    renderTemplateCards(lastPipelineList);
+}
+
+async function generatePipelineFromInput() {
+    const desc = (customizeAiInput && customizeAiInput.value || '').trim();
+    if (!desc) { showFeedback('先用一句话描述这次面试', 'info'); return; }
+    if (!window.electronAPI?.pipelineGenerate) return;
+    customizeAiGenerateBtn.disabled = true;
+    if (customizeAiHint) customizeAiHint.textContent = 'AI 正在生成面试方案…';
+    try {
+        const r = await window.electronAPI.pipelineGenerate({ description: desc });
+        if (r && r.success && r.id) {
+            await refreshCustomizePicker();
+            await selectPipeline(r.id, r.pipeline && r.pipeline.name);
+            if (customizeAiHint) customizeAiHint.textContent = `已生成并启用: ${r.pipeline && r.pipeline.name || r.id}`;
+            if (customizeAiInput) customizeAiInput.value = '';
+        } else {
+            if (customizeAiHint) customizeAiHint.textContent = '';
+            showFeedback(`生成失败: ${r && r.error}`, 'error');
+        }
+    } finally {
+        customizeAiGenerateBtn.disabled = false;
+    }
+}
+
 function setupPipelineStudio() {
     if (openStudioBtn) openStudioBtn.addEventListener('click', () => pipelineStudio.open(activePipelineId || ''));
-    if (customizePipelineSelect) {
-        customizePipelineSelect.addEventListener('change', async () => {
-            const id = customizePipelineSelect.value;
-            const r = await window.electronAPI.pipelineSetActive({ id });
-            if (r && r.success) { activePipelineId = id; interviewerMode = 'customize'; paintModeIndicator(); showFeedback('Active pipeline set', 'success'); }
-            else showFeedback(`Failed: ${r && r.error}`, 'error');
-        });
-    }
+    if (customizeAiGenerateBtn) customizeAiGenerateBtn.addEventListener('click', generatePipelineFromInput);
+    if (customizeAiInput) customizeAiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); generatePipelineFromInput(); } });
 }
 const settingsPanelManager = createSettingsPanelManager({
     settingsPanel,
     settingDashscopeAiModel,
-    settingProgrammingLanguage,
     settingAsrProvider,
     paraformerSettingsGroup,
     xfyunSettingsGroup,
@@ -823,13 +874,10 @@ const settingsPanelManager = createSettingsPanelManager({
     settingSystemSource,
     refreshAudioDevicesBtn,
     openSoundSettingsBtn,
-    // New auto-save deps: status pip + theme/stealth controls. Theme persists
-    // through onThemeChange (set-theme-preference IPC), stealth through
-    // setStealth (toggle-stealth IPC) — neither rides save-settings.
+    // New auto-save deps: status pip + stealth control. Stealth persists through
+    // setStealth (toggle-stealth IPC) — it does not ride save-settings.
     settingsStatusIndicator,
-    settingTheme: settingThemeToggle,
     settingStealthToggle,
-    onThemeChange: (theme) => applyTheme(theme, { persist: true }),
     setStealth: () => window.electronAPI?.toggleStealth?.(),
     applySettingsShortcutConfig: (settings) => applySettingsShortcutConfig(settings),
     showFeedback: (message, type) => showFeedback(message, type),
@@ -1212,6 +1260,23 @@ function setupInterviewTypeModal() {
     document.addEventListener('keydown', interviewTypeModalKeydownHandler);
 }
 
+// On launch, re-open the most recent interview that actually has messages so its
+// chat history is visible and new activity continues it (rather than spawning a
+// fresh blank session on every restart). No-op if there are no sessions yet.
+async function restoreLatestSession() {
+    try {
+        if (!window.electronAPI?.listSessions) return;
+        const r = await window.electronAPI.listSessions();
+        const list = (r && r.sessions) || (Array.isArray(r) ? r : []);
+        if (!Array.isArray(list) || !list.length) return;
+        // Index is newest-first by lastMessageAt; prefer the newest with content.
+        const target = list.find((s) => (s.messageCount || s.messages || 0) > 0) || list[0];
+        if (target && target.id) await handleSelectSession(target.id);
+    } catch (error) {
+        console.error('restoreLatestSession failed:', error);
+    }
+}
+
 async function handleSelectSession(id) {
     if (!id) return;
     try {
@@ -1299,6 +1364,11 @@ function renderSessionMessages(messages) {
     } finally {
         isReplayingSession = false;
     }
+    // Re-hydrate the live conversation from the loaded record so any further
+    // activity in this interview appends to (and re-saves) the full history.
+    liveConversation = (messages || [])
+        .filter((m) => m && String(m.text || '').trim())
+        .map((m) => ({ role: m.role, source: m.source, kind: m.kind, text: String(m.text).trim(), ts: m.ts || Date.now() }));
 }
 
 function clearTranscriptUi() {
@@ -1306,6 +1376,7 @@ function clearTranscriptUi() {
     chatMessagesArray = messageStore.getMessages();
     if (chatMessagesElement) chatMessagesElement.innerHTML = '';
     interviewerQuestionHistory.length = 0;
+    liveConversation = []; // new/empty interview starts a fresh conversation record
     updateUI();
 }
 
@@ -1496,7 +1567,10 @@ async function init() {
     // settings we loaded above (loadShortcutConfig runs before the components
     // exist, so the reflection has to happen here).
     reflectPersistedContext(settings);
-    applyTheme(resolveInitialThemePreference(settings), { persist: false });
+    // Restore the most recent interview so its chat history shows on launch and
+    // new activity continues it — without this, activeSessionId is in-memory only,
+    // so every app restart starts a blank session and the conversation fragments.
+    restoreLatestSession();
     paintModeIndicator();
     paintRecIndicator();
     // Keep the topbar ● REC pill honest with the live source-status object the
@@ -1521,96 +1595,6 @@ async function init() {
 
 function updateWindowOpacityValueLabel(value) {
     settingsPanelManager.updateWindowOpacityValueLabel(value);
-}
-
-function parseThemePreference(theme) {
-    return theme === THEME_DARK || theme === THEME_LIGHT ? theme : null;
-}
-
-function normalizeTheme(theme) {
-    return theme === THEME_DARK ? THEME_DARK : THEME_LIGHT;
-}
-
-function loadStoredThemePreference() {
-    try {
-        const savedTheme = window.localStorage?.getItem(THEME_STORAGE_KEY) || '';
-        return parseThemePreference(savedTheme) || THEME_DARK;
-    } catch (error) {
-        console.warn('Failed to read saved theme preference:', error);
-        return THEME_DARK;
-    }
-}
-
-function resolveInitialThemePreference(settings) {
-    const settingsTheme = parseThemePreference(String(settings?.themePreference || '').trim().toLowerCase());
-    if (settingsTheme) {
-        saveThemePreference(settingsTheme);
-        return settingsTheme;
-    }
-
-    return loadStoredThemePreference();
-}
-
-function saveThemePreference(theme) {
-    try {
-        window.localStorage?.setItem(THEME_STORAGE_KEY, normalizeTheme(theme));
-    } catch (error) {
-        console.warn('Failed to save theme preference:', error);
-    }
-}
-
-function persistThemePreference(theme) {
-    const normalizedTheme = normalizeTheme(theme);
-    saveThemePreference(normalizedTheme);
-
-    const setThemePreference = window.electronAPI?.setThemePreference;
-    if (typeof setThemePreference === 'function') {
-        setThemePreference(normalizedTheme).catch((error) => {
-            console.warn('Failed to persist theme preference to app state:', error);
-        });
-    }
-}
-
-function updateThemeToggleUi() {
-    if (!themeToggleBtn) {
-        return;
-    }
-
-    const isDarkMode = activeTheme === THEME_DARK;
-    const nextThemeLabel = isDarkMode ? 'light' : 'dark';
-    const ariaLabel = `Switch to ${nextThemeLabel} mode`;
-
-    themeToggleBtn.classList.toggle('is-dark', isDarkMode);
-    themeToggleBtn.setAttribute('aria-pressed', isDarkMode ? 'true' : 'false');
-    themeToggleBtn.setAttribute('aria-label', ariaLabel);
-    themeToggleBtn.removeAttribute('title');
-}
-
-function applyTheme(theme, options = {}) {
-    const { persist = true, announce = false } = options;
-    activeTheme = normalizeTheme(theme);
-
-    document.body.classList.toggle('theme-dark', activeTheme === THEME_DARK);
-    document.documentElement.setAttribute('data-theme', activeTheme);
-    updateThemeToggleUi();
-    // Keep the settings "Dark theme" switch consistent with the live theme,
-    // even before the settings panel is first opened.
-    if (settingThemeToggle) {
-        settingThemeToggle.checked = activeTheme === THEME_DARK;
-    }
-
-    if (persist) {
-        persistThemePreference(activeTheme);
-    }
-
-    if (announce) {
-        showFeedback(activeTheme === THEME_DARK ? 'Dark mode enabled' : 'Light mode enabled', 'info');
-    }
-}
-
-function toggleThemeMode() {
-    const nextTheme = activeTheme === THEME_DARK ? THEME_LIGHT : THEME_DARK;
-    applyTheme(nextTheme, { persist: true, announce: true });
 }
 
 function applySettingsShortcutConfig(settings) {
@@ -2450,7 +2434,6 @@ function setupEventListeners() {
         suggestBtn,
         notesBtn,
         insightsBtn,
-        themeToggleBtn,
         settingsBtn,
         closeSettingsBtn,
         saveSettingsBtn,
@@ -2479,7 +2462,6 @@ function setupEventListeners() {
         getResponseSuggestions,
         generateMeetingNotes,
         getConversationInsights,
-        toggleThemeMode,
         openSettings,
         closeSettings,
         saveSettings

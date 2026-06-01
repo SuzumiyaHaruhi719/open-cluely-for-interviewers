@@ -186,7 +186,10 @@ function createVolcengineAsrService({
     const creds = getVolcCredentials() || {};
     const appKey = String(creds.appId || '').trim();
     const accessKey = String(creds.accessToken || '').trim();
-    const resourceId = String(creds.resourceId || '').trim() || 'volc.seedasr.sauc.duration';
+    // Default to the 1.0 hourly model — it is the resource most accounts have
+    // granted. The 2.0 (volc.seedasr.*) model must be explicitly enabled on the
+    // account/endpoint or the handshake returns 400 "resourceId not allowed".
+    const resourceId = String(creds.resourceId || '').trim() || 'volc.bigasr.sauc.duration';
 
     if (!appKey || !accessKey) {
       sendToRenderer('vosk-error', { source: resolved, error: 'Doubao APP ID / Access Token not configured. Add them in Settings.' });

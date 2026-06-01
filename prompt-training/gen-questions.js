@@ -25,13 +25,15 @@ function resolveApiKey() {
 
 function parseArgs() {
   const a = process.argv.slice(2);
-  const o = { perBucket: null, ids: null, limit: null, concurrency: 8, out: null };
+  const o = { perBucket: null, ids: null, limit: null, concurrency: 8, out: null, corpus: null, runs: 1 };
   for (let i = 0; i < a.length; i++) {
     if (a[i] === '--per-bucket') o.perBucket = parseInt(a[++i], 10);
     else if (a[i] === '--ids') o.ids = a[++i];
     else if (a[i] === '--limit') o.limit = parseInt(a[++i], 10);
     else if (a[i] === '--concurrency') o.concurrency = parseInt(a[++i], 10);
     else if (a[i] === '--out') o.out = a[++i];
+    else if (a[i] === '--corpus') o.corpus = a[++i]; // run on a JSONL corpus instead of fixtures
+    else if (a[i] === '--runs') o.runs = parseInt(a[++i], 10); // K chain runs/record, pooled (richer candidate set for gate-select)
   }
   return o;
 }
@@ -66,11 +68,10 @@ function selectFiles(o) {
   return o.limit ? all.slice(0, o.limit) : all;
 }
 
-async function runOne(apiKey, file) {
+// Run the chain on one already-loaded fixture-shaped record (id/resume/jd/history/
+// candidate_last_answer/session_state). Shared by fixture mode and --corpus mode.
+async function runRecord(apiKey, fixture) {
   const start = Date.now();
-  let fixture;
-  try { fixture = JSON.parse(fs.readFileSync(path.join(FIXTURE_DIR, file), 'utf8')); }
-  catch (e) { return { id: file, ok: false, error: `read: ${e.message}` }; }
   try {
     const r = await runExpertChain({
       apiKey,
@@ -102,6 +103,44 @@ async function runOne(apiKey, file) {
   }
 }
 
+// Fixture mode: read the file, then delegate to runRecord.
+async function runOne(apiKey, file) {
+  let fixture;
+  try { fixture = JSON.parse(fs.readFileSync(path.join(FIXTURE_DIR, file), 'utf8')); }
+  catch (e) { return { id: file, ok: false, error: `read: ${e.message}` }; }
+  return runRecord(apiKey, fixture);
+}
+
+// Run the chain K times on the same record and POOL every candidate (each run's
+// primary + alternative + 5 D-candidates) into one fat d_candidates list, so
+// gate-select picks the best across K*~7 questions. More independent samples from
+// the same generator => the calibrated judge reliably finds a >=90 question.
+async function runRecordMulti(apiKey, fixture, runs) {
+  if (!runs || runs <= 1) return runRecord(apiKey, fixture);
+  const results = [];
+  for (let i = 0; i < runs; i++) results.push(await runRecord(apiKey, fixture)); // serial: keep per-record API load bounded
+  const ok = results.filter((r) => r && r.ok);
+  if (!ok.length) return results[0];
+  const base = ok[0];
+  const pool = [];
+  const seen = new Set();
+  const add = (q, type) => { const k = String(q || '').trim(); if (k && !seen.has(k)) { seen.add(k); pool.push({ id: `r${pool.length}`, question: k, question_type: type || '' }); } };
+  for (const r of ok) {
+    add(r.primary_question, 'primary');
+    add(r.alternative_question, 'alt');
+    for (const c of (r.d_candidates || [])) add(c.question, c.question_type);
+  }
+  return { ...base, runs: ok.length, ms: ok.reduce((a, r) => a + (r.ms || 0), 0), d_candidates: pool };
+}
+
+// Corpus mode: each JSONL line is already a fixture-shaped record.
+function loadCorpus(corpusPath, limit) {
+  const recs = fs.readFileSync(corpusPath, 'utf8').trim().split(/\r?\n/).filter(Boolean)
+    .map((l) => { try { return JSON.parse(l); } catch (_) { return null; } })
+    .filter(Boolean);
+  return limit ? recs.slice(0, limit) : recs;
+}
+
 // Simple async pool.
 async function pool(items, concurrency, worker, onDone) {
   let idx = 0; let done = 0;
@@ -122,14 +161,23 @@ async function main() {
   const o = parseArgs();
   const apiKey = resolveApiKey();
   if (!apiKey) { console.error('No DashScope key'); process.exit(2); }
-  const files = selectFiles(o);
+  const useCorpus = !!o.corpus;
+  const items = useCorpus ? loadCorpus(o.corpus, o.limit) : selectFiles(o);
+  const readRec = useCorpus
+    ? async (rec) => rec
+    : async (f) => { try { return JSON.parse(fs.readFileSync(path.join(FIXTURE_DIR, f), 'utf8')); } catch (e) { return { id: f, _readError: e.message }; } };
+  const worker = async (item) => {
+    const rec = await readRec(item);
+    if (rec._readError) return { id: rec.id, ok: false, error: `read: ${rec._readError}` };
+    return runRecordMulti(apiKey, rec, o.runs);
+  };
   const outPath = o.out || path.join('prompt-training', 'results', `gen-${Date.now()}.jsonl`);
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   const stream = fs.createWriteStream(outPath, { flags: 'w' });
-  console.error(`gen: ${files.length} fixtures, concurrency ${o.concurrency}, transport ${process.env.DASHSCOPE_TRANSPORT || 'fetch'} → ${outPath}`);
+  console.error(`gen: ${items.length} ${useCorpus ? 'corpus records' : 'fixtures'}, runs/record ${o.runs}, concurrency ${o.concurrency}, transport ${process.env.DASHSCOPE_TRANSPORT || 'fetch'} → ${outPath}`);
 
   const t0 = Date.now();
-  await pool(files, o.concurrency, (f) => runOne(apiKey, f), (done, total, r) => {
+  await pool(items, o.concurrency, worker, (done, total, r) => {
     stream.write(JSON.stringify(r) + '\n');
     const tag = r.ok ? `${r.ms}ms ${r.fallbacks && r.fallbacks.length ? 'fb:' + r.fallbacks.join('') : 'ok'}` : `ERR ${r.error}`;
     process.stderr.write(`  ${done}/${total} ${r.id} ${tag}\n`);

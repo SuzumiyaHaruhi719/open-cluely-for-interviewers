@@ -789,6 +789,7 @@ export function createTranscriptionManager({
         renderMonitorState,
         setSourceSelected,
         toggleMasterTranscription,
+        ensureSourceRunning,
         flushAllFinalTranscripts,
         handleVoskPartial,
         handleVoskFinal,

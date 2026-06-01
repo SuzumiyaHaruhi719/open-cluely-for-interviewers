@@ -176,6 +176,10 @@ function registerAssistantIpc({
     return windowController.emergencyHide();
   });
 
+  ipcMain.handle('window-minimize', () => {
+    return windowController.minimizeWindow();
+  });
+
   ipcMain.handle('take-stealth-screenshot', async () => {
     return screenshotManager.takeStealthScreenshot();
   });

@@ -264,6 +264,14 @@ function createWindowController({
     sendToRenderer('set-stealth-mode', stealthModeEnabled);
   }
 
+  function minimizeWindow() {
+    if (!mainWindow || mainWindow.isDestroyed()) {
+      return;
+    }
+
+    mainWindow.minimize();
+  }
+
   function emergencyHide() {
     if (autoHideTimer) {
       clearTimeout(autoHideTimer);
@@ -483,6 +491,7 @@ function createWindowController({
     getWindowOpacityLevel,
     hasWindow,
     markVisible,
+    minimizeWindow,
     registerShortcuts,
     setWindowSizePreset,
     setWindowBounds,

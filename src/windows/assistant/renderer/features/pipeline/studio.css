@@ -9,6 +9,12 @@
   background: var(--bg, #0d0f14);
   color: var(--fg, #e7e9ee);
   font-family: var(--font-body, system-ui);
+  /* The studio is a full-window overlay whose topbar sits in the same strip as
+     the app's draggable .titlebar (-webkit-app-region: drag). Electron drag
+     regions capture mouse events at the OS level and punch through overlapping
+     DOM, so without this the topbar's dropdown + name field are unclickable.
+     Mark the whole overlay no-drag so its controls receive clicks. */
+  -webkit-app-region: no-drag;
 }
 .pipeline-studio.hidden { display: none; }
 
@@ -31,6 +37,25 @@
   font-size: 12px;
 }
 .ps-input { width: 160px; }
+
+/* Custom template dropdown — native <select> popups don't render on this
+   transparent frameless window, so we use a button + absolutely-positioned menu. */
+.ps-libpick { position: relative; }
+.ps-libpick__btn { cursor: pointer; min-width: 150px; text-align: left; }
+.ps-libpick__menu {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 50;
+  min-width: 220px; max-height: 320px; overflow-y: auto;
+  background: var(--bg-elev, #14171f); border: 1px solid var(--hairline, #232838);
+  border-radius: 8px; padding: 4px; box-shadow: 0 8px 24px rgba(0,0,0,.5);
+}
+.ps-libpick__menu.hidden { display: none; }
+.ps-libpick__item {
+  display: block; width: 100%; text-align: left; padding: 7px 10px;
+  background: transparent; border: 0; border-radius: 6px; color: var(--fg);
+  font-size: 12px; cursor: pointer;
+}
+.ps-libpick__item:hover { background: color-mix(in srgb, var(--ai) 16%, transparent); }
+.ps-libpick__n { color: var(--fg-subtle, #8a90a0); font-size: 11px; }
 .ps-btn {
   background: var(--bg-elev, #14171f);
   color: var(--fg);

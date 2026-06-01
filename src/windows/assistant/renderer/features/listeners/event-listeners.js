@@ -19,7 +19,6 @@ export function setupEventListeners({
     suggestBtn,
     notesBtn,
     insightsBtn,
-    themeToggleBtn,
     settingsBtn,
     closeSettingsBtn,
     saveSettingsBtn,
@@ -48,7 +47,6 @@ export function setupEventListeners({
     getResponseSuggestions,
     generateMeetingNotes,
     getConversationInsights,
-    toggleThemeMode,
     openSettings,
     closeSettings,
     saveSettings
@@ -139,7 +137,6 @@ export function setupEventListeners({
     if (suggestBtn) suggestBtn.addEventListener('click', getResponseSuggestions);
     if (notesBtn) notesBtn.addEventListener('click', generateMeetingNotes);
     if (insightsBtn) insightsBtn.addEventListener('click', getConversationInsights);
-    if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleThemeMode);
 
     if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
     if (closeSettingsBtn) closeSettingsBtn.addEventListener('click', closeSettings);

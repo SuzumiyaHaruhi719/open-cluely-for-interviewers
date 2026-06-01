@@ -201,7 +201,9 @@ async function startApplication() {
       });
     }
 
-    const restoredAsrProvider = appState?.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer';
+    const restoredAsrProvider = (appState?.asrProvider === 'xfyun' || appState?.asrProvider === 'volc')
+      ? appState.asrProvider
+      : 'paraformer';
 
     console.log('Loaded app state from:', getAppStatePath(app));
     console.log('Restored ASR provider:', restoredAsrProvider);

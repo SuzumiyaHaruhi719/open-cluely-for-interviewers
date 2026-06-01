@@ -90,6 +90,24 @@ function registerSessionsIpc({ ipcMain, app, onSessionCreated = null }) {
     }
   });
 
+  ipcMain.handle('session-set-messages', (_event, payload = {}) => {
+    try {
+      const sessionId = String(payload?.id || '').trim();
+      if (!sessionId) {
+        return { success: false, error: 'empty-session-id', session: null };
+      }
+      const messages = Array.isArray(payload?.messages) ? payload.messages : [];
+      const session = sessionStore.setMessages(app, sessionId, messages);
+      if (!session) {
+        return { success: false, error: 'not-found', session: null };
+      }
+      return { success: true, session };
+    } catch (error) {
+      console.error('Error setting session messages:', error);
+      return { success: false, error: error.message, session: null };
+    }
+  });
+
   ipcMain.handle('session-append', (_event, payload = {}) => {
     try {
       const sessionId = String(payload?.id || '').trim();

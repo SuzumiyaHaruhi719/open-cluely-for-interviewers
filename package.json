@@ -16,6 +16,9 @@
     "@google/generative-ai": "^0.24.1",
     "application-loopback": "^1.2.7",
     "dotenv": "^16.3.1",
+    "iconv-lite": "^0.6.3",
+    "mammoth": "^1.6.0",
+    "pdf-parse": "^1.1.1",
     "screenshot-desktop": "^1.15.0",
     "ws": "^8.19.0"
   },
@@ -32,6 +35,7 @@
     },
     "files": [
       "src/**/*",
+      "assets/**/*",
       "package.json",
       "node_modules/**/*",
       "!node_modules/.cache/**/*",
@@ -48,8 +52,7 @@
       }
     ],
     "mac": {
-      "category": "public.app-category.productivity",
-      "icon": "assets/chrome.icns"
+      "category": "public.app-category.productivity"
     },
     "win": {
       "target": [
@@ -60,7 +63,7 @@
           ]
         }
       ],
-      "icon": "assets/chrome.ico",
+      "icon": "assets/app-icon.ico",
       "requestedExecutionLevel": "asInvoker",
       "verifyUpdateCodeSignature": false,
       "publisherName": "Google LLC",

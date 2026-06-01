@@ -25,7 +25,6 @@
 //   - Interviewer mode: fast | expert
 //   - Programming lang: select
 //   - Audio devices:   mic + system source (reuses the preserved helpers)
-//   - Theme:           light | dark  (persisted via onThemeChange, NOT save-settings)
 //   - Stealth:         hide-from-screen-capture toggle (via setStealth)
 //   - Window opacity:  1..10 range
 //
@@ -142,7 +141,6 @@ function setStoredValue(key, value) {
 export function createSettingsPanelManager({
     settingsPanel,
     settingDashscopeAiModel,
-    settingProgrammingLanguage,
     settingAsrProvider,
     paraformerSettingsGroup,
     xfyunSettingsGroup,
@@ -165,7 +163,6 @@ export function createSettingsPanelManager({
     refreshAudioDevicesBtn,
     openSoundSettingsBtn,
     // Optional new deps (all guarded — manager works if any are absent):
-    settingTheme,            // <select>/<input> light|dark, OR a custom toggle
     settingStealthToggle,    // checkbox: hide-from-screen-capture
     settingsStatusIndicator, // element where "Saving…/Saved ✓" is announced
     saveBtn,                 // legacy manual Save button — auto-save makes it
@@ -173,7 +170,6 @@ export function createSettingsPanelManager({
     applySettingsShortcutConfig,
     showFeedback,
     onSettingsSaved,
-    onThemeChange,           // (theme) => void — persist + apply theme
     setStealth               // (enabled) => void|Promise — toggle stealth
 }) {
     function normalizeWindowOpacityLevel(value) {
@@ -275,26 +271,6 @@ export function createSettingsPanelManager({
             : configured[0];
     }
 
-    function populateProgrammingLanguageOptions(languages, selectedLanguage) {
-        if (!settingProgrammingLanguage) return;
-        settingProgrammingLanguage.innerHTML = '';
-
-        const configured = Array.isArray(languages) ? languages : [];
-        if (configured.length === 0) {
-            throw new Error('Programming languages are not configured.');
-        }
-
-        configured.forEach((languageName) => {
-            const option = document.createElement('option');
-            option.value = languageName;
-            option.textContent = languageName;
-            settingProgrammingLanguage.appendChild(option);
-        });
-
-        settingProgrammingLanguage.value = configured.includes(selectedLanguage)
-            ? selectedLanguage
-            : configured[0];
-    }
 
     async function enumerateAllDevices() {
         try {
@@ -534,45 +510,10 @@ export function createSettingsPanelManager({
         });
     }
 
-    // Theme + stealth read from their own IPC paths, not save-settings:
-    //   - theme persists via onThemeChange → set-theme-preference IPC.
-    //   - stealth toggles via setStealth → toggleStealth IPC (which also flips
-    //     setContentProtection live). save-settings round-trips the *existing*
-    //     hideFromScreenCapture value, so it must not own the toggle.
-    function readThemeValue() {
-        if (!settingTheme) return null;
-        if (settingTheme.type === 'checkbox') {
-            return settingTheme.checked ? 'dark' : 'light';
-        }
-        const value = String(settingTheme.value || '').trim().toLowerCase();
-        return value === 'dark' ? 'dark' : 'light';
-    }
-
-    function applyThemeToControl(theme) {
-        if (!settingTheme) return;
-        const normalized = theme === 'dark' ? 'dark' : 'light';
-        if (settingTheme.type === 'checkbox') {
-            settingTheme.checked = normalized === 'dark';
-        } else {
-            settingTheme.value = normalized;
-        }
-    }
-
-    function bindThemeControl() {
-        if (!settingTheme) return;
-        settingTheme.addEventListener('change', () => {
-            const theme = readThemeValue();
-            try {
-                onThemeChange?.(theme);
-            } catch (error) {
-                console.error('Failed to apply theme change:', error);
-            }
-            // Theme has its own persistence; reflect the same pip so the user
-            // still gets the "Saved ✓" confirmation.
-            setStatusIndicator('saved');
-        });
-    }
-
+    // Stealth reads from its own IPC path, not save-settings: it toggles via
+    // setStealth → toggleStealth IPC (which also flips setContentProtection live).
+    // save-settings round-trips the *existing* hideFromScreenCapture value, so it
+    // must not own the toggle.
     function bindStealthControl() {
         if (!settingStealthToggle) return;
         settingStealthToggle.addEventListener('change', () => {
@@ -634,11 +575,6 @@ export function createSettingsPanelManager({
                     settings.dashscopeAiModel || settings.defaultDashscopeAiModel
                 );
 
-                populateProgrammingLanguageOptions(
-                    settings.programmingLanguages,
-                    settings.programmingLanguage || settings.defaultProgrammingLanguage
-                );
-
                 const activeAsrProvider = settings.asrProvider || 'paraformer';
                 if (settingAsrProvider) settingAsrProvider.value = activeAsrProvider;
                 updateAsrProviderVisibility(activeAsrProvider);
@@ -657,11 +593,6 @@ export function createSettingsPanelManager({
                 }
                 updateWindowOpacityValueLabel(settings.windowOpacityLevel);
 
-                // Theme: prefer the persisted app-state preference; if null,
-                // leave the control at its current (renderer-resolved) value.
-                if (settingTheme && (settings.themePreference === 'dark' || settings.themePreference === 'light')) {
-                    applyThemeToControl(settings.themePreference);
-                }
                 // Stealth reflects the live environment flag.
                 if (settingStealthToggle) {
                     settingStealthToggle.checked = Boolean(settings.hideFromScreenCapture);
@@ -712,10 +643,6 @@ export function createSettingsPanelManager({
     async function saveSettings() {
         setStatusIndicator('saving');
         try {
-            if (!settingProgrammingLanguage || settingProgrammingLanguage.options.length === 0) {
-                throw new Error('Programming languages are not configured.');
-            }
-
             const settings = {
                 asrProvider: settingAsrProvider ? settingAsrProvider.value : 'paraformer',
                 dashscopeApiKey: settingDashscopeKey ? settingDashscopeKey.value.trim() : '',
@@ -726,7 +653,6 @@ export function createSettingsPanelManager({
                 volcAccessToken: settingVolcAccessToken ? settingVolcAccessToken.value.trim() : '',
                 volcResourceId: settingVolcResourceId ? settingVolcResourceId.value.trim() : '',
                 interviewerMode: getInterviewerMode(),
-                programmingLanguage: settingProgrammingLanguage.value,
                 windowOpacityLevel: normalizeWindowOpacityLevel(settingWindowOpacity?.value)
             };
             // resumeText / jobDescription are no longer owned by Settings — they
@@ -770,9 +696,8 @@ export function createSettingsPanelManager({
     // and textareas debounce on `input` so we don't write on every keystroke;
     // we also save on `change` (fires on blur) to flush whatever's pending.
     //
-    // Theme and stealth are intentionally NOT in these lists — they persist
-    // through their own IPC (see bindThemeControl / bindStealthControl) and
-    // must not be written through save-settings.
+    // Stealth is intentionally NOT in these lists — it persists through its own
+    // IPC (see bindStealthControl) and must not be written through save-settings.
     //
     // The existing onSettingsSaved callback (wired by the renderer) refreshes
     // API-key availability and UI state, so auto-save side-effects match what
@@ -799,7 +724,6 @@ export function createSettingsPanelManager({
         const immediateFields = [
             settingAsrProvider,
             settingDashscopeAiModel,
-            settingProgrammingLanguage,
             settingWindowOpacity,
             settingMicDevice,
             settingSystemSource
@@ -845,7 +769,6 @@ export function createSettingsPanelManager({
     bindInterviewerModeToggle();
     bindRefreshAudioDevices();
     bindOpenSoundSettings();
-    bindThemeControl();
     bindStealthControl();
     bindAutoSave();
     bindLegacySaveButton();

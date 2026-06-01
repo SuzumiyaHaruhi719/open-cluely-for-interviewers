@@ -120,10 +120,6 @@
                 <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">Meeting notes</button>
                 <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">Insights</button>
                 <div class="more-menu-separator" role="separator"></div>
-                <button id="theme-toggle-btn" class="more-menu-item theme-toggle-btn" type="button" role="menuitem" aria-pressed="false" aria-label="Toggle theme">
-                  <span class="theme-toggle-label-dark">Light theme</span>
-                  <span class="theme-toggle-label-light">Dark theme</span>
-                </button>
                 <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">Clear session</button>
               </div>
             </div>
@@ -276,8 +272,21 @@
               </button>
             </div>
             <div class="customize-row" id="customize-row">
-              <select id="customize-pipeline-select" class="settings-input customize-select" aria-label="Active pipeline"></select>
-              <button type="button" id="open-pipeline-studio" class="action-btn">Open Studio</button>
+              <div class="customize-block">
+                <div class="customize-block__label">① 选一个面试模板</div>
+                <div class="customize-templates" id="customize-templates" role="listbox" aria-label="面试模板"></div>
+              </div>
+              <div class="customize-block">
+                <div class="customize-block__label">② 或者用一句话让 AI 生成</div>
+                <div class="customize-ai">
+                  <input type="text" id="customize-ai-input" class="settings-input" placeholder="例如：招一个能扛事、会带团队的资深后端，重点看线上事故判断" />
+                  <button type="button" id="customize-ai-generate" class="action-btn">AI 生成</button>
+                </div>
+                <div class="customize-ai__hint" id="customize-ai-hint"></div>
+              </div>
+              <div class="customize-block customize-block--advanced">
+                <button type="button" id="open-pipeline-studio" class="action-btn action-btn--ghost">⚙ 高级编辑（节点编辑器）</button>
+              </div>
             </div>
           </section>
 
@@ -296,15 +305,11 @@
 
           <!-- AI model -->
           <section class="settings-section">
-            <h3 class="settings-section__title">AI model</h3>
+            <h3 class="settings-section__title">AI 模型（Fast 模式）</h3>
             <div class="settings-field">
-              <label class="settings-field__label" for="setting-dashscope-ai-model">Model</label>
+              <label class="settings-field__label" for="setting-dashscope-ai-model">Fast 模式 / 通用 AI 模型</label>
               <select id="setting-dashscope-ai-model" class="settings-select"></select>
-              <p class="settings-field__desc"><code>deepseek-v4-pro</code> deepest reasoning · <code>deepseek-v4-flash</code> fastest · <code>qwen3-vl-*</code> required for screenshots.</p>
-            </div>
-            <div class="settings-field">
-              <label class="settings-field__label" for="setting-programming-language">Programming language</label>
-              <select id="setting-programming-language" class="settings-select"></select>
+              <p class="settings-field__desc">Fast 模式追问与通用 AI 功能使用此模型。<strong>Expert / Customize 模式各自在节点编辑器里单独配置每个 block 的模型，不受此项影响。</strong><br><code>deepseek-v4-pro</code> 推理最深 · <code>deepseek-v4-flash</code> 最快 · <code>qwen3-vl-*</code> 截图分析需要。</p>
             </div>
           </section>
 
@@ -378,16 +383,6 @@
           <!-- Appearance -->
           <section class="settings-section">
             <h3 class="settings-section__title">Appearance</h3>
-            <div class="settings-toggle-row">
-              <span class="settings-toggle-row__text">
-                <span class="settings-field__label">Dark theme</span>
-                <span class="settings-field__desc">Near-black control-room palette. Light theme is a work in progress.</span>
-              </span>
-              <label class="settings-switch">
-                <input type="checkbox" id="setting-theme-toggle" aria-label="Dark theme" />
-                <span class="settings-switch__track"></span>
-              </label>
-            </div>
             <div class="settings-field">
               <span class="settings-field__label" id="setting-window-opacity-label">Window opacity</span>
               <div class="settings-range-row">
@@ -482,7 +477,10 @@
     <div id="pipeline-studio" class="pipeline-studio hidden" role="dialog" aria-modal="true" aria-label="Pipeline Studio">
       <header class="ps-topbar">
         <span class="ps-title">Pipeline Studio</span>
-        <select id="ps-library" class="ps-select" aria-label="Pipeline"></select>
+        <div id="ps-library" class="ps-libpick">
+          <button type="button" id="ps-library-btn" class="ps-select ps-libpick__btn" aria-haspopup="listbox" aria-expanded="false">+ New (clone Expert) ▾</button>
+          <div id="ps-library-menu" class="ps-libpick__menu hidden" role="listbox"></div>
+        </div>
         <input id="ps-name" class="ps-input" placeholder="Pipeline name" />
         <span class="ps-spacer"></span>
         <button id="ps-validate" class="ps-btn" type="button">Validate</button>

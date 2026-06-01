@@ -18,9 +18,7 @@ function getDefaultAppState() {
     volcAppId: null,
     volcAccessToken: null,
     volcResourceId: null,
-    programmingLanguage: null,
     windowOpacityLevel: 10,
-    themePreference: null,
     resumeText: null,
     jobDescription: null,
     interviewerMode: 'fast',
@@ -86,19 +84,11 @@ function sanitizeAppState(state) {
       nextState.jobDescription = jobDescription || null;
     }
 
-    if (typeof state.programmingLanguage === 'string' && state.programmingLanguage.trim()) {
-      nextState.programmingLanguage = state.programmingLanguage.trim();
-    }
-
     const windowOpacityLevel = Number.parseInt(String(state.windowOpacityLevel ?? ''), 10);
     if (Number.isFinite(windowOpacityLevel)) {
       nextState.windowOpacityLevel = Math.min(Math.max(windowOpacityLevel, 1), 10);
     }
 
-    const themePreference = String(state.themePreference ?? '').trim().toLowerCase();
-    if (themePreference === 'dark' || themePreference === 'light') {
-      nextState.themePreference = themePreference;
-    }
 
     const interviewerMode = String(state.interviewerMode ?? '').trim().toLowerCase();
     if (interviewerMode === 'expert' || interviewerMode === 'fast' || interviewerMode === 'customize') {

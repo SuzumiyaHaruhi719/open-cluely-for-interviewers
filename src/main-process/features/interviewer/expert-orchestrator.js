@@ -144,8 +144,12 @@ const BLOCK_THINKING = {
   A: THINK_OFF,
   B: THINK_OFF,
   C: THINK_OFF,
-  D: THINK_BUDGET(1024),
-  E: THINK_BUDGET(1536),
+  // Latency budget: the chain must finish < 45s. D (generation) keeps a small
+  // thinking budget — that's where question depth is decided. E (ranking) is
+  // disabled: scoring 5 candidates on a fixed rubric + picking top-2 doesn't need
+  // open-ended deliberation, and its CoT was the single biggest latency cost.
+  D: THINK_BUDGET(512),
+  E: THINK_OFF,
   F: THINK_OFF,
   G: THINK_OFF
 };

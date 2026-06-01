@@ -78,11 +78,17 @@ export function createChatUiManager({
             case 'voice-mic':
                 icon = '\u{1F3A4}';
                 label = 'You';
+                // Amber "interviewer / microphone" lane (see chat.css). The
+                // class drives the left accent bar + mono lane marker; colour
+                // comes from --interviewer, never hard-coded here.
+                messageDiv.classList.add('lane-interviewer');
                 break;
 
             case 'voice-system':
                 icon = '\u{1F50A}';
-                label = 'Host';
+                label = 'Candidate';
+                // Teal "candidate / computer audio" lane.
+                messageDiv.classList.add('lane-candidate');
                 break;
 
             case 'screenshot':
@@ -97,9 +103,15 @@ export function createChatUiManager({
 
             case 'interviewer-coach':
                 icon = '\u{1F3AF}';
-                label = 'Coach';
+                label = 'AI follow-up';
                 contentClass = 'message-content interviewer-coach';
                 safeContent = formatResponse(content);
+                // Indigo AI follow-up card styling (see chat.css). The class is
+                // applied to the message wrapper so the existing escape-then-
+                // markdown content (and live updateChatMessageContent streaming)
+                // keep working unchanged; renderQuestionCard() below is the
+                // richer entry point with an anchor quote + copy affordance.
+                messageDiv.classList.add('is-question-card', 'lane-ai');
                 break;
 
             case 'system':
@@ -198,6 +210,169 @@ export function createChatUiManager({
         }
     }
 
+    // Map a capture source ('system' | 'mic') to its transcript message type.
+    // 'system' = candidate / computer audio (teal); 'mic'/'voice' = you /
+    // microphone (amber). Anything else falls back to the mic lane.
+    function messageTypeForSource(source) {
+        return source === 'system' || source === 'voice-system'
+            ? 'voice-system'
+            : 'voice-mic';
+    }
+
+    // Render a single dual-lane transcript line. Thin wrapper over
+    // addChatMessage so the orchestrator's streaming path can speak in terms
+    // of { source, text, ts } without knowing the internal message types.
+    // Returns the message-store record (so callers can stream updates into it
+    // via updateChatMessageContent(record.id, ...)). `ts` is accepted for API
+    // symmetry; the store stamps its own Date so ordering stays monotonic.
+    function renderTranscriptLine({ source, text, ts } = {}) {
+        const type = messageTypeForSource(source);
+        return addChatMessage(type, String(text ?? ''), { timestamp: ts instanceof Date ? ts : undefined });
+    }
+
+    async function copyTextToClipboard(text) {
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+        } catch (_) {
+            // Fall through to the legacy path below.
+        }
+        try {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(textarea);
+            return ok;
+        } catch (_) {
+            return false;
+        }
+    }
+
+    // Inline Lucide "copy" icon — static markup, safe to inject as innerHTML.
+    const COPY_ICON_SVG =
+        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+
+    // Render an indigo AI follow-up question card with a copy button and an
+    // optional anchor quote (the candidate phrase the question drills into).
+    //
+    // SECURITY: question + anchor can be model- or LAN-sourced, so every
+    // dynamic string is written via textContent. Only COPY_ICON_SVG (a
+    // hardcoded constant) is assigned through innerHTML. `priority` is mapped
+    // to a known class set — never interpolated into markup.
+    function renderQuestionCard({ question, anchor, priority } = {}) {
+        if (!chatMessagesElement) {
+            return null;
+        }
+
+        const questionText = String(question ?? '').trim();
+        if (!questionText) {
+            return null;
+        }
+
+        const shouldAutoScroll = isChatNearBottom();
+        const timestampDate = new Date();
+
+        // Persist as an interviewer-coach record so it participates in the
+        // message store (history persistence, AI-context defaults) exactly
+        // like the addChatMessage('interviewer-coach', ...) path.
+        const record = messageStore.add('interviewer-coach', questionText, { timestamp: timestampDate });
+
+        const card = document.createElement('div');
+        card.className = 'chat-message interviewer-coach-message is-question-card lane-ai chat-question-card';
+        card.dataset.messageId = record.id;
+
+        const normalizedPriority = ['high', 'medium', 'low'].includes(String(priority))
+            ? String(priority)
+            : null;
+        if (normalizedPriority) {
+            card.classList.add(`priority-${normalizedPriority}`);
+            card.dataset.priority = normalizedPriority;
+        }
+
+        const timestamp = timestampDate.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Header: target icon + label + (optional) priority pill + copy + time.
+        const header = document.createElement('div');
+        header.className = 'message-header question-card__header';
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'message-icon';
+        iconSpan.textContent = '\u{1F3AF}';
+
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'message-label';
+        labelSpan.textContent = 'AI follow-up';
+
+        header.append(iconSpan, labelSpan);
+
+        if (normalizedPriority) {
+            const pill = document.createElement('span');
+            pill.className = 'question-card__priority';
+            pill.dataset.priority = normalizedPriority;
+            pill.textContent = normalizedPriority;
+            header.appendChild(pill);
+        }
+
+        const actions = document.createElement('span');
+        actions.className = 'message-actions';
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'message-copy-btn question-card__copy';
+        copyBtn.setAttribute('aria-label', 'Copy question');
+        copyBtn.innerHTML = COPY_ICON_SVG; // static constant only.
+        copyBtn.addEventListener('click', async (event) => {
+            event.stopPropagation();
+            const ok = await copyTextToClipboard(questionText);
+            showFeedback?.(ok ? 'Question copied' : 'Copy failed', ok ? 'success' : 'error');
+        });
+        actions.appendChild(copyBtn);
+        header.appendChild(actions);
+
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'message-time';
+        timeSpan.textContent = timestamp;
+        header.appendChild(timeSpan);
+
+        card.appendChild(header);
+
+        // Optional anchor quote — the candidate phrase being drilled into.
+        const anchorText = String(anchor ?? '').trim();
+        if (anchorText) {
+            const anchorEl = document.createElement('blockquote');
+            anchorEl.className = 'question-card__anchor';
+            anchorEl.textContent = anchorText;
+            card.appendChild(anchorEl);
+        }
+
+        // The question body. textContent keeps it inert; .message-content lets
+        // updateChatMessageContent stream into the card if needed.
+        const body = document.createElement('div');
+        body.className = 'message-content interviewer-coach question-card__body';
+        body.textContent = questionText;
+        card.appendChild(body);
+
+        chatMessagesElement.appendChild(card);
+
+        if (shouldAutoScroll && isAutoScrollEnabled()) {
+            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+        }
+
+        onMessagesChanged?.(messageStore.getMessages());
+        updateUi?.();
+
+        return record;
+    }
+
     function submitManualContextMessage() {
         if (!chatManualInput) {
             return;
@@ -223,7 +398,10 @@ export function createChatUiManager({
 
     return {
         addChatMessage,
+        renderTranscriptLine,
+        renderQuestionCard,
         updateChatMessageContent,
+        formatResponse,
         autoResizeManualInput,
         submitManualContextMessage,
         updateManualComposerState,

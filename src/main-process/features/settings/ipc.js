@@ -111,35 +111,11 @@ function registerSettingsIpc({
       hasXfyunCredentials: xfyunAppId.length > 0 && xfyunApiKey.length > 0,
       dashscopeAiModels: geminiRuntime.getDashscopeAiModels(),
       defaultDashscopeAiModel: geminiRuntime.getDefaultDashscopeAiModel(),
-      programmingLanguage: geminiRuntime.getActiveProgrammingLanguage(),
-      programmingLanguages: geminiRuntime.getProgrammingLanguages(),
-      defaultProgrammingLanguage: geminiRuntime.getDefaultProgrammingLanguage(),
       keyboardShortcuts,
       hideFromScreenCapture: appEnvironment.hideFromScreenCapture,
       startHidden: appEnvironment.startHidden,
-      windowOpacityLevel: windowController.getWindowOpacityLevel(),
-      themePreference: appState?.themePreference === 'dark' || appState?.themePreference === 'light'
-        ? appState.themePreference
-        : null
+      windowOpacityLevel: windowController.getWindowOpacityLevel()
     };
-  });
-
-  ipcMain.handle('set-theme-preference', (_event, payload = {}) => {
-    try {
-      const requestedTheme = typeof payload === 'string'
-        ? payload
-        : payload?.theme;
-      const normalizedTheme = String(requestedTheme || '').trim().toLowerCase();
-      const themePreference = normalizedTheme === 'dark' ? 'dark' : 'light';
-
-      const updatedAppState = saveAppState(app, { themePreference });
-      setAppState(updatedAppState);
-
-      return { success: true, themePreference };
-    } catch (error) {
-      console.error('Error saving theme preference:', error);
-      return { success: false, error: error.message };
-    }
   });
 
   ipcMain.handle('save-settings', async (_event, settings = {}) => {

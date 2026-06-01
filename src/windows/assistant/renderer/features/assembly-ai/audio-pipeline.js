@@ -7,6 +7,11 @@ const TARGET_FRAME_SAMPLES = Math.round((TARGET_SAMPLE_RATE * TARGET_FRAME_MS) /
 const MIN_FRAME_SAMPLES = Math.round((TARGET_SAMPLE_RATE * MIN_FRAME_MS) / 1000);
 const WORKLET_MODULE_PATH = 'pcm-capture-worklet.js';
 
+// Level-meter emit cadence. The worklet posts chunks far faster than the UI
+// needs (a meter only has to feel live), so we throttle per-source emits to
+// ~10/s to keep the subscription cheap and avoid layout thrash downstream.
+const LEVEL_EMIT_INTERVAL_MS = 100;
+
 export function createAudioPipeline({ sendAudioChunk, addMonitorLog }) {
   const workletLoadedContexts = new WeakSet();
   const sourceSampleQueues = {
@@ -14,6 +19,48 @@ export function createAudioPipeline({ sendAudioChunk, addMonitorLog }) {
     system: { chunks: [], length: 0 }
   };
   const audioChunkCounters = { mic: 0, system: 0 };
+
+  // Optional per-source RMS level subscription. Consumers (e.g. the channel
+  // controls' VU meters) register a single listener via setLevelListener; it
+  // receives { source, level } where level is a 0..1 RMS magnitude, throttled
+  // to LEVEL_EMIT_INTERVAL_MS per source. Defaults to a no-op so the audio
+  // graph never has to null-check.
+  let levelListener = null;
+  const lastLevelEmitAt = { mic: 0, system: 0 };
+
+  function setLevelListener(fn) {
+    levelListener = typeof fn === 'function' ? fn : null;
+  }
+
+  function computeRms(float32Data) {
+    if (!float32Data || float32Data.length === 0) {
+      return 0;
+    }
+    let sumSquares = 0;
+    for (let index = 0; index < float32Data.length; index += 1) {
+      const sample = float32Data[index];
+      sumSquares += sample * sample;
+    }
+    const rms = Math.sqrt(sumSquares / float32Data.length);
+    return rms > 1 ? 1 : rms;
+  }
+
+  function emitSourceLevel(source, float32Data) {
+    if (!levelListener) {
+      return;
+    }
+    const resolvedSource = normalizeSource(source);
+    const now = Date.now();
+    if (now - lastLevelEmitAt[resolvedSource] < LEVEL_EMIT_INTERVAL_MS) {
+      return;
+    }
+    lastLevelEmitAt[resolvedSource] = now;
+    try {
+      levelListener({ source: resolvedSource, level: computeRms(float32Data) });
+    } catch (_) {
+      // A misbehaving listener must never break the audio graph.
+    }
+  }
 
   function convertToPCM16(float32Data) {
     const int16Data = new Int16Array(float32Data.length);
@@ -201,6 +248,9 @@ export function createAudioPipeline({ sendAudioChunk, addMonitorLog }) {
 
       try {
         const chunk = event.data instanceof Float32Array ? event.data : new Float32Array(event.data || []);
+        // RMS is taken on the raw chunk (pre-downsample) so the meter tracks
+        // the live input level independent of the 16 kHz resample.
+        emitSourceLevel(source, chunk);
         const normalizedChunk = downsampleFloat32Buffer(chunk, context.sampleRate, TARGET_SAMPLE_RATE);
         appendSourceSamples(source, normalizedChunk);
         drainSourceSampleQueue(source);
@@ -266,6 +316,7 @@ export function createAudioPipeline({ sendAudioChunk, addMonitorLog }) {
     isLikelyCameraTrack,
     resetChunkCounter,
     resetSourceSampleQueue,
+    setLevelListener,
     stopAudioResources
   };
 }

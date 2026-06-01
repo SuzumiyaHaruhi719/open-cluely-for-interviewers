@@ -7,6 +7,8 @@ const path = require('path');
 const lib = require('../../../services/ai/pipeline/preset-library');
 const { validatePipeline, PORT_TYPES } = require('../../../services/ai/pipeline/pipeline-schema');
 const { BLOCK_TYPES, blockTypeMeta } = require('../../../services/ai/pipeline/block-types');
+const { generatePipeline } = require('../../../services/ai/pipeline/pipeline-generator');
+const { dashscopeChat, safeJsonParse, FLASH_MODEL } = require('../interviewer/expert-orchestrator');
 
 // app is passed so handlers resolve the per-install pipelines dir. getAppState /
 // saveAppState let "set active pipeline" flip Customize mode + persist the choice.
@@ -65,6 +67,20 @@ function registerPipelineIpc({ ipcMain, app, getAppState, saveAppState, setAppSt
     try {
       const json = typeof payload === 'string' ? payload : payload?.json;
       return { success: true, id: lib.importPipeline(json, dir) };
+    } catch (error) { return { success: false, error: error.message }; }
+  });
+
+  // AI one-click generation: HR's plain-language description → a role-tuned
+  // pipeline on the fixed Expert DAG, saved as a user pipeline. Returns the saved
+  // id so the renderer can immediately select it.
+  ipcMain.handle('pipeline-generate', async (_e, payload = {}) => {
+    try {
+      const description = typeof payload === 'string' ? payload : payload?.description;
+      const apiKey = String(getAppState()?.dashscopeApiKey || '').trim();
+      const r = await generatePipeline({ description, apiKey, chat: dashscopeChat, model: FLASH_MODEL, safeJsonParse });
+      if (!r.ok) return { success: false, error: r.error };
+      const id = lib.savePipeline(r.pipeline, dir);
+      return { success: true, id, pipeline: { ...r.pipeline, id } };
     } catch (error) { return { success: false, error: error.message }; }
   });
 

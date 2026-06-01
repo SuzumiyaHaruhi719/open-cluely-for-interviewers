@@ -7,10 +7,13 @@
 const fs = require('fs');
 const path = require('path');
 const { EXPERT_PRESET } = require('./presets');
+const { ROLE_TEMPLATES } = require('./role-templates');
 const { validatePipeline } = require('./pipeline-schema');
 const { BLOCK_TYPES } = require('./block-types');
 
+// Built-ins = the generic Expert pipeline + the role-based template library.
 const BUILTINS = { [EXPERT_PRESET.id]: EXPERT_PRESET };
+for (const t of ROLE_TEMPLATES) BUILTINS[t.id] = t;
 const ALIASES = { expert: EXPERT_PRESET.id, Expert: EXPERT_PRESET.id };
 
 function defaultDir() { return path.join(process.cwd(), 'cache', 'pipelines'); }
@@ -29,7 +32,7 @@ function readUser(dir) {
 }
 
 function listPipelines(dir = defaultDir()) {
-  const fmt = (p, builtin) => ({ id: p.id, name: p.name, builtin, nodes: (p.nodes || []).length });
+  const fmt = (p, builtin) => ({ id: p.id, name: p.name, builtin, nodes: (p.nodes || []).length, blurb: p.blurb || '', role: p.role || null });
   return [
     ...Object.values(BUILTINS).map((p) => fmt(p, true)),
     ...readUser(dir).map((p) => fmt(p, false))

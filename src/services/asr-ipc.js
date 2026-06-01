@@ -29,7 +29,7 @@ function registerAsrIpc({ ipcMain, asrService }) {
     // cheap. Drop the frame silently if it's malformed or oversized.
     if (typeof payload !== 'object' || payload === null) return;
     if (!ALLOWED_AUDIO_SOURCES.has(payload.source)) return;
-    const audio = payload.audio;
+    const audio = payload.data;
     if (audio == null) return;
     const length = audio.length ?? audio.byteLength;
     if (typeof length !== 'number' || length <= 0 || length > MAX_AUDIO_CHUNK_BYTES) {

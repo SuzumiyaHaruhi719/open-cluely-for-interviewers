@@ -203,13 +203,6 @@ function createInvokeActions(ipcRenderer) {
       fallback: () => ({ listening: false })
     }),
 
-    setThemePreference: invokeWithFallback(ipcRenderer, {
-      channel: 'set-theme-preference',
-      label: 'setThemePreference',
-      transformArgs: (args) => [{ theme: args[0] }],
-      fallback: (error) => ({ success: false, error: error.message })
-    }),
-
     closeApp: invokeWithFallback(ipcRenderer, {
       channel: 'close-app',
       label: 'closeApp',
@@ -243,6 +236,7 @@ function createInvokeActions(ipcRenderer) {
     pipelineDelete: invokeWithFallback(ipcRenderer, { channel: 'pipeline-delete', label: 'pipelineDelete', fallback: (e) => ({ success: false, error: e.message }) }),
     pipelineExport: invokeWithFallback(ipcRenderer, { channel: 'pipeline-export', label: 'pipelineExport', fallback: (e) => ({ success: false, error: e.message }) }),
     pipelineImport: invokeWithFallback(ipcRenderer, { channel: 'pipeline-import', label: 'pipelineImport', fallback: (e) => ({ success: false, error: e.message }) }),
+    pipelineGenerate: invokeWithFallback(ipcRenderer, { channel: 'pipeline-generate', label: 'pipelineGenerate', fallback: (e) => ({ success: false, error: e.message }) }),
     pipelineSetActive: invokeWithFallback(ipcRenderer, { channel: 'pipeline-set-active', label: 'pipelineSetActive', fallback: (e) => ({ success: false, error: e.message }) }),
     interviewerSetMode: invokeWithFallback(ipcRenderer, { channel: 'interviewer-set-mode', label: 'interviewerSetMode', fallback: (e) => ({ success: false, error: e.message }) }),
 
@@ -297,6 +291,13 @@ function createInvokeActions(ipcRenderer) {
       channel: 'session-append',
       label: 'appendToSession',
       transformArgs: (args) => [{ id: args[0], message: args[1] }],
+      fallback: (error) => ({ success: false, session: null, error: error.message })
+    }),
+
+    setSessionMessages: invokeWithFallback(ipcRenderer, {
+      channel: 'session-set-messages',
+      label: 'setSessionMessages',
+      transformArgs: (args) => [{ id: args[0], messages: args[1] }],
       fallback: (error) => ({ success: false, session: null, error: error.message })
     }),
 

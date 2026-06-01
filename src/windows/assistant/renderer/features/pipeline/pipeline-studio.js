@@ -14,8 +14,10 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
   const palette = el('ps-palette');
   const config = el('ps-config');
   const status = el('ps-status');
-  const libSel = el('ps-library');
+  const libBtn = el('ps-library-btn');
+  const libMenu = el('ps-library-menu');
   const nameInput = el('ps-name');
+  let libItems = []; // [{id,name,builtin,nodes}] for the custom dropdown
 
   let blockTypes = [];      // [{id,label,inputs,outputType,defaults,schemaId}]
   let typeById = {};
@@ -37,10 +39,23 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
 
   async function refreshLibrary(selectId) {
     const r = await api.pipelineList();
-    const items = (r && r.pipelines) || [];
-    libSel.innerHTML = '<option value="">+ New (clone Expert)</option>'
-      + items.map((p) => `<option value="${p.id}">${p.builtin ? '★ ' : ''}${escapeAttr(p.name)} (${p.nodes})</option>`).join('');
-    if (selectId != null) libSel.value = selectId;
+    libItems = (r && r.pipelines) || [];
+    // Custom dropdown (native <select> popups do not render on this transparent
+    // frameless window — they silently fail to open). Build clickable rows.
+    libMenu.innerHTML = `<button type="button" class="ps-libpick__item" data-pid="" role="option">+ New (clone Expert)</button>`
+      + libItems.map((p) => `<button type="button" class="ps-libpick__item" data-pid="${escapeAttr(p.id)}" role="option">${p.builtin ? '★ ' : ''}${escapeAttr(p.name)} <span class="ps-libpick__n">(${p.nodes})</span></button>`).join('');
+    setLibLabel(selectId != null ? selectId : '');
+  }
+
+  function setLibLabel(id) {
+    const found = libItems.find((p) => p.id === id);
+    libBtn.textContent = (found ? `${found.builtin ? '★ ' : ''}${found.name}` : '+ New (clone Expert)') + ' ▾';
+  }
+
+  function toggleLibMenu(open) {
+    const show = open == null ? libMenu.classList.contains('hidden') : open;
+    libMenu.classList.toggle('hidden', !show);
+    libBtn.setAttribute('aria-expanded', show ? 'true' : 'false');
   }
 
   function escapeAttr(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
@@ -58,6 +73,7 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
     }
     selectedId = null;
     nameInput.value = pipeline.name || '';
+    setLibLabel(id || '');
     render();
     setStatus(pipeline.builtin ? 'Built-in preset — Save will create an editable copy.' : '');
   }
@@ -234,7 +250,20 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
   }
 
   palette.addEventListener('click', (ev) => { const b = ev.target.closest('[data-add]'); if (b) addNode(b.dataset.add); });
-  libSel.addEventListener('change', () => loadPipeline(libSel.value));
+  // Custom template dropdown (replaces a native <select>, which won't open on a
+  // transparent frameless window).
+  libBtn.addEventListener('click', (ev) => { ev.stopPropagation(); toggleLibMenu(); });
+  libMenu.addEventListener('click', (ev) => {
+    const item = ev.target.closest('[data-pid]');
+    if (!item) return;
+    toggleLibMenu(false);
+    loadPipeline(item.dataset.pid || '');
+  });
+  // Click-away closes the menu.
+  document.addEventListener('click', (ev) => {
+    if (libMenu.classList.contains('hidden')) return;
+    if (!ev.target.closest('#ps-library')) toggleLibMenu(false);
+  });
   el('ps-validate').addEventListener('click', doValidate);
   el('ps-save').addEventListener('click', doSave);
   el('ps-use').addEventListener('click', async () => {

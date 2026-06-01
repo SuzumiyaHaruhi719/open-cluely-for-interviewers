@@ -278,6 +278,46 @@
 .mode-segmented__btn[data-mode="expert"]    { --mode-accent: var(--ai);          --mode-glow: var(--glow-ai); }
 .mode-segmented__btn[data-mode="customize"] { --mode-accent: var(--interviewer);  --mode-glow: var(--glow-interviewer); }
 
+/* ── Customize front door: template gallery + AI generate (HR-friendly) ─────── */
+.customize-row { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+.customize-block { display: flex; flex-direction: column; gap: 8px; }
+.customize-block--advanced { align-items: flex-start; }
+.customize-block__label { font-size: 12px; font-weight: 600; color: var(--fg-subtle); }
+.customize-templates {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+}
+.customize-card {
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+    color: var(--fg);
+    cursor: pointer;
+    transition: border-color var(--dur-2) var(--ease), background var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
+}
+.customize-card:hover { border-color: color-mix(in srgb, var(--interviewer) 45%, var(--hairline)); }
+.customize-card:active { transform: scale(0.98); }
+.customize-card--active {
+    border-color: var(--interviewer);
+    background: color-mix(in srgb, var(--interviewer) 12%, var(--surface));
+    box-shadow: var(--glow-interviewer);
+}
+.customize-card__top { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-weight: 700; font-size: 13px; }
+.customize-card__badge {
+    font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 999px;
+    background: color-mix(in srgb, var(--interviewer) 22%, transparent); color: var(--interviewer);
+}
+.customize-card__badge--user { background: color-mix(in srgb, var(--ai) 22%, transparent); color: var(--ai); }
+.customize-card__desc { margin-top: 4px; font-size: 11px; line-height: 1.4; color: var(--fg-subtle); }
+.customize-ai { display: flex; gap: 8px; }
+.customize-ai .settings-input { flex: 1; }
+.customize-ai__hint { font-size: 11px; color: var(--fg-subtle); min-height: 14px; }
+.action-btn--ghost { background: transparent; border-color: var(--hairline); color: var(--fg-subtle); }
+.action-btn--ghost:hover { color: var(--fg); border-color: color-mix(in srgb, var(--interviewer) 40%, var(--hairline)); }
+
 .mode-segmented__btn:hover {
     border-color: color-mix(in srgb, var(--mode-accent) 40%, var(--hairline));
     color: var(--fg);

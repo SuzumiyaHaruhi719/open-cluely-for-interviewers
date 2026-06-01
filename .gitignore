@@ -73,3 +73,7 @@ eval-*.log
 fixtures/expert-interview/_manifests/eval-block-*.json
 fixtures/expert-interview/_manifests/local-dedup-report.json
 fixtures/expert-interview/_manifests/dedup-report.json
+
+# prompt-training run artifacts (scripts + rubric stay tracked)
+prompt-training/results/
+prompt-training/corpus/
