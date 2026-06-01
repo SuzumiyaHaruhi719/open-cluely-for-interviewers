@@ -55,6 +55,7 @@
   font-size: 12px; cursor: pointer;
 }
 .ps-libpick__item:hover { background: color-mix(in srgb, var(--ai) 16%, transparent); }
+.ps-libpick__item:focus-visible { outline: 2px solid var(--ai); outline-offset: -2px; }
 .ps-libpick__n { color: var(--fg-subtle, #8a90a0); font-size: 11px; }
 .ps-btn {
   background: var(--bg-elev, #14171f);

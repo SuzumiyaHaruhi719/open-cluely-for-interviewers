@@ -300,6 +300,7 @@
 }
 .customize-card:hover { border-color: color-mix(in srgb, var(--interviewer) 45%, var(--hairline)); }
 .customize-card:active { transform: scale(0.98); }
+.customize-card:focus-visible { outline: 2px solid var(--interviewer); outline-offset: 2px; }
 .customize-card--active {
     border-color: var(--interviewer);
     background: color-mix(in srgb, var(--interviewer) 12%, var(--surface));
