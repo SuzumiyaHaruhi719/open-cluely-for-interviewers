@@ -125,4 +125,23 @@ const BLOCK_TYPES = {
   }
 };
 
-module.exports = { BLOCK_TYPES, resolvePrimaryAlt };
+// Serializable metadata for the editor palette / Customize UI (the registry
+// entries hold functions, which can't cross IPC). Defaults' thinking is reported
+// as a simple flag + budget the UI can toggle.
+function blockTypeMeta() {
+  return Object.entries(BLOCK_TYPES).map(([id, t]) => ({
+    id,
+    label: t.label,
+    schemaId: t.schemaId,
+    inputs: (t.inputs || []).map((p) => ({ name: p.name, type: p.type, optional: Boolean(p.optional) })),
+    outputType: t.outputType,
+    defaults: {
+      model: t.defaults.model,
+      thinking: t.defaults.thinking,
+      temperature: t.defaults.temperature,
+      maxTokens: t.defaults.maxTokens
+    }
+  }));
+}
+
+module.exports = { BLOCK_TYPES, resolvePrimaryAlt, blockTypeMeta };

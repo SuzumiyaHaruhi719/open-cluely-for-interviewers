@@ -35,6 +35,7 @@ const { registerInterviewerIpc } = require('./features/interviewer/ipc');
 const { createProcessLoopbackService } = require('../services/process-loopback/service');
 const { registerProcessLoopbackIpc } = require('../services/process-loopback/ipc');
 const { registerSessionsIpc } = require('./features/sessions/ipc');
+const { registerPipelineIpc } = require('./features/pipeline/ipc');
 const { registerResumeIpc } = require('./features/resume/ipc');
 const { updateSessionState } = require('../services/state/session-store');
 const { createWindowController } = require('./features/window/window-controller');
@@ -247,12 +248,22 @@ async function startApplication() {
         }
       }
     },
-    sendToRenderer
+    sendToRenderer,
+    // Customize mode resolves its active pipeline from the per-install library dir.
+    pipelinesDir: require('path').join(app.getPath('userData'), 'pipelines')
   });
 
   registerInterviewerIpc({
     ipcMain,
     interviewerRuntime
+  });
+
+  registerPipelineIpc({
+    ipcMain,
+    app,
+    getAppState: () => appState,
+    saveAppState,
+    setAppState: (next) => { appState = next; }
   });
 
   const processLoopbackService = createProcessLoopbackService({

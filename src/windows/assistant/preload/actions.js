@@ -14,6 +14,12 @@ function createInvokeActions(ipcRenderer) {
       fallback: (error) => ({ error: error.message })
     }),
 
+    minimizeWindow: invokeWithFallback(ipcRenderer, {
+      channel: 'window-minimize',
+      label: 'minimizeWindow',
+      fallback: (error) => ({ error: error.message })
+    }),
+
     takeStealthScreenshot: invokeWithFallback(ipcRenderer, {
       channel: 'take-stealth-screenshot',
       label: 'takeStealthScreenshot',
@@ -226,6 +232,79 @@ function createInvokeActions(ipcRenderer) {
       channel: 'interviewer-is-configured',
       label: 'interviewerIsConfigured',
       fallback: () => ({ configured: false })
+    }),
+
+    // ── Customizable pipeline (SP2/SP3) ──────────────────────────────────────
+    pipelineList: invokeWithFallback(ipcRenderer, { channel: 'pipeline-list', label: 'pipelineList', fallback: () => ({ success: false, pipelines: [] }) }),
+    pipelineGet: invokeWithFallback(ipcRenderer, { channel: 'pipeline-get', label: 'pipelineGet', fallback: (e) => ({ success: false, error: e.message, pipeline: null }) }),
+    pipelineBlockTypes: invokeWithFallback(ipcRenderer, { channel: 'pipeline-block-types', label: 'pipelineBlockTypes', fallback: () => ({ success: false, blockTypes: [], portTypes: [] }) }),
+    pipelineValidate: invokeWithFallback(ipcRenderer, { channel: 'pipeline-validate', label: 'pipelineValidate', fallback: (e) => ({ success: false, ok: false, errors: [e.message] }) }),
+    pipelineSave: invokeWithFallback(ipcRenderer, { channel: 'pipeline-save', label: 'pipelineSave', fallback: (e) => ({ success: false, error: e.message }) }),
+    pipelineDelete: invokeWithFallback(ipcRenderer, { channel: 'pipeline-delete', label: 'pipelineDelete', fallback: (e) => ({ success: false, error: e.message }) }),
+    pipelineExport: invokeWithFallback(ipcRenderer, { channel: 'pipeline-export', label: 'pipelineExport', fallback: (e) => ({ success: false, error: e.message }) }),
+    pipelineImport: invokeWithFallback(ipcRenderer, { channel: 'pipeline-import', label: 'pipelineImport', fallback: (e) => ({ success: false, error: e.message }) }),
+    pipelineSetActive: invokeWithFallback(ipcRenderer, { channel: 'pipeline-set-active', label: 'pipelineSetActive', fallback: (e) => ({ success: false, error: e.message }) }),
+    interviewerSetMode: invokeWithFallback(ipcRenderer, { channel: 'interviewer-set-mode', label: 'interviewerSetMode', fallback: (e) => ({ success: false, error: e.message }) }),
+
+    uploadResume: invokeWithFallback(ipcRenderer, {
+      channel: 'resume-upload',
+      label: 'uploadResume',
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
+    resumeChat: invokeWithFallback(ipcRenderer, {
+      channel: 'resume-chat',
+      label: 'resumeChat',
+      transformArgs: (args) => [{ messages: args[0]?.messages }],
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
+    listSessions: invokeWithFallback(ipcRenderer, {
+      channel: 'session-list',
+      label: 'listSessions',
+      fallback: () => ({ success: false, sessions: [] })
+    }),
+
+    loadSession: invokeWithFallback(ipcRenderer, {
+      channel: 'session-load',
+      label: 'loadSession',
+      transformArgs: (args) => [{ id: args[0] }],
+      fallback: (error) => ({ success: false, session: null, error: error.message })
+    }),
+
+    createSession: invokeWithFallback(ipcRenderer, {
+      channel: 'session-create',
+      label: 'createSession',
+      transformArgs: (args) => [{ title: args[0]?.title, mode: args[0]?.mode, interviewType: args[0]?.interviewType }],
+      fallback: (error) => ({ success: false, session: null, error: error.message })
+    }),
+
+    renameSession: invokeWithFallback(ipcRenderer, {
+      channel: 'session-rename',
+      label: 'renameSession',
+      transformArgs: (args) => [{ id: args[0], title: args[1] }],
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
+    deleteSession: invokeWithFallback(ipcRenderer, {
+      channel: 'session-delete',
+      label: 'deleteSession',
+      transformArgs: (args) => [{ id: args[0] }],
+      fallback: (error) => ({ success: false, error: error.message })
+    }),
+
+    appendToSession: invokeWithFallback(ipcRenderer, {
+      channel: 'session-append',
+      label: 'appendToSession',
+      transformArgs: (args) => [{ id: args[0], message: args[1] }],
+      fallback: (error) => ({ success: false, session: null, error: error.message })
+    }),
+
+    updateSessionContext: invokeWithFallback(ipcRenderer, {
+      channel: 'session-update-context',
+      label: 'updateSessionContext',
+      transformArgs: (args) => [{ id: args[0], resumeText: args[1]?.resumeText, jobDescription: args[1]?.jobDescription }],
+      fallback: (error) => ({ success: false, session: null, error: error.message })
     })
   };
 }
