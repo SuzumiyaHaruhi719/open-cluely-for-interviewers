@@ -411,6 +411,10 @@ body.stealth-on .app-shell { opacity: 0.92; }
   min-height: 0;
   min-width: 0;
   background: var(--bg-base);
+  /* Query container so the topbar adapts to the MAIN column's real width (not the
+     viewport — the left sidebar + right rail eat width, so viewport is wrong). */
+  container-type: inline-size;
+  container-name: main;
 }
 
 /* ── Topbar ──────────────────────────────────────────────────────────────── */
@@ -1699,32 +1703,43 @@ body.rail-collapsed .right-rail {
   /* Collapse the sidebar to icons: hide history list + button labels. */
   .sidebar #session-list { display: none; }
   .sidebar #btn-new-interview .history-new-btn__label { display: none; }
+  /* Centre the lone "+" icon (no label) instead of leaving it left-aligned with
+     the wide padding meant for the icon+label row. */
+  .sidebar #btn-new-interview { justify-content: center; gap: 0; padding-left: 0; padding-right: 0; margin-left: 8px; margin-right: 8px; }
   .sidebar__settings-btn span { display: none; }
   .sidebar__settings-btn { justify-content: center; }
 
   .composer__channels { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ── Narrow-window topbar: shed informational pills so the action buttons
- *    (Ask AI / Screen AI / Generate Q) are never truncated. Priority to drop,
- *    least-critical first: REC + screenshot count → ASR engine → timer →
- *    mode-pill label (dot stays). The action buttons never shrink. ───────────── */
-@media (max-width: 860px) {
+/* ── Narrow topbar (driven by the MAIN column width via container queries, so it
+ *    reacts correctly even when the sidebar + right rail consume window width).
+ *    Shed informational pills least-critical-first so the action buttons
+ *    (Ask AI / Screen AI / Generate Q) are NEVER truncated. ─────────────────── */
+@container main (max-width: 640px) {
   .topbar { gap: 8px; padding: 10px 12px; }
   #rec-indicator,
   #screenshot-count { display: none; }
 }
-@media (max-width: 740px) {
+@container main (max-width: 540px) {
   .topbar__lead .timer { display: none; }
   #asr-indicator { display: none; }
-  .topbar__title { max-width: 18ch; }
+  .topbar__title { max-width: 16ch; }
 }
-@media (max-width: 620px) {
+@container main (max-width: 460px) {
   /* Keep the mode dot (Fast/Expert colour) but drop its text label, and tighten
      the action buttons so the trio + more-menu still fit. */
   #mode-indicator .mode-indicator__label { display: none; }
   .topbar__actions { gap: 4px; }
   .topbar__actions .action-btn { padding-left: 8px; padding-right: 8px; }
+}
+@container main (max-width: 380px) {
+  /* Last resort on a very thin column: condense the text buttons to first word. */
+  .topbar__lead .timer,
+  #mode-indicator,
+  #asr-indicator,
+  #rec-indicator,
+  #screenshot-count { display: none; }
 }
 
 /* ── Motion policy ───────────────────────────────────────────────────────────

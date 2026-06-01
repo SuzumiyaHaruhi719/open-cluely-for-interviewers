@@ -230,6 +230,39 @@ export function createChatUiManager({
         return addChatMessage(type, String(text ?? ''), { timestamp: ts instanceof Date ? ts : undefined });
     }
 
+    // Scroll to + briefly flash the transcript line a follow-up's anchor was
+    // drilled from. Matches the most recent transcript bubble (NOT a question
+    // card) whose text contains the anchor; the flash fades itself out via CSS.
+    let activeJumpFlash = null;
+    function jumpToSource(anchorText) {
+        if (!chatMessagesElement) return;
+        const needle = String(anchorText || '').trim();
+        if (!needle) return;
+        const bubbles = Array.from(chatMessagesElement.querySelectorAll('.chat-message:not(.chat-question-card)'));
+        // Last match = the most recent occurrence (anchors quote the latest answer).
+        let target = null;
+        for (const el of bubbles) {
+            const body = el.querySelector('.message-content') || el;
+            if (body.textContent && body.textContent.includes(needle)) target = el;
+        }
+        if (!target) {
+            showFeedback?.('找不到原文 / Source not found in transcript', 'info');
+            return;
+        }
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Restart the flash cleanly if one is already running on another bubble.
+        if (activeJumpFlash) activeJumpFlash.classList.remove('source-flash');
+        // Force reflow so re-adding the class re-triggers the animation.
+        void target.offsetWidth;
+        target.classList.add('source-flash');
+        activeJumpFlash = target;
+        target.addEventListener('animationend', function onEnd() {
+            target.classList.remove('source-flash');
+            target.removeEventListener('animationend', onEnd);
+            if (activeJumpFlash === target) activeJumpFlash = null;
+        });
+    }
+
     async function copyTextToClipboard(text) {
         try {
             if (navigator.clipboard?.writeText) {
@@ -346,11 +379,19 @@ export function createChatUiManager({
         card.appendChild(header);
 
         // Optional anchor quote — the candidate phrase being drilled into.
+        // Clickable: jumps to + flashes the source transcript line it came from.
         const anchorText = String(anchor ?? '').trim();
         if (anchorText) {
             const anchorEl = document.createElement('blockquote');
-            anchorEl.className = 'question-card__anchor';
+            anchorEl.className = 'question-card__anchor question-card__anchor--jump';
             anchorEl.textContent = anchorText;
+            anchorEl.setAttribute('role', 'button');
+            anchorEl.setAttribute('tabindex', '0');
+            anchorEl.title = '跳转到原文 / Jump to source';
+            anchorEl.addEventListener('click', () => jumpToSource(anchorText));
+            anchorEl.addEventListener('keydown', (ev) => {
+                if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); jumpToSource(anchorText); }
+            });
             card.appendChild(anchorEl);
         }
 

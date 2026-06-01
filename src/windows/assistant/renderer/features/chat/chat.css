@@ -354,6 +354,38 @@
     overflow-wrap: anywhere;
 }
 
+/* Clickable anchor — jumps to the source transcript line. Reads as interactive
+   (pointer, teal hover, focus ring) without shouting. */
+.question-card__anchor--jump {
+    cursor: pointer;
+    transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
+}
+.question-card__anchor--jump::after {
+    content: ' ↩';
+    color: color-mix(in srgb, var(--candidate) 70%, transparent);
+    font-style: normal;
+}
+.question-card__anchor--jump:hover {
+    background: color-mix(in srgb, var(--candidate) 14%, transparent);
+    border-left-color: var(--candidate);
+}
+.question-card__anchor--jump:focus-visible {
+    outline: 2px solid var(--candidate);
+    outline-offset: 2px;
+}
+
+/* Source-flash — the transcript line a follow-up was drilled from glows, then
+   fades out on its own (self-removing via animationend in chat-ui-manager). */
+@keyframes source-flash {
+    0%   { background: color-mix(in srgb, var(--candidate) 36%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--candidate) 45%, transparent); }
+    25%  { background: color-mix(in srgb, var(--candidate) 30%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--candidate) 38%, transparent); }
+    100% { background: transparent; box-shadow: 0 0 0 2px transparent; }
+}
+.chat-message.source-flash {
+    animation: source-flash 2.6s var(--ease) forwards;
+    border-radius: var(--radius-sm);
+}
+
 /* Priority pill — mono uppercase; colours are keyed to semantic risk level.
    High = danger (red), medium = interviewer (amber), low = muted. */
 .question-card__priority {
