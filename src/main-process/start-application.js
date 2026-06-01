@@ -34,6 +34,9 @@ const { createInterviewerRuntime } = require('./features/interviewer/interviewer
 const { registerInterviewerIpc } = require('./features/interviewer/ipc');
 const { createProcessLoopbackService } = require('../services/process-loopback/service');
 const { registerProcessLoopbackIpc } = require('../services/process-loopback/ipc');
+const { registerSessionsIpc } = require('./features/sessions/ipc');
+const { registerResumeIpc } = require('./features/resume/ipc');
+const { updateSessionState } = require('../services/state/session-store');
 const { createWindowController } = require('./features/window/window-controller');
 const { DEFAULT_WINDOW_OPACITY_LEVEL } = require('./features/window/window-constants');
 const { logStartupConfiguration } = require('./startup-logging');
@@ -158,6 +161,15 @@ async function startApplication() {
   function loadPersistedAppState() {
     appState = loadAppState(app);
 
+    // interviewerSessionState is the running context for ONE interview (Block H
+    // consolidation feeding the next turn's Block C). It must NOT survive a
+    // restart: there is no active-session linkage in the main process, so a
+    // persisted value just bleeds stale topics ("qipao", "Black Tower", …) from
+    // an old test into whatever interview runs next. Always start a launch clean.
+    if (appState.interviewerSessionState) {
+      appState = saveAppState(app, { interviewerSessionState: null });
+    }
+
     const activeDashscopeAiModel = geminiRuntime.setActiveDashscopeAiModel(appState.dashscopeAiModel);
     const activeProgrammingLanguage = geminiRuntime.setActiveProgrammingLanguage(appState.programmingLanguage);
     const activeWindowOpacityLevel = windowController.setWindowOpacityLevel(appState.windowOpacityLevel);
@@ -224,7 +236,18 @@ async function startApplication() {
   });
 
   const interviewerRuntime = createInterviewerRuntime({
-    getAppState: () => appState
+    getAppState: () => appState,
+    saveSessionState: (nextState) => {
+      appState = saveAppState(app, { interviewerSessionState: nextState });
+      if (appState.activeSessionId) {
+        try {
+          updateSessionState(app, appState.activeSessionId, nextState);
+        } catch (error) {
+          console.error('Failed to persist session state to session store:', error);
+        }
+      }
+    },
+    sendToRenderer
   });
 
   registerInterviewerIpc({
@@ -240,6 +263,30 @@ async function startApplication() {
   registerProcessLoopbackIpc({
     ipcMain,
     processLoopbackService
+  });
+
+  registerSessionsIpc({
+    ipcMain,
+    app,
+    // A new interview must start with a clean interviewer context — otherwise the
+    // previous interview's consolidated topics carry over into the new one.
+    onSessionCreated: () => {
+      appState = saveAppState(app, { interviewerSessionState: null });
+    }
+  });
+
+  registerResumeIpc({
+    ipcMain,
+    app,
+    getAppState: () => appState,
+    setAppState: (nextAppState) => {
+      appState = nextAppState;
+    },
+    saveAppState,
+    // Reuse the working DashScope client for the isolated résumé chat. Its
+    // generateText sends a single stateless message, so the résumé Q&A never
+    // pollutes the interview transcript or the shared AI history.
+    getGeminiService: () => geminiRuntime.getService()
   });
 
   registerSettingsIpc({
