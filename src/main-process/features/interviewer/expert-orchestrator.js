@@ -148,7 +148,7 @@ const BLOCK_THINKING = {
   // thinking budget — that's where question depth is decided. E (ranking) is
   // disabled: scoring 5 candidates on a fixed rubric + picking top-2 doesn't need
   // open-ended deliberation, and its CoT was the single biggest latency cost.
-  D: THINK_BUDGET(512),
+  D: THINK_BUDGET(256),
   E: THINK_OFF,
   F: THINK_OFF,
   G: THINK_OFF
@@ -708,8 +708,20 @@ async function runPipelineChain({
   }
   const { runPipeline } = require('../../../services/ai/pipeline/pipeline-engine');
 
-  const context = { candidateAnswer, resumeChunk, jobDescription, outputLanguage, questionHistory, sessionState };
-  const result = await runPipeline({ pipeline, apiKey, context, abortSignal, onProgress });
+  // Bound per-block input so latency stays flat regardless of total interview
+  // length (a 10k-char transcript must still finish <30s). We keep the focus —
+  // the candidate's latest answer — nearly whole, take a résumé/JD slice, and only
+  // the most recent questions (the chain follows up on the LATEST answer).
+  const cap = (s, n) => { const t = String(s || ''); return t.length > n ? t.slice(0, n) : t; };
+  const boundedContext = {
+    candidateAnswer: cap(candidateAnswer, 2800),
+    resumeChunk: cap(resumeChunk, 1500),
+    jobDescription: cap(jobDescription, 900),
+    outputLanguage,
+    questionHistory: Array.isArray(questionHistory) ? questionHistory.slice(-5) : questionHistory,
+    sessionState
+  };
+  const result = await runPipeline({ pipeline, apiKey, context: boundedContext, abortSignal, onProgress });
   const blockG = result.output;
 
   // ─── Block H — auto context consolidation (NON-BLOCKING) ──────────────────

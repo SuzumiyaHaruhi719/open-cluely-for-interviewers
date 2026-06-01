@@ -11,11 +11,12 @@ const fs = require('fs');
 
 function parseArgs() {
   const a = process.argv.slice(2);
-  const o = { file: null, threshold: 90, need: 100, show: 12 };
+  const o = { file: null, threshold: 90, need: 100, show: 12, maxMs: 0 };
   for (let i = 0; i < a.length; i++) {
     if (a[i] === '--threshold') o.threshold = parseInt(a[++i], 10);
     else if (a[i] === '--need') o.need = parseInt(a[++i], 10);
     else if (a[i] === '--show') o.show = parseInt(a[++i], 10);
+    else if (a[i] === '--max-ms') o.maxMs = parseInt(a[++i], 10); // also require ms < this (combined latency+score)
     else if (!o.file) o.file = a[i];
   }
   return o;
@@ -29,8 +30,16 @@ function main() {
   const recs = fs.readFileSync(o.file, 'utf8').trim().split(/\r?\n/).filter(Boolean).map((l) => JSON.parse(l));
   const scored = recs.filter((r) => r.judge && typeof r.judge.total === 'number');
   const totals = scored.map((r) => r.judge.total);
-  const passes = scored.map((r) => r.judge.total >= o.threshold);
+  // A run passes if its score clears the threshold AND (when --max-ms is set) it
+  // finished under the latency budget. This is the combined accept criterion.
+  const passes = scored.map((r) => r.judge.total >= o.threshold && (o.maxMs <= 0 || (Number(r.ms) > 0 && r.ms < o.maxMs)));
   const passCount = passes.filter(Boolean).length;
+  if (o.maxMs > 0) {
+    const msArr = scored.map((r) => Number(r.ms) || 0).filter((x) => x > 0).sort((a, b) => a - b);
+    const underMs = scored.filter((r) => Number(r.ms) > 0 && r.ms < o.maxMs).length;
+    console.log(`latency: p50 ${msArr.length ? msArr[Math.floor(msArr.length/2)] : '?'}ms  p90 ${msArr.length ? msArr[Math.floor(msArr.length*0.9)] : '?'}ms  under ${o.maxMs}ms: ${underMs}/${scored.length}`);
+    console.log(`COMBINED pass (score>=${o.threshold} AND <${o.maxMs}ms): ${passCount}/${scored.length}`);
+  }
 
   // Longest consecutive run of >= threshold, in file order.
   let best = 0, cur = 0, bestEnd = -1;

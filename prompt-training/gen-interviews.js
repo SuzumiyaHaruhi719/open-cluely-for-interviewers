@@ -34,30 +34,37 @@ const LANGS = ['English', 'Chinese', 'mixed Chinese+English technical terms'];
 const ANSWER_STYLES = ['STAR-complete and specific', 'vague and evasive', 'team-credit-only (over-uses "we")', 'inflated/unverifiable metrics', 'defensive/pushes back', 'rambling and tangential', 'over-packaged buzzwords', 'deflects blame onto others', 'concise and precise', 'timeline-confused/contradictory'];
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+const MIN_CHARS = (() => { const i = process.argv.indexOf('--minchars'); return i >= 0 ? parseInt(process.argv[i + 1], 10) : 10000; })();
+
 function buildPrompt() {
   const industry = pick(INDUSTRIES); const level = pick(LEVELS); const lang = pick(LANGS); const style = pick(ANSWER_STYLES);
-  return `You are authoring ONE realistic job-interview scenario for evaluating an interviewer-copilot.
+  return `You are authoring ONE LONG, realistic job-interview transcript for stress-testing an interviewer-copilot.
 Constraints:
 - Industry/role: ${industry}; seniority: ${level}; language: ${lang}; the candidate's FINAL answer style: ${style}.
 - Output STRICT JSON only (no markdown), shape:
-  {"resume":"<150-300 words>","jd":"<120-250 words>","history":["<interviewer question 1>","<q2>","<q3>","<q4>"],"candidate_last_answer":"<a LONG, realistic final answer, 120-250 words, enacting the '${style}' style>"}
-- The whole thing must be mutually coherent and >=1000 characters total. The candidate_last_answer must be substantive and specific to this role, and must be the kind of answer an interviewer would want to follow up on.
-- Vary wording; do not reuse boilerplate. Real company-ish details, real metrics where the style calls for them.
+  {"resume":"<450-650 words: companies, scope, stack, quantified wins, multiple projects>","jd":"<200-300 words>","history":[{"q":"<interviewer question, full sentence>","a":"<candidate's substantive answer, 60-120 words>"}, … 10 to 12 such turns],"candidate_last_answer":"<a LONG, detailed final answer, 350-500 words, enacting the '${style}' style — multiple paragraphs, specific decisions/metrics/tradeoffs>"}
+- The transcript must be DENSE, coherent, and TOTAL at least ${MIN_CHARS} characters across resume + jd + every history q AND a + candidate_last_answer. Write real depth, not filler.
+- Vary wording; no boilerplate. Real company-ish details and real metrics.
 Emit only the JSON object.`;
 }
 
 async function genOne(apiKey, i) {
   try {
-    const { text } = await dashscopeChat({ apiKey, model: FLASH_MODEL, prompt: buildPrompt(), temperature: 0.9, maxTokens: 1400, timeoutMs: 120000, thinking: { type: 'disabled' } });
+    const { text } = await dashscopeChat({ apiKey, model: FLASH_MODEL, prompt: buildPrompt(), temperature: 0.9, maxTokens: 8000, timeoutMs: 180000, thinking: { type: 'disabled' } });
     const p = safeJsonParse(text);
     if (!p || !p.candidate_last_answer || !p.resume) return null;
-    const ctxLen = (p.resume + p.jd + (p.history || []).join('') + p.candidate_last_answer).length;
-    if (ctxLen < 1000) return null; // enforce the >=1000-char context floor
+    // history items may be {q,a} turns or bare question strings — normalize to {q,a}.
+    const history = (Array.isArray(p.history) ? p.history : []).map((h) => (
+      typeof h === 'string' ? { q: h, a: '' } : { q: String(h.q || ''), a: String(h.a || '') }
+    ));
+    const historyChars = history.reduce((n, t) => n + t.q.length + t.a.length, 0);
+    const ctxLen = String(p.resume).length + String(p.jd || '').length + historyChars + String(p.candidate_last_answer).length;
+    if (ctxLen < MIN_CHARS) return null; // enforce the >=MIN_CHARS context floor
     return {
       id: `gi_${String(i).padStart(4, '0')}`,
       resume: p.resume,
       jd: p.jd,
-      history: (Array.isArray(p.history) ? p.history : []).map((q) => ({ q: String(q) })),
+      history,
       candidate_last_answer: String(p.candidate_last_answer),
       session_state: null,
       ctx_chars: ctxLen
