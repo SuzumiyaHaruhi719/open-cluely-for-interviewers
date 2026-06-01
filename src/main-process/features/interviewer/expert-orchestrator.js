@@ -133,6 +133,23 @@ const BLOCK_TIMEOUTS_MS = {
   G: REQUEST_TIMEOUT_MS
 };
 
+// Per-block thinking control. deepseek-v4 "thinking" emits thousands of hidden
+// reasoning tokens and is the dominant latency cost (~250s chains). Disabling it
+// drops each block to seconds. Blocks that genuinely benefit from reasoning
+// (D generation, E ranking) get a bounded budget instead of full off; the rest
+// are disabled. Tune via the eval harness (prompt-training/).
+const THINK_OFF = { type: 'disabled' };
+const THINK_BUDGET = (n) => ({ type: 'enabled', budget_tokens: n });
+const BLOCK_THINKING = {
+  A: THINK_OFF,
+  B: THINK_OFF,
+  C: THINK_OFF,
+  D: THINK_BUDGET(1024),
+  E: THINK_BUDGET(1536),
+  F: THINK_OFF,
+  G: THINK_OFF
+};
+
 function safeJsonParse(text) {
   if (!text) return null;
   const cleaned = String(text).replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
@@ -149,13 +166,17 @@ function safeJsonParse(text) {
 // reliable. Setting DASHSCOPE_TRANSPORT=curl (eval scripts only — never the
 // production Electron path) routes LLM calls through curl instead. The default
 // fetch path below is left completely untouched.
-async function curlChat({ apiKey, model, prompt, temperature, maxTokens, timeoutMs }) {
+async function curlChat({ apiKey, model, prompt, temperature, maxTokens, timeoutMs, thinking }) {
   const fs = require('fs');
   const os = require('os');
   const path = require('path');
   const { execFile } = require('child_process');
   const body = { model, messages: [{ role: 'user', content: prompt }], max_tokens: maxTokens };
   if (typeof temperature === 'number') body.temperature = temperature;
+  // deepseek-v4 models do extended "thinking" by default, which emits thousands
+  // of hidden reasoning tokens and dominates latency. Passing thinking:{disabled}
+  // (Anthropic-shape, honored by DashScope) skips it; a budget caps it.
+  if (thinking) body.thinking = thinking;
   const tmp = path.join(os.tmpdir(), `dsc-${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}.json`);
   fs.writeFileSync(tmp, JSON.stringify(body), 'utf8');
   const maxTime = Math.ceil((timeoutMs || REQUEST_TIMEOUT_MS) / 1000);
@@ -183,9 +204,9 @@ async function curlChat({ apiKey, model, prompt, temperature, maxTokens, timeout
   }
 }
 
-async function dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal, timeoutMs = REQUEST_TIMEOUT_MS }) {
+async function dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal, timeoutMs = REQUEST_TIMEOUT_MS, thinking }) {
   if (process.env.DASHSCOPE_TRANSPORT === 'curl') {
-    return curlChat({ apiKey, model, prompt, temperature, maxTokens, timeoutMs });
+    return curlChat({ apiKey, model, prompt, temperature, maxTokens, timeoutMs, thinking });
   }
   const body = {
     model,
@@ -193,6 +214,7 @@ async function dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, ab
     max_tokens: maxTokens
   };
   if (typeof temperature === 'number') body.temperature = temperature;
+  if (thinking) body.thinking = thinking;
 
   let lastErr = null;
   for (let attempt = 0; attempt <= MAX_RETRIES_TRANSPORT; attempt += 1) {
@@ -250,10 +272,11 @@ async function callBlock({ blockId, apiKey, prompt, abortSignal }) {
   const model = BLOCK_MODELS[blockId];
   const temperature = BLOCK_TEMPERATURES[blockId];
   const maxTokens = BLOCK_MAX_TOKENS[blockId];
+  const thinking = BLOCK_THINKING[blockId];
 
   let first;
   try {
-    first = await dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal, timeoutMs: BLOCK_TIMEOUTS_MS[blockId] });
+    first = await dashscopeChat({ apiKey, model, prompt, temperature, maxTokens, abortSignal, timeoutMs: BLOCK_TIMEOUTS_MS[blockId], thinking });
   } catch (err) {
     // Transport error / timeout-abort on the first attempt. Do NOT throw — that
     // crashes the whole chain. Signal runExpertChain to use this block's fallback
@@ -294,7 +317,7 @@ Re-emit the JSON object fixing ALL listed errors. Strict JSON only — no markdo
   const repairStart = Date.now();
   let second;
   try {
-    second = await dashscopeChat({ apiKey, model, prompt: repairPrompt, temperature: Math.max(0, temperature - 0.05), maxTokens, abortSignal, timeoutMs: BLOCK_TIMEOUTS_MS[blockId] });
+    second = await dashscopeChat({ apiKey, model, prompt: repairPrompt, temperature: Math.max(0, temperature - 0.05), maxTokens, abortSignal, timeoutMs: BLOCK_TIMEOUTS_MS[blockId], thinking });
   } catch (err) {
     // Repair attempt failed at transport level — fall back rather than crash.
     trace.push({ block: blockId, attempt: 2, ms: Date.now() - repairStart, ok: false, errors: [`transport: ${err.message}`], model, usage: null, repair: true });
