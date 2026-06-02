@@ -134,7 +134,10 @@
 .ps-status[data-kind="ok"] { color: #57d9a3; }
 .ps-status[data-kind="error"] { color: #ff7a7a; }
 
-/* The Customize segment + active-pipeline picker in settings. */
-.customize-row { display: none; gap: 8px; margin-top: 8px; align-items: center; }
-.customize-row.is-visible { display: flex; }
-.customize-select { flex: 1; }
+/* Studio-scoped only. NOTE: `.customize-row` is ALSO the Settings modal's
+ * Customize front-door (settings.css, display:flex). studio.css loads after
+ * settings.css, so an unscoped `.customize-row{display:none}` here clobbered
+ * the Settings gallery (hid the template cards). Scope to the studio overlay. */
+#pipeline-studio .customize-row { display: none; gap: 8px; margin-top: 8px; align-items: center; }
+#pipeline-studio .customize-row.is-visible { display: flex; }
+#pipeline-studio .customize-select { flex: 1; }
