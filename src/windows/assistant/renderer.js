@@ -206,12 +206,13 @@ function renderExpertFollowUp(output, tokensUsed = null, elapsedMs = null) {
 
     const rationale = String(output?.rationale_for_interviewer || '').trim();
     const alternative = String(output?.alternative_question || '').trim();
-    // Persistable part (alternative follow-up + rationale) — survives reload. The
-    // cost line below is runtime-only and intentionally NOT persisted (it would be
-    // stale/misleading on a re-opened session).
+    // The rationale is the analysis of the PRIMARY question, so it comes FIRST
+    // (right under the primary card) — not after the alternative, where it read as
+    // if it belonged to the alternative. Then the alternative follow-up. Both
+    // persist (round-trip on reload); the cost line below is runtime-only.
     const persistParts = [];
+    if (rationale) persistParts.push(`💡 **追问解析** ${rationale}`);
     if (alternative) persistParts.push(`**备选追问** ${alternative}`);
-    if (rationale) persistParts.push(`*${rationale}*`);
     const extra = persistParts.slice();
     const costBits = [];
     if (Number(elapsedMs) > 0) costBits.push(`⏱ 耗时 ${(Number(elapsedMs) / 1000).toFixed(1)}s`);
