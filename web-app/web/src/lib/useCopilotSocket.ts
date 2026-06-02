@@ -85,6 +85,8 @@ export interface CopilotSocket {
    * tells the server to update its candidate-gating state.
    */
   setSpeakerRole: (speakerId: number, role: SpeakerRole) => void;
+  /** Clear the offline speaker segments + role overrides (called per-session, not per-analyze). */
+  resetSpeakerSegments: () => void;
 }
 
 const RECONNECT_BASE_MS = 500;
@@ -303,10 +305,6 @@ export function useCopilotSocket(): CopilotSocket {
       setProgress(null);
       setProgressTokens(0);
       setError(null);
-      // Reset speaker-segment state for the new analysis session.
-      setSpeakerSegments([]);
-      roleOverrideRef.current.clear();
-      segSeqRef.current = 0;
       return requestId;
     },
     [send]
@@ -378,6 +376,14 @@ export function useCopilotSocket(): CopilotSocket {
     [send]
   );
 
+  // Speaker segments are the offline rolling transcript — they persist across
+  // analyze()/Generate-Q and reset only on a new session (Shell.onClearSession).
+  const resetSpeakerSegments = useCallback((): void => {
+    setSpeakerSegments([]);
+    roleOverrideRef.current.clear();
+    segSeqRef.current = 0;
+  }, []);
+
   // Stop any live capture when the hook unmounts.
   useEffect(() => {
     return () => {
@@ -404,6 +410,7 @@ export function useCopilotSocket(): CopilotSocket {
     startAudio,
     stopAudio,
     speakerSegments,
-    setSpeakerRole
+    setSpeakerRole,
+    resetSpeakerSegments
   };
 }

@@ -96,7 +96,8 @@ export function Shell() {
     startAudio,
     stopAudio,
     speakerSegments,
-    setSpeakerRole
+    setSpeakerRole,
+    resetSpeakerSegments
   } = socket;
 
   const [view, setView] = useState<AppView>('copilot');
@@ -384,7 +385,8 @@ export function Shell() {
     setAnswer('');
     setTranscriptMessages([]);
     lastDisplayFinalRef.current = '';
-  }, []);
+    resetSpeakerSegments();
+  }, [resetSpeakerSegments]);
 
   // ── Topbar assistant actions ───────────────────────────────────────────────
   // Build the running transcript text (both lanes, finals only) for notes/insights.
