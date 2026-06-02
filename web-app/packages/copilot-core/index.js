@@ -15,6 +15,15 @@ const expertOrchestrator = require(path.join(REPO_SRC, 'main-process', 'features
 const config = require(path.join(REPO_SRC, 'config'));
 const presets = require(path.join(REPO_SRC, 'services', 'ai', 'pipeline', 'presets'));
 const presetLibrary = require(path.join(REPO_SRC, 'services', 'ai', 'pipeline', 'preset-library'));
+// DashScope Paraformer realtime ASR factory from the desktop app. Re-exported
+// so server code can import the canonical client from one stable package.
+// NOTE: this factory is Electron-renderer-shaped (emits `vosk-*` channels,
+// expects desktopCapturer / getGeminiService, hardcodes mic/system sources and
+// the Chinese-only 8k model). The web ASR relay reuses its proven WS PROTOCOL
+// (run-task payload, result-generated/sentence_end parsing, finish-task) via a
+// focused client tuned for mic/display + a multilingual 16k model — see
+// server/src/paraformer-client.ts for the rationale.
+const paraformerService = require(path.join(REPO_SRC, 'services', 'paraformer', 'service'));
 
 const { createInterviewerRuntime } = interviewerRuntime;
 
@@ -103,5 +112,7 @@ module.exports = {
   EXPERT_FAST_PRESET: presets.EXPERT_FAST_PRESET,
   presetLibrary,
   config,
-  REPO_SRC
+  REPO_SRC,
+  // Canonical desktop DashScope Paraformer ASR factory (see note above).
+  createParaformerService: paraformerService.createParaformerService
 };

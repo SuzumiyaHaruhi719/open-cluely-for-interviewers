@@ -88,7 +88,18 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
       };
 
     case S2C.TRANSCRIPT:
-      // Audio transcripts are out of scope for this phase; ignore safely.
+      if (
+        (data.source === 'mic' || data.source === 'display') &&
+        isString(data.text) &&
+        typeof data.isFinal === 'boolean'
+      ) {
+        return {
+          type: 'transcript',
+          source: data.source,
+          text: data.text,
+          isFinal: data.isFinal
+        };
+      }
       return null;
 
     default:

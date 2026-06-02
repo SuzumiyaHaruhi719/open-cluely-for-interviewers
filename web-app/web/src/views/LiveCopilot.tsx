@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { InterviewerMode, OutputLanguage, SessionConfig } from '@open-cluely/contract';
 import { INTERVIEWER_MODES } from '@open-cluely/contract';
 import { useCopilotSocket } from '../lib/useCopilotSocket';
@@ -6,6 +6,7 @@ import { FollowUpCard } from '../components/FollowUpCard';
 import { ProgressBar } from '../components/ProgressBar';
 import { ErrorAlert } from '../components/ErrorAlert';
 import { ConnectionStatus } from '../components/ConnectionStatus';
+import { LiveAudioPanel } from '../components/LiveAudioPanel';
 
 const MODE_LABELS: Record<InterviewerMode, string> = {
   fast: 'Fast',
@@ -40,14 +41,38 @@ interface LiveCopilotProps {
 }
 
 export function LiveCopilot({ socket }: LiveCopilotProps) {
-  const { status, sessionId, sendConfigure, analyze, lastResult, progress, isAnalyzing, error } =
-    socket;
+  const {
+    status,
+    sessionId,
+    sendConfigure,
+    analyze,
+    lastResult,
+    progress,
+    isAnalyzing,
+    error,
+    transcripts,
+    audio,
+    startAudio,
+    stopAudio
+  } = socket;
 
   const [config, setConfig] = useState<ConfigState>(INITIAL_CONFIG);
   const [answer, setAnswer] = useState('');
 
   const isReady = status === 'open';
   const canAnalyze = isReady && !isAnalyzing && answer.trim().length > 0;
+
+  // When the interviewee (display) lane produces new FINAL text, fill the answer
+  // box so the interviewer can Analyze it. We only react to growth of the final
+  // transcript so manual edits between turns are preserved.
+  const lastDisplayFinalRef = useRef('');
+  useEffect(() => {
+    const displayFinal = transcripts.display.finalText;
+    if (displayFinal && displayFinal !== lastDisplayFinalRef.current) {
+      lastDisplayFinalRef.current = displayFinal;
+      setAnswer(displayFinal);
+    }
+  }, [transcripts.display.finalText]);
 
   // Send a single config field, merging into local state immutably.
   const pushConfig = useCallback(
@@ -141,12 +166,20 @@ export function LiveCopilot({ socket }: LiveCopilotProps) {
         </div>
 
         <p className="hint">
-          Config is sent to the session as you edit. Live audio capture arrives in a later
-          release; for now, paste the candidate's answer to get a follow-up.
+          Config is sent to the session as you edit. Turn on live audio to stream the conversation,
+          or paste the candidate's answer to get a follow-up.
         </p>
       </aside>
 
       <section className="copilot-work">
+        <LiveAudioPanel
+          audio={audio}
+          transcripts={transcripts}
+          disabled={!isReady}
+          onStart={startAudio}
+          onStop={stopAudio}
+        />
+
         <div className="answer-bar">
           <div>
             <label htmlFor="answer">Candidate's latest answer</label>

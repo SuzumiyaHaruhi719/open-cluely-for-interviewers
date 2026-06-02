@@ -6,7 +6,7 @@ import { WS_PATH } from '@open-cluely/contract';
 import type { FollowUpOutput, ServerMessage, TokenUsage } from '@open-cluely/contract';
 import { createHeadlessSession } from '@open-cluely/copilot-core';
 import { config } from './config';
-import { handleAudio, handleAudioControl } from './asr-relay';
+import { createAsrRelay, type AsrRelay } from './asr-relay';
 import { getRetriever } from './question-bank';
 
 // Top-K real interview questions threaded into Block D as OPTIONAL grounding.
@@ -39,7 +39,11 @@ const sessionConfigSchema = z
     resumeText: z.string().optional(),
     jobDescription: z.string().optional(),
     outputLanguage: z.enum(['', 'zh', 'en']).optional(),
-    activePipelineId: z.string().nullable().optional()
+    activePipelineId: z.string().nullable().optional(),
+    // Opt-in: when true, a FINAL interviewee ('display') transcript auto-runs
+    // analyze. Default off so live audio only streams transcripts (no surprise
+    // model spend). The interviewer can still press Analyze manually.
+    autoAnalyzeDisplay: z.boolean().optional()
   })
   .passthrough();
 
@@ -168,26 +172,33 @@ async function handleAnalyze(
   });
 }
 
-async function dispatch(ws: WebSocket, session: HeadlessSession, msg: ClientMessageParsed): Promise<void> {
+async function dispatch(
+  ws: WebSocket,
+  session: HeadlessSession,
+  relay: AsrRelay,
+  msg: ClientMessageParsed
+): Promise<void> {
   switch (msg.type) {
     case 'configure':
       session.configure(msg.config);
+      // The opt-in auto-analyze flag is relay state, not session state.
+      if (typeof msg.config.autoAnalyzeDisplay === 'boolean') {
+        relay.setAutoAnalyzeDisplay(msg.config.autoAnalyzeDisplay);
+      }
       return;
     case 'analyze':
       await handleAnalyze(ws, session, msg);
       return;
     case 'audio':
-      // TODO(wave2): ASR relay
-      handleAudio({ seq: msg.seq, source: msg.source, pcm: msg.pcm });
+      relay.handleAudio({ source: msg.source, pcmBase64: msg.pcm });
       return;
     case 'audio-control':
-      // TODO(wave2): ASR relay
-      handleAudioControl({ action: msg.action, source: msg.source });
+      relay.handleAudioControl({ action: msg.action, source: msg.source });
       return;
   }
 }
 
-function onMessage(ws: WebSocket, session: HeadlessSession, raw: unknown): void {
+function onMessage(ws: WebSocket, session: HeadlessSession, relay: AsrRelay, raw: unknown): void {
   let requestId: string | undefined;
   void (async () => {
     try {
@@ -199,13 +210,32 @@ function onMessage(ws: WebSocket, session: HeadlessSession, raw: unknown): void 
         return;
       }
       if (parsed.data.type === 'analyze') requestId = parsed.data.requestId;
-      await dispatch(ws, session, parsed.data);
+      await dispatch(ws, session, relay, parsed.data);
     } catch (err) {
       // A handler error must never close the socket.
       const message = err instanceof Error ? err.message : 'handler error';
       send(ws, { type: 'error', requestId, message });
     }
   })();
+}
+
+/**
+ * Run an analysis turn for an interviewee FINAL transcript (auto-analyze path).
+ * Generates its own requestId and streams progress/result like a manual analyze
+ * would. Failures are swallowed (best-effort) — they must not break the relay.
+ */
+function autoAnalyzeFromTranscript(ws: WebSocket, session: HeadlessSession, text: string): void {
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  void handleAnalyze(ws, session, {
+    type: 'analyze',
+    requestId: randomUUID(),
+    candidateAnswer: trimmed,
+    questionHistory: []
+  }).catch((err) => {
+    const message = err instanceof Error ? err.message : 'auto-analyze error';
+    send(ws, { type: 'error', message });
+  });
 }
 
 /** Attach the WebSocket server (path = WS_PATH) to an existing http.Server. */
@@ -218,15 +248,22 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       emit: makeEmit(ws)
     });
 
+    // One ASR relay per connection. Transcripts stream straight back as
+    // `transcript` messages; a FINAL interviewee transcript optionally auto-runs
+    // analyze (opt-in via configure({ autoAnalyzeDisplay: true })).
+    const relay = createAsrRelay({
+      emit: (t) => send(ws, { type: 'transcript', source: t.source, text: t.text, isFinal: t.isFinal }),
+      onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, text)
+    });
+
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
-    ws.on('message', (data) => onMessage(ws, session, data.toString()));
+    ws.on('message', (data) => onMessage(ws, session, relay, data.toString()));
     ws.on('error', () => {
       /* swallow socket errors — connection cleanup happens on 'close' */
     });
     ws.on('close', () => {
-      // No durable per-connection resources today. Wave 2 will close the ASR
-      // session here.
+      relay.dispose();
     });
   });
 

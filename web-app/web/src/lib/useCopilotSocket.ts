@@ -1,17 +1,41 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
+  AudioSource,
   ClientMessage,
   ServerMessage,
   SessionConfig
 } from '@open-cluely/contract';
 import { WS_PATH } from '@open-cluely/contract';
 import { parseServerMessage } from './messages';
+import { startCapture, AudioCaptureError, type CaptureHandle } from './audioCapture';
 
 export type SocketStatus = 'connecting' | 'open' | 'closed' | 'reconnecting';
 
 /** A `result` payload plus the requestId it answered. */
 export type CopilotResult = Extract<ServerMessage, { type: 'result' }>;
 export type CopilotProgress = Extract<ServerMessage, { type: 'progress' }>;
+
+/** Per-source transcript: committed finals + the live (in-flight) partial. */
+export interface LaneTranscript {
+  finalText: string;
+  partial: string;
+}
+
+export type TranscriptLanes = Record<AudioSource, LaneTranscript>;
+
+/** Per-source live-audio capture state for the UI. */
+export interface AudioState {
+  capturing: boolean;
+  /** 0..1 RMS input level (for a VU meter). */
+  level: number;
+  /** Friendly capture error (denied / cancelled / unsupported), else null. */
+  error: string | null;
+}
+
+export type AudioLanes = Record<AudioSource, AudioState>;
+
+const EMPTY_LANE: LaneTranscript = { finalText: '', partial: '' };
+const IDLE_AUDIO: AudioState = { capturing: false, level: 0, error: null };
 
 export interface CopilotSocket {
   status: SocketStatus;
@@ -26,6 +50,14 @@ export interface CopilotSocket {
   /** True between `analyze()` and the matching result/error. */
   isAnalyzing: boolean;
   error: string | null;
+  /** Running transcripts per source (interviewer=mic, interviewee=display). */
+  transcripts: TranscriptLanes;
+  /** Live-audio capture state per source. */
+  audio: AudioLanes;
+  /** Begin capturing + streaming a source's audio to the ASR relay. */
+  startAudio: (source: AudioSource) => Promise<void>;
+  /** Stop capturing a source and tell the server to close its ASR session. */
+  stopAudio: (source: AudioSource) => void;
 }
 
 const RECONNECT_BASE_MS = 500;
@@ -56,12 +88,23 @@ export function useCopilotSocket(): CopilotSocket {
   const [progress, setProgress] = useState<CopilotProgress | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [transcripts, setTranscripts] = useState<TranscriptLanes>({
+    mic: { ...EMPTY_LANE },
+    display: { ...EMPTY_LANE }
+  });
+  const [audio, setAudio] = useState<AudioLanes>({
+    mic: { ...IDLE_AUDIO },
+    display: { ...IDLE_AUDIO }
+  });
 
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimerRef = useRef<number | null>(null);
   const attemptsRef = useRef(0);
   const activeRequestRef = useRef<string | null>(null);
   const isMountedRef = useRef(true);
+  // Live capture handles + per-source frame sequence counters.
+  const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
+  const seqRef = useRef<Record<AudioSource, number>>({ mic: 0, display: 0 });
 
   const send = useCallback((message: ClientMessage): boolean => {
     const socket = socketRef.current;
@@ -101,6 +144,17 @@ export function useCopilotSocket(): CopilotSocket {
       case 'session-context':
         // No UI surface for raw session context yet; intentionally ignored.
         break;
+      case 'transcript': {
+        const { source, text, isFinal } = message;
+        setTranscripts((prev) => {
+          const lane = prev[source];
+          const next: LaneTranscript = isFinal
+            ? { finalText: `${lane.finalText} ${text}`.trim(), partial: '' }
+            : { finalText: lane.finalText, partial: text };
+          return { ...prev, [source]: next };
+        });
+        break;
+      }
     }
   }, []);
 
@@ -208,6 +262,73 @@ export function useCopilotSocket(): CopilotSocket {
     [send]
   );
 
+  const setAudioState = useCallback((source: AudioSource, patch: Partial<AudioState>): void => {
+    setAudio((prev) => ({ ...prev, [source]: { ...prev[source], ...patch } }));
+  }, []);
+
+  const stopAudio = useCallback(
+    (source: AudioSource): void => {
+      const handle = captureRef.current[source];
+      captureRef.current[source] = null;
+      if (handle) {
+        handle.stop();
+      }
+      // Tell the server to finish this source's ASR session. Safe if not open.
+      send({ type: 'audio-control', action: 'stop', source });
+      setAudioState(source, { capturing: false, level: 0 });
+    },
+    [send, setAudioState]
+  );
+
+  const startAudio = useCallback(
+    async (source: AudioSource): Promise<void> => {
+      // Already capturing — no-op (idempotent toggle).
+      if (captureRef.current[source]) return;
+
+      setAudioState(source, { error: null });
+      // Tell the server to open the ASR session before frames arrive.
+      send({ type: 'audio-control', action: 'start', source });
+      seqRef.current[source] = 0;
+
+      try {
+        const handle = await startCapture(source, {
+          onFrame: (pcm) => {
+            const seq = seqRef.current[source]++;
+            send({ type: 'audio', seq, source, pcm });
+          },
+          onLevel: (level) => setAudioState(source, { level })
+        });
+        // The component may have unmounted while we awaited the share/mic
+        // prompt — don't keep a stale graph alive.
+        if (!isMountedRef.current) {
+          handle.stop();
+          send({ type: 'audio-control', action: 'stop', source });
+          return;
+        }
+        captureRef.current[source] = handle;
+        setAudioState(source, { capturing: true });
+      } catch (err) {
+        // User cancelled/denied or unsupported — surface friendly, don't crash.
+        const message =
+          err instanceof AudioCaptureError ? err.message : 'Could not start audio capture.';
+        send({ type: 'audio-control', action: 'stop', source });
+        setAudioState(source, { capturing: false, level: 0, error: message });
+      }
+    },
+    [send, setAudioState]
+  );
+
+  // Stop any live capture when the hook unmounts.
+  useEffect(() => {
+    return () => {
+      for (const source of ['mic', 'display'] as AudioSource[]) {
+        const handle = captureRef.current[source];
+        captureRef.current[source] = null;
+        if (handle) handle.stop();
+      }
+    };
+  }, []);
+
   return {
     status,
     sessionId,
@@ -216,6 +337,10 @@ export function useCopilotSocket(): CopilotSocket {
     lastResult,
     progress,
     isAnalyzing,
-    error
+    error,
+    transcripts,
+    audio,
+    startAudio,
+    stopAudio
   };
 }

@@ -401,6 +401,129 @@ label {
   color: var(--text-faint);
 }
 
+/* --- Live audio ------------------------------------------------------------ */
+
+.audio-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  background: var(--bg-elev-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.audio-sources {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+.audio-source {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elev-2);
+  padding: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.audio-source[data-capturing='true'] {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.audio-source-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.audio-source-title {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.vu {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--bg-elev-3);
+  overflow: hidden;
+}
+
+.vu-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--text-faint);
+  transition: width 90ms linear;
+}
+
+.vu[data-active='true'] .vu-fill {
+  background: var(--success);
+}
+
+.audio-warn {
+  color: var(--warn);
+}
+
+.audio-error {
+  color: var(--danger);
+}
+
+.transcript-lanes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+.lane {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elev-2);
+  padding: var(--sp-3);
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.lane[data-tone='interviewee'] {
+  border-left: 2px solid var(--accent);
+}
+
+.lane[data-tone='interviewer'] {
+  border-left: 2px solid var(--success);
+}
+
+.lane-label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  font-weight: 600;
+}
+
+.lane-body p {
+  margin: 0;
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+.lane-partial {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.lane-empty {
+  color: var(--text-faint);
+}
+
 /* --- Cards ----------------------------------------------------------------- */
 
 .card {

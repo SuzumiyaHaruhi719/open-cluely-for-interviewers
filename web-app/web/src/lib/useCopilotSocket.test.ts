@@ -123,6 +123,55 @@ describe('useCopilotSocket', () => {
     expect(frame).toEqual({ type: 'configure', config: { mode: 'fast' } });
   });
 
+  test('transcript messages accumulate finals and track the live partial per source', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    // A partial on the interviewee (display) lane updates `partial` only.
+    act(() => {
+      socket.emit({ type: 'transcript', source: 'display', text: 'I built a', isFinal: false });
+    });
+    await waitFor(() => expect(result.current.transcripts.display.partial).toBe('I built a'));
+    expect(result.current.transcripts.display.finalText).toBe('');
+
+    // A final commits to `finalText` and clears the partial.
+    act(() => {
+      socket.emit({ type: 'transcript', source: 'display', text: 'I built a cache.', isFinal: true });
+    });
+    await waitFor(() => expect(result.current.transcripts.display.finalText).toBe('I built a cache.'));
+    expect(result.current.transcripts.display.partial).toBe('');
+
+    // A second final appends (space-joined).
+    act(() => {
+      socket.emit({ type: 'transcript', source: 'display', text: 'It cut p99.', isFinal: true });
+    });
+    await waitFor(() =>
+      expect(result.current.transcripts.display.finalText).toBe('I built a cache. It cut p99.')
+    );
+
+    // The mic lane is independent of the display lane.
+    expect(result.current.transcripts.mic.finalText).toBe('');
+  });
+
+  test('stopAudio sends an audio-control stop frame', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    act(() => {
+      result.current.stopAudio('mic');
+    });
+    const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
+    expect(frame).toEqual({ type: 'audio-control', action: 'stop', source: 'mic' });
+    expect(result.current.audio.mic.capturing).toBe(false);
+  });
+
   test('surfaces server error messages', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {

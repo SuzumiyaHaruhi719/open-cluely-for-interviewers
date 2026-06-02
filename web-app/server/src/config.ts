@@ -15,13 +15,25 @@ export interface ServerConfig {
   readonly port: number;
   readonly dashscopeApiKey: string;
   readonly interviewerModel: string;
+  /** DashScope Paraformer realtime model for live ASR. */
+  readonly paraformerModel: string;
+  /** PCM sample rate the ASR model expects (the relay downsamples 16k->this). */
+  readonly paraformerSampleRate: number;
   readonly envPath: string;
 }
+
+// The bundled DashScope key is licensed for paraformer-realtime-8k-v2 (8 kHz),
+// not the multilingual -v2 (16 kHz) — verified live. Default to the 8k model so
+// live ASR works out of the box; override via env if your key differs.
+const DEFAULT_PARAFORMER_MODEL = 'paraformer-realtime-8k-v2';
+const DEFAULT_PARAFORMER_SAMPLE_RATE = 8000;
 
 export const config: ServerConfig = Object.freeze({
   port: toInt(process.env.PORT, 8787),
   dashscopeApiKey: String(process.env.DASHSCOPE_API_KEY ?? '').trim(),
   interviewerModel: String(process.env.INTERVIEWER_MODEL ?? '').trim(),
+  paraformerModel: String(process.env.PARAFORMER_MODEL ?? '').trim() || DEFAULT_PARAFORMER_MODEL,
+  paraformerSampleRate: toInt(process.env.PARAFORMER_SAMPLE_RATE, DEFAULT_PARAFORMER_SAMPLE_RATE),
   envPath: ENV_PATH
 });
 
