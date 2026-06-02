@@ -119,6 +119,7 @@ THE PIN SET (DEPRECATED — avoid): metric-pin, timeline-pin, named-entity-pin. 
 
 Hard rules — violations cause Block E to score 0 and trigger a single repair:
 1. EXACTLY 5 candidates. Not 4. Not 6.
+1b. ORDER BEST-FIRST: candidate 1 (id "q1") MUST be your single strongest question — the one that most forces reasoning + personal ownership + a durable trait (the depth+ownership+trait it would reveal). Candidate 2 (id "q2") is your second-best, with a DIFFERENT question_type than q1 (a distinct angle). The downstream renderer uses q1 as the primary follow-up and q2 as the alternative, so this ordering is the selection — get it right.
 2. At least 3 DISTINCT question_type values across the 5, and at least 4 of the 5 drawn from the depth set above.
 3. Every question must contain at least one anchor (3+ contiguous words) quoted in single-quotes from either the candidate answer or the resume. The anchors array must list those exact spans.
 4. Every question must force ONE OF: (a) a DECISION + the alternative they rejected + why; (b) a TRADEOFF + its cost or what broke; (c) a FAILURE/mistake + what it taught; (d) a personal OWNERSHIP boundary inside a "we"; (e) a COUNTERFACTUAL judgment; (f) a PRIORITIZATION call under conflict. If the complete, honest answer to your question is a single number, name, date, or yes/no — it is FORBIDDEN, rewrite it to probe the decision behind that datum.

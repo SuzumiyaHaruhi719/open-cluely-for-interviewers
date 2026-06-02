@@ -11,7 +11,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { runExpertChain } = require('../src/main-process/features/interviewer/expert-orchestrator');
+const { runExpertChain, runPipelineChain } = require('../src/main-process/features/interviewer/expert-orchestrator');
+const PRESET_ARG = (() => { const i = process.argv.indexOf('--preset'); return i >= 0 ? process.argv[i + 1] : null; })();
+const PRESET = PRESET_ARG ? require('../src/services/ai/pipeline/preset-library').getPipeline(PRESET_ARG) : null;
 
 const FIXTURE_DIR = path.join(process.cwd(), 'fixtures', 'expert-interview');
 
@@ -73,14 +75,19 @@ function selectFiles(o) {
 async function runRecord(apiKey, fixture) {
   const start = Date.now();
   try {
-    const r = await runExpertChain({
+    const chainArgs = {
       apiKey,
       candidateAnswer: fixture.candidate_last_answer,
       resumeChunk: fixture.resume,
       jobDescription: fixture.jd,
       questionHistory: (fixture.history || []).map((h) => h.q || h),
       sessionState: fixture.session_state
-    });
+    };
+    // --preset <id> runs an arbitrary pipeline (e.g. builtin-expert-fast) via the
+    // engine; default uses the legacy Expert chain.
+    const r = PRESET
+      ? await runPipelineChain({ pipeline: PRESET, ...chainArgs })
+      : await runExpertChain(chainArgs);
     const out = r.output || {};
     const dCandidates = (r.blocks && r.blocks.D && Array.isArray(r.blocks.D.candidates))
       ? r.blocks.D.candidates.map((c) => ({ id: c.id, question: c.question, question_type: c.question_type }))

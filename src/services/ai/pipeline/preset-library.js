@@ -6,15 +6,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const { EXPERT_PRESET } = require('./presets');
+const { EXPERT_PRESET, EXPERT_FAST_PRESET } = require('./presets');
 const { ROLE_TEMPLATES } = require('./role-templates');
 const { validatePipeline } = require('./pipeline-schema');
 const { BLOCK_TYPES } = require('./block-types');
 
 // Built-ins = the generic Expert pipeline + the role-based template library.
-const BUILTINS = { [EXPERT_PRESET.id]: EXPERT_PRESET };
+const BUILTINS = { [EXPERT_PRESET.id]: EXPERT_PRESET, [EXPERT_FAST_PRESET.id]: EXPERT_FAST_PRESET };
 for (const t of ROLE_TEMPLATES) BUILTINS[t.id] = t;
-const ALIASES = { expert: EXPERT_PRESET.id, Expert: EXPERT_PRESET.id };
+const ALIASES = { expert: EXPERT_PRESET.id, Expert: EXPERT_PRESET.id, 'expert-fast': EXPERT_FAST_PRESET.id };
 
 function defaultDir() { return path.join(process.cwd(), 'cache', 'pipelines'); }
 function ensureDir(dir) { fs.mkdirSync(dir, { recursive: true }); }

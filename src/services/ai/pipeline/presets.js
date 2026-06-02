@@ -40,4 +40,34 @@ const EXPERT_PRESET = {
   ]
 };
 
-module.exports = { EXPERT_PRESET };
+// Expert-Fast: merged DE — Block E is removed; Block D orders candidates best-first
+// (q1=primary, q2=alternative) so F/G use D's own ranking (ranking inputs are
+// optional). One fewer serial LLM call than Expert → ~6s faster, same blocks
+// otherwise. Quality is re-proven via the eval before this becomes the default.
+const EXPERT_FAST_PRESET = {
+  id: 'builtin-expert-fast',
+  name: 'Expert (fast)',
+  builtin: true,
+  version: 'expert_fast_v1',
+  nodes: [
+    { id: 'A', type: 'anatomy', pos: { x: 40, y: 40 } },
+    { id: 'C', type: 'state-update', pos: { x: 40, y: 200 } },
+    { id: 'B', type: 'evidence-gap', pos: { x: 240, y: 40 } },
+    { id: 'D', type: 'question-pool', pos: { x: 440, y: 120 } },
+    { id: 'F', type: 'safety-audit', pos: { x: 700, y: 120 } },
+    { id: 'G', type: 'final-render', pos: { x: 900, y: 120 } }
+  ],
+  edges: [
+    e('A', 'B', 'claims'),
+    e('A', 'D', 'claims'),
+    e('B', 'D', 'gaps'),
+    e('C', 'D', 'state'),
+    e('D', 'F', 'candidates'),
+    e('D', 'G', 'candidates'),
+    e('F', 'G', 'verdict'),
+    e('B', 'G', 'gaps'),
+    e('C', 'G', 'state')
+  ]
+};
+
+module.exports = { EXPERT_PRESET, EXPERT_FAST_PRESET };

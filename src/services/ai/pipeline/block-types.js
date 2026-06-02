@@ -76,7 +76,9 @@ const BLOCK_TYPES = {
   },
   'safety-audit': {
     label: '安全审查', schemaId: 'F', outputType: 'verdict', phase: { id: 'safety', index: 5 },
-    inputs: [{ name: 'candidates', type: 'candidates' }, { name: 'ranking', type: 'ranking' }], defaults: defaultsFor('F'),
+    // ranking is optional: a merged-DE preset omits Block E and relies on Block D's
+    // own best-first ordering (resolvePrimaryAlt falls back to candidates[0],[1]).
+    inputs: [{ name: 'candidates', type: 'candidates' }, { name: 'ranking', type: 'ranking', optional: true }], defaults: defaultsFor('F'),
     prepare: (_ctx, inputs) => {
       const { primary, alternative } = resolvePrimaryAlt(inputs.ranking, inputs.candidates);
       const regexHits = [
@@ -91,8 +93,8 @@ const BLOCK_TYPES = {
   'final-render': {
     label: '整理成稿', schemaId: 'G', outputType: 'final', phase: { id: 'render', index: 6 },
     inputs: [
-      { name: 'ranking', type: 'ranking' }, { name: 'candidates', type: 'candidates' },
-      { name: 'verdict', type: 'verdict' }, { name: 'gaps', type: 'gaps' }, { name: 'state', type: 'state' }
+      { name: 'ranking', type: 'ranking', optional: true }, { name: 'candidates', type: 'candidates' },
+      { name: 'verdict', type: 'verdict' }, { name: 'gaps', type: 'gaps', optional: true }, { name: 'state', type: 'state' }
     ], defaults: defaultsFor('G'),
     prepare: (_ctx, inputs) => {
       const { primary, alternative } = resolvePrimaryAlt(inputs.ranking, inputs.candidates);
