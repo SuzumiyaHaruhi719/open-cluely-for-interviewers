@@ -30,6 +30,8 @@ export interface ServerConfig {
   readonly volcModel: string;
   /** PCM sample rate forwarded to Volc (Doubao expects 16 kHz mono s16le). */
   readonly volcSampleRate: number;
+  /** FunASR streaming-SPK WebSocket URL. Used when asrProvider === 'funasr'. */
+  readonly funasrWsUrl: string;
   /**
    * Autonomous question-generation trigger tuning (server-side monitor).
    * `autoCooldownMs`    — min gap between auto fires (anti-spam).
@@ -74,6 +76,8 @@ export const config: ServerConfig = Object.freeze({
   volcResourceId: String(process.env.VOLC_RESOURCE_ID ?? '').trim(),
   volcModel: String(process.env.VOLC_MODEL ?? '').trim(),
   volcSampleRate: toInt(process.env.VOLC_SAMPLE_RATE, DEFAULT_VOLC_SAMPLE_RATE),
+  // Optional FunASR env fallback — per-session configure funasrUrl wins.
+  funasrWsUrl: String(process.env.FUNASR_WS_URL ?? '').trim(),
   // Auto-trigger tuning — all env-overridable.
   autoCooldownMs: toInt(process.env.AUTO_COOLDOWN_MS, DEFAULT_AUTO_COOLDOWN_MS),
   autoMinNewChars: toInt(process.env.AUTO_MIN_NEW_CHARS, DEFAULT_AUTO_MIN_NEW_CHARS),
