@@ -10,6 +10,33 @@
  * globally — the QB scope remaps a few aliases locally.
  * ==========================================================================*/
 
+/* ── Shell layout fix ───────────────────────────────────────────────────────
+ *  The desktop `.main` is a 4-row grid (auto auto minmax(0,1fr) auto) mapping
+ *  topbar · transcription-monitor · chat-messages · composer. The web shell
+ *  omits the monitor strip, so it renders only 3 children — which made the
+ *  transcript land in a collapsed `auto` row and the composer grab the 1fr row
+ *  (tiny conversation + void below the composer). Remap to 3 rows so the
+ *  transcript (.chat-messages) grows and the composer pins to the bottom. ──── */
+.main {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* ── Views nav reuses `.history-row` on <button> elements (desktop builds the
+ *  real history rows as <div>). A <button> carries the UA `buttonface` (gray)
+ *  background, which `.history-row` never overrides at rest — so an unselected
+ *  nav row showed a gray fill. Neutralise the button chrome; hover/.is-active
+ *  still paint their own background + accent. ──────────────────────────────── */
+button.history-row {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
 /* ── Question-bank view fills the .main grid ─────────────────────────────── */
 .main__view-bank {
   grid-row: 1 / -1;

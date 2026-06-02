@@ -48,14 +48,15 @@ export function TranscriptStream({
   error,
   autoScroll
 }: TranscriptStreamProps) {
-  const endRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Keep the newest content in view as lines / cards arrive (desktop autoscroll).
-  // Guarded: jsdom (and some embeddings) don't implement scrollIntoView.
+  // Scroll the CONTAINER (not a trailing sentinel) so `.chat-messages` can be
+  // truly `:empty` — that's what triggers the desktop `:empty::before` prompt.
   useEffect(() => {
-    const end = endRef.current;
-    if (autoScroll && end && typeof end.scrollIntoView === 'function') {
-      end.scrollIntoView({ block: 'end' });
+    const el = containerRef.current;
+    if (autoScroll && el) {
+      el.scrollTop = el.scrollHeight;
     }
   }, [
     autoScroll,
@@ -75,6 +76,7 @@ export function TranscriptStream({
     <div
       id="chat-messages"
       className="chat-messages"
+      ref={containerRef}
       role="log"
       aria-live="polite"
       aria-label="Live transcript"
@@ -101,8 +103,6 @@ export function TranscriptStream({
           <span className="system-message-message">{error}</span>
         </div>
       ) : null}
-
-      <div ref={endRef} />
     </div>
   );
 }
