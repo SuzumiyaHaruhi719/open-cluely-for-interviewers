@@ -184,3 +184,29 @@ test('funasr provider emits transcripts carrying the speaker id', () => {
   created[0].deps.onTranscript({ text: '你好', isFinal: true, speakerId: 1 });
   assert.deepEqual(emits, [{ source: 'mic', text: '你好', isFinal: true, speakerId: 1 }]);
 });
+
+test('funasr with a blank url emits a friendly error and creates no session', () => {
+  // NOTE: relies on the test env having NO FUNASR_WS_URL — config.funasrWsUrl is
+  // then '' and a blank configure url leaves the relay with no URL to dial.
+  const emits: any[] = [];
+  let funasrCalls = 0;
+  const relay = createAsrRelay({
+    emit: (t) => emits.push(t),
+    apiKey: 'k',
+    funasrSessionFactory: () => {
+      funasrCalls += 1;
+      throw new Error('funasr factory should not run for a blank url');
+    }
+  });
+
+  relay.setAsrProvider('funasr', undefined, { url: '' });
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+
+  // No session was created, and the failure surfaced once on the mic lane as a
+  // non-final transcript-shaped error carrying the friendly "FunASR" text.
+  assert.equal(funasrCalls, 0);
+  assert.equal(emits.length, 1);
+  assert.equal(emits[0].source, 'mic');
+  assert.equal(emits[0].isFinal, false);
+  assert.match(emits[0].text, /FunASR unavailable/i);
+});

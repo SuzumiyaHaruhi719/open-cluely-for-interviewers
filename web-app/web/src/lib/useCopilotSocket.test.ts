@@ -227,6 +227,42 @@ describe('useCopilotSocket', () => {
     expect(result.current.audio.mic.capturing).toBe(false);
   });
 
+  test('speakerSegments: online finals (no speakerId) add nothing; offline finals (numeric speakerId) append one labelled segment', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    // ONLINE provider: a final transcript with NO speakerId must NOT create a
+    // segment — the guard `typeof message.speakerId === 'number'` holds.
+    act(() => {
+      socket.emit({ type: 'transcript', source: 'mic', text: 'hi', isFinal: true });
+    });
+    await waitFor(() => expect(result.current.transcripts.mic.finalText).toBe('hi'));
+    expect(result.current.speakerSegments).toEqual([]);
+
+    // OFFLINE FunASR: a final carrying a numeric speakerId appends exactly one
+    // labelled segment using the server-provided speaker role.
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '你好',
+        isFinal: true,
+        speakerId: 0,
+        speaker: 'interviewer'
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(1));
+    expect(result.current.speakerSegments[0]).toMatchObject({
+      speakerId: 0,
+      role: 'interviewer',
+      text: '你好'
+    });
+  });
+
   test('surfaces server error messages', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {

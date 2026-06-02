@@ -371,6 +371,40 @@ describe('Shell', () => {
     expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc', volcAppId: 'app-123' });
   });
 
+  test('an offline interview routes ASR to FunASR: full config carries asrProvider:funasr + the configured funasrUrl', async () => {
+    // The FunASR URL lives in app settings (localStorage); seed a non-default one
+    // so the assertion proves the configured value flows through, not a constant.
+    const funasrUrl = 'ws://funasr.example:10096';
+    localStorage.setItem('open-cluely.funasrUrl', funasrUrl);
+
+    render(<Shell />);
+    await flushMount();
+
+    // Create an OFFLINE interview via the type picker (offline card).
+    fireEvent.click(screen.getByRole('button', { name: /New interview/ }));
+    fireEvent.click(
+      document.querySelector<HTMLButtonElement>('[data-interview-type="offline"]')!
+    );
+    await waitFor(() => {
+      expect(
+        fetchCalls.some((c) => c.url.endsWith('/api/sessions') && c.method === 'POST')
+      ).toBe(true);
+    });
+    const post = fetchCalls.find((c) => c.url.endsWith('/api/sessions') && c.method === 'POST');
+    expect(post?.body).toMatchObject({ interviewType: 'offline' });
+
+    // Now open the socket: the new sessionId triggers the FULL-config re-push,
+    // which for an offline interview routes to FunASR and carries the URL.
+    const ws = openSocket();
+    await waitFor(() => {
+      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'funasr', funasrUrl });
+    });
+
+    // Offline composer shows only the room mic — no computer-audio/display card.
+    expect(document.getElementById('channel-mic')).toBeInTheDocument();
+    expect(document.getElementById('channel-computer')).not.toBeInTheDocument();
+  });
+
   test('Customize: picking a template card configures the pipeline + flips to customize mode', async () => {
     render(<Shell />);
     await flushMount();
