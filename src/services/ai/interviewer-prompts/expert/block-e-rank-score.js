@@ -93,7 +93,7 @@ Required output — strict JSON only.
         "usability": <1-5>
       },
       "total": <sum of the 6 dims, integer 6-30>,
-      "reasoning": "<3-5 sentence chain-of-thought: (a) what judgment/trait this question would reveal; (b) its strongest dim and why; (c) its weakest dim and why; (d) verifier sentence — re-state one rubric dim's score and confirm against the candidate text.>"
+      "reasoning": "<ONE sentence: name the strongest + weakest dim, and re-confirm one score against the candidate text (verifier).>"
     }
   ],
   "top_2_ids": ["<best id>", "<second best id>"]
