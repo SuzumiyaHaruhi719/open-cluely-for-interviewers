@@ -1,0 +1,130 @@
+import { afterEach, describe, expect, test, vi } from 'vitest';
+import { cleanup, render, screen, fireEvent } from '@testing-library/react';
+import type { FollowUpOutput, RankedQuestion, TokenUsage } from '@open-cluely/contract';
+import { QuestionCard } from './QuestionCard';
+
+const OUTPUT: FollowUpOutput = {
+  primary_question: 'How did you choose the shard key?',
+  alternative_question: 'What broke first under load?',
+  rationale_for_interviewer: 'Probes the depth of the partitioning decision.',
+  anchor_quotes: ['consistent hashing'],
+  expected_evidence_yield: 'Reveals trade-off reasoning.',
+  iteration_version: '3'
+};
+
+const TOKENS: TokenUsage = { input: 10, output: 5, total: 15 };
+
+/** Four ranked candidates — [0] is the top pick, [1..3] populate the list. */
+const RANKED: RankedQuestion[] = [
+  {
+    question: 'How did you choose the shard key?',
+    score: 27,
+    maxScore: 30,
+    rubricReason: 'Highest specificity + follow-on potential.',
+    rank: 1
+  },
+  {
+    question: 'What happened when a shard got hot?',
+    score: 24,
+    maxScore: 30,
+    rubricReason: 'Good failure-mode probe.',
+    rank: 2
+  },
+  {
+    question: 'How did you rebalance after adding nodes?',
+    score: 21,
+    maxScore: 30,
+    rubricReason: 'Tests operational maturity.',
+    rank: 3
+  },
+  {
+    question: 'Why not use a managed datastore?',
+    score: 18,
+    maxScore: 30,
+    rubricReason: 'Broad, slightly off the thread.',
+    rank: 4
+  }
+];
+
+afterEach(() => {
+  cleanup();
+});
+
+describe('QuestionCard ranked candidates', () => {
+  test('renders the primary question with the top-pick score badge', () => {
+    render(<QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} />);
+
+    // Primary question prominent.
+    expect(screen.getByText('How did you choose the shard key?')).toBeInTheDocument();
+    // Top pick (27/30) badges the primary.
+    const primary = document.querySelector('.question-card__primary');
+    expect(primary).not.toBeNull();
+    expect(primary?.querySelector('.question-card__score')?.textContent).toBe('27/30');
+  });
+
+  test('expandable list shows the other 3 candidates with scores + reasons', () => {
+    const { container } = render(
+      <QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} />
+    );
+
+    // The summary advertises the count of the remaining candidates (4 - 1 = 3).
+    expect(screen.getByText('更多排序候选 (3)')).toBeInTheDocument();
+
+    const items = container.querySelectorAll('.question-card__ranked-item');
+    expect(items).toHaveLength(3);
+
+    // Each non-primary candidate's question, score and reason render.
+    expect(screen.getByText('What happened when a shard got hot?')).toBeInTheDocument();
+    expect(screen.getByText('How did you rebalance after adding nodes?')).toBeInTheDocument();
+    expect(screen.getByText('Why not use a managed datastore?')).toBeInTheDocument();
+
+    const scores = Array.from(
+      container.querySelectorAll('.question-card__ranked-item .question-card__score')
+    ).map((el) => el.textContent);
+    expect(scores).toEqual(['24/30', '21/30', '18/30']);
+
+    expect(screen.getByText('Good failure-mode probe.')).toBeInTheDocument();
+    expect(screen.getByText('Tests operational maturity.')).toBeInTheDocument();
+  });
+
+  test("trigger:'auto' shows the 自动 badge; manual omits it", () => {
+    const { rerender } = render(
+      <QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} trigger="auto" />
+    );
+    expect(screen.getByText('自动')).toBeInTheDocument();
+
+    rerender(
+      <QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} trigger="manual" />
+    );
+    expect(screen.queryByText('自动')).toBeNull();
+  });
+
+  test('clicking a candidate row calls onPickCandidate with its question', () => {
+    const onPickCandidate = vi.fn();
+    render(
+      <QuestionCard
+        output={OUTPUT}
+        mode="expert"
+        tokensUsed={TOKENS}
+        elapsedMs={1200}
+        ranked={RANKED}
+        onPickCandidate={onPickCandidate}
+      />
+    );
+
+    fireEvent.click(screen.getByText('What happened when a shard got hot?'));
+
+    expect(onPickCandidate).toHaveBeenCalledTimes(1);
+    expect(onPickCandidate).toHaveBeenCalledWith('What happened when a shard got hot?');
+  });
+
+  test('with no ranked pool, renders only the primary (no score badge, no list)', () => {
+    const { container } = render(
+      <QuestionCard output={OUTPUT} mode="fast" tokensUsed={TOKENS} elapsedMs={900} />
+    );
+
+    expect(screen.getByText('How did you choose the shard key?')).toBeInTheDocument();
+    expect(container.querySelector('.question-card__score')).toBeNull();
+    expect(container.querySelector('.question-card__ranked')).toBeNull();
+  });
+});

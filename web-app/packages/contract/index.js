@@ -20,6 +20,11 @@ const INTERVIEWER_MODES = Object.freeze(['fast', 'expert', 'expert2', 'customize
 // which needs per-session Volc credentials supplied via `configure`.
 const ASR_PROVIDERS = Object.freeze(['paraformer', 'volc']);
 
+// How a `result` was produced: 'auto' = the server's autonomous trigger monitor
+// fired the Expert pipeline from the live transcript; 'manual' = the interviewer
+// pressed Generate Q. Carried on the `result` message's `trigger` field.
+const GENERATION_TRIGGERS = Object.freeze(['auto', 'manual']);
+
 // PCM format the browser AudioWorklet must emit for the ASR relay.
 const PCM = Object.freeze({ sampleRate: 16000, channels: 1, format: 's16le' });
 
@@ -41,4 +46,13 @@ const C2S = Object.freeze({
   AUDIO_CONTROL: 'audio-control'
 });
 
-module.exports = { WS_PATH, AUDIO_SOURCES, INTERVIEWER_MODES, ASR_PROVIDERS, PCM, S2C, C2S };
+module.exports = {
+  WS_PATH,
+  AUDIO_SOURCES,
+  INTERVIEWER_MODES,
+  ASR_PROVIDERS,
+  GENERATION_TRIGGERS,
+  PCM,
+  S2C,
+  C2S
+};

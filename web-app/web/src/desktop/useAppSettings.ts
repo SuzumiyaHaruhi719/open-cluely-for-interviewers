@@ -7,11 +7,14 @@ const KEYS = {
   volcAccessToken: 'open-cluely.volcAccessToken',
   volcResourceId: 'open-cluely.volcResourceId',
   volcModel: 'open-cluely.volcModel',
-  opacity: 'open-cluely.windowOpacity'
+  opacity: 'open-cluely.windowOpacity',
+  autoGenerate: 'open-cluely.autoGenerate'
 } as const;
 
 export const DEFAULT_AI_MODEL = 'deepseek-v4-pro';
 export const DEFAULT_ASR_PROVIDER = 'paraformer';
+/** Autonomous question generation defaults ON (the design's auto-on default). */
+export const DEFAULT_AUTO_GENERATE = true;
 /** Opacity is a 1..10 step (matching the desktop slider); 10 = fully opaque. */
 export const DEFAULT_OPACITY_STEP = 10;
 export const MIN_OPACITY_STEP = 1;
@@ -31,6 +34,8 @@ export interface AppSettings {
   volcResourceId: string;
   volcModel: string;
   opacityStep: number;
+  /** Autonomous context-driven question generation (auto-on by default). */
+  autoGenerate: boolean;
 }
 
 function readString(key: string, fallback: string): string {
@@ -38,6 +43,18 @@ function readString(key: string, fallback: string): string {
     return fallback;
   }
   return localStorage.getItem(key) ?? fallback;
+}
+
+/** Read a persisted boolean; only the literal string 'false' turns it off. */
+function readBool(key: string, fallback: boolean): boolean {
+  if (typeof localStorage === 'undefined') {
+    return fallback;
+  }
+  const raw = localStorage.getItem(key);
+  if (raw === null) {
+    return fallback;
+  }
+  return raw !== 'false';
 }
 
 function readOpacityStep(): number {
@@ -75,6 +92,8 @@ export interface UseAppSettings {
   /** Merge-patch the Volc credential fields (persists each touched field). */
   setVolcSettings: (patch: Partial<VolcSettings>) => void;
   setOpacityStep: (value: number) => void;
+  /** Toggle autonomous question generation (persisted to localStorage). */
+  setAutoGenerate: (value: boolean) => void;
 }
 
 const VOLC_FIELD_KEYS: Record<keyof VolcSettings, string> = {
@@ -100,7 +119,8 @@ export function useAppSettings(): UseAppSettings {
     volcAccessToken: readString(KEYS.volcAccessToken, ''),
     volcResourceId: readString(KEYS.volcResourceId, ''),
     volcModel: readString(KEYS.volcModel, ''),
-    opacityStep: readOpacityStep()
+    opacityStep: readOpacityStep(),
+    autoGenerate: readBool(KEYS.autoGenerate, DEFAULT_AUTO_GENERATE)
   }));
 
   const setAiModel = useCallback((value: string): void => {
@@ -129,6 +149,11 @@ export function useAppSettings(): UseAppSettings {
     persist(KEYS.opacity, String(clamped));
   }, []);
 
+  const setAutoGenerate = useCallback((value: boolean): void => {
+    setSettings((prev) => ({ ...prev, autoGenerate: value }));
+    persist(KEYS.autoGenerate, String(value));
+  }, []);
+
   // Apply the opacity to the shell whenever it changes. This is the one
   // appearance setting that works in a browser.
   useEffect(() => {
@@ -138,5 +163,5 @@ export function useAppSettings(): UseAppSettings {
     }
   }, [settings.opacityStep]);
 
-  return { settings, setAiModel, setAsrProvider, setVolcSettings, setOpacityStep };
+  return { settings, setAiModel, setAsrProvider, setVolcSettings, setOpacityStep, setAutoGenerate };
 }

@@ -168,6 +168,38 @@ describe('Shell', () => {
     expect(analyzeMsg.candidateAnswer).toContain('We sharded by user id');
   });
 
+  test('Auto toggle is ON by default and full config re-push carries autoGenerate', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    // The pill defaults ON.
+    const pill = document.getElementById('auto-indicator');
+    expect(pill).toHaveAttribute('data-auto', 'on');
+
+    // The full-config re-push (fired on the new sessionId) includes autoGenerate.
+    expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
+  });
+
+  test('toggling Auto off persists the setting and sends configure({ autoGenerate:false })', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    const pill = document.getElementById('auto-indicator')!;
+    fireEvent.click(pill);
+
+    // Pill flips OFF, the delta configure is sent, and the choice persists.
+    expect(document.getElementById('auto-indicator')).toHaveAttribute('data-auto', 'off');
+    expect(lastConfig(ws)).toMatchObject({ autoGenerate: false });
+    expect(localStorage.getItem('open-cluely.autoGenerate')).toBe('false');
+
+    // Toggling back ON sends true again.
+    fireEvent.click(document.getElementById('auto-indicator')!);
+    expect(document.getElementById('auto-indicator')).toHaveAttribute('data-auto', 'on');
+    expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
+  });
+
   test('renders the AI question card when a result arrives', async () => {
     render(<Shell />);
     await flushMount();
@@ -202,6 +234,60 @@ describe('Shell', () => {
 
     expect(document.querySelector('.is-question-card')).toBeInTheDocument();
     expect(screen.getByText('How did you pick the hash ring size?')).toBeInTheDocument();
+  });
+
+  test('an auto result renders the ranked list + 自动 badge; picking a candidate fills the analyze buffer', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    // Server pushes an autonomous result carrying a ranked pool (no manual analyze).
+    act(() => {
+      ws.emit({
+        type: 'result',
+        requestId: 'auto-1',
+        mode: 'expert',
+        trigger: 'auto',
+        output: {
+          primary_question: 'How did you size the cache?',
+          alternative_question: '',
+          rationale_for_interviewer: '',
+          anchor_quotes: [],
+          expected_evidence_yield: '',
+          iteration_version: '3'
+        },
+        ranked: [
+          { question: 'How did you size the cache?', score: 28, maxScore: 30, rubricReason: 'Top.', rank: 1 },
+          { question: 'What was the eviction policy?', score: 22, maxScore: 30, rubricReason: 'Probe.', rank: 2 }
+        ],
+        shouldShowFollowUps: true,
+        tokensUsed: { input: 10, output: 5, total: 15 },
+        elapsedMs: 1200,
+        iterationVersion: '3'
+      });
+    });
+
+    // 自动 badge + the top-pick score badge on the primary.
+    expect(screen.getByText('自动')).toBeInTheDocument();
+    expect(document.querySelector('.question-card__primary .question-card__score')?.textContent).toBe(
+      '28/30'
+    );
+
+    // Generate Q is disabled until there is buffered text to analyze.
+    expect(screen.getByRole('button', { name: 'Generate Q' })).toBeDisabled();
+
+    // Pick the second candidate → it fills the (internal) analyze buffer + flashes a hint.
+    fireEvent.click(screen.getByText('What was the eviction policy?'));
+    expect(document.querySelector('.question-card__picked-hint')?.textContent).toContain(
+      'What was the eviction policy?'
+    );
+
+    // The picked text is now the analyze buffer: Generate Q is enabled and analyzes it.
+    const generate = screen.getByRole('button', { name: 'Generate Q' });
+    expect(generate).toBeEnabled();
+    fireEvent.click(generate);
+    const analyzeMsg = ws.sent.map((s) => JSON.parse(s)).find((m) => m.type === 'analyze');
+    expect(analyzeMsg?.candidateAnswer).toBe('What was the eviction policy?');
   });
 
   test('New interview opens the type picker and a card creates a session', async () => {

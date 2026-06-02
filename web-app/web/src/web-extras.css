@@ -99,11 +99,212 @@ button.history-row {
   opacity: 1;
 }
 
+/* ── Auto-generation toggle pill (topbar) ───────────────────────────────────
+ *    A clickable .mode-indicator-shaped button. ON = AI-indigo accent + glow
+ *    dot (reads "armed"); OFF = muted/dim like an idle pill. Namespaced under
+ *    .auto-indicator so it never collides with the mode/asr pill colour rules
+ *    (those key off data-mode / data-asr; this keys off data-auto). ────────── */
+.auto-indicator {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+}
+
+.auto-indicator[data-auto='on'] {
+  color: var(--ai);
+  border-color: color-mix(in srgb, var(--ai) 40%, var(--border));
+  background: color-mix(in srgb, var(--ai) 10%, transparent);
+}
+.auto-indicator[data-auto='on'] .mode-indicator__dot {
+  background: var(--ai);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 55%, transparent);
+}
+
+.auto-indicator[data-auto='off'] {
+  color: var(--fg-subtle);
+  opacity: 0.72;
+}
+.auto-indicator[data-auto='off'] .mode-indicator__dot {
+  background: var(--fg-subtle);
+  box-shadow: none;
+}
+
+.auto-indicator:hover {
+  border-color: var(--hairline-strong);
+}
+
 /* ── AI question-card sub-blocks (desktop builds these in chat-ui-manager) ─── */
 .question-card__anchors {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+/* Primary question row: question text + the top-pick score badge, baseline-aligned. */
+.question-card__primary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.question-card__primary .question-card__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Rubric score badge (e.g. 27/30) — indigo, tabular, sits beside a question. */
+.question-card__score {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--ai) 35%, var(--hairline));
+  color: var(--ai);
+  background: color-mix(in srgb, var(--ai) 12%, transparent);
+  white-space: nowrap;
+}
+
+/* "自动" badge — subtle teal (candidate colour), distinct from the red priority pill. */
+.question-card__trigger[data-trigger='auto'] {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--candidate) 40%, var(--hairline));
+  color: var(--candidate);
+  background: color-mix(in srgb, var(--candidate) 12%, transparent);
+}
+
+/* Expandable ranked-candidate list. */
+.question-card__ranked {
+  margin-top: 12px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 10px;
+}
+
+.question-card__ranked-summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--fg-muted);
+  list-style: none;
+  user-select: none;
+}
+.question-card__ranked-summary::-webkit-details-marker {
+  display: none;
+}
+.question-card__ranked-summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform var(--dur-2, 160ms) var(--ease, ease);
+}
+.question-card__ranked[open] .question-card__ranked-summary::before {
+  transform: rotate(90deg);
+}
+.question-card__ranked-summary:hover {
+  color: var(--ai);
+}
+
+.question-card__ranked-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Each candidate is a full-width button (the whole row promotes the question). */
+.question-card__ranked-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm, 6px);
+  padding: 6px 8px;
+  transition:
+    background var(--dur-2, 160ms) var(--ease, ease),
+    border-color var(--dur-2, 160ms) var(--ease, ease);
+}
+.question-card__ranked-pick:hover {
+  background: color-mix(in srgb, var(--ai) 7%, transparent);
+  border-color: color-mix(in srgb, var(--ai) 28%, var(--hairline));
+}
+.question-card__ranked-pick:focus-visible {
+  outline: none;
+  border-color: var(--ring, var(--ai));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ai) 35%, transparent);
+}
+
+.question-card__ranked-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.question-card__rank {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fg-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.question-card__ranked-q {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--fg);
+}
+
+.question-card__ranked-reason {
+  display: block;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--fg-subtle);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Indent the muted reason under the rank/question, clear of the #N gutter. */
+  padding-left: 22px;
+}
+
+/* "已选用" confirmation flash after picking a candidate. */
+.question-card__picked-hint {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--candidate);
+  background: color-mix(in srgb, var(--candidate) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--candidate) 30%, var(--hairline));
+  border-radius: var(--radius-sm, 6px);
+  padding: 5px 9px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .question-card__alt,

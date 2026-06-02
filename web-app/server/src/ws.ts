@@ -4,11 +4,19 @@ import { randomUUID } from 'node:crypto';
 import { WebSocketServer, type WebSocket } from 'ws';
 import { z } from 'zod';
 import { WS_PATH } from '@open-cluely/contract';
-import type { FollowUpOutput, ServerMessage, TokenUsage } from '@open-cluely/contract';
+import type {
+  FollowUpOutput,
+  GenerationTrigger,
+  RankedQuestion,
+  ServerMessage,
+  TokenUsage
+} from '@open-cluely/contract';
 import { createHeadlessSession } from '@open-cluely/copilot-core';
 import { config } from './config';
 import { createAsrRelay, type AsrRelay, type VolcCredentials } from './asr-relay';
 import { getRetriever } from './question-bank';
+import { toRankedQuestions } from './ranked';
+import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
 
 // Top-K real interview questions threaded into Block D as OPTIONAL grounding.
 const BANK_GROUNDING_TOP_K = 6;
@@ -134,6 +142,12 @@ interface AnalyzeResult {
   mode?: string;
   output?: FollowUpOutput;
   stage2?: { parsed?: { questions?: FastQuestion[] } } | null;
+  // Expert/Customize modes carry the per-block results; Fast mode omits them.
+  // `toRankedQuestions` reads D (candidate pool) + E (rubric scores) from here.
+  blocks?: {
+    D?: { candidates?: Array<{ id?: string; question?: string }> } | null;
+    E?: { ranked?: Array<{ id?: string; total?: number; reasoning?: string }> } | null;
+  } | null;
   shouldShowFollowUps?: boolean;
   tokensUsed?: TokenUsage;
   elapsedMs?: number;
@@ -160,37 +174,75 @@ function toFollowUpOutput(result: AnalyzeResult): FollowUpOutput {
 
 type HeadlessSession = ReturnType<typeof createHeadlessSession>;
 
-async function handleAnalyze(
-  ws: WebSocket,
-  session: HeadlessSession,
-  msg: Extract<ClientMessageParsed, { type: 'analyze' }>
-): Promise<void> {
+interface RunAnalysisArgs {
+  candidateAnswer: string;
+  questionHistory?: string[];
+  requestId: string;
+  /** Distinguishes the autonomous monitor ('auto') from manual Generate Q ('manual'). */
+  trigger: GenerationTrigger;
+}
+
+/**
+ * The SINGLE analyze-and-emit path shared by manual Generate Q and the autonomous
+ * trigger monitor. Both emit identical `progress` (via the session's emit) and a
+ * `result` carrying `output` + the scored `ranked` pool — the ONLY difference is
+ * the `trigger` flag. Returns nothing; a `skipped` result emits an `error` instead.
+ */
+async function runAnalysis(ws: WebSocket, session: HeadlessSession, args: RunAnalysisArgs): Promise<void> {
   // Grounding for Block D — retrieved BEFORE analysis. Fast mode ignores it;
   // passing it unconditionally keeps the call site simple and never blocks.
-  const bankQuestions = await retrieveBankGrounding(msg.candidateAnswer);
+  const bankQuestions = await retrieveBankGrounding(args.candidateAnswer);
 
   const result = (await session.analyze({
-    candidateAnswer: msg.candidateAnswer,
-    questionHistory: msg.questionHistory ?? [],
-    requestId: msg.requestId,
+    candidateAnswer: args.candidateAnswer,
+    questionHistory: args.questionHistory ?? [],
+    requestId: args.requestId,
     bankQuestions
   })) as AnalyzeResult;
 
   if (result.skipped) {
-    send(ws, { type: 'error', requestId: msg.requestId, message: `skipped: ${result.reason ?? 'unknown'}` });
+    send(ws, { type: 'error', requestId: args.requestId, message: `skipped: ${result.reason ?? 'unknown'}` });
     return;
   }
 
+  const ranked: RankedQuestion[] = toRankedQuestions(result);
+
   send(ws, {
     type: 'result',
-    requestId: msg.requestId,
+    requestId: args.requestId,
     mode: result.mode ?? 'fast',
     output: toFollowUpOutput(result),
     shouldShowFollowUps: !!result.shouldShowFollowUps,
     tokensUsed: result.tokensUsed ?? ZERO_TOKENS,
     elapsedMs: result.elapsedMs ?? 0,
-    iterationVersion: result.iterationVersion ?? ''
+    iterationVersion: result.iterationVersion ?? '',
+    ranked,
+    trigger: args.trigger
   });
+}
+
+/**
+ * Manual Generate Q. Shares the auto-trigger's in-flight/cooldown bookkeeping so
+ * a manual run and the monitor never overlap: markManualRun() claims the slot +
+ * resets the cooldown up front; markRunDone() releases it on settle.
+ */
+async function handleAnalyze(
+  ws: WebSocket,
+  session: HeadlessSession,
+  trigger: AutoTrigger,
+  msg: Extract<ClientMessageParsed, { type: 'analyze' }>
+): Promise<void> {
+  trigger.markManualRun(msg.candidateAnswer);
+  try {
+    await runAnalysis(ws, session, {
+      candidateAnswer: msg.candidateAnswer,
+      questionHistory: msg.questionHistory,
+      requestId: msg.requestId,
+      trigger: 'manual'
+    });
+  } finally {
+    trigger.markRunDone(msg.candidateAnswer);
+  }
 }
 
 type ConfigurePayload = Extract<ClientMessageParsed, { type: 'configure' }>['config'];
@@ -236,6 +288,7 @@ async function dispatch(
   ws: WebSocket,
   session: HeadlessSession,
   relay: AsrRelay,
+  trigger: AutoTrigger,
   msg: ClientMessageParsed
 ): Promise<void> {
   switch (msg.type) {
@@ -245,6 +298,12 @@ async function dispatch(
       if (typeof msg.config.autoAnalyzeDisplay === 'boolean') {
         relay.setAutoAnalyzeDisplay(msg.config.autoAnalyzeDisplay);
       }
+      // Autonomous generation toggle: monitor state, default ON. A configure that
+      // omits the field leaves the current setting untouched (so an unrelated
+      // mode change doesn't silently flip autonomy).
+      if (typeof msg.config.autoGenerate === 'boolean') {
+        trigger.setAutoGenerate(msg.config.autoGenerate);
+      }
       // ASR provider + Volc creds are relay state too. Apply when present so the
       // NEXT audio-control start uses the chosen provider/creds. Volc creds carry
       // forward across configures (a later configure that only flips the provider
@@ -252,7 +311,7 @@ async function dispatch(
       applyAsrConfig(relay, msg.config);
       return;
     case 'analyze':
-      await handleAnalyze(ws, session, msg);
+      await handleAnalyze(ws, session, trigger, msg);
       return;
     case 'audio':
       relay.handleAudio({ source: msg.source, pcmBase64: msg.pcm });
@@ -263,7 +322,13 @@ async function dispatch(
   }
 }
 
-function onMessage(ws: WebSocket, session: HeadlessSession, relay: AsrRelay, raw: unknown): void {
+function onMessage(
+  ws: WebSocket,
+  session: HeadlessSession,
+  relay: AsrRelay,
+  trigger: AutoTrigger,
+  raw: unknown
+): void {
   let requestId: string | undefined;
   void (async () => {
     try {
@@ -275,7 +340,7 @@ function onMessage(ws: WebSocket, session: HeadlessSession, relay: AsrRelay, raw
         return;
       }
       if (parsed.data.type === 'analyze') requestId = parsed.data.requestId;
-      await dispatch(ws, session, relay, parsed.data);
+      await dispatch(ws, session, relay, trigger, parsed.data);
     } catch (err) {
       // A handler error must never close the socket.
       const message = err instanceof Error ? err.message : 'handler error';
@@ -285,14 +350,22 @@ function onMessage(ws: WebSocket, session: HeadlessSession, relay: AsrRelay, raw
 }
 
 /**
- * Run an analysis turn for an interviewee FINAL transcript (auto-analyze path).
- * Generates its own requestId and streams progress/result like a manual analyze
- * would. Failures are swallowed (best-effort) — they must not break the relay.
+ * Run an analysis turn for an interviewee FINAL transcript (the opt-in
+ * autoAnalyzeDisplay path — fires Expert on EVERY display final, ungated). This
+ * is SEPARATE from the autonomous trigger monitor (which gates + debounces +
+ * asks Flash). Failures are swallowed (best-effort) — they must not break the
+ * relay. Bookkeeping is shared with the monitor via markManualRun/markRunDone so
+ * the two transcript-driven paths never overlap.
  */
-function autoAnalyzeFromTranscript(ws: WebSocket, session: HeadlessSession, text: string): void {
+function autoAnalyzeFromTranscript(
+  ws: WebSocket,
+  session: HeadlessSession,
+  trigger: AutoTrigger,
+  text: string
+): void {
   const trimmed = text.trim();
   if (!trimmed) return;
-  void handleAnalyze(ws, session, {
+  void handleAnalyze(ws, session, trigger, {
     type: 'analyze',
     requestId: randomUUID(),
     candidateAnswer: trimmed,
@@ -317,12 +390,47 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       pipelinesDir: pipelinesDir()
     });
 
+    // Accumulated interviewee FINAL transcript — the candidate's answer so far.
+    // The trigger monitor gates on its LENGTH (new chars since the last fire) and
+    // generates from its content. Partial transcripts are not accumulated here.
+    let accumulatedDisplayFinal = '';
+
+    // The autonomous trigger monitor (per connection). `runAnalyze` reuses the
+    // SAME analyze-and-emit path manual Generate Q uses; only the `trigger` flag
+    // differs ('auto'). The monitor owns its own isGenerating slot for auto fires
+    // (set inside its evaluate()), so this runAnalyze just emits — it must NOT
+    // touch markManualRun/markRunDone or it would double-claim the slot.
+    const trigger: AutoTrigger = createAutoTrigger({
+      runAnalyze: ({ candidateAnswer }) =>
+        runAnalysis(ws, session, {
+          candidateAnswer,
+          questionHistory: [],
+          requestId: randomUUID(),
+          trigger: 'auto'
+        })
+    });
+
     // One ASR relay per connection. Transcripts stream straight back as
-    // `transcript` messages; a FINAL interviewee transcript optionally auto-runs
-    // analyze (opt-in via configure({ autoAnalyzeDisplay: true })).
+    // `transcript` messages. TWO transcript-driven generation paths hang off the
+    // interviewee ('display') lane: (1) the autonomous trigger monitor, fed the
+    // accumulated final text on EVERY display final (it gates/debounces/asks
+    // Flash internally); (2) the legacy opt-in autoAnalyzeDisplay, which fires
+    // Expert ungated on each display final (via onDisplayFinal). They share the
+    // trigger's in-flight bookkeeping so they never overlap.
     const relay = createAsrRelay({
-      emit: (t) => send(ws, { type: 'transcript', source: t.source, text: t.text, isFinal: t.isFinal }),
-      onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, text)
+      emit: (t) => {
+        send(ws, { type: 'transcript', source: t.source, text: t.text, isFinal: t.isFinal });
+        if (t.source === 'display' && t.isFinal) {
+          const segment = t.text.trim();
+          if (segment) {
+            accumulatedDisplayFinal = accumulatedDisplayFinal
+              ? `${accumulatedDisplayFinal} ${segment}`
+              : segment;
+          }
+          trigger.onCandidateFinal(accumulatedDisplayFinal);
+        }
+      },
+      onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, trigger, text)
     });
 
     // Seed the relay from VOLC_* env defaults (if any) so a deployment can ship
@@ -339,7 +447,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
-    ws.on('message', (data) => onMessage(ws, session, relay, data.toString()));
+    ws.on('message', (data) => onMessage(ws, session, relay, trigger, data.toString()));
     ws.on('error', () => {
       /* swallow socket errors — connection cleanup happens on 'close' */
     });

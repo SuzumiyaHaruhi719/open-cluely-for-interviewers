@@ -21,6 +21,10 @@ interface TranscriptStreamProps {
   isAnalyzing: boolean;
   error: string | null;
   autoScroll: boolean;
+  /** Transient "已选用" confirmation text after a ranked candidate is picked. */
+  pickedHint?: string | null;
+  /** Promote a ranked candidate into the analyze buffer (no server round-trip). */
+  onPickCandidate?: (question: string) => void;
 }
 
 interface LaneLineProps {
@@ -77,7 +81,9 @@ export function TranscriptStream({
   progress,
   isAnalyzing,
   error,
-  autoScroll
+  autoScroll,
+  pickedHint = null,
+  onPickCandidate
 }: TranscriptStreamProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -135,6 +141,10 @@ export function TranscriptStream({
           mode={lastResult.mode}
           tokensUsed={lastResult.tokensUsed}
           elapsedMs={lastResult.elapsedMs}
+          ranked={lastResult.ranked}
+          trigger={lastResult.trigger}
+          pickedHint={pickedHint}
+          onPickCandidate={onPickCandidate}
         />
       ) : null}
 

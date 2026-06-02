@@ -11,7 +11,11 @@ import { startCapture, AudioCaptureError, type CaptureHandle } from './audioCapt
 
 export type SocketStatus = 'connecting' | 'open' | 'closed' | 'reconnecting';
 
-/** A `result` payload plus the requestId it answered. */
+/**
+ * A `result` payload plus the requestId it answered. The contract's `result`
+ * member carries the optional auto-question-generation fields (`ranked`,
+ * `trigger`) used by the QuestionCard.
+ */
 export type CopilotResult = Extract<ServerMessage, { type: 'result' }>;
 export type CopilotProgress = Extract<ServerMessage, { type: 'progress' }>;
 

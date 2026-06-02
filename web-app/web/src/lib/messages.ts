@@ -1,4 +1,9 @@
-import type { FollowUpOutput, ServerMessage } from '@open-cluely/contract';
+import type {
+  FollowUpOutput,
+  GenerationTrigger,
+  RankedQuestion,
+  ServerMessage
+} from '@open-cluely/contract';
 import { S2C } from '@open-cluely/contract';
 
 /**
@@ -6,6 +11,9 @@ import { S2C } from '@open-cluely/contract';
  * we parse as `unknown` and validate the discriminant + required fields before
  * handing a typed `ServerMessage` to the hook.
  */
+
+/** The contract's `result` message member (carries the optional `ranked`/`trigger`). */
+type ResultMessage = Extract<ServerMessage, { type: 'result' }>;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -64,7 +72,10 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
 
     case S2C.RESULT:
       if (isString(data.requestId) && isRecord(data.output)) {
-        return {
+        // `ranked`/`trigger` are additive auto-question-generation fields. They
+        // are optional on the wire (absent in fast mode / older servers), so we
+        // parse them defensively and only attach when present.
+        const result: ResultMessage = {
           type: 'result',
           requestId: data.requestId,
           mode: isString(data.mode) ? data.mode : '',
@@ -74,6 +85,15 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
           elapsedMs: isNumber(data.elapsedMs) ? data.elapsedMs : 0,
           iterationVersion: isString(data.iterationVersion) ? data.iterationVersion : ''
         };
+        const ranked = parseRanked(data.ranked);
+        if (ranked) {
+          result.ranked = ranked;
+        }
+        const trigger = parseTrigger(data.trigger);
+        if (trigger) {
+          result.trigger = trigger;
+        }
+        return result;
       }
       return null;
 
@@ -126,6 +146,41 @@ function parseTokenUsage(value: unknown): { input: number; output: number; total
     };
   }
   return { input: 0, output: 0 };
+}
+
+/**
+ * Parse the optional ranked-candidate pool. Returns `undefined` when absent or
+ * malformed (so the client falls back to the single primary question); filters
+ * out any individual entry that isn't a well-formed `RankedQuestion`.
+ */
+function parseRanked(value: unknown): RankedQuestion[] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+  const parsed: RankedQuestion[] = [];
+  for (const entry of value) {
+    if (
+      isRecord(entry) &&
+      isString(entry.question) &&
+      isNumber(entry.score) &&
+      isNumber(entry.maxScore) &&
+      isNumber(entry.rank)
+    ) {
+      parsed.push({
+        question: entry.question,
+        score: entry.score,
+        maxScore: entry.maxScore,
+        rubricReason: isString(entry.rubricReason) ? entry.rubricReason : '',
+        rank: entry.rank
+      });
+    }
+  }
+  return parsed.length > 0 ? parsed : undefined;
+}
+
+/** Parse the optional generation trigger; `undefined` for any other value. */
+function parseTrigger(value: unknown): GenerationTrigger | undefined {
+  return value === 'auto' || value === 'manual' ? value : undefined;
 }
 
 function parseFollowUp(value: Record<string, unknown>): FollowUpOutput {

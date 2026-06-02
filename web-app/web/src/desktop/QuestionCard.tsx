@@ -1,10 +1,27 @@
-import type { FollowUpOutput, TokenUsage } from '@open-cluely/contract';
+import type {
+  FollowUpOutput,
+  GenerationTrigger,
+  RankedQuestion,
+  TokenUsage
+} from '@open-cluely/contract';
 
 interface QuestionCardProps {
   output: FollowUpOutput;
   mode: string;
   tokensUsed: TokenUsage;
   elapsedMs: number;
+  /**
+   * Scored/ranked candidate pool from the Expert pipeline. `ranked[0]` is the
+   * top pick (its score badges the primary question); `ranked[1..]` populate the
+   * expandable "更多排序候选" list. Empty/absent → only the primary is shown.
+   */
+  ranked?: RankedQuestion[];
+  /** 'auto' renders the 自动 badge; manual results omit it. */
+  trigger?: GenerationTrigger;
+  /** Transient "已选用" confirmation text after a candidate is picked. */
+  pickedHint?: string | null;
+  /** Promote a candidate into the analyze buffer (no server round-trip). */
+  onPickCandidate?: (question: string) => void;
 }
 
 function totalTokens(tokens: TokenUsage): number {
@@ -18,6 +35,15 @@ function formatElapsed(ms: number): string {
   return `${(ms / 1000).toFixed(1)} s`;
 }
 
+/** Compact "score/maxScore" badge (e.g. 27/30). */
+function ScoreBadge({ score, maxScore }: { score: number; maxScore: number }) {
+  return (
+    <span className="question-card__score" title="Rubric score">
+      {score}/{maxScore}
+    </span>
+  );
+}
+
 /**
  * The AI follow-up question card — the product's hero output surface. Rendered
  * as the desktop `.chat-message.is-question-card` (glowing indigo lane) so it
@@ -25,8 +51,26 @@ function formatElapsed(ms: number): string {
  * `FollowUpOutput`: primary question prominent, anchor quotes as
  * `.question-card__anchor`, alternative + rationale + expected evidence below,
  * and a footer with mode / tokens / latency.
+ *
+ * When the Expert pipeline surfaces a scored pool (`ranked`), the top pick's
+ * score badges the primary question and the remaining candidates appear in an
+ * expandable list, each promotable into the analyze buffer via `onPickCandidate`.
+ * An autonomous (`trigger === 'auto'`) result wears a subtle 自动 badge.
  */
-export function QuestionCard({ output, mode, tokensUsed, elapsedMs }: QuestionCardProps) {
+export function QuestionCard({
+  output,
+  mode,
+  tokensUsed,
+  elapsedMs,
+  ranked = [],
+  trigger,
+  pickedHint = null,
+  onPickCandidate
+}: QuestionCardProps) {
+  const topPick = ranked.length > 0 ? ranked[0] : null;
+  const others = ranked.slice(1);
+  const isAuto = trigger === 'auto';
+
   return (
     <article className="chat-message lane-ai is-question-card" aria-label="Suggested follow-up">
       <div className="message-header question-card__header">
@@ -34,13 +78,21 @@ export function QuestionCard({ output, mode, tokensUsed, elapsedMs }: QuestionCa
           ✦
         </span>
         <span className="message-label">AI follow-up</span>
+        {isAuto ? (
+          <span className="question-card__trigger" data-trigger="auto" title="Auto-generated from the live conversation">
+            自动
+          </span>
+        ) : null}
         <span className="question-card__priority" data-priority="high">
           {mode}
         </span>
         <span className="message-time">{formatElapsed(elapsedMs)}</span>
       </div>
 
-      <div className="message-content question-card__body">{output.primary_question}</div>
+      <div className="question-card__primary">
+        <div className="message-content question-card__body">{output.primary_question}</div>
+        {topPick ? <ScoreBadge score={topPick.score} maxScore={topPick.maxScore} /> : null}
+      </div>
 
       {output.anchor_quotes.length > 0 ? (
         <div className="question-card__anchors">
@@ -49,6 +101,39 @@ export function QuestionCard({ output, mode, tokensUsed, elapsedMs }: QuestionCa
               “{quote}”
             </div>
           ))}
+        </div>
+      ) : null}
+
+      {others.length > 0 ? (
+        <details className="question-card__ranked">
+          <summary className="question-card__ranked-summary">更多排序候选 ({others.length})</summary>
+          <ul className="question-card__ranked-list">
+            {others.map((candidate) => (
+              <li className="question-card__ranked-item" key={`${candidate.rank}-${candidate.question}`}>
+                <button
+                  type="button"
+                  className="question-card__ranked-pick"
+                  onClick={() => onPickCandidate?.(candidate.question)}
+                  title="选用这个候选问题"
+                >
+                  <span className="question-card__ranked-row">
+                    <span className="question-card__rank">#{candidate.rank}</span>
+                    <span className="question-card__ranked-q">{candidate.question}</span>
+                    <ScoreBadge score={candidate.score} maxScore={candidate.maxScore} />
+                  </span>
+                  {candidate.rubricReason ? (
+                    <span className="question-card__ranked-reason">{candidate.rubricReason}</span>
+                  ) : null}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+
+      {pickedHint ? (
+        <div className="question-card__picked-hint" role="status">
+          已选用：{pickedHint}
         </div>
       ) : null}
 

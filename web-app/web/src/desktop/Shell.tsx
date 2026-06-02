@@ -96,6 +96,10 @@ export function Shell() {
   const [studioOpen, setStudioOpen] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [railCollapsed, toggleRail] = useRailCollapsed();
+  // Transient "已选用" confirmation shown after picking a ranked candidate. Holds
+  // the chosen text; cleared on a timer so it doesn't linger past the next turn.
+  const [pickedHint, setPickedHint] = useState<string | null>(null);
+  const pickedHintTimerRef = useRef<number | null>(null);
 
   const sessions = useSessions();
   const assistant = useAssistantPanel();
@@ -197,6 +201,40 @@ export function Shell() {
     [pushConfig]
   );
 
+  // Toggle autonomous question generation: persist locally AND tell the server so
+  // its trigger monitor starts/stops. The full-config re-push (above) carries
+  // `autoGenerate` on every new sessionId, so this delta is enough for the live one.
+  const { setAutoGenerate } = appSettings;
+  const onToggleAuto = useCallback((): void => {
+    const next = !appSettings.settings.autoGenerate;
+    setAutoGenerate(next);
+    pushConfig({ autoGenerate: next });
+  }, [appSettings.settings.autoGenerate, setAutoGenerate, pushConfig]);
+
+  // Promote a ranked candidate: copy it into the analyze buffer (so Generate Q /
+  // the next analyze uses it) and flash a brief "已选用" confirmation. No server
+  // round-trip — picking is a purely local selection.
+  const onPickCandidate = useCallback((question: string): void => {
+    setAnswer(question);
+    setPickedHint(question);
+    if (pickedHintTimerRef.current !== null) {
+      window.clearTimeout(pickedHintTimerRef.current);
+    }
+    pickedHintTimerRef.current = window.setTimeout(() => {
+      setPickedHint(null);
+      pickedHintTimerRef.current = null;
+    }, 2600);
+  }, []);
+
+  // Clear any pending "已选用" hint timer on unmount.
+  useEffect(() => {
+    return () => {
+      if (pickedHintTimerRef.current !== null) {
+        window.clearTimeout(pickedHintTimerRef.current);
+      }
+    };
+  }, []);
+
   // ASR provider / Doubao creds → persist locally AND push to the server so the
   // NEXT audio-control start uses the chosen recognizer. We always send the Volc
   // creds alongside the provider so flipping to Doubao (or editing a cred while
@@ -295,7 +333,10 @@ export function Shell() {
       volcAppId: s.volcAppId,
       volcAccessToken: s.volcAccessToken,
       volcResourceId: s.volcResourceId,
-      volcModel: s.volcModel
+      volcModel: s.volcModel,
+      // Part of the full config: re-push so a fresh/reconnected server session
+      // honours the auto-generate choice (the monitor is off until told on).
+      autoGenerate: s.autoGenerate
     };
   }, [config, appSettings.settings]);
   useEffect(() => {
@@ -513,6 +554,8 @@ export function Shell() {
                 onMeetingNotes={onMeetingNotes}
                 onInsights={onInsights}
                 assistantBusy={assistant.busy}
+                autoGenerate={appSettings.settings.autoGenerate}
+                onToggleAuto={onToggleAuto}
               />
               <TranscriptStream
                 transcripts={transcripts}
@@ -522,6 +565,8 @@ export function Shell() {
                 isAnalyzing={isAnalyzing}
                 error={error}
                 autoScroll={autoScroll}
+                pickedHint={pickedHint}
+                onPickCandidate={onPickCandidate}
               />
               <Composer
                 audio={audio}

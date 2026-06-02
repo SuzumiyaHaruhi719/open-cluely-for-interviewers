@@ -37,6 +37,13 @@ export interface ChatOptions {
   readonly maxTokens?: number;
   /** Optional sampling temperature. */
   readonly temperature?: number;
+  /**
+   * deepseek-v4 models do extended "thinking" by default, which emits thousands
+   * of hidden reasoning tokens and dominates latency. Pass `false` to disable it
+   * (Anthropic-shape `thinking: { type: 'disabled' }`, honored by DashScope) for
+   * fast, low-latency calls like the auto-trigger monitor. Omit/`true` = default.
+   */
+  readonly thinking?: boolean;
 }
 
 /** The Anthropic-shape base URL (`.../apps/anthropic`) from the desktop config. */
@@ -75,6 +82,10 @@ export async function chat(options: ChatOptions): Promise<string> {
   };
   if (options.system) body.system = options.system;
   if (typeof options.temperature === 'number') body.temperature = options.temperature;
+  // Explicit thinking:disabled skips deepseek-v4's hidden reasoning tokens —
+  // the latency win that makes the trigger monitor cheap. Only sent when the
+  // caller opts out; omitting the field preserves each model's default behavior.
+  if (options.thinking === false) body.thinking = { type: 'disabled' };
 
   const url = `${getDashscopeBaseUrl()}/v1/messages`;
 

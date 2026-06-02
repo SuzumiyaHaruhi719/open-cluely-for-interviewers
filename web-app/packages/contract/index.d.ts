@@ -20,6 +20,9 @@ export const C2S: {
 /** Live-ASR providers the server can stream through. Default: 'paraformer'. */
 export const ASR_PROVIDERS: readonly ['paraformer', 'volc'];
 
+/** How a `result` was produced: autonomous monitor vs. manual Generate Q. */
+export const GENERATION_TRIGGERS: readonly ['auto', 'manual'];
+
 export type InterviewerMode = 'fast' | 'expert' | 'expert2' | 'customize';
 export type OutputLanguage = '' | 'zh' | 'en';
 export type AudioSource = 'mic' | 'display';
@@ -41,6 +44,26 @@ export interface FollowUpOutput {
   expected_evidence_yield: string;
   iteration_version: string;
 }
+
+/**
+ * One scored/ranked follow-up candidate, surfaced from the Expert pipeline's
+ * Block D (the candidate pool) joined with Block E (the rubric scores). Lets the
+ * client render an expandable ranked list under the prominent pick.
+ *   - `score`    — Block E composite total (sum of the 6 rubric dims).
+ *   - `maxScore` — the rubric ceiling (6 dims × 5 = 30).
+ *   - `rubricReason` — Block E's one-line reasoning for this candidate.
+ *   - `rank`     — 1-based position after sorting by score descending.
+ */
+export interface RankedQuestion {
+  question: string;
+  score: number;
+  maxScore: number;
+  rubricReason: string;
+  rank: number;
+}
+
+/** Whether a `result` was produced by the autonomous monitor or a manual Generate Q. */
+export type GenerationTrigger = 'auto' | 'manual';
 
 export interface SessionConfig {
   mode: InterviewerMode;
@@ -70,6 +93,14 @@ export interface SessionConfig {
   volcResourceId?: string;
   /** Optional Volc model name override (config-frame `model_name`). */
   volcModel?: string;
+  /**
+   * Autonomous question generation: when true (the default), the server's
+   * per-session trigger monitor may decide on its own to run the Expert pipeline
+   * from the live interviewee transcript. Toggling false stops ALL monitor
+   * activity (a cheap local check runs before any LLM call). Manual Generate Q
+   * always works regardless.
+   */
+  autoGenerate?: boolean;
 }
 
 /** A question-bank search hit. difficulty: 0=unspecified,1=easy,2=medium,3=hard. */
@@ -116,6 +147,14 @@ export type ServerMessage =
       tokensUsed: TokenUsage;
       elapsedMs: number;
       iterationVersion: string;
+      /**
+       * The full scored candidate pool (Block D ⨝ Block E), sorted by score
+       * descending. Empty for Fast mode / fallbacks that produce no blocks, in
+       * which case the client falls back to the single `output` question.
+       */
+      ranked?: RankedQuestion[];
+      /** How this result was produced: the autonomous monitor ('auto') or a manual Generate Q ('manual'). */
+      trigger?: GenerationTrigger;
     }
   | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean }
   | { type: 'session-context'; state: unknown }

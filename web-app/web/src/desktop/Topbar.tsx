@@ -33,6 +33,10 @@ interface TopbarProps {
   onInsights: () => void;
   /** Disable the assistant actions while a request is in flight / unavailable. */
   assistantBusy: boolean;
+  /** Autonomous question generation on/off (the Auto pill state). */
+  autoGenerate: boolean;
+  /** Toggle autonomous question generation. */
+  onToggleAuto: () => void;
 }
 
 /**
@@ -61,7 +65,9 @@ export function Topbar({
   onAskAi,
   onMeetingNotes,
   onInsights,
-  assistantBusy
+  assistantBusy,
+  autoGenerate,
+  onToggleAuto
 }: TopbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -139,6 +145,22 @@ export function Topbar({
             {asrMeta.label}
           </span>
         </span>
+        <button
+          id="auto-indicator"
+          className="mode-indicator auto-indicator"
+          type="button"
+          data-auto={autoGenerate ? 'on' : 'off'}
+          aria-pressed={autoGenerate}
+          onClick={onToggleAuto}
+          title={
+            autoGenerate
+              ? 'Auto question generation ON — the copilot fires from the live conversation. Click to turn off.'
+              : 'Auto question generation OFF — only manual Generate Q. Click to turn on.'
+          }
+        >
+          <span className="mode-indicator__dot" aria-hidden="true" />
+          <span className="mode-indicator__label">Auto</span>
+        </button>
         <span className="screenshot-count" id="screenshot-count" title="Screenshots captured">
           {screenshotCount}
         </span>
