@@ -1,0 +1,289 @@
+/*
+ * Session-context panel — right-rail "Session context (auto)" surface.
+ *
+ * Renders the Expert Block H consolidator output as labelled, collapsible
+ * <details> sections: drilled_topics · competencies_covered · open_gaps ·
+ * candidate_profile_summary · asked_questions.
+ *
+ * TOKENS: All design tokens live on :root in styles.css. This file NEVER
+ * redefines them. var() fallbacks keep the panel legible if it mounts before
+ * :root tokens land (Electron load race).
+ *
+ * MOTION: transform/opacity only. Durations use token vars exclusively.
+ * No @media (prefers-reduced-motion) guard — explicit owner product decision.
+ *
+ * SPACING: strict 4px grid.
+ */
+
+/* ── Container ────────────────────────────────────────────────────────────── */
+.session-context {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  padding: 2px 0;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 13px;
+  color: var(--fg, #e6edf3);
+}
+
+/* ── Panel-level scrollbar ────────────────────────────────────────────────── */
+/* Thin 4px track; styles.css owns the 8px #session-context scrollbar.
+   These rules apply when .session-context is itself a scroll container. */
+.session-context::-webkit-scrollbar        { width: 4px; }
+.session-context::-webkit-scrollbar-track  { background: transparent; }
+.session-context::-webkit-scrollbar-thumb  {
+  background: color-mix(in srgb, var(--fg, #e6edf3) 14%, transparent);
+  border-radius: 999px;
+}
+.session-context::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--fg, #e6edf3) 26%, transparent);
+}
+
+/* ── Section entrance animation ───────────────────────────────────────────── */
+/* session-context.js replaces children wholesale on every update(state) call
+   (replaceChildren). Fresh .session-section/.session-empty nodes animate in
+   automatically on append — no JS hook needed. Staggered delays give a crisp
+   top-to-bottom settlement rather than an instant snap. */
+.session-section,
+.session-empty {
+  animation: ctx-item-in var(--dur-3, 240ms) var(--ease-out, cubic-bezier(.16,1,.3,1)) both;
+}
+
+.session-section:nth-child(1) { animation-delay: 0ms; }
+.session-section:nth-child(2) { animation-delay: 36ms; }
+.session-section:nth-child(3) { animation-delay: 72ms; }
+.session-section:nth-child(4) { animation-delay: 96ms; }
+.session-section:nth-child(n + 5) { animation-delay: 116ms; }
+
+@keyframes ctx-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Collapsible section (<details>) ─────────────────────────────────────── */
+.session-section {
+  /* Restrained card depth: one step of elevation + top-edge sheen. Dense rail,
+     so we keep the shadow light and avoid stacking heavy shadows. */
+  background: var(--bg-elev, #161b22);
+  border: 1px solid var(--hairline, rgba(255,255,255,.08));
+  border-top: 1px solid var(--hairline-strong, rgba(255,255,255,.14));
+  border-left: 3px solid var(--section-accent, var(--hairline, rgba(255,255,255,.08)));
+  border-radius: var(--radius, 12px);
+  box-shadow: var(--elev-1, 0 1px 2px rgba(0,0,0,.40)),
+              var(--top-highlight, inset 0 1px 0 rgba(255,255,255,.05));
+  overflow: hidden;
+}
+
+/* ── Summary row (tappable header) ───────────────────────────────────────── */
+.session-section__summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  min-height: 40px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition:
+    background var(--dur-1, 120ms) var(--ease, cubic-bezier(.16,1,.3,1));
+}
+
+/* Hide the native <details> disclosure triangle. */
+.session-section__summary::-webkit-details-marker { display: none; }
+
+.session-section__summary:hover {
+  background: var(--surface-strong, rgba(255,255,255,.07));
+}
+
+.session-section__summary:active {
+  background: var(--surface-strong, rgba(255,255,255,.07));
+  /* Micro-scale on press — spring pop feels decisive, not bouncy. */
+  transform: scale(0.985);
+  transition:
+    background var(--dur-1, 120ms) var(--ease, cubic-bezier(.16,1,.3,1)),
+    transform var(--dur-1, 120ms) var(--ease-spring, cubic-bezier(.34,1.4,.64,1));
+}
+
+.session-section__summary:focus-visible {
+  outline: 2px solid var(--ring, #7c8cf8);
+  outline-offset: -2px;
+}
+
+/* ── Section icon ─────────────────────────────────────────────────────────── */
+.session-section__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: var(--section-accent, var(--fg-muted, #8b949e));
+}
+
+/* ── Section label ────────────────────────────────────────────────────────── */
+/* Display font, uppercase, generous letter-spacing — premium rail label feel. */
+.session-section__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted, #8b949e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Count badge ──────────────────────────────────────────────────────────── */
+.session-section__count {
+  flex: 0 0 auto;
+  min-width: 20px;
+  padding: 2px 6px;
+  text-align: center;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--section-accent, var(--fg-muted, #8b949e));
+  background: color-mix(in srgb, var(--section-accent, var(--fg-muted, #8b949e)) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--section-accent, var(--fg-muted, #8b949e)) 28%, transparent);
+  border-radius: var(--radius-sm, 8px);
+}
+
+/* ── Custom chevron ───────────────────────────────────────────────────────── */
+/* A hairline rotated square corner — minimal, sharp. */
+.session-section__summary::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  margin-left: 2px;
+  border-right: 1.5px solid var(--fg-subtle, #6e7681);
+  border-bottom: 1.5px solid var(--fg-subtle, #6e7681);
+  transform: rotate(-45deg);
+  transition: transform var(--dur-2, 180ms) var(--ease, cubic-bezier(.16,1,.3,1));
+}
+
+.session-section[open] > .session-section__summary::after {
+  transform: rotate(45deg);
+}
+
+/* ── Section body ─────────────────────────────────────────────────────────── */
+.session-section__body {
+  padding: 0 12px 12px;
+  /* Hairline separator between summary and body. */
+  border-top: 1px solid var(--hairline, rgba(255,255,255,.08));
+}
+
+/* ── Chip list ────────────────────────────────────────────────────────────── */
+.session-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.session-chip {
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--fg, #e6edf3);
+  background: color-mix(in srgb, var(--chip-accent, var(--fg-muted, #8b949e)) 10%, var(--surface, rgba(255,255,255,.04)));
+  border: 1px solid color-mix(in srgb, var(--chip-accent, var(--border, rgba(255,255,255,.08))) 30%, var(--border, rgba(255,255,255,.08)));
+  border-radius: 999px; /* pill — denser & tidier than square in a chip cloud */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  transition:
+    background var(--dur-1, 120ms) var(--ease, cubic-bezier(.16,1,.3,1)),
+    border-color var(--dur-1, 120ms) var(--ease, cubic-bezier(.16,1,.3,1));
+}
+
+/* ── Candidate profile paragraph ─────────────────────────────────────────── */
+.session-profile {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--fg, #e6edf3);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* ── Asked-questions ordered list ─────────────────────────────────────────── */
+.session-question-list {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: decimal;
+}
+
+.session-question {
+  font-size: 12px;
+  line-height: 1.5;
+  /* Full --fg (not muted): these are content (the questions already asked),
+     so they get body-text contrast, not meta-text contrast. */
+  color: var(--fg, #e6edf3);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.session-question::marker {
+  color: var(--ai, #7c8cf8);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+}
+
+/* ── Empty state ──────────────────────────────────────────────────────────── */
+/* Centred, breathing room, restrained — not an event, just a placeholder. */
+.session-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 36px 20px 32px;
+  color: var(--fg-muted, #8b949e);
+  /* Subtle card treatment to anchor it in the rail. */
+  background: var(--surface, rgba(255,255,255,.04));
+  border: 1px solid var(--hairline, rgba(255,255,255,.08));
+  border-radius: var(--radius, 12px);
+  box-shadow: var(--top-highlight, inset 0 1px 0 rgba(255,255,255,.05));
+}
+
+.session-empty__icon {
+  display: inline-flex;
+  color: var(--fg-subtle, #6e7681);
+  opacity: 0.55;
+}
+
+.session-empty__text {
+  margin: 0;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted, #8b949e);
+}
+
+.session-empty__hint {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--fg-subtle, #6e7681);
+  max-width: 26ch;
+}
+
+/* NOTE: @media (prefers-reduced-motion: reduce) was removed by explicit owner
+   choice — motion plays unconditionally regardless of OS reduced-motion state. */

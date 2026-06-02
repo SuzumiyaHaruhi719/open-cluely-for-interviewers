@@ -1,0 +1,535 @@
+/*
+ * Chat-history sidebar.
+ * Consumes ONLY the global tokens defined by the orchestrator in styles.css:
+ *   Surfaces  — --bg-elev --bg-elev-2 --surface --surface-strong
+ *   Borders   — --border --hairline --hairline-strong --top-highlight
+ *   Text      — --fg --fg-muted --fg-subtle
+ *   Accents   — --ai --danger --ring
+ *   Elevation — --elev-1 --elev-2 --glow-ai
+ *   Radii     — --radius --radius-sm
+ *   Motion    — --dur-1(120ms) --dur-2(180ms) --dur-3(240ms)
+ *               --ease --ease-out --ease-in --ease-spring
+ *   Fonts     — --font-display --font-body
+ * Do NOT redefine those here. Spacing follows a 4 px scale.
+ */
+
+.history-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--bg-elev);
+  border-right: 1px solid var(--hairline);
+  font-family: var(--font-body);
+}
+
+/* ── New interview button ──────────────────────────────────────────────────── */
+/* Primary action in the sidebar; gets the full --ai accent treatment. */
+
+.history-new-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px;
+  padding: 10px 14px;
+  min-height: 44px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-sm);   /* button tier (matches .action-btn etc.) */
+  background: var(--surface);
+  box-shadow: var(--elev-1), var(--top-highlight);
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  /* Entrance: button fades + rises in as the sidebar mounts. */
+  animation: history-new-btn-in var(--dur-3) var(--ease-out) both;
+  transition:
+    background  var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease),
+    box-shadow  var(--dur-2) var(--ease),
+    transform   var(--dur-1) var(--ease);
+}
+
+@keyframes history-new-btn-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.history-new-btn:hover {
+  background: color-mix(in srgb, var(--ai) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--ai) 45%, var(--hairline-strong));
+  /* Lift on hover (no glow) — matches the app-wide button hover grammar. The
+     indigo tinted fill + border already mark this as the primary action;
+     glows are reserved for live/active states, not plain hover. */
+  box-shadow: var(--elev-2), var(--top-highlight);
+  color: var(--fg);
+}
+
+.history-new-btn:active {
+  transform: scale(0.97);
+  box-shadow: var(--top-highlight);
+  transition:
+    background  var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    box-shadow  var(--dur-1) var(--ease),
+    transform   var(--dur-1) var(--ease-spring);
+}
+
+.history-new-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.history-new-btn__icon {
+  display: inline-flex;
+  color: var(--ai);
+  /* Icon matches parent transitions; no extra rule needed. */
+}
+
+.history-new-btn__label {
+  /* Inherits font/weight/color from the button. */
+}
+
+/* ── Scroll list ───────────────────────────────────────────────────────────── */
+
+.history-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 8px 16px;
+}
+
+/* ── Group headings ────────────────────────────────────────────────────────── */
+
+.history-group + .history-group {
+  margin-top: 16px;
+}
+
+.history-group__label {
+  padding: 6px 8px 4px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  /* Hairline rule below the label separates the group visually. */
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 4px;
+}
+
+/* ── Row ───────────────────────────────────────────────────────────────────── */
+
+.history-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 12px;
+  /* Breathing room between rows so adjacent highlight fills don't touch. */
+  margin-bottom: 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  /* Colour + background carry active/hover state.
+     Transform is for the press-scale only — never animate layout props.
+     Staggered entrance is set by the per-row animation-delay rules below. */
+  transition:
+    background   var(--dur-2) var(--ease),
+    color        var(--dur-2) var(--ease),
+    transform    var(--dur-1) var(--ease);
+}
+
+/* Active-state accent bar: grows in from vertical centre (scaleY 0 → 1)
+   with an --ease-spring pop so it reads as the indicator snapping into place.
+   Exits with --ease-in at ~70 % of entry duration. */
+.history-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--ai);
+  opacity: 0;
+  transform: scaleY(0.2);
+  transform-origin: center;
+  transition:
+    opacity   var(--dur-2) var(--ease-in),
+    transform var(--dur-2) var(--ease-in);
+}
+
+.history-row:hover {
+  background: var(--surface);
+}
+
+.history-row:active {
+  transform: scale(0.98);
+  transition:
+    background   var(--dur-1) var(--ease),
+    color        var(--dur-1) var(--ease),
+    transform    var(--dur-1) var(--ease-spring);
+}
+
+.history-row:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+/* Active row — use --surface-strong (7 % white) for a clearly lifted fill. */
+.history-row.is-active {
+  background: var(--surface-strong);
+}
+
+/* Accent bar entrance: spring overshoot gives the snap-in feel. */
+.history-row.is-active::before {
+  opacity: 1;
+  transform: scaleY(1);
+  transition:
+    opacity   var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-spring);
+}
+
+/* ── Staggered list entrance ───────────────────────────────────────────────── */
+/* Cap the cascade at ~10 rows (≈ 24 ms per row, 30–40 ms guidance band) so a
+   long history doesn't build a visibly long tail of delays; rows past the cap
+   appear with the same delay as the 10th. Nothing exceeds --dur-4 (320 ms). */
+
+.history-row {
+  animation: history-row-in var(--dur-2) var(--ease-out) both;
+}
+
+.history-row:nth-child(1)  { animation-delay: 0ms; }
+.history-row:nth-child(2)  { animation-delay: 24ms; }
+.history-row:nth-child(3)  { animation-delay: 48ms; }
+.history-row:nth-child(4)  { animation-delay: 72ms; }
+.history-row:nth-child(5)  { animation-delay: 96ms; }
+.history-row:nth-child(6)  { animation-delay: 120ms; }
+.history-row:nth-child(7)  { animation-delay: 144ms; }
+.history-row:nth-child(8)  { animation-delay: 168ms; }
+.history-row:nth-child(9)  { animation-delay: 192ms; }
+.history-row:nth-child(n + 10) { animation-delay: 216ms; }
+
+@keyframes history-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Row content ───────────────────────────────────────────────────────────── */
+
+.history-row__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.history-row__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Colour transitions only — font-weight changes glyph metrics (layout prop);
+     let it snap instantly when .is-active is toggled. */
+  transition: color var(--dur-2) var(--ease);
+}
+
+.history-row.is-active .history-row__title {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.history-row__time {
+  font-size: 11px;
+  color: var(--fg-subtle);
+}
+
+/* ── Per-row inline action buttons ────────────────────────────────────────────
+ * Pinned inline (flex sibling), not absolute — the old absolute/overflow-hidden
+ * combo made the Delete button unclickable because it was clipped by
+ * .history-list's scroll container. Keep this architecture intact.
+ * Revealed on hover/focus with a micro translateX slide-in for polish. */
+
+.history-row__actions {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transform: translateX(4px);
+  transition:
+    opacity   var(--dur-2) var(--ease-in),
+    transform var(--dur-2) var(--ease-in);
+}
+
+/* Entrance: ease-out + faster translate so reveal feels decisive, not deferred. */
+.history-row:hover .history-row__actions,
+.history-row:focus-within .history-row__actions,
+.history-row.is-active .history-row__actions {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity   var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.history-row__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition:
+    background var(--dur-1) var(--ease),
+    color      var(--dur-1) var(--ease),
+    transform  var(--dur-1) var(--ease);
+}
+
+.history-row__action span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.history-row__action:hover {
+  background: color-mix(in srgb, var(--fg) 10%, transparent);
+  color: var(--fg);
+}
+
+.history-row__action:active {
+  transform: scale(0.90);
+  transition:
+    background var(--dur-1) var(--ease),
+    color      var(--dur-1) var(--ease),
+    transform  var(--dur-1) var(--ease-spring);
+}
+
+.history-row__action:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+/* Delete button: danger tint uses the --danger token, never a raw hex. */
+.history-row__action--danger:hover {
+  background: color-mix(in srgb, var(--danger) 18%, transparent);
+  color: var(--danger);
+}
+
+/* ── Empty state ───────────────────────────────────────────────────────────── */
+
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 52px 24px;
+  text-align: center;
+  color: var(--fg-muted);
+  animation: history-empty-in var(--dur-3) var(--ease-out) both;
+  animation-delay: var(--dur-1); /* Brief pause before rendering into view. */
+}
+
+@keyframes history-empty-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.history-empty__icon {
+  display: inline-flex;
+  opacity: 0.35;
+  color: var(--fg-muted);
+}
+
+.history-empty__text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: 0.01em;
+}
+
+.history-empty__hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+
+/* ── In-app dialogs (rename / delete) ─────────────────────────────────────────
+ * Premium replacements for native window.prompt()/confirm() (which rendered as
+ * unstyleable light OS dialogs that clashed with the dark UI — see the delete
+ * flow in history-sidebar.js). Centered glass card; the SCRIM is rounded to the
+ * shell radius because a fixed element is NOT clipped by .app-shell's overflow,
+ * so without it the scrim would square off the window's rounded corners. */
+.app-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: app-modal-scrim-in var(--dur-3) var(--ease-out) both;
+}
+
+.app-modal__card {
+  width: min(360px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--hairline-strong);
+  background: var(--bg-elev-2);
+  box-shadow: var(--elev-4), var(--top-highlight);
+  animation: app-modal-card-in var(--dur-4) var(--ease-spring) both;
+}
+
+.app-modal__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--fg);
+}
+
+.app-modal__text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--fg-muted);
+  word-break: break-word;
+}
+
+.app-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.app-modal__label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+
+.app-modal__input {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 12px;
+  color: var(--fg);
+  background-color: var(--bg-elev);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color-scheme: dark;
+  transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+}
+
+.app-modal__input:focus-visible {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 40%, transparent);
+}
+
+.app-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.app-modal__btn {
+  min-width: 88px;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--elev-1), var(--top-highlight);
+  transition:
+    background var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease),
+    box-shadow var(--dur-2) var(--ease),
+    transform var(--dur-1) var(--ease-spring);
+}
+
+.app-modal__btn:active { transform: scale(0.97); }
+
+.app-modal__btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+.app-modal__btn--secondary {
+  background: var(--surface);
+  border-color: var(--hairline-strong);
+  color: var(--fg);
+}
+.app-modal__btn--secondary:hover { background: var(--surface-strong); }
+
+.app-modal__btn--primary {
+  background: var(--ai);
+  border-color: color-mix(in srgb, var(--ai) 85%, white);
+  color: var(--bg-base);
+}
+.app-modal__btn--primary:hover {
+  background: color-mix(in srgb, var(--ai) 88%, white);
+  box-shadow: var(--elev-2), 0 0 18px -6px color-mix(in srgb, var(--ai) 50%, transparent);
+}
+
+.app-modal__btn--danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.app-modal__btn--danger:hover {
+  background: color-mix(in srgb, var(--danger) 88%, white);
+  box-shadow: var(--elev-2), 0 0 18px -6px color-mix(in srgb, var(--danger) 60%, transparent);
+}
+
+@keyframes app-modal-scrim-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes app-modal-card-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* NOTE: the `@media (prefers-reduced-motion: reduce)` guard was removed by
+   explicit owner choice — the staggered list entrance, the gliding active
+   accent bar, and the press-scales animate regardless of the OS reduced-motion
+   setting. */

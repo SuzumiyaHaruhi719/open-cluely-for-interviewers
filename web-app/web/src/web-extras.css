@@ -1,0 +1,673 @@
+/* ============================================================================
+ * web-extras.css — web-client-only rules layered on top of the copied desktop
+ * CSS. Two responsibilities:
+ *   1. Question-card sub-blocks the desktop builds in JS (alt / rationale /
+ *      expected-evidence / footer) that have no rule in chat.css.
+ *   2. The Question Bank view, restyled with the desktop tokens and fully
+ *      namespaced under `.main__view-bank` so its generic class names
+ *      (.btn, .q-row, .filter-item, .empty, …) never leak into the shell.
+ * Tokens come from the copied styles.css :root. Nothing here redefines them
+ * globally — the QB scope remaps a few aliases locally.
+ * ==========================================================================*/
+
+/* ── Question-bank view fills the .main grid ─────────────────────────────── */
+.main__view-bank {
+  grid-row: 1 / -1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Channel device "select" rendered as a static label (web has no device
+ *    picker yet) — keep the desktop look, drop the chevron + pointer. ─────── */
+.channel-device-select--static {
+  display: inline-flex;
+  align-items: center;
+  background-image: none;
+  cursor: default;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--fg-muted);
+}
+
+/* ── AI question-card sub-blocks (desktop builds these in chat-ui-manager) ─── */
+.question-card__anchors {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.question-card__alt,
+.question-card__rationale,
+.question-card__yield {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.question-card__alt .message-label,
+.question-card__rationale .message-label,
+.question-card__yield .message-label {
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.question-card__alt .message-content {
+  color: var(--fg-muted);
+}
+
+.question-card__footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-subtle);
+}
+
+.question-card__footer .tag-mode {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--ai);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ * QUESTION BANK — namespaced restyle on the desktop tokens.
+ * Local aliases map the old generic theme variables onto the desktop palette
+ * so the ported QB markup reads as part of the same design system.
+ * ════════════════════════════════════════════════════════════════════════ */
+.main__view-bank {
+  --bg: var(--bg-base);
+  --bg-elev-1: var(--bg-elev);
+  --bg-elev-2: var(--bg-elev-2);
+  --bg-elev-3: var(--surface-strong);
+  --border: var(--border);
+  --border-strong: var(--hairline-strong);
+
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-faint: var(--fg-subtle);
+
+  --accent: var(--ai);
+  --accent-strong: color-mix(in srgb, var(--ai) 80%, white);
+  --accent-bg: color-mix(in srgb, var(--ai) 12%, transparent);
+  --accent-border: color-mix(in srgb, var(--ai) 35%, var(--border));
+
+  --warn: var(--interviewer);
+  --danger-local: var(--danger);
+  --danger-bg: color-mix(in srgb, var(--danger) 12%, transparent);
+  --danger-border: color-mix(in srgb, var(--danger) 35%, var(--border));
+
+  --diff-unspecified: var(--fg-subtle);
+  --diff-easy: var(--success);
+  --diff-medium: var(--interviewer);
+  --diff-hard: var(--danger);
+
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-base: 13px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  --qb-radius-sm: var(--radius-sm);
+  --qb-radius: var(--radius);
+  --qb-radius-lg: var(--radius-lg);
+
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--text);
+}
+
+/* Form controls inside the bank. */
+.main__view-bank textarea,
+.main__view-bank input[type='text'],
+.main__view-bank input[type='search'],
+.main__view-bank select {
+  width: 100%;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--qb-radius-sm);
+  color: var(--fg);
+  padding: var(--sp-2) var(--sp-3);
+  font-family: var(--font-body);
+  color-scheme: dark;
+  transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+}
+
+.main__view-bank textarea:hover,
+.main__view-bank input:hover,
+.main__view-bank select:hover {
+  border-color: var(--hairline-strong);
+}
+
+.main__view-bank textarea:focus-visible,
+.main__view-bank input:focus-visible,
+.main__view-bank select:focus-visible {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 40%, transparent);
+}
+
+.main__view-bank select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--fg-muted) 50%),
+    linear-gradient(135deg, var(--fg-muted) 50%, transparent 50%);
+  background-position: calc(100% - 16px) 52%, calc(100% - 11px) 52%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: var(--sp-8);
+  cursor: pointer;
+}
+
+.main__view-bank label {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--fg-muted);
+  margin-bottom: var(--sp-2);
+  font-weight: 500;
+}
+
+.main__view-bank .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  background: var(--surface);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--qb-radius-sm);
+  color: var(--fg);
+  padding: var(--sp-2) var(--sp-4);
+  font-family: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--elev-1), var(--top-highlight);
+  transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease),
+    transform var(--dur-1) var(--ease-spring);
+  white-space: nowrap;
+}
+
+.main__view-bank .btn:hover:not(:disabled) {
+  background: var(--surface-strong);
+  border-color: var(--accent-border);
+}
+
+.main__view-bank .btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.main__view-bank .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.main__view-bank .btn-primary {
+  background: var(--ai);
+  border-color: var(--ai);
+  color: var(--bg-base);
+}
+
+.main__view-bank .btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.main__view-bank .btn-sm {
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--fs-sm);
+}
+
+/* Connection pill. */
+.main__view-bank .conn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--fg-muted);
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.main__view-bank .conn-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fg-subtle);
+  flex-shrink: 0;
+}
+
+.main__view-bank .conn[data-status='open'] .conn-dot {
+  background: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 18%, transparent);
+}
+
+.main__view-bank .conn[data-status='connecting'] .conn-dot,
+.main__view-bank .conn[data-status='reconnecting'] .conn-dot {
+  background: var(--interviewer);
+  animation: qb-pulse 1.2s ease-in-out infinite;
+}
+
+.main__view-bank .conn[data-status='closed'] .conn-dot {
+  background: var(--danger);
+}
+
+@keyframes qb-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Section + layout. */
+.main__view-bank .section-title {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-bottom: var(--sp-3);
+}
+
+.main__view-bank .hint {
+  font-size: var(--fs-sm);
+  color: var(--fg-subtle);
+}
+
+.main__view-bank .qbank {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  height: 100%;
+  min-height: 0;
+}
+
+.main__view-bank .qbank-sidebar {
+  border-right: 1px solid var(--hairline);
+  background: var(--bg-elev);
+  overflow-y: auto;
+  padding: var(--sp-5);
+}
+
+.main__view-bank .qbank-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main__view-bank .qbank-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-6);
+  border-bottom: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--bg-base) 90%, var(--bg-elev));
+  box-shadow: var(--top-highlight), var(--elev-1);
+  flex-shrink: 0;
+}
+
+.main__view-bank .qbank-search {
+  flex: 1;
+  position: relative;
+}
+
+.main__view-bank .mode-toggle {
+  display: inline-flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--qb-radius-sm);
+  padding: 2px;
+}
+
+.main__view-bank .mode-toggle button {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  transition: background var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
+}
+
+.main__view-bank .mode-toggle button.is-active {
+  background: var(--accent-bg);
+  color: var(--accent-strong);
+}
+
+.main__view-bank .qbank-results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sp-4) var(--sp-6);
+}
+
+.main__view-bank .qbank-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--fg-subtle);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-3);
+}
+
+.main__view-bank .filter-group {
+  margin-bottom: var(--sp-6);
+}
+
+.main__view-bank .filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.main__view-bank .filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--qb-radius-sm);
+  color: var(--fg-muted);
+  padding: var(--sp-2) var(--sp-3);
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font-family: var(--font-body);
+  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+
+.main__view-bank .filter-item:hover {
+  background: var(--surface);
+  color: var(--fg);
+}
+
+.main__view-bank .filter-item.is-active {
+  background: var(--accent-bg);
+  color: var(--fg);
+  border-color: var(--accent-border);
+}
+
+.main__view-bank .filter-item .filter-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.main__view-bank .filter-count {
+  font-size: var(--fs-xs);
+  color: var(--fg-subtle);
+  font-variant-numeric: tabular-nums;
+  background: var(--surface-strong);
+  border-radius: 999px;
+  padding: 1px var(--sp-2);
+  flex-shrink: 0;
+}
+
+.main__view-bank .filter-item.is-active .filter-count {
+  background: var(--accent-border);
+  color: var(--fg);
+}
+
+/* Question rows. */
+.main__view-bank .q-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.main__view-bank .q-row {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--qb-radius);
+  padding: var(--sp-4);
+  box-shadow: var(--elev-1), var(--top-highlight);
+  transition: border-color var(--dur-2) var(--ease), background var(--dur-2) var(--ease);
+}
+
+.main__view-bank .q-row:hover {
+  border-color: var(--hairline-strong);
+  background: var(--bg-elev-2);
+}
+
+.main__view-bank .q-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  justify-content: space-between;
+}
+
+.main__view-bank .q-text {
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.main__view-bank .q-score {
+  font-size: var(--fs-xs);
+  color: var(--accent-strong);
+  font-variant-numeric: tabular-nums;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  padding: 1px var(--sp-2);
+  flex-shrink: 0;
+}
+
+.main__view-bank .q-row-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.main__view-bank .q-vote {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--fg-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.main__view-bank .q-row-meta .spacer {
+  flex: 1;
+}
+
+.main__view-bank .q-link {
+  font-size: var(--fs-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--accent-strong);
+}
+
+.main__view-bank .q-link:hover {
+  text-decoration: underline;
+}
+
+.main__view-bank .q-subcats {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* Chips (shared by company chips). */
+.main__view-bank .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.main__view-bank .chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-sm);
+  padding: 3px var(--sp-3);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.main__view-bank .chip-more {
+  color: var(--fg-subtle);
+  background: transparent;
+  border-style: dashed;
+}
+
+/* Difficulty badge. */
+.main__view-bank .diff-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 2px var(--sp-2);
+  border-radius: var(--qb-radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.main__view-bank .diff-badge .diff-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+}
+
+.main__view-bank .diff-badge[data-level='0'] .diff-pip { background: var(--diff-unspecified); }
+.main__view-bank .diff-badge[data-level='1'] .diff-pip { background: var(--diff-easy); }
+.main__view-bank .diff-badge[data-level='2'] .diff-pip { background: var(--diff-medium); }
+.main__view-bank .diff-badge[data-level='3'] .diff-pip { background: var(--diff-hard); }
+
+/* Spinner. */
+.main__view-bank .spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--hairline-strong);
+  border-top-color: var(--ai);
+  border-radius: 50%;
+  animation: qb-spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes qb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.main__view-bank .loading-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--fg-muted);
+  font-size: var(--fs-base);
+  padding: var(--sp-4);
+}
+
+/* Alerts. */
+.main__view-bank .alert {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: flex-start;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--qb-radius);
+  font-size: var(--fs-base);
+}
+
+.main__view-bank .alert-error {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: color-mix(in srgb, var(--danger) 70%, white);
+}
+
+.main__view-bank .alert-error strong {
+  color: var(--danger);
+}
+
+/* Empty state. */
+.main__view-bank .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--sp-2);
+  padding: var(--sp-8) var(--sp-4);
+  color: var(--fg-subtle);
+}
+
+.main__view-bank .empty-title {
+  color: var(--fg-muted);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-md);
+}
+
+.main__view-bank .empty-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--qb-radius);
+  border: 1px dashed var(--hairline-strong);
+  margin-bottom: var(--sp-2);
+}
+
+/* Pagination. */
+.main__view-bank .pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) 0 var(--sp-2);
+  color: var(--fg-muted);
+  font-size: var(--fs-sm);
+}
+
+.main__view-bank .pager-info {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Narrow window: collapse the bank's sidebar like the desktop responsive rules. */
+@media (max-width: 860px) {
+  .main__view-bank .qbank {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  .main__view-bank .qbank-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--hairline);
+  }
+}

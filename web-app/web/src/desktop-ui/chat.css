@@ -1,0 +1,761 @@
+/*
+ * chat.css — Hero transcript + AI follow-up card surface.
+ * Owned by: chat-ui-manager.js (message builder) + styles.css (tokens).
+ *
+ * Architecture:
+ *   • Three colour-coded lanes stream into .chat-messages:
+ *       teal  = .lane-candidate  (voice-system / computer audio)
+ *       amber = .lane-interviewer (voice-mic / you)
+ *       indigo = .lane-ai        (AI coach — the product's core output)
+ *   • Every AI follow-up question is a .is-question-card — the premium
+ *     surface that makes the product feel like a real copilot.
+ *   • All durations come from --dur-* tokens; all colours from --candidate /
+ *     --interviewer / --ai / --fg etc. NEVER hardcode here.
+ *   • prefers-reduced-motion guards are intentionally absent — explicit
+ *     owner choice (always animate).
+ *
+ * Motion rules (不拖泥带水):
+ *   Entrances ease-out (--ease-out). Exits ease-in ~70%. Press = --ease-spring.
+ *   transform/opacity ONLY — never animate layout/box-model properties.
+ *   Nothing exceeds --dur-4 (320ms).
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 1. SESSION SWITCH CROSSFADE
+ *    styles.css owns the scroll container geometry; we own transform/opacity.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Phase 1 — old content leaving (ease-in = accelerates away, decisively). */
+.chat-messages.is-switching {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+        opacity    var(--dur-1) var(--ease-in),
+        transform  var(--dur-1) var(--ease-in);
+}
+
+/* Phase 2 — new content arriving. Container-level rise triggers the replay
+   cascade's nth-child stagger (rules below). */
+.chat-messages.is-entering {
+    animation: chat-content-in var(--dur-3) var(--ease-out) both;
+}
+
+@keyframes chat-content-in {
+    from {
+        opacity:   0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity:   1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 2. MESSAGE — SHARED FRAME
+ *    Every .chat-message is one transcript line or AI card.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.chat-message {
+    position: relative;
+    padding: 8px 12px 8px 16px;
+    margin: 2px 0;                   /* tight rhythm; cards override to 8px */
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--fg);
+    /* Every live-incoming line gets a crisp slide-fade entrance.
+       --dur-3 = 240ms with expo-out — decisive, not floaty. */
+    animation: chat-line-in var(--dur-3) var(--ease-out) both;
+}
+
+/* Replay cascade: only while .is-entering (session switch batch replay).
+   Live transcription does NOT set .is-entering so live lines land instantly. */
+.chat-messages.is-entering .chat-message:nth-child(1) { animation-delay: 0ms; }
+.chat-messages.is-entering .chat-message:nth-child(2) { animation-delay: 32ms; }
+.chat-messages.is-entering .chat-message:nth-child(3) { animation-delay: 64ms; }
+.chat-messages.is-entering .chat-message:nth-child(4) { animation-delay: 96ms; }
+.chat-messages.is-entering .chat-message:nth-child(5) { animation-delay: 128ms; }
+.chat-messages.is-entering .chat-message:nth-child(6) { animation-delay: 160ms; }
+
+@keyframes chat-line-in {
+    from {
+        opacity:   0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity:   1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 3. MESSAGE HEADER  — icon · label · actions · timestamp
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 3px;
+    min-height: 20px;
+}
+
+.message-icon {
+    flex: 0 0 auto;
+    font-size: 12px;
+    line-height: 1;
+    /* Opacity carried by lane rules below; default for system messages. */
+    opacity: 0.72;
+}
+
+/* Uppercase mono label — CANDIDATE / YOU / AI FOLLOW-UP.
+   letter-spacing 0.06em matches the rail section header rhythm. */
+.message-label {
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    /* Default; lane rules override to the accent colour. */
+}
+
+/* Tabular mono timestamp — never warps on digit change. */
+.message-time {
+    margin-left: auto;
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-subtle);           /* tertiary, receding */
+    letter-spacing: 0.02em;
+}
+
+.message-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 4. MESSAGE BODY
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.message-content {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fg);
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+/* Code blocks inside formatted AI responses. */
+.message-content pre {
+    margin: 6px 0;
+    padding: 10px 12px;
+    background: var(--bg-deep);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    white-space: pre;
+    color: var(--fg);
+}
+
+.message-content code {
+    font-family: var(--font-mono);
+    font-size: 12px;            /* on-scale (was 0.9em = 12.6px fractional) */
+    color: var(--fg-muted);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 5. LANE STYLES — teal (candidate) and amber (interviewer)
+ *    A left accent rail + soft gradient wash establishes role instantly.
+ *    Colour is only sourced from --lane-accent; never hard-coded here.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.lane-candidate,
+.lane-interviewer {
+    border-left: 2px solid var(--lane-accent, var(--border));
+    /* Subtle gradient wash fades within ~36px; communicates role without
+       dominating the reading surface. */
+    background: linear-gradient(
+        to right,
+        color-mix(in srgb, var(--lane-accent, transparent) 7%, transparent) 0%,
+        transparent 38%
+    );
+    /* Hairline top edge catches virtual light — aligns with global elev model. */
+    box-shadow: var(--top-highlight);
+}
+
+/* Teal — candidate / computer audio. */
+.lane-candidate {
+    --lane-accent: var(--candidate);
+}
+
+/* Amber — you / microphone. */
+.lane-interviewer {
+    --lane-accent: var(--interviewer);
+}
+
+/* Label + icon tinted to the accent — colour + text + icon, never colour alone. */
+.lane-candidate .message-label,
+.lane-interviewer .message-label {
+    color: var(--lane-accent);
+}
+
+.lane-candidate .message-icon,
+.lane-interviewer .message-icon {
+    color: var(--lane-accent);
+    opacity: 1;
+}
+
+/* Faint hover surface: reassures the user the row is interactive (copy btn). */
+.lane-candidate:hover,
+.lane-interviewer:hover {
+    background: linear-gradient(
+        to right,
+        color-mix(in srgb, var(--lane-accent) 11%, transparent) 0%,
+        color-mix(in srgb, var(--lane-accent) 3%, transparent) 48%,
+        transparent 100%
+    );
+    transition: background var(--dur-2) var(--ease-out);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 6. LIVE / IN-PROGRESS TRANSCRIPT LINE
+ *    Dimmed text + blinking caret signals the segment isn't finalised yet.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.chat-message.is-live .message-content,
+.chat-message.is-interim .message-content {
+    color: var(--fg-muted);
+}
+
+/* Blinking block caret — steps(1) gives a hard digital blink, not a fade. */
+.chat-message.is-live .message-content::after,
+.chat-message.is-interim .message-content::after {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 1em;
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    border-radius: 1px;
+    background: var(--lane-accent, var(--ai));
+    animation: chat-caret-blink 1s steps(1, end) infinite;
+}
+
+@keyframes chat-caret-blink {
+    0%,  49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 7. AI FOLLOW-UP QUESTION CARD  — the product's CORE output surface
+ *
+ *    Visual language: indigo accent rail + elev-2 elevation + hairline top
+ *    sheen + soft --glow-ai bloom.  Entrance: slide-fade from below.
+ *    This is the ONE element per view that can glow — keeps it premium.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Indigo lane custom property (also consumed by the caret above). */
+.lane-ai {
+    --lane-accent: var(--ai);
+}
+
+.is-question-card {
+    --lane-accent: var(--ai);
+
+    /* Comfortable vertical breathing room; wider left padding clears the rail. */
+    margin: 8px 0;
+    padding: 12px 16px 16px 16px;
+
+    /* Elevated indigo-tinted card surface (one tier above transcript lines). */
+    background: color-mix(in srgb, var(--ai) 5%, var(--bg-elev));
+    border: 1px solid color-mix(in srgb, var(--ai) 30%, var(--hairline));
+    border-left: 3px solid var(--ai);
+    border-radius: var(--radius-lg);        /* larger radius = more premium feel */
+
+    /* Depth: elev-2 drop shadow + top highlight sheen + sparing AI glow bloom.
+       The glow is colour-mixed to 40% so it reads as an aura, not a neon ring. */
+    box-shadow:
+        var(--elev-2),
+        var(--top-highlight),
+        0 0 26px -8px color-mix(in srgb, var(--ai) 36%, transparent);
+
+    /* Crisp slide-fade entrance — plays automatically when JS appends the element.
+       --dur-3 = 240ms expo-out; translateY(10px→0) gives a clear "landing" feel.
+       `both` = fill-mode: also applies the `from` state before the animation. */
+    animation: question-card-in var(--dur-3) var(--ease-out) both;
+}
+
+@keyframes question-card-in {
+    from {
+        opacity:   0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity:   1;
+        transform: translateY(0);
+    }
+}
+
+/* Glow is STATIC — no hover intensification. This avoids a per-hover box-shadow
+   repaint on the most common card in the transcript, and keeps the single
+   "hero glow per view" reading calm rather than reactive. (The copy button
+   still reveals on hover via its own rule below.) */
+
+/* Label + icon always in indigo — this is the AI brand colour. */
+.is-question-card .message-label {
+    color: var(--ai);
+    letter-spacing: 0.07em;    /* slightly tighter than lane labels — premium */
+}
+
+.is-question-card .message-icon {
+    color: var(--ai);
+    opacity: 1;
+}
+
+/* Question body — slightly larger, medium weight: this is the key output text. */
+.is-question-card .message-content,
+.question-card__body {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--fg);
+}
+
+/* Anchor quote — the candidate phrase the question drills into.
+   Teal left border (candidate colour) clarifies provenance at a glance. */
+.question-card__anchor {
+    margin: 0 0 10px;
+    padding: 6px 10px;
+    border-left: 2px solid color-mix(in srgb, var(--candidate) 55%, transparent);
+    background: color-mix(in srgb, var(--candidate) 7%, transparent);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--fg-muted);
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* Clickable anchor — jumps to the source transcript line. Reads as interactive
+   (pointer, teal hover, focus ring) without shouting. */
+.question-card__anchor--jump {
+    cursor: pointer;
+    transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
+}
+.question-card__anchor--jump::after {
+    content: ' ↩';
+    color: color-mix(in srgb, var(--candidate) 70%, transparent);
+    font-style: normal;
+}
+.question-card__anchor--jump:hover {
+    background: color-mix(in srgb, var(--candidate) 14%, transparent);
+    border-left-color: var(--candidate);
+}
+.question-card__anchor--jump:focus-visible {
+    outline: 2px solid var(--candidate);
+    outline-offset: 2px;
+}
+
+/* Source-flash — the transcript line a follow-up was drilled from glows, then
+   fades out on its own (self-removing via animationend in chat-ui-manager). */
+@keyframes source-flash {
+    0%   { background: color-mix(in srgb, var(--candidate) 36%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--candidate) 45%, transparent); }
+    25%  { background: color-mix(in srgb, var(--candidate) 30%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--candidate) 38%, transparent); }
+    100% { background: transparent; box-shadow: 0 0 0 2px transparent; }
+}
+.chat-message.source-flash {
+    animation: source-flash 2.6s var(--ease) forwards;
+    border-radius: var(--radius-sm);
+}
+
+/* Priority pill — mono uppercase; colours are keyed to semantic risk level.
+   High = danger (red), medium = interviewer (amber), low = muted. */
+.question-card__priority {
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 999px;           /* pill shape */
+    border: 1px solid var(--hairline);
+    color: var(--fg-muted);
+    background: var(--surface);
+}
+
+.question-card__priority[data-priority="high"] {
+    color: var(--danger);
+    border-color: color-mix(in srgb, var(--danger) 45%, var(--hairline));
+    background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+
+.question-card__priority[data-priority="medium"] {
+    color: var(--interviewer);
+    border-color: color-mix(in srgb, var(--interviewer) 45%, var(--hairline));
+    background: color-mix(in srgb, var(--interviewer) 12%, transparent);
+}
+
+.question-card__priority[data-priority="low"] {
+    color: var(--fg-subtle);
+}
+
+/* Card header layout — icon · label · priority · actions · time.
+   Same flex row as .message-header; no separate rule needed. */
+.question-card__header {
+    margin-bottom: 6px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 8. ACTION BUTTONS — copy + AI-context toggle
+ *    Hidden at rest; revealed on line hover or :focus-within.
+ *    The question card's copy button is always faintly visible (primary CTA).
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.message-copy-btn,
+.ai-include-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 5px;
+    color: var(--fg-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    /* Hidden at rest; opacity transition matches --dur-2 hover rhythm. */
+    opacity: 0;
+    transition:
+        opacity        var(--dur-2) var(--ease-out),
+        color          var(--dur-2) var(--ease-out),
+        border-color   var(--dur-2) var(--ease-out),
+        background     var(--dur-2) var(--ease-out),
+        transform      var(--dur-1) var(--ease-spring);
+}
+
+/* Reveal on parent hover or keyboard focus. */
+.chat-message:hover .message-copy-btn,
+.chat-message:hover .ai-include-toggle,
+.chat-message:focus-within .message-copy-btn,
+.chat-message:focus-within .ai-include-toggle,
+.message-copy-btn:focus-visible,
+.ai-include-toggle:focus-visible {
+    opacity: 1;
+}
+
+.message-copy-btn:hover,
+.ai-include-toggle:hover {
+    color: var(--fg);
+    border-color: var(--hairline);
+    background: var(--surface);
+}
+
+/* Press: spring scale-down = decisive, tactile. */
+.message-copy-btn:active,
+.ai-include-toggle:active {
+    transform: scale(0.92);
+}
+
+.message-copy-btn:focus-visible,
+.ai-include-toggle:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+/* Card copy button — always faintly visible since it is the primary CTA. */
+.question-card__copy {
+    opacity: 0.55;
+}
+
+.is-question-card:hover .question-card__copy,
+.question-card__copy:focus-visible {
+    opacity: 1;
+    color: var(--ai);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 9. AI CONTEXT INCLUSION — toggleable rows
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.ai-toggleable.ai-excluded {
+    opacity: 0.48;
+}
+
+.ai-excluded-note {
+    display: none;
+    margin-bottom: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    color: var(--fg-subtle);
+}
+
+.ai-toggleable.ai-excluded .ai-excluded-note {
+    display: block;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 10. SYSTEM MESSAGE VARIANT
+ *     Informational / error lines; no lane colour; subdued hierarchy.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.system-message {
+    font-size: 12px;
+    color: var(--fg-muted);
+}
+
+/* .system-message-message is the text span inside system messages. */
+.system-message-message {
+    opacity: 0.85;
+}
+
+/* ai-response is a full formatted response (markdown). Inherits body type. */
+.message-content.ai-response {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 11. CHAT COMPOSER
+ *     Premium focus ring + send button affordance. The autoscroll toggle is
+ *     styled by styles.css; only the inner textarea + send live here.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.chat-composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 8px;
+    /* Elevated card surface — one tier above the base canvas (bg-elev). */
+    background: var(--bg-elev);
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--radius);
+    box-shadow: var(--elev-1), var(--top-highlight);
+    /* Smooth border/shadow change on focus state of the inner textarea. */
+    transition:
+        border-color   var(--dur-2) var(--ease-out),
+        box-shadow     var(--dur-2) var(--ease-out);
+}
+
+/* When the inner textarea is focused, lift the whole composer slightly. */
+.chat-composer:focus-within {
+    border-color: color-mix(in srgb, var(--ai) 45%, var(--hairline-strong));
+    box-shadow:
+        var(--elev-1),
+        var(--top-highlight),
+        0 0 0 2px color-mix(in srgb, var(--ring) 22%, transparent);
+}
+
+/* Textarea — grows to maxChatInputHeight via JS auto-resize. */
+.chat-composer textarea,
+.chat-manual-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 24px;
+    max-height: 160px;
+    padding: 8px 10px;
+    resize: none;
+    color: var(--fg);
+    /* No background/border of its own — the composer shell provides the chrome. */
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    caret-color: var(--ai);          /* indigo text cursor = brand consistent */
+    outline: none;                   /* focus indicator lives on the shell above */
+}
+
+.chat-composer textarea::placeholder,
+.chat-manual-input::placeholder {
+    color: var(--fg-subtle);
+    font-size: 13px;
+}
+
+/* focus-visible on the textarea itself: no border (shell handles it). */
+.chat-composer textarea:focus-visible,
+.chat-manual-input:focus-visible {
+    outline: none;
+}
+
+/* Send / Add button — indigo CTA, spring press scale. */
+.chat-manual-send {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 14px;
+    /* Dark text on bright indigo = highest contrast within the dark palette. */
+    color: var(--bg-base);
+    background: var(--ai);
+    border: 1px solid color-mix(in srgb, var(--ai) 85%, white);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    box-shadow: 0 1px 3px -1px color-mix(in srgb, var(--ai) 50%, transparent);
+    transition:
+        background     var(--dur-2) var(--ease-out),
+        border-color   var(--dur-2) var(--ease-out),
+        box-shadow     var(--dur-2) var(--ease-out),
+        transform      var(--dur-1) var(--ease-spring);
+}
+
+.chat-manual-send:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--ai) 88%, white);
+    border-color: color-mix(in srgb, var(--ai) 72%, white);
+    box-shadow:
+        0 1px 3px -1px color-mix(in srgb, var(--ai) 55%, transparent),
+        0 0 14px -4px color-mix(in srgb, var(--ai) 45%, transparent);
+}
+
+/* Spring scale: 0.96 feels like a physical button click. */
+.chat-manual-send:active:not(:disabled) {
+    transform: scale(0.96);
+    transition-duration: var(--dur-1);
+}
+
+.chat-manual-send:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+.chat-manual-send:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 12. CHAT MESSAGES SCROLL AREA — EMPTY STATE
+ *     Styles the placeholder text when no messages exist.
+ *     .chat-messages geometry is owned by styles.css.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Overrides the ::before in styles.css with a more polished empty state. */
+.chat-messages:empty::before {
+    font-size: 13px;
+    font-family: var(--font-body);
+    color: var(--fg-subtle);
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+}
+
+/* ── Generate-Q progress card ──────────────────────────────────────────────
+ * Transient chat-stream card shown while the Expert follow-up chain runs.
+ * Determinate bar (JS sets fill width); indeterminate variant for Fast mode.
+ * Indigo --ai lane, consistent with .is-question-card. */
+.chat-progress-card {
+    --lane-accent: var(--ai);
+    padding: 10px 14px;
+    border: 1px solid color-mix(in srgb, var(--ai) 28%, var(--hairline));
+    border-left: 3px solid var(--ai);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--ai) 5%, var(--bg-elev));
+}
+
+.chat-progress__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.chat-progress__label {
+    font-size: 12px;
+    color: var(--ai);
+    letter-spacing: 0.01em;
+}
+
+.chat-progress__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex: none;
+}
+
+.chat-progress__timer {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in srgb, var(--ai) 60%, var(--fg-subtle));
+    white-space: nowrap;
+}
+
+.chat-progress__tokens {
+    flex: none;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in srgb, var(--ai) 70%, var(--fg-subtle));
+    white-space: nowrap;
+}
+
+.chat-progress__bar {
+    position: relative;
+    height: 6px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--ai) 14%, transparent);
+}
+
+.chat-progress__fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: var(--ai);
+    transition: width 220ms ease-out;
+}
+
+/* Indeterminate (Fast mode / pre-first-event): ignore the JS width and run a
+ * sliding shimmer instead. */
+.chat-progress-card.is-indeterminate .chat-progress__fill {
+    width: 40% !important;
+    transition: none;
+    animation: chat-progress-slide 1.1s ease-in-out infinite;
+}
+
+@keyframes chat-progress-slide {
+    0%   { transform: translateX(-110%); }
+    100% { transform: translateX(280%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chat-progress-card.is-indeterminate .chat-progress__fill {
+        animation: none;
+        width: 100% !important;
+        opacity: 0.5;
+    }
+    .chat-progress__fill { transition: none; }
+}

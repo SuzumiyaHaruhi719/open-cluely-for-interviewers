@@ -1,7 +1,21 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App';
-import './styles.css';
+import { Shell } from './desktop/Shell';
+
+// Desktop CSS, copied verbatim into ./desktop-ui and imported in the SAME order
+// as the desktop renderer.html: styles.css (shell + tokens + fonts) first, then
+// the feature partials. This is what gives the web client the identical look,
+// tokens, and launch/entrance animations.
+import './desktop-ui/styles.css';
+import './desktop-ui/history-sidebar.css';
+import './desktop-ui/channel-control.css';
+import './desktop-ui/resume-dropzone.css';
+import './desktop-ui/chat.css';
+import './desktop-ui/session-context.css';
+import './desktop-ui/interview-type.css';
+import './desktop-ui/settings.css';
+// Web-only additions: question-card sub-blocks + the namespaced Question Bank.
+import './web-extras.css';
 
 const container = document.getElementById('root');
 if (!container) {
@@ -10,6 +24,6 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <App />
+    <Shell />
   </StrictMode>
 );
