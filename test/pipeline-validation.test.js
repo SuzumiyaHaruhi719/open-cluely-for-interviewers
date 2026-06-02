@@ -37,7 +37,9 @@ test('rejects type-mismatched edge (claims → candidates port)', () => {
 
 test('rejects missing required input', () => {
   const v = validatePipeline({ nodes: [{ id: 'G', type: 'final-render' }], edges: [] }, BLOCK_TYPES);
-  assert.ok(hasErr(v.errors, 'required input "ranking"'), v.errors.join('; '));
+  // 'candidates' is required on G; 'ranking' is now optional (merged-DE presets omit
+  // Block E and let G fall back to Block D's candidate order).
+  assert.ok(hasErr(v.errors, 'required input "candidates"'), v.errors.join('; '));
 });
 
 test('rejects no final producer', () => {
