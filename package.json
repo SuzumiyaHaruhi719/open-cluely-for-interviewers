@@ -1,5 +1,5 @@
 {
-  "name": "stealth-meeting-assistant",
+  "name": "interviewer-copilot",
   "version": "1.0.0",
   "description": "Invisible AI assistant for meetings - undetectable during screen share",
   "main": "src/main.js",
@@ -28,8 +28,8 @@
     "esbuild": "^0.25.6"
   },
   "build": {
-    "appId": "com.google.chrome",
-    "productName": "Google Chrome (2)",
+    "appId": "com.wtatc.interviewer-copilot",
+    "productName": "Interviewer Copilot",
     "directories": {
       "output": "dist"
     },
@@ -70,7 +70,7 @@
       "fileAssociations": []
     },
     "portable": {
-      "artifactName": "GoogleChrome.exe"
+      "artifactName": "InterviewerCopilot.exe"
     },
     "linux": {
       "target": "AppImage",
