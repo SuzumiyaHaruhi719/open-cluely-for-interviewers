@@ -547,6 +547,17 @@ body.stealth-on .app-shell { opacity: 0.92; }
   box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 50%, transparent);
 }
 
+/* Expert 2.0 = emerald (the merged-DE fast chain) */
+.mode-indicator[data-mode="expert2"] {
+  color: #34d399;
+  border-color: color-mix(in srgb, #34d399 35%, var(--border));
+  background: color-mix(in srgb, #34d399 8%, transparent);
+}
+.mode-indicator[data-mode="expert2"] .mode-indicator__dot {
+  background: #34d399;
+  box-shadow: 0 0 6px color-mix(in srgb, #34d399 50%, transparent);
+}
+
 /* ASR engine pill — colour per provider so the active speech-to-text model is
    obvious at a glance (Paraformer = teal, Xunfei = amber, Doubao = violet). */
 .mode-indicator[data-asr="paraformer"] {

@@ -103,7 +103,7 @@ function sanitizeAppState(state) {
 
 
     const interviewerMode = String(state.interviewerMode ?? '').trim().toLowerCase();
-    if (interviewerMode === 'expert' || interviewerMode === 'fast' || interviewerMode === 'customize') {
+    if (['expert', 'expert2', 'fast', 'customize'].includes(interviewerMode)) {
       nextState.interviewerMode = interviewerMode;
     }
 

@@ -91,7 +91,7 @@ function registerSettingsIpc({
     const resumeText = typeof appState?.resumeText === 'string' ? appState.resumeText : '';
     const jobDescription = typeof appState?.jobDescription === 'string' ? appState.jobDescription : '';
     const asrProvider = ['xfyun', 'volc'].includes(appState?.asrProvider) ? appState.asrProvider : 'paraformer';
-    const interviewerMode = ['expert', 'customize'].includes(appState?.interviewerMode) ? appState.interviewerMode : 'fast';
+    const interviewerMode = ['expert', 'expert2', 'customize'].includes(appState?.interviewerMode) ? appState.interviewerMode : 'fast';
     const activePipelineId = typeof appState?.activePipelineId === 'string' ? appState.activePipelineId : null;
 
     return {
@@ -153,7 +153,7 @@ function registerSettingsIpc({
       }
       if (has('interviewerMode')) {
         const r = String(settings.interviewerMode || '').trim().toLowerCase();
-        patch.interviewerMode = ['expert', 'customize'].includes(r) ? r : 'fast';
+        patch.interviewerMode = ['expert', 'expert2', 'customize'].includes(r) ? r : 'fast';
       }
 
       // Side-effecting settings (active model / language / opacity): apply + persist

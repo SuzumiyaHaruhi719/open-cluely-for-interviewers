@@ -820,7 +820,9 @@ function renderTemplateCards(items) {
 async function refreshCustomizePicker() {
     if (!customizeTemplatesEl || !window.electronAPI?.pipelineList) return;
     const r = await window.electronAPI.pipelineList();
-    lastPipelineList = (r && r.pipelines) || [];
+    // Expert 1.0 / 2.0 are now top-level modes (not Customize templates), so hide
+    // them from the gallery — Customize is for role templates + your own pipelines.
+    lastPipelineList = ((r && r.pipelines) || []).filter((p) => p.id !== 'builtin-expert' && p.id !== 'builtin-expert-fast');
     renderTemplateCards(lastPipelineList);
 }
 
@@ -1722,9 +1724,10 @@ function paintAsrIndicator(provider) {
 
 // Track the interviewer mode from settings so the topbar pill + new-session
 // `mode` stay in sync with what the backend orchestrator will actually run.
+const MODE_LABELS = { fast: 'Fast', expert: 'Expert 1.0', expert2: 'Expert 2.0', customize: 'Customize' };
 function applyInterviewerModeFromSettings(settings) {
     const m = settings && settings.interviewerMode;
-    interviewerMode = (m === 'expert' || m === 'customize') ? m : 'fast';
+    interviewerMode = ['expert', 'expert2', 'customize'].includes(m) ? m : 'fast';
     if (settings && typeof settings.activePipelineId === 'string') activePipelineId = settings.activePipelineId;
     paintModeIndicator();
     if (customizeRowEl) customizeRowEl.classList.toggle('is-visible', interviewerMode === 'customize');
@@ -1734,10 +1737,10 @@ function applyInterviewerModeFromSettings(settings) {
 function paintModeIndicator() {
     if (modeIndicatorEl) {
         modeIndicatorEl.dataset.mode = interviewerMode;
-        modeIndicatorEl.setAttribute('title', `Interviewer mode: ${interviewerMode}`);
+        modeIndicatorEl.setAttribute('title', `Interviewer mode: ${MODE_LABELS[interviewerMode] || 'Fast'}`);
     }
     if (modeIndicatorLabel) {
-        modeIndicatorLabel.textContent = interviewerMode === 'expert' ? 'Expert' : (interviewerMode === 'customize' ? 'Customize' : 'Fast');
+        modeIndicatorLabel.textContent = MODE_LABELS[interviewerMode] || 'Fast';
     }
 }
 

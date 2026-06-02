@@ -101,7 +101,7 @@ function registerPipelineIpc({ ipcMain, app, getAppState, saveAppState, setAppSt
   ipcMain.handle('interviewer-set-mode', (_e, payload = {}) => {
     try {
       const mode = String(payload && payload.mode || '').toLowerCase();
-      if (!['fast', 'expert', 'customize'].includes(mode)) return { success: false, error: 'invalid-mode' };
+      if (!['fast', 'expert', 'expert2', 'customize'].includes(mode)) return { success: false, error: 'invalid-mode' };
       const next = saveAppState(app, { interviewerMode: mode });
       if (typeof setAppState === 'function') setAppState(next);
       return { success: true, interviewerMode: next.interviewerMode, activePipelineId: next.activePipelineId };

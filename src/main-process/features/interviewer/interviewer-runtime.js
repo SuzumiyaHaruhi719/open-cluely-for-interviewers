@@ -22,7 +22,7 @@ const {
 const { runPipelineChain, EXPERT_ITERATION_VERSION } = require('./expert-orchestrator');
 const { logExpertRun } = require('./expert-run-logger');
 const presetLibrary = require('../../../services/ai/pipeline/preset-library');
-const { EXPERT_PRESET } = require('../../../services/ai/pipeline/presets');
+const { EXPERT_PRESET, EXPERT_FAST_PRESET } = require('../../../services/ai/pipeline/presets');
 
 const STAGE1_TRIGGER_SCORE = 4;
 const MIN_ANSWER_CHARS = 12;
@@ -141,6 +141,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
   function getMode() {
     const state = getAppState() || {};
     if (state.interviewerMode === 'expert') return 'expert';
+    if (state.interviewerMode === 'expert2') return 'expert2';
     if (state.interviewerMode === 'customize') return 'customize';
     return 'fast';
   }
@@ -309,6 +310,10 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     const mode = getMode();
     if (mode === 'expert') {
       return analyzeViaPipeline({ pipeline: EXPERT_PRESET, mode: 'expert', candidateAnswer: answer, questionHistory, emotion, requestId });
+    }
+    if (mode === 'expert2') {
+      // Expert 2.0 — merged-DE fast chain.
+      return analyzeViaPipeline({ pipeline: EXPERT_FAST_PRESET, mode: 'expert', candidateAnswer: answer, questionHistory, emotion, requestId });
     }
     if (mode === 'customize') {
       return analyzeViaPipeline({ pipeline: getActivePipeline(), mode: 'custom', candidateAnswer: answer, questionHistory, emotion, requestId });

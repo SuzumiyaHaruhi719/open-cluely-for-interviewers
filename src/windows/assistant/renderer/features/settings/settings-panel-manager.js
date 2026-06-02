@@ -540,12 +540,12 @@ export function createSettingsPanelManager({
         if (!settingInterviewerMode) return 'fast';
         const active = settingInterviewerMode.querySelector('.mode-segmented__btn.is-active');
         const m = active && active.dataset.mode;
-        return (m === 'expert' || m === 'customize') ? m : 'fast';
+        return ['expert', 'expert2', 'customize'].includes(m) ? m : 'fast';
     }
 
     function setInterviewerMode(mode) {
         if (!settingInterviewerMode) return;
-        const normalized = (mode === 'expert' || mode === 'customize') ? mode : 'fast';
+        const normalized = ['expert', 'expert2', 'customize'].includes(mode) ? mode : 'fast';
         settingInterviewerMode.querySelectorAll('.mode-segmented__btn').forEach((btn) => {
             const isActive = btn.dataset.mode === normalized;
             btn.classList.toggle('is-active', isActive);
