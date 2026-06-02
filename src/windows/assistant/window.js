@@ -141,13 +141,10 @@ function createAssistantWindow({
     app.dock.hide();
     mainWindow.setHiddenInMissionControl(true);
   } else if (process.platform === 'win32') {
-    console.log('Applying Windows stealth settings');
     mainWindow.setSkipTaskbar(false);
     mainWindow.setAppDetails({
-      appId: 'SystemProcess',
-      appIconPath: '',
-      relaunchCommand: '',
-      relaunchDisplayName: ''
+      appId: 'com.wtatc.interviewer-copilot',
+      relaunchDisplayName: 'Interviewer Copilot'
     });
   }
 

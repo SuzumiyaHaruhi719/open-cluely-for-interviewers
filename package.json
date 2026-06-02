@@ -1,7 +1,7 @@
 {
   "name": "interviewer-copilot",
   "version": "1.0.0",
-  "description": "Invisible AI assistant for meetings - undetectable during screen share",
+  "description": "Interviewer Copilot — real-time follow-up question suggestions for interviewers",
   "main": "src/main.js",
   "scripts": {
     "start": "node scripts/run-electron.js",
@@ -66,7 +66,7 @@
       "icon": "assets/app-icon.ico",
       "requestedExecutionLevel": "asInvoker",
       "verifyUpdateCodeSignature": false,
-      "publisherName": "Google LLC",
+      "publisherName": "WTATC",
       "fileAssociations": []
     },
     "portable": {
@@ -74,7 +74,7 @@
     },
     "linux": {
       "target": "AppImage",
-      "icon": "assets/chrome.png"
+      "icon": "assets/app-icon.png"
     }
   },
   "author": "Shubham",
