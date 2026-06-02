@@ -407,6 +407,13 @@ body.stealth-on .app-shell { opacity: 0.92; }
 /* ── Main column ─────────────────────────────────────────────────────────── */
 .main {
   display: grid;
+  /* Pin the single implicit column to the track width. Without this the column
+     defaults to `auto`, which grows to the widest non-shrinkable child (the
+     topbar pills, the composer's channel cards) — ~935px — so every grid item,
+     including .chat-messages, blows past .main's 696px and bleeds under the
+     right rail, hiding the progress card's right-aligned timer/token meta.
+     minmax(0,1fr) lets the column shrink below its content's min-size. */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   min-height: 0;
   min-width: 0;
