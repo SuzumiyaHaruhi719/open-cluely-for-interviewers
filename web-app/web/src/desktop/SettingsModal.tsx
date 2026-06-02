@@ -5,10 +5,12 @@ import { MODE_META, LANGUAGE_OPTIONS } from './helpers';
 import { CloseIcon } from './icons';
 import { SHORTCUTS } from './shortcuts';
 import { useMicDevices } from './useMicDevices';
+import { useCustomizePipelines } from './useCustomizePipelines';
 import {
   MAX_OPACITY_STEP,
   MIN_OPACITY_STEP,
-  type AppSettings
+  type AppSettings,
+  type VolcSettings
 } from './useAppSettings';
 
 interface SettingsModalProps {
@@ -16,12 +18,18 @@ interface SettingsModalProps {
   mode: InterviewerMode;
   outputLanguage: OutputLanguage;
   settings: AppSettings;
+  /** The Customize pipeline the session currently runs (marks the active card). */
+  activePipelineId: string | null;
   onClose: () => void;
   onModeChange: (mode: InterviewerMode) => void;
   onLanguageChange: (language: OutputLanguage) => void;
   onAiModelChange: (value: string) => void;
   onAsrProviderChange: (value: string) => void;
+  /** Merge-patch the Doubao/Volc credential fields (revealed when provider = volc). */
+  onVolcSettingsChange: (patch: Partial<VolcSettings>) => void;
   onOpacityChange: (step: number) => void;
+  /** Pick a saved/builtin pipeline as the active Customize pipeline. */
+  onSelectPipeline: (id: string) => void;
   /** Open the full-window Pipeline Studio (Customize-mode node editor). */
   onOpenStudio: () => void;
 }
@@ -60,18 +68,34 @@ export function SettingsModal({
   mode,
   outputLanguage,
   settings,
+  activePipelineId,
   onClose,
   onModeChange,
   onLanguageChange,
   onAiModelChange,
   onAsrProviderChange,
+  onVolcSettingsChange,
   onOpacityChange,
+  onSelectPipeline,
   onOpenStudio
 }: SettingsModalProps) {
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
   const { devices } = useMicDevices(open);
   const [micDeviceId, setMicDeviceId] = useState('');
+  const [aiPrompt, setAiPrompt] = useState('');
+
+  // Customize-row gallery + AI generator. Only fetches while the modal is open in
+  // Customize mode (the row itself is only rendered then).
+  const customize = useCustomizePipelines(open && mode === 'customize');
+
+  const onGeneratePipeline = async (): Promise<void> => {
+    const id = await customize.generate(aiPrompt);
+    if (id) {
+      onSelectPipeline(id);
+      setAiPrompt('');
+    }
+  };
 
   // Mount on open; on close, play the exit animation before unmounting.
   useEffect(() => {
@@ -192,20 +216,65 @@ export function SettingsModal({
                     role="listbox"
                     aria-label="面试模板"
                   >
-                    <button type="button" className="customize-card" role="option" aria-selected="false">
-                      <span className="customize-card__top">
-                        资深后端
-                        <span className="customize-card__badge">内置</span>
-                      </span>
-                      <span className="customize-card__desc">分布式系统 · 深链追问</span>
+                    {customize.loading && customize.pipelines.length === 0 ? (
+                      <p className="settings-field__desc">加载模板中…</p>
+                    ) : null}
+                    {customize.pipelines.map((pipeline) => {
+                      const isActive = pipeline.id === activePipelineId;
+                      const badgeLabel = pipeline.builtin ? '模板' : '自定义';
+                      const badgeClass = `customize-card__badge${
+                        pipeline.builtin ? '' : ' customize-card__badge--user'
+                      }`;
+                      return (
+                        <button
+                          key={pipeline.id}
+                          type="button"
+                          className={`customize-card${isActive ? ' customize-card--active' : ''}`}
+                          role="option"
+                          aria-selected={isActive}
+                          data-id={pipeline.id}
+                          data-name={pipeline.name}
+                          onClick={() => onSelectPipeline(pipeline.id)}
+                        >
+                          <span className="customize-card__top">
+                            {pipeline.name}
+                            <span className={badgeClass}>{badgeLabel}</span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="customize-block">
+                  <div className="customize-block__label">② 或者用一句话让 AI 生成</div>
+                  <div className="customize-ai">
+                    <input
+                      type="text"
+                      id="customize-ai-input"
+                      className="settings-input"
+                      placeholder="例如：招一个能扛事、会带团队的资深后端，重点看线上事故判断"
+                      value={aiPrompt}
+                      disabled={customize.generating}
+                      onChange={(e) => setAiPrompt(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          void onGeneratePipeline();
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      id="customize-ai-generate"
+                      className="action-btn"
+                      disabled={customize.generating}
+                      onClick={() => void onGeneratePipeline()}
+                    >
+                      {customize.generating ? '生成中…' : 'AI 生成'}
                     </button>
-                    <button type="button" className="customize-card" role="option" aria-selected="false">
-                      <span className="customize-card__top">
-                        产品经理
-                        <span className="customize-card__badge">内置</span>
-                      </span>
-                      <span className="customize-card__desc">指标驱动 · 取舍判断</span>
-                    </button>
+                  </div>
+                  <div className="customize-ai__hint" id="customize-ai-hint">
+                    {customize.hint}
                   </div>
                 </div>
                 <div className="customize-block customize-block--advanced">
@@ -310,10 +379,86 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                Saved in this browser. The server streams via{' '}
-                <code>paraformer-realtime-8k-v2</code> regardless of this selection for now.
+                Saved in this browser and applied live. <code>Paraformer</code> uses the
+                server&apos;s DashScope key. <code>Doubao (豆包)</code> streams via Volcengine and
+                needs the credentials below. <code>Xunfei</code> is not wired yet.
               </p>
             </div>
+
+            {settings.asrProvider === 'volc' ? (
+              <div id="settings-volc-creds" className="settings-field">
+                <label className="settings-field__label" htmlFor="setting-volc-app-id">
+                  Doubao APP ID
+                </label>
+                <input
+                  type="text"
+                  id="setting-volc-app-id"
+                  className="settings-input settings-input--mono"
+                  value={settings.volcAppId}
+                  autoComplete="off"
+                  spellCheck={false}
+                  placeholder="X-Api-App-Key"
+                  onChange={(e) => onVolcSettingsChange({ volcAppId: e.target.value })}
+                />
+                <label
+                  className="settings-field__label"
+                  htmlFor="setting-volc-access-token"
+                  style={{ marginTop: 8 }}
+                >
+                  Doubao Access Token
+                </label>
+                <input
+                  type="password"
+                  id="setting-volc-access-token"
+                  className="settings-input settings-input--mono"
+                  value={settings.volcAccessToken}
+                  autoComplete="off"
+                  spellCheck={false}
+                  placeholder="X-Api-Access-Key"
+                  onChange={(e) => onVolcSettingsChange({ volcAccessToken: e.target.value })}
+                />
+                <label
+                  className="settings-field__label"
+                  htmlFor="setting-volc-model"
+                  style={{ marginTop: 8 }}
+                >
+                  Model (optional)
+                </label>
+                <input
+                  type="text"
+                  id="setting-volc-model"
+                  className="settings-input settings-input--mono"
+                  value={settings.volcModel}
+                  autoComplete="off"
+                  spellCheck={false}
+                  placeholder="bigmodel"
+                  onChange={(e) => onVolcSettingsChange({ volcModel: e.target.value })}
+                />
+                <label
+                  className="settings-field__label"
+                  htmlFor="setting-volc-resource-id"
+                  style={{ marginTop: 8 }}
+                >
+                  Resource ID (optional)
+                </label>
+                <input
+                  type="text"
+                  id="setting-volc-resource-id"
+                  className="settings-input settings-input--mono"
+                  value={settings.volcResourceId}
+                  autoComplete="off"
+                  spellCheck={false}
+                  placeholder="volc.bigasr.sauc.duration"
+                  onChange={(e) => onVolcSettingsChange({ volcResourceId: e.target.value })}
+                />
+                <p className="settings-field__desc">
+                  Sent to the server, which opens the Doubao connection on your behalf — the browser
+                  never connects to Volcengine directly, and the server never logs these. Stored in
+                  this browser only. Live transcription starts once both APP ID and Access Token are
+                  filled in.
+                </p>
+              </div>
+            ) : null}
 
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-mic-device">

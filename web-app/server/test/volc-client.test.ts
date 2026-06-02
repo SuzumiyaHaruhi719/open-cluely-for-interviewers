@@ -1,0 +1,403 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import zlib from 'node:zlib';
+import {
+  buildFrame,
+  parseFrame,
+  buildConfigPayload,
+  extractTranscripts,
+  createVolcSession,
+  VOLC_DEFAULT_MODEL,
+  VOLC_DEFAULT_RESOURCE_ID,
+  type WsConstructor,
+  type WsLike
+} from '../src/volc-client';
+import { createAsrRelay, type TranscriptEmit, type AsrSession } from '../src/asr-relay';
+import type { ParaformerSessionDeps } from '../src/paraformer-client';
+import type { VolcSessionDeps } from '../src/volc-client';
+
+// Frame protocol message-type / flag / (de)serialization constants. Mirrors the
+// desktop test in test/volcengine-frame.test.js so the web port stays in lock-step.
+const MSG_FULL_CLIENT = 0x1;
+const MSG_AUDIO_ONLY = 0x2;
+const MSG_FULL_SERVER = 0x9;
+const FLAG_POS_SEQ = 0x1;
+const SER_JSON = 0x1;
+const SER_RAW = 0x0;
+const COMP_GZIP = 0x1;
+
+// --- Frame build/parse round-trip (mirrors test/volcengine-frame.test.js) ---
+
+test('config frame round-trips (gzip JSON, full-client-shaped header)', () => {
+  const json = JSON.stringify({ user: { uid: 'x' }, audio: { rate: 16000 } });
+  const frame = buildFrame({
+    messageType: MSG_FULL_CLIENT,
+    flags: FLAG_POS_SEQ,
+    serialization: SER_JSON,
+    compression: COMP_GZIP,
+    sequence: 1,
+    payload: zlib.gzipSync(Buffer.from(json))
+  });
+  // Header byte 0 = version<<4 | headerSize.
+  assert.equal(frame[0], (0x1 << 4) | 0x1);
+  // messageType<<4 | flags.
+  assert.equal((frame[1] >> 4) & 0xf, MSG_FULL_CLIENT);
+  assert.equal(frame[1] & 0xf, FLAG_POS_SEQ);
+
+  const parsed = parseFrame(frame);
+  assert.ok(parsed);
+  assert.equal(parsed.messageType, MSG_FULL_CLIENT);
+  assert.deepEqual(JSON.parse(parsed.payload.toString('utf8')), JSON.parse(json));
+});
+
+test('audio frame with sequence parses and un-gzips payload', () => {
+  const pcm = Buffer.from([1, 2, 3, 4, 5, 6]);
+  const frame = buildFrame({
+    messageType: MSG_AUDIO_ONLY,
+    flags: FLAG_POS_SEQ,
+    serialization: SER_RAW,
+    compression: COMP_GZIP,
+    sequence: 7,
+    payload: zlib.gzipSync(pcm)
+  });
+  const parsed = parseFrame(frame);
+  assert.ok(parsed);
+  assert.equal(parsed.messageType, MSG_AUDIO_ONLY);
+  assert.deepEqual(parsed.payload, pcm);
+});
+
+test('buildConfigPayload encodes a gzip JSON config carrying the model + rate', () => {
+  const payload = buildConfigPayload('bigmodel', 16000);
+  const config = JSON.parse(zlib.gunzipSync(payload).toString('utf8'));
+  assert.equal(config.request.model_name, 'bigmodel');
+  assert.equal(config.audio.rate, 16000);
+  assert.equal(config.audio.format, 'pcm');
+});
+
+// --- result-frame parsing ----------------------------------------------------
+
+test('extractTranscripts returns a partial from rolling text', () => {
+  const payload = Buffer.from(JSON.stringify({ result: { text: 'hello wor' } }));
+  assert.deepEqual(extractTranscripts(payload), [{ text: 'hello wor', isFinal: false }]);
+});
+
+test('extractTranscripts returns finals from definite utterances', () => {
+  const payload = Buffer.from(
+    JSON.stringify({
+      result: {
+        text: 'ignored rolling',
+        utterances: [
+          { text: ' hello world. ', definite: true },
+          { text: 'partial', definite: false }
+        ]
+      }
+    })
+  );
+  assert.deepEqual(extractTranscripts(payload), [{ text: 'hello world.', isFinal: true }]);
+});
+
+test('extractTranscripts is empty for unparseable / empty frames', () => {
+  assert.deepEqual(extractTranscripts(Buffer.from('not json')), []);
+  assert.deepEqual(extractTranscripts(Buffer.from(JSON.stringify({}))), []);
+  assert.deepEqual(extractTranscripts(Buffer.from(JSON.stringify({ result: { text: '   ' } }))), []);
+});
+
+// --- Fake `ws` WebSocket (modeled on paraformer-client.test.ts) --------------
+
+class FakeWs implements WsLike {
+  static OPEN = 1;
+  static instances: FakeWs[] = [];
+
+  readyState = FakeWs.OPEN;
+  url: string;
+  headers?: Record<string, string>;
+  sent: Array<string | Buffer> = [];
+  terminated = false;
+  private listeners: Record<string, Array<(...args: any[]) => void>> = {};
+
+  constructor(url: string, options?: { headers?: Record<string, string> }) {
+    this.url = url;
+    this.headers = options?.headers;
+    FakeWs.instances.push(this);
+  }
+
+  on(event: string, listener: (...args: any[]) => void): void {
+    (this.listeners[event] ??= []).push(listener);
+  }
+
+  send(data: string | Buffer): void {
+    this.sent.push(data);
+  }
+
+  close(): void {
+    this.emit('close');
+  }
+
+  terminate(): void {
+    this.terminated = true;
+  }
+
+  emit(event: string, ...args: any[]): void {
+    for (const fn of this.listeners[event] ?? []) fn(...args);
+  }
+}
+
+const FakeWsCtor = FakeWs as unknown as WsConstructor;
+
+/** Decode the gzip(JSON) config frame the session sends on open. */
+function decodeConfigFrame(ws: FakeWs): any {
+  const frame = ws.sent.find((d): d is Buffer => Buffer.isBuffer(d));
+  assert.ok(frame, 'expected a config frame');
+  const parsed = parseFrame(frame);
+  assert.ok(parsed);
+  assert.equal(parsed.messageType, MSG_FULL_CLIENT);
+  return JSON.parse(parsed.payload.toString('utf8'));
+}
+
+test('session opens with the Volc auth headers and sends a gzip config on open', () => {
+  FakeWs.instances = [];
+  createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'app-123',
+    accessToken: 'tok-abc',
+    onTranscript: () => {}
+  });
+
+  const ws = FakeWs.instances.at(-1)!;
+  assert.equal(ws.headers?.['X-Api-App-Key'], 'app-123');
+  assert.equal(ws.headers?.['X-Api-Access-Key'], 'tok-abc');
+  assert.equal(ws.headers?.['X-Api-Resource-Id'], VOLC_DEFAULT_RESOURCE_ID);
+
+  ws.emit('open');
+  const config = decodeConfigFrame(ws);
+  assert.equal(config.request.model_name, VOLC_DEFAULT_MODEL);
+  assert.equal(config.audio.rate, 16000);
+});
+
+test('a custom resourceId + model flow into the headers and config frame', () => {
+  FakeWs.instances = [];
+  createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    resourceId: 'volc.seedasr.custom',
+    model: 'my-model',
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  assert.equal(ws.headers?.['X-Api-Resource-Id'], 'volc.seedasr.custom');
+  ws.emit('open');
+  assert.equal(decodeConfigFrame(ws).request.model_name, 'my-model');
+});
+
+test('audio frames are gzip-compressed binary with an incrementing sequence', () => {
+  FakeWs.instances = [];
+  const session = createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+
+  const pcm = Buffer.from([10, 20, 30, 40]);
+  session.sendAudio(pcm);
+
+  // Two binary frames now: [config, audio]. Parse the audio one back.
+  const binary = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d));
+  assert.equal(binary.length, 2);
+  const audio = parseFrame(binary[1]);
+  assert.ok(audio);
+  assert.equal(audio.messageType, MSG_AUDIO_ONLY);
+  assert.deepEqual(audio.payload, pcm);
+});
+
+test('a full-server-response frame surfaces partials then finals via onTranscript', () => {
+  FakeWs.instances = [];
+  const got: Array<{ text: string; isFinal: boolean }> = [];
+  createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    onTranscript: (t) => got.push(t)
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+
+  const partialFrame = buildFrame({
+    messageType: MSG_FULL_SERVER,
+    flags: FLAG_POS_SEQ,
+    serialization: SER_JSON,
+    compression: COMP_GZIP,
+    sequence: 1,
+    payload: zlib.gzipSync(Buffer.from(JSON.stringify({ result: { text: 'hello' } })))
+  });
+  const finalFrame = buildFrame({
+    messageType: MSG_FULL_SERVER,
+    flags: FLAG_POS_SEQ,
+    serialization: SER_JSON,
+    compression: COMP_GZIP,
+    sequence: 2,
+    payload: zlib.gzipSync(
+      Buffer.from(JSON.stringify({ result: { utterances: [{ text: 'hello world.', definite: true }] } }))
+    )
+  });
+  ws.emit('message', partialFrame);
+  ws.emit('message', finalFrame);
+
+  assert.deepEqual(got, [
+    { text: 'hello', isFinal: false },
+    { text: 'hello world.', isFinal: true }
+  ]);
+});
+
+test('stop sends a last-packet audio frame and terminates the socket', () => {
+  FakeWs.instances = [];
+  const session = createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+
+  const before = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d)).length;
+  session.stop();
+  const after = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d)).length;
+  assert.equal(after, before + 1, 'expected a final last-packet frame');
+  assert.equal(ws.terminated, true);
+});
+
+test('a server-error frame reports via onError and stops forwarding audio', () => {
+  FakeWs.instances = [];
+  const errors: string[] = [];
+  const session = createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    onTranscript: () => {},
+    onError: (m) => errors.push(m)
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+
+  const errorFrame = buildFrame({
+    messageType: 0xf,
+    flags: FLAG_POS_SEQ,
+    serialization: SER_JSON,
+    compression: COMP_GZIP,
+    sequence: 1,
+    payload: zlib.gzipSync(Buffer.from(JSON.stringify({ error: 'resourceId not allowed' })))
+  });
+  ws.emit('message', errorFrame);
+  assert.deepEqual(errors, ['resourceId not allowed']);
+
+  const binaryBefore = ws.sent.filter((d) => Buffer.isBuffer(d)).length;
+  session.sendAudio(Buffer.from([1, 2]));
+  assert.equal(ws.sent.filter((d) => Buffer.isBuffer(d)).length, binaryBefore);
+});
+
+// --- Relay provider-switch: audio routes to the chosen client ----------------
+// Inject BOTH a fake Paraformer factory and a fake Volc factory, then assert the
+// relay routes start/audio to the right one based on the configured provider.
+
+interface RecordingSession extends AsrSession {
+  frames: Buffer[];
+  stopped: boolean;
+}
+
+function makeRecordingFactory<TDeps>() {
+  const created: Array<{ deps: TDeps; session: RecordingSession }> = [];
+  const factory = (deps: TDeps): AsrSession => {
+    const session: RecordingSession = {
+      frames: [],
+      stopped: false,
+      isReady: true,
+      sendAudio(pcm: Buffer) {
+        session.frames.push(pcm);
+      },
+      stop() {
+        session.stopped = true;
+      }
+    };
+    created.push({ deps, session });
+    return session;
+  };
+  return { factory, created };
+}
+
+function providerRelay() {
+  const emits: TranscriptEmit[] = [];
+  const para = makeRecordingFactory<ParaformerSessionDeps>();
+  const volc = makeRecordingFactory<VolcSessionDeps>();
+  const relay = createAsrRelay({
+    emit: (t) => emits.push(t),
+    apiKey: 'dashscope-key',
+    sessionFactory: para.factory,
+    volcSessionFactory: volc.factory
+  });
+  return { relay, emits, para: para.created, volc: volc.created };
+}
+
+test('default provider routes audio to the Paraformer client, not Volc', () => {
+  const { relay, para, volc } = providerRelay();
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+  relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([1, 2, 3]).toString('base64') });
+
+  assert.equal(para.length, 1);
+  assert.equal(volc.length, 0);
+  assert.deepEqual(para[0].session.frames[0], Buffer.from([1, 2, 3]));
+});
+
+test('selecting volc + creds routes audio to the Volc client and emits its transcripts', () => {
+  const { relay, emits, para, volc } = providerRelay();
+  relay.setAsrProvider('volc', { appId: 'app-1', accessToken: 'tok-1', resourceId: 'r-1', model: 'm-1' });
+
+  relay.handleAudioControl({ action: 'start', source: 'display' });
+  assert.equal(volc.length, 1, 'a Volc session should be created');
+  assert.equal(para.length, 0, 'no Paraformer session should be created');
+
+  // Creds were injected into the Volc client (NOT hardcoded).
+  assert.equal(volc[0].deps.appId, 'app-1');
+  assert.equal(volc[0].deps.accessToken, 'tok-1');
+  assert.equal(volc[0].deps.resourceId, 'r-1');
+  assert.equal(volc[0].deps.model, 'm-1');
+
+  // Audio routes to the Volc session.
+  const pcm = Buffer.from([9, 8, 7, 6]);
+  relay.handleAudio({ source: 'display', pcmBase64: pcm.toString('base64') });
+  assert.deepEqual(volc[0].session.frames[0], pcm);
+
+  // The Volc session's transcripts flow through emit, tagged with the source.
+  volc[0].deps.onTranscript({ text: 'partial', isFinal: false });
+  volc[0].deps.onTranscript({ text: 'final.', isFinal: true });
+  assert.deepEqual(emits, [
+    { source: 'display', text: 'partial', isFinal: false },
+    { source: 'display', text: 'final.', isFinal: true }
+  ]);
+});
+
+test('volc without creds emits a friendly error and creates no session', () => {
+  const { relay, emits, volc } = providerRelay();
+  relay.setAsrProvider('volc'); // no creds supplied
+
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+  assert.equal(volc.length, 0);
+  assert.equal(emits.length, 1);
+  assert.match(emits[0].text, /Doubao/i);
+  assert.equal(emits[0].isFinal, false);
+});
+
+test('switching back to paraformer after volc routes new sessions to Paraformer', () => {
+  const { relay, para, volc } = providerRelay();
+  relay.setAsrProvider('volc', { appId: 'a', accessToken: 'b' });
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+  assert.equal(volc.length, 1);
+
+  // Flip back to the default. The NEXT source start uses Paraformer.
+  relay.setAsrProvider('paraformer');
+  relay.handleAudioControl({ action: 'start', source: 'display' });
+  assert.equal(para.length, 1);
+});

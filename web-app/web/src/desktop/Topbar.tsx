@@ -4,9 +4,18 @@ import { MODE_META, recMeta } from './helpers';
 import type { SocketStatus } from '../lib/useCopilotSocket';
 import { CameraIcon, KebabIcon } from './icons';
 
+/** ASR engine pill label + `data-asr` attribute (CSS colours each provider). */
+const ASR_META: Record<string, { label: string; attr: string }> = {
+  paraformer: { label: 'Paraformer', attr: 'paraformer' },
+  volc: { label: 'Doubao', attr: 'volc' },
+  xfyun: { label: 'Xunfei', attr: 'xfyun' }
+};
+
 interface TopbarProps {
   title: string;
   mode: InterviewerMode;
+  /** Active speech-to-text provider (drives the #asr-indicator pill). */
+  asrProvider: string;
   status: SocketStatus;
   capturing: boolean;
   timer: string;
@@ -29,7 +38,8 @@ interface TopbarProps {
 /**
  * Live-interview topbar, 1:1 with the desktop `.topbar`. The mode/REC/ASR pills
  * reflect real state (mode from config; REC derived from capture + socket; ASR
- * shows the default Paraformer engine). "Generate Q" runs a copilot analysis
+ * shows the active provider — Paraformer or Doubao — from settings). "Generate Q"
+ * runs a copilot analysis
  * (follow-up question); "Ask AI" + the meeting-notes / insights menu items call
  * the assistant HTTP endpoints and surface replies in the results panel. The
  * screenshot + Screen AI actions stay faithful-but-inert stubs (image capture
@@ -38,6 +48,7 @@ interface TopbarProps {
 export function Topbar({
   title,
   mode,
+  asrProvider,
   status,
   capturing,
   timer,
@@ -56,6 +67,7 @@ export function Topbar({
   const menuRef = useRef<HTMLDivElement | null>(null);
   const modeMeta = MODE_META[mode];
   const rec = recMeta(status, capturing);
+  const asrMeta = ASR_META[asrProvider] ?? ASR_META.paraformer;
 
   // Close the more-menu on outside click / Escape, like the desktop.
   useEffect(() => {
@@ -119,12 +131,12 @@ export function Topbar({
         <span
           id="asr-indicator"
           className="mode-indicator"
-          data-asr="paraformer"
+          data-asr={asrMeta.attr}
           title="Speech-to-text engine"
         >
           <span className="mode-indicator__dot" aria-hidden="true" />
           <span id="asr-indicator-label" className="mode-indicator__label">
-            Paraformer
+            {asrMeta.label}
           </span>
         </span>
         <span className="screenshot-count" id="screenshot-count" title="Screenshots captured">

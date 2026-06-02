@@ -46,6 +46,26 @@ beforeEach(() => {
     if (url.includes('/api/resume/')) {
       return Promise.resolve(jsonResponse({ text: '', reply: '' }));
     }
+    if (url.endsWith('/api/pipelines/generate') && method === 'POST') {
+      return Promise.resolve(
+        jsonResponse({
+          pipeline: { id: 'gen-be', name: 'AI Backend', builtin: false, nodes: [], edges: [] }
+        })
+      );
+    }
+    if (url.endsWith('/api/pipelines') && method === 'POST') {
+      return Promise.resolve(jsonResponse({ id: 'gen-be' }));
+    }
+    if (url.endsWith('/api/pipelines')) {
+      return Promise.resolve(
+        jsonResponse({
+          pipelines: [
+            { id: 'builtin-role-backend', name: '资深后端', builtin: true },
+            { id: 'builtin-role-pm', name: '产品经理', builtin: true }
+          ]
+        })
+      );
+    }
     return Promise.reject(new Error(`unexpected url ${url}`));
   });
   vi.stubGlobal('fetch', fetchMock);
@@ -233,5 +253,94 @@ describe('Shell', () => {
     await waitFor(() => {
       expect(document.getElementById('results-panel')?.classList.contains('hidden')).toBe(true);
     });
+  });
+
+  test('selecting the Doubao ASR provider reveals the creds and configures the recognizer', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    // Default ASR provider pill reads Paraformer.
+    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'paraformer');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+
+    // Volc cred fields are hidden until 'volc' is selected.
+    expect(document.getElementById('settings-volc-creds')).not.toBeInTheDocument();
+
+    fireEvent.change(document.getElementById('setting-asr-provider')!, {
+      target: { value: 'volc' }
+    });
+
+    // Creds revealed, the topbar pill flips to Doubao, and a configure carries the provider.
+    expect(document.getElementById('settings-volc-creds')).toBeInTheDocument();
+    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'volc');
+    expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc' });
+
+    // Editing a cred persists to localStorage and re-sends it with the provider.
+    fireEvent.change(document.getElementById('setting-volc-app-id')!, {
+      target: { value: 'app-123' }
+    });
+    expect(localStorage.getItem('open-cluely.volcAppId')).toBe('app-123');
+    expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc', volcAppId: 'app-123' });
+  });
+
+  test('Customize: picking a template card configures the pipeline + flips to customize mode', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    // Switch to Customize so the template row renders + fetches the gallery.
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+    fireEvent.click(screen.getByRole('radio', { name: /Customize/ }));
+
+    // The builtin role templates load from /api/pipelines; click the backend card.
+    await waitFor(() => {
+      expect(
+        document.querySelector('.customize-card[data-id="builtin-role-backend"]')
+      ).toBeInTheDocument();
+    });
+    const card = document.querySelector<HTMLButtonElement>(
+      '.customize-card[data-id="builtin-role-backend"]'
+    )!;
+    fireEvent.click(card);
+
+    expect(lastConfig(ws)).toMatchObject({
+      mode: 'customize',
+      activePipelineId: 'builtin-role-backend'
+    });
+    // The picked card is marked active.
+    await waitFor(() => {
+      expect(card.className).toContain('customize-card--active');
+    });
+  });
+
+  test('Customize: AI-generate authors → saves → activates the pipeline and shows a hint', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+    fireEvent.click(screen.getByRole('radio', { name: /Customize/ }));
+    await waitFor(() => {
+      expect(document.getElementById('customize-ai-input')).toBeInTheDocument();
+    });
+
+    fireEvent.change(document.getElementById('customize-ai-input')!, {
+      target: { value: '招一个资深后端' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'AI 生成' }));
+
+    // generate → save → activate (configure with the saved id).
+    await waitFor(() => {
+      expect(lastConfig(ws)).toMatchObject({ mode: 'customize', activePipelineId: 'gen-be' });
+    });
+    expect(
+      fetchCalls.some((c) => c.url.endsWith('/api/pipelines/generate') && c.method === 'POST')
+    ).toBe(true);
+    expect(
+      fetchCalls.some((c) => c.url.endsWith('/api/pipelines') && c.method === 'POST')
+    ).toBe(true);
+    expect(document.getElementById('customize-ai-hint')?.textContent).toContain('AI Backend');
   });
 });

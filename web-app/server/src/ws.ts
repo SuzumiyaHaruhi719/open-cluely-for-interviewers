@@ -7,7 +7,7 @@ import { WS_PATH } from '@open-cluely/contract';
 import type { FollowUpOutput, ServerMessage, TokenUsage } from '@open-cluely/contract';
 import { createHeadlessSession } from '@open-cluely/copilot-core';
 import { config } from './config';
-import { createAsrRelay, type AsrRelay } from './asr-relay';
+import { createAsrRelay, type AsrRelay, type VolcCredentials } from './asr-relay';
 import { getRetriever } from './question-bank';
 
 // Top-K real interview questions threaded into Block D as OPTIONAL grounding.
@@ -55,7 +55,16 @@ const sessionConfigSchema = z
     // Opt-in: when true, a FINAL interviewee ('display') transcript auto-runs
     // analyze. Default off so live audio only streams transcripts (no surprise
     // model spend). The interviewer can still press Analyze manually.
-    autoAnalyzeDisplay: z.boolean().optional()
+    autoAnalyzeDisplay: z.boolean().optional(),
+    // Realtime ASR provider + (for 'volc') Doubao/Volcengine credentials. These
+    // are stored on the relay and used for the NEXT `audio-control start`. The
+    // creds are application secrets for the user's own Volc account; the server
+    // uses them to open the Volc WebSocket and NEVER logs them.
+    asrProvider: z.enum(['paraformer', 'volc']).optional(),
+    volcAppId: z.string().optional(),
+    volcAccessToken: z.string().optional(),
+    volcResourceId: z.string().optional(),
+    volcModel: z.string().optional()
   })
   .passthrough();
 
@@ -184,6 +193,45 @@ async function handleAnalyze(
   });
 }
 
+type ConfigurePayload = Extract<ClientMessageParsed, { type: 'configure' }>['config'];
+
+/**
+ * Resolve per-session Volc creds, falling back to VOLC_* env defaults for any
+ * field the configure message omits. configure values ALWAYS win. SECURITY: the
+ * returned object is handed to the relay (which opens the Volc socket) and is
+ * NEVER logged here or by the relay.
+ */
+function resolveVolcCreds(cfg: ConfigurePayload): VolcCredentials {
+  return {
+    appId: String(cfg.volcAppId ?? config.volcAppId).trim(),
+    accessToken: String(cfg.volcAccessToken ?? config.volcAccessToken).trim(),
+    resourceId: String(cfg.volcResourceId ?? config.volcResourceId).trim() || undefined,
+    model: String(cfg.volcModel ?? config.volcModel).trim() || undefined
+  };
+}
+
+/**
+ * Push ASR provider + Volc creds from a configure message onto the relay. Called
+ * only when at least one ASR field is present so an unrelated configure (e.g. a
+ * mode change) does not reset the provider. The provider defaults to the env
+ * default ('volc' only if VOLC creds exist, else 'paraformer') when the message
+ * supplies creds but no explicit provider.
+ */
+function applyAsrConfig(relay: AsrRelay, cfg: ConfigurePayload): void {
+  const hasAsrField =
+    cfg.asrProvider !== undefined ||
+    cfg.volcAppId !== undefined ||
+    cfg.volcAccessToken !== undefined ||
+    cfg.volcResourceId !== undefined ||
+    cfg.volcModel !== undefined;
+  if (!hasAsrField) return;
+  const creds = resolveVolcCreds(cfg);
+  // If the message only carried creds (no explicit provider), infer 'volc' when
+  // creds are now present so entering creds is enough to switch.
+  const provider = cfg.asrProvider ?? (creds.appId && creds.accessToken ? 'volc' : 'paraformer');
+  relay.setAsrProvider(provider, creds);
+}
+
 async function dispatch(
   ws: WebSocket,
   session: HeadlessSession,
@@ -197,6 +245,11 @@ async function dispatch(
       if (typeof msg.config.autoAnalyzeDisplay === 'boolean') {
         relay.setAutoAnalyzeDisplay(msg.config.autoAnalyzeDisplay);
       }
+      // ASR provider + Volc creds are relay state too. Apply when present so the
+      // NEXT audio-control start uses the chosen provider/creds. Volc creds carry
+      // forward across configures (a later configure that only flips the provider
+      // keeps earlier-entered creds).
+      applyAsrConfig(relay, msg.config);
       return;
     case 'analyze':
       await handleAnalyze(ws, session, msg);
@@ -271,6 +324,18 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       emit: (t) => send(ws, { type: 'transcript', source: t.source, text: t.text, isFinal: t.isFinal }),
       onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, text)
     });
+
+    // Seed the relay from VOLC_* env defaults (if any) so a deployment can ship
+    // default Doubao creds without the browser sending them. A per-session
+    // configure still overrides this. Paraformer stays the default provider.
+    if (config.volcAppId && config.volcAccessToken) {
+      relay.setAsrProvider('paraformer', {
+        appId: config.volcAppId,
+        accessToken: config.volcAccessToken,
+        resourceId: config.volcResourceId || undefined,
+        model: config.volcModel || undefined
+      });
+    }
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 

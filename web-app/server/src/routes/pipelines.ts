@@ -18,9 +18,13 @@ import {
   blockTypeMeta,
   validatePipeline,
   BLOCK_TYPES,
+  EXPERT_PRESET,
   type BlockTypeMeta,
   type ValidatePipelineResult
 } from '@open-cluely/copilot-core';
+import { config } from '../config';
+import { chat } from '../dashscope';
+import { buildPipelineFromReply, buildSystemPrompt } from '../services/pipeline-generate';
 
 interface PipelineSummary {
   id: string;
@@ -35,6 +39,15 @@ const createBodySchema = z.object({
 const validateBodySchema = z.object({
   pipeline: z.object({}).passthrough()
 });
+
+const generateBodySchema = z.object({
+  prompt: z.string().trim().min(1, 'prompt is required')
+});
+
+// Token budget for the tuning reply — the model returns a small JSON object
+// (name + focus + up to 7 short per-block hints), so this is generous.
+const GENERATE_MAX_TOKENS = 900;
+const GENERATE_TEMPERATURE = 0.4;
 
 /** Resolve the pipelines dir lazily so a test can set DATA_DIR before any call. */
 function pipelinesDir(): string {
@@ -84,6 +97,45 @@ export function createPipelinesRouter(): Router {
       }
       const result: ValidatePipelineResult = validatePipeline(parsed.data.pipeline, BLOCK_TYPES);
       res.json({ ok: result.ok, errors: result.errors });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Build a Customize pipeline from a one-sentence description (Settings →
+  // Customize "② 一句话让 AI 生成"). One DashScope tuning call appends per-block
+  // hints onto a clone of the Expert preset; the structure is never AI-authored,
+  // so the result is always a valid, runnable pipeline (see services/
+  // pipeline-generate.ts). NOT persisted here — the client saves it via POST /.
+  // Declared before `/:id` so the param route cannot capture "generate".
+  router.post('/generate', async (req, res, next) => {
+    try {
+      if (!config.dashscopeApiKey) {
+        res.status(503).json({ error: 'no key' });
+        return;
+      }
+      const parsed = generateBodySchema.safeParse(req.body ?? {});
+      if (!parsed.success) {
+        res.status(400).json({ error: parsed.error.issues[0]?.message ?? 'invalid body' });
+        return;
+      }
+      const { prompt } = parsed.data;
+
+      const blockIds = blockTypeMeta()
+        .map((b) => b.schemaId)
+        .filter((id): id is string => typeof id === 'string' && id.length > 0);
+
+      const reply = await chat({
+        system: buildSystemPrompt(blockIds),
+        messages: [{ role: 'user', content: prompt }],
+        maxTokens: GENERATE_MAX_TOKENS,
+        temperature: GENERATE_TEMPERATURE
+      });
+
+      // buildPipelineFromReply parses defensively, applies hints, validates, and
+      // falls back to the pristine Expert clone on any failure — always valid.
+      const pipeline = buildPipelineFromReply(EXPERT_PRESET, prompt, reply);
+      res.json({ pipeline });
     } catch (err) {
       next(err);
     }

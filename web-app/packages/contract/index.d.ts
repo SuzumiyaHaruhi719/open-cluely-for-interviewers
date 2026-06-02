@@ -17,9 +17,20 @@ export const C2S: {
   AUDIO_CONTROL: 'audio-control';
 };
 
+/** Live-ASR providers the server can stream through. Default: 'paraformer'. */
+export const ASR_PROVIDERS: readonly ['paraformer', 'volc'];
+
 export type InterviewerMode = 'fast' | 'expert' | 'expert2' | 'customize';
 export type OutputLanguage = '' | 'zh' | 'en';
 export type AudioSource = 'mic' | 'display';
+
+/**
+ * Realtime ASR provider:
+ *   'paraformer' — DashScope Paraformer (server uses its env DASHSCOPE key).
+ *   'volc'       — Doubao / Volcengine streaming ASR (豆包). Needs the Volc
+ *                  credentials below, which are SEPARATE from the DashScope key.
+ */
+export type AsrProvider = 'paraformer' | 'volc';
 
 /** Block G final output — the follow-up shown to the interviewer. */
 export interface FollowUpOutput {
@@ -41,6 +52,24 @@ export interface SessionConfig {
    * `null` clears it (falls back to the Expert preset). Ignored by other modes.
    */
   activePipelineId?: string | null;
+  /**
+   * Realtime ASR provider for subsequent `audio-control start` controls.
+   * Omitted/'paraformer' keeps the default DashScope Paraformer relay.
+   */
+  asrProvider?: AsrProvider;
+  /**
+   * Doubao / Volcengine credentials (only used when `asrProvider === 'volc'`).
+   * SECURITY: these are sent to the SERVER, which opens the Volc WebSocket on the
+   * browser's behalf — the browser never connects to Volc directly. The server
+   * NEVER logs these values. They are application credentials for the user's own
+   * Volc account (distinct from the DashScope key).
+   */
+  volcAppId?: string;
+  volcAccessToken?: string;
+  /** Volc resource id, e.g. `volc.bigasr.sauc.duration`. Optional; server defaults. */
+  volcResourceId?: string;
+  /** Optional Volc model name override (config-frame `model_name`). */
+  volcModel?: string;
 }
 
 /** A question-bank search hit. difficulty: 0=unspecified,1=easy,2=medium,3=hard. */

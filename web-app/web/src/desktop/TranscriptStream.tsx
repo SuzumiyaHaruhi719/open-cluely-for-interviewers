@@ -3,8 +3,19 @@ import type { CopilotProgress, CopilotResult, TranscriptLanes } from '../lib/use
 import { QuestionCard } from './QuestionCard';
 import { ProgressCard } from './ProgressCard';
 
+/** A role on a seeded/loaded conversation line (sample pick or session load). */
+export type TranscriptRole = 'candidate' | 'interviewer' | 'ai';
+
+/** One pre-existing conversation line, rendered before the live transcript. */
+export interface TranscriptMessage {
+  role: TranscriptRole;
+  text: string;
+}
+
 interface TranscriptStreamProps {
   transcripts: TranscriptLanes;
+  /** Seeded (sample) or loaded (session) conversation, shown before live lanes. */
+  transcriptMessages: TranscriptMessage[];
   lastResult: CopilotResult | null;
   progress: CopilotProgress | null;
   isAnalyzing: boolean;
@@ -34,6 +45,25 @@ function LaneLine({ lane, text, live = false }: LaneLineProps) {
 }
 
 /**
+ * A compact AI follow-up line for seeded/loaded history — `.chat-message.lane-ai`.
+ * Deliberately NOT the full question card: replayed history shows the question
+ * text only, while LIVE results still render the rich `QuestionCard` below.
+ */
+function AiLine({ text }: { text: string }) {
+  return (
+    <div className="chat-message lane-ai">
+      <div className="message-header">
+        <span className="message-icon" aria-hidden="true">
+          ✦
+        </span>
+        <span className="message-label">AI</span>
+      </div>
+      <div className="message-content">{text}</div>
+    </div>
+  );
+}
+
+/**
  * Live transcript stream — the desktop `.chat-messages` hero column. Renders the
  * two colour-coded lanes (candidate = display/teal, interviewer = mic/amber),
  * then the analyze-progress card while a request is in flight, then the AI
@@ -42,6 +72,7 @@ function LaneLine({ lane, text, live = false }: LaneLineProps) {
  */
 export function TranscriptStream({
   transcripts,
+  transcriptMessages,
   lastResult,
   progress,
   isAnalyzing,
@@ -60,6 +91,7 @@ export function TranscriptStream({
     }
   }, [
     autoScroll,
+    transcriptMessages,
     transcripts.display.finalText,
     transcripts.display.partial,
     transcripts.mic.finalText,
@@ -81,6 +113,14 @@ export function TranscriptStream({
       aria-live="polite"
       aria-label="Live transcript"
     >
+      {/* Seeded (sample) or loaded (session) conversation, before the live lanes. */}
+      {transcriptMessages.map((message, index) => {
+        if (message.role === 'ai') {
+          return <AiLine key={`seed-${index}`} text={message.text} />;
+        }
+        return <LaneLine key={`seed-${index}`} lane={message.role} text={message.text} />;
+      })}
+
       {display.finalText ? <LaneLine lane="candidate" text={display.finalText} /> : null}
       {display.partial ? <LaneLine lane="candidate" text={display.partial} live /> : null}
 

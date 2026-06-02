@@ -77,3 +77,7 @@ fixtures/expert-interview/_manifests/dedup-report.json
 # prompt-training run artifacts (scripts + rubric stay tracked)
 prompt-training/results/
 prompt-training/corpus/
+.gstack/
+
+# Scratch frames for README media capture (see scripts/capture-readme-media.sh)
+.tmp-readme-frames/

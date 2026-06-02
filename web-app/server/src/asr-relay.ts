@@ -4,25 +4,32 @@
 // The browser captures the interviewee (getDisplayMedia -> source 'display')
 // and interviewer (getUserMedia -> source 'mic'), downsamples to 16 kHz mono
 // s16le in an AudioWorklet, and streams base64 PCM frames over the copilot
-// WebSocket. This relay owns one Paraformer recognition session PER source,
-// lazily started on the first 'start' control (or first audio frame), feeds it
-// the decoded PCM, and turns partial/final transcripts into `transcript`
-// ServerMessages via the injected `emit`.
+// WebSocket. This relay owns one recognition session PER source, lazily started
+// on the first 'start' control (or first audio frame), feeds it the decoded
+// PCM, and turns partial/final transcripts into `transcript` ServerMessages via
+// the injected `emit`.
 //
-// REUSE: the actual DashScope protocol lives in ./paraformer-client (a focused
-// port of the desktop src/services/paraformer/service.js protocol — see the
-// note there for why we ported rather than consumed the Electron factory).
+// PROVIDER-AWARE: the relay carries an `asrProvider` ('paraformer' | 'volc',
+// default 'paraformer'). When 'volc', start() opens a Doubao / Volcengine
+// session (./volc-client) with the per-session Volc creds; otherwise it opens a
+// Paraformer session (./paraformer-client). Both clients expose the SAME
+// sendAudio/stop/isReady surface, so the emit + dispose paths are identical.
+// Paraformer is the default and is unaffected when no provider is configured.
+//
+// REUSE: the DashScope protocol lives in ./paraformer-client and the Volc/Doubao
+// protocol in ./volc-client (a verbatim port of the desktop frame protocol —
+// see the note there).
 // ============================================================================
 
 import { WebSocket as WsWebSocket } from 'ws';
-import type { AudioSource } from '@open-cluely/contract';
+import type { AsrProvider, AudioSource } from '@open-cluely/contract';
 import { config } from './config';
 import {
   createParaformerSession,
-  type ParaformerSession,
   type ParaformerSessionDeps,
   type WsConstructor
 } from './paraformer-client';
+import { createVolcSession, type VolcSessionDeps } from './volc-client';
 
 export interface TranscriptEmit {
   source: AudioSource;
@@ -41,17 +48,36 @@ export interface AudioControl {
   source: AudioSource;
 }
 
-/** Factory used to create a session — overridable in tests with a fake. */
-export type SessionFactory = (deps: ParaformerSessionDeps) => ParaformerSession;
+/** The common recognition-session surface both providers expose. */
+export interface AsrSession {
+  sendAudio(pcm: Buffer): void;
+  stop(): void;
+  readonly isReady: boolean;
+}
+
+/** Per-session Volc / Doubao credentials, injected via configure. */
+export interface VolcCredentials {
+  appId: string;
+  accessToken: string;
+  resourceId?: string;
+  model?: string;
+}
+
+/** Factory used to create a Paraformer session — overridable in tests with a fake. */
+export type ParaformerSessionFactory = (deps: ParaformerSessionDeps) => AsrSession;
+/** Factory used to create a Volc/Doubao session — overridable in tests with a fake. */
+export type VolcSessionFactory = (deps: VolcSessionDeps) => AsrSession;
 
 export interface AsrRelayDeps {
   /** Send a `transcript` message back to this connection's browser. */
   emit: (t: TranscriptEmit) => void;
-  /** DashScope API key. Defaults to config.dashscopeApiKey. */
+  /** DashScope API key (Paraformer). Defaults to config.dashscopeApiKey. */
   apiKey?: string;
-  /** Session factory (defaults to the real Paraformer client). */
-  sessionFactory?: SessionFactory;
-  /** WebSocket constructor passed to the session (defaults to `ws`). */
+  /** Paraformer session factory (defaults to the real client). */
+  sessionFactory?: ParaformerSessionFactory;
+  /** Volc/Doubao session factory (defaults to the real client). */
+  volcSessionFactory?: VolcSessionFactory;
+  /** WebSocket constructor passed to the sessions (defaults to `ws`). */
   WebSocket?: WsConstructor;
   /**
    * Optional: invoked with the FINAL interviewee ('display') transcript so the
@@ -66,6 +92,12 @@ export interface AsrRelay {
   handleAudioControl(control: AudioControl): void;
   /** Enable/disable auto-analyze of interviewee final transcripts. */
   setAutoAnalyzeDisplay(enabled: boolean): void;
+  /**
+   * Choose the ASR provider + (for 'volc') its credentials for SUBSEQUENT
+   * starts. Does not restart live sessions — the next `audio-control start`
+   * (or first frame) for a source picks up the new provider/creds.
+   */
+  setAsrProvider(provider: AsrProvider, volc?: VolcCredentials): void;
   dispose(): void;
 }
 
@@ -79,15 +111,34 @@ const SOURCES: readonly AudioSource[] = ['mic', 'display'];
  */
 export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const apiKey = deps.apiKey ?? config.dashscopeApiKey;
-  const sessionFactory = deps.sessionFactory ?? createParaformerSession;
+  const sessionFactory = deps.sessionFactory ?? (createParaformerSession as ParaformerSessionFactory);
+  const volcSessionFactory = deps.volcSessionFactory ?? (createVolcSession as VolcSessionFactory);
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
-  const sessions: Record<AudioSource, ParaformerSession | null> = { mic: null, display: null };
+  const sessions: Record<AudioSource, AsrSession | null> = { mic: null, display: null };
   let autoAnalyzeDisplay = false;
+  let provider: AsrProvider = 'paraformer';
+  let volcCreds: VolcCredentials | null = null;
   let disposed = false;
 
-  function startSource(source: AudioSource): void {
-    if (disposed || sessions[source]) return;
+  // Shared transcript/error wiring so both providers route identically.
+  function onTranscript(source: AudioSource, t: TranscriptEmit | { text: string; isFinal: boolean }): void {
+    deps.emit({ source, text: t.text, isFinal: t.isFinal });
+    if (t.isFinal && source === 'display' && autoAnalyzeDisplay) {
+      try {
+        deps.onDisplayFinal?.(t.text);
+      } catch {
+        /* never let an analyze trigger break the relay */
+      }
+    }
+  }
+
+  function onError(source: AudioSource, message: string): void {
+    deps.emit({ source, text: `[ASR error: ${message}]`, isFinal: false });
+    stopSource(source);
+  }
+
+  function startParaformer(source: AudioSource): void {
     if (!apiKey) {
       // No key: surface once as a non-final transcript-shaped error so the UI
       // can show it on the right lane without crashing.
@@ -99,21 +150,38 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
       apiKey,
       model: config.paraformerModel,
       sampleRate: config.paraformerSampleRate,
-      onTranscript: ({ text, isFinal }) => {
-        deps.emit({ source, text, isFinal });
-        if (isFinal && source === 'display' && autoAnalyzeDisplay) {
-          try {
-            deps.onDisplayFinal?.(text);
-          } catch {
-            /* never let an analyze trigger break the relay */
-          }
-        }
-      },
-      onError: (message) => {
-        deps.emit({ source, text: `[ASR error: ${message}]`, isFinal: false });
-        stopSource(source);
-      }
+      onTranscript: (t) => onTranscript(source, t),
+      onError: (message) => onError(source, message)
     });
+  }
+
+  function startVolc(source: AudioSource): void {
+    const appId = (volcCreds?.appId ?? '').trim();
+    const accessToken = (volcCreds?.accessToken ?? '').trim();
+    if (!appId || !accessToken) {
+      deps.emit({
+        source,
+        text: '[Doubao unavailable: enter APP ID + Access Token in Settings]',
+        isFinal: false
+      });
+      return;
+    }
+    sessions[source] = volcSessionFactory({
+      WebSocket: WebSocketCtor,
+      appId,
+      accessToken,
+      resourceId: volcCreds?.resourceId,
+      model: volcCreds?.model,
+      sampleRate: config.volcSampleRate,
+      onTranscript: (t) => onTranscript(source, t),
+      onError: (message) => onError(source, message)
+    });
+  }
+
+  function startSource(source: AudioSource): void {
+    if (disposed || sessions[source]) return;
+    if (provider === 'volc') startVolc(source);
+    else startParaformer(source);
   }
 
   function stopSource(source: AudioSource): void {
@@ -155,11 +223,16 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     autoAnalyzeDisplay = enabled;
   }
 
+  function setAsrProvider(next: AsrProvider, volc?: VolcCredentials): void {
+    provider = next === 'volc' ? 'volc' : 'paraformer';
+    if (volc) volcCreds = { ...volc };
+  }
+
   function dispose(): void {
     if (disposed) return;
     disposed = true;
     for (const source of SOURCES) stopSource(source);
   }
 
-  return { handleAudio, handleAudioControl, setAutoAnalyzeDisplay, dispose };
+  return { handleAudio, handleAudioControl, setAutoAnalyzeDisplay, setAsrProvider, dispose };
 }

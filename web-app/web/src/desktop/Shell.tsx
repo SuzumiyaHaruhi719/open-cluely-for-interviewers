@@ -5,7 +5,7 @@ import { QuestionBank } from '../views/QuestionBank';
 import { TitleBar } from './TitleBar';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
-import { TranscriptStream } from './TranscriptStream';
+import { TranscriptStream, type TranscriptMessage, type TranscriptRole } from './TranscriptStream';
 import { Composer } from './Composer';
 import { RightRail } from './RightRail';
 import { SettingsModal } from './SettingsModal';
@@ -15,7 +15,8 @@ import { PipelineStudio } from './studio/PipelineStudio';
 import { useRailCollapsed } from './useRailCollapsed';
 import { useSessions } from './useSessions';
 import { useAssistantPanel } from './useAssistantPanel';
-import { useAppSettings } from './useAppSettings';
+import { useAppSettings, type VolcSettings } from './useAppSettings';
+import type { AsrProvider } from '@open-cluely/contract';
 import { formatTimer } from './helpers';
 import { sampleTranscriptText } from './interviewSamples';
 import type { AppView } from './types';
@@ -36,6 +37,27 @@ const INITIAL_CONFIG: ConfigState = {
   resumeText: '',
   activePipelineId: null
 };
+
+/**
+ * Map a persisted session message role onto a transcript-stream lane. Persisted
+ * roles are 'candidate' | 'interviewer' | 'ai' | 'note' | 'user' | 'assistant';
+ * 'user' → candidate, 'assistant'/'ai' → ai, 'note' → skipped (returns null).
+ */
+function mapMessageRole(role: string): TranscriptRole | null {
+  switch (role) {
+    case 'candidate':
+    case 'user':
+      return 'candidate';
+    case 'interviewer':
+      return 'interviewer';
+    case 'ai':
+    case 'assistant':
+      return 'ai';
+    default:
+      // 'note' and any unknown role have no lane — skip them.
+      return null;
+  }
+}
 
 /**
  * The re-skinned app shell. Reproduces the desktop `renderer.html` structure
@@ -66,6 +88,9 @@ export function Shell() {
   const [view, setView] = useState<AppView>('copilot');
   const [config, setConfig] = useState<ConfigState>(INITIAL_CONFIG);
   const [answer, setAnswer] = useState('');
+  // Seeded (sample) or loaded (session) conversation, rendered as chat lines in
+  // the transcript stream BEFORE any live socket transcript. Cleared on new/clear.
+  const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
   const [studioOpen, setStudioOpen] = useState(false);
@@ -168,6 +193,45 @@ export function Shell() {
     [pushConfig]
   );
 
+  // ASR provider / Doubao creds → persist locally AND push to the server so the
+  // NEXT audio-control start uses the chosen recognizer. We always send the Volc
+  // creds alongside the provider so flipping to Doubao (or editing a cred while
+  // already on Doubao) carries everything in one configure message. Creds are
+  // sensitive: localStorage matches the desktop's local-store behaviour, and the
+  // server (not the browser) makes the Volc connection and never logs them.
+  const { setAsrProvider, setVolcSettings } = appSettings;
+  const onAsrProviderChange = useCallback(
+    (value: string): void => {
+      const provider: AsrProvider = value === 'volc' ? 'volc' : 'paraformer';
+      setAsrProvider(value);
+      const s = appSettings.settings;
+      pushConfig({
+        asrProvider: provider,
+        volcAppId: s.volcAppId,
+        volcAccessToken: s.volcAccessToken,
+        volcResourceId: s.volcResourceId,
+        volcModel: s.volcModel
+      });
+    },
+    [pushConfig, setAsrProvider, appSettings.settings]
+  );
+
+  const onVolcSettingsChange = useCallback(
+    (patch: Partial<VolcSettings>): void => {
+      setVolcSettings(patch);
+      // Merge the patch over current settings for the push (state updates async).
+      const s = { ...appSettings.settings, ...patch };
+      pushConfig({
+        asrProvider: 'volc',
+        volcAppId: s.volcAppId,
+        volcAccessToken: s.volcAccessToken,
+        volcResourceId: s.volcResourceId,
+        volcModel: s.volcModel
+      });
+    },
+    [pushConfig, setVolcSettings, appSettings.settings]
+  );
+
   // Open the node editor (from the Customize section in Settings). Close Settings
   // so the full-window studio overlay isn't competing with the modal.
   const onOpenStudio = useCallback((): void => {
@@ -222,6 +286,7 @@ export function Shell() {
 
   const onClearSession = useCallback((): void => {
     setAnswer('');
+    setTranscriptMessages([]);
     lastDisplayFinalRef.current = '';
   }, []);
 
@@ -282,8 +347,20 @@ export function Shell() {
         void sessions.patch(id, { jobDescription: jd, resumeText });
       }
       if (sample) {
-        const seeded = sampleTranscriptText(sample);
-        setAnswer(seeded);
+        // Render the whole sample conversation as chat lines…
+        setTranscriptMessages(
+          sample.turns.map((turn) => ({
+            role: turn.speaker === 'interviewer' ? 'interviewer' : 'candidate',
+            text: turn.text
+          }))
+        );
+        // …and seed the analyze buffer with the LAST candidate turn so Generate Q
+        // has the most-recent answer to follow up on (falls back to the flattened
+        // transcript if the sample has no candidate turn).
+        const lastCandidate = [...sample.turns]
+          .reverse()
+          .find((turn) => turn.speaker === 'candidate');
+        setAnswer(lastCandidate ? lastCandidate.text : sampleTranscriptText(sample));
       }
     },
     [sessions, onClearSession, pushConfig]
@@ -304,11 +381,20 @@ export function Shell() {
       }));
       pushConfig({ jobDescription: detail.jobDescription, resumeText: detail.resumeText });
 
-      // Reset live buffers, then replay the last candidate message into the
-      // analyze buffer so Generate Q has something to work with.
+      // Reset live buffers (also clears seeded messages), then hydrate the chat
+      // stream from the saved messages and replay the last candidate message into
+      // the analyze buffer so Generate Q has something to work with.
       onClearSession();
       persistedDisplayRef.current = '';
       persistedResultRef.current = null;
+      const replayed: TranscriptMessage[] = [];
+      for (const m of detail.messages) {
+        const role = mapMessageRole(m.role);
+        if (role) {
+          replayed.push({ role, text: m.text });
+        }
+      }
+      setTranscriptMessages(replayed);
       const lastCandidate = [...detail.messages]
         .reverse()
         .find((m) => m.role === 'candidate' || m.role === 'user');
@@ -354,6 +440,7 @@ export function Shell() {
               <Topbar
                 title={sessionTitle}
                 mode={config.mode}
+                asrProvider={appSettings.settings.asrProvider}
                 status={status}
                 capturing={capturing}
                 timer={timer}
@@ -370,6 +457,7 @@ export function Shell() {
               />
               <TranscriptStream
                 transcripts={transcripts}
+                transcriptMessages={transcriptMessages}
                 lastResult={lastResult}
                 progress={progress}
                 isAnalyzing={isAnalyzing}
@@ -419,12 +507,15 @@ export function Shell() {
         mode={config.mode}
         outputLanguage={config.outputLanguage}
         settings={appSettings.settings}
+        activePipelineId={config.activePipelineId}
         onClose={() => setSettingsOpen(false)}
         onModeChange={onModeChange}
         onLanguageChange={onLanguageChange}
         onAiModelChange={appSettings.setAiModel}
-        onAsrProviderChange={appSettings.setAsrProvider}
+        onAsrProviderChange={onAsrProviderChange}
+        onVolcSettingsChange={onVolcSettingsChange}
         onOpacityChange={appSettings.setOpacityStep}
+        onSelectPipeline={onUseCustomPipeline}
         onOpenStudio={onOpenStudio}
       />
 

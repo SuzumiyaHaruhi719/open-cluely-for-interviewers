@@ -10,9 +10,22 @@ import {
   extractResume,
   fetchSession,
   fetchSessions,
+  generatePipeline,
+  getPipeline,
+  listPipelines,
   resumeChat,
-  updateSession
+  savePipeline,
+  updateSession,
+  type Pipeline
 } from './api';
+
+const FAKE_PIPELINE: Pipeline = {
+  id: 'gen-1',
+  name: 'Senior Backend',
+  builtin: false,
+  nodes: [],
+  edges: []
+};
 
 interface FetchCall {
   url: string;
@@ -158,5 +171,52 @@ describe('resume + assistant api wrappers', () => {
     expect(calls[0]).toMatchObject({ url: '/api/assistant/ask', body: { prompt: 'p', context: 'c' } });
     expect(calls[1]).toMatchObject({ url: '/api/assistant/notes', body: { transcript: 't' } });
     expect(calls[2]).toMatchObject({ url: '/api/assistant/insights', body: { transcript: 't' } });
+  });
+});
+
+describe('pipeline api wrappers', () => {
+  test('listPipelines GETs /api/pipelines and returns the summaries', async () => {
+    stubFetch(() =>
+      jsonResponse({ pipelines: [{ id: 'builtin-role-be', name: 'Backend', builtin: true }] })
+    );
+
+    const res = await listPipelines();
+
+    expect(calls[0]).toMatchObject({ url: '/api/pipelines', method: 'GET' });
+    expect(res.pipelines[0]).toMatchObject({ id: 'builtin-role-be', builtin: true });
+  });
+
+  test('getPipeline encodes the id in the path', async () => {
+    stubFetch(() => jsonResponse({ pipeline: FAKE_PIPELINE }));
+
+    await getPipeline('builtin role be');
+
+    expect(calls[0]).toMatchObject({ url: '/api/pipelines/builtin%20role%20be', method: 'GET' });
+  });
+
+  test('generatePipeline POSTs the prompt and returns the authored pipeline', async () => {
+    stubFetch(() => jsonResponse({ pipeline: FAKE_PIPELINE }));
+
+    const res = await generatePipeline('a senior backend who can run incidents');
+
+    expect(calls[0]).toMatchObject({
+      url: '/api/pipelines/generate',
+      method: 'POST',
+      body: { prompt: 'a senior backend who can run incidents' }
+    });
+    expect(res.pipeline.name).toBe('Senior Backend');
+  });
+
+  test('savePipeline POSTs the pipeline wrapped in { pipeline } and returns its id', async () => {
+    stubFetch(() => jsonResponse({ id: 'saved-1' }));
+
+    const res = await savePipeline(FAKE_PIPELINE);
+
+    expect(calls[0]).toMatchObject({
+      url: '/api/pipelines',
+      method: 'POST',
+      body: { pipeline: FAKE_PIPELINE }
+    });
+    expect(res.id).toBe('saved-1');
   });
 });

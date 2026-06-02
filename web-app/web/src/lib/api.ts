@@ -378,12 +378,39 @@ export interface SavePipelineResponse {
   id: string;
 }
 
+/** `POST /api/pipelines/generate` → the freshly authored (unsaved) pipeline. */
+export interface GeneratePipelineResponse {
+  pipeline: Pipeline;
+}
+
 export function fetchPipelines(signal?: AbortSignal): Promise<PipelineListResponse> {
   return getJson<PipelineListResponse>('/api/pipelines', signal);
 }
 
 export function fetchPipeline(id: string, signal?: AbortSignal): Promise<PipelineResponse> {
   return getJson<PipelineResponse>(`/api/pipelines/${encodeURIComponent(id)}`, signal);
+}
+
+/** Canonical alias for `fetchPipelines` (matches the Customize-row naming). */
+export function listPipelines(signal?: AbortSignal): Promise<PipelineListResponse> {
+  return fetchPipelines(signal);
+}
+
+/** Canonical alias for `fetchPipeline` (matches the Customize-row naming). */
+export function getPipeline(id: string, signal?: AbortSignal): Promise<PipelineResponse> {
+  return fetchPipeline(id, signal);
+}
+
+/**
+ * Ask the server to author a pipeline from a one-line prompt
+ * (`POST /api/pipelines/generate`). The returned pipeline is NOT yet saved —
+ * the caller persists it via `savePipeline` and then activates it.
+ */
+export function generatePipeline(
+  prompt: string,
+  signal?: AbortSignal
+): Promise<GeneratePipelineResponse> {
+  return sendJson<GeneratePipelineResponse>('/api/pipelines/generate', 'POST', { prompt }, signal);
 }
 
 export function fetchBlockTypes(signal?: AbortSignal): Promise<BlockTypesResponse> {

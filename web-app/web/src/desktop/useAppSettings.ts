@@ -3,6 +3,10 @@ import { useCallback, useEffect, useState } from 'react';
 const KEYS = {
   aiModel: 'open-cluely.aiModel',
   asrProvider: 'open-cluely.asrProvider',
+  volcAppId: 'open-cluely.volcAppId',
+  volcAccessToken: 'open-cluely.volcAccessToken',
+  volcResourceId: 'open-cluely.volcResourceId',
+  volcModel: 'open-cluely.volcModel',
   opacity: 'open-cluely.windowOpacity'
 } as const;
 
@@ -16,6 +20,16 @@ export const MAX_OPACITY_STEP = 10;
 export interface AppSettings {
   aiModel: string;
   asrProvider: string;
+  /**
+   * Doubao / Volcengine credentials (only meaningful when asrProvider === 'volc').
+   * SECURITY: stored in this browser's localStorage — same local-store behaviour
+   * as the desktop app on the user's own machine. They are sent to the server
+   * (which opens the Volc connection); the browser never connects to Volc directly.
+   */
+  volcAppId: string;
+  volcAccessToken: string;
+  volcResourceId: string;
+  volcModel: string;
   opacityStep: number;
 }
 
@@ -46,24 +60,46 @@ function persist(key: string, value: string): void {
   }
 }
 
+/** The Volc credential fields, kept together for the modal's onChange wiring. */
+export interface VolcSettings {
+  volcAppId: string;
+  volcAccessToken: string;
+  volcResourceId: string;
+  volcModel: string;
+}
+
 export interface UseAppSettings {
   settings: AppSettings;
   setAiModel: (value: string) => void;
   setAsrProvider: (value: string) => void;
+  /** Merge-patch the Volc credential fields (persists each touched field). */
+  setVolcSettings: (patch: Partial<VolcSettings>) => void;
   setOpacityStep: (value: number) => void;
 }
 
+const VOLC_FIELD_KEYS: Record<keyof VolcSettings, string> = {
+  volcAppId: KEYS.volcAppId,
+  volcAccessToken: KEYS.volcAccessToken,
+  volcResourceId: KEYS.volcResourceId,
+  volcModel: KEYS.volcModel
+};
+
 /**
- * Web-only app settings persisted to localStorage. The AI-model and
- * ASR-provider selects are remembered for UI continuity but do NOT change
- * server behaviour (the deployment is server-driven) — the settings modal notes
- * this. The window-opacity step is applied to `.app-shell` by the Shell, which
- * genuinely works on the web.
+ * Web-only app settings persisted to localStorage. The ASR provider select is
+ * now FUNCTIONAL: changing it (and the Volc creds, when 'volc' is chosen) is
+ * pushed to the server by the Shell via sendConfigure, which opens the matching
+ * recognition session. The AI-model select remains UI continuity only (server
+ * model selection is server-driven). The window-opacity step is applied to
+ * `.app-shell` by the Shell.
  */
 export function useAppSettings(): UseAppSettings {
   const [settings, setSettings] = useState<AppSettings>(() => ({
     aiModel: readString(KEYS.aiModel, DEFAULT_AI_MODEL),
     asrProvider: readString(KEYS.asrProvider, DEFAULT_ASR_PROVIDER),
+    volcAppId: readString(KEYS.volcAppId, ''),
+    volcAccessToken: readString(KEYS.volcAccessToken, ''),
+    volcResourceId: readString(KEYS.volcResourceId, ''),
+    volcModel: readString(KEYS.volcModel, ''),
     opacityStep: readOpacityStep()
   }));
 
@@ -75,6 +111,16 @@ export function useAppSettings(): UseAppSettings {
   const setAsrProvider = useCallback((value: string): void => {
     setSettings((prev) => ({ ...prev, asrProvider: value }));
     persist(KEYS.asrProvider, value);
+  }, []);
+
+  const setVolcSettings = useCallback((patch: Partial<VolcSettings>): void => {
+    setSettings((prev) => ({ ...prev, ...patch }));
+    for (const key of Object.keys(patch) as Array<keyof VolcSettings>) {
+      const value = patch[key];
+      if (typeof value === 'string') {
+        persist(VOLC_FIELD_KEYS[key], value);
+      }
+    }
   }, []);
 
   const setOpacityStep = useCallback((value: number): void => {
@@ -92,5 +138,5 @@ export function useAppSettings(): UseAppSettings {
     }
   }, [settings.opacityStep]);
 
-  return { settings, setAiModel, setAsrProvider, setOpacityStep };
+  return { settings, setAiModel, setAsrProvider, setVolcSettings, setOpacityStep };
 }

@@ -77,6 +77,28 @@ button.history-row {
   color: var(--fg-muted);
 }
 
+/* ── Compact AI history line (.chat-message.lane-ai, NOT the question card) ───
+ *    Seeded/loaded conversations replay AI follow-ups as a single indigo line
+ *    rather than the full `.is-question-card`. chat.css only sets the indigo
+ *    `--lane-accent` on `.lane-ai`; the rail + tinted header rules there are
+ *    scoped to candidate/interviewer only. Mirror that lane treatment here so
+ *    the replayed AI line reads as indigo, consistent with the live card. ──── */
+.chat-message.lane-ai:not(.is-question-card) {
+  border-left: 2px solid var(--lane-accent, var(--ai));
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--lane-accent, transparent) 7%, transparent) 0%,
+    transparent 38%
+  );
+  box-shadow: var(--top-highlight);
+}
+
+.chat-message.lane-ai:not(.is-question-card) .message-label,
+.chat-message.lane-ai:not(.is-question-card) .message-icon {
+  color: var(--lane-accent, var(--ai));
+  opacity: 1;
+}
+
 /* ── AI question-card sub-blocks (desktop builds these in chat-ui-manager) ─── */
 .question-card__anchors {
   display: flex;

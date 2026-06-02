@@ -40,7 +40,12 @@ const IDLE_AUDIO: AudioState = { capturing: false, level: 0, error: null };
 export interface CopilotSocket {
   status: SocketStatus;
   sessionId: string | null;
-  /** Send a partial session config to the server. No-op if not connected. */
+  /**
+   * Send a partial session config to the server. No-op if not connected.
+   * `Partial<SessionConfig>` includes the ASR fields (asrProvider, volcAppId,
+   * volcAccessToken, volcResourceId, volcModel) so the settings modal can switch
+   * the live recognizer and pass Doubao/Volc creds in the same configure message.
+   */
   sendConfigure: (config: Partial<SessionConfig>) => void;
   /** Request an analysis. Returns the generated requestId, or null if not connected. */
   analyze: (candidateAnswer: string, questionHistory?: string[]) => string | null;
