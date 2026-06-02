@@ -1,0 +1,11 @@
+{
+  "name": "@open-cluely/copilot-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Headless facade over the Open-Cluely desktop interviewer brain (Electron-free pipeline, prompts, runtime), reused server-side.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "node --test test"
+  }
+}

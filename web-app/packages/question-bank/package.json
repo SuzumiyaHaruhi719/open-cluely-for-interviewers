@@ -1,0 +1,12 @@
+{
+  "name": "@open-cluely/question-bank",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "src/retriever.js",
+  "scripts": {
+    "scrape": "node scripts/scrape.js",
+    "build-embeddings": "node scripts/build-embeddings.js",
+    "test": "node --test"
+  }
+}

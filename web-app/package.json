@@ -1,0 +1,19 @@
+{
+  "name": "open-cluely-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Web edition of Open-Cluely (Interviewer Copilot): React browser client + Node server reusing the desktop app's interviewer brain.",
+  "workspaces": [
+    "packages/contract",
+    "packages/copilot-core",
+    "packages/question-bank"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "npm run test:core && npm run test:qbank",
+    "test:core": "node --test \"packages/copilot-core/test/**/*.test.js\"",
+    "test:qbank": "node --test \"packages/question-bank/test/**/*.test.js\""
+  }
+}
