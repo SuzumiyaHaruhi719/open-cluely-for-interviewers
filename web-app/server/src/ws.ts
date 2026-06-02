@@ -17,6 +17,8 @@ import { createAsrRelay, type AsrRelay, type VolcCredentials } from './asr-relay
 import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
+import { createSpeakerRoleMap, type SpeakerRoleMap } from './speaker-roles';
+import { stampRole, isCandidateFinal } from './ws-speaker';
 
 // Top-K real interview questions threaded into Block D as OPTIONAL grounding.
 const BANK_GROUNDING_TOP_K = 6;
@@ -68,11 +70,13 @@ const sessionConfigSchema = z
     // are stored on the relay and used for the NEXT `audio-control start`. The
     // creds are application secrets for the user's own Volc account; the server
     // uses them to open the Volc WebSocket and NEVER logs them.
-    asrProvider: z.enum(['paraformer', 'volc']).optional(),
+    asrProvider: z.enum(['paraformer', 'volc', 'funasr']).optional(),
     volcAppId: z.string().optional(),
     volcAccessToken: z.string().optional(),
     volcResourceId: z.string().optional(),
-    volcModel: z.string().optional()
+    volcModel: z.string().optional(),
+    // FunASR streaming-SPK WebSocket URL (used only when asrProvider==='funasr').
+    funasrUrl: z.string().optional()
   })
   .passthrough();
 
@@ -85,7 +89,12 @@ const clientMessageSchema = z.discriminatedUnion('type', [
     questionHistory: z.array(z.string()).optional()
   }),
   z.object({ type: z.literal('audio'), seq: z.number(), source: audioSourceSchema, pcm: z.string() }),
-  z.object({ type: z.literal('audio-control'), action: z.enum(['start', 'stop']), source: audioSourceSchema })
+  z.object({ type: z.literal('audio-control'), action: z.enum(['start', 'stop']), source: audioSourceSchema }),
+  z.object({
+    type: z.literal('set-speaker-role'),
+    speakerId: z.number(),
+    role: z.enum(['interviewer', 'candidate', 'unknown'])
+  })
 ]);
 
 type ClientMessageParsed = z.infer<typeof clientMessageSchema>;
@@ -276,8 +285,16 @@ function applyAsrConfig(relay: AsrRelay, cfg: ConfigurePayload): void {
     cfg.volcAppId !== undefined ||
     cfg.volcAccessToken !== undefined ||
     cfg.volcResourceId !== undefined ||
-    cfg.volcModel !== undefined;
+    cfg.volcModel !== undefined ||
+    cfg.funasrUrl !== undefined;
   if (!hasAsrField) return;
+  // FunASR: switch when explicitly selected OR when a funasrUrl is supplied (so
+  // entering a URL is enough to opt in). The relay falls back to config.funasrWsUrl
+  // when the url is blank.
+  if (cfg.asrProvider === 'funasr' || cfg.funasrUrl !== undefined) {
+    relay.setAsrProvider('funasr', undefined, { url: cfg.funasrUrl ?? '' });
+    return;
+  }
   const creds = resolveVolcCreds(cfg);
   // If the message only carried creds (no explicit provider), infer 'volc' when
   // creds are now present so entering creds is enough to switch.
@@ -290,6 +307,7 @@ async function dispatch(
   session: HeadlessSession,
   relay: AsrRelay,
   trigger: AutoTrigger,
+  roles: SpeakerRoleMap,
   msg: ClientMessageParsed
 ): Promise<void> {
   switch (msg.type) {
@@ -320,6 +338,9 @@ async function dispatch(
     case 'audio-control':
       relay.handleAudioControl({ action: msg.action, source: msg.source });
       return;
+    case 'set-speaker-role':
+      roles.setRole(msg.speakerId, msg.role);
+      return;
   }
 }
 
@@ -328,6 +349,7 @@ function onMessage(
   session: HeadlessSession,
   relay: AsrRelay,
   trigger: AutoTrigger,
+  roles: SpeakerRoleMap,
   raw: unknown
 ): void {
   let requestId: string | undefined;
@@ -341,7 +363,7 @@ function onMessage(
         return;
       }
       if (parsed.data.type === 'analyze') requestId = parsed.data.requestId;
-      await dispatch(ws, session, relay, trigger, parsed.data);
+      await dispatch(ws, session, relay, trigger, roles, parsed.data);
     } catch (err) {
       // A handler error must never close the socket.
       const message = err instanceof Error ? err.message : 'handler error';
@@ -391,10 +413,29 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       pipelinesDir: pipelinesDir()
     });
 
+    // Per-connection speaker-role map. FunASR segments carry a speakerId that
+    // resolves to a role here; online providers carry no id (resolve(null) =
+    // 'unknown') so the role gating below is inert for them.
+    const roles = createSpeakerRoleMap();
+
     // Accumulated interviewee FINAL transcript — the candidate's answer so far.
     // The trigger monitor gates on its LENGTH (new chars since the last fire) and
     // generates from its content. Partial transcripts are not accumulated here.
     let accumulatedDisplayFinal = '';
+
+    // The SINGLE finalized-interviewee-answer seam: accumulate the new segment and
+    // feed the running answer to the autonomous trigger monitor. ONLINE mode hits
+    // this via display finals; OFFLINE funasr hits the SAME function for candidate
+    // finals. Factored out so both paths share identical accumulation + trigger.
+    function feedCandidateAnswer(rawSegment: string): void {
+      const segment = rawSegment.trim();
+      if (segment) {
+        accumulatedDisplayFinal = accumulatedDisplayFinal
+          ? `${accumulatedDisplayFinal} ${segment}`
+          : segment;
+      }
+      trigger.onCandidateFinal(accumulatedDisplayFinal);
+    }
 
     // The autonomous trigger monitor (per connection). `runAnalyze` reuses the
     // SAME analyze-and-emit path manual Generate Q uses; only the `trigger` flag
@@ -420,15 +461,27 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // trigger's in-flight bookkeeping so they never overlap.
     const relay = createAsrRelay({
       emit: (t) => {
-        send(ws, { type: 'transcript', source: t.source, text: t.text, isFinal: t.isFinal });
+        // Stamp the resolved speaker role + carry speakerId so the browser can
+        // label lanes and offer a per-speaker role override.
+        const stamped = stampRole(roles, t);
+        send(ws, {
+          type: 'transcript',
+          source: stamped.source,
+          text: stamped.text,
+          isFinal: stamped.isFinal,
+          speakerId: stamped.speakerId,
+          speaker: stamped.speaker
+        });
+        // ONLINE seam (paraformer/volc): interviewee answers arrive on the
+        // 'display' lane with no speakerId — unchanged byte-for-byte.
         if (t.source === 'display' && t.isFinal) {
-          const segment = t.text.trim();
-          if (segment) {
-            accumulatedDisplayFinal = accumulatedDisplayFinal
-              ? `${accumulatedDisplayFinal} ${segment}`
-              : segment;
-          }
-          trigger.onCandidateFinal(accumulatedDisplayFinal);
+          feedCandidateAnswer(t.text);
+        }
+        // OFFLINE seam (funasr): a finalized CANDIDATE segment (by speaker role,
+        // not source) feeds the SAME trigger path. Inert online: resolve(null) =
+        // 'unknown' so isCandidateFinal is always false there.
+        else if (isCandidateFinal(roles, t)) {
+          feedCandidateAnswer(t.text);
         }
       },
       onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, trigger, text)
@@ -448,7 +501,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
-    ws.on('message', (data) => onMessage(ws, session, relay, trigger, data.toString()));
+    ws.on('message', (data) => onMessage(ws, session, relay, trigger, roles, data.toString()));
     ws.on('error', () => {
       /* swallow socket errors — connection cleanup happens on 'close' */
     });
