@@ -19,6 +19,18 @@
  *  transcript (.chat-messages) grows and the composer pins to the bottom. ──── */
 .main {
   grid-template-rows: auto minmax(0, 1fr) auto;
+  /* Pin the single implicit column to the track width. The desktop `.main`
+     never declares grid-template-columns, so its column defaults to `auto`,
+     which grows to the widest non-shrinkable grid item — the topbar pills and
+     the composer's two channel cards — computing to ~935px even though .main's
+     track is only ~696px at a 1280px viewport. Every grid item, including
+     .chat-messages, then inherited that 935px and bled ~239px past .main, under
+     the right rail (grid column 3), hiding the progress card's right-aligned
+     timer/token meta behind the RESUME panel. minmax(0,1fr) lets the column
+     shrink below its content min-size so the stream tracks the column width and
+     the meta stays visible. (min-width:0 on .main is not enough — that bounds
+     the LAYOUT track, not .main's own implicit column.) */
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* ── Views nav reuses `.history-row` on <button> elements (desktop builds the
