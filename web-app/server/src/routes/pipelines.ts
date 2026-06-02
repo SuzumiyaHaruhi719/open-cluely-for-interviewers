@@ -13,7 +13,14 @@
 import path from 'node:path';
 import { Router } from 'express';
 import { z } from 'zod';
-import { presetLibrary } from '@open-cluely/copilot-core';
+import {
+  presetLibrary,
+  blockTypeMeta,
+  validatePipeline,
+  BLOCK_TYPES,
+  type BlockTypeMeta,
+  type ValidatePipelineResult
+} from '@open-cluely/copilot-core';
 
 interface PipelineSummary {
   id: string;
@@ -22,6 +29,10 @@ interface PipelineSummary {
 }
 
 const createBodySchema = z.object({
+  pipeline: z.object({}).passthrough()
+});
+
+const validateBodySchema = z.object({
   pipeline: z.object({}).passthrough()
 });
 
@@ -45,6 +56,34 @@ export function createPipelinesRouter(): Router {
           builtin: Boolean(p.builtin)
         }));
       res.json({ pipelines });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // The block-type catalog the editor's palette + config panel render from.
+  // Static metadata (ids/labels/ports/defaults/default bodies) — no I/O. MUST be
+  // declared before `/:id` so the param route does not capture "block-types".
+  router.get('/block-types', (_req, res, next) => {
+    try {
+      const blockTypes: BlockTypeMeta[] = blockTypeMeta();
+      res.json({ blockTypes });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Validate a pipeline without persisting it. Pure (the same validator the
+  // library runs on save), so this never touches disk. Declared before `/:id`.
+  router.post('/validate', (req, res, next) => {
+    try {
+      const parsed = validateBodySchema.safeParse(req.body ?? {});
+      if (!parsed.success) {
+        res.status(400).json({ error: parsed.error.issues[0]?.message ?? 'invalid body' });
+        return;
+      }
+      const result: ValidatePipelineResult = validatePipeline(parsed.data.pipeline, BLOCK_TYPES);
+      res.json({ ok: result.ok, errors: result.errors });
     } catch (err) {
       next(err);
     }

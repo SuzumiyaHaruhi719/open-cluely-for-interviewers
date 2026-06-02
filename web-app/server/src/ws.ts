@@ -1,3 +1,4 @@
+import path from 'node:path';
 import type { Server as HttpServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { WebSocketServer, type WebSocket } from 'ws';
@@ -11,6 +12,17 @@ import { getRetriever } from './question-bank';
 
 // Top-K real interview questions threaded into Block D as OPTIONAL grounding.
 const BANK_GROUNDING_TOP_K = 6;
+
+/**
+ * Resolve the dir Customize-mode pipelines live in — the SAME dir the pipelines
+ * route writes to (`${DATA_DIR}/pipelines`). Passing it to the headless session
+ * lets `getActivePipeline` load a saved custom pipeline by `activePipelineId`.
+ * Resolved lazily (per connection) so a test can set DATA_DIR first.
+ */
+function pipelinesDir(): string {
+  const base = process.env.DATA_DIR || path.join(__dirname, '..', '.data');
+  return path.join(base, 'pipelines');
+}
 
 /**
  * Retrieve high-frequency interview questions semantically similar to the
@@ -245,7 +257,11 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
   wss.on('connection', (ws: WebSocket) => {
     const session = createHeadlessSession({
       apiKey: config.dashscopeApiKey,
-      emit: makeEmit(ws)
+      emit: makeEmit(ws),
+      // Customize mode RUNS a saved custom pipeline: the brain's
+      // getActivePipeline reads activePipelineId (set via configure) and loads
+      // the pipeline JSON from this dir — the same one the pipelines route saves to.
+      pipelinesDir: pipelinesDir()
     });
 
     // One ASR relay per connection. Transcripts stream straight back as

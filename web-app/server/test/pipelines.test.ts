@@ -96,6 +96,81 @@ test('pipelines: lists built-ins, saves + reads + deletes a custom, guards built
   });
 });
 
+interface BlockTypeMeta {
+  id: string;
+  label: string;
+  schemaId: string | null;
+  inputs: { name: string; type: string; optional: boolean }[];
+  outputType: string;
+  defaultBody: string;
+  defaults: { model: string; temperature: number; maxTokens: number };
+}
+
+test('pipelines: GET /block-types returns the editor catalog (not shadowed by :id)', async () => {
+  await withServer(async (base) => {
+    const res = await fetch(`${base}/api/pipelines/block-types`);
+    assert.equal(res.status, 200);
+    const { blockTypes } = (await res.json()) as { blockTypes: BlockTypeMeta[] };
+    assert.ok(Array.isArray(blockTypes), 'blockTypes is an array');
+    assert.ok(blockTypes.length >= 7, 'expected the 7 Expert blocks + generic llm');
+
+    const byId = new Map(blockTypes.map((b) => [b.id, b]));
+    // The terminal "final-render" block produces the `final` output the validator
+    // requires exactly one of.
+    const finalRender = byId.get('final-render');
+    assert.ok(finalRender, 'final-render block present');
+    assert.equal(finalRender?.outputType, 'final');
+
+    // anatomy is a source (no inputs) and carries serializable defaults + body.
+    const anatomy = byId.get('anatomy');
+    assert.ok(anatomy, 'anatomy block present');
+    assert.equal(anatomy?.inputs.length, 0);
+    assert.equal(typeof anatomy?.defaults.model, 'string');
+    assert.equal(typeof anatomy?.defaultBody, 'string');
+
+    // A block with a typed input port (question-pool consumes claims/gaps/state).
+    const pool = byId.get('question-pool');
+    assert.ok(pool, 'question-pool present');
+    assert.ok(
+      pool?.inputs.some((p) => p.type === 'claims'),
+      'question-pool declares a claims input'
+    );
+  });
+});
+
+test('pipelines: POST /validate accepts the Expert preset and rejects a broken graph', async () => {
+  await withServer(async (base) => {
+    // The Expert preset is a valid DAG with exactly one final producer.
+    const okRes = await fetch(`${base}/api/pipelines/validate`, post({ pipeline: EXPERT_PRESET }));
+    assert.equal(okRes.status, 200);
+    const okBody = (await okRes.json()) as { ok: boolean; errors: string[] };
+    assert.equal(okBody.ok, true);
+    assert.deepEqual(okBody.errors, []);
+
+    // A single anatomy node has no `final` producer + an unknown-type check path.
+    const broken = {
+      id: 'broken-1',
+      name: 'Broken',
+      version: 'custom_v1',
+      nodes: [{ id: 'n1', type: 'anatomy' }],
+      edges: []
+    };
+    const badRes = await fetch(`${base}/api/pipelines/validate`, post({ pipeline: broken }));
+    assert.equal(badRes.status, 200, 'validate always 200; ok flag carries the verdict');
+    const badBody = (await badRes.json()) as { ok: boolean; errors: string[] };
+    assert.equal(badBody.ok, false);
+    assert.ok(badBody.errors.length >= 1, 'reports at least one error');
+    assert.ok(
+      badBody.errors.some((e) => e.includes('final')),
+      `expected a missing-final error; got ${JSON.stringify(badBody.errors)}`
+    );
+
+    // A malformed body (no pipeline) is a 400.
+    const malformed = await fetch(`${base}/api/pipelines/validate`, post({}));
+    assert.equal(malformed.status, 400);
+  });
+});
+
 test.after(() => {
   fs.rmSync(TMP_DATA_DIR, { recursive: true, force: true });
 });

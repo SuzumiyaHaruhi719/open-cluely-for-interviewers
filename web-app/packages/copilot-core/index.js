@@ -15,6 +15,8 @@ const expertOrchestrator = require(path.join(REPO_SRC, 'main-process', 'features
 const config = require(path.join(REPO_SRC, 'config'));
 const presets = require(path.join(REPO_SRC, 'services', 'ai', 'pipeline', 'presets'));
 const presetLibrary = require(path.join(REPO_SRC, 'services', 'ai', 'pipeline', 'preset-library'));
+const blockTypes = require(path.join(REPO_SRC, 'services', 'ai', 'pipeline', 'block-types'));
+const pipelineSchema = require(path.join(REPO_SRC, 'services', 'ai', 'pipeline', 'pipeline-schema'));
 // DashScope Paraformer realtime ASR factory from the desktop app. Re-exported
 // so server code can import the canonical client from one stable package.
 // NOTE: this factory is Electron-renderer-shaped (emits `vosk-*` channels,
@@ -111,6 +113,12 @@ module.exports = {
   EXPERT_PRESET: presets.EXPERT_PRESET,
   EXPERT_FAST_PRESET: presets.EXPERT_FAST_PRESET,
   presetLibrary,
+  // Pipeline-editor primitives: the block-type registry + its serializable
+  // metadata (palette/config panel), and the pure validator. Same source of
+  // truth the desktop Studio + preset-library use, so server validation matches.
+  BLOCK_TYPES: blockTypes.BLOCK_TYPES,
+  blockTypeMeta: blockTypes.blockTypeMeta,
+  validatePipeline: pipelineSchema.validatePipeline,
   config,
   REPO_SRC,
   // Canonical desktop DashScope Paraformer ASR factory (see note above).

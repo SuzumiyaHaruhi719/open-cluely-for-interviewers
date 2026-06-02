@@ -11,6 +11,7 @@ import { RightRail } from './RightRail';
 import { SettingsModal } from './SettingsModal';
 import { InterviewTypeModal, type InterviewTypeChoice } from './InterviewTypeModal';
 import { ResultsPanel } from './ResultsPanel';
+import { PipelineStudio } from './studio/PipelineStudio';
 import { useRailCollapsed } from './useRailCollapsed';
 import { useSessions } from './useSessions';
 import { useAssistantPanel } from './useAssistantPanel';
@@ -24,13 +25,16 @@ interface ConfigState {
   outputLanguage: OutputLanguage;
   jobDescription: string;
   resumeText: string;
+  /** Customize mode: the saved pipeline the session runs (null = Expert fallback). */
+  activePipelineId: string | null;
 }
 
 const INITIAL_CONFIG: ConfigState = {
   mode: 'expert',
   outputLanguage: '',
   jobDescription: '',
-  resumeText: ''
+  resumeText: '',
+  activePipelineId: null
 };
 
 /**
@@ -64,6 +68,7 @@ export function Shell() {
   const [answer, setAnswer] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
+  const [studioOpen, setStudioOpen] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [railCollapsed, toggleRail] = useRailCollapsed();
 
@@ -159,6 +164,23 @@ export function Shell() {
     (outputLanguage: OutputLanguage): void => {
       setConfig((prev) => ({ ...prev, outputLanguage }));
       pushConfig({ outputLanguage });
+    },
+    [pushConfig]
+  );
+
+  // Open the node editor (from the Customize section in Settings). Close Settings
+  // so the full-window studio overlay isn't competing with the modal.
+  const onOpenStudio = useCallback((): void => {
+    setSettingsOpen(false);
+    setStudioOpen(true);
+  }, []);
+
+  // "Use this" in the Studio: flip the live session to Customize running the saved
+  // pipeline. One configure carries both so the server never runs with a stale id.
+  const onUseCustomPipeline = useCallback(
+    (id: string): void => {
+      setConfig((prev) => ({ ...prev, mode: 'customize', activePipelineId: id }));
+      pushConfig({ mode: 'customize', activePipelineId: id });
     },
     [pushConfig]
   );
@@ -403,6 +425,13 @@ export function Shell() {
         onAiModelChange={appSettings.setAiModel}
         onAsrProviderChange={appSettings.setAsrProvider}
         onOpacityChange={appSettings.setOpacityStep}
+        onOpenStudio={onOpenStudio}
+      />
+
+      <PipelineStudio
+        open={studioOpen}
+        onClose={() => setStudioOpen(false)}
+        onUse={(id) => onUseCustomPipeline(id)}
       />
     </div>
   );

@@ -22,6 +22,8 @@ interface SettingsModalProps {
   onAiModelChange: (value: string) => void;
   onAsrProviderChange: (value: string) => void;
   onOpacityChange: (step: number) => void;
+  /** Open the full-window Pipeline Studio (Customize-mode node editor). */
+  onOpenStudio: () => void;
 }
 
 /** Matches SETTINGS_CLOSE_MS on the desktop: hold the exit anim, then unmount. */
@@ -63,7 +65,8 @@ export function SettingsModal({
   onLanguageChange,
   onAiModelChange,
   onAsrProviderChange,
-  onOpacityChange
+  onOpacityChange,
+  onOpenStudio
 }: SettingsModalProps) {
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
@@ -210,8 +213,8 @@ export function SettingsModal({
                     type="button"
                     id="open-pipeline-studio"
                     className="action-btn action-btn--ghost"
-                    title="Coming soon"
-                    disabled
+                    title="Open the node editor"
+                    onClick={onOpenStudio}
                   >
                     ⚙ 高级编辑（节点编辑器）
                   </button>

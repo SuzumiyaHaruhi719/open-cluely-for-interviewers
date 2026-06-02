@@ -36,6 +36,11 @@ export interface SessionConfig {
   resumeText: string;
   jobDescription: string;
   outputLanguage: OutputLanguage;
+  /**
+   * Customize mode only: the saved pipeline the headless session should run.
+   * `null` clears it (falls back to the Expert preset). Ignored by other modes.
+   */
+  activePipelineId?: string | null;
 }
 
 /** A question-bank search hit. difficulty: 0=unspecified,1=easy,2=medium,3=hard. */
