@@ -1,4 +1,4 @@
-import type { QuestionBankHit } from '@open-cluely/contract';
+import type { InterviewerMode, QuestionBankHit } from '@open-cluely/contract';
 
 /**
  * Typed fetch wrappers for the question-bank HTTP endpoints. All requests are
@@ -70,6 +70,39 @@ async function getJson<T>(url: string, signal?: AbortSignal): Promise<T> {
   return (await response.json()) as T;
 }
 
+/**
+ * JSON request helper for mutating verbs (POST/PATCH/DELETE). Serializes `body`
+ * to JSON when present, throws `ApiError` on a non-2xx response, and returns the
+ * parsed JSON payload.
+ */
+async function sendJson<T>(
+  url: string,
+  method: 'POST' | 'PATCH' | 'DELETE',
+  body?: unknown,
+  signal?: AbortSignal
+): Promise<T> {
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method,
+      signal,
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: body === undefined ? undefined : JSON.stringify(body)
+    });
+  } catch (error: unknown) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw error;
+    }
+    throw new ApiError(0, getErrorMessage(error));
+  }
+
+  if (!response.ok) {
+    throw new ApiError(response.status, `Request failed (${response.status})`);
+  }
+
+  return (await response.json()) as T;
+}
+
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
@@ -119,3 +152,167 @@ export function searchQuestions(
   const url = `/api/question-bank/search${buildQuery({ q, topK })}`;
   return getJson<SearchResponse>(url, signal);
 }
+
+/* ── Sessions (interview history) ──────────────────────────────────────────── */
+
+/** A session summary as returned by `GET /api/sessions`. */
+export interface SessionSummary {
+  id: string;
+  title: string;
+  interviewType: string;
+  createdAt: number;
+  updatedAt: number;
+  messageCount: number;
+}
+
+/** One persisted transcript message inside a session. */
+export interface SessionMessage {
+  role: string;
+  text: string;
+  ts: number;
+}
+
+/** A fully-hydrated session as returned by `GET /api/sessions/:id`. */
+export interface SessionDetail {
+  id: string;
+  title: string;
+  interviewType: string;
+  jobDescription: string;
+  resumeText: string;
+  messages: SessionMessage[];
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface SessionsResponse {
+  sessions: SessionSummary[];
+}
+
+export interface SessionResponse {
+  session: SessionDetail;
+}
+
+export interface CreateSessionBody {
+  title?: string;
+  interviewType?: string;
+}
+
+export interface UpdateSessionBody {
+  title?: string;
+  jobDescription?: string;
+  resumeText?: string;
+}
+
+export interface AppendMessageResponse {
+  ok: boolean;
+  messageCount: number;
+}
+
+export function fetchSessions(signal?: AbortSignal): Promise<SessionsResponse> {
+  return getJson<SessionsResponse>('/api/sessions', signal);
+}
+
+export function createSession(
+  body: CreateSessionBody,
+  signal?: AbortSignal
+): Promise<SessionResponse> {
+  return sendJson<SessionResponse>('/api/sessions', 'POST', body, signal);
+}
+
+export function fetchSession(id: string, signal?: AbortSignal): Promise<SessionResponse> {
+  return getJson<SessionResponse>(`/api/sessions/${encodeURIComponent(id)}`, signal);
+}
+
+export function updateSession(
+  id: string,
+  body: UpdateSessionBody,
+  signal?: AbortSignal
+): Promise<SessionResponse> {
+  return sendJson<SessionResponse>(
+    `/api/sessions/${encodeURIComponent(id)}`,
+    'PATCH',
+    body,
+    signal
+  );
+}
+
+export function deleteSession(id: string, signal?: AbortSignal): Promise<{ ok: boolean }> {
+  return sendJson<{ ok: boolean }>(
+    `/api/sessions/${encodeURIComponent(id)}`,
+    'DELETE',
+    undefined,
+    signal
+  );
+}
+
+export function appendSessionMessage(
+  id: string,
+  message: { role: string; text: string },
+  signal?: AbortSignal
+): Promise<AppendMessageResponse> {
+  return sendJson<AppendMessageResponse>(
+    `/api/sessions/${encodeURIComponent(id)}/messages`,
+    'POST',
+    message,
+    signal
+  );
+}
+
+/* ── Résumé extraction + chat ──────────────────────────────────────────────── */
+
+export interface ResumeExtractResponse {
+  text: string;
+}
+
+export interface ResumeChatTurn {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ResumeChatResponse {
+  reply: string;
+}
+
+export function extractResume(
+  payload: { filename: string; contentBase64: string },
+  signal?: AbortSignal
+): Promise<ResumeExtractResponse> {
+  return sendJson<ResumeExtractResponse>('/api/resume/extract', 'POST', payload, signal);
+}
+
+export function resumeChat(
+  payload: { resumeText: string; messages: ResumeChatTurn[] },
+  signal?: AbortSignal
+): Promise<ResumeChatResponse> {
+  return sendJson<ResumeChatResponse>('/api/resume/chat', 'POST', payload, signal);
+}
+
+/* ── Assistant (legacy actions) ────────────────────────────────────────────── */
+
+export interface AssistantReplyResponse {
+  reply: string;
+}
+
+export function assistantAsk(
+  payload: { prompt: string; context?: string },
+  signal?: AbortSignal
+): Promise<AssistantReplyResponse> {
+  return sendJson<AssistantReplyResponse>('/api/assistant/ask', 'POST', payload, signal);
+}
+
+export function assistantNotes(
+  payload: { transcript: string },
+  signal?: AbortSignal
+): Promise<AssistantReplyResponse> {
+  return sendJson<AssistantReplyResponse>('/api/assistant/notes', 'POST', payload, signal);
+}
+
+export function assistantInsights(
+  payload: { transcript: string },
+  signal?: AbortSignal
+): Promise<AssistantReplyResponse> {
+  return sendJson<AssistantReplyResponse>('/api/assistant/insights', 'POST', payload, signal);
+}
+
+/** Re-exported for consumers building create-session payloads. */
+export type { InterviewerMode };

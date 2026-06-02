@@ -4,6 +4,10 @@ import express, { type Express, type NextFunction, type Request, type Response }
 import { WS_PATH } from '@open-cluely/contract';
 import { createHealthRouter } from './routes/health';
 import { createQuestionBankRouter } from './routes/question-bank';
+import { createSessionsRouter } from './routes/sessions';
+import { createResumeRouter } from './routes/resume';
+import { createPipelinesRouter } from './routes/pipelines';
+import { createAssistantRouter } from './routes/assistant';
 
 // Resolve ../web/dist (the separately-built browser client) relative to source.
 // At runtime from dist/, __dirname is server/dist, so ../../web/dist; from tsx
@@ -26,10 +30,15 @@ export function createApp(): Express {
   const app = express();
 
   app.use(corsMiddleware);
-  app.use(express.json({ limit: '1mb' }));
+  // 25mb accommodates base64-encoded résumé uploads (POST /api/resume/extract).
+  app.use(express.json({ limit: '25mb' }));
 
   app.use('/api', createHealthRouter());
   app.use('/api/question-bank', createQuestionBankRouter());
+  app.use('/api/sessions', createSessionsRouter());
+  app.use('/api/resume', createResumeRouter());
+  app.use('/api/pipelines', createPipelinesRouter());
+  app.use('/api/assistant', createAssistantRouter());
 
   // Serve the built web client if it exists; otherwise skip (built separately).
   const hasWebDist = fs.existsSync(path.join(WEB_DIST, 'index.html'));

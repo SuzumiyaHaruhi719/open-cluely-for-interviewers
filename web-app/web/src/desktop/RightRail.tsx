@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { ContextEmptyIcon, UploadIcon } from './icons';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ContextEmptyIcon } from './icons';
+import { ResumeDropzone } from './ResumeDropzone';
+import { ResumeChat } from './ResumeChat';
 
 interface RightRailProps {
   jobDescription: string;
@@ -8,74 +10,105 @@ interface RightRailProps {
   onResumeTextChange: (value: string) => void;
   /** Whether any live session-context has arrived from the server yet. */
   hasSessionContext: boolean;
+  /** Identity that resets the résumé chat when it changes (active session id). */
+  resumeChatResetKey?: string | number | null;
 }
 
 const DEBOUNCE_MS = 500;
 
 /**
- * Debounce a value and invoke `onCommit` after it settles, skipping the initial
- * mount so we don't echo the empty default back to the server.
+ * A controlled text field that debounces commits to the parent. Owns local
+ * draft state, but re-syncs to `external` whenever the parent replaces it (e.g.
+ * loading a session or seeding a sample) WITHOUT echoing that value straight
+ * back through `onCommit`. Edits the user types settle after `DEBOUNCE_MS`.
+ *
+ * Returns `[draft, setDraft, commitNow]`: `commitNow(value)` flushes immediately
+ * (used by the résumé upload so the server grounds on it without the delay).
  */
-function useCommitDebounced(value: string, onCommit: (value: string) => void): void {
-  const committedRef = useRef(value);
+function useDebouncedField(
+  external: string,
+  onCommit: (value: string) => void
+): readonly [string, (value: string) => void, (value: string) => void] {
+  const [draft, setDraft] = useState(external);
+  // Tracks the last value that is "in sync" with the parent — either committed
+  // by us or pushed down from the parent. Used to suppress echo + no-op commits.
+  const syncedRef = useRef(external);
+
+  // Parent replaced the value → adopt it as the new baseline, no commit.
   useEffect(() => {
-    if (value === committedRef.current) {
+    if (external !== syncedRef.current) {
+      syncedRef.current = external;
+      setDraft(external);
+    }
+  }, [external]);
+
+  // Debounce user edits → commit once settled.
+  useEffect(() => {
+    if (draft === syncedRef.current) {
       return;
     }
     const handle = window.setTimeout(() => {
-      committedRef.current = value;
-      onCommit(value);
+      syncedRef.current = draft;
+      onCommit(draft);
     }, DEBOUNCE_MS);
     return () => window.clearTimeout(handle);
-  }, [value, onCommit]);
+  }, [draft, onCommit]);
+
+  const commitNow = useCallback(
+    (value: string): void => {
+      syncedRef.current = value;
+      setDraft(value);
+      onCommit(value);
+    },
+    [onCommit]
+  );
+
+  return [draft, setDraft, commitNow] as const;
 }
 
 /**
  * Right rail, 1:1 with the desktop `.right-rail`:
- *   #resume-section  →  drop-zone (visible markup) + a working resume textarea
+ *   #resume-section  →  drop-zone (real upload) + résumé chat + manual textarea
  *   #jd-input        →  job-description textarea
  *   #session-context →  live session context, or an empty-state placeholder
  *
- * JD + resume edits are debounced before they push to the session config. The
- * drop-zone markup stays visible per the spec; the textarea below it is the
- * working input until drag-drop upload lands in a later wave.
+ * The drop-zone reads a file → base64 → /api/resume/extract → text, which flows
+ * up via onResumeTextChange (pushed to the session config). A manual textarea
+ * remains as a fallback editor and stays in sync with the extracted text. JD +
+ * résumé edits are debounced before they push to the session config.
  */
 export function RightRail({
   jobDescription,
   resumeText,
   onJobDescriptionChange,
   onResumeTextChange,
-  hasSessionContext
+  hasSessionContext,
+  resumeChatResetKey
 }: RightRailProps) {
-  const [jd, setJd] = useState(jobDescription);
-  const [resume, setResume] = useState(resumeText);
+  const [jd, setJd] = useDebouncedField(jobDescription, onJobDescriptionChange);
+  const [resume, setResume, commitResume] = useDebouncedField(resumeText, onResumeTextChange);
 
-  useCommitDebounced(jd, onJobDescriptionChange);
-  useCommitDebounced(resume, onResumeTextChange);
+  // Upload extracts text → commit immediately (no debounce) so the chat + server
+  // ground on it right away; the manual textarea mirrors it.
+  const onExtracted = (text: string): void => commitResume(text);
+  const onCleared = (): void => commitResume('');
 
   return (
     <aside id="right-rail" className="right-rail">
       <section className="rail-section" id="resume-section">
         <h2 className="rail-section__title">Resume</h2>
         <div className="rail-section__body">
-          <div id="resume-dropzone" className="resume-dropzone" data-state="idle">
-            <div className="resume-dropzone__target" role="presentation">
-              <span className="resume-dropzone__icon" aria-hidden="true">
-                <UploadIcon size={22} />
-              </span>
-              <span className="resume-dropzone__primary">Paste the résumé below</span>
-              <span className="resume-dropzone__hint">Drag-and-drop upload coming soon</span>
-            </div>
-          </div>
+          <ResumeDropzone resumeText={resume} onExtracted={onExtracted} onCleared={onCleared} />
           <textarea
             id="resume-text"
             className="jd-input"
-            rows={5}
-            placeholder="Paste the candidate's résumé so the copilot can ground its follow-ups…"
+            rows={4}
+            placeholder="…or paste the candidate's résumé here."
             aria-label="Candidate résumé"
             value={resume}
             onChange={(e) => setResume(e.target.value)}
           />
+          <ResumeChat resumeText={resume} resetKey={resumeChatResetKey} />
         </div>
       </section>
 

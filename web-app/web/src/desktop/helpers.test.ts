@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { formatTimer, recMeta, MODE_META } from './helpers';
+import { formatTimer, recMeta, MODE_META, formatRelativeTime } from './helpers';
 
 describe('formatTimer', () => {
   test('formats sub-minute durations as mm:ss', () => {
@@ -40,5 +40,28 @@ describe('MODE_META', () => {
     expect(MODE_META.expert.attr).toBe('expert');
     expect(MODE_META.expert2.attr).toBe('expert2');
     expect(MODE_META.customize.attr).toBe('customize');
+  });
+});
+
+describe('formatRelativeTime', () => {
+  const now = 1_700_000_000_000;
+
+  test('reports "just now" under a minute', () => {
+    expect(formatRelativeTime(now - 30_000, now)).toBe('just now');
+  });
+
+  test('reports minutes, hours, and days ago within a week', () => {
+    expect(formatRelativeTime(now - 5 * 60_000, now)).toBe('5m ago');
+    expect(formatRelativeTime(now - 3 * 60 * 60_000, now)).toBe('3h ago');
+    expect(formatRelativeTime(now - 2 * 24 * 60 * 60_000, now)).toBe('2d ago');
+  });
+
+  test('falls back to an absolute date past a week', () => {
+    const result = formatRelativeTime(now - 10 * 24 * 60 * 60_000, now);
+    expect(result).not.toMatch(/ago|just now/);
+  });
+
+  test('clamps future timestamps to "just now"', () => {
+    expect(formatRelativeTime(now + 10_000, now)).toBe('just now');
   });
 });

@@ -13,3 +13,6 @@ build/
 # committed on purpose — it makes the question bank turnkey on clone/deploy
 # without needing the DashScope key to re-embed. Regenerate with:
 #   npm run scrape && DASHSCOPE_API_KEY=... npm run build-embeddings
+
+# server session file-store (runtime data)
+.data/

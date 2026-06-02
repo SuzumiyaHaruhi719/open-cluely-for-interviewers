@@ -75,3 +75,33 @@ export function recMeta(status: SocketStatus, capturing: boolean): RecMeta {
   }
   return { state: 'idle', label: 'Idle' };
 }
+
+const MINUTE_MS = 60_000;
+const HOUR_MS = 60 * MINUTE_MS;
+const DAY_MS = 24 * HOUR_MS;
+const WEEK_MS = 7 * DAY_MS;
+
+/**
+ * Relative time for a history row, ported from the desktop history-sidebar.js:
+ * "just now" under a minute, then Nm / Nh / Nd ago, falling back to a short
+ * absolute date past a week. `now` is injectable for deterministic tests.
+ */
+export function formatRelativeTime(ts: number, now: number = Date.now()): string {
+  const diff = Math.max(0, now - ts);
+  const minutes = Math.floor(diff / MINUTE_MS);
+  if (minutes < 1) {
+    return 'just now';
+  }
+  if (minutes < 60) {
+    return `${minutes}m ago`;
+  }
+  const hours = Math.floor(diff / HOUR_MS);
+  if (hours < 24) {
+    return `${hours}h ago`;
+  }
+  const days = Math.floor(diff / DAY_MS);
+  if (diff < WEEK_MS) {
+    return `${days}d ago`;
+  }
+  return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
