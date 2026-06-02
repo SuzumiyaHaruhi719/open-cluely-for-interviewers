@@ -429,6 +429,10 @@ async function runExpertChainLegacy({
   jobDescription = '',
   questionHistory = [],
   sessionState = null,
+  // OPTIONAL grounding for Block D — real high-frequency interview questions
+  // similar to the candidate's answer (from @open-cluely/question-bank). Empty
+  // by default (desktop path + all tests), making Block D byte-identical to today.
+  bankQuestions = [],
   abortSignal = null,
   // Block H — optional callback invoked (off the critical path) once session
   // consolidation resolves. Receives the updated session-state object. Provided
@@ -524,7 +528,8 @@ async function runExpertChainLegacy({
       candidateAnswer,
       resumeChunk,
       jobDescription,
-      questionHistory
+      questionHistory,
+      bankQuestions
     }),
     abortSignal
   });
@@ -696,6 +701,10 @@ async function runPipelineChain({
   outputLanguage = '',
   questionHistory = [],
   sessionState = null,
+  // OPTIONAL Block D grounding (see runExpertChainLegacy). Bounded below so a
+  // large retriever payload can't inflate the prompt / latency. Default [] keeps
+  // the engine's Block D byte-identical to today.
+  bankQuestions = [],
   abortSignal = null,
   onSessionState = null,
   onProgress = null
@@ -719,6 +728,11 @@ async function runPipelineChain({
     jobDescription: cap(jobDescription, 900),
     outputLanguage,
     questionHistory: Array.isArray(questionHistory) ? questionHistory.slice(-5) : questionHistory,
+    // Cap count + per-item length here too so the engine's Block D builder gets a
+    // pre-bounded list (Block D re-caps defensively). Empty list = unchanged prompt.
+    bankQuestions: Array.isArray(bankQuestions)
+      ? bankQuestions.slice(0, 8).map((q) => cap(q, 160))
+      : [],
     sessionState
   };
   const result = await runPipeline({ pipeline, apiKey, context: boundedContext, abortSignal, onProgress });

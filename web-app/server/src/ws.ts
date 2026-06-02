@@ -7,6 +7,27 @@ import type { FollowUpOutput, ServerMessage, TokenUsage } from '@open-cluely/con
 import { createHeadlessSession } from '@open-cluely/copilot-core';
 import { config } from './config';
 import { handleAudio, handleAudioControl } from './asr-relay';
+import { getRetriever } from './question-bank';
+
+// Top-K real interview questions threaded into Block D as OPTIONAL grounding.
+const BANK_GROUNDING_TOP_K = 6;
+
+/**
+ * Retrieve high-frequency interview questions semantically similar to the
+ * candidate's answer. NEVER throws and NEVER blocks analysis — any failure
+ * (no key, embed error, missing vectors) resolves to []. The retriever itself
+ * already swallows errors; the try/catch is belt-and-suspenders for the lazy
+ * singleton construction.
+ */
+async function retrieveBankGrounding(candidateAnswer: string): Promise<string[]> {
+  try {
+    const retriever = getRetriever();
+    const hits = await retriever.retrieve({ queryText: candidateAnswer, topK: BANK_GROUNDING_TOP_K });
+    return hits.map((h) => h.question).filter((q): q is string => typeof q === 'string' && q.length > 0);
+  } catch {
+    return [];
+  }
+}
 
 // --- Incoming message validation (mirrors ClientMessage) -------------------
 
@@ -119,10 +140,15 @@ async function handleAnalyze(
   session: HeadlessSession,
   msg: Extract<ClientMessageParsed, { type: 'analyze' }>
 ): Promise<void> {
+  // Grounding for Block D — retrieved BEFORE analysis. Fast mode ignores it;
+  // passing it unconditionally keeps the call site simple and never blocks.
+  const bankQuestions = await retrieveBankGrounding(msg.candidateAnswer);
+
   const result = (await session.analyze({
     candidateAnswer: msg.candidateAnswer,
     questionHistory: msg.questionHistory ?? [],
-    requestId: msg.requestId
+    requestId: msg.requestId,
+    bankQuestions
   })) as AnalyzeResult;
 
   if (result.skipped) {

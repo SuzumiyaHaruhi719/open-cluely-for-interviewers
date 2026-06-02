@@ -16,6 +16,12 @@ THE MISSION — probe the PERSON, not the datum. A great follow-up makes the can
 
 Your three jobs: (1) depth — every question forces reasoning/ownership/trait revelation; (2) diversity — ≥3 distinct question_types; (3) anchoring — quote the candidate's own words so the question can't be asked of anyone else.`;
 
+// Cap on how many bank questions to inject, and per-question char budget. The
+// retriever returns a handful of high-frequency questions as DIRECTION HINTS
+// only — they ground D toward the area without letting it copy verbatim.
+const BANK_QUESTIONS_MAX = 8;
+const BANK_QUESTION_CHARS = 160;
+
 function buildBlockD({
   blockAResult = null,
   blockBResult = null,
@@ -24,6 +30,7 @@ function buildBlockD({
   resumeChunk = '',
   jobDescription = '',
   questionHistory = [],
+  bankQuestions = [],
   promptBody = null
 } = {}) {
   const history = Array.isArray(questionHistory) && questionHistory.length
@@ -53,6 +60,22 @@ function buildBlockD({
   const nextComp = blockCResult?.next_competency_target || 'technical-depth';
   const shouldPivot = blockCResult?.should_pivot ? 'YES — open a new topic' : 'NO — drill the current topic';
 
+  // OPTIONAL grounding: real high-frequency interview questions semantically
+  // similar to the candidate's answer (from @open-cluely/question-bank). When
+  // absent/empty the section is an EMPTY STRING, so the prompt is byte-identical
+  // to today (verified by pipeline-prompt-body + equivalence tests). Direction
+  // hints only — D must still anchor on the candidate's own words.
+  const groundingSection = Array.isArray(bankQuestions) && bankQuestions.length
+    ? `\n\nREAL HIGH-FREQUENCY INTERVIEW QUESTIONS IN THIS AREA (direction hints only — you MUST anchor on the candidate's latest answer; do NOT copy these verbatim):\n${bankQuestions
+        .slice(0, BANK_QUESTIONS_MAX)
+        .map((q, i) => {
+          const text = String(q == null ? '' : q).replace(/\s+/g, ' ').trim();
+          const clipped = text.length > BANK_QUESTION_CHARS ? text.slice(0, BANK_QUESTION_CHARS) : text;
+          return `${i + 1}. ${clipped}`;
+        })
+        .join('\n')}`
+    : '';
+
   return `${promptBody || DEFAULT_BODY}
 
 [Block A claims]
@@ -71,7 +94,7 @@ ${contradictionsStr}
 ${nextComp}
 
 [Block C pivot directive]
-${shouldPivot}
+${shouldPivot}${groundingSection}
 
 [Candidate answer — for verbatim quoting in anchors]
 \`\`\`

@@ -13,6 +13,12 @@ export interface AnalyzeArgs {
   questionHistory?: string[];
   emotion?: unknown;
   requestId?: string | null;
+  /**
+   * OPTIONAL grounding for Block D: real high-frequency interview questions
+   * similar to the candidate's answer. Empty/absent = unchanged behavior;
+   * the Fast path ignores it.
+   */
+  bankQuestions?: string[];
 }
 
 export interface HeadlessSession {

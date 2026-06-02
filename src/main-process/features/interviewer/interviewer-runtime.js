@@ -197,7 +197,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     return { raw: text, usage, parsed: safeJsonParse(text) };
   }
 
-  async function analyzeViaPipeline({ pipeline, mode = 'expert', candidateAnswer, questionHistory, emotion, requestId = null }) {
+  async function analyzeViaPipeline({ pipeline, mode = 'expert', candidateAnswer, questionHistory, emotion, requestId = null, bankQuestions = [] }) {
     const apiKey = getApiKey();
     const { resumeChunk, jobDescription, outputLanguage } = getContext();
     const state = getAppState() || {};
@@ -216,6 +216,11 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
         outputLanguage,
         questionHistory,
         sessionState,
+        // OPTIONAL Block D grounding — top-K real interview questions similar to
+        // the candidate's answer, retrieved by the caller (server/ws.ts) and
+        // passed in per-call. Empty by default (desktop never supplies it), so
+        // Block D stays byte-identical to today.
+        bankQuestions,
         // Block H persistence — invoked OFF the critical path once consolidation
         // resolves (never throws). We mutate the live app-state object in place
         // so the NEXT turn's `getAppState().interviewerSessionState` (read above)
@@ -293,7 +298,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     }
   }
 
-  async function analyzeCandidateAnswer({ candidateAnswer, questionHistory = [], emotion = null, requestId = null } = {}) {
+  async function analyzeCandidateAnswer({ candidateAnswer, questionHistory = [], emotion = null, requestId = null, bankQuestions = [] } = {}) {
     const answer = String(candidateAnswer || '').trim();
     if (!answer) {
       return { skipped: true, reason: 'empty-answer' };
@@ -309,14 +314,14 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
 
     const mode = getMode();
     if (mode === 'expert') {
-      return analyzeViaPipeline({ pipeline: EXPERT_PRESET, mode: 'expert', candidateAnswer: answer, questionHistory, emotion, requestId });
+      return analyzeViaPipeline({ pipeline: EXPERT_PRESET, mode: 'expert', candidateAnswer: answer, questionHistory, emotion, requestId, bankQuestions });
     }
     if (mode === 'expert2') {
       // Expert 2.0 — merged-DE fast chain.
-      return analyzeViaPipeline({ pipeline: EXPERT_FAST_PRESET, mode: 'expert', candidateAnswer: answer, questionHistory, emotion, requestId });
+      return analyzeViaPipeline({ pipeline: EXPERT_FAST_PRESET, mode: 'expert', candidateAnswer: answer, questionHistory, emotion, requestId, bankQuestions });
     }
     if (mode === 'customize') {
-      return analyzeViaPipeline({ pipeline: getActivePipeline(), mode: 'custom', candidateAnswer: answer, questionHistory, emotion, requestId });
+      return analyzeViaPipeline({ pipeline: getActivePipeline(), mode: 'custom', candidateAnswer: answer, questionHistory, emotion, requestId, bankQuestions });
     }
 
     const { resumeChunk, jobDescription } = getContext();

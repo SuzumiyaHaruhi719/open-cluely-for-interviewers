@@ -65,7 +65,7 @@ const BLOCK_TYPES = {
   'question-pool': {
     label: '生成候选问题', schemaId: 'D', outputType: 'candidates', phase: { id: 'pool', index: 3 },
     inputs: [{ name: 'claims', type: 'claims' }, { name: 'gaps', type: 'gaps' }, { name: 'state', type: 'state' }], defaults: defaultsFor('D'),
-    build: (ctx, inputs, body) => buildBlockD({ blockAResult: inputs.claims, blockBResult: inputs.gaps, blockCResult: inputs.state, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, jobDescription: ctx.jobDescription, questionHistory: ctx.questionHistory, promptBody: body }),
+    build: (ctx, inputs, body) => buildBlockD({ blockAResult: inputs.claims, blockBResult: inputs.gaps, blockCResult: inputs.state, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, jobDescription: ctx.jobDescription, questionHistory: ctx.questionHistory, bankQuestions: ctx.bankQuestions, promptBody: body }),
     fallback: () => blockDFallback()
   },
   'rank-score': {
