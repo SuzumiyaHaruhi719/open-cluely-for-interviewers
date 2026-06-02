@@ -547,15 +547,15 @@ body.stealth-on .app-shell { opacity: 0.92; }
   box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 50%, transparent);
 }
 
-/* Expert 2.0 = emerald (the merged-DE fast chain) */
+/* Expert 2.0 = magenta-pink (the merged-DE fast chain; distinct from Fast's teal) */
 .mode-indicator[data-mode="expert2"] {
-  color: #34d399;
-  border-color: color-mix(in srgb, #34d399 35%, var(--border));
-  background: color-mix(in srgb, #34d399 8%, transparent);
+  color: #ec4899;
+  border-color: color-mix(in srgb, #ec4899 35%, var(--border));
+  background: color-mix(in srgb, #ec4899 8%, transparent);
 }
 .mode-indicator[data-mode="expert2"] .mode-indicator__dot {
-  background: #34d399;
-  box-shadow: 0 0 6px color-mix(in srgb, #34d399 50%, transparent);
+  background: #ec4899;
+  box-shadow: 0 0 6px color-mix(in srgb, #ec4899 50%, transparent);
 }
 
 /* ASR engine pill — colour per provider so the active speech-to-text model is

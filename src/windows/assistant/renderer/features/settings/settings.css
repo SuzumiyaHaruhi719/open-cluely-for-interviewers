@@ -276,7 +276,7 @@
 
 .mode-segmented__btn[data-mode="fast"]      { --mode-accent: var(--candidate);   --mode-glow: var(--glow-candidate); }
 .mode-segmented__btn[data-mode="expert"]    { --mode-accent: var(--ai);          --mode-glow: var(--glow-ai); }
-.mode-segmented__btn[data-mode="expert2"]   { --mode-accent: #34d399;            --mode-glow: 0 0 16px color-mix(in srgb, #34d399 42%, transparent); }
+.mode-segmented__btn[data-mode="expert2"]   { --mode-accent: #ec4899;            --mode-glow: 0 0 16px color-mix(in srgb, #ec4899 42%, transparent); }
 .mode-segmented__btn[data-mode="customize"] { --mode-accent: var(--interviewer);  --mode-glow: var(--glow-interviewer); }
 
 /* ── Customize front door: template gallery + AI generate (HR-friendly) ─────── */

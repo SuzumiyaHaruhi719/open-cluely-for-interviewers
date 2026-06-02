@@ -391,9 +391,19 @@
               </div>
             </div>
             <div class="settings-field">
+              <label class="settings-field__label" for="setting-volc-model">豆包模型 / Doubao model</label>
+              <select id="setting-volc-model" class="settings-select">
+                <option value="volc.bigasr.sauc.duration">流式 1.0 · 小时版 (bigasr · duration)</option>
+                <option value="volc.bigasr.sauc.concurrent">流式 1.0 · 并发版 (bigasr · concurrent)</option>
+                <option value="volc.seedasr.sauc.duration">流式 2.0 Seed · 小时版 (seedasr · duration)</option>
+                <option value="volc.seedasr.sauc.concurrent">流式 2.0 Seed · 并发版 (seedasr · concurrent)</option>
+                <option value="__custom">自定义 / Custom…</option>
+              </select>
+              <p class="settings-field__desc">选好即自动保存。2.0 (seedasr) 更准但需在控制台为该 App 开通；1.0 小时版最通用。需要其它 resource id 选「自定义」。</p>
+            </div>
+            <div class="settings-field" id="setting-volc-resource-id-row">
               <label class="settings-field__label" for="setting-volc-resource-id">Resource ID</label>
               <input type="text" id="setting-volc-resource-id" class="settings-input" placeholder="e.g. volc.bigasr.sauc.duration" />
-              <p class="settings-field__desc">在线豆包流式语音识别。在上方 Provider 选 “Doubao streaming” 即用这里的凭证。例: <code>volc.seedasr.sauc.duration</code></p>
             </div>
           </section>
 

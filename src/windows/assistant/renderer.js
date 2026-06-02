@@ -666,6 +666,8 @@ const settingVolcAppId = document.getElementById('setting-volc-appid');
 const settingVolcAccessToken = document.getElementById('setting-volc-access-token');
 const toggleVolcAccessTokenVisibilityBtn = document.getElementById('toggle-volc-access-token-visibility');
 const settingVolcResourceId = document.getElementById('setting-volc-resource-id');
+const settingVolcModel = document.getElementById('setting-volc-model');
+const settingVolcResourceIdRow = document.getElementById('setting-volc-resource-id-row');
 const settingResumeText = document.getElementById('setting-resume-text');
 const settingJobDescription = document.getElementById('setting-job-description');
 const settingInterviewerMode = document.getElementById('setting-interviewer-mode');
@@ -852,6 +854,37 @@ function setupPipelineStudio() {
     if (openStudioBtn) openStudioBtn.addEventListener('click', () => pipelineStudio.open(activePipelineId || ''));
     if (customizeAiGenerateBtn) customizeAiGenerateBtn.addEventListener('click', generatePipelineFromInput);
     if (customizeAiInput) customizeAiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); generatePipelineFromInput(); } });
+}
+
+// Doubao model picker: a friendly dropdown of the known Volcengine resource IDs
+// that drives the (still-editable) Resource ID field, auto-saving on change.
+const VOLC_KNOWN_RESOURCES = ['volc.bigasr.sauc.duration', 'volc.bigasr.sauc.concurrent', 'volc.seedasr.sauc.duration', 'volc.seedasr.sauc.concurrent'];
+function syncVolcModelFromInput() {
+    if (!settingVolcModel || !settingVolcResourceId) return;
+    const v = String(settingVolcResourceId.value || '').trim();
+    settingVolcModel.value = VOLC_KNOWN_RESOURCES.includes(v) ? v : '__custom';
+    if (settingVolcResourceIdRow) settingVolcResourceIdRow.style.display = settingVolcModel.value === '__custom' ? '' : 'none';
+}
+function setupVolcModelPicker() {
+    if (!settingVolcModel || !settingVolcResourceId) return;
+    settingVolcModel.addEventListener('change', () => {
+        if (settingVolcModel.value === '__custom') {
+            if (settingVolcResourceIdRow) settingVolcResourceIdRow.style.display = '';
+            settingVolcResourceId.focus();
+            return;
+        }
+        settingVolcResourceId.value = settingVolcModel.value;
+        if (settingVolcResourceIdRow) settingVolcResourceIdRow.style.display = 'none';
+        window.electronAPI?.saveSettings?.({ volcResourceId: settingVolcModel.value }).catch(() => {});
+    });
+    settingVolcResourceId.addEventListener('change', () => {
+        window.electronAPI?.saveSettings?.({ volcResourceId: String(settingVolcResourceId.value || '').trim() }).catch(() => {});
+        syncVolcModelFromInput();
+    });
+    // The settings panel populates the Resource ID input asynchronously on open;
+    // sync the dropdown to it shortly after.
+    if (settingsBtn) settingsBtn.addEventListener('click', () => setTimeout(syncVolcModelFromInput, 200));
+    syncVolcModelFromInput();
 }
 const settingsPanelManager = createSettingsPanelManager({
     settingsPanel,
@@ -1566,6 +1599,7 @@ async function init() {
     setupSessionContextPanel();
     setupInterviewerProgressListener();
     setupPipelineStudio();
+    setupVolcModelPicker();
     populateInterviewSampleOptions();
     // Components are mounted now, so reflect any persisted resume/JD from the
     // settings we loaded above (loadShortcutConfig runs before the components
