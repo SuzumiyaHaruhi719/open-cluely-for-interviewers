@@ -2,7 +2,8 @@ import type {
   FollowUpOutput,
   GenerationTrigger,
   RankedQuestion,
-  ServerMessage
+  ServerMessage,
+  SpeakerRole
 } from '@open-cluely/contract';
 import { S2C } from '@open-cluely/contract';
 
@@ -113,11 +114,17 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
         isString(data.text) &&
         typeof data.isFinal === 'boolean'
       ) {
+        const speakerRole: SpeakerRole | undefined =
+          data.speaker === 'interviewer' || data.speaker === 'candidate' || data.speaker === 'unknown'
+            ? (data.speaker as SpeakerRole)
+            : undefined;
         return {
           type: 'transcript',
           source: data.source,
           text: data.text,
-          isFinal: data.isFinal
+          isFinal: data.isFinal,
+          ...(typeof data.speakerId === 'number' ? { speakerId: data.speakerId } : {}),
+          ...(speakerRole !== undefined ? { speaker: speakerRole } : {})
         };
       }
       return null;
