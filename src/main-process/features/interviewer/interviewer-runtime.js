@@ -369,7 +369,13 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
         concreteHooks: Array.isArray(parsed.concrete_hooks) ? parsed.concrete_hooks : [],
         missingStar: parsed.missing_star_element || 'none',
         recommendedDirection: parsed.recommended_direction || 'technical-depth',
-        candidateEmotion: emotion
+        candidateEmotion: emotion,
+        // OPTIONAL Block-D-style grounding for Fast Stage 2 — top-K real interview
+        // questions similar to the answer, passed in per-call by the caller
+        // (server/ws.ts). Empty by default (desktop supplies none), so the Stage-2
+        // prompt stays byte-identical to today. Direction hints only; the question
+        // is still anchored on the candidate's own answer.
+        bankQuestions
       });
 
       result.stage2 = {

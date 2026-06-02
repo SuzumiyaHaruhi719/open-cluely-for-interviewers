@@ -77,6 +77,7 @@ export function Shell() {
     analyze,
     lastResult,
     progress,
+    progressTokens,
     isAnalyzing,
     error,
     transcripts,
@@ -562,6 +563,7 @@ export function Shell() {
                 transcriptMessages={transcriptMessages}
                 lastResult={lastResult}
                 progress={progress}
+                progressTokens={progressTokens}
                 isAnalyzing={isAnalyzing}
                 error={error}
                 autoScroll={autoScroll}

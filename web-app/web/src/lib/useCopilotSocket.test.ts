@@ -103,6 +103,61 @@ describe('useCopilotSocket', () => {
     expect(result.current.error).toBeNull();
   });
 
+  test('progressTokens accumulates per-phase token payloads and resets on a new analyze', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.analyze('We sharded by user id.');
+    });
+    expect(result.current.progressTokens).toBe(0);
+
+    // First phase reports tokens → accumulate (12 + 8).
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId,
+        phase: 'answer',
+        index: 0,
+        total: 2,
+        status: 'done',
+        tokens: { input: 12, output: 8 }
+      });
+    });
+    await waitFor(() => expect(result.current.progressTokens).toBe(20));
+
+    // A token-less phase leaves the running total unchanged.
+    act(() => {
+      socket.emit({ type: 'progress', requestId, phase: 'rank', index: 1, total: 2, status: 'start' });
+    });
+    expect(result.current.progressTokens).toBe(20);
+
+    // A second token-bearing phase adds on top (20 + 30).
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId,
+        phase: 'rank',
+        index: 1,
+        total: 2,
+        status: 'done',
+        tokens: { input: 20, output: 10 }
+      });
+    });
+    await waitFor(() => expect(result.current.progressTokens).toBe(50));
+
+    // A fresh analyze resets the counter back to 0.
+    act(() => {
+      result.current.analyze('Another answer.');
+    });
+    expect(result.current.progressTokens).toBe(0);
+  });
+
   test('configure is a no-op until the socket is open', () => {
     const { result } = renderHook(() => useCopilotSocket());
 

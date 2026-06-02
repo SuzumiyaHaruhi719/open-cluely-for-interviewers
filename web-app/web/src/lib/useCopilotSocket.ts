@@ -56,6 +56,12 @@ export interface CopilotSocket {
   lastResult: CopilotResult | null;
   /** Latest progress event for the in-flight request (cleared on result/error). */
   progress: CopilotProgress | null;
+  /**
+   * Cumulative tokens (input + output) reported across the in-flight request's
+   * progress events. Reset to 0 on each `analyze()`; 0 until the first phase
+   * carries a `tokens` payload.
+   */
+  progressTokens: number;
   /** True between `analyze()` and the matching result/error. */
   isAnalyzing: boolean;
   error: string | null;
@@ -95,6 +101,7 @@ export function useCopilotSocket(): CopilotSocket {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<CopilotResult | null>(null);
   const [progress, setProgress] = useState<CopilotProgress | null>(null);
+  const [progressTokens, setProgressTokens] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [transcripts, setTranscripts] = useState<TranscriptLanes>({
@@ -132,6 +139,10 @@ export function useCopilotSocket(): CopilotSocket {
       case 'progress':
         if (message.requestId === activeRequestRef.current) {
           setProgress(message);
+          if (message.tokens) {
+            const delta = message.tokens.input + message.tokens.output;
+            setProgressTokens((prev) => prev + delta);
+          }
         }
         break;
       case 'result':
@@ -265,6 +276,7 @@ export function useCopilotSocket(): CopilotSocket {
       activeRequestRef.current = requestId;
       setIsAnalyzing(true);
       setProgress(null);
+      setProgressTokens(0);
       setError(null);
       return requestId;
     },
@@ -345,6 +357,7 @@ export function useCopilotSocket(): CopilotSocket {
     analyze,
     lastResult,
     progress,
+    progressTokens,
     isAnalyzing,
     error,
     transcripts,

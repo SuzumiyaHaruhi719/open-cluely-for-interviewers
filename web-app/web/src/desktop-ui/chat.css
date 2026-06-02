@@ -751,11 +751,7 @@
     100% { transform: translateX(280%); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .chat-progress-card.is-indeterminate .chat-progress__fill {
-        animation: none;
-        width: 100% !important;
-        opacity: 0.5;
-    }
-    .chat-progress__fill { transition: none; }
-}
+/* prefers-reduced-motion guard removed per this file's no-reduced-motion-guard
+ * policy (see header): the deployment runs with OS animations off, so the guard
+ * froze the progress bar. The 220ms width transition + indeterminate shimmer
+ * must always run. */

@@ -189,8 +189,9 @@ interface RunAnalysisArgs {
  * the `trigger` flag. Returns nothing; a `skipped` result emits an `error` instead.
  */
 async function runAnalysis(ws: WebSocket, session: HeadlessSession, args: RunAnalysisArgs): Promise<void> {
-  // Grounding for Block D — retrieved BEFORE analysis. Fast mode ignores it;
-  // passing it unconditionally keeps the call site simple and never blocks.
+  // Question-bank grounding — retrieved BEFORE analysis, passed to every mode:
+  // Expert 1.0/2.0/Customize ground Block D; Fast grounds its Stage-2 prompt.
+  // Retrieval never throws/blocks (returns [] on any failure).
   const bankQuestions = await retrieveBankGrounding(args.candidateAnswer);
 
   const result = (await session.analyze({

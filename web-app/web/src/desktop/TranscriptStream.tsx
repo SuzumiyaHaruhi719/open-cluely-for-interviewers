@@ -18,6 +18,8 @@ interface TranscriptStreamProps {
   transcriptMessages: TranscriptMessage[];
   lastResult: CopilotResult | null;
   progress: CopilotProgress | null;
+  /** Cumulative analyze tokens so far; shown on the progress card when > 0. */
+  progressTokens?: number;
   isAnalyzing: boolean;
   error: string | null;
   autoScroll: boolean;
@@ -79,6 +81,7 @@ export function TranscriptStream({
   transcriptMessages,
   lastResult,
   progress,
+  progressTokens = 0,
   isAnalyzing,
   error,
   autoScroll,
@@ -133,7 +136,7 @@ export function TranscriptStream({
       {mic.finalText ? <LaneLine lane="interviewer" text={mic.finalText} /> : null}
       {mic.partial ? <LaneLine lane="interviewer" text={mic.partial} live /> : null}
 
-      {isAnalyzing ? <ProgressCard progress={progress} /> : null}
+      {isAnalyzing ? <ProgressCard progress={progress} tokens={progressTokens} /> : null}
 
       {lastResult && !isAnalyzing ? (
         <QuestionCard

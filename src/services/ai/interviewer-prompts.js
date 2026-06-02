@@ -95,6 +95,12 @@ Output strict JSON only.
 }
 
 // ─── STAGE 2 ─────────────────────────────────────────────────────────────────
+// Cap + per-question char budget for the OPTIONAL question-bank grounding,
+// mirroring Block D (block-d-question-pool.js). The retriever returns a handful
+// of high-frequency real questions as DIRECTION HINTS only.
+const FAST_BANK_QUESTIONS_MAX = 8;
+const FAST_BANK_QUESTION_CHARS = 160;
+
 function buildFollowUpQuestionPrompt({
   concreteHooks = [],
   missingStar = 'none',
@@ -102,12 +108,29 @@ function buildFollowUpQuestionPrompt({
   candidateAnswer = '',
   questionHistory = [],
   resumeChunk = '',
-  candidateEmotion = null
+  candidateEmotion = null,
+  bankQuestions = []
 } = {}) {
   const hooks = Array.isArray(concreteHooks) ? concreteHooks.join('\n- ') : String(concreteHooks);
   const history = Array.isArray(questionHistory)
     ? questionHistory.map((q, i) => `${i + 1}. ${q}`).join('\n')
     : String(questionHistory || '');
+
+  // OPTIONAL grounding: real high-frequency interview questions semantically
+  // similar to the candidate's answer (retrieved by the caller, e.g. server/ws.ts,
+  // and passed in per-call). When absent/empty the section is an EMPTY STRING, so
+  // the prompt is byte-identical to today (guarded by fast-bank-grounding.test.js).
+  // Direction hints only — Stage 2 must still anchor on the candidate's answer.
+  const groundingSection = Array.isArray(bankQuestions) && bankQuestions.length
+    ? `\n\n[参考：该领域真实高频面试题（仅作追问方向参考，必须锚定候选人本轮回答，不要照搬）]\n${bankQuestions
+        .slice(0, FAST_BANK_QUESTIONS_MAX)
+        .map((q, i) => {
+          const text = String(q == null ? '' : q).replace(/\s+/g, ' ').trim();
+          const clipped = text.length > FAST_BANK_QUESTION_CHARS ? text.slice(0, FAST_BANK_QUESTION_CHARS) : text;
+          return `${i + 1}. ${clipped}`;
+        })
+        .join('\n')}`
+    : '';
 
   return `Generate 1-2 follow-up questions for the interviewer.
 
@@ -130,7 +153,7 @@ ${safe(candidateAnswer)}
 ${emotionLine(candidateEmotion)}
 
 [Questions already asked — do not repeat]
-${safe(history, '(none yet)')}
+${safe(history, '(none yet)')}${groundingSection}
 
 Worked example of the quoting rule (READ THIS):
 Bad (no quote, generic):
