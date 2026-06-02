@@ -111,6 +111,50 @@ button.history-row {
   opacity: 1;
 }
 
+/* ── Offline speaker bubble: one-tap role toggle chip ────────────────────────
+ *    Sits in the bubble's `.message-header` (offline diarization only). Picks up
+ *    the lane's `--lane-accent` (chat.css sets it per lane-candidate/interviewer)
+ *    so the chip reads in the bubble's own colour. Low-emphasis at rest, lifts on
+ *    hover — it's a relabel affordance, not a primary action. Pushed to the right
+ *    of the header so it never crowds the speaker icon/label. ────────────────── */
+.chat-message.has-role-toggle .message-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.speaker-role-toggle {
+  margin-left: auto;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--lane-accent, var(--fg-subtle)) 30%, var(--hairline));
+  color: color-mix(in srgb, var(--lane-accent, var(--fg-muted)) 70%, var(--fg-muted));
+  background: transparent;
+  opacity: 0.66;
+  transition:
+    opacity var(--dur-2, 160ms) var(--ease, ease),
+    background var(--dur-2, 160ms) var(--ease, ease),
+    border-color var(--dur-2, 160ms) var(--ease, ease);
+}
+.speaker-role-toggle:hover {
+  opacity: 1;
+  color: var(--lane-accent, var(--fg));
+  background: color-mix(in srgb, var(--lane-accent, transparent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--lane-accent, var(--hairline-strong)) 45%, var(--hairline));
+}
+.speaker-role-toggle:focus-visible {
+  outline: none;
+  opacity: 1;
+  border-color: var(--ring, var(--lane-accent, var(--ai)));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--lane-accent, var(--ai)) 35%, transparent);
+}
+
 /* ── Auto-generation toggle pill (topbar) ───────────────────────────────────
  *    A clickable .mode-indicator-shaped button. ON = AI-indigo accent + glow
  *    dot (reads "armed"); OFF = muted/dim like an idle pill. Namespaced under

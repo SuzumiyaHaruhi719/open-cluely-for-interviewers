@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, test } from 'vitest';
-import { cleanup, render } from '@testing-library/react';
+import { afterEach, describe, expect, it, test, vi } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
 import type { TranscriptLanes } from '../lib/useCopilotSocket';
 
@@ -80,5 +80,28 @@ describe('TranscriptStream seeded messages', () => {
   test('renders nothing (stays :empty-eligible) when there are no messages or live text', () => {
     const { container } = renderStream([]);
     expect(container.querySelectorAll('.chat-message')).toHaveLength(0);
+  });
+});
+
+describe('TranscriptStream offline speaker bubbles', () => {
+  it('offline: renders speaker bubbles and fires the role toggle', () => {
+    const onSetRole = vi.fn();
+    render(
+      <TranscriptStream
+        offline
+        speakerSegments={[{ id: 1, speakerId: 0, role: 'interviewer', text: '你好' }]}
+        onSetSpeakerRole={onSetRole}
+        transcripts={EMPTY_LANES}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+    expect(screen.getByText('你好')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /候选人/ }));
+    expect(onSetRole).toHaveBeenCalledWith(0, 'candidate');
   });
 });

@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
+import type { SpeakerRole } from '@open-cluely/contract';
 import type { CopilotProgress, CopilotResult, TranscriptLanes } from '../lib/useCopilotSocket';
+import type { SpeakerSegment } from '../lib/speakerSegments';
 import { QuestionCard } from './QuestionCard';
 import { ProgressCard } from './ProgressCard';
 
@@ -27,6 +29,16 @@ interface TranscriptStreamProps {
   pickedHint?: string | null;
   /** Promote a ranked candidate into the analyze buffer (no server round-trip). */
   onPickCandidate?: (question: string) => void;
+  /**
+   * Offline (single-mic) interview: render the diarized `speakerSegments` list
+   * with one-tap role toggles INSTEAD of the two online source lanes. Online
+   * callers omit this (defaults false) and are unaffected.
+   */
+  offline?: boolean;
+  /** Diarized speaker segments (offline FunASR only); rendered when `offline`. */
+  speakerSegments?: SpeakerSegment[];
+  /** One-tap role override for a speaker id (offline only). */
+  onSetSpeakerRole?: (speakerId: number, role: SpeakerRole) => void;
 }
 
 interface LaneLineProps {
@@ -69,6 +81,11 @@ function AiLine({ text }: { text: string }) {
   );
 }
 
+/** Map a diarized speaker role onto a transcript lane (only interviewer/candidate). */
+function roleToLane(role: SpeakerRole): 'candidate' | 'interviewer' {
+  return role === 'interviewer' ? 'interviewer' : 'candidate';
+}
+
 /**
  * Live transcript stream — the desktop `.chat-messages` hero column. Renders the
  * two colour-coded lanes (candidate = display/teal, interviewer = mic/amber),
@@ -86,7 +103,10 @@ export function TranscriptStream({
   error,
   autoScroll,
   pickedHint = null,
-  onPickCandidate
+  onPickCandidate,
+  offline = false,
+  speakerSegments,
+  onSetSpeakerRole
 }: TranscriptStreamProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -105,6 +125,7 @@ export function TranscriptStream({
     transcripts.display.partial,
     transcripts.mic.finalText,
     transcripts.mic.partial,
+    speakerSegments,
     lastResult,
     progress,
     isAnalyzing
@@ -130,11 +151,46 @@ export function TranscriptStream({
         return <LaneLine key={`seed-${index}`} lane={message.role} text={message.text} />;
       })}
 
-      {display.finalText ? <LaneLine lane="candidate" text={display.finalText} /> : null}
-      {display.partial ? <LaneLine lane="candidate" text={display.partial} live /> : null}
+      {offline ? (
+        // Offline (single-mic) diarization: one bubble per finalized speaker
+        // segment with a one-tap role toggle, in place of the two source lanes.
+        (speakerSegments ?? []).map((seg) => (
+          <div
+            key={seg.id}
+            className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}
+          >
+            <div className="message-header">
+              <span className="message-icon" aria-hidden="true">
+                {seg.role === 'interviewer' ? '●' : '◐'}
+              </span>
+              <span className="message-label">
+                {seg.role === 'interviewer' ? '面试官' : '候选人'}
+              </span>
+              <button
+                type="button"
+                className="speaker-role-toggle"
+                onClick={() =>
+                  onSetSpeakerRole?.(
+                    seg.speakerId,
+                    seg.role === 'interviewer' ? 'candidate' : 'interviewer'
+                  )
+                }
+              >
+                {seg.role === 'interviewer' ? '标为候选人' : '标为面试官'}
+              </button>
+            </div>
+            <div className="message-content">{seg.text}</div>
+          </div>
+        ))
+      ) : (
+        <>
+          {display.finalText ? <LaneLine lane="candidate" text={display.finalText} /> : null}
+          {display.partial ? <LaneLine lane="candidate" text={display.partial} live /> : null}
 
-      {mic.finalText ? <LaneLine lane="interviewer" text={mic.finalText} /> : null}
-      {mic.partial ? <LaneLine lane="interviewer" text={mic.partial} live /> : null}
+          {mic.finalText ? <LaneLine lane="interviewer" text={mic.finalText} /> : null}
+          {mic.partial ? <LaneLine lane="interviewer" text={mic.partial} live /> : null}
+        </>
+      )}
 
       {isAnalyzing ? <ProgressCard progress={progress} tokens={progressTokens} /> : null}
 
