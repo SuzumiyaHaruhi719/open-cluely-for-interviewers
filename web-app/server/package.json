@@ -1,0 +1,32 @@
+{
+  "name": "@open-cluely/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Node/Express + ws server for the Open-Cluely web app. Reuses the desktop interviewer brain (@open-cluely/copilot-core) and the question bank (@open-cluely/question-bank).",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --format=cjs --outfile=dist/index.js --external:@open-cluely/* --packages=external",
+    "start": "node dist/index.js",
+    "test": "tsx --test test/**/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@open-cluely/contract": "file:../packages/contract",
+    "@open-cluely/copilot-core": "file:../packages/copilot-core",
+    "@open-cluely/question-bank": "file:../packages/question-bank",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "ws": "^8.18.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.9.0",
+    "@types/ws": "^8.5.13",
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
