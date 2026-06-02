@@ -15,10 +15,11 @@ export const C2S: {
   ANALYZE: 'analyze';
   AUDIO: 'audio';
   AUDIO_CONTROL: 'audio-control';
+  SET_SPEAKER_ROLE: 'set-speaker-role';
 };
 
 /** Live-ASR providers the server can stream through. Default: 'paraformer'. */
-export const ASR_PROVIDERS: readonly ['paraformer', 'volc'];
+export const ASR_PROVIDERS: readonly ['paraformer', 'volc', 'funasr'];
 
 /** How a `result` was produced: autonomous monitor vs. manual Generate Q. */
 export const GENERATION_TRIGGERS: readonly ['auto', 'manual'];
@@ -32,8 +33,13 @@ export type AudioSource = 'mic' | 'display';
  *   'paraformer' — DashScope Paraformer (server uses its env DASHSCOPE key).
  *   'volc'       — Doubao / Volcengine streaming ASR (豆包). Needs the Volc
  *                  credentials below, which are SEPARATE from the DashScope key.
+ *   'funasr'     — FunASR streaming-SPK WebSocket provider with per-segment
+ *                  speaker labels. Requires `funasrUrl` in `SessionConfig`.
  */
-export type AsrProvider = 'paraformer' | 'volc';
+export type AsrProvider = 'paraformer' | 'volc' | 'funasr';
+
+/** Per-segment speaker role resolved from a cluster ID. */
+export type SpeakerRole = 'interviewer' | 'candidate' | 'unknown';
 
 /** Block G final output — the follow-up shown to the interviewer. */
 export interface FollowUpOutput {
@@ -94,6 +100,11 @@ export interface SessionConfig {
   /** Optional Volc model name override (config-frame `model_name`). */
   volcModel?: string;
   /**
+   * FunASR streaming-SPK WS URL (used only when asrProvider === 'funasr').
+   * Falls back to the server's FUNASR_WS_URL env var when omitted.
+   */
+  funasrUrl?: string;
+  /**
    * Autonomous question generation: when true (the default), the server's
    * per-session trigger monitor may decide on its own to run the Expert pipeline
    * from the live interviewee transcript. Toggling false stops ALL monitor
@@ -124,7 +135,8 @@ export type ClientMessage =
   | { type: 'configure'; config: Partial<SessionConfig> }
   | { type: 'analyze'; requestId: string; candidateAnswer: string; questionHistory?: string[] }
   | { type: 'audio'; seq: number; source: AudioSource; pcm: string }
-  | { type: 'audio-control'; action: 'start' | 'stop'; source: AudioSource };
+  | { type: 'audio-control'; action: 'start' | 'stop'; source: AudioSource }
+  | { type: 'set-speaker-role'; speakerId: number; role: SpeakerRole };
 
 export type ServerMessage =
   | { type: 'ready'; sessionId: string }
@@ -156,6 +168,6 @@ export type ServerMessage =
       /** How this result was produced: the autonomous monitor ('auto') or a manual Generate Q ('manual'). */
       trigger?: GenerationTrigger;
     }
-  | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean }
+  | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
   | { type: 'session-context'; state: unknown }
   | { type: 'error'; requestId?: string; message: string };

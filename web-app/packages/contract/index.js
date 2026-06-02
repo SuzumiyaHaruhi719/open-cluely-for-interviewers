@@ -17,8 +17,9 @@ const INTERVIEWER_MODES = Object.freeze(['fast', 'expert', 'expert2', 'customize
 
 // Realtime ASR providers the server can stream through. 'paraformer' is the
 // default (DashScope); 'volc' is Doubao / Volcengine streaming ASR (豆包),
-// which needs per-session Volc credentials supplied via `configure`.
-const ASR_PROVIDERS = Object.freeze(['paraformer', 'volc']);
+// which needs per-session Volc credentials supplied via `configure`;
+// 'funasr' is the FunASR streaming-SPK provider with per-segment speaker labels.
+const ASR_PROVIDERS = Object.freeze(['paraformer', 'volc', 'funasr']);
 
 // How a `result` was produced: 'auto' = the server's autonomous trigger monitor
 // fired the Expert pipeline from the live transcript; 'manual' = the interviewer
@@ -43,7 +44,8 @@ const C2S = Object.freeze({
   CONFIGURE: 'configure',
   ANALYZE: 'analyze',
   AUDIO: 'audio',
-  AUDIO_CONTROL: 'audio-control'
+  AUDIO_CONTROL: 'audio-control',
+  SET_SPEAKER_ROLE: 'set-speaker-role'
 });
 
 module.exports = {
