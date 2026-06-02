@@ -3,11 +3,13 @@ import type {
   AudioSource,
   ClientMessage,
   ServerMessage,
-  SessionConfig
+  SessionConfig,
+  SpeakerRole
 } from '@open-cluely/contract';
 import { WS_PATH } from '@open-cluely/contract';
 import { parseServerMessage } from './messages';
 import { startCapture, AudioCaptureError, type CaptureHandle } from './audioCapture';
+import { effectiveRole, appendSegment, relabelSegments, type SpeakerSegment } from './speakerSegments';
 
 export type SocketStatus = 'connecting' | 'open' | 'closed' | 'reconnecting';
 
@@ -73,6 +75,16 @@ export interface CopilotSocket {
   startAudio: (source: AudioSource) => Promise<void>;
   /** Stop capturing a source and tell the server to close its ASR session. */
   stopAudio: (source: AudioSource) => void;
+  /**
+   * Ordered list of finalized speaker-labeled segments (offline FunASR only).
+   * Empty for online providers that omit speakerId.
+   */
+  speakerSegments: SpeakerSegment[];
+  /**
+   * One-tap role override: re-labels all segments for a given speaker id and
+   * tells the server to update its candidate-gating state.
+   */
+  setSpeakerRole: (speakerId: number, role: SpeakerRole) => void;
 }
 
 const RECONNECT_BASE_MS = 500;
@@ -112,6 +124,7 @@ export function useCopilotSocket(): CopilotSocket {
     mic: { ...IDLE_AUDIO },
     display: { ...IDLE_AUDIO }
   });
+  const [speakerSegments, setSpeakerSegments] = useState<SpeakerSegment[]>([]);
 
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimerRef = useRef<number | null>(null);
@@ -121,6 +134,9 @@ export function useCopilotSocket(): CopilotSocket {
   // Live capture handles + per-source frame sequence counters.
   const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
   const seqRef = useRef<Record<AudioSource, number>>({ mic: 0, display: 0 });
+  // Speaker-segment state for offline FunASR diarization.
+  const roleOverrideRef = useRef<Map<number, SpeakerRole>>(new Map());
+  const segSeqRef = useRef(0);
 
   const send = useCallback((message: ClientMessage): boolean => {
     const socket = socketRef.current;
@@ -173,6 +189,15 @@ export function useCopilotSocket(): CopilotSocket {
             : { finalText: lane.finalText, partial: text };
           return { ...prev, [source]: next };
         });
+        // Offline FunASR: append a labelled segment for finals that carry a real speakerId.
+        // Online providers omit speakerId entirely — they must NOT create segments.
+        if (isFinal && typeof message.speakerId === 'number') {
+          const sid = message.speakerId;
+          const role = effectiveRole(sid, message.speaker, roleOverrideRef.current);
+          setSpeakerSegments((prev) =>
+            appendSegment(prev, { id: segSeqRef.current++, speakerId: sid, role, text })
+          );
+        }
         break;
       }
     }
@@ -278,6 +303,10 @@ export function useCopilotSocket(): CopilotSocket {
       setProgress(null);
       setProgressTokens(0);
       setError(null);
+      // Reset speaker-segment state for the new analysis session.
+      setSpeakerSegments([]);
+      roleOverrideRef.current.clear();
+      segSeqRef.current = 0;
       return requestId;
     },
     [send]
@@ -339,6 +368,16 @@ export function useCopilotSocket(): CopilotSocket {
     [send, setAudioState]
   );
 
+  const setSpeakerRole = useCallback(
+    (speakerId: number, role: SpeakerRole): void => {
+      roleOverrideRef.current.set(speakerId, role);
+      setSpeakerSegments((prev) => relabelSegments(prev, speakerId, role));
+      // Also tell the server so its candidate-gating updates.
+      send({ type: 'set-speaker-role', speakerId, role });
+    },
+    [send]
+  );
+
   // Stop any live capture when the hook unmounts.
   useEffect(() => {
     return () => {
@@ -363,6 +402,8 @@ export function useCopilotSocket(): CopilotSocket {
     transcripts,
     audio,
     startAudio,
-    stopAudio
+    stopAudio,
+    speakerSegments,
+    setSpeakerRole
   };
 }
