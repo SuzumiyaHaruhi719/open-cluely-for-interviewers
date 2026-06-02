@@ -1,0 +1,15 @@
+# Build context for web-app/Dockerfile. Keep it tiny: ship only the brain (src/)
+# and the web monorepo. Everything else (Electron build incl. the 72MB exe, deps,
+# caches, logs, secrets) is excluded.
+*
+!src/
+!web-app/
+
+# Inside the allowed dirs: drop deps/build artifacts (rebuilt in the image),
+# secrets, and logs.
+**/node_modules
+**/dist
+**/.env
+**/.env.*
+**/*.log
+.git

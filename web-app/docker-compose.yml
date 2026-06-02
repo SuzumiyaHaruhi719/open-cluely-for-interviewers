@@ -1,0 +1,16 @@
+# Run the Open-Cluely web edition.
+#   cd web-app && docker compose up --build
+# Requires DASHSCOPE_API_KEY in the environment or in web-app/.env (compose reads
+# web-app/.env automatically for the interpolation below).
+services:
+  open-cluely-web:
+    build:
+      context: ..
+      dockerfile: web-app/Dockerfile
+    image: open-cluely-web:latest
+    ports:
+      - "8787:8787"
+    environment:
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:?set DASHSCOPE_API_KEY in web-app/.env or the environment}
+      PORT: "8787"
+    restart: unless-stopped
