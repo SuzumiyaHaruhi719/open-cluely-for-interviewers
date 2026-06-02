@@ -100,6 +100,10 @@ export function Shell() {
   const sessions = useSessions();
   const assistant = useAssistantPanel();
   const appSettings = useAppSettings();
+  // Guards the one-time "restore the persisted active session on mount" effect.
+  // Any user session action (new interview / explicit select) sets it true so the
+  // auto-restore can't clobber a freshly-seeded or just-selected conversation.
+  const hydratedRef = useRef(false);
 
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
@@ -149,7 +153,7 @@ export function Shell() {
     persistedResultRef.current = lastResult.requestId;
     const question = lastResult.output.primary_question;
     if (question) {
-      void sessions.appendMessage(activeId, 'assistant', question);
+      void sessions.appendMessage(activeId, 'ai', question);
     }
   }, [lastResult, sessions]);
 
@@ -271,6 +275,35 @@ export function Shell() {
     [pushConfig, sessions]
   );
 
+  // ── Re-push the FULL config on every new server session (connect + reconnect) ─
+  // The server spins up a fresh headless session (default mode 'fast') per WS
+  // connection, identified by a new sessionId. The per-change pushConfig calls
+  // only send deltas — so a fresh OR reconnected session silently ran Fast even
+  // when the UI showed Expert (and lost JD/résumé/Customize/ASR on reconnect).
+  // Keep the latest full config in a ref and resend it whenever a new sessionId
+  // arrives. This is the fix for "selected Expert but the progress shows fast".
+  const fullConfigRef = useRef<Partial<SessionConfig>>({});
+  useEffect(() => {
+    const s = appSettings.settings;
+    fullConfigRef.current = {
+      mode: config.mode,
+      outputLanguage: config.outputLanguage,
+      jobDescription: config.jobDescription,
+      resumeText: config.resumeText,
+      activePipelineId: config.activePipelineId,
+      asrProvider: s.asrProvider === 'volc' ? 'volc' : 'paraformer',
+      volcAppId: s.volcAppId,
+      volcAccessToken: s.volcAccessToken,
+      volcResourceId: s.volcResourceId,
+      volcModel: s.volcModel
+    };
+  }, [config, appSettings.settings]);
+  useEffect(() => {
+    if (socket.sessionId) {
+      sendConfigure(fullConfigRef.current);
+    }
+  }, [socket.sessionId, sendConfigure]);
+
   const onAnalyze = useCallback((): void => {
     const trimmed = answer.trim();
     if (!isReady || isAnalyzing || trimmed.length === 0) {
@@ -329,6 +362,7 @@ export function Shell() {
   const onPickInterviewType = useCallback(
     async (choice: InterviewTypeChoice): Promise<void> => {
       setTypePickerOpen(false);
+      hydratedRef.current = true; // user-created session — skip the mount auto-restore
       const sample = choice.sample;
       const title = sample ? sample.name : 'New interview';
       const id = await sessions.create({ title, interviewType: choice.interviewType });
@@ -361,6 +395,18 @@ export function Shell() {
           .reverse()
           .find((turn) => turn.speaker === 'candidate');
         setAnswer(lastCandidate ? lastCandidate.text : sampleTranscriptText(sample));
+        // Persist the seeded turns to the session so they survive a page refresh
+        // (rehydrate-on-mount replays session.messages). Sequential awaits avoid
+        // racing the server's read-modify-write message store.
+        if (id) {
+          for (const turn of sample.turns) {
+            await sessions.appendMessage(
+              id,
+              turn.speaker === 'interviewer' ? 'interviewer' : 'candidate',
+              turn.text
+            );
+          }
+        }
       }
     },
     [sessions, onClearSession, pushConfig]
@@ -368,6 +414,7 @@ export function Shell() {
 
   const onSelectSession = useCallback(
     async (id: string): Promise<void> => {
+      hydratedRef.current = true;
       sessions.select(id);
       const detail = await sessions.load(id);
       if (!detail) {
@@ -404,6 +451,18 @@ export function Shell() {
     },
     [sessions, pushConfig, onClearSession]
   );
+
+  // ── Rehydrate the active session on mount (survive a page refresh) ───────────
+  // useSessions persists the active id to localStorage, but the transcript lives
+  // in memory and is lost on reload. Once on mount, load the persisted session and
+  // replay its saved messages into the stream so the conversation isn't lost.
+  useEffect(() => {
+    if (hydratedRef.current || !sessions.activeId) {
+      return;
+    }
+    hydratedRef.current = true;
+    void onSelectSession(sessions.activeId);
+  }, [sessions.activeId, onSelectSession]);
 
   const sessionTitle = useMemo(() => {
     if (view === 'bank') {
