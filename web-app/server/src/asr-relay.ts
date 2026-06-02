@@ -30,11 +30,14 @@ import {
   type WsConstructor
 } from './paraformer-client';
 import { createVolcSession, type VolcSessionDeps } from './volc-client';
+import { createFunasrSession, type FunasrSessionDeps } from './funasr-client';
 
 export interface TranscriptEmit {
   source: AudioSource;
   text: string;
   isFinal: boolean;
+  /** FunASR-only: per-segment speaker id. Omitted by paraformer/volc. */
+  speakerId?: number | null;
 }
 
 export interface AudioFrame {
@@ -67,6 +70,8 @@ export interface VolcCredentials {
 export type ParaformerSessionFactory = (deps: ParaformerSessionDeps) => AsrSession;
 /** Factory used to create a Volc/Doubao session — overridable in tests with a fake. */
 export type VolcSessionFactory = (deps: VolcSessionDeps) => AsrSession;
+/** Factory used to create a FunASR streaming-SPK session — overridable in tests. */
+export type FunasrSessionFactory = (deps: FunasrSessionDeps) => AsrSession;
 
 export interface AsrRelayDeps {
   /** Send a `transcript` message back to this connection's browser. */
@@ -77,6 +82,8 @@ export interface AsrRelayDeps {
   sessionFactory?: ParaformerSessionFactory;
   /** Volc/Doubao session factory (defaults to the real client). */
   volcSessionFactory?: VolcSessionFactory;
+  /** FunASR streaming-SPK session factory (defaults to the real client). */
+  funasrSessionFactory?: FunasrSessionFactory;
   /** WebSocket constructor passed to the sessions (defaults to `ws`). */
   WebSocket?: WsConstructor;
   /**
@@ -93,11 +100,12 @@ export interface AsrRelay {
   /** Enable/disable auto-analyze of interviewee final transcripts. */
   setAutoAnalyzeDisplay(enabled: boolean): void;
   /**
-   * Choose the ASR provider + (for 'volc') its credentials for SUBSEQUENT
-   * starts. Does not restart live sessions — the next `audio-control start`
-   * (or first frame) for a source picks up the new provider/creds.
+   * Choose the ASR provider + (for 'volc') its credentials / (for 'funasr') its
+   * WS URL for SUBSEQUENT starts. Does not restart live sessions — the next
+   * `audio-control start` (or first frame) for a source picks up the new
+   * provider/creds/url.
    */
-  setAsrProvider(provider: AsrProvider, volc?: VolcCredentials): void;
+  setAsrProvider(provider: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void;
   dispose(): void;
 }
 
@@ -113,17 +121,29 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const apiKey = deps.apiKey ?? config.dashscopeApiKey;
   const sessionFactory = deps.sessionFactory ?? (createParaformerSession as ParaformerSessionFactory);
   const volcSessionFactory = deps.volcSessionFactory ?? (createVolcSession as VolcSessionFactory);
+  const funasrSessionFactory = deps.funasrSessionFactory ?? (createFunasrSession as FunasrSessionFactory);
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
   const sessions: Record<AudioSource, AsrSession | null> = { mic: null, display: null };
   let autoAnalyzeDisplay = false;
   let provider: AsrProvider = 'paraformer';
   let volcCreds: VolcCredentials | null = null;
+  let funasrUrl: string = config.funasrWsUrl;
   let disposed = false;
 
-  // Shared transcript/error wiring so both providers route identically.
-  function onTranscript(source: AudioSource, t: TranscriptEmit | { text: string; isFinal: boolean }): void {
-    deps.emit({ source, text: t.text, isFinal: t.isFinal });
+  // Shared transcript/error wiring so all providers route identically. The
+  // optional `speakerId` is carried only when present (FunASR) — omitted for
+  // paraformer/volc so their emit payloads stay byte-identical to before.
+  function onTranscript(
+    source: AudioSource,
+    t: { text: string; isFinal: boolean; speakerId?: number | null }
+  ): void {
+    deps.emit({
+      source,
+      text: t.text,
+      isFinal: t.isFinal,
+      ...(t.speakerId == null ? {} : { speakerId: t.speakerId })
+    });
     if (t.isFinal && source === 'display' && autoAnalyzeDisplay) {
       try {
         deps.onDisplayFinal?.(t.text);
@@ -178,9 +198,29 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     });
   }
 
+  function startFunasr(source: AudioSource): void {
+    const url = funasrUrl.trim();
+    if (!url) {
+      deps.emit({
+        source,
+        text: '[FunASR unavailable: set the FunASR WebSocket URL in Settings]',
+        isFinal: false
+      });
+      return;
+    }
+    sessions[source] = funasrSessionFactory({
+      WebSocket: WebSocketCtor as unknown as FunasrSessionDeps['WebSocket'],
+      url,
+      sampleRate: 16000,
+      onTranscript: (t) => onTranscript(source, t),
+      onError: (message) => onError(source, message)
+    });
+  }
+
   function startSource(source: AudioSource): void {
     if (disposed || sessions[source]) return;
     if (provider === 'volc') startVolc(source);
+    else if (provider === 'funasr') startFunasr(source);
     else startParaformer(source);
   }
 
@@ -223,9 +263,10 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     autoAnalyzeDisplay = enabled;
   }
 
-  function setAsrProvider(next: AsrProvider, volc?: VolcCredentials): void {
-    provider = next === 'volc' ? 'volc' : 'paraformer';
+  function setAsrProvider(next: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void {
+    provider = next === 'volc' ? 'volc' : next === 'funasr' ? 'funasr' : 'paraformer';
     if (volc) volcCreds = { ...volc };
+    funasrUrl = funasr?.url || config.funasrWsUrl;
   }
 
   function dispose(): void {

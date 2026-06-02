@@ -163,3 +163,24 @@ test('with no API key, start emits a friendly error and creates no session', () 
   assert.match(emits[0].text, /API key/i);
   assert.equal(emits[0].isFinal, false);
 });
+
+test('funasr provider emits transcripts carrying the speaker id', () => {
+  const emits: any[] = [];
+  const created: any[] = [];
+  const relay = createAsrRelay({
+    emit: (t) => emits.push(t),
+    apiKey: 'k',
+    sessionFactory: () => {
+      throw new Error('paraformer factory should not run');
+    },
+    funasrSessionFactory: (deps: any) => {
+      const s = { isReady: true, sendAudio() {}, stop() {}, deps };
+      created.push(s);
+      return s;
+    }
+  });
+  relay.setAsrProvider('funasr', undefined, { url: 'ws://funasr:10096' });
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+  created[0].deps.onTranscript({ text: '你好', isFinal: true, speakerId: 1 });
+  assert.deepEqual(emits, [{ source: 'mic', text: '你好', isFinal: true, speakerId: 1 }]);
+});
