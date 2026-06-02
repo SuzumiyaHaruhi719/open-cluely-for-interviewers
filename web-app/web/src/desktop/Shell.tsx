@@ -9,7 +9,7 @@ import { TranscriptStream, type TranscriptMessage, type TranscriptRole } from '.
 import { Composer } from './Composer';
 import { RightRail } from './RightRail';
 import { SettingsModal } from './SettingsModal';
-import { InterviewTypeModal, type InterviewTypeChoice } from './InterviewTypeModal';
+import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from './InterviewTypeModal';
 import { ResultsPanel } from './ResultsPanel';
 import { PipelineStudio } from './studio/PipelineStudio';
 import { useRailCollapsed } from './useRailCollapsed';
@@ -28,6 +28,11 @@ interface ConfigState {
   resumeText: string;
   /** Customize mode: the saved pipeline the session runs (null = Expert fallback). */
   activePipelineId: string | null;
+  /**
+   * Interview format from the loaded/created session. 'offline' routes ASR to
+   * FunASR (single room mic + diarization); 'online' keeps the dual-lane flow.
+   */
+  interviewType: InterviewType;
 }
 
 const INITIAL_CONFIG: ConfigState = {
@@ -35,8 +40,14 @@ const INITIAL_CONFIG: ConfigState = {
   outputLanguage: '',
   jobDescription: '',
   resumeText: '',
-  activePipelineId: null
+  activePipelineId: null,
+  interviewType: 'online'
 };
+
+/** Coerce a persisted session's interviewType string onto the union (default online). */
+function asInterviewType(value: string): InterviewType {
+  return value === 'offline' ? 'offline' : 'online';
+}
 
 /**
  * Map a persisted session message role onto a transcript-stream lane. Persisted
@@ -83,7 +94,9 @@ export function Shell() {
     transcripts,
     audio,
     startAudio,
-    stopAudio
+    stopAudio,
+    speakerSegments,
+    setSpeakerRole
   } = socket;
 
   const [view, setView] = useState<AppView>('copilot');
@@ -113,6 +126,8 @@ export function Shell() {
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
   const canAnalyze = isReady && !isAnalyzing && answer.trim().length > 0;
+  // Offline (single-mic) interview: routes ASR to FunASR + diarized bubbles.
+  const offline = config.interviewType === 'offline';
 
   // Mirror the desktop: when the candidate (display) lane produces new FINAL
   // text, fill the analyze buffer. Only react to growth so manual notes between
@@ -330,7 +345,13 @@ export function Shell() {
       jobDescription: config.jobDescription,
       resumeText: config.resumeText,
       activePipelineId: config.activePipelineId,
-      asrProvider: s.asrProvider === 'volc' ? 'volc' : 'paraformer',
+      // Offline (single-mic) interviews route to FunASR (streaming-SPK
+      // diarization) and carry the FunASR WS URL. Online keeps the existing
+      // provider choice (volc when selected, else the default Paraformer relay).
+      // The volc creds are always included so flipping back online with Doubao
+      // selected re-applies them on the next audio start.
+      asrProvider: offline ? 'funasr' : s.asrProvider === 'volc' ? 'volc' : 'paraformer',
+      funasrUrl: s.funasrUrl,
       volcAppId: s.volcAppId,
       volcAccessToken: s.volcAccessToken,
       volcResourceId: s.volcResourceId,
@@ -339,7 +360,7 @@ export function Shell() {
       // honours the auto-generate choice (the monitor is off until told on).
       autoGenerate: s.autoGenerate
     };
-  }, [config, appSettings.settings]);
+  }, [config, offline, appSettings.settings]);
   useEffect(() => {
     if (socket.sessionId) {
       sendConfigure(fullConfigRef.current);
@@ -415,9 +436,15 @@ export function Shell() {
       persistedResultRef.current = null;
 
       // Seed the shell from the sample (or clear) and push to the server + session.
+      // interviewType drives offline (FunASR single-mic) vs online routing.
       const jd = sample ? sample.jd : '';
       const resumeText = sample ? sample.resume : '';
-      setConfig((prev) => ({ ...prev, jobDescription: jd, resumeText }));
+      setConfig((prev) => ({
+        ...prev,
+        jobDescription: jd,
+        resumeText,
+        interviewType: choice.interviewType
+      }));
       pushConfig({ jobDescription: jd, resumeText });
       if (id) {
         void sessions.patch(id, { jobDescription: jd, resumeText });
@@ -463,10 +490,12 @@ export function Shell() {
         return;
       }
       // Hydrate the shell: JD + résumé to the server, messages into the buffer.
+      // interviewType comes back on the detail — restore offline/online routing.
       setConfig((prev) => ({
         ...prev,
         jobDescription: detail.jobDescription,
-        resumeText: detail.resumeText
+        resumeText: detail.resumeText,
+        interviewType: asInterviewType(detail.interviewType)
       }));
       pushConfig({ jobDescription: detail.jobDescription, resumeText: detail.resumeText });
 
@@ -569,6 +598,9 @@ export function Shell() {
                 autoScroll={autoScroll}
                 pickedHint={pickedHint}
                 onPickCandidate={onPickCandidate}
+                offline={offline}
+                speakerSegments={speakerSegments}
+                onSetSpeakerRole={setSpeakerRole}
               />
               <Composer
                 audio={audio}
@@ -578,6 +610,7 @@ export function Shell() {
                 onStartAudio={startAudio}
                 onStopAudio={stopAudio}
                 onAddNote={onAddNote}
+                offline={offline}
               />
             </>
           )}
@@ -620,6 +653,7 @@ export function Shell() {
         onAiModelChange={appSettings.setAiModel}
         onAsrProviderChange={onAsrProviderChange}
         onVolcSettingsChange={onVolcSettingsChange}
+        onFunasrUrlChange={appSettings.setFunasrUrl}
         onOpacityChange={appSettings.setOpacityStep}
         onSelectPipeline={onUseCustomPipeline}
         onOpenStudio={onOpenStudio}

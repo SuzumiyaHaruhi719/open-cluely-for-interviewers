@@ -12,6 +12,11 @@ interface ComposerProps {
   onStopAudio: (source: AudioSource) => void;
   /** Append a manual note to the candidate-answer buffer. */
   onAddNote: (note: string) => void;
+  /**
+   * Offline (single-mic) interview: render ONLY the mic channel as the room mic
+   * and hide the candidate/computer-audio card. Online (default) shows both.
+   */
+  offline?: boolean;
 }
 
 /**
@@ -27,7 +32,8 @@ export function Composer({
   onToggleAutoScroll,
   onStartAudio,
   onStopAudio,
-  onAddNote
+  onAddNote,
+  offline = false
 }: ComposerProps) {
   const [note, setNote] = useState('');
 
@@ -50,21 +56,25 @@ export function Composer({
   return (
     <div id="composer" className="composer">
       <div className="composer__channels">
-        <ChannelCard
-          domId="channel-computer"
-          source="display"
-          accent="candidate"
-          title="Candidate · computer audio"
-          state={audio.display}
-          disabled={disabled}
-          onStart={onStartAudio}
-          onStop={onStopAudio}
-        />
+        {/* Offline (single-mic) interviews capture only the room mic — the
+            computer-audio/candidate card is online-only. */}
+        {offline ? null : (
+          <ChannelCard
+            domId="channel-computer"
+            source="display"
+            accent="candidate"
+            title="Candidate · computer audio"
+            state={audio.display}
+            disabled={disabled}
+            onStart={onStartAudio}
+            onStop={onStopAudio}
+          />
+        )}
         <ChannelCard
           domId="channel-mic"
           source="mic"
           accent="interviewer"
-          title="You · microphone"
+          title={offline ? '房间麦克风 / Room mic' : 'You · microphone'}
           state={audio.mic}
           disabled={disabled}
           onStart={onStartAudio}

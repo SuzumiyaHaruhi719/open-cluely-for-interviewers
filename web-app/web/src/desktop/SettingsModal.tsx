@@ -27,6 +27,8 @@ interface SettingsModalProps {
   onAsrProviderChange: (value: string) => void;
   /** Merge-patch the Doubao/Volc credential fields (revealed when provider = volc). */
   onVolcSettingsChange: (patch: Partial<VolcSettings>) => void;
+  /** Set the offline FunASR streaming-SPK WS URL (used for 线下 / offline interviews). */
+  onFunasrUrlChange: (value: string) => void;
   onOpacityChange: (step: number) => void;
   /** Pick a saved/builtin pipeline as the active Customize pipeline. */
   onSelectPipeline: (id: string) => void;
@@ -75,6 +77,7 @@ export function SettingsModal({
   onAiModelChange,
   onAsrProviderChange,
   onVolcSettingsChange,
+  onFunasrUrlChange,
   onOpacityChange,
   onSelectPipeline,
   onOpenStudio
@@ -459,6 +462,26 @@ export function SettingsModal({
                 </p>
               </div>
             ) : null}
+
+            <div id="settings-funasr" className="settings-field">
+              <label className="settings-field__label" htmlFor="setting-funasr-url">
+                线下 · FunASR WS URL
+              </label>
+              <input
+                type="text"
+                id="setting-funasr-url"
+                className="settings-input settings-input--mono"
+                value={settings.funasrUrl}
+                autoComplete="off"
+                spellCheck={false}
+                placeholder="ws://localhost:10096"
+                onChange={(e) => onFunasrUrlChange(e.target.value)}
+              />
+              <p className="settings-field__desc">
+                线下面试（单麦克风）使用 FunASR 做带说话人分离的流式识别。这是 FunASR streaming-SPK
+                服务的 WebSocket 地址；留空则使用服务端的默认地址。
+              </p>
+            </div>
 
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-mic-device">

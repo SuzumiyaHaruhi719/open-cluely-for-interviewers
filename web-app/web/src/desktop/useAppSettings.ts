@@ -7,12 +7,15 @@ const KEYS = {
   volcAccessToken: 'open-cluely.volcAccessToken',
   volcResourceId: 'open-cluely.volcResourceId',
   volcModel: 'open-cluely.volcModel',
+  funasrUrl: 'open-cluely.funasrUrl',
   opacity: 'open-cluely.windowOpacity',
   autoGenerate: 'open-cluely.autoGenerate'
 } as const;
 
 export const DEFAULT_AI_MODEL = 'deepseek-v4-pro';
 export const DEFAULT_ASR_PROVIDER = 'paraformer';
+/** Default offline FunASR streaming-SPK WS URL (local FunASR docker). */
+export const DEFAULT_FUNASR_URL = 'ws://localhost:10096';
 /** Autonomous question generation defaults ON (the design's auto-on default). */
 export const DEFAULT_AUTO_GENERATE = true;
 /** Opacity is a 1..10 step (matching the desktop slider); 10 = fully opaque. */
@@ -33,6 +36,12 @@ export interface AppSettings {
   volcAccessToken: string;
   volcResourceId: string;
   volcModel: string;
+  /**
+   * Offline FunASR streaming-SPK WS URL (only meaningful when asrProvider ===
+   * 'funasr' / an offline interview). Sent to the server, which opens the
+   * FunASR connection; falls back to the server's FUNASR_WS_URL when blank.
+   */
+  funasrUrl: string;
   opacityStep: number;
   /** Autonomous context-driven question generation (auto-on by default). */
   autoGenerate: boolean;
@@ -91,6 +100,8 @@ export interface UseAppSettings {
   setAsrProvider: (value: string) => void;
   /** Merge-patch the Volc credential fields (persists each touched field). */
   setVolcSettings: (patch: Partial<VolcSettings>) => void;
+  /** Set the offline FunASR streaming-SPK WS URL (persisted to localStorage). */
+  setFunasrUrl: (value: string) => void;
   setOpacityStep: (value: number) => void;
   /** Toggle autonomous question generation (persisted to localStorage). */
   setAutoGenerate: (value: boolean) => void;
@@ -119,6 +130,7 @@ export function useAppSettings(): UseAppSettings {
     volcAccessToken: readString(KEYS.volcAccessToken, ''),
     volcResourceId: readString(KEYS.volcResourceId, ''),
     volcModel: readString(KEYS.volcModel, ''),
+    funasrUrl: readString(KEYS.funasrUrl, DEFAULT_FUNASR_URL),
     opacityStep: readOpacityStep(),
     autoGenerate: readBool(KEYS.autoGenerate, DEFAULT_AUTO_GENERATE)
   }));
@@ -143,6 +155,11 @@ export function useAppSettings(): UseAppSettings {
     }
   }, []);
 
+  const setFunasrUrl = useCallback((value: string): void => {
+    setSettings((prev) => ({ ...prev, funasrUrl: value }));
+    persist(KEYS.funasrUrl, value);
+  }, []);
+
   const setOpacityStep = useCallback((value: number): void => {
     const clamped = Math.min(MAX_OPACITY_STEP, Math.max(MIN_OPACITY_STEP, Math.round(value)));
     setSettings((prev) => ({ ...prev, opacityStep: clamped }));
@@ -163,5 +180,13 @@ export function useAppSettings(): UseAppSettings {
     }
   }, [settings.opacityStep]);
 
-  return { settings, setAiModel, setAsrProvider, setVolcSettings, setOpacityStep, setAutoGenerate };
+  return {
+    settings,
+    setAiModel,
+    setAsrProvider,
+    setVolcSettings,
+    setFunasrUrl,
+    setOpacityStep,
+    setAutoGenerate
+  };
 }
