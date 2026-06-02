@@ -13,4 +13,20 @@ services:
     environment:
       DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:?set DASHSCOPE_API_KEY in web-app/.env or the environment}
       PORT: "8787"
+      FUNASR_WS_URL: ws://funasr:10096
+    depends_on:
+      - funasr
     restart: unless-stopped
+
+  funasr:
+    image: registry.cn-hangzhou.aliyuncs.com/funasr_repo/funasr:funasr-runtime-sdk-online-cpu-0.1.12
+    command: ["bash","-lc","cd /workspace/FunASR/runtime && python -m funasr.bin.serve_realtime_ws --port 10096 --spk true"]
+    ports:
+      - "10096:10096"
+    restart: unless-stopped
+    # GPU (recommended for low-latency streaming speaker assignment): uncomment
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - { capabilities: [gpu] }

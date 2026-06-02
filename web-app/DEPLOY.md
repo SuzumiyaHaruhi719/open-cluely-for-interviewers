@@ -35,6 +35,28 @@ docker compose up --build
 |---|---|---|---|
 | `DASHSCOPE_API_KEY` | **yes** | — | DashScope key. `x-api-key` for chat (Anthropic-shape) + `Authorization: Bearer` for `text-embedding-v4` (native). |
 | `PORT` | no | `8787` | HTTP/WS port. |
+| `FUNASR_WS_URL` | no | — | WebSocket URL of the FunASR streaming-SPK service. Required only when offline interview mode is used. When running via compose, this is wired automatically to `ws://funasr:10096`. |
+
+## Offline speaker diarization (FunASR)
+
+Offline interview mode performs single-room-mic speaker diarization using a self-hosted
+FunASR streaming-SPK service. Online mode is unaffected and continues to use only
+`DASHSCOPE_API_KEY`.
+
+**Starting the service:** the `docker-compose.yml` includes a `funasr` service that the
+server `depends_on`. Run `docker compose up` from `web-app/` and both containers start
+together. `FUNASR_WS_URL` is automatically set to `ws://funasr:10096` inside the server
+container — no manual wiring needed when using compose.
+
+For plain-Docker deployments, start the FunASR container separately and pass
+`FUNASR_WS_URL=ws://<host>:10096` to the server container.
+
+**GPU recommended:** the streaming-SPK path (Paraformer + CAM++ speaker embedding) is
+compute-intensive. A GPU gives low-latency per-turn speaker labels. On CPU the service
+still works but expect higher per-turn label latency. To enable GPU in compose, uncomment
+the `deploy.resources.reservations.devices` block in the `funasr` service.
+
+> Speech recognition & speaker diarization in offline mode are powered by **FunASR** (Paraformer / CAM++ models), © Alibaba Group, used under the FunASR Model License (attribution + model names retained per the license).
 
 ## Health check
 

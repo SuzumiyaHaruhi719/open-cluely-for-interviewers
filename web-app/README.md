@@ -19,6 +19,7 @@ untouched and ships separately.
 - **Live audio (interviewee + interviewer):** browser capture → Paraformer ASR relay →
   live transcript. (Connectivity verified with the DashScope key; full speech-to-text needs
   a real mic / shared-tab audio in a Chromium browser.)
+- **Offline speaker diarization:** self-hosted FunASR streaming-SPK service (Paraformer / CAM++ models, © Alibaba Group, FunASR Model License) for single-room-mic diarization in offline interview mode; online mode is unaffected.
 
 ## Layout
 
