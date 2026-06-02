@@ -135,6 +135,14 @@ export function createFunasrSession(deps: FunasrSessionDeps): FunasrSession {
       : [];
 
     // Emit only the sentences that are newly locked since the last message.
+    // NOTE: FunASR re-clusters speakers globally on STOP, which can correct the
+    // `spk` of EARLIER sentences. We deliberately do not re-emit already-locked
+    // indices (lockedCount only moves forward), so a late correction to a past
+    // sentence's speaker is not propagated. v1 accepts this: in-session cluster
+    // ids are stable enough, and the one-tap role override (set-speaker-role)
+    // lets the interviewer fix any mislabel. Revisit if STOP corrections prove
+    // common in practice (would require re-emitting changed indices + the web
+    // updating segments by id).
     for (let i = lockedCount; i < sentences.length; i++) {
       const s = sentences[i] as { text?: unknown; spk?: unknown } | null | undefined;
       deps.onTranscript({

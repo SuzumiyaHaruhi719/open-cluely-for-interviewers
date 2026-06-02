@@ -123,9 +123,13 @@ room mic ─ getUserMedia ─ 16kHz PCM worklet ─ WS{audio} ─▶ asr-relay (
   `set-speaker-role` and recolours that speaker's bubbles (including history).
 
 ## Error handling / degradation
-- FunASR unreachable / handshake fail → emit a clear `error` and **degrade to label-less mic ASR**
-  (offline still transcribes via the existing mic provider; no speaker split) so the interview is
-  never blocked.
+- FunASR unreachable / blank URL → emit a clear `error` and **pause offline transcription** (the
+  relay starts no session). We deliberately do **not** silently fall back to the cloud Paraformer
+  relay: offline mode's value is that candidate audio stays on-prem, and a silent cloud fallback
+  would betray that privacy guarantee without the interviewer knowing. The error message tells them
+  to fix the FunASR service. An *explicit, opt-in* cloud fallback is possible future work.
+  (Implementation: `asr-relay.ts startFunasr` emits a friendly error + starts no session; runtime
+  WS errors route through `onError` → error transcript + `stopSource`.)
 - Low-confidence / cross-speaker segment → `speaker: 'unknown'`, defaulted to candidate for gating
   (prefer over-triggering to dropping a candidate answer).
 - Missing `FUNASR_WS_URL` when provider=funasr → config-validation error surfaced in Settings.

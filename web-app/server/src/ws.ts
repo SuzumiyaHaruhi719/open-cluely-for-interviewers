@@ -464,14 +464,27 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         // Stamp the resolved speaker role + carry speakerId so the browser can
         // label lanes and offer a per-speaker role override.
         const stamped = stampRole(roles, t);
-        send(ws, {
-          type: 'transcript',
-          source: stamped.source,
-          text: stamped.text,
-          isFinal: stamped.isFinal,
-          speakerId: stamped.speakerId,
-          speaker: stamped.speaker
-        });
+        // Only attach the speaker fields when the provider actually diarized (a
+        // numeric speakerId). Online (paraformer/volc) carries none, so the wire
+        // shape stays byte-identical to before and the browser builds no segment.
+        send(
+          ws,
+          stamped.speakerId == null
+            ? {
+                type: 'transcript',
+                source: stamped.source,
+                text: stamped.text,
+                isFinal: stamped.isFinal
+              }
+            : {
+                type: 'transcript',
+                source: stamped.source,
+                text: stamped.text,
+                isFinal: stamped.isFinal,
+                speakerId: stamped.speakerId,
+                speaker: stamped.speaker
+              }
+        );
         // ONLINE seam (paraformer/volc): interviewee answers arrive on the
         // 'display' lane with no speakerId — unchanged byte-for-byte.
         if (t.source === 'display' && t.isFinal) {
