@@ -18,6 +18,7 @@ test('dispatch routes a context-note to injectNote with the note text', async ()
     {} as never, // trigger
     {} as never, // roles
     (note: string) => injected.push(note),
+    () => {}, // resetAccumulated — unused by the context-note branch
     { type: 'context-note', note: 'candidate was unsure about DB sharding' } as never
   );
   assert.deepEqual(injected, ['candidate was unsure about DB sharding']);
@@ -34,6 +35,7 @@ test('dispatch does not inject a note for an unrelated message', async () => {
     () => {
       called = true;
     },
+    () => {}, // resetAccumulated — unused by the set-speaker-role branch
     { type: 'set-speaker-role', speakerId: 0, role: 'candidate' } as never
   );
   assert.equal(called, false);

@@ -18,8 +18,10 @@ const INTERVIEWER_MODES = Object.freeze(['fast', 'expert', 'expert2', 'customize
 // Realtime ASR providers the server can stream through. 'paraformer' is the
 // default (DashScope); 'volc' is Doubao / Volcengine streaming ASR (豆包),
 // which needs per-session Volc credentials supplied via `configure`;
-// 'funasr' is the FunASR streaming-SPK provider with per-segment speaker labels.
-const ASR_PROVIDERS = Object.freeze(['paraformer', 'volc', 'funasr']);
+// 'funasr' is the FunASR streaming-SPK provider with per-segment speaker labels;
+// 'xfyun' is iFlytek 实时语音转写大模型 (text + speaker in one call); 'sim' is the
+// mic-less simulation provider (replays a scripted two-speaker transcript).
+const ASR_PROVIDERS = Object.freeze(['paraformer', 'volc', 'funasr', 'xfyun', 'sim']);
 
 // How a `result` was produced: 'auto' = the server's autonomous trigger monitor
 // fired the Expert pipeline from the live transcript; 'manual' = the interviewer

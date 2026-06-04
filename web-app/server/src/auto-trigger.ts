@@ -106,6 +106,22 @@ export interface AutoTrigger {
   /** A generation (auto or manual) settled — clear in-flight, record the fire. */
   markRunDone: (fullCandidateText?: string) => void;
   /**
+   * Abandon the current chat: clear the interval-mode accumulated transcript
+   * (`latestText`), cancel any armed agent debounce/pending, reset the cooldown
+   * bookkeeping (so the next chat's first segment is eligible immediately), and
+   * BUMP the internal epoch. A generation that started in the old chat captured
+   * the prior epoch; when it settles the epoch mismatch means the trigger does
+   * NOT count it (no cooldown reset) and the caller can suppress its stale emit.
+   * Called when the client creates/switches a chat (configure `resetGeneration`).
+   */
+  reset: () => void;
+  /**
+   * The current epoch. Capture it at the START of a generation; if it differs at
+   * settle time a reset() happened mid-flight, so the generation is stale (its
+   * result/remaining progress must be suppressed and the fire must not count).
+   */
+  getEpoch: () => number;
+  /**
    * TEST SEAT: synchronously evaluate any pending debounced candidate now,
    * bypassing the timer. Returns the evaluation promise so tests can await the
    * full gate→monitor→fire decision deterministically. No-op if nothing pending.
@@ -236,6 +252,12 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let pendingText: string | null = null;
   let timer: TimerHandle | null = null;
 
+  // Monotonic epoch bumped by reset() (new/switched chat). A generation captures
+  // the epoch when it starts; if it changes before settle, that generation belongs
+  // to the abandoned chat and must NOT count toward the cooldown (and its emit is
+  // suppressed by the caller via getEpoch()).
+  let epoch = 0;
+
   function clearPending(): void {
     if (timer !== null) {
       clearTimer(timer);
@@ -282,13 +304,16 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     if (!autoGenerate || mode !== 'interval' || isGenerating || !capturing) return;
     const text = latestText.trim();
     if (!text) return;
+    const startEpoch = epoch;
     isGenerating = true;
     try {
       await runAnalyze({ candidateAnswer: text, focusHint: '' });
     } catch {
       /* analyze failures are handled by the caller's path; never disrupt the relay */
     } finally {
-      recordFire(text);
+      // A reset() mid-flight (new/switched chat) means this fire belongs to an
+      // abandoned chat — do NOT advance the cooldown for the new chat.
+      if (epoch === startEpoch) recordFire(text);
       isGenerating = false;
     }
   }
@@ -319,13 +344,16 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // claimed the slot while the monitor was thinking.
     if (!localGatesPass(text)) return;
 
+    const startEpoch = epoch;
     isGenerating = true;
     try {
       await runAnalyze({ candidateAnswer: text, focusHint: decision.focusHint });
     } catch {
       /* analyze failures are handled by the caller's path; never disrupt the relay */
     } finally {
-      recordFire(text);
+      // A reset() mid-flight (new/switched chat) means this fire belongs to an
+      // abandoned chat — do NOT advance the cooldown for the new chat.
+      if (epoch === startEpoch) recordFire(text);
       isGenerating = false;
     }
   }
@@ -408,6 +436,22 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     if (typeof fullCandidateText === 'string') charsAtLastGen = fullCandidateText.length;
   }
 
+  function reset(): void {
+    // Bump the epoch FIRST so any in-flight generation (whose finally compares the
+    // captured epoch) neither records a fire nor lets the caller emit its result.
+    epoch += 1;
+    // Drop the interval-mode accumulated transcript so the new chat starts blank.
+    latestText = '';
+    // Cancel any armed agent debounce/pending so no late fire from the old chat.
+    clearPending();
+    // Free the in-flight slot (the abandoned generation is suppressed) and reset
+    // the cooldown one window into the past so the NEW chat's first substantive
+    // segment is eligible immediately — same as a fresh session.
+    isGenerating = false;
+    lastGenAt = now() - cfg.cooldownMs;
+    charsAtLastGen = 0;
+  }
+
   async function flush(): Promise<void> {
     if (timer !== null) {
       clearTimer(timer);
@@ -429,6 +473,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     getIsGenerating: () => isGenerating,
     markManualRun,
     markRunDone,
+    reset,
+    getEpoch: () => epoch,
     flush
   };
 }

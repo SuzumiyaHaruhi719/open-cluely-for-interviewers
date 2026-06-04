@@ -20,12 +20,6 @@ interface TranscriptStreamProps {
   /** Seeded (sample) or loaded (session) conversation, shown before live lanes. */
   transcriptMessages: TranscriptMessage[];
   lastResult: CopilotResult | null;
-  /**
-   * Full arrival-order history of generated results. Every entry renders its own
-   * QuestionCard so a new generation never overwrites/hides an older question.
-   * Optional (defaults to []) so existing callers/tests without history still work.
-   */
-  results?: CopilotResult[];
   progress: CopilotProgress | null;
   /** Cumulative analyze tokens so far; shown on the progress card when > 0. */
   progressTokens?: number;
@@ -116,9 +110,9 @@ function NoteLine({ text }: { text: string }) {
   );
 }
 
-/** Map a diarized speaker role onto a transcript lane (only interviewer/candidate). */
-function roleToLane(role: SpeakerRole): 'candidate' | 'interviewer' {
-  return role === 'interviewer' ? 'interviewer' : 'candidate';
+/** Map a diarized speaker role onto a transcript lane. */
+function roleToLane(role: SpeakerRole): 'candidate' | 'interviewer' | 'unknown' {
+  return role === 'interviewer' ? 'interviewer' : role === 'candidate' ? 'candidate' : 'unknown';
 }
 
 /**
@@ -163,7 +157,6 @@ export function TranscriptStream({
   transcripts,
   transcriptMessages,
   lastResult,
-  results = [],
   progress,
   progressTokens = 0,
   isAnalyzing,
@@ -198,7 +191,6 @@ export function TranscriptStream({
     transcripts.mic.partial,
     speakerSegments,
     lastResult,
-    results.length,
     progress,
     isAnalyzing
   ]);
@@ -236,34 +228,48 @@ export function TranscriptStream({
         // diarization tags a speaker (sidecar resolving/unavailable), plus the
         // live partial for real-time feedback.
         <>
-          {(speakerSegments ?? []).map((seg) => (
-          <div
-            key={seg.id}
-            className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}
-          >
-            <div className="message-header">
-              <span className="message-icon" aria-hidden="true">
-                {seg.role === 'interviewer' ? '●' : '◐'}
-              </span>
-              <span className="message-label">
-                {seg.role === 'interviewer' ? '面试官' : '候选人'}
-              </span>
-              <button
-                type="button"
-                className="speaker-role-toggle"
-                onClick={() =>
-                  onSetSpeakerRole?.(
-                    seg.speakerId,
-                    seg.role === 'interviewer' ? 'candidate' : 'interviewer'
-                  )
-                }
+          {(speakerSegments ?? []).map((seg) => {
+            // iFlytek 'unknown' speakers (not yet manually labeled) show as
+            // "说话人 N"; the interviewer taps to assign. Assigned speakers show
+            // their role. Each button labels THIS speaker only (manual per-roleid).
+            const icon = seg.role === 'interviewer' ? '●' : seg.role === 'candidate' ? '◐' : '○';
+            const label =
+              seg.role === 'interviewer'
+                ? '面试官'
+                : seg.role === 'candidate'
+                  ? '候选人'
+                  : `说话人 ${seg.speakerId}`;
+            return (
+              <div
+                key={seg.id}
+                className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}
               >
-                {seg.role === 'interviewer' ? '标为候选人' : '标为面试官'}
-              </button>
-            </div>
-            <div className="message-content">{seg.text}</div>
-          </div>
-          ))}
+                <div className="message-header">
+                  <span className="message-icon" aria-hidden="true">
+                    {icon}
+                  </span>
+                  <span className="message-label">{label}</span>
+                  <span className="speaker-role-actions">
+                    <button
+                      type="button"
+                      className={`speaker-role-toggle${seg.role === 'interviewer' ? ' is-active' : ''}`}
+                      onClick={() => onSetSpeakerRole?.(seg.speakerId, 'interviewer')}
+                    >
+                      面试官
+                    </button>
+                    <button
+                      type="button"
+                      className={`speaker-role-toggle${seg.role === 'candidate' ? ' is-active' : ''}`}
+                      onClick={() => onSetSpeakerRole?.(seg.speakerId, 'candidate')}
+                    >
+                      候选人
+                    </button>
+                  </span>
+                </div>
+                <div className="message-content">{seg.text}</div>
+              </div>
+            );
+          })}
           {(speakerSegments ?? []).length === 0 && mic.finalText ? (
             <LaneLine lane="candidate" text={mic.finalText} />
           ) : null}
@@ -279,27 +285,22 @@ export function TranscriptStream({
         </>
       )}
 
-      {/* Full result history — one card per generation, oldest→newest, so a new
-          question never overwrites/hides an older one. The picker affordances
-          (onPickCandidate + the "已选用" hint) attach only to the LATEST card. */}
-      {results.map((result, index) => {
-        const isLatest = index === results.length - 1;
-        return (
-          <QuestionCard
-            key={result.requestId}
-            output={result.output}
-            mode={result.mode}
-            tokensUsed={result.tokensUsed}
-            elapsedMs={result.elapsedMs}
-            ranked={result.ranked}
-            trigger={result.trigger}
-            pickedHint={isLatest ? pickedHint : null}
-            onPickCandidate={isLatest ? onPickCandidate : undefined}
-          />
-        );
-      })}
+      {/* Only the LATEST follow-up is ever shown — a new result overwrites the
+          previous bubble (single-card behaviour). While a generation is in
+          flight the progress card replaces it. */}
+      {lastResult && !isAnalyzing ? (
+        <QuestionCard
+          output={lastResult.output}
+          mode={lastResult.mode}
+          tokensUsed={lastResult.tokensUsed}
+          elapsedMs={lastResult.elapsedMs}
+          ranked={lastResult.ranked}
+          trigger={lastResult.trigger}
+          pickedHint={pickedHint}
+          onPickCandidate={onPickCandidate}
+        />
+      ) : null}
 
-      {/* Progress shows ADDITIONALLY, below the history — it must not replace it. */}
       {isAnalyzing ? <ProgressCard progress={progress} tokens={progressTokens} /> : null}
 
       {showCooldown ? (

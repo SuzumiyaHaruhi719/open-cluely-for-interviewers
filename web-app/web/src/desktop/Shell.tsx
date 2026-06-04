@@ -90,7 +90,6 @@ export function Shell() {
     analyze,
     addContextNote,
     lastResult,
-    results,
     lastAutoFireAt,
     progress,
     progressTokens,
@@ -321,7 +320,7 @@ export function Shell() {
   const { setAsrProvider, setVolcSettings } = appSettings;
   const onAsrProviderChange = useCallback(
     (value: string): void => {
-      const provider: AsrProvider = value === 'volc' ? 'volc' : 'paraformer';
+      const provider: AsrProvider = value === 'volc' ? 'volc' : value === 'xfyun' ? 'xfyun' : 'paraformer';
       setAsrProvider(value);
       const s = appSettings.settings;
       pushConfig({
@@ -413,7 +412,7 @@ export function Shell() {
       // selected re-applies them on the next audio start.
       // asrProvider is the TEXT engine (follows the Settings choice in BOTH modes);
       // `diarize` adds CAM++ speaker labelling for offline single-mic interviews.
-      asrProvider: s.asrProvider === 'volc' ? 'volc' : 'paraformer',
+      asrProvider: s.asrProvider === 'volc' ? 'volc' : s.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer',
       diarize: offline,
       funasrUrl: s.funasrUrl,
       volcAppId: s.volcAppId,
@@ -520,6 +519,10 @@ export function Shell() {
 
       // Reset the live buffers for the fresh session.
       onClearSession();
+      // Tell the server to ABANDON the old chat's accumulated transcript AND any
+      // in-flight auto generation (chats share ONE socket + ONE server trigger),
+      // so the new chat never shows the previous chat's follow-up or progress bar.
+      pushConfig({ resetGeneration: true });
       persistedDisplayRef.current = '';
       persistedResultRef.current = null;
       persistedSegRef.current = new Map();
@@ -592,6 +595,9 @@ export function Shell() {
       // stream from the saved messages and replay the last candidate message into
       // the analyze buffer so Generate Q has something to work with.
       onClearSession();
+      // Switching chats: abandon the old chat's server-side accumulation + any
+      // in-flight auto generation so its follow-up/progress can't land here.
+      pushConfig({ resetGeneration: true });
       persistedDisplayRef.current = '';
       persistedResultRef.current = null;
       persistedSegRef.current = new Map();
@@ -688,7 +694,6 @@ export function Shell() {
                 transcripts={transcripts}
                 transcriptMessages={transcriptMessages}
                 lastResult={lastResult}
-                results={results}
                 progress={progress}
                 progressTokens={progressTokens}
                 isAnalyzing={isAnalyzing}

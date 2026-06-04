@@ -70,11 +70,14 @@ const sessionConfigSchema = z
     // are stored on the relay and used for the NEXT `audio-control start`. The
     // creds are application secrets for the user's own Volc account; the server
     // uses them to open the Volc WebSocket and NEVER logs them.
-    asrProvider: z.enum(['paraformer', 'volc', 'funasr']).optional(),
+    asrProvider: z.enum(['paraformer', 'volc', 'funasr', 'xfyun', 'sim']).optional(),
     volcAppId: z.string().optional(),
     volcAccessToken: z.string().optional(),
     volcResourceId: z.string().optional(),
     volcModel: z.string().optional(),
+    // Simulation script for asrProvider 'sim' (mic-less test harness): the relay
+    // stores the latest one and replays it on the NEXT audio-control start.
+    simScript: z.array(z.object({ speakerId: z.number(), text: z.string() })).optional(),
     // CAM++ diarizer sidecar URL (offline). The text engine is asrProvider;
     // `diarize` adds local CAM++ speaker labelling on top of it.
     funasrUrl: z.string().optional(),
@@ -84,7 +87,10 @@ const sessionConfigSchema = z
     autoMode: z.enum(['agent', 'interval']).optional(),
     // Interviewer-adjustable cadence (ms) for 'interval' mode. Clamped server-side
     // to a 5s floor; absent leaves the current cadence (default 30000) untouched.
-    autoIntervalMs: z.number().optional()
+    autoIntervalMs: z.number().optional(),
+    // One-shot signal from a new/switched chat: abandon the previous chat's
+    // accumulated transcript AND in-flight generation (see SessionConfig docs).
+    resetGeneration: z.boolean().optional()
   })
   .passthrough();
 
@@ -128,11 +134,17 @@ interface ProgressPayload {
   tokens?: { input: number; output: number } | null;
 }
 
-/** Map a copilot-core emit(channel,payload) onto the wire protocol. */
-function makeEmit(ws: WebSocket) {
+/**
+ * Map a copilot-core emit(channel,payload) onto the wire protocol. `isStale`
+ * lets a NEW/switched chat suppress the leftover `progress` of an abandoned
+ * in-flight auto generation: when it returns true for the event's requestId the
+ * progress is dropped (so a stale progress bar never appears in the new chat).
+ */
+function makeEmit(ws: WebSocket, isStale: (requestId: string) => boolean) {
   return (channel: string, payload: unknown): void => {
     if (channel === 'interviewer-progress') {
       const p = (payload ?? {}) as Partial<ProgressPayload>;
+      if (isStale(String(p.requestId ?? ''))) return;
       send(ws, {
         type: 'progress',
         requestId: String(p.requestId ?? ''),
@@ -198,6 +210,13 @@ interface RunAnalysisArgs {
   requestId: string;
   /** Distinguishes the autonomous monitor ('auto') from manual Generate Q ('manual'). */
   trigger: GenerationTrigger;
+  /**
+   * Optional staleness probe for the AUTO path. When it returns true at settle
+   * time, a reset() (new/switched chat) happened mid-flight, so this generation
+   * belongs to the abandoned chat: its `result` is NOT emitted (and the matching
+   * progress was already suppressed by makeEmit). Absent for manual runs.
+   */
+  isStale?: () => boolean;
 }
 
 /**
@@ -219,6 +238,11 @@ async function runAnalysis(ws: WebSocket, session: HeadlessSession, args: RunAna
     bankQuestions
   })) as AnalyzeResult;
 
+  // A reset() (new/switched chat) landed while this auto generation was running:
+  // the result belongs to the abandoned chat. Drop it silently so the new chat
+  // shows nothing leftover (a 'skipped' error is likewise dropped, not surfaced).
+  if (args.isStale?.()) return;
+
   if (result.skipped) {
     send(ws, { type: 'error', requestId: args.requestId, message: `skipped: ${result.reason ?? 'unknown'}` });
     return;
@@ -226,10 +250,17 @@ async function runAnalysis(ws: WebSocket, session: HeadlessSession, args: RunAna
 
   const ranked: RankedQuestion[] = toRankedQuestions(result);
 
+  // The runtime echoes the PIPELINE label, not the user-selected mode: Expert 2.0
+  // (expert2) internally runs the merged-DE chain tagged mode:'expert', so
+  // result.mode would mislabel an expert2 result as 'expert'. session.getMode()
+  // returns the TRUE selected mode ('fast'|'expert'|'expert2'|'customize'); prefer
+  // it, falling back to the result's label then 'fast'.
+  const trueMode = session.getMode() || result.mode || 'fast';
+
   send(ws, {
     type: 'result',
     requestId: args.requestId,
-    mode: result.mode ?? 'fast',
+    mode: trueMode,
     output: toFollowUpOutput(result),
     shouldShowFollowUps: !!result.shouldShowFollowUps,
     tokensUsed: result.tokensUsed ?? ZERO_TOKENS,
@@ -291,25 +322,38 @@ function resolveVolcCreds(cfg: ConfigurePayload): VolcCredentials {
  * default ('volc' only if VOLC creds exist, else 'paraformer') when the message
  * supplies creds but no explicit provider.
  */
-function applyAsrConfig(relay: AsrRelay, cfg: ConfigurePayload): void {
+function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePayload): void {
   const hasAsrField =
     cfg.asrProvider !== undefined ||
     cfg.volcAppId !== undefined ||
     cfg.volcAccessToken !== undefined ||
     cfg.volcResourceId !== undefined ||
     cfg.volcModel !== undefined ||
-    cfg.funasrUrl !== undefined;
+    cfg.funasrUrl !== undefined ||
+    cfg.simScript !== undefined;
   if (!hasAsrField) return;
   const creds = resolveVolcCreds(cfg);
-  // asrProvider is the TEXT engine (paraformer | volc); `diarize` adds local CAM++
-  // speaker labelling on top (offline single-mic). Back-compat: older clients sent
+  // Stash the simulation script (mic-less harness) so the relay replays it on the
+  // NEXT audio-control start. Stored regardless of provider so the script can be
+  // configured before the provider flips to 'sim'.
+  if (Array.isArray(cfg.simScript)) {
+    relay.setSimScript(cfg.simScript);
+  }
+  // asrProvider is the TEXT engine (paraformer | volc | xfyun); `diarize` adds
+  // local CAM++ speaker labelling on top (offline single-mic) — EXCEPT xfyun,
+  // which carries its own speaker (角色分离 role_type=2) and needs no per-session
+  // creds (the server reads XFYUN_* from .env). Back-compat: older clients sent
   // asrProvider:'funasr' to mean "paraformer text + diarize".
   const legacyFunasr = cfg.asrProvider === 'funasr';
-  const textProvider: 'paraformer' | 'volc' = legacyFunasr
+  const textProvider: 'paraformer' | 'volc' | 'xfyun' | 'sim' = legacyFunasr
     ? 'paraformer'
-    : cfg.asrProvider === 'volc' || (cfg.asrProvider === undefined && creds.appId && creds.accessToken)
-      ? 'volc'
-      : 'paraformer';
+    : cfg.asrProvider === 'sim'
+      ? 'sim'
+      : cfg.asrProvider === 'xfyun'
+        ? 'xfyun'
+        : cfg.asrProvider === 'volc' || (cfg.asrProvider === undefined && creds.appId && creds.accessToken)
+          ? 'volc'
+          : 'paraformer';
   // Only change diarize when it's EXPLICITLY in this message (or legacy funasr).
   // A PARTIAL configure (e.g. a provider/settings change) omits diarize and must
   // NOT clobber the offline diarization flag set by the full session config.
@@ -317,6 +361,10 @@ function applyAsrConfig(relay: AsrRelay, cfg: ConfigurePayload): void {
     relay.setDiarize(cfg.diarize === true || legacyFunasr);
   }
   relay.setAsrProvider(textProvider, creds, { url: cfg.funasrUrl ?? '' });
+  // iFlytek carries its OWN speaker cluster ids (role_type=2) the interviewer
+  // labels manually → never guess for it (unassigned ids resolve to 'unknown',
+  // shown as "说话人 N"). CAM++/others keep the first-seen guess.
+  roles.setGuess(textProvider !== 'xfyun');
 }
 
 export async function dispatch(
@@ -326,10 +374,20 @@ export async function dispatch(
   trigger: AutoTrigger,
   roles: SpeakerRoleMap,
   injectNote: (note: string) => void,
+  resetAccumulated: () => void,
   msg: ClientMessageParsed
 ): Promise<void> {
   switch (msg.type) {
     case 'configure':
+      // New/switched chat: abandon the old chat's accumulation + in-flight auto
+      // generation BEFORE applying the rest of the config. trigger.reset() bumps
+      // the epoch (suppressing any stale in-flight result/progress), clears the
+      // interval-mode transcript + cooldown; resetAccumulated() drops the
+      // per-connection candidate-answer buffer the trigger is fed from.
+      if (msg.config.resetGeneration === true) {
+        trigger.reset();
+        resetAccumulated();
+      }
       session.configure(msg.config);
       // The opt-in auto-analyze flag is relay state, not session state.
       if (typeof msg.config.autoAnalyzeDisplay === 'boolean') {
@@ -355,7 +413,7 @@ export async function dispatch(
       // NEXT audio-control start uses the chosen provider/creds. Volc creds carry
       // forward across configures (a later configure that only flips the provider
       // keeps earlier-entered creds).
-      applyAsrConfig(relay, msg.config);
+      applyAsrConfig(relay, roles, msg.config);
       return;
     case 'analyze':
       await handleAnalyze(ws, session, trigger, msg);
@@ -388,6 +446,7 @@ function onMessage(
   trigger: AutoTrigger,
   roles: SpeakerRoleMap,
   injectNote: (note: string) => void,
+  resetAccumulated: () => void,
   raw: unknown
 ): void {
   let requestId: string | undefined;
@@ -401,7 +460,7 @@ function onMessage(
         return;
       }
       if (parsed.data.type === 'analyze') requestId = parsed.data.requestId;
-      await dispatch(ws, session, relay, trigger, roles, injectNote, parsed.data);
+      await dispatch(ws, session, relay, trigger, roles, injectNote, resetAccumulated, parsed.data);
     } catch (err) {
       // A handler error must never close the socket.
       const message = err instanceof Error ? err.message : 'handler error';
@@ -442,9 +501,22 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
   const wss = new WebSocketServer({ server: httpServer, path: WS_PATH });
 
   wss.on('connection', (ws: WebSocket) => {
+    // Tracks the in-flight AUTO generation so a mid-flight reset() (new/switched
+    // chat) can suppress its leftover progress AND result. We record the requestId
+    // + the trigger epoch at the START of the auto run; `autoIsStale` compares the
+    // trigger's CURRENT epoch (bumped by reset) against that captured value. Manual
+    // runs never set this, so they are never suppressed. The trigger is defined
+    // below — `autoIsStale` only reads it when invoked (during/after analysis).
+    let autoInflight: { requestId: string; startEpoch: number } | null = null;
+    const autoIsStale = (requestId: string): boolean =>
+      autoInflight !== null &&
+      requestId === autoInflight.requestId &&
+      trigger.getEpoch() !== autoInflight.startEpoch;
+
     const session = createHeadlessSession({
       apiKey: config.dashscopeApiKey,
-      emit: makeEmit(ws),
+      // Suppress stale auto progress (a reset abandoned the in-flight chat).
+      emit: makeEmit(ws, autoIsStale),
       // Customize mode RUNS a saved custom pipeline: the brain's
       // getActivePipeline reads activePipelineId (set via configure) and loads
       // the pipeline JSON from this dir — the same one the pipelines route saves to.
@@ -481,13 +553,26 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // (set inside its evaluate()), so this runAnalyze just emits — it must NOT
     // touch markManualRun/markRunDone or it would double-claim the slot.
     const trigger: AutoTrigger = createAutoTrigger({
-      runAnalyze: ({ candidateAnswer }) =>
-        runAnalysis(ws, session, {
-          candidateAnswer,
-          questionHistory: [],
-          requestId: randomUUID(),
-          trigger: 'auto'
-        })
+      runAnalyze: async ({ candidateAnswer }) => {
+        // Capture the epoch at the START so a reset() during this generation marks
+        // it stale (suppressing its progress + result). Record the in-flight auto
+        // requestId so makeEmit/runAnalysis can match it; clear it on settle.
+        const requestId = randomUUID();
+        const startEpoch = trigger.getEpoch();
+        autoInflight = { requestId, startEpoch };
+        try {
+          await runAnalysis(ws, session, {
+            candidateAnswer,
+            questionHistory: [],
+            requestId,
+            trigger: 'auto',
+            isStale: () => trigger.getEpoch() !== startEpoch
+          });
+        } finally {
+          // Only clear if still ours — a later auto run may have replaced it.
+          if (autoInflight?.requestId === requestId) autoInflight = null;
+        }
+      }
     });
 
     // One ASR relay per connection. Transcripts stream straight back as
@@ -559,7 +644,20 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
     ws.on('message', (data) =>
-      onMessage(ws, session, relay, trigger, roles, feedCandidateAnswer, data.toString())
+      onMessage(
+        ws,
+        session,
+        relay,
+        trigger,
+        roles,
+        feedCandidateAnswer,
+        // resetGeneration → drop the per-connection accumulated candidate answer so
+        // the new chat's trigger starts from a blank transcript.
+        () => {
+          accumulatedDisplayFinal = '';
+        },
+        data.toString()
+      )
     );
     ws.on('error', () => {
       /* swallow socket errors — connection cleanup happens on 'close' */

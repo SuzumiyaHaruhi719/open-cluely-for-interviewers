@@ -35,8 +35,12 @@ export type AudioSource = 'mic' | 'display';
  *                  credentials below, which are SEPARATE from the DashScope key.
  *   'funasr'     — FunASR streaming-SPK WebSocket provider with per-segment
  *                  speaker labels. Requires `funasrUrl` in `SessionConfig`.
+ *   'sim'        — Simulation provider for the mic-less test harness: IGNORES
+ *                  audio and replays a scripted two-speaker transcript supplied
+ *                  via `simScript`, stamping each turn's speakerId on its final
+ *                  (like xfyun, no CAM++). Used by scripts/sim/run-chats.mjs.
  */
-export type AsrProvider = 'paraformer' | 'volc' | 'funasr';
+export type AsrProvider = 'paraformer' | 'volc' | 'funasr' | 'xfyun' | 'sim';
 
 /** Per-segment speaker role resolved from a cluster ID. */
 export type SpeakerRole = 'interviewer' | 'candidate' | 'unknown';
@@ -105,6 +109,13 @@ export interface SessionConfig {
    */
   funasrUrl?: string;
   /**
+   * Simulation script for `asrProvider === 'sim'` (the mic-less test harness):
+   * an ordered two-speaker transcript the server replays instead of listening to
+   * audio. Each turn's `speakerId` is stamped on its FINAL transcript (0 =
+   * interviewer, 1 = candidate by convention). Ignored by all other providers.
+   */
+  simScript?: Array<{ speakerId: number; text: string }>;
+  /**
    * Offline speaker diarization: when true, the server runs LOCAL CAM++ speaker
    * labelling on top of `asrProvider`'s text and stamps `speakerId` on finals.
    * The text engine still follows `asrProvider` (Paraformer or Doubao).
@@ -130,6 +141,16 @@ export interface SessionConfig {
    * adjustable; only used when autoMode === 'interval'. Server clamps to a sane min.
    */
   autoIntervalMs?: number;
+  /**
+   * One-shot reset signal sent by the client when a new chat is created or an
+   * existing chat is switched to. "Chats" are client-side views over ONE shared
+   * WS + ONE server-side trigger, so the server must ABANDON the previous chat's
+   * accumulated transcript AND any in-flight generation: the trigger clears its
+   * accumulation/cooldown and bumps an epoch so a generation started in the old
+   * chat is suppressed (its stale `result`/`progress` are not emitted). Not
+   * persisted — it is acted on once per configure carrying `resetGeneration:true`.
+   */
+  resetGeneration?: boolean;
 }
 
 /** A question-bank search hit. difficulty: 0=unspecified,1=easy,2=medium,3=hard. */

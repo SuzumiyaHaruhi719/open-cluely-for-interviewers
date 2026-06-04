@@ -30,6 +30,8 @@ import {
   type WsConstructor
 } from './paraformer-client';
 import { createVolcSession, type VolcSessionDeps } from './volc-client';
+import { createXfyunSession, type XfyunSessionDeps } from './xfyun-client';
+import { createSimSession, type SimSessionDeps, type SimScriptTurn } from './sim-client';
 import { createCamppDiarizer, type CamppDiarizerDeps, type Diarizer } from './campp-diarizer';
 
 export interface TranscriptEmit {
@@ -70,11 +72,19 @@ export interface VolcCredentials {
 export type ParaformerSessionFactory = (deps: ParaformerSessionDeps) => AsrSession;
 /** Factory used to create a Volc/Doubao session — overridable in tests with a fake. */
 export type VolcSessionFactory = (deps: VolcSessionDeps) => AsrSession;
+/** Factory used to create an iFlytek (讯飞) session — overridable in tests with a fake. */
+export type XfyunSessionFactory = (deps: XfyunSessionDeps) => AsrSession;
+/** Factory used to create a simulation ('sim') session — overridable in tests with a fake. */
+export type SimSessionFactory = (deps: SimSessionDeps) => AsrSession;
 /** Factory used to create a CAM++ diarizer — overridable in tests with a fake. */
 export type DiarizerFactory = (deps: CamppDiarizerDeps) => Diarizer;
 
-/** A transcript callback from a text session (text + isFinal; no speaker). */
-type OnText = (t: { text: string; isFinal: boolean }) => void;
+/**
+ * A transcript callback from a text session. Most providers carry text + isFinal
+ * only; 'xfyun' (角色分离 role_type=2) ALSO carries its own per-utterance speakerId
+ * (null on partials), which startSource forwards instead of running CAM++.
+ */
+type OnText = (t: { text: string; isFinal: boolean; speakerId?: number | null }) => void;
 
 export interface AsrRelayDeps {
   /** Send a `transcript` message back to this connection's browser. */
@@ -85,6 +95,10 @@ export interface AsrRelayDeps {
   sessionFactory?: ParaformerSessionFactory;
   /** Volc/Doubao session factory (defaults to the real client). */
   volcSessionFactory?: VolcSessionFactory;
+  /** iFlytek (讯飞) session factory (defaults to the real client). */
+  xfyunSessionFactory?: XfyunSessionFactory;
+  /** Simulation ('sim') session factory (defaults to createSimSession). */
+  simSessionFactory?: SimSessionFactory;
   /** CAM++ diarizer factory (defaults to the real HTTP client). */
   diarizerFactory?: DiarizerFactory;
   /** WebSocket constructor passed to the sessions (defaults to `ws`). */
@@ -107,6 +121,11 @@ export interface AsrRelay {
    * 'paraformer'.) Does not restart live sessions.
    */
   setAsrProvider(provider: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void;
+  /**
+   * Store the simulation script (mic-less harness). Used by the NEXT
+   * `audio-control start` when `asrProvider === 'sim'`. Does not restart sessions.
+   */
+  setSimScript(script: ReadonlyArray<SimScriptTurn>): void;
   /**
    * Turn local CAM++ speaker diarization on/off for SUBSEQUENT starts (offline
    * single-mic). When on, the next session tees mic PCM to the sidecar and
@@ -133,6 +152,8 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const apiKey = deps.apiKey ?? config.dashscopeApiKey;
   const sessionFactory = deps.sessionFactory ?? (createParaformerSession as ParaformerSessionFactory);
   const volcSessionFactory = deps.volcSessionFactory ?? (createVolcSession as VolcSessionFactory);
+  const xfyunSessionFactory = deps.xfyunSessionFactory ?? (createXfyunSession as XfyunSessionFactory);
+  const simSessionFactory = deps.simSessionFactory ?? (createSimSession as SimSessionFactory);
   const diarizerFactory = deps.diarizerFactory ?? createCamppDiarizer;
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
@@ -140,6 +161,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   let autoAnalyzeDisplay = false;
   let provider: AsrProvider = 'paraformer';
   let volcCreds: VolcCredentials | null = null;
+  let simScript: ReadonlyArray<SimScriptTurn> = [];
   let camppUrl: string = config.camppUrl;
   let diarize = false;
   const diarSession = randomUUID();
@@ -174,6 +196,41 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   // Create the TEXT recognition session for `source`, wired to `onText`. Returns
   // null (after emitting a friendly error) when the key/creds are missing.
   function makeTextSession(source: AudioSource, onText: OnText): AsrSession | null {
+    if (provider === 'sim') {
+      // Mic-less harness: replay the stored two-speaker script (audio ignored).
+      // Like xfyun, the session carries its own speakerId on finals — onText
+      // forwards it and the plain path below skips CAM++.
+      if (!simScript.length) {
+        deps.emit({ source, text: '[Sim unavailable: no simScript configured]', isFinal: false });
+        return null;
+      }
+      return simSessionFactory({
+        script: simScript,
+        onTranscript: onText,
+        onError: (message) => onError(source, message)
+      });
+    }
+    if (provider === 'xfyun') {
+      const appId = config.xfyunAppId.trim();
+      const apiKey = config.xfyunApiKey.trim();
+      const apiSecret = config.xfyunApiSecret.trim();
+      if (!appId || !apiKey || !apiSecret) {
+        deps.emit({ source, text: '[Xunfei unavailable: set XFYUN_* in .env]', isFinal: false });
+        return null;
+      }
+      // ONE cloud call returns text + speaker (角色分离 role_type=2); 16 kHz PCM,
+      // forwarded as-is. onText carries the provider's own speakerId on finals.
+      return xfyunSessionFactory({
+        WebSocket: WebSocketCtor,
+        appId,
+        apiKey,
+        apiSecret,
+        wsUrl: config.xfyunWsUrl,
+        sampleRate: 16000,
+        onTranscript: onText,
+        onError: (message) => onError(source, message)
+      });
+    }
     if (provider === 'volc') {
       const appId = (volcCreds?.appId ?? '').trim();
       const accessToken = (volcCreds?.accessToken ?? '').trim();
@@ -212,6 +269,15 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
 
   function startSource(source: AudioSource): void {
     if (disposed || sessions[source]) return;
+    // xfyun (角色分离 role_type=2) AND sim (scripted) both carry their OWN speaker
+    // in the same call, so they use the PLAIN text path and forward that speakerId
+    // — never the local CAM++ diarize tee, even when `diarize` is on.
+    if (provider === 'xfyun' || provider === 'sim') {
+      sessions[source] = makeTextSession(source, (t) =>
+        emitTranscript(source, { text: t.text, isFinal: t.isFinal, speakerId: t.speakerId ?? null })
+      );
+      return;
+    }
     if (!diarize) {
       sessions[source] = makeTextSession(source, (t) => emitTranscript(source, t));
       return;
@@ -296,10 +362,21 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   }
 
   function setAsrProvider(next: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void {
-    // 'funasr' is legacy for "paraformer + diarize"; the diarize flag is separate now.
-    provider = next === 'volc' ? 'volc' : 'paraformer';
+    // 'funasr' is legacy for "paraformer + diarize"; the diarize flag is separate
+    // now. 'xfyun' is the iFlytek text+speaker engine (no per-session creds — the
+    // server reads XFYUN_* from .env). Anything else collapses to 'paraformer'.
+    provider =
+      next === 'volc' ? 'volc' : next === 'xfyun' ? 'xfyun' : next === 'sim' ? 'sim' : 'paraformer';
     if (volc) volcCreds = { ...volc };
     camppUrl = funasr?.url || config.camppUrl;
+  }
+
+  function setSimScript(script: ReadonlyArray<SimScriptTurn>): void {
+    // Defensive copy so a later mutation of the caller's array can't change a
+    // running/next replay; keep only well-formed turns.
+    simScript = Array.isArray(script)
+      ? script.filter((t) => t && typeof t.text === 'string').map((t) => ({ speakerId: Number(t.speakerId) || 0, text: t.text }))
+      : [];
   }
 
   function setDiarize(enabled: boolean): void {
@@ -321,6 +398,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     handleAudioControl,
     setAutoAnalyzeDisplay,
     setAsrProvider,
+    setSimScript,
     setDiarize,
     isCapturing,
     dispose

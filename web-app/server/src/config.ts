@@ -30,6 +30,17 @@ export interface ServerConfig {
   readonly volcModel: string;
   /** PCM sample rate forwarded to Volc (Doubao expects 16 kHz mono s16le). */
   readonly volcSampleRate: number;
+  /**
+   * iFlytek (讯飞) 实时语音转写大模型 credentials, read from XFYUN_* env. Used when
+   * asrProvider === 'xfyun' — the cloud call returns BOTH text AND speaker id
+   * (角色分离 role_type=2) for the offline single-mic scenario. No per-session
+   * creds: the server reads these from .env. Empty unless XFYUN_* are set.
+   */
+  readonly xfyunAppId: string;
+  readonly xfyunApiKey: string;
+  readonly xfyunApiSecret: string;
+  /** iFlytek realtime ASR WebSocket base URL. */
+  readonly xfyunWsUrl: string;
   /** CAM++ diarizer sidecar URL (offline mode). Used when asrProvider === 'funasr'. */
   readonly camppUrl: string;
   /**
@@ -55,6 +66,8 @@ const DEFAULT_PARAFORMER_MODEL = 'paraformer-realtime-8k-v2';
 const DEFAULT_PARAFORMER_SAMPLE_RATE = 8000;
 // Doubao streams the browser's native 16 kHz mono PCM directly (no downsample).
 const DEFAULT_VOLC_SAMPLE_RATE = 16000;
+// iFlytek 实时语音转写大模型 default endpoint (verified live by the probe).
+const DEFAULT_XFYUN_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
 // Offline mode's local CAM++ diarizer sidecar (deploy/campp_sidecar.py).
 const DEFAULT_CAMPP_URL = 'http://localhost:10097';
 
@@ -78,6 +91,11 @@ export const config: ServerConfig = Object.freeze({
   volcResourceId: String(process.env.VOLC_RESOURCE_ID ?? '').trim(),
   volcModel: String(process.env.VOLC_MODEL ?? '').trim(),
   volcSampleRate: toInt(process.env.VOLC_SAMPLE_RATE, DEFAULT_VOLC_SAMPLE_RATE),
+  // iFlytek (讯飞) 实时语音转写大模型 creds — server-side only, read from .env.
+  xfyunAppId: String(process.env.XFYUN_APP_ID ?? '').trim(),
+  xfyunApiKey: String(process.env.XFYUN_API_KEY ?? '').trim(),
+  xfyunApiSecret: String(process.env.XFYUN_API_SECRET ?? '').trim(),
+  xfyunWsUrl: String(process.env.XFYUN_WS_URL ?? '').trim() || DEFAULT_XFYUN_WS_URL,
   // CAM++ diarizer sidecar URL — per-session configure funasrUrl wins; defaults
   // to the local sidecar so offline mode works out of the box.
   camppUrl: String(process.env.CAMPP_URL ?? '').trim() || DEFAULT_CAMPP_URL,

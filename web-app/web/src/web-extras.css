@@ -155,6 +155,34 @@ button.history-row {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--lane-accent, var(--ai)) 35%, transparent);
 }
 
+/* Two-way speaker assign (iFlytek manual labelling): button group + active state.
+ * The GROUP carries margin-left:auto (pushed right in the flex header); the
+ * buttons inside sit together, so reset their individual margin-left. */
+.speaker-role-actions {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.speaker-role-actions .speaker-role-toggle {
+  margin-left: 0;
+}
+.speaker-role-toggle.is-active {
+  opacity: 1;
+  background: var(--lane-accent, var(--ai));
+  color: var(--bg, #0b0b0f);
+  border-color: var(--lane-accent, var(--ai));
+  font-weight: 600;
+}
+/* 'unknown' speaker lane (not yet labeled) — neutral grey accent. */
+.chat-message.lane-unknown {
+  --lane-accent: var(--fg-muted, #8b8b94);
+}
+.chat-message.lane-unknown .message-label,
+.chat-message.lane-unknown .message-icon {
+  color: var(--lane-accent, #8b8b94);
+  opacity: 1;
+}
+
 /* ── Auto-generation toggle pill (topbar) ───────────────────────────────────
  *    A clickable .mode-indicator-shaped button. ON = AI-indigo accent + glow
  *    dot (reads "armed"); OFF = muted/dim like an idle pill. Namespaced under

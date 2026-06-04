@@ -103,6 +103,11 @@ function makeTrigger(opts: {
   };
 
   const trigger = createAutoTrigger(deps);
+  // The mic-on gate: auto (agent + interval) only fires while capturing. ws.ts
+  // calls setCapturing(true) on audio-control start; the tests below assert the
+  // firing behavior, so default capturing ON here. (Tests that specifically
+  // exercise the capturing gate flip it back to false themselves.)
+  trigger.setCapturing(true);
   return { trigger, h };
 }
 
@@ -176,6 +181,7 @@ test('does NOT fire while a generation is already in flight', async () => {
     },
     config: { cooldownMs: COOLDOWN_MS, minNewChars: MIN_NEW_CHARS, debounceMs: DEBOUNCE_MS, monitorModel: 'stub' }
   });
+  trigger.setCapturing(true); // mic-on gate (ws.ts sets this on audio-control start)
 
   trigger.onCandidateFinal(LONG_ANSWER);
   // Start the first evaluation but DON'T await — analyze stays pending.
@@ -238,6 +244,27 @@ test('monitor throwing → no fire (swallowed)', async () => {
 
   assert.equal(h.monitorCalls.length, 1);
   assert.equal(h.analyzeCalls.length, 0, 'a throwing monitor never fires analyze');
+});
+
+test('does NOT fire while the mic is off (capturing gate)', async () => {
+  // ws.ts calls setCapturing(relay.isCapturing()) on audio-control start/stop;
+  // auto must stay silent whenever the mic is off, even with a substantive final
+  // and a yes-saying monitor. The local gate rejects before the debounce arms, so
+  // the monitor is never consulted either.
+  const { trigger, h } = makeTrigger({ decision: yes() });
+  trigger.setCapturing(false);
+
+  trigger.onCandidateFinal(LONG_ANSWER);
+  assert.equal(h.setTimerCalls, 0, 'no debounce armed while the mic is off');
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'no fire while the mic is off');
+  assert.equal(h.monitorCalls.length, 0, 'monitor not consulted while the mic is off');
+
+  // Turning the mic back on makes the same accumulated final eligible again.
+  trigger.setCapturing(true);
+  trigger.onCandidateFinal(LONG_ANSWER);
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 1, 'auto fires once the mic is on');
 });
 
 test('debounce coalesces rapid onCandidateFinal calls into ONE evaluation', async () => {

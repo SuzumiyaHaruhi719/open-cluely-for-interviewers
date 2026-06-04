@@ -24,3 +24,20 @@ test('setRole overrides the default and sticks', () => {
   m.setRole(0, 'candidate');
   assert.equal(m.resolve(0), 'candidate');
 });
+test('guess mode: setRole complements the other seen speaker', () => {
+  const m = createSpeakerRoleMap();
+  m.resolve(0); m.resolve(1);
+  m.setRole(0, 'interviewer');
+  assert.equal(m.resolve(0), 'interviewer');
+  assert.equal(m.resolve(1), 'candidate');
+});
+test('no-guess (xfyun): unassigned ids resolve to unknown, no complement on setRole', () => {
+  const m = createSpeakerRoleMap();
+  m.setGuess(false);
+  assert.equal(m.resolve(1), 'unknown');
+  assert.equal(m.resolve(2), 'unknown');
+  m.setRole(2, 'candidate');
+  assert.equal(m.resolve(2), 'candidate');
+  // No complement in no-guess mode: id 1 stays unknown (NOT flipped to interviewer).
+  assert.equal(m.resolve(1), 'unknown');
+});

@@ -59,12 +59,6 @@ export interface CopilotSocket {
   addContextNote: (note: string) => boolean;
   lastResult: CopilotResult | null;
   /**
-   * Full history of every `result` received this session, in arrival order. The
-   * transcript renders ALL of these so a new generation never overwrites an older
-   * question; `lastResult` remains the most-recent one for backward compat.
-   */
-  results: CopilotResult[];
-  /**
    * Timestamp (ms) of the last `trigger === 'auto'` result, or of when interval
    * mode last became active. Drives the client-side "next auto follow-up" cooldown
    * countdown; null when no auto fire has happened yet.
@@ -131,9 +125,7 @@ export function useCopilotSocket(): CopilotSocket {
   const [status, setStatus] = useState<SocketStatus>('connecting');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<CopilotResult | null>(null);
-  // Full arrival-order history of results (kept so a new generation never hides
-  // an older question) + the timestamp of the last auto fire for the cooldown.
-  const [results, setResults] = useState<CopilotResult[]>([]);
+  // Timestamp of the last auto fire, for the interval-mode cooldown countdown.
   const [lastAutoFireAt, setLastAutoFireAt] = useState<number | null>(null);
   const [progress, setProgress] = useState<CopilotProgress | null>(null);
   const [progressTokens, setProgressTokens] = useState(0);
@@ -153,6 +145,10 @@ export function useCopilotSocket(): CopilotSocket {
   const reconnectTimerRef = useRef<number | null>(null);
   const attemptsRef = useRef(0);
   const activeRequestRef = useRef<string | null>(null);
+  // requestIds of generations abandoned by a chat reset — their late
+  // progress/result/error belong to the chat we left and must be ignored so an
+  // old chat's follow-up never lands in the fresh one.
+  const discardedRequestsRef = useRef<Set<string>>(new Set());
   const isMountedRef = useRef(true);
   // Live capture handles + per-source frame sequence counters.
   const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
@@ -176,6 +172,7 @@ export function useCopilotSocket(): CopilotSocket {
         setSessionId(message.sessionId);
         break;
       case 'progress':
+        if (discardedRequestsRef.current.has(message.requestId)) break;
         // Adopt a server-initiated (autonomous) request: when nothing is in
         // flight, the first progress event's requestId becomes the active one so
         // the auto follow-up shows the same progress bar a manual analyze does.
@@ -195,20 +192,27 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       case 'result':
-        if (message.requestId === activeRequestRef.current) {
-          activeRequestRef.current = null;
-          setIsAnalyzing(false);
-          setProgress(null);
-        }
+        if (discardedRequestsRef.current.has(message.requestId)) break;
+        // ANY result means the in-flight generation finished — ALWAYS clear the
+        // progress UI and show it. Previously this cleared isAnalyzing only when
+        // the result's requestId matched the adopted one; on any mismatch (the
+        // autonomous adoption path is fragile) isAnalyzing stayed true, so the
+        // single-bubble render kept the card hidden and the progress bar stuck
+        // ("bar fills to 100%, no question"). With the single-bubble model the
+        // latest result is simply the one shown, so unconditional is correct.
+        activeRequestRef.current = null;
+        setIsAnalyzing(false);
+        setProgress(null);
+        // A new result OVERWRITES the previous one — only the latest follow-up
+        // bubble is ever shown (no history accumulation).
         setLastResult(message);
-        // Keep every result so the transcript history never loses an old question.
-        setResults((prev) => [...prev, message]);
         // An auto-triggered result restarts the cooldown window for the countdown.
         if (message.trigger === 'auto') {
           setLastAutoFireAt(Date.now());
         }
         break;
       case 'error':
+        if (message.requestId && discardedRequestsRef.current.has(message.requestId)) break;
         if (!message.requestId || message.requestId === activeRequestRef.current) {
           activeRequestRef.current = null;
           setIsAnalyzing(false);
@@ -412,8 +416,10 @@ export function useCopilotSocket(): CopilotSocket {
   const setSpeakerRole = useCallback(
     (speakerId: number, role: SpeakerRole): void => {
       roleOverrideRef.current.set(speakerId, role);
+      // Re-label this speaker's past bubbles immediately; the server updates its
+      // candidate-gating + future stamping. iFlytek mode assigns each speaker
+      // independently (no auto-complement); CAM++ guess-mode complements server-side.
       setSpeakerSegments((prev) => relabelSegments(prev, speakerId, role));
-      // Also tell the server so its candidate-gating updates.
       send({ type: 'set-speaker-role', speakerId, role });
     },
     [send]
@@ -431,9 +437,13 @@ export function useCopilotSocket(): CopilotSocket {
   // the previous chat's transcript + follow-up never leak in: lanes, last result,
   // progress + tokens, in-flight flag, error.
   const resetTranscripts = useCallback((): void => {
+    // Abandon any in-flight generation: its late progress/result belongs to the
+    // chat we're leaving and must not surface in the fresh one.
+    if (activeRequestRef.current) {
+      discardedRequestsRef.current.add(activeRequestRef.current);
+    }
     setTranscripts({ mic: { ...EMPTY_LANE }, display: { ...EMPTY_LANE } });
     setLastResult(null);
-    setResults([]);
     setLastAutoFireAt(null);
     setProgress(null);
     setProgressTokens(0);
@@ -460,7 +470,6 @@ export function useCopilotSocket(): CopilotSocket {
     analyze,
     addContextNote,
     lastResult,
-    results,
     lastAutoFireAt,
     progress,
     progressTokens,
