@@ -341,7 +341,7 @@ describe('Shell', () => {
     });
   });
 
-  test('selecting the Doubao ASR provider reveals the creds and configures the recognizer', async () => {
+  test('selecting the Doubao ASR provider configures the recognizer (creds in their own section)', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
@@ -351,15 +351,15 @@ describe('Shell', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
 
-    // Volc cred fields are hidden until 'volc' is selected.
-    expect(document.getElementById('settings-volc-creds')).not.toBeInTheDocument();
+    // Doubao creds now live in their own always-visible "Doubao API" section,
+    // so the APP ID input is present regardless of the selected provider.
+    expect(document.getElementById('setting-volc-app-id')).toBeInTheDocument();
 
     fireEvent.change(document.getElementById('setting-asr-provider')!, {
       target: { value: 'volc' }
     });
 
-    // Creds revealed, the topbar pill flips to Doubao, and a configure carries the provider.
-    expect(document.getElementById('settings-volc-creds')).toBeInTheDocument();
+    // The topbar pill flips to Doubao and a configure carries the provider.
     expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'volc');
     expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc' });
 
@@ -371,7 +371,7 @@ describe('Shell', () => {
     expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc', volcAppId: 'app-123' });
   });
 
-  test('an offline interview routes ASR to FunASR: full config carries asrProvider:funasr + the configured funasrUrl', async () => {
+  test('an offline interview turns on diarize: full config carries the text asrProvider + diarize:true + funasrUrl', async () => {
     // The FunASR URL lives in app settings (localStorage); seed a non-default one
     // so the assertion proves the configured value flows through, not a constant.
     const funasrUrl = 'ws://funasr.example:10096';
@@ -394,10 +394,11 @@ describe('Shell', () => {
     expect(post?.body).toMatchObject({ interviewType: 'offline' });
 
     // Now open the socket: the new sessionId triggers the FULL-config re-push,
-    // which for an offline interview routes to FunASR and carries the URL.
+    // which for an offline interview keeps the text engine (paraformer here) and
+    // turns on diarize, carrying the sidecar URL.
     const ws = openSocket();
     await waitFor(() => {
-      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'funasr', funasrUrl });
+      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'paraformer', diarize: true, funasrUrl });
     });
 
     // Offline composer shows only the room mic — no computer-audio/display card.

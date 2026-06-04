@@ -6,7 +6,7 @@ import { QuestionCard } from './QuestionCard';
 import { ProgressCard } from './ProgressCard';
 
 /** A role on a seeded/loaded conversation line (sample pick or session load). */
-export type TranscriptRole = 'candidate' | 'interviewer' | 'ai';
+export type TranscriptRole = 'candidate' | 'interviewer' | 'ai' | 'note';
 
 /** One pre-existing conversation line, rendered before the live transcript. */
 export interface TranscriptMessage {
@@ -55,7 +55,9 @@ function LaneLine({ lane, text, live = false }: LaneLineProps) {
         <span className="message-icon" aria-hidden="true">
           {lane === 'candidate' ? '◐' : '●'}
         </span>
-        <span className="message-label">{lane === 'candidate' ? 'Candidate' : 'You'}</span>
+        <span className="message-label">
+          {live ? '输入中…' : lane === 'candidate' ? 'Candidate' : 'You'}
+        </span>
       </div>
       <div className="message-content">{text}</div>
     </div>
@@ -75,6 +77,21 @@ function AiLine({ text }: { text: string }) {
           ✦
         </span>
         <span className="message-label">AI</span>
+      </div>
+      <div className="message-content">{text}</div>
+    </div>
+  );
+}
+
+/** A manual interviewer note added to the context — `.chat-message.lane-note`. */
+function NoteLine({ text }: { text: string }) {
+  return (
+    <div className="chat-message lane-note">
+      <div className="message-header">
+        <span className="message-icon" aria-hidden="true">
+          📝
+        </span>
+        <span className="message-label">Note</span>
       </div>
       <div className="message-content">{text}</div>
     </div>
@@ -148,13 +165,19 @@ export function TranscriptStream({
         if (message.role === 'ai') {
           return <AiLine key={`seed-${index}`} text={message.text} />;
         }
+        if (message.role === 'note') {
+          return <NoteLine key={`seed-${index}`} text={message.text} />;
+        }
         return <LaneLine key={`seed-${index}`} lane={message.role} text={message.text} />;
       })}
 
       {offline ? (
-        // Offline (single-mic) diarization: one bubble per finalized speaker
-        // segment with a one-tap role toggle, in place of the two source lanes.
-        (speakerSegments ?? []).map((seg) => (
+        // Offline (single-mic): diarized speaker bubbles + a fallback so the
+        // room-mic transcript is NEVER blank — it shows the raw text until
+        // diarization tags a speaker (sidecar resolving/unavailable), plus the
+        // live partial for real-time feedback.
+        <>
+          {(speakerSegments ?? []).map((seg) => (
           <div
             key={seg.id}
             className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}
@@ -181,7 +204,12 @@ export function TranscriptStream({
             </div>
             <div className="message-content">{seg.text}</div>
           </div>
-        ))
+          ))}
+          {(speakerSegments ?? []).length === 0 && mic.finalText ? (
+            <LaneLine lane="candidate" text={mic.finalText} />
+          ) : null}
+          {mic.partial ? <LaneLine lane="candidate" text={mic.partial} live /> : null}
+        </>
       ) : (
         <>
           {display.finalText ? <LaneLine lane="candidate" text={display.finalText} /> : null}

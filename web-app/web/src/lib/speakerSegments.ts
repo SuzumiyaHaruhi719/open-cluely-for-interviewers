@@ -23,6 +23,14 @@ export function appendSegment(
   segments: SpeakerSegment[],
   args: { id: number; speakerId: number; role: SpeakerRole; text: string }
 ): SpeakerSegment[] {
+  // Coalesce consecutive finals from the SAME speaker into one growing bubble,
+  // so a multi-sentence turn renders as one segment (not "一段一段"). A different
+  // speaker id starts a new bubble. Keeps the original segment id (stable React key).
+  const last = segments[segments.length - 1];
+  if (last && last.speakerId === args.speakerId) {
+    const text = last.text ? `${last.text} ${args.text}` : args.text;
+    return [...segments.slice(0, -1), { ...last, role: args.role, text }];
+  }
   return [...segments, { id: args.id, speakerId: args.speakerId, role: args.role, text: args.text }];
 }
 

@@ -100,10 +100,16 @@ export interface SessionConfig {
   /** Optional Volc model name override (config-frame `model_name`). */
   volcModel?: string;
   /**
-   * FunASR streaming-SPK WS URL (used only when asrProvider === 'funasr').
-   * Falls back to the server's FUNASR_WS_URL env var when omitted.
+   * CAM++ diarizer sidecar URL (offline single-mic). Falls back to the server's
+   * CAMPP_URL env var when omitted.
    */
   funasrUrl?: string;
+  /**
+   * Offline speaker diarization: when true, the server runs LOCAL CAM++ speaker
+   * labelling on top of `asrProvider`'s text and stamps `speakerId` on finals.
+   * The text engine still follows `asrProvider` (Paraformer or Doubao).
+   */
+  diarize?: boolean;
   /**
    * Autonomous question generation: when true (the default), the server's
    * per-session trigger monitor may decide on its own to run the Expert pipeline
@@ -136,7 +142,8 @@ export type ClientMessage =
   | { type: 'analyze'; requestId: string; candidateAnswer: string; questionHistory?: string[] }
   | { type: 'audio'; seq: number; source: AudioSource; pcm: string }
   | { type: 'audio-control'; action: 'start' | 'stop'; source: AudioSource }
-  | { type: 'set-speaker-role'; speakerId: number; role: SpeakerRole };
+  | { type: 'set-speaker-role'; speakerId: number; role: SpeakerRole }
+  | { type: 'context-note'; note: string };
 
 export type ServerMessage =
   | { type: 'ready'; sessionId: string }

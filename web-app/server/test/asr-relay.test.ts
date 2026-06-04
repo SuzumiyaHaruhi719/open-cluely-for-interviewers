@@ -164,49 +164,109 @@ test('with no API key, start emits a friendly error and creates no session', () 
   assert.equal(emits[0].isFinal, false);
 });
 
-test('funasr provider emits transcripts carrying the speaker id', () => {
+test('funasr (offline) transcribes via Paraformer and stamps the diarized speaker id on finals', async () => {
   const emits: any[] = [];
-  const created: any[] = [];
+  const { factory, created } = makeFakeFactory();
+  let diarizedWith: Buffer | null = null;
   const relay = createAsrRelay({
     emit: (t) => emits.push(t),
-    apiKey: 'k',
-    sessionFactory: () => {
-      throw new Error('paraformer factory should not run');
-    },
-    funasrSessionFactory: (deps: any) => {
-      const s = { isReady: true, sendAudio() {}, stop() {}, deps };
-      created.push(s);
-      return s;
-    }
+    apiKey: FAKE_KEY,
+    sessionFactory: factory,
+    diarizerFactory: () => ({
+      diarize: async (pcm: Buffer) => {
+        diarizedWith = pcm;
+        return 1;
+      },
+      reset: () => {}
+    })
   });
-  relay.setAsrProvider('funasr', undefined, { url: 'ws://funasr:10096' });
+  relay.setDiarize(true);
+  relay.setAsrProvider('paraformer', undefined, { url: 'http://localhost:10097' });
   relay.handleAudioControl({ action: 'start', source: 'mic' });
-  created[0].deps.onTranscript({ text: '你好', isFinal: true, speakerId: 1 });
-  assert.deepEqual(emits, [{ source: 'mic', text: '你好', isFinal: true, speakerId: 1 }]);
+
+  // Mic audio is teed into the per-utterance diarization buffer.
+  const pcm = Buffer.from([0x01, 0x02, 0x03, 0x04]);
+  relay.handleAudio({ source: 'mic', pcmBase64: pcm.toString('base64') });
+
+  // Paraformer drives a partial (no speaker) then a final (diarized).
+  const cb = created[0].deps.onTranscript;
+  cb({ text: '我做', isFinal: false });
+  cb({ text: '我做过分布式系统', isFinal: true });
+
+  // diarize() is async — let the microtask settle before asserting the final.
+  await new Promise((r) => setTimeout(r, 0));
+
+  assert.deepEqual(emits, [
+    { source: 'mic', text: '我做', isFinal: false },
+    { source: 'mic', text: '我做过分布式系统', isFinal: true, speakerId: 1 }
+  ]);
+  // The diarizer received exactly the utterance audio buffered since start, and
+  // the inner Paraformer session also got the raw frame (cloud transcription).
+  assert.deepEqual(diarizedWith, pcm);
+  assert.deepEqual(created[0].frames, [pcm]);
 });
 
-test('funasr with a blank url emits a friendly error and creates no session', () => {
-  // NOTE: relies on the test env having NO FUNASR_WS_URL — config.funasrWsUrl is
-  // then '' and a blank configure url leaves the relay with no URL to dial.
+test('funasr finals still emit (without a speaker) when diarization is unavailable', async () => {
   const emits: any[] = [];
-  let funasrCalls = 0;
+  const { factory, created } = makeFakeFactory();
   const relay = createAsrRelay({
     emit: (t) => emits.push(t),
-    apiKey: 'k',
-    funasrSessionFactory: () => {
-      funasrCalls += 1;
-      throw new Error('funasr factory should not run for a blank url');
-    }
+    apiKey: FAKE_KEY,
+    sessionFactory: factory,
+    diarizerFactory: () => ({
+      diarize: async () => null, // sidecar down / clip too short
+      reset: () => {}
+    })
   });
-
-  relay.setAsrProvider('funasr', undefined, { url: '' });
+  relay.setDiarize(true);
+  relay.setAsrProvider('paraformer', undefined, { url: 'http://localhost:10097' });
   relay.handleAudioControl({ action: 'start', source: 'mic' });
 
-  // No session was created, and the failure surfaced once on the mic lane as a
-  // non-final transcript-shaped error carrying the friendly "FunASR" text.
-  assert.equal(funasrCalls, 0);
+  created[0].deps.onTranscript({ text: '候选人的回答', isFinal: true });
+  await new Promise((r) => setTimeout(r, 0));
+
+  assert.deepEqual(emits, [{ source: 'mic', text: '候选人的回答', isFinal: true }]);
+});
+
+test('funasr (offline) still needs the DashScope key for the transcription text', () => {
+  const emits: any[] = [];
+  const { factory, created } = makeFakeFactory();
+  const relay = createAsrRelay({
+    emit: (t) => emits.push(t),
+    apiKey: '',
+    sessionFactory: factory,
+    diarizerFactory: () => ({ diarize: async () => 0, reset: () => {} })
+  });
+  relay.setDiarize(true);
+  relay.setAsrProvider('paraformer', undefined, { url: 'http://localhost:10097' });
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+
+  assert.equal(created.length, 0);
   assert.equal(emits.length, 1);
-  assert.equal(emits[0].source, 'mic');
+  assert.match(emits[0].text, /API key/i);
   assert.equal(emits[0].isFinal, false);
-  assert.match(emits[0].text, /FunASR unavailable/i);
+});
+
+test('offline diarize works with the Doubao (volc) text engine too', async () => {
+  const emits: any[] = [];
+  const volcCreated: any[] = [];
+  const relay = createAsrRelay({
+    emit: (t) => emits.push(t),
+    apiKey: FAKE_KEY,
+    volcSessionFactory: (deps: any) => {
+      const s = { isReady: true, sendAudio() {}, stop() {}, deps };
+      volcCreated.push(s);
+      return s;
+    },
+    diarizerFactory: () => ({ diarize: async () => 1, reset: () => {} })
+  });
+  relay.setDiarize(true);
+  relay.setAsrProvider('volc', { appId: 'a', accessToken: 't' }, { url: 'http://localhost:10097' });
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+
+  // Doubao supplies the text; CAM++ stamps the speaker id on the final.
+  volcCreated[0].deps.onTranscript({ text: '候选人答案', isFinal: true });
+  await new Promise((r) => setTimeout(r, 0));
+
+  assert.deepEqual(emits, [{ source: 'mic', text: '候选人答案', isFinal: true, speakerId: 1 }]);
 });

@@ -30,8 +30,8 @@ export interface ServerConfig {
   readonly volcModel: string;
   /** PCM sample rate forwarded to Volc (Doubao expects 16 kHz mono s16le). */
   readonly volcSampleRate: number;
-  /** FunASR streaming-SPK WebSocket URL. Used when asrProvider === 'funasr'. */
-  readonly funasrWsUrl: string;
+  /** CAM++ diarizer sidecar URL (offline mode). Used when asrProvider === 'funasr'. */
+  readonly camppUrl: string;
   /**
    * Autonomous question-generation trigger tuning (server-side monitor).
    * `autoCooldownMs`    — min gap between auto fires (anti-spam).
@@ -55,6 +55,8 @@ const DEFAULT_PARAFORMER_MODEL = 'paraformer-realtime-8k-v2';
 const DEFAULT_PARAFORMER_SAMPLE_RATE = 8000;
 // Doubao streams the browser's native 16 kHz mono PCM directly (no downsample).
 const DEFAULT_VOLC_SAMPLE_RATE = 16000;
+// Offline mode's local CAM++ diarizer sidecar (deploy/campp_sidecar.py).
+const DEFAULT_CAMPP_URL = 'http://localhost:10097';
 
 // Auto-trigger defaults (see ServerConfig + auto-trigger.ts). Tuned for a live
 // interview cadence: ~20s between auto fires, ~120 new chars (a sentence or two)
@@ -76,8 +78,9 @@ export const config: ServerConfig = Object.freeze({
   volcResourceId: String(process.env.VOLC_RESOURCE_ID ?? '').trim(),
   volcModel: String(process.env.VOLC_MODEL ?? '').trim(),
   volcSampleRate: toInt(process.env.VOLC_SAMPLE_RATE, DEFAULT_VOLC_SAMPLE_RATE),
-  // Optional FunASR env fallback — per-session configure funasrUrl wins.
-  funasrWsUrl: String(process.env.FUNASR_WS_URL ?? '').trim(),
+  // CAM++ diarizer sidecar URL — per-session configure funasrUrl wins; defaults
+  // to the local sidecar so offline mode works out of the box.
+  camppUrl: String(process.env.CAMPP_URL ?? '').trim() || DEFAULT_CAMPP_URL,
   // Auto-trigger tuning — all env-overridable.
   autoCooldownMs: toInt(process.env.AUTO_COOLDOWN_MS, DEFAULT_AUTO_COOLDOWN_MS),
   autoMinNewChars: toInt(process.env.AUTO_MIN_NEW_CHARS, DEFAULT_AUTO_MIN_NEW_CHARS),

@@ -20,6 +20,20 @@ describe('speakerSegments', () => {
     ]);
   });
 
+  it('merges consecutive finals from the same speaker into one bubble', () => {
+    let s = appendSegment([], { id: 1, speakerId: 0, role: 'interviewer', text: '你好' });
+    s = appendSegment(s, { id: 2, speakerId: 0, role: 'interviewer', text: '请坐' });
+    expect(s).toHaveLength(1);
+    expect(s[0].text).toBe('你好 请坐');
+    expect(s[0].id).toBe(1); // keeps the original bubble's id
+    // A different speaker id starts a fresh bubble.
+    s = appendSegment(s, { id: 3, speakerId: 1, role: 'candidate', text: '我做过分布式' });
+    expect(s.map((x) => [x.role, x.text])).toEqual([
+      ['interviewer', '你好 请坐'],
+      ['candidate', '我做过分布式']
+    ]);
+  });
+
   it('relabelSegments flips all segments of a speaker id', () => {
     const s = appendSegment([], { id: 1, speakerId: 0, role: 'interviewer', text: 'a' });
     expect(relabelSegments(s, 0, 'candidate')[0].role).toBe('candidate');

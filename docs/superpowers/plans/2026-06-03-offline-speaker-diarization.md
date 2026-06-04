@@ -1,5 +1,7 @@
 # Offline Speaker Diarization Implementation Plan
 
+> **⚠️ SUPERSEDED — implemented differently.** Real `modelscope/FunASR` has **no** real-time blind-diarization WS server: its streaming server does enrolled speaker *verification* via `speaker_db.json` (returns a string `spk_name`, default `"unknown"`), not integer clusters; and DashScope's hosted CAM++ diarization is recorded-file/async only. The shipped design is **cloud Paraformer (text) + a local CAM++ sidecar** that assigns an integer speaker id via online clustering (first-seen = interviewer). Tasks 1/2/6 (contract, role map, ws gating) + the web tasks were reused unchanged; Task 0/3 (`funasr-client.ts` WS client) and Task 12 (live FunASR server) were NOT shipped as written. See `Implementation/web-offline-speaker-diarization.md` in the Obsidian vault for the real, current design.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** In offline (single room-mic) interview mode, label every spoken segment interviewer-vs-candidate with a self-hosted FunASR streaming service, render speaker-coloured bubbles, and gate Generate-Q to candidate speech only.

@@ -231,6 +231,25 @@
     transition: background var(--dur-2) var(--ease-out);
 }
 
+/* Neutral grey — a manual interviewer note added to the context (an aside, not
+   spoken transcript). Distinct from teal/amber/indigo so it never reads as speech. */
+.lane-note {
+    --lane-accent: var(--fg-muted);
+    border-left: 2px solid var(--lane-accent, var(--border));
+    background: linear-gradient(
+        to right,
+        color-mix(in srgb, var(--lane-accent, transparent) 7%, transparent) 0%,
+        transparent 38%
+    );
+    box-shadow: var(--top-highlight);
+}
+
+.lane-note .message-label,
+.lane-note .message-icon {
+    color: var(--lane-accent);
+    opacity: 1;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════════
  * 6. LIVE / IN-PROGRESS TRANSCRIPT LINE

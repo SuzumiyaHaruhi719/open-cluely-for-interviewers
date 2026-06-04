@@ -35,28 +35,30 @@ docker compose up --build
 |---|---|---|---|
 | `DASHSCOPE_API_KEY` | **yes** | — | DashScope key. `x-api-key` for chat (Anthropic-shape) + `Authorization: Bearer` for `text-embedding-v4` (native). |
 | `PORT` | no | `8787` | HTTP/WS port. |
-| `FUNASR_WS_URL` | no | — | WebSocket URL of the FunASR streaming-SPK service. Required only when offline interview mode is used. When running via compose, this is wired automatically to `ws://funasr:10096`. |
+| `CAMPP_URL` | no | `http://localhost:10097` | HTTP URL of the local CAM++ diarizer sidecar. Offline interview mode only. Via compose it's wired to `http://campp-sidecar:10097`. |
 
-## Offline speaker diarization (FunASR)
+## Offline speaker diarization (CAM++ sidecar)
 
-Offline interview mode performs single-room-mic speaker diarization using a self-hosted
-FunASR streaming-SPK service. Online mode is unaffected and continues to use only
-`DASHSCOPE_API_KEY`.
+Offline interview mode (single room microphone) keeps **transcription on cloud Paraformer**
+(same `DASHSCOPE_API_KEY` as online) and adds speaker labels via a small **local CAM++
+sidecar**. For each finalized utterance the server posts the audio to the sidecar, which
+computes a CAM++ speaker embedding and assigns a speaker id by online clustering: the first
+voice heard becomes the interviewer (cluster 0), the next distinct voice the candidate.
+Generate-Q is gated to candidate-labelled speech. Online mode is unaffected.
 
-**Starting the service:** the `docker-compose.yml` includes a `funasr` service that the
-server `depends_on`. Run `docker compose up` from `web-app/` and both containers start
-together. `FUNASR_WS_URL` is automatically set to `ws://funasr:10096` inside the server
-container — no manual wiring needed when using compose.
+**Starting the service:** the `docker-compose.yml` includes a `campp-sidecar` service that
+the server `depends_on`. Run `docker compose up --build` from `web-app/` and both containers
+start together; `CAMPP_URL` is wired to `http://campp-sidecar:10097` inside the server
+container. The sidecar image bakes in the CAM++ model, so it starts ready.
 
-For plain-Docker deployments, start the FunASR container separately and pass
-`FUNASR_WS_URL=ws://<host>:10096` to the server container.
+For plain-Docker / dev (server running outside Docker), start the sidecar container and pass
+`CAMPP_URL=http://localhost:10097` to the server. If the sidecar is unreachable, offline
+transcription still works — segments are just left unlabelled (role `unknown`, never gated),
+so a momentarily-down sidecar never blocks the interview.
 
-**GPU recommended:** the streaming-SPK path (Paraformer + CAM++ speaker embedding) is
-compute-intensive. A GPU gives low-latency per-turn speaker labels. On CPU the service
-still works but expect higher per-turn label latency. To enable GPU in compose, uncomment
-the `deploy.resources.reservations.devices` block in the `funasr` service.
+**CPU is fine:** per-utterance CAM++ embeddings are light; no GPU required.
 
-> Speech recognition & speaker diarization in offline mode are powered by **FunASR** (Paraformer / CAM++ models), © Alibaba Group, used under the FunASR Model License (attribution + model names retained per the license).
+> Speaker diarization in offline mode is powered by **FunASR / CAM++** (`speech_campplus_sv_zh-cn_16k-common`), © Alibaba Group, used under the FunASR Model License (attribution + model name retained per the license).
 
 ## Health check
 

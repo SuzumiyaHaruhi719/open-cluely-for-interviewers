@@ -55,6 +55,8 @@ export interface CopilotSocket {
   sendConfigure: (config: Partial<SessionConfig>) => void;
   /** Request an analysis. Returns the generated requestId, or null if not connected. */
   analyze: (candidateAnswer: string, questionHistory?: string[]) => string | null;
+  /** Add a manual interviewer note to the server's candidate-answer context (feeds auto + manual generation). */
+  addContextNote: (note: string) => boolean;
   lastResult: CopilotResult | null;
   /** Latest progress event for the in-flight request (cleared on result/error). */
   progress: CopilotProgress | null;
@@ -87,6 +89,9 @@ export interface CopilotSocket {
   setSpeakerRole: (speakerId: number, role: SpeakerRole) => void;
   /** Clear the offline speaker segments + role overrides (called per-session, not per-analyze). */
   resetSpeakerSegments: () => void;
+  /** Reset the live transcript lanes + last result/progress/error — a clean slate
+   *  for a new interview so one chat's context never leaks into the next. */
+  resetTranscripts: () => void;
 }
 
 const RECONNECT_BASE_MS = 500;
@@ -310,6 +315,12 @@ export function useCopilotSocket(): CopilotSocket {
     [send]
   );
 
+  // Manual interviewer note → server candidate-answer context (auto + manual gen).
+  const addContextNote = useCallback(
+    (note: string): boolean => send({ type: 'context-note', note }),
+    [send]
+  );
+
   const setAudioState = useCallback((source: AudioSource, patch: Partial<AudioState>): void => {
     setAudio((prev) => ({ ...prev, [source]: { ...prev[source], ...patch } }));
   }, []);
@@ -384,6 +395,19 @@ export function useCopilotSocket(): CopilotSocket {
     segSeqRef.current = 0;
   }, []);
 
+  // Reset the live conversation to a clean slate for a NEW interview/session so
+  // the previous chat's transcript + follow-up never leak in: lanes, last result,
+  // progress + tokens, in-flight flag, error.
+  const resetTranscripts = useCallback((): void => {
+    setTranscripts({ mic: { ...EMPTY_LANE }, display: { ...EMPTY_LANE } });
+    setLastResult(null);
+    setProgress(null);
+    setProgressTokens(0);
+    setIsAnalyzing(false);
+    setError(null);
+    activeRequestRef.current = null;
+  }, []);
+
   // Stop any live capture when the hook unmounts.
   useEffect(() => {
     return () => {
@@ -400,6 +424,7 @@ export function useCopilotSocket(): CopilotSocket {
     sessionId,
     sendConfigure,
     analyze,
+    addContextNote,
     lastResult,
     progress,
     progressTokens,
@@ -411,6 +436,7 @@ export function useCopilotSocket(): CopilotSocket {
     stopAudio,
     speakerSegments,
     setSpeakerRole,
-    resetSpeakerSegments
+    resetSpeakerSegments,
+    resetTranscripts
   };
 }

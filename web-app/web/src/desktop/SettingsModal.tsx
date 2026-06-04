@@ -51,6 +51,16 @@ const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
   { value: 'volc', label: 'Doubao streaming (豆包 / 火山引擎)' }
 ];
 
+// Doubao streaming ASR resource ids — the "model" the user picks. 2.0 (seedasr)
+// must be enabled on the account or the handshake 400s; 1.0 (bigasr) is the
+// broadly-available fallback. Drives X-Api-Resource-Id on the server.
+const VOLC_RESOURCE_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
+  { value: 'volc.seedasr.sauc.duration', label: '豆包流式 2.0 · 小时版（推荐）' },
+  { value: 'volc.seedasr.sauc.concurrent', label: '豆包流式 2.0 · 并发版' },
+  { value: 'volc.bigasr.sauc.duration', label: '豆包流式 1.0 · 小时版' },
+  { value: 'volc.bigasr.sauc.concurrent', label: '豆包流式 1.0 · 并发版' }
+];
+
 /**
  * Auto-saving settings modal, 1:1 with the desktop `.settings-panel` >
  * `.settings-dialog`. Open/close use the copied scrim + dialog spring/exit
@@ -319,6 +329,66 @@ export function SettingsModal({
           </section>
 
           <section className="settings-section">
+            <h3 className="settings-section__title">Doubao API (豆包语音)</h3>
+            <div className="settings-field">
+              <label className="settings-field__label" htmlFor="setting-volc-app-id">
+                Doubao APP ID
+              </label>
+              <input
+                type="text"
+                id="setting-volc-app-id"
+                className="settings-input settings-input--mono"
+                value={settings.volcAppId}
+                autoComplete="off"
+                spellCheck={false}
+                placeholder="留空则用服务端 .env (VOLC_APP_ID)"
+                onChange={(e) => onVolcSettingsChange({ volcAppId: e.target.value })}
+              />
+              <label
+                className="settings-field__label"
+                htmlFor="setting-volc-access-token"
+                style={{ marginTop: 8 }}
+              >
+                Doubao Access Token
+              </label>
+              <input
+                type="password"
+                id="setting-volc-access-token"
+                className="settings-input settings-input--mono"
+                value={settings.volcAccessToken}
+                autoComplete="off"
+                spellCheck={false}
+                placeholder="留空则用服务端 .env (VOLC_ACCESS_TOKEN)"
+                onChange={(e) => onVolcSettingsChange({ volcAccessToken: e.target.value })}
+              />
+              <label
+                className="settings-field__label"
+                htmlFor="setting-volc-model"
+                style={{ marginTop: 8 }}
+              >
+                模型 (Model)
+              </label>
+              <select
+                id="setting-volc-model"
+                className="settings-select"
+                value={settings.volcResourceId || 'volc.seedasr.sauc.duration'}
+                onChange={(e) => onVolcSettingsChange({ volcResourceId: e.target.value })}
+              >
+                {VOLC_RESOURCE_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <p className="settings-field__desc">
+                豆包流式语音识别（火山引擎）。APP ID / Access Token 已在服务端 <code>.env</code> 配置，
+                这里留空即用、填写则覆盖。2.0（seedasr）需账号开通对应资源，否则握手报 400 —— 用不了就选
+                1.0（bigasr）。需在下方「Speech recognition」把 Provider 选成 Doubao 才会启用。
+              </p>
+            </div>
+          </section>
+
+          <section className="settings-section">
             <h3 className="settings-section__title">AI 模型（Fast 模式）</h3>
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-dashscope-ai-model">
@@ -383,89 +453,15 @@ export function SettingsModal({
               </select>
               <p className="settings-field__desc">
                 Saved in this browser and applied live. <code>Paraformer</code> uses the
-                server&apos;s DashScope key. <code>Doubao (豆包)</code> streams via Volcengine and
-                needs the credentials below. <code>Xunfei</code> is not wired yet.
+                server&apos;s DashScope key. <code>Doubao (豆包)</code> streams via Volcengine —
+                set its APP ID / Access Token / 模型 in the <strong>Doubao API</strong> section
+                above. <code>Xunfei</code> is not wired yet.
               </p>
             </div>
 
-            {settings.asrProvider === 'volc' ? (
-              <div id="settings-volc-creds" className="settings-field">
-                <label className="settings-field__label" htmlFor="setting-volc-app-id">
-                  Doubao APP ID
-                </label>
-                <input
-                  type="text"
-                  id="setting-volc-app-id"
-                  className="settings-input settings-input--mono"
-                  value={settings.volcAppId}
-                  autoComplete="off"
-                  spellCheck={false}
-                  placeholder="X-Api-App-Key"
-                  onChange={(e) => onVolcSettingsChange({ volcAppId: e.target.value })}
-                />
-                <label
-                  className="settings-field__label"
-                  htmlFor="setting-volc-access-token"
-                  style={{ marginTop: 8 }}
-                >
-                  Doubao Access Token
-                </label>
-                <input
-                  type="password"
-                  id="setting-volc-access-token"
-                  className="settings-input settings-input--mono"
-                  value={settings.volcAccessToken}
-                  autoComplete="off"
-                  spellCheck={false}
-                  placeholder="X-Api-Access-Key"
-                  onChange={(e) => onVolcSettingsChange({ volcAccessToken: e.target.value })}
-                />
-                <label
-                  className="settings-field__label"
-                  htmlFor="setting-volc-model"
-                  style={{ marginTop: 8 }}
-                >
-                  Model (optional)
-                </label>
-                <input
-                  type="text"
-                  id="setting-volc-model"
-                  className="settings-input settings-input--mono"
-                  value={settings.volcModel}
-                  autoComplete="off"
-                  spellCheck={false}
-                  placeholder="bigmodel"
-                  onChange={(e) => onVolcSettingsChange({ volcModel: e.target.value })}
-                />
-                <label
-                  className="settings-field__label"
-                  htmlFor="setting-volc-resource-id"
-                  style={{ marginTop: 8 }}
-                >
-                  Resource ID (optional)
-                </label>
-                <input
-                  type="text"
-                  id="setting-volc-resource-id"
-                  className="settings-input settings-input--mono"
-                  value={settings.volcResourceId}
-                  autoComplete="off"
-                  spellCheck={false}
-                  placeholder="volc.bigasr.sauc.duration"
-                  onChange={(e) => onVolcSettingsChange({ volcResourceId: e.target.value })}
-                />
-                <p className="settings-field__desc">
-                  Sent to the server, which opens the Doubao connection on your behalf — the browser
-                  never connects to Volcengine directly, and the server never logs these. Stored in
-                  this browser only. Live transcription starts once both APP ID and Access Token are
-                  filled in.
-                </p>
-              </div>
-            ) : null}
-
             <div id="settings-funasr" className="settings-field">
               <label className="settings-field__label" htmlFor="setting-funasr-url">
-                线下 · FunASR WS URL
+                线下 · CAM++ 说话人分离 sidecar URL
               </label>
               <input
                 type="text"
@@ -474,12 +470,12 @@ export function SettingsModal({
                 value={settings.funasrUrl}
                 autoComplete="off"
                 spellCheck={false}
-                placeholder="ws://localhost:10096"
+                placeholder="http://localhost:10097"
                 onChange={(e) => onFunasrUrlChange(e.target.value)}
               />
               <p className="settings-field__desc">
-                线下面试（单麦克风）使用 FunASR 做带说话人分离的流式识别。这是 FunASR streaming-SPK
-                服务的 WebSocket 地址；留空则使用服务端的默认地址。
+                线下面试（单麦克风）转写仍走云端 Paraformer，另用本地 CAM++ sidecar 做说话人分离
+                （先说话=面试官）。这是该 sidecar 的 HTTP 地址；留空则用服务端默认地址。
               </p>
             </div>
 

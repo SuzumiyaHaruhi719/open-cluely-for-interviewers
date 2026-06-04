@@ -1,4 +1,4 @@
-import { MicIcon, MobileIcon, PanelIcon, MinimizeIcon, CloseIcon } from './icons';
+import { MicIcon, MobileIcon, PanelIcon } from './icons';
 
 interface TitleBarProps {
   railCollapsed: boolean;
@@ -6,10 +6,9 @@ interface TitleBarProps {
 }
 
 /**
- * Frameless title bar, 1:1 with the desktop `.titlebar`. The brand mark + the
- * rail toggle are functional; the mobile pill and min/close buttons are
- * faithful-but-inert in a browser tab (a tab can't minimise/close itself), so
- * they carry a "Coming soon" / not-available title.
+ * Title bar for the web edition. The brand mark + the rail toggle are functional.
+ * The desktop-only window controls (minimise / close) are omitted — a browser tab
+ * can't minimise or close itself. The mobile pill stays an inert "desktop only".
  */
 export function TitleBar({ railCollapsed, onToggleRail }: TitleBarProps) {
   return (
@@ -45,26 +44,6 @@ export function TitleBar({ railCollapsed, onToggleRail }: TitleBarProps) {
           onClick={onToggleRail}
         >
           <PanelIcon size={14} />
-        </button>
-        <button
-          id="btn-min"
-          className="titlebar__btn"
-          type="button"
-          aria-label="Minimize"
-          title="Minimize — desktop only"
-          disabled
-        >
-          <MinimizeIcon size={12} />
-        </button>
-        <button
-          id="btn-close"
-          className="titlebar__btn titlebar__btn--danger"
-          type="button"
-          aria-label="Close"
-          title="Close — desktop only"
-          disabled
-        >
-          <CloseIcon size={13} />
         </button>
       </div>
     </header>

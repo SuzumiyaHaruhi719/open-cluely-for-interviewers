@@ -52,7 +52,7 @@ function asInterviewType(value: string): InterviewType {
 /**
  * Map a persisted session message role onto a transcript-stream lane. Persisted
  * roles are 'candidate' | 'interviewer' | 'ai' | 'note' | 'user' | 'assistant';
- * 'user' → candidate, 'assistant'/'ai' → ai, 'note' → skipped (returns null).
+ * 'user' → candidate, 'assistant'/'ai' → ai, 'note' → note (manual context line).
  */
 function mapMessageRole(role: string): TranscriptRole | null {
   switch (role) {
@@ -64,8 +64,10 @@ function mapMessageRole(role: string): TranscriptRole | null {
     case 'ai':
     case 'assistant':
       return 'ai';
+    case 'note':
+      return 'note';
     default:
-      // 'note' and any unknown role have no lane — skip them.
+      // Any unknown role has no lane — skip it.
       return null;
   }
 }
@@ -86,6 +88,7 @@ export function Shell() {
     status,
     sendConfigure,
     analyze,
+    addContextNote,
     lastResult,
     progress,
     progressTokens,
@@ -97,7 +100,8 @@ export function Shell() {
     stopAudio,
     speakerSegments,
     setSpeakerRole,
-    resetSpeakerSegments
+    resetSpeakerSegments,
+    resetTranscripts
   } = socket;
 
   const [view, setView] = useState<AppView>('copilot');
@@ -177,6 +181,34 @@ export function Shell() {
       void sessions.appendMessage(activeId, 'ai', question);
     }
   }, [lastResult, sessions]);
+
+  // Persist newly-committed offline speaker segments to the active session, so an
+  // offline (single-mic) chat's transcript survives a switch/refresh the same way
+  // the online candidate lane does. Keyed by segment id; only the grown delta is
+  // appended (segments coalesce consecutive same-speaker finals), tagged with the
+  // segment's interviewer/candidate role. Online chats have no segments → no-op.
+  const persistedSegRef = useRef<Map<number, string>>(new Map());
+  useEffect(() => {
+    const activeId = sessions.activeId;
+    if (!activeId || speakerSegments.length === 0) {
+      return;
+    }
+    for (const seg of speakerSegments) {
+      const prior = persistedSegRef.current.get(seg.id) ?? '';
+      if (seg.text === prior) {
+        continue;
+      }
+      const delta = seg.text.startsWith(prior) ? seg.text.slice(prior.length).trim() : seg.text;
+      persistedSegRef.current.set(seg.id, seg.text);
+      if (delta) {
+        void sessions.appendMessage(
+          activeId,
+          seg.role === 'interviewer' ? 'interviewer' : 'candidate',
+          delta
+        );
+      }
+    }
+  }, [speakerSegments, sessions]);
 
   // Session timer — starts counting from the first time any channel goes live.
   const [startedAt, setStartedAt] = useState<number | null>(null);
@@ -351,7 +383,10 @@ export function Shell() {
       // provider choice (volc when selected, else the default Paraformer relay).
       // The volc creds are always included so flipping back online with Doubao
       // selected re-applies them on the next audio start.
-      asrProvider: offline ? 'funasr' : s.asrProvider === 'volc' ? 'volc' : 'paraformer',
+      // asrProvider is the TEXT engine (follows the Settings choice in BOTH modes);
+      // `diarize` adds CAM++ speaker labelling for offline single-mic interviews.
+      asrProvider: s.asrProvider === 'volc' ? 'volc' : 'paraformer',
+      diarize: offline,
       funasrUrl: s.funasrUrl,
       volcAppId: s.volcAppId,
       volcAccessToken: s.volcAccessToken,
@@ -366,7 +401,10 @@ export function Shell() {
     if (socket.sessionId) {
       sendConfigure(fullConfigRef.current);
     }
-  }, [socket.sessionId, sendConfigure]);
+    // Re-push the FULL config (which carries diarize=offline) whenever the mode
+    // flips — not just on connect — or switching online<->offline mid-session
+    // leaves the server's diarize flag stale (offline shows no speaker bubbles).
+  }, [socket.sessionId, offline, sendConfigure]);
 
   const onAnalyze = useCallback((): void => {
     const trimmed = answer.trim();
@@ -376,17 +414,31 @@ export function Shell() {
     analyze(trimmed);
   }, [answer, isReady, isAnalyzing, analyze]);
 
-  // "Add a note" appends to the candidate-answer buffer (the analyze input).
-  const onAddNote = useCallback((note: string): void => {
-    setAnswer((prev) => (prev.trim().length === 0 ? note : `${prev.trim()} ${note}`));
-  }, []);
+  // "Add a note to the context": (1) feed the manual analyze buffer (Generate Q
+  // button), (2) send it to the server so the AUTONOMOUS trigger's candidate context
+  // includes it too — otherwise auto-generation never sees a manual note, (3) show it
+  // in the stream as a Note line so the interviewer sees it landed, and persist it so
+  // it survives a session switch/refresh.
+  const onAddNote = useCallback(
+    (note: string): void => {
+      setAnswer((prev) => (prev.trim().length === 0 ? note : `${prev.trim()} ${note}`));
+      addContextNote(note);
+      setTranscriptMessages((prev) => [...prev, { role: 'note', text: note }]);
+      const activeId = sessions.activeId;
+      if (activeId) {
+        void sessions.appendMessage(activeId, 'note', note);
+      }
+    },
+    [addContextNote, sessions]
+  );
 
   const onClearSession = useCallback((): void => {
     setAnswer('');
     setTranscriptMessages([]);
     lastDisplayFinalRef.current = '';
     resetSpeakerSegments();
-  }, [resetSpeakerSegments]);
+    resetTranscripts();
+  }, [resetSpeakerSegments, resetTranscripts]);
 
   // ── Topbar assistant actions ───────────────────────────────────────────────
   // Build the running transcript text (both lanes, finals only) for notes/insights.
@@ -436,6 +488,7 @@ export function Shell() {
       onClearSession();
       persistedDisplayRef.current = '';
       persistedResultRef.current = null;
+      persistedSegRef.current = new Map();
 
       // Seed the shell from the sample (or clear) and push to the server + session.
       // interviewType drives offline (FunASR single-mic) vs online routing.
@@ -507,6 +560,7 @@ export function Shell() {
       onClearSession();
       persistedDisplayRef.current = '';
       persistedResultRef.current = null;
+      persistedSegRef.current = new Map();
       const replayed: TranscriptMessage[] = [];
       for (const m of detail.messages) {
         const role = mapMessageRole(m.role);

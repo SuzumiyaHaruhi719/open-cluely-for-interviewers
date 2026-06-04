@@ -98,7 +98,7 @@ async function acquireStream(source: AudioSource): Promise<MediaStream> {
       raw.getTracks().forEach((t) => t.stop());
       throw new AudioCaptureError(
         'no-audio-track',
-        'No audio was shared. Re-share and tick "Share tab audio".'
+        'No audio was shared. Re-share a browser TAB and tick "Share tab audio", or pick "Entire Screen" and tick "Share system audio" — a native app window (e.g. 网易云音乐) carries no audio.'
       );
     }
     // We only want the audio. Drop the video track immediately.

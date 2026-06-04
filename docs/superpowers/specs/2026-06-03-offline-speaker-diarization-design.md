@@ -1,8 +1,10 @@
 # Offline Speaker Diarization — Design
 
-**Status:** Draft for review
+**Status:** ⚠️ SUPERSEDED — see banner below.
 **Date:** 2026-06-03
 **Scope:** Web app (`web-app/`). Desktop port is a follow-up.
+
+> **Implemented differently than this draft.** The "FunASR streaming-SPK WS server" assumed here does not exist: real `modelscope/FunASR` does enrolled speaker *verification* (`spk_name` vs `speaker_db.json`), not real-time blind clustering; DashScope's hosted CAM++ diarization is recorded-file/async only. **Shipped:** cloud Paraformer for text + a **local CAM++ sidecar** returning an integer speaker id via online centroid clustering (first-seen = interviewer; cosine threshold 0.5). The role map / candidate gating / web bubbles are reused unchanged. Authoritative design: `Implementation/web-offline-speaker-diarization.md` (Obsidian vault).
 
 ## Goal
 

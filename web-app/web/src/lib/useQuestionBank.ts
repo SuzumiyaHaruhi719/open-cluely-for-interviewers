@@ -115,7 +115,10 @@ export function useQuestionResults(params: QuestionBankParams): QuestionBankData
               company: current.company ?? undefined,
               difficulty: current.difficulty ?? undefined,
               q: current.query.trim() || undefined,
-              page: current.page,
+              // The UI page state is 0-based; the server API is 1-based
+              // (start = (page - 1) * pageSize). Convert here, or page 1 and 2
+              // both resolve to start 0 and show identical results.
+              page: current.page + 1,
               pageSize: PAGE_SIZE
             },
             controller.signal

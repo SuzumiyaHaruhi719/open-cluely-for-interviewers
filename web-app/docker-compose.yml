@@ -13,18 +13,23 @@ services:
     environment:
       DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:?set DASHSCOPE_API_KEY in web-app/.env or the environment}
       PORT: "8787"
-      FUNASR_WS_URL: ws://funasr:10096
+      # Offline mode: transcription via cloud Paraformer, speaker id via the local CAM++ sidecar.
+      CAMPP_URL: http://campp-sidecar:10097
     depends_on:
-      - funasr
+      - campp-sidecar
     restart: unless-stopped
 
-  funasr:
-    image: registry.cn-hangzhou.aliyuncs.com/funasr_repo/funasr:funasr-runtime-sdk-online-cpu-0.1.12
-    command: ["bash","-lc","cd /workspace/FunASR/runtime && python -m funasr.bin.serve_realtime_ws --port 10096 --spk true"]
+  # CAM++ speaker-diarization sidecar (offline single-room-mic mode only). The
+  # image bakes in the CAM++ model so it starts ready. CPU-only is fine.
+  campp-sidecar:
+    build:
+      context: ./deploy/campp-sidecar
+    image: open-cluely-campp:latest
     ports:
-      - "10096:10096"
+      - "10097:10097"
     restart: unless-stopped
-    # GPU (recommended for low-latency streaming speaker assignment): uncomment
+    # GPU is NOT required (per-utterance embeddings are light). To use one anyway,
+    # install nvidia-container-toolkit and uncomment:
     # deploy:
     #   resources:
     #     reservations:

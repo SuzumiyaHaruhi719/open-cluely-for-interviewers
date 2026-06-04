@@ -75,8 +75,10 @@ const sessionConfigSchema = z
     volcAccessToken: z.string().optional(),
     volcResourceId: z.string().optional(),
     volcModel: z.string().optional(),
-    // FunASR streaming-SPK WebSocket URL (used only when asrProvider==='funasr').
-    funasrUrl: z.string().optional()
+    // CAM++ diarizer sidecar URL (offline). The text engine is asrProvider;
+    // `diarize` adds local CAM++ speaker labelling on top of it.
+    funasrUrl: z.string().optional(),
+    diarize: z.boolean().optional()
   })
   .passthrough();
 
@@ -94,7 +96,8 @@ const clientMessageSchema = z.discriminatedUnion('type', [
     type: z.literal('set-speaker-role'),
     speakerId: z.number(),
     role: z.enum(['interviewer', 'candidate', 'unknown'])
-  })
+  }),
+  z.object({ type: z.literal('context-note'), note: z.string().min(1) })
 ]);
 
 type ClientMessageParsed = z.infer<typeof clientMessageSchema>;
@@ -265,10 +268,13 @@ type ConfigurePayload = Extract<ClientMessageParsed, { type: 'configure' }>['con
  */
 function resolveVolcCreds(cfg: ConfigurePayload): VolcCredentials {
   return {
-    appId: String(cfg.volcAppId ?? config.volcAppId).trim(),
-    accessToken: String(cfg.volcAccessToken ?? config.volcAccessToken).trim(),
-    resourceId: String(cfg.volcResourceId ?? config.volcResourceId).trim() || undefined,
-    model: String(cfg.volcModel ?? config.volcModel).trim() || undefined
+    // `||` (not `??`) so a BLANK field from the browser ('' — not undefined) still
+    // falls back to the server's VOLC_* env creds (.env). With `??`, an empty
+    // string would win over the env default and break the fallback.
+    appId: String(cfg.volcAppId || config.volcAppId).trim(),
+    accessToken: String(cfg.volcAccessToken || config.volcAccessToken).trim(),
+    resourceId: String(cfg.volcResourceId || config.volcResourceId).trim() || undefined,
+    model: String(cfg.volcModel || config.volcModel).trim() || undefined
   };
 }
 
@@ -288,26 +294,32 @@ function applyAsrConfig(relay: AsrRelay, cfg: ConfigurePayload): void {
     cfg.volcModel !== undefined ||
     cfg.funasrUrl !== undefined;
   if (!hasAsrField) return;
-  // FunASR: switch when explicitly selected OR when a funasrUrl is supplied (so
-  // entering a URL is enough to opt in). The relay falls back to config.funasrWsUrl
-  // when the url is blank.
-  if (cfg.asrProvider === 'funasr' || cfg.funasrUrl !== undefined) {
-    relay.setAsrProvider('funasr', undefined, { url: cfg.funasrUrl ?? '' });
-    return;
-  }
   const creds = resolveVolcCreds(cfg);
-  // If the message only carried creds (no explicit provider), infer 'volc' when
-  // creds are now present so entering creds is enough to switch.
-  const provider = cfg.asrProvider ?? (creds.appId && creds.accessToken ? 'volc' : 'paraformer');
-  relay.setAsrProvider(provider, creds);
+  // asrProvider is the TEXT engine (paraformer | volc); `diarize` adds local CAM++
+  // speaker labelling on top (offline single-mic). Back-compat: older clients sent
+  // asrProvider:'funasr' to mean "paraformer text + diarize".
+  const legacyFunasr = cfg.asrProvider === 'funasr';
+  const textProvider: 'paraformer' | 'volc' = legacyFunasr
+    ? 'paraformer'
+    : cfg.asrProvider === 'volc' || (cfg.asrProvider === undefined && creds.appId && creds.accessToken)
+      ? 'volc'
+      : 'paraformer';
+  // Only change diarize when it's EXPLICITLY in this message (or legacy funasr).
+  // A PARTIAL configure (e.g. a provider/settings change) omits diarize and must
+  // NOT clobber the offline diarization flag set by the full session config.
+  if (cfg.diarize !== undefined || legacyFunasr) {
+    relay.setDiarize(cfg.diarize === true || legacyFunasr);
+  }
+  relay.setAsrProvider(textProvider, creds, { url: cfg.funasrUrl ?? '' });
 }
 
-async function dispatch(
+export async function dispatch(
   ws: WebSocket,
   session: HeadlessSession,
   relay: AsrRelay,
   trigger: AutoTrigger,
   roles: SpeakerRoleMap,
+  injectNote: (note: string) => void,
   msg: ClientMessageParsed
 ): Promise<void> {
   switch (msg.type) {
@@ -341,6 +353,12 @@ async function dispatch(
     case 'set-speaker-role':
       roles.setRole(msg.speakerId, msg.role);
       return;
+    case 'context-note':
+      // "Add a note to the context": fold the interviewer's manual note into the
+      // SAME accumulated candidate answer the autonomous trigger watches, so AUTO
+      // generation sees it too (manual Generate Q also carries it via candidateAnswer).
+      injectNote(msg.note);
+      return;
   }
 }
 
@@ -350,6 +368,7 @@ function onMessage(
   relay: AsrRelay,
   trigger: AutoTrigger,
   roles: SpeakerRoleMap,
+  injectNote: (note: string) => void,
   raw: unknown
 ): void {
   let requestId: string | undefined;
@@ -363,7 +382,7 @@ function onMessage(
         return;
       }
       if (parsed.data.type === 'analyze') requestId = parsed.data.requestId;
-      await dispatch(ws, session, relay, trigger, roles, parsed.data);
+      await dispatch(ws, session, relay, trigger, roles, injectNote, parsed.data);
     } catch (err) {
       // A handler error must never close the socket.
       const message = err instanceof Error ? err.message : 'handler error';
@@ -514,7 +533,9 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
-    ws.on('message', (data) => onMessage(ws, session, relay, trigger, roles, data.toString()));
+    ws.on('message', (data) =>
+      onMessage(ws, session, relay, trigger, roles, feedCandidateAnswer, data.toString())
+    );
     ws.on('error', () => {
       /* swallow socket errors — connection cleanup happens on 'close' */
     });

@@ -14,8 +14,10 @@ const KEYS = {
 
 export const DEFAULT_AI_MODEL = 'deepseek-v4-pro';
 export const DEFAULT_ASR_PROVIDER = 'paraformer';
-/** Default offline FunASR streaming-SPK WS URL (local FunASR docker). */
-export const DEFAULT_FUNASR_URL = 'ws://localhost:10096';
+/** Default offline diarizer URL — the local CAM++ sidecar (deploy/campp_sidecar.py). */
+export const DEFAULT_FUNASR_URL = 'http://localhost:10097';
+/** Default Doubao ASR resource id — the 2.0 (seedasr) hourly model (most accurate). */
+export const DEFAULT_VOLC_RESOURCE_ID = 'volc.seedasr.sauc.duration';
 /** Autonomous question generation defaults ON (the design's auto-on default). */
 export const DEFAULT_AUTO_GENERATE = true;
 /** Opacity is a 1..10 step (matching the desktop slider); 10 = fully opaque. */
@@ -37,9 +39,9 @@ export interface AppSettings {
   volcResourceId: string;
   volcModel: string;
   /**
-   * Offline FunASR streaming-SPK WS URL (only meaningful when asrProvider ===
-   * 'funasr' / an offline interview). Sent to the server, which opens the
-   * FunASR connection; falls back to the server's FUNASR_WS_URL when blank.
+   * Offline CAM++ diarizer sidecar URL (only meaningful when asrProvider ===
+   * 'funasr' / an offline interview). Sent to the server, which calls the sidecar
+   * per finalized utterance; falls back to the server's CAMPP_URL when blank.
    */
   funasrUrl: string;
   opacityStep: number;
@@ -128,7 +130,7 @@ export function useAppSettings(): UseAppSettings {
     asrProvider: readString(KEYS.asrProvider, DEFAULT_ASR_PROVIDER),
     volcAppId: readString(KEYS.volcAppId, ''),
     volcAccessToken: readString(KEYS.volcAccessToken, ''),
-    volcResourceId: readString(KEYS.volcResourceId, ''),
+    volcResourceId: readString(KEYS.volcResourceId, DEFAULT_VOLC_RESOURCE_ID),
     volcModel: readString(KEYS.volcModel, ''),
     funasrUrl: readString(KEYS.funasrUrl, DEFAULT_FUNASR_URL),
     opacityStep: readOpacityStep(),

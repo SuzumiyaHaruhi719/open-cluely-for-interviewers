@@ -9,19 +9,19 @@
 // PCM, and turns partial/final transcripts into `transcript` ServerMessages via
 // the injected `emit`.
 //
-// PROVIDER-AWARE: the relay carries an `asrProvider` ('paraformer' | 'volc',
-// default 'paraformer'). When 'volc', start() opens a Doubao / Volcengine
-// session (./volc-client) with the per-session Volc creds; otherwise it opens a
-// Paraformer session (./paraformer-client). Both clients expose the SAME
-// sendAudio/stop/isReady surface, so the emit + dispose paths are identical.
-// Paraformer is the default and is unaffected when no provider is configured.
-//
-// REUSE: the DashScope protocol lives in ./paraformer-client and the Volc/Doubao
-// protocol in ./volc-client (a verbatim port of the desktop frame protocol —
-// see the note there).
+// TWO ORTHOGONAL KNOBS:
+//   1. asrProvider — the TEXT engine: 'paraformer' (DashScope, default) or
+//      'volc' (Doubao/Volcengine). Both clients expose the same sendAudio/stop/
+//      isReady surface.
+//   2. diarize — when true (offline single room-mic), the relay tees the mic PCM
+//      to a LOCAL CAM++ sidecar (./campp-diarizer) and stamps a per-utterance
+//      integer `speakerId` on each FINAL — on top of whichever text engine is
+//      chosen. So offline can use Paraformer OR Doubao for the words, plus CAM++
+//      for "who". Online (diarize=false) never emits speakerId — byte-identical.
 // ============================================================================
 
 import { WebSocket as WsWebSocket } from 'ws';
+import { randomUUID } from 'node:crypto';
 import type { AsrProvider, AudioSource } from '@open-cluely/contract';
 import { config } from './config';
 import {
@@ -30,13 +30,13 @@ import {
   type WsConstructor
 } from './paraformer-client';
 import { createVolcSession, type VolcSessionDeps } from './volc-client';
-import { createFunasrSession, type FunasrSessionDeps } from './funasr-client';
+import { createCamppDiarizer, type CamppDiarizerDeps, type Diarizer } from './campp-diarizer';
 
 export interface TranscriptEmit {
   source: AudioSource;
   text: string;
   isFinal: boolean;
-  /** FunASR-only: per-segment speaker id. Omitted by paraformer/volc. */
+  /** Diarized (offline CAM++) only: per-utterance speaker id. Omitted online. */
   speakerId?: number | null;
 }
 
@@ -51,7 +51,7 @@ export interface AudioControl {
   source: AudioSource;
 }
 
-/** The common recognition-session surface both providers expose. */
+/** The common recognition-session surface both text providers expose. */
 export interface AsrSession {
   sendAudio(pcm: Buffer): void;
   stop(): void;
@@ -70,8 +70,11 @@ export interface VolcCredentials {
 export type ParaformerSessionFactory = (deps: ParaformerSessionDeps) => AsrSession;
 /** Factory used to create a Volc/Doubao session — overridable in tests with a fake. */
 export type VolcSessionFactory = (deps: VolcSessionDeps) => AsrSession;
-/** Factory used to create a FunASR streaming-SPK session — overridable in tests. */
-export type FunasrSessionFactory = (deps: FunasrSessionDeps) => AsrSession;
+/** Factory used to create a CAM++ diarizer — overridable in tests with a fake. */
+export type DiarizerFactory = (deps: CamppDiarizerDeps) => Diarizer;
+
+/** A transcript callback from a text session (text + isFinal; no speaker). */
+type OnText = (t: { text: string; isFinal: boolean }) => void;
 
 export interface AsrRelayDeps {
   /** Send a `transcript` message back to this connection's browser. */
@@ -82,14 +85,13 @@ export interface AsrRelayDeps {
   sessionFactory?: ParaformerSessionFactory;
   /** Volc/Doubao session factory (defaults to the real client). */
   volcSessionFactory?: VolcSessionFactory;
-  /** FunASR streaming-SPK session factory (defaults to the real client). */
-  funasrSessionFactory?: FunasrSessionFactory;
+  /** CAM++ diarizer factory (defaults to the real HTTP client). */
+  diarizerFactory?: DiarizerFactory;
   /** WebSocket constructor passed to the sessions (defaults to `ws`). */
   WebSocket?: WsConstructor;
   /**
    * Optional: invoked with the FINAL interviewee ('display') transcript so the
-   * caller MAY auto-run analysis. Opt-in via configure({ autoAnalyzeDisplay });
-   * left unset means transcripts only stream — no surprise model spend.
+   * caller MAY auto-run analysis. Opt-in via configure({ autoAnalyzeDisplay }).
    */
   onDisplayFinal?: (text: string) => void;
 }
@@ -100,41 +102,50 @@ export interface AsrRelay {
   /** Enable/disable auto-analyze of interviewee final transcripts. */
   setAutoAnalyzeDisplay(enabled: boolean): void;
   /**
-   * Choose the ASR provider + (for 'volc') its credentials / (for 'funasr') its
-   * WS URL for SUBSEQUENT starts. Does not restart live sessions — the next
-   * `audio-control start` (or first frame) for a source picks up the new
-   * provider/creds/url.
+   * Choose the TEXT engine + (for 'volc') its creds / the CAM++ sidecar URL for
+   * SUBSEQUENT starts. ('funasr' is accepted for back-compat and treated as
+   * 'paraformer'.) Does not restart live sessions.
    */
   setAsrProvider(provider: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void;
+  /**
+   * Turn local CAM++ speaker diarization on/off for SUBSEQUENT starts (offline
+   * single-mic). When on, the next session tees mic PCM to the sidecar and
+   * stamps an integer speakerId on each final.
+   */
+  setDiarize(enabled: boolean): void;
   dispose(): void;
 }
 
 const SOURCES: readonly AudioSource[] = ['mic', 'display'];
 
+// Cap the per-utterance diarization buffer at ~30 s of 16 kHz mono s16le, so a
+// missing final (long monologue) can't grow it without bound.
+const MAX_DIAR_SEG_BYTES = 30 * 16000 * 2;
+
 /**
  * Create a relay bound to one browser connection. Sessions are created lazily
  * and torn down on stop / dispose. NEVER throws to the caller — a recognizer
- * failure surfaces as a `transcript`-channel error path via emit/onError, and
- * the ws layer keeps the socket alive.
+ * failure surfaces as a `transcript`-channel error path via emit/onError.
  */
 export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const apiKey = deps.apiKey ?? config.dashscopeApiKey;
   const sessionFactory = deps.sessionFactory ?? (createParaformerSession as ParaformerSessionFactory);
   const volcSessionFactory = deps.volcSessionFactory ?? (createVolcSession as VolcSessionFactory);
-  const funasrSessionFactory = deps.funasrSessionFactory ?? (createFunasrSession as FunasrSessionFactory);
+  const diarizerFactory = deps.diarizerFactory ?? createCamppDiarizer;
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
   const sessions: Record<AudioSource, AsrSession | null> = { mic: null, display: null };
   let autoAnalyzeDisplay = false;
   let provider: AsrProvider = 'paraformer';
   let volcCreds: VolcCredentials | null = null;
-  let funasrUrl: string = config.funasrWsUrl;
+  let camppUrl: string = config.camppUrl;
+  let diarize = false;
+  const diarSession = randomUUID();
   let disposed = false;
 
-  // Shared transcript/error wiring so all providers route identically. The
-  // optional `speakerId` is carried only when present (FunASR) — omitted for
-  // paraformer/volc so their emit payloads stay byte-identical to before.
-  function onTranscript(
+  // Shared emit: carries `speakerId` only when present (diarized) — omitted for
+  // online so the wire stays byte-identical. Display finals may auto-analyze.
+  function emitTranscript(
     source: AudioSource,
     t: { text: string; isFinal: boolean; speakerId?: number | null }
   ): void {
@@ -158,70 +169,90 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     stopSource(source);
   }
 
-  function startParaformer(source: AudioSource): void {
-    if (!apiKey) {
-      // No key: surface once as a non-final transcript-shaped error so the UI
-      // can show it on the right lane without crashing.
-      deps.emit({ source, text: '[ASR unavailable: DashScope API key not configured]', isFinal: false });
-      return;
+  // Create the TEXT recognition session for `source`, wired to `onText`. Returns
+  // null (after emitting a friendly error) when the key/creds are missing.
+  function makeTextSession(source: AudioSource, onText: OnText): AsrSession | null {
+    if (provider === 'volc') {
+      const appId = (volcCreds?.appId ?? '').trim();
+      const accessToken = (volcCreds?.accessToken ?? '').trim();
+      if (!appId || !accessToken) {
+        deps.emit({
+          source,
+          text: '[Doubao unavailable: enter APP ID + Access Token in Settings]',
+          isFinal: false
+        });
+        return null;
+      }
+      return volcSessionFactory({
+        WebSocket: WebSocketCtor,
+        appId,
+        accessToken,
+        resourceId: volcCreds?.resourceId,
+        model: volcCreds?.model,
+        sampleRate: config.volcSampleRate,
+        onTranscript: onText,
+        onError: (message) => onError(source, message)
+      });
     }
-    sessions[source] = sessionFactory({
+    if (!apiKey) {
+      deps.emit({ source, text: '[ASR unavailable: DashScope API key not configured]', isFinal: false });
+      return null;
+    }
+    return sessionFactory({
       WebSocket: WebSocketCtor,
       apiKey,
       model: config.paraformerModel,
       sampleRate: config.paraformerSampleRate,
-      onTranscript: (t) => onTranscript(source, t),
-      onError: (message) => onError(source, message)
-    });
-  }
-
-  function startVolc(source: AudioSource): void {
-    const appId = (volcCreds?.appId ?? '').trim();
-    const accessToken = (volcCreds?.accessToken ?? '').trim();
-    if (!appId || !accessToken) {
-      deps.emit({
-        source,
-        text: '[Doubao unavailable: enter APP ID + Access Token in Settings]',
-        isFinal: false
-      });
-      return;
-    }
-    sessions[source] = volcSessionFactory({
-      WebSocket: WebSocketCtor,
-      appId,
-      accessToken,
-      resourceId: volcCreds?.resourceId,
-      model: volcCreds?.model,
-      sampleRate: config.volcSampleRate,
-      onTranscript: (t) => onTranscript(source, t),
-      onError: (message) => onError(source, message)
-    });
-  }
-
-  function startFunasr(source: AudioSource): void {
-    const url = funasrUrl.trim();
-    if (!url) {
-      deps.emit({
-        source,
-        text: '[FunASR unavailable: set the FunASR WebSocket URL in Settings]',
-        isFinal: false
-      });
-      return;
-    }
-    sessions[source] = funasrSessionFactory({
-      WebSocket: WebSocketCtor as unknown as FunasrSessionDeps['WebSocket'],
-      url,
-      sampleRate: 16000,
-      onTranscript: (t) => onTranscript(source, t),
+      onTranscript: onText,
       onError: (message) => onError(source, message)
     });
   }
 
   function startSource(source: AudioSource): void {
     if (disposed || sessions[source]) return;
-    if (provider === 'volc') startVolc(source);
-    else if (provider === 'funasr') startFunasr(source);
-    else startParaformer(source);
+    if (!diarize) {
+      sessions[source] = makeTextSession(source, (t) => emitTranscript(source, t));
+      return;
+    }
+
+    // Offline: diarize each finalized utterance with the local CAM++ sidecar and
+    // stamp its integer speakerId. Partials emit immediately (no speaker).
+    const diarizer = diarizerFactory({ url: camppUrl, session: diarSession });
+    let segChunks: Buffer[] = [];
+    let segBytes = 0;
+    const onText: OnText = (t) => {
+      if (!t.isFinal) {
+        emitTranscript(source, { text: t.text, isFinal: false });
+        return;
+      }
+      const seg = Buffer.concat(segChunks);
+      segChunks = [];
+      segBytes = 0;
+      const { text } = t;
+      diarizer
+        .diarize(seg)
+        .then((spk) => emitTranscript(source, { text, isFinal: true, speakerId: spk }))
+        .catch(() => emitTranscript(source, { text, isFinal: true }));
+    };
+    const inner = makeTextSession(source, onText);
+    if (!inner) return;
+    sessions[source] = {
+      get isReady(): boolean {
+        return inner.isReady;
+      },
+      sendAudio(pcm: Buffer): void {
+        segChunks.push(pcm);
+        segBytes += pcm.length;
+        while (segBytes > MAX_DIAR_SEG_BYTES && segChunks.length > 1) {
+          segBytes -= segChunks.shift()!.length;
+        }
+        inner.sendAudio(pcm);
+      },
+      stop(): void {
+        diarizer.reset();
+        inner.stop();
+      }
+    };
   }
 
   function stopSource(source: AudioSource): void {
@@ -239,7 +270,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   function handleAudio(frame: { source: AudioSource; pcmBase64: string }): void {
     if (disposed) return;
     const source = frame.source;
-    // Lazily start if a frame arrives before an explicit 'start' control.
     if (!sessions[source]) startSource(source);
     const session = sessions[source];
     if (!session) return;
@@ -264,9 +294,14 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   }
 
   function setAsrProvider(next: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void {
-    provider = next === 'volc' ? 'volc' : next === 'funasr' ? 'funasr' : 'paraformer';
+    // 'funasr' is legacy for "paraformer + diarize"; the diarize flag is separate now.
+    provider = next === 'volc' ? 'volc' : 'paraformer';
     if (volc) volcCreds = { ...volc };
-    funasrUrl = funasr?.url || config.funasrWsUrl;
+    camppUrl = funasr?.url || config.camppUrl;
+  }
+
+  function setDiarize(enabled: boolean): void {
+    diarize = enabled;
   }
 
   function dispose(): void {
@@ -275,5 +310,12 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     for (const source of SOURCES) stopSource(source);
   }
 
-  return { handleAudio, handleAudioControl, setAutoAnalyzeDisplay, setAsrProvider, dispose };
+  return {
+    handleAudio,
+    handleAudioControl,
+    setAutoAnalyzeDisplay,
+    setAsrProvider,
+    setDiarize,
+    dispose
+  };
 }
