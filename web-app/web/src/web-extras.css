@@ -164,7 +164,11 @@ button.history-row {
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  font: inherit;
+  /* Match the sibling status pills' monospace face. Do NOT use `font: inherit` —
+     the shorthand resets font-family to the body (sans) font, clobbering
+     .mode-indicator's var(--font-mono) so "AUTO" renders in a different typeface
+     from EXPERT / IDLE / PARAFORMER. */
+  font-family: var(--font-mono);
 }
 
 .auto-indicator[data-auto='on'] {

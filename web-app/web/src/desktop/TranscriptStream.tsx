@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { SpeakerRole } from '@open-cluely/contract';
 import type { CopilotProgress, CopilotResult, TranscriptLanes } from '../lib/useCopilotSocket';
+import type { AutoMode } from './useAppSettings';
 import type { SpeakerSegment } from '../lib/speakerSegments';
 import { QuestionCard } from './QuestionCard';
 import { ProgressCard } from './ProgressCard';
@@ -19,6 +20,12 @@ interface TranscriptStreamProps {
   /** Seeded (sample) or loaded (session) conversation, shown before live lanes. */
   transcriptMessages: TranscriptMessage[];
   lastResult: CopilotResult | null;
+  /**
+   * Full arrival-order history of generated results. Every entry renders its own
+   * QuestionCard so a new generation never overwrites/hides an older question.
+   * Optional (defaults to []) so existing callers/tests without history still work.
+   */
+  results?: CopilotResult[];
   progress: CopilotProgress | null;
   /** Cumulative analyze tokens so far; shown on the progress card when > 0. */
   progressTokens?: number;
@@ -29,6 +36,17 @@ interface TranscriptStreamProps {
   pickedHint?: string | null;
   /** Promote a ranked candidate into the analyze buffer (no server round-trip). */
   onPickCandidate?: (question: string) => void;
+  /**
+   * Autonomous trigger mode. The cooldown countdown only renders for 'interval'.
+   * Optional (defaults 'agent') so existing callers/tests are unaffected.
+   */
+  autoMode?: AutoMode;
+  /** Interval-mode cooldown in ms (autoIntervalSec × 1000); drives the countdown. */
+  autoIntervalMs?: number;
+  /** Whether the AUTO pill is on — countdown only shows when auto-generate is active. */
+  autoGenerate?: boolean;
+  /** Timestamp (ms) of the last auto fire (or when interval mode became active). */
+  lastAutoFireAt?: number | null;
   /**
    * Offline (single-mic) interview: render the diarized `speakerSegments` list
    * with one-tap role toggles INSTEAD of the two online source lanes. Online
@@ -104,6 +122,37 @@ function roleToLane(role: SpeakerRole): 'candidate' | 'interviewer' {
 }
 
 /**
+ * An approximate client-side countdown to the next interval-mode auto follow-up:
+ * "下次自动追问 ~Ns". Drives a 1s tick (cleaned up on unmount) and computes the
+ * remaining seconds from `autoIntervalMs - (now - lastAutoFireAt)`. The caller is
+ * responsible for only rendering this when interval mode + AUTO are on and a
+ * generation isn't in flight; if no auto has fired yet (`lastAutoFireAt` null) it
+ * counts down from the full interval starting now.
+ */
+function AutoCooldownLine({
+  autoIntervalMs,
+  lastAutoFireAt
+}: {
+  autoIntervalMs: number;
+  lastAutoFireAt: number | null;
+}) {
+  const [now, setNow] = useState(() => Date.now());
+  // Fall back to "now" when no auto has fired yet so the bar starts a fresh window.
+  const [mountedAt] = useState(() => Date.now());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+  const anchor = lastAutoFireAt ?? mountedAt;
+  const remaining = Math.max(0, Math.round((autoIntervalMs - (now - anchor)) / 1000));
+  return (
+    <div className="chat-message auto-cooldown-line" role="status" aria-live="off">
+      <span className="auto-cooldown-line__text">下次自动追问 ~{remaining}s</span>
+    </div>
+  );
+}
+
+/**
  * Live transcript stream — the desktop `.chat-messages` hero column. Renders the
  * two colour-coded lanes (candidate = display/teal, interviewer = mic/amber),
  * then the analyze-progress card while a request is in flight, then the AI
@@ -114,6 +163,7 @@ export function TranscriptStream({
   transcripts,
   transcriptMessages,
   lastResult,
+  results = [],
   progress,
   progressTokens = 0,
   isAnalyzing,
@@ -123,7 +173,11 @@ export function TranscriptStream({
   onPickCandidate,
   offline = false,
   speakerSegments,
-  onSetSpeakerRole
+  onSetSpeakerRole,
+  autoMode = 'agent',
+  autoIntervalMs = 30000,
+  autoGenerate = false,
+  lastAutoFireAt = null
 }: TranscriptStreamProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -144,9 +198,14 @@ export function TranscriptStream({
     transcripts.mic.partial,
     speakerSegments,
     lastResult,
+    results.length,
     progress,
     isAnalyzing
   ]);
+
+  // Show the approximate cooldown only when interval mode + AUTO are on and no
+  // generation is in flight (the progress card replaces it while analyzing).
+  const showCooldown = autoMode === 'interval' && autoGenerate && !isAnalyzing;
 
   const display = transcripts.display;
   const mic = transcripts.mic;
@@ -220,19 +279,31 @@ export function TranscriptStream({
         </>
       )}
 
+      {/* Full result history — one card per generation, oldest→newest, so a new
+          question never overwrites/hides an older one. The picker affordances
+          (onPickCandidate + the "已选用" hint) attach only to the LATEST card. */}
+      {results.map((result, index) => {
+        const isLatest = index === results.length - 1;
+        return (
+          <QuestionCard
+            key={result.requestId}
+            output={result.output}
+            mode={result.mode}
+            tokensUsed={result.tokensUsed}
+            elapsedMs={result.elapsedMs}
+            ranked={result.ranked}
+            trigger={result.trigger}
+            pickedHint={isLatest ? pickedHint : null}
+            onPickCandidate={isLatest ? onPickCandidate : undefined}
+          />
+        );
+      })}
+
+      {/* Progress shows ADDITIONALLY, below the history — it must not replace it. */}
       {isAnalyzing ? <ProgressCard progress={progress} tokens={progressTokens} /> : null}
 
-      {lastResult && !isAnalyzing ? (
-        <QuestionCard
-          output={lastResult.output}
-          mode={lastResult.mode}
-          tokensUsed={lastResult.tokensUsed}
-          elapsedMs={lastResult.elapsedMs}
-          ranked={lastResult.ranked}
-          trigger={lastResult.trigger}
-          pickedHint={pickedHint}
-          onPickCandidate={onPickCandidate}
-        />
+      {showCooldown ? (
+        <AutoCooldownLine autoIntervalMs={autoIntervalMs} lastAutoFireAt={lastAutoFireAt} />
       ) : null}
 
       {error ? (

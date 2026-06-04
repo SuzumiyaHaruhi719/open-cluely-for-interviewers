@@ -90,6 +90,8 @@ export function Shell() {
     analyze,
     addContextNote,
     lastResult,
+    results,
+    lastAutoFireAt,
     progress,
     progressTokens,
     isAnalyzing,
@@ -260,6 +262,32 @@ export function Shell() {
     pushConfig({ autoGenerate: next });
   }, [appSettings.settings.autoGenerate, setAutoGenerate, pushConfig]);
 
+  // Autonomous follow-up trigger MODE: persist locally AND tell the server so its
+  // monitor switches between the AI-decided ('agent') and fixed-30s ('interval')
+  // cadence. The full-config re-push carries `autoMode` on every new sessionId, so
+  // this delta is enough for the live one (mirrors onModeChange/onToggleAuto).
+  const { setAutoMode } = appSettings;
+  const onAutoModeChange = useCallback(
+    (mode: 'agent' | 'interval'): void => {
+      setAutoMode(mode);
+      pushConfig({ autoMode: mode });
+    },
+    [setAutoMode, pushConfig]
+  );
+
+  // Interviewer-adjustable interval (cooldown) for interval mode: persist locally
+  // AND push to the server as autoIntervalMs so its monitor uses the new cadence.
+  // The full-config re-push carries autoIntervalMs on every new sessionId, so this
+  // delta is enough for the live one (mirrors onAutoModeChange).
+  const { setAutoIntervalSec } = appSettings;
+  const onAutoIntervalChange = useCallback(
+    (sec: number): void => {
+      setAutoIntervalSec(sec);
+      pushConfig({ autoIntervalMs: sec * 1000 });
+    },
+    [setAutoIntervalSec, pushConfig]
+  );
+
   // Promote a ranked candidate: copy it into the analyze buffer (so Generate Q /
   // the next analyze uses it) and flash a brief "已选用" confirmation. No server
   // round-trip — picking is a purely local selection.
@@ -394,7 +422,13 @@ export function Shell() {
       volcModel: s.volcModel,
       // Part of the full config: re-push so a fresh/reconnected server session
       // honours the auto-generate choice (the monitor is off until told on).
-      autoGenerate: s.autoGenerate
+      autoGenerate: s.autoGenerate,
+      // Re-push the trigger mode too so a fresh/reconnected session uses the
+      // chosen cadence (AI-decided 'agent' vs fixed-30s 'interval').
+      autoMode: s.autoMode,
+      // Re-push the interviewer-adjustable interval so a fresh/reconnected session
+      // honours the chosen cooldown (only used when autoMode === 'interval').
+      autoIntervalMs: s.autoIntervalSec * 1000
     };
   }, [config, offline, appSettings.settings]);
   useEffect(() => {
@@ -564,7 +598,14 @@ export function Shell() {
       const replayed: TranscriptMessage[] = [];
       for (const m of detail.messages) {
         const role = mapMessageRole(m.role);
-        if (role) {
+        if (!role) continue;
+        // Coalesce consecutive SAME-speaker messages into one line, mirroring the
+        // live appendSegment coalescing — otherwise a turn saved as several finals
+        // reloads as several one-line boxes instead of the single merged bubble.
+        const last = replayed[replayed.length - 1];
+        if (last && last.role === role && (role === 'candidate' || role === 'interviewer')) {
+          last.text = last.text ? `${last.text} ${m.text}` : m.text;
+        } else {
           replayed.push({ role, text: m.text });
         }
       }
@@ -647,6 +688,7 @@ export function Shell() {
                 transcripts={transcripts}
                 transcriptMessages={transcriptMessages}
                 lastResult={lastResult}
+                results={results}
                 progress={progress}
                 progressTokens={progressTokens}
                 isAnalyzing={isAnalyzing}
@@ -657,6 +699,10 @@ export function Shell() {
                 offline={offline}
                 speakerSegments={speakerSegments}
                 onSetSpeakerRole={setSpeakerRole}
+                autoMode={appSettings.settings.autoMode}
+                autoIntervalMs={appSettings.settings.autoIntervalSec * 1000}
+                autoGenerate={appSettings.settings.autoGenerate}
+                lastAutoFireAt={lastAutoFireAt}
               />
               <Composer
                 audio={audio}
@@ -708,6 +754,8 @@ export function Shell() {
         onLanguageChange={onLanguageChange}
         onAiModelChange={appSettings.setAiModel}
         onAsrProviderChange={onAsrProviderChange}
+        onAutoModeChange={onAutoModeChange}
+        onAutoIntervalChange={onAutoIntervalChange}
         onVolcSettingsChange={onVolcSettingsChange}
         onFunasrUrlChange={appSettings.setFunasrUrl}
         onOpacityChange={appSettings.setOpacityStep}

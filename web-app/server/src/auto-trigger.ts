@@ -38,6 +38,8 @@ export interface AutoTriggerConfig {
   minNewChars: number;
   debounceMs: number;
   monitorModel: string;
+  /** Fixed wall-clock cadence (ms) for 'interval' mode. Default 30000. */
+  intervalMs: number;
 }
 
 /** A pending-timer handle abstraction so tests can drive time without real waits. */
@@ -71,6 +73,27 @@ export interface AutoTrigger {
   onCandidateFinal: (fullCandidateText: string) => void;
   /** Enable/disable autonomous generation. When off, no LLM call is ever made. */
   setAutoGenerate: (enabled: boolean) => void;
+  /**
+   * Select the autonomous-firing mode. 'agent' = the Flash monitor gates/debounces
+   * (default); 'interval' = fire on a fixed wall-clock cadence (no monitor gate),
+   * independent of generation time. Switching modes restarts the interval timer as
+   * needed (only running when mode==='interval' AND autoGenerate is on).
+   */
+  setMode: (mode: 'agent' | 'interval') => void;
+  /**
+   * Live-adjust the 'interval' mode cadence (ms). Clamped to a 5s floor; falls
+   * back to 30000 for NaN/0. If the cadence timer is currently running it restarts
+   * immediately so the new period takes effect at once (no wait for the old tick).
+   */
+  setIntervalMs: (ms: number) => void;
+  /**
+   * Record ANY finalized transcript segment (interviewer/candidate/guest) so the
+   * 'interval' (every-30s) mode has the recent conversation to fire from — even
+   * when no candidate has been diarized yet. Agent mode is unaffected.
+   */
+  noteFinal: (text: string) => void;
+  /** Mic on/off gate: auto (agent AND interval) only fires while capturing is true. */
+  setCapturing: (on: boolean) => void;
   /** Whether autonomous generation is currently enabled. */
   getAutoGenerate: () => boolean;
   /** Whether a generation (auto OR manual) is currently in flight. */
@@ -180,7 +203,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     cooldownMs: deps.config?.cooldownMs ?? serverConfig.autoCooldownMs,
     minNewChars: deps.config?.minNewChars ?? serverConfig.autoMinNewChars,
     debounceMs: deps.config?.debounceMs ?? serverConfig.autoDebounceMs,
-    monitorModel: deps.config?.monitorModel ?? serverConfig.autoMonitorModel
+    monitorModel: deps.config?.monitorModel ?? serverConfig.autoMonitorModel,
+    intervalMs: deps.config?.intervalMs ?? 30000
   };
 
   const now = deps.now ?? Date.now;
@@ -197,6 +221,17 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let charsAtLastGen = 0;
   let isGenerating = false;
 
+  // Firing mode + the latest accumulated candidate text. In 'interval' mode a fixed
+  // wall-clock timer drives firing from `latestText` (no monitor gate); in 'agent'
+  // mode the timer is idle and the existing gate/debounce path drives everything.
+  let mode: 'agent' | 'interval' = 'agent';
+  let latestText = '';
+  let intervalHandle: ReturnType<typeof setInterval> | null = null;
+  // Auto NEVER fires unless an audio source is actively capturing (the mic is On).
+  // Set from ws.ts on every audio-control start/stop. Default false = nothing fires
+  // until capture begins, and firing stops the moment the mic is turned off.
+  let capturing = false;
+
   // Debounce bookkeeping: the latest accumulated text + the pending timer.
   let pendingText: string | null = null;
   let timer: TimerHandle | null = null;
@@ -212,6 +247,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   /** True iff the cheap local gates currently allow a fire for `text`. */
   function localGatesPass(text: string): boolean {
     if (!autoGenerate) return false;
+    if (!capturing) return false;
     if (isGenerating) return false;
     if (now() - lastGenAt < cfg.cooldownMs) return false;
     if (text.length - charsAtLastGen < cfg.minNewChars) return false;
@@ -222,6 +258,46 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   function recordFire(text: string): void {
     lastGenAt = now();
     charsAtLastGen = text.length;
+  }
+
+  /** Mic on/off gate — auto only fires while an audio source is capturing. */
+  function setCapturing(on: boolean): void {
+    capturing = !!on;
+  }
+
+  // --- Interval mode ---------------------------------------------------------
+  // A FIXED wall-clock cadence, independent of generation time. The setInterval
+  // gives the steady cadence; a tick that lands mid-generation simply SKIPS (no
+  // overlap, no queue, no reschedule-on-completion). Uses the GLOBAL timer (the
+  // injected setTimer/clearTimer drive the agent-mode debounce only).
+
+  function stopInterval(): void {
+    if (intervalHandle !== null) {
+      clearInterval(intervalHandle);
+      intervalHandle = null;
+    }
+  }
+
+  async function intervalTick(): Promise<void> {
+    if (!autoGenerate || mode !== 'interval' || isGenerating || !capturing) return;
+    const text = latestText.trim();
+    if (!text) return;
+    isGenerating = true;
+    try {
+      await runAnalyze({ candidateAnswer: text, focusHint: '' });
+    } catch {
+      /* analyze failures are handled by the caller's path; never disrupt the relay */
+    } finally {
+      recordFire(text);
+      isGenerating = false;
+    }
+  }
+
+  function startInterval(): void {
+    if (intervalHandle !== null) return;
+    intervalHandle = setInterval(() => {
+      void intervalTick();
+    }, cfg.intervalMs);
   }
 
   /**
@@ -254,8 +330,21 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     }
   }
 
+  function noteFinal(rawText: string): void {
+    const s = String(rawText ?? '').trim();
+    if (!s) return;
+    // Accumulate the recent transcript across ALL speakers (capped) so 'interval'
+    // mode can fire a follow-up even before any candidate is diarized.
+    latestText = latestText ? `${latestText} ${s}` : s;
+    if (latestText.length > 4000) latestText = latestText.slice(-4000);
+  }
+
   function onCandidateFinal(fullCandidateText: string): void {
     const text = String(fullCandidateText ?? '');
+    // 'interval' mode is timer-driven and fires from `latestText` (fed by
+    // noteFinal across ALL speakers); the agent gate/debounce below stays
+    // candidate-only and unchanged.
+    if (mode !== 'agent') return;
     // Cheap pre-filter: if the local gates can't pass for this text, don't even
     // arm the debounce. (The post-debounce evaluate() re-checks, so this is purely
     // an optimization — it also keeps a disabled monitor completely silent.)
@@ -274,6 +363,34 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     autoGenerate = !!enabled;
     // Turning off cancels any armed evaluation immediately (no surprise late fire).
     if (!autoGenerate) clearPending();
+    // Keep the interval timer consistent with the new enabled state: stop on
+    // disable; (re)start only if we're enabling AND already in interval mode.
+    if (!autoGenerate) stopInterval();
+    else if (mode === 'interval') startInterval();
+  }
+
+  function setMode(next: 'agent' | 'interval'): void {
+    if (next === mode) return;
+    mode = next;
+    // Always tear down the timer first; only re-arm it for interval mode while
+    // autonomous generation is on. Switching to 'agent' leaves the timer stopped
+    // and hands firing back to the gate/debounce path untouched.
+    stopInterval();
+    if (mode === 'interval' && autoGenerate) startInterval();
+  }
+
+  function setIntervalMs(ms: number): void {
+    // Clamp to a 5s floor (avoid hammering the pipeline); fall back to 30000 for
+    // NaN/0 so a bad value never disables or stalls the cadence.
+    const next = Math.max(5000, Math.floor(ms) || 30000);
+    if (next === cfg.intervalMs) return;
+    cfg.intervalMs = next;
+    // If the cadence timer is live, restart it so the new period applies now
+    // rather than after the current (old-period) tick fires.
+    if (intervalHandle !== null) {
+      stopInterval();
+      startInterval();
+    }
   }
 
   function markManualRun(fullCandidateText?: string): void {
@@ -304,6 +421,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   return {
     onCandidateFinal,
     setAutoGenerate,
+    setMode,
+    setIntervalMs,
+    noteFinal,
+    setCapturing,
     getAutoGenerate: () => autoGenerate,
     getIsGenerating: () => isGenerating,
     markManualRun,

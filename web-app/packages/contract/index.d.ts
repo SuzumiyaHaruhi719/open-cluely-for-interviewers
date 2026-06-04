@@ -118,6 +118,18 @@ export interface SessionConfig {
    * always works regardless.
    */
   autoGenerate?: boolean;
+  /**
+   * How autonomous generation fires while autoGenerate is on:
+   *   'agent'    — the AI monitor decides when to fire (gated/debounced; default).
+   *   'interval' — fire on a fixed ~30s wall-clock cadence (no monitor gate),
+   *                independent of how long each generation takes.
+   */
+  autoMode?: 'agent' | 'interval';
+  /**
+   * Interval-mode cadence in milliseconds (default 30000 = 30s). Interviewer-
+   * adjustable; only used when autoMode === 'interval'. Server clamps to a sane min.
+   */
+  autoIntervalMs?: number;
 }
 
 /** A question-bank search hit. difficulty: 0=unspecified,1=easy,2=medium,3=hard. */

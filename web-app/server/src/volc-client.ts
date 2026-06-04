@@ -75,6 +75,15 @@ export interface VolcSessionDeps {
 }
 
 export const VOLC_WS_URL = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel';
+// The seedasr (2.0) models are rejected on /bigmodel (handshake HTTP 400
+// "resourceId not allowed") and must use /bigmodel_nostream; the bigasr (1.0)
+// models work on /bigmodel. Verified live against the account.
+export const VOLC_WS_URL_NOSTREAM = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream';
+
+/** Pick the v3 endpoint a resource id is served on: seedasr (2.0) → nostream, else /bigmodel. */
+export function endpointForResource(resourceId: string): string {
+  return /seedasr/i.test(resourceId) ? VOLC_WS_URL_NOSTREAM : VOLC_WS_URL;
+}
 export const VOLC_DEFAULT_SAMPLE_RATE = 16000;
 // Default to the 1.0 hourly model — the resource most accounts have granted.
 // The 2.0 (volc.seedasr.*) model must be explicitly enabled on the account or
@@ -289,7 +298,7 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
   }
 
   try {
-    socket = new WebSocket(VOLC_WS_URL, {
+    socket = new WebSocket(endpointForResource(resourceId), {
       headers: {
         'X-Api-App-Key': appId,
         'X-Api-Access-Key': accessToken,

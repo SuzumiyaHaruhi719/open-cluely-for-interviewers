@@ -58,6 +58,18 @@ export interface CopilotSocket {
   /** Add a manual interviewer note to the server's candidate-answer context (feeds auto + manual generation). */
   addContextNote: (note: string) => boolean;
   lastResult: CopilotResult | null;
+  /**
+   * Full history of every `result` received this session, in arrival order. The
+   * transcript renders ALL of these so a new generation never overwrites an older
+   * question; `lastResult` remains the most-recent one for backward compat.
+   */
+  results: CopilotResult[];
+  /**
+   * Timestamp (ms) of the last `trigger === 'auto'` result, or of when interval
+   * mode last became active. Drives the client-side "next auto follow-up" cooldown
+   * countdown; null when no auto fire has happened yet.
+   */
+  lastAutoFireAt: number | null;
   /** Latest progress event for the in-flight request (cleared on result/error). */
   progress: CopilotProgress | null;
   /**
@@ -119,6 +131,10 @@ export function useCopilotSocket(): CopilotSocket {
   const [status, setStatus] = useState<SocketStatus>('connecting');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<CopilotResult | null>(null);
+  // Full arrival-order history of results (kept so a new generation never hides
+  // an older question) + the timestamp of the last auto fire for the cooldown.
+  const [results, setResults] = useState<CopilotResult[]>([]);
+  const [lastAutoFireAt, setLastAutoFireAt] = useState<number | null>(null);
   const [progress, setProgress] = useState<CopilotProgress | null>(null);
   const [progressTokens, setProgressTokens] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -160,6 +176,16 @@ export function useCopilotSocket(): CopilotSocket {
         setSessionId(message.sessionId);
         break;
       case 'progress':
+        // Adopt a server-initiated (autonomous) request: when nothing is in
+        // flight, the first progress event's requestId becomes the active one so
+        // the auto follow-up shows the same progress bar a manual analyze does.
+        // The manual flow always has an active requestId, so this branch is inert
+        // for it. The matching 'result'/'error' clears activeRequestRef as usual.
+        if (activeRequestRef.current === null) {
+          activeRequestRef.current = message.requestId;
+          setIsAnalyzing(true);
+          setProgressTokens(0);
+        }
         if (message.requestId === activeRequestRef.current) {
           setProgress(message);
           if (message.tokens) {
@@ -175,6 +201,12 @@ export function useCopilotSocket(): CopilotSocket {
           setProgress(null);
         }
         setLastResult(message);
+        // Keep every result so the transcript history never loses an old question.
+        setResults((prev) => [...prev, message]);
+        // An auto-triggered result restarts the cooldown window for the countdown.
+        if (message.trigger === 'auto') {
+          setLastAutoFireAt(Date.now());
+        }
         break;
       case 'error':
         if (!message.requestId || message.requestId === activeRequestRef.current) {
@@ -401,6 +433,8 @@ export function useCopilotSocket(): CopilotSocket {
   const resetTranscripts = useCallback((): void => {
     setTranscripts({ mic: { ...EMPTY_LANE }, display: { ...EMPTY_LANE } });
     setLastResult(null);
+    setResults([]);
+    setLastAutoFireAt(null);
     setProgress(null);
     setProgressTokens(0);
     setIsAnalyzing(false);
@@ -426,6 +460,8 @@ export function useCopilotSocket(): CopilotSocket {
     analyze,
     addContextNote,
     lastResult,
+    results,
+    lastAutoFireAt,
     progress,
     progressTokens,
     isAnalyzing,

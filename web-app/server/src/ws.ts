@@ -78,7 +78,13 @@ const sessionConfigSchema = z
     // CAM++ diarizer sidecar URL (offline). The text engine is asrProvider;
     // `diarize` adds local CAM++ speaker labelling on top of it.
     funasrUrl: z.string().optional(),
-    diarize: z.boolean().optional()
+    diarize: z.boolean().optional(),
+    // How autonomous generation fires while autoGenerate is on: 'agent' (the Flash
+    // monitor decides; default) or 'interval' (fixed ~30s wall-clock cadence, no gate).
+    autoMode: z.enum(['agent', 'interval']).optional(),
+    // Interviewer-adjustable cadence (ms) for 'interval' mode. Clamped server-side
+    // to a 5s floor; absent leaves the current cadence (default 30000) untouched.
+    autoIntervalMs: z.number().optional()
   })
   .passthrough();
 
@@ -329,9 +335,19 @@ export async function dispatch(
       if (typeof msg.config.autoAnalyzeDisplay === 'boolean') {
         relay.setAutoAnalyzeDisplay(msg.config.autoAnalyzeDisplay);
       }
-      // Autonomous generation toggle: monitor state, default ON. A configure that
-      // omits the field leaves the current setting untouched (so an unrelated
-      // mode change doesn't silently flip autonomy).
+      // Autonomous generation toggle + firing mode: monitor state, default ON /
+      // 'agent'. A configure that omits a field leaves that setting untouched (so an
+      // unrelated change doesn't silently flip autonomy or mode). Apply setMode
+      // BEFORE setAutoGenerate so that, when both are present, enabling in 'interval'
+      // mode starts the cadence timer.
+      // Apply the cadence BEFORE setMode so that, if this same message also
+      // switches into 'interval', the freshly started timer uses the new period.
+      if (typeof msg.config.autoIntervalMs === 'number') {
+        trigger.setIntervalMs(msg.config.autoIntervalMs);
+      }
+      if (msg.config.autoMode !== undefined) {
+        trigger.setMode(msg.config.autoMode);
+      }
       if (typeof msg.config.autoGenerate === 'boolean') {
         trigger.setAutoGenerate(msg.config.autoGenerate);
       }
@@ -349,6 +365,9 @@ export async function dispatch(
       return;
     case 'audio-control':
       relay.handleAudioControl({ action: msg.action, source: msg.source });
+      // Gate autonomous follow-ups on capture state: auto (agent AND interval)
+      // only fires while at least one audio source is live (the mic is On).
+      trigger.setCapturing(relay.isCapturing());
       return;
     case 'set-speaker-role':
       roles.setRole(msg.speakerId, msg.role);
@@ -504,6 +523,12 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
                 speaker: stamped.speaker
               }
         );
+        // 'interval' (every-30s) auto mode fires from the FULL recent transcript,
+        // so feed EVERY finalized segment (interviewer/candidate/guest) to it. The
+        // candidate-only feed below still drives 'agent' mode, unchanged.
+        if (t.isFinal) {
+          trigger.noteFinal(t.text);
+        }
         // ONLINE seam (paraformer/volc): interviewee answers arrive on the
         // 'display' lane with no speakerId — unchanged byte-for-byte.
         if (t.source === 'display' && t.isFinal) {
@@ -541,6 +566,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     });
     ws.on('close', () => {
       relay.dispose();
+      // Stop the autonomous trigger too: setAutoGenerate(false) cancels any armed
+      // debounce AND clears the interval-mode cadence timer (leak guard — a live
+      // setInterval would otherwise keep the closure + connection alive).
+      trigger.setAutoGenerate(false);
     });
   });
 

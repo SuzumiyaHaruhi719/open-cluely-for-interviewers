@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { AudioSource } from '@open-cluely/contract';
 import type { AudioState } from '../lib/useCopilotSocket';
@@ -15,6 +16,74 @@ interface ChannelCardProps {
   disabled: boolean;
   onStart: (source: AudioSource) => void;
   onStop: (source: AudioSource) => void;
+}
+
+/** localStorage key audioCapture.ts reads to pick the mic input device ('' = OS default). */
+const MIC_DEVICE_KEY = 'mic.inputDeviceId';
+
+function readStoredMic(): string {
+  try {
+    return localStorage.getItem(MIC_DEVICE_KEY) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Audio-input device list for the room-mic lane. Enumerates inputs on mount; a
+ * one-time permission unlock reveals device LABELS (blank until granted). The
+ * chosen deviceId is persisted to MIC_DEVICE_KEY, which audioCapture.ts reads on
+ * the next mic start.
+ */
+function useMicDevices(enabled: boolean) {
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [needsPermission, setNeedsPermission] = useState(false);
+  const [selectedId, setSelectedId] = useState<string>(() => readStoredMic());
+
+  const load = useCallback(async (withPrompt: boolean) => {
+    if (typeof navigator === 'undefined' || !navigator.mediaDevices?.enumerateDevices) {
+      return;
+    }
+    if (withPrompt) {
+      try {
+        const tmp = await navigator.mediaDevices.getUserMedia({ audio: true });
+        tmp.getTracks().forEach((t) => t.stop());
+      } catch {
+        /* permission denied — labels stay blank */
+      }
+    }
+    let list: MediaDeviceInfo[] = [];
+    try {
+      list = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'audioinput');
+    } catch {
+      return;
+    }
+    setDevices(list);
+    setNeedsPermission(list.length > 0 && !list.some((d) => d.label));
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+    void load(false);
+    const onChange = () => void load(false);
+    navigator.mediaDevices?.addEventListener?.('devicechange', onChange);
+    return () => {
+      navigator.mediaDevices?.removeEventListener?.('devicechange', onChange);
+    };
+  }, [enabled, load]);
+
+  const select = useCallback((deviceId: string) => {
+    try {
+      localStorage.setItem(MIC_DEVICE_KEY, deviceId);
+    } catch {
+      /* ignore */
+    }
+    setSelectedId(deviceId);
+  }, []);
+
+  return { devices, needsPermission, selectedId, select, grant: () => void load(true) };
 }
 
 /** Status pill text + `data-state` from the capture state. */
@@ -54,6 +123,11 @@ export function ChannelCard({
   const cardStyle = { '--channel-accent': accentVar } as CSSProperties;
   const fillStyle = { transform: `scaleX(${meterScale})` } as CSSProperties;
 
+  // Room-mic lane: a real device picker. Hook is always called (gated internally).
+  const isMic = source === 'mic';
+  const mic = useMicDevices(isMic);
+  const micSelectDisabled = blocked || state.capturing;
+
   return (
     <div
       id={domId}
@@ -82,16 +156,60 @@ export function ChannelCard({
           >
             {state.capturing ? 'Stop' : 'Start'}
           </button>
-          <span className="channel-device-select channel-device-select--static" aria-hidden="true">
-            {unsupported
-              ? 'Tab audio needs Chrome / Edge'
-              : state.error
-                ? state.error
-                : source === 'display'
-                  ? 'Share a tab/window with audio'
-                  : 'System default microphone'}
-          </span>
+          {isMic ? (
+            <div style={{ display: 'flex', flex: '1 1 auto', alignItems: 'center', gap: 6, minWidth: 0 }}>
+              <select
+                className="channel-device-select"
+                style={{ flex: '1 1 auto', minWidth: 0 }}
+                value={mic.selectedId}
+                disabled={micSelectDisabled}
+                title={state.capturing ? '停止后才能切换麦克风' : '选择麦克风输入设备'}
+                onChange={(e) => mic.select(e.target.value)}
+              >
+                <option value="">系统默认麦克风</option>
+                {mic.devices.map((d, i) => (
+                  <option key={d.deviceId || `mic-${i}`} value={d.deviceId}>
+                    {d.label || `麦克风 ${i + 1}`}
+                  </option>
+                ))}
+              </select>
+              {mic.needsPermission && (
+                <button
+                  type="button"
+                  onClick={mic.grant}
+                  title="授权一次以显示麦克风名称（仅用于列出设备）"
+                  style={{
+                    flex: '0 0 auto',
+                    cursor: 'pointer',
+                    background: 'transparent',
+                    border: '1px solid var(--border)',
+                    borderRadius: 6,
+                    color: 'var(--fg-muted)',
+                    padding: '2px 7px',
+                    fontSize: 12,
+                    lineHeight: 1
+                  }}
+                >
+                  🔓 设备名
+                </button>
+              )}
+            </div>
+          ) : (
+            <span className="channel-device-select channel-device-select--static" aria-hidden="true">
+              {unsupported
+                ? 'Tab audio needs Chrome / Edge'
+                : state.error
+                  ? state.error
+                  : 'Share a tab/window with audio'}
+            </span>
+          )}
         </div>
+
+        {isMic && state.error ? (
+          <div style={{ color: 'var(--danger)', fontSize: 11, marginTop: 4, lineHeight: 1.3 }}>
+            {state.error}
+          </div>
+        ) : null}
 
         <div className="channel-meter">
           <div className="channel-meter-fill" style={fillStyle} />

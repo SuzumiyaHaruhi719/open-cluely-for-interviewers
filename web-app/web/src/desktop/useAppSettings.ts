@@ -9,7 +9,9 @@ const KEYS = {
   volcModel: 'open-cluely.volcModel',
   funasrUrl: 'open-cluely.funasrUrl',
   opacity: 'open-cluely.windowOpacity',
-  autoGenerate: 'open-cluely.autoGenerate'
+  autoGenerate: 'open-cluely.autoGenerate',
+  autoMode: 'open-cluely.autoMode',
+  autoIntervalSec: 'open-cluely.autoIntervalSec'
 } as const;
 
 export const DEFAULT_AI_MODEL = 'deepseek-v4-pro';
@@ -20,10 +22,26 @@ export const DEFAULT_FUNASR_URL = 'http://localhost:10097';
 export const DEFAULT_VOLC_RESOURCE_ID = 'volc.seedasr.sauc.duration';
 /** Autonomous question generation defaults ON (the design's auto-on default). */
 export const DEFAULT_AUTO_GENERATE = true;
+/**
+ * Autonomous follow-up trigger MODE. 'agent' = an AI monitor decides when to
+ * follow up (the design default); 'interval' = a fixed 30s cadence. Pushed to
+ * the server via SessionConfig.autoMode.
+ */
+export const DEFAULT_AUTO_MODE: AutoMode = 'agent';
+/**
+ * Default interval-mode cooldown in SECONDS (matches the legacy fixed 30s cadence).
+ * Pushed to the server as autoIntervalMs (× 1000); only used when autoMode === 'interval'.
+ */
+export const DEFAULT_AUTO_INTERVAL_SEC = 30;
+/** Floor for the interval cooldown — mirrors the server's sane minimum. */
+export const MIN_AUTO_INTERVAL_SEC = 5;
 /** Opacity is a 1..10 step (matching the desktop slider); 10 = fully opaque. */
 export const DEFAULT_OPACITY_STEP = 10;
 export const MIN_OPACITY_STEP = 1;
 export const MAX_OPACITY_STEP = 10;
+
+/** Autonomous follow-up trigger mode (mirrors SessionConfig.autoMode). */
+export type AutoMode = 'agent' | 'interval';
 
 export interface AppSettings {
   aiModel: string;
@@ -47,6 +65,13 @@ export interface AppSettings {
   opacityStep: number;
   /** Autonomous context-driven question generation (auto-on by default). */
   autoGenerate: boolean;
+  /** Autonomous follow-up trigger mode: AI monitor ('agent') vs fixed 30s ('interval'). */
+  autoMode: AutoMode;
+  /**
+   * Interval-mode cooldown in SECONDS (default 30, floored at 5). Pushed to the
+   * server as autoIntervalMs; only used when autoMode === 'interval'.
+   */
+  autoIntervalSec: number;
 }
 
 function readString(key: string, fallback: string): string {
@@ -80,6 +105,19 @@ function readOpacityStep(): number {
   return Math.min(MAX_OPACITY_STEP, Math.max(MIN_OPACITY_STEP, Math.round(value)));
 }
 
+/** Read a persisted integer, coerced to a finite value floored at `min`. */
+function readNumber(key: string, fallback: number, min: number): number {
+  if (typeof localStorage === 'undefined') {
+    return fallback;
+  }
+  const raw = localStorage.getItem(key);
+  const value = raw === null ? fallback : Number(raw);
+  if (!Number.isFinite(value)) {
+    return fallback;
+  }
+  return Math.max(min, Math.round(value));
+}
+
 function persist(key: string, value: string): void {
   try {
     localStorage.setItem(key, value);
@@ -107,6 +145,10 @@ export interface UseAppSettings {
   setOpacityStep: (value: number) => void;
   /** Toggle autonomous question generation (persisted to localStorage). */
   setAutoGenerate: (value: boolean) => void;
+  /** Set the autonomous follow-up trigger mode (persisted to localStorage). */
+  setAutoMode: (value: AutoMode) => void;
+  /** Set the interval-mode cooldown in seconds (clamped >=5, persisted to localStorage). */
+  setAutoIntervalSec: (value: number) => void;
 }
 
 const VOLC_FIELD_KEYS: Record<keyof VolcSettings, string> = {
@@ -134,7 +176,10 @@ export function useAppSettings(): UseAppSettings {
     volcModel: readString(KEYS.volcModel, ''),
     funasrUrl: readString(KEYS.funasrUrl, DEFAULT_FUNASR_URL),
     opacityStep: readOpacityStep(),
-    autoGenerate: readBool(KEYS.autoGenerate, DEFAULT_AUTO_GENERATE)
+    autoGenerate: readBool(KEYS.autoGenerate, DEFAULT_AUTO_GENERATE),
+    // Anything other than the literal 'interval' coerces to the 'agent' default.
+    autoMode: readString(KEYS.autoMode, DEFAULT_AUTO_MODE) === 'interval' ? 'interval' : 'agent',
+    autoIntervalSec: readNumber(KEYS.autoIntervalSec, DEFAULT_AUTO_INTERVAL_SEC, MIN_AUTO_INTERVAL_SEC)
   }));
 
   const setAiModel = useCallback((value: string): void => {
@@ -173,6 +218,17 @@ export function useAppSettings(): UseAppSettings {
     persist(KEYS.autoGenerate, String(value));
   }, []);
 
+  const setAutoMode = useCallback((value: AutoMode): void => {
+    setSettings((prev) => ({ ...prev, autoMode: value }));
+    persist(KEYS.autoMode, value);
+  }, []);
+
+  const setAutoIntervalSec = useCallback((value: number): void => {
+    const clamped = Math.max(MIN_AUTO_INTERVAL_SEC, Math.round(value));
+    setSettings((prev) => ({ ...prev, autoIntervalSec: clamped }));
+    persist(KEYS.autoIntervalSec, String(clamped));
+  }, []);
+
   // Apply the opacity to the shell whenever it changes. This is the one
   // appearance setting that works in a browser.
   useEffect(() => {
@@ -189,6 +245,8 @@ export function useAppSettings(): UseAppSettings {
     setVolcSettings,
     setFunasrUrl,
     setOpacityStep,
-    setAutoGenerate
+    setAutoGenerate,
+    setAutoMode,
+    setAutoIntervalSec
   };
 }

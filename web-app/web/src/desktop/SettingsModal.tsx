@@ -10,6 +10,7 @@ import {
   MAX_OPACITY_STEP,
   MIN_OPACITY_STEP,
   type AppSettings,
+  type AutoMode,
   type VolcSettings
 } from './useAppSettings';
 
@@ -25,6 +26,10 @@ interface SettingsModalProps {
   onLanguageChange: (language: OutputLanguage) => void;
   onAiModelChange: (value: string) => void;
   onAsrProviderChange: (value: string) => void;
+  /** Set the autonomous follow-up trigger mode (AI monitor vs fixed 30s). */
+  onAutoModeChange: (mode: AutoMode) => void;
+  /** Set the interval-mode cooldown in SECONDS (pushed as autoIntervalMs). */
+  onAutoIntervalChange: (sec: number) => void;
   /** Merge-patch the Doubao/Volc credential fields (revealed when provider = volc). */
   onVolcSettingsChange: (patch: Partial<VolcSettings>) => void;
   /** Set the offline FunASR streaming-SPK WS URL (used for 线下 / offline interviews). */
@@ -49,6 +54,23 @@ const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
   { value: 'paraformer', label: 'DashScope Paraformer (recommended)' },
   { value: 'xfyun', label: 'Xunfei RTASR (科大讯飞)' },
   { value: 'volc', label: 'Doubao streaming (豆包 / 火山引擎)' }
+];
+
+// Autonomous follow-up trigger mode. 'agent' lets an AI monitor decide when to
+// follow up; 'interval' fires on a fixed 30s cadence. Pushed via SessionConfig.autoMode.
+const AUTO_MODE_OPTIONS: ReadonlyArray<{ value: AutoMode; label: string }> = [
+  { value: 'agent', label: 'AI 智能追问' },
+  { value: 'interval', label: '每 30 秒自动' }
+];
+
+// Interviewer-adjustable cooldown (in SECONDS) for interval mode. Pushed as
+// SessionConfig.autoIntervalMs (× 1000); only used when autoMode === 'interval'.
+const AUTO_INTERVAL_OPTIONS: ReadonlyArray<{ value: number; label: string }> = [
+  { value: 15, label: '15 秒' },
+  { value: 30, label: '30 秒' },
+  { value: 45, label: '45 秒' },
+  { value: 60, label: '60 秒' },
+  { value: 90, label: '90 秒' }
 ];
 
 // Doubao streaming ASR resource ids — the "model" the user picks. 2.0 (seedasr)
@@ -86,6 +108,8 @@ export function SettingsModal({
   onLanguageChange,
   onAiModelChange,
   onAsrProviderChange,
+  onAutoModeChange,
+  onAutoIntervalChange,
   onVolcSettingsChange,
   onFunasrUrlChange,
   onOpacityChange,
@@ -429,6 +453,48 @@ export function SettingsModal({
               </select>
               <p className="settings-field__desc">
                 最终追问输出的语言。技术名词、工具/产品名、缩写与候选人原话引用保持原样。
+              </p>
+            </div>
+            <div className="settings-field">
+              <label className="settings-field__label" htmlFor="setting-auto-mode">
+                自动追问模式
+              </label>
+              <select
+                id="setting-auto-mode"
+                className="settings-select"
+                value={settings.autoMode}
+                onChange={(e) => onAutoModeChange(e.target.value as AutoMode)}
+              >
+                {AUTO_MODE_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <p className="settings-field__desc">
+                <code>AI 智能追问</code> 由 AI 监控决定何时追问；<code>每 30 秒自动</code>
+                固定每 30 秒触发一次，不计生成耗时。
+              </p>
+            </div>
+            <div className="settings-field">
+              <label className="settings-field__label" htmlFor="setting-auto-interval">
+                自动追问间隔
+              </label>
+              <select
+                id="setting-auto-interval"
+                className="settings-select"
+                value={settings.autoIntervalSec}
+                disabled={settings.autoMode !== 'interval'}
+                onChange={(e) => onAutoIntervalChange(Number(e.target.value))}
+              >
+                {AUTO_INTERVAL_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <p className="settings-field__desc">
+                仅在<code>每 N 秒自动</code>模式下生效：每隔所选秒数固定触发一次自动追问（不计生成耗时）。
               </p>
             </div>
           </section>

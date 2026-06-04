@@ -113,6 +113,8 @@ export interface AsrRelay {
    * stamps an integer speakerId on each final.
    */
   setDiarize(enabled: boolean): void;
+  /** True while any audio source is actively capturing (used to gate auto-fire). */
+  isCapturing(): boolean;
   dispose(): void;
 }
 
@@ -310,12 +312,17 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     for (const source of SOURCES) stopSource(source);
   }
 
+  function isCapturing(): boolean {
+    return SOURCES.some((source) => sessions[source] !== null);
+  }
+
   return {
     handleAudio,
     handleAudioControl,
     setAutoAnalyzeDisplay,
     setAsrProvider,
     setDiarize,
+    isCapturing,
     dispose
   };
 }

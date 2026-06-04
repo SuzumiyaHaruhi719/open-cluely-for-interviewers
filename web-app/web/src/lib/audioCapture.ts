@@ -109,8 +109,18 @@ async function acquireStream(source: AudioSource): Promise<MediaStream> {
   if (!supportsMic()) {
     throw new AudioCaptureError('unsupported', 'Microphone capture is not supported here.');
   }
+  // Honour a mic chosen in the Room-mic device picker; '' / unset = OS default.
+  let micDeviceId = '';
   try {
-    return await navigator.mediaDevices.getUserMedia({ audio: true });
+    micDeviceId = localStorage.getItem('mic.inputDeviceId') ?? '';
+  } catch {
+    /* localStorage unavailable — use default */
+  }
+  const audioConstraints: MediaStreamConstraints['audio'] = micDeviceId
+    ? { deviceId: { exact: micDeviceId } }
+    : true;
+  try {
+    return await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
   } catch (err) {
     throw classifyGetMediaError(err);
   }
