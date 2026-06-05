@@ -1,21 +1,14 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import {
-  ApiError,
-  appendSessionMessage,
   assistantAsk,
   assistantInsights,
   assistantNotes,
-  createSession,
-  deleteSession,
   extractResume,
-  fetchSession,
-  fetchSessions,
   generatePipeline,
   getPipeline,
   listPipelines,
   resumeChat,
   savePipeline,
-  updateSession,
   type Pipeline
 } from './api';
 
@@ -60,75 +53,6 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
-});
-
-describe('session api wrappers', () => {
-  test('fetchSessions GETs /api/sessions and returns the list', async () => {
-    stubFetch(() => jsonResponse({ sessions: [{ id: 'a', title: 'A' }] }));
-
-    const res = await fetchSessions();
-
-    expect(calls[0]).toMatchObject({ url: '/api/sessions', method: 'GET' });
-    expect(res.sessions).toHaveLength(1);
-  });
-
-  test('createSession POSTs the title + interviewType body', async () => {
-    stubFetch((call) => jsonResponse({ session: { id: 'x', title: call.body && (call.body as { title: string }).title } }));
-
-    const res = await createSession({ title: 'Backend', interviewType: 'online' });
-
-    expect(calls[0]).toMatchObject({
-      url: '/api/sessions',
-      method: 'POST',
-      body: { title: 'Backend', interviewType: 'online' }
-    });
-    expect(res.session.id).toBe('x');
-  });
-
-  test('fetchSession encodes the id in the path', async () => {
-    stubFetch(() => jsonResponse({ session: { id: 'a b', messages: [] } }));
-
-    await fetchSession('a b');
-
-    expect(calls[0].url).toBe('/api/sessions/a%20b');
-  });
-
-  test('updateSession PATCHes a JD/résumé patch', async () => {
-    stubFetch(() => jsonResponse({ session: { id: 'a' } }));
-
-    await updateSession('a', { jobDescription: 'JD', resumeText: 'R' });
-
-    expect(calls[0]).toMatchObject({
-      url: '/api/sessions/a',
-      method: 'PATCH',
-      body: { jobDescription: 'JD', resumeText: 'R' }
-    });
-  });
-
-  test('deleteSession DELETEs and appendSessionMessage POSTs to /messages', async () => {
-    stubFetch((call) =>
-      call.method === 'DELETE'
-        ? jsonResponse({ ok: true })
-        : jsonResponse({ ok: true, messageCount: 3 })
-    );
-
-    await deleteSession('a');
-    const appended = await appendSessionMessage('a', { role: 'candidate', text: 'hi' });
-
-    expect(calls[0]).toMatchObject({ url: '/api/sessions/a', method: 'DELETE' });
-    expect(calls[1]).toMatchObject({
-      url: '/api/sessions/a/messages',
-      method: 'POST',
-      body: { role: 'candidate', text: 'hi' }
-    });
-    expect(appended.messageCount).toBe(3);
-  });
-
-  test('throws ApiError on a non-2xx response', async () => {
-    stubFetch(() => jsonResponse({}, false, 500));
-
-    await expect(fetchSessions()).rejects.toBeInstanceOf(ApiError);
-  });
 });
 
 describe('resume + assistant api wrappers', () => {

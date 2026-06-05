@@ -5,7 +5,7 @@ import { QuestionBank } from '../views/QuestionBank';
 import { TitleBar } from './TitleBar';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
-import { TranscriptStream, type TranscriptMessage, type TranscriptRole } from './TranscriptStream';
+import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
 import { Composer } from './Composer';
 import { RightRail } from './RightRail';
 import { SettingsModal } from './SettingsModal';
@@ -13,7 +13,6 @@ import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from
 import { ResultsPanel } from './ResultsPanel';
 import { PipelineStudio } from './studio/PipelineStudio';
 import { useRailCollapsed } from './useRailCollapsed';
-import { useSessions } from './useSessions';
 import { useAssistantPanel } from './useAssistantPanel';
 import { useAppSettings, type VolcSettings } from './useAppSettings';
 import type { AsrProvider } from '@open-cluely/contract';
@@ -44,43 +43,17 @@ const INITIAL_CONFIG: ConfigState = {
   interviewType: 'online'
 };
 
-/** Coerce a persisted session's interviewType string onto the union (default online). */
-function asInterviewType(value: string): InterviewType {
-  return value === 'offline' ? 'offline' : 'online';
-}
-
-/**
- * Map a persisted session message role onto a transcript-stream lane. Persisted
- * roles are 'candidate' | 'interviewer' | 'ai' | 'note' | 'user' | 'assistant';
- * 'user' → candidate, 'assistant'/'ai' → ai, 'note' → note (manual context line).
- */
-function mapMessageRole(role: string): TranscriptRole | null {
-  switch (role) {
-    case 'candidate':
-    case 'user':
-      return 'candidate';
-    case 'interviewer':
-      return 'interviewer';
-    case 'ai':
-    case 'assistant':
-      return 'ai';
-    case 'note':
-      return 'note';
-    default:
-      // Any unknown role has no lane — skip it.
-      return null;
-  }
-}
-
 /**
  * The re-skinned app shell. Reproduces the desktop `renderer.html` structure
  * (`.app-shell` > `.titlebar` + `.layout`(`.sidebar`,`.main`,`.right-rail`) +
  * the settings modal) and wires the existing `useCopilotSocket` hook into it.
  *
- * Wave B additions wired here: session history (`useSessions`) with the
- * interview-type picker + hydration, the résumé upload/chat rail, the topbar
- * assistant actions (Ask AI / notes / insights → results panel), and the
- * functional settings (opacity, mic enumerate, model/provider persistence).
+ * Interviews are EPHEMERAL: nothing persists across reload. On mount the
+ * interview-type picker opens for a fresh in-memory interview; "New interview"
+ * resets all live state and re-opens the picker. Also wired here: the résumé
+ * upload/chat rail, the topbar assistant actions (Ask AI / notes / insights →
+ * results panel), and the functional settings (opacity, mic enumerate,
+ * model/provider persistence).
  */
 export function Shell() {
   const socket = useCopilotSocket();
@@ -113,6 +86,8 @@ export function Shell() {
   const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
+  // Topbar title for the current in-memory interview (sample name, else default).
+  const [interviewTitle, setInterviewTitle] = useState('New interview');
   const [studioOpen, setStudioOpen] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [railCollapsed, toggleRail] = useRailCollapsed();
@@ -121,13 +96,8 @@ export function Shell() {
   const [pickedHint, setPickedHint] = useState<string | null>(null);
   const pickedHintTimerRef = useRef<number | null>(null);
 
-  const sessions = useSessions();
   const assistant = useAssistantPanel();
   const appSettings = useAppSettings();
-  // Guards the one-time "restore the persisted active session on mount" effect.
-  // Any user session action (new interview / explicit select) sets it true so the
-  // auto-restore can't clobber a freshly-seeded or just-selected conversation.
-  const hydratedRef = useRef(false);
 
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
@@ -162,70 +132,6 @@ export function Shell() {
       setAnswer(next);
     }
   }, [offline, transcripts.display.finalText, transcripts.mic.finalText, speakerSegments]);
-
-  // Persist newly-committed candidate finals to the active session.
-  const persistedDisplayRef = useRef('');
-  useEffect(() => {
-    const displayFinal = transcripts.display.finalText;
-    const activeId = sessions.activeId;
-    if (!activeId || !displayFinal || displayFinal === persistedDisplayRef.current) {
-      return;
-    }
-    // Append only the delta committed since the last persisted final.
-    const prior = persistedDisplayRef.current;
-    const delta = displayFinal.startsWith(prior)
-      ? displayFinal.slice(prior.length).trim()
-      : displayFinal;
-    persistedDisplayRef.current = displayFinal;
-    if (delta) {
-      void sessions.appendMessage(activeId, 'candidate', delta);
-    }
-  }, [transcripts.display.finalText, sessions]);
-
-  // Persist each AI follow-up question to the active session.
-  const persistedResultRef = useRef<string | null>(null);
-  useEffect(() => {
-    const activeId = sessions.activeId;
-    if (!activeId || !lastResult) {
-      return;
-    }
-    if (lastResult.requestId === persistedResultRef.current) {
-      return;
-    }
-    persistedResultRef.current = lastResult.requestId;
-    const question = lastResult.output.primary_question;
-    if (question) {
-      void sessions.appendMessage(activeId, 'ai', question);
-    }
-  }, [lastResult, sessions]);
-
-  // Persist newly-committed offline speaker segments to the active session, so an
-  // offline (single-mic) chat's transcript survives a switch/refresh the same way
-  // the online candidate lane does. Keyed by segment id; only the grown delta is
-  // appended (segments coalesce consecutive same-speaker finals), tagged with the
-  // segment's interviewer/candidate role. Online chats have no segments → no-op.
-  const persistedSegRef = useRef<Map<number, string>>(new Map());
-  useEffect(() => {
-    const activeId = sessions.activeId;
-    if (!activeId || speakerSegments.length === 0) {
-      return;
-    }
-    for (const seg of speakerSegments) {
-      const prior = persistedSegRef.current.get(seg.id) ?? '';
-      if (seg.text === prior) {
-        continue;
-      }
-      const delta = seg.text.startsWith(prior) ? seg.text.slice(prior.length).trim() : seg.text;
-      persistedSegRef.current.set(seg.id, seg.text);
-      if (delta) {
-        void sessions.appendMessage(
-          activeId,
-          seg.role === 'interviewer' ? 'interviewer' : 'candidate',
-          delta
-        );
-      }
-    }
-  }, [speakerSegments, sessions]);
 
   // Session timer — starts counting from the first time any channel goes live.
   const [startedAt, setStartedAt] = useState<number | null>(null);
@@ -387,22 +293,16 @@ export function Shell() {
     (jobDescription: string): void => {
       setConfig((prev) => ({ ...prev, jobDescription }));
       pushConfig({ jobDescription });
-      if (sessions.activeId) {
-        void sessions.patch(sessions.activeId, { jobDescription });
-      }
     },
-    [pushConfig, sessions]
+    [pushConfig]
   );
 
   const onResumeTextChange = useCallback(
     (resumeText: string): void => {
       setConfig((prev) => ({ ...prev, resumeText }));
       pushConfig({ resumeText });
-      if (sessions.activeId) {
-        void sessions.patch(sessions.activeId, { resumeText });
-      }
     },
-    [pushConfig, sessions]
+    [pushConfig]
   );
 
   // ── Re-push the FULL config on every new server session (connect + reconnect) ─
@@ -466,19 +366,14 @@ export function Shell() {
   // "Add a note to the context": (1) feed the manual analyze buffer (Generate Q
   // button), (2) send it to the server so the AUTONOMOUS trigger's candidate context
   // includes it too — otherwise auto-generation never sees a manual note, (3) show it
-  // in the stream as a Note line so the interviewer sees it landed, and persist it so
-  // it survives a session switch/refresh.
+  // in the stream as a Note line so the interviewer sees it landed.
   const onAddNote = useCallback(
     (note: string): void => {
       setAnswer((prev) => (prev.trim().length === 0 ? note : `${prev.trim()} ${note}`));
       addContextNote(note);
       setTranscriptMessages((prev) => [...prev, { role: 'note', text: note }]);
-      const activeId = sessions.activeId;
-      if (activeId) {
-        void sessions.appendMessage(activeId, 'note', note);
-      }
     },
-    [addContextNote, sessions]
+    [addContextNote]
   );
 
   const onClearSession = useCallback((): void => {
@@ -520,31 +415,28 @@ export function Shell() {
     void assistant.insights(transcriptText);
   }, [assistant, transcriptText]);
 
-  // ── Session lifecycle ──────────────────────────────────────────────────────
+  // ── Interview lifecycle (ephemeral — nothing persists across reload) ─────────
+  // "New interview": reset all in-memory state and re-open the type picker.
   const onNewInterview = useCallback((): void => {
+    onClearSession();
+    setInterviewTitle('New interview');
     setTypePickerOpen(true);
-  }, []);
+  }, [onClearSession]);
 
+  // Picking a type starts a fresh in-memory interview: reset live state, apply the
+  // online/offline choice (drives ASR routing), seed the sample conversation when
+  // chosen, and push the config to the server. No session is created or persisted.
   const onPickInterviewType = useCallback(
-    async (choice: InterviewTypeChoice): Promise<void> => {
+    (choice: InterviewTypeChoice): void => {
       setTypePickerOpen(false);
-      hydratedRef.current = true; // user-created session — skip the mount auto-restore
       const sample = choice.sample;
-      const title = sample ? sample.name : 'New interview';
-      const id = await sessions.create({ title, interviewType: choice.interviewType });
+      setInterviewTitle(sample ? sample.name : 'New interview');
 
-      // Reset the live buffers for the fresh session.
+      // Reset the live buffers for the fresh interview.
       onClearSession();
-      // Tell the server to ABANDON the old chat's accumulated transcript AND any
-      // in-flight auto generation (chats share ONE socket + ONE server trigger),
-      // so the new chat never shows the previous chat's follow-up or progress bar.
-      pushConfig({ resetGeneration: true });
-      persistedDisplayRef.current = '';
-      persistedResultRef.current = null;
-      persistedSegRef.current = new Map();
 
-      // Seed the shell from the sample (or clear) and push to the server + session.
-      // interviewType drives offline (FunASR single-mic) vs online routing.
+      // Apply the picked type + sample JD/résumé. interviewType drives offline
+      // (FunASR single-mic) vs online routing.
       const jd = sample ? sample.jd : '';
       const resumeText = sample ? sample.resume : '';
       setConfig((prev) => ({
@@ -554,9 +446,7 @@ export function Shell() {
         interviewType: choice.interviewType
       }));
       pushConfig({ jobDescription: jd, resumeText });
-      if (id) {
-        void sessions.patch(id, { jobDescription: jd, resumeText });
-      }
+
       if (sample) {
         // Render the whole sample conversation as chat lines…
         setTranscriptMessages(
@@ -572,95 +462,17 @@ export function Shell() {
           .reverse()
           .find((turn) => turn.speaker === 'candidate');
         setAnswer(lastCandidate ? lastCandidate.text : sampleTranscriptText(sample));
-        // Persist the seeded turns to the session so they survive a page refresh
-        // (rehydrate-on-mount replays session.messages). Sequential awaits avoid
-        // racing the server's read-modify-write message store.
-        if (id) {
-          for (const turn of sample.turns) {
-            await sessions.appendMessage(
-              id,
-              turn.speaker === 'interviewer' ? 'interviewer' : 'candidate',
-              turn.text
-            );
-          }
-        }
       }
     },
-    [sessions, onClearSession, pushConfig]
+    [onClearSession, pushConfig]
   );
 
-  const onSelectSession = useCallback(
-    async (id: string): Promise<void> => {
-      hydratedRef.current = true;
-      sessions.select(id);
-      const detail = await sessions.load(id);
-      if (!detail) {
-        return;
-      }
-      // Hydrate the shell: JD + résumé to the server, messages into the buffer.
-      // interviewType comes back on the detail — restore offline/online routing.
-      setConfig((prev) => ({
-        ...prev,
-        jobDescription: detail.jobDescription,
-        resumeText: detail.resumeText,
-        interviewType: asInterviewType(detail.interviewType)
-      }));
-      pushConfig({ jobDescription: detail.jobDescription, resumeText: detail.resumeText });
-
-      // Reset live buffers (also clears seeded messages), then hydrate the chat
-      // stream from the saved messages and replay the last candidate message into
-      // the analyze buffer so Generate Q has something to work with.
-      onClearSession();
-      // Switching chats: abandon the old chat's server-side accumulation + any
-      // in-flight auto generation so its follow-up/progress can't land here.
-      pushConfig({ resetGeneration: true });
-      persistedDisplayRef.current = '';
-      persistedResultRef.current = null;
-      persistedSegRef.current = new Map();
-      const replayed: TranscriptMessage[] = [];
-      for (const m of detail.messages) {
-        const role = mapMessageRole(m.role);
-        if (!role) continue;
-        // Coalesce consecutive SAME-speaker messages into one line, mirroring the
-        // live appendSegment coalescing — otherwise a turn saved as several finals
-        // reloads as several one-line boxes instead of the single merged bubble.
-        const last = replayed[replayed.length - 1];
-        if (last && last.role === role && (role === 'candidate' || role === 'interviewer')) {
-          last.text = last.text ? `${last.text} ${m.text}` : m.text;
-        } else {
-          replayed.push({ role, text: m.text });
-        }
-      }
-      setTranscriptMessages(replayed);
-      const lastCandidate = [...detail.messages]
-        .reverse()
-        .find((m) => m.role === 'candidate' || m.role === 'user');
-      if (lastCandidate) {
-        setAnswer(lastCandidate.text);
-      }
-    },
-    [sessions, pushConfig, onClearSession]
-  );
-
-  // ── Rehydrate the active session on mount (survive a page refresh) ───────────
-  // useSessions persists the active id to localStorage, but the transcript lives
-  // in memory and is lost on reload. Once on mount, load the persisted session and
-  // replay its saved messages into the stream so the conversation isn't lost.
+  // On mount: open the type picker for a fresh interview (nothing to restore).
   useEffect(() => {
-    if (hydratedRef.current || !sessions.activeId) {
-      return;
-    }
-    hydratedRef.current = true;
-    void onSelectSession(sessions.activeId);
-  }, [sessions.activeId, onSelectSession]);
+    setTypePickerOpen(true);
+  }, []);
 
-  const sessionTitle = useMemo(() => {
-    if (view === 'bank') {
-      return 'Question bank';
-    }
-    const active = sessions.sessions.find((s) => s.id === sessions.activeId);
-    return active?.title || 'New interview';
-  }, [view, sessions.sessions, sessions.activeId]);
+  const sessionTitle = view === 'bank' ? 'Question bank' : interviewTitle;
 
   return (
     <div id="app" className="app-shell">
@@ -672,11 +484,6 @@ export function Shell() {
           onSelectView={setView}
           onNewInterview={onNewInterview}
           onOpenSettings={() => setSettingsOpen(true)}
-          sessions={sessions.sessions}
-          activeId={sessions.activeId}
-          onSelectSession={(id) => void onSelectSession(id)}
-          onRenameSession={(id, title) => void sessions.rename(id, title)}
-          onDeleteSession={(id) => void sessions.remove(id)}
         />
 
         <main id="main" className="main">
@@ -745,7 +552,6 @@ export function Shell() {
           onJobDescriptionChange={onJobDescriptionChange}
           onResumeTextChange={onResumeTextChange}
           hasSessionContext={false}
-          resumeChatResetKey={sessions.activeId}
         />
       </div>
 

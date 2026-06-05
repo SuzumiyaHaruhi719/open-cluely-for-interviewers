@@ -145,10 +145,6 @@ export function useCopilotSocket(): CopilotSocket {
   const reconnectTimerRef = useRef<number | null>(null);
   const attemptsRef = useRef(0);
   const activeRequestRef = useRef<string | null>(null);
-  // requestIds of generations abandoned by a chat reset — their late
-  // progress/result/error belong to the chat we left and must be ignored so an
-  // old chat's follow-up never lands in the fresh one.
-  const discardedRequestsRef = useRef<Set<string>>(new Set());
   const isMountedRef = useRef(true);
   // Live capture handles + per-source frame sequence counters.
   const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
@@ -172,7 +168,6 @@ export function useCopilotSocket(): CopilotSocket {
         setSessionId(message.sessionId);
         break;
       case 'progress':
-        if (discardedRequestsRef.current.has(message.requestId)) break;
         // Adopt a server-initiated (autonomous) request: when nothing is in
         // flight, the first progress event's requestId becomes the active one so
         // the auto follow-up shows the same progress bar a manual analyze does.
@@ -192,12 +187,6 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       case 'result':
-        // A discarded request's straggler final won't come again — drop the id
-        // so the set can't grow unbounded across many chat resets.
-        if (discardedRequestsRef.current.has(message.requestId)) {
-          discardedRequestsRef.current.delete(message.requestId);
-          break;
-        }
         // ANY result means the in-flight generation finished — ALWAYS clear the
         // progress UI and show it. Previously this cleared isAnalyzing only when
         // the result's requestId matched the adopted one; on any mismatch (the
@@ -217,11 +206,6 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       case 'error':
-        // Terminal straggler for a discarded request — drop the id (bounded set).
-        if (message.requestId && discardedRequestsRef.current.has(message.requestId)) {
-          discardedRequestsRef.current.delete(message.requestId);
-          break;
-        }
         if (!message.requestId || message.requestId === activeRequestRef.current) {
           activeRequestRef.current = null;
           setIsAnalyzing(false);
@@ -442,21 +426,11 @@ export function useCopilotSocket(): CopilotSocket {
     segSeqRef.current = 0;
   }, []);
 
-  // Reset the live conversation to a clean slate for a NEW interview/session so
-  // the previous chat's transcript + follow-up never leak in: lanes, last result,
-  // progress + tokens, in-flight flag, error.
+  // Reset the live conversation to a clean slate for a NEW interview so the
+  // previous interview's transcript + follow-up never leak in: lanes, last result,
+  // progress + tokens, in-flight flag, error. Any in-flight generation is simply
+  // abandoned — its late progress/result has nowhere to surface once cleared.
   const resetTranscripts = useCallback((): void => {
-    // Abandon any in-flight generation: its late progress/result belongs to the
-    // chat we're leaving and must not surface in the fresh one. Prune the backlog
-    // BEFORE adding the current id so the just-abandoned request is ALWAYS kept
-    // (terminal stragglers self-delete; a 64-deep backlog of never-settling
-    // requests is already pathological, so clearing the older ids is safe).
-    if (discardedRequestsRef.current.size > 64) {
-      discardedRequestsRef.current.clear();
-    }
-    if (activeRequestRef.current) {
-      discardedRequestsRef.current.add(activeRequestRef.current);
-    }
     setTranscripts({ mic: { ...EMPTY_LANE }, display: { ...EMPTY_LANE } });
     setLastResult(null);
     setLastAutoFireAt(null);

@@ -21,25 +21,14 @@ let fetchCalls: FetchCall[];
 beforeEach(() => {
   restore = installMockWebSocket();
   fetchCalls = [];
-  // The shell loads the session list on mount and may POST sessions/messages;
-  // route those to in-memory fakes so tests don't hit the network.
+  // Interviews are ephemeral — the shell makes NO session HTTP calls. Route the
+  // remaining endpoints (assistant / résumé / pipelines) to in-memory fakes.
   const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof input === 'string' ? input : input.toString();
     const method = init?.method ?? 'GET';
     const body = init?.body ? JSON.parse(String(init.body)) : undefined;
     fetchCalls.push({ url, method, body });
 
-    if (url.endsWith('/api/sessions') && method === 'POST') {
-      return Promise.resolve(
-        jsonResponse({ session: { id: 'new-1', title: body?.title ?? 'New interview' } })
-      );
-    }
-    if (url.endsWith('/api/sessions')) {
-      return Promise.resolve(jsonResponse({ sessions: [] }));
-    }
-    if (url.includes('/api/sessions/')) {
-      return Promise.resolve(jsonResponse({ ok: true, messageCount: 1 }));
-    }
     if (url.includes('/api/assistant/')) {
       return Promise.resolve(jsonResponse({ reply: 'Assistant reply.' }));
     }
@@ -100,10 +89,21 @@ function lastConfig(ws: MockWebSocket): Record<string, unknown> | null {
   return null;
 }
 
-/** Let the on-mount `useSessions` fetch resolve so state settles inside act(). */
+/**
+ * The shell auto-opens the interview-type picker on mount (ephemeral: a fresh
+ * in-memory interview every open). Dismiss it so tests run against the default
+ * online interview, mirroring the pre-ephemeral "no active session" baseline.
+ */
 async function flushMount(): Promise<void> {
   await waitFor(() => {
-    expect(fetchCalls.some((c) => c.url.endsWith('/api/sessions'))).toBe(true);
+    const modal = document.getElementById('interview-type-modal');
+    expect(modal?.classList.contains('hidden')).toBe(false);
+  });
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+  await waitFor(() => {
+    expect(
+      document.getElementById('interview-type-modal')?.classList.contains('hidden')
+    ).toBe(true);
   });
 }
 
@@ -290,7 +290,7 @@ describe('Shell', () => {
     expect(analyzeMsg?.candidateAnswer).toBe('What was the eviction policy?');
   });
 
-  test('New interview opens the type picker and a card creates a session', async () => {
+  test('New interview opens the type picker and a card starts a fresh in-memory interview (no session POST)', async () => {
     render(<Shell />);
     await flushMount();
 
@@ -301,16 +301,19 @@ describe('Shell', () => {
     expect(modal).toBeInTheDocument();
     expect(modal?.classList.contains('hidden')).toBe(false);
 
-    // Picking the online card POSTs a new session.
+    // Picking the online card closes the picker and starts a fresh interview.
     fireEvent.click(screen.getByText('线上面试 / Online').closest('button')!);
-
     await waitFor(() => {
-      expect(
-        fetchCalls.some((c) => c.url.endsWith('/api/sessions') && c.method === 'POST')
-      ).toBe(true);
+      expect(modal?.classList.contains('hidden')).toBe(true);
     });
-    const post = fetchCalls.find((c) => c.url.endsWith('/api/sessions') && c.method === 'POST');
-    expect(post?.body).toMatchObject({ interviewType: 'online' });
+
+    // Ephemeral: NO session is persisted. Opening the socket re-pushes the full
+    // config for the online interview (diarize off — dual-lane routing).
+    const ws = openSocket();
+    await waitFor(() => {
+      expect(lastConfig(ws)).toMatchObject({ diarize: false });
+    });
+    expect(fetchCalls.some((c) => c.url.includes('/api/sessions'))).toBe(false);
   });
 
   test('Ask AI calls the assistant endpoint and shows the reply in the results panel', async () => {
@@ -380,18 +383,18 @@ describe('Shell', () => {
     render(<Shell />);
     await flushMount();
 
-    // Create an OFFLINE interview via the type picker (offline card).
+    // Create an OFFLINE interview via the type picker (offline card). Ephemeral:
+    // no session is persisted — the choice only flips the in-memory routing.
     fireEvent.click(screen.getByRole('button', { name: /New interview/ }));
     fireEvent.click(
       document.querySelector<HTMLButtonElement>('[data-interview-type="offline"]')!
     );
     await waitFor(() => {
       expect(
-        fetchCalls.some((c) => c.url.endsWith('/api/sessions') && c.method === 'POST')
+        document.getElementById('interview-type-modal')?.classList.contains('hidden')
       ).toBe(true);
     });
-    const post = fetchCalls.find((c) => c.url.endsWith('/api/sessions') && c.method === 'POST');
-    expect(post?.body).toMatchObject({ interviewType: 'offline' });
+    expect(fetchCalls.some((c) => c.url.includes('/api/sessions'))).toBe(false);
 
     // Now open the socket: the new sessionId triggers the FULL-config re-push,
     // which for an offline interview keeps the text engine (paraformer here) and
