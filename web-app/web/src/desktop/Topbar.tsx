@@ -2,7 +2,54 @@ import { useEffect, useRef, useState } from 'react';
 import type { InterviewerMode } from '@open-cluely/contract';
 import { MODE_META, recMeta } from './helpers';
 import type { SocketStatus } from '../lib/useCopilotSocket';
+import { useTheme } from '../lib/useTheme';
 import { CameraIcon, KebabIcon } from './icons';
+
+/** Sun mark — shown in DARK mode (click switches to light). */
+function SunIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <line x1="12" y1="2" x2="12" y2="4" />
+      <line x1="12" y1="20" x2="12" y2="22" />
+      <line x1="4.93" y1="4.93" x2="6.34" y2="6.34" />
+      <line x1="17.66" y1="17.66" x2="19.07" y2="19.07" />
+      <line x1="2" y1="12" x2="4" y2="12" />
+      <line x1="20" y1="12" x2="22" y2="12" />
+      <line x1="4.93" y1="19.07" x2="6.34" y2="17.66" />
+      <line x1="17.66" y1="6.34" x2="19.07" y2="4.93" />
+    </svg>
+  );
+}
+
+/** Moon mark — shown in LIGHT mode (click switches to dark). */
+function MoonIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
 
 /** ASR engine pill label + `data-asr` attribute (CSS colours each provider). */
 const ASR_META: Record<string, { label: string; attr: string }> = {
@@ -71,6 +118,7 @@ export function Topbar({
 }: TopbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const { theme, toggle: toggleTheme } = useTheme();
   const modeMeta = MODE_META[mode];
   const rec = recMeta(status, capturing);
   const asrMeta = ASR_META[asrProvider] ?? ASR_META.paraformer;
@@ -167,6 +215,15 @@ export function Topbar({
       </div>
 
       <div className="topbar__actions action-buttons">
+        <button
+          className="glp-theme-toggle action-btn icon-btn"
+          type="button"
+          aria-label={theme === 'dark' ? '切换主题 / Toggle theme (switch to light)' : '切换主题 / Toggle theme (switch to dark)'}
+          title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          onClick={toggleTheme}
+        >
+          {theme === 'dark' ? <SunIcon size={15} /> : <MoonIcon size={15} />}
+        </button>
         <button
           id="screenshot-btn"
           className="action-btn icon-btn"

@@ -6,8 +6,9 @@
  *   2. The Question Bank view, restyled with the desktop tokens and fully
  *      namespaced under `.main__view-bank` so its generic class names
  *      (.btn, .q-row, .filter-item, .empty, …) never leak into the shell.
- * Tokens come from the copied styles.css :root. Nothing here redefines them
- * globally — the QB scope remaps a few aliases locally.
+ * Tokens come from the GLP design system (desktop-ui/theme.css). Nothing here
+ * redefines them globally — the QB scope remaps a few semantic aliases locally
+ * onto the GLP tokens so the ported markup reads as part of the same system.
  * ==========================================================================*/
 
 /* ── Shell layout fix ───────────────────────────────────────────────────────
@@ -86,28 +87,28 @@ button.history-row {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 /* ── Compact AI history line (.chat-message.lane-ai, NOT the question card) ───
- *    Seeded/loaded conversations replay AI follow-ups as a single indigo line
- *    rather than the full `.is-question-card`. chat.css only sets the indigo
- *    `--lane-accent` on `.lane-ai`; the rail + tinted header rules there are
- *    scoped to candidate/interviewer only. Mirror that lane treatment here so
- *    the replayed AI line reads as indigo, consistent with the live card. ──── */
+ *    Seeded/loaded conversations replay AI follow-ups as a single brand-green
+ *    line rather than the full `.is-question-card`. chat.css only sets the
+ *    brand `--lane-accent` on `.lane-ai`; the rail + tinted header rules there
+ *    are scoped to candidate/interviewer only. Mirror that lane treatment here
+ *    so the replayed AI line reads as brand green, consistent with the live
+ *    card. Flat GLP surface — no top sheen. ─────────────────────────────────── */
 .chat-message.lane-ai:not(.is-question-card) {
-  border-left: 2px solid var(--lane-accent, var(--ai));
+  border-left: 2px solid var(--lane-accent, var(--lane-ai));
   background: linear-gradient(
     to right,
-    color-mix(in srgb, var(--lane-accent, transparent) 7%, transparent) 0%,
+    color-mix(in srgb, var(--lane-accent, transparent) 7%, var(--surface-subtle)) 0%,
     transparent 38%
   );
-  box-shadow: var(--top-highlight);
 }
 
 .chat-message.lane-ai:not(.is-question-card) .message-label,
 .chat-message.lane-ai:not(.is-question-card) .message-icon {
-  color: var(--lane-accent, var(--ai));
+  color: var(--lane-accent, var(--text-brand));
   opacity: 1;
 }
 
@@ -132,27 +133,28 @@ button.history-row {
   font-weight: 600;
   letter-spacing: 0.04em;
   padding: 1px 7px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--lane-accent, var(--fg-subtle)) 30%, var(--hairline));
-  color: color-mix(in srgb, var(--lane-accent, var(--fg-muted)) 70%, var(--fg-muted));
-  background: transparent;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  background: var(--surface-subtle);
   opacity: 0.66;
   transition:
-    opacity var(--dur-2, 160ms) var(--ease, ease),
-    background var(--dur-2, 160ms) var(--ease, ease),
-    border-color var(--dur-2, 160ms) var(--ease, ease);
+    opacity var(--transition-base),
+    background var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base);
 }
 .speaker-role-toggle:hover {
   opacity: 1;
-  color: var(--lane-accent, var(--fg));
-  background: color-mix(in srgb, var(--lane-accent, transparent) 10%, transparent);
-  border-color: color-mix(in srgb, var(--lane-accent, var(--hairline-strong)) 45%, var(--hairline));
+  color: var(--text-primary);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
 }
 .speaker-role-toggle:focus-visible {
   outline: none;
   opacity: 1;
-  border-color: var(--ring, var(--lane-accent, var(--ai)));
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--lane-accent, var(--ai)) 35%, transparent);
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 /* Two-way speaker assign (iFlytek manual labelling): button group + active state.
@@ -168,26 +170,27 @@ button.history-row {
 }
 .speaker-role-toggle.is-active {
   opacity: 1;
-  background: var(--lane-accent, var(--ai));
-  color: var(--bg, #0b0b0f);
-  border-color: var(--lane-accent, var(--ai));
+  background: var(--brand-500);
+  color: var(--text-inverse);
+  border-color: var(--brand-500);
   font-weight: 600;
 }
 /* 'unknown' speaker lane (not yet labeled) — neutral grey accent. */
 .chat-message.lane-unknown {
-  --lane-accent: var(--fg-muted, #8b8b94);
+  --lane-accent: var(--lane-unknown);
 }
 .chat-message.lane-unknown .message-label,
 .chat-message.lane-unknown .message-icon {
-  color: var(--lane-accent, #8b8b94);
+  color: var(--lane-accent, var(--text-tertiary));
   opacity: 1;
 }
 
 /* ── Auto-generation toggle pill (topbar) ───────────────────────────────────
- *    A clickable .mode-indicator-shaped button. ON = AI-indigo accent + glow
+ *    A clickable .mode-indicator-shaped button. ON = brand-green accent + solid
  *    dot (reads "armed"); OFF = muted/dim like an idle pill. Namespaced under
  *    .auto-indicator so it never collides with the mode/asr pill colour rules
- *    (those key off data-mode / data-asr; this keys off data-auto). ────────── */
+ *    (those key off data-mode / data-asr; this keys off data-auto). Flat GLP —
+ *    no coloured glow on the dot. ──────────────────────────────────────────── */
 .auto-indicator {
   cursor: pointer;
   appearance: none;
@@ -200,26 +203,25 @@ button.history-row {
 }
 
 .auto-indicator[data-auto='on'] {
-  color: var(--ai);
-  border-color: color-mix(in srgb, var(--ai) 40%, var(--border));
-  background: color-mix(in srgb, var(--ai) 10%, transparent);
+  color: var(--text-brand);
+  border-color: color-mix(in srgb, var(--brand-500) 40%, var(--border-default));
+  background: color-mix(in srgb, var(--brand-500) 10%, transparent);
 }
 .auto-indicator[data-auto='on'] .mode-indicator__dot {
-  background: var(--ai);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 55%, transparent);
+  background: var(--brand-500);
 }
 
 .auto-indicator[data-auto='off'] {
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   opacity: 0.72;
 }
 .auto-indicator[data-auto='off'] .mode-indicator__dot {
-  background: var(--fg-subtle);
+  background: var(--text-tertiary);
   box-shadow: none;
 }
 
 .auto-indicator:hover {
-  border-color: var(--hairline-strong);
+  border-color: var(--border-strong);
 }
 
 /* ── AI question-card sub-blocks (desktop builds these in chat-ui-manager) ─── */
@@ -241,7 +243,7 @@ button.history-row {
   min-width: 0;
 }
 
-/* Rubric score badge (e.g. 27/30) — indigo, tabular, sits beside a question. */
+/* Rubric score badge (e.g. 27/30) — brand green, tabular, sits beside a question. */
 .question-card__score {
   flex: 0 0 auto;
   font-family: var(--font-mono);
@@ -250,14 +252,14 @@ button.history-row {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.03em;
   padding: 1px 7px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--ai) 35%, var(--hairline));
-  color: var(--ai);
-  background: color-mix(in srgb, var(--ai) 12%, transparent);
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--brand-500) 35%, var(--border-default));
+  color: var(--text-brand);
+  background: color-mix(in srgb, var(--brand-500) 12%, transparent);
   white-space: nowrap;
 }
 
-/* "自动" badge — subtle teal (candidate colour), distinct from the red priority pill. */
+/* "自动" badge — subtle candidate (info) colour, distinct from the priority pill. */
 .question-card__trigger[data-trigger='auto'] {
   flex: 0 0 auto;
   font-family: var(--font-mono);
@@ -265,16 +267,16 @@ button.history-row {
   font-weight: 600;
   letter-spacing: 0.08em;
   padding: 2px 7px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--candidate) 40%, var(--hairline));
-  color: var(--candidate);
-  background: color-mix(in srgb, var(--candidate) 12%, transparent);
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--lane-candidate) 40%, var(--border-default));
+  color: var(--lane-candidate);
+  background: color-mix(in srgb, var(--lane-candidate) 12%, transparent);
 }
 
 /* Expandable ranked-candidate list. */
 .question-card__ranked {
   margin-top: 12px;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--border-default);
   padding-top: 10px;
 }
 
@@ -284,7 +286,7 @@ button.history-row {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   list-style: none;
   user-select: none;
 }
@@ -295,13 +297,13 @@ button.history-row {
   content: '▸';
   display: inline-block;
   margin-right: 6px;
-  transition: transform var(--dur-2, 160ms) var(--ease, ease);
+  transition: transform var(--transition-base);
 }
 .question-card__ranked[open] .question-card__ranked-summary::before {
   transform: rotate(90deg);
 }
 .question-card__ranked-summary:hover {
-  color: var(--ai);
+  color: var(--text-brand);
 }
 
 .question-card__ranked-list {
@@ -327,20 +329,20 @@ button.history-row {
   color: inherit;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm, 6px);
+  border-radius: var(--radius-md);
   padding: 6px 8px;
   transition:
-    background var(--dur-2, 160ms) var(--ease, ease),
-    border-color var(--dur-2, 160ms) var(--ease, ease);
+    background var(--transition-base),
+    border-color var(--transition-base);
 }
 .question-card__ranked-pick:hover {
-  background: color-mix(in srgb, var(--ai) 7%, transparent);
-  border-color: color-mix(in srgb, var(--ai) 28%, var(--hairline));
+  background: color-mix(in srgb, var(--brand-500) 7%, transparent);
+  border-color: color-mix(in srgb, var(--brand-500) 28%, var(--border-default));
 }
 .question-card__ranked-pick:focus-visible {
   outline: none;
-  border-color: var(--ring, var(--ai));
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ai) 35%, transparent);
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 .question-card__ranked-row {
@@ -354,7 +356,7 @@ button.history-row {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
 }
 
@@ -363,14 +365,14 @@ button.history-row {
   min-width: 0;
   font-size: 13px;
   line-height: 1.45;
-  color: var(--fg);
+  color: var(--text-primary);
 }
 
 .question-card__ranked-reason {
   display: block;
   font-size: 11px;
   line-height: 1.4;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -385,10 +387,10 @@ button.history-row {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: var(--candidate);
-  background: color-mix(in srgb, var(--candidate) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--candidate) 30%, var(--hairline));
-  border-radius: var(--radius-sm, 6px);
+  color: var(--lane-candidate);
+  background: color-mix(in srgb, var(--lane-candidate) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lane-candidate) 30%, var(--border-default));
+  border-radius: var(--radius-md);
   padding: 5px 9px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -407,7 +409,7 @@ button.history-row {
 .question-card__alt .message-label,
 .question-card__rationale .message-label,
 .question-card__yield .message-label {
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
@@ -416,7 +418,7 @@ button.history-row {
 }
 
 .question-card__alt .message-content {
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 .question-card__footer {
@@ -426,18 +428,18 @@ button.history-row {
   gap: 10px;
   margin-top: 12px;
   padding-top: 10px;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--border-default);
   font-family: var(--font-mono);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
 }
 
 .question-card__footer .tag-mode {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 600;
-  color: var(--ai);
+  color: var(--text-brand);
 }
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -446,52 +448,55 @@ button.history-row {
  * so the ported QB markup reads as part of the same design system.
  * ════════════════════════════════════════════════════════════════════════ */
 .main__view-bank {
-  --bg: var(--bg-base);
-  --bg-elev-1: var(--bg-elev);
-  --bg-elev-2: var(--bg-elev-2);
-  --bg-elev-3: var(--surface-strong);
-  --border: var(--border);
-  --border-strong: var(--hairline-strong);
+  /* Local semantic aliases mapped onto GLP tokens (desktop-ui/theme.css) so the
+     ported QB markup reads as part of the same design system. Neutral surfaces;
+     brand green as the only accent. */
+  --bg: var(--surface-page);
+  --bg-elev-1: var(--surface-elevated);
+  --bg-elev-2: var(--surface-container);
+  --bg-elev-3: var(--surface-hover);
+  --border: var(--border-default);
+  --border-strong: var(--border-strong);
 
-  --text: var(--fg);
-  --text-muted: var(--fg-muted);
-  --text-faint: var(--fg-subtle);
+  --text: var(--text-primary);
+  --text-muted: var(--text-secondary);
+  --text-faint: var(--text-tertiary);
 
-  --accent: var(--ai);
-  --accent-strong: color-mix(in srgb, var(--ai) 80%, white);
-  --accent-bg: color-mix(in srgb, var(--ai) 12%, transparent);
-  --accent-border: color-mix(in srgb, var(--ai) 35%, var(--border));
+  --accent: var(--brand-500);
+  --accent-strong: var(--text-brand);
+  --accent-bg: color-mix(in srgb, var(--brand-500) 12%, transparent);
+  --accent-border: color-mix(in srgb, var(--brand-500) 35%, var(--border-default));
 
-  --warn: var(--interviewer);
-  --danger-local: var(--danger);
-  --danger-bg: color-mix(in srgb, var(--danger) 12%, transparent);
-  --danger-border: color-mix(in srgb, var(--danger) 35%, var(--border));
+  --warn: var(--warning);
+  --danger-local: var(--error);
+  --danger-bg: var(--error-bg);
+  --danger-border: color-mix(in srgb, var(--error) 35%, var(--border-default));
 
-  --diff-unspecified: var(--fg-subtle);
+  --diff-unspecified: var(--text-tertiary);
   --diff-easy: var(--success);
-  --diff-medium: var(--interviewer);
-  --diff-hard: var(--danger);
+  --diff-medium: var(--warning);
+  --diff-hard: var(--error);
 
-  --fs-xs: 11px;
+  --fs-xs: var(--text-xs);
   --fs-sm: 12px;
-  --fs-base: 13px;
-  --fs-md: 14px;
-  --fs-lg: 16px;
-  --fs-xl: 20px;
+  --fs-base: var(--text-sm);
+  --fs-md: var(--text-base);
+  --fs-lg: var(--text-lg);
+  --fs-xl: var(--text-xl);
 
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 20px;
-  --sp-6: 24px;
-  --sp-8: 32px;
+  --sp-1: var(--space-1);
+  --sp-2: var(--space-2);
+  --sp-3: var(--space-3);
+  --sp-4: var(--space-4);
+  --sp-5: var(--space-5);
+  --sp-6: var(--space-6);
+  --sp-8: var(--space-8);
 
-  --qb-radius-sm: var(--radius-sm);
-  --qb-radius: var(--radius);
-  --qb-radius-lg: var(--radius-lg);
+  --qb-radius-sm: var(--radius-md);
+  --qb-radius: var(--radius-xl);
+  --qb-radius-lg: var(--radius-2xl);
 
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--fs-base);
   color: var(--text);
 }
@@ -502,34 +507,34 @@ button.history-row {
 .main__view-bank input[type='search'],
 .main__view-bank select {
   width: 100%;
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
   border-radius: var(--qb-radius-sm);
-  color: var(--fg);
+  color: var(--text-primary);
   padding: var(--sp-2) var(--sp-3);
-  font-family: var(--font-body);
-  color-scheme: dark;
-  transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+  font-family: var(--font-sans);
+  color-scheme: light dark;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .main__view-bank textarea:hover,
 .main__view-bank input:hover,
 .main__view-bank select:hover {
-  border-color: var(--hairline-strong);
+  border-color: var(--border-strong);
 }
 
 .main__view-bank textarea:focus-visible,
 .main__view-bank input:focus-visible,
 .main__view-bank select:focus-visible {
   outline: none;
-  border-color: var(--ring);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 40%, transparent);
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 .main__view-bank select {
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, var(--fg-muted) 50%),
-    linear-gradient(135deg, var(--fg-muted) 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%),
+    linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%);
   background-position: calc(100% - 16px) 52%, calc(100% - 11px) 52%;
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
@@ -540,7 +545,7 @@ button.history-row {
 .main__view-bank label {
   display: block;
   font-size: var(--fs-sm);
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   margin-bottom: var(--sp-2);
   font-weight: 500;
 }
@@ -550,22 +555,22 @@ button.history-row {
   align-items: center;
   justify-content: center;
   gap: var(--sp-2);
-  background: var(--surface);
-  border: 1px solid var(--hairline-strong);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-strong);
   border-radius: var(--qb-radius-sm);
-  color: var(--fg);
+  color: var(--text-primary);
   padding: var(--sp-2) var(--sp-4);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-weight: 600;
   cursor: pointer;
-  box-shadow: var(--elev-1), var(--top-highlight);
-  transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease),
-    transform var(--dur-1) var(--ease-spring);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition-base), border-color var(--transition-base),
+    transform var(--transition-fast);
   white-space: nowrap;
 }
 
 .main__view-bank .btn:hover:not(:disabled) {
-  background: var(--surface-strong);
+  background: var(--surface-hover);
   border-color: var(--accent-border);
 }
 
@@ -579,14 +584,14 @@ button.history-row {
 }
 
 .main__view-bank .btn-primary {
-  background: var(--ai);
-  border-color: var(--ai);
-  color: var(--bg-base);
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  color: var(--text-inverse);
 }
 
 .main__view-bank .btn-primary:hover:not(:disabled) {
-  background: var(--accent-strong);
-  border-color: var(--accent-strong);
+  background: var(--brand-600);
+  border-color: var(--brand-600);
 }
 
 .main__view-bank .btn-sm {
@@ -600,18 +605,18 @@ button.history-row {
   align-items: center;
   gap: var(--sp-2);
   font-size: var(--fs-sm);
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   padding: var(--sp-1) var(--sp-3);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  background: var(--surface-subtle);
 }
 
 .main__view-bank .conn-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--fg-subtle);
+  background: var(--text-tertiary);
   flex-shrink: 0;
 }
 
@@ -622,12 +627,12 @@ button.history-row {
 
 .main__view-bank .conn[data-status='connecting'] .conn-dot,
 .main__view-bank .conn[data-status='reconnecting'] .conn-dot {
-  background: var(--interviewer);
+  background: var(--warning);
   animation: qb-pulse 1.2s ease-in-out infinite;
 }
 
 .main__view-bank .conn[data-status='closed'] .conn-dot {
-  background: var(--danger);
+  background: var(--error);
 }
 
 @keyframes qb-pulse {
@@ -641,7 +646,7 @@ button.history-row {
   font-size: var(--fs-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   font-family: var(--font-display);
   font-weight: 700;
   margin-bottom: var(--sp-3);
@@ -649,7 +654,7 @@ button.history-row {
 
 .main__view-bank .hint {
   font-size: var(--fs-sm);
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
 }
 
 .main__view-bank .qbank {
@@ -660,8 +665,8 @@ button.history-row {
 }
 
 .main__view-bank .qbank-sidebar {
-  border-right: 1px solid var(--hairline);
-  background: var(--bg-elev);
+  border-right: 1px solid var(--border-default);
+  background: var(--surface-elevated);
   overflow-y: auto;
   padding: var(--sp-5);
 }
@@ -677,9 +682,9 @@ button.history-row {
   align-items: center;
   gap: var(--sp-3);
   padding: var(--sp-4) var(--sp-6);
-  border-bottom: 1px solid var(--hairline);
-  background: color-mix(in srgb, var(--bg-base) 90%, var(--bg-elev));
-  box-shadow: var(--top-highlight), var(--elev-1);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-sm);
   flex-shrink: 0;
 }
 
@@ -690,8 +695,8 @@ button.history-row {
 
 .main__view-bank .mode-toggle {
   display: inline-flex;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-default);
   border-radius: var(--qb-radius-sm);
   padding: 2px;
 }
@@ -699,13 +704,13 @@ button.history-row {
 .main__view-bank .mode-toggle button {
   background: transparent;
   border: none;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   padding: var(--sp-1) var(--sp-3);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-weight: 600;
-  transition: background var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
 .main__view-bank .mode-toggle button.is-active {
@@ -724,7 +729,7 @@ button.history-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   font-size: var(--fs-sm);
   margin-bottom: var(--sp-3);
 }
@@ -747,23 +752,23 @@ button.history-row {
   background: transparent;
   border: 1px solid transparent;
   border-radius: var(--qb-radius-sm);
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   padding: var(--sp-2) var(--sp-3);
   text-align: left;
   cursor: pointer;
   width: 100%;
-  font-family: var(--font-body);
-  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+  font-family: var(--font-sans);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .main__view-bank .filter-item:hover {
-  background: var(--surface);
-  color: var(--fg);
+  background: var(--surface-hover);
+  color: var(--text-primary);
 }
 
 .main__view-bank .filter-item.is-active {
   background: var(--accent-bg);
-  color: var(--fg);
+  color: var(--text-primary);
   border-color: var(--accent-border);
 }
 
@@ -775,17 +780,17 @@ button.history-row {
 
 .main__view-bank .filter-count {
   font-size: var(--fs-xs);
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
-  background: var(--surface-strong);
-  border-radius: 999px;
+  background: var(--surface-hover);
+  border-radius: var(--radius-full);
   padding: 1px var(--sp-2);
   flex-shrink: 0;
 }
 
 .main__view-bank .filter-item.is-active .filter-count {
   background: var(--accent-border);
-  color: var(--fg);
+  color: var(--text-primary);
 }
 
 /* Question rows. */
@@ -796,17 +801,17 @@ button.history-row {
 }
 
 .main__view-bank .q-row {
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
   border-radius: var(--qb-radius);
   padding: var(--sp-4);
-  box-shadow: var(--elev-1), var(--top-highlight);
-  transition: border-color var(--dur-2) var(--ease), background var(--dur-2) var(--ease);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-base), background var(--transition-base);
 }
 
 .main__view-bank .q-row:hover {
-  border-color: var(--hairline-strong);
-  background: var(--bg-elev-2);
+  border-color: var(--border-strong);
+  background: var(--surface-container);
 }
 
 .main__view-bank .q-row-head {
@@ -819,7 +824,7 @@ button.history-row {
 .main__view-bank .q-text {
   font-size: var(--fs-md);
   line-height: 1.5;
-  color: var(--fg);
+  color: var(--text-primary);
   font-weight: 500;
 }
 
@@ -829,7 +834,7 @@ button.history-row {
   font-variant-numeric: tabular-nums;
   background: var(--accent-bg);
   border: 1px solid var(--accent-border);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   padding: 1px var(--sp-2);
   flex-shrink: 0;
 }
@@ -847,7 +852,7 @@ button.history-row {
   align-items: center;
   gap: var(--sp-1);
   font-size: var(--fs-sm);
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
 }
 
@@ -885,10 +890,10 @@ button.history-row {
   align-items: center;
   font-size: var(--fs-sm);
   padding: 3px var(--sp-3);
-  border-radius: 999px;
-  background: var(--surface-strong);
-  border: 1px solid var(--border);
-  color: var(--fg-muted);
+  border-radius: var(--radius-full);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -896,7 +901,7 @@ button.history-row {
 }
 
 .main__view-bank .chip-more {
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   background: transparent;
   border-style: dashed;
 }
@@ -911,9 +916,9 @@ button.history-row {
   letter-spacing: 0.02em;
   padding: 2px var(--sp-2);
   border-radius: var(--qb-radius-sm);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--fg-muted);
+  border: 1px solid var(--border-default);
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
@@ -933,8 +938,8 @@ button.history-row {
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid var(--hairline-strong);
-  border-top-color: var(--ai);
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--brand-500);
   border-radius: 50%;
   animation: qb-spin 0.6s linear infinite;
   flex-shrink: 0;
@@ -950,7 +955,7 @@ button.history-row {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   font-size: var(--fs-base);
   padding: var(--sp-4);
 }
@@ -968,11 +973,11 @@ button.history-row {
 .main__view-bank .alert-error {
   background: var(--danger-bg);
   border: 1px solid var(--danger-border);
-  color: color-mix(in srgb, var(--danger) 70%, white);
+  color: var(--error);
 }
 
 .main__view-bank .alert-error strong {
-  color: var(--danger);
+  color: var(--error);
 }
 
 /* Empty state. */
@@ -984,11 +989,11 @@ button.history-row {
   text-align: center;
   gap: var(--sp-2);
   padding: var(--sp-8) var(--sp-4);
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
 }
 
 .main__view-bank .empty-title {
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--fs-md);
@@ -998,7 +1003,7 @@ button.history-row {
   width: 36px;
   height: 36px;
   border-radius: var(--qb-radius);
-  border: 1px dashed var(--hairline-strong);
+  border: 1px dashed var(--border-strong);
   margin-bottom: var(--sp-2);
 }
 
@@ -1009,7 +1014,7 @@ button.history-row {
   justify-content: center;
   gap: var(--sp-3);
   padding: var(--sp-5) 0 var(--sp-2);
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   font-size: var(--fs-sm);
 }
 
@@ -1025,6 +1030,6 @@ button.history-row {
   }
   .main__view-bank .qbank-sidebar {
     border-right: none;
-    border-bottom: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--border-default);
   }
 }

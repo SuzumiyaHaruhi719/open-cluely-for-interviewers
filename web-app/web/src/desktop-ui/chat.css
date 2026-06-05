@@ -59,13 +59,13 @@
 
 .chat-message {
     position: relative;
-    padding: 8px 12px 8px 16px;
-    margin: 2px 0;                   /* tight rhythm; cards override to 8px */
-    border-radius: var(--radius-sm);
-    font-family: var(--font-body);
-    font-size: 14px;
+    padding: var(--space-2) var(--space-3) var(--space-2) var(--space-4);
+    margin: var(--space-0-5) 0;      /* tight rhythm; cards override to 8px */
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
     line-height: 1.5;
-    color: var(--fg);
+    color: var(--text-primary);
     /* Every live-incoming line gets a crisp slide-fade entrance.
        --dur-3 = 240ms with expo-out — decisive, not floaty. */
     animation: chat-line-in var(--dur-3) var(--ease-out) both;
@@ -99,17 +99,18 @@
 .message-header {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-1-5, 6px);
     margin-bottom: 3px;
     min-height: 20px;
 }
 
 .message-icon {
     flex: 0 0 auto;
-    font-size: 12px;
+    font-size: var(--text-xs);
     line-height: 1;
     /* Opacity carried by lane rules below; default for system messages. */
     opacity: 0.72;
+    color: var(--text-tertiary);
 }
 
 /* Uppercase mono label — CANDIDATE / YOU / AI FOLLOW-UP.
@@ -117,11 +118,11 @@
 .message-label {
     flex: 0 0 auto;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--fg-muted);
+    color: var(--text-tertiary);
     /* Default; lane rules override to the accent colour. */
 }
 
@@ -130,16 +131,16 @@
     margin-left: auto;
     flex: 0 0 auto;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-variant-numeric: tabular-nums;
-    color: var(--fg-subtle);           /* tertiary, receding */
+    color: var(--text-tertiary);       /* tertiary, receding */
     letter-spacing: 0.02em;
 }
 
 .message-actions {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-1);
 }
 
 
@@ -148,9 +149,9 @@
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 .message-content {
-    font-size: 14px;
+    font-size: var(--text-base);
     line-height: 1.55;
-    color: var(--fg);
+    color: var(--text-primary);
     word-break: break-word;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
@@ -158,22 +159,22 @@
 
 /* Code blocks inside formatted AI responses. */
 .message-content pre {
-    margin: 6px 0;
-    padding: 10px 12px;
-    background: var(--bg-deep);
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-sm);
+    margin: var(--space-1-5, 6px) 0;
+    padding: var(--space-2-5, 10px) var(--space-3);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
     overflow-x: auto;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--text-sm);
     white-space: pre;
-    color: var(--fg);
+    color: var(--text-primary);
 }
 
 .message-content code {
     font-family: var(--font-mono);
-    font-size: 12px;            /* on-scale (was 0.9em = 12.6px fractional) */
-    color: var(--fg-muted);
+    font-size: var(--text-sm);  /* on-scale (was 0.9em = 12.6px fractional) */
+    color: var(--text-secondary);
 }
 
 
@@ -185,26 +186,24 @@
 
 .lane-candidate,
 .lane-interviewer {
-    border-left: 2px solid var(--lane-accent, var(--border));
+    border-left: 2px solid var(--lane-accent, var(--border-default));
     /* Subtle gradient wash fades within ~36px; communicates role without
        dominating the reading surface. */
     background: linear-gradient(
         to right,
-        color-mix(in srgb, var(--lane-accent, transparent) 7%, transparent) 0%,
-        transparent 38%
+        color-mix(in srgb, var(--lane-accent, transparent) 7%, var(--surface-subtle)) 0%,
+        var(--surface-subtle) 38%
     );
-    /* Hairline top edge catches virtual light — aligns with global elev model. */
-    box-shadow: var(--top-highlight);
 }
 
-/* Teal — candidate / computer audio. */
+/* Blue/info — candidate / computer audio. */
 .lane-candidate {
-    --lane-accent: var(--candidate);
+    --lane-accent: var(--lane-candidate);
 }
 
-/* Amber — you / microphone. */
+/* Amber/warning — you / microphone. */
 .lane-interviewer {
-    --lane-accent: var(--interviewer);
+    --lane-accent: var(--lane-interviewer);
 }
 
 /* Label + icon tinted to the accent — colour + text + icon, never colour alone. */
@@ -224,24 +223,23 @@
 .lane-interviewer:hover {
     background: linear-gradient(
         to right,
-        color-mix(in srgb, var(--lane-accent) 11%, transparent) 0%,
-        color-mix(in srgb, var(--lane-accent) 3%, transparent) 48%,
-        transparent 100%
+        color-mix(in srgb, var(--lane-accent) 11%, var(--surface-hover)) 0%,
+        color-mix(in srgb, var(--lane-accent) 3%, var(--surface-hover)) 48%,
+        var(--surface-hover) 100%
     );
     transition: background var(--dur-2) var(--ease-out);
 }
 
 /* Neutral grey — a manual interviewer note added to the context (an aside, not
-   spoken transcript). Distinct from teal/amber/indigo so it never reads as speech. */
+   spoken transcript). Distinct from candidate/interviewer/ai so it never reads as speech. */
 .lane-note {
-    --lane-accent: var(--fg-muted);
-    border-left: 2px solid var(--lane-accent, var(--border));
+    --lane-accent: var(--lane-unknown);
+    border-left: 2px solid var(--lane-accent, var(--border-default));
     background: linear-gradient(
         to right,
-        color-mix(in srgb, var(--lane-accent, transparent) 7%, transparent) 0%,
-        transparent 38%
+        color-mix(in srgb, var(--lane-accent, transparent) 7%, var(--surface-subtle)) 0%,
+        var(--surface-subtle) 38%
     );
-    box-shadow: var(--top-highlight);
 }
 
 .lane-note .message-label,
@@ -258,7 +256,7 @@
 
 .chat-message.is-live .message-content,
 .chat-message.is-interim .message-content {
-    color: var(--fg-muted);
+    color: var(--text-tertiary);
 }
 
 /* Blinking block caret — steps(1) gives a hard digital blink, not a fade. */
@@ -270,8 +268,8 @@
     height: 1em;
     margin-left: 3px;
     vertical-align: text-bottom;
-    border-radius: 1px;
-    background: var(--lane-accent, var(--ai));
+    border-radius: var(--radius-xs);
+    background: var(--lane-accent, var(--lane-ai));
     animation: chat-caret-blink 1s steps(1, end) infinite;
 }
 
@@ -289,30 +287,26 @@
  *    This is the ONE element per view that can glow — keeps it premium.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Indigo lane custom property (also consumed by the caret above). */
+/* Brand-green lane custom property (also consumed by the caret above). */
 .lane-ai {
-    --lane-accent: var(--ai);
+    --lane-accent: var(--lane-ai);
 }
 
 .is-question-card {
-    --lane-accent: var(--ai);
+    --lane-accent: var(--lane-ai);
 
     /* Comfortable vertical breathing room; wider left padding clears the rail. */
-    margin: 8px 0;
-    padding: 12px 16px 16px 16px;
+    margin: var(--space-2) 0;
+    padding: var(--space-3) var(--space-4) var(--space-4) var(--space-4);
 
-    /* Elevated indigo-tinted card surface (one tier above transcript lines). */
-    background: color-mix(in srgb, var(--ai) 5%, var(--bg-elev));
-    border: 1px solid color-mix(in srgb, var(--ai) 30%, var(--hairline));
-    border-left: 3px solid var(--ai);
-    border-radius: var(--radius-lg);        /* larger radius = more premium feel */
+    /* Hero surface: elevated neutral card with a brand-green accent rail. */
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-default);
+    border-left: 3px solid var(--brand-500);
+    border-radius: var(--radius-2xl);       /* hero card = largest radius */
 
-    /* Depth: elev-2 drop shadow + top highlight sheen + sparing AI glow bloom.
-       The glow is colour-mixed to 40% so it reads as an aura, not a neon ring. */
-    box-shadow:
-        var(--elev-2),
-        var(--top-highlight),
-        0 0 26px -8px color-mix(in srgb, var(--ai) 36%, transparent);
+    /* Depth: soft GLP elevation shadow (no glow per dark-spec ethos). */
+    box-shadow: var(--shadow-sm);
 
     /* Crisp slide-fade entrance — plays automatically when JS appends the element.
        --dur-3 = 240ms expo-out; translateY(10px→0) gives a clear "landing" feel.
@@ -336,39 +330,39 @@
    "hero glow per view" reading calm rather than reactive. (The copy button
    still reveals on hover via its own rule below.) */
 
-/* Label + icon always in indigo — this is the AI brand colour. */
+/* Label + icon always in brand green — this is the AI brand colour. */
 .is-question-card .message-label {
-    color: var(--ai);
+    color: var(--text-brand);
     letter-spacing: 0.07em;    /* slightly tighter than lane labels — premium */
 }
 
 .is-question-card .message-icon {
-    color: var(--ai);
+    color: var(--text-brand);
     opacity: 1;
 }
 
 /* Question body — slightly larger, medium weight: this is the key output text. */
 .is-question-card .message-content,
 .question-card__body {
-    font-size: 14px;
+    font-size: var(--text-base);
     font-weight: 500;
     line-height: 1.6;
-    color: var(--fg);
+    color: var(--text-primary);
 }
 
 /* Anchor quote — the candidate phrase the question drills into.
    Teal left border (candidate colour) clarifies provenance at a glance. */
 .question-card__anchor {
-    margin: 0 0 10px;
-    padding: 6px 10px;
-    border-left: 2px solid color-mix(in srgb, var(--candidate) 55%, transparent);
-    background: color-mix(in srgb, var(--candidate) 7%, transparent);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-body);
-    font-size: 12px;
+    margin: 0 0 var(--space-2-5, 10px);
+    padding: var(--space-1-5, 6px) var(--space-2-5, 10px);
+    border-left: 2px solid color-mix(in srgb, var(--lane-candidate) 55%, transparent);
+    background: color-mix(in srgb, var(--lane-candidate) 7%, var(--surface-subtle));
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
     font-style: italic;
     line-height: 1.5;
-    color: var(--fg-muted);
+    color: var(--text-secondary);
     word-break: break-word;
     overflow-wrap: anywhere;
 }
@@ -381,28 +375,28 @@
 }
 .question-card__anchor--jump::after {
     content: ' ↩';
-    color: color-mix(in srgb, var(--candidate) 70%, transparent);
+    color: color-mix(in srgb, var(--lane-candidate) 70%, transparent);
     font-style: normal;
 }
 .question-card__anchor--jump:hover {
-    background: color-mix(in srgb, var(--candidate) 14%, transparent);
-    border-left-color: var(--candidate);
+    background: color-mix(in srgb, var(--lane-candidate) 14%, var(--surface-hover));
+    border-left-color: var(--lane-candidate);
 }
 .question-card__anchor--jump:focus-visible {
-    outline: 2px solid var(--candidate);
+    outline: 2px solid var(--lane-candidate);
     outline-offset: 2px;
 }
 
-/* Source-flash — the transcript line a follow-up was drilled from glows, then
-   fades out on its own (self-removing via animationend in chat-ui-manager). */
+/* Source-flash — the transcript line a follow-up was drilled from highlights,
+   then fades out on its own (self-removing via animationend in chat-ui-manager). */
 @keyframes source-flash {
-    0%   { background: color-mix(in srgb, var(--candidate) 36%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--candidate) 45%, transparent); }
-    25%  { background: color-mix(in srgb, var(--candidate) 30%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--candidate) 38%, transparent); }
+    0%   { background: color-mix(in srgb, var(--lane-candidate) 36%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--lane-candidate) 45%, transparent); }
+    25%  { background: color-mix(in srgb, var(--lane-candidate) 30%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--lane-candidate) 38%, transparent); }
     100% { background: transparent; box-shadow: 0 0 0 2px transparent; }
 }
 .chat-message.source-flash {
     animation: source-flash 2.6s var(--ease) forwards;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
 }
 
 /* Priority pill — mono uppercase; colours are keyed to semantic risk level.
@@ -410,31 +404,31 @@
 .question-card__priority {
     flex: 0 0 auto;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    padding: 2px 7px;
-    border-radius: 999px;           /* pill shape */
-    border: 1px solid var(--hairline);
-    color: var(--fg-muted);
-    background: var(--surface);
+    padding: var(--space-0-5) var(--space-1-5, 7px);
+    border-radius: var(--radius-full);  /* pill shape */
+    border: 1px solid var(--border-default);
+    color: var(--text-tertiary);
+    background: var(--surface-subtle);
 }
 
 .question-card__priority[data-priority="high"] {
-    color: var(--danger);
-    border-color: color-mix(in srgb, var(--danger) 45%, var(--hairline));
-    background: color-mix(in srgb, var(--danger) 12%, transparent);
+    color: var(--error);
+    border-color: color-mix(in srgb, var(--error) 45%, var(--border-default));
+    background: var(--error-bg);
 }
 
 .question-card__priority[data-priority="medium"] {
-    color: var(--interviewer);
-    border-color: color-mix(in srgb, var(--interviewer) 45%, var(--hairline));
-    background: color-mix(in srgb, var(--interviewer) 12%, transparent);
+    color: var(--warning);
+    border-color: color-mix(in srgb, var(--warning) 45%, var(--border-default));
+    background: var(--warning-bg);
 }
 
 .question-card__priority[data-priority="low"] {
-    color: var(--fg-subtle);
+    color: var(--text-tertiary);
 }
 
 /* Card header layout — icon · label · priority · actions · time.
@@ -458,10 +452,10 @@
     min-width: 22px;
     height: 22px;
     padding: 0 5px;
-    color: var(--fg-muted);
+    color: var(--text-tertiary);
     background: transparent;
     border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     cursor: pointer;
     /* Hidden at rest; opacity transition matches --dur-2 hover rhythm. */
     opacity: 0;
@@ -485,9 +479,9 @@
 
 .message-copy-btn:hover,
 .ai-include-toggle:hover {
-    color: var(--fg);
-    border-color: var(--hairline);
-    background: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--border-default);
+    background: var(--surface-hover);
 }
 
 /* Press: spring scale-down = decisive, tactile. */
@@ -498,8 +492,8 @@
 
 .message-copy-btn:focus-visible,
 .ai-include-toggle:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: var(--focus-ring);
 }
 
 /* Card copy button — always faintly visible since it is the primary CTA. */
@@ -510,7 +504,7 @@
 .is-question-card:hover .question-card__copy,
 .question-card__copy:focus-visible {
     opacity: 1;
-    color: var(--ai);
+    color: var(--text-brand);
 }
 
 
@@ -524,11 +518,11 @@
 
 .ai-excluded-note {
     display: none;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-1);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: var(--text-xs);
     letter-spacing: 0.03em;
-    color: var(--fg-subtle);
+    color: var(--text-tertiary);
 }
 
 .ai-toggleable.ai-excluded .ai-excluded-note {
@@ -542,8 +536,8 @@
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 .system-message {
-    font-size: 12px;
-    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
 }
 
 /* .system-message-message is the text span inside system messages. */
@@ -553,9 +547,9 @@
 
 /* ai-response is a full formatted response (markdown). Inherits body type. */
 .message-content.ai-response {
-    font-size: 14px;
+    font-size: var(--text-base);
     line-height: 1.6;
-    color: var(--fg);
+    color: var(--text-primary);
 }
 
 
@@ -568,13 +562,13 @@
 .chat-composer {
     display: flex;
     align-items: flex-end;
-    gap: 8px;
-    padding: 8px;
-    /* Elevated card surface — one tier above the base canvas (bg-elev). */
-    background: var(--bg-elev);
-    border: 1px solid var(--hairline-strong);
-    border-radius: var(--radius);
-    box-shadow: var(--elev-1), var(--top-highlight);
+    gap: var(--space-2);
+    padding: var(--space-2);
+    /* Elevated card surface — one tier above the base page canvas. */
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
     /* Smooth border/shadow change on focus state of the inner textarea. */
     transition:
         border-color   var(--dur-2) var(--ease-out),
@@ -583,11 +577,10 @@
 
 /* When the inner textarea is focused, lift the whole composer slightly. */
 .chat-composer:focus-within {
-    border-color: color-mix(in srgb, var(--ai) 45%, var(--hairline-strong));
+    border-color: var(--border-focus);
     box-shadow:
-        var(--elev-1),
-        var(--top-highlight),
-        0 0 0 2px color-mix(in srgb, var(--ring) 22%, transparent);
+        var(--shadow-sm),
+        var(--focus-ring);
 }
 
 /* Textarea — grows to maxChatInputHeight via JS auto-resize. */
@@ -597,24 +590,24 @@
     min-width: 0;
     min-height: 24px;
     max-height: 160px;
-    padding: 8px 10px;
+    padding: var(--space-2) var(--space-2-5, 10px);
     resize: none;
-    color: var(--fg);
+    color: var(--text-primary);
     /* No background/border of its own — the composer shell provides the chrome. */
     background: transparent;
     border: none;
-    border-radius: var(--radius-sm);
-    font-family: var(--font-body);
-    font-size: 14px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
     line-height: 1.5;
-    caret-color: var(--ai);          /* indigo text cursor = brand consistent */
+    caret-color: var(--brand-500);   /* brand-green text cursor = brand consistent */
     outline: none;                   /* focus indicator lives on the shell above */
 }
 
 .chat-composer textarea::placeholder,
 .chat-manual-input::placeholder {
-    color: var(--fg-subtle);
-    font-size: 13px;
+    color: var(--text-placeholder);
+    font-size: var(--text-sm);
 }
 
 /* focus-visible on the textarea itself: no border (shell handles it). */
@@ -631,19 +624,19 @@
     justify-content: center;
     min-width: 44px;
     min-height: 44px;
-    padding: 0 14px;
-    /* Dark text on bright indigo = highest contrast within the dark palette. */
-    color: var(--bg-base);
-    background: var(--ai);
-    border: 1px solid color-mix(in srgb, var(--ai) 85%, white);
-    border-radius: var(--radius-sm);
+    padding: 0 var(--space-3-5, 14px);
+    /* Inverse text on brand green = primary CTA per GLP. */
+    color: var(--text-inverse);
+    background: var(--brand-500);
+    border: 1px solid var(--brand-600);
+    border-radius: var(--radius-md);
     cursor: pointer;
-    font-family: var(--font-body);
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
     font-weight: 600;
     white-space: nowrap;
     letter-spacing: 0.01em;
-    box-shadow: 0 1px 3px -1px color-mix(in srgb, var(--ai) 50%, transparent);
+    box-shadow: var(--shadow-sm);
     transition:
         background     var(--dur-2) var(--ease-out),
         border-color   var(--dur-2) var(--ease-out),
@@ -652,11 +645,9 @@
 }
 
 .chat-manual-send:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--ai) 88%, white);
-    border-color: color-mix(in srgb, var(--ai) 72%, white);
-    box-shadow:
-        0 1px 3px -1px color-mix(in srgb, var(--ai) 55%, transparent),
-        0 0 14px -4px color-mix(in srgb, var(--ai) 45%, transparent);
+    background: var(--brand-600);
+    border-color: var(--brand-700);
+    box-shadow: var(--shadow-md);
 }
 
 /* Spring scale: 0.96 feels like a physical button click. */
@@ -666,8 +657,8 @@
 }
 
 .chat-manual-send:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: var(--focus-ring);
 }
 
 .chat-manual-send:disabled {
@@ -685,9 +676,9 @@
 
 /* Overrides the ::before in styles.css with a more polished empty state. */
 .chat-messages:empty::before {
-    font-size: 13px;
-    font-family: var(--font-body);
-    color: var(--fg-subtle);
+    font-size: var(--text-sm);
+    font-family: var(--font-sans);
+    color: var(--text-tertiary);
     letter-spacing: 0.01em;
     line-height: 1.6;
 }
@@ -697,63 +688,63 @@
  * Determinate bar (JS sets fill width); indeterminate variant for Fast mode.
  * Indigo --ai lane, consistent with .is-question-card. */
 .chat-progress-card {
-    --lane-accent: var(--ai);
-    padding: 10px 14px;
-    border: 1px solid color-mix(in srgb, var(--ai) 28%, var(--hairline));
-    border-left: 3px solid var(--ai);
-    border-radius: 10px;
-    background: color-mix(in srgb, var(--ai) 5%, var(--bg-elev));
+    --lane-accent: var(--lane-ai);
+    padding: var(--space-2-5, 10px) var(--space-3-5, 14px);
+    border: 1px solid var(--border-default);
+    border-left: 3px solid var(--brand-500);
+    border-radius: var(--radius-xl);
+    background: var(--surface-subtle);
 }
 
 .chat-progress__head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 8px;
+    gap: var(--space-2-5, 10px);
+    margin-bottom: var(--space-2);
 }
 
 .chat-progress__label {
-    font-size: 12px;
-    color: var(--ai);
+    font-size: var(--text-sm);
+    color: var(--text-brand);
     letter-spacing: 0.01em;
 }
 
 .chat-progress__meta {
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: var(--space-2-5, 10px);
     flex: none;
 }
 
 .chat-progress__timer {
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-variant-numeric: tabular-nums;
-    color: color-mix(in srgb, var(--ai) 60%, var(--fg-subtle));
+    color: var(--text-tertiary);
     white-space: nowrap;
 }
 
 .chat-progress__tokens {
     flex: none;
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-variant-numeric: tabular-nums;
-    color: color-mix(in srgb, var(--ai) 70%, var(--fg-subtle));
+    color: var(--text-secondary);
     white-space: nowrap;
 }
 
 .chat-progress__bar {
     position: relative;
     height: 6px;
-    border-radius: 999px;
+    border-radius: var(--radius-full);
     overflow: hidden;
-    background: color-mix(in srgb, var(--ai) 14%, transparent);
+    background: var(--surface-active);
 }
 
 .chat-progress__fill {
     height: 100%;
     width: 0%;
-    border-radius: 999px;
-    background: var(--ai);
+    border-radius: var(--radius-full);
+    background: var(--brand-500);
     transition: width 220ms ease-out;
 }
 

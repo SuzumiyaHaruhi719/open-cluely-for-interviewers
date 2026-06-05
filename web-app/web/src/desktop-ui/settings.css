@@ -2,16 +2,15 @@
  * Settings panel — "Interviewer Copilot" (settings-panel-manager.js).
  *
  * Auto-saving modal surface — no manual Save button. Centered over a
- * glass-frosted scrim; the panel scrolls internally. Every field persists on
+ * dimmed scrim; the panel scrolls internally. Every field persists on
  * change; a "Saved ✓" pip in the header confirms each write.
  *
- * Token source: styles.css :root (SINGLE SOURCE — never redefine here).
- * Spacing: 4px rhythm. Type scale: 11/12/13/14/15. Motion: transform/opacity
- * only, durations via --dur-*, easings via --ease-* vars.
+ * Token source: theme.css GLP design system (SINGLE SOURCE — never redefine
+ * here). Light + dark resolve automatically from html[data-theme].
  *
  * JS class hooks (no CSS-only selectors were added; these are toggled by JS):
  *   .settings-panel.hidden      — display:none when closed (JS adds/removes)
- *   [data-state="saving"]       — pip goes amber/muted
+ *   [data-state="saving"]       — pip goes muted
  *   [data-state="saved"]        — pip goes green
  *   [data-state="error"]        — pip goes red
  *   .settings-field.hidden      — hide provider sub-groups
@@ -33,22 +32,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: var(--space-6);
     /* MUST be rounded to the shell radius: this is a fixed element, so it is
        NOT clipped by .app-shell's overflow/border-radius (overflow never clips
        fixed descendants). Without this the scrim covers the full rectangle and
        squares off the window's rounded corners. */
     border-radius: var(--radius-lg);
-    /* Clean, mostly-opaque dim + a LIGHT blur. The old blur(18px)+saturate over
-       the entire window — compounded by a SECOND backdrop-filter on the header —
-       caused a visible hitch on open and looked muddy. A more opaque scrim lets
-       a 6px blur stay subtle, crisp, and cheap to composite. */
-    background: color-mix(in srgb, var(--bg-deep) 82%, transparent);
+    /* GLP overlay: neutral black scrim — no colored tint, no heavy blur. */
+    background: rgba(0, 0, 0, .5);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    font-family: var(--font-body);
-    color: var(--fg);
-    animation: settings-scrim-in var(--dur-3) var(--ease);
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    animation: settings-scrim-in var(--transition-moderate);
 }
 
 .settings-panel.hidden {
@@ -63,15 +59,14 @@
     width: 100%;
     max-width: 560px;
     max-height: min(88vh, 780px);
-    /* Double-stacked surface: sits above the scrim, reads as elevated modal. */
-    background: var(--bg-elev-2);
-    border: 1px solid var(--hairline-strong);
-    border-radius: var(--radius-lg);
-    /* Elevation + top-edge sheen so the card feels lit from above. */
-    box-shadow: var(--elev-4), var(--top-highlight);
+    /* GLP modal surface: elevated + 1px border + large radius + lg shadow. */
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-lg);
     overflow: hidden;
     /* Spring entrance: scale up from 96 % with a gentle overshoot. */
-    animation: settings-dialog-in var(--dur-4) var(--ease-spring) both;
+    animation: settings-dialog-in var(--transition-moderate) cubic-bezier(.34, 1.56, .64, 1) both;
 }
 
 /* ── Header ──────────────────────────────────────────────────────────────── */
@@ -79,15 +74,11 @@
 .settings-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    /* Solid sub-header — NO backdrop-filter. A second blur nested inside the
-       already-blurred scrim was a major source of the open-lag, and the dialog
-       is opaque (bg-elev-2) so there's nothing meaningful to frost here. */
-    background: color-mix(in srgb, var(--fg) 3%, var(--bg-elev-2));
-    border-bottom: 1px solid var(--hairline);
-    /* Keep a faint top-edge sheen inside the card header. */
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    /* Solid sub-header — sits on a subtle surface tint to separate from body. */
+    background: var(--surface-subtle);
+    border-bottom: 1px solid var(--border-subtle);
     flex: 0 0 auto;
 }
 
@@ -95,12 +86,12 @@
     flex: 1 1 auto;
     min-width: 0;
     margin: 0;
-    font-family: var(--font-display);
-    font-size: 15px;
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
     font-weight: 700;
     letter-spacing: 0.01em;
     line-height: 1.2;
-    color: var(--fg);
+    color: var(--text-primary);
 }
 
 /* ── Auto-save "Saved ✓" status pip ─────────────────────────────────────────
@@ -113,34 +104,34 @@
     align-items: center;
     gap: 5px;
     min-height: 24px;
-    padding: 0 10px;
-    border-radius: 999px;
+    padding: 0 var(--space-2-5, 10px);
+    border-radius: var(--radius-full);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-weight: 600;
     letter-spacing: 0.02em;
     line-height: 1;
     border: 1px solid transparent;
     background: transparent;
-    color: var(--fg-muted);
+    color: var(--text-secondary);
     /* Idle: invisible, slightly lifted — slides down + fades in. */
     opacity: 0;
     transform: translateY(-2px);
     transition:
-        opacity var(--dur-2) var(--ease-out),
-        transform var(--dur-2) var(--ease-out),
-        color var(--dur-2) var(--ease),
-        background var(--dur-2) var(--ease),
-        border-color var(--dur-2) var(--ease);
+        opacity var(--transition-base),
+        transform var(--transition-base),
+        color var(--transition-base),
+        background var(--transition-base),
+        border-color var(--transition-base);
     pointer-events: none;
 }
 
 .settings-status[data-state="saving"] {
     opacity: 1;
     transform: none;
-    color: var(--fg-muted);
-    border-color: var(--hairline);
-    background: var(--surface);
+    color: var(--text-secondary);
+    border-color: var(--border-default);
+    background: var(--surface-subtle);
     pointer-events: auto;
 }
 
@@ -148,17 +139,17 @@
     opacity: 1;
     transform: none;
     color: var(--success);
-    border-color: color-mix(in srgb, var(--success) 45%, var(--hairline));
-    background: color-mix(in srgb, var(--success) 14%, transparent);
+    border-color: var(--success);
+    background: var(--success-bg);
     pointer-events: auto;
 }
 
 .settings-status[data-state="error"] {
     opacity: 1;
     transform: none;
-    color: var(--danger);
-    border-color: color-mix(in srgb, var(--danger) 45%, var(--hairline));
-    background: color-mix(in srgb, var(--danger) 14%, transparent);
+    color: var(--error);
+    border-color: var(--error);
+    background: var(--error-bg);
     pointer-events: auto;
 }
 
@@ -172,22 +163,22 @@
     width: 32px;
     height: 32px;
     padding: 0;
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    color: var(--fg-muted);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    background: var(--surface-elevated);
+    color: var(--text-secondary);
     cursor: pointer;
     transition:
-        color var(--dur-1) var(--ease),
-        border-color var(--dur-1) var(--ease),
-        background var(--dur-1) var(--ease),
-        transform var(--dur-1) var(--ease-spring);
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        background var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .settings-close:hover {
-    color: var(--fg);
-    background: var(--surface-strong);
-    border-color: var(--hairline-strong);
+    color: var(--text-primary);
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
 }
 
 .settings-close:active {
@@ -195,8 +186,9 @@
 }
 
 .settings-close:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: var(--focus-ring);
 }
 
 /* ── Scrollable body ─────────────────────────────────────────────────────── */
@@ -205,50 +197,50 @@
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
-    padding: 4px 20px 24px;
+    padding: var(--space-1) var(--space-5) var(--space-6);
 }
 
 /* ── Sections ────────────────────────────────────────────────────────────── */
 
 .settings-section {
-    padding: 20px 0 16px;
+    padding: var(--space-5) 0 var(--space-4);
     /* Hairline divider — a single pixel that separates without shouting. */
-    border-bottom: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .settings-section:last-child {
     border-bottom: none;
-    padding-bottom: 4px;
+    padding-bottom: var(--space-1);
 }
 
 /* Uppercase display-font label — the typographic anchor of each section. */
 .settings-section__title {
-    margin: 0 0 12px;
-    font-family: var(--font-display);
-    font-size: 11px;
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
     font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: var(--fg-subtle);
+    color: var(--text-tertiary);
 }
 
 /* Optional hint line beneath the title. */
 .settings-section__hint {
-    margin: -8px 0 12px;
-    font-size: 12px;
+    margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+    font-size: var(--text-sm);
     line-height: 1.45;
-    color: var(--fg-subtle);
+    color: var(--text-tertiary);
 }
 
 /* ── Interviewer-mode segmented toggle (Fast / Expert) ────────────────────────
- * Two prominent colour-coded buttons (Fast = teal, Expert = indigo). The active
- * one glows + lifts so the selection is unmistakable. */
-.settings-section--mode { padding-top: 4px; }
+ * Two prominent buttons. The active one gets a brand border + tint + shadow so
+ * the selection is unmistakable. */
+.settings-section--mode { padding-top: var(--space-1); }
 
 .mode-segmented {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: var(--space-2-5, 10px);
 }
 
 .mode-segmented__btn {
@@ -257,86 +249,88 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
-    padding: 14px 14px 13px;
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius);
-    background: var(--surface);
-    color: var(--fg-muted);
+    gap: var(--space-1-5, 6px);
+    padding: var(--space-3-5, 14px) var(--space-3-5, 14px) var(--space-3, 13px);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    background: var(--surface-elevated);
+    color: var(--text-secondary);
     cursor: pointer;
     text-align: left;
-    box-shadow: var(--elev-1), var(--top-highlight);
+    box-shadow: var(--shadow-sm);
     transition:
-        border-color var(--dur-2) var(--ease),
-        background var(--dur-2) var(--ease),
-        color var(--dur-2) var(--ease),
-        transform var(--dur-2) var(--ease-spring),
-        box-shadow var(--dur-2) var(--ease);
+        border-color var(--transition-base),
+        background var(--transition-base),
+        color var(--transition-base),
+        transform var(--transition-base),
+        box-shadow var(--transition-base);
 }
 
-.mode-segmented__btn[data-mode="fast"]      { --mode-accent: var(--candidate);   --mode-glow: var(--glow-candidate); }
-.mode-segmented__btn[data-mode="expert"]    { --mode-accent: var(--ai);          --mode-glow: var(--glow-ai); }
-.mode-segmented__btn[data-mode="expert2"]   { --mode-accent: #ec4899;            --mode-glow: 0 0 16px color-mix(in srgb, #ec4899 42%, transparent); }
-.mode-segmented__btn[data-mode="customize"] { --mode-accent: var(--interviewer);  --mode-glow: var(--glow-interviewer); }
+.mode-segmented__btn[data-mode="fast"]      { --mode-accent: var(--info); }
+.mode-segmented__btn[data-mode="expert"]    { --mode-accent: var(--brand-500); }
+.mode-segmented__btn[data-mode="expert2"]   { --mode-accent: var(--accent-emerald); }
+.mode-segmented__btn[data-mode="customize"] { --mode-accent: var(--warning); }
 
 /* ── Customize front door: template gallery + AI generate (HR-friendly) ─────── */
-.customize-row { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
-.customize-block { display: flex; flex-direction: column; gap: 8px; }
+.customize-row { display: flex; flex-direction: column; gap: var(--space-3-5, 14px); margin-top: var(--space-3); }
+.customize-block { display: flex; flex-direction: column; gap: var(--space-2); }
 .customize-block--advanced { align-items: flex-start; }
-.customize-block__label { font-size: 12px; font-weight: 600; color: var(--fg-subtle); }
+.customize-block__label { font-size: var(--text-sm); font-weight: 600; color: var(--text-tertiary); }
 .customize-templates {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 8px;
+    gap: var(--space-2);
 }
 .customize-card {
     text-align: left;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid var(--hairline);
-    background: var(--surface);
-    color: var(--fg);
+    padding: var(--space-2-5, 10px) var(--space-3);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-default);
+    background: var(--surface-elevated);
+    color: var(--text-primary);
     cursor: pointer;
-    transition: border-color var(--dur-2) var(--ease), background var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
+    transition: border-color var(--transition-base), background var(--transition-base), transform var(--transition-base);
 }
-.customize-card:hover { border-color: color-mix(in srgb, var(--interviewer) 45%, var(--hairline)); }
+.customize-card:hover { border-color: var(--border-strong); }
 .customize-card:active { transform: scale(0.98); }
-.customize-card:focus-visible { outline: 2px solid var(--interviewer); outline-offset: 2px; }
+.customize-card:focus-visible { outline: none; border-color: var(--border-focus); box-shadow: var(--focus-ring); }
 .customize-card--active {
-    border-color: var(--interviewer);
-    background: color-mix(in srgb, var(--interviewer) 12%, var(--surface));
-    box-shadow: var(--glow-interviewer);
+    border-color: var(--brand-500);
+    background: var(--brand-50);
+    box-shadow: var(--shadow-sm);
 }
-.customize-card__top { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-weight: 700; font-size: 13px; }
+.customize-card__top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-1-5, 6px); font-weight: 700; font-size: var(--text-sm); }
 .customize-card__badge {
-    font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 999px;
-    background: color-mix(in srgb, var(--interviewer) 22%, transparent); color: var(--interviewer);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    font-size: var(--text-xs); font-weight: 600; padding: 1px var(--space-1-5, 6px); border-radius: var(--radius-md);
+    background: var(--brand-100); color: var(--text-brand);
 }
-.customize-card__badge--user { background: color-mix(in srgb, var(--ai) 22%, transparent); color: var(--ai); }
-.customize-card__desc { margin-top: 4px; font-size: 11px; line-height: 1.4; color: var(--fg-subtle); }
-.customize-ai { display: flex; gap: 8px; }
+.customize-card__badge--user { background: var(--info-bg); color: var(--info); }
+.customize-card__desc { margin-top: var(--space-1); font-size: var(--text-xs); line-height: 1.4; color: var(--text-tertiary); }
+.customize-ai { display: flex; gap: var(--space-2); }
 .customize-ai .settings-input { flex: 1; }
-.customize-ai__hint { font-size: 11px; color: var(--fg-subtle); min-height: 14px; }
-.action-btn--ghost { background: transparent; border-color: var(--hairline); color: var(--fg-subtle); }
-.action-btn--ghost:hover { color: var(--fg); border-color: color-mix(in srgb, var(--interviewer) 40%, var(--hairline)); }
+.customize-ai__hint { font-size: var(--text-xs); color: var(--text-tertiary); min-height: 14px; }
+.action-btn--ghost { background: transparent; border-color: var(--border-default); color: var(--text-tertiary); }
+.action-btn--ghost:hover { color: var(--text-primary); border-color: var(--border-strong); }
 
 .mode-segmented__btn:hover {
-    border-color: color-mix(in srgb, var(--mode-accent) 40%, var(--hairline));
-    color: var(--fg);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
 }
 
 .mode-segmented__btn:active { transform: scale(0.98); }
 
-.mode-segmented__btn:focus-visible { outline: 2px solid var(--mode-accent); outline-offset: 2px; }
+.mode-segmented__btn:focus-visible { outline: none; border-color: var(--border-focus); box-shadow: var(--focus-ring); }
 
 /* Soft accent bloom behind the button — fades in when active. */
 .mode-segmented__glow {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--mode-accent) 22%, transparent), transparent 70%);
+    background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--mode-accent) 14%, transparent), transparent 70%);
     opacity: 0;
-    transition: opacity var(--dur-3) var(--ease);
+    transition: opacity var(--transition-moderate);
     pointer-events: none;
 }
 
@@ -344,47 +338,46 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-2);
 }
 
 .mode-segmented__dot {
     width: 8px;
     height: 8px;
-    border-radius: 50%;
-    background: var(--fg-subtle);
-    transition: background var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+    border-radius: var(--radius-full);
+    background: var(--text-tertiary);
+    transition: background var(--transition-base), box-shadow var(--transition-base);
 }
 
 .mode-segmented__label {
-    font-family: var(--font-display);
-    font-size: 14px;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
     font-weight: 700;
-    color: var(--fg);
+    color: var(--text-primary);
 }
 
 .mode-segmented__desc {
     position: relative;
-    font-size: 11px;
+    font-size: var(--text-xs);
     line-height: 1.4;
-    color: var(--fg-subtle);
+    color: var(--text-tertiary);
 }
 
-/* Active: accent border + bloom + lifted glowing dot + accent label. */
+/* Active: accent border + tint + lifted dot + accent label. */
 .mode-segmented__btn.is-active {
-    border-color: var(--mode-accent);
-    background: color-mix(in srgb, var(--mode-accent) 10%, var(--surface));
-    box-shadow: var(--elev-2), var(--top-highlight), var(--mode-glow);
-    color: var(--fg);
+    border-color: var(--brand-500);
+    background: var(--brand-50);
+    box-shadow: var(--shadow-md);
+    color: var(--text-primary);
 }
 
 .mode-segmented__btn.is-active .mode-segmented__glow { opacity: 1; }
 
 .mode-segmented__btn.is-active .mode-segmented__dot {
-    background: var(--mode-accent);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--mode-accent) 70%, transparent);
+    background: var(--brand-500);
 }
 
-.mode-segmented__btn.is-active .mode-segmented__label { color: var(--mode-accent); }
+.mode-segmented__btn.is-active .mode-segmented__label { color: var(--text-brand); }
 
 /* Hidden provider sub-groups toggled by ASR provider select. */
 .settings-section .hidden,
@@ -397,8 +390,8 @@
 .settings-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-top: 16px;
+    gap: var(--space-1-5, 6px);
+    margin-top: var(--space-4);
 }
 
 .settings-field:first-of-type {
@@ -406,25 +399,25 @@
 }
 
 .settings-field__label {
-    font-size: 13px;
+    font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--fg);
+    color: var(--text-primary);
 }
 
 .settings-field__desc {
-    font-size: 12px;
+    font-size: var(--text-sm);
     line-height: 1.45;
-    color: var(--fg-muted);
+    color: var(--text-secondary);
 }
 
 .settings-field__desc code {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--text-xs);
     padding: 1px 5px;
-    border-radius: 4px;
-    background: var(--surface-strong);
-    border: 1px solid var(--hairline);
-    color: var(--fg);
+    border-radius: var(--radius-sm);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
 }
 
 /* ── Inputs / selects / textareas ────────────────────────────────────────── */
@@ -434,50 +427,43 @@
 .settings-textarea {
     width: 100%;
     min-height: 44px;
-    padding: 10px 12px;
-    font-family: var(--font-body);
-    font-size: 13px;
-    color: var(--fg);
-    /* Solid elevated surface — NOT translucent --surface. The solid fill is
-       critical for dropdown option readability: the native OS picker inherits
-       the background-color, so a translucent value produces unreadable light
-       text on a near-white compositor blend. */
-    background-color: var(--bg-elev);
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-sm);
+    padding: var(--space-2-5, 10px) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    /* GLP input surface: solid elevated fill. */
+    background-color: var(--surface-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
     box-sizing: border-box;
-    /* Force the native OS popup (and its <option> text) into dark mode. */
-    color-scheme: dark;
+    /* Let the native OS popup follow the active theme. */
+    color-scheme: light dark;
     transition:
-        border-color var(--dur-2) var(--ease),
-        box-shadow var(--dur-2) var(--ease),
-        background-color var(--dur-1) var(--ease);
+        border-color var(--transition-base),
+        box-shadow var(--transition-base),
+        background-color var(--transition-fast);
 }
 
 .settings-input::placeholder,
 .settings-textarea::placeholder {
-    color: var(--fg-subtle);
+    color: var(--text-placeholder);
     opacity: 1;
 }
 
-/* Hover — hairline brightens, no background jump. */
+/* Hover — border strengthens, no background jump. */
 .settings-input:hover,
 .settings-select:hover,
 .settings-textarea:hover {
-    border-color: var(--hairline-strong);
-    background-color: var(--bg-elev-2);
+    border-color: var(--border-strong);
 }
 
-/* Focus — indigo ring + soft glow. Never moves other elements. */
+/* Focus — brand ring. Never moves other elements. */
 .settings-input:focus-visible,
 .settings-select:focus-visible,
 .settings-textarea:focus-visible {
     outline: none;
-    border-color: var(--ring);
-    background-color: var(--bg-elev-2);
-    box-shadow:
-        0 0 0 2px color-mix(in srgb, var(--ring) 40%, transparent),
-        var(--elev-1);
+    border-color: var(--border-focus);
+    box-shadow: var(--focus-ring);
 }
 
 /* ── Select: custom chevron caret ────────────────────────────────────────── */
@@ -490,8 +476,8 @@
     padding-right: 36px;
     /* Chevron drawn with two gradient triangles — muted by default. */
     background-image:
-        linear-gradient(45deg, transparent 50%, var(--fg-muted) 50%),
-        linear-gradient(135deg, var(--fg-muted) 50%, transparent 50%);
+        linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%),
+        linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%);
     background-position:
         calc(100% - 18px) calc(50% - 2px),
         calc(100% - 13px) calc(50% - 2px);
@@ -499,11 +485,11 @@
     background-repeat: no-repeat;
 }
 
-/* Caret brightens with the border on hover. */
+/* Caret strengthens with the border on hover. */
 .settings-select:hover {
     background-image:
-        linear-gradient(45deg, transparent 50%, var(--fg) 50%),
-        linear-gradient(135deg, var(--fg) 50%, transparent 50%);
+        linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
+        linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
     background-position:
         calc(100% - 18px) calc(50% - 2px),
         calc(100% - 13px) calc(50% - 2px);
@@ -511,11 +497,11 @@
     background-repeat: no-repeat;
 }
 
-/* Focus: caret turns to ring color so it coheres with the focus highlight. */
+/* Focus: caret turns to focus color so it coheres with the focus ring. */
 .settings-select:focus-visible {
     background-image:
-        linear-gradient(45deg, transparent 50%, var(--ring) 50%),
-        linear-gradient(135deg, var(--ring) 50%, transparent 50%);
+        linear-gradient(45deg, transparent 50%, var(--border-focus) 50%),
+        linear-gradient(135deg, var(--border-focus) 50%, transparent 50%);
     background-position:
         calc(100% - 18px) calc(50% - 2px),
         calc(100% - 13px) calc(50% - 2px);
@@ -523,18 +509,18 @@
     background-repeat: no-repeat;
 }
 
-/* Option + optgroup: dark elevated background + light text.
-   Without these the OS renders system colors (often white-on-white). */
+/* Option + optgroup: container surface + primary text.
+   Without these the OS renders system colors (often unreadable). */
 .settings-select option,
 .settings-select optgroup {
-    background-color: var(--bg-elev-2);
-    color: var(--fg);
-    font-family: var(--font-body);
-    font-size: 13px;
+    background-color: var(--surface-container);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
 }
 
 .settings-select option:disabled {
-    color: var(--fg-subtle);
+    color: var(--text-disabled);
 }
 
 /* ── Textarea ────────────────────────────────────────────────────────────── */
@@ -549,7 +535,7 @@
 
 .settings-input--mono {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: var(--text-sm);
     letter-spacing: 0.02em;
 }
 
@@ -558,7 +544,7 @@
 .settings-key-row {
     display: flex;
     align-items: stretch;
-    gap: 8px;
+    gap: var(--space-2);
 }
 
 .settings-key-row .settings-input {
@@ -570,27 +556,27 @@
     flex: 0 0 auto;
     min-width: 52px;
     min-height: 44px;
-    padding: 0 12px;
+    padding: 0 var(--space-3);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-weight: 600;
     letter-spacing: 0.03em;
-    color: var(--fg-muted);
-    background: var(--surface);
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
     cursor: pointer;
     transition:
-        color var(--dur-1) var(--ease),
-        border-color var(--dur-1) var(--ease),
-        background var(--dur-1) var(--ease),
-        transform var(--dur-1) var(--ease-spring);
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        background var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .settings-key-toggle:hover {
-    color: var(--fg);
-    background: var(--surface-strong);
-    border-color: color-mix(in srgb, var(--ai) 40%, var(--hairline));
+    color: var(--text-primary);
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
 }
 
 .settings-key-toggle:active {
@@ -598,14 +584,15 @@
 }
 
 .settings-key-toggle[aria-pressed="true"] {
-    color: var(--ai);
-    border-color: color-mix(in srgb, var(--ai) 55%, var(--hairline));
-    background: color-mix(in srgb, var(--ai) 10%, transparent);
+    color: var(--text-brand);
+    border-color: var(--brand-500);
+    background: var(--brand-50);
 }
 
 .settings-key-toggle:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: var(--focus-ring);
 }
 
 /* ── Inline secondary buttons (Refresh / OS sound) ───────────────────────── */
@@ -613,37 +600,37 @@
 .settings-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
 }
 
 .settings-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: var(--space-1-5, 6px);
     min-height: 36px;
-    padding: 0 14px;
-    font-family: var(--font-body);
-    font-size: 13px;            /* match .action-btn / .close-confirmation-btn */
+    padding: 0 var(--space-3-5, 14px);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);            /* match .action-btn / .close-confirmation-btn */
     font-weight: 600;
     letter-spacing: 0.01em;
-    color: var(--fg-muted);
-    background: var(--surface);
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
     cursor: pointer;
     transition:
-        background var(--dur-1) var(--ease),
-        color var(--dur-1) var(--ease),
-        border-color var(--dur-1) var(--ease),
-        transform var(--dur-1) var(--ease-spring);
+        background var(--transition-fast),
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .settings-btn:hover {
-    color: var(--fg);
-    background: color-mix(in srgb, var(--ai) 10%, var(--surface-strong));
-    border-color: color-mix(in srgb, var(--ai) 38%, var(--hairline));
+    color: var(--text-primary);
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
 }
 
 .settings-btn:active {
@@ -651,8 +638,9 @@
 }
 
 .settings-btn:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: var(--focus-ring);
 }
 
 .settings-btn:disabled {
@@ -666,21 +654,21 @@
 .settings-toggle-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-top: 16px;
-    padding: 12px 16px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--hairline);
-    background: var(--surface);
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-default);
+    background: var(--surface-elevated);
     /* Subtle hover lift without moving other rows. */
     transition:
-        background var(--dur-1) var(--ease),
-        border-color var(--dur-1) var(--ease);
+        background var(--transition-fast),
+        border-color var(--transition-fast);
 }
 
 .settings-toggle-row:hover {
-    background: var(--surface-strong);
-    border-color: var(--hairline-strong);
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
 }
 
 .settings-toggle-row__text {
@@ -698,7 +686,7 @@
  *     <span class="settings-switch__track"></span>
  *   </label>
  * Native input is hidden but focusable/accessible.
- * Thumb uses translateX (transform only) with --ease-spring for tactile snap.
+ * Thumb uses translateX (transform only) for a tactile snap.
  */
 .settings-switch {
     position: relative;
@@ -724,16 +712,16 @@
     display: inline-block;
     width: 44px;
     height: 26px;
-    border-radius: 999px;
-    background: var(--bg-deep);
-    border: 1px solid var(--hairline);
+    border-radius: var(--radius-full);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-default);
     transition:
-        background var(--dur-2) var(--ease),
-        border-color var(--dur-2) var(--ease),
-        box-shadow var(--dur-2) var(--ease);
+        background var(--transition-base),
+        border-color var(--transition-base),
+        box-shadow var(--transition-base);
 }
 
-/* Thumb — pure translateX + opacity, --ease-spring for snap. */
+/* Thumb — pure translateX + opacity. */
 .settings-switch__track::after {
     content: "";
     position: absolute;
@@ -741,32 +729,30 @@
     left: 3px;
     width: 18px;
     height: 18px;
-    border-radius: 50%;
-    background: var(--fg-subtle);
-    box-shadow: var(--elev-1);
+    border-radius: var(--radius-full);
+    background: var(--text-inverse);
+    box-shadow: var(--shadow-sm);
     transition:
-        transform var(--dur-2) var(--ease-spring),
-        background var(--dur-2) var(--ease);
+        transform var(--transition-base),
+        background var(--transition-base);
 }
 
-/* Checked state: track glows, thumb slides right and turns ai-indigo. */
+/* Checked state: track turns brand, thumb slides right. */
 .settings-switch input:checked + .settings-switch__track {
-    background: color-mix(in srgb, var(--ai) 28%, var(--bg-elev));
-    border-color: color-mix(in srgb, var(--ai) 60%, var(--hairline));
-    /* Contained component glow — tighter than the ambient --glow-ai bloom so
-       several toggled-on switches don't add up to a hazy panel. */
-    box-shadow: 0 0 10px -3px color-mix(in srgb, var(--ai) 50%, transparent);
+    background: var(--brand-500);
+    border-color: var(--brand-500);
 }
 
 .settings-switch input:checked + .settings-switch__track::after {
     transform: translateX(18px);
-    background: var(--ai);
+    background: var(--text-inverse);
 }
 
 /* Focus ring on the track (native input focus-visible propagates via CSS). */
 .settings-switch input:focus-visible + .settings-switch__track {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: var(--focus-ring);
 }
 
 /* ── Range (window opacity) ──────────────────────────────────────────────── */
@@ -774,22 +760,22 @@
 .settings-range-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 12px;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
 }
 
 .settings-range {
     flex: 1 1 auto;
     min-width: 0;
     height: 44px;
-    accent-color: var(--ai);
+    accent-color: var(--brand-500);
     cursor: pointer;
 }
 
 .settings-range:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 4px;
-    border-radius: 2px;
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--radius-xs);
 }
 
 .settings-range-value {
@@ -797,9 +783,9 @@
     min-width: 40px;
     text-align: right;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--text-sm);
     font-variant-numeric: tabular-nums;
-    color: var(--fg-muted);
+    color: var(--text-secondary);
 }
 
 /* ── Keyboard shortcut list (rendered by shortcut-manager.js) ────────────── */
@@ -807,38 +793,38 @@
 .settings-shortcuts-list {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    margin-top: 8px;
+    gap: var(--space-0-5, 2px);
+    margin-top: var(--space-2);
 }
 
 .settings-shortcuts-empty {
-    font-size: 12px;
-    color: var(--fg-subtle);
-    padding: 8px 0;
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    padding: var(--space-2) 0;
 }
 
 .settings-shortcut-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding: 8px 10px;
-    border-radius: var(--radius-sm);
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-2-5, 10px);
+    border-radius: var(--radius-lg);
     border: 1px solid transparent;
     transition:
-        background var(--dur-1) var(--ease),
-        border-color var(--dur-1) var(--ease);
+        background var(--transition-fast),
+        border-color var(--transition-fast);
 }
 
 .settings-shortcut-row:hover {
-    background: var(--surface);
-    border-color: var(--hairline);
+    background: var(--surface-hover);
+    border-color: var(--border-default);
 }
 
 .settings-shortcut-meta {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-2-5, 10px);
     min-width: 0;
 }
 
@@ -849,10 +835,10 @@
     justify-content: center;
     width: 28px;
     height: 28px;
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    border: 1px solid var(--hairline);
-    color: var(--fg-muted);
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
 }
 
 .settings-shortcut-icon svg {
@@ -863,40 +849,40 @@
 .settings-shortcut-text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-0-5, 2px);
     min-width: 0;
 }
 
 .settings-shortcut-button {
-    font-size: 13px;
+    font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--fg);
+    color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .settings-shortcut-description {
-    font-size: 11px;
-    color: var(--fg-subtle);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Keyboard badge — mono pill, hairline border, elevated surface. */
+/* Keyboard badge — mono pill, border, elevated surface. */
 .settings-shortcut-key {
     flex: 0 0 auto;
-    padding: 3px 8px;
-    border-radius: 6px;
-    border: 1px solid var(--hairline-strong);
-    background: var(--bg-elev);
-    box-shadow: var(--elev-1), var(--top-highlight);
+    padding: 3px var(--space-2);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-elevated);
+    box-shadow: var(--shadow-sm);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-weight: 600;
     letter-spacing: 0.03em;
-    color: var(--fg-muted);
+    color: var(--text-secondary);
     white-space: nowrap;
 }
 
@@ -908,9 +894,7 @@
     to   { opacity: 1; }
 }
 
-/* Dialog: spring entrance from scale(0.96) + slight Y lift.
-   --ease-spring provides the gentle overshoot that makes the card "arrive"
-   rather than just "appear". Duration pinned to --dur-4 (320ms max). */
+/* Dialog: spring entrance from scale(0.96) + slight Y lift. */
 @keyframes settings-dialog-in {
     from {
         opacity: 0;
@@ -922,16 +906,16 @@
     }
 }
 
-/* Exit animation — fast (--dur-2) + ease-in so the panel leaves decisively.
+/* Exit animation — fast + ease-in so the panel leaves decisively.
    .is-closing is added by closeSettings(); the panel is display:none'd only
    AFTER these finish (SETTINGS_CLOSE_MS in settings-panel-manager.js). `forwards`
    holds the faded-out end state through the brief gap before .hidden lands. */
 .settings-panel.is-closing {
-    animation: settings-scrim-out var(--dur-2) var(--ease-in) forwards;
+    animation: settings-scrim-out var(--transition-base) cubic-bezier(.4, 0, 1, 1) forwards;
 }
 
 .settings-panel.is-closing .settings-dialog {
-    animation: settings-dialog-out var(--dur-2) var(--ease-in) forwards;
+    animation: settings-dialog-out var(--transition-base) cubic-bezier(.4, 0, 1, 1) forwards;
 }
 
 @keyframes settings-scrim-out {

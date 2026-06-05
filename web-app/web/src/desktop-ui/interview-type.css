@@ -3,22 +3,21 @@
  *
  * Two surfaces:
  *   1. #interview-type-modal (.interview-type-modal) — the picker shown on
- *      "+ New interview". Glass scrim + spring card entrance. Two large clickable
- *      cards: 线上 Online (candidate/teal) and 线下 Offline (interviewer/amber).
- *      Clicking a card immediately creates the session and closes the modal.
+ *      "+ New interview". Dimmed scrim + spring card entrance. Two large
+ *      clickable cards: 线上 Online (candidate/info) and 线下 Offline
+ *      (interviewer/warning). Clicking a card immediately creates the session
+ *      and closes the modal.
  *   2. body.offline-mode — collapses the composer to the single room mic:
  *      hides #channel-computer, singles-columns .composer__channels.
  *
  * State managed by renderer.js:
  *   - .interview-type-modal.hidden  → display:none (modal toggled in/out)
  *   - No .selected/.active class added to cards — click fires immediately.
- *   - data-accent="candidate" (online/teal) | data-accent="interviewer" (offline/amber)
+ *   - data-accent="candidate" (online) | data-accent="interviewer" (offline)
  *
- * Tokens: consumes ONLY from styles.css :root — never redefined here.
+ * Tokens: consumes ONLY from theme.css GLP design system — never redefined here.
+ * Light + dark resolve automatically from html[data-theme].
  * Motion: always-on (no prefers-reduced-motion guard). transform/opacity only.
- *   Scrim in: --dur-3 --ease-out. Card in: --dur-4 --ease-spring.
- *   Close: modal hides via .hidden → display:none (no exit keyframe — JS is
- *   instant, markup has no exit-class hook; keep removal snappy per spec).
  */
 
 /* ── Scrim + centering ──────────────────────────────────────────────────────── */
@@ -29,22 +28,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: var(--space-6);
 
   /* Rounded to the shell radius — a fixed element is NOT clipped by
      .app-shell's overflow, so without this the scrim squares off the window's
-     rounded corners. Clean opaque dim + a light 6px blur: crisp and cheap, not
-     the heavy full-window 18px frost (which hitches on open). */
+     rounded corners. GLP overlay: neutral black scrim + light 6px blur. */
   border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
+  background: rgba(0, 0, 0, .5);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 
-  font-family: var(--font-body);
-  color: var(--fg);
+  font-family: var(--font-sans);
+  color: var(--text-primary);
 
   /* Scrim fades in decisively */
-  animation: itm-scrim-in var(--dur-3) var(--ease-out) both;
+  animation: itm-scrim-in var(--transition-moderate) cubic-bezier(0, 0, .2, 1) both;
 }
 
 .interview-type-modal.hidden {
@@ -52,48 +50,45 @@
 }
 
 /* ── Card wrapper ───────────────────────────────────────────────────────────── */
-/* Dimensional: --elev-4 drop-shadow + --top-highlight inner sheen + --hairline edge. */
+/* GLP modal: elevated surface + 1px border + 2xl radius + lg shadow. */
 .interview-type-card-wrap {
   width: 100%;
   max-width: 660px;
-  background: var(--bg-elev-2);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
 
-  /* Layered depth: deep shadow + top-edge lit highlight */
-  box-shadow:
-    var(--elev-4),
-    var(--top-highlight);
+  box-shadow: var(--shadow-lg);
 
-  padding: 28px;
+  padding: var(--space-8);
 
   /* Spring entrance: scale 0.96 → 1 + opacity */
-  animation: itm-card-in var(--dur-4) var(--ease-spring) both;
+  animation: itm-card-in var(--transition-moderate) cubic-bezier(.34, 1.56, .64, 1) both;
 }
 
 /* ── Head: title + subtitle + close ────────────────────────────────────────── */
 .interview-type-head {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   padding-right: 44px;
 }
 
 .interview-type-title {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: 18px;
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: var(--fg);
+  color: var(--text-primary);
 }
 
 .interview-type-subtitle {
-  margin: 6px 0 0;
-  font-family: var(--font-body);
-  font-size: 13px;
+  margin: var(--space-1-5, 6px) 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
   line-height: 1.5;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 /* ── Close button ───────────────────────────────────────────────────────────── */
@@ -107,24 +102,24 @@
   width: 32px;
   height: 32px;
   padding: 0;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-sm);
-  color: var(--fg-muted);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
   cursor: pointer;
 
-  /* Micro-feedback: color + border in --dur-1; transform in --dur-1 */
+  /* Micro-feedback: color + border + transform */
   transition:
-    color         var(--dur-1) var(--ease-out),
-    background    var(--dur-1) var(--ease-out),
-    border-color  var(--dur-1) var(--ease-out),
-    transform     var(--dur-1) var(--ease-spring);
+    color         var(--transition-fast),
+    background    var(--transition-fast),
+    border-color  var(--transition-fast),
+    transform     var(--transition-fast);
 }
 
 .interview-type-close:hover {
-  color: var(--fg);
-  background: var(--surface-strong);
-  border-color: var(--hairline-strong);
+  color: var(--text-primary);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
 }
 
 .interview-type-close:active {
@@ -132,15 +127,16 @@
 }
 
 .interview-type-close:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 /* ── Options grid: two large cards ─────────────────────────────────────────── */
 .interview-type-options {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 @media (max-width: 560px) {
@@ -153,86 +149,84 @@
 /*
  * The card resolves its accent from data-accent (set in HTML).
  * No "selected" class is toggled — a click fires immediately.
- * Accent map: candidate → teal (--candidate), interviewer → amber (--interviewer).
+ * Accent map: candidate → info (online), interviewer → warning (offline).
  *
- * Hover: lift translateY(-2px) + border brightens to --hairline-strong + elevation bump.
- * Active: snap back translateY(0) + scale(0.97) — crisp press feedback.
- * Focus-visible: 2px --ring outline + soft accent glow.
+ * Distinct/inviting per GLP: surface-elevated + border + left accent stripe.
+ * Hover: lift translateY(-2px) + border-strong + shadow-md.
+ * Active: snap back translateY(0) + scale(0.97).
+ * Focus-visible: brand focus ring.
  */
 .interview-type-option {
-  --option-accent: var(--ai);
-  --option-glow:   var(--glow-ai);
+  --option-accent: var(--brand-500);
 
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  gap: var(--space-4);
   min-height: 160px;
-  padding: 20px;
+  padding: var(--space-5);
   text-align: left;
 
-  /* Base surface: slightly elevated above the card bg */
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-lg);   /* match the hero-card tier (was --radius) */
-  color: var(--fg);
+  /* Base surface: elevated card */
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  color: var(--text-primary);
   cursor: pointer;
 
   /* Left accent stripe — 3px coloured edge */
   box-shadow:
     inset 3px 0 0 var(--option-accent),
-    var(--elev-1);
+    var(--shadow-sm);
 
   /* Animate lift + border + shadow + color coherently */
   transition:
-    transform     var(--dur-2) var(--ease-out),
-    background    var(--dur-2) var(--ease-out),
-    border-color  var(--dur-2) var(--ease-out),
-    box-shadow    var(--dur-2) var(--ease-out);
+    transform     var(--transition-base),
+    background    var(--transition-base),
+    border-color  var(--transition-base),
+    box-shadow    var(--transition-base);
 }
 
 /* Accent overrides per data-accent attribute */
 .interview-type-option[data-accent="candidate"] {
-  --option-accent: var(--candidate);
-  --option-glow:   var(--glow-candidate);
+  --option-accent: var(--info);
 }
 
 .interview-type-option[data-accent="interviewer"] {
-  --option-accent: var(--interviewer);
-  --option-glow:   var(--glow-interviewer);
+  --option-accent: var(--warning);
 }
 
-/* Hover: lift + brightened border + elevated shadow + accent tint */
+/* Hover: lift + strong border + elevated shadow + brand tint */
 .interview-type-option:hover {
   transform: translateY(-2px);
-  background: color-mix(in srgb, var(--option-accent) 9%, var(--surface));
-  border-color: var(--hairline-strong);
+  background: var(--brand-50);
+  border-color: var(--border-strong);
   box-shadow:
     inset 3px 0 0 var(--option-accent),
-    var(--elev-3);
+    var(--shadow-md);
 }
 
 /* Active: decisive snap-press, no linger */
 .interview-type-option:active {
   transform: translateY(0) scale(0.97);
-  transition-duration: var(--dur-1);
-  background: color-mix(in srgb, var(--option-accent) 14%, var(--surface));
+  transition-duration: 150ms;
+  background: var(--surface-active);
   /* No border-color change on press — the scale + bg shift carry the feedback;
      a border jump mid-press reads as a flicker before the scale completes. */
   box-shadow:
     inset 3px 0 0 var(--option-accent),
-    var(--elev-1);
+    var(--shadow-sm);
 }
 
-/* Keyboard focus: 2px ring + soft accent glow (accent-specific via --option-glow) */
+/* Keyboard focus: brand focus ring (plus the accent stripe + md shadow) */
 .interview-type-option:focus-visible {
-  outline: 2px solid var(--option-accent);
-  outline-offset: 2px;
+  outline: none;
+  border-color: var(--border-focus);
   box-shadow:
     inset 3px 0 0 var(--option-accent),
-    var(--option-glow),
-    var(--elev-2);
+    var(--focus-ring),
+    var(--shadow-md);
 }
 
 /* ── Icon badge ─────────────────────────────────────────────────────────────── */
@@ -242,13 +236,13 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background: color-mix(in srgb, var(--option-accent) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--option-accent) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--option-accent) 28%, transparent);
   color: var(--option-accent);
 
   /* Icon tint breathes with the card's hover transition */
-  transition: background var(--dur-2) var(--ease-out);
+  transition: background var(--transition-base);
 }
 
 .interview-type-option:hover .interview-type-option__icon {
@@ -259,24 +253,24 @@
 .interview-type-option__body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1-5, 6px);
   min-width: 0;
 }
 
 .interview-type-option__title {
-  font-family: var(--font-display);
-  font-size: 15px;
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.005em;
-  color: var(--fg);
+  color: var(--text-primary);
 }
 
 .interview-type-option__desc {
-  font-family: var(--font-body);
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
   line-height: 1.5;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 /* ── Entrance keyframes ─────────────────────────────────────────────────────── */
@@ -314,18 +308,18 @@ body.offline-mode .composer__channels {
 
 /* Sample-transcript picker in the new-interview modal. */
 .interview-type-sample {
-  margin-top: 16px;
+  margin-top: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1-5, 6px);
 }
 .interview-type-sample__label {
-  font-size: 12px;
-  color: var(--fg-subtle, #8a90a0);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
   letter-spacing: 0.01em;
 }
 .interview-type-sample__desc {
-  font-size: 11px;
-  color: var(--fg-subtle, #8a90a0);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
   margin: 0;
 }

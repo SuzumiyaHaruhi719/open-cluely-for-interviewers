@@ -10,97 +10,84 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap');
 
+/* ── GLP alias layer ─────────────────────────────────────────────────────────
+ * theme.css (imported first) is the single source of truth for the GLP token
+ * contract and themes the UI automatically (light :root + dark
+ * html[data-theme="dark"]). This file no longer defines its own colour system;
+ * instead the legacy alias names that the shell/partials reference are mapped
+ * onto GLP tokens here so EVERY downstream `var(--…)` resolves to the right GLP
+ * value in BOTH themes. Geometry/motion aliases simply point at GLP tokens too.
+ * Names are kept intact — only VALUES change — so React selectors keep working. */
 :root {
-  /* ── Surfaces / structure ────────────────────────────────────────────────
-   * Deep, layered near-blacks (never pure #000 — avoids OLED smear and lets
-   * the elevation scale read). Surfaces step up by tonal lightness, not by
-   * stacking opaque panels. */
-  --bg-deep: #090B0F;     /* window backdrop / titlebar base */
-  --bg-base: #0E1117;     /* main canvas */
-  --bg-elev: #161B22;     /* sidebar / rail / cards */
-  --bg-elev-2: #1C222C;   /* menus, modals, double-stacked surfaces */
-  --surface: rgba(255, 255, 255, .04);        /* faint fill on bg-elev */
-  --surface-strong: rgba(255, 255, 255, .07); /* hover / pressed fill */
-  --border: rgba(255, 255, 255, .08);
-  --fg: #E6EDF3;
-  --fg-muted: #8B949E;
-  --fg-subtle: #6E7681;   /* tertiary: timestamps, hints, disabled labels */
+  /* ── Surfaces / structure → GLP surfaces ───────────────────────────────── */
+  --bg-deep: var(--surface-page);      /* window backdrop / titlebar base */
+  --bg-base: var(--surface-elevated);  /* main canvas (MAIN surface) */
+  --bg-elev: var(--surface-elevated);  /* sidebar / rail / cards */
+  --bg-elev-2: var(--surface-container); /* menus, modals, double-stacked */
+  --surface: var(--surface-subtle);    /* faint fill / low-emphasis chips */
+  --surface-strong: var(--surface-hover); /* hover / pressed fill */
+  --border: var(--border-default);
+  --fg: var(--text-primary);
+  --fg-muted: var(--text-secondary);
+  --fg-subtle: var(--text-tertiary);   /* timestamps, hints, disabled labels */
 
-  /* Semantic channel + role colours (never colour-alone: always icon+label) */
-  --candidate: #2DD4BF;   /* teal  — computer audio / candidate */
-  --interviewer: #F5A524; /* amber — microphone / you */
-  --ai: #7C8CF8;          /* indigo — AI coach + primary CTA */
-  --success: #3FB950;
-  --danger: #F85149;
-  --ring: #7C8CF8;
+  /* Semantic channel + role colours → GLP lanes / semantic tokens */
+  --candidate: var(--lane-candidate);   /* candidate / computer audio */
+  --interviewer: var(--lane-interviewer); /* you / microphone */
+  --ai: var(--lane-ai);                 /* AI coach + primary CTA (brand) */
+  --danger: var(--error);
+  --ring: var(--border-focus);
 
-  /* Hairline borders — a crisp edge + a translucent highlight that catches the
-   * "light from above". Pair --hairline (edge) with --top-highlight (sheen). */
-  --hairline: rgba(255, 255, 255, .08);
-  --hairline-strong: rgba(255, 255, 255, .14);
+  /* Hairline borders → GLP borders (edge + stronger edge). */
+  --hairline: var(--border-default);
+  --hairline-strong: var(--border-strong);
 
-  /* ── Radii ──────────────────────────────────────────────────────────────*/
-  --radius-sm: 8px;
-  --radius: 12px;
-  --radius-lg: 16px;   /* premium cards, channel boxes, modals */
-  --radius-xl: 20px;   /* shell / hero surfaces */
+  /* ── Radii → GLP radius scale ──────────────────────────────────────────── */
+  --radius-sm: var(--radius-lg);   /* compact controls */
+  --radius: var(--radius-xl);      /* default surfaces */
+  --radius-lg: var(--radius-2xl);  /* premium cards, channel boxes, modals */
+  --radius-xl: var(--radius-2xl);  /* shell / hero surfaces */
 
-  /* ── Motion system ────────────────────────────────────────────────────────
-   * Crisp, never sluggish (不拖泥带水). Premium feel comes from the EASING
-   * (decisive expo-out arrival), layered depth, and glass — NOT long durations.
-   * Durations: micro 120ms → modal 320ms. Always transform/opacity.
-   *   --ease       expo-out, the default "decisive arrival" curve (kept name)
-   *   --ease-in    accelerate away (exits — keep ~70% of enter duration)
-   *   --ease-spring gentle overshoot for pops (badges, modals, toggles)
-   *   --ease-inout symmetric for looping/continuous motion */
-  --dur-1: 120ms;  /* color / opacity / press micro-feedback */
-  --dur-2: 180ms;  /* hover reveals, small transitions */
-  --dur-3: 240ms;  /* panels, content reveals, accordions */
-  --dur-4: 320ms;  /* modals, session crossfade, large surfaces */
-  --ease: cubic-bezier(.16, 1, .3, 1);
-  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  /* ── Motion system → GLP transitions ───────────────────────────────────────
+   * Durations map onto the GLP transition tokens; easing comes from the same
+   * curve GLP uses (the GLP transitions bake in cubic-bezier(0,0,.2,1)). */
+  --dur-1: 150ms;  /* color / opacity / press micro-feedback */
+  --dur-2: 150ms;  /* hover reveals, small transitions */
+  --dur-3: 200ms;  /* panels, content reveals, accordions */
+  --dur-4: 300ms;  /* modals, session crossfade, large surfaces */
+  --ease: cubic-bezier(0, 0, .2, 1);
+  --ease-out: cubic-bezier(0, 0, .2, 1);
   --ease-in: cubic-bezier(.4, 0, 1, 1);
   --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
   --ease-inout: cubic-bezier(.65, 0, .35, 1);
 
-  /* ── Elevation scale (dark-tuned) ─────────────────────────────────────────
-   * Soft, layered shadows + a top-edge inner highlight so raised surfaces look
-   * lit from above rather than outlined. Use one step per elevation tier;
-   * never invent ad-hoc shadow values. */
-  --elev-1: 0 1px 2px rgba(0, 0, 0, .40);
-  --elev-2: 0 4px 14px -2px rgba(0, 0, 0, .50);
-  --elev-3: 0 12px 32px -4px rgba(0, 0, 0, .55);
-  --elev-4: 0 24px 64px -8px rgba(0, 0, 0, .62);
-  --top-highlight: inset 0 1px 0 rgba(255, 255, 255, .05);
+  /* ── Elevation scale → GLP shadows (never colored glows) ────────────────── */
+  --elev-1: var(--shadow-sm);
+  --elev-2: var(--shadow-md);
+  --elev-3: var(--shadow-lg);
+  --elev-4: var(--shadow-lg);
+  --top-highlight: none; /* GLP surfaces are flat — no inner top sheen */
 
-  /* ── Glass ────────────────────────────────────────────────────────────────
-   * Frosted translucency for chrome that floats over content (titlebar, menus,
-   * sticky headers). Always pair backdrop-filter with a translucent --glass-bg
-   * fallback so it degrades to a solid panel where blur is unavailable. */
-  --glass-blur: 18px;
-  --glass-bg: color-mix(in srgb, var(--bg-elev) 78%, transparent);
-  --glass-bg-deep: color-mix(in srgb, var(--bg-deep) 72%, transparent);
+  /* ── Glass → translucent elevated surface ──────────────────────────────────
+   * Translucent chrome floating over content (titlebar, topbar). Built from the
+   * GLP elevated surface so it themes automatically — no heavy backdrop blur. */
+  --glass-bg: color-mix(in srgb, var(--surface-elevated) 82%, transparent);
 
-  /* ── Accent glows ─────────────────────────────────────────────────────────
-   * Soft coloured bloom behind active/primary elements. Use sparingly — one
-   * glowing element per view keeps it premium, not gaudy. */
-  --glow-ai: 0 0 24px -6px color-mix(in srgb, var(--ai) 65%, transparent);
-  --glow-candidate: 0 0 24px -6px color-mix(in srgb, var(--candidate) 60%, transparent);
-  --glow-interviewer: 0 0 24px -6px color-mix(in srgb, var(--interviewer) 60%, transparent);
+  /* ── Accent glows → neutral GLP shadows (GLP forbids colored glows) ─────── */
+  --glow-ai: var(--shadow-md);
+  --glow-candidate: var(--shadow-md);
+  --glow-interviewer: var(--shadow-md);
 
-  /* ── Type ─────────────────────────────────────────────────────────────────
-   * Scale: 11 / 12 / 13 / 14(base) / 15 / 18 / 24. Display = Bricolage (700/800)
-   * for titles only; body = Hanken; mono = JetBrains for data/timers/labels. */
-  --font-display: 'Bricolage Grotesque', 'Hanken Grotesk', 'Noto Sans SC', system-ui, sans-serif;
-  --font-body: 'Hanken Grotesk', 'Noto Sans SC', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* ── Type → GLP families ───────────────────────────────────────────────────
+   * Display keeps Bricolage for product titles; body + mono map onto the GLP
+   * sans/mono stacks so weights and metrics match the rest of the system. */
+  --font-display: 'Bricolage Grotesque', var(--font-sans);
+  --font-body: var(--font-sans);
 
   /* Shell geometry */
   --titlebar-h: 40px;
   --sidebar-w: 264px;
   --rail-w: 320px;
-
-  color-scheme: dark;
 }
 
 * {
@@ -117,7 +104,7 @@ body {
 
 body {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--text-base);
   line-height: 1.45;
   color: var(--fg);
   background: transparent;
@@ -162,20 +149,16 @@ svg:not([width]) {
   width: 100%;
   height: 100dvh;
   min-height: 0;
-  /* Atmospheric base — deep canvas lifted by faint corner glows (indigo /
-     teal / amber) so the window reads as a lit space, not a flat fill.
-     Static layered gradients: pure paint, zero per-frame cost. */
-  background:
-    radial-gradient(135% 100% at 6% -8%, color-mix(in srgb, var(--ai) 6%, transparent) 0%, transparent 44%),
-    radial-gradient(120% 100% at 104% 108%, color-mix(in srgb, var(--candidate) 5%, transparent) 0%, transparent 48%),
-    radial-gradient(90% 80% at 102% -6%, color-mix(in srgb, var(--interviewer) 3%, transparent) 0%, transparent 42%),
-    var(--bg-base);
+  /* GLP base — flat neutral page surface (≤20% visible app backdrop). The old
+     coloured corner glows are dropped: GLP keeps surfaces neutral and reserves
+     brand green for CTA/focus/active only. */
+  background: var(--surface-page);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-/* Premium bezel — a crisp hairline ring + a lit top edge, painted ABOVE every
-   panel so the rounded window has a clean, floating contour. Non-interactive. */
+/* Window contour — a single neutral hairline ring painted ABOVE every panel so
+   the rounded window has a clean edge. Non-interactive. */
 .app-shell::after {
   content: "";
   position: absolute;
@@ -183,9 +166,7 @@ svg:not([width]) {
   z-index: 40;
   pointer-events: none;
   border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 1px var(--hairline-strong),
-    inset 0 1px 0 rgba(255, 255, 255, .07);
+  box-shadow: inset 0 0 0 1px var(--border-default);
 }
 
 /* ── Orchestrated launch entrance ─────────────────────────────────────────────
@@ -224,15 +205,14 @@ svg:not([width]) {
   -webkit-app-region: drag;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 8px 0 14px;
-  /* Solid bar — NO backdrop-filter. A full-window blur recomputed on every
-     resize frame, on an already-transparent window, was the main cause of
-     window-resize lag. A near-opaque deep bar + hairline + faint top sheen
-     keeps the premium framing at a fraction of the per-frame paint cost. */
-  background: var(--bg-deep);
-  border-bottom: 1px solid var(--hairline);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+  gap: var(--space-3);
+  padding: 0 var(--space-2) 0 var(--space-4);
+  /* GLP top chrome — translucent elevated surface with a bottom hairline. NO
+     backdrop-filter blur on the full bar (a window-wide blur recomputed on
+     every resize frame was the main cause of resize lag); the translucent
+     elevated fill + bottom border carries the framing cheaply. */
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--border-default);
   user-select: none;
 }
 
@@ -240,30 +220,25 @@ svg:not([width]) {
 .titlebar__brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   min-width: 0;
 }
 
-/* The mic SVG acts as the brand mark — tinted with the --ai accent and a
-   subtle glow so it reads as the product's primary identity colour. */
+/* The mic SVG acts as the brand mark — tinted with the brand colour so it reads
+   as the product's primary identity. GLP: brand green, no coloured glow. */
 .titlebar__logo {
   display: inline-flex;
-  color: var(--ai);
-  /* Hairline drop-shadow behind the icon — readable on any surface shade. */
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ai) 50%, transparent));
+  color: var(--text-brand);
   flex: 0 0 auto;
 }
 
 .titlebar__title {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--fg);
+  color: var(--text-primary);
   white-space: nowrap;
-  /* Sharpen the wordmark with a very faint top-highlight text-shadow so it
-     reads as embossed into the glass surface. */
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .06);
 }
 
 /* ── Titlebar status section (mobile pill lives here) ─────────────────────── */
@@ -279,10 +254,11 @@ svg:not([width]) {
   -webkit-app-region: no-drag;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-0-5);
 }
 
-/* Individual window control buttons.
+/* Individual window control buttons — ghost icon buttons (transparent at rest,
+   GLP secondary surface on hover).
    Transition: color/background at --dur-2 (hover-reveal), press scale at
    --dur-1 (micro). Two separate transitions keep each axis optimal. */
 .titlebar__btn {
@@ -293,9 +269,9 @@ svg:not([width]) {
   height: 26px;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background: transparent;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   transition:
     background var(--dur-2) var(--ease),
     color var(--dur-2) var(--ease),
@@ -304,9 +280,9 @@ svg:not([width]) {
 }
 
 .titlebar__btn:hover {
-  background: var(--surface);
-  color: var(--fg);
-  border-color: var(--hairline);
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
 }
 
 /* Press: subtle spring scale so the control feels tactile without bouncing. */
@@ -322,9 +298,9 @@ svg:not([width]) {
 
 /* Danger close button — red tint on hover only, so it stays invisible at rest. */
 .titlebar__btn--danger:hover {
-  background: color-mix(in srgb, var(--danger) 18%, transparent);
-  border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
-  color: var(--danger);
+  background: var(--error-bg);
+  border-color: color-mix(in srgb, var(--error) 40%, var(--border-default));
+  color: var(--error);
 }
 
 /* Stealth toggle icon swap (eye → eye-off) driven by .stealth-on on <body>. */
@@ -332,8 +308,8 @@ svg:not([width]) {
 body.stealth-on .titlebar__icon-stealth-off { display: none; }
 body.stealth-on .titlebar__icon-stealth-on { display: inline-flex; }
 body.stealth-on #btn-stealth {
-  color: var(--interviewer);
-  background: color-mix(in srgb, var(--interviewer) 16%, transparent);
+  color: var(--warning);
+  background: var(--warning-bg);
 }
 
 /* Whole-app dim feedback while stealth is active (cosmetic; real hiding is
@@ -353,8 +329,8 @@ body.stealth-on .app-shell { opacity: 0.92; }
   display: flex;
   flex-direction: column;
   min-height: 0;
-  background: var(--bg-elev);
-  border-right: 1px solid var(--border);
+  background: var(--surface-elevated);
+  border-right: 1px solid var(--border-default);
 }
 
 /* #session-list carries the .history-list class — sidebar partial owns its
@@ -366,23 +342,23 @@ body.stealth-on .app-shell { opacity: 0.92; }
 
 .sidebar__footer {
   flex: 0 0 auto;
-  padding: 8px;
-  border-top: 1px solid var(--border);
+  padding: var(--space-2);
+  border-top: 1px solid var(--border-default);
 }
 
 .sidebar__settings-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5, 10px);
   width: 100%;
   min-height: 40px;
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background: transparent;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 600;
   transition:
     background var(--dur-2) var(--ease),
@@ -392,9 +368,9 @@ body.stealth-on .app-shell { opacity: 0.92; }
 }
 
 .sidebar__settings-btn:hover {
-  background: var(--surface);
-  color: var(--fg);
-  border-color: var(--border);
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
 }
 
 .sidebar__settings-btn:active { transform: scale(0.98); }
@@ -410,7 +386,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   min-height: 0;
   min-width: 0;
-  background: var(--bg-base);
+  background: var(--surface-elevated);
   /* Query container so the topbar adapts to the MAIN column's real width (not the
      viewport — the left sidebar + right rail eat width, so viewport is wrong). */
   container-type: inline-size;
@@ -423,17 +399,17 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .topbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--hairline);
-  background: color-mix(in srgb, var(--bg-base) 90%, var(--bg-elev));
-  box-shadow: var(--top-highlight), var(--elev-1);
+  gap: var(--space-3);
+  padding: var(--space-2-5, 10px) var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--glass-bg);
+  box-shadow: var(--shadow-sm);
 }
 
 .topbar__lead {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   min-width: 0;
   /* Title yields space first (it ellipsizes) so the meta + actions stay intact. */
   flex: 0 1 auto;
@@ -442,10 +418,10 @@ body.stealth-on .app-shell { opacity: 0.92; }
 /* Session title in display font for hierarchy — truncates cleanly. */
 .topbar__title {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: var(--text-lg);
   font-weight: 700;
   letter-spacing: 0.01em;
-  color: var(--fg);
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -456,24 +432,24 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .status-dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
-  background: var(--fg-subtle);
+  border-radius: var(--radius-full);
+  background: var(--text-tertiary);
   flex: 0 0 auto;
   /* Soft pulse when session is live — toggled by JS adding .is-live to topbar */
   transition: background var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
 .topbar.is-live .status-dot {
-  background: var(--danger);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--danger) 60%, transparent);
+  background: var(--error);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--error) 60%, transparent);
 }
 
 /* Elapsed session timer — monospaced tabular so digits don't reflow. */
 .timer {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--text-xs);
   font-variant-numeric: tabular-nums;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   letter-spacing: 0.02em;
 }
 
@@ -481,7 +457,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .topbar__meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   margin-left: auto;
   /* Meta pills are informational — they shrink/clip before the action buttons,
      and the least-critical ones hide on a narrow window (media queries below). */
@@ -497,19 +473,19 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .mode-indicator {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  gap: var(--space-1-5, 6px);
+  padding: 3px var(--space-2-5, 10px);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--surface-subtle);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   white-space: nowrap;
-  box-shadow: var(--elev-1);
+  box-shadow: var(--shadow-sm);
   transition:
     color var(--dur-2) var(--ease),
     border-color var(--dur-2) var(--ease),
@@ -519,65 +495,66 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .mode-indicator__dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
-  background: var(--fg-muted);
+  border-radius: var(--radius-full);
+  background: var(--text-secondary);
   flex: 0 0 auto;
   transition: background var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
-/* Fast mode = teal (candidate colour) */
+/* Fast mode = candidate lane (blue) */
 .mode-indicator[data-mode="fast"] {
-  color: var(--candidate);
-  border-color: color-mix(in srgb, var(--candidate) 35%, var(--border));
-  background: color-mix(in srgb, var(--candidate) 8%, transparent);
+  color: var(--lane-candidate);
+  border-color: color-mix(in srgb, var(--lane-candidate) 35%, var(--border-default));
+  background: color-mix(in srgb, var(--lane-candidate) 8%, transparent);
 }
 .mode-indicator[data-mode="fast"] .mode-indicator__dot {
-  background: var(--candidate);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--candidate) 50%, transparent);
+  background: var(--lane-candidate);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--lane-candidate) 50%, transparent);
 }
 
-/* Expert mode = indigo (AI colour) */
+/* Expert mode = AI lane (brand green) */
 .mode-indicator[data-mode="expert"] {
-  color: var(--ai);
-  border-color: color-mix(in srgb, var(--ai) 35%, var(--border));
-  background: color-mix(in srgb, var(--ai) 8%, transparent);
+  color: var(--lane-ai);
+  border-color: color-mix(in srgb, var(--lane-ai) 35%, var(--border-default));
+  background: color-mix(in srgb, var(--lane-ai) 8%, transparent);
 }
 .mode-indicator[data-mode="expert"] .mode-indicator__dot {
-  background: var(--ai);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 50%, transparent);
+  background: var(--lane-ai);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--lane-ai) 50%, transparent);
 }
 
-/* Expert 2.0 = magenta-pink (the merged-DE fast chain; distinct from Fast's teal) */
+/* Expert 2.0 = chart-6 (violet accent; distinct from Fast's blue) */
 .mode-indicator[data-mode="expert2"] {
-  color: #ec4899;
-  border-color: color-mix(in srgb, #ec4899 35%, var(--border));
-  background: color-mix(in srgb, #ec4899 8%, transparent);
+  color: var(--chart-6);
+  border-color: color-mix(in srgb, var(--chart-6) 35%, var(--border-default));
+  background: color-mix(in srgb, var(--chart-6) 8%, transparent);
 }
 .mode-indicator[data-mode="expert2"] .mode-indicator__dot {
-  background: #ec4899;
-  box-shadow: 0 0 6px color-mix(in srgb, #ec4899 50%, transparent);
+  background: var(--chart-6);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--chart-6) 50%, transparent);
 }
 
 /* ASR engine pill — colour per provider so the active speech-to-text model is
-   obvious at a glance (Paraformer = teal, Xunfei = amber, Doubao = violet). */
+   obvious at a glance (Paraformer = candidate blue, Xunfei = warning amber,
+   Doubao = interviewer amber). */
 .mode-indicator[data-asr="paraformer"] {
-  color: var(--candidate);
-  border-color: color-mix(in srgb, var(--candidate) 35%, var(--border));
-  background: color-mix(in srgb, var(--candidate) 8%, transparent);
+  color: var(--lane-candidate);
+  border-color: color-mix(in srgb, var(--lane-candidate) 35%, var(--border-default));
+  background: color-mix(in srgb, var(--lane-candidate) 8%, transparent);
 }
-.mode-indicator[data-asr="paraformer"] .mode-indicator__dot { background: var(--candidate); box-shadow: 0 0 6px color-mix(in srgb, var(--candidate) 50%, transparent); }
+.mode-indicator[data-asr="paraformer"] .mode-indicator__dot { background: var(--lane-candidate); box-shadow: 0 0 6px color-mix(in srgb, var(--lane-candidate) 50%, transparent); }
 .mode-indicator[data-asr="xfyun"] {
-  color: #f5a623;
-  border-color: color-mix(in srgb, #f5a623 35%, var(--border));
-  background: color-mix(in srgb, #f5a623 8%, transparent);
+  color: var(--warning);
+  border-color: color-mix(in srgb, var(--warning) 35%, var(--border-default));
+  background: color-mix(in srgb, var(--warning) 8%, transparent);
 }
-.mode-indicator[data-asr="xfyun"] .mode-indicator__dot { background: #f5a623; box-shadow: 0 0 6px color-mix(in srgb, #f5a623 50%, transparent); }
+.mode-indicator[data-asr="xfyun"] .mode-indicator__dot { background: var(--warning); box-shadow: 0 0 6px color-mix(in srgb, var(--warning) 50%, transparent); }
 .mode-indicator[data-asr="volc"] {
-  color: var(--interviewer);
-  border-color: color-mix(in srgb, var(--interviewer) 40%, var(--border));
-  background: color-mix(in srgb, var(--interviewer) 10%, transparent);
+  color: var(--lane-interviewer);
+  border-color: color-mix(in srgb, var(--lane-interviewer) 40%, var(--border-default));
+  background: color-mix(in srgb, var(--lane-interviewer) 10%, transparent);
 }
-.mode-indicator[data-asr="volc"] .mode-indicator__dot { background: var(--interviewer); box-shadow: 0 0 6px color-mix(in srgb, var(--interviewer) 55%, transparent); }
+.mode-indicator[data-asr="volc"] .mode-indicator__dot { background: var(--lane-interviewer); box-shadow: 0 0 6px color-mix(in srgb, var(--lane-interviewer) 55%, transparent); }
 
 /* ── REC state indicator ─────────────────────────────────────────────────── */
 /* Mirrors mode-indicator shape; data-state drives colour.
@@ -585,19 +562,19 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .rec-indicator {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  gap: var(--space-1-5, 6px);
+  padding: 3px var(--space-2-5, 10px);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--surface-subtle);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   white-space: nowrap;
-  box-shadow: var(--elev-1);
+  box-shadow: var(--shadow-sm);
   transition:
     color var(--dur-2) var(--ease),
     border-color var(--dur-2) var(--ease),
@@ -608,33 +585,33 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .rec-indicator__dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
-  background: var(--fg-muted);
+  border-radius: var(--radius-full);
+  background: var(--text-secondary);
   flex: 0 0 auto;
   transition: background var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
-/* Connecting — indigo with a slow AI-colour pulse on the dot. */
+/* Connecting — brand (AI lane) with a slow pulse on the dot. */
 .rec-indicator[data-state="connecting"] {
-  color: var(--ai);
-  border-color: color-mix(in srgb, var(--ai) 40%, var(--border));
-  background: color-mix(in srgb, var(--ai) 8%, transparent);
+  color: var(--lane-ai);
+  border-color: color-mix(in srgb, var(--lane-ai) 40%, var(--border-default));
+  background: color-mix(in srgb, var(--lane-ai) 8%, transparent);
 }
 .rec-indicator[data-state="connecting"] .rec-indicator__dot {
-  background: var(--ai);
+  background: var(--lane-ai);
   animation: rec-pulse 1.2s var(--ease-inout) infinite;
 }
 
-/* Live — full danger red bloom: border, bg tint, and the --glow-* bloom behind
-   the pill. The glow is the single "hot" element in the topbar hierarchy. */
+/* Live — error-red emphasis: border + bg tint + a soft red ring so it reads as
+   the single "hot" element in the topbar hierarchy. */
 .rec-indicator[data-state="live"] {
-  color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 50%, var(--border));
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  box-shadow: var(--elev-1), 0 0 20px -6px color-mix(in srgb, var(--danger) 55%, transparent);
+  color: var(--error);
+  border-color: color-mix(in srgb, var(--error) 50%, var(--border-default));
+  background: var(--error-bg);
+  box-shadow: var(--shadow-sm), 0 0 20px -6px color-mix(in srgb, var(--error) 55%, transparent);
 }
 .rec-indicator[data-state="live"] .rec-indicator__dot {
-  background: var(--danger);
+  background: var(--error);
   animation: rec-pulse 1.4s var(--ease-inout) infinite;
 }
 
@@ -649,13 +626,13 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .screenshot-count {
   min-width: 22px;
   padding: 2px 7px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-default);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-variant-numeric: tabular-nums;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   text-align: center;
   transition:
     color var(--dur-2) var(--ease),
@@ -666,9 +643,9 @@ body.stealth-on .app-shell { opacity: 0.92; }
 
 /* Pop-spring when the number changes — JS can toggle .bump then remove it. */
 .screenshot-count.bump {
-  color: var(--ai);
-  border-color: color-mix(in srgb, var(--ai) 40%, var(--border));
-  background: color-mix(in srgb, var(--ai) 12%, transparent);
+  color: var(--text-brand);
+  border-color: color-mix(in srgb, var(--brand-500) 40%, var(--border-default));
+  background: color-mix(in srgb, var(--brand-500) 12%, transparent);
   transform: scale(1.08);
 }
 
@@ -676,7 +653,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .topbar__actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1-5, 6px);
   /* Never shrink/clip the action buttons (Generate Q is the primary action).
      The title + meta yield space first; see flex rules + the narrow-window
      media queries below. */
@@ -690,35 +667,31 @@ body.stealth-on .app-shell { opacity: 0.92; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-1-5, 6px);
   min-height: 34px;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--fg);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: var(--elev-1), var(--top-highlight);
-  transition:
-    background var(--dur-2) var(--ease),
-    border-color var(--dur-2) var(--ease),
-    color var(--dur-2) var(--ease),
-    box-shadow var(--dur-2) var(--ease),
-    transform var(--dur-1) var(--ease-spring);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-base);
 }
 
 .action-btn:hover:not(:disabled) {
-  background: var(--surface-strong);
-  border-color: var(--hairline-strong);
-  box-shadow: var(--elev-2), var(--top-highlight);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
-/* Decisive press scale — snaps back via spring overshoot. */
+/* Decisive press — settle back to rest. */
 .action-btn:active:not(:disabled) {
-  transform: scale(0.96);
+  transform: translateY(0) scale(0.98);
   transition-duration: var(--dur-1);
 }
 
@@ -737,32 +710,72 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .action-btn.icon-btn {
   width: 34px;
   padding: 0;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 .action-btn.icon-btn:hover:not(:disabled) {
-  color: var(--fg);
+  color: var(--text-primary);
 }
 
-/* Primary CTA — indigo fill, subtle --glow-ai bloom on hover so it pops as
-   the most important affordance without being garish at rest. */
+/* Primary CTA — brand-green fill + inverse text. GLP: solid brand, no glow. */
 .action-btn.primary-btn {
-  color: #0E1117; /* --bg-base solid so text reads on indigo */
-  background: var(--ai);
-  border-color: var(--ai);
-  box-shadow: var(--elev-1), var(--top-highlight);
+  color: var(--text-inverse);
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  box-shadow: var(--shadow-sm);
 }
 
 .action-btn.primary-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--ai) 86%, white);
-  border-color: color-mix(in srgb, var(--ai) 86%, white);
-  /* Glow bloom appears on hover — one glowing CTA keeps the bar premium. */
-  box-shadow: var(--glow-ai), var(--elev-2), var(--top-highlight);
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  box-shadow: var(--shadow-md);
 }
 
 .action-btn.primary-btn:disabled {
-  color: color-mix(in srgb, var(--bg-base) 55%, transparent);
+  color: color-mix(in srgb, var(--text-inverse) 65%, transparent);
 }
+
+/* ── Theme toggle (light/dark) ───────────────────────────────────────────────
+ * Topbar icon button that flips the GLP theme. Ghost/secondary look: transparent
+ * at rest with a secondary-grey icon, GLP hover surface + primary icon on hover.
+ * ~34px square to sit in the action cluster. */
+.glp-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--text-secondary);
+  transition: var(--transition-base);
+}
+
+.glp-theme-toggle:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.glp-theme-toggle:active {
+  transform: translateY(0) scale(0.96);
+  transition-duration: var(--dur-1);
+}
+
+.glp-theme-toggle:focus-visible {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
+}
+
+/* Icon swap: show the sun in dark mode (to switch → light) and the moon in light
+   mode (to switch → dark). Components may render either/both icons inside. */
+.glp-theme-toggle .glp-theme-toggle__icon-dark { display: none; }
+html[data-theme="dark"] .glp-theme-toggle .glp-theme-toggle__icon-dark { display: inline-flex; }
+html[data-theme="dark"] .glp-theme-toggle .glp-theme-toggle__icon-light { display: none; }
 
 /* ── More menu dropdown ──────────────────────────────────────────────────── */
 .more-menu {
@@ -770,23 +783,21 @@ body.stealth-on .app-shell { opacity: 0.92; }
   display: inline-flex;
 }
 
-/* Glass panel: backdrop-filter frost, layered shadow, hairline border.
+/* Dropdown panel: solid GLP container surface, layered shadow, hairline border.
    Entrance animation uses --ease-spring so it "pops" from the anchor point. */
 .more-menu-panel {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
   min-width: 180px;
-  padding: 4px;
+  padding: var(--space-1);
   display: flex;
   flex-direction: column;
   gap: 1px;
-  border-radius: var(--radius);
-  border: 1px solid var(--hairline-strong);
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  box-shadow: var(--elev-3), var(--top-highlight);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  background: var(--surface-container);
+  box-shadow: var(--shadow-lg);
   z-index: 80;
   /* Spring entrance: pops open from the top-right anchor with mild overshoot. */
   transform-origin: top right;
@@ -804,13 +815,13 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .more-menu-item {
   display: block;
   width: 100%;
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background: transparent;
-  color: var(--fg);
+  color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-sm);
   text-align: left;
   transition:
     background var(--dur-1) var(--ease),
@@ -819,8 +830,8 @@ body.stealth-on .app-shell { opacity: 0.92; }
 }
 
 .more-menu-item:hover {
-  background: var(--surface-strong);
-  color: var(--fg);
+  background: var(--surface-hover);
+  color: var(--text-primary);
 }
 
 .more-menu-item:active:not(:disabled) { transform: scale(0.98); }
@@ -831,29 +842,29 @@ body.stealth-on .app-shell { opacity: 0.92; }
 }
 
 .more-menu-item:disabled {
-  color: var(--fg-subtle);
+  color: var(--text-disabled);
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 .more-menu-separator {
   height: 1px;
-  margin: 3px 4px;
-  background: var(--hairline);
+  margin: 3px var(--space-1);
+  background: var(--border-subtle);
 }
 
 /* ── Mobile companion pill (titlebar status area) ────────────────────────── */
 .mobile-server-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--fg-muted);
+  gap: var(--space-1-5, 6px);
+  padding: 3px var(--space-2-5, 10px);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.02em;
   transition:
@@ -864,9 +875,9 @@ body.stealth-on .app-shell { opacity: 0.92; }
 }
 
 .mobile-server-pill:hover {
-  background: var(--surface-strong);
-  border-color: var(--hairline-strong);
-  color: var(--fg);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
 }
 
 .mobile-server-pill:active { transform: scale(0.96); }
@@ -881,16 +892,16 @@ body.stealth-on .app-shell { opacity: 0.92; }
 
 /* Server is up but no device connected yet — amber for "waiting". */
 .mobile-server-pill.idle {
-  color: var(--interviewer);
-  border-color: color-mix(in srgb, var(--interviewer) 38%, var(--border));
-  background: color-mix(in srgb, var(--interviewer) 8%, transparent);
+  color: var(--warning);
+  border-color: color-mix(in srgb, var(--warning) 38%, var(--border-default));
+  background: var(--warning-bg);
 }
 
-/* Device connected — success green with a faint bloom. */
+/* Device connected — success green. */
 .mobile-server-pill.connected {
   color: var(--success);
-  border-color: color-mix(in srgb, var(--success) 40%, var(--border));
-  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border-color: color-mix(in srgb, var(--success) 40%, var(--border-default));
+  background: var(--success-bg);
 }
 
 .mobile-server-pill svg { flex: 0 0 auto; }
@@ -899,8 +910,8 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .transcription-monitor {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid var(--hairline);
-  background: color-mix(in srgb, var(--bg-base) 94%, var(--bg-elev));
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-subtle);
   overflow: hidden;
 }
 
@@ -909,14 +920,14 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .monitor-toggle {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   width: 100%;
-  padding: 5px 16px;
+  padding: 5px var(--space-4);
   border: none;
   background: transparent;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.02em;
   text-align: left;
   transition:
@@ -925,8 +936,8 @@ body.stealth-on .app-shell { opacity: 0.92; }
 }
 
 .monitor-toggle:hover {
-  background: var(--surface);
-  color: var(--fg);
+  background: var(--surface-hover);
+  color: var(--text-primary);
 }
 
 .monitor-toggle:focus-visible {
@@ -937,18 +948,18 @@ body.stealth-on .app-shell { opacity: 0.92; }
 /* Rounded pill showing master state: Idle / Active / Connecting. */
 .monitor-pill {
   padding: 1px 7px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-weight: 600;
   letter-spacing: 0.04em;
   font-size: 10px;
   text-transform: uppercase;
-  color: var(--bg-base);
-  background: var(--fg-muted);
+  color: var(--text-inverse);
+  background: var(--text-tertiary);
   transition: background var(--dur-2) var(--ease);
 }
 
 .monitor-pill.active     { background: var(--success); }
-.monitor-pill.connecting { background: var(--ai); }
+.monitor-pill.connecting { background: var(--brand-500); }
 
 /* Mini source row inside the toggle bar (dot + label). */
 .monitor-source-inline {
@@ -960,8 +971,8 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .monitor-source-dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
-  background: var(--fg-subtle);
+  border-radius: var(--radius-full);
+  background: var(--text-tertiary);
   flex: 0 0 auto;
   transition:
     background var(--dur-2) var(--ease),
@@ -971,24 +982,24 @@ body.stealth-on .app-shell { opacity: 0.92; }
 /* State-driven dot colours + a crisp drop-shadow glow (not box-shadow bloom,
    so it renders sharp at small sizes). */
 .monitor-source-dot[data-state="connecting"] {
-  background: var(--ai);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--ai) 60%, transparent);
+  background: var(--brand-500);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--brand-500) 60%, transparent);
 }
 .monitor-source-dot[data-state="listening"] {
   background: var(--success);
   box-shadow: 0 0 6px color-mix(in srgb, var(--success) 55%, transparent);
 }
 .monitor-source-dot[data-state="error"] {
-  background: var(--danger);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--danger) 60%, transparent);
+  background: var(--error);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--error) 60%, transparent);
 }
 
 /* Expand/collapse caret — pure CSS rotation via class on parent. */
 .monitor-toggle-caret {
   margin-left: auto;
-  font-size: 14px;
+  font-size: var(--text-base);
   line-height: 1;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
   transition: transform var(--dur-2) var(--ease-out);
 }
 
@@ -1002,9 +1013,9 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .monitor-details {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 0 16px 10px;
-  border-top: 1px solid var(--hairline);
+  gap: var(--space-1-5, 6px);
+  padding: 0 var(--space-4) var(--space-2-5, 10px);
+  border-top: 1px solid var(--border-default);
   overflow: hidden;
   max-height: 300px;
   opacity: 1;
@@ -1029,22 +1040,22 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .monitor-source-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 6px;
-  margin-top: 8px;
+  gap: var(--space-1-5, 6px);
+  margin-top: var(--space-2);
 }
 
-/* Individual source card — elevated one step so they read as "chips". */
+/* Individual source card — a subtle chip that reads above the strip. */
 .monitor-source-row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   min-width: 0;
-  padding: 6px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--hairline);
-  background: var(--surface);
-  box-shadow: var(--elev-1), var(--top-highlight);
+  padding: var(--space-1-5, 6px) var(--space-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-sm);
 }
 
 /* UPPERCASE monospaced source label — tight tracking for a data-label look. */
@@ -1054,15 +1065,15 @@ body.stealth-on .app-shell { opacity: 0.92; }
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 /* Live transcript snippet — truncated to one line. */
 .monitor-live-text {
   min-width: 0;
-  font-size: 12px;
+  font-size: var(--text-xs);
   line-height: 1.35;
-  color: var(--fg);
+  color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1074,25 +1085,25 @@ body.stealth-on .app-shell { opacity: 0.92; }
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0-5);
 }
 
 /* Log entries — mono, compact, tinted by severity. */
 .monitor-log-entry {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   line-height: 1.35;
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: var(--fg-muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
+  padding: 2px var(--space-1-5, 6px);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-default);
 }
 
 .monitor-log-entry.error {
-  color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 38%, var(--border));
-  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  color: var(--error);
+  border-color: color-mix(in srgb, var(--error) 38%, var(--border-default));
+  background: var(--error-bg);
 }
 
 /* ── Transcript stream ────────────────────────────────────────────────────── */
@@ -1100,10 +1111,10 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .chat-messages {
   min-height: 0;
   overflow-y: auto;
-  padding: 16px;
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 /* Empty state — centered, subtle, actionable copy. The pseudo-element avoids
@@ -1115,10 +1126,10 @@ body.stealth-on .app-shell { opacity: 0.92; }
   justify-content: center;
   height: 100%;
   margin: auto;
-  padding: 48px 32px;
+  padding: var(--space-12) var(--space-8);
   text-align: center;
-  color: var(--fg-subtle);
-  font-size: 13px;
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
   font-style: italic;
   line-height: 1.6;
 }
@@ -1127,18 +1138,17 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .composer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 12px 16px 16px;
-  border-top: 1px solid var(--hairline);
-  background: color-mix(in srgb, var(--bg-base) 88%, var(--bg-elev));
-  box-shadow: var(--top-highlight);
+  gap: var(--space-2-5, 10px);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-top: 1px solid var(--border-default);
+  background: var(--surface-subtle);
 }
 
 /* Two channel boxes side by side — equal columns. */
 .composer__channels {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 10px;
+  gap: var(--space-2-5, 10px);
 }
 
 /* ── Chat autoscroll toggle ───────────────────────────────────────────────── */
@@ -1150,12 +1160,12 @@ body.stealth-on .app-shell { opacity: 0.92; }
   justify-content: center;
   min-width: 40px;
   min-height: 44px;
-  padding: 0 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--fg-muted);
-  font-size: 14px;
+  padding: 0 var(--space-2-5, 10px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  color: var(--text-secondary);
+  font-size: var(--text-base);
   transition:
     background var(--dur-2) var(--ease),
     border-color var(--dur-2) var(--ease),
@@ -1164,9 +1174,9 @@ body.stealth-on .app-shell { opacity: 0.92; }
 }
 
 .chat-autoscroll-toggle:hover {
-  background: var(--surface-strong);
-  border-color: var(--hairline-strong);
-  color: var(--fg);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
 }
 
 .chat-autoscroll-toggle:active { transform: scale(0.95); }
@@ -1186,12 +1196,12 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .right-rail {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
   min-height: 0;
-  padding: 16px;
+  padding: var(--space-4);
   overflow-y: auto;
-  background: var(--bg-elev);
-  border-left: 1px solid var(--hairline);
+  background: var(--surface-elevated);
+  border-left: 1px solid var(--border-default);
 }
 
 /* Rail section container — flex column, gap between children.
@@ -1201,7 +1211,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .rail-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   flex: 0 0 auto;
 }
 
@@ -1216,25 +1226,25 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .rail-section__title {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1-5, 6px);
   margin: 0;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 .rail-section__title label { cursor: pointer; }
 
-/* Inline "auto" badge next to section titles — uses --ai colour family. */
+/* Inline "auto" badge next to section titles — brand-green badge. */
 .rail-section__tag {
-  padding: 1px 6px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--ai) 30%, var(--border));
-  background: color-mix(in srgb, var(--ai) 12%, transparent);
-  color: color-mix(in srgb, var(--ai) 90%, var(--fg));
+  padding: 1px var(--space-1-5, 6px);
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--brand-500) 30%, var(--border-default));
+  background: var(--brand-50);
+  color: var(--text-brand);
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 600;
@@ -1249,34 +1259,31 @@ body.stealth-on .app-shell { opacity: 0.92; }
   width: 100%;
   min-height: 96px;
   max-height: 200px;
-  padding: 10px 12px;
+  padding: var(--space-2-5, 10px) var(--space-3);
   resize: vertical;
-  color: var(--fg);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.55;
-  box-shadow: var(--elev-1), var(--top-highlight);
+  box-shadow: var(--shadow-sm);
   transition:
     border-color var(--dur-2) var(--ease),
     box-shadow var(--dur-2) var(--ease);
 }
 
 .jd-input::placeholder {
-  color: var(--fg-subtle);
+  color: var(--text-placeholder);
   font-style: italic;
 }
 
-/* On focus: full ring glow — the most important input affordance in the rail. */
+/* On focus: GLP focus ring — the most important input affordance in the rail. */
 .jd-input:focus-visible {
   outline: none;
-  border-color: var(--ring);
-  box-shadow:
-    var(--top-highlight),
-    0 0 0 2px color-mix(in srgb, var(--ring) 45%, transparent),
-    var(--glow-ai);
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 /* Session context flows at natural height; the whole rail scrolls (no internal
@@ -1289,7 +1296,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
 .rail-section__body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 /* ── Whole right-panel collapse (topbar toggle → body.rail-collapsed) ─────────
@@ -1315,11 +1322,11 @@ body.rail-collapsed .right-rail {
   pointer-events: none;
 }
 
-/* Toggle button reflects the collapsed state (indigo, like the active accent). */
+/* Toggle button reflects the collapsed state (brand green = active accent). */
 #toggle-rail-btn[aria-pressed="true"] {
-  color: var(--ai);
-  border-color: color-mix(in srgb, var(--ai) 40%, var(--border));
-  background: color-mix(in srgb, var(--ai) 12%, var(--surface));
+  color: var(--text-brand);
+  border-color: color-mix(in srgb, var(--brand-500) 40%, var(--border-default));
+  background: var(--brand-50);
 }
 
 /* ── Transient status toast ───────────────────────────────────────────────── */
@@ -1331,19 +1338,17 @@ body.rail-collapsed .right-rail {
   top: calc(var(--titlebar-h) + 10px);
   left: 50%;
   transform: translateX(-50%) translateY(-4px);
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--hairline-strong);
-  /* Glass: frosted surface lifts the toast above the canvas. */
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  color: var(--fg);
-  font-size: 12px;
+  padding: var(--space-1-5, 6px) var(--space-3-5, 14px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  /* Elevated container surface lifts the toast above the canvas. */
+  background: var(--surface-container);
+  color: var(--text-primary);
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  box-shadow: var(--elev-3);
+  box-shadow: var(--shadow-lg);
   opacity: 0;
   pointer-events: none;
   z-index: 1200;
@@ -1358,10 +1363,10 @@ body.rail-collapsed .right-rail {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Severity tints — semantic colour on text; background stays glass-neutral. */
+/* Severity tints — semantic colour on text; background stays neutral. */
 .status-text.success { color: var(--success); }
-.status-text.error   { color: var(--danger); }
-.status-text.info    { color: var(--ai); }
+.status-text.error   { color: var(--error); }
+.status-text.info    { color: var(--info); }
 
 /* ── Legacy results panel ────────────────────────────────────────────────── */
 /* Kept for wired "close-results" listener. Glass elevation matches the toast. */
@@ -1374,12 +1379,10 @@ body.rail-collapsed .right-rail {
   max-height: 320px;
   display: flex;
   flex-direction: column;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--hairline-strong);
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  box-shadow: var(--elev-4), var(--top-highlight);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-default);
+  background: var(--surface-container);
+  box-shadow: var(--shadow-lg);
   z-index: 900;
 }
 
@@ -1389,15 +1392,15 @@ body.rail-collapsed .right-rail {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-2-5, 10px) var(--space-3-5, 14px);
+  border-bottom: 1px solid var(--border-default);
 }
 
 .results-title {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 700;
-  color: var(--fg);
+  color: var(--text-primary);
 }
 
 .close-btn {
@@ -1406,10 +1409,10 @@ body.rail-collapsed .right-rail {
   justify-content: center;
   width: 28px;
   height: 28px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--fg-muted);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  color: var(--text-secondary);
   transition:
     color var(--dur-2) var(--ease),
     background var(--dur-2) var(--ease),
@@ -1418,9 +1421,9 @@ body.rail-collapsed .right-rail {
 }
 
 .close-btn:hover {
-  color: var(--danger);
-  background: color-mix(in srgb, var(--danger) 14%, transparent);
-  border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+  color: var(--error);
+  background: var(--error-bg);
+  border-color: color-mix(in srgb, var(--error) 40%, var(--border-default));
 }
 
 .close-btn:active { transform: scale(0.93); }
@@ -1432,14 +1435,14 @@ body.rail-collapsed .right-rail {
 
 .results-content {
   flex: 1;
-  padding: 14px;
+  padding: var(--space-3-5, 14px);
   overflow-y: auto;
 }
 
 .result-text {
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.55;
-  color: var(--fg);
+  color: var(--text-primary);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -1453,12 +1456,12 @@ body.rail-collapsed .right-rail {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: var(--space-3-5, 14px);
   /* Rounded to the shell radius (a fixed element is NOT clipped by .app-shell's
      overflow, so otherwise it squares off the window corners). Light blur +
      opaque dim — cheap to composite, no heavy full-window frost. */
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--surface-page) 80%, transparent);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   z-index: 1100;
@@ -1472,26 +1475,26 @@ body.rail-collapsed .right-rail {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 28px 36px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--hairline-strong);
-  background: var(--bg-elev-2);
-  box-shadow: var(--elev-4), var(--top-highlight);
+  gap: var(--space-3-5, 14px);
+  padding: var(--space-7, 28px) var(--space-9, 36px);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-default);
+  background: var(--surface-container);
+  box-shadow: var(--shadow-lg);
   text-align: center;
   animation: spring-card-in var(--dur-4) var(--ease-spring) both;
 }
 
 /* Spinner icon: linear rotation keeps it mechanical/fast, not floaty. */
 .analyzing-icon {
-  color: var(--ai);
+  color: var(--brand-500);
   animation: spin 0.9s linear infinite;
 }
 
 .loading-text {
-  font-size: 14px;
+  font-size: var(--text-base);
   font-weight: 600;
-  color: var(--fg);
+  color: var(--text-primary);
   letter-spacing: 0.01em;
 }
 
@@ -1508,7 +1511,10 @@ body.rail-collapsed .right-rail {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-2xl);
+  /* Intentional hard black (theme-independent): this is the content-protection
+     HIDDEN scrim — it must be fully opaque black in BOTH themes for maximum
+     alarm visibility, so it is NOT mapped to a surface token. */
   background: rgba(0, 0, 0, 0.97);
   z-index: 1300;
 }
@@ -1517,10 +1523,10 @@ body.rail-collapsed .right-rail {
 
 /* Danger mono text — steps blink (not smooth) for maximum alarm legibility. */
 .emergency-message {
-  color: var(--danger);
+  color: var(--error);
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 13px;
+  font-size: var(--text-sm);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   animation: blink 1s steps(1, end) infinite;
@@ -1541,11 +1547,11 @@ body.rail-collapsed .right-rail {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: var(--space-5);
   /* Rounded to the shell radius (fixed → not clipped by .app-shell overflow).
      Light blur + opaque dim — no square corners, cheap to composite. */
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--surface-page) 80%, transparent);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   z-index: 1250;
@@ -1566,12 +1572,12 @@ body.rail-collapsed .right-rail {
   width: min(340px, 100%);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--hairline-strong);
-  background: var(--bg-elev-2);
-  box-shadow: var(--elev-4), var(--top-highlight);
+  gap: var(--space-2-5, 10px);
+  padding: var(--space-5);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-default);
+  background: var(--surface-container);
+  box-shadow: var(--shadow-lg);
   animation: spring-card-in var(--dur-4) var(--ease-spring) both;
 }
 
@@ -1583,73 +1589,70 @@ body.rail-collapsed .right-rail {
 
 .close-confirmation-title {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: var(--text-lg);
   font-weight: 700;
-  color: var(--fg);
+  color: var(--text-primary);
 }
 
 .close-confirmation-text {
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.55;
-  color: var(--fg-muted);
+  color: var(--text-secondary);
 }
 
 .close-confirmation-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 4px;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
 }
 
-/* Base dialog button — same motion model as action-btn. */
+/* Base dialog button — GLP button motion (lift on hover, settle on press). */
 .close-confirmation-btn {
   min-width: 92px;
   min-height: 38px;
-  padding: 0 16px;
-  border-radius: var(--radius-sm);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-lg);
   border: 1px solid transparent;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 600;
-  box-shadow: var(--elev-1), var(--top-highlight);
-  transition:
-    background var(--dur-2) var(--ease),
-    border-color var(--dur-2) var(--ease),
-    box-shadow var(--dur-2) var(--ease),
-    transform var(--dur-1) var(--ease-spring);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-base);
 }
 
-.close-confirmation-btn:active { transform: scale(0.97); }
+.close-confirmation-btn:hover { transform: translateY(-1px); }
+
+.close-confirmation-btn:active { transform: translateY(0) scale(0.98); }
 
 .close-confirmation-btn:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 
-/* Cancel — neutral secondary, muted by default. */
+/* Cancel — neutral secondary. */
 .close-confirmation-btn-secondary {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--fg);
+  background: var(--surface-elevated);
+  border-color: var(--border-default);
+  color: var(--text-primary);
 }
 
 .close-confirmation-btn-secondary:hover {
-  background: var(--surface-strong);
-  border-color: var(--hairline-strong);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
 }
 
-/* Confirm close — danger fill with a red bloom on hover to signal destruction. */
+/* Confirm close — danger fill + inverse text to signal destruction. */
 .close-confirmation-btn-danger {
-  background: var(--danger);
-  border-color: var(--danger);
-  color: white;
+  background: var(--error);
+  border-color: var(--error);
+  color: var(--text-inverse);
 }
 
 .close-confirmation-btn-danger:hover {
-  background: color-mix(in srgb, var(--danger) 88%, white);
-  box-shadow:
-    var(--elev-2),
-    0 0 20px -6px color-mix(in srgb, var(--danger) 60%, transparent);
+  background: color-mix(in srgb, var(--error) 88%, black);
+  border-color: color-mix(in srgb, var(--error) 88%, black);
+  box-shadow: var(--shadow-md);
 }
 
 /* ── Scrollbars (premium thin, refined hover) ─────────────────────────────── */
@@ -1683,8 +1686,8 @@ body.rail-collapsed .right-rail {
 .settings-body::-webkit-scrollbar-thumb,
 #session-list::-webkit-scrollbar-thumb,
 #session-context::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--fg) 14%, transparent);
-  border-radius: 999px;
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
   /* Invisible border creates padding so thumb never touches the panel edge. */
   border: 1px solid transparent;
   background-clip: padding-box;
@@ -1697,7 +1700,7 @@ body.rail-collapsed .right-rail {
 .settings-body::-webkit-scrollbar-thumb:hover,
 #session-list::-webkit-scrollbar-thumb:hover,
 #session-context::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--fg) 28%, transparent);
+  background: var(--text-tertiary);
   background-clip: padding-box;
 }
 

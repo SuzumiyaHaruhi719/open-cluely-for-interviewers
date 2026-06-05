@@ -1,17 +1,8 @@
 /* ============================================================================
  * Resume drop-zone — right-rail upload target.
  *
- * Tokens are GLOBAL (defined in styles.css :root — never redefined here):
- *   Surfaces : --bg-deep --bg-base --bg-elev --bg-elev-2 --surface --surface-strong
- *   Text     : --fg --fg-muted --fg-subtle
- *   Accents  : --candidate --interviewer --ai --success --danger --ring
- *   Borders  : --border --hairline --hairline-strong
- *   Radii    : --radius-sm --radius --radius-lg --radius-xl
- *   Motion   : --dur-1..4  --ease --ease-out --ease-in --ease-spring --ease-inout
- *   Elevation: --elev-1..4  --top-highlight
- *   Glass    : --glass-blur --glass-bg
- *   Glows    : --glow-ai --glow-candidate --glow-interviewer
- *   Fonts    : --font-display --font-body --font-mono
+ * Tokens are GLOBAL (defined in theme.css — the GLP design system — never
+ * redefined here). Light/dark are handled entirely by theme.css.
  *
  * State classes set by JS:
  *   rootEl.classList     → .is-dragover
@@ -19,20 +10,20 @@
  *
  * Motion rules: transform/opacity only; no prefers-reduced-motion guard
  * (removed by owner intent — motion ALWAYS plays).
- * Spacing follows a strict 4 px grid. Max transition: --dur-4 (320 ms).
+ * Spacing follows the GLP scale. Transitions use GLP transition tokens.
  * ========================================================================== */
 
 /* ── Root wrapper ─────────────────────────────────────────────────────────── */
 .resume-dropzone {
   display: block;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   /* Clip so child entrance animations don't overflow the rail column. */
   overflow: hidden;
 }
 
 /* ── Drop target <button> ─────────────────────────────────────────────────── */
 /*
- * Idle state: dashed hairline border, muted fill, upload icon in --fg-muted.
+ * Idle state: dashed border, elevated fill, upload icon in --text-tertiary.
  * The button carries ALL interactive affordance — 44 px min touch target,
  * keyboard-focusable, :hover / :active / :focus-visible fully styled.
  */
@@ -41,119 +32,117 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
   min-height: 120px;
-  padding: 24px 20px;
+  padding: var(--space-6) var(--space-5);
   text-align: center;
   cursor: pointer;
 
-  /* Tone: elevated surface with hairline dashed border */
-  color: var(--fg-muted);
-  background: var(--surface);
-  border: 1px dashed var(--hairline);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--elev-1), var(--top-highlight);
+  /* Tone: elevated surface card with dashed strong border */
+  color: var(--text-tertiary);
+  background: var(--surface-elevated);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
 
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.5;
 
-  /* Single compound transition — all animatable props, all tokens */
+  /* Single compound transition — all animatable props */
   transition:
-    border-color   var(--dur-2) var(--ease-out),
-    background     var(--dur-2) var(--ease-out),
-    color          var(--dur-2) var(--ease-out),
-    box-shadow     var(--dur-2) var(--ease-out),
-    transform      var(--dur-2) var(--ease-out);
+    border-color   var(--transition-base),
+    background     var(--transition-base),
+    color          var(--transition-base),
+    box-shadow     var(--transition-base),
+    transform      var(--transition-base);
 }
 
-/* Hover — step up surface brightness, border to --hairline-strong */
+/* Hover — brand-50 tint, border to focus accent */
 .resume-dropzone__target:hover {
-  color: var(--fg);
-  background: var(--surface-strong);
-  border-color: var(--hairline-strong);
-  box-shadow: var(--elev-2), var(--top-highlight);
+  color: var(--text-primary);
+  background: var(--brand-50);
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-md);
 }
 
 /* Press — decisive micro-scale, single-frame feel */
 .resume-dropzone__target:active {
   transform: scale(0.97);
-  transition-duration: var(--dur-1);
-  transition-timing-function: var(--ease-in);
+  transition-duration: 150ms;
 }
 
-/* Focus-visible ring — 2 px --ring, clear on all backgrounds */
+/* Focus-visible ring */
 .resume-dropzone__target:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 /* ── Icon ─────────────────────────────────────────────────────────────────── */
 /*
- * Idle: dim --fg-muted. Hover lifts to the --ai accent so the icon signals
- * the interaction channel without touching the border yet.
+ * Idle: dim --text-tertiary. Hover lifts to the brand accent so the icon
+ * signals the interaction channel.
  */
 .resume-dropzone__icon {
-  color: var(--fg-muted);
+  color: var(--text-tertiary);
   flex: none;
-  transition: color var(--dur-2) var(--ease-out);
+  transition: color var(--transition-base);
 }
 
 .resume-dropzone__target:hover .resume-dropzone__icon {
-  color: var(--ai);
+  color: var(--text-brand);
 }
 
 /* ── Label text ───────────────────────────────────────────────────────────── */
 .resume-dropzone__primary {
-  color: var(--fg);
+  color: var(--text-primary);
   font-weight: 600;
-  font-size: 13px;
+  font-size: var(--text-sm);
   letter-spacing: 0.01em;
 }
 
 .resume-dropzone__hint {
   font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--fg-subtle);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
   letter-spacing: 0.02em;
 }
 
 /* ── Drag-over state (.is-dragover on rootEl) ─────────────────────────────── */
 /*
- * Border flips to solid + --ai accent. A soft --glow-ai bloom makes it obvious
- * that the drop will land. Subtle scale-up (1 → 1.015) — crisp, decisive.
- * Duration: --dur-2 so the response reads as immediate, not mechanical.
+ * Border flips to solid + focus accent over a brand-50 tint so it's obvious
+ * the drop will land. Subtle scale-up (1 → 1.015) — crisp, decisive.
  */
 .resume-dropzone.is-dragover .resume-dropzone__target {
-  color: var(--fg);
+  color: var(--text-primary);
   border-style: solid;
-  border-color: var(--ai);
-  background: color-mix(in srgb, var(--ai) 7%, var(--bg-elev));
-  box-shadow: var(--elev-2), var(--top-highlight), var(--glow-ai);
+  border-color: var(--border-focus);
+  background: var(--brand-50);
+  box-shadow: var(--shadow-md);
   transform: scale(1.015);
-  transition-timing-function: var(--ease-out);
 }
 
 .resume-dropzone.is-dragover .resume-dropzone__icon {
-  color: var(--ai);
+  color: var(--text-brand);
 }
 
 /* ── Parsing state (data-state="parsing") ─────────────────────────────────── */
 /*
- * Border adopts --ai to show processing. Icon pulses opacity to signal
- * async activity without heavy layout shifts.
+ * Border adopts the brand accent to show processing. Icon pulses opacity to
+ * signal async activity without heavy layout shifts.
  */
 .resume-dropzone[data-state="parsing"] .resume-dropzone__target {
   border-style: solid;
-  border-color: var(--ai);
-  background: color-mix(in srgb, var(--ai) 5%, var(--surface));
+  border-color: var(--border-focus);
+  background: var(--brand-50);
   cursor: wait;
 }
 
 .resume-dropzone[data-state="parsing"] .resume-dropzone__icon {
-  color: var(--ai);
-  animation: resume-icon-pulse var(--dur-4) var(--ease-inout) infinite alternate;
+  color: var(--text-brand);
+  animation: resume-icon-pulse var(--transition-moderate) ease-in-out infinite alternate;
 }
 
 @keyframes resume-icon-pulse {
@@ -166,13 +155,13 @@
 /* ── Parsed state (data-state="parsed") ──────────────────────────────────── */
 /*
  * Drop-zone border turns --success to confirm the file is loaded.
- * The target itself steps back (fg-muted) — focus now lives on __result.
+ * The target itself steps back (tertiary) — focus now lives on __result.
  */
 .resume-dropzone[data-state="parsed"] .resume-dropzone__target {
   border-style: solid;
   border-color: var(--success);
-  background: color-mix(in srgb, var(--success) 5%, var(--surface));
-  color: var(--fg-muted);
+  background: var(--success-bg);
+  color: var(--text-tertiary);
 }
 
 .resume-dropzone[data-state="parsed"] .resume-dropzone__icon {
@@ -182,35 +171,33 @@
 /* ── Error state (data-state="error") ────────────────────────────────────── */
 .resume-dropzone[data-state="error"] .resume-dropzone__target {
   border-style: solid;
-  border-color: var(--danger);
-  background: color-mix(in srgb, var(--danger) 5%, var(--surface));
-  color: var(--fg-muted);
+  border-color: var(--error);
+  background: var(--error-bg);
+  color: var(--text-tertiary);
 }
 
 .resume-dropzone[data-state="error"] .resume-dropzone__icon {
-  color: var(--danger);
+  color: var(--error);
 }
 
 /* ── Result panel (file chip) — entrance animation ────────────────────────── */
 /*
  * The result panel acts as the "file chip": filename + character count +
- * 2-line text preview. It enters via an --ease-spring pop so the appearance
- * feels alive and physical, not mechanical.
+ * 2-line text preview. It enters via a pop so the appearance feels alive.
  *
  * Implementation: the panel uses animation-fill-mode: backwards so it stays
  * invisible until its parent is un-hidden by JS (resultEl.hidden = false).
  * Only transform + opacity — no layout shift on enter.
  */
 .resume-dropzone__result {
-  margin-top: 8px;
-  padding: 12px 14px;
-  background: color-mix(in srgb, var(--bg-elev) 90%, transparent);
-  border: 1px solid var(--hairline-strong);
-  border-radius: var(--radius);
-  box-shadow: var(--elev-2), var(--top-highlight);
+  margin-top: var(--space-2);
+  padding: var(--space-3) var(--space-3);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
 
-  /* Spring entrance — decisive pop, overshoots slightly then settles */
-  animation: resume-result-in var(--dur-3) var(--ease-spring) both;
+  animation: resume-result-in var(--transition-moderate) both;
 }
 
 @keyframes resume-result-in {
@@ -229,14 +216,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
 
 .resume-dropzone__filename {
-  color: var(--fg);
+  color: var(--text-primary);
   font-weight: 600;
-  font-size: 13px;
+  font-size: var(--text-sm);
   letter-spacing: 0.01em;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -246,19 +233,19 @@
   min-width: 0;
 }
 
-/* Char-count badge — mono, teal accent, pill shape */
+/* Char-count badge — mono, info accent, pill shape */
 .resume-dropzone__count {
   flex: none;
   display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
-  background: color-mix(in srgb, var(--candidate) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--candidate) 28%, transparent);
-  border-radius: var(--radius-sm);
+  padding: var(--space-0-5) var(--space-2);
+  background: var(--info-bg);
+  border: 1px solid color-mix(in srgb, var(--info) 28%, transparent);
+  border-radius: var(--radius-lg);
   font-family: var(--font-mono);
-  font-size: 11px;            /* on-scale floor for user-facing labels */
+  font-size: var(--text-xs);
   font-weight: 500;
-  color: var(--candidate);
+  color: var(--info);
   letter-spacing: 0.03em;
   white-space: nowrap;
 }
@@ -272,36 +259,37 @@
   width: 26px;
   height: 26px;
   padding: 0;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--fg-muted);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  color: var(--text-tertiary);
   cursor: pointer;
   transition:
-    background var(--dur-1) var(--ease),
-    color var(--dur-1) var(--ease),
-    border-color var(--dur-1) var(--ease),
-    transform var(--dur-1) var(--ease-spring);
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .resume-dropzone__remove:hover {
-  color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 45%, var(--hairline));
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--error);
+  border-color: var(--error);
+  background: var(--error-bg);
 }
 
 .resume-dropzone__remove:active { transform: scale(0.9); }
 
 .resume-dropzone__remove:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 /* ── Preview (2-line clamped extract) ─────────────────────────────────────── */
 .resume-dropzone__preview {
   margin: 0;
-  color: var(--fg-muted);
-  font-size: 12px;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
@@ -318,18 +306,18 @@
  * spring) since errors are corrective feedback, not celebratory.
  */
 .resume-dropzone__error {
-  margin: 8px 0 0;
-  padding: 10px 14px;
-  background: color-mix(in srgb, var(--danger) 8%, var(--bg-elev));
-  border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
-  border-radius: var(--radius);
-  box-shadow: var(--elev-1);
-  color: var(--danger);
-  font-size: 12px;
+  margin: var(--space-2) 0 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--error-bg);
+  border: 1px solid color-mix(in srgb, var(--error) 35%, transparent);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  color: var(--error);
+  font-size: var(--text-sm);
   font-weight: 500;
   line-height: 1.5;
 
-  animation: resume-error-in var(--dur-2) var(--ease-out) both;
+  animation: resume-error-in var(--transition-base) both;
 }
 
 @keyframes resume-error-in {
@@ -366,78 +354,76 @@
 .resume-chat {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 10px;
-  padding-top: 12px;
-  border-top: 1px solid var(--hairline);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .resume-chat__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .resume-chat__title {
-  font-family: var(--font-display);
-  font-size: 11px;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
 }
 
 /* Per-chat model picker — compact, pushed to the right next to Clear. */
 .resume-chat__model {
   margin-left: auto;
   max-width: 130px;
-  font-size: 10px;
-  padding: 2px 6px;
-  background: var(--surface);
-  color: var(--fg);
-  border: 1px solid var(--hairline);
-  border-radius: 6px;
+  font-size: var(--text-xs);
+  padding: var(--space-0-5) var(--space-2);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
   cursor: pointer;
 }
 
 .resume-chat__clear {
-  padding: 2px 8px;
+  padding: var(--space-0-5) var(--space-2);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background: transparent;
-  color: var(--fg-subtle);
-  font-family: var(--font-body);
-  font-size: 11px;
+  color: var(--text-tertiary);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
   cursor: pointer;
-  transition: color var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
-.resume-chat__clear:hover { color: var(--fg); background: var(--surface); }
-.resume-chat__clear:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.resume-chat__clear:hover { color: var(--text-primary); background: var(--surface-hover); }
+.resume-chat__clear:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
 
 .resume-chat__messages {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   max-height: 260px;
   overflow-y: auto;
-  padding-right: 2px;
+  padding-right: var(--space-0-5);
 }
 
-/* Premium thin FLOATING scrollbar — a slim ~4px thumb that floats inside the
-   track via a transparent border (same idiom as the app shell), no chunky
-   default track. */
+/* Thin floating scrollbar — token-driven. */
 .resume-chat__messages::-webkit-scrollbar { width: 11px; }
 .resume-chat__messages::-webkit-scrollbar-track { background: transparent; }
 .resume-chat__messages::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--fg) 18%, transparent);
-  border-radius: 999px;
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
   border: 3px solid transparent;
   background-clip: padding-box;
 }
 .resume-chat__messages::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--fg) 30%, transparent);
+  background: var(--text-tertiary);
   background-clip: padding-box;
 }
 
@@ -445,22 +431,22 @@
 .resume-chat__messages:empty::before {
   content: "Grounded only on the loaded résumé. Try: \201CSummarise their strongest evidence\201D or \201CWhat should I probe?\201D";
   display: block;
-  font-size: 11px;
+  font-size: var(--text-xs);
   line-height: 1.5;
-  color: var(--fg-subtle);
+  color: var(--text-tertiary);
 }
 
 .resume-chat__msg {
   max-width: 88%;
-  padding: 9px 12px;
-  border-radius: var(--radius);
-  font-size: 12.5px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-xl);
+  font-size: var(--text-sm);
   line-height: 1.55;
   word-break: break-word;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
-  box-shadow: var(--elev-1);
-  animation: resume-chat-msg-in var(--dur-2) var(--ease-out) both;
+  box-shadow: var(--shadow-sm);
+  animation: resume-chat-msg-in var(--transition-base) both;
 }
 
 @keyframes resume-chat-msg-in {
@@ -468,37 +454,37 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Interviewer turn — indigo, right-aligned, with a tighter bottom-right corner
-   that reads as a subtle "tail" toward the sender. */
+/* Interviewer turn — brand-tinted, right-aligned, with a tighter bottom-right
+   corner that reads as a subtle "tail" toward the sender. */
 .resume-chat__msg--user {
   align-self: flex-end;
-  border-radius: var(--radius) var(--radius) var(--radius-sm) var(--radius);
-  color: var(--fg);
-  background: color-mix(in srgb, var(--ai) 20%, var(--bg-elev));
-  border: 1px solid color-mix(in srgb, var(--ai) 38%, var(--hairline));
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-sm) var(--radius-xl);
+  color: var(--text-primary);
+  background: var(--brand-50);
+  border: 1px solid color-mix(in srgb, var(--brand-500) 38%, var(--border-default));
 }
 
 /* AI reply — lifted neutral surface, left-aligned, mirror tail (bottom-left). */
 .resume-chat__msg--assistant {
   align-self: flex-start;
-  border-radius: var(--radius) var(--radius) var(--radius) var(--radius-sm);
-  color: var(--fg);
-  background: var(--surface-strong);
-  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-xl) var(--radius-sm);
+  color: var(--text-primary);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-subtle);
 }
 
-.resume-chat__msg--pending { color: var(--fg-subtle); font-style: italic; }
+.resume-chat__msg--pending { color: var(--text-tertiary); font-style: italic; }
 
 .resume-chat__msg--error {
-  color: var(--danger);
-  background: color-mix(in srgb, var(--danger) 10%, transparent);
-  border-color: color-mix(in srgb, var(--danger) 35%, var(--hairline));
+  color: var(--error);
+  background: var(--error-bg);
+  border-color: color-mix(in srgb, var(--error) 35%, var(--border-default));
 }
 
 .resume-chat__composer {
   display: flex;
   align-items: flex-end;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .resume-chat__input {
@@ -506,44 +492,44 @@
   min-width: 0;
   min-height: 36px;
   max-height: 120px;
-  padding: 8px 10px;
+  padding: var(--space-2) var(--space-3);
   resize: none;
-  color: var(--fg);
-  background: var(--bg-elev);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 12px;
+  color: var(--text-primary);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
   line-height: 1.4;
-  transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
-.resume-chat__input::placeholder { color: var(--fg-subtle); }
+.resume-chat__input::placeholder { color: var(--text-placeholder); }
 
 .resume-chat__input:focus-visible {
   outline: none;
-  border-color: var(--ring);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 35%, transparent);
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
 }
 
 .resume-chat__send {
   flex: 0 0 auto;
   min-height: 36px;
-  padding: 0 12px;
-  color: var(--bg-base);
-  background: var(--ai);
-  border: 1px solid color-mix(in srgb, var(--ai) 85%, white);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 12px;
+  padding: 0 var(--space-3);
+  color: var(--text-inverse);
+  background: var(--brand-500);
+  border: 1px solid var(--brand-500);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--dur-2) var(--ease), transform var(--dur-1) var(--ease-spring);
+  transition: background var(--transition-base), transform var(--transition-fast);
 }
 
-.resume-chat__send:hover:not(:disabled) { background: color-mix(in srgb, var(--ai) 88%, white); }
+.resume-chat__send:hover:not(:disabled) { background: var(--brand-600); }
 .resume-chat__send:active:not(:disabled) { transform: scale(0.96); }
-.resume-chat__send:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.resume-chat__send:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 .resume-chat__send:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* NOTE: @media (prefers-reduced-motion: reduce) guards were removed by
