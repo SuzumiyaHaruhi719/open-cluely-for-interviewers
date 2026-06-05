@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ContextEmptyIcon } from './icons';
+import type { SessionContextState } from '@open-cluely/contract';
 import { ResumeDropzone } from './ResumeDropzone';
 import { ResumeChat } from './ResumeChat';
+import { SessionContextPanel } from './SessionContextPanel';
 
 interface RightRailProps {
   jobDescription: string;
   resumeText: string;
   onJobDescriptionChange: (value: string) => void;
   onResumeTextChange: (value: string) => void;
-  /** Whether any live session-context has arrived from the server yet. */
-  hasSessionContext: boolean;
+  /** Latest live session-context from the server (null until the first analysis). */
+  sessionContext: SessionContextState | null;
   /** Identity that resets the résumé chat when it changes (active session id). */
   resumeChatResetKey?: string | number | null;
 }
@@ -82,7 +83,7 @@ export function RightRail({
   resumeText,
   onJobDescriptionChange,
   onResumeTextChange,
-  hasSessionContext,
+  sessionContext,
   resumeChatResetKey
 }: RightRailProps) {
   const [jd, setJd] = useDebouncedField(jobDescription, onJobDescriptionChange);
@@ -131,20 +132,7 @@ export function RightRail({
         <h2 className="rail-section__title">
           Session context <span className="rail-section__tag">auto</span>
         </h2>
-        <div id="session-context" className="session-context">
-          {hasSessionContext ? null : (
-            <div className="session-empty">
-              <span className="session-empty__icon" aria-hidden="true">
-                <ContextEmptyIcon size={28} />
-              </span>
-              <p className="session-empty__text">No context yet</p>
-              <p className="session-empty__hint">
-                Drilled topics, covered competencies and open gaps will appear here as the
-                interview progresses.
-              </p>
-            </div>
-          )}
-        </div>
+        <SessionContextPanel state={sessionContext} />
       </section>
     </aside>
   );

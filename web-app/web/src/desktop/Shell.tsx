@@ -75,6 +75,7 @@ export function Shell() {
     speakerSegments,
     setSpeakerRole,
     resetSpeakerSegments,
+    sessionContext,
     resetTranscripts
   } = socket;
 
@@ -551,7 +552,7 @@ export function Shell() {
           resumeText={config.resumeText}
           onJobDescriptionChange={onJobDescriptionChange}
           onResumeTextChange={onResumeTextChange}
-          hasSessionContext={false}
+          sessionContext={sessionContext}
         />
       </div>
 

@@ -9,6 +9,7 @@ import type {
   GenerationTrigger,
   RankedQuestion,
   ServerMessage,
+  SessionContextState,
   TokenUsage
 } from '@open-cluely/contract';
 import { createHeadlessSession } from '@open-cluely/copilot-core';
@@ -17,6 +18,8 @@ import { createAsrRelay, type AsrRelay, type VolcCredentials } from './asr-relay
 import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
+import { createSessionContextAnalyzer } from './session-context-analyzer';
+import { analyzeSessionContext, buildAnalysisInput } from './interview-analysis';
 import { createSpeakerRoleMap, type SpeakerRoleMap } from './speaker-roles';
 import { stampRole, isCandidateFinal } from './ws-speaker';
 
@@ -156,7 +159,10 @@ function makeEmit(ws: WebSocket, isStale: (requestId: string) => boolean) {
         tokens: p.tokens ?? null
       });
     } else if (channel === 'session-context-updated') {
-      send(ws, { type: 'session-context', state: payload });
+      // Legacy forward: copilot-core may emit its own session-context payload. The
+      // wire `state` is typed as SessionContextState; this payload is untyped from
+      // core, so cast through unknown. The client parses/renders it defensively.
+      send(ws, { type: 'session-context', state: payload as SessionContextState });
     }
   };
 }
@@ -377,6 +383,7 @@ export async function dispatch(
   roles: SpeakerRoleMap,
   injectNote: (note: string) => void,
   resetAccumulated: () => void,
+  setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
   msg: ClientMessageParsed
 ): Promise<void> {
   switch (msg.type) {
@@ -385,12 +392,17 @@ export async function dispatch(
       // generation BEFORE applying the rest of the config. trigger.reset() bumps
       // the epoch (suppressing any stale in-flight result/progress), clears the
       // interval-mode transcript + cooldown; resetAccumulated() drops the
-      // per-connection candidate-answer buffer the trigger is fed from.
+      // per-connection candidate-answer buffer the trigger is fed from AND the
+      // full-transcript buffer + pending analysis the context analyzer reads.
       if (msg.config.resetGeneration === true) {
         trigger.reset();
         resetAccumulated();
       }
       session.configure(msg.config);
+      // Capture JD/résumé so the session-context analyzer can ground on them. Only
+      // overwrite a field the configure actually carries (a partial configure — e.g.
+      // a mode change — must NOT wipe earlier-entered JD/résumé).
+      setContextGrounding(msg.config.jobDescription, msg.config.resumeText);
       // The opt-in auto-analyze flag is relay state, not session state.
       if (typeof msg.config.autoAnalyzeDisplay === 'boolean') {
         relay.setAutoAnalyzeDisplay(msg.config.autoAnalyzeDisplay);
@@ -449,6 +461,7 @@ function onMessage(
   roles: SpeakerRoleMap,
   injectNote: (note: string) => void,
   resetAccumulated: () => void,
+  setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
   raw: unknown
 ): void {
   let requestId: string | undefined;
@@ -462,7 +475,17 @@ function onMessage(
         return;
       }
       if (parsed.data.type === 'analyze') requestId = parsed.data.requestId;
-      await dispatch(ws, session, relay, trigger, roles, injectNote, resetAccumulated, parsed.data);
+      await dispatch(
+        ws,
+        session,
+        relay,
+        trigger,
+        roles,
+        injectNote,
+        resetAccumulated,
+        setContextGrounding,
+        parsed.data
+      );
     } catch (err) {
       // A handler error must never close the socket.
       const message = err instanceof Error ? err.message : 'handler error';
@@ -539,6 +562,40 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // The trigger monitor gates on its LENGTH (new chars since the last fire) and
     // generates from its content. Partial transcripts are not accumulated here.
     let accumulatedDisplayFinal = '';
+
+    // FULL accumulated transcript (BOTH lanes — candidate + interviewer finals),
+    // oldest first, capped, that feeds the live session-context analyzer. Distinct
+    // from accumulatedDisplayFinal (candidate-only, drives follow-up generation):
+    // the context panel summarizes the whole conversation, both sides. Cleared by
+    // a new/switched chat (resetAccumulated).
+    let accumulatedTranscript = '';
+    const TRANSCRIPT_CAP = 16000;
+    // Latest JD/résumé from configure — grounding for the context analyzer. Updated
+    // on every configure that carries them (the session itself also stores them,
+    // but ws.ts needs them to BUILD the context input).
+    let contextJobDescription = '';
+    let contextResumeText = '';
+
+    // The live session-context analyzer (per connection). Debounced + in-flight-
+    // gated; fed at the SAME finalized-transcript seam the trigger is fed. On a
+    // successful (non-null) analysis it emits a `session-context` message. It NEVER
+    // fires while not capturing, and SKIPS while the heavier follow-up/auto pipeline
+    // is generating so the cheap light call never competes with the expensive one.
+    const contextAnalyzer = createSessionContextAnalyzer({
+      analyze: () =>
+        analyzeSessionContext(
+          buildAnalysisInput({
+            transcript: accumulatedTranscript,
+            jobDescription: contextJobDescription,
+            resumeText: contextResumeText
+          })
+        ),
+      onState: (state) => send(ws, { type: 'session-context', state }),
+      // Only while the mic is on (mirrors the auto-trigger's capture gate).
+      isCapturing: () => relay.isCapturing(),
+      // Don't piggyback on the expensive Expert/auto pipeline.
+      isPipelineBusy: () => trigger.getIsGenerating()
+    });
 
     // The SINGLE finalized-interviewee-answer seam: accumulate the new segment and
     // feed the running answer to the autonomous trigger monitor. ONLINE mode hits
@@ -620,6 +677,19 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         // candidate-only feed below still drives 'agent' mode, unchanged.
         if (t.isFinal) {
           trigger.noteFinal(t.text);
+          // Accumulate the FULL conversation (both lanes) and (re)arm the debounced
+          // session-context analyzer on EVERY final — candidate AND interviewer —
+          // so the live panel reflects the whole interview, not just answers.
+          const seg = t.text.trim();
+          if (seg) {
+            accumulatedTranscript = accumulatedTranscript
+              ? `${accumulatedTranscript} ${seg}`
+              : seg;
+            if (accumulatedTranscript.length > TRANSCRIPT_CAP) {
+              accumulatedTranscript = accumulatedTranscript.slice(-TRANSCRIPT_CAP);
+            }
+            contextAnalyzer.schedule();
+          }
         }
         // ONLINE seam (paraformer/volc): interviewee answers arrive on the
         // 'display' lane with no speakerId — unchanged byte-for-byte.
@@ -659,9 +729,19 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         roles,
         feedCandidateAnswer,
         // resetGeneration → drop the per-connection accumulated candidate answer so
-        // the new chat's trigger starts from a blank transcript.
+        // the new chat's trigger starts from a blank transcript, AND drop the full
+        // transcript + cancel any pending context analysis so "New interview" starts
+        // the live panel blank too.
         () => {
           accumulatedDisplayFinal = '';
+          accumulatedTranscript = '';
+          contextAnalyzer.cancel();
+        },
+        // configure → capture JD/résumé for the context analyzer's grounding. Only
+        // overwrite a field the configure carries (a partial configure keeps prior).
+        (jd, resume) => {
+          if (typeof jd === 'string') contextJobDescription = jd;
+          if (typeof resume === 'string') contextResumeText = resume;
         },
         data.toString()
       )
@@ -675,6 +755,9 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       // debounce AND clears the interval-mode cadence timer (leak guard — a live
       // setInterval would otherwise keep the closure + connection alive).
       trigger.setAutoGenerate(false);
+      // Cancel any armed session-context debounce so its timer can't outlive the
+      // connection (same leak guard as the trigger above).
+      contextAnalyzer.cancel();
     });
   });
 

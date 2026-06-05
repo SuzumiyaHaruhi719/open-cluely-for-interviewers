@@ -283,5 +283,133 @@
   max-width: 26ch;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════ *
+ * React SessionContextPanel — competency chips + topic/gap lists.
+ * ----------------------------------------------------------------------------
+ * The React port renders the LIGHT analyzer's SessionContextState as compact
+ * blocks: competency chips coloured by status, a drilled-topics list, and an
+ * open-gaps list. All colour comes from GLP tokens (theme.css) so light + dark
+ * both work; this file NEVER redefines tokens.
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Block (one labelled group: competencies / topics / gaps) ─────────────── */
+.ctx-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  animation: ctx-item-in var(--transition-moderate) both;
+}
+
+.ctx-block:nth-child(1) { animation-delay: 0ms; }
+.ctx-block:nth-child(2) { animation-delay: 36ms; }
+.ctx-block:nth-child(3) { animation-delay: 72ms; }
+
+/* ── Block title (mono-uppercase rail label) ──────────────────────────────── */
+.ctx-block__title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ── Competency chip cloud ────────────────────────────────────────────────── */
+.ctx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* One chip. The status drives --chip-accent / --chip-bg (set below); the chip
+   pairs the competency NAME with a small mono-uppercase status BADGE. */
+.ctx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-0-5) var(--space-1) var(--space-0-5) var(--space-2);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  color: var(--text-primary);
+  background: var(--chip-bg, var(--surface-subtle));
+  border: 1px solid color-mix(in srgb, var(--chip-accent, var(--border-default)) 38%, var(--border-default));
+  border-radius: var(--radius-full);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.ctx-chip__name {
+  font-weight: 500;
+}
+
+/* Mono-uppercase badge — the status, in the chip's accent colour. */
+.ctx-chip__badge {
+  flex: 0 0 auto;
+  padding: 0 var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--chip-accent, var(--text-tertiary));
+  background: color-mix(in srgb, var(--chip-accent, var(--text-tertiary)) 16%, transparent);
+  border-radius: var(--radius-md);
+}
+
+/* Status → GLP semantic colour. covered=success, partial=warning, gap=info. */
+.ctx-chip[data-status='covered'] { --chip-accent: var(--success); --chip-bg: var(--success-bg); }
+.ctx-chip[data-status='partial'] { --chip-accent: var(--warning); --chip-bg: var(--warning-bg); }
+.ctx-chip[data-status='gap']     { --chip-accent: var(--info);    --chip-bg: var(--info-bg); }
+
+/* ── Topic / gap list ─────────────────────────────────────────────────────── */
+.ctx-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ctx-list__item {
+  position: relative;
+  padding-left: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-primary);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Leading marker dot in the brand colour (topics) / info colour (gaps). */
+.ctx-list__item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--text-brand);
+}
+
+.ctx-list--gaps .ctx-list__item::before {
+  background: var(--info);
+}
+
 /* NOTE: @media (prefers-reduced-motion: reduce) was removed by explicit owner
    choice — motion plays unconditionally regardless of OS reduced-motion state. */

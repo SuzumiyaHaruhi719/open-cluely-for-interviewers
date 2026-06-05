@@ -75,6 +75,30 @@ export interface RankedQuestion {
 /** Whether a `result` was produced by the autonomous monitor or a manual Generate Q. */
 export type GenerationTrigger = 'auto' | 'manual';
 
+/** How well a competency has been probed so far in the live interview. */
+export type CompetencyStatus = 'covered' | 'partial' | 'gap';
+
+/** One competency the light session-context analyzer tracks across the transcript. */
+export interface SessionCompetency {
+  name: string;
+  status: CompetencyStatus;
+  /** Optional short quote/paraphrase justifying the status. */
+  evidence?: string;
+}
+
+/**
+ * The live "session context" the light analyzer (deepseek-v4-flash) derives from
+ * the accumulated transcript and emits over the `session-context` message. Drives
+ * the right-rail panel: competency chips (by status), drilled topics, open gaps.
+ */
+export interface SessionContextState {
+  competencies: SessionCompetency[];
+  /** Topics the interview has already drilled into. */
+  topics: string[];
+  /** Areas still worth probing. */
+  gaps: string[];
+}
+
 export interface SessionConfig {
   mode: InterviewerMode;
   resumeText: string;
@@ -209,5 +233,5 @@ export type ServerMessage =
       trigger?: GenerationTrigger;
     }
   | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
-  | { type: 'session-context'; state: unknown }
+  | { type: 'session-context'; state: SessionContextState }
   | { type: 'error'; requestId?: string; message: string };

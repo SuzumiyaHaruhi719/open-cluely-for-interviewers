@@ -4,6 +4,7 @@ import type {
   ClientMessage,
   ServerMessage,
   SessionConfig,
+  SessionContextState,
   SpeakerRole
 } from '@open-cluely/contract';
 import { WS_PATH } from '@open-cluely/contract';
@@ -95,6 +96,12 @@ export interface CopilotSocket {
   setSpeakerRole: (speakerId: number, role: SpeakerRole) => void;
   /** Clear the offline speaker segments + role overrides (called per-session, not per-analyze). */
   resetSpeakerSegments: () => void;
+  /**
+   * Latest live session-context state from the server (competencies / drilled
+   * topics / open gaps), or null until the first analysis arrives. Drives the
+   * right-rail SessionContextPanel; cleared by resetTranscripts ("New interview").
+   */
+  sessionContext: SessionContextState | null;
   /** Reset the live transcript lanes + last result/progress/error — a clean slate
    *  for a new interview so one chat's context never leaks into the next. */
   resetTranscripts: () => void;
@@ -140,6 +147,7 @@ export function useCopilotSocket(): CopilotSocket {
     display: { ...IDLE_AUDIO }
   });
   const [speakerSegments, setSpeakerSegments] = useState<SpeakerSegment[]>([]);
+  const [sessionContext, setSessionContext] = useState<SessionContextState | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimerRef = useRef<number | null>(null);
@@ -214,7 +222,10 @@ export function useCopilotSocket(): CopilotSocket {
         setError(message.message);
         break;
       case 'session-context':
-        // No UI surface for raw session context yet; intentionally ignored.
+        // Latest live analysis from the server's light analyzer — store it for the
+        // right-rail SessionContextPanel. The server only emits non-null states, so
+        // a new message always carries fresh signal; overwrite the previous one.
+        setSessionContext(message.state);
         break;
       case 'transcript': {
         const { source, text, isFinal } = message;
@@ -439,6 +450,9 @@ export function useCopilotSocket(): CopilotSocket {
     setIsAnalyzing(false);
     setError(null);
     activeRequestRef.current = null;
+    // Drop the live session context too so the panel returns to its empty state
+    // for the next interview ("New interview").
+    setSessionContext(null);
   }, []);
 
   // Stop any live capture when the hook unmounts.
@@ -471,6 +485,7 @@ export function useCopilotSocket(): CopilotSocket {
     speakerSegments,
     setSpeakerRole,
     resetSpeakerSegments,
+    sessionContext,
     resetTranscripts
   };
 }
