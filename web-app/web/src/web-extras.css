@@ -1033,3 +1033,221 @@ button.history-row {
     border-bottom: 1px solid var(--border-default);
   }
 }
+
+/* ── Interview summary modal (DeepSeek v4 pro) ───────────────────────────────
+ *  Mirrors .app-modal (history-sidebar.css) — fixed scrim + centered card — but
+ *  wider with a scrollable report body. Tokens only, so both themes are covered.
+ *  The scrim is rounded to the shell radius for the same reason .app-modal is
+ *  (a fixed element isn't clipped by .app-shell's overflow). ─────────────────*/
+.summary-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1450;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--surface-page) 80%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: app-modal-scrim-in var(--transition-moderate) both;
+}
+
+.summary-modal__card {
+  width: min(720px, 100%);
+  max-height: min(82vh, 760px);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-lg);
+  animation: app-modal-card-in var(--transition-moderate) both;
+  overflow: hidden;
+}
+
+.summary-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.summary-modal__title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+}
+
+.summary-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+.summary-modal__close:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+.summary-modal__close:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.summary-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-5);
+}
+
+.summary-modal__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) 0;
+  color: var(--text-secondary);
+}
+
+.summary-modal__spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--brand-500);
+  animation: summary-spin 0.8s linear infinite;
+}
+@keyframes summary-spin {
+  to { transform: rotate(360deg); }
+}
+
+.summary-modal__loading-text {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.summary-modal__loading-text--inline {
+  margin-top: var(--space-4);
+  text-align: center;
+  opacity: 0.8;
+}
+
+.summary-modal__error {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--error) 40%, transparent);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--error) 10%, transparent);
+  color: var(--error);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+.summary-modal__empty {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+}
+
+/* The rendered report (minimal markdown). */
+.summary-md {
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.summary-md__h {
+  margin: var(--space-4) 0 var(--space-2);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+}
+.summary-md__h:first-child { margin-top: 0; }
+.summary-md__h2 { font-size: var(--text-base); }
+.summary-md__h3 {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.summary-md__p {
+  margin: 0 0 var(--space-3);
+  word-break: break-word;
+}
+.summary-md__list {
+  margin: 0 0 var(--space-3);
+  padding-left: var(--space-5);
+  list-style: disc;
+}
+.summary-md__li {
+  margin: 0 0 var(--space-1);
+  word-break: break-word;
+}
+.summary-md__quote {
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-left: 3px solid var(--brand-500);
+  background: var(--surface-subtle, color-mix(in srgb, var(--brand-500) 8%, transparent));
+  color: var(--text-secondary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.summary-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--border-default);
+}
+
+.summary-modal__btn {
+  min-width: 96px;
+  min-height: 38px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-fast);
+}
+.summary-modal__btn:active { transform: scale(0.97); }
+.summary-modal__btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.summary-modal__btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
+.summary-modal__btn--secondary {
+  background: var(--surface-elevated);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+.summary-modal__btn--secondary:not(:disabled):hover { background: var(--surface-hover); }
+
+.summary-modal__btn--primary {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  color: var(--text-inverse);
+}
+.summary-modal__btn--primary:not(:disabled):hover {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  box-shadow: var(--shadow-md);
+}

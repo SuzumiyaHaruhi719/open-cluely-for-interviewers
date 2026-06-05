@@ -30,6 +30,19 @@ export interface LaneTranscript {
 
 export type TranscriptLanes = Record<AudioSource, LaneTranscript>;
 
+/**
+ * The interview-summary report state (DeepSeek v4 pro). 'idle' before any run;
+ * 'streaming' while the report is being produced (the one-shot server keeps this
+ * until the report lands, so the modal shows a spinner); 'done' with the full
+ * `text`; 'error' with the failure message. `text` accumulates streamed chunks
+ * and is replaced by the final report on done.
+ */
+export interface SummaryState {
+  status: 'idle' | 'streaming' | 'done' | 'error';
+  text: string;
+  error: string | null;
+}
+
 /** Per-source live-audio capture state for the UI. */
 export interface AudioState {
   capturing: boolean;
@@ -102,6 +115,18 @@ export interface CopilotSocket {
    * right-rail SessionContextPanel; cleared by resetTranscripts ("New interview").
    */
   sessionContext: SessionContextState | null;
+  /**
+   * The interview-summary report (DeepSeek v4 pro): status + accumulated text +
+   * error. Drives the SummaryModal. Reset to idle by resetTranscripts ("New
+   * interview").
+   */
+  summary: SummaryState;
+  /**
+   * Request an interview summary. Sends `summarize`, flips `summary` to
+   * 'streaming', and returns the generated requestId (or null if not connected).
+   * Stale replies (a different requestId) are ignored so a re-run supersedes.
+   */
+  startSummary: () => string | null;
   /** Reset the live transcript lanes + last result/progress/error — a clean slate
    *  for a new interview so one chat's context never leaks into the next. */
   resetTranscripts: () => void;
@@ -148,6 +173,10 @@ export function useCopilotSocket(): CopilotSocket {
   });
   const [speakerSegments, setSpeakerSegments] = useState<SpeakerSegment[]>([]);
   const [sessionContext, setSessionContext] = useState<SessionContextState | null>(null);
+  const [summary, setSummary] = useState<SummaryState>({ status: 'idle', text: '', error: null });
+  // The requestId of the in-flight summary, so stale summary-* replies from a
+  // superseded run are ignored (a re-run mints a new id).
+  const activeSummaryRef = useRef<string | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimerRef = useRef<number | null>(null);
@@ -226,6 +255,31 @@ export function useCopilotSocket(): CopilotSocket {
         // right-rail SessionContextPanel. The server only emits non-null states, so
         // a new message always carries fresh signal; overwrite the previous one.
         setSessionContext(message.state);
+        break;
+      case 'summary-chunk':
+        // Ignore chunks from a superseded run (a re-run minted a new id).
+        if (message.requestId !== activeSummaryRef.current) break;
+        setSummary((prev) => ({
+          status: 'streaming',
+          text: prev.text + message.text,
+          error: null
+        }));
+        break;
+      case 'summary-done':
+        if (message.requestId !== activeSummaryRef.current) break;
+        activeSummaryRef.current = null;
+        // One-shot server: the whole report rides on `text`. Streamed runs omit it
+        // (chunks already built prev.text) — keep what we accumulated then.
+        setSummary((prev) => ({
+          status: 'done',
+          text: typeof message.text === 'string' && message.text.length > 0 ? message.text : prev.text,
+          error: null
+        }));
+        break;
+      case 'summary-error':
+        if (message.requestId !== activeSummaryRef.current) break;
+        activeSummaryRef.current = null;
+        setSummary((prev) => ({ status: 'error', text: prev.text, error: message.message }));
         break;
       case 'transcript': {
         const { source, text, isFinal } = message;
@@ -361,6 +415,19 @@ export function useCopilotSocket(): CopilotSocket {
     [send]
   );
 
+  // Request an interview summary: mint a requestId, send `summarize`, and flip the
+  // summary state to 'streaming' (the modal shows a spinner). A re-run mints a new
+  // id, so late replies from the previous run are ignored by the handlers above.
+  const startSummary = useCallback((): string | null => {
+    const requestId = newRequestId();
+    if (!send({ type: 'summarize', requestId })) {
+      return null;
+    }
+    activeSummaryRef.current = requestId;
+    setSummary({ status: 'streaming', text: '', error: null });
+    return requestId;
+  }, [send]);
+
   const setAudioState = useCallback((source: AudioSource, patch: Partial<AudioState>): void => {
     setAudio((prev) => ({ ...prev, [source]: { ...prev[source], ...patch } }));
   }, []);
@@ -453,6 +520,9 @@ export function useCopilotSocket(): CopilotSocket {
     // Drop the live session context too so the panel returns to its empty state
     // for the next interview ("New interview").
     setSessionContext(null);
+    // Clear any interview summary so "New interview" starts with a blank report.
+    setSummary({ status: 'idle', text: '', error: null });
+    activeSummaryRef.current = null;
   }, []);
 
   // Stop any live capture when the hook unmounts.
@@ -486,6 +556,8 @@ export function useCopilotSocket(): CopilotSocket {
     setSpeakerRole,
     resetSpeakerSegments,
     sessionContext,
+    summary,
+    startSummary,
     resetTranscripts
   };
 }

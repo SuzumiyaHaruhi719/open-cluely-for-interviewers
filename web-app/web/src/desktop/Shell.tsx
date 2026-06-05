@@ -11,6 +11,7 @@ import { RightRail } from './RightRail';
 import { SettingsModal } from './SettingsModal';
 import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from './InterviewTypeModal';
 import { ResultsPanel } from './ResultsPanel';
+import { SummaryModal } from './SummaryModal';
 import { PipelineStudio } from './studio/PipelineStudio';
 import { useRailCollapsed } from './useRailCollapsed';
 import { useAssistantPanel } from './useAssistantPanel';
@@ -76,6 +77,8 @@ export function Shell() {
     setSpeakerRole,
     resetSpeakerSegments,
     sessionContext,
+    summary,
+    startSummary,
     resetTranscripts
   } = socket;
 
@@ -86,6 +89,7 @@ export function Shell() {
   // the transcript stream BEFORE any live socket transcript. Cleared on new/clear.
   const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [summaryOpen, setSummaryOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
   // Topbar title for the current in-memory interview (sample name, else default).
   const [interviewTitle, setInterviewTitle] = useState('New interview');
@@ -416,6 +420,15 @@ export function Shell() {
     void assistant.insights(transcriptText);
   }, [assistant, transcriptText]);
 
+  // ── Interview summary (DeepSeek v4 pro) ─────────────────────────────────────
+  // Open the modal AND kick off a fresh summary. The server builds the report from
+  // its own accumulated transcript (both lanes) + JD/résumé — no payload needed
+  // from the client beyond the requestId startSummary mints.
+  const onSummarize = useCallback((): void => {
+    setSummaryOpen(true);
+    startSummary();
+  }, [startSummary]);
+
   // ── Interview lifecycle (ephemeral — nothing persists across reload) ─────────
   // "New interview": reset all in-memory state and re-open the type picker.
   const onNewInterview = useCallback((): void => {
@@ -508,6 +521,7 @@ export function Shell() {
                 onAnalyze={onAnalyze}
                 onClearSession={onClearSession}
                 onAskAi={onAskAi}
+                onSummarize={onSummarize}
                 onMeetingNotes={onMeetingNotes}
                 onInsights={onInsights}
                 assistantBusy={assistant.busy}
@@ -563,6 +577,13 @@ export function Shell() {
         loading={assistant.panel.loading}
         error={assistant.panel.error}
         onClose={assistant.close}
+      />
+
+      <SummaryModal
+        open={summaryOpen}
+        summary={summary}
+        onRegenerate={startSummary}
+        onClose={() => setSummaryOpen(false)}
       />
 
       <InterviewTypeModal

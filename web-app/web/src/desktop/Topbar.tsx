@@ -74,6 +74,8 @@ interface TopbarProps {
   onClearSession: () => void;
   /** Ask the assistant a free-form question (legacy results panel). */
   onAskAi: () => void;
+  /** Open the interview-summary modal + kick off a DeepSeek v4 pro evaluation. */
+  onSummarize: () => void;
   /** Generate meeting notes from the current transcript. */
   onMeetingNotes: () => void;
   /** Generate insights from the current transcript. */
@@ -110,6 +112,7 @@ export function Topbar({
   onAnalyze,
   onClearSession,
   onAskAi,
+  onSummarize,
   onMeetingNotes,
   onInsights,
   assistantBusy,
@@ -243,6 +246,15 @@ export function Topbar({
           title="Ask the assistant a free-form question"
         >
           {askLabel}
+        </button>
+        <button
+          id="summarize-btn"
+          className="action-btn"
+          type="button"
+          onClick={onSummarize}
+          title="生成面试评估总结 / Generate an interview evaluation summary"
+        >
+          总结面试 · Summarize
         </button>
         <button
           id="screen-ai-btn"

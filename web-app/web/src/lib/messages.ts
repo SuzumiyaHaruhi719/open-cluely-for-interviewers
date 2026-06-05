@@ -101,6 +101,32 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
     case S2C.SESSION_CONTEXT:
       return { type: 'session-context', state: data.state };
 
+    case S2C.SUMMARY_CHUNK:
+      return isString(data.requestId) && isString(data.text)
+        ? { type: 'summary-chunk', requestId: data.requestId, text: data.text }
+        : null;
+
+    case S2C.SUMMARY_DONE:
+      // `text`/`model` are optional (streamed runs omit `text`; the model id is
+      // best-effort). Only `requestId` is required to correlate the finish.
+      return isString(data.requestId)
+        ? {
+            type: 'summary-done',
+            requestId: data.requestId,
+            ...(isString(data.text) ? { text: data.text } : {}),
+            ...(isString(data.model) ? { model: data.model } : {})
+          }
+        : null;
+
+    case S2C.SUMMARY_ERROR:
+      return isString(data.requestId)
+        ? {
+            type: 'summary-error',
+            requestId: data.requestId,
+            message: isString(data.message) ? data.message : 'Summary failed'
+          }
+        : null;
+
     case S2C.ERROR:
       return {
         type: 'error',

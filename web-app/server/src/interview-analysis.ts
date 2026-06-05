@@ -18,14 +18,22 @@
 // ============================================================================
 
 import type { SessionContextState, CompetencyStatus, SessionCompetency } from '@open-cluely/contract';
-import { chat } from './dashscope';
+import { chat, getDefaultModel } from './dashscope';
 
 /** The light model used for the incremental session-context call. */
 const DEFAULT_CONTEXT_MODEL = 'deepseek-v4-flash';
 
+/** The PRO model used for the full interview-summary report (deepest reasoning). */
+const DEFAULT_SUMMARY_MODEL = 'deepseek-v4-pro';
+
 /** Resolve the session-context model: env override, else the light default. */
 export function getContextModel(): string {
   return String(process.env.INTERVIEWER_CONTEXT_MODEL ?? '').trim() || DEFAULT_CONTEXT_MODEL;
+}
+
+/** Resolve the summary model: env override (INTERVIEWER_SUMMARY_MODEL), else v4-pro. */
+export function getSummaryModel(): string {
+  return String(process.env.INTERVIEWER_SUMMARY_MODEL ?? '').trim() || DEFAULT_SUMMARY_MODEL;
 }
 
 // Keep the transcript window we hand the model bounded — the live panel only
@@ -186,5 +194,138 @@ export async function analyzeSessionContext(input: string): Promise<SessionConte
     return parseSessionContext(text);
   } catch {
     return null;
+  }
+}
+
+// ── Interview summary (Phase B — DeepSeek v4 pro) ───────────────────────────
+// A full, deepest-reasoning evaluation report the interviewer reads after (or
+// during) the interview. Unlike the live context call this KEEPS thinking on
+// (the reasoning depth is the point) and asks for a Chinese Markdown report with
+// a fixed section structure. The summary reads the FULL transcript window (both
+// lanes — the AI's asked follow-ups are already accumulated in the transcript),
+// so it is built with a larger transcript cap than the live panel.
+
+const SUMMARY_TRANSCRIPT_WINDOW_CHARS = 14000;
+// The report is long-form prose; give it room. Pro thinking + a multi-section
+// report needs a generous ceiling so the conclusion is never truncated.
+const SUMMARY_MAX_TOKENS = 4096;
+
+/**
+ * The evaluation prompt (Chinese). Asks for a Markdown report with the fixed
+ * sections the spec mandates. Kept here so both analysis prompts live in one
+ * module. The interviewer's own follow-ups are part of the transcript, so the
+ * model can also judge 追问覆盖度 (follow-up coverage) from what was actually asked.
+ */
+const SUMMARY_SYSTEM = [
+  '你是一位资深技术面试官与评估专家。请基于下面提供的完整面试记录（包含面试官与候选人双方的发言，',
+  '以及可选的岗位描述 JD 与候选人简历），对候选人做一次全面、客观、有证据支撑的面试评估。',
+  '只依据记录中的实际内容下结论，不要臆造记录里没有的事实；当证据不足时，明确指出"证据不足"。',
+  '',
+  '请用【中文】输出一份 Markdown 评估报告，使用二级标题（## ），严格包含且仅包含以下小节，顺序固定：',
+  '## 候选人概况',
+  '  用 2-4 句概述候选人的背景、应聘岗位匹配度与整体印象。',
+  '## 各能力维度',
+  '  针对岗位相关的关键能力维度（如：专业深度、系统设计、编码能力、问题解决、沟通表达等；优先依据 JD）',
+  '  逐项评估。每个维度给出 1-5 分的评分，并附上来自面试记录的具体证据（可引用候选人原话或转述）。',
+  '  用要点列表呈现，例如：`- 系统设计：4/5 — 证据：……`。',
+  '## 亮点',
+  '  列出候选人表现突出之处（要点列表）。',
+  '## 风险·不足',
+  '  列出明显的薄弱点、疑虑或风险信号（要点列表）。',
+  '## 追问覆盖度',
+  '  评估面试过程中追问是否充分：哪些关键点被深入追问、哪些重要方向尚未被探究、是否存在未澄清的疑点。',
+  '## 录用建议',
+  '  给出明确倾向（如：强烈推荐 / 推荐 / 待定 / 不推荐）并说明理由，理由需与上文证据一致。',
+  '',
+  '保持专业、简洁、可执行。直接输出 Markdown 报告本体，不要添加额外的前言或结语。'
+].join('\n');
+
+/** The result of a summary run: the report text + the model id that produced it. */
+export interface SummaryResult {
+  /** The full Markdown evaluation report. */
+  readonly text: string;
+  /** The model id actually used (the configured pro id, or the fallback id). */
+  readonly model: string;
+  /** True when the pro model was rejected and we fell back to the interviewer model. */
+  readonly fellBack: boolean;
+}
+
+/**
+ * Build the summary input — same shape as the live-context input but with a much
+ * larger transcript window (the report judges the WHOLE interview, both lanes,
+ * including the AI follow-ups already in the transcript). Returns '' when there
+ * is no transcript (the caller then sends a friendly "nothing to summarize").
+ */
+export function buildSummaryInput(parts: AnalysisInputParts): string {
+  const transcript = String(parts.transcript ?? '').trim();
+  if (!transcript) return '';
+
+  const sections: string[] = [];
+
+  const jd = String(parts.jobDescription ?? '').trim();
+  if (jd) sections.push(`# 岗位描述 (JD)\n${jd.slice(0, JD_WINDOW_CHARS)}`);
+
+  const resume = String(parts.resumeText ?? '').trim();
+  if (resume) sections.push(`# 候选人简历\n${resume.slice(0, RESUME_WINDOW_CHARS)}`);
+
+  // The summary keeps the recent tail too (the long window already covers most
+  // interviews); for very long ones the most-recent exchange matters most.
+  sections.push(`# 面试完整记录\n${transcript.slice(-SUMMARY_TRANSCRIPT_WINDOW_CHARS)}`);
+
+  return sections.join('\n\n');
+}
+
+/** A built-in retry-on-bad-model heuristic: did DashScope reject the model id? */
+function isModelRejected(err: unknown): boolean {
+  const msg = (err instanceof Error ? err.message : String(err ?? '')).toLowerCase();
+  // DashScope returns 400/404 with messages mentioning the model when an id is
+  // unknown/unavailable for the key. Match broadly so the fallback is reliable.
+  return /model/.test(msg) && /(not found|not exist|unknown|invalid|unavailable|unsupported|400|404)/.test(msg);
+}
+
+/**
+ * Run the PRO-model interview-summary call over the built input. Returns the full
+ * Markdown report plus the model id actually used. Throws on hard failure (no
+ * key, network/timeout, or both pro AND fallback rejected) — the caller maps that
+ * to a `summary-error`. If the configured pro model id is REJECTED by DashScope
+ * (unknown/unavailable for the key), this falls back ONCE to the configured
+ * interviewer model (INTERVIEWER_MODEL / deepseek-v4-flash) and notes it.
+ *
+ * NOTE: `chat()` is one-shot (no streaming), so the whole report comes back at
+ * once — the client shows a spinner and renders it on `summary-done`.
+ */
+export async function analyzeSummary(input: string): Promise<SummaryResult> {
+  const trimmed = String(input ?? '').trim();
+  if (!trimmed) {
+    // Defensive: callers already guard empty transcripts, but never call the
+    // model with nothing.
+    throw new Error('empty summary input');
+  }
+
+  const proModel = getSummaryModel();
+  const messages = [{ role: 'user' as const, content: trimmed }];
+
+  try {
+    const text = await chat({
+      system: SUMMARY_SYSTEM,
+      messages,
+      model: proModel,
+      maxTokens: SUMMARY_MAX_TOKENS
+      // thinking left at default ON — the pro reasoning depth is the whole point.
+    });
+    return { text, model: proModel, fellBack: false };
+  } catch (err) {
+    if (!isModelRejected(err)) throw err;
+    // The pro id was rejected by DashScope — fall back to the configured
+    // interviewer model so the user still gets a (less-deep) report.
+    const fallbackModel = getDefaultModel();
+    if (fallbackModel === proModel) throw err; // nothing else to try
+    const text = await chat({
+      system: SUMMARY_SYSTEM,
+      messages,
+      model: fallbackModel,
+      maxTokens: SUMMARY_MAX_TOKENS
+    });
+    return { text, model: fallbackModel, fellBack: true };
   }
 }

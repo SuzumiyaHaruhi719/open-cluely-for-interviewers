@@ -1,7 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { parseSessionContext, buildAnalysisInput } from '../src/interview-analysis';
+import {
+  parseSessionContext,
+  buildAnalysisInput,
+  buildSummaryInput,
+  getSummaryModel
+} from '../src/interview-analysis';
 
 // The light session-context analyzer must parse the model's reply DEFENSIVELY:
 // strip ```json fences, recover the first {...} from surrounding prose, validate
@@ -90,4 +95,37 @@ test('buildAnalysisInput: includes JD + résumé sections only when present', ()
   assert.doesNotMatch(transcriptOnly, /Job description/);
   assert.doesNotMatch(transcriptOnly, /Candidate résumé/);
   assert.match(transcriptOnly, /Interview transcript so far/);
+});
+
+// ── Interview summary (Phase B) ─────────────────────────────────────────────
+
+test('buildSummaryInput: empty transcript yields empty string (caller sends friendly empty-state)', () => {
+  assert.equal(buildSummaryInput({ transcript: '   ' }), '');
+});
+
+test('buildSummaryInput: includes JD + résumé (Chinese headings) only when present', () => {
+  const withAll = buildSummaryInput({
+    transcript: 'Interviewer: tell me about a project. Candidate: I built a queue.',
+    jobDescription: 'Backend engineer',
+    resumeText: '5 years Node'
+  });
+  assert.match(withAll, /岗位描述/);
+  assert.match(withAll, /候选人简历/);
+  assert.match(withAll, /面试完整记录/);
+  assert.match(withAll, /I built a queue/);
+
+  const transcriptOnly = buildSummaryInput({ transcript: 'Candidate: hello.' });
+  assert.doesNotMatch(transcriptOnly, /岗位描述/);
+  assert.doesNotMatch(transcriptOnly, /候选人简历/);
+  assert.match(transcriptOnly, /面试完整记录/);
+});
+
+test('getSummaryModel: env override wins, else defaults to deepseek-v4-pro', () => {
+  const prev = process.env.INTERVIEWER_SUMMARY_MODEL;
+  delete process.env.INTERVIEWER_SUMMARY_MODEL;
+  assert.equal(getSummaryModel(), 'deepseek-v4-pro');
+  process.env.INTERVIEWER_SUMMARY_MODEL = 'custom-pro-model';
+  assert.equal(getSummaryModel(), 'custom-pro-model');
+  if (prev === undefined) delete process.env.INTERVIEWER_SUMMARY_MODEL;
+  else process.env.INTERVIEWER_SUMMARY_MODEL = prev;
 });

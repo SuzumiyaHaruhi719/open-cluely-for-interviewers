@@ -19,7 +19,12 @@ import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
 import { createSessionContextAnalyzer } from './session-context-analyzer';
-import { analyzeSessionContext, buildAnalysisInput } from './interview-analysis';
+import {
+  analyzeSessionContext,
+  analyzeSummary,
+  buildAnalysisInput,
+  buildSummaryInput
+} from './interview-analysis';
 import { createSpeakerRoleMap, type SpeakerRoleMap } from './speaker-roles';
 import { stampRole, isCandidateFinal } from './ws-speaker';
 
@@ -112,7 +117,8 @@ const clientMessageSchema = z.discriminatedUnion('type', [
     speakerId: z.number(),
     role: z.enum(['interviewer', 'candidate', 'unknown'])
   }),
-  z.object({ type: z.literal('context-note'), note: z.string().min(1) })
+  z.object({ type: z.literal('context-note'), note: z.string().min(1) }),
+  z.object({ type: z.literal('summarize'), requestId: z.string() })
 ]);
 
 type ClientMessageParsed = z.infer<typeof clientMessageSchema>;
@@ -301,6 +307,43 @@ async function handleAnalyze(
   }
 }
 
+/**
+ * Handle a `summarize` request: build the summary input from the per-connection
+ * accumulated transcript (both lanes) + captured JD/résumé, call the PRO summary
+ * model, and reply. `chat()` is one-shot (no streaming), so the WHOLE report is
+ * returned at once via a single `summary-done {requestId, text}` — the client
+ * shows a spinner until then. An EMPTY transcript replies with a friendly
+ * `summary-done` carrying a "nothing to summarize" message (NOT an error, so the
+ * modal renders it as ordinary text). Any model failure → `summary-error`.
+ */
+async function handleSummarize(
+  ws: WebSocket,
+  buildSummary: () => string,
+  requestId: string
+): Promise<void> {
+  const input = buildSummary();
+  if (!input) {
+    // Friendly empty-state — surfaced as a normal (non-error) report so the modal
+    // shows it as text rather than a red error banner.
+    send(ws, {
+      type: 'summary-done',
+      requestId,
+      text: '还没有可总结的面试内容。\n\nThere is no interview content to summarize yet — start the conversation first.'
+    });
+    return;
+  }
+  try {
+    const result = await analyzeSummary(input);
+    const text = result.fellBack
+      ? `> 注意：所选总结模型不可用，已回退到 ${result.model}。\n\n${result.text}`
+      : result.text;
+    send(ws, { type: 'summary-done', requestId, text, model: result.model });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'summary failed';
+    send(ws, { type: 'summary-error', requestId, message });
+  }
+}
+
 type ConfigurePayload = Extract<ClientMessageParsed, { type: 'configure' }>['config'];
 
 /**
@@ -384,6 +427,7 @@ export async function dispatch(
   injectNote: (note: string) => void,
   resetAccumulated: () => void,
   setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
+  buildSummary: () => string,
   msg: ClientMessageParsed
 ): Promise<void> {
   switch (msg.type) {
@@ -450,6 +494,11 @@ export async function dispatch(
       // generation sees it too (manual Generate Q also carries it via candidateAnswer).
       injectNote(msg.note);
       return;
+    case 'summarize':
+      // Interview summary (DeepSeek v4 pro): build the input from the accumulated
+      // transcript (both lanes) + captured JD/résumé and reply with the report.
+      await handleSummarize(ws, buildSummary, msg.requestId);
+      return;
   }
 }
 
@@ -462,6 +511,7 @@ function onMessage(
   injectNote: (note: string) => void,
   resetAccumulated: () => void,
   setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
+  buildSummary: () => string,
   raw: unknown
 ): void {
   let requestId: string | undefined;
@@ -474,7 +524,11 @@ function onMessage(
         send(ws, { type: 'error', message: parsed.error.issues[0]?.message ?? 'invalid message' });
         return;
       }
-      if (parsed.data.type === 'analyze') requestId = parsed.data.requestId;
+      // Correlate errors with the request: analyze + summarize both carry a
+      // requestId, so a thrown handler error can be reported against it.
+      if (parsed.data.type === 'analyze' || parsed.data.type === 'summarize') {
+        requestId = parsed.data.requestId;
+      }
       await dispatch(
         ws,
         session,
@@ -484,6 +538,7 @@ function onMessage(
         injectNote,
         resetAccumulated,
         setContextGrounding,
+        buildSummary,
         parsed.data
       );
     } catch (err) {
@@ -743,6 +798,16 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
           if (typeof jd === 'string') contextJobDescription = jd;
           if (typeof resume === 'string') contextResumeText = resume;
         },
+        // summarize → build the summary input from the SAME per-connection
+        // accumulated transcript (both lanes) + captured JD/résumé the live panel
+        // reads. Returns '' when there is nothing to summarize (handleSummarize
+        // then replies with the friendly empty-state message).
+        () =>
+          buildSummaryInput({
+            transcript: accumulatedTranscript,
+            jobDescription: contextJobDescription,
+            resumeText: contextResumeText
+          }),
         data.toString()
       )
     );

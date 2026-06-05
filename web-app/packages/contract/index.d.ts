@@ -8,6 +8,9 @@ export const S2C: {
   RESULT: 'result';
   TRANSCRIPT: 'transcript';
   SESSION_CONTEXT: 'session-context';
+  SUMMARY_CHUNK: 'summary-chunk';
+  SUMMARY_DONE: 'summary-done';
+  SUMMARY_ERROR: 'summary-error';
   ERROR: 'error';
 };
 export const C2S: {
@@ -16,6 +19,7 @@ export const C2S: {
   AUDIO: 'audio';
   AUDIO_CONTROL: 'audio-control';
   SET_SPEAKER_ROLE: 'set-speaker-role';
+  SUMMARIZE: 'summarize';
 };
 
 /** Live-ASR providers the server can stream through. Default: 'paraformer'. */
@@ -200,7 +204,15 @@ export type ClientMessage =
   | { type: 'audio'; seq: number; source: AudioSource; pcm: string }
   | { type: 'audio-control'; action: 'start' | 'stop'; source: AudioSource }
   | { type: 'set-speaker-role'; speakerId: number; role: SpeakerRole }
-  | { type: 'context-note'; note: string };
+  | { type: 'context-note'; note: string }
+  /**
+   * Request a full interview-evaluation summary (DeepSeek v4 pro). The server
+   * builds the input from the per-connection accumulated transcript (both lanes)
+   * plus the captured JD/résumé and replies with summary-chunk + summary-done
+   * (streamed) OR a single summary-done carrying the whole report. `requestId`
+   * correlates the reply so a re-run supersedes the previous one.
+   */
+  | { type: 'summarize'; requestId: string };
 
 export type ServerMessage =
   | { type: 'ready'; sessionId: string }
@@ -234,4 +246,15 @@ export type ServerMessage =
     }
   | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
   | { type: 'session-context'; state: SessionContextState }
+  /** A streamed slice of the interview summary (appended in order by requestId). */
+  | { type: 'summary-chunk'; requestId: string; text: string }
+  /**
+   * The interview summary finished. Carries the WHOLE report `text` for the
+   * one-shot path (no chunks were sent); omitted/empty when chunks were streamed
+   * (the client already has the full text). `model` reports the model actually
+   * used (the v4-pro id, or the fallback id if pro was rejected).
+   */
+  | { type: 'summary-done'; requestId: string; text?: string; model?: string }
+  /** The interview summary failed (no key, model error, empty transcript). */
+  | { type: 'summary-error'; requestId: string; message: string }
   | { type: 'error'; requestId?: string; message: string };

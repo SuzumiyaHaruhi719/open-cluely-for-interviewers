@@ -31,23 +31,30 @@ const GENERATION_TRIGGERS = Object.freeze(['auto', 'manual']);
 // PCM format the browser AudioWorklet must emit for the ASR relay.
 const PCM = Object.freeze({ sampleRate: 16000, channels: 1, format: 's16le' });
 
-// Server -> client message type tags.
+// Server -> client message type tags. The summary-* tags carry the interview
+// evaluation report (DeepSeek v4 pro): summary-chunk streams slices in order,
+// summary-done finalizes (carrying the whole text for the one-shot path),
+// summary-error reports a failure (no key / model error / empty transcript).
 const S2C = Object.freeze({
   READY: 'ready',
   PROGRESS: 'progress',
   RESULT: 'result',
   TRANSCRIPT: 'transcript',
   SESSION_CONTEXT: 'session-context',
+  SUMMARY_CHUNK: 'summary-chunk',
+  SUMMARY_DONE: 'summary-done',
+  SUMMARY_ERROR: 'summary-error',
   ERROR: 'error'
 });
 
-// Client -> server message type tags.
+// Client -> server message type tags. 'summarize' requests the interview summary.
 const C2S = Object.freeze({
   CONFIGURE: 'configure',
   ANALYZE: 'analyze',
   AUDIO: 'audio',
   AUDIO_CONTROL: 'audio-control',
-  SET_SPEAKER_ROLE: 'set-speaker-role'
+  SET_SPEAKER_ROLE: 'set-speaker-role',
+  SUMMARIZE: 'summarize'
 });
 
 module.exports = {
