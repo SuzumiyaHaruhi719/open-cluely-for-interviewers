@@ -23,7 +23,7 @@ export interface InterviewSample {
   turns: InterviewSampleTurn[];
 }
 
-export const INTERVIEW_SAMPLES: InterviewSample[] = [
+const BUILTIN_SAMPLES: InterviewSample[] = [
   {
     id: 'rich-backend-zh',
     name: 'ZH·资深后端/分布式系统工程师面试',
@@ -135,6 +135,30 @@ export const INTERVIEW_SAMPLES: InterviewSample[] = [
     ]
   }
 ];
+
+// Auto-include every generated template under ./samples/*.ts. Each such module
+// exports one `InterviewSample` const; Vite's import.meta.glob (eager) pulls them
+// in at build time, so dropping a new sample-N.ts into ./samples makes it appear
+// in the New-interview picker with NO manual wiring. Built-ins first, then the
+// generated ones sorted by file path for a stable order.
+const generatedModules = import.meta.glob('./samples/*.ts', { eager: true }) as Record<
+  string,
+  Record<string, unknown>
+>;
+const GENERATED_SAMPLES: InterviewSample[] = Object.keys(generatedModules)
+  .sort()
+  .flatMap((path) =>
+    Object.values(generatedModules[path]).filter(
+      (v): v is InterviewSample =>
+        !!v &&
+        typeof v === 'object' &&
+        typeof (v as { id?: unknown }).id === 'string' &&
+        Array.isArray((v as { turns?: unknown }).turns)
+    )
+  );
+
+/** All New-interview templates: built-ins + any generated ./samples/*.ts. */
+export const INTERVIEW_SAMPLES: InterviewSample[] = [...BUILTIN_SAMPLES, ...GENERATED_SAMPLES];
 
 /** Flatten a sample's turns into a single candidate-answer string for analysis. */
 export function sampleTranscriptText(sample: InterviewSample): string {

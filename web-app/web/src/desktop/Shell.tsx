@@ -140,12 +140,28 @@ export function Shell() {
   // turns are preserved.
   const lastDisplayFinalRef = useRef('');
   useEffect(() => {
-    const displayFinal = transcripts.display.finalText;
-    if (displayFinal && displayFinal !== lastDisplayFinalRef.current) {
-      lastDisplayFinalRef.current = displayFinal;
-      setAnswer(displayFinal);
+    // Feed the manual Generate Q buffer (`answer`) with the candidate's latest
+    // words. ONLINE: the candidate is the 'display' lane. OFFLINE single-mic
+    // (CAM++/iFlytek): there is NO display lane — the candidate's speech arrives as
+    // diarized speakerSegments (or, before any speaker is labelled, the raw
+    // room-mic transcript). Feed from those offline, otherwise `answer` stays empty
+    // and Generate Q is disabled for the whole in-person interview.
+    let next = '';
+    if (offline) {
+      const candidateText = speakerSegments
+        .filter((s) => s.role === 'candidate')
+        .map((s) => s.text)
+        .join(' ')
+        .trim();
+      next = candidateText || transcripts.mic.finalText.trim();
+    } else {
+      next = transcripts.display.finalText;
     }
-  }, [transcripts.display.finalText]);
+    if (next && next !== lastDisplayFinalRef.current) {
+      lastDisplayFinalRef.current = next;
+      setAnswer(next);
+    }
+  }, [offline, transcripts.display.finalText, transcripts.mic.finalText, speakerSegments]);
 
   // Persist newly-committed candidate finals to the active session.
   const persistedDisplayRef = useRef('');

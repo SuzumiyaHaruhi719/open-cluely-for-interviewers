@@ -242,6 +242,11 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   // mode the timer is idle and the existing gate/debounce path drives everything.
   let mode: 'agent' | 'interval' = 'agent';
   let latestText = '';
+  // Rolling transcript accumulated SINCE the last fire (auto OR manual). Every
+  // follow-up is generated from ONLY this window — not the whole conversation —
+  // so the model never re-asks about material an earlier follow-up already
+  // covered. Consumed on each fire, cleared on a manual run and on reset().
+  let sinceFire = '';
   let intervalHandle: ReturnType<typeof setInterval> | null = null;
   // Auto NEVER fires unless an audio source is actively capturing (the mic is On).
   // Set from ws.ts on every audio-control start/stop. Default false = nothing fires
@@ -282,6 +287,18 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     charsAtLastGen = text.length;
   }
 
+  // Drop the just-fired window from `sinceFire`, KEEPING anything noteFinal()
+  // appended while the generation was in flight (so speech during a ~25s analyze
+  // isn't lost from the next window). Falls back to clearing if the buffer was
+  // capped/changed underneath us.
+  function consumeSinceFire(firedRaw: string): void {
+    if (firedRaw && sinceFire.startsWith(firedRaw)) {
+      sinceFire = sinceFire.slice(firedRaw.length).replace(/^\s+/, '');
+    } else {
+      sinceFire = '';
+    }
+  }
+
   /** Mic on/off gate — auto only fires while an audio source is capturing. */
   function setCapturing(on: boolean): void {
     capturing = !!on;
@@ -302,7 +319,11 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   async function intervalTick(): Promise<void> {
     if (!autoGenerate || mode !== 'interval' || isGenerating || !capturing) return;
-    const text = latestText.trim();
+    // Fire from ONLY the transcript since the last follow-up. If nothing new was
+    // said since then, skip this tick — re-running the same context would just
+    // produce a duplicate follow-up.
+    const firedRaw = sinceFire;
+    const text = firedRaw.trim();
     if (!text) return;
     const startEpoch = epoch;
     isGenerating = true;
@@ -313,7 +334,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     } finally {
       // A reset() mid-flight (new/switched chat) means this fire belongs to an
       // abandoned chat — do NOT advance the cooldown for the new chat.
-      if (epoch === startEpoch) recordFire(text);
+      if (epoch === startEpoch) {
+        recordFire(latestText);
+        consumeSinceFire(firedRaw);
+      }
       isGenerating = false;
     }
   }
@@ -346,14 +370,22 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
     const startEpoch = epoch;
     isGenerating = true;
+    // Generate from ONLY the transcript since the last follow-up (fall back to the
+    // gate text if that window is somehow empty), so the follow-up targets new
+    // material instead of re-probing what an earlier follow-up already covered.
+    const firedRaw = sinceFire;
+    const since = firedRaw.trim();
     try {
-      await runAnalyze({ candidateAnswer: text, focusHint: decision.focusHint });
+      await runAnalyze({ candidateAnswer: since || text, focusHint: decision.focusHint });
     } catch {
       /* analyze failures are handled by the caller's path; never disrupt the relay */
     } finally {
       // A reset() mid-flight (new/switched chat) means this fire belongs to an
       // abandoned chat — do NOT advance the cooldown for the new chat.
-      if (epoch === startEpoch) recordFire(text);
+      if (epoch === startEpoch) {
+        recordFire(text);
+        consumeSinceFire(firedRaw);
+      }
       isGenerating = false;
     }
   }
@@ -365,6 +397,9 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // mode can fire a follow-up even before any candidate is diarized.
     latestText = latestText ? `${latestText} ${s}` : s;
     if (latestText.length > 4000) latestText = latestText.slice(-4000);
+    // Grow the since-last-fire window every follow-up is generated from.
+    sinceFire = sinceFire ? `${sinceFire} ${s}` : s;
+    if (sinceFire.length > 4000) sinceFire = sinceFire.slice(-4000);
   }
 
   function onCandidateFinal(fullCandidateText: string): void {
@@ -427,6 +462,9 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     isGenerating = true;
     lastGenAt = now();
     if (typeof fullCandidateText === 'string') charsAtLastGen = fullCandidateText.length;
+    // A manual Generate Q covers the recent transcript — drop the since-fire window
+    // so the next AUTO follow-up doesn't re-ask what the manual one just covered.
+    sinceFire = '';
     clearPending();
   }
 
@@ -440,8 +478,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // Bump the epoch FIRST so any in-flight generation (whose finally compares the
     // captured epoch) neither records a fire nor lets the caller emit its result.
     epoch += 1;
-    // Drop the interval-mode accumulated transcript so the new chat starts blank.
+    // Drop the interval-mode accumulated transcript + the since-last-fire window
+    // so the new chat starts blank.
     latestText = '';
+    sinceFire = '';
     // Cancel any armed agent debounce/pending so no late fire from the old chat.
     clearPending();
     // Free the in-flight slot (the abandoned generation is suppressed) and reset
