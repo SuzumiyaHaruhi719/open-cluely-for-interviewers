@@ -336,7 +336,12 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
   });
 
   socket.on('close', () => {
+    const wasFinished = finished;
     socket = null;
+    // Unexpected drop (not our own stop()): surface it so the relay tears the
+    // source down instead of silently swallowing all further audio. fail() is a
+    // no-op once finished, so a normal stop()->close does not double-fire.
+    if (!wasFinished) fail('Doubao socket closed unexpectedly');
   });
 
   function sendAudio(pcm: Buffer): void {

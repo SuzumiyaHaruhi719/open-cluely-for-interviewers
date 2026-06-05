@@ -192,7 +192,12 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       case 'result':
-        if (discardedRequestsRef.current.has(message.requestId)) break;
+        // A discarded request's straggler final won't come again — drop the id
+        // so the set can't grow unbounded across many chat resets.
+        if (discardedRequestsRef.current.has(message.requestId)) {
+          discardedRequestsRef.current.delete(message.requestId);
+          break;
+        }
         // ANY result means the in-flight generation finished — ALWAYS clear the
         // progress UI and show it. Previously this cleared isAnalyzing only when
         // the result's requestId matched the adopted one; on any mismatch (the
@@ -212,7 +217,11 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       case 'error':
-        if (message.requestId && discardedRequestsRef.current.has(message.requestId)) break;
+        // Terminal straggler for a discarded request — drop the id (bounded set).
+        if (message.requestId && discardedRequestsRef.current.has(message.requestId)) {
+          discardedRequestsRef.current.delete(message.requestId);
+          break;
+        }
         if (!message.requestId || message.requestId === activeRequestRef.current) {
           activeRequestRef.current = null;
           setIsAnalyzing(false);
@@ -438,7 +447,13 @@ export function useCopilotSocket(): CopilotSocket {
   // progress + tokens, in-flight flag, error.
   const resetTranscripts = useCallback((): void => {
     // Abandon any in-flight generation: its late progress/result belongs to the
-    // chat we're leaving and must not surface in the fresh one.
+    // chat we're leaving and must not surface in the fresh one. Prune the backlog
+    // BEFORE adding the current id so the just-abandoned request is ALWAYS kept
+    // (terminal stragglers self-delete; a 64-deep backlog of never-settling
+    // requests is already pathological, so clearing the older ids is safe).
+    if (discardedRequestsRef.current.size > 64) {
+      discardedRequestsRef.current.clear();
+    }
     if (activeRequestRef.current) {
       discardedRequestsRef.current.add(activeRequestRef.current);
     }

@@ -217,6 +217,7 @@ export function createParaformerSession(deps: ParaformerSessionDeps): Paraformer
   });
 
   socket.on('message', (raw: unknown, isBinary?: boolean) => {
+    if (finished) return; // session ended (stop()/task-finished/failed) — drop late frames
     if (isBinary) return; // Paraformer replies with JSON only.
     let msg: { header?: { event?: string; error_message?: string; error_code?: string } };
     try {
@@ -250,7 +251,12 @@ export function createParaformerSession(deps: ParaformerSessionDeps): Paraformer
   });
 
   socket.on('close', () => {
+    const wasFinished = finished;
     socket = null;
+    // Unexpected drop (not our own stop()/task-finished): surface it so the relay
+    // tears the source down instead of silently swallowing audio. fail() is a no-op
+    // once finished, so a normal stop()/task-finished -> close does not double-fire.
+    if (!wasFinished) fail('Paraformer socket closed unexpectedly');
   });
 
   function sendAudio(pcm: Buffer): void {

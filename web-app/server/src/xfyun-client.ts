@@ -298,12 +298,17 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
   });
 
   socket.on('close', () => {
+    const wasFinished = finished;
     socket = null;
+    // Unexpected drop (not our own stop()): notify so the relay tears the source down
+    // instead of silently swallowing all further audio. fail() is a no-op if finished.
+    if (!wasFinished) fail('iFlytek socket closed unexpectedly');
   });
 
   function sendAudio(pcm: Buffer): void {
     if (finished || !socket) return;
-    if (socket.readyState !== WebSocket.OPEN) return;
+    // iFlytek rejects/ignores audio before it acks `action:started`; drop until ready.
+    if (!ready || socket.readyState !== WebSocket.OPEN) return;
     try {
       // Forward the relay's 16 kHz PCM AS-IS as a raw binary frame.
       socket.send(pcm);

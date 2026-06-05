@@ -288,6 +288,9 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     const diarizer = diarizerFactory({ url: camppUrl, session: diarSession });
     let segChunks: Buffer[] = [];
     let segBytes = 0;
+    // Per-session cancellation guard: once this session is stopped/replaced, a
+    // late diarize() settle must NOT emit onto a dead-or-new session.
+    let stopped = false;
     const onText: OnText = (t) => {
       if (!t.isFinal) {
         emitTranscript(source, { text: t.text, isFinal: false });
@@ -299,8 +302,14 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
       const { text } = t;
       diarizer
         .diarize(seg)
-        .then((spk) => emitTranscript(source, { text, isFinal: true, speakerId: spk }))
-        .catch(() => emitTranscript(source, { text, isFinal: true }));
+        .then((spk) => {
+          if (stopped) return;
+          emitTranscript(source, { text, isFinal: true, speakerId: spk });
+        })
+        .catch(() => {
+          if (stopped) return;
+          emitTranscript(source, { text, isFinal: true });
+        });
     };
     const inner = makeTextSession(source, onText);
     if (!inner) return;
@@ -317,6 +326,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
         inner.sendAudio(pcm);
       },
       stop(): void {
+        stopped = true;
         diarizer.reset();
         inner.stop();
       }

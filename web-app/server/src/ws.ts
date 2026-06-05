@@ -323,6 +323,16 @@ function resolveVolcCreds(cfg: ConfigurePayload): VolcCredentials {
  * supplies creds but no explicit provider.
  */
 function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePayload): void {
+  // Back-compat: older clients sent asrProvider:'funasr' to mean "paraformer text
+  // + diarize". The diarize flag is separate now, so funasr still implies it.
+  const legacyFunasr = cfg.asrProvider === 'funasr';
+  // Apply diarize INDEPENDENTLY of the ASR fields below: a configure carrying ONLY
+  // `diarize` (no provider/creds/sim) must still reach setDiarize, so this runs
+  // BEFORE the hasAsrField early-return. Only change it when EXPLICITLY present (or
+  // legacy funasr) — a partial configure that omits it must NOT clobber the flag.
+  if (cfg.diarize !== undefined || legacyFunasr) {
+    relay.setDiarize(cfg.diarize === true || legacyFunasr);
+  }
   const hasAsrField =
     cfg.asrProvider !== undefined ||
     cfg.volcAppId !== undefined ||
@@ -339,12 +349,10 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
   if (Array.isArray(cfg.simScript)) {
     relay.setSimScript(cfg.simScript);
   }
-  // asrProvider is the TEXT engine (paraformer | volc | xfyun); `diarize` adds
-  // local CAM++ speaker labelling on top (offline single-mic) — EXCEPT xfyun,
-  // which carries its own speaker (角色分离 role_type=2) and needs no per-session
-  // creds (the server reads XFYUN_* from .env). Back-compat: older clients sent
-  // asrProvider:'funasr' to mean "paraformer text + diarize".
-  const legacyFunasr = cfg.asrProvider === 'funasr';
+  // asrProvider is the TEXT engine (paraformer | volc | xfyun); `diarize` (applied
+  // above, independently of these ASR fields) adds local CAM++ speaker labelling on
+  // top (offline single-mic) — EXCEPT xfyun, which carries its own speaker (角色分离
+  // role_type=2) and needs no per-session creds (the server reads XFYUN_* from .env).
   const textProvider: 'paraformer' | 'volc' | 'xfyun' | 'sim' = legacyFunasr
     ? 'paraformer'
     : cfg.asrProvider === 'sim'
@@ -354,12 +362,6 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
         : cfg.asrProvider === 'volc' || (cfg.asrProvider === undefined && creds.appId && creds.accessToken)
           ? 'volc'
           : 'paraformer';
-  // Only change diarize when it's EXPLICITLY in this message (or legacy funasr).
-  // A PARTIAL configure (e.g. a provider/settings change) omits diarize and must
-  // NOT clobber the offline diarization flag set by the full session config.
-  if (cfg.diarize !== undefined || legacyFunasr) {
-    relay.setDiarize(cfg.diarize === true || legacyFunasr);
-  }
   relay.setAsrProvider(textProvider, creds, { url: cfg.funasrUrl ?? '' });
   // iFlytek carries its OWN speaker cluster ids (role_type=2) the interviewer
   // labels manually → never guess for it (unassigned ids resolve to 'unknown',
@@ -501,17 +503,22 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
   const wss = new WebSocketServer({ server: httpServer, path: WS_PATH });
 
   wss.on('connection', (ws: WebSocket) => {
-    // Tracks the in-flight AUTO generation so a mid-flight reset() (new/switched
-    // chat) can suppress its leftover progress AND result. We record the requestId
-    // + the trigger epoch at the START of the auto run; `autoIsStale` compares the
-    // trigger's CURRENT epoch (bumped by reset) against that captured value. Manual
-    // runs never set this, so they are never suppressed. The trigger is defined
-    // below — `autoIsStale` only reads it when invoked (during/after analysis).
-    let autoInflight: { requestId: string; startEpoch: number } | null = null;
-    const autoIsStale = (requestId: string): boolean =>
-      autoInflight !== null &&
-      requestId === autoInflight.requestId &&
-      trigger.getEpoch() !== autoInflight.startEpoch;
+    // Tracks the in-flight AUTO generation(s) so a mid-flight reset() (new/switched
+    // chat) can suppress their leftover progress. We map each auto requestId → the
+    // trigger epoch captured at the START of that run; `autoIsStale` looks the id up
+    // and compares the trigger's CURRENT epoch (bumped by reset) against it. A Map
+    // (not a single slot) so that if reset() frees the monitor's gate mid-flight and
+    // a NEW auto run starts before the abandoned one settles, the abandoned run's id
+    // is still tracked and its stale progress is still suppressed (the single-slot
+    // version would have been overwritten, leaking the old run's progress). Manual
+    // runs never register here, so they are never suppressed. Each run deletes its
+    // own id on settle. The trigger is defined below — `autoIsStale` only reads it
+    // when invoked (during/after analysis).
+    const autoInflight = new Map<string, number>();
+    const autoIsStale = (requestId: string): boolean => {
+      const startEpoch = autoInflight.get(requestId);
+      return startEpoch !== undefined && trigger.getEpoch() !== startEpoch;
+    };
 
     const session = createHeadlessSession({
       apiKey: config.dashscopeApiKey,
@@ -559,7 +566,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         // requestId so makeEmit/runAnalysis can match it; clear it on settle.
         const requestId = randomUUID();
         const startEpoch = trigger.getEpoch();
-        autoInflight = { requestId, startEpoch };
+        autoInflight.set(requestId, startEpoch);
         try {
           await runAnalysis(ws, session, {
             candidateAnswer,
@@ -569,8 +576,8 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             isStale: () => trigger.getEpoch() !== startEpoch
           });
         } finally {
-          // Only clear if still ours — a later auto run may have replaced it.
-          if (autoInflight?.requestId === requestId) autoInflight = null;
+          // Drop our own entry on settle (the Map only holds genuinely in-flight ids).
+          autoInflight.delete(requestId);
         }
       }
     });
