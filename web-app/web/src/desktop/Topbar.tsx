@@ -55,7 +55,8 @@ function MoonIcon({ size = 15 }: { size?: number }) {
 const ASR_META: Record<string, { label: string; attr: string }> = {
   paraformer: { label: 'Paraformer', attr: 'paraformer' },
   volc: { label: 'Doubao', attr: 'volc' },
-  xfyun: { label: 'Xunfei', attr: 'xfyun' }
+  xfyun: { label: 'Xunfei', attr: 'xfyun' },
+  sim: { label: 'Sim', attr: 'sim' }
 };
 
 interface TopbarProps {

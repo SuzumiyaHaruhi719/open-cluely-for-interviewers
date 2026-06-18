@@ -19,6 +19,7 @@ import { useAppSettings, type VolcSettings } from './useAppSettings';
 import type { AsrProvider } from '@open-cluely/contract';
 import { formatTimer } from './helpers';
 import { sampleTranscriptText } from './interviewSamples';
+import { SIM_SCENARIOS } from './simScenarios';
 import type { AppView } from './types';
 
 interface ConfigState {
@@ -43,6 +44,15 @@ const INITIAL_CONFIG: ConfigState = {
   activePipelineId: null,
   interviewType: 'online'
 };
+
+function normalizeAsrProvider(value: string): AsrProvider {
+  if (value === 'volc' || value === 'xfyun' || value === 'sim') return value;
+  return 'paraformer';
+}
+
+function simScriptFor(provider: AsrProvider): SessionConfig['simScript'] | undefined {
+  return provider === 'sim' ? SIM_SCENARIOS[0]?.turns : undefined;
+}
 
 /**
  * The re-skinned app shell. Reproduces the desktop `renderer.html` structure
@@ -247,11 +257,12 @@ export function Shell() {
   const { setAsrProvider, setVolcSettings } = appSettings;
   const onAsrProviderChange = useCallback(
     (value: string): void => {
-      const provider: AsrProvider = value === 'volc' ? 'volc' : value === 'xfyun' ? 'xfyun' : 'paraformer';
+      const provider = normalizeAsrProvider(value);
       setAsrProvider(value);
       const s = appSettings.settings;
       pushConfig({
         asrProvider: provider,
+        simScript: simScriptFor(provider),
         volcAppId: s.volcAppId,
         volcAccessToken: s.volcAccessToken,
         volcResourceId: s.volcResourceId,
@@ -294,6 +305,12 @@ export function Shell() {
     [pushConfig]
   );
 
+  const onStartAudio = useCallback(
+    (source: Parameters<typeof startAudio>[0]): Promise<void> =>
+      startAudio(source, { skipLocalCapture: appSettings.settings.asrProvider === 'sim' }),
+    [startAudio, appSettings.settings.asrProvider]
+  );
+
   const onJobDescriptionChange = useCallback(
     (jobDescription: string): void => {
       setConfig((prev) => ({ ...prev, jobDescription }));
@@ -333,7 +350,8 @@ export function Shell() {
       // selected re-applies them on the next audio start.
       // asrProvider is the TEXT engine (follows the Settings choice in BOTH modes);
       // `diarize` adds CAM++ speaker labelling for offline single-mic interviews.
-      asrProvider: s.asrProvider === 'volc' ? 'volc' : s.asrProvider === 'xfyun' ? 'xfyun' : 'paraformer',
+      asrProvider: normalizeAsrProvider(s.asrProvider),
+      simScript: simScriptFor(normalizeAsrProvider(s.asrProvider)),
       diarize: offline,
       funasrUrl: s.funasrUrl,
       volcAppId: s.volcAppId,
@@ -382,12 +400,13 @@ export function Shell() {
   );
 
   const onClearSession = useCallback((): void => {
+    pushConfig({ resetGeneration: true });
     setAnswer('');
     setTranscriptMessages([]);
     lastDisplayFinalRef.current = '';
     resetSpeakerSegments();
     resetTranscripts();
-  }, [resetSpeakerSegments, resetTranscripts]);
+  }, [pushConfig, resetSpeakerSegments, resetTranscripts]);
 
   // ── Topbar assistant actions ───────────────────────────────────────────────
   // Build the running transcript text (both lanes, finals only) for notes/insights.
@@ -552,7 +571,7 @@ export function Shell() {
                 disabled={!isReady}
                 autoScroll={autoScroll}
                 onToggleAutoScroll={() => setAutoScroll((on) => !on)}
-                onStartAudio={startAudio}
+                onStartAudio={onStartAudio}
                 onStopAudio={stopAudio}
                 onAddNote={onAddNote}
                 offline={offline}

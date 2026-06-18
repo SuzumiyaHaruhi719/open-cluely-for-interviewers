@@ -270,3 +270,38 @@ test('offline diarize works with the Doubao (volc) text engine too', async () =>
 
   assert.deepEqual(emits, [{ source: 'mic', text: '候选人答案', isFinal: true, speakerId: 1 }]);
 });
+
+test('sim provider replays scripted speaker finals without any cloud ASR key', () => {
+  const emits: any[] = [];
+  const simCreated: any[] = [];
+  const relay = createAsrRelay({
+    emit: (t) => emits.push(t),
+    apiKey: '',
+    simSessionFactory: (deps: any) => {
+      const s = { isReady: true, sendAudio() {}, stop() {}, deps };
+      simCreated.push(s);
+      return s;
+    }
+  });
+
+  relay.setSimScript([
+    { speakerId: 0, text: '面试官：讲讲这个迁移的背景' },
+    { speakerId: 1, text: '候选人：我负责把队列迁到幂等写入' }
+  ]);
+  relay.setAsrProvider('sim');
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+
+  assert.equal(simCreated.length, 1);
+  assert.deepEqual(simCreated[0].deps.script, [
+    { speakerId: 0, text: '面试官：讲讲这个迁移的背景' },
+    { speakerId: 1, text: '候选人：我负责把队列迁到幂等写入' }
+  ]);
+
+  simCreated[0].deps.onTranscript({ text: '面试官：讲讲这个迁移的背景', isFinal: true, speakerId: 0 });
+  simCreated[0].deps.onTranscript({ text: '候选人：我负责把队列迁到幂等写入', isFinal: true, speakerId: 1 });
+
+  assert.deepEqual(emits, [
+    { source: 'mic', text: '面试官：讲讲这个迁移的背景', isFinal: true, speakerId: 0 },
+    { source: 'mic', text: '候选人：我负责把队列迁到幂等写入', isFinal: true, speakerId: 1 }
+  ]);
+});

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen, cleanup, fireEvent, act, waitFor } from '@testing-library/react';
 import { installMockWebSocket, MockWebSocket } from '../test/mockWebSocket';
 import { Shell } from './Shell';
+import { SIM_SCENARIOS } from './simScenarios';
 
 let restore: () => void;
 
@@ -236,6 +237,43 @@ describe('Shell', () => {
     expect(screen.getByText('How did you pick the hash ring size?')).toBeInTheDocument();
   });
 
+  test('a manual result renders the 手动 badge and never shows the 自动 badge', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.change(screen.getByLabelText('Manual context input'), {
+      target: { value: 'I rolled out an idempotency key migration' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Generate Q' }));
+
+    const analyzeMsg = ws.sent.map((s) => JSON.parse(s)).find((m) => m.type === 'analyze');
+    act(() => {
+      ws.emit({
+        type: 'result',
+        requestId: analyzeMsg.requestId,
+        mode: 'expert',
+        trigger: 'manual',
+        output: {
+          primary_question: 'What did you do when idempotency failed?',
+          alternative_question: '',
+          rationale_for_interviewer: '',
+          anchor_quotes: [],
+          expected_evidence_yield: '',
+          iteration_version: '3'
+        },
+        shouldShowFollowUps: true,
+        tokensUsed: { input: 10, output: 5, total: 15 },
+        elapsedMs: 1200,
+        iterationVersion: '3'
+      });
+    });
+
+    expect(screen.getByText('手动')).toBeInTheDocument();
+    expect(screen.queryByText('自动')).toBeNull();
+  });
+
   test('an auto result renders the ranked list + 自动 badge; picking a candidate fills the analyze buffer', async () => {
     render(<Shell />);
     await flushMount();
@@ -316,6 +354,19 @@ describe('Shell', () => {
     expect(fetchCalls.some((c) => c.url.includes('/api/sessions'))).toBe(false);
   });
 
+  test('New interview notifies the server to reset generation state for the abandoned chat', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: /New interview/ }));
+
+    const resetConfig = ws.sent
+      .map((s) => JSON.parse(s))
+      .find((m) => m.type === 'configure' && m.config?.resetGeneration === true);
+    expect(resetConfig).toBeTruthy();
+  });
+
   test('Ask AI calls the assistant endpoint and shows the reply in the results panel', async () => {
     render(<Shell />);
     await flushMount();
@@ -372,6 +423,23 @@ describe('Shell', () => {
     });
     expect(localStorage.getItem('open-cluely.volcAppId')).toBe('app-123');
     expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc', volcAppId: 'app-123' });
+  });
+
+  test('selecting the Sim ASR provider configures the generated local injection script', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+    fireEvent.change(document.getElementById('setting-asr-provider')!, {
+      target: { value: 'sim' }
+    });
+
+    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'sim');
+    expect(lastConfig(ws)).toMatchObject({
+      asrProvider: 'sim',
+      simScript: SIM_SCENARIOS[0].turns
+    });
   });
 
   test('an offline interview turns on diarize: full config carries the text asrProvider + diarize:true + funasrUrl', async () => {

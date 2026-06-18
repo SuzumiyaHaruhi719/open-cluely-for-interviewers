@@ -45,7 +45,7 @@ export function createCamppDiarizer(deps: CamppDiarizerDeps): Diarizer {
         const res = await fetchFn(`${base}/diarize?session=${session}`, {
           method: 'POST',
           headers: { 'content-type': 'application/octet-stream' },
-          body: pcm
+          body: new Uint8Array(pcm) as BodyInit
         });
         if (!res.ok) return null;
         const body = (await res.json()) as { spk?: unknown };

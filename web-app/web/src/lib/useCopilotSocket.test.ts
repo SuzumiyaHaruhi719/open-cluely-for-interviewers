@@ -227,6 +227,22 @@ describe('useCopilotSocket', () => {
     expect(result.current.audio.mic.capturing).toBe(false);
   });
 
+  test('startAudio with skipLocalCapture opens the server ASR session without browser media capture', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    await act(async () => {
+      await result.current.startAudio('mic', { skipLocalCapture: true });
+    });
+
+    const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
+    expect(frame).toEqual({ type: 'audio-control', action: 'start', source: 'mic' });
+    expect(result.current.audio.mic).toMatchObject({ capturing: true, error: null });
+  });
+
   test('speakerSegments: online finals (no speakerId) add nothing; offline finals (numeric speakerId) append one labelled segment', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
@@ -274,5 +290,108 @@ describe('useCopilotSocket', () => {
       MockWebSocket.last().emit({ type: 'error', message: 'model unavailable' });
     });
     await waitFor(() => expect(result.current.error).toBe('model unavailable'));
+  });
+
+  test('resetTranscripts abandons a pending manual result so it cannot reappear after clear/new interview', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.analyze('I owned the queue migration.');
+    });
+    expect(result.current.isAnalyzing).toBe(true);
+
+    act(() => {
+      result.current.resetTranscripts();
+    });
+    expect(result.current.isAnalyzing).toBe(false);
+    expect(result.current.lastResult).toBeNull();
+
+    act(() => {
+      socket.emit({
+        type: 'result',
+        requestId,
+        mode: 'expert',
+        trigger: 'manual',
+        output: {
+          primary_question: 'Stale manual question?',
+          alternative_question: '',
+          rationale_for_interviewer: '',
+          anchor_quotes: [],
+          expected_evidence_yield: '',
+          iteration_version: '3'
+        },
+        shouldShowFollowUps: true,
+        tokensUsed: { input: 10, output: 5, total: 15 },
+        elapsedMs: 1200,
+        iterationVersion: '3'
+      });
+    });
+
+    expect(result.current.lastResult).toBeNull();
+  });
+
+  test('resetTranscripts abandons an adopted auto request so late progress/result stay hidden', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId: 'auto-1',
+        phase: 'rank',
+        index: 0,
+        total: 2,
+        status: 'start'
+      });
+    });
+    await waitFor(() => expect(result.current.isAnalyzing).toBe(true));
+
+    act(() => {
+      result.current.resetTranscripts();
+    });
+    expect(result.current.isAnalyzing).toBe(false);
+    expect(result.current.progress).toBeNull();
+
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId: 'auto-1',
+        phase: 'rank',
+        index: 1,
+        total: 2,
+        status: 'done'
+      });
+      socket.emit({
+        type: 'result',
+        requestId: 'auto-1',
+        mode: 'expert',
+        trigger: 'auto',
+        output: {
+          primary_question: 'Stale auto question?',
+          alternative_question: '',
+          rationale_for_interviewer: '',
+          anchor_quotes: [],
+          expected_evidence_yield: '',
+          iteration_version: '3'
+        },
+        shouldShowFollowUps: true,
+        tokensUsed: { input: 10, output: 5, total: 15 },
+        elapsedMs: 1200,
+        iterationVersion: '3'
+      });
+    });
+
+    expect(result.current.progress).toBeNull();
+    expect(result.current.lastResult).toBeNull();
   });
 });

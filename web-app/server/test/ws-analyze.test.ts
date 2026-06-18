@@ -122,6 +122,7 @@ test('WS analyze (fast mode) yields ready, progress, and a synthesized result', 
   assert.ok(result, `expected a result message; got: ${JSON.stringify(messages)}`);
   if (result && result.type === 'result') {
     assert.equal(result.requestId, 'req-1');
+    assert.equal(result.trigger, 'manual');
     assert.equal(result.output.primary_question, 'Q?');
     assert.equal(result.shouldShowFollowUps, true);
   }

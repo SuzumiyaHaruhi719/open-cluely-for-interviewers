@@ -41,3 +41,36 @@ describe('transcript speaker fields', () => {
     }
   });
 });
+
+describe('result trigger fields', () => {
+  const baseResult = {
+    type: 'result',
+    requestId: 'req-1',
+    mode: 'expert',
+    output: {
+      primary_question: 'How did you debug the queue?',
+      alternative_question: '',
+      rationale_for_interviewer: '',
+      anchor_quotes: [],
+      expected_evidence_yield: '',
+      iteration_version: '3'
+    },
+    shouldShowFollowUps: true,
+    tokensUsed: { input: 10, output: 5, total: 15 },
+    elapsedMs: 1200,
+    iterationVersion: '3'
+  };
+
+  it('preserves manual and auto result triggers', () => {
+    for (const trigger of ['manual', 'auto'] as const) {
+      const out = parseServerMessage(JSON.stringify({ ...baseResult, trigger }));
+      expect(out).toMatchObject({ type: 'result', trigger });
+    }
+  });
+
+  it('omits malformed result triggers without dropping the result', () => {
+    const out = parseServerMessage(JSON.stringify({ ...baseResult, trigger: 'timer' })) as Record<string, unknown>;
+    expect(out).toMatchObject({ type: 'result', requestId: 'req-1' });
+    expect(out).not.toHaveProperty('trigger');
+  });
+});

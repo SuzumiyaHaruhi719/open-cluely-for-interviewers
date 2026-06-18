@@ -10,7 +10,7 @@
 
 const DEFAULT_BODY = `Role: You are the RANK-SCORE block — the deep reasoner of the chain. You score 5 follow-up candidates on a 6-dim rubric and pick the top 2 the interviewer should see.
 
-WHAT MAKES A QUESTION WIN: it forces the candidate to reveal durable POTENTIAL and WORK TRAITS — judgment, the alternatives they weighed, what they personally owned, what broke and what they learned. A question whose honest answer is a single number, name, or date is WEAK no matter how "specific" — pinning "how much did p99 drop" reveals nothing about the person. Reward depth and trait-revelation; punish fact-pins.
+WHAT MAKES A QUESTION WIN: it reveals the highest-value next signal from THIS answer with a natural, non-repetitive follow-up frame. Reward depth, novelty, evidence value, trait-revelation, and frame_diversity. A question whose honest answer is a single number, name, or date is WEAK no matter how "specific" — pinning "how much did p99 drop" reveals little unless it continues into what the interviewer can conclude or probe next. Do not let ownership framing win by default; ownership is valuable only when the answer or Block B actually leaves personal contribution unclear.
 
 You MUST think step-by-step in the reasoning field for each candidate. Do NOT skip reasoning.`;
 
@@ -27,7 +27,7 @@ function buildBlockE({
 } = {}) {
   const candidates = blockDResult?.candidates || [];
   const candidatesStr = candidates.length
-    ? candidates.map((c, i) => `${i + 1}. id=${c.id} type=${c.question_type} fills=${c.fills_evidence_gap || 'n/a'}\n   Q: ${c.question}\n   anchors: ${JSON.stringify(c.anchors || [])}\n   expected_yield: ${c.expected_yield || ''}`).join('\n\n')
+    ? candidates.map((c, i) => `${i + 1}. id=${c.id} type=${c.question_type} frame=${c.followup_frame || 'n/a'} fills=${c.fills_evidence_gap || 'n/a'}\n   Q: ${c.question}\n   anchors: ${JSON.stringify(c.anchors || [])}\n   expected_yield: ${c.expected_yield || ''}`).join('\n\n')
     : '(no candidates)';
 
   const gapsStr = (blockBResult?.missing_evidence || []).map((g, i) => `${i + 1}. ${g.competency} / ${g.evidence_type} — ${g.why_missing}`).join('\n') || '(none)';
@@ -72,12 +72,17 @@ ${candidatesStr}
 
 Six-dimension rubric — score EACH dim as integer 1-5 per candidate.
 
-1. depth (1=answerable with a fact/yes-no; 5=cannot be answered without walking through real reasoning — a decision + the rejected alternative, a tradeoff + its cost, a failure + its diagnosis)
-2. ownership (1=indifferent to who did what; 5=structurally forces a personal "I decided/did/risked" answer, not "we")
+1. depth (1=answerable with a fact/yes-no; 5=cannot be answered without walking through real reasoning — diagnosis, evidence verification, a tradeoff, a failure, or a collaboration boundary)
+2. ownership (1=irrelevant or performative ownership demand; 3=neutral; 5=usefully clarifies personal contribution because the answer says "we"/team, Block B flags owner-of-action, or the open competency is leadership/collaboration)
 3. trait (1=reveals only information; 5=the answer is a window into a durable work trait — handling ambiguity, conflict, failure, prioritization, influence, judgment, learning)
 4. anchoring (1=generic, askable of anyone; 5=tightly tied to a specific thing THIS candidate said, can't be answered with a canned story)
 5. non_triviality (1=fundamentally a fact-pin — its answer is a number/name/date; 5=the value is in the reasoning, not any datum)
 6. usability (1=clunky, >35 words, hard to speak; 5=natural conversational sentence the interviewer can drop in)
+
+Novelty / frame_diversity guard (applies after the numeric rubric):
+- novelty means the question would uncover a new signal not already covered by prior questions, Block B/C, or another stronger candidate.
+- frame_diversity means the top-2 should give the interviewer different follow-up intents when both are otherwise viable (e.g. diagnostic-debug vs evidence-verification, or tradeoff-alternative vs failure-learning).
+- Do not reward a candidate just because it says "you personally"; if the answer did not create an ownership gap, treat repeated ownership framing as low novelty.
 
 Required output — strict JSON only.
 {
@@ -104,14 +109,14 @@ Hard rules:
 2. total must equal the sum of the 6 dim scores exactly.
 3. top_2_ids must contain TWO DISTINCT ids that exist in ranked[].id.
 4. A candidate scoring non_triviality<=2 (a fact-pin) MUST NOT be top-1 unless every other candidate also scores non_triviality<=2. Never let "how much exactly"-style pins win.
-5. SELECTION OBJECTIVE (this is what the interviewer actually values): top-1 is the candidate that best reveals the candidate's POTENTIAL — i.e. the HIGHEST (depth + ownership + trait) sum, among candidates with non_triviality>=3. These THREE dimensions matter far more than usability or anchoring polish — and OWNERSHIP is weighted equally with depth/trait here: a question that forces an explicit personal call ("the one decision that was YOURS alone, and what it cost you") beats one that merely demands deep reasoning a team could own. Do NOT pick a smoother or better-anchored question over one that is meaningfully deeper OR more personally-owned. Break ties by total.
-6. Tie-break for top-2: among the remaining candidates, again highest (depth + ownership + trait) with non_triviality>=3, but PREFER a different question_type than top-1 so the interviewer gets two distinct angles.
+5. SELECTION OBJECTIVE (this is what the interviewer actually values): top-1 is the candidate with the highest evidence value for THIS moment — depth + trait + non_triviality + novelty/current-gap fit, among candidates with non_triviality>=3. Ownership is a conditional bonus only when personal contribution is truly unresolved. Do not let ownership framing win by default, and do NOT pick a lower-information ownership question over a stronger diagnostic, verification, tradeoff, or failure-learning question.
+6. Tie-break for top-2: among the remaining candidates, again maximize evidence value with non_triviality>=3, but PREFER a different followup_frame and question_type than top-1 so the interviewer gets two distinct angles.
 7. reasoning MUST include a verifier sentence — re-read one rubric score and confirm against the candidate text. If you change your mind on verification, change the score before emitting.
 
 Thinking scaffold (do this silently before emitting):
-Step 1: For each candidate, ask "if the candidate answered honestly, would I learn how they THINK/DECIDE/OWN, or just a datum?" Score depth + non_triviality from that.
-Step 2: Score all 6 dims absolutely against the rubric, not relative to other candidates.
-Step 3: Recompute totals. Sort. Apply rule 4 (demote fact-pins), then tie-breaks.
+Step 1: For each candidate, ask "if the candidate answered honestly, would I learn new reasoning/evidence/judgment/learning/collaboration signal, or just a datum?" Score depth + non_triviality from that.
+Step 2: Score all 6 dims absolutely against the rubric, not relative to other candidates. Treat ownership as conditional, not a universal virtue.
+Step 3: Recompute totals. Sort. Apply rule 4 (demote fact-pins), then apply novelty + frame_diversity tie-breaks.
 Step 4: Write reasoning for the top-2 incl. the verifier sentence.
 Step 5: Re-check top_2_ids has 2 distinct ids that exist in ranked.
 

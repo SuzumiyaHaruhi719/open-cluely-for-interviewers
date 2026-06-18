@@ -87,7 +87,7 @@ describe('QuestionCard ranked candidates', () => {
     expect(screen.getByText('Tests operational maturity.')).toBeInTheDocument();
   });
 
-  test("trigger:'auto' shows the 自动 badge; manual omits it", () => {
+  test("trigger badges distinguish auto and manual results", () => {
     const { rerender } = render(
       <QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} trigger="auto" />
     );
@@ -97,6 +97,7 @@ describe('QuestionCard ranked candidates', () => {
       <QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} trigger="manual" />
     );
     expect(screen.queryByText('自动')).toBeNull();
+    expect(screen.getByText('手动')).toBeInTheDocument();
   });
 
   test('clicking a candidate row calls onPickCandidate with its question', () => {

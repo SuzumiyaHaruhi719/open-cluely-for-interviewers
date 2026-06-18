@@ -87,9 +87,9 @@ export interface AutoTrigger {
    */
   setIntervalMs: (ms: number) => void;
   /**
-   * Record ANY finalized transcript segment (interviewer/candidate/guest) so the
-   * 'interval' (every-30s) mode has the recent conversation to fire from — even
-   * when no candidate has been diarized yet. Agent mode is unaffected.
+   * Record ANY finalized transcript segment for bookkeeping. This does NOT feed
+   * generation content; interval/agent generation both use candidate-only text
+   * recorded by `onCandidateFinal`.
    */
   noteFinal: (text: string) => void;
   /** Mic on/off gate: auto (agent AND interval) only fires while capturing is true. */
@@ -237,15 +237,17 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let charsAtLastGen = 0;
   let isGenerating = false;
 
-  // Firing mode + the latest accumulated candidate text. In 'interval' mode a fixed
-  // wall-clock timer drives firing from `latestText` (no monitor gate); in 'agent'
-  // mode the timer is idle and the existing gate/debounce path drives everything.
+  // Firing mode + recent transcript bookkeeping. `latestText` is the full recent
+  // transcript across all speakers; generation content is candidate-only and
+  // lives in `sinceFire`, fed from onCandidateFinal().
   let mode: 'agent' | 'interval' = 'agent';
   let latestText = '';
-  // Rolling transcript accumulated SINCE the last fire (auto OR manual). Every
-  // follow-up is generated from ONLY this window — not the whole conversation —
-  // so the model never re-asks about material an earlier follow-up already
-  // covered. Consumed on each fire, cleared on a manual run and on reset().
+  let latestCandidateText = '';
+  let lastCandidateFullText = '';
+  // Rolling CANDIDATE transcript accumulated SINCE the last fire (auto OR manual).
+  // Every follow-up is generated from ONLY this candidate window — not interviewer
+  // prompts and not the whole conversation — so the model never probes the
+  // interviewer's question as if it were the candidate's answer.
   let sinceFire = '';
   let intervalHandle: ReturnType<typeof setInterval> | null = null;
   // Auto NEVER fires unless an audio source is actively capturing (the mic is On).
@@ -320,8 +322,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   async function intervalTick(): Promise<void> {
     if (!autoGenerate || mode !== 'interval' || isGenerating || !capturing) return;
     // Fire from ONLY the transcript since the last follow-up. If nothing new was
-    // said since then, skip this tick — re-running the same context would just
-    // produce a duplicate follow-up.
+    // said by the candidate since then, skip this tick — generating from the
+    // interviewer's prompt would produce generic/meta follow-ups.
     const firedRaw = sinceFire;
     const text = firedRaw.trim();
     if (!text) return;
@@ -335,7 +337,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       // A reset() mid-flight (new/switched chat) means this fire belongs to an
       // abandoned chat — do NOT advance the cooldown for the new chat.
       if (epoch === startEpoch) {
-        recordFire(latestText);
+        recordFire(latestCandidateText || latestText);
         consumeSinceFire(firedRaw);
       }
       isGenerating = false;
@@ -393,20 +395,35 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   function noteFinal(rawText: string): void {
     const s = String(rawText ?? '').trim();
     if (!s) return;
-    // Accumulate the recent transcript across ALL speakers (capped) so 'interval'
-    // mode can fire a follow-up even before any candidate is diarized.
+    // Accumulate the recent transcript across ALL speakers for bookkeeping only.
+    // It intentionally does NOT feed sinceFire: generation must be candidate-only.
     latestText = latestText ? `${latestText} ${s}` : s;
     if (latestText.length > 4000) latestText = latestText.slice(-4000);
-    // Grow the since-last-fire window every follow-up is generated from.
-    sinceFire = sinceFire ? `${sinceFire} ${s}` : s;
+  }
+
+  function rememberCandidateFinal(fullCandidateText: string): void {
+    const text = String(fullCandidateText ?? '').trim();
+    if (!text) return;
+    latestCandidateText = text;
+
+    let delta = text;
+    if (lastCandidateFullText && text.startsWith(lastCandidateFullText)) {
+      delta = text.slice(lastCandidateFullText.length).trim();
+    } else if (text === lastCandidateFullText) {
+      delta = '';
+    }
+    lastCandidateFullText = text;
+
+    if (!delta) return;
+    sinceFire = sinceFire ? `${sinceFire} ${delta}` : delta;
     if (sinceFire.length > 4000) sinceFire = sinceFire.slice(-4000);
   }
 
   function onCandidateFinal(fullCandidateText: string): void {
     const text = String(fullCandidateText ?? '');
-    // 'interval' mode is timer-driven and fires from `latestText` (fed by
-    // noteFinal across ALL speakers); the agent gate/debounce below stays
-    // candidate-only and unchanged.
+    rememberCandidateFinal(text);
+    // 'interval' mode is timer-driven and fires from the candidate-only
+    // `sinceFire` window; the agent gate/debounce below stays unchanged.
     if (mode !== 'agent') return;
     // Cheap pre-filter: if the local gates can't pass for this text, don't even
     // arm the debounce. (The post-debounce evaluate() re-checks, so this is purely
@@ -461,7 +478,12 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // right after a manual generation. Cancel any pending auto evaluation too.
     isGenerating = true;
     lastGenAt = now();
-    if (typeof fullCandidateText === 'string') charsAtLastGen = fullCandidateText.length;
+    if (typeof fullCandidateText === 'string') {
+      const text = fullCandidateText.trim();
+      charsAtLastGen = fullCandidateText.length;
+      latestCandidateText = text;
+      lastCandidateFullText = text;
+    }
     // A manual Generate Q covers the recent transcript — drop the since-fire window
     // so the next AUTO follow-up doesn't re-ask what the manual one just covered.
     sinceFire = '';
@@ -471,7 +493,12 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   function markRunDone(fullCandidateText?: string): void {
     isGenerating = false;
     lastGenAt = now();
-    if (typeof fullCandidateText === 'string') charsAtLastGen = fullCandidateText.length;
+    if (typeof fullCandidateText === 'string') {
+      const text = fullCandidateText.trim();
+      charsAtLastGen = fullCandidateText.length;
+      latestCandidateText = text;
+      lastCandidateFullText = text;
+    }
   }
 
   function reset(): void {
@@ -481,6 +508,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // Drop the interval-mode accumulated transcript + the since-last-fire window
     // so the new chat starts blank.
     latestText = '';
+    latestCandidateText = '';
+    lastCandidateFullText = '';
     sinceFire = '';
     // Cancel any armed agent debounce/pending so no late fire from the old chat.
     clearPending();

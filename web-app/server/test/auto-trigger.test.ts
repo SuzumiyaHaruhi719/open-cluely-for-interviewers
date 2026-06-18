@@ -331,3 +331,43 @@ test('does NOT fire when too few new chars have accumulated since the last gen',
   assert.equal(h.analyzeCalls.length, 0);
   assert.equal(h.monitorCalls.length, 0);
 });
+
+test('interval mode waits for candidate speech and does not analyze interviewer-only finals', async (t) => {
+  const originalSetInterval = globalThis.setInterval;
+  const originalClearInterval = globalThis.clearInterval;
+  let tick: (() => void | Promise<void>) | null = null;
+
+  globalThis.setInterval = ((
+    fn: TimerHandler,
+    _timeout?: number,
+    ...args: unknown[]
+  ): ReturnType<typeof setInterval> => {
+    tick = typeof fn === 'function' ? () => fn(...args) : () => {};
+    return 1 as unknown as ReturnType<typeof setInterval>;
+  }) as unknown as typeof setInterval;
+  globalThis.clearInterval = (() => undefined) as unknown as typeof clearInterval;
+
+  t.after(() => {
+    globalThis.setInterval = originalSetInterval;
+    globalThis.clearInterval = originalClearInterval;
+  });
+  const fireTick = async (): Promise<void> => {
+    if (!tick) throw new Error('interval timer not armed');
+    await tick();
+  };
+
+  const { trigger, h } = makeTrigger({ decision: yes() });
+  trigger.setIntervalMs(5000);
+  trigger.setMode('interval');
+
+  trigger.noteFinal('Interviewer: tell me about the queue migration you owned.');
+  await fireTick();
+  assert.equal(h.analyzeCalls.length, 0, 'interviewer-only final must not run the follow-up pipeline');
+
+  trigger.noteFinal(LONG_ANSWER);
+  trigger.onCandidateFinal(LONG_ANSWER);
+  await fireTick();
+
+  assert.equal(h.analyzeCalls.length, 1, 'candidate final makes interval mode eligible');
+  assert.equal(h.analyzeCalls[0].candidateAnswer, LONG_ANSWER);
+});

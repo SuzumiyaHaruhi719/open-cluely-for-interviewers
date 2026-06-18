@@ -259,8 +259,8 @@ button.history-row {
   white-space: nowrap;
 }
 
-/* "自动" badge — subtle candidate (info) colour, distinct from the priority pill. */
-.question-card__trigger[data-trigger='auto'] {
+/* Source badge — subtle colour, distinct from the priority/mode pill. */
+.question-card__trigger {
   flex: 0 0 auto;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -268,9 +268,18 @@ button.history-row {
   letter-spacing: 0.08em;
   padding: 2px 7px;
   border-radius: var(--radius-full);
+}
+
+.question-card__trigger[data-trigger='auto'] {
   border: 1px solid color-mix(in srgb, var(--lane-candidate) 40%, var(--border-default));
   color: var(--lane-candidate);
   background: color-mix(in srgb, var(--lane-candidate) 12%, transparent);
+}
+
+.question-card__trigger[data-trigger='manual'] {
+  border: 1px solid color-mix(in srgb, var(--lane-interviewer) 42%, var(--border-default));
+  color: var(--lane-interviewer);
+  background: color-mix(in srgb, var(--lane-interviewer) 12%, transparent);
 }
 
 /* Expandable ranked-candidate list. */

@@ -3,6 +3,7 @@ import type {
   GenerationTrigger,
   RankedQuestion,
   ServerMessage,
+  SessionContextState,
   SpeakerRole
 } from '@open-cluely/contract';
 import { S2C } from '@open-cluely/contract';
@@ -99,7 +100,7 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
       return null;
 
     case S2C.SESSION_CONTEXT:
-      return { type: 'session-context', state: data.state };
+      return { type: 'session-context', state: data.state as SessionContextState };
 
     case S2C.SUMMARY_CHUNK:
       return isString(data.requestId) && isString(data.text)

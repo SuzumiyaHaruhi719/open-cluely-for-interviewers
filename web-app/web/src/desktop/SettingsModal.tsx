@@ -53,7 +53,8 @@ const AI_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
   { value: 'paraformer', label: 'DashScope Paraformer (recommended)' },
   { value: 'xfyun', label: 'Xunfei RTASR (科大讯飞)' },
-  { value: 'volc', label: 'Doubao streaming (豆包 / 火山引擎)' }
+  { value: 'volc', label: 'Doubao streaming (豆包 / 火山引擎)' },
+  { value: 'sim', label: 'Sim injection (local test script)' }
 ];
 
 // Autonomous follow-up trigger mode. 'agent' lets an AI monitor decide when to
@@ -521,7 +522,9 @@ export function SettingsModal({
                 Saved in this browser and applied live. <code>Paraformer</code> uses the
                 server&apos;s DashScope key. <code>Doubao (豆包)</code> streams via Volcengine —
                 set its APP ID / Access Token / 模型 in the <strong>Doubao API</strong> section
-                above. <code>Xunfei</code> is not wired yet.
+                above. <code>Sim injection</code> replays a local scripted interviewer/candidate
+                transcript so you can inspect message injection without microphone or cloud ASR.
+                <code>Xunfei</code> is not wired yet.
               </p>
             </div>
 

@@ -727,9 +727,9 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
                 speaker: stamped.speaker
               }
         );
-        // 'interval' (every-30s) auto mode fires from the FULL recent transcript,
-        // so feed EVERY finalized segment (interviewer/candidate/guest) to it. The
-        // candidate-only feed below still drives 'agent' mode, unchanged.
+        // Record EVERY finalized segment for trigger bookkeeping. Generation
+        // content stays candidate-only: feedCandidateAnswer() below is the only
+        // path that grows the auto trigger's since-last-fire question window.
         if (t.isFinal) {
           trigger.noteFinal(t.text);
           // Accumulate the FULL conversation (both lanes) and (re)arm the debounced

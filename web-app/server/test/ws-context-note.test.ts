@@ -44,3 +44,26 @@ test('dispatch does not inject a note for an unrelated message', async () => {
   );
   assert.equal(called, false);
 });
+
+test('dispatch configure resetGeneration resets trigger and accumulated transcript before applying config', async () => {
+  const calls: string[] = [];
+  await dispatch(
+    {} as never,
+    { configure: () => calls.push('configure') } as never,
+    {} as never,
+    { reset: () => calls.push('trigger-reset') } as never,
+    {} as never,
+    () => {
+      calls.push('inject-note');
+    },
+    () => {
+      calls.push('reset-accumulated');
+    },
+    () => {
+      calls.push('context-grounding');
+    },
+    () => '',
+    { type: 'configure', config: { resetGeneration: true, mode: 'expert' } } as never
+  );
+  assert.deepEqual(calls, ['trigger-reset', 'reset-accumulated', 'configure', 'context-grounding']);
+});

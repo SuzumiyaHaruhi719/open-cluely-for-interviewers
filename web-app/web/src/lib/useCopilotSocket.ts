@@ -53,6 +53,10 @@ export interface AudioState {
 }
 
 export type AudioLanes = Record<AudioSource, AudioState>;
+export interface StartAudioOptions {
+  /** Used by the local sim ASR provider: open the server ASR session without browser media permissions. */
+  skipLocalCapture?: boolean;
+}
 
 const EMPTY_LANE: LaneTranscript = { finalText: '', partial: '' };
 const IDLE_AUDIO: AudioState = { capturing: false, level: 0, error: null };
@@ -94,7 +98,7 @@ export interface CopilotSocket {
   /** Live-audio capture state per source. */
   audio: AudioLanes;
   /** Begin capturing + streaming a source's audio to the ASR relay. */
-  startAudio: (source: AudioSource) => Promise<void>;
+  startAudio: (source: AudioSource, options?: StartAudioOptions) => Promise<void>;
   /** Stop capturing a source and tell the server to close its ASR session. */
   stopAudio: (source: AudioSource) => void;
   /**
@@ -182,6 +186,7 @@ export function useCopilotSocket(): CopilotSocket {
   const reconnectTimerRef = useRef<number | null>(null);
   const attemptsRef = useRef(0);
   const activeRequestRef = useRef<string | null>(null);
+  const abandonedRequestIdsRef = useRef<Set<string>>(new Set());
   const isMountedRef = useRef(true);
   // Live capture handles + per-source frame sequence counters.
   const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
@@ -205,6 +210,9 @@ export function useCopilotSocket(): CopilotSocket {
         setSessionId(message.sessionId);
         break;
       case 'progress':
+        if (abandonedRequestIdsRef.current.has(message.requestId)) {
+          break;
+        }
         // Adopt a server-initiated (autonomous) request: when nothing is in
         // flight, the first progress event's requestId becomes the active one so
         // the auto follow-up shows the same progress bar a manual analyze does.
@@ -224,6 +232,9 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       case 'result':
+        if (abandonedRequestIdsRef.current.delete(message.requestId)) {
+          break;
+        }
         // ANY result means the in-flight generation finished — ALWAYS clear the
         // progress UI and show it. Previously this cleared isAnalyzing only when
         // the result's requestId matched the adopted one; on any mismatch (the
@@ -243,6 +254,9 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       case 'error':
+        if (message.requestId && abandonedRequestIdsRef.current.delete(message.requestId)) {
+          break;
+        }
         if (!message.requestId || message.requestId === activeRequestRef.current) {
           activeRequestRef.current = null;
           setIsAnalyzing(false);
@@ -399,6 +413,7 @@ export function useCopilotSocket(): CopilotSocket {
       if (!send(message)) {
         return null;
       }
+      abandonedRequestIdsRef.current.delete(requestId);
       activeRequestRef.current = requestId;
       setIsAnalyzing(true);
       setProgress(null);
@@ -447,7 +462,7 @@ export function useCopilotSocket(): CopilotSocket {
   );
 
   const startAudio = useCallback(
-    async (source: AudioSource): Promise<void> => {
+    async (source: AudioSource, options?: StartAudioOptions): Promise<void> => {
       // Already capturing — no-op (idempotent toggle).
       if (captureRef.current[source]) return;
 
@@ -455,6 +470,12 @@ export function useCopilotSocket(): CopilotSocket {
       // Tell the server to open the ASR session before frames arrive.
       send({ type: 'audio-control', action: 'start', source });
       seqRef.current[source] = 0;
+
+      if (options?.skipLocalCapture) {
+        captureRef.current[source] = { stop: () => {} };
+        setAudioState(source, { capturing: true, level: 0 });
+        return;
+      }
 
       try {
         const handle = await startCapture(source, {
@@ -516,6 +537,9 @@ export function useCopilotSocket(): CopilotSocket {
     setProgressTokens(0);
     setIsAnalyzing(false);
     setError(null);
+    if (activeRequestRef.current) {
+      abandonedRequestIdsRef.current.add(activeRequestRef.current);
+    }
     activeRequestRef.current = null;
     // Drop the live session context too so the panel returns to its empty state
     // for the next interview ("New interview").
