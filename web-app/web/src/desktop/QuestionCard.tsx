@@ -101,9 +101,9 @@ export function QuestionCard({
         {topPick ? <ScoreBadge score={topPick.score} maxScore={topPick.maxScore} /> : null}
       </div>
 
-      {output.anchor_quotes.length > 0 ? (
+      {(output.anchor_quotes ?? []).length > 0 ? (
         <div className="question-card__anchors">
-          {output.anchor_quotes.map((quote, index) => (
+          {(output.anchor_quotes ?? []).map((quote, index) => (
             <div className="question-card__anchor" key={`${index}-${quote}`}>
               “{quote}”
             </div>

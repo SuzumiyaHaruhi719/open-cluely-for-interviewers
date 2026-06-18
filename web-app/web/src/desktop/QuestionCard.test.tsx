@@ -62,6 +62,20 @@ describe('QuestionCard ranked candidates', () => {
     expect(primary?.querySelector('.question-card__score')?.textContent).toBe('27/30');
   });
 
+  test('does not crash when anchor_quotes is missing (regression: white-screen)', () => {
+    // A follow-up result whose anchor_quotes is undefined (model omitted it /
+    // malformed parse) used to throw "Cannot read properties of undefined
+    // (reading 'length')" and white-screen the whole app via the ErrorBoundary.
+    const noAnchors = { ...OUTPUT, anchor_quotes: undefined } as unknown as FollowUpOutput;
+    expect(() =>
+      render(
+        <QuestionCard output={noAnchors} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} />
+      )
+    ).not.toThrow();
+    // The card still renders its primary question.
+    expect(screen.getByText('How did you choose the shard key?')).toBeInTheDocument();
+  });
+
   test('expandable list shows the other 3 candidates with scores + reasons', () => {
     const { container } = render(
       <QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} />
