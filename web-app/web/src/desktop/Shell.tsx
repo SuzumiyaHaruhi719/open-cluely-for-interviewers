@@ -116,7 +116,13 @@ export function Shell() {
 
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
-  const canAnalyze = isReady && !isAnalyzing && answer.trim().length > 0;
+  // The Generate Q button's `disabled` must NOT depend on `isAnalyzing`. Toggling
+  // the native `disabled` on the *focused* button blurs it (focus jumps to <body>)
+  // and the click landing the instant it flips to disabled is silently eaten — the
+  // "点了浏览器会失焦 / 要点很多次才能点动" bug, made constant when Auto fires. `onAnalyze`
+  // already guards `isAnalyzing` (no double-fire), so keep the button enabled and
+  // focusable and gate only on the STABLE ready + has-text conditions.
+  const canAnalyze = isReady && answer.trim().length > 0;
   // Offline (single-mic) interview: routes ASR to FunASR + diarized bubbles.
   const offline = config.interviewType === 'offline';
 
