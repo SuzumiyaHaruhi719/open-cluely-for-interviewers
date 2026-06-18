@@ -104,4 +104,89 @@ describe('TranscriptStream offline speaker bubbles', () => {
     fireEvent.click(screen.getByRole('button', { name: /候选人/ }));
     expect(onSetRole).toHaveBeenCalledWith(0, 'candidate');
   });
+
+  it('offline with empty segments: falls back to the room-mic lane (no toggles)', () => {
+    const onSetRole = vi.fn();
+    render(
+      <TranscriptStream
+        offline
+        speakerSegments={[]}
+        onSetSpeakerRole={onSetRole}
+        transcripts={{
+          mic: { finalText: '房间麦克风文字', partial: '' },
+          display: { finalText: '', partial: '' }
+        }}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+    // Fallback room-mic lane shows the raw text; no role toggles yet.
+    expect(screen.getByText('房间麦克风文字')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /候选人/ })).toBeNull();
+  });
+});
+
+describe('TranscriptStream online iFlytek speaker bubbles', () => {
+  it('online (offline=false) WITH speaker segments: renders the labelable bubbles + toggles', () => {
+    const onSetRole = vi.fn();
+    render(
+      <TranscriptStream
+        offline={false}
+        speakerSegments={[
+          { id: 1, speakerId: 1, role: 'unknown', text: '请介绍一下你的项目' },
+          { id: 2, speakerId: 2, role: 'unknown', text: '我做了一个推荐系统' }
+        ]}
+        onSetSpeakerRole={onSetRole}
+        transcripts={EMPTY_LANES}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+    // Both iFlytek-online segments render as bubbles…
+    expect(screen.getByText('请介绍一下你的项目')).toBeInTheDocument();
+    expect(screen.getByText('我做了一个推荐系统')).toBeInTheDocument();
+    // …and EACH bubble offers the 面试官 / 候选人 toggles (2 bubbles × 2 buttons).
+    expect(screen.getAllByRole('button', { name: /面试官/ })).toHaveLength(2);
+    const candidateButtons = screen.getAllByRole('button', { name: /候选人/ });
+    expect(candidateButtons).toHaveLength(2);
+    // Tapping 候选人 on speaker 2's bubble labels THAT speaker id.
+    fireEvent.click(candidateButtons[1]);
+    expect(onSetRole).toHaveBeenCalledWith(2, 'candidate');
+  });
+
+  it('online (offline=false) WITHOUT segments (paraformer/volc): renders the two channel lanes, NO toggles', () => {
+    const onSetRole = vi.fn();
+    render(
+      <TranscriptStream
+        offline={false}
+        speakerSegments={[]}
+        onSetSpeakerRole={onSetRole}
+        transcripts={{
+          mic: { finalText: 'Interviewer line.', partial: '' },
+          display: { finalText: 'Candidate line.', partial: '' }
+        }}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+    // The two fixed online lanes render (candidate = display, interviewer = mic)…
+    expect(screen.getByText('Candidate line.')).toBeInTheDocument();
+    expect(screen.getByText('Interviewer line.')).toBeInTheDocument();
+    // …and there are NO role toggles in pure online mode with a non-diarizing provider.
+    expect(screen.queryByRole('button', { name: /候选人/ })).toBeNull();
+    expect(screen.queryByRole('button', { name: /面试官/ })).toBeNull();
+    expect(onSetRole).not.toHaveBeenCalled();
+  });
 });

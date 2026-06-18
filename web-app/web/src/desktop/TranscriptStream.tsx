@@ -202,6 +202,15 @@ export function TranscriptStream({
   const display = transcripts.display;
   const mic = transcripts.mic;
 
+  // Render the labelable speaker-segment view whenever diarized segments exist
+  // OR the interview is offline. iFlytek (讯飞) carries its OWN speaker id on
+  // ONLINE finals, so segments DO exist in online mode — show the bubbles with
+  // 面试官/候选人 toggles so the interviewer can label them. Without this, online
+  // mode always showed the two fixed channel lanes and the toggles never appeared
+  // ("使用讯飞的时候也要能点候选人"). Pure online with a non-diarizing provider
+  // (paraformer/volc) has no segments → falls through to the two-lane view.
+  const showSpeakers = offline || (speakerSegments?.length ?? 0) > 0;
+
   return (
     <div
       id="chat-messages"
@@ -222,9 +231,10 @@ export function TranscriptStream({
         return <LaneLine key={`seed-${index}`} lane={message.role} text={message.text} />;
       })}
 
-      {offline ? (
-        // Offline (single-mic): diarized speaker bubbles + a fallback so the
-        // room-mic transcript is NEVER blank — it shows the raw text until
+      {showSpeakers ? (
+        // Diarized speaker bubbles (offline single-mic OR online iFlytek, which
+        // carries its own speaker id). Each bubble offers the 面试官/候选人 toggle.
+        // The OFFLINE-only fallback below shows the raw room-mic text until
         // diarization tags a speaker (sidecar resolving/unavailable), plus the
         // live partial for real-time feedback.
         <>
@@ -270,10 +280,10 @@ export function TranscriptStream({
               </div>
             );
           })}
-          {(speakerSegments ?? []).length === 0 && mic.finalText ? (
+          {offline && (speakerSegments ?? []).length === 0 && mic.finalText ? (
             <LaneLine lane="candidate" text={mic.finalText} />
           ) : null}
-          {mic.partial ? <LaneLine lane="candidate" text={mic.partial} live /> : null}
+          {offline && mic.partial ? <LaneLine lane="candidate" text={mic.partial} live /> : null}
         </>
       ) : (
         <>

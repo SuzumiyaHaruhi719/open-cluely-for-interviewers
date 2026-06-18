@@ -126,19 +126,25 @@ export function Shell() {
   const lastDisplayFinalRef = useRef('');
   useEffect(() => {
     // Feed the manual Generate Q buffer (`answer`) with the candidate's latest
-    // words. ONLINE: the candidate is the 'display' lane. OFFLINE single-mic
-    // (CAM++/iFlytek): there is NO display lane — the candidate's speech arrives as
-    // diarized speakerSegments (or, before any speaker is labelled, the raw
-    // room-mic transcript). Feed from those offline, otherwise `answer` stays empty
-    // and Generate Q is disabled for the whole in-person interview.
+    // words. Whenever diarized speakerSegments exist, the candidate is identified
+    // by ROLE, not by lane — this covers OFFLINE single-mic (CAM++) AND ONLINE
+    // iFlytek (讯飞), which carries its own speaker id on finals. Use the
+    // candidate-labeled segment text so the buffer fills once the interviewer taps
+    // 候选人 ("使用讯飞的时候也要能点候选人"); without this, online iFlytek fed only
+    // from the empty 'display' lane and Generate Q stayed disabled all interview.
+    // OFFLINE additionally falls back to the raw room-mic transcript before any
+    // speaker is labelled. PURE ONLINE with a non-diarizing provider
+    // (paraformer/volc) has no segments → keep feeding from the 'display' lane.
     let next = '';
-    if (offline) {
+    if (speakerSegments.length) {
       const candidateText = speakerSegments
         .filter((s) => s.role === 'candidate')
         .map((s) => s.text)
         .join(' ')
         .trim();
-      next = candidateText || transcripts.mic.finalText.trim();
+      next = candidateText || (offline ? transcripts.mic.finalText.trim() : '');
+    } else if (offline) {
+      next = transcripts.mic.finalText.trim();
     } else {
       next = transcripts.display.finalText;
     }
@@ -171,6 +177,30 @@ export function Shell() {
     },
     [sendConfigure]
   );
+
+  // ── Auto-clear the candidate speech cache when the interview ENDS ────────────
+  // "Interview ends" = the LAST active audio source is stopped (capture goes from
+  // some-source-capturing → none). At that transition we clear the candidate
+  // cache the same way "New interview" does: frontend speakerSegments + transcripts
+  // + in-flight summary/context (resetSpeakerSegments/resetTranscripts) AND the
+  // server-side candidate buffers via a resetGeneration configure (mirrors
+  // onClearSession's pushConfig). A mere PARTIAL stop (another source still live)
+  // does NOT clear. We track the previous capturing state so the clear fires once
+  // per end transition and never repeats while idle (idempotent). The manual
+  // "New interview" clear stays as-is.
+  const wasCapturingRef = useRef(false);
+  useEffect(() => {
+    if (wasCapturingRef.current && !capturing) {
+      // All sources just stopped → interview ended → clear the candidate cache.
+      pushConfig({ resetGeneration: true });
+      setAnswer('');
+      setTranscriptMessages([]);
+      lastDisplayFinalRef.current = '';
+      resetSpeakerSegments();
+      resetTranscripts();
+    }
+    wasCapturingRef.current = capturing;
+  }, [capturing, pushConfig, resetSpeakerSegments, resetTranscripts]);
 
   const onModeChange = useCallback(
     (mode: InterviewerMode): void => {

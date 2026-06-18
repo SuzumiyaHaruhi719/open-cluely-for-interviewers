@@ -279,6 +279,39 @@ describe('useCopilotSocket', () => {
     });
   });
 
+  test('iFlytek capped ids (server sends only 0/1) form ≤2 speakers and relabel of a capped id still works', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    // The server-side 2-speaker cap means the wire only ever carries capped ids
+    // 0/1, even when iFlytek over-segmented upstream. Drive a back-and-forth.
+    act(() => {
+      socket.emit({ type: 'transcript', source: 'mic', text: '问题一', isFinal: true, speakerId: 0, speaker: 'unknown' });
+      socket.emit({ type: 'transcript', source: 'mic', text: '回答一', isFinal: true, speakerId: 1, speaker: 'unknown' });
+      socket.emit({ type: 'transcript', source: 'mic', text: '问题二', isFinal: true, speakerId: 0, speaker: 'unknown' });
+    });
+    await waitFor(() => expect(result.current.speakerSegments.length).toBeGreaterThanOrEqual(2));
+    // Never more than two distinct speakers surface.
+    const distinct = new Set(result.current.speakerSegments.map((s) => s.speakerId));
+    expect(distinct.size).toBeLessThanOrEqual(2);
+    expect([...distinct].sort()).toEqual([0, 1]);
+
+    // Manual relabel of a capped speaker id still re-labels all of that speaker's
+    // bubbles AND tells the server (set-speaker-role with the capped id).
+    act(() => {
+      result.current.setSpeakerRole(1, 'candidate');
+    });
+    const speaker1Segs = result.current.speakerSegments.filter((s) => s.speakerId === 1);
+    expect(speaker1Segs.length).toBeGreaterThan(0);
+    expect(speaker1Segs.every((s) => s.role === 'candidate')).toBe(true);
+    const roleFrame = JSON.parse(socket.sent.at(-1) as string);
+    expect(roleFrame).toEqual({ type: 'set-speaker-role', speakerId: 1, role: 'candidate' });
+  });
+
   test('surfaces server error messages', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
