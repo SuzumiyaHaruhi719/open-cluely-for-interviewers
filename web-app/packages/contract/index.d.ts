@@ -179,6 +179,28 @@ export interface SessionConfig {
    * persisted — it is acted on once per configure carrying `resetGeneration:true`.
    */
   resetGeneration?: boolean;
+  /**
+   * Per-session summary model override (Feature 2). When set, overrides the
+   * server's default summary model (deepseek-v4-pro / INTERVIEWER_SUMMARY_MODEL)
+   * for this connection's summarize calls. Empty string clears the override (falls
+   * back to the server default). Valid values: 'deepseek-v4-pro',
+   * 'deepseek-v4-flash', 'qwen3-7b-max', 'glm-4-5'.
+   */
+  summaryModel?: string;
+  /**
+   * Per-session summary prompt mode (Feature 3).
+   *   'default' — server uses the built-in polished evaluation prompt (default).
+   *   'custom'  — server uses `summaryPromptText` as the system prompt (when
+   *               non-empty; falls back to the built-in default if blank).
+   */
+  summaryPromptMode?: 'default' | 'custom';
+  /**
+   * Per-session custom system prompt for the evaluation report (Feature 3).
+   * Only honoured when `summaryPromptMode === 'custom'` AND this string is
+   * non-empty. Ignored (falls back to default) when mode is 'default' or this
+   * is blank/whitespace-only.
+   */
+  summaryPromptText?: string;
 }
 
 /** A question-bank search hit. difficulty: 0=unspecified,1=easy,2=medium,3=hard. */

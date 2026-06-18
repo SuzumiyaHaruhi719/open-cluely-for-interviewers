@@ -1,12 +1,17 @@
 // ============================================================================
 // DashScope Anthropic-shape chat helper
 // ----------------------------------------------------------------------------
-// One small `chat()` over DashScope's Anthropic-shape Messages endpoint
+// Two chat helpers over DashScope's Anthropic-shape Messages endpoint
 // (`${baseUrl}/v1/messages`), reused by the resume-chat and legacy-assistant
 // routes. Mirrors the desktop interviewer-runtime call pattern exactly: same
 // headers (`x-api-key` + `anthropic-version`), same body shape, same
 // timeout + 5xx/429 exponential-backoff retry, and the same `content[].text`
 // concatenation of the response.
+//
+//  `chat()`       — one-shot (no streaming), returns full text.
+//  `chatStream()` — SSE-streaming variant for the summary flow; calls
+//                   `onDelta(text)` per content_block_delta and
+//                   `onUsage({input, output})` at the end.
 //
 // Base URL + default model come from the desktop config re-exported by
 // `@open-cluely/copilot-core` (one source of truth with the Electron app).
@@ -151,6 +156,182 @@ export async function chat(options: ChatOptions): Promise<string> {
     }
   }
   throw lastErr instanceof Error ? lastErr : new Error('DashScope request failed');
+}
+
+// ── Streaming chat ─────────────────────────────────────────────────────────
+
+export interface ChatStreamCallbacks {
+  /** Called with each incremental text delta as it arrives from the SSE stream. */
+  onDelta: (text: string) => void;
+  /**
+   * Called once at stream end with the accumulated usage. `input` comes from
+   * the `message_start` event; `output` comes from the final `message_delta`
+   * event. Either may be 0 if the model omits that usage field.
+   */
+  onUsage: (usage: { input: number; output: number }) => void;
+}
+
+/**
+ * Streaming Anthropic-shape chat completion over DashScope. Sends `stream:true`
+ * and parses SSE events:
+ *   `message_start`      → captures `usage.input_tokens`
+ *   `content_block_delta` (type=`text_delta`) → calls `onDelta(delta.text)`
+ *   `message_delta`      → captures `usage.output_tokens`; calls `onUsage`
+ *   `message_stop`       → stream finished
+ *
+ * Returns the fully accumulated text (identical to what `chat()` would return).
+ * Throws on non-retryable 4xx (fail fast) or timeout. Does NOT retry (the
+ * caller — the summary path — owns its own error semantics).
+ */
+export async function chatStream(
+  options: ChatOptions,
+  callbacks: ChatStreamCallbacks
+): Promise<string> {
+  const apiKey = config.dashscopeApiKey;
+  if (!apiKey) {
+    throw new Error('no key');
+  }
+
+  const model = options.model || getDefaultModel();
+  const maxTokens = options.maxTokens ?? DEFAULT_MAX_TOKENS;
+  const timeoutMs =
+    typeof options.timeoutMs === 'number' && options.timeoutMs > 0
+      ? options.timeoutMs
+      : REQUEST_TIMEOUT_MS;
+
+  const body: Record<string, unknown> = {
+    model,
+    max_tokens: maxTokens,
+    stream: true,
+    messages: options.messages.map((m) => ({ role: m.role, content: m.content }))
+  };
+  if (options.system) body.system = options.system;
+  if (typeof options.temperature === 'number') body.temperature = options.temperature;
+  if (options.thinking === false) body.thinking = { type: 'disabled' };
+
+  const url = `${getDashscopeBaseUrl()}/v1/messages`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  let resp: Response;
+  try {
+    resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': ANTHROPIC_VERSION,
+        'x-api-key': apiKey
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal
+    });
+  } catch (err) {
+    clearTimeout(timer);
+    throw err;
+  }
+
+  if (!resp.ok) {
+    clearTimeout(timer);
+    const text = await resp.text().catch(() => '');
+    if (resp.status >= 400 && resp.status < 500 && resp.status !== 429) {
+      // Non-retryable 4xx: fail fast with the exact error text.
+      throw markNonRetryable(new Error(`DashScope ${resp.status}: ${text.slice(0, 500)}`));
+    }
+    throw new Error(`DashScope ${resp.status}: ${text.slice(0, 300)}`);
+  }
+
+  // Parse the SSE stream.
+  const reader = resp.body?.getReader();
+  if (!reader) {
+    clearTimeout(timer);
+    throw new Error('DashScope streaming: no response body');
+  }
+
+  const decoder = new TextDecoder();
+  let accumulated = '';
+  let inputTokens = 0;
+  let outputTokens = 0;
+  let buffer = '';
+
+  // DashScope uses the standard SSE named-event format:
+  //   event:TYPE\ndata:{...}\n\n
+  // so we track the event name from `event:` lines and pair it with the
+  // following `data:` line. The `type` field inside the JSON payload is a
+  // duplicate (present on some events, absent on others); we prefer the
+  // `event:` line name for routing.
+  let pendingEventType = '';
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      // SSE events are separated by blank lines ('\n\n'). Split on single
+      // newlines so we can read both `event:` and `data:` lines in order.
+      const lines = buffer.split('\n');
+      // Keep the last (potentially incomplete) line in the buffer.
+      buffer = lines.pop() ?? '';
+
+      for (const rawLine of lines) {
+        const line = rawLine.trimEnd();
+
+        // Named event line: `event:message_start` or `event:content_block_delta`
+        if (line.startsWith('event:')) {
+          pendingEventType = line.slice(6).trim();
+          continue;
+        }
+
+        if (!line.startsWith('data:')) {
+          // Blank line (event separator) or other field — reset pending event type.
+          if (line === '') pendingEventType = '';
+          continue;
+        }
+
+        const data = line.slice(5).trim(); // strip 'data:' (no space required by spec)
+        if (data === '[DONE]') continue;
+
+        let payload: Record<string, unknown>;
+        try {
+          payload = JSON.parse(data) as Record<string, unknown>;
+        } catch {
+          continue; // skip malformed lines
+        }
+
+        // Resolve the event type: prefer the `event:` line name (DashScope
+        // standard); fall back to `type` inside the JSON body (Anthropic cloud).
+        const eventType = pendingEventType || (payload.type as string | undefined) || '';
+        pendingEventType = ''; // consumed
+
+        if (eventType === 'message_start') {
+          // Capture input token count from usage.
+          const msg = payload.message as Record<string, unknown> | undefined;
+          const usage = (msg?.usage ?? payload.usage) as Record<string, unknown> | undefined;
+          if (typeof usage?.input_tokens === 'number') {
+            inputTokens = usage.input_tokens;
+          }
+        } else if (eventType === 'content_block_delta') {
+          const delta = (payload.delta ?? payload) as Record<string, unknown> | undefined;
+          if (delta?.type === 'text_delta' && typeof delta.text === 'string') {
+            accumulated += delta.text;
+            callbacks.onDelta(delta.text);
+          }
+        } else if (eventType === 'message_delta') {
+          const usage = (payload.usage ?? payload) as Record<string, unknown> | undefined;
+          if (typeof usage?.output_tokens === 'number') {
+            outputTokens = usage.output_tokens;
+          }
+        } else if (eventType === 'message_stop') {
+          callbacks.onUsage({ input: inputTokens, output: outputTokens });
+        }
+      }
+    }
+  } finally {
+    clearTimeout(timer);
+    reader.releaseLock();
+  }
+
+  return accumulated;
 }
 
 /** Brand for a non-retryable error so the retry catch re-throws it immediately. */

@@ -1,6 +1,14 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import type { SummaryState } from '../lib/useCopilotSocket';
 
+/** Format elapsed seconds as mm:ss. */
+function fmtElapsed(ms: number): string {
+  const total = Math.floor(ms / 1000);
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
 interface SummaryModalProps {
   open: boolean;
   /** The interview-summary state from the socket (status + report text + error). */
@@ -26,6 +34,27 @@ interface SummaryModalProps {
 export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryModalProps) {
   const [copied, setCopied] = useState(false);
   const copyTimerRef = useRef<number | null>(null);
+  // Tick every second while streaming/loading to update elapsed display.
+  const [now, setNow] = useState(() => Date.now());
+  const tickRef = useRef<number | null>(null);
+  const isGenerating = summary.status === 'loading' || summary.status === 'streaming';
+
+  useEffect(() => {
+    if (isGenerating) {
+      tickRef.current = window.setInterval(() => setNow(Date.now()), 1000);
+    } else {
+      if (tickRef.current !== null) {
+        window.clearInterval(tickRef.current);
+        tickRef.current = null;
+      }
+    }
+    return () => {
+      if (tickRef.current !== null) {
+        window.clearInterval(tickRef.current);
+        tickRef.current = null;
+      }
+    };
+  }, [isGenerating]);
 
   // Close on Escape while open.
   useEffect(() => {
@@ -64,10 +93,14 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
   }
 
   const isLoading = summary.status === 'loading';
+  const isStreaming = summary.status === 'streaming';
   const hasText = summary.text.trim().length > 0;
   // The empty-transcript notice (server set `empty`) is a NOTICE, not a report —
   // render it distinctly so it never looks like a real evaluation. #8
   const isEmptyNotice = summary.status === 'done' && summary.empty;
+
+  const elapsedMs = summary.startedAt !== null ? now - summary.startedAt : 0;
+  const elapsedStr = fmtElapsed(elapsedMs);
 
   const onCopy = (): void => {
     const text = summary.text;
@@ -117,12 +150,32 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
         </header>
 
         <div className="summary-modal__body">
+          {/* Progress bar shown while loading (spinner phase) or streaming (live text). */}
+          {isGenerating ? (
+            <div className="summary-modal__progress-bar-wrap" aria-live="polite">
+              <div className="summary-modal__progress-bar">
+                <div
+                  className="summary-modal__progress-bar-fill"
+                  style={{ width: isStreaming ? '80%' : '20%' }}
+                />
+              </div>
+              <div className="summary-modal__progress-meta">
+                <span className="summary-modal__progress-elapsed">⏱ {elapsedStr}</span>
+                {summary.tokens > 0 ? (
+                  <span className="summary-modal__progress-tokens">
+                    {summary.tokens.toLocaleString()} tokens
+                  </span>
+                ) : null}
+                <span className="summary-modal__progress-label">
+                  {isStreaming ? '正在生成… · Generating…' : '正在生成评估报告… · Generating evaluation report…'}
+                </span>
+              </div>
+            </div>
+          ) : null}
+          {/* Spinner-only phase: no text yet. */}
           {isLoading && !hasText ? (
             <div className="summary-modal__loading">
               <span className="summary-modal__spinner" aria-hidden="true" />
-              <p className="summary-modal__loading-text">
-                正在生成评估报告… · Generating evaluation report…
-              </p>
             </div>
           ) : summary.status === 'error' ? (
             <p className="summary-modal__error">
@@ -142,11 +195,6 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
               还没有总结内容。点击"重新生成"开始。 · No summary yet — click Regenerate to start.
             </p>
           )}
-          {isLoading && hasText ? (
-            <p className="summary-modal__loading-text summary-modal__loading-text--inline">
-              正在生成… · Generating…
-            </p>
-          ) : null}
         </div>
 
         <footer className="summary-modal__actions">
@@ -163,10 +211,10 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
             type="button"
             className="summary-modal__btn summary-modal__btn--secondary"
             onClick={onRegenerate}
-            disabled={isLoading}
+            disabled={isGenerating}
             title="重新生成总结 / Regenerate the summary"
           >
-            {isLoading ? '生成中… · Generating…' : '重新生成 · Regenerate'}
+            {isGenerating ? '生成中… · Generating…' : '重新生成 · Regenerate'}
           </button>
           <button
             type="button"

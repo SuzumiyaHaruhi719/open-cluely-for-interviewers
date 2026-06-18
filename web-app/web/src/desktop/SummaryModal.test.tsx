@@ -12,7 +12,7 @@ import type { SummaryState } from '../lib/useCopilotSocket';
 const noop = () => {};
 
 function state(patch: Partial<SummaryState>): SummaryState {
-  return { status: 'idle', text: '', error: null, empty: false, ...patch };
+  return { status: 'idle', text: '', error: null, empty: false, startedAt: null, tokens: 0, ...patch };
 }
 
 function renderModal(summary: SummaryState) {

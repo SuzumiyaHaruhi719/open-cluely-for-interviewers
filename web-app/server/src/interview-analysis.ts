@@ -18,7 +18,7 @@
 // ============================================================================
 
 import type { SessionContextState, CompetencyStatus, SessionCompetency } from '@open-cluely/contract';
-import { chat, getDefaultModel, type ChatOptions } from './dashscope';
+import { chat, chatStream, getDefaultModel, type ChatOptions } from './dashscope';
 import type { SummaryTelemetry } from './summary-telemetry';
 
 /** The light model used for the incremental session-context call. */
@@ -219,34 +219,51 @@ const SUMMARY_MAX_TOKENS = 4096;
 export const SUMMARY_REQUEST_TIMEOUT_MS = 180000;
 
 /**
- * The evaluation prompt (Chinese). Asks for a Markdown report with the fixed
- * sections the spec mandates. Kept here so both analysis prompts live in one
- * module. The interviewer's own follow-ups are part of the transcript, so the
- * model can also judge 追问覆盖度 (follow-up coverage) from what was actually asked.
+ * The default evaluation prompt (Chinese). Polished for sharpness, evidence
+ * grounding, and decisive hire recommendations. Kept here as the authoritative
+ * source; both `analyzeSummary` and `analyzeSummaryStream` use it by default,
+ * and it can be overridden per-session via `summarySystemPrompt` (Feature 3).
+ *
+ * Requirements:
+ *  - Chinese output, Markdown with fixed `##` sections, strict ordering.
+ *  - Every judgment MUST cite the candidate's own words or a concrete observation.
+ *  - Must NOT hallucinate facts beyond the transcript + JD + résumé.
+ *  - Concise and decisive: an actual hire/reject recommendation is required.
  */
-const SUMMARY_SYSTEM = [
-  '你是一位资深技术面试官与评估专家。请基于下面提供的完整面试记录（包含面试官与候选人双方的发言，',
-  '以及可选的岗位描述 JD 与候选人简历），对候选人做一次全面、客观、有证据支撑的面试评估。',
-  '只依据记录中的实际内容下结论，不要臆造记录里没有的事实；当证据不足时，明确指出"证据不足"。',
-  '',
-  '请用【中文】输出一份 Markdown 评估报告，使用二级标题（## ），严格包含且仅包含以下小节，顺序固定：',
-  '## 候选人概况',
-  '  用 2-4 句概述候选人的背景、应聘岗位匹配度与整体印象。',
-  '## 各能力维度',
-  '  针对岗位相关的关键能力维度（如：专业深度、系统设计、编码能力、问题解决、沟通表达等；优先依据 JD）',
-  '  逐项评估。每个维度给出 1-5 分的评分，并附上来自面试记录的具体证据（可引用候选人原话或转述）。',
-  '  用要点列表呈现，例如：`- 系统设计：4/5 — 证据：……`。',
-  '## 亮点',
-  '  列出候选人表现突出之处（要点列表）。',
-  '## 风险·不足',
-  '  列出明显的薄弱点、疑虑或风险信号（要点列表）。',
-  '## 追问覆盖度',
-  '  评估面试过程中追问是否充分：哪些关键点被深入追问、哪些重要方向尚未被探究、是否存在未澄清的疑点。',
-  '## 录用建议',
-  '  给出明确倾向（如：强烈推荐 / 推荐 / 待定 / 不推荐）并说明理由，理由需与上文证据一致。',
-  '',
-  '保持专业、简洁、可执行。直接输出 Markdown 报告本体，不要添加额外的前言或结语。'
-].join('\n');
+export const SUMMARY_SYSTEM = `你是一位资深技术面试官与评估专家，受雇于招聘委员会做书面评估。\
+你的结论将直接影响录用决策，因此务必做到：客观、有据可查、立场鲜明。
+
+**输入材料**（按优先级）：完整面试记录（含面试官追问与候选人回答） + 可选 JD + 可选简历。
+
+**行为规则**
+1. 每一项判断必须附上来自记录的直接引用（候选人原话或面试官的具体观察），格式：「引用：……」。
+2. 严禁凭空推断记录中未出现的事实；证据不足时，明确写"证据不足"。
+3. 评分基准（1–5 分）：5=远超预期，4=达到预期，3=部分达到，2=低于预期，1=严重不足。
+4. 录用建议必须明确，不允许模糊措辞（禁用"视具体情况而定"等表述）。
+
+请用**中文**输出一份 Markdown 评估报告，严格按照以下顺序输出且仅包含以下小节（使用二级标题 ## ）：
+
+## 综合结论与录用建议
+给出明确倾向，从以下四项中选一并加粗：**强烈推荐录用** / **推荐录用** / **待定（需补充考察）** / **不推荐录用**。\
+用 2–3 句说明核心理由，理由必须与下文证据一致，不得前后矛盾。
+
+## 能力维度评分
+针对岗位核心能力维度（优先以 JD 为准；无 JD 时选：专业深度、系统设计、问题解决、编码能力、沟通表达）逐项列出。\
+每项格式：
+- **维度名**：N/5 — 引用：「…（候选人原话或观察）」 → 小结（1 句）
+
+## 亮点
+用要点列表列出候选人 2–4 个突出表现，每条必须有引用支撑。
+
+## 风险与顾虑
+用要点列表列出 1–4 个值得关注的弱点、疑虑或红旗信号，每条注明「证据：…」或「证据不足，需追查」。
+
+## 进一步考察建议
+若结论为「待定」或「推荐录用」，列出 2–3 个下一轮应重点验证的方向及建议考察问题。\
+若结论为「强烈推荐」或「不推荐」，此节写"无需进一步考察"。
+
+---
+直接输出 Markdown 报告本体，不要添加任何前言、致谢或结语。`;
 
 /** The result of a summary run: the report text + the model id that produced it. */
 export interface SummaryResult {
@@ -409,4 +426,104 @@ export async function analyzeSummary(
 /** Short, safe error-message extraction for telemetry. */
 function errMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err ?? 'unknown error');
+}
+
+// ── Streaming summary (Feature 1) ────────────────────────────────────────────
+
+export interface StreamCallbacks {
+  /** Called with each incremental text chunk as it arrives. */
+  onDelta: (text: string) => void;
+  /** Called once at the end of the stream with the final token counts. */
+  onUsage: (usage: { input: number; output: number }) => void;
+}
+
+export interface AnalyzeSummaryStreamDeps {
+  /** Optional lifecycle recorder. */
+  readonly telemetry?: SummaryTelemetry;
+  /** Correlation id stamped on telemetry events. */
+  readonly requestId?: string;
+  /**
+   * Per-session custom system prompt (Feature 3). When provided AND non-empty,
+   * this replaces the default `SUMMARY_SYSTEM` prompt. Callers must already have
+   * validated that the mode is 'custom'; an empty string here still falls back to
+   * the default (NEVER call the model with an empty system prompt).
+   */
+  readonly summarySystemPrompt?: string;
+}
+
+/**
+ * Resolve the system prompt to use for a summary call (Feature 3).
+ * Returns the custom prompt when it is non-empty, else the default `SUMMARY_SYSTEM`.
+ * This is the single source of truth for prompt selection — both `analyzeSummary`
+ * and `analyzeSummaryStream` go through here.
+ */
+export function resolveSummarySystemPrompt(customPrompt: string | undefined): string {
+  const trimmed = String(customPrompt ?? '').trim();
+  return trimmed || SUMMARY_SYSTEM;
+}
+
+/**
+ * Like `analyzeSummary` but STREAMS the report via SSE. Calls `onDelta(text)`
+ * for each chunk and `onUsage({input, output})` at the end. Includes the same
+ * model-rejected fallback: if the configured summary model is rejected by
+ * DashScope the fallback model is attempted (also streaming). Throws on hard
+ * failures — the caller maps that to `summary-error`.
+ */
+export async function analyzeSummaryStream(
+  input: string,
+  callbacks: StreamCallbacks,
+  { model: overrideModel, ...deps }: AnalyzeSummaryStreamDeps & { model?: string } = {}
+): Promise<SummaryResult> {
+  const trimmed = String(input ?? '').trim();
+  if (!trimmed) {
+    throw new Error('empty summary input');
+  }
+
+  const tel = deps.telemetry;
+  const rid = deps.requestId;
+  const proModel = overrideModel || getSummaryModel();
+  const messages = [{ role: 'user' as const, content: trimmed }];
+  const systemPrompt = resolveSummarySystemPrompt(deps.summarySystemPrompt);
+
+  const runStream = async (model: string): Promise<string> => {
+    return chatStream(
+      {
+        system: systemPrompt,
+        messages,
+        model,
+        maxTokens: SUMMARY_MAX_TOKENS,
+        timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS
+      },
+      callbacks
+    );
+  };
+
+  try {
+    tel?.record('model-call-start', { requestId: rid, model: proModel });
+    const text = await runStream(proModel);
+    tel?.record('model-call-end', { requestId: rid, model: proModel });
+    tel?.record('done', { requestId: rid, model: proModel });
+    return { text, model: proModel, fellBack: false };
+  } catch (err) {
+    if (!isModelRejected(err)) {
+      tel?.record('error', { requestId: rid, model: proModel, error: errMessage(err) });
+      throw err;
+    }
+    const fallbackModel = getDefaultModel();
+    if (fallbackModel === proModel) {
+      tel?.record('error', { requestId: rid, model: proModel, error: errMessage(err) });
+      throw err;
+    }
+    tel?.record('fallback', { requestId: rid, model: fallbackModel, reason: 'pro model rejected' });
+    try {
+      tel?.record('model-call-start', { requestId: rid, model: fallbackModel });
+      const text = await runStream(fallbackModel);
+      tel?.record('model-call-end', { requestId: rid, model: fallbackModel });
+      tel?.record('done', { requestId: rid, model: fallbackModel });
+      return { text, model: fallbackModel, fellBack: true };
+    } catch (fallbackErr) {
+      tel?.record('error', { requestId: rid, model: fallbackModel, error: errMessage(fallbackErr) });
+      throw fallbackErr;
+    }
+  }
 }

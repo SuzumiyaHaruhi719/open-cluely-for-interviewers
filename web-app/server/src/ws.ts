@@ -22,9 +22,12 @@ import { createSessionContextAnalyzer } from './session-context-analyzer';
 import {
   analyzeSessionContext,
   analyzeSummary,
+  analyzeSummaryStream,
   buildAnalysisInput,
   buildSummaryInput,
-  type SummaryResult
+  resolveSummarySystemPrompt,
+  type SummaryResult,
+  type StreamCallbacks
 } from './interview-analysis';
 import { createSummaryTelemetry, type SummaryTelemetry } from './summary-telemetry';
 import { createSpeakerRoleMap, type SpeakerRoleMap } from './speaker-roles';
@@ -100,7 +103,16 @@ const sessionConfigSchema = z
     autoIntervalMs: z.number().optional(),
     // One-shot signal from a new/switched chat: abandon the previous chat's
     // accumulated transcript AND in-flight generation (see SessionConfig docs).
-    resetGeneration: z.boolean().optional()
+    resetGeneration: z.boolean().optional(),
+    // Per-session summary model override (Feature 2). When set, overrides the
+    // server's INTERVIEWER_SUMMARY_MODEL / getSummaryModel() default for this
+    // connection's next summarize call.
+    summaryModel: z.string().optional(),
+    // Per-session custom summary prompt (Feature 3).
+    // 'default' keeps the built-in SUMMARY_SYSTEM; 'custom' uses summaryPromptText
+    // when non-empty, else falls back to the built-in default.
+    summaryPromptMode: z.enum(['default', 'custom']).optional(),
+    summaryPromptText: z.string().optional()
   })
   .passthrough();
 
@@ -319,22 +331,50 @@ async function handleAnalyze(
   }
 }
 
-/** Injectable deps for handleSummarize (defaults wire production analyzeSummary). */
+/** Injectable deps for handleSummarize (defaults wire production analyzeSummaryStream). */
 export interface SummarizeDeps {
-  /** The summary runner; defaults to `analyzeSummary`. Injected in tests. */
+  /**
+   * The one-shot summary runner; injected in tests that don't need streaming.
+   * When this is set, streaming is skipped (no summary-chunk events) — the whole
+   * report arrives as a single summary-done (legacy test path).
+   */
   readonly analyze?: (input: string, deps?: { telemetry?: SummaryTelemetry; requestId?: string }) => Promise<SummaryResult>;
+  /**
+   * The streaming summary runner; defaults to the real `analyzeSummaryStream`.
+   * Emits `summary-chunk` events as text accumulates, then a final `summary-done`.
+   * Tests that inject `analyze` bypass this entirely.
+   */
+  readonly analyzeStream?: (
+    input: string,
+    callbacks: StreamCallbacks,
+    deps: { telemetry?: SummaryTelemetry; requestId?: string; model?: string }
+  ) => Promise<SummaryResult>;
   /** Optional lifecycle recorder so the (slow, opaque) summary flow is observable. */
   readonly telemetry?: SummaryTelemetry;
+  /** Per-session summary model override (set via SessionConfig.summaryModel). */
+  readonly summaryModel?: string;
+  /**
+   * Per-session custom system prompt for the evaluation report (Feature 3).
+   * When non-empty, replaces the default SUMMARY_SYSTEM prompt for this call.
+   * An empty string (or undefined) falls back to the default.
+   */
+  readonly summarySystemPrompt?: string;
 }
 
 /**
  * Handle a `summarize` request: build the summary input from the per-connection
- * accumulated transcript (both lanes) + captured JD/résumé, call the PRO summary
- * model, and reply. `chat()` is one-shot (no streaming), so the WHOLE report is
- * returned at once via a single `summary-done {requestId, text}` — the client
- * shows a spinner until then. An EMPTY transcript replies with a friendly
- * `summary-done` flagged `empty:true` (NOT an error, and NOT a real report — the
- * modal renders a distinct notice). Any model failure → `summary-error`.
+ * accumulated transcript (both lanes) + captured JD/résumé, stream the report
+ * via `summary-chunk` events as it generates, and reply with a final `summary-done`.
+ *
+ * Streaming path (production):
+ *   Each SSE text delta → `summary-chunk {requestId, text}` (client accumulates).
+ *   Final `summary-done {requestId, model}` (no `text` — client already has it).
+ *
+ * Legacy one-shot path (tests that inject `analyze`):
+ *   No `summary-chunk` events — whole report arrives on `summary-done {text}`.
+ *
+ * An EMPTY transcript replies with a friendly `summary-done` flagged `empty:true`.
+ * Any model failure → `summary-error`.
  */
 export async function handleSummarize(
   ws: WebSocket,
@@ -342,7 +382,6 @@ export async function handleSummarize(
   requestId: string,
   deps: SummarizeDeps = {}
 ): Promise<void> {
-  const analyze = deps.analyze ?? analyzeSummary;
   const tel = deps.telemetry;
   tel?.record('requested', { requestId });
 
@@ -360,16 +399,53 @@ export async function handleSummarize(
     return;
   }
   tel?.record('input-built', { requestId, inputChars: input.length });
+
+  // Legacy one-shot path: tests inject `analyze` to avoid streaming complexity.
+  if (deps.analyze) {
+    try {
+      const result = await deps.analyze(input, { telemetry: tel, requestId });
+      const text = result.fellBack
+        ? `> 注意：所选总结模型不可用，已回退到 ${result.model}。\n\n${result.text}`
+        : result.text;
+      send(ws, { type: 'summary-done', requestId, text, model: result.model });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'summary failed';
+      tel?.record('error', { requestId, error: message });
+      send(ws, { type: 'summary-error', requestId, message });
+    }
+    return;
+  }
+
+  // Streaming path (production): emit summary-chunk per delta.
+  const streamFn = deps.analyzeStream ?? analyzeSummaryStream;
+  const callbacks: StreamCallbacks = {
+    onDelta: (text) => {
+      send(ws, { type: 'summary-chunk', requestId, text });
+    },
+    onUsage: (_usage) => {
+      // Usage is captured inside analyzeSummaryStream for telemetry; no need
+      // to re-emit it here — the client accumulates tokens from the chunks.
+    }
+  };
+
   try {
-    const result = await analyze(input, { telemetry: tel, requestId });
-    const text = result.fellBack
-      ? `> 注意：所选总结模型不可用，已回退到 ${result.model}。\n\n${result.text}`
-      : result.text;
-    send(ws, { type: 'summary-done', requestId, text, model: result.model });
+    const result = await streamFn(input, callbacks, {
+      telemetry: tel,
+      requestId,
+      model: deps.summaryModel,
+      summarySystemPrompt: deps.summarySystemPrompt
+    });
+    // For the fellBack case, prepend the notice to the accumulated text and
+    // send it as a final chunk so the client sees it.
+    if (result.fellBack) {
+      const notice = `> 注意：所选总结模型不可用，已回退到 ${result.model}。\n\n`;
+      send(ws, { type: 'summary-chunk', requestId, text: notice });
+    }
+    // summary-done carries no `text` in streaming mode — the client has already
+    // accumulated the full report via summary-chunk events.
+    send(ws, { type: 'summary-done', requestId, model: result.model });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'summary failed';
-    // analyzeSummary already records its own 'error'; record here too for the
-    // empty-input/defensive path that never reaches the model.
     tel?.record('error', { requestId, error: message });
     send(ws, { type: 'summary-error', requestId, message });
   }
@@ -459,7 +535,15 @@ export async function dispatch(
   resetAccumulated: () => void,
   setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
   buildSummary: () => string,
-  msg: ClientMessageParsed
+  msg: ClientMessageParsed,
+  /** Setter for the per-session summary model (Feature 2). */
+  setSummaryModel?: (model: string | undefined) => void,
+  /** Getter for the per-session summary model (Feature 2). */
+  getSummaryModelOverride?: () => string | undefined,
+  /** Setter for the per-session custom system prompt (Feature 3). */
+  setSummaryPrompt?: (prompt: string | undefined) => void,
+  /** Getter for the per-session custom system prompt (Feature 3). */
+  getSummaryPromptOverride?: () => string | undefined
 ): Promise<void> {
   switch (msg.type) {
     case 'configure':
@@ -503,6 +587,32 @@ export async function dispatch(
       // forward across configures (a later configure that only flips the provider
       // keeps earlier-entered creds).
       applyAsrConfig(relay, roles, msg.config);
+      // Per-session summary model override (Feature 2). Only overwrite when the
+      // configure explicitly carries the field (partial configures must not clear it).
+      if (typeof msg.config.summaryModel === 'string') {
+        setSummaryModel?.(msg.config.summaryModel || undefined);
+      }
+      // Per-session custom system prompt (Feature 3). When mode is 'custom' and
+      // summaryPromptText is non-empty, store it; 'default' or blank clears it.
+      if (msg.config.summaryPromptMode !== undefined || msg.config.summaryPromptText !== undefined) {
+        const mode = msg.config.summaryPromptMode;
+        const text = typeof msg.config.summaryPromptText === 'string'
+          ? msg.config.summaryPromptText.trim()
+          : undefined;
+        if (mode === 'custom' && text) {
+          setSummaryPrompt?.(text);
+        } else if (mode === 'default' || mode === 'custom') {
+          // 'default' always clears; 'custom' + empty text also falls back to default.
+          setSummaryPrompt?.(undefined);
+        } else if (mode === undefined && text !== undefined) {
+          // No mode change but text updated: only keep if already in custom mode
+          // (non-undefined prompt means custom was previously set).
+          const current = getSummaryPromptOverride?.();
+          if (current !== undefined) {
+            setSummaryPrompt?.(text || undefined);
+          }
+        }
+      }
       return;
     case 'analyze':
       await handleAnalyze(ws, session, trigger, msg);
@@ -526,10 +636,14 @@ export async function dispatch(
       injectNote(msg.note);
       return;
     case 'summarize':
-      // Interview summary (DeepSeek v4 pro): build the input from the accumulated
-      // transcript (both lanes) + captured JD/résumé and reply with the report.
-      // The shared telemetry recorder makes the (slow, opaque) flow observable.
-      await handleSummarize(ws, buildSummary, msg.requestId, { telemetry: summaryTelemetry });
+      // Interview summary: stream the report via summary-chunk events. Uses the
+      // per-session summaryModel override (Feature 2) and prompt override (Feature 3)
+      // when set; else falls back to server defaults.
+      await handleSummarize(ws, buildSummary, msg.requestId, {
+        telemetry: summaryTelemetry,
+        summaryModel: getSummaryModelOverride?.(),
+        summarySystemPrompt: getSummaryPromptOverride?.()
+      });
       return;
   }
 }
@@ -544,6 +658,10 @@ function onMessage(
   resetAccumulated: () => void,
   setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
   buildSummary: () => string,
+  setSummaryModel: (model: string | undefined) => void,
+  getSummaryModelOverride: () => string | undefined,
+  setSummaryPrompt: (prompt: string | undefined) => void,
+  getSummaryPromptOverride: () => string | undefined,
   raw: unknown
 ): void {
   let requestId: string | undefined;
@@ -571,7 +689,11 @@ function onMessage(
         resetAccumulated,
         setContextGrounding,
         buildSummary,
-        parsed.data
+        parsed.data,
+        setSummaryModel,
+        getSummaryModelOverride,
+        setSummaryPrompt,
+        getSummaryPromptOverride
       );
     } catch (err) {
       // A handler error must never close the socket.
@@ -644,6 +766,20 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // resolves to a role here; online providers carry no id (resolve(null) =
     // 'unknown') so the role gating below is inert for them.
     const roles = createSpeakerRoleMap();
+
+    // Per-connection summary model override (Feature 2). Set by configure when the
+    // client sends `summaryModel`; undefined means use the server default.
+    let perSessionSummaryModel: string | undefined;
+    const setSummaryModel = (model: string | undefined): void => { perSessionSummaryModel = model; };
+    const getSummaryModelOverride = (): string | undefined => perSessionSummaryModel;
+
+    // Per-connection custom system prompt override (Feature 3). Set by configure
+    // when the client sends summaryPromptMode='custom' + a non-empty summaryPromptText.
+    // undefined (or empty) means use the server's built-in SUMMARY_SYSTEM default.
+    // resolveSummarySystemPrompt() is the authoritative fallback — never pass empty.
+    let perSessionSummaryPrompt: string | undefined;
+    const setSummaryPrompt = (prompt: string | undefined): void => { perSessionSummaryPrompt = prompt; };
+    const getSummaryPromptOverride = (): string | undefined => perSessionSummaryPrompt;
 
     // Accumulated interviewee FINAL transcript — the candidate's answer so far.
     // The trigger monitor gates on its LENGTH (new chars since the last fire) and
@@ -840,6 +976,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             jobDescription: contextJobDescription,
             resumeText: contextResumeText
           }),
+        setSummaryModel,
+        getSummaryModelOverride,
+        setSummaryPrompt,
+        getSummaryPromptOverride,
         data.toString()
       )
     );

@@ -11,10 +11,23 @@ const KEYS = {
   opacity: 'open-cluely.windowOpacity',
   autoGenerate: 'open-cluely.autoGenerate',
   autoMode: 'open-cluely.autoMode',
-  autoIntervalSec: 'open-cluely.autoIntervalSec'
+  autoIntervalSec: 'open-cluely.autoIntervalSec',
+  summaryModel: 'open-cluely.summaryModel',
+  summaryPromptMode: 'open-cluely.summaryPromptMode',
+  summaryPromptText: 'open-cluely.summaryPromptText'
 } as const;
 
 export const DEFAULT_AI_MODEL = 'deepseek-v4-pro';
+/** Default summary prompt mode — use the built-in polished evaluation prompt. */
+export const DEFAULT_SUMMARY_PROMPT_MODE: 'default' | 'custom' = 'default';
+/** Default custom prompt text — empty means not yet set. */
+export const DEFAULT_SUMMARY_PROMPT_TEXT = '';
+/**
+ * Default summary model. Matches the server's DEFAULT_SUMMARY_MODEL (deepseek-v4-pro).
+ * The user can override via the Settings modal; the value is sent in `summaryModel`
+ * on every `configure` so the server uses it for the next summarize call.
+ */
+export const DEFAULT_SUMMARY_MODEL = 'deepseek-v4-pro';
 export const DEFAULT_ASR_PROVIDER = 'paraformer';
 /** Default offline diarizer URL — the local CAM++ sidecar (deploy/campp_sidecar.py). */
 export const DEFAULT_FUNASR_URL = 'http://localhost:10097';
@@ -45,6 +58,19 @@ export type AutoMode = 'agent' | 'interval';
 
 export interface AppSettings {
   aiModel: string;
+  /** Per-session summary model id. Sent to the server via `configure.summaryModel`. */
+  summaryModel: string;
+  /**
+   * Per-session summary prompt mode (Feature 3).
+   *   'default' — server uses the built-in polished evaluation prompt.
+   *   'custom'  — server uses `summaryPromptText` when non-empty, else the default.
+   */
+  summaryPromptMode: 'default' | 'custom';
+  /**
+   * Per-session custom system prompt text (Feature 3). Only sent to the server
+   * when summaryPromptMode === 'custom'. Ignored (falls back to default) when blank.
+   */
+  summaryPromptText: string;
   asrProvider: string;
   /**
    * Doubao / Volcengine credentials (only meaningful when asrProvider === 'volc').
@@ -137,6 +163,11 @@ export interface VolcSettings {
 export interface UseAppSettings {
   settings: AppSettings;
   setAiModel: (value: string) => void;
+  setSummaryModel: (value: string) => void;
+  /** Set the summary prompt mode ('default' | 'custom') and persist to localStorage. */
+  setSummaryPromptMode: (mode: 'default' | 'custom') => void;
+  /** Set the custom summary prompt text and persist to localStorage. */
+  setSummaryPromptText: (text: string) => void;
   setAsrProvider: (value: string) => void;
   /** Merge-patch the Volc credential fields (persists each touched field). */
   setVolcSettings: (patch: Partial<VolcSettings>) => void;
@@ -169,6 +200,9 @@ const VOLC_FIELD_KEYS: Record<keyof VolcSettings, string> = {
 export function useAppSettings(): UseAppSettings {
   const [settings, setSettings] = useState<AppSettings>(() => ({
     aiModel: readString(KEYS.aiModel, DEFAULT_AI_MODEL),
+    summaryModel: readString(KEYS.summaryModel, DEFAULT_SUMMARY_MODEL),
+    summaryPromptMode: readString(KEYS.summaryPromptMode, DEFAULT_SUMMARY_PROMPT_MODE) === 'custom' ? 'custom' : 'default',
+    summaryPromptText: readString(KEYS.summaryPromptText, DEFAULT_SUMMARY_PROMPT_TEXT),
     asrProvider: readString(KEYS.asrProvider, DEFAULT_ASR_PROVIDER),
     volcAppId: readString(KEYS.volcAppId, ''),
     volcAccessToken: readString(KEYS.volcAccessToken, ''),
@@ -185,6 +219,21 @@ export function useAppSettings(): UseAppSettings {
   const setAiModel = useCallback((value: string): void => {
     setSettings((prev) => ({ ...prev, aiModel: value }));
     persist(KEYS.aiModel, value);
+  }, []);
+
+  const setSummaryModel = useCallback((value: string): void => {
+    setSettings((prev) => ({ ...prev, summaryModel: value }));
+    persist(KEYS.summaryModel, value);
+  }, []);
+
+  const setSummaryPromptMode = useCallback((mode: 'default' | 'custom'): void => {
+    setSettings((prev) => ({ ...prev, summaryPromptMode: mode }));
+    persist(KEYS.summaryPromptMode, mode);
+  }, []);
+
+  const setSummaryPromptText = useCallback((text: string): void => {
+    setSettings((prev) => ({ ...prev, summaryPromptText: text }));
+    persist(KEYS.summaryPromptText, text);
   }, []);
 
   const setAsrProvider = useCallback((value: string): void => {
@@ -241,6 +290,9 @@ export function useAppSettings(): UseAppSettings {
   return {
     settings,
     setAiModel,
+    setSummaryModel,
+    setSummaryPromptMode,
+    setSummaryPromptText,
     setAsrProvider,
     setVolcSettings,
     setFunasrUrl,

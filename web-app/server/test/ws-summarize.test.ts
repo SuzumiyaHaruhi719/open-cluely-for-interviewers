@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 
 import { handleSummarize, type SummarizeDeps } from '../src/ws';
 import { createSummaryTelemetry } from '../src/summary-telemetry';
+import { resolveSummarySystemPrompt, SUMMARY_SYSTEM } from '../src/interview-analysis';
 import type { ServerMessage } from '@open-cluely/contract';
-import type { SummaryResult } from '../src/interview-analysis';
+import type { SummaryResult, StreamCallbacks, AnalyzeSummaryStreamDeps } from '../src/interview-analysis';
 
 // ----------------------------------------------------------------------------
 // handleSummarize is the server-side summary entrypoint. We exercise it directly
@@ -161,4 +162,173 @@ test('telemetry: an error records an error event', async () => {
   await handleSummarize(ws, () => '面试记录…', 'req-e2', deps);
   const types = tel.snapshot().map((e) => e.type);
   assert.ok(types.includes('error'), `missing error: ${types.join(',')}`);
+});
+
+// ── Streaming path (Feature 1) ───────────────────────────────────────────────
+
+test('streaming path: summary-chunk events emitted per delta, no text on summary-done', async () => {
+  const { ws, frames } = fakeWs();
+
+  const analyzeStream = async (
+    _input: string,
+    callbacks: StreamCallbacks,
+    _deps: { telemetry?: unknown; requestId?: string; model?: string }
+  ): Promise<SummaryResult> => {
+    callbacks.onDelta('## 候选人');
+    callbacks.onDelta('概况\n不错。');
+    callbacks.onUsage({ input: 10, output: 20 });
+    return { text: '## 候选人概况\n不错。', model: 'deepseek-v4-pro', fellBack: false };
+  };
+
+  const deps: SummarizeDeps = { analyzeStream };
+  await handleSummarize(ws, () => '面试记录…', 'req-stream', deps);
+
+  const chunks = frames.filter((f) => f.type === 'summary-chunk');
+  const done = frames.find((f) => f.type === 'summary-done');
+
+  assert.equal(chunks.length, 2, 'should emit one chunk per delta');
+  if (chunks[0].type === 'summary-chunk') assert.equal(chunks[0].text, '## 候选人');
+  if (chunks[1].type === 'summary-chunk') assert.equal(chunks[1].text, '概况\n不错。');
+
+  assert.ok(done, 'should emit summary-done at the end');
+  if (done?.type === 'summary-done') {
+    assert.equal(done.requestId, 'req-stream');
+    // In streaming mode, text is absent on summary-done (client has accumulated it).
+    assert.equal(done.text, undefined);
+    assert.equal(done.model, 'deepseek-v4-pro');
+    assert.notEqual(done.empty, true);
+  }
+});
+
+test('streaming path fellBack: a notice chunk is emitted before summary-done', async () => {
+  const { ws, frames } = fakeWs();
+
+  const analyzeStream = async (
+    _input: string,
+    callbacks: StreamCallbacks,
+    _deps: { telemetry?: unknown; requestId?: string; model?: string }
+  ): Promise<SummaryResult> => {
+    callbacks.onDelta('# 报告');
+    callbacks.onUsage({ input: 5, output: 10 });
+    return { text: '# 报告', model: 'deepseek-v4-flash', fellBack: true };
+  };
+
+  await handleSummarize(ws, () => '面试记录…', 'req-fb-stream', { analyzeStream });
+
+  const chunks = frames.filter((f) => f.type === 'summary-chunk');
+  // One delta chunk + one notice chunk prepended for fellBack.
+  const noticeChunk = chunks.find(
+    (c) => c.type === 'summary-chunk' && c.text.includes('已回退到 deepseek-v4-flash')
+  );
+  assert.ok(noticeChunk, 'fallback notice should be emitted as a chunk');
+  const done = frames.find((f) => f.type === 'summary-done');
+  assert.ok(done);
+  if (done?.type === 'summary-done') {
+    assert.equal(done.model, 'deepseek-v4-flash');
+  }
+});
+
+test('streaming path error → summary-error (no chunks sent after failure)', async () => {
+  const { ws, frames } = fakeWs();
+
+  const analyzeStream = async (): Promise<SummaryResult> => {
+    throw new Error('stream broken');
+  };
+
+  await handleSummarize(ws, () => '面试记录…', 'req-err-stream', { analyzeStream });
+
+  const chunks = frames.filter((f) => f.type === 'summary-chunk');
+  assert.equal(chunks.length, 0, 'no chunks on hard failure');
+  const errMsg = frames.find((f) => f.type === 'summary-error');
+  assert.ok(errMsg);
+  if (errMsg?.type === 'summary-error') {
+    assert.match(errMsg.message, /stream broken/);
+  }
+});
+
+// ── Feature 2: per-session model override ────────────────────────────────────
+
+test('Feature 2: summaryModel in deps is forwarded to analyzeStream', async () => {
+  const { ws } = fakeWs();
+  let capturedModel: string | undefined;
+
+  const analyzeStream = async (
+    _input: string,
+    callbacks: StreamCallbacks,
+    deps: { telemetry?: unknown; requestId?: string; model?: string }
+  ): Promise<SummaryResult> => {
+    capturedModel = deps.model;
+    callbacks.onDelta('ok');
+    callbacks.onUsage({ input: 1, output: 1 });
+    return { text: 'ok', model: deps.model ?? 'deepseek-v4-pro', fellBack: false };
+  };
+
+  await handleSummarize(ws, () => '面试记录…', 'req-model', {
+    analyzeStream,
+    summaryModel: 'deepseek-v4-flash'
+  });
+
+  assert.equal(capturedModel, 'deepseek-v4-flash', 'selected model must be forwarded');
+});
+
+// ── Feature 3: per-session custom system prompt ───────────────────────────────
+
+test('Feature 3: resolveSummarySystemPrompt — non-empty custom prompt is used as-is', () => {
+  const custom = 'You are a brief interviewer.';
+  assert.equal(resolveSummarySystemPrompt(custom), custom);
+});
+
+test('Feature 3: resolveSummarySystemPrompt — empty string falls back to SUMMARY_SYSTEM', () => {
+  assert.equal(resolveSummarySystemPrompt(''), SUMMARY_SYSTEM);
+  assert.equal(resolveSummarySystemPrompt('   '), SUMMARY_SYSTEM);
+});
+
+test('Feature 3: resolveSummarySystemPrompt — undefined falls back to SUMMARY_SYSTEM', () => {
+  assert.equal(resolveSummarySystemPrompt(undefined), SUMMARY_SYSTEM);
+});
+
+test('Feature 3: summarySystemPrompt in deps is forwarded to analyzeStream', async () => {
+  const { ws } = fakeWs();
+  let capturedDeps: AnalyzeSummaryStreamDeps & { model?: string } = {};
+
+  const analyzeStream = async (
+    _input: string,
+    callbacks: StreamCallbacks,
+    deps: AnalyzeSummaryStreamDeps & { model?: string }
+  ): Promise<SummaryResult> => {
+    capturedDeps = deps;
+    callbacks.onDelta('ok');
+    callbacks.onUsage({ input: 1, output: 1 });
+    return { text: 'ok', model: 'deepseek-v4-pro', fellBack: false };
+  };
+
+  const customPrompt = 'Be concise. One sentence summary only.';
+  await handleSummarize(ws, () => '面试记录…', 'req-prompt', {
+    analyzeStream,
+    summarySystemPrompt: customPrompt
+  });
+
+  assert.equal(capturedDeps.summarySystemPrompt, customPrompt, 'custom prompt must reach analyzeStream');
+});
+
+test('Feature 3: empty summarySystemPrompt in deps is forwarded (falls back inside resolveSummarySystemPrompt)', async () => {
+  const { ws } = fakeWs();
+  let capturedPrompt: string | undefined = 'sentinel';
+
+  const analyzeStream = async (
+    _input: string,
+    callbacks: StreamCallbacks,
+    deps: AnalyzeSummaryStreamDeps & { model?: string }
+  ): Promise<SummaryResult> => {
+    capturedPrompt = deps.summarySystemPrompt;
+    callbacks.onDelta('ok');
+    callbacks.onUsage({ input: 1, output: 1 });
+    return { text: 'ok', model: 'deepseek-v4-pro', fellBack: false };
+  };
+
+  // No summarySystemPrompt in deps → should be undefined (and resolveSummarySystemPrompt
+  // inside analyzeSummaryStream will pick the default).
+  await handleSummarize(ws, () => '面试记录…', 'req-no-prompt', { analyzeStream });
+
+  assert.equal(capturedPrompt, undefined, 'absent prompt must arrive as undefined, not a string');
 });

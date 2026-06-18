@@ -543,4 +543,84 @@ describe('useCopilotSocket', () => {
     // No spurious error when there was nothing in flight.
     expect(result.current.summary.status).toBe('idle');
   });
+
+  // ── Streaming (Feature 1) ────────────────────────────────────────────────
+
+  test('summary-chunk transitions status to streaming and accumulates text', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => { MockWebSocket.last().open(); });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let requestId: string | null = null;
+    act(() => { requestId = result.current.startSummary(); });
+    expect(result.current.summary.status).toBe('loading');
+
+    act(() => {
+      socket.emit({ type: 'summary-chunk', requestId, text: '## 候选人' });
+    });
+    await waitFor(() => expect(result.current.summary.status).toBe('streaming'));
+    expect(result.current.summary.text).toBe('## 候选人');
+
+    act(() => {
+      socket.emit({ type: 'summary-chunk', requestId, text: '概况\n不错。' });
+    });
+    await waitFor(() => expect(result.current.summary.text).toBe('## 候选人概况\n不错。'));
+  });
+
+  test('summary-chunk then summary-done (no text): uses accumulated text, status done', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => { MockWebSocket.last().open(); });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let requestId: string | null = null;
+    act(() => { requestId = result.current.startSummary(); });
+
+    act(() => {
+      socket.emit({ type: 'summary-chunk', requestId, text: 'chunk1' });
+      socket.emit({ type: 'summary-chunk', requestId, text: 'chunk2' });
+    });
+    await waitFor(() => expect(result.current.summary.text).toBe('chunk1chunk2'));
+
+    act(() => {
+      // summary-done without text (streaming path): client already has accumulated text
+      socket.emit({ type: 'summary-done', requestId, model: 'deepseek-v4-pro' });
+    });
+    await waitFor(() => expect(result.current.summary.status).toBe('done'));
+    // Accumulated text from chunks is preserved
+    expect(result.current.summary.text).toBe('chunk1chunk2');
+    expect(result.current.summary.empty).toBe(false);
+  });
+
+  test('stale summary-chunk (old requestId) is ignored', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => { MockWebSocket.last().open(); });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => { result.current.startSummary(); });
+
+    // Emit a chunk for a different request id
+    act(() => {
+      socket.emit({ type: 'summary-chunk', requestId: 'stale-id', text: 'stale text' });
+    });
+    // Status must remain 'loading', not transition to 'streaming' with stale text
+    expect(result.current.summary.status).toBe('loading');
+    expect(result.current.summary.text).toBe('');
+  });
+
+  test('startSummary records startedAt and resets tokens to 0', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => { MockWebSocket.last().open(); });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    const before = Date.now();
+    act(() => { result.current.startSummary(); });
+    const after = Date.now();
+
+    expect(result.current.summary.startedAt).toBeGreaterThanOrEqual(before);
+    expect(result.current.summary.startedAt).toBeLessThanOrEqual(after);
+    expect(result.current.summary.tokens).toBe(0);
+  });
 });

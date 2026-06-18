@@ -31,19 +31,24 @@ export interface LaneTranscript {
 export type TranscriptLanes = Record<AudioSource, LaneTranscript>;
 
 /**
- * The interview-summary report state (DeepSeek v4 pro). 'idle' before any run;
- * 'loading' while the report is being produced (the server is ONE-SHOT — it sends
- * a single `summary-done` with the whole report, so the modal shows a spinner
- * until then; there is no chunk streaming); 'done' with the full `text`; 'error'
- * with the failure message. `empty` is set on a 'done' that carries the friendly
- * "nothing to summarize" notice (so the modal renders a notice, not a fake report).
+ * The interview-summary report state. 'idle' before any run; 'loading' while
+ * waiting for the first chunk (spinner); 'streaming' once text starts arriving
+ * (progress bar + live text); 'done' with the full `text`; 'error' with the
+ * failure message. `empty` is set on a 'done' that carries the friendly "nothing
+ * to summarize" notice (so the modal renders a notice, not a fake report).
+ * `startedAt` is set when the request is sent (ms timestamp); `tokens` accumulates
+ * the output token count reported by the server.
  */
 export interface SummaryState {
-  status: 'idle' | 'loading' | 'done' | 'error';
+  status: 'idle' | 'loading' | 'streaming' | 'done' | 'error';
   text: string;
   error: string | null;
   /** True when 'done' carries the empty-transcript notice rather than a real report. */
   empty: boolean;
+  /** ms timestamp when the summarize request was sent — for elapsed-time display. */
+  startedAt: number | null;
+  /** Accumulated output token count from the stream (0 until tokens arrive). */
+  tokens: number;
 }
 
 /** Per-source live-audio capture state for the UI. */
@@ -184,7 +189,9 @@ export function useCopilotSocket(): CopilotSocket {
     status: 'idle',
     text: '',
     error: null,
-    empty: false
+    empty: false,
+    startedAt: null,
+    tokens: 0
   });
   // The requestId of the in-flight summary, so stale summary-* replies from a
   // superseded run are ignored (a re-run mints a new id).
@@ -278,26 +285,35 @@ export function useCopilotSocket(): CopilotSocket {
         // a new message always carries fresh signal; overwrite the previous one.
         setSessionContext(message.state);
         break;
-      // NOTE: the server is ONE-SHOT — it never emits `summary-chunk`. The whole
-      // report arrives on a single `summary-done` below, so there is no chunk
-      // handler (the contract keeps `summary-chunk` only as a forward capability).
+      // Streaming chunk: accumulate text and flip status to 'streaming' so the
+      // UI can show the live progress bar + partial report.
+      case 'summary-chunk':
+        if (message.requestId !== activeSummaryRef.current) break;
+        setSummary((prev) => ({
+          ...prev,
+          status: 'streaming',
+          text: prev.text + message.text
+        }));
+        break;
       case 'summary-done':
         if (message.requestId !== activeSummaryRef.current) break;
         activeSummaryRef.current = null;
-        // One-shot server: the whole report rides on `text`. `empty` flags the
-        // friendly "nothing to summarize" notice so the modal renders it distinctly
-        // rather than as a real report.
-        setSummary({
+        // Streaming path: `text` is absent (chunks already accumulated it).
+        // One-shot/empty path: `text` carries the whole report or the notice.
+        setSummary((prev) => ({
+          ...prev,
           status: 'done',
-          text: typeof message.text === 'string' ? message.text : '',
+          // Use the server's text when present (one-shot / empty notice),
+          // otherwise keep what we accumulated from chunks.
+          text: typeof message.text === 'string' ? message.text : prev.text,
           error: null,
           empty: message.empty === true
-        });
+        }));
         break;
       case 'summary-error':
         if (message.requestId !== activeSummaryRef.current) break;
         activeSummaryRef.current = null;
-        setSummary((prev) => ({ status: 'error', text: prev.text, error: message.message, empty: false }));
+        setSummary((prev) => ({ ...prev, status: 'error', error: message.message, empty: false }));
         break;
       case 'transcript': {
         const { source, text, isFinal } = message;
@@ -379,8 +395,8 @@ export function useCopilotSocket(): CopilotSocket {
         if (activeSummaryRef.current !== null) {
           activeSummaryRef.current = null;
           setSummary((prev) => ({
+            ...prev,
             status: 'error',
-            text: prev.text,
             error: '连接已断开，总结未完成，请重试。 · Connection lost before the summary finished — please retry.',
             empty: false
           }));
@@ -448,15 +464,15 @@ export function useCopilotSocket(): CopilotSocket {
   );
 
   // Request an interview summary: mint a requestId, send `summarize`, and flip the
-  // summary state to 'loading' (the modal shows a spinner). A re-run mints a new
-  // id, so late replies from the previous run are ignored by the handlers above.
+  // summary state to 'loading' (the modal shows a spinner until first chunk arrives).
+  // A re-run mints a new id, so late replies from the previous run are ignored.
   const startSummary = useCallback((): string | null => {
     const requestId = newRequestId();
     if (!send({ type: 'summarize', requestId })) {
       return null;
     }
     activeSummaryRef.current = requestId;
-    setSummary({ status: 'loading', text: '', error: null, empty: false });
+    setSummary({ status: 'loading', text: '', error: null, empty: false, startedAt: Date.now(), tokens: 0 });
     return requestId;
   }, [send]);
 
@@ -562,7 +578,7 @@ export function useCopilotSocket(): CopilotSocket {
     // for the next interview ("New interview").
     setSessionContext(null);
     // Clear any interview summary so "New interview" starts with a blank report.
-    setSummary({ status: 'idle', text: '', error: null, empty: false });
+    setSummary({ status: 'idle', text: '', error: null, empty: false, startedAt: null, tokens: 0 });
     activeSummaryRef.current = null;
   }, []);
 

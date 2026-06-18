@@ -366,7 +366,14 @@ export function Shell() {
       autoMode: s.autoMode,
       // Re-push the interviewer-adjustable interval so a fresh/reconnected session
       // honours the chosen cooldown (only used when autoMode === 'interval').
-      autoIntervalMs: s.autoIntervalSec * 1000
+      autoIntervalMs: s.autoIntervalSec * 1000,
+      // Re-push the per-session summary model so a fresh/reconnected session uses
+      // the user's chosen model for the next summarize call (Feature 2).
+      summaryModel: s.summaryModel,
+      // Re-push prompt mode + text (Feature 3) so a fresh/reconnected session
+      // honours the user's prompt choice on the next summarize call.
+      summaryPromptMode: s.summaryPromptMode,
+      summaryPromptText: s.summaryPromptMode === 'custom' ? s.summaryPromptText : undefined
     };
   }, [config, offline, appSettings.settings]);
   useEffect(() => {
@@ -621,6 +628,24 @@ export function Shell() {
         onModeChange={onModeChange}
         onLanguageChange={onLanguageChange}
         onAiModelChange={appSettings.setAiModel}
+        onSummaryModelChange={(value) => {
+          appSettings.setSummaryModel(value);
+          pushConfig({ summaryModel: value });
+        }}
+        onSummaryPromptModeChange={(mode) => {
+          appSettings.setSummaryPromptMode(mode);
+          pushConfig({
+            summaryPromptMode: mode,
+            summaryPromptText: mode === 'custom' ? appSettings.settings.summaryPromptText : undefined
+          });
+        }}
+        onSummaryPromptTextChange={(text) => {
+          appSettings.setSummaryPromptText(text);
+          // Only push to server when in custom mode (no-op in default mode).
+          if (appSettings.settings.summaryPromptMode === 'custom') {
+            pushConfig({ summaryPromptMode: 'custom', summaryPromptText: text });
+          }
+        }}
         onAsrProviderChange={onAsrProviderChange}
         onAutoModeChange={onAutoModeChange}
         onAutoIntervalChange={onAutoIntervalChange}

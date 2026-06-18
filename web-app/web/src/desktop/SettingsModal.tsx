@@ -25,6 +25,12 @@ interface SettingsModalProps {
   onModeChange: (mode: InterviewerMode) => void;
   onLanguageChange: (language: OutputLanguage) => void;
   onAiModelChange: (value: string) => void;
+  /** Change the report-generation model (Feature 2). */
+  onSummaryModelChange: (value: string) => void;
+  /** Change the summary prompt mode: 'default' or 'custom' (Feature 3). */
+  onSummaryPromptModeChange: (mode: 'default' | 'custom') => void;
+  /** Update the custom summary prompt text (Feature 3). */
+  onSummaryPromptTextChange: (text: string) => void;
   onAsrProviderChange: (value: string) => void;
   /** Set the autonomous follow-up trigger mode (AI monitor vs fixed 30s). */
   onAutoModeChange: (mode: AutoMode) => void;
@@ -48,6 +54,18 @@ const AI_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
   { value: 'deepseek-v4-pro', label: 'deepseek-v4-pro · 推理最深' },
   { value: 'deepseek-v4-flash', label: 'deepseek-v4-flash · 最快' },
   { value: 'qwen3-vl-plus', label: 'qwen3-vl-plus · 截图分析' }
+];
+
+/**
+ * Available models for the evaluation report (Feature 2).
+ * User instruction: 用户可在设置选择生成报告的模型
+ * deepseek-v4-pro (深度·慢·默认), deepseek-v4-flash (快), qwen3.7-max, glm-5.2
+ */
+const SUMMARY_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
+  { value: 'deepseek-v4-pro', label: 'deepseek-v4-pro · 深度·慢·默认' },
+  { value: 'deepseek-v4-flash', label: 'deepseek-v4-flash · 快' },
+  { value: 'qwen3-7b-max', label: 'qwen3.7-max' },
+  { value: 'glm-4-5', label: 'glm-5.2' }
 ];
 
 const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
@@ -108,6 +126,9 @@ export function SettingsModal({
   onModeChange,
   onLanguageChange,
   onAiModelChange,
+  onSummaryModelChange,
+  onSummaryPromptModeChange,
+  onSummaryPromptTextChange,
   onAsrProviderChange,
   onAutoModeChange,
   onAutoIntervalChange,
@@ -436,6 +457,77 @@ export function SettingsModal({
                 deployment, so this does not change replies for now.
               </p>
             </div>
+            <div className="settings-field">
+              <label className="settings-field__label" htmlFor="setting-summary-model">
+                评估报告模型 / Report model
+              </label>
+              <select
+                id="setting-summary-model"
+                className="settings-select"
+                value={settings.summaryModel}
+                onChange={(e) => onSummaryModelChange(e.target.value)}
+              >
+                {SUMMARY_MODEL_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <p className="settings-field__desc">
+                生成面试评估报告时使用的模型。deepseek-v4-pro 推理最深（默认，30-180 秒）；deepseek-v4-flash
+                速度最快；qwen3.7-max / glm-5.2 需账号开通对应资源，否则回退到 flash。
+              </p>
+            </div>
+
+            <div className="settings-field">
+              <span className="settings-field__label">总结 Prompt / Summary prompt</span>
+              <div
+                className="mode-segmented mode-segmented--sm"
+                role="radiogroup"
+                aria-label="Summary prompt mode"
+              >
+                <button
+                  type="button"
+                  className={`mode-segmented__btn${settings.summaryPromptMode === 'default' ? ' is-active' : ''}`}
+                  role="radio"
+                  aria-checked={settings.summaryPromptMode === 'default'}
+                  onClick={() => onSummaryPromptModeChange('default')}
+                >
+                  <span className="mode-segmented__top">
+                    <span className="mode-segmented__dot" aria-hidden="true" />
+                    <span className="mode-segmented__label">默认 Default</span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className={`mode-segmented__btn${settings.summaryPromptMode === 'custom' ? ' is-active' : ''}`}
+                  role="radio"
+                  aria-checked={settings.summaryPromptMode === 'custom'}
+                  onClick={() => onSummaryPromptModeChange('custom')}
+                >
+                  <span className="mode-segmented__top">
+                    <span className="mode-segmented__dot" aria-hidden="true" />
+                    <span className="mode-segmented__label">自定义 Custom</span>
+                  </span>
+                </button>
+              </div>
+              {settings.summaryPromptMode === 'custom' ? (
+                <textarea
+                  id="setting-summary-prompt-text"
+                  className="settings-input"
+                  rows={6}
+                  placeholder="在此输入自定义的系统提示词（System prompt）。留空则自动回退到内置默认 prompt。"
+                  value={settings.summaryPromptText}
+                  onChange={(e) => onSummaryPromptTextChange(e.target.value)}
+                  style={{ marginTop: 8, resize: 'vertical', fontFamily: 'monospace', fontSize: 12 }}
+                />
+              ) : null}
+              <p className="settings-field__desc">
+                <strong>默认</strong>：使用内置精调评估 prompt（推荐）。<strong>自定义</strong>：输入你自己的 System
+                prompt，完全替换内置 prompt 发送给模型。留空时自动回退到内置 prompt。
+              </p>
+            </div>
+
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-output-language">
                 Generate Q 输出语言
