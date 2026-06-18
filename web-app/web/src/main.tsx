@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Shell } from './desktop/Shell';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 // GLP design-system theme foundation. MUST be the first CSS import so every
 // downstream consumer resolves against the shared tokens (light by default;
@@ -31,6 +32,8 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <Shell />
+    <ErrorBoundary>
+      <Shell />
+    </ErrorBoundary>
   </StrictMode>
 );
