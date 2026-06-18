@@ -59,13 +59,12 @@ const AI_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 /**
  * Available models for the evaluation report (Feature 2).
  * User instruction: 用户可在设置选择生成报告的模型
- * deepseek-v4-pro (深度·慢·默认), deepseek-v4-flash (快), qwen3.7-max, glm-5.2
+ * Only models confirmed available on the DashScope key are offered. qwen3.7-max
+ * and glm-5.2 were removed — they returned 400 "model does not exist" on this key.
  */
 const SUMMARY_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
   { value: 'deepseek-v4-pro', label: 'deepseek-v4-pro · 深度·慢·默认' },
-  { value: 'deepseek-v4-flash', label: 'deepseek-v4-flash · 快' },
-  { value: 'qwen3-7b-max', label: 'qwen3.7-max' },
-  { value: 'glm-4-5', label: 'glm-5.2' }
+  { value: 'deepseek-v4-flash', label: 'deepseek-v4-flash · 快' }
 ];
 
 const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
@@ -475,7 +474,7 @@ export function SettingsModal({
               </select>
               <p className="settings-field__desc">
                 生成面试评估报告时使用的模型。deepseek-v4-pro 推理最深（默认，30-180 秒）；deepseek-v4-flash
-                速度最快；qwen3.7-max / glm-5.2 需账号开通对应资源，否则回退到 flash。
+                速度最快。
               </p>
             </div>
 
