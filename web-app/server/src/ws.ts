@@ -23,8 +23,10 @@ import {
   analyzeSessionContext,
   analyzeSummary,
   buildAnalysisInput,
-  buildSummaryInput
+  buildSummaryInput,
+  type SummaryResult
 } from './interview-analysis';
+import { createSummaryTelemetry, type SummaryTelemetry } from './summary-telemetry';
 import { createSpeakerRoleMap, type SpeakerRoleMap } from './speaker-roles';
 import { stampRole, isCandidateFinal } from './ws-speaker';
 
@@ -131,6 +133,16 @@ function send(ws: WebSocket, msg: ServerMessage): void {
   if (ws.readyState === ws.OPEN) {
     ws.send(JSON.stringify(msg));
   }
+}
+
+// A process-wide summary telemetry log so the (30–60s, otherwise opaque) summary
+// lifecycle is observable across connections. Bounded ring buffer — see
+// `summary-telemetry.ts`. Exposed for an ops/health surface to snapshot.
+const summaryTelemetry = createSummaryTelemetry();
+
+/** The process-wide summary telemetry recorder (lifecycle event log). */
+export function getSummaryTelemetry(): SummaryTelemetry {
+  return summaryTelemetry;
 }
 
 interface ProgressPayload {
@@ -307,39 +319,58 @@ async function handleAnalyze(
   }
 }
 
+/** Injectable deps for handleSummarize (defaults wire production analyzeSummary). */
+export interface SummarizeDeps {
+  /** The summary runner; defaults to `analyzeSummary`. Injected in tests. */
+  readonly analyze?: (input: string, deps?: { telemetry?: SummaryTelemetry; requestId?: string }) => Promise<SummaryResult>;
+  /** Optional lifecycle recorder so the (slow, opaque) summary flow is observable. */
+  readonly telemetry?: SummaryTelemetry;
+}
+
 /**
  * Handle a `summarize` request: build the summary input from the per-connection
  * accumulated transcript (both lanes) + captured JD/résumé, call the PRO summary
  * model, and reply. `chat()` is one-shot (no streaming), so the WHOLE report is
  * returned at once via a single `summary-done {requestId, text}` — the client
  * shows a spinner until then. An EMPTY transcript replies with a friendly
- * `summary-done` carrying a "nothing to summarize" message (NOT an error, so the
- * modal renders it as ordinary text). Any model failure → `summary-error`.
+ * `summary-done` flagged `empty:true` (NOT an error, and NOT a real report — the
+ * modal renders a distinct notice). Any model failure → `summary-error`.
  */
-async function handleSummarize(
+export async function handleSummarize(
   ws: WebSocket,
   buildSummary: () => string,
-  requestId: string
+  requestId: string,
+  deps: SummarizeDeps = {}
 ): Promise<void> {
+  const analyze = deps.analyze ?? analyzeSummary;
+  const tel = deps.telemetry;
+  tel?.record('requested', { requestId });
+
   const input = buildSummary();
   if (!input) {
-    // Friendly empty-state — surfaced as a normal (non-error) report so the modal
-    // shows it as text rather than a red error banner.
+    // Friendly empty-state — surfaced as a non-error reply flagged `empty:true` so
+    // the modal renders a NOTICE, not a fake evaluation report.
     send(ws, {
       type: 'summary-done',
       requestId,
+      empty: true,
       text: '还没有可总结的面试内容。\n\nThere is no interview content to summarize yet — start the conversation first.'
     });
+    tel?.record('done', { requestId, reason: 'empty' });
     return;
   }
+  tel?.record('input-built', { requestId, inputChars: input.length });
   try {
-    const result = await analyzeSummary(input);
+    const result = await analyze(input, { telemetry: tel, requestId });
     const text = result.fellBack
       ? `> 注意：所选总结模型不可用，已回退到 ${result.model}。\n\n${result.text}`
       : result.text;
     send(ws, { type: 'summary-done', requestId, text, model: result.model });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'summary failed';
+    // analyzeSummary already records its own 'error'; record here too for the
+    // empty-input/defensive path that never reaches the model.
+    tel?.record('error', { requestId, error: message });
     send(ws, { type: 'summary-error', requestId, message });
   }
 }
@@ -497,7 +528,8 @@ export async function dispatch(
     case 'summarize':
       // Interview summary (DeepSeek v4 pro): build the input from the accumulated
       // transcript (both lanes) + captured JD/résumé and reply with the report.
-      await handleSummarize(ws, buildSummary, msg.requestId);
+      // The shared telemetry recorder makes the (slow, opaque) flow observable.
+      await handleSummarize(ws, buildSummary, msg.requestId, { telemetry: summaryTelemetry });
       return;
   }
 }

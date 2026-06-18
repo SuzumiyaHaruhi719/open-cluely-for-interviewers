@@ -32,15 +32,18 @@ export type TranscriptLanes = Record<AudioSource, LaneTranscript>;
 
 /**
  * The interview-summary report state (DeepSeek v4 pro). 'idle' before any run;
- * 'streaming' while the report is being produced (the one-shot server keeps this
- * until the report lands, so the modal shows a spinner); 'done' with the full
- * `text`; 'error' with the failure message. `text` accumulates streamed chunks
- * and is replaced by the final report on done.
+ * 'loading' while the report is being produced (the server is ONE-SHOT — it sends
+ * a single `summary-done` with the whole report, so the modal shows a spinner
+ * until then; there is no chunk streaming); 'done' with the full `text`; 'error'
+ * with the failure message. `empty` is set on a 'done' that carries the friendly
+ * "nothing to summarize" notice (so the modal renders a notice, not a fake report).
  */
 export interface SummaryState {
-  status: 'idle' | 'streaming' | 'done' | 'error';
+  status: 'idle' | 'loading' | 'done' | 'error';
   text: string;
   error: string | null;
+  /** True when 'done' carries the empty-transcript notice rather than a real report. */
+  empty: boolean;
 }
 
 /** Per-source live-audio capture state for the UI. */
@@ -116,14 +119,14 @@ export interface CopilotSocket {
    */
   sessionContext: SessionContextState | null;
   /**
-   * The interview-summary report (DeepSeek v4 pro): status + accumulated text +
-   * error. Drives the SummaryModal. Reset to idle by resetTranscripts ("New
-   * interview").
+   * The interview-summary report (DeepSeek v4 pro): status + report text + error
+   * + empty-notice flag. Drives the SummaryModal. Reset to idle by resetTranscripts
+   * ("New interview"). The server is one-shot — the whole report arrives at once.
    */
   summary: SummaryState;
   /**
    * Request an interview summary. Sends `summarize`, flips `summary` to
-   * 'streaming', and returns the generated requestId (or null if not connected).
+   * 'loading', and returns the generated requestId (or null if not connected).
    * Stale replies (a different requestId) are ignored so a re-run supersedes.
    */
   startSummary: () => string | null;
@@ -173,7 +176,12 @@ export function useCopilotSocket(): CopilotSocket {
   });
   const [speakerSegments, setSpeakerSegments] = useState<SpeakerSegment[]>([]);
   const [sessionContext, setSessionContext] = useState<SessionContextState | null>(null);
-  const [summary, setSummary] = useState<SummaryState>({ status: 'idle', text: '', error: null });
+  const [summary, setSummary] = useState<SummaryState>({
+    status: 'idle',
+    text: '',
+    error: null,
+    empty: false
+  });
   // The requestId of the in-flight summary, so stale summary-* replies from a
   // superseded run are ignored (a re-run mints a new id).
   const activeSummaryRef = useRef<string | null>(null);
@@ -256,30 +264,26 @@ export function useCopilotSocket(): CopilotSocket {
         // a new message always carries fresh signal; overwrite the previous one.
         setSessionContext(message.state);
         break;
-      case 'summary-chunk':
-        // Ignore chunks from a superseded run (a re-run minted a new id).
-        if (message.requestId !== activeSummaryRef.current) break;
-        setSummary((prev) => ({
-          status: 'streaming',
-          text: prev.text + message.text,
-          error: null
-        }));
-        break;
+      // NOTE: the server is ONE-SHOT — it never emits `summary-chunk`. The whole
+      // report arrives on a single `summary-done` below, so there is no chunk
+      // handler (the contract keeps `summary-chunk` only as a forward capability).
       case 'summary-done':
         if (message.requestId !== activeSummaryRef.current) break;
         activeSummaryRef.current = null;
-        // One-shot server: the whole report rides on `text`. Streamed runs omit it
-        // (chunks already built prev.text) — keep what we accumulated then.
-        setSummary((prev) => ({
+        // One-shot server: the whole report rides on `text`. `empty` flags the
+        // friendly "nothing to summarize" notice so the modal renders it distinctly
+        // rather than as a real report.
+        setSummary({
           status: 'done',
-          text: typeof message.text === 'string' && message.text.length > 0 ? message.text : prev.text,
-          error: null
-        }));
+          text: typeof message.text === 'string' ? message.text : '',
+          error: null,
+          empty: message.empty === true
+        });
         break;
       case 'summary-error':
         if (message.requestId !== activeSummaryRef.current) break;
         activeSummaryRef.current = null;
-        setSummary((prev) => ({ status: 'error', text: prev.text, error: message.message }));
+        setSummary((prev) => ({ status: 'error', text: prev.text, error: message.message, empty: false }));
         break;
       case 'transcript': {
         const { source, text, isFinal } = message;
@@ -354,6 +358,19 @@ export function useCopilotSocket(): CopilotSocket {
 
       socket.onclose = () => {
         socketRef.current = null;
+        // If a summary was in flight, the one-shot server is stateless about it —
+        // no reply will ever arrive over this (now-dead) socket, so the modal would
+        // otherwise spin forever. Fail it with a friendly message and clear the
+        // in-flight ref so a re-run can start clean.
+        if (activeSummaryRef.current !== null) {
+          activeSummaryRef.current = null;
+          setSummary((prev) => ({
+            status: 'error',
+            text: prev.text,
+            error: '连接已断开，总结未完成，请重试。 · Connection lost before the summary finished — please retry.',
+            empty: false
+          }));
+        }
         if (!isMountedRef.current) {
           return;
         }
@@ -416,7 +433,7 @@ export function useCopilotSocket(): CopilotSocket {
   );
 
   // Request an interview summary: mint a requestId, send `summarize`, and flip the
-  // summary state to 'streaming' (the modal shows a spinner). A re-run mints a new
+  // summary state to 'loading' (the modal shows a spinner). A re-run mints a new
   // id, so late replies from the previous run are ignored by the handlers above.
   const startSummary = useCallback((): string | null => {
     const requestId = newRequestId();
@@ -424,7 +441,7 @@ export function useCopilotSocket(): CopilotSocket {
       return null;
     }
     activeSummaryRef.current = requestId;
-    setSummary({ status: 'streaming', text: '', error: null });
+    setSummary({ status: 'loading', text: '', error: null, empty: false });
     return requestId;
   }, [send]);
 
@@ -521,7 +538,7 @@ export function useCopilotSocket(): CopilotSocket {
     // for the next interview ("New interview").
     setSessionContext(null);
     // Clear any interview summary so "New interview" starts with a blank report.
-    setSummary({ status: 'idle', text: '', error: null });
+    setSummary({ status: 'idle', text: '', error: null, empty: false });
     activeSummaryRef.current = null;
   }, []);
 

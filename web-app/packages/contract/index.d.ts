@@ -208,8 +208,8 @@ export type ClientMessage =
   /**
    * Request a full interview-evaluation summary (DeepSeek v4 pro). The server
    * builds the input from the per-connection accumulated transcript (both lanes)
-   * plus the captured JD/résumé and replies with summary-chunk + summary-done
-   * (streamed) OR a single summary-done carrying the whole report. `requestId`
+   * plus the captured JD/résumé and replies with a SINGLE summary-done carrying
+   * the whole report (the server is one-shot — see `summary-chunk`). `requestId`
    * correlates the reply so a re-run supersedes the previous one.
    */
   | { type: 'summarize'; requestId: string };
@@ -246,15 +246,23 @@ export type ServerMessage =
     }
   | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
   | { type: 'session-context'; state: SessionContextState }
-  /** A streamed slice of the interview summary (appended in order by requestId). */
+  /**
+   * RESERVED for a future streamed summary: a slice appended in order by
+   * requestId. The current server is ONE-SHOT and never emits this — the whole
+   * report arrives on a single `summary-done`. Kept in the contract as a forward
+   * capability; the client does not handle it.
+   */
   | { type: 'summary-chunk'; requestId: string; text: string }
   /**
    * The interview summary finished. Carries the WHOLE report `text` for the
    * one-shot path (no chunks were sent); omitted/empty when chunks were streamed
    * (the client already has the full text). `model` reports the model actually
-   * used (the v4-pro id, or the fallback id if pro was rejected).
+   * used (the v4-pro id, or the fallback id if pro was rejected). `empty` is set
+   * when there was no transcript to summarize — the `text` is then a friendly
+   * NOTICE (not a real report), so the client renders a distinct empty state
+   * rather than a fake evaluation.
    */
-  | { type: 'summary-done'; requestId: string; text?: string; model?: string }
+  | { type: 'summary-done'; requestId: string; text?: string; model?: string; empty?: boolean }
   /** The interview summary failed (no key, model error, empty transcript). */
   | { type: 'summary-error'; requestId: string; message: string }
   | { type: 'error'; requestId?: string; message: string };

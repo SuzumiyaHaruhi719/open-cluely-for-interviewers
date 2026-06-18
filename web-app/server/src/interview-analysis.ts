@@ -18,7 +18,8 @@
 // ============================================================================
 
 import type { SessionContextState, CompetencyStatus, SessionCompetency } from '@open-cluely/contract';
-import { chat, getDefaultModel } from './dashscope';
+import { chat, getDefaultModel, type ChatOptions } from './dashscope';
+import type { SummaryTelemetry } from './summary-telemetry';
 
 /** The light model used for the incremental session-context call. */
 const DEFAULT_CONTEXT_MODEL = 'deepseek-v4-flash';
@@ -209,6 +210,13 @@ const SUMMARY_TRANSCRIPT_WINDOW_CHARS = 14000;
 // The report is long-form prose; give it room. Pro thinking + a multi-section
 // report needs a generous ceiling so the conclusion is never truncated.
 const SUMMARY_MAX_TOKENS = 4096;
+/**
+ * The summary call's abort budget. The default chat() timeout is 60s, but the
+ * v4-pro summary (thinking ON + 4096 tokens) routinely runs longer, so it passes
+ * this generous override to chat() — otherwise a still-working call is aborted
+ * mid-report and surfaces as a spurious `summary-error`.
+ */
+export const SUMMARY_REQUEST_TIMEOUT_MS = 180000;
 
 /**
  * The evaluation prompt (Chinese). Asks for a Markdown report with the fixed
@@ -269,18 +277,50 @@ export function buildSummaryInput(parts: AnalysisInputParts): string {
   if (resume) sections.push(`# 候选人简历\n${resume.slice(0, RESUME_WINDOW_CHARS)}`);
 
   // The summary keeps the recent tail too (the long window already covers most
-  // interviews); for very long ones the most-recent exchange matters most.
-  sections.push(`# 面试完整记录\n${transcript.slice(-SUMMARY_TRANSCRIPT_WINDOW_CHARS)}`);
+  // interviews); for very long ones the most-recent exchange matters most. When
+  // the transcript actually OVERFLOWS the window the head is dropped, so the
+  // heading must say so honestly — labelling a truncated tail as 完整 ("complete")
+  // would mislead the model (and the reader) into judging the whole interview.
+  const truncated = transcript.length > SUMMARY_TRANSCRIPT_WINDOW_CHARS;
+  const tail = transcript.slice(-SUMMARY_TRANSCRIPT_WINDOW_CHARS);
+  const heading = truncated ? '# 面试记录（节选：最近部分）' : '# 面试完整记录';
+  sections.push(`${heading}\n${tail}`);
 
   return sections.join('\n\n');
 }
 
-/** A built-in retry-on-bad-model heuristic: did DashScope reject the model id? */
-function isModelRejected(err: unknown): boolean {
+/**
+ * Did DashScope reject the model id itself (unknown/unavailable for the key) —
+ * the only case where falling back to a cheaper model is appropriate?
+ *
+ * MUST be narrow: a previous over-broad match (`/model/` AND a generic `400|404`)
+ * also fired on UNRELATED 400s that merely contained the word "model" (e.g.
+ * "max_tokens too large for model X"), silently downgrading to the cheaper model
+ * and MASKING the real param error. So we require the message to pair the word
+ * "model" with genuine not-found / does-not-exist / unknown / unavailable /
+ * unsupported wording — NOT a bare status code, and NOT max_tokens/param errors.
+ */
+export function isModelRejected(err: unknown): boolean {
   const msg = (err instanceof Error ? err.message : String(err ?? '')).toLowerCase();
-  // DashScope returns 400/404 with messages mentioning the model when an id is
-  // unknown/unavailable for the key. Match broadly so the fallback is reliable.
-  return /model/.test(msg) && /(not found|not exist|unknown|invalid|unavailable|unsupported|400|404)/.test(msg);
+  if (!/\bmodel\b/.test(msg)) return false;
+  // Param/limit errors often mention a model but are NOT a rejected-model error.
+  if (/max_tokens|max tokens|temperature|parameter|param\b/.test(msg)) return false;
+  return /(not found|not exist|does ?n'?t exist|unknown|unavailable|unsupported|not supported|no such model)/.test(
+    msg
+  );
+}
+
+/** The chat signature analyzeSummary depends on — injectable for offline tests. */
+export type SummaryChatFn = (options: ChatOptions) => Promise<string>;
+
+/** Optional dependencies for analyzeSummary (defaults wire production + no-op telemetry). */
+export interface AnalyzeSummaryDeps {
+  /** The chat helper; defaults to the real DashScope `chat`. Injected in tests. */
+  readonly chat?: SummaryChatFn;
+  /** Optional lifecycle recorder so the (slow, opaque) summary flow is observable. */
+  readonly telemetry?: SummaryTelemetry;
+  /** Correlation id stamped on the telemetry events. */
+  readonly requestId?: string;
 }
 
 /**
@@ -291,10 +331,16 @@ function isModelRejected(err: unknown): boolean {
  * (unknown/unavailable for the key), this falls back ONCE to the configured
  * interviewer model (INTERVIEWER_MODEL / deepseek-v4-flash) and notes it.
  *
+ * Passes a generous per-call timeout (SUMMARY_REQUEST_TIMEOUT_MS) so the deep
+ * v4-pro reasoning is not aborted by the default 60s budget.
+ *
  * NOTE: `chat()` is one-shot (no streaming), so the whole report comes back at
  * once — the client shows a spinner and renders it on `summary-done`.
  */
-export async function analyzeSummary(input: string): Promise<SummaryResult> {
+export async function analyzeSummary(
+  input: string,
+  deps: AnalyzeSummaryDeps = {}
+): Promise<SummaryResult> {
   const trimmed = String(input ?? '').trim();
   if (!trimmed) {
     // Defensive: callers already guard empty transcripts, but never call the
@@ -302,30 +348,65 @@ export async function analyzeSummary(input: string): Promise<SummaryResult> {
     throw new Error('empty summary input');
   }
 
+  const runChat = deps.chat ?? chat;
+  const tel = deps.telemetry;
+  const rid = deps.requestId;
+
   const proModel = getSummaryModel();
   const messages = [{ role: 'user' as const, content: trimmed }];
 
   try {
-    const text = await chat({
+    tel?.record('model-call-start', { requestId: rid, model: proModel });
+    const text = await runChat({
       system: SUMMARY_SYSTEM,
       messages,
       model: proModel,
-      maxTokens: SUMMARY_MAX_TOKENS
+      maxTokens: SUMMARY_MAX_TOKENS,
+      timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS
       // thinking left at default ON — the pro reasoning depth is the whole point.
     });
+    tel?.record('model-call-end', { requestId: rid, model: proModel });
+    tel?.record('done', { requestId: rid, model: proModel });
     return { text, model: proModel, fellBack: false };
   } catch (err) {
-    if (!isModelRejected(err)) throw err;
+    if (!isModelRejected(err)) {
+      // A real failure (network/timeout/param error) — surface it, do NOT mask it
+      // behind a silent fallback.
+      tel?.record('error', { requestId: rid, model: proModel, error: errMessage(err) });
+      throw err;
+    }
     // The pro id was rejected by DashScope — fall back to the configured
     // interviewer model so the user still gets a (less-deep) report.
     const fallbackModel = getDefaultModel();
-    if (fallbackModel === proModel) throw err; // nothing else to try
-    const text = await chat({
-      system: SUMMARY_SYSTEM,
-      messages,
+    if (fallbackModel === proModel) {
+      tel?.record('error', { requestId: rid, model: proModel, error: errMessage(err) });
+      throw err; // nothing else to try
+    }
+    tel?.record('fallback', {
+      requestId: rid,
       model: fallbackModel,
-      maxTokens: SUMMARY_MAX_TOKENS
+      reason: 'pro model rejected'
     });
-    return { text, model: fallbackModel, fellBack: true };
+    try {
+      tel?.record('model-call-start', { requestId: rid, model: fallbackModel });
+      const text = await runChat({
+        system: SUMMARY_SYSTEM,
+        messages,
+        model: fallbackModel,
+        maxTokens: SUMMARY_MAX_TOKENS,
+        timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS
+      });
+      tel?.record('model-call-end', { requestId: rid, model: fallbackModel });
+      tel?.record('done', { requestId: rid, model: fallbackModel });
+      return { text, model: fallbackModel, fellBack: true };
+    } catch (fallbackErr) {
+      tel?.record('error', { requestId: rid, model: fallbackModel, error: errMessage(fallbackErr) });
+      throw fallbackErr;
+    }
   }
+}
+
+/** Short, safe error-message extraction for telemetry. */
+function errMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err ?? 'unknown error');
 }
