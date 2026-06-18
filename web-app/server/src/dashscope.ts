@@ -44,6 +44,12 @@ export interface ChatOptions {
    * fast, low-latency calls like the auto-trigger monitor. Omit/`true` = default.
    */
   readonly thinking?: boolean;
+  /**
+   * Per-call abort timeout in ms. Overrides the default 60s. The deep v4-pro
+   * summary (thinking ON + 4096 tokens) can run well past 60s, so the summary
+   * call passes a generous budget here; omit it for the fast default callers.
+   */
+  readonly timeoutMs?: number;
 }
 
 /** The Anthropic-shape base URL (`.../apps/anthropic`) from the desktop config. */
@@ -74,6 +80,11 @@ export async function chat(options: ChatOptions): Promise<string> {
 
   const model = options.model || getDefaultModel();
   const maxTokens = options.maxTokens ?? DEFAULT_MAX_TOKENS;
+  // Per-call timeout override (e.g. the deep summary needs >60s); default 60s.
+  const timeoutMs =
+    typeof options.timeoutMs === 'number' && options.timeoutMs > 0
+      ? options.timeoutMs
+      : REQUEST_TIMEOUT_MS;
 
   const body: Record<string, unknown> = {
     model,
@@ -92,7 +103,7 @@ export async function chat(options: ChatOptions): Promise<string> {
   let lastErr: unknown = null;
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const resp = await fetch(url, {
         method: 'POST',
@@ -116,7 +127,10 @@ export async function chat(options: ChatOptions): Promise<string> {
           }
           throw lastErr;
         }
-        throw new Error(`DashScope ${resp.status}: ${text.slice(0, 500)}`);
+        // Non-retryable 4xx (e.g. 400/404): fail FAST. Marked so the catch below
+        // re-throws it immediately instead of looping the retry/backoff (which
+        // would burn MAX_RETRIES attempts on an error that can never succeed).
+        throw markNonRetryable(new Error(`DashScope ${resp.status}: ${text.slice(0, 500)}`));
       }
 
       const json = (await resp.json()) as { content?: Array<{ type?: string; text?: string }> };
@@ -127,6 +141,9 @@ export async function chat(options: ChatOptions): Promise<string> {
         .join('');
     } catch (err) {
       clearTimeout(timer);
+      // A non-retryable HTTP error (4xx ≠ 429) must abort the loop now — retrying
+      // a 400/404 only wastes time and masks the real failure behind backoff.
+      if (isNonRetryable(err)) throw err;
       lastErr = err;
       if (attempt < MAX_RETRIES) {
         await delay(RETRY_BASE_DELAY_MS * 2 ** attempt);
@@ -134,4 +151,16 @@ export async function chat(options: ChatOptions): Promise<string> {
     }
   }
   throw lastErr instanceof Error ? lastErr : new Error('DashScope request failed');
+}
+
+/** Brand for a non-retryable error so the retry catch re-throws it immediately. */
+const NON_RETRYABLE = Symbol('dashscope.nonRetryable');
+
+function markNonRetryable(err: Error): Error {
+  (err as Error & { [NON_RETRYABLE]?: boolean })[NON_RETRYABLE] = true;
+  return err;
+}
+
+function isNonRetryable(err: unknown): boolean {
+  return Boolean(err && typeof err === 'object' && (err as { [NON_RETRYABLE]?: boolean })[NON_RETRYABLE]);
 }

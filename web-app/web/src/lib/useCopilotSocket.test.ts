@@ -394,4 +394,153 @@ describe('useCopilotSocket', () => {
     expect(result.current.progress).toBeNull();
     expect(result.current.lastResult).toBeNull();
   });
+
+  // ── Interview summary state machine ───────────────────────────────────────
+
+  test('startSummary sends a summarize frame and flips status to loading', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.startSummary();
+    });
+    expect(requestId).toBe('11111111-1111-4111-8111-111111111111');
+    expect(result.current.summary.status).toBe('loading');
+    expect(result.current.summary.empty).toBe(false);
+
+    const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
+    expect(frame).toEqual({ type: 'summarize', requestId });
+  });
+
+  // #5 — the server is ONE-SHOT: the whole report rides on summary-done.text.
+  test('#5 a one-shot summary-done with the full report transitions loading → done', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.startSummary();
+    });
+    expect(result.current.summary.status).toBe('loading');
+
+    act(() => {
+      socket.emit({ type: 'summary-done', requestId, text: '## 报告\n内容', model: 'deepseek-v4-pro' });
+    });
+    await waitFor(() => expect(result.current.summary.status).toBe('done'));
+    expect(result.current.summary.text).toBe('## 报告\n内容');
+    expect(result.current.summary.empty).toBe(false);
+  });
+
+  // #8 — an empty-transcript reply must be a distinct NOTICE, not a fake report.
+  test('#8 summary-done with empty:true yields an empty notice state, not a report', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.startSummary();
+    });
+
+    act(() => {
+      socket.emit({
+        type: 'summary-done',
+        requestId,
+        text: '还没有可总结的面试内容。',
+        empty: true
+      });
+    });
+    await waitFor(() => expect(result.current.summary.status).toBe('done'));
+    // The notice flag is set so the modal can render it distinctly.
+    expect(result.current.summary.empty).toBe(true);
+  });
+
+  test('summary-error transitions loading → error with the message', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.startSummary();
+    });
+    act(() => {
+      socket.emit({ type: 'summary-error', requestId, message: 'no key' });
+    });
+    await waitFor(() => expect(result.current.summary.status).toBe('error'));
+    expect(result.current.summary.error).toBe('no key');
+  });
+
+  test('a stale summary-done (superseded requestId) is ignored', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      result.current.startSummary();
+    });
+    // A reply for a DIFFERENT (old) request must not move the state.
+    act(() => {
+      socket.emit({ type: 'summary-done', requestId: 'some-old-id', text: 'stale' });
+    });
+    expect(result.current.summary.status).toBe('loading');
+    expect(result.current.summary.text).toBe('');
+  });
+
+  // #6 — a disconnect mid-summary must NOT leave the spinner stuck forever.
+  test('#6 socket close while a summary is in flight transitions it to error (no infinite spinner)', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      result.current.startSummary();
+    });
+    expect(result.current.summary.status).toBe('loading');
+
+    // The socket drops before any summary-* reply arrives.
+    act(() => {
+      socket.close();
+    });
+
+    await waitFor(() => expect(result.current.summary.status).toBe('error'));
+    expect(result.current.summary.status).not.toBe('loading');
+    expect(result.current.summary.error).toBeTruthy();
+  });
+
+  test('#6 socket close when NO summary is in flight leaves summary idle', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    expect(result.current.summary.status).toBe('idle');
+    act(() => {
+      socket.close();
+    });
+    // No spurious error when there was nothing in flight.
+    expect(result.current.summary.status).toBe('idle');
+  });
 });

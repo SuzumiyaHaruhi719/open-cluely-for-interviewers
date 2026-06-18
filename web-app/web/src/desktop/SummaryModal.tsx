@@ -18,9 +18,10 @@ interface SummaryModalProps {
  * 重新生成 (re-run) / 关闭 (close). Bilingual labels.
  *
  * The report is lightweight Markdown — rendered with a tiny inline renderer
- * (## headings, **bold**, - bullets, > blockquote) via safe React text nodes
- * (NEVER dangerouslySetInnerHTML), so model output can't inject markup. No heavy
- * markdown dependency is pulled in.
+ * (## headings, **bold**, inline `code`, - bullets, 1. numbered lists, > quote)
+ * via safe React text nodes (NEVER dangerouslySetInnerHTML), so model output
+ * can't inject markup. No heavy markdown dependency is pulled in. The empty-
+ * transcript case (`summary.empty`) renders a distinct notice, not a fake report.
  */
 export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryModalProps) {
   const [copied, setCopied] = useState(false);
@@ -62,8 +63,11 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
     return null;
   }
 
-  const isLoading = summary.status === 'streaming';
+  const isLoading = summary.status === 'loading';
   const hasText = summary.text.trim().length > 0;
+  // The empty-transcript notice (server set `empty`) is a NOTICE, not a report —
+  // render it distinctly so it never looks like a real evaluation. #8
+  const isEmptyNotice = summary.status === 'done' && summary.empty;
 
   const onCopy = (): void => {
     const text = summary.text;
@@ -125,6 +129,12 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
               生成失败 · Failed to generate summary
               {summary.error ? `: ${summary.error}` : '.'}
             </p>
+          ) : isEmptyNotice ? (
+            <p className="summary-modal__notice">
+              {summary.text.trim().length > 0
+                ? summary.text
+                : '还没有可总结的面试内容。 · There is no interview content to summarize yet.'}
+            </p>
           ) : hasText ? (
             <SummaryReport text={summary.text} />
           ) : (
@@ -173,14 +183,18 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
 
 /**
  * A minimal, safe Markdown-ish renderer for the report: `## ` / `### ` headings,
- * `- ` / `* ` bullets, `> ` blockquotes, and inline `**bold**`. Everything else
- * is a paragraph. All content renders as React text nodes (no HTML injection).
+ * `- ` / `* ` bullets, `1.` numbered lists, `> ` blockquotes, inline `**bold**`,
+ * and inline `` `code` ``. Everything else is a paragraph. All content renders as
+ * React text nodes (no HTML injection — never dangerouslySetInnerHTML).
  */
 function SummaryReport({ text }: { text: string }) {
   const lines = String(text ?? '').replace(/\r\n/g, '\n').split('\n');
 
   const blocks: React.ReactNode[] = [];
+  // Two independent list accumulators so a `-` bullet run and a `1.` numbered run
+  // never merge into one list. Each flushes when a non-matching line is seen.
   let bullets: string[] = [];
+  let ordered: string[] = [];
 
   const flushBullets = (key: string): void => {
     if (bullets.length === 0) return;
@@ -197,6 +211,26 @@ function SummaryReport({ text }: { text: string }) {
     );
   };
 
+  const flushOrdered = (key: string): void => {
+    if (ordered.length === 0) return;
+    const items = ordered;
+    ordered = [];
+    blocks.push(
+      <ol className="summary-md__list summary-md__list--ordered" key={key}>
+        {items.map((item, i) => (
+          <li className="summary-md__li" key={i}>
+            {renderInline(item)}
+          </li>
+        ))}
+      </ol>
+    );
+  };
+
+  const flushLists = (key: string): void => {
+    flushBullets(`${key}-ul`);
+    flushOrdered(`${key}-ol`);
+  };
+
   lines.forEach((rawLine, index) => {
     const line = rawLine.trimEnd();
     const key = `b-${index}`;
@@ -205,13 +239,24 @@ function SummaryReport({ text }: { text: string }) {
     const h2 = /^##\s+(.*)$/.exec(line);
     const h1 = /^#\s+(.*)$/.exec(line);
     const bullet = /^\s*[-*]\s+(.*)$/.exec(line);
+    // A numbered list item: `1.` / `2)` etc. The marker is dropped (the <ol>
+    // renders its own numbering).
+    const number = /^\s*\d+[.)]\s+(.*)$/.exec(line);
     const quote = /^>\s?(.*)$/.exec(line);
 
     if (bullet) {
+      // A bullet run ends any pending ordered run.
+      flushOrdered(`${key}-ol`);
       bullets.push(bullet[1]);
       return;
     }
-    flushBullets(`${key}-ul`);
+    if (number) {
+      // A numbered run ends any pending bullet run.
+      flushBullets(`${key}-ul`);
+      ordered.push(number[1]);
+      return;
+    }
+    flushLists(key);
 
     if (h3) {
       blocks.push(
@@ -247,18 +292,31 @@ function SummaryReport({ text }: { text: string }) {
       );
     }
   });
-  flushBullets('b-tail-ul');
+  flushLists('b-tail');
 
   return <div className="summary-md">{blocks}</div>;
 }
 
-/** Render inline `**bold**` segments as <strong>; everything else stays plain text. */
+/**
+ * Render inline `**bold**` (→ <strong>) and `` `code` `` (→ <code>) segments;
+ * everything else stays plain text. Split on both delimiters in one pass so they
+ * compose within a line. SAFE: only React text nodes / elements, no raw HTML.
+ */
 function renderInline(text: string): React.ReactNode {
-  const parts = String(text ?? '').split(/(\*\*[^*]+\*\*)/g);
+  // The capture groups keep the delimiters so each piece can be classified.
+  const parts = String(text ?? '').split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
   return parts.map((part, i) => {
     const bold = /^\*\*([^*]+)\*\*$/.exec(part);
     if (bold) {
       return <strong key={i}>{bold[1]}</strong>;
+    }
+    const code = /^`([^`]+)`$/.exec(part);
+    if (code) {
+      return (
+        <code className="summary-md__code" key={i}>
+          {code[1]}
+        </code>
+      );
     }
     return <Fragment key={i}>{part}</Fragment>;
   });

@@ -108,14 +108,16 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
         : null;
 
     case S2C.SUMMARY_DONE:
-      // `text`/`model` are optional (streamed runs omit `text`; the model id is
-      // best-effort). Only `requestId` is required to correlate the finish.
+      // `text`/`model`/`empty` are optional (the model id is best-effort; `empty`
+      // flags the friendly no-transcript notice). Only `requestId` is required to
+      // correlate the finish.
       return isString(data.requestId)
         ? {
             type: 'summary-done',
             requestId: data.requestId,
             ...(isString(data.text) ? { text: data.text } : {}),
-            ...(isString(data.model) ? { model: data.model } : {})
+            ...(isString(data.model) ? { model: data.model } : {}),
+            ...(data.empty === true ? { empty: true } : {})
           }
         : null;
 
