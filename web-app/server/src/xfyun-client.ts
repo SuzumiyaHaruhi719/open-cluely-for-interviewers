@@ -20,10 +20,13 @@
 //   - {"msg_type":"result","res_type":"asr","data":{"cn":{"st":{
 //        "rt":[{"ws":[{"cw":[{"w":"词","rl":"0",...}], ...}]}],
 //        "type":"0"|"1", ...}}, "ls":true|false}}
-//       * Text  = concat of all data.cn.st.rt[].ws[].cw[].w
+//       * Words = data.cn.st.rt[].ws[].cw[] each with its OWN `rl` (角色分离).
 //       * type==="0" (string) = FINAL; "1" = intermediate/partial.
-//       * Speaker = first non-"0" `rl` among the segment's cw (else last-known/0);
-//         emitted as parseInt(rl,10) on FINALS only.
+//       * Speaker is PER WORD: `rl="0"` = continue previous speaker, non-zero =
+//         a distinct role. On FINALS we SPLIT a frame into consecutive
+//         same-speaker runs (so fast hand-offs aren't collapsed to one speaker)
+//         and emit each run with its own parseInt(rl,10) speaker. Partials carry
+//         no speaker.
 //   - action:"error" OR a top-level `code` !== "0" → onError(code/desc).
 // ============================================================================
 
@@ -124,23 +127,43 @@ export function buildSignedUrl(deps: {
 }
 
 /**
- * Extract a transcript from a parsed `result` frame's `data`. Concatenates all
- * cw words for the text, picks the segment speaker as the first non-"0" rl (else
- * the last-known speaker carried in via `prevSpeaker`), and marks FINAL when
- * st.type === "0". Returns the resolved speaker so the caller can carry it.
+ * Extract transcript RUNS from a parsed `result` frame's `data`.
+ *
+ * iFlytek 角色分离 (role_type=2) tags `rl` PER WORD, and during fast turn-taking it
+ * packs BOTH speakers' words into ONE `result` frame with different `rl` per word
+ * (`rl="0"` = "continue the previous speaker"; non-zero values are distinct roles).
+ * Collapsing such a frame to a single speaker mislabels everyone after the first
+ * hand-off. So we SPLIT the frame into consecutive same-speaker RUNS:
+ *
+ *   • Walk words in order; "current speaker" starts at the carried `prevSpeaker`
+ *     (last-known across frames, default 0).
+ *   • rl="0" / missing / non-numeric = continue the current speaker.
+ *   • A non-zero rl that DIFFERS from the current speaker starts a NEW run.
+ *   • Each run's words are concatenated into its own text; on a FINAL frame each
+ *     run becomes a final transcript carrying that run's `speakerId`.
+ *
+ * Partials (st.type !== "0") are transient, so we keep the old behavior: ONE run
+ * of the concatenated text with `speakerId: null` (no per-word splitting).
+ *
+ * Returns the runs plus the speaker to carry forward (the LAST run's speaker, so
+ * a following frame that opens with rl="0" inherits it). Returns null when the
+ * frame has no recognizable words.
  */
 export function extractResult(
   data: unknown,
   prevSpeaker: number | null
-): { transcript: XfyunTranscript; speaker: number | null } | null {
+): { runs: XfyunTranscript[]; speaker: number | null } | null {
   const st = (data as { cn?: { st?: unknown } })?.cn?.st as
     | { rt?: unknown; type?: unknown }
     | undefined;
   if (!st || typeof st !== 'object') return null;
 
+  // type is a STRING per the protocol: "0" = final, "1" = intermediate/partial.
+  const isFinal = String(st.type) === '0';
+
+  // Flatten the frame to an ordered list of { w, rl } words.
   const rtArr = Array.isArray(st.rt) ? st.rt : [];
-  let text = '';
-  let segSpeaker: number | null = null;
+  const words: Array<{ w: string; rl: number | null }> = [];
   for (const rt of rtArr) {
     const wsArr = Array.isArray((rt as { ws?: unknown })?.ws) ? (rt as { ws: unknown[] }).ws : [];
     for (const wsItem of wsArr) {
@@ -149,26 +172,50 @@ export function extractResult(
         : [];
       for (const cw of cwArr) {
         const w = (cw as { w?: unknown })?.w;
-        if (typeof w === 'string') text += w;
-        // First non-"0" rl wins as the segment speaker ("0" = continue previous).
-        if (segSpeaker === null) {
-          const rl = (cw as { rl?: unknown })?.rl;
-          const n = typeof rl === 'string' ? parseInt(rl, 10) : NaN;
-          if (Number.isFinite(n) && n !== 0) segSpeaker = n;
-        }
+        if (typeof w !== 'string' || w.length === 0) continue;
+        const rlRaw = (cw as { rl?: unknown })?.rl;
+        const n = typeof rlRaw === 'string' ? parseInt(rlRaw, 10) : NaN;
+        // null = "continue current speaker" (covers rl="0", missing, non-numeric).
+        const rl = Number.isFinite(n) && n !== 0 ? n : null;
+        words.push({ w, rl });
       }
     }
   }
 
-  // type is a STRING per the protocol: "0" = final, "1" = intermediate/partial.
-  const isFinal = String(st.type) === '0';
-  // Carry the last-known speaker forward when the segment only had "0" (continue).
-  const resolved = segSpeaker ?? prevSpeaker ?? 0;
-  if (!text) return null;
-  return {
-    transcript: { text, isFinal, speakerId: isFinal ? resolved : null },
-    speaker: segSpeaker ?? prevSpeaker
-  };
+  if (words.length === 0) return null;
+
+  // Partials: keep the legacy single-segment, no-speaker behavior. Still resolve a
+  // carry-forward speaker (first non-"0" rl, else prevSpeaker) so a partial frame
+  // doesn't lose the running speaker for the next frame.
+  if (!isFinal) {
+    const text = words.map((x) => x.w).join('');
+    const firstNonZero = words.find((x) => x.rl !== null)?.rl ?? null;
+    return {
+      runs: [{ text, isFinal: false, speakerId: null }],
+      speaker: firstNonZero ?? prevSpeaker
+    };
+  }
+
+  // FINAL: split into consecutive same-speaker runs by per-word rl.
+  const runs: XfyunTranscript[] = [];
+  let current = prevSpeaker ?? 0; // carried last-known speaker (default 0).
+  let buf = '';
+  for (const { w, rl } of words) {
+    if (rl !== null && rl !== current) {
+      // Speaker changed: flush the accumulated run, then start the new speaker.
+      if (buf) runs.push({ text: buf, isFinal: true, speakerId: current });
+      current = rl;
+      buf = w;
+    } else {
+      // rl="0"/missing/non-numeric, or same speaker → continue the current run.
+      buf += w;
+    }
+  }
+  if (buf) runs.push({ text: buf, isFinal: true, speakerId: current });
+
+  if (runs.length === 0) return null;
+  // Carry the LAST run's speaker forward for the next frame.
+  return { runs, speaker: current };
 }
 
 /** A single live iFlytek recognition session over one upstream WebSocket. */
@@ -262,12 +309,14 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
       return;
     }
 
-    // Recognition result frame.
+    // Recognition result frame. A single frame may contain MULTIPLE speakers
+    // during fast turn-taking, so extractResult returns consecutive same-speaker
+    // RUNS — emit one transcript per run, each with its own speakerId.
     if (obj.msg_type === 'result' && obj.res_type === 'asr') {
       const extracted = extractResult(obj.data, lastSpeaker);
       if (!extracted) return;
       lastSpeaker = extracted.speaker;
-      onTranscript(extracted.transcript);
+      for (const run of extracted.runs) onTranscript(run);
     }
   }
 
