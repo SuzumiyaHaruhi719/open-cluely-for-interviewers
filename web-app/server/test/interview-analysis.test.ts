@@ -197,20 +197,27 @@ function fakeChat(reply: string, capture?: (opts: Parameters<SummaryChatFn>[0]) 
   };
 }
 
-test('#1 analyzeSummary passes a generous timeoutMs (>60s) to chat', async () => {
+test('#1 analyzeSummary uses a generous (>60s) but bounded timeout AND disables thinking', async () => {
   let seenTimeout: number | undefined;
+  let seenThinking: boolean | undefined;
   const chat = fakeChat('# 报告', (opts) => {
     seenTimeout = opts.timeoutMs;
+    seenThinking = opts.thinking;
   });
   const result = await analyzeSummary('面试记录', { chat });
   assert.equal(result.text, '# 报告');
   assert.equal(result.fellBack, false);
+  // Generous vs the 60s default so a working call isn't aborted mid-report…
   assert.ok(
-    typeof seenTimeout === 'number' && seenTimeout >= 180000,
-    `expected a >=180s timeout, got ${seenTimeout}`
+    typeof seenTimeout === 'number' && seenTimeout > 60000,
+    `expected a >60s timeout, got ${seenTimeout}`
   );
-  // The constant the summary uses is exported + generous.
-  assert.ok(SUMMARY_REQUEST_TIMEOUT_MS >= 180000);
+  // …but bounded UNDER the old 3-minute worst case so the user never waits that long.
+  assert.ok(SUMMARY_REQUEST_TIMEOUT_MS > 60000 && SUMMARY_REQUEST_TIMEOUT_MS < 180000);
+  // Thinking MUST be disabled: deepseek-v4 extended thinking emits thousands of
+  // hidden reasoning tokens that dominated latency and pushed even flash past 3
+  // minutes. Regression guard for the summary-speed fix.
+  assert.equal(seenThinking, false);
 });
 
 test('analyzeSummary: falls back ONCE to the interviewer model when the pro id is rejected', async () => {

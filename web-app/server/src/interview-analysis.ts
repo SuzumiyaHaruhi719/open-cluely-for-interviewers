@@ -211,12 +211,13 @@ const SUMMARY_TRANSCRIPT_WINDOW_CHARS = 14000;
 // report needs a generous ceiling so the conclusion is never truncated.
 const SUMMARY_MAX_TOKENS = 4096;
 /**
- * The summary call's abort budget. The default chat() timeout is 60s, but the
- * v4-pro summary (thinking ON + 4096 tokens) routinely runs longer, so it passes
- * this generous override to chat() — otherwise a still-working call is aborted
- * mid-report and surfaces as a spurious `summary-error`.
+ * The summary call's abort budget. With thinking DISABLED (see the call sites),
+ * even a full 4096-token report streams well inside this, so the ceiling is just
+ * a guard against a genuinely stuck call — kept under 2 min so the user never
+ * waits the old 3-minute thinking-ON worst case. A stuck call now fails fast as a
+ * `summary-error` instead of hanging.
  */
-export const SUMMARY_REQUEST_TIMEOUT_MS = 180000;
+export const SUMMARY_REQUEST_TIMEOUT_MS = 120000;
 
 /**
  * The default evaluation prompt (Chinese). Polished for sharpness, evidence
@@ -379,8 +380,11 @@ export async function analyzeSummary(
       messages,
       model: proModel,
       maxTokens: SUMMARY_MAX_TOKENS,
-      timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS
-      // thinking left at default ON — the pro reasoning depth is the whole point.
+      timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS,
+      // Disable deepseek-v4's default extended thinking: its hidden reasoning
+      // tokens dominate latency (minutes, up to the abort) without materially
+      // improving this structured, evidence-cited report. Keep the summary fast.
+      thinking: false
     });
     tel?.record('model-call-end', { requestId: rid, model: proModel });
     tel?.record('done', { requestId: rid, model: proModel });
@@ -492,7 +496,13 @@ export async function analyzeSummaryStream(
         messages,
         model,
         maxTokens: SUMMARY_MAX_TOKENS,
-        timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS
+        timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS,
+        // deepseek-v4 does extended "thinking" by default — thousands of hidden
+        // reasoning tokens that DOMINATE latency and pushed even flash past 3 min
+        // (up to the abort) for a single report. The structured prompt below is
+        // explicit enough to yield a strong report without it, so disable thinking:
+        // flash now returns in seconds, not minutes.
+        thinking: false
       },
       callbacks
     );
