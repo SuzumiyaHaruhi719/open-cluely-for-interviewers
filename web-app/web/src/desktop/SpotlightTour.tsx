@@ -392,7 +392,7 @@ export function SpotlightTour() {
           transform: tooltipVisible ? 'scale(1)' : 'scale(0.92)',
         }}
       >
-        <div className="tour-step-badge">第 {stepIdx + 1} / {TOUR_STEPS.length} 步</div>
+        <div className="tour-step-badge">第 {stepIdx} / {TOUR_STEPS.length - 2} 步</div>
         <h3 className="tour-title">{step.icon} {step.title}</h3>
         <p className="tour-desc">{step.desc}</p>
         <div className="tour-actions">

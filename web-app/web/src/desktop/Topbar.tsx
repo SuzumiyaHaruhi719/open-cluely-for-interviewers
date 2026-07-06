@@ -54,8 +54,8 @@ function MoonIcon({ size = 15 }: { size?: number }) {
 /** ASR engine pill label + `data-asr` attribute (CSS colours each provider). */
 const ASR_META: Record<string, { label: string; attr: string }> = {
   paraformer: { label: 'Paraformer', attr: 'paraformer' },
-  volc: { label: 'Doubao', attr: 'volc' },
-  xfyun: { label: 'Xunfei', attr: 'xfyun' },
+  volc: { label: '豆包', attr: 'volc' },
+  xfyun: { label: '讯飞', attr: 'xfyun' },
   sim: { label: '模拟', attr: 'sim' }
 };
 
@@ -92,7 +92,7 @@ interface TopbarProps {
 /**
  * Live-interview topbar, 1:1 with the desktop `.topbar`. The mode/REC/ASR pills
  * reflect real state (mode from config; REC derived from capture + socket; ASR
- * shows the active provider — Paraformer or Doubao — from settings). "Generate Q"
+ * shows the active provider — Paraformer, 讯飞, or 豆包 — from settings). "Generate Q"
  * runs a copilot analysis
  * (follow-up question); "Ask AI" + the meeting-notes / insights menu items call
  * the assistant HTTP endpoints and surface replies in the results panel. The

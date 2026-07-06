@@ -724,6 +724,12 @@ export function SettingsModal({
               >重新播放引导 Tour</button>
               <p className="settings-field__desc">重新查看面试官 Copilot 的功能导览。</p>
             </div>
+            <div className="settings-field">
+              <span className="settings-field__label">帮助</span>
+              <p className="settings-field__desc">
+                遇到问题？按 <code>Alt+Shift+H</code> 查看快捷键，或在设置中重播引导 Tour。
+              </p>
+            </div>
           </section>
         </div>
       </div>
