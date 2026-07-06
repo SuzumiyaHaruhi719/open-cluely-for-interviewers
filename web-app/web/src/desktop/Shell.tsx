@@ -13,7 +13,7 @@ import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from
 import { ResultsPanel } from './ResultsPanel';
 import { SummaryModal } from './SummaryModal';
 import { PipelineStudio } from './studio/PipelineStudio';
-import { OnboardingOverlay } from './OnboardingOverlay';
+import { SpotlightTour } from './SpotlightTour';
 import { useRailCollapsed } from './useRailCollapsed';
 import { useAssistantPanel } from './useAssistantPanel';
 import { useAppSettings, type VolcSettings } from './useAppSettings';
@@ -704,7 +704,7 @@ export function Shell() {
         onUse={(id) => onUseCustomPipeline(id)}
       />
 
-      <OnboardingOverlay />
+      <SpotlightTour />
     </div>
   );
 }

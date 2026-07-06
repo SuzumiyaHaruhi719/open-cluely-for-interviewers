@@ -1630,8 +1630,8 @@ async function init() {
     console.log('Renderer initialized - Ready for live transcription!');
     showFeedback('已就绪 — 在下方开启一个频道即可开始', 'success');
     addMonitorLog('info', 'init', '渲染器已初始化');
-    // Show newcomer guidance on first launch
-    setTimeout(showOnboardingIfNeeded, 600);
+    // Start spotlight tour on first launch
+    startSpotlightTour();
 }
 
 function updateWindowOpacityValueLabel(value) {
@@ -2539,23 +2539,17 @@ function setupIpcListeners() {
     });
 }
 
-// ── 新手指引 / Onboarding overlay ──
-function showOnboardingIfNeeded() {
-    const overlay = document.getElementById('onboarding-overlay');
-    if (!overlay) return;
+// ── Spotlight tour / 新手引导 ──
+// Tour engine is in tour.js (loaded as module before renderer.js).
+// Start it after init() so all DOM elements are ready.
+function startSpotlightTour() {
     try {
-        if (localStorage.getItem('onboarding-dismissed') === '1') return;
-    } catch { /* localStorage may be unavailable */ }
-    overlay.classList.remove('hidden');
-    const close = () => {
-        const cb = document.getElementById('onboarding-dont-show-again');
-        if (cb?.checked) {
-            try { localStorage.setItem('onboarding-dismissed', '1'); } catch {}
-        }
-        overlay.classList.add('hidden');
-    };
-    document.getElementById('onboarding-start')?.addEventListener('click', close);
-    document.getElementById('onboarding-close')?.addEventListener('click', close);
+        import('./tour.js').then(({ startTourIfNeeded }) => {
+            setTimeout(() => startTourIfNeeded(), 800);
+        });
+    } catch (e) {
+        console.warn('Tour module not available:', e);
+    }
 }
 
 // Initialize on load

@@ -1,0 +1,181 @@
+/* ╔══ Spotlight Tour / 新手引导 spotlight ══╗ */
+/*
+ * Interactive spotlight tour: darkens everything except the highlighted element,
+ * with an arrow + tooltip that dynamically positions relative to the target.
+ * Follows user clicks — "Next" advances to the next highlighted element.
+ */
+
+.tour-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  /* The "hole" is created by 4 dark rectangles around the spotlight.
+     We use a single SVG mask for smooth rounded corners on the cutout. */
+}
+
+/* Dark backdrop with SVG cutout for the spotlight hole */
+.tour-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+}
+.tour-backdrop.active {
+  background: rgba(0, 0, 0, 0);
+}
+/* Use 4 divs as the dark area around the hole (top/right/bottom/left strips) */
+.tour-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: auto;
+  background: rgba(10, 10, 15, 0.72);
+  /* Clip out the spotlight rect with rounded corners */
+  clip-path: none;
+  transition: clip-path 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.tour-mask-shape {
+  /* This is set dynamically via JS: polygon clip-path that cuts a rounded rect */
+}
+
+/* Spotlight border ring */
+.tour-spotlight-ring {
+  position: fixed;
+  z-index: 10001;
+  border: 2px solid rgba(124, 111, 187, 0.6);
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 4px rgba(124, 111, 187, 0.12),
+    0 0 24px rgba(124, 111, 187, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: tour-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tour-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(124,111,187,0.12), 0 0 24px rgba(124,111,187,0.3), inset 0 0 0 1px rgba(255,255,255,0.06); }
+  50%      { box-shadow: 0 0 0 6px rgba(124,111,187,0.18), 0 0 32px rgba(124,111,187,0.45), inset 0 0 0 1px rgba(255,255,255,0.1); }
+}
+
+/* Tooltip card */
+.tour-tooltip {
+  position: fixed;
+  z-index: 10002;
+  width: 300px;
+  background: rgba(22, 22, 33, 0.96);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 111, 187, 0.25);
+  border-radius: 14px;
+  padding: 20px 20px 16px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0;
+  transform: scale(0.92);
+}
+.tour-tooltip.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Arrow pointing from tooltip to the spotlighted element */
+.tour-arrow {
+  position: fixed;
+  z-index: 10003;
+  width: 0; height: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Tooltip content */
+.tour-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(124, 111, 187, 1);
+  background: rgba(124, 111, 187, 0.12);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.tour-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e0dff0;
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+.tour-desc {
+  font-size: 13px;
+  color: #9990b0;
+  line-height: 1.55;
+  margin: 0 0 16px;
+}
+.tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tour-dots {
+  display: flex;
+  gap: 5px;
+}
+.tour-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: all 0.25s;
+  cursor: pointer;
+}
+.tour-dot.active {
+  background: rgba(124, 111, 187, 0.9);
+  width: 16px;
+  border-radius: 3px;
+}
+.tour-buttons {
+  display: flex;
+  gap: 8px;
+}
+.tour-btn {
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 7px 14px;
+  transition: all 0.2s;
+}
+.tour-btn--ghost {
+  background: transparent;
+  color: #777;
+}
+.tour-btn--ghost:hover {
+  color: #aaa;
+  background: rgba(255, 255, 255, 0.04);
+}
+.tour-btn--primary {
+  background: rgba(124, 111, 187, 0.9);
+  color: #fff;
+}
+.tour-btn--primary:hover {
+  background: rgba(124, 111, 187, 1);
+  box-shadow: 0 0 12px rgba(124, 111, 187, 0.4);
+}
+
+/* "Got it" final step */
+.tour-final-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(124, 111, 187, 0.15);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
