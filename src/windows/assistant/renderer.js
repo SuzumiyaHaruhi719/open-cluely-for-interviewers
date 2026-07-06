@@ -636,6 +636,8 @@ const channelMicEl = document.getElementById('channel-mic');
 const resumeDropzoneEl = document.getElementById('resume-dropzone');
 const resumeChatEl = document.getElementById('resume-chat');
 const jobDescriptionInput = document.getElementById('jd-input');
+// JD save-status pip (see setupJobDescriptionInput): shows 保存中… / 已保存.
+const jdSavePip = document.getElementById('jd-save-pip');
 const sessionContextEl = document.getElementById('session-context');
 
 // Topbar live indicators
@@ -1230,11 +1232,74 @@ function relabelMicChannel(isOffline) {
     }
 }
 
+// ── Focus trap ─────────────────────────────────────────────────────────────
+// Reusable focus trap for modal dialogs. On open, store the element that had
+// focus (so it can be restored on close), then call trapFocus(container): it
+// focuses the first visible focusable child and keeps Tab/Shift+Tab cycling
+// INSIDE the container (wrapping from the last element back to the first and
+// vice-versa) so focus can never escape to the background UI while the modal is
+// open. Returns a cleanup function that removes the keydown listener — call it
+// on close, then restore focus to the stored element.
+//
+// Visibility filter: `.hidden` on these modals is `display:none`, so
+// `el.offsetParent !== null` correctly excludes elements that are not actually
+// rendered (a display:none ancestor yields offsetParent === null). This keeps
+// the focus list honest when sub-groups (e.g. ASR provider panels) are hidden.
+function trapFocus(container) {
+    if (!container) return () => {};
+    const focusable = container.querySelectorAll(
+        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+    );
+    const visible = Array.from(focusable).filter((el) => el.offsetParent !== null);
+    if (visible.length === 0) return () => {};
+
+    const first = visible[0];
+    const last = visible[visible.length - 1];
+
+    // Re-query the visible set on each Tab so dynamically shown/hidden fields
+    // (provider sub-groups, disabled buttons) are always reflected.
+    function visibleFocusables() {
+        const list = container.querySelectorAll(
+            'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+        );
+        return Array.from(list).filter((el) => el.offsetParent !== null);
+    }
+
+    // Defer the initial focus to the next frame so the container's display
+    // change (hidden→visible) has settled — focusing synchronously right after
+    // removing .hidden can land on an element before layout is ready.
+    requestAnimationFrame(() => { first.focus(); });
+
+    const handler = (e) => {
+        if (e.key !== 'Tab') return;
+        const items = visibleFocusables();
+        if (items.length === 0) return;
+        const f = items[0];
+        const l = items[items.length - 1];
+        if (e.shiftKey) {
+            if (document.activeElement === f || !container.contains(document.activeElement)) {
+                e.preventDefault();
+                l.focus();
+            }
+        } else {
+            if (document.activeElement === l || !container.contains(document.activeElement)) {
+                e.preventDefault();
+                f.focus();
+            }
+        }
+    };
+
+    container.addEventListener('keydown', handler);
+    return () => container.removeEventListener('keydown', handler);
+}
+
 // ── New-interview type picker (online vs offline) ───────────────────────────
 // Opens on "+ New interview". Esc + backdrop click cancel; choosing a card
 // creates the session with that interviewType then closes. Arrow/Enter keyboard
 // nav between the two cards is supported.
 let interviewTypeModalKeydownHandler = null;
+let interviewTypeFocusTrapCleanup = null;
+let interviewTypeFocusReturnEl = null;
 function openInterviewTypeModal() {
     if (!interviewTypeModal) {
         // No modal in the DOM (defensive) — fall back to creating an online
@@ -1242,17 +1307,29 @@ function openInterviewTypeModal() {
         createSessionWithType('online');
         return;
     }
+    interviewTypeFocusReturnEl = document.activeElement;
     interviewTypeModal.classList.remove('hidden');
-    // Focus the first card so keyboard users land inside the dialog.
-    const firstOption = interviewTypeModal.querySelector('.interview-type-option');
-    firstOption?.focus();
+    // Trap focus inside the dialog (focuses the first focusable + wraps Tab).
+    interviewTypeFocusTrapCleanup?.();
+    interviewTypeFocusTrapCleanup = trapFocus(interviewTypeModal);
+    // trapFocus focuses the close button (first focusable in DOM order) by
+    // default; for this picker we prefer the first option card so the
+    // arrow-key nav between cards starts on a card, not the close control.
+    // Run after trapFocus's own focus-deferral so this wins.
+    requestAnimationFrame(() => {
+        interviewTypeModal.querySelector('.interview-type-option')?.focus();
+    });
 }
 
 function closeInterviewTypeModal() {
     if (!interviewTypeModal) return;
     interviewTypeModal.classList.add('hidden');
-    // Return focus to the trigger for a clean keyboard loop.
-    newInterviewBtn?.focus();
+    // Release the focus trap before restoring focus.
+    interviewTypeFocusTrapCleanup?.();
+    interviewTypeFocusTrapCleanup = null;
+    // Return focus to the trigger (or the stored origin) for a clean loop.
+    (interviewTypeFocusReturnEl || newInterviewBtn)?.focus();
+    interviewTypeFocusReturnEl = null;
 }
 
 function setupInterviewTypeModal() {
@@ -1482,7 +1559,27 @@ function setupResumeChat() {
 
 // ── Job-description field (debounced save into existing settings field) ─────
 const JD_SAVE_DEBOUNCE_MS = 600;
+const JD_PIP_CLEAR_MS = 2000;
 let jdSaveTimer = null;
+let jdPipClearTimer = null;
+
+// Paint the JD save-status pip. Pass {state, text}: state is one of
+// '' | 'saving' | 'saved' (drives the colour class), text is the visible label.
+function setJdSavePip(state, text) {
+    if (!jdSavePip) return;
+    jdSavePip.classList.remove('saving', 'saved');
+    if (state) jdSavePip.classList.add(state);
+    jdSavePip.textContent = text || '';
+}
+
+function clearJdPipSoon() {
+    if (jdPipClearTimer) clearTimeout(jdPipClearTimer);
+    jdPipClearTimer = setTimeout(() => {
+        setJdSavePip('', '');
+        jdPipClearTimer = null;
+    }, JD_PIP_CLEAR_MS);
+}
+
 function setupJobDescriptionInput() {
     if (!jobDescriptionInput) return;
     const flush = () => {
@@ -1491,13 +1588,25 @@ function setupJobDescriptionInput() {
             jdSaveTimer = null;
         }
         const value = jobDescriptionInput.value;
-        window.electronAPI?.saveSettings?.({ jobDescription: value }).catch((error) => {
+        setJdSavePip('saving', '保存中…');
+        window.electronAPI?.saveSettings?.({ jobDescription: value }).then(() => {
+            setJdSavePip('saved', '已保存');
+            clearJdPipSoon();
+        }).catch((error) => {
             console.error('Failed to save job description:', error);
+            setJdSavePip('', '');
         });
         // Mirror into the settings-panel textarea so the two stay consistent.
         if (settingJobDescription) settingJobDescription.value = value;
     };
     jobDescriptionInput.addEventListener('input', () => {
+        // User typed: a debounced save is now pending. Mark as unsaved so the
+        // pip doesn't linger on a stale 已保存 from the previous save.
+        if (jdPipClearTimer) {
+            clearTimeout(jdPipClearTimer);
+            jdPipClearTimer = null;
+        }
+        setJdSavePip('', '未保存');
         if (jdSaveTimer) clearTimeout(jdSaveTimer);
         jdSaveTimer = setTimeout(flush, JD_SAVE_DEBOUNCE_MS);
     });
@@ -2036,15 +2145,20 @@ async function emergencyHide() {
     }
 }
 
+let closeConfirmationFocusTrapCleanup = null;
+let closeConfirmationFocusReturnEl = null;
 function openCloseConfirmation() {
     if (!closeConfirmationDialog) {
         closeApplication();
         return;
     }
 
+    closeConfirmationFocusReturnEl = document.activeElement;
     isCloseConfirmationOpen = true;
     closeConfirmationDialog.classList.remove('hidden');
-    confirmCloseBtn?.focus();
+    // Trap focus inside the dialog (focuses the first button + wraps Tab).
+    closeConfirmationFocusTrapCleanup?.();
+    closeConfirmationFocusTrapCleanup = trapFocus(closeConfirmationDialog);
 }
 
 function closeCloseConfirmation() {
@@ -2054,13 +2168,19 @@ function closeCloseConfirmation() {
 
     isCloseConfirmationOpen = false;
     closeConfirmationDialog.classList.add('hidden');
-    closeAppBtn?.focus();
+    // Release the focus trap before restoring focus.
+    closeConfirmationFocusTrapCleanup?.();
+    closeConfirmationFocusTrapCleanup = null;
+    (closeConfirmationFocusReturnEl || closeAppBtn)?.focus();
+    closeConfirmationFocusReturnEl = null;
 }
 
 // ── Clear-session confirmation dialog ────────────────────────────────────────
 // "清空会话" now asks for confirmation before actually clearing the transcript
 // and context. Mirrors openCloseConfirmation / closeCloseConfirmation above.
 let isClearConfirmationOpen = false;
+let clearConfirmationFocusTrapCleanup = null;
+let clearConfirmationFocusReturnEl = null;
 
 function openClearConfirmation() {
     if (!clearConfirmationDialog) {
@@ -2071,9 +2191,12 @@ function openClearConfirmation() {
         return;
     }
 
+    clearConfirmationFocusReturnEl = document.activeElement;
     isClearConfirmationOpen = true;
     clearConfirmationDialog.classList.remove('hidden');
-    confirmClearSessionBtn?.focus();
+    // Trap focus inside the dialog (focuses the first button + wraps Tab).
+    clearConfirmationFocusTrapCleanup?.();
+    clearConfirmationFocusTrapCleanup = trapFocus(clearConfirmationDialog);
 }
 
 function closeClearConfirmation() {
@@ -2084,7 +2207,11 @@ function closeClearConfirmation() {
 
     isClearConfirmationOpen = false;
     clearConfirmationDialog.classList.add('hidden');
-    clearBtn?.focus();
+    // Release the focus trap before restoring focus.
+    clearConfirmationFocusTrapCleanup?.();
+    clearConfirmationFocusTrapCleanup = null;
+    (clearConfirmationFocusReturnEl || clearBtn)?.focus();
+    clearConfirmationFocusReturnEl = null;
 }
 
 async function closeApplication() {
@@ -2236,12 +2363,34 @@ async function getConversationInsights() {
 
 // SETTINGS FUNCTIONS
 
+// Focus trap state for the settings panel. The actual .hidden toggle lives in
+// the settings-panel-manager (it also runs an exit animation on close), so the
+// trap is installed/released here around the manager's open/close calls. The
+// panel is a large form, so trapping Tab inside it is the key accessibility win.
+let settingsFocusTrapCleanup = null;
+let settingsFocusReturnEl = null;
+
 async function openSettings() {
+    settingsFocusReturnEl = document.activeElement;
     await settingsPanelManager.openSettings();
+    // The manager just removed .hidden (display restored) — now safe to trap.
+    // Defer to the next frame so the panel's layout is ready before we focus.
+    settingsFocusTrapCleanup?.();
+    requestAnimationFrame(() => {
+        if (settingsPanel && !settingsPanel.classList.contains('hidden')) {
+            settingsFocusTrapCleanup = trapFocus(settingsPanel);
+        }
+    });
 }
 
 function closeSettings() {
     settingsPanelManager.closeSettings();
+    // The manager plays a short exit animation before adding .hidden back, but
+    // we release the trap immediately so Tab can't escape during that window.
+    settingsFocusTrapCleanup?.();
+    settingsFocusTrapCleanup = null;
+    (settingsFocusReturnEl || settingsBtn)?.focus();
+    settingsFocusReturnEl = null;
 }
 
 // Click on the settings scrim (anywhere outside the dialog card) closes the
@@ -2625,9 +2774,10 @@ function setupReplayTourButton() {
     const btn = document.getElementById('replay-tour-btn');
     if (!btn) return;
     btn.addEventListener('click', () => {
-        // Close settings panel first
-        const settingsPanel = document.getElementById('settings-panel');
-        if (settingsPanel) settingsPanel.classList.add('hidden');
+        // Close settings panel first — go through closeSettings() so the focus
+        // trap is released and focus is restored (rather than toggling .hidden
+        // directly, which would leave the trap listener dangling).
+        closeSettings();
         // Reset and start tour
         import('./tour.js').then(({ resetTour, startTour }) => {
             resetTour();

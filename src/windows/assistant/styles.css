@@ -1293,6 +1293,21 @@ body.stealth-on .app-shell { opacity: 0.92; }
   font-style: italic;
 }
 
+/* JD save-status pip — small inline indicator next to the section title that
+   reflects the debounced save cycle: 未保存 → 保存中… → 已保存 (clears after 2s).
+   Tints amber while saving, green once saved, then fades back to subtle grey. */
+.save-pip {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--fg-subtle);
+  margin-left: 6px;
+  transition: opacity 0.3s;
+}
+
+.save-pip.saving { color: #e8c84a; }
+
+.save-pip.saved { color: #6ec89b; }
+
 /* On focus: full ring glow — the most important input affordance in the rail. */
 .jd-input:focus-visible {
   outline: none;

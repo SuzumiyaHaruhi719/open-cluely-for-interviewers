@@ -185,6 +185,22 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
   // onResumeParsed callback fires with cleared:true so dependent UI (e.g. the
   // resume chat's grounding) can react.
   async function handleRemove() {
+    // Confirm before clearing — consistent with the history sidebar's delete
+    // flow. Prefer the app's branded openConfirmDialog() when the host page has
+    // exposed it on window; otherwise fall back to the native confirm().
+    const confirmed =
+      typeof window.openConfirmDialog === 'function'
+        ? await window.openConfirmDialog({
+            title: '移除简历',
+            message: '确定移除当前简历？将清除已加载的简历文本。',
+            confirmLabel: '移除',
+            danger: true
+          })
+        : window.confirm('确定移除简历？');
+    if (!confirmed) {
+      return;
+    }
+
     if (window.electronAPI && typeof window.electronAPI.uploadResume === 'function') {
       try {
         await window.electronAPI.uploadResume({ clear: true });

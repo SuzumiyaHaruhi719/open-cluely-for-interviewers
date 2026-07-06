@@ -102,14 +102,14 @@
           </div>
 
           <div class="topbar__actions action-buttons">
-            <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="截图" title="截图">
+            <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="截图" title="截图（Alt+Shift+S）">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
               </svg>
             </button>
-            <button id="analyze-btn" class="action-btn primary-btn" type="button" title="问 AI">问 AI</button>
+            <button id="analyze-btn" class="action-btn primary-btn" type="button" title="问 AI（Alt+Shift+A）">问 AI</button>
             <button id="screen-ai-btn" class="action-btn" type="button">屏幕 AI</button>
-            <button id="generate-question-btn" class="action-btn" type="button" title="生成追问">生成问题</button>
+            <button id="generate-question-btn" class="action-btn" type="button" title="生成追问（Alt+Shift+G）">生成问题</button>
 
             <div class="more-menu" id="more-menu">
               <button id="more-menu-btn" class="action-btn icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="更多操作">
@@ -216,7 +216,7 @@
 
         <section class="rail-section">
           <h2 class="rail-section__title">
-            <label for="jd-input">岗位描述（JD）</label>
+            <label for="jd-input">岗位描述（JD） <span id="jd-save-pip" class="save-pip"></span></label>
           </h2>
           <textarea
             id="jd-input"

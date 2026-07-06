@@ -128,6 +128,27 @@ export function ChannelCard({
   const mic = useMicDevices(isMic);
   const micSelectDisabled = blocked || state.capturing;
 
+  // Debounce guard: while a start/stop is in flight, lock the toggle so a user
+  // can't spam-click it before the capture state settles. Mirrors the desktop
+  // channel-control.js `isBusy` flag — there the toggle shows '…' and ignores
+  // clicks while ensureSourceRunning() awaits. AudioState has no `connecting`
+  // field (capture flips `capturing` only once setup completes), so we track it
+  // locally by awaiting the onStart/onStop callback.
+  const [connecting, setConnecting] = useState(false);
+  const handleToggle = async (): Promise<void> => {
+    if (connecting) return;
+    setConnecting(true);
+    try {
+      if (state.capturing) {
+        await onStop(source);
+      } else {
+        await onStart(source);
+      }
+    } finally {
+      setConnecting(false);
+    }
+  };
+
   return (
     <div
       id={domId}
@@ -150,11 +171,11 @@ export function ChannelCard({
         <div className="channel-device-row">
           <button
             type="button"
-            className={`channel-toggle${state.capturing ? ' on' : ''}`}
-            disabled={blocked}
-            onClick={() => (state.capturing ? onStop(source) : onStart(source))}
+            className={`channel-toggle${state.capturing ? ' on' : ''}${connecting ? ' connecting' : ''}`}
+            disabled={blocked || connecting}
+            onClick={handleToggle}
           >
-            {state.capturing ? '停止' : '开始'}
+            {connecting ? '…' : state.capturing ? '停止' : '开始'}
           </button>
           {isMic ? (
             <div style={{ display: 'flex', flex: '1 1 auto', alignItems: 'center', gap: 6, minWidth: 0 }}>
