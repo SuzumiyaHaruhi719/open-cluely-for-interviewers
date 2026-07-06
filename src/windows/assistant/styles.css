@@ -1601,6 +1601,19 @@ body.rail-collapsed .right-rail {
   letter-spacing: 0.01em;
 }
 
+/* Subtle breathing pulse on the loading label while the overlay is up — gives the
+   static "正在分析..." text a sense of ongoing activity (no JS phase signal exists
+   for the blocking analyze call). Scoped to the visible overlay so it can't run
+   while hidden. */
+.loading-overlay:not(.hidden) .loading-text {
+  animation: loading-dots 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-dots {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
 .loading-timer {
   font-size: 12px; color: var(--fg-subtle); margin-top: 8px;
   font-variant-numeric: tabular-nums;
