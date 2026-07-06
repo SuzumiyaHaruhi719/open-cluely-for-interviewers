@@ -13,6 +13,7 @@ import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from
 import { ResultsPanel } from './ResultsPanel';
 import { SummaryModal } from './SummaryModal';
 import { PipelineStudio } from './studio/PipelineStudio';
+import { OnboardingOverlay } from './OnboardingOverlay';
 import { useRailCollapsed } from './useRailCollapsed';
 import { useAssistantPanel } from './useAssistantPanel';
 import { useAppSettings, type VolcSettings } from './useAppSettings';
@@ -702,6 +703,8 @@ export function Shell() {
         onClose={() => setStudioOpen(false)}
         onUse={(id) => onUseCustomPipeline(id)}
       />
+
+      <OnboardingOverlay />
     </div>
   );
 }
