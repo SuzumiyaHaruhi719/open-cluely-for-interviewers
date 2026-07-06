@@ -1632,6 +1632,7 @@ async function init() {
     addMonitorLog('info', 'init', '渲染器已初始化');
     // Start spotlight tour on first launch
     startSpotlightTour();
+    setupReplayTourButton();
 }
 
 function updateWindowOpacityValueLabel(value) {
@@ -2550,6 +2551,22 @@ function startSpotlightTour() {
     } catch (e) {
         console.warn('Tour module not available:', e);
     }
+}
+
+// Replay tour from settings button
+function setupReplayTourButton() {
+    const btn = document.getElementById('replay-tour-btn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        // Close settings panel first
+        const settingsPanel = document.getElementById('settings-panel');
+        if (settingsPanel) settingsPanel.classList.add('hidden');
+        // Reset and start tour
+        import('./tour.js').then(({ resetTour, startTour }) => {
+            resetTour();
+            setTimeout(() => startTour(), 300);
+        });
+    });
 }
 
 // Initialize on load

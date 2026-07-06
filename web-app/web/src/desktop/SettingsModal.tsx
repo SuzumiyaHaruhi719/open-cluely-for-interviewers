@@ -712,6 +712,18 @@ export function SettingsModal({
               </div>
               <p className="settings-field__desc">只读参考。</p>
             </div>
+            <div className="settings-field">
+              <span className="settings-field__label">新手引导</span>
+              <button
+                type="button"
+                className="settings-btn"
+                onClick={() => {
+                  try { localStorage.removeItem('tour-completed-v2'); } catch {}
+                  window.location.reload();
+                }}
+              >重新播放引导 Tour</button>
+              <p className="settings-field__desc">重新查看面试官 Copilot 的功能导览。</p>
+            </div>
           </section>
         </div>
       </div>
