@@ -34,7 +34,7 @@ const REMOVE_ICON_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="n
 function readFileAsBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onerror = () => reject(reader.error || new Error('Could not read file'));
+    reader.onerror = () => reject(reader.error || new Error('无法读取文件'));
     reader.onload = () => {
       const result = String(reader.result || '');
       // result is a data: URL (data:<mime>;base64,XXXX); strip the prefix so we
@@ -48,7 +48,7 @@ function readFileAsBase64(file) {
 
 function formatCharCount(chars) {
   const value = Number.isFinite(chars) ? chars : 0;
-  return `${value.toLocaleString('en-US')} characters`;
+  return `${value.toLocaleString('en-US')} 字符`;
 }
 
 // Electron/Chromium navigates the WHOLE window to a file dropped anywhere in it
@@ -79,16 +79,16 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
 
   // Build static structure once. Dynamic regions are populated via textContent.
   rootEl.innerHTML = `
-    <button type="button" class="resume-dropzone__target" aria-label="Upload resume. ${ACCEPT_HINT}. Drop a file here or press Enter to browse.">
+    <button type="button" class="resume-dropzone__target" aria-label="上传简历。${ACCEPT_HINT}。拖拽文件到此处或按 Enter 选择。">
       ${UPLOAD_ICON_SVG}
-      <span class="resume-dropzone__primary">Drop resume or click to browse</span>
+      <span class="resume-dropzone__primary">拖拽简历或点击选择</span>
       <span class="resume-dropzone__hint">${ACCEPT_HINT}</span>
     </button>
     <div class="resume-dropzone__result" hidden>
       <div class="resume-dropzone__meta">
         <span class="resume-dropzone__filename"></span>
         <span class="resume-dropzone__count"></span>
-        <button type="button" class="resume-dropzone__remove" aria-label="Remove resume" title="Remove resume">${REMOVE_ICON_SVG}</button>
+        <button type="button" class="resume-dropzone__remove" aria-label="移除简历" title="移除简历">${REMOVE_ICON_SVG}</button>
       </div>
       <p class="resume-dropzone__preview"></p>
     </div>
@@ -126,17 +126,17 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
       errorEl.textContent = message;
       errorEl.hidden = false;
     }
-    announce(`Resume upload failed. ${message}`);
+    announce(`简历上传失败。${message}`);
   }
 
   function showParsed({ name, chars, preview }) {
     setState('parsed');
     if (errorEl) errorEl.hidden = true;
-    if (filenameEl) filenameEl.textContent = name || 'Resume';
+    if (filenameEl) filenameEl.textContent = name || '简历';
     if (countEl) countEl.textContent = formatCharCount(chars);
     if (previewEl) previewEl.textContent = String(preview || '');
     if (resultEl) resultEl.hidden = false;
-    announce(`Resume loaded: ${name || 'file'}, ${formatCharCount(chars)}.`);
+    announce(`简历已加载: ${name || '文件'}, ${formatCharCount(chars)}.`);
   }
 
   async function handleFile(file) {
@@ -145,14 +145,14 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
     }
 
     if (!window.electronAPI || typeof window.electronAPI.uploadResume !== 'function') {
-      showError('Resume upload is unavailable in this build');
+      showError('此版本不支持简历上传');
       return;
     }
 
     setState('parsing');
     if (errorEl) errorEl.hidden = true;
     if (resultEl) resultEl.hidden = true;
-    announce(`Reading ${file.name || 'file'}…`);
+    announce(`正在读取 ${file.name || '文件'}…`);
 
     try {
       const dataBase64 = await readFileAsBase64(file);
@@ -163,14 +163,14 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
       });
 
       if (!response || response.success !== true) {
-        showError((response && response.error) || 'Could not read resume');
+        showError((response && response.error) || '无法读取简历');
         return;
       }
 
       showParsed({ name: file.name, chars: response.chars, preview: response.preview });
       onResumeParsed?.({ chars: response.chars, preview: response.preview, text: response.text });
     } catch (error) {
-      showError(error?.message || 'Could not read resume');
+      showError(error?.message || '无法读取简历');
     }
   }
 
@@ -195,7 +195,7 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
     setState('idle');
     if (resultEl) resultEl.hidden = true;
     if (errorEl) errorEl.hidden = true;
-    announce('Resume removed.');
+    announce('已移除简历。');
     onResumeParsed?.({ chars: 0, preview: '', cleared: true });
   }
 
@@ -273,7 +273,7 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
     if (file) {
       handleFile(file);
     } else {
-      showError('Could not read the dropped file — try clicking to browse');
+      showError('无法读取拖拽的文件 — 请尝试点击选择');
     }
   });
 
@@ -289,7 +289,7 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
       return;
     }
     const lines = value.split('\n').slice(0, PREVIEW_LINES).join('\n');
-    showParsed({ name: 'Saved resume', chars: value.length, preview: lines });
+    showParsed({ name: '已保存的简历', chars: value.length, preview: lines });
   }
 
   return { setText };

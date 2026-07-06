@@ -29,10 +29,10 @@ const LEVEL_SMOOTHING = 0.4;
 const LEVEL_DISPLAY_GAIN = 2.4;
 
 const STATUS_LABELS = {
-    off: 'Off',
-    connecting: 'Connecting',
-    listening: 'Listening',
-    error: 'Error'
+    off: '关闭',
+    connecting: '连接中',
+    listening: '监听中',
+    error: '错误'
 };
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -143,7 +143,7 @@ function createChannelBox({
     const label = document.createElement('label');
     label.className = 'channel-device-label';
     label.setAttribute('for', selectId);
-    label.textContent = `${title} device`;
+    label.textContent = `${title} 设备`;
     deviceRow.appendChild(label);
 
     const select = document.createElement('select');
@@ -155,8 +155,8 @@ function createChannelBox({
     toggle.type = 'button';
     toggle.className = 'channel-toggle';
     toggle.setAttribute('aria-pressed', 'false');
-    toggle.setAttribute('aria-label', `Turn ${title} on`);
-    toggle.textContent = 'Off';
+    toggle.setAttribute('aria-label', `开启${title}`);
+    toggle.textContent = '关闭';
     deviceRow.appendChild(toggle);
 
     rootEl.appendChild(deviceRow);
@@ -203,8 +203,8 @@ function createChannelBox({
         toggle.classList.toggle('on', isOn);
         toggle.classList.toggle('connecting', isConnecting);
         toggle.setAttribute('aria-pressed', isOn ? 'true' : 'false');
-        toggle.setAttribute('aria-label', `Turn ${title} ${isOn ? 'off' : 'on'}`);
-        toggle.textContent = isConnecting ? '…' : (isOn ? 'On' : 'Off');
+        toggle.setAttribute('aria-label', isOn ? `关闭${title}` : `开启${title}`);
+        toggle.textContent = isConnecting ? '…' : (isOn ? '开启' : '关闭');
 
         rootEl.classList.toggle('is-on', isOn);
         rootEl.classList.toggle('is-connecting', isConnecting);
@@ -327,7 +327,7 @@ export function createChannelControls({
         const saved = getStoredValue(MIC_DEVICE_STORAGE_KEY);
         const devices = await enumerateDevicesSafe();
         select.innerHTML = '';
-        appendOption(select, '', 'System default microphone');
+        appendOption(select, '', '系统默认麦克风');
 
         const seen = new Set();
         const audioInputs = devices.filter((d) => d.kind === 'audioinput');
@@ -337,11 +337,11 @@ export function createChannelControls({
             }
             if (seen.has(device.deviceId)) return;
             seen.add(device.deviceId);
-            appendOption(select, device.deviceId, device.label || `Microphone ${index + 1}`);
+            appendOption(select, device.deviceId, device.label || `麦克风 ${index + 1}`);
         });
 
         if (audioInputs.length === 0) {
-            appendOption(select, '', 'No microphones detected — check OS permissions', { disabled: true });
+            appendOption(select, '', '未检测到麦克风 — 请检查系统权限', { disabled: true });
         }
 
         select.value = saved && seen.has(saved) ? saved : '';
@@ -351,14 +351,14 @@ export function createChannelControls({
         const saved = getStoredValue(SYSTEM_SOURCE_STORAGE_KEY);
         const devices = await enumerateDevicesSafe();
         select.innerHTML = '';
-        appendOption(select, '', 'Default loopback (recommended)');
+        appendOption(select, '', '默认回环（推荐）');
 
         // Virtual loopback inputs — directly capturable via getUserMedia;
         // encoded as input:<deviceId> per the system-source convention.
         const loopbackInputs = devices
             .filter((d) => d.kind === 'audioinput' && d.deviceId && isLikelyLoopbackInput(d.label));
         loopbackInputs.forEach((device) => {
-            appendOption(select, `input:${device.deviceId}`, device.label || 'Loopback input');
+            appendOption(select, `input:${device.deviceId}`, device.label || '回环输入');
         });
 
         // Per-screen desktopCapturer sources — encoded as screen:<id>.
@@ -371,7 +371,7 @@ export function createChannelControls({
         if (Array.isArray(desktopSources)) {
             desktopSources.forEach((src, index) => {
                 if (!src?.id) return;
-                appendOption(select, `screen:${src.id}`, src.name || `Screen ${index + 1}`);
+                appendOption(select, `screen:${src.id}`, src.name || `屏幕 ${index + 1}`);
             });
         }
 
@@ -390,7 +390,7 @@ export function createChannelControls({
         boxBySource.system = createChannelBox({
             rootEl: computerRootEl,
             source: 'system',
-            title: 'Computer audio',
+            title: '电脑音频',
             accentVar: 'var(--candidate)',
             createIcon: createMonitorIcon,
             transcriptionManager,
@@ -403,7 +403,7 @@ export function createChannelControls({
         boxBySource.mic = createChannelBox({
             rootEl: micRootEl,
             source: 'mic',
-            title: 'Microphone',
+            title: '麦克风',
             accentVar: 'var(--interviewer)',
             createIcon: createMicIcon,
             transcriptionManager,

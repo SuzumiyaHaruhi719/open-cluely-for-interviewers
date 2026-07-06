@@ -201,15 +201,15 @@ export function createSettingsPanelManager({
         }
         settingsStatusIndicator.dataset.state = state;
         if (state === 'saving') {
-            settingsStatusIndicator.textContent = 'Saving…';
+            settingsStatusIndicator.textContent = '保存中…';
         } else if (state === 'saved') {
-            settingsStatusIndicator.textContent = 'Saved ✓';
+            settingsStatusIndicator.textContent = '已保存 ✓';
             savedPipTimer = setTimeout(() => {
                 savedPipTimer = null;
                 setStatusIndicator('idle');
             }, SAVED_PIP_VISIBLE_MS);
         } else if (state === 'error') {
-            settingsStatusIndicator.textContent = 'Save failed';
+            settingsStatusIndicator.textContent = '保存失败';
         } else {
             settingsStatusIndicator.textContent = '';
         }
@@ -219,11 +219,11 @@ export function createSettingsPanelManager({
         if (!inputElement || !toggleButton) return;
         const shouldShow = Boolean(visible);
         inputElement.type = shouldShow ? 'text' : 'password';
-        toggleButton.textContent = shouldShow ? 'Hide' : 'Show';
+        toggleButton.textContent = shouldShow ? '隐藏' : '显示';
         toggleButton.setAttribute('aria-pressed', shouldShow ? 'true' : 'false');
         toggleButton.setAttribute(
             'aria-label',
-            `${shouldShow ? 'Hide' : 'Show'} ${providerName} API key`
+            `${shouldShow ? '隐藏' : '显示'} ${providerName} API key`
         );
     }
 
@@ -292,7 +292,7 @@ export function createSettingsPanelManager({
 
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
-        defaultOption.textContent = 'System default microphone';
+        defaultOption.textContent = '系统默认麦克风';
         settingMicDevice.appendChild(defaultOption);
 
         const audioInputs = (devices || []).filter((device) => device.kind === 'audioinput');
@@ -307,7 +307,7 @@ export function createSettingsPanelManager({
 
             const option = document.createElement('option');
             option.value = device.deviceId;
-            option.textContent = device.label || `Microphone ${index + 1}`;
+            option.textContent = device.label || `麦克风 ${index + 1}`;
             settingMicDevice.appendChild(option);
         });
 
@@ -317,13 +317,13 @@ export function createSettingsPanelManager({
             const helper = document.createElement('option');
             helper.value = '';
             helper.disabled = true;
-            helper.textContent = 'No microphones detected — check OS permissions';
+            helper.textContent = '未检测到麦克风 — 请检查系统权限';
             settingMicDevice.appendChild(helper);
         } else if (audioInputs.some((device) => !device.label)) {
             const helper = document.createElement('option');
             helper.value = '';
             helper.disabled = true;
-            helper.textContent = '(Start mic capture once to reveal device names)';
+            helper.textContent = '(开启一次麦克风采集后即可显示设备名称)';
             settingMicDevice.appendChild(helper);
         }
     }
@@ -337,8 +337,8 @@ export function createSettingsPanelManager({
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
         defaultOption.textContent = IS_MAC
-            ? 'macOS default output loopback (needs BlackHole or Aggregate)'
-            : 'Windows default loopback (recommended)';
+            ? 'macOS 默认输出回环（需 BlackHole 或聚合设备）'
+            : 'Windows 默认回环（推荐）';
         settingSystemSource.appendChild(defaultOption);
 
         const audioOutputs = (devices || []).filter((device) => device.kind === 'audiooutput');
@@ -349,12 +349,12 @@ export function createSettingsPanelManager({
         // getUserMedia and are the most reliable way to pick a specific source.
         if (loopbackInputs.length > 0) {
             const group = document.createElement('optgroup');
-            group.label = 'Virtual loopback (capture-ready)';
+            group.label = '虚拟回环（可直接采集）';
             loopbackInputs.forEach((device) => {
                 if (!device.deviceId) return;
                 const option = document.createElement('option');
                 option.value = `input:${device.deviceId}`;
-                option.textContent = device.label || 'Loopback input';
+                option.textContent = device.label || '回环输入';
                 group.appendChild(option);
             });
             settingSystemSource.appendChild(group);
@@ -371,12 +371,12 @@ export function createSettingsPanelManager({
         if (audioOutputs.length > 0) {
             const group = document.createElement('optgroup');
             group.label = IS_MAC
-                ? 'OS audio outputs (sets macOS default — capture via BlackHole)'
-                : 'OS audio outputs (set as Windows default to capture)';
+                ? '系统音频输出（设为 macOS 默认输出 — 通过 BlackHole 采集）'
+                : '系统音频输出（设为 Windows 默认输出后采集）';
             const labelledOutputs = audioOutputs.filter((device) => device.deviceId && device.deviceId !== 'default');
             labelledOutputs.forEach((device, index) => {
                 const option = document.createElement('option');
-                const label = device.label || `Output ${index + 1}`;
+                const label = device.label || `输出 ${index + 1}`;
                 if (IS_MAC) {
                     // Encode both the deviceId (renderer-side identity) and the
                     // human label (which is what SwitchAudioSource matches on
@@ -393,7 +393,7 @@ export function createSettingsPanelManager({
             if (labelledOutputs.length === 0) {
                 const option = document.createElement('option');
                 option.value = '';
-                option.textContent = '(Start audio once to reveal output names)';
+                option.textContent = '(开启一次音频后即可显示输出名称)';
                 option.disabled = true;
                 group.appendChild(option);
             }
@@ -409,7 +409,7 @@ export function createSettingsPanelManager({
                 const result = await window.electronAPI.listAudioProcesses();
                 if (result?.supported && Array.isArray(result.processes) && result.processes.length > 0) {
                     const group = document.createElement('optgroup');
-                    group.label = 'Specific app (Windows per-process loopback)';
+                    group.label = '指定应用（Windows 进程级回环）';
                     result.processes.forEach((proc) => {
                         if (!proc?.processId) return;
                         const option = document.createElement('option');
@@ -438,12 +438,12 @@ export function createSettingsPanelManager({
         }
         if (Array.isArray(desktopSources) && desktopSources.length > 1) {
             const group = document.createElement('optgroup');
-            group.label = 'Per-screen loopback (multi-monitor)';
+            group.label = '按屏幕回环（多显示器）';
             desktopSources.forEach((source, index) => {
                 if (!source?.id) return;
                 const option = document.createElement('option');
                 option.value = `screen:${source.id}`;
-                option.textContent = source.name || `Screen ${index + 1}`;
+                option.textContent = source.name || `屏幕 ${index + 1}`;
                 group.appendChild(option);
             });
             settingSystemSource.appendChild(group);
@@ -489,10 +489,10 @@ export function createSettingsPanelManager({
             refreshAudioDevicesBtn.textContent = '...';
             try {
                 await refreshAudioDeviceOptions();
-                showFeedback?.('Audio devices refreshed', 'success');
+                showFeedback?.('音频设备已刷新', 'success');
             } catch (error) {
                 console.error('Failed to refresh audio devices:', error);
-                showFeedback?.('Failed to refresh audio devices', 'error');
+                showFeedback?.('刷新音频设备失败', 'error');
             } finally {
                 refreshAudioDevicesBtn.textContent = previousText;
                 refreshAudioDevicesBtn.disabled = false;
@@ -688,13 +688,13 @@ export function createSettingsPanelManager({
             }
 
             setStatusIndicator('error');
-            showFeedback?.(`Failed to save: ${result.error}`, 'error');
-            return { success: false, error: result.error || 'Failed to save settings' };
+            showFeedback?.(`保存失败：${result.error}`, 'error');
+            return { success: false, error: result.error || '保存设置失败' };
         } catch (error) {
             console.error('Failed to save settings:', error);
             setStatusIndicator('error');
-            showFeedback?.('Failed to save settings', 'error');
-            return { success: false, error: error.message || 'Failed to save settings' };
+            showFeedback?.('保存设置失败', 'error');
+            return { success: false, error: error.message || '保存设置失败' };
         }
     }
 

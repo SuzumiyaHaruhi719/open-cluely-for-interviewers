@@ -3,7 +3,7 @@
 }
 
 export function sourceLabel(source) {
-  return source === 'system' ? 'Host' : 'Mic';
+  return source === 'system' ? '主机' : '麦克风';
 }
 
 export function createTranscriptionSourceState() {

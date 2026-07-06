@@ -110,8 +110,8 @@ export function createTranscriptionManager({
     const sourceStatuses = transcriptionSourceState.sourceStatuses;
     const monitorLogEntries = [];
     const monitorLastText = {
-        system: 'No transcript yet',
-        mic: 'No transcript yet'
+        system: '暂无转写',
+        mic: '暂无转写'
     };
 
     function normalizeSource(source) {
@@ -180,48 +180,48 @@ export function createTranscriptionManager({
         updateTranscriptionUI();
 
         const statusMap = {
-            off: 'Off',
-            connecting: 'Connecting',
-            listening: 'Listening',
-            error: 'Error'
+            off: '关闭',
+            connecting: '连接中',
+            listening: '监听中',
+            error: '错误'
         };
 
         if (monitorStatusSystem) {
             monitorStatusSystem.dataset.state = sourceStatuses.system;
-            monitorStatusSystem.setAttribute('aria-label', `Host: ${statusMap[sourceStatuses.system] || 'Off'}`);
-            monitorStatusSystem.setAttribute('title', `Host: ${statusMap[sourceStatuses.system] || 'Off'}`);
+            monitorStatusSystem.setAttribute('aria-label', `Host: ${statusMap[sourceStatuses.system] || '关闭'}`);
+            monitorStatusSystem.setAttribute('title', `Host: ${statusMap[sourceStatuses.system] || '关闭'}`);
         }
 
         if (monitorStatusMic) {
             monitorStatusMic.dataset.state = sourceStatuses.mic;
-            monitorStatusMic.setAttribute('aria-label', `Mic: ${statusMap[sourceStatuses.mic] || 'Off'}`);
-            monitorStatusMic.setAttribute('title', `Mic: ${statusMap[sourceStatuses.mic] || 'Off'}`);
+            monitorStatusMic.setAttribute('aria-label', `Mic: ${statusMap[sourceStatuses.mic] || '关闭'}`);
+            monitorStatusMic.setAttribute('title', `Mic: ${statusMap[sourceStatuses.mic] || '关闭'}`);
         }
 
         if (monitorLiveSystem) {
-            monitorLiveSystem.textContent = monitorLastText.system || 'No transcript yet';
+            monitorLiveSystem.textContent = monitorLastText.system || '暂无转写';
         }
 
         if (monitorLiveMic) {
-            monitorLiveMic.textContent = monitorLastText.mic || 'No transcript yet';
+            monitorLiveMic.textContent = monitorLastText.mic || '暂无转写';
         }
 
         if (monitorMasterState) {
             monitorMasterState.classList.remove('active', 'connecting');
             if (isAnyTranscriptionActive()) {
-                monitorMasterState.textContent = 'Running';
+                monitorMasterState.textContent = '运行中';
                 monitorMasterState.classList.add('active');
             } else if (isAnySourceConnecting()) {
-                monitorMasterState.textContent = 'Connecting';
+                monitorMasterState.textContent = '连接中';
                 monitorMasterState.classList.add('connecting');
             } else {
-                monitorMasterState.textContent = 'Idle';
+                monitorMasterState.textContent = '空闲';
             }
         }
     }
 
     function formatMonitorTime(timestamp = Date.now()) {
-        return new Date(timestamp).toLocaleTimeString('en-US', {
+        return new Date(timestamp).toLocaleTimeString('zh-CN', {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit'
@@ -287,7 +287,7 @@ export function createTranscriptionManager({
     function setSourceSelected(source, enabled) {
         const resolvedSource = normalizeSource(source);
         transcriptionSourceState.setSourceSelected(resolvedSource, enabled);
-        addMonitorLog('info', 'source-toggle', `${sourceLabel(resolvedSource)} ${enabled ? 'enabled' : 'disabled'}`, resolvedSource);
+        addMonitorLog('info', 'source-toggle', `${sourceLabel(resolvedSource)} ${enabled ? '已启用' : '已停用'}`, resolvedSource);
         updateTranscriptionUI();
 
         if (isAnyTranscriptionActive() || sourceStatuses[resolvedSource] === 'connecting') {
@@ -315,13 +315,13 @@ export function createTranscriptionManager({
 
     async function startSelectedSources() {
         if (!selectedSources.system && !selectedSources.mic) {
-            const message = 'Select at least one source (Host or Mic) before starting transcription.';
+            const message = '开始转写前请至少选择一个音源（Host 或 Mic）。';
             showFeedback(message, 'error');
             addMonitorLog('error', 'start-blocked', message);
             return;
         }
 
-        addMonitorLog('info', 'master-start', 'Starting selected transcription sources');
+        addMonitorLog('info', 'master-start', '正在启动所选转写音源');
 
         if (selectedSources.system) {
             await ensureSourceRunning('system', true);
@@ -333,7 +333,7 @@ export function createTranscriptionManager({
     }
 
     async function stopAllSources() {
-        addMonitorLog('info', 'master-stop', 'Stopping all active transcription sources');
+        addMonitorLog('info', 'master-stop', '正在停止所有活动转写音源');
         if (isSystemActive || sourceStatuses.system === 'connecting') {
             await stopSystemAudioRecording();
         }
@@ -372,36 +372,36 @@ export function createTranscriptionManager({
         const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent || '');
         if (isMac) {
             throw new Error(
-                'macOS can\'t capture system audio through desktop loopback (Chromium limitation). '
-                + 'In Settings → System source, pick a "Virtual loopback (capture-ready)" entry such as '
-                + '"BlackHole 2ch" or "Blackhole Audio Input (Aggregate)". Then make sure your meeting '
-                + 'audio actually plays through that device — usually via a Multi-Output Device set up '
-                + 'in /Applications/Utilities/Audio MIDI Setup.app.'
+                'macOS 无法通过 desktop loopback 捕获系统音频（Chromium 限制）。'
+                + '请在「设置 → 系统音源」中选择一个「Virtual loopback (capture-ready)」条目，例如 '
+                + '「BlackHole 2ch」或「Blackhole Audio Input (Aggregate)」。然后确保会议音频'
+                + '确实通过该设备播放——通常需在 /Applications/Utilities/Audio MIDI Setup.app '
+                + '中设置一个 Multi-Output Device。'
             );
         }
 
         const sources = await window.electronAPI.getDesktopSources();
         if (!sources || sources.length === 0) {
-            throw new Error('No desktop sources found');
+            throw new Error('未找到桌面源');
         }
         let chosen = null;
         if (preferredSourceId) {
             chosen = sources.find((source) => source?.id === preferredSourceId) || null;
             if (!chosen) {
-                addMonitorLog('warn', 'desktop-source-fallback', `Screen ${preferredSourceId} not found; using first available`, 'system');
+                addMonitorLog('warn', 'desktop-source-fallback', `未找到屏幕 ${preferredSourceId}；改用首个可用源`, 'system');
             }
         }
         if (!chosen) chosen = sources[0];
-        addMonitorLog('info', 'desktop-source', `Using desktop source: ${chosen.name || chosen.id}`, 'system');
+        addMonitorLog('info', 'desktop-source', `使用桌面源：${chosen.name || chosen.id}`, 'system');
 
         const stream = await getSystemAudioStream(chosen.id);
         const videoTrack = stream.getVideoTracks()[0];
         if (videoTrack && isLikelyCameraTrack(videoTrack.label)) {
-            throw new Error(`Desktop capture fell back to camera source (${videoTrack.label || 'unknown'}).`);
+            throw new Error(`桌面捕获回退到了摄像头源（${videoTrack.label || '未知'}）。`);
         }
         if (stream.getAudioTracks().length === 0) {
             stream.getTracks().forEach((track) => { try { track.stop(); } catch (_) {} });
-            throw new Error('Desktop capture returned no audio track. Check OS sound permissions and that the selected source supports audio.');
+            throw new Error('桌面捕获未返回音频轨道。请检查系统声音权限，并确认所选源支持音频。');
         }
         return stream;
     }
@@ -424,8 +424,8 @@ export function createTranscriptionManager({
 
     async function startMicRecording() {
         if (isMicActive || sourceStatuses.mic === 'connecting') return;
-        setSourceStatus('mic', 'connecting', 'Connecting to mic...');
-        addMonitorLog('info', 'start-request', 'Starting mic source', 'mic');
+        setSourceStatus('mic', 'connecting', '正在连接麦克风...');
+        addMonitorLog('info', 'start-request', '正在启动麦克风音源', 'mic');
         resetFinalTranscriptBuffer('mic');
 
         try {
@@ -440,14 +440,14 @@ export function createTranscriptionManager({
             };
             if (selectedMicDeviceId) {
                 audioConstraint.deviceId = { exact: selectedMicDeviceId };
-                addMonitorLog('info', 'mic-device', `Using selected mic device ${selectedMicDeviceId.slice(0, 8)}…`, 'mic');
+                addMonitorLog('info', 'mic-device', `使用所选麦克风设备 ${selectedMicDeviceId.slice(0, 8)}…`, 'mic');
             }
 
             try {
                 micMediaStream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraint });
             } catch (deviceError) {
                 if (selectedMicDeviceId) {
-                    addMonitorLog('warn', 'mic-device-fallback', `Selected mic unavailable (${deviceError.message}); falling back to default`, 'mic');
+                    addMonitorLog('warn', 'mic-device-fallback', `所选麦克风不可用（${deviceError.message}）；回退到默认设备`, 'mic');
                     delete audioConstraint.deviceId;
                     micMediaStream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraint });
                 } else {
@@ -460,12 +460,12 @@ export function createTranscriptionManager({
             micScriptProcessor = await buildAudioProcessor(micAudioContext, micMediaStream, 'mic', () => isMicActive);
 
             setMicActive(true);
-            addChatMessage('system', 'Mic listening...');
-            showFeedback('Mic on', 'success');
-            addMonitorLog('info', 'source-active', 'Mic source active', 'mic');
+            addChatMessage('system', '麦克风监听中...');
+            showFeedback('麦克风已开启', 'success');
+            addMonitorLog('info', 'source-active', '麦克风音源已激活', 'mic');
         } catch (error) {
             console.error('Failed to start mic:', error);
-            showFeedback(`Mic failed: ${error.message}`, 'error');
+            showFeedback(`麦克风启动失败：${error.message}`, 'error');
             addMonitorLog('error', 'source-failed', error.message, 'mic');
             stopAudioResources(micAudioContext, micMediaStream, micScriptProcessor);
             micAudioContext = null;
@@ -473,7 +473,7 @@ export function createTranscriptionManager({
             micScriptProcessor = null;
             setMicActive(false);
             resetSourceSampleQueue('mic');
-            setSourceStatus('mic', 'error', `Mic error: ${error.message}`);
+            setSourceStatus('mic', 'error', `麦克风错误：${error.message}`);
             try {
                 await window.electronAPI.stopVoiceRecognition('mic');
             } catch (_) {}
@@ -494,20 +494,20 @@ export function createTranscriptionManager({
         try {
             await window.electronAPI.stopVoiceRecognition('mic');
         } catch (error) {
-            addMonitorLog('error', 'stop-failed', error.message || 'Failed to stop mic source', 'mic');
+            addMonitorLog('error', 'stop-failed', error.message || '停止麦克风音源失败', 'mic');
         }
         setMicActive(false);
         resetSourceSampleQueue('mic');
         audioPipeline.resetChunkCounter('mic');
-        setSourceStatus('mic', 'off', 'Mic stopped');
-        addMonitorLog('info', 'source-stopped', 'Mic source stopped', 'mic');
-        showFeedback('Mic off', 'info');
+        setSourceStatus('mic', 'off', '麦克风已停止');
+        addMonitorLog('info', 'source-stopped', '麦克风音源已停止', 'mic');
+        showFeedback('麦克风已关闭', 'info');
     }
 
     async function startSystemAudioRecording() {
         if (isSystemActive || sourceStatuses.system === 'connecting') return;
-        setSourceStatus('system', 'connecting', 'Connecting to host audio...');
-        addMonitorLog('info', 'start-request', 'Starting host audio source', 'system');
+        setSourceStatus('system', 'connecting', '正在连接主机音频...');
+        addMonitorLog('info', 'start-request', '正在启动主机音频源', 'system');
         resetFinalTranscriptBuffer('system');
 
         try {
@@ -523,15 +523,15 @@ export function createTranscriptionManager({
                 // this branch. We still call startVoiceRecognition above to
                 // open the WebSocket; the sidecar fills it.
                 if (!window.electronAPI?.startProcessAudio) {
-                    addMonitorLog('warn', 'system-source-fallback', 'Per-process capture API missing; falling back to default loopback', 'system');
+                    addMonitorLog('warn', 'system-source-fallback', '缺少按进程捕获 API；回退到默认 loopback', 'system');
                     systemMediaStream = await captureDefaultScreenLoopback(null);
                 } else {
-                    addMonitorLog('info', 'system-source', `Starting per-process capture for PID ${selection.id}`, 'system');
+                    addMonitorLog('info', 'system-source', `正在为 PID ${selection.id} 启动按进程捕获`, 'system');
                     const startResult = await window.electronAPI.startProcessAudio(selection.id);
                     if (!startResult || startResult.success === false) {
-                        const reason = startResult?.error || 'unknown';
-                        addMonitorLog('warn', 'system-source-fallback', `Per-process capture failed (${reason}); falling back to default loopback`, 'system');
-                        showFeedback(`Per-process capture failed: ${reason}`, 'error');
+                        const reason = startResult?.error || '未知';
+                        addMonitorLog('warn', 'system-source-fallback', `按进程捕获失败（${reason}）；回退到默认 loopback`, 'system');
+                        showFeedback(`按进程捕获失败：${reason}`, 'error');
                         systemMediaStream = await captureDefaultScreenLoopback(null);
                     } else {
                         // No MediaStream — bytes flow main → ASR directly. We
@@ -544,7 +544,7 @@ export function createTranscriptionManager({
                 // Capture directly from a virtual loopback input (Stereo Mix,
                 // VB-Cable, BlackHole, etc.). The most reliable way to pick a
                 // specific source on any platform.
-                addMonitorLog('info', 'system-source', `Using loopback input device ${String(selection.id).slice(0, 8)}…`, 'system');
+                addMonitorLog('info', 'system-source', `使用 loopback 输入设备 ${String(selection.id).slice(0, 8)}…`, 'system');
                 try {
                     systemMediaStream = await navigator.mediaDevices.getUserMedia({
                         audio: {
@@ -556,7 +556,7 @@ export function createTranscriptionManager({
                         }
                     });
                 } catch (deviceError) {
-                    addMonitorLog('warn', 'system-source-fallback', `Loopback input unavailable (${deviceError.message}); falling back to default screen loopback`, 'system');
+                    addMonitorLog('warn', 'system-source-fallback', `Loopback 输入不可用（${deviceError.message}）；回退到默认屏幕 loopback`, 'system');
                     systemMediaStream = await captureDefaultScreenLoopback(null);
                 }
             } else if (selection.type === 'output' && selection.label && window.electronAPI?.setMacosDefaultOutput) {
@@ -566,23 +566,23 @@ export function createTranscriptionManager({
                 // switch the macOS system default to that device via
                 // SwitchAudioSource, then fall through to the default loopback
                 // path which follows the system default.
-                addMonitorLog('info', 'system-source', `Switching macOS default output to "${selection.label}"`, 'system');
+                addMonitorLog('info', 'system-source', `正在将 macOS 默认输出切换为「${selection.label}」`, 'system');
                 try {
                     const switchResult = await window.electronAPI.setMacosDefaultOutput(selection.label);
                     if (!switchResult?.success) {
                         const hint = switchResult?.hint ? ` — ${switchResult.hint}` : '';
-                        const reason = switchResult?.error || 'unknown';
-                        addMonitorLog('warn', 'system-source-fallback', `Could not switch macOS output (${reason})${hint}; falling back to current default`, 'system');
-                        showFeedback(`Could not switch output: ${reason}${hint}`, 'error');
+                        const reason = switchResult?.error || '未知';
+                        addMonitorLog('warn', 'system-source-fallback', `无法切换 macOS 输出（${reason}）${hint}；回退到当前默认设备`, 'system');
+                        showFeedback(`无法切换输出：${reason}${hint}`, 'error');
                     } else {
-                        addMonitorLog('info', 'system-source', `macOS default output now: ${selection.label}`, 'system');
+                        addMonitorLog('info', 'system-source', `macOS 默认输出当前为：${selection.label}`, 'system');
                     }
                 } catch (switchError) {
-                    addMonitorLog('warn', 'system-source-fallback', `setMacosDefaultOutput threw: ${switchError.message}`, 'system');
+                    addMonitorLog('warn', 'system-source-fallback', `setMacosDefaultOutput 抛出异常：${switchError.message}`, 'system');
                 }
                 systemMediaStream = await captureDefaultScreenLoopback(null);
             } else if (selection.type === 'screen' && selection.id) {
-                addMonitorLog('info', 'system-source', `Using screen source ${selection.id}`, 'system');
+                addMonitorLog('info', 'system-source', `使用屏幕源 ${selection.id}`, 'system');
                 systemMediaStream = await captureDefaultScreenLoopback(selection.id);
             } else {
                 systemMediaStream = await captureDefaultScreenLoopback(null);
@@ -591,9 +591,9 @@ export function createTranscriptionManager({
             if (systemMediaStream === '__process_loopback__') {
                 // Sidecar pumps PCM main-side; no renderer-side audio graph.
                 setSystemActive(true);
-                addChatMessage('system', `Capturing audio from PID ${selection.id}`);
-                showFeedback('Per-process capture on', 'success');
-                addMonitorLog('info', 'source-active', 'Per-process capture active', 'system');
+                addChatMessage('system', `正在捕获 PID ${selection.id} 的音频`);
+                showFeedback('按进程捕获已开启', 'success');
+                addMonitorLog('info', 'source-active', '按进程捕获已激活', 'system');
             } else {
                 systemMediaStream.getVideoTracks().forEach((track) => track.stop());
 
@@ -603,13 +603,13 @@ export function createTranscriptionManager({
                 systemScriptProcessor = await buildAudioProcessor(systemAudioContext, systemMediaStream, 'system', () => isSystemActive);
 
                 setSystemActive(true);
-                addChatMessage('system', 'Listening to host audio...');
-                showFeedback('System audio on', 'success');
-                addMonitorLog('info', 'source-active', 'Host source active', 'system');
+                addChatMessage('system', '正在监听主机音频...');
+                showFeedback('系统音频已开启', 'success');
+                addMonitorLog('info', 'source-active', '主机音源已激活', 'system');
             }
         } catch (error) {
             console.error('Failed to start system audio:', error);
-            showFeedback(`System audio failed: ${error.message}`, 'error');
+            showFeedback(`系统音频启动失败：${error.message}`, 'error');
             addMonitorLog('error', 'source-failed', error.message, 'system');
             if (systemMediaStream === '__process_loopback__') {
                 try { await window.electronAPI?.stopProcessAudio?.(); } catch (_) {}
@@ -621,7 +621,7 @@ export function createTranscriptionManager({
             systemScriptProcessor = null;
             setSystemActive(false);
             resetSourceSampleQueue('system');
-            setSourceStatus('system', 'error', `Host error: ${error.message}`);
+            setSourceStatus('system', 'error', `主机错误：${error.message}`);
             try {
                 await window.electronAPI.stopVoiceRecognition('system');
             } catch (_) {}
@@ -636,7 +636,7 @@ export function createTranscriptionManager({
         flushFinalTranscript('system', 'stop-request');
         if (systemMediaStream === '__process_loopback__') {
             try { await window.electronAPI?.stopProcessAudio?.(); } catch (error) {
-                addMonitorLog('error', 'stop-failed', error.message || 'Failed to stop process audio', 'system');
+                addMonitorLog('error', 'stop-failed', error.message || '停止按进程捕获失败', 'system');
             }
         } else {
             stopAudioResources(systemAudioContext, systemMediaStream, systemScriptProcessor);
@@ -648,14 +648,14 @@ export function createTranscriptionManager({
         try {
             await window.electronAPI.stopVoiceRecognition('system');
         } catch (error) {
-            addMonitorLog('error', 'stop-failed', error.message || 'Failed to stop host source', 'system');
+            addMonitorLog('error', 'stop-failed', error.message || '停止主机音源失败', 'system');
         }
         setSystemActive(false);
         resetSourceSampleQueue('system');
         audioPipeline.resetChunkCounter('system');
-        setSourceStatus('system', 'off', 'Host source stopped');
-        addMonitorLog('info', 'source-stopped', 'Host source stopped', 'system');
-        showFeedback('System audio off', 'info');
+        setSourceStatus('system', 'off', '主机音源已停止');
+        addMonitorLog('info', 'source-stopped', '主机音源已停止', 'system');
+        showFeedback('系统音频已关闭', 'info');
     }
 
     function handleVoskPartial(data) {
@@ -665,7 +665,7 @@ export function createTranscriptionManager({
         if (!isSourceActive(source)) return;
 
         const trimmed = text.trim();
-        monitorLastText[source] = `Live: ${trimmed}`;
+        monitorLastText[source] = `实时：${trimmed}`;
         renderMonitorState();
 
         // Show the merged finals so far (from the buffer) plus the live
@@ -684,9 +684,9 @@ export function createTranscriptionManager({
 
         const finalText = text.trim();
         const emotion = data?.emotion && data.emotion.tag ? data.emotion : null;
-        monitorLastText[source] = `Final: ${finalText}`;
+        monitorLastText[source] = `最终：${finalText}`;
         renderMonitorState();
-        addMonitorLog('info', 'final', 'Final transcript received', source, {
+        addMonitorLog('info', 'final', '已收到最终转写', source, {
             chars: finalText.length,
             emotion: emotion ? `${emotion.tag}/${emotion.confidence ?? '?'}` : null
         });
@@ -705,26 +705,26 @@ export function createTranscriptionManager({
         console.log(`STT status [${source}]:`, status, message);
 
         if (status === 'loading') {
-            setSourceStatus(source, 'connecting', `Connecting (${sourceLabel(source)})...`);
-            showFeedback(`Connecting (${sourceLabel(source)})...`, 'info');
-            addMonitorLog('info', 'status-loading', message || 'Connection requested', source);
+            setSourceStatus(source, 'connecting', `正在连接（${sourceLabel(source)}）...`);
+            showFeedback(`正在连接（${sourceLabel(source)}）...`, 'info');
+            addMonitorLog('info', 'status-loading', message || '已请求连接', source);
         } else if (status === 'listening') {
-            setSourceStatus(source, 'listening', `Listening (${sourceLabel(source)})...`);
-            showFeedback(`Listening (${sourceLabel(source)})...`, 'success');
-            addMonitorLog('info', 'status-listening', message || 'Source listening', source);
+            setSourceStatus(source, 'listening', `监听中（${sourceLabel(source)}）...`);
+            showFeedback(`监听中（${sourceLabel(source)}）...`, 'success');
+            addMonitorLog('info', 'status-listening', message || '音源监听中', source);
         } else if (status === 'stopped') {
-            setSourceStatus(source, 'off', `${sourceLabel(source)} stopped`);
-            showFeedback(`Stopped (${sourceLabel(source)})`, 'info');
-            addMonitorLog('info', 'status-stopped', message || 'Source stopped', source);
+            setSourceStatus(source, 'off', `${sourceLabel(source)} 已停止`);
+            showFeedback(`已停止（${sourceLabel(source)}）`, 'info');
+            addMonitorLog('info', 'status-stopped', message || '音源已停止', source);
         }
     }
 
     function handleVoskError(data) {
         const source = normalizeSource(data?.source);
-        const error = data?.error || 'Unknown transcription error';
+        const error = data?.error || '未知转写错误';
         console.error(`STT error [${source}]:`, error);
-        showFeedback(`Error (${sourceLabel(source)}): ${error}`, 'error');
-        addChatMessage('system', `Transcription error (${sourceLabel(source)}): ${error}`);
+        showFeedback(`错误（${sourceLabel(source)}）：${error}`, 'error');
+        addChatMessage('system', `转写出错（${sourceLabel(source)}）：${error}`);
         addMonitorLog('error', 'status-error', error, source);
         flushFinalTranscript(source, 'status-error');
 
@@ -748,7 +748,7 @@ export function createTranscriptionManager({
             resetFinalTranscriptBuffer('mic');
         }
 
-        setSourceStatus(source, 'error', `Error: ${error}`);
+        setSourceStatus(source, 'error', `错误：${error}`);
         updateTranscriptionUI();
     }
 
@@ -775,8 +775,8 @@ export function createTranscriptionManager({
             resetSourceSampleQueue('mic');
             resetFinalTranscriptBuffer('mic');
         }
-        setSourceStatus(source, 'off', `${sourceLabel(source)} stopped`);
-        addMonitorLog('info', 'stopped-event', 'Stop acknowledged by backend', source);
+        setSourceStatus(source, 'off', `${sourceLabel(source)} 已停止`);
+        addMonitorLog('info', 'stopped-event', '后端已确认停止', source);
     }
 
     return {

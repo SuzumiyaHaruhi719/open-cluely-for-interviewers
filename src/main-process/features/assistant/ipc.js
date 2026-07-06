@@ -10,10 +10,10 @@ function registerAssistantIpc({
   let chatContext = [];
 
   function getAllKeysUnavailableMessage() {
-    return 'The configured DashScope API key is unavailable (quota exhausted or invalid). Please wait or update the key in Settings.';
+    return '配置的 DashScope API 密钥不可用（额度用尽或无效）。请稍后重试或在设置中更新密钥。';
   }
 
-  function mapAiErrorMessage(error, fallbackPrefix = 'Request failed') {
+  function mapAiErrorMessage(error, fallbackPrefix = '请求失败') {
     const message = String(error?.message || '');
     const normalizedMessage = message.toLowerCase();
 
@@ -22,7 +22,7 @@ function registerAssistantIpc({
     }
 
     if (normalizedMessage.includes('no api key configured') || normalizedMessage.includes('no gemini api key')) {
-      return 'No AI API key configured. Add a DashScope key in Settings.';
+      return '未配置 AI API 密钥。请在设置中添加 DashScope 密钥。';
     }
 
     if (
@@ -36,7 +36,7 @@ function registerAssistantIpc({
       normalizedMessage.includes('401') ||
       normalizedMessage.includes('403')
     ) {
-      return 'Invalid DashScope API key. Please check the key in Settings.';
+      return 'DashScope API 密钥无效。请在设置中检查密钥。';
     }
 
     if (
@@ -44,11 +44,11 @@ function registerAssistantIpc({
       normalizedMessage.includes('daily request limit') ||
       normalizedMessage.includes('exceeded your current quota')
     ) {
-      return 'API quota exceeded. Please try again later.';
+      return 'API 额度已用尽，请稍后重试。';
     }
 
     if (normalizedMessage.includes('network') || normalizedMessage.includes('fetch')) {
-      return 'Network error. Please check your internet connection.';
+      return '网络错误，请检查网络连接。';
     }
 
     if (
@@ -57,11 +57,11 @@ function registerAssistantIpc({
       normalizedMessage.includes('does not exist or you do not have access') ||
       normalizedMessage.includes('invalidparameter.model')
     ) {
-      return 'Selected DashScope model is not available. Open Settings and pick a different one (e.g. deepseek-v4-flash or qwen3.6-plus).';
+      return '所选 DashScope 模型不可用。请打开设置并选择其他模型（如 deepseek-v4-flash 或 qwen3.6-plus）。';
     }
 
     if (normalizedMessage.includes('model')) {
-      return 'AI model error. Please try a different model.';
+      return 'AI 模型错误，请尝试其他模型。';
     }
 
     return message ? `${fallbackPrefix}: ${message}` : fallbackPrefix;
@@ -84,14 +84,14 @@ function registerAssistantIpc({
 
     if (!geminiRuntime.hasApiKeys()) {
       sendToRenderer('analysis-result', {
-        error: 'No AI API key configured. Add a DashScope key in Settings.'
+        error: '未配置 AI API 密钥。请在设置中添加 DashScope 密钥。'
       });
       return;
     }
 
     if (!screenshotManager.hasScreenshots()) {
       sendToRenderer('analysis-result', {
-        error: 'No screenshots to analyze. Take a screenshot first.'
+        error: '没有可分析的截图，请先截图。'
       });
       return;
     }
@@ -106,7 +106,7 @@ function registerAssistantIpc({
 
       if (imageParts.length === 0) {
         sendToRenderer('analysis-result', {
-          error: 'No enabled screenshots selected for analysis.'
+          error: '当前所选截图均未启用，无法进行分析。'
         });
         return;
       }
@@ -118,7 +118,7 @@ function registerAssistantIpc({
 
       const text = await geminiRuntime.executeWithKeyFailover((geminiService) => {
         if (!geminiService || !geminiService.modelName) {
-          throw new Error('AI model not initialized. Please check your API key.');
+          throw new Error('AI 模型未初始化，请检查 API 密钥。');
         }
 
         return geminiService.analyzeScreenshots(
@@ -142,7 +142,7 @@ function registerAssistantIpc({
 
       sendToRenderer('ai-stream-end', { actionId: 'screenAi' });
       sendToRenderer('analysis-result', {
-        error: mapAiErrorMessage(error, 'Analysis failed')
+        error: mapAiErrorMessage(error, '分析失败')
       });
     }
   }
@@ -199,7 +199,7 @@ function registerAssistantIpc({
       asrService.flushAllSttHistoryBuffers('pre-ask-ai');
 
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
+        throw new Error('未配置 AI API 密钥。请在设置中添加 DashScope 密钥。');
       }
 
       const transcriptContext = typeof payload?.transcriptContext === 'string'
@@ -218,7 +218,7 @@ function registerAssistantIpc({
       if (!transcriptContext && !contextString && !screenshotManager.hasScreenshots()) {
         return {
           success: false,
-          error: 'No transcript or screenshots available yet. Start transcription or capture a screenshot first.',
+          error: '暂无转写或截图。请先开始转写或截图。',
           mode,
           usedScreenshots: false
         };
@@ -244,7 +244,7 @@ function registerAssistantIpc({
           usedScreenshotCount = imageParts.length;
           text = await geminiRuntime.executeWithKeyFailover((geminiService) => {
             if (!geminiService || !geminiService.modelName) {
-              throw new Error('AI model not initialized. Please check your API key.');
+              throw new Error('AI 模型未初始化，请检查 API 密钥。');
             }
 
             return geminiService.askAiWithSessionContextAndScreenshots(imageParts, {
@@ -262,7 +262,7 @@ function registerAssistantIpc({
       if (!text) {
         text = await geminiRuntime.executeWithKeyFailover((geminiService) => {
           if (!geminiService || !geminiService.modelName) {
-            throw new Error('AI model not initialized. Please check your API key.');
+            throw new Error('AI 模型未初始化，请检查 API 密钥。');
           }
 
           return geminiService.askAiWithSessionContext({
@@ -290,7 +290,7 @@ function registerAssistantIpc({
       sendToRenderer('ai-stream-end', { actionId: 'askAi' });
       return {
         success: false,
-        error: mapAiErrorMessage(error, 'Ask AI failed'),
+        error: mapAiErrorMessage(error, '询问 AI 失败'),
         mode,
         usedScreenshots: false
       };
@@ -323,7 +323,7 @@ function registerAssistantIpc({
     try {
       asrService.flushAllSttHistoryBuffers('pre-suggest');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
+        throw new Error('未配置 AI API 密钥。请在设置中添加 DashScope 密钥。');
       }
 
       const payload = typeof context === 'object' && context !== null
@@ -331,7 +331,7 @@ function registerAssistantIpc({
         : { context };
       const contextPrompt = typeof payload.context === 'string'
         ? payload.context
-        : 'Current meeting conversation';
+        : '当前会议对话';
       const contextStringOverride = typeof payload.contextString === 'string'
         ? payload.contextString
         : '';
@@ -343,7 +343,7 @@ function registerAssistantIpc({
 
       const suggestions = await geminiRuntime.executeWithKeyFailover((geminiService) => {
         if (!geminiService || !geminiService.modelName) {
-          throw new Error('AI service not initialized');
+          throw new Error('AI 服务未初始化');
         }
 
         return geminiService.suggestResponse(contextPrompt, {
@@ -357,7 +357,7 @@ function registerAssistantIpc({
     } catch (error) {
       console.error('Error generating suggestions:', error);
       sendToRenderer('ai-stream-end', { actionId: 'suggest' });
-      return { success: false, error: mapAiErrorMessage(error, 'Failed to generate suggestions') };
+      return { success: false, error: mapAiErrorMessage(error, '生成建议失败') };
     }
   });
 
@@ -365,7 +365,7 @@ function registerAssistantIpc({
     try {
       asrService.flushAllSttHistoryBuffers('pre-notes');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
+        throw new Error('未配置 AI API 密钥。请在设置中添加 DashScope 密钥。');
       }
 
       const contextStringOverride = typeof payload?.contextString === 'string'
@@ -379,7 +379,7 @@ function registerAssistantIpc({
 
       const notes = await geminiRuntime.executeWithKeyFailover((geminiService) => {
         if (!geminiService || !geminiService.modelName) {
-          throw new Error('AI service not initialized');
+          throw new Error('AI 服务未初始化');
         }
 
         return geminiService.generateMeetingNotes({
@@ -393,7 +393,7 @@ function registerAssistantIpc({
     } catch (error) {
       console.error('Error generating meeting notes:', error);
       sendToRenderer('ai-stream-end', { actionId: 'notes' });
-      return { success: false, error: mapAiErrorMessage(error, 'Failed to generate meeting notes') };
+      return { success: false, error: mapAiErrorMessage(error, '生成会议纪要失败') };
     }
   });
 
@@ -401,12 +401,12 @@ function registerAssistantIpc({
     try {
       asrService.flushAllSttHistoryBuffers('pre-followup');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
+        throw new Error('未配置 AI API 密钥。请在设置中添加 DashScope 密钥。');
       }
 
       const email = await geminiRuntime.executeWithKeyFailover((geminiService) => {
         if (!geminiService || !geminiService.modelName) {
-          throw new Error('AI service not initialized');
+          throw new Error('AI 服务未初始化');
         }
 
         return geminiService.generateFollowUpEmail();
@@ -415,7 +415,7 @@ function registerAssistantIpc({
       return { success: true, email };
     } catch (error) {
       console.error('Error generating email:', error);
-      return { success: false, error: mapAiErrorMessage(error, 'Failed to generate follow-up email') };
+      return { success: false, error: mapAiErrorMessage(error, '生成跟进邮件失败') };
     }
   });
 
@@ -423,12 +423,12 @@ function registerAssistantIpc({
     try {
       asrService.flushAllSttHistoryBuffers('pre-answer');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
+        throw new Error('未配置 AI API 密钥。请在设置中添加 DashScope 密钥。');
       }
 
       const answer = await geminiRuntime.executeWithKeyFailover((geminiService) => {
         if (!geminiService || !geminiService.modelName) {
-          throw new Error('AI service not initialized');
+          throw new Error('AI 服务未初始化');
         }
 
         return geminiService.answerQuestion(question);
@@ -437,7 +437,7 @@ function registerAssistantIpc({
       return { success: true, answer };
     } catch (error) {
       console.error('Error answering question:', error);
-      return { success: false, error: mapAiErrorMessage(error, 'Failed to answer question') };
+      return { success: false, error: mapAiErrorMessage(error, '回答问题失败') };
     }
   });
 
@@ -445,7 +445,7 @@ function registerAssistantIpc({
     try {
       asrService.flushAllSttHistoryBuffers('pre-insights');
       if (!geminiRuntime.hasApiKeys()) {
-        throw new Error('No AI API key configured. Add a DashScope key in Settings.');
+        throw new Error('未配置 AI API 密钥。请在设置中添加 DashScope 密钥。');
       }
 
       const contextStringOverride = typeof payload?.contextString === 'string'
@@ -459,7 +459,7 @@ function registerAssistantIpc({
 
       const insights = await geminiRuntime.executeWithKeyFailover((geminiService) => {
         if (!geminiService || !geminiService.modelName) {
-          throw new Error('AI service not initialized');
+          throw new Error('AI 服务未初始化');
         }
 
         return geminiService.getConversationInsights({
@@ -473,7 +473,7 @@ function registerAssistantIpc({
     } catch (error) {
       console.error('Error getting insights:', error);
       sendToRenderer('ai-stream-end', { actionId: 'insights' });
-      return { success: false, error: mapAiErrorMessage(error, 'Failed to get conversation insights') };
+      return { success: false, error: mapAiErrorMessage(error, '获取对话洞察失败') };
     }
   });
 

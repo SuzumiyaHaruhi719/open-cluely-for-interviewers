@@ -179,7 +179,7 @@ export function createShortcutManager({ settingsShortcutsList }) {
         if (!configuredKeyboardShortcuts.length) {
             const emptyState = document.createElement('div');
             emptyState.className = 'settings-shortcuts-empty';
-            emptyState.textContent = 'No shortcuts configured.';
+            emptyState.textContent = '未配置快捷键。';
             settingsShortcutsList.appendChild(emptyState);
             return;
         }

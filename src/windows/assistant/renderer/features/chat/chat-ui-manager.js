@@ -63,7 +63,7 @@ export function createChatUiManager({
             messageDiv.classList.add(record.includeInAi ? 'ai-included' : 'ai-excluded');
         }
 
-        const timestamp = timestampDate.toLocaleTimeString('en-US', {
+        const timestamp = timestampDate.toLocaleTimeString('zh-CN', {
             hour: '2-digit',
             minute: '2-digit'
         });
@@ -77,7 +77,7 @@ export function createChatUiManager({
             case 'voice':
             case 'voice-mic':
                 icon = '\u{1F3A4}';
-                label = 'You';
+                label = '你';
                 // Amber "interviewer / microphone" lane (see chat.css). The
                 // class drives the left accent bar + mono lane marker; colour
                 // comes from --interviewer, never hard-coded here.
@@ -86,7 +86,7 @@ export function createChatUiManager({
 
             case 'voice-system':
                 icon = '\u{1F50A}';
-                label = 'Candidate';
+                label = '候选人';
                 // Teal "candidate / computer audio" lane.
                 messageDiv.classList.add('lane-candidate');
                 break;
@@ -103,7 +103,7 @@ export function createChatUiManager({
 
             case 'interviewer-coach':
                 icon = '\u{1F3AF}';
-                label = 'AI follow-up';
+                label = 'AI 追问';
                 contentClass = 'message-content interviewer-coach';
                 safeContent = formatResponse(content);
                 // Indigo AI follow-up card styling (see chat.css). The class is
@@ -122,12 +122,12 @@ export function createChatUiManager({
 
         const labelHtml = label ? `<span class="message-label">${label}</span>` : '';
         const toggleHtml = record.canToggleAi
-            ? `<button class="ai-include-toggle ${record.includeInAi ? 'included' : 'excluded'}" data-message-id="${record.id}" type="button" aria-label="Toggle AI context" aria-pressed="${record.includeInAi ? 'true' : 'false'}">${record.includeInAi ? '-' : '+'}</button>`
+            ? `<button class="ai-include-toggle ${record.includeInAi ? 'included' : 'excluded'}" data-message-id="${record.id}" type="button" aria-label="切换 AI 上下文" aria-pressed="${record.includeInAi ? 'true' : 'false'}">${record.includeInAi ? '-' : '+'}</button>`
             : '';
-        const copyHtml = `<button class="message-copy-btn" data-message-id="${record.id}" type="button" aria-label="Copy message"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>`;
+        const copyHtml = `<button class="message-copy-btn" data-message-id="${record.id}" type="button" aria-label="复制消息"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>`;
         const messageActionsHtml = `<span class="message-actions">${toggleHtml}${copyHtml}</span>`;
         const exclusionHtml = record.canToggleAi
-            ? '<div class="ai-excluded-note">Excluded from AI context</div>'
+            ? '<div class="ai-excluded-note">已排除出 AI 上下文</div>'
             : '';
 
         const messageContent = `
@@ -329,7 +329,7 @@ export function createChatUiManager({
             card.dataset.priority = normalizedPriority;
         }
 
-        const timestamp = timestampDate.toLocaleTimeString('en-US', {
+        const timestamp = timestampDate.toLocaleTimeString('zh-CN', {
             hour: '2-digit',
             minute: '2-digit'
         });
@@ -344,7 +344,7 @@ export function createChatUiManager({
 
         const labelSpan = document.createElement('span');
         labelSpan.className = 'message-label';
-        labelSpan.textContent = 'AI follow-up';
+        labelSpan.textContent = 'AI 追问';
 
         header.append(iconSpan, labelSpan);
 
@@ -361,12 +361,12 @@ export function createChatUiManager({
         const copyBtn = document.createElement('button');
         copyBtn.type = 'button';
         copyBtn.className = 'message-copy-btn question-card__copy';
-        copyBtn.setAttribute('aria-label', 'Copy question');
+        copyBtn.setAttribute('aria-label', '复制问题');
         copyBtn.innerHTML = COPY_ICON_SVG; // static constant only.
         copyBtn.addEventListener('click', async (event) => {
             event.stopPropagation();
             const ok = await copyTextToClipboard(questionText);
-            showFeedback?.(ok ? 'Question copied' : 'Copy failed', ok ? 'success' : 'error');
+            showFeedback?.(ok ? '问题已复制' : '复制失败', ok ? 'success' : 'error');
         });
         actions.appendChild(copyBtn);
         header.appendChild(actions);
@@ -421,7 +421,7 @@ export function createChatUiManager({
 
         const text = String(chatManualInput.value || '').trim();
         if (!text) {
-            showFeedback?.('Type a message first', 'error');
+            showFeedback?.('请先输入消息', 'error');
             return;
         }
 
@@ -429,7 +429,7 @@ export function createChatUiManager({
         addMonitorLog?.('info', 'manual-context-added', 'Manual context message added', 'mic', {
             chars: text.length
         });
-        showFeedback?.('Manual context added', 'success');
+        showFeedback?.('已添加手动上下文', 'success');
 
         chatManualInput.value = '';
         autoResizeManualInput();

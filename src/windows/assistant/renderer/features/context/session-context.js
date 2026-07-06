@@ -162,11 +162,11 @@ export function createSessionContextPanel({ rootEl }) {
 
     const text = document.createElement('p');
     text.className = 'session-empty__text';
-    text.textContent = 'No session context yet';
+    text.textContent = '暂无会话上下文';
 
     const hint = document.createElement('p');
     hint.className = 'session-empty__hint';
-    hint.textContent = 'Context builds automatically after each Expert-mode question.';
+    hint.textContent = 'Expert 模式下每次追问后会自动构建上下文。';
 
     empty.append(icon, text, hint);
     return empty;
@@ -185,7 +185,7 @@ export function createSessionContextPanel({ rootEl }) {
     if (profile) {
       fragment.appendChild(
         buildSection({
-          title: 'Candidate profile',
+          title: '候选人画像',
           iconSvg: ICON_PROFILE,
           accentVar: 'var(--candidate, #2dd4bf)',
           count: undefined,
@@ -198,7 +198,7 @@ export function createSessionContextPanel({ rootEl }) {
     if (drilled.length > 0) {
       fragment.appendChild(
         buildSection({
-          title: 'Topics drilled',
+          title: '已追问话题',
           iconSvg: ICON_LAYERS,
           accentVar: 'var(--candidate, #2dd4bf)',
           count: drilled.length,
@@ -211,7 +211,7 @@ export function createSessionContextPanel({ rootEl }) {
     if (competencies.length > 0) {
       fragment.appendChild(
         buildSection({
-          title: 'Competencies covered',
+          title: '已覆盖能力',
           iconSvg: ICON_CHECK,
           accentVar: 'var(--success, #3fb950)',
           count: competencies.length,
@@ -224,7 +224,7 @@ export function createSessionContextPanel({ rootEl }) {
     if (gaps.length > 0) {
       fragment.appendChild(
         buildSection({
-          title: 'Open gaps',
+          title: '待考察项',
           iconSvg: ICON_GAP,
           accentVar: 'var(--interviewer, #f5a524)',
           count: gaps.length,
@@ -237,7 +237,7 @@ export function createSessionContextPanel({ rootEl }) {
     if (asked.length > 0) {
       fragment.appendChild(
         buildSection({
-          title: 'Questions asked',
+          title: '已提问数',
           iconSvg: ICON_QUESTION,
           accentVar: 'var(--ai, #7c8cf8)',
           count: asked.length,

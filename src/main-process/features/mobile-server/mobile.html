@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="theme-color" content="#0d1117">
-  <title>Open Cluely</title>
+  <title>面试官助手</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -123,7 +123,7 @@
     }
 
     .messages:empty::after {
-      content: 'No messages yet.\nTake a screenshot or type a question.';
+      content: '暂无消息。\n截图或输入问题开始。';
       display: block;
       text-align: center;
       color: var(--text-muted);
@@ -357,12 +357,12 @@
   <div class="header">
     <div class="header-left">
       <div class="header-logo">✦</div>
-      <span class="header-title">Open Cluely</span>
+      <span class="header-title">面试官助手</span>
     </div>
     <div class="header-right">
       <div class="status-pill" id="statusPill">
         <div class="status-dot"></div>
-        <span id="statusText">Connecting</span>
+        <span id="statusText">连接中</span>
       </div>
     </div>
   </div>
@@ -375,10 +375,10 @@
     <textarea
       class="context-input"
       id="contextInput"
-      placeholder="Type a question or context for AI…"
+      placeholder="输入问题或上下文…"
       rows="1"
     ></textarea>
-    <button class="send-btn" onclick="askAi()" title="Ask AI">
+    <button class="send-btn" onclick="askAi()" title="问 AI">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="22" y1="2" x2="11" y2="13"/>
         <polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -394,7 +394,7 @@
         <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
         <circle cx="12" cy="13" r="4"/>
       </svg>
-      <span class="btn-label">Screenshot</span>
+      <span class="btn-label">截图</span>
       <div class="ss-badge" id="ssBadge">0</div>
     </button>
 
@@ -402,7 +402,7 @@
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 2l2.09 6.26L20.18 10l-4.73 4.74 1.18 6.26L12 18l-4.63 3 1.18-6.26L3.82 10l6.09-1.74z"/>
       </svg>
-      <span class="btn-label">Ask AI</span>
+      <span class="btn-label">问 AI</span>
     </button>
 
     <button class="tool-btn autoscroll" id="btnAutoScroll" onclick="toggleAutoScroll()" aria-pressed="true">
@@ -410,7 +410,7 @@
         <polyline points="7 13 12 18 17 13"/>
         <line x1="12" y1="18" x2="12" y2="4"/>
       </svg>
-      <span class="btn-label" id="autoScrollLabel">Auto-scroll</span>
+      <span class="btn-label" id="autoScrollLabel">自动滚动</span>
     </button>
 
     <button class="tool-btn clear" id="btnClear" onclick="clearConversation()">
@@ -420,7 +420,7 @@
         <path d="M10 11v6M14 11v6"/>
         <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
       </svg>
-      <span class="btn-label">Clear</span>
+      <span class="btn-label">清空</span>
     </button>
 
   </div>
@@ -480,13 +480,13 @@
       ws.onopen = () => {
         isConnected = true;
         statusPill.classList.add('connected');
-        statusText.textContent = 'Connected';
+        statusText.textContent = '已连接';
       };
 
       ws.onclose = () => {
         isConnected = false;
         statusPill.classList.remove('connected');
-        statusText.textContent = 'Reconnecting';
+        statusText.textContent = '重连中';
         scheduleReconnect();
       };
 
@@ -515,13 +515,13 @@
         case 'connected':
           screenshotsCount = data.screenshotsCount || 0;
           updateBadge();
-          addSysMsg(`Connected · ${screenshotsCount} screenshot(s) on file`);
+          addSysMsg(`已连接 · 已有 ${screenshotsCount} 张截图`);
           break;
 
         case 'screenshot-taken-stealth':
           screenshotsCount = data.count || 0;
           updateBadge();
-          addSysMsg(`📸 Screenshot #${screenshotsCount} captured`);
+          addSysMsg(`📸 已截取第 ${screenshotsCount} 张截图`);
           break;
 
         case 'ai-stream-start':
@@ -546,18 +546,18 @@
           break;
 
         case 'vosk-final': {
-          const label = data.source === 'system' ? 'Host' : 'You (mic)';
+          const label = data.source === 'system' ? '主机' : '你（麦克风）';
           addTranscriptMsg(data.text || '', label);
           break;
         }
 
         case 'clear-done':
           clearMessages();
-          addSysMsg('💬 Conversation cleared');
+          addSysMsg('💬 对话已清空');
           break;
 
         case 'error':
-          showToast(data.message || 'Unknown error', 'error');
+          showToast(data.message || '未知错误', 'error');
           break;
       }
     }
@@ -573,24 +573,24 @@
     // ── Actions ───────────────────────────────────────────────────────────────
 
     function takeScreenshot() {
-      if (!isConnected) { showToast('Not connected', 'error'); return; }
+      if (!isConnected) { showToast('未连接', 'error'); return; }
       sendJson({ type: 'take-screenshot' });
     }
 
     function askAi() {
-      if (!isConnected) { showToast('Not connected', 'error'); return; }
+      if (!isConnected) { showToast('未连接', 'error'); return; }
       const contextString = contextInput.value.trim();
       sendJson({ type: 'ask-ai', contextString });
 
       if (contextString) {
-        addTranscriptMsg(contextString, 'You (typed)');
+        addTranscriptMsg(contextString, '你（输入）');
         contextInput.value = '';
         contextInput.style.height = 'auto';
       }
     }
 
     function clearConversation() {
-      if (!isConnected) { showToast('Not connected', 'error'); return; }
+      if (!isConnected) { showToast('未连接', 'error'); return; }
       sendJson({ type: 'clear-conversation' });
     }
 
@@ -633,7 +633,7 @@
 
       const lbl = document.createElement('div');
       lbl.className = 'msg-label';
-      lbl.textContent = 'Open Cluely';
+      lbl.textContent = '面试官助手';
 
       const bubble = document.createElement('div');
       bubble.className = 'msg-bubble';
@@ -669,7 +669,7 @@
       const enabled = autoScrollEnabled();
       btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
       btn.classList.toggle('off', !enabled);
-      if (label) label.textContent = enabled ? 'Auto-scroll' : 'Scroll off';
+      if (label) label.textContent = enabled ? '自动滚动' : '停止滚动';
     }
     function toggleAutoScroll() { setAutoScrollEnabled(!autoScrollEnabled()); }
 

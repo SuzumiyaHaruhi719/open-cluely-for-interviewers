@@ -39,7 +39,7 @@ function buildModalScrim() {
   return { scrim, card };
 }
 
-function openConfirmDialog({ title, message, confirmLabel = 'Confirm', danger = false }) {
+function openConfirmDialog({ title, message, confirmLabel = '确认', danger = false }) {
   return new Promise((resolve) => {
     const { scrim, card } = buildModalScrim();
 
@@ -57,7 +57,7 @@ function openConfirmDialog({ title, message, confirmLabel = 'Confirm', danger = 
     const cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
     cancelBtn.className = 'app-modal__btn app-modal__btn--secondary';
-    cancelBtn.textContent = 'Cancel';
+    cancelBtn.textContent = '取消';
 
     const okBtn = document.createElement('button');
     okBtn.type = 'button';
@@ -86,7 +86,7 @@ function openConfirmDialog({ title, message, confirmLabel = 'Confirm', danger = 
   });
 }
 
-function openPromptDialog({ title, label, value = '', confirmLabel = 'Save' }) {
+function openPromptDialog({ title, label, value = '', confirmLabel = '保存' }) {
   return new Promise((resolve) => {
     const { scrim, card } = buildModalScrim();
 
@@ -114,7 +114,7 @@ function openPromptDialog({ title, label, value = '', confirmLabel = 'Save' }) {
     const cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
     cancelBtn.className = 'app-modal__btn app-modal__btn--secondary';
-    cancelBtn.textContent = 'Cancel';
+    cancelBtn.textContent = '取消';
 
     const okBtn = document.createElement('button');
     okBtn.type = 'button';
@@ -155,30 +155,30 @@ function startOfDay(ts) {
 function groupKeyFor(ts, nowStartOfDay) {
   const dayStart = startOfDay(ts);
   if (dayStart >= nowStartOfDay) {
-    return 'Today';
+    return '今天';
   }
   if (dayStart >= nowStartOfDay - DAY_MS) {
-    return 'Yesterday';
+    return '昨天';
   }
-  return 'Earlier';
+  return '更早';
 }
 
 function formatRelativeTime(ts, now) {
   const diff = Math.max(0, now - ts);
   const minutes = Math.floor(diff / 60000);
   if (minutes < 1) {
-    return 'just now';
+    return '刚刚';
   }
   if (minutes < 60) {
-    return `${minutes}m ago`;
+    return `${minutes}分钟前`;
   }
   const hours = Math.floor(minutes / 60);
   if (hours < 24) {
-    return `${hours}h ago`;
+    return `${hours}小时前`;
   }
   const days = Math.floor(hours / 24);
   if (days < 7) {
-    return `${days}d ago`;
+    return `${days}天前`;
   }
   return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
@@ -199,7 +199,7 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
     setIcon(iconSpan, ICON_PLUS);
     const labelSpan = document.createElement('span');
     labelSpan.className = 'history-new-btn__label';
-    labelSpan.textContent = 'New interview';
+    labelSpan.textContent = '新建面试';
     newBtnEl.replaceChildren(iconSpan, labelSpan);
     newBtnEl.addEventListener('click', () => {
       onNewSession?.();
@@ -229,8 +229,8 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
 
     const title = document.createElement('span');
     title.className = 'history-row__title';
-    title.textContent = session.title || 'Untitled interview'; // XSS-safe.
-    title.title = session.title || 'Untitled interview';
+    title.textContent = session.title || '未命名面试'; // XSS-safe.
+    title.title = session.title || '未命名面试';
 
     const meta = document.createElement('span');
     meta.className = 'history-row__time';
@@ -269,8 +269,8 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
     const renameBtn = document.createElement('button');
     renameBtn.type = 'button';
     renameBtn.className = 'history-row__action';
-    renameBtn.title = 'Rename';
-    renameBtn.setAttribute('aria-label', 'Rename interview');
+    renameBtn.title = '重命名';
+    renameBtn.setAttribute('aria-label', '重命名面试');
     setIcon(renameBtn, ICON_PENCIL);
     renameBtn.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -280,8 +280,8 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
     const deleteBtn = document.createElement('button');
     deleteBtn.type = 'button';
     deleteBtn.className = 'history-row__action history-row__action--danger';
-    deleteBtn.title = 'Delete';
-    deleteBtn.setAttribute('aria-label', 'Delete interview');
+    deleteBtn.title = '删除';
+    deleteBtn.setAttribute('aria-label', '删除面试');
     setIcon(deleteBtn, ICON_TRASH);
     deleteBtn.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -304,10 +304,10 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
   async function handleRename(session) {
     const current = session.title || '';
     const next = await openPromptDialog({
-      title: 'Rename interview',
-      label: 'Interview name',
+      title: '重命名面试',
+      label: '面试名称',
       value: current,
-      confirmLabel: 'Save',
+      confirmLabel: '保存',
     });
     if (next === null) {
       return;
@@ -328,11 +328,11 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
   }
 
   async function handleDelete(session) {
-    const label = session.title || 'this interview';
+    const label = session.title || '此面试';
     const confirmed = await openConfirmDialog({
-      title: 'Delete interview',
-      message: `Delete "${label}"? This cannot be undone.`,
-      confirmLabel: 'Delete',
+      title: '删除面试',
+      message: `删除"${label}"？此操作无法撤销。`,
+      confirmLabel: '删除',
       danger: true,
     });
     if (!confirmed) {
@@ -360,10 +360,10 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
     setIcon(icon, ICON_HISTORY);
     const text = document.createElement('p');
     text.className = 'history-empty__text';
-    text.textContent = 'No interviews yet';
+    text.textContent = '暂无面试';
     const hint = document.createElement('p');
     hint.className = 'history-empty__hint';
-    hint.textContent = 'Start a new interview to see it here.';
+    hint.textContent = '开始新面试后会显示在这里。';
     empty.append(icon, text, hint);
     listEl.replaceChildren(empty);
   }
@@ -383,7 +383,7 @@ export function createHistorySidebar({ listEl, newBtnEl, onSelectSession, onNewS
 
     // Index is already sorted newest-first by the store; preserve that order
     // within each group while emitting groups in chronological precedence.
-    const order = ['Today', 'Yesterday', 'Earlier'];
+    const order = ['今天', '昨天', '更早'];
     const groups = new Map(order.map((key) => [key, []]));
     sessions.forEach((session) => {
       const stamp = Number.isFinite(session.lastMessageAt) ? session.lastMessageAt : session.startedAt;

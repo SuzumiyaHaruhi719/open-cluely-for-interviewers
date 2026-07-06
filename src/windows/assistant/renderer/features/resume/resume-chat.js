@@ -25,14 +25,14 @@ export function createResumeChat({ rootEl }) {
   rootEl.classList.add('resume-chat');
   rootEl.innerHTML = `
     <div class="resume-chat__header">
-      <span class="resume-chat__title">Ask about this résumé</span>
+      <span class="resume-chat__title">简历问答</span>
       <select class="resume-chat__model" aria-label="简历对话模型" title="此简历对话使用的模型（选完自动保存）"></select>
-      <button type="button" class="resume-chat__clear" aria-label="Clear résumé chat">Clear</button>
+      <button type="button" class="resume-chat__clear" aria-label="清空简历对话">清空</button>
     </div>
     <div class="resume-chat__messages" role="log" aria-live="polite"></div>
     <form class="resume-chat__composer">
-      <textarea class="resume-chat__input" rows="1" placeholder="Ask anything about the résumé…" aria-label="Ask about the résumé"></textarea>
-      <button type="submit" class="resume-chat__send">Send</button>
+      <textarea class="resume-chat__input" rows="1" placeholder="输入关于简历的问题…" aria-label="简历问答"></textarea>
+      <button type="submit" class="resume-chat__send">发送</button>
     </form>
   `;
 
@@ -78,7 +78,7 @@ export function createResumeChat({ rootEl }) {
     if (pending) {
       const row = document.createElement('div');
       row.className = 'resume-chat__msg resume-chat__msg--assistant resume-chat__msg--pending';
-      row.textContent = 'Thinking…';
+      row.textContent = '思考中…';
       messagesEl.appendChild(row);
     }
     messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -106,14 +106,14 @@ export function createResumeChat({ rootEl }) {
       } else {
         messages.push({
           role: 'assistant',
-          content: (result && result.error) || 'Could not get a reply.',
+          content: (result && result.error) || '无法获取回复。',
           isError: true
         });
       }
     } catch (error) {
       messages.push({
         role: 'assistant',
-        content: error?.message || 'Résumé chat failed.',
+        content: error?.message || '简历对话失败。',
         isError: true
       });
     } finally {

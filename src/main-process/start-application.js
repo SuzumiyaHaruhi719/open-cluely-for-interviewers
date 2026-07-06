@@ -341,7 +341,7 @@ async function startApplication() {
       appEnvironment = loadApplicationEnvironment(app);
     } catch (error) {
       console.error('Failed to load application environment:', error);
-      dialog.showErrorBox('Open-Cluely Configuration Error', error.message);
+      dialog.showErrorBox('面试官 Copilot 配置错误', error.message);
       app.exit(1);
       return;
     }

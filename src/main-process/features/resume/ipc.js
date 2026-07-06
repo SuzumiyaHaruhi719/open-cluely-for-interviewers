@@ -191,7 +191,7 @@ function registerResumeIpc({ ipcMain, app, getAppState, setAppState, saveAppStat
       };
     } catch (error) {
       console.error('Resume upload failed:', error);
-      return { success: false, error: error?.message || 'Failed to read resume' };
+      return { success: false, error: error?.message || '读取简历失败' };
     }
   });
 

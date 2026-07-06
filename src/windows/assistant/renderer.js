@@ -85,7 +85,7 @@ async function ensureActiveSession() {
     if (!window.electronAPI?.createSession) return null;
     activeSessionCreation = (async () => {
         try {
-            const title = `Interview · ${new Date().toLocaleString('en-US', {
+            const title = `面试 · ${new Date().toLocaleString('zh-CN', {
                 month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
             })}`;
             const result = await window.electronAPI.createSession({ title, mode: interviewerMode, interviewType: activeInterviewType });
@@ -99,7 +99,7 @@ async function ensureActiveSession() {
             sessionContextPanel?.update(session.interviewerSessionState || null);
             await historySidebar?.refresh();
             historySidebar?.setActive(activeSessionId);
-            addMonitorLog('info', 'session-auto', 'Started interview session on first activity', null, {
+            addMonitorLog('info', 'session-auto', '首次活动时已创建面试会话', null, {
                 id: activeSessionId,
                 mode: interviewerMode,
                 interviewType: session.interviewType || activeInterviewType
@@ -170,7 +170,7 @@ function renderInterviewerCoachMessage(stage2Parsed, stage1Parsed, meta = null) 
     const score = stage1Parsed?.score;
     const direction = stage1Parsed?.recommended_direction;
     const headerBits = [];
-    if (typeof score === 'number') headerBits.push(`score ${score}`);
+    if (typeof score === 'number') headerBits.push(`评分 ${score}`);
     if (direction) headerBits.push(direction);
     const header = headerBits.length ? `_(${headerBits.join(' · ')})_` : '';
 
@@ -263,7 +263,7 @@ async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
             // why the coach is silent; subsequent skips stay quiet.
             if (response.reason === 'no-dashscope-key' && !interviewerSkipKeyWarned) {
                 interviewerSkipKeyWarned = true;
-                addMonitorLog('warn', 'interviewer', 'AI key (DashScope) not configured — interviewer coach disabled. Add it in Settings.', 'system');
+                addMonitorLog('warn', 'interviewer', 'AI 密钥（DashScope）未配置 — 面试官助手已禁用。请在设置中添加。', 'system');
             }
             return;
         }
@@ -277,16 +277,16 @@ async function triggerInterviewerAnalysis(candidateAnswer, emotion = null) {
             if (response.shouldShowFollowUps) {
                 renderExpertFollowUp(response.output, response.tokensUsed, response.elapsedMs);
             } else {
-                addMonitorLog('info', 'interviewer', 'Expert chain produced no high-confidence follow-up', 'system');
+                addMonitorLog('info', 'interviewer', 'Expert 链未产生高置信度的追问', 'system');
             }
         } else if (response.shouldShowFollowUps && response.stage2?.parsed) {
             renderInterviewerCoachMessage(response.stage2.parsed, response.stage1?.parsed, { model: response.model, tokensUsed: response.tokensUsed, elapsedMs: response.elapsedMs });
         } else {
-            addMonitorLog('info', 'interviewer', `Stage1 score ${response.stage1?.parsed?.score ?? '?'} — no follow-up emitted`, 'system');
+            addMonitorLog('info', 'interviewer', `Stage1 评分 ${response.stage1?.parsed?.score ?? '?'} — 未生成追问`, 'system');
         }
     } catch (err) {
         interviewerProgressCard.fail(requestId);
-        addMonitorLog('error', 'interviewer', err?.message || 'analysis failed', 'system');
+        addMonitorLog('error', 'interviewer', err?.message || '分析失败', 'system');
     } finally {
         interviewerAnalysisInFlight = false;
         // Drain the pending answer (if any final arrived while busy).
@@ -335,13 +335,13 @@ async function handleGenerateQuestionClick() {
 
     // Mirror the other AI actions: bail with feedback if AI isn't configured.
     if (!hasAiConfigured) {
-        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
+        showFeedback('DashScope API 密钥缺失。请在设置中添加。', 'error');
         return;
     }
 
     const candidateAnswer = getLatestCandidateTranscript();
     if (!candidateAnswer) {
-        showFeedback('No candidate answer yet to generate a question from', 'info');
+        showFeedback('暂无候选人回答可用于生成问题', 'info');
         return;
     }
 
@@ -349,7 +349,7 @@ async function handleGenerateQuestionClick() {
     const originalLabel = generateQuestionBtn ? generateQuestionBtn.textContent : '';
     if (generateQuestionBtn) {
         generateQuestionBtn.disabled = true;
-        generateQuestionBtn.textContent = 'Generating…';
+        generateQuestionBtn.textContent = '生成中…';
     }
     try {
         // Same path the candidate-final onFlush auto-trigger uses. No emotion is
@@ -358,12 +358,12 @@ async function handleGenerateQuestionClick() {
         await triggerInterviewerAnalysis(candidateAnswer, null);
     } catch (error) {
         console.error('Generate question failed:', error);
-        showFeedback('Could not generate a question', 'error');
+        showFeedback('无法生成问题', 'error');
     } finally {
         generateQuestionInFlight = false;
         if (generateQuestionBtn) {
             generateQuestionBtn.disabled = false;
-            generateQuestionBtn.textContent = originalLabel || 'Generate Q';
+            generateQuestionBtn.textContent = originalLabel || '生成追问';
         }
     }
 }
@@ -405,7 +405,7 @@ function injectSampleTurns(sample) {
 function populateInterviewSampleOptions() {
     const sel = document.getElementById('interview-sample-select');
     if (!sel) return;
-    const opts = ['<option value="">空白 / Blank (no transcript)</option>']
+    const opts = ['<option value="">空白 / Blank（无转录）</option>']
         .concat(INTERVIEW_SAMPLES.map((s) => `<option value="${s.id}">${s.name}</option>`));
     sel.innerHTML = opts.join('');
 }
@@ -416,7 +416,7 @@ const transcriptBufferManager = createTranscriptBufferManager({
     // doesn't grow without bound.
     mergeWindowMs: 9000,
     onBuffer: ({ source, text, segments }) => {
-        addMonitorLog('info', 'final-buffer', 'Buffered transcript segment', source, {
+        addMonitorLog('info', 'final-buffer', '已缓存转录片段', source, {
             segments,
             chars: text.length
         });
@@ -459,12 +459,12 @@ const transcriptBufferManager = createTranscriptBufferManager({
             source, kind: 'transcript', text
         });
 
-        addMonitorLog('info', 'final-flush', 'Merged transcript committed', source, {
+        addMonitorLog('info', 'final-flush', '已提交合并后的转录', source, {
             reason,
             segments,
             chars: text.length
         });
-        showFeedback('Captured', 'success');
+        showFeedback('已捕获', 'success');
     }
 });
 
@@ -508,7 +508,7 @@ function paintAutoScrollToggle() {
     const enabled = autoScrollEnabledState;
     chatAutoScrollToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
     chatAutoScrollToggle.classList.toggle('off', !enabled);
-    chatAutoScrollToggle.title = enabled ? 'Auto-scroll on (click to disable)' : 'Auto-scroll off (click to enable)';
+    chatAutoScrollToggle.title = enabled ? '自动滚动已开启（点击关闭）' : '自动滚动已关闭（点击开启）';
 }
 
 const mobileServerPill = document.getElementById('mobile-server-pill');
@@ -522,10 +522,10 @@ function paintMobileServerPill() {
 
     if (!mobileServerStatus.listening) {
         mobileServerPill.classList.add('off');
-        mobileServerPillLabel.textContent = mobileServerStatus.error ? 'Mobile · error' : 'Mobile · off';
+        mobileServerPillLabel.textContent = mobileServerStatus.error ? '手机端 · 错误' : '手机端 · 关闭';
         mobileServerPill.title = mobileServerStatus.error
-            ? `Mobile companion not running: ${mobileServerStatus.error}`
-            : 'Mobile companion not running';
+            ? `手机伴侣未运行：${mobileServerStatus.error}`
+            : '手机伴侣未运行';
         return;
     }
 
@@ -537,26 +537,26 @@ function paintMobileServerPill() {
     if (firstUrl) {
         mobileServerPillLabel.textContent = firstUrl.replace(/^http:\/\//, '') + (count > 0 ? ` · ${count}` : '');
     } else {
-        mobileServerPillLabel.textContent = `:${mobileServerStatus.port}` + (count > 0 ? ` · ${count}` : ' · no LAN');
+        mobileServerPillLabel.textContent = `:${mobileServerStatus.port}` + (count > 0 ? ` · ${count}` : ' · 无局域网');
     }
 
     const lines = [
         count > 0
-            ? `Mobile companion: ${count} client(s) connected`
-            : 'Mobile companion listening (no clients yet — click for help)',
+            ? `手机伴侣：${count} 个客户端已连接`
+            : '手机伴侣正在监听（暂无客户端 — 点击查看帮助）',
         ...mobileServerStatus.urls.map(({ url, name, virtual }) => virtual
-            ? `${url}  (${name}) — virtual adapter, phone probably cannot reach this`
+            ? `${url}  (${name}) — 虚拟适配器，手机可能无法访问`
             : `${url}  (${name})`
         )
     ];
     if (mobileServerStatus.urls.length === 0) {
-        lines.push('No non-loopback IPv4 interface detected.');
+        lines.push('未检测到非回环 IPv4 接口。');
     }
     if (mobileServerStatus.urls.some((u) => u.virtual) && mobileServerStatus.urls.some((u) => !u.virtual)) {
-        lines.push('Use the first non-virtual URL on the phone.');
+        lines.push('请在手机上使用第一个非虚拟的 URL。');
     }
     lines.push('');
-    lines.push('Click to copy URL. If the phone times out, run this once in elevated PowerShell:');
+    lines.push('点击复制 URL。如果手机超时，请以管理员身份运行 PowerShell 并执行一次：');
     lines.push('  New-NetFirewallRule -DisplayName "Open-Cluely Mobile" -Direction Inbound -LocalPort 7823 -Protocol TCP -Action Allow -Profile Any');
     mobileServerPill.title = lines.join('\n');
 }
@@ -568,14 +568,14 @@ function copyMobileUrlPickReal() {
 async function copyMobileUrlToClipboard() {
     const url = copyMobileUrlPickReal();
     if (!url) {
-        showFeedback('Mobile server has no LAN URL yet', 'error');
+        showFeedback('手机端尚无局域网 URL', 'error');
         return;
     }
     try {
         await navigator.clipboard.writeText(url);
-        showFeedback(`Copied ${url}`, 'success');
+        showFeedback(`已复制 ${url}`, 'success');
     } catch (err) {
-        showFeedback('Could not copy URL', 'error');
+        showFeedback('无法复制 URL', 'error');
     }
 }
 // The legacy master/per-source transcription toggle trio was replaced by the
@@ -1151,13 +1151,13 @@ async function createSessionWithType(interviewType, sampleId = null) {
     // A picked sample defines its own interview format; otherwise use the card.
     const type = (sample ? sample.interviewType : interviewType) === 'offline' ? 'offline' : 'online';
     try {
-        const title = `Interview · ${new Date().toLocaleString('en-US', {
+        const title = `面试 · ${new Date().toLocaleString('zh-CN', {
             month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
         })}`;
         const result = await window.electronAPI.createSession({ title, mode: interviewerMode, interviewType: type });
         const session = result?.session;
         if (!result?.success || !session) {
-            showFeedback('Could not start a new interview', 'error');
+            showFeedback('无法开始新的面试', 'error');
             return;
         }
         activeSessionId = session.id;
@@ -1183,15 +1183,15 @@ async function createSessionWithType(interviewType, sampleId = null) {
         sessionContextPanel?.update(session.interviewerSessionState || null);
         historySidebar?.setActive(session.id);
         await historySidebar?.refresh();
-        showFeedback(sample ? `样本已载入 / Sample loaded: ${sample.name}` : (type === 'offline' ? '线下面试已开始 / Offline interview started' : 'New interview started'), 'success');
-        addMonitorLog('info', 'session-new', 'Created interview session', null, {
+        showFeedback(sample ? `样本已载入：${sample.name}` : (type === 'offline' ? '线下面试已开始' : '新面试已开始'), 'success');
+        addMonitorLog('info', 'session-new', '已创建面试会话', null, {
             id: session.id,
             mode: interviewerMode,
             interviewType: session.interviewType || type
         });
     } catch (error) {
         console.error('Create session failed:', error);
-        showFeedback('Could not start a new interview', 'error');
+        showFeedback('无法开始新的面试', 'error');
     }
 }
 
@@ -1210,7 +1210,7 @@ function applyInterviewType(interviewType) {
 // rewrites it on repaint, so overwriting textContent here is safe and won't be
 // fought. We stash the original on first change so online restores the exact
 // label channel-control.js rendered.
-const MIC_CHANNEL_OFFLINE_LABEL = '房间麦克风 / Room mic';
+const MIC_CHANNEL_OFFLINE_LABEL = '房间麦克风';
 let micChannelOriginalLabel = null;
 function relabelMicChannel(isOffline) {
     const titleEl = channelMicEl?.querySelector('.channel-title');
@@ -1321,7 +1321,7 @@ async function handleSelectSession(id) {
         const result = await window.electronAPI.loadSession(id);
         const session = result?.session;
         if (!result?.success || !session) {
-            showFeedback('Could not load that interview', 'error');
+            showFeedback('无法加载该面试', 'error');
             return;
         }
         activeSessionId = session.id;
@@ -1361,13 +1361,13 @@ async function handleSelectSession(id) {
         resumeChat?.reset();
         sessionContextPanel?.update(session.interviewerSessionState || null);
         historySidebar?.setActive(session.id);
-        addMonitorLog('info', 'session-load', 'Loaded interview session', null, {
+        addMonitorLog('info', 'session-load', '已加载面试会话', null, {
             id: session.id,
             messages: Array.isArray(session.messages) ? session.messages.length : 0
         });
     } catch (error) {
         console.error('Load session failed:', error);
-        showFeedback('Could not load that interview', 'error');
+        showFeedback('无法加载该面试', 'error');
     }
 }
 
@@ -1420,7 +1420,7 @@ function clearTranscriptUi() {
 
 function setSessionTitle(title) {
     if (sessionTitleEl) {
-        sessionTitleEl.textContent = String(title || 'Untitled interview');
+        sessionTitleEl.textContent = String(title || '未命名面试');
     }
 }
 
@@ -1457,11 +1457,11 @@ function setupResumeDropzone() {
             // résumé chat so it never references a previous résumé.
             resumeChat?.reset();
             if (cleared) {
-                showFeedback('Resume removed', 'info');
-                addMonitorLog('info', 'resume-cleared', 'Resume removed from this interview', null, {});
+                showFeedback('简历已移除', 'info');
+                addMonitorLog('info', 'resume-cleared', '此面试的简历已移除', null, {});
             } else {
-                showFeedback('Resume loaded', 'success');
-                addMonitorLog('info', 'resume-parsed', 'Resume uploaded', null, { chars: chars || 0 });
+                showFeedback('简历已载入', 'success');
+                addMonitorLog('info', 'resume-parsed', '简历已上传', null, { chars: chars || 0 });
             }
         }
     });
@@ -1540,7 +1540,7 @@ async function init() {
         console.log('electronAPI is available');
     } else {
         console.error('electronAPI not available');
-        showFeedback('electronAPI not available', 'error');
+        showFeedback('electronAPI 不可用', 'error');
     }
 
     const settings = await loadShortcutConfig();
@@ -1567,7 +1567,7 @@ async function init() {
             chatMessagesArray = messageStore.getMessages();
             chatMessagesElement.innerHTML = '';
             updateUI();
-            showFeedback('Cleared from mobile', 'info');
+            showFeedback('已从手机端清除', 'info');
         });
     }
     if (mobileServerPill) {
@@ -1628,8 +1628,8 @@ async function init() {
     }
 
     console.log('Renderer initialized - Ready for live transcription!');
-    showFeedback('Ready — start a channel below to begin', 'success');
-    addMonitorLog('info', 'init', 'Renderer initialized');
+    showFeedback('已就绪 — 在下方开启一个频道即可开始', 'success');
+    addMonitorLog('info', 'init', '渲染器已初始化');
 }
 
 function updateWindowOpacityValueLabel(value) {
@@ -1748,18 +1748,18 @@ function applyApiKeyAvailabilityFromSettings(settings) {
 }
 
 // Topbar pill showing which speech-to-text engine is active.
-const ASR_PROVIDER_NAMES = { paraformer: 'Paraformer', xfyun: 'Xunfei', volc: 'Doubao' };
+const ASR_PROVIDER_NAMES = { paraformer: 'Paraformer', xfyun: '讯飞', volc: '豆包' };
 function paintAsrIndicator(provider) {
     const el = document.getElementById('asr-indicator');
     const label = document.getElementById('asr-indicator-label');
     const key = ['paraformer', 'xfyun', 'volc'].includes(provider) ? provider : 'paraformer';
-    if (el) { el.dataset.asr = key; el.setAttribute('title', `Speech-to-text: ${ASR_PROVIDER_NAMES[key]}`); }
+    if (el) { el.dataset.asr = key; el.setAttribute('title', `语音转文字：${ASR_PROVIDER_NAMES[key]}`); }
     if (label) label.textContent = ASR_PROVIDER_NAMES[key];
 }
 
 // Track the interviewer mode from settings so the topbar pill + new-session
 // `mode` stay in sync with what the backend orchestrator will actually run.
-const MODE_LABELS = { fast: 'Fast', expert: 'Expert 1.0', expert2: 'Expert 2.0', customize: 'Customize' };
+const MODE_LABELS = { fast: '快速', expert: 'Expert 1.0', expert2: 'Expert 2.0', customize: '自定义' };
 function applyInterviewerModeFromSettings(settings) {
     const m = settings && settings.interviewerMode;
     interviewerMode = ['expert', 'expert2', 'customize'].includes(m) ? m : 'fast';
@@ -1772,10 +1772,10 @@ function applyInterviewerModeFromSettings(settings) {
 function paintModeIndicator() {
     if (modeIndicatorEl) {
         modeIndicatorEl.dataset.mode = interviewerMode;
-        modeIndicatorEl.setAttribute('title', `Interviewer mode: ${MODE_LABELS[interviewerMode] || 'Fast'}`);
+        modeIndicatorEl.setAttribute('title', `面试官模式：${MODE_LABELS[interviewerMode] || '快速'}`);
     }
     if (modeIndicatorLabel) {
-        modeIndicatorLabel.textContent = MODE_LABELS[interviewerMode] || 'Fast';
+        modeIndicatorLabel.textContent = MODE_LABELS[interviewerMode] || '快速';
     }
 }
 
@@ -1786,13 +1786,13 @@ function paintRecIndicator() {
     const statuses = transcriptionManager?.sourceStatuses || {};
     const values = Object.values(statuses);
     let state = 'idle';
-    let label = 'Idle';
+    let label = '空闲';
     if (values.includes('listening')) {
         state = 'live';
-        label = 'REC';
+        label = '录音中';
     } else if (values.includes('connecting')) {
         state = 'connecting';
-        label = 'Connecting';
+        label = '连接中';
     }
     recIndicatorEl.dataset.state = state;
     if (recIndicatorLabel) recIndicatorLabel.textContent = label;
@@ -1844,7 +1844,7 @@ function buildFilteredAiContextBundle({ charBudget = AI_CONTEXT_CHAR_BUDGET, emi
             addMonitorLog(
                 'info',
                 'context-cap',
-                `Trimmed ${dropped} older context message(s) to stay within ${budget} chars`
+                `已裁剪 ${dropped} 条较早的上下文消息以保持在 ${budget} 字符以内`
             );
         }
     });
@@ -1862,8 +1862,8 @@ function toggleChatMessageInclusion(messageId) {
     updateMessageAiToggleUi(message);
     updateUI();
 
-    const stateText = message.includeInAi ? 'included in' : 'excluded from';
-    addMonitorLog('info', 'ai-context-toggle', `Message ${stateText} AI context`, null, {
+    const stateText = message.includeInAi ? '已纳入' : '已排除';
+    addMonitorLog('info', 'ai-context-toggle', `消息${stateText} AI 上下文`, null, {
         id: message.id,
         type: message.type
     });
@@ -1883,7 +1883,7 @@ function setSourceSelected(source, enabled) {
 
 async function toggleMasterTranscription() {
     if (!hasAsrConfigured) {
-        showFeedback('Speech-recognition credentials missing. Add them in Settings.', 'error');
+        showFeedback('语音识别凭据缺失。请在设置中添加。', 'error');
         return;
     }
 
@@ -1893,11 +1893,11 @@ async function toggleMasterTranscription() {
 // Screenshot functions
 async function takeStealthScreenshot() {
     try {
-        showFeedback('Taking screenshot...', 'info');
+        showFeedback('正在截图...', 'info');
         await window.electronAPI.takeStealthScreenshot();
     } catch (error) {
         console.error('Screenshot error:', error);
-        showFeedback('Screenshot failed', 'error');
+        showFeedback('截图失败', 'error');
     }
 }
 
@@ -1915,18 +1915,18 @@ function buildAskAiContextPayload() {
 
 async function askAiWithSessionContext() {
     if (!hasAiConfigured) {
-        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
+        showFeedback('DashScope API 密钥缺失。请在设置中添加。', 'error');
         return;
     }
 
     if (!window.electronAPI?.askAiWithSessionContext) {
-        showFeedback('Feature not available', 'error');
+        showFeedback('功能不可用', 'error');
         return;
     }
 
     const payload = buildAskAiContextPayload();
     if (!payload.contextString && payload.enabledScreenshotIds.length === 0) {
-        showFeedback('No transcript or screenshots available yet', 'error');
+        showFeedback('暂无可用的转录或截图', 'error');
         return;
     }
 
@@ -1934,24 +1934,24 @@ async function askAiWithSessionContext() {
         const stream = createStreamHandler('askAi');
         try {
             setAnalyzing(true);
-            showLoadingOverlay('Analyzing full session context...');
-            stream.start('**Best Next Answer:**\n\n');
+            showLoadingOverlay('正在分析完整会话上下文...');
+            stream.start('**最佳下一步回答：**\n\n');
 
             const result = await window.electronAPI.askAiWithSessionContext(payload);
 
             if (result?.success && result?.text) {
                 const heading = result.usedScreenshots
-                    ? '**Best Next Answer (Transcript + Screen):**'
-                    : '**Best Next Answer (Transcript):**';
+                    ? '**最佳下一步回答（转录 + 截图）：**'
+                    : '**最佳下一步回答（转录）：**';
                 stream.finalize(`${heading}\n\n${result.text}`);
-                showFeedback('Ask AI ready', 'success');
+                showFeedback('Ask AI 已就绪', 'success');
             } else {
-                throw new Error(result?.error || 'Ask AI failed');
+                throw new Error(result?.error || 'Ask AI 失败');
             }
         } catch (error) {
             console.error('Ask AI error:', error);
-            showFeedback('Ask AI failed', 'error');
-            addChatMessage('system', `Error: ${error.message}`);
+            showFeedback('Ask AI 失败', 'error');
+            addChatMessage('system', `错误：${error.message}`);
         } finally {
             stream.cleanup();
             setAnalyzing(false);
@@ -1962,13 +1962,13 @@ async function askAiWithSessionContext() {
 
 async function analyzeScreenshotsOnly() {
     if (!hasAiConfigured) {
-        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
+        showFeedback('DashScope API 密钥缺失。请在设置中添加。', 'error');
         return;
     }
 
     const bundle = buildFilteredAiContextBundle({ charBudget: AI_CONTEXT_CHAR_BUDGET, emitTruncationLog: true });
     if (bundle.enabledScreenshotIds.length === 0) {
-        showFeedback('No enabled screenshots to analyze', 'error');
+        showFeedback('没有可分析的已启用截图', 'error');
         return;
     }
 
@@ -1977,7 +1977,7 @@ async function analyzeScreenshotsOnly() {
         activeScreenAiStream = stream;
         try {
             setAnalyzing(true);
-            showLoadingOverlay('Analyzing screenshots...');
+            showLoadingOverlay('正在分析截图...');
             stream.start('');
 
             await window.electronAPI.analyzeStealthWithContext({
@@ -1986,7 +1986,7 @@ async function analyzeScreenshotsOnly() {
             });
         } catch (error) {
             console.error('Analysis error:', error);
-            showFeedback('Analysis failed', 'error');
+            showFeedback('分析失败', 'error');
             setAnalyzing(false);
             hideLoadingOverlay();
             // Clean up on error since onAnalysisResult may not fire
@@ -2012,10 +2012,10 @@ async function clearStealthData() {
         chatMessagesArray = messageStore.getMessages();
         chatMessagesElement.innerHTML = '';
         updateUI();
-        showFeedback('Cleared', 'success');
+        showFeedback('已清除', 'success');
     } catch (error) {
         console.error('Clear error:', error);
-        showFeedback('Clear failed', 'error');
+        showFeedback('清除失败', 'error');
     }
 }
 
@@ -2063,43 +2063,43 @@ async function closeApplication() {
 
 async function getResponseSuggestions() {
     if (!hasAiConfigured) {
-        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
+        showFeedback('DashScope API 密钥缺失。请在设置中添加。', 'error');
         return;
     }
 
     if (!window.electronAPI || !window.electronAPI.suggestResponse) {
-        showFeedback('Feature not available', 'error');
+        showFeedback('功能不可用', 'error');
         return;
     }
 
     await runAiActionWithLock('suggest', async () => {
         const stream = createStreamHandler('suggest');
         try {
-            showFeedback('Generating suggestions...', 'info');
+            showFeedback('正在生成建议...', 'info');
             const bundle = buildFilteredAiContextBundle({ charBudget: AI_CONTEXT_CHAR_BUDGET, emitTruncationLog: true });
             const transcriptOnlyContext = String(bundle.transcriptContext || '').trim();
             if (!transcriptOnlyContext) {
-                showFeedback('No enabled transcript context available for suggestions', 'error');
+                showFeedback('暂无可用于生成建议的已启用转录上下文', 'error');
                 return;
             }
 
-            stream.start('\u{1F4A1} **What should I say?**\n\n');
+            stream.start('\u{1F4A1} **我该说什么？**\n\n');
 
             const result = await window.electronAPI.suggestResponse({
-                context: bundle.sessionSummary || 'Current meeting conversation',
+                context: bundle.sessionSummary || '当前会议对话',
                 contextString: transcriptOnlyContext
             });
 
             if (result.success && result.suggestions) {
-                stream.finalize(`\u{1F4A1} **What should I say?**\n\n${result.suggestions}`);
-                showFeedback('Suggestions generated', 'success');
+                stream.finalize(`\u{1F4A1} **我该说什么？**\n\n${result.suggestions}`);
+                showFeedback('建议已生成', 'success');
             } else {
-                throw new Error(result.error || 'Failed to generate suggestions');
+                throw new Error(result.error || '生成建议失败');
             }
         } catch (error) {
             console.error('Error getting suggestions:', error);
-            showFeedback('Failed to generate suggestions', 'error');
-            addChatMessage('system', `Error: ${error.message}`);
+            showFeedback('生成建议失败', 'error');
+            addChatMessage('system', `错误：${error.message}`);
         } finally {
             stream.cleanup();
         }
@@ -2108,42 +2108,42 @@ async function getResponseSuggestions() {
 
 async function generateMeetingNotes() {
     if (!hasAiConfigured) {
-        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
+        showFeedback('DashScope API 密钥缺失。请在设置中添加。', 'error');
         return;
     }
 
     if (!window.electronAPI || !window.electronAPI.generateMeetingNotes) {
-        showFeedback('Feature not available', 'error');
+        showFeedback('功能不可用', 'error');
         return;
     }
 
     await runAiActionWithLock('notes', async () => {
         const stream = createStreamHandler('notes');
         try {
-            showFeedback('Generating meeting notes...', 'info');
+            showFeedback('正在生成会议纪要...', 'info');
             setAnalyzing(true);
             const bundle = buildFilteredAiContextBundle({ charBudget: AI_CONTEXT_CHAR_BUDGET, emitTruncationLog: true });
             if (!bundle.contextString) {
-                showFeedback('No enabled context available for notes', 'error');
+                showFeedback('暂无可用于生成纪要的已启用上下文', 'error');
                 return;
             }
 
-            stream.start('\u{1F4DD} **Meeting Notes**\n\n');
+            stream.start('\u{1F4DD} **会议纪要**\n\n');
 
             const result = await window.electronAPI.generateMeetingNotes({
                 contextString: bundle.contextString
             });
 
             if (result.success && result.notes) {
-                stream.finalize(`\u{1F4DD} **Meeting Notes**\n\n${result.notes}`);
-                showFeedback('Meeting notes generated', 'success');
+                stream.finalize(`\u{1F4DD} **会议纪要**\n\n${result.notes}`);
+                showFeedback('会议纪要已生成', 'success');
             } else {
-                throw new Error(result.error || 'Failed to generate notes');
+                throw new Error(result.error || '生成纪要失败');
             }
         } catch (error) {
             console.error('Error generating notes:', error);
-            showFeedback('Failed to generate notes', 'error');
-            addChatMessage('system', `Error: ${error.message}`);
+            showFeedback('生成纪要失败', 'error');
+            addChatMessage('system', `错误：${error.message}`);
         } finally {
             stream.cleanup();
             setAnalyzing(false);
@@ -2153,42 +2153,42 @@ async function generateMeetingNotes() {
 
 async function getConversationInsights() {
     if (!hasAiConfigured) {
-        showFeedback('DashScope API key missing. Add it in Settings.', 'error');
+        showFeedback('DashScope API 密钥缺失。请在设置中添加。', 'error');
         return;
     }
 
     if (!window.electronAPI || !window.electronAPI.getConversationInsights) {
-        showFeedback('Feature not available', 'error');
+        showFeedback('功能不可用', 'error');
         return;
     }
 
     await runAiActionWithLock('insights', async () => {
         const stream = createStreamHandler('insights');
         try {
-            showFeedback('Analyzing conversation...', 'info');
+            showFeedback('正在分析对话...', 'info');
             setAnalyzing(true);
             const bundle = buildFilteredAiContextBundle({ charBudget: AI_CONTEXT_CHAR_BUDGET, emitTruncationLog: true });
             if (!bundle.contextString) {
-                showFeedback('No enabled context available for insights', 'error');
+                showFeedback('暂无可用于生成洞察的已启用上下文', 'error');
                 return;
             }
 
-            stream.start('\u{1F4CA} **Conversation Insights**\n\n');
+            stream.start('\u{1F4CA} **对话洞察**\n\n');
 
             const result = await window.electronAPI.getConversationInsights({
                 contextString: bundle.contextString
             });
 
             if (result.success && result.insights) {
-                stream.finalize(`\u{1F4CA} **Conversation Insights**\n\n${result.insights}`);
-                showFeedback('Insights generated', 'success');
+                stream.finalize(`\u{1F4CA} **对话洞察**\n\n${result.insights}`);
+                showFeedback('洞察已生成', 'success');
             } else {
-                throw new Error(result.error || 'Failed to get insights');
+                throw new Error(result.error || '获取洞察失败');
             }
         } catch (error) {
             console.error('Error getting insights:', error);
-            showFeedback('Failed to get insights', 'error');
-            addChatMessage('system', `Error: ${error.message}`);
+            showFeedback('获取洞察失败', 'error');
+            addChatMessage('system', `错误：${error.message}`);
         } finally {
             stream.cleanup();
             setAnalyzing(false);
@@ -2321,7 +2321,7 @@ function showFeedback(message, type = 'info') {
     }
 }
 
-function showLoadingOverlay(message = 'Analyzing screen...') {
+function showLoadingOverlay(message = '正在分析屏幕...') {
     if (loadingOverlay) {
         const loadingTextElement = loadingOverlay.querySelector('.loading-text');
         if (loadingTextElement) {
@@ -2337,7 +2337,7 @@ function hideLoadingOverlay() {
         loadingOverlay.classList.add('hidden');
         const loadingTextElement = loadingOverlay.querySelector('.loading-text');
         if (loadingTextElement) {
-            loadingTextElement.textContent = 'Analyzing screen...';
+            loadingTextElement.textContent = '正在分析屏幕...';
         }
     }
 }
@@ -2399,7 +2399,7 @@ async function writeTextToClipboard(text) {
     document.body.removeChild(temporaryInput);
 
     if (!copiedViaSelection) {
-        throw new Error('Clipboard write failed');
+        throw new Error('写入剪贴板失败');
     }
 }
 
@@ -2408,16 +2408,16 @@ async function copyChatMessageById(messageId) {
     const content = String(message?.content || '');
 
     if (!content.trim()) {
-        showFeedback('Nothing to copy', 'error');
+        showFeedback('没有可复制的内容', 'error');
         return;
     }
 
     try {
         await writeTextToClipboard(content);
-        showFeedback('Message copied', 'success');
+        showFeedback('消息已复制', 'success');
     } catch (error) {
         console.error('Message copy error:', error);
-        showFeedback('Copy failed', 'error');
+        showFeedback('复制失败', 'error');
     }
 }
 

@@ -448,7 +448,7 @@ async function runExpertChainLegacy({
   onProgress = null
 } = {}) {
   if (!apiKey) {
-    throw new Error('Expert mode requires DashScope API key');
+    throw new Error('Expert 模式需要 DashScope API 密钥');
   }
   const startedAt = Date.now();
   const traces = [];
@@ -714,7 +714,7 @@ async function runPipelineChain({
   onProgress = null
 } = {}) {
   if (!apiKey) {
-    throw new Error('Expert/custom mode requires DashScope API key');
+    throw new Error('Expert/自定义模式需要 DashScope API 密钥');
   }
   if (!pipeline) {
     throw new Error('runPipelineChain requires a pipeline');

@@ -42,14 +42,14 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
     libItems = (r && r.pipelines) || [];
     // Custom dropdown (native <select> popups do not render on this transparent
     // frameless window — they silently fail to open). Build clickable rows.
-    libMenu.innerHTML = `<button type="button" class="ps-libpick__item" data-pid="" role="option">+ New (clone Expert)</button>`
+    libMenu.innerHTML = `<button type="button" class="ps-libpick__item" data-pid="" role="option">+ 新建（克隆 Expert）</button>`
       + libItems.map((p) => `<button type="button" class="ps-libpick__item" data-pid="${escapeAttr(p.id)}" role="option">${p.builtin ? '★ ' : ''}${escapeAttr(p.name)} <span class="ps-libpick__n">(${p.nodes})</span></button>`).join('');
     setLibLabel(selectId != null ? selectId : '');
   }
 
   function setLibLabel(id) {
     const found = libItems.find((p) => p.id === id);
-    libBtn.textContent = (found ? `${found.builtin ? '★ ' : ''}${found.name}` : '+ New (clone Expert)') + ' ▾';
+    libBtn.textContent = (found ? `${found.builtin ? '★ ' : ''}${found.name}` : '+ 新建（克隆 Expert）') + ' ▾';
   }
 
   function toggleLibMenu(open) {
@@ -65,17 +65,17 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
       const r = await api.pipelineGet('expert');
       const base = r && r.pipeline ? r.pipeline : { nodes: [], edges: [] };
       pipeline = JSON.parse(JSON.stringify(base));
-      pipeline.id = ''; pipeline.name = 'My pipeline'; pipeline.builtin = false; pipeline.version = 'custom_v1';
+      pipeline.id = ''; pipeline.name = '我的流程'; pipeline.builtin = false; pipeline.version = 'custom_v1';
     } else {
       const r = await api.pipelineGet(id);
       pipeline = r && r.pipeline ? JSON.parse(JSON.stringify(r.pipeline)) : null;
-      if (!pipeline) { setStatus('Failed to load pipeline', 'error'); return; }
+      if (!pipeline) { setStatus('加载流程失败', 'error'); return; }
     }
     selectedId = null;
     nameInput.value = pipeline.name || '';
     setLibLabel(id || '');
     render();
-    setStatus(pipeline.builtin ? 'Built-in preset — Save will create an editable copy.' : '');
+    setStatus(pipeline.builtin ? '内置预设 — 保存将创建可编辑副本。' : '');
   }
 
   function addNode(typeId) {
@@ -102,7 +102,7 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
     const toType = typeById[pipeline.nodes.find((n) => n.id === toNode).type];
     const port = (toType.inputs || []).find((p) => p.name === toPort);
     if (!port) return;
-    if (port.type !== fromType.outputType) { setStatus(`Type mismatch: ${fromType.outputType} → ${port.type}`, 'error'); return; }
+    if (port.type !== fromType.outputType) { setStatus(`类型不匹配: ${fromType.outputType} → ${port.type}`, 'error'); return; }
     pipeline.edges = pipeline.edges.filter((e) => !(e.toNode === toNode && e.toPort === toPort));
     pipeline.edges.push({ fromNode, fromPort: 'out', toNode, toPort });
     setStatus('');
@@ -122,7 +122,7 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
       div.dataset.node = node.id;
       const inputs = (t.inputs || []).map((p) => `<div class="ps-port ps-port--in" data-node="${node.id}" data-port="${p.name}" data-type="${p.type}" title="${p.name}:${p.type}"><span class="ps-dot"></span><span class="ps-portlbl">${p.name}</span></div>`).join('');
       div.innerHTML = `
-        <div class="ps-node__hdr"><span>${escapeAttr(t.label)}</span><button class="ps-node__del" data-del="${node.id}" title="Delete">✕</button></div>
+        <div class="ps-node__hdr"><span>${escapeAttr(t.label)}</span><button class="ps-node__del" data-del="${node.id}" title="删除">✕</button></div>
         <div class="ps-node__id">${node.id}${node.promptBody ? ' ·✎' : ''}${node.model ? ` ·${node.model.replace('deepseek-v4-', '')}` : ''}</div>
         <div class="ps-node__ports">
           <div class="ps-ports-in">${inputs}</div>
@@ -158,7 +158,7 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
   }
 
   function renderConfig() {
-    if (!selectedId) { config.innerHTML = '<div class="ps-config__empty">Select a block to configure it.</div>'; return; }
+    if (!selectedId) { config.innerHTML = '<div class="ps-config__empty">选择一个节点进行配置。</div>'; return; }
     const node = pipeline.nodes.find((n) => n.id === selectedId);
     if (!node) { config.innerHTML = ''; return; }
     const t = typeById[node.type] || {};
@@ -166,17 +166,17 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
     const isOn = thinking && thinking.type === 'enabled';
     config.innerHTML = `
       <h4 class="ps-config__title">${escapeAttr(t.label || node.type)} <span class="ps-config__id">${node.id}</span></h4>
-      <label class="ps-field"><span>Model</span>
+      <label class="ps-field"><span>模型</span>
         <select id="ps-f-model">${MODELS.concat(node.model && !MODELS.includes(node.model) ? [node.model] : []).map((m) => `<option ${(node.model || t.defaults.model) === m ? 'selected' : ''}>${m}</option>`).join('')}</select>
       </label>
-      <label class="ps-field ps-field--row"><span>Thinking</span>
-        <input type="checkbox" id="ps-f-think" ${isOn ? 'checked' : ''} /> <span class="ps-muted">budget</span>
+      <label class="ps-field ps-field--row"><span>思考</span>
+        <input type="checkbox" id="ps-f-think" ${isOn ? 'checked' : ''} /> <span class="ps-muted">预算</span>
         <input type="number" id="ps-f-budget" value="${isOn ? (thinking.budget_tokens || 1024) : 1024}" min="0" step="256" ${isOn ? '' : 'disabled'} style="width:80px" />
       </label>
-      <label class="ps-field ps-field--row"><span>Temp</span><input type="number" id="ps-f-temp" value="${node.temperature != null ? node.temperature : (t.defaults.temperature != null ? t.defaults.temperature : 0.2)}" step="0.05" min="0" max="1" style="width:80px" /></label>
-      <label class="ps-field"><span>Prompt body — the default is shown; edit to fine-tune (schema/inputs stay fixed). Leave unchanged to use the default.</span>
+      <label class="ps-field ps-field--row"><span>温度</span><input type="number" id="ps-f-temp" value="${node.temperature != null ? node.temperature : (t.defaults.temperature != null ? t.defaults.temperature : 0.2)}" step="0.05" min="0" max="1" style="width:80px" /></label>
+      <label class="ps-field"><span>提示词正文 — 默认已显示；编辑以微调（schema/输入保持不变）。不修改则使用默认值。</span>
         <textarea id="ps-f-body" rows="10">${escapeAttr(node.promptBody != null ? node.promptBody : (t.defaultBody || ''))}</textarea>
-        <button type="button" id="ps-f-reset" class="ps-btn" style="align-self:flex-start;margin-top:4px">Reset to default</button>
+        <button type="button" id="ps-f-reset" class="ps-btn" style="align-self:flex-start;margin-top:4px">恢复默认</button>
       </label>`;
     el('ps-f-model').addEventListener('change', (ev) => { node.model = ev.target.value; render(); });
     el('ps-f-think').addEventListener('change', (ev) => {
@@ -202,7 +202,7 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
     if (del) { deleteNode(del.dataset.del); return; }
     const port = ev.target.closest('.ps-port');
     if (port) {
-      if (port.classList.contains('ps-port--out')) { connecting = { fromNode: port.dataset.node }; setStatus('Click a matching input port to connect…'); }
+      if (port.classList.contains('ps-port--out')) { connecting = { fromNode: port.dataset.node }; setStatus('点击匹配的输入端口以连接…'); }
       else if (port.classList.contains('ps-port--in') && connecting) { tryConnect(connecting.fromNode, port.dataset.node, port.dataset.port); connecting = null; }
       ev.preventDefault();
       return;
@@ -230,22 +230,22 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
 
   // ── Topbar actions ──────────────────────────────────────────────────────────
   function buildPipelineForSave() {
-    const name = nameInput.value.trim() || 'My pipeline';
+    const name = nameInput.value.trim() || '我的流程';
     const id = (pipeline.id && !pipeline.builtin) ? pipeline.id : slug(name);
     return { ...pipeline, id, name, builtin: false, version: pipeline.version || 'custom_v1' };
   }
 
   async function doValidate() {
     const r = await api.pipelineValidate({ pipeline: buildPipelineForSave() });
-    if (r && r.ok) setStatus('VALID ✓', 'ok');
-    else setStatus(`INVALID: ${(r && r.errors || ['unknown']).join('; ')}`, 'error');
+    if (r && r.ok) setStatus('有效 ✓', 'ok');
+    else setStatus(`无效: ${(r && r.errors || ['unknown']).join('; ')}`, 'error');
     return r && r.ok;
   }
   async function doSave() {
     const p = buildPipelineForSave();
     const r = await api.pipelineSave({ pipeline: p });
-    if (r && r.success) { pipeline.id = p.id; pipeline.builtin = false; setStatus(`Saved "${p.name}"`, 'ok'); await refreshLibrary(p.id); }
-    else setStatus(`Save failed: ${r && r.error}`, 'error');
+    if (r && r.success) { pipeline.id = p.id; pipeline.builtin = false; setStatus(`已保存"${p.name}"`, 'ok'); await refreshLibrary(p.id); }
+    else setStatus(`保存失败: ${r && r.error}`, 'error');
     return r && r.success;
   }
 
@@ -270,18 +270,18 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
     if (!(await doValidate())) return;
     if (!(await doSave())) return;
     const r = await api.pipelineSetActive({ id: pipeline.id });
-    if (r && r.success) { setStatus(`Active: ${pipeline.name} (Customize mode)`, 'ok'); if (typeof onUsed === 'function') onUsed(pipeline.id, pipeline.name); close(); }
-    else setStatus(`Activate failed: ${r && r.error}`, 'error');
+    if (r && r.success) { setStatus(`已激活: ${pipeline.name}（自定义模式）`, 'ok'); if (typeof onUsed === 'function') onUsed(pipeline.id, pipeline.name); close(); }
+    else setStatus(`激活失败: ${r && r.error}`, 'error');
   });
   el('ps-export').addEventListener('click', async () => {
     const p = buildPipelineForSave();
-    try { await navigator.clipboard.writeText(JSON.stringify(p, null, 2)); setStatus('Exported JSON to clipboard', 'ok'); }
-    catch (_) { setStatus('Copy failed', 'error'); }
+    try { await navigator.clipboard.writeText(JSON.stringify(p, null, 2)); setStatus('已导出 JSON 到剪贴板', 'ok'); }
+    catch (_) { setStatus('复制失败', 'error'); }
   });
   el('ps-close').addEventListener('click', close);
 
   function renderPalette() {
-    palette.innerHTML = '<div class="ps-palette__title">Blocks</div>' + blockTypes.map((t) =>
+    palette.innerHTML = '<div class="ps-palette__title">节点</div>' + blockTypes.map((t) =>
       `<button class="ps-palette__item" data-add="${t.id}" title="in: ${(t.inputs || []).map((p) => p.type).join(', ') || '—'} → ${t.outputType}">${escapeAttr(t.label)}<span class="ps-palette__type">${t.outputType}</span></button>`).join('');
   }
 

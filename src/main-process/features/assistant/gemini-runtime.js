@@ -66,7 +66,7 @@ function createGeminiRuntime(options = {}) {
 
     if (!dashscopeService) initializeDashscopeService();
     if (!dashscopeService) {
-      throw new Error('DashScope AI service not available. Configure DashScope API key in Settings.');
+      throw new Error('DashScope AI 服务不可用。请在设置中配置 DashScope API 密钥。');
     }
     return await operation(dashscopeService, { attempt: 1, totalKeys: 0 });
   }
