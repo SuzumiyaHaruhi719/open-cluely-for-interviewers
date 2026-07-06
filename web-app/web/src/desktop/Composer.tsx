@@ -98,7 +98,7 @@ export function Composer({
           className={`chat-autoscroll-toggle${autoScroll ? '' : ' off'}`}
           type="button"
           aria-pressed={autoScroll}
-          title="切换自动滚动"
+          title={autoScroll ? '自动滚动已开启' : '自动滚动已关闭'}
           onClick={onToggleAutoScroll}
         >
           {'⇩'}

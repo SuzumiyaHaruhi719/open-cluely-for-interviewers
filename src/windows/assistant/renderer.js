@@ -1570,6 +1570,10 @@ const JD_SAVE_DEBOUNCE_MS = 600;
 const JD_PIP_CLEAR_MS = 2000;
 let jdSaveTimer = null;
 let jdPipClearTimer = null;
+// Module-level flush handle so a beforeunload handler can force-save any
+// pending JD edits immediately (the input debounces saves by ~600ms, so a
+// refresh right after typing would otherwise lose the last keystrokes).
+let flushJdInputNow = null;
 
 // Paint the JD save-status pip. Pass {state, text}: state is one of
 // '' | 'saving' | 'saved' (drives the colour class), text is the visible label.
@@ -1619,6 +1623,9 @@ function setupJobDescriptionInput() {
         jdSaveTimer = setTimeout(flush, JD_SAVE_DEBOUNCE_MS);
     });
     jobDescriptionInput.addEventListener('change', flush);
+
+    // Expose the flush for the beforeunload handler (registered in init()).
+    flushJdInputNow = flush;
 }
 
 // ── Right-rail session-context panel (Expert Block H state) ────────────────
@@ -1726,6 +1733,12 @@ async function init() {
     setupResumeDropzone();
     setupResumeChat();
     setupJobDescriptionInput();
+    // Flush any pending JD edits on unload: the input debounces saves by
+    // ~600ms, so a refresh/close right after typing would lose the last
+    // keystrokes. Force-save synchronously before the page tears down.
+    window.addEventListener('beforeunload', () => {
+        if (typeof flushJdInputNow === 'function') flushJdInputNow();
+    });
     setupSessionContextPanel();
     setupInterviewerProgressListener();
     setupPipelineStudio();
@@ -2456,6 +2469,10 @@ function setAnalyzing(analyzing) {
 function updateUI() {
     if (screenshotCount) {
         screenshotCount.textContent = screenshotsCount;
+        // Honour the .is-zero / data-count="0" CSS opt-in (styles.css): the
+        // counter pill fades to 0.3 opacity when there's nothing to count.
+        screenshotCount.setAttribute('data-count', String(screenshotsCount));
+        screenshotCount.classList.toggle('is-zero', screenshotsCount <= 0);
     }
 
     const aiBundle = buildFilteredAiContextBundle({
