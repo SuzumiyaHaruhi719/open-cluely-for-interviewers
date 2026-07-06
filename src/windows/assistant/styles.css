@@ -114,6 +114,28 @@
   color-scheme: dark;
 }
 
+/* ── Global keyboard focus ring (WCAG 2.4.7) ────────────────────────────────
+ * A visible focus indicator for keyboard users. The 0.6-alpha indigo outline
+ * reads on any surface; form controls get an explicit reset of the default
+ * outline when focused via mouse (":focus:not(:focus-visible)"). */
+:focus-visible {
+  outline: 2px solid rgba(124, 140, 248, 0.6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(124, 140, 248, 0.6);
+  outline-offset: 2px;
+}
+/* Remove default outline only when not keyboard-focused */
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+  outline: none;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -1431,7 +1453,9 @@ body.rail-collapsed .layout {
 }
 
 .right-rail {
-  transition: opacity var(--dur-2) var(--ease);
+  transition: opacity var(--dur-2) var(--ease),
+              width var(--dur-3, 0.3s) var(--ease-out, ease),
+              min-width var(--dur-3, 0.3s) var(--ease-out, ease);
 }
 
 body.rail-collapsed .right-rail {

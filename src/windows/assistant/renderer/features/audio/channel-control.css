@@ -291,7 +291,7 @@
 /* Decisive press — scale snaps via ease-spring (slight overshoot feel). */
 .channel-toggle:active {
     transform: scale(0.92);
-    transition: transform 0.08s ease;
+    transition: transform 0.08s var(--ease);
 }
 
 .channel-toggle:focus-visible {

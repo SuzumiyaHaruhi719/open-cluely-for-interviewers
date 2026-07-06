@@ -11,6 +11,18 @@
  * onto the GLP tokens so the ported markup reads as part of the same system.
  * ==========================================================================*/
 
+/* ── Global keyboard focus ring (WCAG 2.4.7) ────────────────────────────────
+ * Visible focus indicator for keyboard users; mouse focus gets no outline. */
+:focus-visible {
+  outline: 2px solid rgba(124, 140, 248, 0.6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* ── Shell layout fix ───────────────────────────────────────────────────────
  *  The desktop `.main` is a 4-row grid (auto auto minmax(0,1fr) auto) mapping
  *  topbar · transcription-monitor · chat-messages · composer. The web shell
