@@ -272,7 +272,11 @@ export function startTour(opts = {}) {
     const isFinalStep = step.isFinal;
     const showPrev = stepIdx > 0 && !isWelcomeStep;
 
+    // Completion progress — widens as the user advances through the steps.
+    const progressPct = (stepIdx / (TOUR_STEPS.length - 1)) * 100;
+
     tooltip.innerHTML = `
+      <div class="tour-progress-bar" style="width: ${progressPct}%"></div>
       <button class="tour-skip-btn" data-action="skip" title="跳过导览">✕ 跳过</button>
       ${isWelcomeStep || isFinalStep
         ? `<div class="tour-final-icon">${step.icon || '✨'}</div>`

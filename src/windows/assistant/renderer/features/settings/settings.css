@@ -87,7 +87,7 @@
     background: color-mix(in srgb, var(--fg) 3%, var(--bg-elev-2));
     border-bottom: 1px solid var(--hairline);
     /* Keep a faint top-edge sheen inside the card header. */
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    box-shadow: var(--top-highlight);
     flex: 0 0 auto;
 }
 

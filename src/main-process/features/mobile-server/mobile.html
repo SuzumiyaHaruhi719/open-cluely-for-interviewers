@@ -37,6 +37,9 @@
       display: flex;
       flex-direction: column;
       height: 100dvh; /* dynamic viewport height for mobile browsers */
+      max-width: 100%;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* ── Header ──────────────────────────────────────────────────────────── */
@@ -128,6 +131,7 @@
     /* ── Messages ────────────────────────────────────────────────────────── */
     .messages {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
       padding: 12px 12px 4px;
       display: flex;
@@ -226,6 +230,7 @@
       align-items: flex-end;
       gap: 8px;
       padding: 8px 12px;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
       background: var(--surface);
       border-top: 1px solid var(--border);
       flex-shrink: 0;

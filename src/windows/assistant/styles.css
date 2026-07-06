@@ -749,13 +749,17 @@ body.stealth-on .app-shell { opacity: 0.92; }
     border-color var(--dur-2) var(--ease),
     color var(--dur-2) var(--ease),
     box-shadow var(--dur-2) var(--ease),
-    transform var(--dur-1) var(--ease-spring);
+    transform var(--dur-1) var(--ease-spring),
+    opacity var(--dur-1) var(--ease);
 }
 
 .action-btn:hover:not(:disabled) {
   background: var(--surface-strong);
   border-color: var(--hairline-strong);
   box-shadow: var(--elev-2), var(--top-highlight);
+  /* Subtle hover lift — the existing transform transition (--dur-1 spring)
+     carries it so it snaps up confidently without re-declaring the transition. */
+  transform: translateY(-1px);
 }
 
 /* Decisive press scale — snaps back via spring overshoot. */
