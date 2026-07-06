@@ -218,13 +218,17 @@
   cursor: pointer;
 }
 .tour-dot:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.4);
 }
 .tour-dot.active {
   background: rgba(124, 140, 248, 0.9);
   width: 18px;
   border-radius: 3px;
   box-shadow: 0 0 8px rgba(124, 140, 248, 0.4);
+}
+.tour-dot.active:hover {
+  transform: scale(1.1);
 }
 
 /* Buttons */

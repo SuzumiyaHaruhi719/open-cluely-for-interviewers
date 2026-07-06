@@ -1367,7 +1367,7 @@ button.history-row {
 @keyframes tour-fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 .tour-dots { display: flex; gap: 6px; }
 .tour-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.12); transition: all 0.3s ease; cursor: pointer; }
-.tour-dot:hover { background: rgba(255,255,255,0.25); }
+.tour-dot:hover { background: rgba(255,255,255,0.3); transform: scale(1.4); }
 .tour-dot.active { background: rgba(124,140,248,0.9); width: 18px; border-radius: 3px; box-shadow: 0 0 8px rgba(124,140,248,0.4); }
 .tour-buttons { display: flex; gap: 8px; }
 .tour-btn { font-size: 12px; font-weight: 500; border: none; border-radius: 10px; cursor: pointer; padding: 8px 16px; transition: all 0.2s ease; letter-spacing: 0.2px; }
