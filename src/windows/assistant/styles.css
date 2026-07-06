@@ -73,6 +73,17 @@
   --elev-4: 0 24px 64px -8px rgba(0, 0, 0, .62);
   --top-highlight: inset 0 1px 0 rgba(255, 255, 255, .05);
 
+  /* ── Z-index scale ────────────────────────────────────────────────────────────
+   * One token per stacking tier so overlays/modals never collide. Step them in
+   * order of priority; never invent ad-hoc z-index values. The tour CSS keeps
+   * its own 10000+ range (see --z-tour) so it always wins over app chrome. */
+  --z-modal: 1000;
+  --z-overlay: 1100;
+  --z-toast: 1250;
+  --z-emergency: 1300;
+  --z-dialog: 1400;
+  --z-tour: 10000;
+
   /* ── Glass ────────────────────────────────────────────────────────────────
    * Frosted translucency for chrome that floats over content (titlebar, menus,
    * sticky headers). Always pair backdrop-filter with a translucent --glass-bg
@@ -1509,7 +1520,7 @@ body.rail-collapsed .right-rail {
   background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  z-index: 1100;
+  z-index: var(--z-overlay);
   animation: overlay-scrim-in var(--dur-3) var(--ease-out) both;
 }
 
@@ -1577,7 +1588,7 @@ body.rail-collapsed .right-rail {
   justify-content: center;
   border-radius: var(--radius-lg);
   background: rgba(0, 0, 0, 0.97);
-  z-index: 1300;
+  z-index: var(--z-emergency);
 }
 
 .emergency-overlay.hidden { display: none; }
@@ -1615,7 +1626,7 @@ body.rail-collapsed .right-rail {
   background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  z-index: 1250;
+  z-index: var(--z-toast);
   animation: overlay-scrim-in var(--dur-3) var(--ease-out) both;
 }
 

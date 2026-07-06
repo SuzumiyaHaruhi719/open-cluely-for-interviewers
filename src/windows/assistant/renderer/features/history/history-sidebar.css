@@ -265,7 +265,7 @@
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  opacity: 0;
+  opacity: 0.35; /* faintly visible at rest (was: 0) so the affordance is discoverable */
   transform: translateX(4px);
   transition:
     opacity   var(--dur-2) var(--ease-in),
@@ -387,7 +387,7 @@
 .app-modal {
   position: fixed;
   inset: 0;
-  z-index: 1400;
+  z-index: var(--z-dialog);
   display: flex;
   align-items: center;
   justify-content: center;
