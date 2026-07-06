@@ -717,7 +717,7 @@ async function runPipelineChain({
     throw new Error('Expert/自定义模式需要 DashScope API 密钥');
   }
   if (!pipeline) {
-    throw new Error('runPipelineChain requires a pipeline');
+    throw new Error('runPipelineChain 需要一个流程');
   }
   const { runPipeline } = require('../../../services/ai/pipeline/pipeline-engine');
 

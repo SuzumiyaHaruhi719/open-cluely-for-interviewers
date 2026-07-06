@@ -262,7 +262,7 @@ function createMobileServer({ getGeminiRuntime, getScreenshotManager, notifyDesk
                 const { imageParts } = await screenshotManager.buildImagePartsFromScreenshots({ strict: false });
                 if (imageParts.length > 0) {
                   text = await geminiRuntime.executeWithKeyFailover((svc) => {
-                    if (!svc || !svc.modelName) throw new Error('AI model not initialized');
+                    if (!svc || !svc.modelName) throw new Error('AI 模型未初始化');
                     return svc.askAiWithSessionContextAndScreenshots(imageParts, {
                       contextString,
                       transcriptContext: '',

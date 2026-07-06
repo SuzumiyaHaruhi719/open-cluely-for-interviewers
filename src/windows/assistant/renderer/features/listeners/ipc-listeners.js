@@ -28,7 +28,7 @@ export function setupIpcListeners({
         addChatMessage('screenshot', 'Screenshot captured', {
             screenshotId: typeof payload.screenshotId === 'string' ? payload.screenshotId : null
         });
-        showFeedback('Screenshot captured', 'success');
+        showFeedback('截图已捕获', 'success');
     });
 
     windowApi.onAnalysisStart(() => {
@@ -48,14 +48,14 @@ export function setupIpcListeners({
         console.log('[onAnalysisResult] stream active:', !!stream, 'has error:', !!data.error);
         if (data.error) {
             addChatMessage('system', `Error: ${data.error}`);
-            showFeedback('Analysis failed', 'error');
+            showFeedback('分析失败', 'error');
         } else if (stream) {
             stream.finalize(data.text);
-            showFeedback('Analysis complete', 'success');
+            showFeedback('分析完成', 'success');
         } else {
             console.log('[onAnalysisResult] No active stream - creating new message');
             addChatMessage('ai-response', data.text);
-            showFeedback('Analysis complete', 'success');
+            showFeedback('分析完成', 'success');
         }
 
         // Clean up the screen AI stream after processing the result

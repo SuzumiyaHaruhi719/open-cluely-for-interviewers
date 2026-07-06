@@ -126,7 +126,7 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
         <div class="ps-node__id">${node.id}${node.promptBody ? ' ·✎' : ''}${node.model ? ` ·${node.model.replace('deepseek-v4-', '')}` : ''}</div>
         <div class="ps-node__ports">
           <div class="ps-ports-in">${inputs}</div>
-          <div class="ps-port ps-port--out" data-node="${node.id}" data-type="${t.outputType}" title="out:${t.outputType}"><span class="ps-portlbl">${t.outputType}</span><span class="ps-dot"></span></div>
+          <div class="ps-port ps-port--out" data-node="${node.id}" data-type="${t.outputType}" title="输出:${t.outputType}"><span class="ps-portlbl">${t.outputType}</span><span class="ps-dot"></span></div>
         </div>`;
       canvas.appendChild(div);
     }
@@ -282,7 +282,7 @@ export function createPipelineStudio({ api, onUsed, showFeedback }) {
 
   function renderPalette() {
     palette.innerHTML = '<div class="ps-palette__title">节点</div>' + blockTypes.map((t) =>
-      `<button class="ps-palette__item" data-add="${t.id}" title="in: ${(t.inputs || []).map((p) => p.type).join(', ') || '—'} → ${t.outputType}">${escapeAttr(t.label)}<span class="ps-palette__type">${t.outputType}</span></button>`).join('');
+      `<button class="ps-palette__item" data-add="${t.id}" title="输入: ${(t.inputs || []).map((p) => p.type).join(', ') || '—'} → ${t.outputType}">${escapeAttr(t.label)}<span class="ps-palette__type">${t.outputType}</span></button>`).join('');
   }
 
   async function open(pipelineId) {

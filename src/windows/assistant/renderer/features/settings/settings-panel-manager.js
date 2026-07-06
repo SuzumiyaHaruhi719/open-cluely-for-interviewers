@@ -257,7 +257,7 @@ export function createSettingsPanelManager({
 
         const configured = Array.isArray(models) ? models : [];
         if (configured.length === 0) {
-            throw new Error('DashScope AI models are not configured.');
+            throw new Error('DashScope AI 模型未配置。');
         }
 
         configured.forEach((modelName) => {

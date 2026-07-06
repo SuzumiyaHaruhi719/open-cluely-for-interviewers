@@ -65,7 +65,7 @@ function createScreenshotManager({ app, getMainWindow, getAppEnvironment, sendTo
     const appEnvironment = getAppEnvironment();
 
     if (!mainWindow || mainWindow.isDestroyed()) {
-      throw new Error('Main window not available');
+      throw new Error('主窗口不可用');
     }
 
     screenshotInProgress = true;

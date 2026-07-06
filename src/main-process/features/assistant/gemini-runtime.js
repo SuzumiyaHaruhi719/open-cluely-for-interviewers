@@ -61,7 +61,7 @@ function createGeminiRuntime(options = {}) {
 
   async function executeWithKeyFailover(operation) {
     if (typeof operation !== 'function') {
-      throw new Error('AI operation must be a function.');
+      throw new Error('AI 操作必须是一个函数。');
     }
 
     if (!dashscopeService) initializeDashscopeService();
