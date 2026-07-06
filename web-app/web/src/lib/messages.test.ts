@@ -74,3 +74,74 @@ describe('result trigger fields', () => {
     expect(out).not.toHaveProperty('trigger');
   });
 });
+
+describe('session-context messages', () => {
+  it('normalizes malformed state to empty arrays', () => {
+    const out = parseServerMessage(
+      JSON.stringify({ type: 'session-context', state: { competencies: undefined } })
+    );
+
+    expect(out).toMatchObject({
+      type: 'session-context',
+      state: { competencies: [], topics: [], gaps: [] }
+    });
+  });
+
+  it('maps legacy desktop Block-H session state into web session context', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'session-context',
+        state: {
+          drilled_topics: ['payment migration'],
+          competencies_covered: ['technical-depth'],
+          open_gaps: ['missing QPS number']
+        }
+      })
+    );
+
+    expect(out).toMatchObject({
+      type: 'session-context',
+      state: {
+        topics: ['payment migration'],
+        gaps: ['missing QPS number'],
+        competencies: [{ name: 'technical-depth', status: 'covered' }]
+      }
+    });
+  });
+});
+
+describe('summary debug messages', () => {
+  it('parses event-level summary debug frames without leaking free-form text fields', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'summary-debug',
+        requestId: 'sum-1',
+        event: {
+          at: 1234,
+          source: 'dashscope',
+          stage: 'sse-event',
+          model: 'deepseek-v4-pro',
+          eventType: 'message_stop',
+          inputTokens: 10,
+          outputTokens: 20,
+          text: 'do not leak transcript text'
+        }
+      })
+    ) as Record<string, unknown> | null;
+
+    expect(out).toMatchObject({
+      type: 'summary-debug',
+      requestId: 'sum-1',
+      event: {
+        at: 1234,
+        source: 'dashscope',
+        stage: 'sse-event',
+        model: 'deepseek-v4-pro',
+        eventType: 'message_stop',
+        inputTokens: 10,
+        outputTokens: 20
+      }
+    });
+    expect(out?.event).not.toHaveProperty('text');
+  });
+});

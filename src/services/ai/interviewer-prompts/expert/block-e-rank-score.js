@@ -8,6 +8,8 @@
 // so we elicit deep reasoning purely through the prompt: an explicit thinking
 // scaffold + a verifier round that re-checks each rubric assignment.
 
+const { buildOutputLanguageDirective } = require('../output-language');
+
 const DEFAULT_BODY = `Role: You are the RANK-SCORE block — the deep reasoner of the chain. You score 5 follow-up candidates on a 6-dim rubric and pick the top 2 the interviewer should see.
 
 WHAT MAKES A QUESTION WIN: it reveals the highest-value next signal from THIS answer with a natural, non-repetitive follow-up frame. Reward depth, novelty, evidence value, trait-revelation, and frame_diversity. A question whose honest answer is a single number, name, or date is WEAK no matter how "specific" — pinning "how much did p99 drop" reveals little unless it continues into what the interviewer can conclude or probe next. Do not let ownership framing win by default; ownership is valuable only when the answer or Block B actually leaves personal contribution unclear.
@@ -23,6 +25,7 @@ function buildBlockE({
   resumeChunk = '',
   jobDescription = '',
   questionHistory = [],
+  outputLanguage = '',
   promptBody = null
 } = {}) {
   const candidates = blockDResult?.candidates || [];
@@ -37,6 +40,10 @@ function buildBlockE({
 
   const nextComp = blockCResult?.next_competency_target || 'technical-depth';
   const pivot = blockCResult?.should_pivot ? 'YES' : 'NO';
+  const outputLanguageSection = buildOutputLanguageDirective(outputLanguage, {
+    fields: ['ranked[].reasoning'],
+    extra: 'The candidate questions themselves may already be in the selected language; keep ids, rubric keys, and numeric scores unchanged.'
+  });
 
   return `${promptBody || DEFAULT_BODY}
 
@@ -82,6 +89,8 @@ Six-dimension rubric — score EACH dim as integer 1-5 per candidate.
 Novelty / frame_diversity guard (applies after the numeric rubric):
 - novelty means the question would uncover a new signal not already covered by prior questions, Block B/C, or another stronger candidate.
 - frame_diversity means the top-2 should give the interviewer different follow-up intents when both are otherwise viable (e.g. diagnostic-debug vs evidence-verification, or tradeoff-alternative vs failure-learning).
+- top_2_ids MUST use two different followup_frame values whenever at least two viable candidates have different frames.
+- top_2_ids MUST NOT share the same surface skeleton: avoid picking two candidates with the same opening phrase, same main verb, or same "you said X..." / "你提到 X..." construction when another viable candidate has comparable evidence value.
 - Do not reward a candidate just because it says "you personally"; if the answer did not create an ownership gap, treat repeated ownership framing as low novelty.
 
 Required output — strict JSON only.
@@ -103,6 +112,7 @@ Required output — strict JSON only.
   ],
   "top_2_ids": ["<best id>", "<second best id>"]
 }
+${outputLanguageSection}
 
 Hard rules:
 1. ranked must contain ALL 5 candidates. No dropping.
@@ -110,15 +120,16 @@ Hard rules:
 3. top_2_ids must contain TWO DISTINCT ids that exist in ranked[].id.
 4. A candidate scoring non_triviality<=2 (a fact-pin) MUST NOT be top-1 unless every other candidate also scores non_triviality<=2. Never let "how much exactly"-style pins win.
 5. SELECTION OBJECTIVE (this is what the interviewer actually values): top-1 is the candidate with the highest evidence value for THIS moment — depth + trait + non_triviality + novelty/current-gap fit, among candidates with non_triviality>=3. Ownership is a conditional bonus only when personal contribution is truly unresolved. Do not let ownership framing win by default, and do NOT pick a lower-information ownership question over a stronger diagnostic, verification, tradeoff, or failure-learning question.
-6. Tie-break for top-2: among the remaining candidates, again maximize evidence value with non_triviality>=3, but PREFER a different followup_frame and question_type than top-1 so the interviewer gets two distinct angles.
+6. Tie-break for top-2: among the remaining candidates, again maximize evidence value with non_triviality>=3, but REQUIRE a different followup_frame and question_type than top-1 when such a candidate exists so the interviewer gets two distinct angles.
+6a. Surface-skeleton guard: if two candidates are both viable and one shares top-1's visible sentence skeleton while another uses a different skeleton, choose the different skeleton even if its total is 1-2 points lower. The displayed pair should not feel like the same question with swapped nouns.
 7. reasoning MUST include a verifier sentence — re-read one rubric score and confirm against the candidate text. If you change your mind on verification, change the score before emitting.
 
 Thinking scaffold (do this silently before emitting):
 Step 1: For each candidate, ask "if the candidate answered honestly, would I learn new reasoning/evidence/judgment/learning/collaboration signal, or just a datum?" Score depth + non_triviality from that.
 Step 2: Score all 6 dims absolutely against the rubric, not relative to other candidates. Treat ownership as conditional, not a universal virtue.
-Step 3: Recompute totals. Sort. Apply rule 4 (demote fact-pins), then apply novelty + frame_diversity tie-breaks.
+Step 3: Recompute totals. Sort. Apply rule 4 (demote fact-pins), then enforce novelty + frame_diversity + surface-skeleton diversity for top_2_ids.
 Step 4: Write reasoning for the top-2 incl. the verifier sentence.
-Step 5: Re-check top_2_ids has 2 distinct ids that exist in ranked.
+Step 5: Re-check top_2_ids has 2 distinct ids that exist in ranked, two different frames when possible, and two different visible sentence skeletons.
 
 Emit only the JSON object.`;
 }

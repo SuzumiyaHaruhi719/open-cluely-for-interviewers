@@ -6,8 +6,10 @@ import {
   buildAnalysisInput,
   buildSummaryInput,
   getSummaryModel,
+  getSummaryMaxTokens,
   isModelRejected,
   analyzeSummary,
+  analyzeSummaryStream,
   SUMMARY_REQUEST_TIMEOUT_MS,
   type SummaryChatFn
 } from '../src/interview-analysis';
@@ -220,6 +222,11 @@ test('#1 analyzeSummary uses a generous (>60s) but bounded timeout AND disables 
   assert.equal(seenThinking, false);
 });
 
+test('summary max token budget: Flash uses a shorter report cap than Pro', () => {
+  assert.equal(getSummaryMaxTokens('deepseek-v4-flash'), 1600);
+  assert.equal(getSummaryMaxTokens('deepseek-v4-pro'), 4096);
+});
+
 test('analyzeSummary: falls back ONCE to the interviewer model when the pro id is rejected', async () => {
   const prevSummary = process.env.INTERVIEWER_SUMMARY_MODEL;
   process.env.INTERVIEWER_SUMMARY_MODEL = 'pro-x';
@@ -307,4 +314,50 @@ test('analyzeSummary: records an error telemetry event when the call hard-fails'
   await assert.rejects(() => analyzeSummary('面试记录', { chat, telemetry: tel, requestId: 'r3' }));
   const types = tel.snapshot().map((e) => e.type);
   assert.ok(types.includes('error'), `expected an error event, got ${types.join(',')}`);
+});
+
+test('analyzeSummaryStream: falls back to the fast model when pro streaming times out before any text', async () => {
+  const fallbackModel = getDefaultModel();
+  assert.notEqual(fallbackModel, 'pro-x');
+
+  const seenModels: string[] = [];
+  const deltas: string[] = [];
+  const usages: Array<{ input: number; output: number }> = [];
+  const tel = createSummaryTelemetry({ now: () => 0 });
+  const chatStream = async (
+    opts: { model?: string },
+    callbacks: { onDelta: (text: string) => void; onUsage: (usage: { input: number; output: number }) => void }
+  ): Promise<string> => {
+    const model = String(opts.model);
+    seenModels.push(model);
+    if (model === 'pro-x') {
+      throw new Error('DashScope stream timed out after 90000ms');
+    }
+    callbacks.onDelta('## 快速报告');
+    callbacks.onUsage({ input: 12, output: 34 });
+    return '## 快速报告';
+  };
+
+  const result = await analyzeSummaryStream(
+    '面试记录',
+    {
+      onDelta: (text) => deltas.push(text),
+      onUsage: (usage) => usages.push(usage)
+    },
+    {
+      model: 'pro-x',
+      telemetry: tel,
+      requestId: 'sum-timeout',
+      chatStream
+    } as never
+  );
+
+  assert.equal(result.fellBack, true);
+  assert.equal(result.model, fallbackModel);
+  assert.deepEqual(seenModels, ['pro-x', fallbackModel]);
+  assert.deepEqual(deltas, ['## 快速报告']);
+  assert.deepEqual(usages, [{ input: 12, output: 34 }]);
+  const types = tel.snapshot().map((e) => e.type);
+  assert.ok(types.includes('fallback'), `expected fallback telemetry, got ${types.join(',')}`);
+  assert.ok(types.includes('done'), `expected done telemetry, got ${types.join(',')}`);
 });

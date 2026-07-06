@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, test, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
-import type { TranscriptLanes } from '../lib/useCopilotSocket';
+import type { CopilotResult, TranscriptLanes } from '../lib/useCopilotSocket';
 
 const EMPTY_LANES: TranscriptLanes = {
   mic: { finalText: '', partial: '' },
@@ -80,6 +80,42 @@ describe('TranscriptStream seeded messages', () => {
   test('renders nothing (stays :empty-eligible) when there are no messages or live text', () => {
     const { container } = renderStream([]);
     expect(container.querySelectorAll('.chat-message')).toHaveLength(0);
+  });
+
+  test('passes Chinese output language to the live question card', () => {
+    const lastResult: CopilotResult = {
+      type: 'result',
+      requestId: 'req-1',
+      mode: 'expert',
+      output: {
+        primary_question: '你会如何继续追问？',
+        alternative_question: '还有哪些风险？',
+        rationale_for_interviewer: '检查候选人是否能解释取舍。',
+        anchor_quotes: [],
+        expected_evidence_yield: '能看到系统设计深度。',
+        iteration_version: '3'
+      },
+      shouldShowFollowUps: true,
+      tokensUsed: { input: 10, output: 5, total: 15 },
+      elapsedMs: 600,
+      iterationVersion: '3'
+    };
+
+    render(
+      <TranscriptStream
+        transcripts={EMPTY_LANES}
+        transcriptMessages={[]}
+        lastResult={lastResult}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+        outputLanguage="zh"
+      />
+    );
+
+    expect(screen.getByText('为什么这样问')).toBeInTheDocument();
+    expect(screen.queryByText('Why ask this')).toBeNull();
   });
 });
 

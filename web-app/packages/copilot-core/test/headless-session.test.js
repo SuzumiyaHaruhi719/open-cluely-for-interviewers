@@ -90,3 +90,40 @@ test('configure switches mode and isConfigured tracks the key', () => {
   session.setApiKey('');
   assert.strictEqual(session.isConfigured(), false);
 });
+
+test('headless fast-mode analyze passes outputLanguage into the Stage 2 prompt', async () => {
+  const prompts = [];
+  const session = createHeadlessSession({
+    apiKey: 'test-key',
+    config: { mode: 'fast', outputLanguage: 'zh' }
+  });
+
+  const restore = stubFetchAnthropic((body) => {
+    prompts.push(body.messages[0].content);
+    return body.max_tokens === 600
+      ? JSON.stringify({
+          score: 5,
+          pivot_signal: false,
+          concrete_hooks: ['async queue'],
+          missing_star_element: 'A',
+          recommended_direction: 'technical-depth'
+        })
+      : JSON.stringify({
+          questions: [{ question: '请继续追问 async queue。', rationale: '验证候选人的取舍判断。' }]
+        });
+  });
+
+  try {
+    await session.analyze({
+      candidateAnswer: 'We built an async queue to decouple the workers and it scaled well under load.',
+      questionHistory: [],
+      requestId: 'r-lang'
+    });
+  } finally {
+    restore();
+  }
+
+  const stage2Prompt = prompts[1] || '';
+  assert.ok(stage2Prompt.includes('OUTPUT LANGUAGE'), 'Stage 2 receives a language directive');
+  assert.ok(stage2Prompt.includes('Simplified Chinese') || stage2Prompt.includes('简体中文'));
+});

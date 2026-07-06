@@ -23,9 +23,12 @@ const STATUS_LABEL: Record<CompetencyStatus, string> = {
  * state. Empty individual sections are omitted so the panel only shows signal.
  */
 export function SessionContextPanel({ state }: SessionContextPanelProps) {
+  const competencies = Array.isArray(state?.competencies) ? state.competencies : [];
+  const topics = Array.isArray(state?.topics) ? state.topics : [];
+  const gaps = Array.isArray(state?.gaps) ? state.gaps : [];
   const hasContent =
     !!state &&
-    (state.competencies.length > 0 || state.topics.length > 0 || state.gaps.length > 0);
+    (competencies.length > 0 || topics.length > 0 || gaps.length > 0);
 
   if (!hasContent) {
     return (
@@ -46,11 +49,11 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
 
   return (
     <div id="session-context" className="session-context">
-      {state.competencies.length > 0 && (
+      {competencies.length > 0 && (
         <section className="ctx-block">
           <h3 className="ctx-block__title">能力维度 / Competencies</h3>
           <ul className="ctx-chips">
-            {state.competencies.map((c, i) => (
+            {competencies.map((c, i) => (
               <li
                 key={`${c.name}-${i}`}
                 className="ctx-chip"
@@ -65,11 +68,11 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
         </section>
       )}
 
-      {state.topics.length > 0 && (
+      {topics.length > 0 && (
         <section className="ctx-block">
           <h3 className="ctx-block__title">已追问主题 / Topics</h3>
           <ul className="ctx-list">
-            {state.topics.map((t, i) => (
+            {topics.map((t, i) => (
               <li key={`${t}-${i}`} className="ctx-list__item">
                 {t}
               </li>
@@ -78,11 +81,11 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
         </section>
       )}
 
-      {state.gaps.length > 0 && (
+      {gaps.length > 0 && (
         <section className="ctx-block">
           <h3 className="ctx-block__title">待探究 / Open gaps</h3>
           <ul className="ctx-list ctx-list--gaps">
-            {state.gaps.map((g, i) => (
+            {gaps.map((g, i) => (
               <li key={`${g}-${i}`} className="ctx-list__item">
                 {g}
               </li>

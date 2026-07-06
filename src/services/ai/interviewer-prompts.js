@@ -12,6 +12,8 @@
 // See FINAL_REPORT.md in the Obsidian "Interview Copilot" folder for details.
 // ============================================================================
 
+const { buildOutputLanguageDirective } = require('./interviewer-prompts/output-language');
+
 const ITERATION_VERSION = 'champion_iter_013';
 
 function safe(text, fallback = '(none)') {
@@ -109,7 +111,8 @@ function buildFollowUpQuestionPrompt({
   questionHistory = [],
   resumeChunk = '',
   candidateEmotion = null,
-  bankQuestions = []
+  bankQuestions = [],
+  outputLanguage = ''
 } = {}) {
   const hooks = Array.isArray(concreteHooks) ? concreteHooks.join('\n- ') : String(concreteHooks);
   const history = Array.isArray(questionHistory)
@@ -131,6 +134,10 @@ function buildFollowUpQuestionPrompt({
         })
         .join('\n')}`
     : '';
+
+  const outputLanguageSection = buildOutputLanguageDirective(outputLanguage, {
+    fields: ['questions[].question', 'questions[].rationale']
+  });
 
   return `Generate 1-2 follow-up questions for the interviewer.
 
@@ -159,17 +166,25 @@ Worked example of the quoting rule (READ THIS):
 Bad (no quote, generic):
   "Can you tell me more about your deployment process?"
 Good (quotes hook span verbatim in single quotes):
-  "You said 'we hit our SLO targets' — what was the actual p99 latency number you were measuring against, and what was the SLO ceiling?"
-Good (pinning a vague phrase from the hooks):
-  "You said 'a lot better than expected' — what was the actual percent change and over what time window?"
+  "You said 'we hit our SLO targets' — how did you prove the latency change was durable rather than a lucky run?"
+Good (asking for a tradeoff, not a label):
+  "When you moved from 'five-minute polling' to events, what alternative was tempting, and what did choosing events force you to give up?"
 
-Hard demand on priority-1 question — MUST ask for ONE of these and ONLY these:
-  (a) a specific NUMBER (count, percent, ms, dollar amount, queries-per-second, etc.) OR — if you anticipate the candidate may not have the exact number — an ORDER-OF-MAGNITUDE commitment ("was the latency in single-digit ms, tens, or hundreds?"). The fallback makes refusals less likely.
-  (b) a specific DATE / VERSION / commit / PR id
-  (c) a specific NAMED person / tool / library / dataset / decision
-Forbidden framings (these invite qualitative dodges): "what factors", "what signals", "what set them apart", "how did you decide", "what did you focus on", "what was your approach".
+EVIDENCE FRAME MIX — choose the highest-signal frame for THIS answer; do not repeat the same frame every time:
+  (a) diagnostic/root-cause — how they found the real cause, ruled out false leads, or debugged ambiguity.
+  (b) verification/measurement — how they proved the result worked, what metric mattered, and what changed because of it.
+  (c) tradeoff/alternative — what credible option they rejected, why it was tempting, and what the chosen path cost.
+  (d) failure/learning — what assumption broke, what they changed after seeing reality, or what they would do differently.
+  (e) ownership/influence — their concrete slice, decision boundary, or influence path when "we"/team credit hides it.
 
-The rationale field MUST state which of (a)/(b)/(c) you demanded.
+Priority-1 question — pick the frame with the highest information gain. Do not make priority-1 default to a number/date/name pin. A number, date, named tool, person, PR, or version is useful ONLY when it supports a deeper verification or tradeoff question; it must not be the whole point of the question.
+
+Avoid dead sentence templates:
+- Do not make both questions start with "You said..." / "你提到..." unless the syntax after the quote is genuinely different.
+- Do not ask "what factors/signals/steps" as a list-only prompt. Force the judgment behind the choice.
+- Prefer natural interviewer openings across turns: "How did you...", "What made...", "Walk me through...", "When X happened...", "What did you change after...".
+
+The rationale field MUST state which evidence frame the question targets and what judgment/trait it reveals.
 
 RESUME-PIN RULE — if the candidate's verbal answer is vaguer than the resume bullet on the same topic, the priority-1 question MUST quote the RESUME claim (not a verbal hook) and demand the candidate confirm or refine it.
   Example: candidate says "we improved latency a lot"; resume says "reduced p99 latency by 35%". Priority-1: "Your resume says 'reduced p99 latency by 35%' — over what measurement window, and what was the absolute p99 number before and after?"
@@ -179,6 +194,7 @@ General requirements:
 - Fill the missing STAR element. If candidate gave S + R, probe A.
 - One-sentence rationale TEACHES the interviewer the principle behind the question.
 - Max 2 questions, priority-ranked.
+${outputLanguageSection}
 
 Output strict JSON only. No prose. No markdown fences.
 {

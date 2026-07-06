@@ -114,6 +114,45 @@ describe('QuestionCard ranked candidates', () => {
     expect(screen.getByText('手动')).toBeInTheDocument();
   });
 
+  test('localizes card labels when Chinese output is selected', () => {
+    render(
+      <QuestionCard
+        output={OUTPUT}
+        mode="expert"
+        tokensUsed={TOKENS}
+        elapsedMs={1200}
+        ranked={RANKED}
+        outputLanguage="zh"
+      />
+    );
+
+    expect(screen.getByLabelText('建议追问')).toBeInTheDocument();
+    expect(screen.getByText('AI 追问')).toBeInTheDocument();
+    expect(screen.getByText('备选问题')).toBeInTheDocument();
+    expect(screen.getByText('为什么这样问')).toBeInTheDocument();
+    expect(screen.getByText('预期证据')).toBeInTheDocument();
+    expect(screen.queryByText('Why ask this')).toBeNull();
+  });
+
+  test('localizes ranked-list chrome when English output is selected', () => {
+    render(
+      <QuestionCard
+        output={OUTPUT}
+        mode="expert"
+        tokensUsed={TOKENS}
+        elapsedMs={1200}
+        ranked={RANKED}
+        pickedHint="What happened when a shard got hot?"
+        outputLanguage="en"
+      />
+    );
+
+    expect(screen.getByText('More ranked candidates (3)')).toBeInTheDocument();
+    expect(screen.getByText(/Selected:/)).toBeInTheDocument();
+    expect(screen.queryByText('更多排序候选 (3)')).toBeNull();
+    expect(screen.queryByText(/已选用：/)).toBeNull();
+  });
+
   test('clicking a candidate row calls onPickCandidate with its question', () => {
     const onPickCandidate = vi.fn();
     render(

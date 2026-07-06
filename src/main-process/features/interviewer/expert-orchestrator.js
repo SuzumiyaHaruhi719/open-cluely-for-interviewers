@@ -427,6 +427,7 @@ async function runExpertChainLegacy({
   candidateAnswer,
   resumeChunk = '',
   jobDescription = '',
+  outputLanguage = '',
   questionHistory = [],
   sessionState = null,
   // OPTIONAL grounding for Block D — real high-frequency interview questions
@@ -529,7 +530,8 @@ async function runExpertChainLegacy({
       resumeChunk,
       jobDescription,
       questionHistory,
-      bankQuestions
+      bankQuestions,
+      outputLanguage
     }),
     abortSignal
   });
@@ -551,7 +553,8 @@ async function runExpertChainLegacy({
       candidateAnswer,
       resumeChunk,
       jobDescription,
-      questionHistory
+      questionHistory,
+      outputLanguage
     }),
     abortSignal
   });
@@ -623,7 +626,8 @@ async function runExpertChainLegacy({
         blockCResult: blockC,
         safetyVerdict: blockF.verdict,
         candidateAnswer,
-        resumeChunk
+        resumeChunk,
+        outputLanguage
       }),
       abortSignal
     });

@@ -34,7 +34,8 @@ const PCM = Object.freeze({ sampleRate: 16000, channels: 1, format: 's16le' });
 // Server -> client message type tags. The summary-* tags carry the interview
 // evaluation report (DeepSeek v4 pro): summary-chunk streams slices in order,
 // summary-done finalizes (carrying the whole text for the one-shot path),
-// summary-error reports a failure (no key / model error / empty transcript).
+// summary-error reports a failure (no key / model error / empty transcript),
+// summary-debug carries sanitized event-level diagnostics for stuck runs.
 const S2C = Object.freeze({
   READY: 'ready',
   PROGRESS: 'progress',
@@ -43,11 +44,13 @@ const S2C = Object.freeze({
   SESSION_CONTEXT: 'session-context',
   SUMMARY_CHUNK: 'summary-chunk',
   SUMMARY_DONE: 'summary-done',
+  SUMMARY_DEBUG: 'summary-debug',
   SUMMARY_ERROR: 'summary-error',
   ERROR: 'error'
 });
 
-// Client -> server message type tags. 'summarize' requests the interview summary.
+// Client -> server message type tags. 'summarize' requests the interview summary;
+// it may carry an optional client-side seeded transcript for template interviews.
 const C2S = Object.freeze({
   CONFIGURE: 'configure',
   ANALYZE: 'analyze',

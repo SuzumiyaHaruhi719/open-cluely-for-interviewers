@@ -65,13 +65,13 @@ const BLOCK_TYPES = {
   'question-pool': {
     label: '生成候选问题', schemaId: 'D', outputType: 'candidates', phase: { id: 'pool', index: 3 },
     inputs: [{ name: 'claims', type: 'claims' }, { name: 'gaps', type: 'gaps' }, { name: 'state', type: 'state' }], defaults: defaultsFor('D'),
-    build: (ctx, inputs, body) => buildBlockD({ blockAResult: inputs.claims, blockBResult: inputs.gaps, blockCResult: inputs.state, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, jobDescription: ctx.jobDescription, questionHistory: ctx.questionHistory, bankQuestions: ctx.bankQuestions, promptBody: body }),
+    build: (ctx, inputs, body) => buildBlockD({ blockAResult: inputs.claims, blockBResult: inputs.gaps, blockCResult: inputs.state, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, jobDescription: ctx.jobDescription, questionHistory: ctx.questionHistory, bankQuestions: ctx.bankQuestions, outputLanguage: ctx.outputLanguage, promptBody: body }),
     fallback: () => blockDFallback()
   },
   'rank-score': {
     label: '排序打分', schemaId: 'E', outputType: 'ranking', phase: { id: 'rank', index: 4 },
     inputs: [{ name: 'claims', type: 'claims' }, { name: 'gaps', type: 'gaps' }, { name: 'state', type: 'state' }, { name: 'candidates', type: 'candidates' }], defaults: defaultsFor('E'),
-    build: (ctx, inputs, body) => buildBlockE({ blockAResult: inputs.claims, blockBResult: inputs.gaps, blockCResult: inputs.state, blockDResult: inputs.candidates, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, jobDescription: ctx.jobDescription, questionHistory: ctx.questionHistory, promptBody: body }),
+    build: (ctx, inputs, body) => buildBlockE({ blockAResult: inputs.claims, blockBResult: inputs.gaps, blockCResult: inputs.state, blockDResult: inputs.candidates, candidateAnswer: ctx.candidateAnswer, resumeChunk: ctx.resumeChunk, jobDescription: ctx.jobDescription, questionHistory: ctx.questionHistory, outputLanguage: ctx.outputLanguage, promptBody: body }),
     fallback: (_ctx, inputs) => blockEFallback(inputs.candidates)
   },
   'safety-audit': {

@@ -1,10 +1,13 @@
-import type { FollowUpOutput, TokenUsage } from '@open-cluely/contract';
+import type { FollowUpOutput, OutputLanguage, TokenUsage } from '@open-cluely/contract';
+import { followUpCopyFor } from '../lib/followUpCopy';
 
 interface FollowUpCardProps {
   output: FollowUpOutput;
   mode: string;
   tokensUsed: TokenUsage;
   elapsedMs: number;
+  /** UI chrome follows the selected output language; empty preserves legacy labels. */
+  outputLanguage?: OutputLanguage;
 }
 
 function totalTokens(tokens: TokenUsage): number {
@@ -23,31 +26,34 @@ function formatElapsed(ms: number): string {
  * the alternative, rationale, anchor quotes (as chips), and expected evidence
  * yield below. A footer summarizes the run (mode / tokens / latency).
  */
-export function FollowUpCard({ output, mode, tokensUsed, elapsedMs }: FollowUpCardProps) {
+export function FollowUpCard({ output, mode, tokensUsed, elapsedMs, outputLanguage = '' }: FollowUpCardProps) {
+  const copy = followUpCopyFor(outputLanguage);
+  const anchorQuotes = output.anchor_quotes ?? [];
+
   return (
-    <article className="card followup" aria-label="Suggested follow-up">
-      <div className="followup-label">Suggested follow-up</div>
+    <article className="card followup" aria-label={copy.ariaFollowUp}>
+      <div className="followup-label">{copy.suggestedLabel}</div>
       <h2 className="followup-primary">{output.primary_question}</h2>
 
       {output.alternative_question ? (
         <p className="followup-alt">
-          <span className="followup-alt-label">Alt</span>
+          <span className="followup-alt-label">{copy.alternativeShort}</span>
           {output.alternative_question}
         </p>
       ) : null}
 
       {output.rationale_for_interviewer ? (
         <div className="followup-block">
-          <div className="followup-block-title">Why ask this</div>
+          <div className="followup-block-title">{copy.why}</div>
           <p className="followup-rationale">{output.rationale_for_interviewer}</p>
         </div>
       ) : null}
 
-      {output.anchor_quotes.length > 0 ? (
+      {anchorQuotes.length > 0 ? (
         <div className="followup-block">
-          <div className="followup-block-title">Anchored to</div>
+          <div className="followup-block-title">{copy.anchoredTo}</div>
           <div className="chips">
-            {output.anchor_quotes.map((quote, index) => (
+            {anchorQuotes.map((quote, index) => (
               <span key={`${index}-${quote}`} className="chip chip-quote" title={quote}>
                 “{quote}”
               </span>
@@ -58,7 +64,7 @@ export function FollowUpCard({ output, mode, tokensUsed, elapsedMs }: FollowUpCa
 
       {output.expected_evidence_yield ? (
         <div className="followup-block">
-          <div className="followup-block-title">Expected evidence</div>
+          <div className="followup-block-title">{copy.expected}</div>
           <p className="followup-yield">{output.expected_evidence_yield}</p>
         </div>
       ) : null}

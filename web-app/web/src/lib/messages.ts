@@ -1,18 +1,33 @@
 import type {
+  CompetencyStatus,
   FollowUpOutput,
   GenerationTrigger,
   RankedQuestion,
   ServerMessage,
+  SessionCompetency,
   SessionContextState,
+  SummaryDebugEvent,
   SpeakerRole
 } from '@open-cluely/contract';
-import { S2C } from '@open-cluely/contract';
 
 /**
  * Runtime narrowing for inbound WebSocket payloads. The wire is untrusted, so
  * we parse as `unknown` and validate the discriminant + required fields before
  * handing a typed `ServerMessage` to the hook.
  */
+
+const S2C = {
+  READY: 'ready',
+  PROGRESS: 'progress',
+  RESULT: 'result',
+  TRANSCRIPT: 'transcript',
+  SESSION_CONTEXT: 'session-context',
+  SUMMARY_CHUNK: 'summary-chunk',
+  SUMMARY_DONE: 'summary-done',
+  SUMMARY_DEBUG: 'summary-debug',
+  SUMMARY_ERROR: 'summary-error',
+  ERROR: 'error'
+} as const;
 
 /** The contract's `result` message member (carries the optional `ranked`/`trigger`). */
 type ResultMessage = Extract<ServerMessage, { type: 'result' }>;
@@ -100,7 +115,7 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
       return null;
 
     case S2C.SESSION_CONTEXT:
-      return { type: 'session-context', state: data.state as SessionContextState };
+      return { type: 'session-context', state: parseSessionContext(data.state) };
 
     case S2C.SUMMARY_CHUNK:
       return isString(data.requestId) && isString(data.text)
@@ -120,6 +135,13 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
             ...(data.empty === true ? { empty: true } : {})
           }
         : null;
+
+    case S2C.SUMMARY_DEBUG: {
+      const event = parseSummaryDebugEvent(data.event);
+      return isString(data.requestId) && event
+        ? { type: 'summary-debug', requestId: data.requestId, event }
+        : null;
+    }
 
     case S2C.SUMMARY_ERROR:
       return isString(data.requestId)
@@ -173,6 +195,33 @@ function parseTokens(value: unknown): { input: number; output: number } | null {
   return null;
 }
 
+function parseSummaryDebugEvent(value: unknown): SummaryDebugEvent | null {
+  if (!isRecord(value) || !isNumber(value.at) || !isString(value.stage)) {
+    return null;
+  }
+  if (value.source !== 'client' && value.source !== 'server' && value.source !== 'dashscope') {
+    return null;
+  }
+
+  const event: SummaryDebugEvent = {
+    at: value.at,
+    source: value.source,
+    stage: value.stage
+  };
+  if (isString(value.model)) event.model = value.model;
+  if (isNumber(value.status)) event.status = value.status;
+  if (isString(value.eventType)) event.eventType = value.eventType;
+  if (isNumber(value.inputChars)) event.inputChars = value.inputChars;
+  if (isNumber(value.chunkChars)) event.chunkChars = value.chunkChars;
+  if (isNumber(value.accumulatedChars)) event.accumulatedChars = value.accumulatedChars;
+  if (isNumber(value.inputTokens)) event.inputTokens = value.inputTokens;
+  if (isNumber(value.outputTokens)) event.outputTokens = value.outputTokens;
+  if (isNumber(value.elapsedMs)) event.elapsedMs = value.elapsedMs;
+  if (isString(value.reason)) event.reason = value.reason;
+  if (isString(value.error)) event.error = value.error;
+  return event;
+}
+
 function parseTokenUsage(value: unknown): { input: number; output: number; total?: number } {
   if (isRecord(value) && isNumber(value.input) && isNumber(value.output)) {
     return {
@@ -182,6 +231,57 @@ function parseTokenUsage(value: unknown): { input: number; output: number; total
     };
   }
   return { input: 0, output: 0 };
+}
+
+function toStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .filter(isString)
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+}
+
+function isCompetencyStatus(value: unknown): value is CompetencyStatus {
+  return value === 'covered' || value === 'partial' || value === 'gap';
+}
+
+function parseCompetencies(value: unknown, legacyValue: unknown): SessionCompetency[] {
+  if (Array.isArray(value)) {
+    return value.flatMap((entry) => {
+      if (!isRecord(entry) || !isString(entry.name)) {
+        return [];
+      }
+      const name = entry.name.trim();
+      if (!name) {
+        return [];
+      }
+      return [
+        {
+          name,
+          status: isCompetencyStatus(entry.status) ? entry.status : 'partial',
+          ...(isString(entry.evidence) && entry.evidence.trim()
+            ? { evidence: entry.evidence.trim() }
+            : {})
+        }
+      ];
+    });
+  }
+
+  // Legacy desktop Block-H state emits `competencies_covered: string[]`.
+  return toStringArray(legacyValue).map((name) => ({ name, status: 'covered' }));
+}
+
+function parseSessionContext(value: unknown): SessionContextState {
+  const rec = isRecord(value) ? value : {};
+  const topics = toStringArray(rec.topics);
+  const gaps = toStringArray(rec.gaps);
+  return {
+    competencies: parseCompetencies(rec.competencies, rec.competencies_covered),
+    topics: topics.length ? topics : toStringArray(rec.drilled_topics),
+    gaps: gaps.length ? gaps : toStringArray(rec.open_gaps)
+  };
 }
 
 /**

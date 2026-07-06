@@ -1,7 +1,7 @@
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { chat } from '../src/dashscope';
+import { chat, chatStream, type ChatStreamEvent } from '../src/dashscope';
 
 // ----------------------------------------------------------------------------
 // `chat()` is the one Anthropic-shape HTTP helper. These tests pin two behaviours
@@ -26,6 +26,13 @@ function anthropicOk(text: string): Response {
 
 function httpError(status: number, body = 'err'): Response {
   return new Response(body, { status, headers: { 'Content-Type': 'text/plain' } });
+}
+
+function sseResponse(stream: ReadableStream<Uint8Array>): Response {
+  return new Response(stream, {
+    status: 200,
+    headers: { 'Content-Type': 'text/event-stream' }
+  });
 }
 
 let originalFetch: typeof global.fetch;
@@ -149,4 +156,161 @@ test('#1 default callers (no timeoutMs) still get a working call', async () => {
   global.fetch = (async () => anthropicOk('default-budget')) as typeof global.fetch;
   const text = await chat({ messages: [{ role: 'user', content: 'hi' }] });
   assert.equal(text, 'default-budget');
+});
+
+test('chatStream resolves on message_stop even when the SSE connection stays open', async () => {
+  const encoder = new TextEncoder();
+  let cancelCalled = false;
+  global.fetch = (async () =>
+    sseResponse(
+      new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(
+            encoder.encode(
+              [
+                'event:message_start',
+                'data:{"message":{"usage":{"input_tokens":12}}}',
+                '',
+                'event:content_block_delta',
+                'data:{"delta":{"type":"text_delta","text":"报告完成"}}',
+                '',
+                'event:message_delta',
+                'data:{"usage":{"output_tokens":34}}',
+                '',
+                'event:message_stop',
+                'data:{}',
+                ''
+              ].join('\n')
+            )
+          );
+          // Intentionally do NOT close the stream. DashScope can leave the HTTP
+          // body open after message_stop; chatStream must finish on protocol stop.
+        },
+        cancel() {
+          cancelCalled = true;
+        }
+      })
+    )) as typeof global.fetch;
+
+  let usage: { input: number; output: number } | null = null;
+  const chunks: string[] = [];
+
+  const text = await chatStream(
+    {
+      messages: [{ role: 'user', content: 'hi' }],
+      timeoutMs: 30
+    },
+    {
+      onDelta: (delta) => chunks.push(delta),
+      onUsage: (u) => {
+        usage = u;
+      }
+    }
+  );
+
+  assert.equal(text, '报告完成');
+  assert.deepEqual(chunks, ['报告完成']);
+  assert.deepEqual(usage, { input: 12, output: 34 });
+  assert.equal(cancelCalled, true, 'the open reader should be cancelled after message_stop');
+});
+
+test('chatStream emits event-level debug markers without logging text content', async () => {
+  const encoder = new TextEncoder();
+  global.fetch = (async () =>
+    sseResponse(
+      new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(
+            encoder.encode(
+              [
+                'event:message_start',
+                'data:{"message":{"usage":{"input_tokens":12}}}',
+                '',
+                'event:content_block_delta',
+                'data:{"delta":{"type":"text_delta","text":"报告完成"}}',
+                '',
+                'event:message_delta',
+                'data:{"usage":{"output_tokens":34}}',
+                '',
+                'event:message_stop',
+                'data:{}',
+                ''
+              ].join('\n')
+            )
+          );
+        }
+      })
+    )) as typeof global.fetch;
+
+  const events: ChatStreamEvent[] = [];
+  await chatStream(
+    {
+      messages: [{ role: 'user', content: 'hi' }],
+      model: 'deepseek-v4-pro',
+      timeoutMs: 50
+    },
+    {
+      onDelta: () => {},
+      onUsage: () => {},
+      onEvent: (event) => events.push(event)
+    }
+  );
+
+  assert.deepEqual(
+    events.map((event) => event.stage),
+    [
+      'request-start',
+      'response',
+      'reader-open',
+      'sse-event',
+      'usage-input',
+      'sse-event',
+      'delta',
+      'sse-event',
+      'usage-output',
+      'sse-event',
+      'message-stop',
+      'reader-cancel',
+      'return'
+    ]
+  );
+  const delta = events.find((event) => event.stage === 'delta');
+  assert.equal(delta?.chunkChars, '报告完成'.length);
+  assert.equal(Object.prototype.hasOwnProperty.call(delta ?? {}, 'text'), false, 'debug events must not carry model text');
+});
+
+test('chatStream times out if an opened SSE stream never reaches message_stop', async () => {
+  const encoder = new TextEncoder();
+  global.fetch = (async () =>
+    sseResponse(
+      new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(
+            encoder.encode(
+              [
+                'event:message_start',
+                'data:{"message":{"usage":{"input_tokens":12}}}',
+                ''
+              ].join('\n')
+            )
+          );
+          // Keep the stream open forever: timeout must reject the read loop.
+        }
+      })
+    )) as typeof global.fetch;
+
+  await assert.rejects(
+    () =>
+      chatStream(
+        {
+          messages: [{ role: 'user', content: 'hi' }],
+          timeoutMs: 20
+        },
+        {
+          onDelta: () => {},
+          onUsage: () => {}
+        }
+      ),
+    /timed out/i
+  );
 });

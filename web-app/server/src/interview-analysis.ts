@@ -18,7 +18,7 @@
 // ============================================================================
 
 import type { SessionContextState, CompetencyStatus, SessionCompetency } from '@open-cluely/contract';
-import { chat, chatStream, getDefaultModel, type ChatOptions } from './dashscope';
+import { chat, chatStream, getDefaultModel, type ChatOptions, type ChatStreamEvent } from './dashscope';
 import type { SummaryTelemetry } from './summary-telemetry';
 
 /** The light model used for the incremental session-context call. */
@@ -200,24 +200,27 @@ export async function analyzeSessionContext(input: string): Promise<SessionConte
 
 // ── Interview summary (Phase B — DeepSeek v4 pro) ───────────────────────────
 // A full, deepest-reasoning evaluation report the interviewer reads after (or
-// during) the interview. Unlike the live context call this KEEPS thinking on
-// (the reasoning depth is the point) and asks for a Chinese Markdown report with
-// a fixed section structure. The summary reads the FULL transcript window (both
+// during) the interview. It disables model-side hidden thinking for latency and
+// asks for a Chinese Markdown report with a fixed section structure. The summary
+// reads the FULL transcript window (both
 // lanes — the AI's asked follow-ups are already accumulated in the transcript),
 // so it is built with a larger transcript cap than the live panel.
 
 const SUMMARY_TRANSCRIPT_WINDOW_CHARS = 14000;
-// The report is long-form prose; give it room. Pro thinking + a multi-section
-// report needs a generous ceiling so the conclusion is never truncated.
-const SUMMARY_MAX_TOKENS = 4096;
+// The report is long-form prose. Pro keeps room for a deep multi-section report;
+// Flash is selected for speed, so it gets a shorter concise-report ceiling.
+const SUMMARY_PRO_MAX_TOKENS = 4096;
+const SUMMARY_FLASH_MAX_TOKENS = 1600;
+export function getSummaryMaxTokens(model: string | undefined): number {
+  return String(model ?? '').includes('flash') ? SUMMARY_FLASH_MAX_TOKENS : SUMMARY_PRO_MAX_TOKENS;
+}
 /**
  * The summary call's abort budget. With thinking DISABLED (see the call sites),
- * even a full 4096-token report streams well inside this, so the ceiling is just
- * a guard against a genuinely stuck call — kept under 2 min so the user never
- * waits the old 3-minute thinking-ON worst case. A stuck call now fails fast as a
- * `summary-error` instead of hanging.
+ * even a full 4096-token report should stream inside this. The ceiling is a
+ * guard against a genuinely stuck pro call and leaves room for a fast-model
+ * fallback before the browser's last-resort timeout fires.
  */
-export const SUMMARY_REQUEST_TIMEOUT_MS = 120000;
+export const SUMMARY_REQUEST_TIMEOUT_MS = 90000;
 
 /**
  * The default evaluation prompt (Chinese). Polished for sharpness, evidence
@@ -330,6 +333,8 @@ export function isModelRejected(err: unknown): boolean {
 
 /** The chat signature analyzeSummary depends on — injectable for offline tests. */
 export type SummaryChatFn = (options: ChatOptions) => Promise<string>;
+/** The streaming chat signature analyzeSummaryStream depends on — injectable for offline tests. */
+export type SummaryChatStreamFn = typeof chatStream;
 
 /** Optional dependencies for analyzeSummary (defaults wire production + no-op telemetry). */
 export interface AnalyzeSummaryDeps {
@@ -379,7 +384,7 @@ export async function analyzeSummary(
       system: SUMMARY_SYSTEM,
       messages,
       model: proModel,
-      maxTokens: SUMMARY_MAX_TOKENS,
+      maxTokens: getSummaryMaxTokens(proModel),
       timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS,
       // Disable deepseek-v4's default extended thinking: its hidden reasoning
       // tokens dominate latency (minutes, up to the abort) without materially
@@ -414,7 +419,7 @@ export async function analyzeSummary(
         system: SUMMARY_SYSTEM,
         messages,
         model: fallbackModel,
-        maxTokens: SUMMARY_MAX_TOKENS,
+        maxTokens: getSummaryMaxTokens(fallbackModel),
         timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS
       });
       tel?.record('model-call-end', { requestId: rid, model: fallbackModel });
@@ -430,6 +435,11 @@ export async function analyzeSummary(
 /** Short, safe error-message extraction for telemetry. */
 function errMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err ?? 'unknown error');
+}
+
+function isTimeoutLike(err: unknown): boolean {
+  const msg = errMessage(err).toLowerCase();
+  return /timeout|timed out|abort/.test(msg);
 }
 
 // ── Streaming summary (Feature 1) ────────────────────────────────────────────
@@ -453,6 +463,8 @@ export interface AnalyzeSummaryStreamDeps {
    * the default (NEVER call the model with an empty system prompt).
    */
   readonly summarySystemPrompt?: string;
+  /** The streaming chat helper; defaults to the real DashScope `chatStream`. Injected in tests. */
+  readonly chatStream?: SummaryChatStreamFn;
 }
 
 /**
@@ -488,14 +500,34 @@ export async function analyzeSummaryStream(
   const proModel = overrideModel || getSummaryModel();
   const messages = [{ role: 'user' as const, content: trimmed }];
   const systemPrompt = resolveSummarySystemPrompt(deps.summarySystemPrompt);
+  const runChatStream = deps.chatStream ?? chatStream;
 
+  const recordDashscopeEvent = (event: ChatStreamEvent): void => {
+    tel?.record('stream-event', {
+      requestId: rid,
+      source: 'dashscope',
+      stage: event.stage,
+      model: event.model,
+      status: event.status,
+      eventType: event.eventType,
+      chunkChars: event.chunkChars,
+      accumulatedChars: event.accumulatedChars,
+      inputTokens: event.inputTokens,
+      outputTokens: event.outputTokens,
+      reason: event.reason,
+      error: event.error
+    });
+  };
+
+  let lastAttemptDeltaChars = 0;
   const runStream = async (model: string): Promise<string> => {
-    return chatStream(
+    lastAttemptDeltaChars = 0;
+    return runChatStream(
       {
         system: systemPrompt,
         messages,
         model,
-        maxTokens: SUMMARY_MAX_TOKENS,
+        maxTokens: getSummaryMaxTokens(model),
         timeoutMs: SUMMARY_REQUEST_TIMEOUT_MS,
         // deepseek-v4 does extended "thinking" by default — thousands of hidden
         // reasoning tokens that DOMINATE latency and pushed even flash past 3 min
@@ -504,7 +536,14 @@ export async function analyzeSummaryStream(
         // flash now returns in seconds, not minutes.
         thinking: false
       },
-      callbacks
+      {
+        onDelta: (text) => {
+          lastAttemptDeltaChars += text.length;
+          callbacks.onDelta(text);
+        },
+        onUsage: callbacks.onUsage,
+        onEvent: recordDashscopeEvent
+      }
     );
   };
 
@@ -515,7 +554,12 @@ export async function analyzeSummaryStream(
     tel?.record('done', { requestId: rid, model: proModel });
     return { text, model: proModel, fellBack: false };
   } catch (err) {
-    if (!isModelRejected(err)) {
+    const fallbackReason = isModelRejected(err)
+      ? 'pro model rejected'
+      : isTimeoutLike(err) && lastAttemptDeltaChars === 0
+        ? 'pro model timed out before first text'
+        : '';
+    if (!fallbackReason) {
       tel?.record('error', { requestId: rid, model: proModel, error: errMessage(err) });
       throw err;
     }
@@ -524,7 +568,7 @@ export async function analyzeSummaryStream(
       tel?.record('error', { requestId: rid, model: proModel, error: errMessage(err) });
       throw err;
     }
-    tel?.record('fallback', { requestId: rid, model: fallbackModel, reason: 'pro model rejected' });
+    tel?.record('fallback', { requestId: rid, model: fallbackModel, reason: fallbackReason });
     try {
       tel?.record('model-call-start', { requestId: rid, model: fallbackModel });
       const text = await runStream(fallbackModel);

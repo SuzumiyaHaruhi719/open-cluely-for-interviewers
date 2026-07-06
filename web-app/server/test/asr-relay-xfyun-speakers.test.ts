@@ -25,7 +25,7 @@ function makeXfyunFactory() {
   return { factory, created };
 }
 
-test('xfyun: an over-segmented stream (rl ids 1,2,3,4) is capped to ≤ 2 distinct speakers', async () => {
+test('xfyun: preserves raw speaker ids instead of folding fast-handoff overflow into the previous speaker', async () => {
   const createAsrRelay = await loadRelay();
   const emits: any[] = [];
   const { factory, created } = makeXfyunFactory();
@@ -39,7 +39,9 @@ test('xfyun: an over-segmented stream (rl ids 1,2,3,4) is capped to ≤ 2 distin
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(created.length, 1);
 
-  // iFlytek over-segments 2 people into rl ids 1,2,3,4 on finals.
+  // iFlytek may over-segment fast hand-offs into extra raw ids. The relay must
+  // preserve those ids so the UI shows separate "说话人 N" bubbles the interviewer
+  // can label, instead of locally folding them into the previous speaker.
   const onTranscript = created[0].deps.onTranscript;
   onTranscript({ text: '问题一', isFinal: true, speakerId: 1 });
   onTranscript({ text: '回答一', isFinal: true, speakerId: 2 });
@@ -49,17 +51,10 @@ test('xfyun: an over-segmented stream (rl ids 1,2,3,4) is capped to ≤ 2 distin
   const finalSpeakerIds = emits
     .filter((e) => e.isFinal && typeof e.speakerId === 'number')
     .map((e) => e.speakerId);
-  // Four raw ids in, but the UI must never see more than two distinct speakers.
-  assert.equal(finalSpeakerIds.length, 4);
-  assert.ok(
-    new Set(finalSpeakerIds).size <= 2,
-    `expected ≤2 distinct capped speakers, got ${[...new Set(finalSpeakerIds)].join(',')}`
-  );
-  // Capped slots are 0/1 (first-seen → 0, second → 1).
-  assert.deepEqual([finalSpeakerIds[0], finalSpeakerIds[1]], [0, 1]);
+  assert.deepEqual(finalSpeakerIds, [1, 2, 3, 4]);
 });
 
-test('xfyun: partials (no speakerId) are forwarded untouched by the cap', async () => {
+test('xfyun: partials (no speakerId) are forwarded untouched', async () => {
   const createAsrRelay = await loadRelay();
   const emits: any[] = [];
   const { factory, created } = makeXfyunFactory();
@@ -71,7 +66,7 @@ test('xfyun: partials (no speakerId) are forwarded untouched by the cap', async 
   assert.deepEqual(emits, [{ source: 'mic', text: '半句', isFinal: false }]);
 });
 
-test('xfyun: a genuine 2-speaker stream keeps both speakers (0 and 1)', async () => {
+test('xfyun: a genuine 2-speaker stream keeps the provider ids stable', async () => {
   const createAsrRelay = await loadRelay();
   const emits: any[] = [];
   const { factory, created } = makeXfyunFactory();
@@ -85,5 +80,5 @@ test('xfyun: a genuine 2-speaker stream keeps both speakers (0 and 1)', async ()
   onTranscript({ text: 'c', isFinal: true, speakerId: 5 });
 
   const ids = emits.filter((e) => e.isFinal).map((e) => e.speakerId);
-  assert.deepEqual(ids, [0, 1, 0]);
+  assert.deepEqual(ids, [5, 9, 5]);
 });

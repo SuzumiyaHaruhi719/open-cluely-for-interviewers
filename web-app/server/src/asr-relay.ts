@@ -33,7 +33,6 @@ import { createVolcSession, type VolcSessionDeps } from './volc-client';
 import { createXfyunSession, type XfyunSessionDeps } from './xfyun-client';
 import { createSimSession, type SimSessionDeps, type SimScriptTurn } from './sim-client';
 import { createCamppDiarizer, type CamppDiarizerDeps, type Diarizer } from './campp-diarizer';
-import { createSpeakerCap } from './speaker-cap';
 
 export interface TranscriptEmit {
   source: AudioSource;
@@ -167,13 +166,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   let diarize = false;
   const diarSession = randomUUID();
   let disposed = false;
-  // iFlytek (角色分离) over-segments fast turn-taking into >2 `rl` cluster ids; this
-  // per-connection cap collapses them to at most 2 distinct speakers so the UI
-  // never shows "4 speakers" for a 2-person interview. Only the xfyun path uses
-  // it (paraformer/volc carry no id; CAM++ already caps server-side; sim is a
-  // fixed 0/1 script). See speaker-cap.ts for the fold heuristic.
-  const xfyunSpeakerCap = createSpeakerCap();
-
   // Shared emit: carries `speakerId` only when present (diarized) — omitted for
   // online so the wire stays byte-identical. Display finals may auto-analyze.
   function emitTranscript(
@@ -278,15 +270,13 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     if (disposed || sessions[source]) return;
     // xfyun (角色分离 role_type=2) AND sim (scripted) both carry their OWN speaker
     // in the same call, so they use the PLAIN text path and forward that speakerId
-    // — never the local CAM++ diarize tee, even when `diarize` is on. For xfyun we
-    // additionally run the raw cluster id through the 2-speaker cap (sim's ids are
-    // already a fixed 0/1 script, so it is forwarded as-is).
+    // — never the local CAM++ diarize tee, even when `diarize` is on. Preserve
+    // xfyun's raw ids: during fast hand-offs it may create extra clusters, and
+    // folding them locally into 0/1 can misattribute a real hand-off to the
+    // previous speaker. Extra "说话人 N" bubbles are safer than merged speakers.
     if (provider === 'xfyun' || provider === 'sim') {
-      const isXfyun = provider === 'xfyun';
       sessions[source] = makeTextSession(source, (t) => {
-        const rawId = t.speakerId ?? null;
-        const speakerId = isXfyun && typeof rawId === 'number' ? xfyunSpeakerCap.map(rawId) : rawId;
-        emitTranscript(source, { text: t.text, isFinal: t.isFinal, speakerId });
+        emitTranscript(source, { text: t.text, isFinal: t.isFinal, speakerId: t.speakerId ?? null });
       });
       return;
     }
@@ -389,10 +379,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     // server reads XFYUN_* from .env). Anything else collapses to 'paraformer'.
     const resolved =
       next === 'volc' ? 'volc' : next === 'xfyun' ? 'xfyun' : next === 'sim' ? 'sim' : 'paraformer';
-    // Reset the iFlytek 2-speaker cap only on a genuine provider CHANGE (fresh
-    // engine) — not on the full-config re-push that re-asserts the SAME provider
-    // mid-interview, which must keep the established slot mapping stable.
-    if (resolved !== provider) xfyunSpeakerCap.reset();
     provider = resolved;
     if (volc) volcCreds = { ...volc };
     camppUrl = funasr?.url || config.camppUrl;

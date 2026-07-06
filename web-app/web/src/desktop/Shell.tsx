@@ -98,6 +98,7 @@ export function Shell() {
   // Seeded (sample) or loaded (session) conversation, rendered as chat lines in
   // the transcript stream BEFORE any live socket transcript. Cleared on new/clear.
   const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
+  const [clientSummaryTranscript, setClientSummaryTranscript] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
@@ -446,6 +447,7 @@ export function Shell() {
     pushConfig({ resetGeneration: true });
     setAnswer('');
     setTranscriptMessages([]);
+    setClientSummaryTranscript('');
     lastDisplayFinalRef.current = '';
     resetSpeakerSegments();
     resetTranscripts();
@@ -488,8 +490,8 @@ export function Shell() {
   // from the client beyond the requestId startSummary mints.
   const onSummarize = useCallback((): void => {
     setSummaryOpen(true);
-    startSummary();
-  }, [startSummary]);
+    startSummary(clientSummaryTranscript);
+  }, [clientSummaryTranscript, startSummary]);
 
   // ── Interview lifecycle (ephemeral — nothing persists across reload) ─────────
   // "New interview": reset all in-memory state and re-open the type picker.
@@ -524,6 +526,7 @@ export function Shell() {
       pushConfig({ jobDescription: jd, resumeText });
 
       if (sample) {
+        const sampleText = sampleTranscriptText(sample);
         // Render the whole sample conversation as chat lines…
         setTranscriptMessages(
           sample.turns.map((turn) => ({
@@ -531,13 +534,14 @@ export function Shell() {
             text: turn.text
           }))
         );
+        setClientSummaryTranscript(sampleText);
         // …and seed the analyze buffer with the LAST candidate turn so Generate Q
         // has the most-recent answer to follow up on (falls back to the flattened
         // transcript if the sample has no candidate turn).
         const lastCandidate = [...sample.turns]
           .reverse()
           .find((turn) => turn.speaker === 'candidate');
-        setAnswer(lastCandidate ? lastCandidate.text : sampleTranscriptText(sample));
+        setAnswer(lastCandidate ? lastCandidate.text : sampleText);
       }
     },
     [onClearSession, pushConfig]
@@ -594,6 +598,7 @@ export function Shell() {
                 transcripts={transcripts}
                 transcriptMessages={transcriptMessages}
                 lastResult={lastResult}
+                outputLanguage={config.outputLanguage}
                 progress={progress}
                 progressTokens={progressTokens}
                 isAnalyzing={isAnalyzing}

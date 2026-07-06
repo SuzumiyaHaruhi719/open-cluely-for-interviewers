@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import { SummaryModal } from './SummaryModal';
 import type { SummaryState } from '../lib/useCopilotSocket';
@@ -12,7 +12,16 @@ import type { SummaryState } from '../lib/useCopilotSocket';
 const noop = () => {};
 
 function state(patch: Partial<SummaryState>): SummaryState {
-  return { status: 'idle', text: '', error: null, empty: false, startedAt: null, tokens: 0, ...patch };
+  return {
+    status: 'idle',
+    text: '',
+    error: null,
+    empty: false,
+    startedAt: null,
+    tokens: 0,
+    debugEvents: [],
+    ...patch
+  };
 }
 
 function renderModal(summary: SummaryState) {
@@ -35,6 +44,26 @@ describe('SummaryModal states', () => {
     renderModal(state({ status: 'error', error: 'no key' }));
     expect(screen.getByText(/Failed to generate summary/i)).toBeInTheDocument();
     expect(screen.getByText(/no key/)).toBeInTheDocument();
+  });
+
+  test('error state shows the summary debug timeline when events are available', () => {
+    renderModal(
+      state({
+        status: 'error',
+        error: 'Summary generation timed out',
+        debugEvents: [
+          { at: 1000, source: 'client', stage: 'client:sent' },
+          { at: 1100, source: 'server', stage: 'input-built', inputChars: 4096 },
+          { at: 1200, source: 'dashscope', stage: 'sse-event', eventType: 'message_start' },
+          { at: 151000, source: 'client', stage: 'client:timeout-fired', elapsedMs: 150000 }
+        ]
+      })
+    );
+
+    expect(screen.getByText(/Debug timeline/i)).toBeInTheDocument();
+    expect(screen.getByText(/input-built/)).toBeInTheDocument();
+    expect(screen.getByText(/message_start/)).toBeInTheDocument();
+    expect(screen.getByText(/client:timeout-fired/)).toBeInTheDocument();
   });
 
   // #8 — the empty-transcript notice must be a distinct NOTICE, not a fake report.

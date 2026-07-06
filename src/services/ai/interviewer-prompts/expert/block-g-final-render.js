@@ -8,25 +8,13 @@
 // G is the ONLY block whose JSON is shown to the interviewer. All upstream
 // blocks are internal.
 
+const { buildOutputLanguageDirective } = require('../output-language');
+
 const EXPERT_ITERATION_VERSION = 'expert_v1_2026-05-29';
 
 // Default editable instruction body (static role text). The runtime rewriteHint
 // is appended after this in buildBlockG, so it applies even when overridden.
 const DEFAULT_BODY = `Role: You are the FINAL-RENDER block — pure template. You take the chosen primary question (and optional alternative) and emit the interviewer-facing JSON. No new content. No new analysis.`;
-
-// Output-language directive. 'auto'/null keeps the question verbatim in whatever
-// language it was generated (default). 'zh'/'en' render the interviewer-facing
-// framing in that language while keeping (a) quoted candidate phrases verbatim in
-// their original language (they're real quotes) and (b) technical terms / tool &
-// product names / acronyms / metrics in original form.
-function languageDirective(outputLanguage) {
-  const lang = String(outputLanguage || '').toLowerCase();
-  if (lang !== 'zh' && lang !== 'en') return '';
-  const name = lang === 'zh' ? 'CHINESE (简体中文)' : 'ENGLISH';
-  return `\n=== OUTPUT LANGUAGE — MANDATORY ===
-You MUST write ALL THREE of primary_question, alternative_question, AND rationale_for_interviewer in ${name}. This applies to rationale_for_interviewer too — the schema below shows an ENGLISH example ("This probes…") but that is ONLY a structural template; write the actual rationale in ${name}, NOT English. If the selected question is currently in another language, TRANSLATE it into natural, fluent ${name} — this translation is REQUIRED and is explicitly NOT "new content" (it overrides the verbatim rule for the question's framing). Preserve meaning exactly; do not add or drop ideas. Two things stay in their ORIGINAL form: (1) any candidate phrase inside single quotes — keep it verbatim in the language the candidate used (it is a real quote); (2) technical terms, tool/framework/product names, acronyms, and metric units. anchor_quotes must be the substrings actually present in the rendered primary_question.
-=== END OUTPUT LANGUAGE ===\n`;
-}
 
 function buildBlockG({
   primaryCandidate = null,
@@ -54,8 +42,17 @@ function buildBlockG({
   // Editable body = the static role text (DEFAULT_BODY). rewriteHint is a runtime
   // conditional appended after the body, so it applies whether or not the body is
   // overridden. The candidate payload + output schema + rules below are the frame.
+  const outputLanguageSection = buildOutputLanguageDirective(outputLanguage, {
+    fields: [
+      'primary_question',
+      'alternative_question',
+      'rationale_for_interviewer',
+      'expected_evidence_yield'
+    ],
+    extra: 'If a selected candidate question is in another language, translate only the framing into the selected language. anchor_quotes must be exact substrings actually present in the rendered primary_question.'
+  });
+
   return `${promptBody || DEFAULT_BODY} ${rewriteHint}
-${languageDirective(outputLanguage)}
 [Primary candidate selected by ranker]
 question: ${primary.question}
 type: ${primary.question_type}
@@ -90,6 +87,7 @@ Required output — strict JSON only.
   "expected_evidence_yield": "<the primary candidate's expected_yield, copied verbatim>",
   "iteration_version": "${EXPERT_ITERATION_VERSION}"
 }
+${outputLanguageSection}
 
 Hard rules:
 1. Do NOT add new content, anchors, or rationales. The only transformations allowed: rephrasing under safety_verdict='rewrite', AND translating into the OUTPUT LANGUAGE when that directive is set above (translation there is REQUIRED, not optional, and is not considered new content).

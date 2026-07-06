@@ -10,6 +10,7 @@ import type {
   RankedQuestion,
   ServerMessage,
   SessionContextState,
+  SummaryDebugEvent,
   TokenUsage
 } from '@open-cluely/contract';
 import { createHeadlessSession } from '@open-cluely/copilot-core';
@@ -29,7 +30,7 @@ import {
   type SummaryResult,
   type StreamCallbacks
 } from './interview-analysis';
-import { createSummaryTelemetry, type SummaryTelemetry } from './summary-telemetry';
+import { createSummaryTelemetry, type SummaryTelemetry, type SummaryTelemetryEvent } from './summary-telemetry';
 import { createSpeakerRoleMap, type SpeakerRoleMap } from './speaker-roles';
 import { stampRole, isCandidateFinal } from './ws-speaker';
 
@@ -132,7 +133,7 @@ const clientMessageSchema = z.discriminatedUnion('type', [
     role: z.enum(['interviewer', 'candidate', 'unknown'])
   }),
   z.object({ type: z.literal('context-note'), note: z.string().min(1) }),
-  z.object({ type: z.literal('summarize'), requestId: z.string() })
+  z.object({ type: z.literal('summarize'), requestId: z.string(), transcript: z.string().optional() })
 ]);
 
 type ClientMessageParsed = z.infer<typeof clientMessageSchema>;
@@ -147,14 +148,84 @@ function send(ws: WebSocket, msg: ServerMessage): void {
   }
 }
 
+function telemetryToDebugEvent(
+  type: SummaryTelemetryEvent['type'],
+  detail: Partial<SummaryTelemetryEvent>,
+  at: number
+): SummaryDebugEvent {
+  const stage = typeof detail.stage === 'string' && detail.stage.length > 0 ? detail.stage : type;
+  return {
+    at,
+    source: detail.source ?? 'server',
+    stage,
+    ...(detail.model ? { model: detail.model } : {}),
+    ...(typeof detail.status === 'number' ? { status: detail.status } : {}),
+    ...(detail.eventType ? { eventType: detail.eventType } : {}),
+    ...(typeof detail.inputChars === 'number' ? { inputChars: detail.inputChars } : {}),
+    ...(typeof detail.chunkChars === 'number' ? { chunkChars: detail.chunkChars } : {}),
+    ...(typeof detail.accumulatedChars === 'number' ? { accumulatedChars: detail.accumulatedChars } : {}),
+    ...(typeof detail.inputTokens === 'number' ? { inputTokens: detail.inputTokens } : {}),
+    ...(typeof detail.outputTokens === 'number' ? { outputTokens: detail.outputTokens } : {}),
+    ...(typeof detail.elapsedMs === 'number' ? { elapsedMs: detail.elapsedMs } : {}),
+    ...(detail.reason ? { reason: detail.reason } : {}),
+    ...(detail.error ? { error: detail.error } : {})
+  };
+}
+
+function sendSummaryDebug(ws: WebSocket, requestId: string, event: SummaryDebugEvent): void {
+  send(ws, { type: 'summary-debug', requestId, event });
+}
+
+function withSummaryDebugFrames(
+  telemetry: SummaryTelemetry | undefined,
+  ws: WebSocket,
+  requestId: string
+): SummaryTelemetry {
+  return {
+    record(type, detail = {}): void {
+      const fullDetail = { ...detail, requestId };
+      telemetry?.record(type, fullDetail);
+      sendSummaryDebug(ws, requestId, telemetryToDebugEvent(type, fullDetail, Date.now()));
+    },
+    snapshot(): SummaryTelemetryEvent[] {
+      return telemetry?.snapshot() ?? [];
+    },
+    clear(): void {
+      telemetry?.clear();
+    }
+  };
+}
+
 // A process-wide summary telemetry log so the (30–60s, otherwise opaque) summary
 // lifecycle is observable across connections. Bounded ring buffer — see
 // `summary-telemetry.ts`. Exposed for an ops/health surface to snapshot.
-const summaryTelemetry = createSummaryTelemetry();
+const summaryTelemetry = createSummaryTelemetry({ onEvent: logSummaryTelemetryEvent });
 
 /** The process-wide summary telemetry recorder (lifecycle event log). */
 export function getSummaryTelemetry(): SummaryTelemetry {
   return summaryTelemetry;
+}
+
+function logSummaryTelemetryEvent(event: SummaryTelemetryEvent): void {
+  const debug = telemetryToDebugEvent(event.type, event, event.at);
+  const parts = [
+    '[summary-debug]',
+    `requestId=${event.requestId ?? '-'}`,
+    `source=${debug.source}`,
+    `stage=${debug.stage}`
+  ];
+  if (debug.model) parts.push(`model=${debug.model}`);
+  if (typeof debug.status === 'number') parts.push(`status=${debug.status}`);
+  if (debug.eventType) parts.push(`event=${debug.eventType}`);
+  if (typeof debug.inputChars === 'number') parts.push(`inputChars=${debug.inputChars}`);
+  if (typeof debug.chunkChars === 'number') parts.push(`chunkChars=${debug.chunkChars}`);
+  if (typeof debug.accumulatedChars === 'number') parts.push(`accumulatedChars=${debug.accumulatedChars}`);
+  if (typeof debug.inputTokens === 'number') parts.push(`inputTokens=${debug.inputTokens}`);
+  if (typeof debug.outputTokens === 'number') parts.push(`outputTokens=${debug.outputTokens}`);
+  if (typeof debug.elapsedMs === 'number') parts.push(`elapsedMs=${debug.elapsedMs}`);
+  if (debug.reason) parts.push(`reason=${JSON.stringify(debug.reason)}`);
+  if (debug.error) parts.push(`error=${JSON.stringify(debug.error)}`);
+  console.info(parts.join(' '));
 }
 
 interface ProgressPayload {
@@ -382,7 +453,7 @@ export async function handleSummarize(
   requestId: string,
   deps: SummarizeDeps = {}
 ): Promise<void> {
-  const tel = deps.telemetry;
+  const tel = withSummaryDebugFrames(deps.telemetry, ws, requestId);
   tel?.record('requested', { requestId });
 
   const input = buildSummary();
@@ -395,6 +466,7 @@ export async function handleSummarize(
       empty: true,
       text: '还没有可总结的面试内容。\n\nThere is no interview content to summarize yet — start the conversation first.'
     });
+    tel?.record('stream-event', { requestId, source: 'server', stage: 'summary-done-sent', reason: 'empty' });
     tel?.record('done', { requestId, reason: 'empty' });
     return;
   }
@@ -407,10 +479,18 @@ export async function handleSummarize(
       const text = result.fellBack
         ? `> 注意：所选总结模型不可用，已回退到 ${result.model}。\n\n${result.text}`
         : result.text;
+      tel?.record('stream-event', {
+        requestId,
+        source: 'server',
+        stage: 'summary-done-sent',
+        model: result.model,
+        accumulatedChars: text.length
+      });
       send(ws, { type: 'summary-done', requestId, text, model: result.model });
     } catch (err) {
       const message = err instanceof Error ? err.message : 'summary failed';
       tel?.record('error', { requestId, error: message });
+      tel?.record('stream-event', { requestId, source: 'server', stage: 'summary-error-sent', error: message });
       send(ws, { type: 'summary-error', requestId, message });
     }
     return;
@@ -420,11 +500,22 @@ export async function handleSummarize(
   const streamFn = deps.analyzeStream ?? analyzeSummaryStream;
   const callbacks: StreamCallbacks = {
     onDelta: (text) => {
+      tel?.record('stream-event', {
+        requestId,
+        source: 'server',
+        stage: 'summary-chunk-sent',
+        chunkChars: text.length
+      });
       send(ws, { type: 'summary-chunk', requestId, text });
     },
-    onUsage: (_usage) => {
-      // Usage is captured inside analyzeSummaryStream for telemetry; no need
-      // to re-emit it here — the client accumulates tokens from the chunks.
+    onUsage: (usage) => {
+      tel?.record('stream-event', {
+        requestId,
+        source: 'server',
+        stage: 'usage',
+        inputTokens: usage.input,
+        outputTokens: usage.output
+      });
     }
   };
 
@@ -439,14 +530,24 @@ export async function handleSummarize(
     // send it as a final chunk so the client sees it.
     if (result.fellBack) {
       const notice = `> 注意：所选总结模型不可用，已回退到 ${result.model}。\n\n`;
+      tel?.record('stream-event', {
+        requestId,
+        source: 'server',
+        stage: 'summary-chunk-sent',
+        model: result.model,
+        chunkChars: notice.length,
+        reason: 'fallback-notice'
+      });
       send(ws, { type: 'summary-chunk', requestId, text: notice });
     }
     // summary-done carries no `text` in streaming mode — the client has already
     // accumulated the full report via summary-chunk events.
+    tel?.record('stream-event', { requestId, source: 'server', stage: 'summary-done-sent', model: result.model });
     send(ws, { type: 'summary-done', requestId, model: result.model });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'summary failed';
     tel?.record('error', { requestId, error: message });
+    tel?.record('stream-event', { requestId, source: 'server', stage: 'summary-error-sent', error: message });
     send(ws, { type: 'summary-error', requestId, message });
   }
 }
@@ -534,7 +635,7 @@ export async function dispatch(
   injectNote: (note: string) => void,
   resetAccumulated: () => void,
   setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
-  buildSummary: () => string,
+  buildSummary: (clientTranscript?: string) => string,
   msg: ClientMessageParsed,
   /** Setter for the per-session summary model (Feature 2). */
   setSummaryModel?: (model: string | undefined) => void,
@@ -543,7 +644,8 @@ export async function dispatch(
   /** Setter for the per-session custom system prompt (Feature 3). */
   setSummaryPrompt?: (prompt: string | undefined) => void,
   /** Getter for the per-session custom system prompt (Feature 3). */
-  getSummaryPromptOverride?: () => string | undefined
+  getSummaryPromptOverride?: () => string | undefined,
+  summarizeDeps: SummarizeDeps = {}
 ): Promise<void> {
   switch (msg.type) {
     case 'configure':
@@ -555,6 +657,7 @@ export async function dispatch(
       // full-transcript buffer + pending analysis the context analyzer reads.
       if (msg.config.resetGeneration === true) {
         trigger.reset();
+        roles.reset();
         resetAccumulated();
       }
       session.configure(msg.config);
@@ -639,10 +742,25 @@ export async function dispatch(
       // Interview summary: stream the report via summary-chunk events. Uses the
       // per-session summaryModel override (Feature 2) and prompt override (Feature 3)
       // when set; else falls back to server defaults.
-      await handleSummarize(ws, buildSummary, msg.requestId, {
-        telemetry: summaryTelemetry,
-        summaryModel: getSummaryModelOverride?.(),
-        summarySystemPrompt: getSummaryPromptOverride?.()
+      summaryTelemetry.record('stream-event', {
+        requestId: msg.requestId,
+        source: 'server',
+        stage: 'server:received'
+      });
+      sendSummaryDebug(
+        ws,
+        msg.requestId,
+        telemetryToDebugEvent(
+          'stream-event',
+          { requestId: msg.requestId, source: 'server', stage: 'server:received' },
+          Date.now()
+        )
+      );
+      await handleSummarize(ws, () => buildSummary(msg.transcript), msg.requestId, {
+        ...summarizeDeps,
+        telemetry: summarizeDeps.telemetry ?? summaryTelemetry,
+        summaryModel: summarizeDeps.summaryModel ?? getSummaryModelOverride?.(),
+        summarySystemPrompt: summarizeDeps.summarySystemPrompt ?? getSummaryPromptOverride?.()
       });
       return;
   }
@@ -657,7 +775,7 @@ function onMessage(
   injectNote: (note: string) => void,
   resetAccumulated: () => void,
   setContextGrounding: (jd: string | undefined, resume: string | undefined) => void,
-  buildSummary: () => string,
+  buildSummary: (clientTranscript?: string) => string,
   setSummaryModel: (model: string | undefined) => void,
   getSummaryModelOverride: () => string | undefined,
   setSummaryPrompt: (prompt: string | undefined) => void,
@@ -970,12 +1088,16 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         // accumulated transcript (both lanes) + captured JD/résumé the live panel
         // reads. Returns '' when there is nothing to summarize (handleSummarize
         // then replies with the friendly empty-state message).
-        () =>
-          buildSummaryInput({
-            transcript: accumulatedTranscript,
+        (clientTranscript?: string) => {
+          const client = String(clientTranscript ?? '').trim();
+          const accumulated = accumulatedTranscript.trim();
+          const transcript = [client, accumulated].filter(Boolean).join('\n\n');
+          return buildSummaryInput({
+            transcript,
             jobDescription: contextJobDescription,
             resumeText: contextResumeText
-          }),
+          });
+        },
         setSummaryModel,
         getSummaryModelOverride,
         setSummaryPrompt,

@@ -1173,6 +1173,45 @@ button.history-row {
   font-size: var(--text-sm);
 }
 
+.summary-modal__debug {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
+}
+.summary-modal__debug-title {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.summary-modal__debug-list {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 11px;
+  line-height: 1.45;
+}
+.summary-modal__debug-row {
+  display: grid;
+  grid-template-columns: 44px 74px minmax(130px, 1fr) minmax(0, 2fr);
+  gap: var(--space-2);
+  align-items: baseline;
+  color: var(--text-tertiary);
+}
+.summary-modal__debug-source,
+.summary-modal__debug-stage {
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.summary-modal__debug-detail {
+  overflow-wrap: anywhere;
+}
+
 /* The rendered report (minimal markdown). */
 .summary-md {
   color: var(--text-primary);

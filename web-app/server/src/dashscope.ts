@@ -169,6 +169,22 @@ export interface ChatStreamCallbacks {
    * event. Either may be 0 if the model omits that usage field.
    */
   onUsage: (usage: { input: number; output: number }) => void;
+  /** Optional sanitized event-level diagnostics; never receives prompt/output text. */
+  onEvent?: (event: ChatStreamEvent) => void;
+}
+
+export interface ChatStreamEvent {
+  readonly source: 'dashscope';
+  readonly stage: string;
+  readonly model?: string;
+  readonly status?: number;
+  readonly eventType?: string;
+  readonly chunkChars?: number;
+  readonly accumulatedChars?: number;
+  readonly inputTokens?: number;
+  readonly outputTokens?: number;
+  readonly reason?: string;
+  readonly error?: string;
 }
 
 /**
@@ -210,11 +226,27 @@ export async function chatStream(
   if (options.thinking === false) body.thinking = { type: 'disabled' };
 
   const url = `${getDashscopeBaseUrl()}/v1/messages`;
+  const emitEvent = (stage: string, detail: Omit<ChatStreamEvent, 'source' | 'stage' | 'model'> = {}): void => {
+    try {
+      callbacks.onEvent?.({ source: 'dashscope', stage, model, ...detail });
+    } catch {
+      /* diagnostics must never break the stream */
+    }
+  };
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let timeoutReject: ((err: Error) => void) | null = null;
+  const timeoutPromise = new Promise<never>((_resolve, reject) => {
+    timeoutReject = reject;
+  });
+  const timer = setTimeout(() => {
+    emitEvent('timeout', { reason: `>${timeoutMs}ms` });
+    controller.abort();
+    timeoutReject?.(new Error(`DashScope stream timed out after ${timeoutMs}ms`));
+  }, timeoutMs);
 
   let resp: Response;
   try {
+    emitEvent('request-start');
     resp = await fetch(url, {
       method: 'POST',
       headers: {
@@ -227,8 +259,10 @@ export async function chatStream(
     });
   } catch (err) {
     clearTimeout(timer);
+    emitEvent('request-error', { error: err instanceof Error ? err.message : String(err ?? 'unknown') });
     throw err;
   }
+  emitEvent('response', { status: resp.status });
 
   if (!resp.ok) {
     clearTimeout(timer);
@@ -246,12 +280,14 @@ export async function chatStream(
     clearTimeout(timer);
     throw new Error('DashScope streaming: no response body');
   }
+  emitEvent('reader-open');
 
   const decoder = new TextDecoder();
   let accumulated = '';
   let inputTokens = 0;
   let outputTokens = 0;
   let buffer = '';
+  let sawMessageStop = false;
 
   // DashScope uses the standard SSE named-event format:
   //   event:TYPE\ndata:{...}\n\n
@@ -263,7 +299,7 @@ export async function chatStream(
 
   try {
     while (true) {
-      const { done, value } = await reader.read();
+      const { done, value } = await Promise.race([reader.read(), timeoutPromise]);
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
 
@@ -302,6 +338,9 @@ export async function chatStream(
         // standard); fall back to `type` inside the JSON body (Anthropic cloud).
         const eventType = pendingEventType || (payload.type as string | undefined) || '';
         pendingEventType = ''; // consumed
+        if (eventType) {
+          emitEvent('sse-event', { eventType });
+        }
 
         if (eventType === 'message_start') {
           // Capture input token count from usage.
@@ -309,20 +348,32 @@ export async function chatStream(
           const usage = (msg?.usage ?? payload.usage) as Record<string, unknown> | undefined;
           if (typeof usage?.input_tokens === 'number') {
             inputTokens = usage.input_tokens;
+            emitEvent('usage-input', { inputTokens });
           }
         } else if (eventType === 'content_block_delta') {
           const delta = (payload.delta ?? payload) as Record<string, unknown> | undefined;
           if (delta?.type === 'text_delta' && typeof delta.text === 'string') {
             accumulated += delta.text;
+            emitEvent('delta', { chunkChars: delta.text.length, accumulatedChars: accumulated.length });
             callbacks.onDelta(delta.text);
           }
         } else if (eventType === 'message_delta') {
           const usage = (payload.usage ?? payload) as Record<string, unknown> | undefined;
           if (typeof usage?.output_tokens === 'number') {
             outputTokens = usage.output_tokens;
+            emitEvent('usage-output', { outputTokens });
           }
         } else if (eventType === 'message_stop') {
+          emitEvent('message-stop', { inputTokens, outputTokens, accumulatedChars: accumulated.length });
           callbacks.onUsage({ input: inputTokens, output: outputTokens });
+          sawMessageStop = true;
+        }
+
+        if (sawMessageStop) {
+          await reader.cancel().catch(() => {});
+          emitEvent('reader-cancel');
+          emitEvent('return', { accumulatedChars: accumulated.length });
+          return accumulated;
         }
       }
     }
@@ -331,6 +382,7 @@ export async function chatStream(
     reader.releaseLock();
   }
 
+  emitEvent('stream-closed', { accumulatedChars: accumulated.length });
   return accumulated;
 }
 

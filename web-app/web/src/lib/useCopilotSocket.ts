@@ -5,6 +5,7 @@ import type {
   ServerMessage,
   SessionConfig,
   SessionContextState,
+  SummaryDebugEvent,
   SpeakerRole
 } from '@open-cluely/contract';
 import { WS_PATH } from '@open-cluely/contract';
@@ -49,6 +50,8 @@ export interface SummaryState {
   startedAt: number | null;
   /** Accumulated output token count from the stream (0 until tokens arrive). */
   tokens: number;
+  /** Sanitized event-level timeline for debugging stuck summary runs. */
+  debugEvents: SummaryDebugEvent[];
 }
 
 /** Per-source live-audio capture state for the UI. */
@@ -135,10 +138,12 @@ export interface CopilotSocket {
   summary: SummaryState;
   /**
    * Request an interview summary. Sends `summarize`, flips `summary` to
-   * 'loading', and returns the generated requestId (or null if not connected).
+   * 'loading', and returns the generated requestId (or null if not connected or
+   * local transcript has no candidate content). `clientTranscript` is optional
+   * seeded/template history rendered locally before any live ASR transcript.
    * Stale replies (a different requestId) are ignored so a re-run supersedes.
    */
-  startSummary: () => string | null;
+  startSummary: (clientTranscript?: string) => string | null;
   /** Reset the live transcript lanes + last result/progress/error — a clean slate
    *  for a new interview so one chat's context never leaks into the next. */
   resetTranscripts: () => void;
@@ -146,10 +151,109 @@ export interface CopilotSocket {
 
 const RECONNECT_BASE_MS = 500;
 const RECONNECT_MAX_MS = 8000;
+const SUMMARY_CLIENT_TIMEOUT_MS = 150000;
+const SUMMARY_DEBUG_MAX_EVENTS = 200;
 
 function buildWsUrl(): string {
   const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
+  if (import.meta.env.DEV && location.port === '5173') {
+    return `${scheme}://localhost:8787${WS_PATH}`;
+  }
   return `${scheme}://${location.host}${WS_PATH}`;
+}
+
+function parseServerMessageData(raw: unknown): ServerMessage | null | undefined {
+  if (typeof raw === 'string') {
+    return parseServerMessage(raw);
+  }
+  if (raw instanceof ArrayBuffer) {
+    return parseServerMessage(new TextDecoder().decode(raw));
+  }
+  if (ArrayBuffer.isView(raw)) {
+    return parseServerMessage(new TextDecoder().decode(raw));
+  }
+  return undefined;
+}
+
+function readBlobText(blob: Blob): Promise<string> {
+  const maybeText = (blob as Blob & { text?: () => Promise<string> }).text;
+  if (typeof maybeText === 'function') {
+    return maybeText.call(blob);
+  }
+  if (typeof FileReader !== 'undefined') {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(reader.error ?? new Error('Failed to read Blob payload'));
+      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.readAsText(blob);
+    });
+  }
+  if (typeof Response !== 'undefined') {
+    return new Response(blob).text();
+  }
+  return Promise.reject(new Error('Blob payloads are not readable in this environment'));
+}
+
+function isSummaryMessage(message: ServerMessage): boolean {
+  return (
+    message.type === 'summary-chunk' ||
+    message.type === 'summary-debug' ||
+    message.type === 'summary-done' ||
+    message.type === 'summary-error'
+  );
+}
+
+function appendSummaryDebugEvent(
+  events: SummaryDebugEvent[],
+  event: SummaryDebugEvent
+): SummaryDebugEvent[] {
+  const next = [...events, event];
+  return next.length > SUMMARY_DEBUG_MAX_EVENTS ? next.slice(-SUMMARY_DEBUG_MAX_EVENTS) : next;
+}
+
+function createClientSummaryDebugEvent(
+  stage: string,
+  detail: Omit<SummaryDebugEvent, 'at' | 'source' | 'stage'> = {}
+): SummaryDebugEvent {
+  return { at: Date.now(), source: 'client', stage, ...detail };
+}
+
+function logSummaryDebugEvent(requestId: string, event: SummaryDebugEvent): void {
+  if (import.meta.env.MODE === 'test') {
+    return;
+  }
+  const parts = [
+    '[summary-debug]',
+    `requestId=${requestId}`,
+    `source=${event.source}`,
+    `stage=${event.stage}`
+  ];
+  if (event.model) parts.push(`model=${event.model}`);
+  if (typeof event.status === 'number') parts.push(`status=${event.status}`);
+  if (event.eventType) parts.push(`event=${event.eventType}`);
+  if (typeof event.inputChars === 'number') parts.push(`inputChars=${event.inputChars}`);
+  if (typeof event.chunkChars === 'number') parts.push(`chunkChars=${event.chunkChars}`);
+  if (typeof event.accumulatedChars === 'number') parts.push(`accumulatedChars=${event.accumulatedChars}`);
+  if (typeof event.inputTokens === 'number') parts.push(`inputTokens=${event.inputTokens}`);
+  if (typeof event.outputTokens === 'number') parts.push(`outputTokens=${event.outputTokens}`);
+  if (typeof event.elapsedMs === 'number') parts.push(`elapsedMs=${event.elapsedMs}`);
+  if (event.reason) parts.push(`reason=${JSON.stringify(event.reason)}`);
+  if (event.error) parts.push(`error=${JSON.stringify(event.error)}`);
+  console.info(parts.join(' '));
+}
+
+function hasLocalSummaryContent(
+  transcripts: TranscriptLanes,
+  speakerSegments: SpeakerSegment[],
+  clientTranscript = ''
+): boolean {
+  if (clientTranscript.trim().length > 0) {
+    return true;
+  }
+  if (transcripts.display.finalText.trim().length > 0) {
+    return true;
+  }
+  return speakerSegments.some((segment) => segment.role === 'candidate' && segment.text.trim().length > 0);
 }
 
 function newRequestId(): string {
@@ -191,11 +295,13 @@ export function useCopilotSocket(): CopilotSocket {
     error: null,
     empty: false,
     startedAt: null,
-    tokens: 0
+    tokens: 0,
+    debugEvents: []
   });
   // The requestId of the in-flight summary, so stale summary-* replies from a
   // superseded run are ignored (a re-run mints a new id).
   const activeSummaryRef = useRef<string | null>(null);
+  const summaryTimeoutRef = useRef<number | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimerRef = useRef<number | null>(null);
@@ -218,6 +324,38 @@ export function useCopilotSocket(): CopilotSocket {
     socket.send(JSON.stringify(message));
     return true;
   }, []);
+
+  const clearSummaryTimeout = useCallback((): void => {
+    if (summaryTimeoutRef.current !== null) {
+      window.clearTimeout(summaryTimeoutRef.current);
+      summaryTimeoutRef.current = null;
+    }
+  }, []);
+
+  const armSummaryTimeout = useCallback(
+    (requestId: string): void => {
+      clearSummaryTimeout();
+      summaryTimeoutRef.current = window.setTimeout(() => {
+        if (activeSummaryRef.current !== requestId) {
+          return;
+        }
+        const event = createClientSummaryDebugEvent('client:timeout-fired', {
+          elapsedMs: SUMMARY_CLIENT_TIMEOUT_MS
+        });
+        logSummaryDebugEvent(requestId, event);
+        activeSummaryRef.current = null;
+        summaryTimeoutRef.current = null;
+        setSummary((prev) => ({
+          ...prev,
+          status: 'error',
+          error: '总结生成超时，请重试。 · Summary generation timed out — please retry.',
+          empty: false,
+          debugEvents: appendSummaryDebugEvent(prev.debugEvents, event)
+        }));
+      }, SUMMARY_CLIENT_TIMEOUT_MS);
+    },
+    [clearSummaryTimeout]
+  );
 
   const handleMessage = useCallback((message: ServerMessage) => {
     switch (message.type) {
@@ -289,31 +427,70 @@ export function useCopilotSocket(): CopilotSocket {
       // UI can show the live progress bar + partial report.
       case 'summary-chunk':
         if (message.requestId !== activeSummaryRef.current) break;
+        {
+          clearSummaryTimeout();
+          const event = createClientSummaryDebugEvent('client:summary-chunk-received', {
+            chunkChars: message.text.length
+          });
+          logSummaryDebugEvent(message.requestId, event);
+          setSummary((prev) => ({
+            ...prev,
+            status: 'streaming',
+            text: prev.text + message.text,
+            debugEvents: appendSummaryDebugEvent(prev.debugEvents, event)
+          }));
+        }
+        break;
+      case 'summary-debug':
+        if (message.requestId !== activeSummaryRef.current) break;
+        logSummaryDebugEvent(message.requestId, message.event);
         setSummary((prev) => ({
           ...prev,
-          status: 'streaming',
-          text: prev.text + message.text
+          debugEvents: appendSummaryDebugEvent(prev.debugEvents, message.event)
         }));
         break;
       case 'summary-done':
         if (message.requestId !== activeSummaryRef.current) break;
-        activeSummaryRef.current = null;
-        // Streaming path: `text` is absent (chunks already accumulated it).
-        // One-shot/empty path: `text` carries the whole report or the notice.
-        setSummary((prev) => ({
-          ...prev,
-          status: 'done',
-          // Use the server's text when present (one-shot / empty notice),
-          // otherwise keep what we accumulated from chunks.
-          text: typeof message.text === 'string' ? message.text : prev.text,
-          error: null,
-          empty: message.empty === true
-        }));
+        {
+          const detail: Omit<SummaryDebugEvent, 'at' | 'source' | 'stage'> = {};
+          if (message.model) detail.model = message.model;
+          if (typeof message.text === 'string') detail.accumulatedChars = message.text.length;
+          if (message.empty === true) detail.reason = 'empty';
+          const event = createClientSummaryDebugEvent('client:summary-done-received', detail);
+          logSummaryDebugEvent(message.requestId, event);
+          activeSummaryRef.current = null;
+          clearSummaryTimeout();
+          // Streaming path: `text` is absent (chunks already accumulated it).
+          // One-shot/empty path: `text` carries the whole report or the notice.
+          setSummary((prev) => ({
+            ...prev,
+            status: 'done',
+            // Use the server's text when present (one-shot / empty notice),
+            // otherwise keep what we accumulated from chunks.
+            text: typeof message.text === 'string' ? message.text : prev.text,
+            error: null,
+            empty: message.empty === true,
+            debugEvents: appendSummaryDebugEvent(prev.debugEvents, event)
+          }));
+        }
         break;
       case 'summary-error':
         if (message.requestId !== activeSummaryRef.current) break;
-        activeSummaryRef.current = null;
-        setSummary((prev) => ({ ...prev, status: 'error', error: message.message, empty: false }));
+        {
+          const event = createClientSummaryDebugEvent('client:summary-error-received', {
+            error: message.message
+          });
+          logSummaryDebugEvent(message.requestId, event);
+          activeSummaryRef.current = null;
+          clearSummaryTimeout();
+          setSummary((prev) => ({
+            ...prev,
+            status: 'error',
+            error: message.message,
+            empty: false,
+            debugEvents: appendSummaryDebugEvent(prev.debugEvents, event)
+          }));
+        }
         break;
       case 'transcript': {
         const { source, text, isFinal } = message;
@@ -336,7 +513,7 @@ export function useCopilotSocket(): CopilotSocket {
         break;
       }
     }
-  }, []);
+  }, [clearSummaryTimeout]);
 
   // Connection management. `connect` is intentionally defined inside the effect
   // so the reconnect loop captures a stable closure over the helpers above.
@@ -380,9 +557,24 @@ export function useCopilotSocket(): CopilotSocket {
       };
 
       socket.onmessage = (event: MessageEvent) => {
-        const parsed = parseServerMessage(event.data);
-        if (parsed) {
-          handleMessage(parsed);
+        const parsed = parseServerMessageData(event.data);
+        if (parsed !== undefined) {
+          if (parsed && (socketRef.current === socket || isSummaryMessage(parsed))) {
+            handleMessage(parsed);
+          }
+          return;
+        }
+        if (typeof Blob !== 'undefined' && event.data instanceof Blob) {
+          void readBlobText(event.data)
+            .then((text) => {
+              const parsedBlob = parseServerMessage(text);
+              if (parsedBlob && (socketRef.current === socket || isSummaryMessage(parsedBlob))) {
+                handleMessage(parsedBlob);
+              }
+            })
+            .catch(() => {
+              /* malformed Blob payload — ignore like an unparsable JSON frame */
+            });
         }
       };
 
@@ -393,12 +585,17 @@ export function useCopilotSocket(): CopilotSocket {
         // otherwise spin forever. Fail it with a friendly message and clear the
         // in-flight ref so a re-run can start clean.
         if (activeSummaryRef.current !== null) {
+          const requestId = activeSummaryRef.current;
+          const event = createClientSummaryDebugEvent('client:socket-closed');
+          logSummaryDebugEvent(requestId, event);
           activeSummaryRef.current = null;
+          clearSummaryTimeout();
           setSummary((prev) => ({
             ...prev,
             status: 'error',
             error: '连接已断开，总结未完成，请重试。 · Connection lost before the summary finished — please retry.',
-            empty: false
+            empty: false,
+            debugEvents: appendSummaryDebugEvent(prev.debugEvents, event)
           }));
         }
         if (!isMountedRef.current) {
@@ -428,7 +625,7 @@ export function useCopilotSocket(): CopilotSocket {
         socket.close();
       }
     };
-  }, [handleMessage]);
+  }, [clearSummaryTimeout, handleMessage]);
 
   const sendConfigure = useCallback(
     (config: Partial<SessionConfig>) => {
@@ -466,15 +663,68 @@ export function useCopilotSocket(): CopilotSocket {
   // Request an interview summary: mint a requestId, send `summarize`, and flip the
   // summary state to 'loading' (the modal shows a spinner until first chunk arrives).
   // A re-run mints a new id, so late replies from the previous run are ignored.
-  const startSummary = useCallback((): string | null => {
+  const startSummary = useCallback((clientTranscript = ''): string | null => {
     const requestId = newRequestId();
-    if (!send({ type: 'summarize', requestId })) {
+    const startedAt = Date.now();
+    const startEvent = createClientSummaryDebugEvent('client:start');
+    const transcript = clientTranscript.trim();
+    if (!hasLocalSummaryContent(transcripts, speakerSegments, transcript)) {
+      const emptyEvent = createClientSummaryDebugEvent('client:empty-local');
+      const debugEvents = [startEvent, emptyEvent];
+      for (const event of debugEvents) {
+        logSummaryDebugEvent(requestId, event);
+      }
+      activeSummaryRef.current = null;
+      clearSummaryTimeout();
+      setSummary({
+        status: 'done',
+        text: '还没有可总结的面试内容。\n\nThere is no interview content to summarize yet — wait for the candidate to speak first.',
+        error: null,
+        empty: true,
+        startedAt,
+        tokens: 0,
+        debugEvents
+      });
       return null;
     }
+    const sentEvent = createClientSummaryDebugEvent('client:sent');
+    const timeoutEvent = createClientSummaryDebugEvent('client:timeout-armed', { elapsedMs: SUMMARY_CLIENT_TIMEOUT_MS });
+    const debugEvents = [startEvent, sentEvent, timeoutEvent];
+    const message: ClientMessage = transcript
+      ? { type: 'summarize', requestId, transcript }
+      : { type: 'summarize', requestId };
     activeSummaryRef.current = requestId;
-    setSummary({ status: 'loading', text: '', error: null, empty: false, startedAt: Date.now(), tokens: 0 });
+    for (const event of debugEvents) {
+      logSummaryDebugEvent(requestId, event);
+    }
+    setSummary({
+      status: 'loading',
+      text: '',
+      error: null,
+      empty: false,
+      startedAt,
+      tokens: 0,
+      debugEvents
+    });
+    if (!send(message)) {
+      const failedEvent = createClientSummaryDebugEvent('client:send-failed');
+      logSummaryDebugEvent(requestId, failedEvent);
+      activeSummaryRef.current = null;
+      clearSummaryTimeout();
+      setSummary({
+        status: 'error',
+        text: '',
+        error: '连接尚未就绪，无法发送总结请求。 · Connection is not ready; could not send summary request.',
+        empty: false,
+        startedAt,
+        tokens: 0,
+        debugEvents: [startEvent, failedEvent]
+      });
+      return null;
+    }
+    armSummaryTimeout(requestId);
     return requestId;
-  }, [send]);
+  }, [armSummaryTimeout, clearSummaryTimeout, send, speakerSegments, transcripts]);
 
   const setAudioState = useCallback((source: AudioSource, patch: Partial<AudioState>): void => {
     setAudio((prev) => ({ ...prev, [source]: { ...prev[source], ...patch } }));
@@ -578,9 +828,10 @@ export function useCopilotSocket(): CopilotSocket {
     // for the next interview ("New interview").
     setSessionContext(null);
     // Clear any interview summary so "New interview" starts with a blank report.
-    setSummary({ status: 'idle', text: '', error: null, empty: false, startedAt: null, tokens: 0 });
+    setSummary({ status: 'idle', text: '', error: null, empty: false, startedAt: null, tokens: 0, debugEvents: [] });
     activeSummaryRef.current = null;
-  }, []);
+    clearSummaryTimeout();
+  }, [clearSummaryTimeout]);
 
   // Stop any live capture when the hook unmounts.
   useEffect(() => {
@@ -590,8 +841,9 @@ export function useCopilotSocket(): CopilotSocket {
         captureRef.current[source] = null;
         if (handle) handle.stop();
       }
+      clearSummaryTimeout();
     };
-  }, []);
+  }, [clearSummaryTimeout]);
 
   return {
     status,

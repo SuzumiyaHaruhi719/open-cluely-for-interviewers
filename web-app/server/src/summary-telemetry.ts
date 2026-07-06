@@ -20,6 +20,7 @@ export type SummaryTelemetryType =
   | 'input-built'
   | 'model-call-start'
   | 'model-call-end'
+  | 'stream-event'
   | 'timeout'
   | 'fallback'
   | 'done'
@@ -35,8 +36,20 @@ export interface SummaryTelemetryEvent {
   requestId?: string;
   /** The model id involved (model-call-start/end, fallback). */
   model?: string;
+  /** Component that emitted this event, used when forwarding to the browser. */
+  source?: 'server' | 'dashscope';
+  /** Fine-grained stage for stream-event entries. */
+  stage?: string;
+  /** HTTP status / SSE event type / size counters. */
+  status?: number;
+  eventType?: string;
   /** Built summary-input length (input-built) — handy for spotting truncation. */
   inputChars?: number;
+  chunkChars?: number;
+  accumulatedChars?: number;
+  inputTokens?: number;
+  outputTokens?: number;
+  elapsedMs?: number;
   /** Why a fallback/timeout/error happened (short string). */
   reason?: string;
   /** The error message (error). */
@@ -61,6 +74,8 @@ export interface SummaryTelemetryOptions {
   readonly now?: () => number;
   /** Max events retained before the oldest is dropped. Defaults to 200. */
   readonly capacity?: number;
+  /** Optional sink called for every event (e.g. process console logging). */
+  readonly onEvent?: (event: SummaryTelemetryEvent) => void;
 }
 
 const DEFAULT_CAPACITY = 200;
@@ -71,6 +86,7 @@ const DEFAULT_CAPACITY = 200;
  */
 export function createSummaryTelemetry(options: SummaryTelemetryOptions = {}): SummaryTelemetry {
   const now = typeof options.now === 'function' ? options.now : Date.now;
+  const onEvent = typeof options.onEvent === 'function' ? options.onEvent : null;
   // Clamp capacity to a sane minimum so a misconfigured 0/negative can't make the
   // buffer drop everything immediately.
   const capacity = Math.max(1, Math.floor(options.capacity ?? DEFAULT_CAPACITY));
@@ -87,6 +103,7 @@ export function createSummaryTelemetry(options: SummaryTelemetryOptions = {}): S
           // Ring behaviour: drop the oldest to stay within capacity.
           events.splice(0, events.length - capacity);
         }
+        onEvent?.({ ...event });
       } catch {
         /* instrumentation must never break the summary path — swallow. */
       }

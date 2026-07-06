@@ -10,7 +10,7 @@ function GoodChild() {
 }
 
 // Component that always throws during render
-function BadChild({ message }: { message: string }) {
+function BadChild({ message }: { message: string }): never {
   throw new Error(message);
 }
 

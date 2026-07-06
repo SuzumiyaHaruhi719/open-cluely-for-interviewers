@@ -52,7 +52,7 @@ test('dispatch configure resetGeneration resets trigger and accumulated transcri
     { configure: () => calls.push('configure') } as never,
     {} as never,
     { reset: () => calls.push('trigger-reset') } as never,
-    {} as never,
+    { reset: () => calls.push('roles-reset') } as never,
     () => {
       calls.push('inject-note');
     },
@@ -65,5 +65,5 @@ test('dispatch configure resetGeneration resets trigger and accumulated transcri
     () => '',
     { type: 'configure', config: { resetGeneration: true, mode: 'expert' } } as never
   );
-  assert.deepEqual(calls, ['trigger-reset', 'reset-accumulated', 'configure', 'context-grounding']);
+  assert.deepEqual(calls, ['trigger-reset', 'roles-reset', 'reset-accumulated', 'configure', 'context-grounding']);
 });

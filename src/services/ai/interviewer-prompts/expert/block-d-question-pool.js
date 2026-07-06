@@ -5,6 +5,7 @@
 // is Block E's job. D's job is diversity + anchoring.
 
 const { QUESTION_TYPES } = require('../schemas');
+const { buildOutputLanguageDirective } = require('../output-language');
 
 function asJsonList(arr) {
   return arr.map((v) => `"${v}"`).join(' | ');
@@ -31,6 +32,7 @@ function buildBlockD({
   jobDescription = '',
   questionHistory = [],
   bankQuestions = [],
+  outputLanguage = '',
   promptBody = null
 } = {}) {
   const history = Array.isArray(questionHistory) && questionHistory.length
@@ -75,6 +77,11 @@ function buildBlockD({
         })
         .join('\n')}`
     : '';
+
+  const outputLanguageSection = buildOutputLanguageDirective(outputLanguage, {
+    fields: ['candidates[].question', 'candidates[].expected_yield'],
+    extra: 'The anchors array must still contain exact substrings from the question; quoted candidate phrases stay in their original language.'
+  });
 
   return `${promptBody || DEFAULT_BODY}
 
@@ -128,6 +135,7 @@ Required output — strict JSON only, no markdown fences, no prose.
     }
   ]
 }
+${outputLanguageSection}
 
 FOLLOW-UP FRAME DIVERSITY — cover at least 4 of these 5 frames across the pool:
 - diagnostic-debug — how they identified the real cause, ruled out tempting wrong explanations, or debugged ambiguity.
@@ -149,7 +157,7 @@ QUESTION TYPE TOOLKIT:
 
 Hard rules — violations cause Block E to score 0 and trigger a single repair:
 1. EXACTLY 5 candidates. Not 4. Not 6.
-1b. ORDER BEST-FIRST: candidate 1 (id "q1") MUST be the best next question for THIS answer — highest information gain, strongest fit to Block B/C, natural for an interviewer to ask now, and not a repeat of prior questions. Candidate 2 (id "q2") is your second-best with a DIFFERENT followup_frame and question_type when possible. The downstream renderer uses q1 as the primary follow-up and q2 as the alternative, so this ordering is the selection — get it right.
+1b. ORDER SIGNAL-FIRST WITHOUT STYLE COLLAPSE: candidate 1 (id "q1") should be a high-information question for THIS answer, but candidate 2 (id "q2") must be a credible alternate with a DIFFERENT followup_frame, question_type, opening verb, and surface sentence skeleton. In merged-DE mode the downstream renderer uses q1/q2 directly, so q1 and q2 must not sound like two rewrites of the same question.
 2. At least 3 DISTINCT question_type values across the 5, and at least 4 DISTINCT followup_frame values across the 5.
 3. Every question must contain at least one anchor (3+ contiguous words) quoted in single-quotes from either the candidate answer or the resume. The anchors array must list those exact spans. The quote can appear anywhere natural in the sentence.
 4. Every question must force ONE OF: (a) diagnosis / root-cause reasoning; (b) evidence verification / how they knew it worked; (c) a tradeoff + alternative + why; (d) a failure/mistake + what changed; (e) collaboration / ownership boundary when relevant; (f) prioritization under conflict. If the complete, honest answer to your question is a single number, name, date, or yes/no — it is FORBIDDEN, rewrite it to probe the judgment behind that datum.
@@ -170,11 +178,17 @@ Style:
 - Speakable by an interviewer: <=35 words per question, conversational tone.
 - Do NOT make every question start by quoting the anchor. Vary syntax: some questions may open with "How/What/Walk me through", some may place the quote mid-sentence, and some may use a short quoted anchor after the ask. No "now let's switch" preamble.
 
+SURFACE FORM DIVERSITY:
+- q1 and q2 must use different openings and different sentence skeletons. Bad pair: both begin "你提到 X，能不能..." or both begin "Walk me through X...". Good pair: one diagnostic "How did you isolate...", one tradeoff "What made the rejected option tempting...".
+- Across all 5, include at least 4 distinct opening moves from this set: diagnostic ("How did you isolate..."), verification ("What convinced you..."), tradeoff ("What made the alternative tempting..."), failure-learning ("When did the assumption break..."), ownership/influence ("Where was your decision boundary..."), prioritization ("What did you choose to sacrifice...").
+- Do not let a quoted anchor become the whole skeleton. The quote can appear mid-sentence or after the ask; the verb and demanded reasoning should vary.
+
 Self-check before emitting (silent):
 - For EACH candidate: if its complete answer could be a single number/name/date/yes-no, REWRITE it to probe the reasoning, tradeoff, ownership, or lesson behind it.
 - For EACH candidate: does it open with a yes/no form, or ask only to NAME/LIST something? If so, REWRITE.
 - DEPTH TEST (the bar most candidates miss): could the candidate fully answer by just NAMING a decision, metric, alternative, or owner? If yes, it is too shallow — REWRITE so answering REQUIRES reconstructing the reasoning, verification, tradeoff, failure, or collaboration boundary.
 - FRAME TEST: do the 5 candidates sound like variations of the same sentence skeleton? If yes, rewrite until at least 4 followup_frame values are truly different in intent and surface syntax.
+- TOP-PAIR TEST: q1 and q2 must not share the same first 3 words/opening pattern, the same main verb, or the same "you said X..." structure.
 - OWNERSHIP TEST (conditional): if the selected frame is collaboration-ownership, does it reveal the candidate's concrete slice and influence rather than allowing "the team" as an escape? If another frame would reveal more new signal, switch frames.
 - Count question_types — must be >=3 distinct, with >=4 distinct followup_frame values.
 - For each candidate, find its anchor substring in the answer or resume. If even one fails, fix that candidate.

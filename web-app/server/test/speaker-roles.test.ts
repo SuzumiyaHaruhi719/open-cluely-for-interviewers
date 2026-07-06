@@ -41,3 +41,15 @@ test('no-guess (xfyun): unassigned ids resolve to unknown, no complement on setR
   // No complement in no-guess mode: id 1 stays unknown (NOT flipped to interviewer).
   assert.equal(m.resolve(1), 'unknown');
 });
+
+test('reset clears sticky speaker labels while preserving xfyun no-guess mode', () => {
+  const m = createSpeakerRoleMap();
+  m.setGuess(false);
+  m.setRole(2, 'candidate');
+  assert.equal(m.resolve(2), 'candidate');
+
+  m.reset();
+
+  assert.equal(m.resolve(2), 'unknown');
+  assert.equal(m.resolve(1), 'unknown');
+});

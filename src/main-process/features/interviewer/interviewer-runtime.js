@@ -324,7 +324,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
       return analyzeViaPipeline({ pipeline: getActivePipeline(), mode: 'custom', candidateAnswer: answer, questionHistory, emotion, requestId, bankQuestions });
     }
 
-    const { resumeChunk, jobDescription } = getContext();
+    const { resumeChunk, jobDescription, outputLanguage } = getContext();
 
     // Fast mode runs on the default interviewer model (both stages). Report it via
     // the progress channel so the card shows the model, like Expert/Customize do.
@@ -375,7 +375,8 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
         // (server/ws.ts). Empty by default (desktop supplies none), so the Stage-2
         // prompt stays byte-identical to today. Direction hints only; the question
         // is still anchored on the candidate's own answer.
-        bankQuestions
+        bankQuestions,
+        outputLanguage
       });
 
       result.stage2 = {

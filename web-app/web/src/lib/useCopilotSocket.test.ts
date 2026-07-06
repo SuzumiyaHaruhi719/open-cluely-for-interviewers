@@ -16,6 +16,12 @@ describe('useCopilotSocket', () => {
     vi.restoreAllMocks();
   });
 
+  function seedCandidateTranscript(text = '候选人回答'): void {
+    act(() => {
+      MockWebSocket.last().emit({ type: 'transcript', source: 'display', text, isFinal: true });
+    });
+  }
+
   test('surfaces sessionId from a ready message', async () => {
     const { result } = renderHook(() => useCopilotSocket());
 
@@ -110,6 +116,7 @@ describe('useCopilotSocket', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     let requestId: string | null = null;
     act(() => {
@@ -279,7 +286,7 @@ describe('useCopilotSocket', () => {
     });
   });
 
-  test('iFlytek capped ids (server sends only 0/1) form ≤2 speakers and relabel of a capped id still works', async () => {
+  test('iFlytek raw speaker ids remain independently labelable', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
       MockWebSocket.last().open();
@@ -287,29 +294,29 @@ describe('useCopilotSocket', () => {
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
 
-    // The server-side 2-speaker cap means the wire only ever carries capped ids
-    // 0/1, even when iFlytek over-segmented upstream. Drive a back-and-forth.
+    // iFlytek may over-segment fast hand-offs into extra raw ids. The client
+    // keeps those ids distinct so the interviewer can label each "说话人 N"
+    // instead of receiving locally merged speakers.
     act(() => {
-      socket.emit({ type: 'transcript', source: 'mic', text: '问题一', isFinal: true, speakerId: 0, speaker: 'unknown' });
-      socket.emit({ type: 'transcript', source: 'mic', text: '回答一', isFinal: true, speakerId: 1, speaker: 'unknown' });
-      socket.emit({ type: 'transcript', source: 'mic', text: '问题二', isFinal: true, speakerId: 0, speaker: 'unknown' });
+      socket.emit({ type: 'transcript', source: 'mic', text: '问题一', isFinal: true, speakerId: 1, speaker: 'unknown' });
+      socket.emit({ type: 'transcript', source: 'mic', text: '回答一', isFinal: true, speakerId: 2, speaker: 'unknown' });
+      socket.emit({ type: 'transcript', source: 'mic', text: '插话', isFinal: true, speakerId: 3, speaker: 'unknown' });
     });
-    await waitFor(() => expect(result.current.speakerSegments.length).toBeGreaterThanOrEqual(2));
-    // Never more than two distinct speakers surface.
+    await waitFor(() => expect(result.current.speakerSegments.length).toBe(3));
     const distinct = new Set(result.current.speakerSegments.map((s) => s.speakerId));
-    expect(distinct.size).toBeLessThanOrEqual(2);
-    expect([...distinct].sort()).toEqual([0, 1]);
+    expect([...distinct].sort()).toEqual([1, 2, 3]);
 
-    // Manual relabel of a capped speaker id still re-labels all of that speaker's
-    // bubbles AND tells the server (set-speaker-role with the capped id).
+    // Manual relabel of one raw speaker id only re-labels that id and tells the
+    // server which raw id was assigned.
     act(() => {
-      result.current.setSpeakerRole(1, 'candidate');
+      result.current.setSpeakerRole(2, 'candidate');
     });
-    const speaker1Segs = result.current.speakerSegments.filter((s) => s.speakerId === 1);
-    expect(speaker1Segs.length).toBeGreaterThan(0);
-    expect(speaker1Segs.every((s) => s.role === 'candidate')).toBe(true);
+    const speaker2Segs = result.current.speakerSegments.filter((s) => s.speakerId === 2);
+    expect(speaker2Segs.length).toBeGreaterThan(0);
+    expect(speaker2Segs.every((s) => s.role === 'candidate')).toBe(true);
+    expect(result.current.speakerSegments.filter((s) => s.speakerId !== 2).every((s) => s.role === 'unknown')).toBe(true);
     const roleFrame = JSON.parse(socket.sent.at(-1) as string);
-    expect(roleFrame).toEqual({ type: 'set-speaker-role', speakerId: 1, role: 'candidate' });
+    expect(roleFrame).toEqual({ type: 'set-speaker-role', speakerId: 2, role: 'candidate' });
   });
 
   test('surfaces server error messages', async () => {
@@ -332,6 +339,7 @@ describe('useCopilotSocket', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     let requestId: string | null = null;
     act(() => {
@@ -430,12 +438,37 @@ describe('useCopilotSocket', () => {
 
   // ── Interview summary state machine ───────────────────────────────────────
 
-  test('startSummary sends a summarize frame and flips status to loading', async () => {
+  test('startSummary on a locally empty interview returns an empty notice without sending summarize', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
       MockWebSocket.last().open();
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.startSummary();
+    });
+    expect(requestId).toBeNull();
+    expect(result.current.summary.status).toBe('done');
+    expect(result.current.summary.empty).toBe(true);
+    expect(result.current.summary.text).toMatch(/还没有可总结的面试内容|There is no interview content/i);
+    expect(MockWebSocket.last().sent).toHaveLength(0);
+    expect(result.current.summary.debugEvents.map((e) => e.stage)).toEqual([
+      'client:start',
+      'client:empty-local'
+    ]);
+  });
+
+  test('startSummary sends a summarize frame and flips status to loading when transcript exists', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    act(() => {
+      MockWebSocket.last().emit({ type: 'transcript', source: 'display', text: '候选人回答', isFinal: true });
+    });
 
     let requestId: string | null = null;
     act(() => {
@@ -447,6 +480,110 @@ describe('useCopilotSocket', () => {
 
     const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
     expect(frame).toEqual({ type: 'summarize', requestId });
+    expect(result.current.summary.debugEvents.map((e) => e.stage)).toEqual([
+      'client:start',
+      'client:sent',
+      'client:timeout-armed'
+    ]);
+  });
+
+  test('startSummary accepts a client transcript for seeded template interviews', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.startSummary(
+        'Interviewer: Tell me about a distributed-systems project.\n\nCandidate: I led a Raft scheduler migration.'
+      );
+    });
+
+    expect(requestId).toBe('11111111-1111-4111-8111-111111111111');
+    expect(result.current.summary.status).toBe('loading');
+    expect(result.current.summary.empty).toBe(false);
+
+    const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
+    expect(frame).toEqual({
+      type: 'summarize',
+      requestId,
+      transcript: 'Interviewer: Tell me about a distributed-systems project.\n\nCandidate: I led a Raft scheduler migration.'
+    });
+  });
+
+  test('summary-debug frames are appended to the active request timeline and stale ones are ignored', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+    seedCandidateTranscript();
+
+    let requestId: string | null = null;
+    act(() => {
+      requestId = result.current.startSummary();
+    });
+
+    act(() => {
+      socket.emit({
+        type: 'summary-debug',
+        requestId,
+        event: {
+          at: 111,
+          source: 'server',
+          stage: 'input-built',
+          inputChars: 2048
+        }
+      });
+      socket.emit({
+        type: 'summary-debug',
+        requestId: 'old-request',
+        event: {
+          at: 112,
+          source: 'server',
+          stage: 'should-ignore'
+        }
+      });
+    });
+
+    expect(result.current.summary.debugEvents.map((e) => e.stage)).toContain('input-built');
+    expect(result.current.summary.debugEvents.map((e) => e.stage)).not.toContain('should-ignore');
+    const inputBuilt = result.current.summary.debugEvents.find((e) => e.stage === 'input-built');
+    expect(inputBuilt).toMatchObject({ source: 'server', inputChars: 2048 });
+  });
+
+  test('startSummary registers the active request before sending so immediate server debug is kept', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+    seedCandidateTranscript();
+
+    const originalSend = socket.send.bind(socket);
+    socket.send = (data: string): void => {
+      originalSend(data);
+      const frame = JSON.parse(data) as { requestId?: string };
+      socket.emit({
+        type: 'summary-debug',
+        requestId: frame.requestId,
+        event: {
+          at: 123,
+          source: 'server',
+          stage: 'server:received'
+        }
+      });
+    };
+
+    act(() => {
+      result.current.startSummary();
+    });
+
+    expect(result.current.summary.debugEvents.map((e) => e.stage)).toContain('server:received');
   });
 
   // #5 — the server is ONE-SHOT: the whole report rides on summary-done.text.
@@ -457,6 +594,7 @@ describe('useCopilotSocket', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     let requestId: string | null = null;
     act(() => {
@@ -480,6 +618,7 @@ describe('useCopilotSocket', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     let requestId: string | null = null;
     act(() => {
@@ -506,6 +645,7 @@ describe('useCopilotSocket', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     let requestId: string | null = null;
     act(() => {
@@ -525,6 +665,7 @@ describe('useCopilotSocket', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     act(() => {
       result.current.startSummary();
@@ -545,6 +686,7 @@ describe('useCopilotSocket', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     act(() => {
       result.current.startSummary();
@@ -577,6 +719,88 @@ describe('useCopilotSocket', () => {
     expect(result.current.summary.status).toBe('idle');
   });
 
+  test('summary request times out client-side instead of spinning forever', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    seedCandidateTranscript();
+
+    vi.useFakeTimers();
+    try {
+      let requestId: string | null = null;
+      act(() => {
+        requestId = result.current.startSummary();
+      });
+      expect(requestId).toBeTruthy();
+      expect(result.current.summary.status).toBe('loading');
+
+      act(() => {
+        vi.advanceTimersByTime(150000);
+      });
+
+      expect(result.current.summary.status).toBe('error');
+      expect(result.current.summary.error).toMatch(/timed out|超时/i);
+      expect(result.current.summary.debugEvents.at(-1)).toMatchObject({
+        source: 'client',
+        stage: 'client:timeout-fired'
+      });
+
+      act(() => {
+        MockWebSocket.last().emit({
+          type: 'summary-done',
+          requestId,
+          text: 'late report',
+          model: 'deepseek-v4-pro'
+        });
+      });
+      expect(result.current.summary.status).toBe('error');
+      expect(result.current.summary.text).toBe('');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  test('summary chunks clear the client timeout so long streams do not fail mid-report', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+    seedCandidateTranscript();
+
+    vi.useFakeTimers();
+    try {
+      let requestId: string | null = null;
+      act(() => {
+        requestId = result.current.startSummary();
+      });
+      expect(result.current.summary.status).toBe('loading');
+
+      act(() => {
+        socket.emit({ type: 'summary-chunk', requestId, text: 'partial report' });
+      });
+      expect(result.current.summary.status).toBe('streaming');
+      expect(result.current.summary.text).toBe('partial report');
+
+      act(() => {
+        vi.advanceTimersByTime(150000);
+      });
+      expect(result.current.summary.status).toBe('streaming');
+      expect(result.current.summary.error).toBeNull();
+
+      act(() => {
+        socket.emit({ type: 'summary-done', requestId, model: 'deepseek-v4-pro' });
+      });
+      expect(result.current.summary.status).toBe('done');
+      expect(result.current.summary.text).toBe('partial report');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   // ── Streaming (Feature 1) ────────────────────────────────────────────────
 
   test('summary-chunk transitions status to streaming and accumulates text', async () => {
@@ -584,6 +808,7 @@ describe('useCopilotSocket', () => {
     act(() => { MockWebSocket.last().open(); });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     let requestId: string | null = null;
     act(() => { requestId = result.current.startSummary(); });
@@ -606,6 +831,7 @@ describe('useCopilotSocket', () => {
     act(() => { MockWebSocket.last().open(); });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     let requestId: string | null = null;
     act(() => { requestId = result.current.startSummary(); });
@@ -626,11 +852,37 @@ describe('useCopilotSocket', () => {
     expect(result.current.summary.empty).toBe(false);
   });
 
+  test('summary websocket frames delivered as Blob are parsed instead of silently dropped', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => { MockWebSocket.last().open(); });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+    seedCandidateTranscript();
+
+    let requestId: string | null = null;
+    act(() => { requestId = result.current.startSummary(); });
+
+    act(() => {
+      socket.onmessage?.call(
+        socket as unknown as WebSocket,
+        new MessageEvent('message', {
+          data: new Blob([
+            JSON.stringify({ type: 'summary-chunk', requestId, text: '## 报告' })
+          ])
+        })
+      );
+    });
+
+    await waitFor(() => expect(result.current.summary.status).toBe('streaming'));
+    expect(result.current.summary.text).toBe('## 报告');
+  });
+
   test('stale summary-chunk (old requestId) is ignored', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => { MockWebSocket.last().open(); });
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
+    seedCandidateTranscript();
 
     act(() => { result.current.startSummary(); });
 
@@ -647,6 +899,7 @@ describe('useCopilotSocket', () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => { MockWebSocket.last().open(); });
     await waitFor(() => expect(result.current.status).toBe('open'));
+    seedCandidateTranscript();
 
     const before = Date.now();
     act(() => { result.current.startSummary(); });

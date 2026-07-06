@@ -4,6 +4,12 @@ export interface SpeakerRoleMap {
   resolve(speakerId: number | null): SpeakerRole;
   setRole(speakerId: number, role: SpeakerRole): void;
   /**
+   * Clear per-interview speaker labels + first-seen order without changing the
+   * provider's guess/no-guess mode. Used when the client starts a new interview
+   * on the same WebSocket connection.
+   */
+  reset(): void;
+  /**
    * Toggle first-seen role GUESSING. true (default): the first speaker id seen
    * resolves to 'interviewer', every other to 'candidate' (CAM++ offline single-
    * mic). false: unassigned ids resolve to 'unknown' — used for iFlytek (讯飞),
@@ -43,6 +49,10 @@ export function createSpeakerRoleMap(): SpeakerRoleMap {
           if (other !== speakerId) roles.set(other, opposite);
         }
       }
+    },
+    reset() {
+      roles.clear();
+      order.length = 0;
     },
     setGuess(enabled) {
       guess = enabled;

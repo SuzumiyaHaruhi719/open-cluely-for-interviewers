@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { SpeakerRole } from '@open-cluely/contract';
+import type { OutputLanguage, SpeakerRole } from '@open-cluely/contract';
 import type { CopilotProgress, CopilotResult, TranscriptLanes } from '../lib/useCopilotSocket';
 import type { AutoMode } from './useAppSettings';
 import type { SpeakerSegment } from '../lib/speakerSegments';
@@ -20,6 +20,8 @@ interface TranscriptStreamProps {
   /** Seeded (sample) or loaded (session) conversation, shown before live lanes. */
   transcriptMessages: TranscriptMessage[];
   lastResult: CopilotResult | null;
+  /** Selected output language; also localizes the live question-card labels. */
+  outputLanguage?: OutputLanguage;
   progress: CopilotProgress | null;
   /** Cumulative analyze tokens so far; shown on the progress card when > 0. */
   progressTokens?: number;
@@ -157,6 +159,7 @@ export function TranscriptStream({
   transcripts,
   transcriptMessages,
   lastResult,
+  outputLanguage = '',
   progress,
   progressTokens = 0,
   isAnalyzing,
@@ -304,6 +307,7 @@ export function TranscriptStream({
           mode={lastResult.mode}
           tokensUsed={lastResult.tokensUsed}
           elapsedMs={lastResult.elapsedMs}
+          outputLanguage={outputLanguage}
           ranked={lastResult.ranked}
           trigger={lastResult.trigger}
           pickedHint={pickedHint}

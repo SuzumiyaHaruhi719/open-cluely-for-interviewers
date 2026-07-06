@@ -10,6 +10,7 @@ export const S2C: {
   SESSION_CONTEXT: 'session-context';
   SUMMARY_CHUNK: 'summary-chunk';
   SUMMARY_DONE: 'summary-done';
+  SUMMARY_DEBUG: 'summary-debug';
   SUMMARY_ERROR: 'summary-error';
   ERROR: 'error';
 };
@@ -220,6 +221,27 @@ export interface TokenUsage {
   total?: number;
 }
 
+/** Sanitized event-level diagnostics for one interview-summary run. */
+export interface SummaryDebugEvent {
+  /** Epoch ms when the event happened on the emitting side. */
+  at: number;
+  /** Component that emitted this event. */
+  source: 'client' | 'server' | 'dashscope';
+  /** Stable event label, e.g. `input-built`, `sse-event`, `client:timeout-fired`. */
+  stage: string;
+  model?: string;
+  status?: number;
+  eventType?: string;
+  inputChars?: number;
+  chunkChars?: number;
+  accumulatedChars?: number;
+  inputTokens?: number;
+  outputTokens?: number;
+  elapsedMs?: number;
+  reason?: string;
+  error?: string;
+}
+
 export type ClientMessage =
   | { type: 'configure'; config: Partial<SessionConfig> }
   | { type: 'analyze'; requestId: string; candidateAnswer: string; questionHistory?: string[] }
@@ -230,11 +252,13 @@ export type ClientMessage =
   /**
    * Request a full interview-evaluation summary (DeepSeek v4 pro). The server
    * builds the input from the per-connection accumulated transcript (both lanes)
-   * plus the captured JD/résumé and replies with a SINGLE summary-done carrying
-   * the whole report (the server is one-shot — see `summary-chunk`). `requestId`
-   * correlates the reply so a re-run supersedes the previous one.
+   * plus the captured JD/résumé. `transcript` is optional client-side seeded
+   * history (for template/sample interviews rendered before any live ASR); when
+   * present, the server prepends it to the accumulated transcript for this run.
+   * The server replies with summary chunks followed by `summary-done`.
+   * `requestId` correlates the reply so a re-run supersedes the previous one.
    */
-  | { type: 'summarize'; requestId: string };
+  | { type: 'summarize'; requestId: string; transcript?: string };
 
 export type ServerMessage =
   | { type: 'ready'; sessionId: string }
@@ -285,6 +309,8 @@ export type ServerMessage =
    * rather than a fake evaluation.
    */
   | { type: 'summary-done'; requestId: string; text?: string; model?: string; empty?: boolean }
+  /** Sanitized event-level diagnostics for debugging stuck summary runs. */
+  | { type: 'summary-debug'; requestId: string; event: SummaryDebugEvent }
   /** The interview summary failed (no key, model error, empty transcript). */
   | { type: 'summary-error'; requestId: string; message: string }
   | { type: 'error'; requestId?: string; message: string };

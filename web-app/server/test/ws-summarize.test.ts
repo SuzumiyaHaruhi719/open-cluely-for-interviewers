@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { handleSummarize, type SummarizeDeps } from '../src/ws';
+import { dispatch, handleSummarize, type SummarizeDeps } from '../src/ws';
 import { createSummaryTelemetry } from '../src/summary-telemetry';
 import { resolveSummarySystemPrompt, SUMMARY_SYSTEM } from '../src/interview-analysis';
 import type { ServerMessage } from '@open-cluely/contract';
@@ -30,6 +30,10 @@ function fakeWs(): { ws: any; frames: ServerMessage[] } {
   return { ws, frames };
 }
 
+function businessFrames(frames: ServerMessage[]): ServerMessage[] {
+  return frames.filter((frame) => frame.type !== 'summary-debug');
+}
+
 function ok(text: string, model = 'deepseek-v4-pro', fellBack = false): SummaryResult {
   return { text, model, fellBack };
 }
@@ -47,8 +51,9 @@ test('#8 empty transcript → a summary-done flagged empty:true (a notice, not a
   await handleSummarize(ws, () => '', 'req-empty', deps);
 
   assert.equal(analyzeCalls, 0, 'analyze must not run on an empty transcript');
-  assert.equal(frames.length, 1);
-  const msg = frames[0];
+  const main = businessFrames(frames);
+  assert.equal(main.length, 1);
+  const msg = main[0];
   assert.equal(msg.type, 'summary-done');
   if (msg.type === 'summary-done') {
     assert.equal(msg.requestId, 'req-empty');
@@ -67,8 +72,9 @@ test('happy path → a summary-done with the report text + model, NOT flagged em
   };
   await handleSummarize(ws, () => '面试记录…', 'req-1', deps);
 
-  assert.equal(frames.length, 1);
-  const msg = frames[0];
+  const main = businessFrames(frames);
+  assert.equal(main.length, 1);
+  const msg = main[0];
   assert.equal(msg.type, 'summary-done');
   if (msg.type === 'summary-done') {
     assert.equal(msg.requestId, 'req-1');
@@ -85,7 +91,7 @@ test('fellBack → the report text is prefixed with the fallback notice', async 
   };
   await handleSummarize(ws, () => '面试记录…', 'req-fb', deps);
 
-  const msg = frames[0];
+  const msg = businessFrames(frames)[0];
   assert.equal(msg.type, 'summary-done');
   if (msg.type === 'summary-done') {
     assert.match(msg.text ?? '', /已回退到 deepseek-v4-flash/);
@@ -103,7 +109,7 @@ test('analyze failure → a summary-error with the message', async () => {
   };
   await handleSummarize(ws, () => '面试记录…', 'req-err', deps);
 
-  const msg = frames[0];
+  const msg = businessFrames(frames)[0];
   assert.equal(msg.type, 'summary-error');
   if (msg.type === 'summary-error') {
     assert.equal(msg.requestId, 'req-err');
@@ -197,6 +203,121 @@ test('streaming path: summary-chunk events emitted per delta, no text on summary
     assert.equal(done.text, undefined);
     assert.equal(done.model, 'deepseek-v4-pro');
     assert.notEqual(done.empty, true);
+  }
+});
+
+test('streaming path emits summary-debug frames for request, input, chunk, usage, and done boundaries', async () => {
+  const { ws, frames } = fakeWs();
+
+  const analyzeStream = async (
+    _input: string,
+    callbacks: StreamCallbacks,
+    deps: { telemetry?: unknown; requestId?: string; model?: string }
+  ): Promise<SummaryResult> => {
+    const telemetry = deps.telemetry as { record?: (type: string, detail?: Record<string, unknown>) => void };
+    telemetry.record?.('model-call-start', { requestId: deps.requestId, model: 'deepseek-v4-pro' });
+    callbacks.onDelta('## 候选人');
+    telemetry.record?.('stream-event', {
+      requestId: deps.requestId,
+      source: 'dashscope',
+      stage: 'sse-event',
+      eventType: 'message_stop'
+    });
+    callbacks.onUsage({ input: 10, output: 20 });
+    telemetry.record?.('model-call-end', { requestId: deps.requestId, model: 'deepseek-v4-pro' });
+    return { text: '## 候选人', model: 'deepseek-v4-pro', fellBack: false };
+  };
+
+  await handleSummarize(ws, () => '面试记录…', 'req-debug', { analyzeStream });
+
+  const debug = frames.filter((f) => f.type === 'summary-debug');
+  assert.ok(debug.length > 0, 'should emit event-level debug frames');
+  assert.deepEqual(
+    debug.map((f) => (f.type === 'summary-debug' ? f.event.stage : '')),
+    [
+      'requested',
+      'input-built',
+      'model-call-start',
+      'summary-chunk-sent',
+      'sse-event',
+      'usage',
+      'model-call-end',
+      'summary-done-sent'
+    ]
+  );
+  const chunk = debug.find((f) => f.type === 'summary-debug' && f.event.stage === 'summary-chunk-sent');
+  if (chunk?.type === 'summary-debug') {
+    assert.equal(chunk.event.chunkChars, '## 候选人'.length);
+  }
+});
+
+test('dispatch emits a server:received summary-debug frame before summary handling starts', async () => {
+  const { ws, frames } = fakeWs();
+
+  await dispatch(
+    ws,
+    {} as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    () => {},
+    () => {},
+    () => {},
+    () => '',
+    { type: 'summarize', requestId: 'req-dispatch-received' } as never
+  );
+
+  const debug = frames.filter((f) => f.type === 'summary-debug');
+  assert.ok(debug.length > 0, 'should emit summary-debug frames');
+  const first = debug[0];
+  assert.equal(first.type, 'summary-debug');
+  if (first.type === 'summary-debug') {
+    assert.equal(first.requestId, 'req-dispatch-received');
+    assert.equal(first.event.source, 'server');
+    assert.equal(first.event.stage, 'server:received');
+  }
+});
+
+test('dispatch passes a client-supplied template transcript into summary input', async () => {
+  const { ws, frames } = fakeWs();
+  const inputs: Array<string | undefined> = [];
+
+  await dispatch(
+    ws,
+    {} as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    () => {},
+    () => {},
+    () => {},
+    (transcript?: string) => {
+      inputs.push(transcript);
+      return transcript ? `# Interview transcript so far\n${transcript}` : '';
+    },
+    {
+      type: 'summarize',
+      requestId: 'req-template-summary',
+      transcript: 'Interviewer: Talk through Raft.\n\nCandidate: I migrated our scheduler to Raft.'
+    } as never,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    {
+      analyze: async (input) => {
+        assert.match(input, /Candidate: I migrated our scheduler to Raft/);
+        return ok('## 报告');
+      }
+    }
+  );
+
+  assert.deepEqual(inputs, ['Interviewer: Talk through Raft.\n\nCandidate: I migrated our scheduler to Raft.']);
+  const done = businessFrames(frames).find((frame) => frame.type === 'summary-done');
+  assert.equal(done?.type, 'summary-done');
+  if (done?.type === 'summary-done') {
+    assert.equal(done.empty, undefined);
+    assert.equal(done.text, '## 报告');
   }
 });
 

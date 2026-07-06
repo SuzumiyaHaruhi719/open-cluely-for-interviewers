@@ -178,10 +178,15 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
               <span className="summary-modal__spinner" aria-hidden="true" />
             </div>
           ) : summary.status === 'error' ? (
-            <p className="summary-modal__error">
-              生成失败 · Failed to generate summary
-              {summary.error ? `: ${summary.error}` : '.'}
-            </p>
+            <>
+              <p className="summary-modal__error">
+                生成失败 · Failed to generate summary
+                {summary.error ? `: ${summary.error}` : '.'}
+              </p>
+              {summary.debugEvents.length > 0 ? (
+                <SummaryDebugTimeline events={summary.debugEvents} />
+              ) : null}
+            </>
           ) : isEmptyNotice ? (
             <p className="summary-modal__notice">
               {summary.text.trim().length > 0
@@ -227,6 +232,42 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
       </div>
     </div>
   );
+}
+
+function SummaryDebugTimeline({ events }: { events: SummaryState['debugEvents'] }) {
+  const visible = events.slice(-24);
+  const baseAt = visible[0]?.at ?? Date.now();
+  return (
+    <section className="summary-modal__debug" aria-label="Summary debug timeline">
+      <h3 className="summary-modal__debug-title">调试时间线 · Debug timeline</h3>
+      <ol className="summary-modal__debug-list">
+        {visible.map((event, index) => (
+          <li className="summary-modal__debug-row" key={`${event.at}-${event.source}-${event.stage}-${index}`}>
+            <span className="summary-modal__debug-time">{fmtElapsed(Math.max(0, event.at - baseAt))}</span>
+            <span className="summary-modal__debug-source">{event.source}</span>
+            <span className="summary-modal__debug-stage">{event.stage}</span>
+            <span className="summary-modal__debug-detail">{formatDebugDetails(event)}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function formatDebugDetails(event: SummaryState['debugEvents'][number]): string {
+  const parts: string[] = [];
+  if (event.model) parts.push(`model=${event.model}`);
+  if (typeof event.status === 'number') parts.push(`status=${event.status}`);
+  if (event.eventType) parts.push(`event=${event.eventType}`);
+  if (typeof event.inputChars === 'number') parts.push(`inputChars=${event.inputChars}`);
+  if (typeof event.chunkChars === 'number') parts.push(`chunkChars=${event.chunkChars}`);
+  if (typeof event.accumulatedChars === 'number') parts.push(`accumulatedChars=${event.accumulatedChars}`);
+  if (typeof event.inputTokens === 'number') parts.push(`inputTokens=${event.inputTokens}`);
+  if (typeof event.outputTokens === 'number') parts.push(`outputTokens=${event.outputTokens}`);
+  if (typeof event.elapsedMs === 'number') parts.push(`elapsedMs=${event.elapsedMs}`);
+  if (event.reason) parts.push(`reason=${event.reason}`);
+  if (event.error) parts.push(`error=${event.error}`);
+  return parts.join(' ');
 }
 
 /**
