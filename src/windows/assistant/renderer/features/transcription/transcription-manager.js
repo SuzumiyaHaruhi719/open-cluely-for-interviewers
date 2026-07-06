@@ -188,14 +188,14 @@ export function createTranscriptionManager({
 
         if (monitorStatusSystem) {
             monitorStatusSystem.dataset.state = sourceStatuses.system;
-            monitorStatusSystem.setAttribute('aria-label', `Host: ${statusMap[sourceStatuses.system] || '关闭'}`);
-            monitorStatusSystem.setAttribute('title', `Host: ${statusMap[sourceStatuses.system] || '关闭'}`);
+            monitorStatusSystem.setAttribute('aria-label', `主机: ${statusMap[sourceStatuses.system] || '关闭'}`);
+            monitorStatusSystem.setAttribute('title', `主机: ${statusMap[sourceStatuses.system] || '关闭'}`);
         }
 
         if (monitorStatusMic) {
             monitorStatusMic.dataset.state = sourceStatuses.mic;
-            monitorStatusMic.setAttribute('aria-label', `Mic: ${statusMap[sourceStatuses.mic] || '关闭'}`);
-            monitorStatusMic.setAttribute('title', `Mic: ${statusMap[sourceStatuses.mic] || '关闭'}`);
+            monitorStatusMic.setAttribute('aria-label', `麦克风: ${statusMap[sourceStatuses.mic] || '关闭'}`);
+            monitorStatusMic.setAttribute('title', `麦克风: ${statusMap[sourceStatuses.mic] || '关闭'}`);
         }
 
         if (monitorLiveSystem) {

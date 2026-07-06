@@ -25,7 +25,7 @@ export function setupIpcListeners({
         const payload = typeof count === 'object' && count !== null ? count : { count };
         setScreenshotsCount(Number(payload.count || 0));
         updateUi();
-        addChatMessage('screenshot', 'Screenshot captured', {
+        addChatMessage('screenshot', '截图已捕获', {
             screenshotId: typeof payload.screenshotId === 'string' ? payload.screenshotId : null
         });
         showFeedback('截图已捕获', 'success');
@@ -36,7 +36,7 @@ export function setupIpcListeners({
         showLoadingOverlay();
         const stream = typeof getActiveScreenAiStream === 'function' ? getActiveScreenAiStream() : null;
         if (!stream) {
-            addChatMessage('system', 'Analyzing screenshots...');
+            addChatMessage('system', '正在分析截图…');
         }
     });
 
@@ -47,7 +47,7 @@ export function setupIpcListeners({
         const stream = typeof getActiveScreenAiStream === 'function' ? getActiveScreenAiStream() : null;
         console.log('[onAnalysisResult] stream active:', !!stream, 'has error:', !!data.error);
         if (data.error) {
-            addChatMessage('system', `Error: ${data.error}`);
+            addChatMessage('system', `错误：${data.error}`);
             showFeedback('分析失败', 'error');
         } else if (stream) {
             stream.finalize(data.text);
@@ -65,7 +65,7 @@ export function setupIpcListeners({
     });
 
     windowApi.onSetStealthMode((enabled) => {
-        showFeedback(enabled ? 'Stealth mode ON' : 'Stealth mode OFF', 'info');
+        showFeedback(enabled ? '隐身模式已开启' : '隐身模式已关闭', 'info');
     });
 
     windowApi.onEmergencyClear(() => {
