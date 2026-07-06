@@ -244,7 +244,13 @@ export function Topbar({
           type="button"
           onClick={onAskAi}
           disabled={assistantBusy}
-          title="向助手提问"
+          title={
+            isAnalyzing
+              ? '分析中…'
+              : !canAnalyze
+                ? '未连接服务'
+                : '问 AI'
+          }
         >
           {askLabel}
         </button>

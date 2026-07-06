@@ -271,11 +271,20 @@ export function createTranscriptionManager({
         const entriesToRender = [...monitorLogEntries].reverse();
         for (const item of entriesToRender) {
             const row = document.createElement('div');
-            row.className = `monitor-log-entry ${item.level === 'error' ? 'error' : ''}`.trim();
+            const isError = item.level === 'error';
+            row.className = `monitor-log-entry ${isError ? 'error' : ''}`.trim();
 
             const sourcePrefix = item.source ? `${sourceLabel(item.source)} ` : '';
-            const metaText = item.meta ? ` ${safeJson(item.meta)}` : '';
-            row.textContent = `${formatMonitorTime(item.timestamp)} ${sourcePrefix}${item.event}: ${item.message}${metaText}`;
+            // Meta is rendered for error-level entries only — info/debug logs stay
+            // terse so the feed doesn't drown in JSON noise. Wrapped in a styled
+            // .monitor-log-meta span (opacity 0.4, mono, 10px) so it recedes.
+            row.textContent = `${formatMonitorTime(item.timestamp)} ${sourcePrefix}${item.event}: ${item.message}`;
+            if (isError && item.meta) {
+                const metaSpan = document.createElement('span');
+                metaSpan.className = 'monitor-log-meta';
+                metaSpan.textContent = ` ${safeJson(item.meta)}`;
+                row.appendChild(metaSpan);
+            }
             monitorLogList.appendChild(row);
         }
     }

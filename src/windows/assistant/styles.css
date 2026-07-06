@@ -665,6 +665,18 @@ body.stealth-on .app-shell { opacity: 0.92; }
   50%       { opacity: 0.3; }
 }
 
+/* Auto-generate toggle pill (button form of mode-indicator). Inherits pill
+   chrome from .mode-indicator; here we only add interactivity affordance:
+   pointer cursor at rest + an indigo hover border so it reads as clickable. */
+.auto-indicator {
+  cursor: pointer;
+}
+
+.auto-indicator:hover {
+  border-color: rgba(124, 140, 248, 0.5);
+  cursor: pointer;
+}
+
 /* Screenshot counter pill */
 .screenshot-count {
   min-width: 22px;
@@ -690,6 +702,16 @@ body.stealth-on .app-shell { opacity: 0.92; }
   border-color: color-mix(in srgb, var(--ai) 40%, var(--border));
   background: color-mix(in srgb, var(--ai) 12%, transparent);
   transform: scale(1.08);
+}
+
+/* Demote the pill when there's nothing to count: it's purely informational
+   noise at zero. The desktop JS sets textContent="0" (so :empty won't match),
+   but if a data-count attribute is present we honour it; otherwise the .is-zero
+   class is the documented opt-in. Either way it fades to 0.3 rather than
+   disappearing entirely. */
+.screenshot-count[data-count="0"],
+.screenshot-count.is-zero {
+  opacity: 0.3;
 }
 
 /* ── Topbar action buttons ─────────────────────────────────────────────────── */
@@ -1129,6 +1151,14 @@ body.stealth-on .app-shell { opacity: 0.92; }
   color: var(--danger);
   border-color: color-mix(in srgb, var(--danger) 38%, var(--border));
   background: color-mix(in srgb, var(--danger) 10%, transparent);
+}
+
+/* Meta payload shown only on error-level entries (added by transcription-manager).
+   Recedes visually so the error message dominates, not the JSON blob. */
+.monitor-log-meta {
+  font-size: 10px;
+  opacity: 0.4;
+  font-family: var(--font-mono, monospace);
 }
 
 /* ── Transcript stream ────────────────────────────────────────────────────── */

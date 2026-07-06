@@ -364,6 +364,14 @@
     content: ' ↩';
     color: color-mix(in srgb, var(--candidate) 70%, transparent);
     font-style: normal;
+    /* Button affordance on the ↩ suffix: a rounded padded chip so the hover
+       fill reads as a clickable target, not bare punctuation. */
+    border-radius: 4px;
+    padding: 2px 6px;
+    transition: background var(--dur-2) var(--ease);
+}
+.question-card__anchor--jump:hover::after {
+    background: rgba(255, 255, 255, 0.04);
 }
 .question-card__anchor--jump:hover {
     background: color-mix(in srgb, var(--candidate) 14%, transparent);
