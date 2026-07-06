@@ -1549,9 +1549,11 @@ function setupResumeDropzone() {
             if (cleared) {
                 showFeedback('简历已移除', 'info');
                 addMonitorLog('info', 'resume-cleared', '此面试的简历已移除', null, {});
+                document.getElementById('resume-section-title')?.classList.remove('has-resume');
             } else {
                 showFeedback('简历已载入', 'success');
                 addMonitorLog('info', 'resume-parsed', '简历已上传', null, { chars: chars || 0 });
+                document.getElementById('resume-section-title')?.classList.add('has-resume');
             }
         }
     });
@@ -1941,6 +1943,12 @@ function paintRecIndicator() {
     }
     recIndicatorEl.dataset.state = state;
     if (recIndicatorLabel) recIndicatorLabel.textContent = label;
+    // Reflect recording state for screen readers. The element is an aria-live
+    // region, so updating aria-label announces the state change aloud.
+    const ariaLabel = state === 'live' ? '正在录音'
+        : state === 'connecting' ? '正在连接'
+        : '未录音';
+    recIndicatorEl.setAttribute('aria-label', ariaLabel);
 }
 
 async function loadShortcutConfig() {

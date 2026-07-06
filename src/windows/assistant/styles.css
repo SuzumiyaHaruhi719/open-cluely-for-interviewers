@@ -1304,6 +1304,13 @@ body.stealth-on .app-shell { opacity: 0.92; }
 
 .rail-section__title label { cursor: pointer; }
 
+/* Resume loaded → a green ✓ after the title signals a résumé is attached. */
+.rail-section__title.has-resume::after {
+  content: ' ✓';
+  color: #6ec89b;
+  font-size: 11px;
+}
+
 /* Inline "auto" badge next to section titles — uses --ai colour family. */
 .rail-section__tag {
   padding: 1px 6px;
@@ -1642,6 +1649,14 @@ body.rail-collapsed .right-rail {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   animation: blink 1s steps(1, end) infinite;
+}
+
+/* Restore hint beneath the HIDDEN message — tells the user how to bring the
+   app back. Low-contrast so it recedes below the blinking alarm text. */
+.emergency-restore-hint {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  margin-top: 8px;
 }
 
 @keyframes blink {

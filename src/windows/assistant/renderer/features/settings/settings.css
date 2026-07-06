@@ -317,6 +317,16 @@
 .customize-ai { display: flex; gap: 8px; }
 .customize-ai .settings-input { flex: 1; }
 .customize-ai__hint { font-size: 11px; color: var(--fg-subtle); min-height: 14px; }
+
+/* Pulse the hint while AI is generating (hint is set to a non-empty string).
+   A subtle opacity breathing so the user sees work is happening in the background. */
+.customize-ai__hint:not(:empty) {
+    animation: hint-pulse 1.5s ease-in-out infinite;
+}
+@keyframes hint-pulse {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+}
 .action-btn--ghost { background: transparent; border-color: var(--hairline); color: var(--fg-subtle); }
 .action-btn--ghost:hover { color: var(--fg); border-color: color-mix(in srgb, var(--interviewer) 40%, var(--hairline)); }
 
