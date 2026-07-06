@@ -11,43 +11,50 @@
 const TOUR_STORAGE_KEY = 'tour-completed-v2';
 
 /**
- * Tour steps. Each step targets a DOM element by selector and shows
- * a title + description. The arrow auto-positions (top/bottom/left/right).
+ * Tour steps. Step 0 is a welcome (no target element, centered modal).
+ * Steps 1+ target DOM elements by selector.
  */
 const TOUR_STEPS = [
   {
+    selector: null, // welcome step — centered, no spotlight
+    title: '欢迎使用面试官 Copilot',
+    desc: '这是一个 AI 辅助面试工具。30 秒带你了解核心功能：新建面试、粘贴 JD、上传简历、开始录音、获取 AI 追问。',
+    icon: '👋',
+    isWelcome: true,
+  },
+  {
     selector: '#btn-new-interview',
-    title: '新建面试',
+    title: '① 新建面试',
     desc: '点这里开始一场新面试。选择「线上」采集电脑音频，或「线下」仅用房间麦克风。',
     icon: '✏️',
   },
   {
     selector: '#jd-input',
-    title: '粘贴岗位描述',
+    title: '② 粘贴岗位描述',
     desc: '把 JD 粘贴到这里，AI 会据此生成针对性的追问方向。',
     icon: '📋',
   },
   {
     selector: '#resume-dropzone',
-    title: '上传简历',
+    title: '③ 上传简历',
     desc: '拖入或点击上传候选人简历（txt / md / pdf / docx），AI 会结合简历提问。',
     icon: '📄',
   },
   {
     selector: '#channel-computer',
-    title: '采集候选人音频',
+    title: '④ 采集候选人音频',
     desc: '点击这里开启「电脑音频」通道，采集候选人的声音（线上面试用）。',
     icon: '🎙️',
   },
   {
     selector: '#channel-mic',
-    title: '采集你的声音',
+    title: '⑤ 采集你的声音',
     desc: '点击这里开启「麦克风」通道，采集你的提问和对话。',
     icon: '🎤',
   },
   {
     selector: '#analyze-btn',
-    title: '随时问 AI',
+    title: '⑥ 随时问 AI',
     desc: '对话进行中，点这里让 AI 分析上下文并推荐下一步追问。也可点「生成问题」快速出题。',
     icon: '🤖',
   },
@@ -301,26 +308,59 @@ export function startTour(opts = {}) {
     }
     currentStep = idx;
     const step = TOUR_STEPS[idx];
-    const rect = getTargetRect(step.selector);
 
-    if (!rect) {
-      // Element not found/visible — skip this step
-      goToStep(idx + 1);
+    // Welcome step: no spotlight, centered tooltip
+    if (step.isWelcome || !step.selector) {
+      const isLast = idx === TOUR_STEPS.length - 1;
+      tooltip.classList.remove('visible');
+      ring.style.display = 'none';
+      arrow.style.display = 'none';
+      // Full dark mask (no cutout)
+      mask.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+      setTimeout(() => {
+        // Center tooltip
+        const ttW = 340;
+        const ttH = 200;
+        tooltip.style.top = (window.innerHeight / 2 - ttH / 2) + 'px';
+        tooltip.style.left = (window.innerWidth / 2 - ttW / 2) + 'px';
+        tooltip.style.width = ttW + 'px';
+        renderTooltip(idx, isLast);
+        requestAnimationFrame(() => {
+          tooltip.classList.add('visible');
+        });
+      }, 150);
       return;
     }
 
-    const isLast = idx === TOUR_STEPS.length - 1;
+    // Normal step: scroll element into view if needed, then spotlight
+    const el = document.querySelector(step.selector);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }
 
-    // Fade out tooltip, reposition, fade in
-    tooltip.classList.remove('visible');
+    // Wait a tick for scroll to settle
     setTimeout(() => {
-      positionSpotlight(rect);
-      positionTooltip(rect, step);
-      renderTooltip(idx, isLast);
-      requestAnimationFrame(() => {
-        tooltip.classList.add('visible');
-      });
-    }, 150);
+      const rect = getTargetRect(step.selector);
+      if (!rect) {
+        goToStep(idx + 1);
+        return;
+      }
+
+      const isLast = idx === TOUR_STEPS.length - 1;
+      arrow.style.display = 'block';
+      tooltip.style.width = '300px';
+
+      // Fade out tooltip, reposition, fade in
+      tooltip.classList.remove('visible');
+      setTimeout(() => {
+        positionSpotlight(rect);
+        positionTooltip(rect, step);
+        renderTooltip(idx, isLast);
+        requestAnimationFrame(() => {
+          tooltip.classList.add('visible');
+        });
+      }, 150);
+    }, 300);
   }
 
   /** Finish the tour */

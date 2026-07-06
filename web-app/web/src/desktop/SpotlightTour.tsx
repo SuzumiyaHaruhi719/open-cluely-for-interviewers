@@ -10,44 +10,59 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 const TOUR_STORAGE_KEY = 'tour-completed-v2';
 
-const TOUR_STEPS = [
+const TOUR_STEPS: TourStep[] = [
+  {
+    selector: null,
+    title: '欢迎使用面试官 Copilot',
+    desc: '这是一个 AI 辅助面试工具。30 秒带你了解核心功能：新建面试、粘贴 JD、上传简历、开始录音、获取 AI 追问。',
+    icon: '👋',
+    isWelcome: true,
+  },
   {
     selector: '#btn-new-interview',
-    title: '新建面试',
+    title: '① 新建面试',
     desc: '点这里开始一场新面试。选择「线上」采集电脑音频，或「线下」仅用房间麦克风。',
     icon: '✏️',
   },
   {
     selector: '#jd-input',
-    title: '粘贴岗位描述',
+    title: '② 粘贴岗位描述',
     desc: '把 JD 粘贴到这里，AI 会据此生成针对性的追问方向。',
     icon: '📋',
   },
   {
     selector: '#resume-dropzone',
-    title: '上传简历',
+    title: '③ 上传简历',
     desc: '拖入或点击上传候选人简历（txt / md / pdf / docx），AI 会结合简历提问。',
     icon: '📄',
   },
   {
     selector: '#channel-computer',
-    title: '采集候选人音频',
+    title: '④ 采集候选人音频',
     desc: '点击这里开启「电脑音频」通道，采集候选人的声音（线上面试用）。',
     icon: '🎙️',
   },
   {
     selector: '#channel-mic',
-    title: '采集你的声音',
+    title: '⑤ 采集你的声音',
     desc: '点击这里开启「麦克风」通道，采集你的提问和对话。',
     icon: '🎤',
   },
   {
     selector: '#analyze-btn',
-    title: '随时问 AI',
+    title: '⑥ 随时问 AI',
     desc: '对话进行中，点这里让 AI 分析上下文并推荐下一步追问。也可点「生成问题」快速出题。',
     icon: '🤖',
   },
 ];
+
+interface TourStep {
+  selector: string | null;
+  title: string;
+  desc: string;
+  icon: string;
+  isWelcome?: boolean;
+}
 
 interface TourStep {
   selector: string;
@@ -195,18 +210,30 @@ export function SpotlightTour() {
   // Position spotlight when step changes
   const reposition = useCallback((idx: number) => {
     const step = TOUR_STEPS[idx];
-    const r = getTargetRect(step.selector);
-    if (!r) {
-      // Element not visible — skip to next
-      if (idx + 1 < TOUR_STEPS.length) {
-        setStepIdx(idx + 1);
-      } else {
-        setVisible(false);
-      }
+    // Welcome step: no spotlight, centered
+    if (step.isWelcome || !step.selector) {
+      setRect(null);
+      setTtPos(null);
       return;
     }
-    setRect(r);
-    setTtPos(computeTooltipPos(r));
+    // Auto-scroll element into view
+    const el = document.querySelector(step.selector);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }
+    setTimeout(() => {
+      const r = getTargetRect(step.selector!);
+      if (!r) {
+        if (idx + 1 < TOUR_STEPS.length) {
+          setStepIdx(idx + 1);
+        } else {
+          setVisible(false);
+        }
+        return;
+      }
+      setRect(r);
+      setTtPos(computeTooltipPos(r));
+    }, 300);
   }, []);
 
   useEffect(() => {
@@ -266,12 +293,49 @@ export function SpotlightTour() {
     }
   }
 
-  if (!visible || !rect || !ttPos) return null;
+  if (!visible) return null;
+
+  const step = TOUR_STEPS[stepIdx];
+  const isWelcome = step.isWelcome || !step.selector;
+  const isLast = stepIdx === TOUR_STEPS.length - 1;
 
   const pad = 6;
   const r = 10;
-  const step = TOUR_STEPS[stepIdx];
-  const isLast = stepIdx === TOUR_STEPS.length - 1;
+
+  // Welcome step: full dark mask, centered tooltip, no ring/arrow
+  if (isWelcome) {
+    return (
+      <>
+        <div className="tour-mask" style={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' }} onClick={() => finish(false)} />
+        <div
+          className="tour-tooltip"
+          style={{
+            top: '50%', left: '50%', width: '340px',
+            transform: tooltipVisible ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.92)',
+            opacity: tooltipVisible ? 1 : 0,
+          }}
+        >
+          <div className="tour-final-icon" style={{ fontSize: '28px' }}>{step.icon}</div>
+          <h3 className="tour-title">{step.title}</h3>
+          <p className="tour-desc">{step.desc}</p>
+          <div className="tour-actions">
+            <div className="tour-dots">
+              {TOUR_STEPS.map((_, i) => (
+                <div key={i} className={`tour-dot ${i === stepIdx ? 'active' : ''}`} onClick={() => goToStep(i)} />
+              ))}
+            </div>
+            <div className="tour-buttons">
+              <button className="tour-btn tour-btn--ghost" onClick={() => finish(false)}>跳过</button>
+              <button className="tour-btn tour-btn--primary" onClick={next}>开始导览 →</button>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Normal step: spotlight + arrow + tooltip
+  if (!rect || !ttPos) return null;
   const clipPath = computeMaskClipPath(rect, pad, r);
   const ringTop = rect.top - pad;
   const ringLeft = rect.left - pad;
