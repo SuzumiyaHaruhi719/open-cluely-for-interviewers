@@ -15,26 +15,26 @@ export interface ShortcutDef {
 export const SHORTCUTS: ReadonlyArray<ShortcutDef> = [
   {
     id: 'toggleTranscription',
-    label: 'Toggle transcription',
-    description: 'Start / stop live audio capture',
+    label: '切换转写',
+    description: '开始或停止实时音频采集',
     keys: 'Ctrl+Shift+T'
   },
   {
     id: 'askAi',
-    label: 'Ask AI',
-    description: 'Open the assistant on the current context',
+    label: '提问 AI',
+    description: '基于当前上下文打开助手',
     keys: 'Ctrl+Shift+A'
   },
   {
     id: 'generateQuestion',
-    label: 'Generate Q',
-    description: 'Generate a follow-up question',
+    label: '生成追问',
+    description: '生成一个追问问题',
     keys: 'Ctrl+Enter'
   },
   {
     id: 'clearSession',
-    label: 'Clear session',
-    description: 'Reset the current answer buffer',
+    label: '清空会话',
+    description: '重置当前回答缓存',
     keys: 'Ctrl+Shift+Backspace'
   }
 ];

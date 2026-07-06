@@ -97,15 +97,15 @@ export function RightRail({
   return (
     <aside id="right-rail" className="right-rail">
       <section className="rail-section" id="resume-section">
-        <h2 className="rail-section__title">Resume</h2>
+        <h2 className="rail-section__title">简历</h2>
         <div className="rail-section__body">
           <ResumeDropzone resumeText={resume} onExtracted={onExtracted} onCleared={onCleared} />
           <textarea
             id="resume-text"
             className="jd-input"
             rows={4}
-            placeholder="…or paste the candidate's résumé here."
-            aria-label="Candidate résumé"
+            placeholder="…或在这里粘贴候选人简历。"
+            aria-label="候选人简历"
             value={resume}
             onChange={(e) => setResume(e.target.value)}
           />
@@ -115,14 +115,14 @@ export function RightRail({
 
       <section className="rail-section">
         <h2 className="rail-section__title">
-          <label htmlFor="jd-input">Job description</label>
+          <label htmlFor="jd-input">职位描述</label>
         </h2>
         <textarea
           id="jd-input"
           className="jd-input"
           rows={5}
-          placeholder="Paste the JD so the copilot prioritises relevant hooks…"
-          aria-label="Job description"
+          placeholder="粘贴 JD，让助手优先关注相关追问点…"
+          aria-label="职位描述"
           value={jd}
           onChange={(e) => setJd(e.target.value)}
         />
@@ -130,7 +130,7 @@ export function RightRail({
 
       <section className="rail-section rail-section--grow">
         <h2 className="rail-section__title">
-          Session context <span className="rail-section__tag">auto</span>
+          会话上下文 <span className="rail-section__tag">自动</span>
         </h2>
         <SessionContextPanel state={sessionContext} />
       </section>

@@ -348,7 +348,7 @@ export function useCopilotSocket(): CopilotSocket {
         setSummary((prev) => ({
           ...prev,
           status: 'error',
-          error: '总结生成超时，请重试。 · Summary generation timed out — please retry.',
+          error: '总结生成超时，请重试。',
           empty: false,
           debugEvents: appendSummaryDebugEvent(prev.debugEvents, event)
         }));
@@ -593,7 +593,7 @@ export function useCopilotSocket(): CopilotSocket {
           setSummary((prev) => ({
             ...prev,
             status: 'error',
-            error: '连接已断开，总结未完成，请重试。 · Connection lost before the summary finished — please retry.',
+            error: '连接已断开，总结未完成，请重试。',
             empty: false,
             debugEvents: appendSummaryDebugEvent(prev.debugEvents, event)
           }));
@@ -678,7 +678,7 @@ export function useCopilotSocket(): CopilotSocket {
       clearSummaryTimeout();
       setSummary({
         status: 'done',
-        text: '还没有可总结的面试内容。\n\nThere is no interview content to summarize yet — wait for the candidate to speak first.',
+        text: '还没有可总结的面试内容。\n\n请等待候选人发言后再生成总结。',
         error: null,
         empty: true,
         startedAt,
@@ -714,7 +714,7 @@ export function useCopilotSocket(): CopilotSocket {
       setSummary({
         status: 'error',
         text: '',
-        error: '连接尚未就绪，无法发送总结请求。 · Connection is not ready; could not send summary request.',
+        error: '连接尚未就绪，无法发送总结请求。',
         empty: false,
         startedAt,
         tokens: 0,
@@ -780,7 +780,7 @@ export function useCopilotSocket(): CopilotSocket {
       } catch (err) {
         // User cancelled/denied or unsupported — surface friendly, don't crash.
         const message =
-          err instanceof AudioCaptureError ? err.message : 'Could not start audio capture.';
+          err instanceof AudioCaptureError ? err.message : '无法启动音频采集。';
         send({ type: 'audio-control', action: 'stop', source });
         setAudioState(source, { capturing: false, level: 0, error: message });
       }

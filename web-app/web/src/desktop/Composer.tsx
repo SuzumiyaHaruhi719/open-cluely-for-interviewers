@@ -63,7 +63,7 @@ export function Composer({
             domId="channel-computer"
             source="display"
             accent="candidate"
-            title="Candidate · computer audio"
+            title="候选人 · 电脑音频"
             state={audio.display}
             disabled={disabled}
             onStart={onStartAudio}
@@ -74,7 +74,7 @@ export function Composer({
           domId="channel-mic"
           source="mic"
           accent="interviewer"
-          title={offline ? '房间麦克风 / Room mic' : 'You · microphone'}
+          title={offline ? '房间麦克风' : '你 · 麦克风'}
           state={audio.mic}
           disabled={disabled}
           onStart={onStartAudio}
@@ -87,8 +87,8 @@ export function Composer({
           id="chat-manual-input"
           className="chat-manual-input"
           rows={1}
-          placeholder="Add a note to the context…"
-          aria-label="Manual context input"
+          placeholder="添加一条上下文备注…"
+          aria-label="手动上下文输入"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           onKeyDown={onKeyDown}
@@ -98,7 +98,7 @@ export function Composer({
           className={`chat-autoscroll-toggle${autoScroll ? '' : ' off'}`}
           type="button"
           aria-pressed={autoScroll}
-          title="Toggle auto-scroll"
+          title="切换自动滚动"
           onClick={onToggleAutoScroll}
         >
           {'⇩'}
@@ -110,7 +110,7 @@ export function Composer({
           onClick={submit}
           disabled={note.trim().length === 0}
         >
-          Add
+          添加
         </button>
       </div>
     </div>

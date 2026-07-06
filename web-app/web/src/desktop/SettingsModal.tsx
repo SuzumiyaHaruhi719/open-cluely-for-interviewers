@@ -68,10 +68,10 @@ const SUMMARY_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 ];
 
 const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
-  { value: 'paraformer', label: 'DashScope Paraformer (recommended)' },
-  { value: 'xfyun', label: 'Xunfei RTASR (科大讯飞)' },
-  { value: 'volc', label: 'Doubao streaming (豆包 / 火山引擎)' },
-  { value: 'sim', label: 'Sim injection (local test script)' }
+  { value: 'paraformer', label: 'DashScope Paraformer（推荐）' },
+  { value: 'xfyun', label: '讯飞实时转写（科大讯飞）' },
+  { value: 'volc', label: '豆包流式语音（火山引擎）' },
+  { value: 'sim', label: '本地模拟注入脚本' }
 ];
 
 // Autonomous follow-up trigger mode. 'agent' lets an AI monitor decide when to
@@ -211,7 +211,7 @@ export function SettingsModal({
       <div className="settings-dialog">
         <div className="settings-header">
           <h2 id="settings-title" className="settings-title">
-            Settings
+            设置
           </h2>
           <span
             id="settings-status"
@@ -224,7 +224,7 @@ export function SettingsModal({
             id="close-settings"
             className="settings-close"
             type="button"
-            aria-label="Close settings"
+            aria-label="关闭设置"
             onClick={onClose}
           >
             <CloseIcon size={16} />
@@ -233,12 +233,12 @@ export function SettingsModal({
 
         <div className="settings-body">
           <section className="settings-section settings-section--mode">
-            <h3 className="settings-section__title">Interviewer mode</h3>
+            <h3 className="settings-section__title">面试模式</h3>
             <div
               className="mode-segmented"
               id="setting-interviewer-mode"
               role="radiogroup"
-              aria-label="Interviewer mode"
+              aria-label="面试模式"
             >
               {INTERVIEWER_MODES.map((value) => {
                 const meta = MODE_META[value];
@@ -340,7 +340,7 @@ export function SettingsModal({
                     type="button"
                     id="open-pipeline-studio"
                     className="action-btn action-btn--ghost"
-                    title="Open the node editor"
+                    title="打开节点编辑器"
                     onClick={onOpenStudio}
                   >
                     ⚙ 高级编辑（节点编辑器）
@@ -351,33 +351,32 @@ export function SettingsModal({
           </section>
 
           <section className="settings-section">
-            <h3 className="settings-section__title">API key</h3>
+            <h3 className="settings-section__title">API 密钥</h3>
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-dashscope-key">
-                DashScope key
+                DashScope 密钥
               </label>
               <div className="settings-key-row">
                 <input
                   type="text"
                   id="setting-dashscope-key"
                   className="settings-input settings-input--mono"
-                  value="Managed by the server"
+                  value="由服务端管理"
                   readOnly
                   aria-readonly="true"
                 />
               </div>
               <p className="settings-field__desc">
-                This deployment uses a server-side key (environment variable). The browser never
-                sees or sends it.
+                当前部署使用服务端环境变量里的密钥。浏览器不会看到或发送该密钥。
               </p>
             </div>
           </section>
 
           <section className="settings-section">
-            <h3 className="settings-section__title">Doubao API (豆包语音)</h3>
+            <h3 className="settings-section__title">豆包 API（语音识别）</h3>
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-volc-app-id">
-                Doubao APP ID
+                豆包 APP ID
               </label>
               <input
                 type="text"
@@ -394,7 +393,7 @@ export function SettingsModal({
                 htmlFor="setting-volc-access-token"
                 style={{ marginTop: 8 }}
               >
-                Doubao Access Token
+                豆包 Access Token
               </label>
               <input
                 type="password"
@@ -411,7 +410,7 @@ export function SettingsModal({
                 htmlFor="setting-volc-model"
                 style={{ marginTop: 8 }}
               >
-                模型 (Model)
+                模型
               </label>
               <select
                 id="setting-volc-model"
@@ -428,16 +427,16 @@ export function SettingsModal({
               <p className="settings-field__desc">
                 豆包流式语音识别（火山引擎）。APP ID / Access Token 已在服务端 <code>.env</code> 配置，
                 这里留空即用、填写则覆盖。2.0（seedasr）需账号开通对应资源，否则握手报 400 —— 用不了就选
-                1.0（bigasr）。需在下方「Speech recognition」把 Provider 选成 Doubao 才会启用。
+                1.0（bigasr）。需在下方「语音识别」把服务商选成豆包才会启用。
               </p>
             </div>
           </section>
 
           <section className="settings-section">
-            <h3 className="settings-section__title">AI 模型（Fast 模式）</h3>
+            <h3 className="settings-section__title">AI 模型（快速模式）</h3>
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-dashscope-ai-model">
-                Fast 模式 / 通用 AI 模型
+                快速模式与通用 AI 模型
               </label>
               <select
                 id="setting-dashscope-ai-model"
@@ -452,13 +451,12 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                Saved in this browser for continuity. Server model selection is fixed for this
-                deployment, so this does not change replies for now.
+                为了保持体验连续性，会保存在当前浏览器。本部署的服务端模型选择目前固定，因此暂时不会改变回复。
               </p>
             </div>
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-summary-model">
-                评估报告模型 / Report model
+                评估报告模型
               </label>
               <select
                 id="setting-summary-model"
@@ -479,11 +477,11 @@ export function SettingsModal({
             </div>
 
             <div className="settings-field">
-              <span className="settings-field__label">总结 Prompt / Summary prompt</span>
+              <span className="settings-field__label">总结提示词</span>
               <div
                 className="mode-segmented mode-segmented--sm"
                 role="radiogroup"
-                aria-label="Summary prompt mode"
+                aria-label="总结提示词模式"
               >
                 <button
                   type="button"
@@ -494,7 +492,7 @@ export function SettingsModal({
                 >
                   <span className="mode-segmented__top">
                     <span className="mode-segmented__dot" aria-hidden="true" />
-                    <span className="mode-segmented__label">默认 Default</span>
+                    <span className="mode-segmented__label">默认</span>
                   </span>
                 </button>
                 <button
@@ -506,7 +504,7 @@ export function SettingsModal({
                 >
                   <span className="mode-segmented__top">
                     <span className="mode-segmented__dot" aria-hidden="true" />
-                    <span className="mode-segmented__label">自定义 Custom</span>
+                    <span className="mode-segmented__label">自定义</span>
                   </span>
                 </button>
               </div>
@@ -515,21 +513,21 @@ export function SettingsModal({
                   id="setting-summary-prompt-text"
                   className="settings-input"
                   rows={6}
-                  placeholder="在此输入自定义的系统提示词（System prompt）。留空则自动回退到内置默认 prompt。"
+                  placeholder="在此输入自定义的系统提示词。留空则自动回退到内置默认提示词。"
                   value={settings.summaryPromptText}
                   onChange={(e) => onSummaryPromptTextChange(e.target.value)}
                   style={{ marginTop: 8, resize: 'vertical', fontFamily: 'monospace', fontSize: 12 }}
                 />
               ) : null}
               <p className="settings-field__desc">
-                <strong>默认</strong>：使用内置精调评估 prompt（推荐）。<strong>自定义</strong>：输入你自己的 System
-                prompt，完全替换内置 prompt 发送给模型。留空时自动回退到内置 prompt。
+                <strong>默认</strong>：使用内置精调评估提示词（推荐）。<strong>自定义</strong>：输入你自己的系统提示词，
+                完全替换内置提示词发送给模型。留空时自动回退到内置提示词。
               </p>
             </div>
 
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-output-language">
-                Generate Q 输出语言
+                追问输出语言
               </label>
               <select
                 id="setting-output-language"
@@ -592,10 +590,10 @@ export function SettingsModal({
           </section>
 
           <section className="settings-section">
-            <h3 className="settings-section__title">Speech recognition</h3>
+            <h3 className="settings-section__title">语音识别</h3>
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-asr-provider">
-                Provider
+                服务商
               </label>
               <select
                 id="setting-asr-provider"
@@ -610,18 +608,16 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                Saved in this browser and applied live. <code>Paraformer</code> uses the
-                server&apos;s DashScope key. <code>Doubao (豆包)</code> streams via Volcengine —
-                set its APP ID / Access Token / 模型 in the <strong>Doubao API</strong> section
-                above. <code>Sim injection</code> replays a local scripted interviewer/candidate
-                transcript so you can inspect message injection without microphone or cloud ASR.
-                <code>Xunfei</code> is not wired yet.
+                会保存在当前浏览器并实时应用。<code>Paraformer</code> 使用服务端 DashScope 密钥。
+                <code>豆包</code> 通过火山引擎流式识别，请在上方 <strong>豆包 API</strong> 区域配置
+                APP ID / Access Token / 模型。<code>本地模拟注入脚本</code> 会回放一段本地脚本对话，
+                方便在没有麦克风或云端 ASR 时检查消息注入。<code>讯飞</code> 走实时语音转写通道。
               </p>
             </div>
 
             <div id="settings-funasr" className="settings-field">
               <label className="settings-field__label" htmlFor="setting-funasr-url">
-                线下 · CAM++ 说话人分离 sidecar URL
+                线下 · CAM++ 说话人分离本地服务地址
               </label>
               <input
                 type="text"
@@ -635,13 +631,13 @@ export function SettingsModal({
               />
               <p className="settings-field__desc">
                 线下面试（单麦克风）转写仍走云端 Paraformer，另用本地 CAM++ sidecar 做说话人分离
-                （先说话=面试官）。这是该 sidecar 的 HTTP 地址；留空则用服务端默认地址。
+                （先说话=面试官）。这是该本地服务的 HTTP 地址；留空则用服务端默认地址。
               </p>
             </div>
 
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-mic-device">
-                Microphone (your voice)
+                麦克风（你的声音）
               </label>
               <select
                 id="setting-mic-device"
@@ -649,7 +645,7 @@ export function SettingsModal({
                 value={micDeviceId}
                 onChange={(e) => setMicDeviceId(e.target.value)}
               >
-                <option value="">System default microphone</option>
+                <option value="">系统默认麦克风</option>
                 {devices.map((device) => (
                   <option key={device.deviceId || device.label} value={device.deviceId}>
                     {device.label}
@@ -657,29 +653,28 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                Device labels appear after you grant microphone permission once.
+                授权一次麦克风权限后，会显示设备名称。
               </p>
             </div>
 
             <div className="settings-field">
               <label className="settings-field__label" htmlFor="setting-system-source">
-                System audio (candidate's voice)
+                系统音频（候选人的声音）
               </label>
               <select id="setting-system-source" className="settings-select" defaultValue="tab" disabled>
-                <option value="tab">Browser tab share (getDisplayMedia)</option>
+                <option value="tab">共享浏览器标签页（getDisplayMedia）</option>
               </select>
               <p className="settings-field__desc">
-                On the web, candidate audio comes from a shared browser tab/window picked when you
-                start the computer-audio channel.
+                网页版会在启动电脑音频通道时，让你选择一个共享的浏览器标签页或窗口作为候选人音频来源。
               </p>
             </div>
           </section>
 
           <section className="settings-section">
-            <h3 className="settings-section__title">Appearance</h3>
+            <h3 className="settings-section__title">外观</h3>
             <div className="settings-field">
               <span className="settings-field__label" id="setting-window-opacity-label">
-                Window opacity
+                窗口透明度
               </span>
               <div className="settings-range-row">
                 <input
@@ -699,7 +694,7 @@ export function SettingsModal({
               </div>
             </div>
             <div className="settings-field">
-              <span className="settings-field__label">Keyboard shortcuts</span>
+              <span className="settings-field__label">键盘快捷键</span>
               <div id="settings-shortcuts-list" className="settings-shortcuts-list">
                 {SHORTCUTS.map((shortcut) => (
                   <div className="settings-shortcut-row" key={shortcut.id}>
@@ -715,7 +710,7 @@ export function SettingsModal({
                   </div>
                 ))}
               </div>
-              <p className="settings-field__desc">Read-only reference.</p>
+              <p className="settings-field__desc">只读参考。</p>
             </div>
           </section>
         </div>

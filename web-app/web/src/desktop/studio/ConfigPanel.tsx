@@ -31,7 +31,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
   if (!node) {
     return (
       <aside className="ps-config" id="ps-config">
-        <div className="ps-config__empty">Select a block to configure it.</div>
+        <div className="ps-config__empty">选择一个模块进行配置。</div>
       </aside>
     );
   }
@@ -61,7 +61,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
       </h4>
 
       <label className="ps-field">
-        <span>Model</span>
+        <span>模型</span>
         <select
           id="ps-f-model"
           value={modelValue}
@@ -76,7 +76,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
       </label>
 
       <label className="ps-field ps-field--row">
-        <span>Thinking</span>
+        <span>深度思考</span>
         <input
           type="checkbox"
           id="ps-f-think"
@@ -89,7 +89,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
             })
           }
         />
-        <span className="ps-muted">budget</span>
+        <span className="ps-muted">预算</span>
         <input
           type="number"
           id="ps-f-budget"
@@ -107,7 +107,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
       </label>
 
       <label className="ps-field ps-field--row">
-        <span>Temp</span>
+        <span>温度</span>
         <input
           type="number"
           id="ps-f-temp"
@@ -121,7 +121,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
       </label>
 
       <label className="ps-field ps-field--row">
-        <span>Max tokens</span>
+        <span>最大令牌数</span>
         <input
           type="number"
           id="ps-f-maxtokens"
@@ -135,8 +135,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
 
       <label className="ps-field">
         <span>
-          Prompt body — the default is shown; edit to fine-tune (schema/inputs stay fixed). Leave
-          unchanged to use the default.
+          提示词正文：这里显示默认内容，可编辑微调（结构与输入保持固定）。保持不变则使用默认内容。
         </span>
         <textarea
           id="ps-f-body"
@@ -151,7 +150,7 @@ export function ConfigPanel({ node, typeIndex, onPatch }: ConfigPanelProps) {
           style={{ alignSelf: 'flex-start', marginTop: 4 }}
           onClick={() => onPatch(node.id, { promptBody: undefined })}
         >
-          Reset to default
+          恢复默认
         </button>
       </label>
     </aside>

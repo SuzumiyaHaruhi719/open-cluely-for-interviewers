@@ -51,7 +51,7 @@ const TICK_MS = 100;
 export function ProgressCard({
   progress,
   tokens = 0,
-  fallbackLabel = 'Analyzing answer…'
+  fallbackLabel = '正在分析回答…'
 }: ProgressCardProps) {
   const [elapsedMs, setElapsedMs] = useState(0);
 
@@ -85,7 +85,7 @@ export function ProgressCard({
         <div className="chat-progress__meta">
           <span className="chat-progress__timer">{formatElapsed(elapsedMs)}</span>
           {tokens > 0 ? (
-            <span className="chat-progress__tokens">{tokens.toLocaleString()} tokens</span>
+            <span className="chat-progress__tokens">{tokens.toLocaleString()} 令牌</span>
           ) : null}
         </div>
       </div>

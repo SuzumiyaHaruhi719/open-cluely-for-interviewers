@@ -143,11 +143,25 @@ describe('PipelineStudio', () => {
       expect(document.querySelectorAll('.ps-wire').length).toBe(2);
     });
 
-    // A fresh clone is named "My pipeline" (matches the desktop New-clone flow),
+    // A fresh clone is named "我的流程" (matches the desktop New-clone flow),
     // and the catalog + library were fetched.
-    expect((document.getElementById('ps-name') as HTMLInputElement).value).toBe('My pipeline');
+    expect((document.getElementById('ps-name') as HTMLInputElement).value).toBe('我的流程');
     expect(fetchCalls.some((c) => c.url.endsWith('/api/pipelines/block-types'))).toBe(true);
     expect(fetchCalls.some((c) => c.url.endsWith('/api/pipelines') && c.method === 'GET')).toBe(true);
+  });
+
+  test('renders Studio chrome in Chinese', async () => {
+    render(<PipelineStudio open onClose={() => {}} onUse={() => {}} />);
+    await waitForCanvas();
+
+    expect(screen.getByText('流程工作台')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /\+ 新建（克隆 Expert）/ })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('流程名称')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '校验' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '保存' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '启用' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '导出' })).toBeInTheDocument();
+    expect(screen.getByText('模块')).toBeInTheDocument();
   });
 
   test('clicking a palette block adds a node and selects it for config', async () => {
@@ -169,10 +183,10 @@ describe('PipelineStudio', () => {
     render(<PipelineStudio open onClose={() => {}} onUse={() => {}} />);
     await waitForCanvas();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Validate' }));
+    fireEvent.click(screen.getByRole('button', { name: '校验' }));
 
     await waitFor(() => {
-      expect(document.getElementById('ps-status')?.textContent).toMatch(/VALID/);
+      expect(document.getElementById('ps-status')?.textContent).toMatch(/校验通过/);
     });
     const validateCall = fetchCalls.find((c) => c.url.endsWith('/api/pipelines/validate'));
     expect(validateCall?.method).toBe('POST');
@@ -189,7 +203,7 @@ describe('PipelineStudio', () => {
       target: { value: 'Senior Backend' }
     });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Use this' }));
+    fireEvent.click(screen.getByRole('button', { name: '启用' }));
 
     await waitFor(() => {
       expect(onUse).toHaveBeenCalledTimes(1);
@@ -206,7 +220,7 @@ describe('PipelineStudio', () => {
     await waitForCanvas();
 
     // Open the library menu and pick the built-in Expert entry.
-    fireEvent.click(screen.getByRole('button', { name: /New \(clone Expert\)/ }));
+    fireEvent.click(screen.getByRole('button', { name: /\+ 新建（克隆 Expert）/ }));
     fireEvent.click(screen.getByRole('option', { name: /Expert 1\.0/ }));
 
     await waitFor(() => {
@@ -214,7 +228,7 @@ describe('PipelineStudio', () => {
     });
     // Loading a built-in surfaces the editable-copy hint.
     await waitFor(() => {
-      expect(document.getElementById('ps-status')?.textContent).toMatch(/Built-in preset/);
+      expect(document.getElementById('ps-status')?.textContent).toMatch(/内置预设/);
     });
   });
 });

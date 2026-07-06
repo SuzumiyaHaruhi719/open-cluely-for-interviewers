@@ -31,7 +31,7 @@ export function ResultsPanel({ open, title, text, loading, error, onClose }: Res
             id="close-results"
             className="close-btn"
             type="button"
-            aria-label="Close response"
+            aria-label="关闭回答"
             onClick={onClose}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -43,7 +43,7 @@ export function ResultsPanel({ open, title, text, loading, error, onClose }: Res
       <div className="results-content">
         <div id="result-text" className="result-text">
           {loading ? (
-            'Thinking…'
+            '思考中…'
           ) : error ? (
             error
           ) : (

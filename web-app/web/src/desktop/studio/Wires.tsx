@@ -75,7 +75,7 @@ export function Wires({ pipeline, canvasRef, version, onDeleteEdge }: WiresProps
           style={{ pointerEvents: 'stroke', cursor: 'pointer' }}
           onClick={() => onDeleteEdge(w.edge)}
         >
-          <title>Click to delete</title>
+          <title>点击删除</title>
         </path>
       ))}
     </svg>

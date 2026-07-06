@@ -11,8 +11,8 @@ interface LiveAudioPanelProps {
 }
 
 const SOURCE_META: Record<AudioSource, { title: string; sub: string }> = {
-  display: { title: 'Interviewee audio', sub: 'Share a tab/window with audio' },
-  mic: { title: 'My mic', sub: 'Your side of the conversation' }
+  display: { title: '候选人音频', sub: '共享带音频的标签页或窗口' },
+  mic: { title: '我的麦克风', sub: '你这一侧的对话' }
 };
 
 /** A small VU bar driven by a 0..1 RMS level. */
@@ -55,12 +55,12 @@ function SourceToggle({
           disabled={blocked}
           onClick={() => (state.capturing ? onStop(source) : onStart(source))}
         >
-          {state.capturing ? 'Stop' : 'Start'}
+          {state.capturing ? '停止' : '开始'}
         </button>
       </div>
       <LevelMeter level={state.level} active={state.capturing} />
       {unsupported ? (
-        <div className="hint audio-warn">Tab-audio capture needs Chrome or Edge.</div>
+        <div className="hint audio-warn">标签页音频采集需要 Chrome 或 Edge。</div>
       ) : null}
       {state.error ? <div className="hint audio-error">{state.error}</div> : null}
     </div>
@@ -87,7 +87,7 @@ function TranscriptLane({
             {lane.partial ? <span className="lane-partial"> {lane.partial}</span> : null}
           </p>
         ) : (
-          <p className="lane-empty">No speech captured yet.</p>
+          <p className="lane-empty">还没有采集到语音。</p>
         )}
       </div>
     </div>
@@ -101,7 +101,7 @@ function TranscriptLane({
 export function LiveAudioPanel({ audio, transcripts, disabled, onStart, onStop }: LiveAudioPanelProps) {
   return (
     <div className="audio-panel">
-      <div className="section-title">Live audio</div>
+      <div className="section-title">实时音频</div>
       <div className="audio-sources">
         <SourceToggle
           source="display"
@@ -120,13 +120,12 @@ export function LiveAudioPanel({ audio, transcripts, disabled, onStart, onStop }
       </div>
 
       <div className="transcript-lanes">
-        <TranscriptLane label="Interviewee" lane={transcripts.display} tone="interviewee" />
-        <TranscriptLane label="Interviewer (you)" lane={transcripts.mic} tone="interviewer" />
+        <TranscriptLane label="候选人" lane={transcripts.display} tone="interviewee" />
+        <TranscriptLane label="面试官（你）" lane={transcripts.mic} tone="interviewer" />
       </div>
 
       <p className="hint">
-        Sharing tab audio is Chrome/Edge-only — tick “Share tab audio” in the picker. Transcripts
-        stream live; the interviewee transcript fills the answer box for you to Analyze.
+        共享标签页音频仅支持 Chrome/Edge。请在选择器里勾选“共享标签页音频”。转写会实时流入；候选人转写会自动填入待分析回答。
       </p>
     </div>
   );

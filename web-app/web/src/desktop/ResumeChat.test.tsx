@@ -28,10 +28,10 @@ describe('ResumeChat', () => {
   test('sends the conversation with the résumé text and renders the reply', async () => {
     render(<ResumeChat resumeText="Senior backend, 8 years." />);
 
-    fireEvent.change(screen.getByLabelText('Ask about the résumé'), {
+    fireEvent.change(screen.getByLabelText('询问简历'), {
       target: { value: 'What is their strongest evidence?' }
     });
-    fireEvent.submit(screen.getByLabelText('Ask about the résumé').closest('form')!);
+    fireEvent.submit(screen.getByLabelText('询问简历').closest('form')!);
 
     // The user turn renders immediately (indigo / right).
     expect(screen.getByText('What is their strongest evidence?')).toBeInTheDocument();
@@ -50,13 +50,13 @@ describe('ResumeChat', () => {
   test('Clear empties the conversation', async () => {
     render(<ResumeChat resumeText="R" />);
 
-    fireEvent.change(screen.getByLabelText('Ask about the résumé'), {
+    fireEvent.change(screen.getByLabelText('询问简历'), {
       target: { value: 'Probe areas?' }
     });
-    fireEvent.submit(screen.getByLabelText('Ask about the résumé').closest('form')!);
+    fireEvent.submit(screen.getByLabelText('询问简历').closest('form')!);
     await screen.findByText('They led a Saga refactor.');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Clear résumé chat' }));
+    fireEvent.click(screen.getByRole('button', { name: '清空简历问答' }));
 
     expect(screen.queryByText('Probe areas?')).not.toBeInTheDocument();
     expect(screen.queryByText('They led a Saga refactor.')).not.toBeInTheDocument();

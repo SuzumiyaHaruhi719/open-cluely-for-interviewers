@@ -41,25 +41,25 @@ function renderPanel(overrides: Partial<Parameters<typeof LiveAudioPanel>[0]> = 
 describe('LiveAudioPanel', () => {
   test('renders both capture toggles and the two transcript lanes', () => {
     renderPanel();
-    expect(screen.getByText('Interviewee audio')).toBeInTheDocument();
-    expect(screen.getByText('My mic')).toBeInTheDocument();
-    expect(screen.getByText('Interviewee')).toBeInTheDocument();
-    expect(screen.getByText('Interviewer (you)')).toBeInTheDocument();
+    expect(screen.getByText('候选人音频')).toBeInTheDocument();
+    expect(screen.getByText('我的麦克风')).toBeInTheDocument();
+    expect(screen.getByText('候选人')).toBeInTheDocument();
+    expect(screen.getByText('面试官（你）')).toBeInTheDocument();
     // Two idle sources => two Start buttons.
-    expect(screen.getAllByRole('button', { name: 'Start' })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: '开始' })).toHaveLength(2);
   });
 
   test('clicking Start on the interviewee source calls onStart("display")', () => {
     const { onStart } = renderPanel();
     // The first source rendered is the interviewee (display) lane.
-    const startButtons = screen.getAllByRole('button', { name: 'Start' });
+    const startButtons = screen.getAllByRole('button', { name: '开始' });
     fireEvent.click(startButtons[0]);
     expect(onStart).toHaveBeenCalledWith('display');
   });
 
   test('clicking Start on the mic source calls onStart("mic")', () => {
     const { onStart } = renderPanel();
-    const startButtons = screen.getAllByRole('button', { name: 'Start' });
+    const startButtons = screen.getAllByRole('button', { name: '开始' });
     fireEvent.click(startButtons[1]);
     expect(onStart).toHaveBeenCalledWith('mic');
   });
@@ -68,7 +68,7 @@ describe('LiveAudioPanel', () => {
     const { onStop } = renderPanel({
       audio: { ...IDLE, mic: { capturing: true, level: 0.4, error: null } }
     });
-    const stop = screen.getByRole('button', { name: 'Stop' });
+    const stop = screen.getByRole('button', { name: '停止' });
     fireEvent.click(stop);
     expect(onStop).toHaveBeenCalledWith('mic');
   });
@@ -86,7 +86,7 @@ describe('LiveAudioPanel', () => {
 
   test('disables the toggles when the socket is not ready', () => {
     renderPanel({ disabled: true });
-    for (const btn of screen.getAllByRole('button', { name: 'Start' })) {
+    for (const btn of screen.getAllByRole('button', { name: '开始' })) {
       expect(btn).toBeDisabled();
     }
   });

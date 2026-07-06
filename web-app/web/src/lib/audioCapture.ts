@@ -70,12 +70,12 @@ function classifyGetMediaError(err: unknown): AudioCaptureError {
   if (name === 'NotAllowedError' || name === 'PermissionDeniedError') {
     // getDisplayMedia throws NotAllowedError both for an OS/permission denial
     // AND when the user clicks Cancel on the picker — treat as a soft cancel.
-    return new AudioCaptureError('cancelled', 'Capture was cancelled or permission was denied.');
+    return new AudioCaptureError('cancelled', '采集已取消，或权限被拒绝。');
   }
   if (name === 'NotFoundError' || name === 'NotReadableError') {
-    return new AudioCaptureError('denied', 'No usable audio device was found.');
+    return new AudioCaptureError('denied', '未找到可用的音频设备。');
   }
-  return new AudioCaptureError('unknown', message || 'Failed to start audio capture.');
+  return new AudioCaptureError('unknown', message || '启动音频采集失败。');
 }
 
 async function acquireStream(source: AudioSource): Promise<MediaStream> {
@@ -83,7 +83,7 @@ async function acquireStream(source: AudioSource): Promise<MediaStream> {
     if (!supportsDisplayAudio()) {
       throw new AudioCaptureError(
         'unsupported',
-        'Tab audio sharing is only supported in Chrome and Edge.'
+        '标签页音频共享仅支持 Chrome 和 Edge。'
       );
     }
     let raw: MediaStream;
@@ -98,7 +98,7 @@ async function acquireStream(source: AudioSource): Promise<MediaStream> {
       raw.getTracks().forEach((t) => t.stop());
       throw new AudioCaptureError(
         'no-audio-track',
-        'No audio was shared. Re-share a browser TAB and tick "Share tab audio", or pick "Entire Screen" and tick "Share system audio" — a native app window (e.g. 网易云音乐) carries no audio.'
+        '没有共享到音频。请重新共享浏览器标签页并勾选“共享标签页音频”，或选择“整个屏幕”并勾选“共享系统音频”。原生应用窗口（例如网易云音乐）不会携带音频。'
       );
     }
     // We only want the audio. Drop the video track immediately.
@@ -107,7 +107,7 @@ async function acquireStream(source: AudioSource): Promise<MediaStream> {
   }
 
   if (!supportsMic()) {
-    throw new AudioCaptureError('unsupported', 'Microphone capture is not supported here.');
+    throw new AudioCaptureError('unsupported', '当前环境不支持麦克风采集。');
   }
   // Honour a mic chosen in the Room-mic device picker; '' / unset = OS default.
   let micDeviceId = '';
@@ -223,7 +223,7 @@ export async function startCapture(
     if (err instanceof AudioCaptureError) throw err;
     throw new AudioCaptureError(
       'unknown',
-      err instanceof Error ? err.message : 'Failed to initialize the audio graph.'
+      err instanceof Error ? err.message : '初始化音频图失败。'
     );
   }
 }

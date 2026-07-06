@@ -148,7 +148,7 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
         ? {
             type: 'summary-error',
             requestId: data.requestId,
-            message: isString(data.message) ? data.message : 'Summary failed'
+            message: isString(data.message) ? data.message : '总结失败'
           }
         : null;
 
@@ -156,7 +156,7 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
       return {
         type: 'error',
         requestId: isString(data.requestId) ? data.requestId : undefined,
-        message: isString(data.message) ? data.message : 'Unknown server error'
+        message: isString(data.message) ? data.message : '未知服务端错误'
       };
 
     case S2C.TRANSCRIPT:

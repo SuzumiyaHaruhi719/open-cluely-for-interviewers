@@ -59,7 +59,7 @@ export function ResumeChat({ resumeText, resetKey }: ResumeChatProps) {
       setMessages((prev) => [...prev, { role: 'assistant', content: res.reply ?? '' }]);
     } catch (err: unknown) {
       const message =
-        err instanceof ApiError || err instanceof Error ? err.message : 'Résumé chat failed.';
+        err instanceof ApiError || err instanceof Error ? err.message : '简历问答失败。';
       setMessages((prev) => [...prev, { role: 'assistant', content: message, isError: true }]);
     } finally {
       setPending(false);
@@ -91,14 +91,14 @@ export function ResumeChat({ resumeText, resetKey }: ResumeChatProps) {
   return (
     <div id="resume-chat" className="resume-chat">
       <div className="resume-chat__header">
-        <span className="resume-chat__title">Ask about this résumé</span>
+        <span className="resume-chat__title">询问这份简历</span>
         <button
           type="button"
           className="resume-chat__clear"
-          aria-label="Clear résumé chat"
+          aria-label="清空简历问答"
           onClick={clear}
         >
-          Clear
+          清空
         </button>
       </div>
 
@@ -116,7 +116,7 @@ export function ResumeChat({ resumeText, resetKey }: ResumeChatProps) {
         })}
         {pending ? (
           <div className="resume-chat__msg resume-chat__msg--assistant resume-chat__msg--pending">
-            Thinking…
+            思考中…
           </div>
         ) : null}
       </div>
@@ -125,15 +125,15 @@ export function ResumeChat({ resumeText, resetKey }: ResumeChatProps) {
         <textarea
           className="resume-chat__input"
           rows={1}
-          placeholder="Ask anything about the résumé…"
-          aria-label="Ask about the résumé"
+          placeholder="询问简历里的任何内容…"
+          aria-label="询问简历"
           value={input}
           disabled={pending}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={onKeyDown}
         />
         <button type="submit" className="resume-chat__send" disabled={pending}>
-          Send
+          发送
         </button>
       </form>
     </div>

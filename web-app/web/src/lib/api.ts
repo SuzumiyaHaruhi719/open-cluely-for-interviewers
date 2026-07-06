@@ -64,7 +64,7 @@ async function getJson<T>(url: string, signal?: AbortSignal): Promise<T> {
   }
 
   if (!response.ok) {
-    throw new ApiError(response.status, `Request failed (${response.status})`);
+    throw new ApiError(response.status, `请求失败（${response.status}）`);
   }
 
   return (await response.json()) as T;
@@ -97,7 +97,7 @@ async function sendJson<T>(
   }
 
   if (!response.ok) {
-    throw new ApiError(response.status, `Request failed (${response.status})`);
+    throw new ApiError(response.status, `请求失败（${response.status}）`);
   }
 
   return (await response.json()) as T;
@@ -107,7 +107,7 @@ function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
-  return 'Network request failed';
+  return '网络请求失败';
 }
 
 function buildQuery(params: Record<string, string | number | undefined>): string {

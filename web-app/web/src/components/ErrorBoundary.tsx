@@ -45,7 +45,7 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 
 // ---------------------------------------------------------------------------
-// Default fallback panel — bilingual, themed via CSS variables, no external deps
+// Default fallback panel — themed via CSS variables, no external deps
 // ---------------------------------------------------------------------------
 
 function DefaultFallback({
@@ -150,12 +150,12 @@ function DefaultFallback({
   return (
     <div style={panelStyle}>
       <div role="alert" style={cardStyle}>
-        <h1 style={headingStyle}>出错了 · Something went wrong</h1>
+        <h1 style={headingStyle}>出错了</h1>
         <p style={messageStyle}>{error.message}</p>
         {showDiagnostics ? (
           <details style={diagStyle} open>
             <summary style={{ cursor: 'pointer', fontSize: 12, color: 'var(--text-secondary, #555b61)' }}>
-              诊断信息 / Diagnostics — where it threw
+              诊断信息 — 出错位置
             </summary>
             <pre style={preStyle}>
               {error.stack || error.message}
@@ -165,10 +165,10 @@ function DefaultFallback({
         ) : null}
         <div style={buttonRowStyle}>
           <button style={primaryBtnStyle} onClick={() => window.location.reload()}>
-            重新加载 · Reload
+            重新加载
           </button>
           <button style={secondaryBtnStyle} onClick={onReset}>
-            重试 · Try again
+            重试
           </button>
         </div>
       </div>

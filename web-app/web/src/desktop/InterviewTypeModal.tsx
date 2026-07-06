@@ -70,21 +70,21 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
       <div className="interview-type-card-wrap" role="document">
         <div className="interview-type-head">
           <h2 id="interview-type-title" className="interview-type-title">
-            开始新面试 / New interview
+            开始新面试
           </h2>
-          <p className="interview-type-subtitle">选择面试形式 · Choose the interview format</p>
+          <p className="interview-type-subtitle">选择面试形式</p>
           <button
             id="interview-type-close"
             className="interview-type-close"
             type="button"
-            aria-label="Cancel"
+            aria-label="取消"
             onClick={onClose}
           >
             <CloseIcon size={16} />
           </button>
         </div>
 
-        <div className="interview-type-options" role="group" aria-label="Interview format">
+        <div className="interview-type-options" role="group" aria-label="面试形式">
           <button
             className="interview-type-option"
             type="button"
@@ -109,7 +109,7 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
               </svg>
             </span>
             <span className="interview-type-option__body">
-              <span className="interview-type-option__title">线上面试 / Online</span>
+              <span className="interview-type-option__title">线上面试</span>
               <span className="interview-type-option__desc">
                 远程面试 · 电脑音频(候选人) + 麦克风(你)
               </span>
@@ -140,7 +140,7 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
               </svg>
             </span>
             <span className="interview-type-option__body">
-              <span className="interview-type-option__title">线下面试 / Offline</span>
+              <span className="interview-type-option__title">线下面试</span>
               <span className="interview-type-option__desc">现场面试 · 仅房间麦克风 + 简历</span>
             </span>
           </button>
@@ -148,7 +148,7 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
 
         <div className="interview-type-sample">
           <label className="interview-type-sample__label" htmlFor="interview-sample-select">
-            样本 / Sample transcript (可选)
+            样本对话（可选）
           </label>
           <select
             id="interview-sample-select"
@@ -156,7 +156,7 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
             value={sampleId}
             onChange={(e) => setSampleId(e.target.value)}
           >
-            <option value="">空白 / Blank (no transcript)</option>
+            <option value="">空白（无对话）</option>
             {INTERVIEW_SAMPLES.map((sample) => (
               <option key={sample.id} value={sample.id}>
                 {sample.name}
@@ -164,7 +164,7 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
             ))}
           </select>
           <p className="interview-type-sample__desc">
-            选一个样本会预填简历/JD + 一段对话，方便直接试 Generate Q。
+            选一个样本会预填简历/JD 和一段对话，方便直接试用生成追问。
           </p>
         </div>
       </div>

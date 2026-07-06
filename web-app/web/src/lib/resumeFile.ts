@@ -9,7 +9,7 @@
 export function readFileAsBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onerror = () => reject(reader.error ?? new Error('Could not read file'));
+    reader.onerror = () => reject(reader.error ?? new Error('无法读取文件'));
     reader.onload = () => {
       const result = String(reader.result ?? '');
       const commaIndex = result.indexOf(',');
@@ -23,8 +23,8 @@ export function readFileAsBase64(file: File): Promise<string> {
 export const RESUME_ACCEPT_ATTR = '.txt,.md,.pdf,.docx';
 export const RESUME_ACCEPT_HINT = '.txt, .md, .pdf, .docx';
 
-/** Format a character count for the parsed-file chip (e.g. "1,024 characters"). */
+/** Format a character count for the parsed-file chip (e.g. "1,024 字"). */
 export function formatCharCount(chars: number): string {
   const value = Number.isFinite(chars) ? chars : 0;
-  return `${value.toLocaleString('en-US')} characters`;
+  return `${value.toLocaleString('zh-CN')} 字`;
 }

@@ -107,14 +107,14 @@ describe('studioState — pure graph ops', () => {
 
     // anatomy outputs `claims`; G's only input is `gaps` → mismatch.
     const mismatch = connect(p, types, 'A', 'G', 'gaps');
-    expect(mismatch.error).toMatch(/mismatch/i);
+    expect(mismatch.error).toMatch(/类型不匹配/);
     expect(mismatch.pipeline).toBe(p);
 
     const selfLoop = connect(p, types, 'A', 'A', 'claims');
-    expect(selfLoop.error).toMatch(/itself/);
+    expect(selfLoop.error).toMatch(/自身/);
 
     const badPort = connect(p, types, 'A', 'G', 'does-not-exist');
-    expect(badPort.error).toMatch(/no input port/);
+    expect(badPort.error).toMatch(/没有输入端口/);
   });
 
   test('removeNode cascades its edges; removeEdge removes only the target', () => {
@@ -167,7 +167,7 @@ describe('studioState — pure graph ops', () => {
     const clone = cloneAsNew(base);
     expect(clone.id).toBe('');
     expect(clone.builtin).toBe(false);
-    expect(clone.name).toBe('My pipeline');
+    expect(clone.name).toBe('我的流程');
     // Deep copy: mutating the clone's node doesn't touch the base.
     clone.nodes[0].pos = { x: 9, y: 9 };
     expect(base.nodes[0].pos).toEqual({ x: 1, y: 2 });

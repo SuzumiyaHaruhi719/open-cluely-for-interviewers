@@ -8,7 +8,7 @@ interface PaletteProps {
 /** A block-type's input summary for the hover title (e.g. "claims, gaps → candidates"). */
 function portSummary(meta: BlockTypeMeta): string {
   const ins = (meta.inputs || []).map((p) => p.type).join(', ') || '—';
-  return `in: ${ins} → ${meta.outputType}`;
+  return `输入：${ins} → ${meta.outputType}`;
 }
 
 /**
@@ -19,7 +19,7 @@ function portSummary(meta: BlockTypeMeta): string {
 export function Palette({ blockTypes, onAdd }: PaletteProps) {
   return (
     <aside className="ps-palette" id="ps-palette">
-      <div className="ps-palette__title">Blocks</div>
+      <div className="ps-palette__title">模块</div>
       {blockTypes.map((meta) => (
         <button
           key={meta.id}

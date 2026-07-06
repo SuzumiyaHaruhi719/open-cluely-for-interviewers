@@ -23,12 +23,12 @@ describe('readFileAsBase64', () => {
 });
 
 describe('formatCharCount', () => {
-  test('formats with thousands separators + the "characters" suffix', () => {
-    expect(formatCharCount(1024)).toBe('1,024 characters');
-    expect(formatCharCount(0)).toBe('0 characters');
+  test('formats with thousands separators + the Chinese character suffix', () => {
+    expect(formatCharCount(1024)).toBe('1,024 字');
+    expect(formatCharCount(0)).toBe('0 字');
   });
 
   test('coerces non-finite input to 0', () => {
-    expect(formatCharCount(Number.NaN)).toBe('0 characters');
+    expect(formatCharCount(Number.NaN)).toBe('0 字');
   });
 });

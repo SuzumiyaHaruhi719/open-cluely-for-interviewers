@@ -89,12 +89,12 @@ function useMicDevices(enabled: boolean) {
 /** Status pill text + `data-state` from the capture state. */
 function statusFor(state: AudioState): { label: string; attr: 'off' | 'connecting' | 'listening' | 'error' } {
   if (state.error) {
-    return { label: 'Error', attr: 'error' };
+    return { label: '错误', attr: 'error' };
   }
   if (state.capturing) {
-    return { label: 'Live', attr: 'listening' };
+    return { label: '实时', attr: 'listening' };
   }
-  return { label: 'Off', attr: 'off' };
+  return { label: '关闭', attr: 'off' };
 }
 
 /**
@@ -154,7 +154,7 @@ export function ChannelCard({
             disabled={blocked}
             onClick={() => (state.capturing ? onStop(source) : onStart(source))}
           >
-            {state.capturing ? 'Stop' : 'Start'}
+            {state.capturing ? '停止' : '开始'}
           </button>
           {isMic ? (
             <div style={{ display: 'flex', flex: '1 1 auto', alignItems: 'center', gap: 6, minWidth: 0 }}>
@@ -197,10 +197,10 @@ export function ChannelCard({
           ) : (
             <span className="channel-device-select channel-device-select--static" aria-hidden="true">
               {unsupported
-                ? 'Tab audio needs Chrome / Edge'
+                ? '标签页音频需要 Chrome 或 Edge'
                 : state.error
                   ? state.error
-                  : 'Share a tab/window with audio'}
+                  : '共享带音频的标签页或窗口'}
             </span>
           )}
         </div>

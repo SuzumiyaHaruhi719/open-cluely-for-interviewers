@@ -19,18 +19,18 @@ describe('formatTimer', () => {
 
 describe('recMeta', () => {
   test('reports live when a channel is capturing regardless of socket', () => {
-    expect(recMeta('open', true)).toEqual({ state: 'live', label: 'Live' });
-    expect(recMeta('reconnecting', true)).toEqual({ state: 'live', label: 'Live' });
+    expect(recMeta('open', true)).toEqual({ state: 'live', label: '实时' });
+    expect(recMeta('reconnecting', true)).toEqual({ state: 'live', label: '实时' });
   });
 
   test('reports connecting while the socket is opening', () => {
-    expect(recMeta('connecting', false)).toEqual({ state: 'connecting', label: 'Connecting' });
-    expect(recMeta('reconnecting', false)).toEqual({ state: 'connecting', label: 'Connecting' });
+    expect(recMeta('connecting', false)).toEqual({ state: 'connecting', label: '连接中' });
+    expect(recMeta('reconnecting', false)).toEqual({ state: 'connecting', label: '连接中' });
   });
 
   test('reports idle when open but not capturing', () => {
-    expect(recMeta('open', false)).toEqual({ state: 'idle', label: 'Idle' });
-    expect(recMeta('closed', false)).toEqual({ state: 'idle', label: 'Idle' });
+    expect(recMeta('open', false)).toEqual({ state: 'idle', label: '空闲' });
+    expect(recMeta('closed', false)).toEqual({ state: 'idle', label: '空闲' });
   });
 });
 
@@ -47,21 +47,21 @@ describe('formatRelativeTime', () => {
   const now = 1_700_000_000_000;
 
   test('reports "just now" under a minute', () => {
-    expect(formatRelativeTime(now - 30_000, now)).toBe('just now');
+    expect(formatRelativeTime(now - 30_000, now)).toBe('刚刚');
   });
 
   test('reports minutes, hours, and days ago within a week', () => {
-    expect(formatRelativeTime(now - 5 * 60_000, now)).toBe('5m ago');
-    expect(formatRelativeTime(now - 3 * 60 * 60_000, now)).toBe('3h ago');
-    expect(formatRelativeTime(now - 2 * 24 * 60 * 60_000, now)).toBe('2d ago');
+    expect(formatRelativeTime(now - 5 * 60_000, now)).toBe('5 分钟前');
+    expect(formatRelativeTime(now - 3 * 60 * 60_000, now)).toBe('3 小时前');
+    expect(formatRelativeTime(now - 2 * 24 * 60 * 60_000, now)).toBe('2 天前');
   });
 
   test('falls back to an absolute date past a week', () => {
     const result = formatRelativeTime(now - 10 * 24 * 60 * 60_000, now);
-    expect(result).not.toMatch(/ago|just now/);
+    expect(result).not.toMatch(/前|刚刚/);
   });
 
   test('clamps future timestamps to "just now"', () => {
-    expect(formatRelativeTime(now + 10_000, now)).toBe('just now');
+    expect(formatRelativeTime(now + 10_000, now)).toBe('刚刚');
   });
 });

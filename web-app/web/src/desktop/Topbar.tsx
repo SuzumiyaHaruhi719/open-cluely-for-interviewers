@@ -56,7 +56,7 @@ const ASR_META: Record<string, { label: string; attr: string }> = {
   paraformer: { label: 'Paraformer', attr: 'paraformer' },
   volc: { label: 'Doubao', attr: 'volc' },
   xfyun: { label: 'Xunfei', attr: 'xfyun' },
-  sim: { label: 'Sim', attr: 'sim' }
+  sim: { label: '模拟', attr: 'sim' }
 };
 
 interface TopbarProps {
@@ -150,7 +150,7 @@ export function Topbar({
     };
   }, [menuOpen]);
 
-  const askLabel = assistantBusy ? 'Asking…' : 'Ask AI';
+  const askLabel = assistantBusy ? '提问中…' : '提问 AI';
 
   return (
     <div id="topbar" className={`topbar${isLive ? ' is-live' : ''}`}>
@@ -167,7 +167,7 @@ export function Topbar({
           id="mode-indicator"
           className="mode-indicator"
           data-mode={modeMeta.attr}
-          title="Interviewer mode"
+          title="面试模式"
         >
           <span className="mode-indicator__dot" aria-hidden="true" />
           <span id="mode-indicator-label" className="mode-indicator__label">
@@ -190,7 +190,7 @@ export function Topbar({
           id="asr-indicator"
           className="mode-indicator"
           data-asr={asrMeta.attr}
-          title="Speech-to-text engine"
+          title="语音转文字引擎"
         >
           <span className="mode-indicator__dot" aria-hidden="true" />
           <span id="asr-indicator-label" className="mode-indicator__label">
@@ -206,14 +206,14 @@ export function Topbar({
           onClick={onToggleAuto}
           title={
             autoGenerate
-              ? 'Auto question generation ON — the copilot fires from the live conversation. Click to turn off.'
-              : 'Auto question generation OFF — only manual Generate Q. Click to turn on.'
+              ? '自动追问已开启：助手会根据实时对话触发。点击关闭。'
+              : '自动追问已关闭：只会手动生成追问。点击开启。'
           }
         >
           <span className="mode-indicator__dot" aria-hidden="true" />
-          <span className="mode-indicator__label">Auto</span>
+          <span className="mode-indicator__label">自动</span>
         </button>
-        <span className="screenshot-count" id="screenshot-count" title="Screenshots captured">
+        <span className="screenshot-count" id="screenshot-count" title="已截屏数量">
           {screenshotCount}
         </span>
       </div>
@@ -222,8 +222,8 @@ export function Topbar({
         <button
           className="glp-theme-toggle action-btn icon-btn"
           type="button"
-          aria-label={theme === 'dark' ? '切换主题 / Toggle theme (switch to light)' : '切换主题 / Toggle theme (switch to dark)'}
-          title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          aria-label={theme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
+          title={theme === 'dark' ? '切换到浅色主题' : '切换到深色主题'}
           onClick={toggleTheme}
         >
           {theme === 'dark' ? <SunIcon size={15} /> : <MoonIcon size={15} />}
@@ -232,8 +232,8 @@ export function Topbar({
           id="screenshot-btn"
           className="action-btn icon-btn"
           type="button"
-          aria-label="Take screenshot"
-          title="Coming soon"
+          aria-label="截屏"
+          title="即将推出"
           disabled
         >
           <CameraIcon size={14} />
@@ -244,7 +244,7 @@ export function Topbar({
           type="button"
           onClick={onAskAi}
           disabled={assistantBusy}
-          title="Ask the assistant a free-form question"
+          title="向助手提问"
         >
           {askLabel}
         </button>
@@ -253,18 +253,18 @@ export function Topbar({
           className="action-btn"
           type="button"
           onClick={onSummarize}
-          title="生成面试评估总结 / Generate an interview evaluation summary"
+          title="生成面试评估总结"
         >
-          总结面试 · Summarize
+          总结面试
         </button>
         <button
           id="screen-ai-btn"
           className="action-btn"
           type="button"
-          title="Coming soon"
+          title="即将推出"
           disabled
         >
-          Screen AI
+          屏幕 AI
         </button>
         <button
           id="generate-question-btn"
@@ -272,9 +272,9 @@ export function Topbar({
           type="button"
           onClick={onAnalyze}
           disabled={!canAnalyze}
-          title="Generate a follow-up question"
+          title="生成追问"
         >
-          {isAnalyzing ? 'Analyzing…' : 'Generate Q'}
+          {isAnalyzing ? '分析中…' : '生成追问'}
         </button>
 
         <div className="more-menu" id="more-menu" ref={menuRef}>
@@ -284,7 +284,7 @@ export function Topbar({
             type="button"
             aria-haspopup="menu"
             aria-expanded={menuOpen}
-            aria-label="More actions"
+            aria-label="更多操作"
             onClick={() => setMenuOpen((open) => !open)}
           >
             <KebabIcon size={16} />
@@ -305,7 +305,7 @@ export function Topbar({
                 onMeetingNotes();
               }}
             >
-              Meeting notes
+              会议纪要
             </button>
             <button
               id="insights-btn"
@@ -318,7 +318,7 @@ export function Topbar({
                 onInsights();
               }}
             >
-              Insights
+              洞察
             </button>
             <div className="more-menu-separator" role="separator" />
             <button
@@ -331,7 +331,7 @@ export function Topbar({
                 onClearSession();
               }}
             >
-              Clear session
+              清空会话
             </button>
           </div>
         </div>

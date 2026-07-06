@@ -91,7 +91,7 @@ export function Canvas({
   const onOutputClick = useCallback(
     (nodeId: string): void => {
       setConnecting(nodeId);
-      setStatus('Click a matching input port to connect…');
+      setStatus('点击匹配的输入端口进行连接…');
     },
     [setStatus]
   );
@@ -186,7 +186,7 @@ export function Canvas({
                   className="ps-node__del"
                   type="button"
                   data-del={node.id}
-                  title="Delete"
+                  title="删除"
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => {
                     e.stopPropagation();

@@ -22,14 +22,14 @@ export function QuestionRow({ item, showScore = false }: QuestionRowProps) {
       </div>
       <div className="q-row-meta">
         <DifficultyBadge difficulty={item.difficulty} />
-        <span className="q-vote" title="Votes">
+        <span className="q-vote" title="票数">
           ▲ {item.vote}
         </span>
         <CompanyChips companies={item.companies} />
         <span className="spacer" />
         {item.url ? (
           <a className="q-link" href={item.url} target="_blank" rel="noopener noreferrer">
-            Source ↗
+            来源 ↗
           </a>
         ) : null}
       </div>

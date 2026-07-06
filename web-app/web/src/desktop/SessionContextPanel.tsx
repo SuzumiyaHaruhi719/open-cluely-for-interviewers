@@ -8,9 +8,9 @@ interface SessionContextPanelProps {
 
 /** Bilingual status label for a competency chip. */
 const STATUS_LABEL: Record<CompetencyStatus, string> = {
-  covered: '已覆盖 Covered',
-  partial: '部分 Partial',
-  gap: '缺口 Gap'
+  covered: '已覆盖',
+  partial: '部分覆盖',
+  gap: '缺口'
 };
 
 /**
@@ -39,8 +39,7 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
           </span>
           <p className="session-empty__text">还没有上下文</p>
           <p className="session-empty__hint">
-            Context appears here as the interview progresses — covered competencies,
-            drilled topics and open gaps.
+            随着面试推进，这里会显示已覆盖能力、已追问主题和待探究缺口。
           </p>
         </div>
       </div>
@@ -51,7 +50,7 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
     <div id="session-context" className="session-context">
       {competencies.length > 0 && (
         <section className="ctx-block">
-          <h3 className="ctx-block__title">能力维度 / Competencies</h3>
+          <h3 className="ctx-block__title">能力维度</h3>
           <ul className="ctx-chips">
             {competencies.map((c, i) => (
               <li
@@ -70,7 +69,7 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
 
       {topics.length > 0 && (
         <section className="ctx-block">
-          <h3 className="ctx-block__title">已追问主题 / Topics</h3>
+          <h3 className="ctx-block__title">已追问主题</h3>
           <ul className="ctx-list">
             {topics.map((t, i) => (
               <li key={`${t}-${i}`} className="ctx-list__item">
@@ -83,7 +82,7 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
 
       {gaps.length > 0 && (
         <section className="ctx-block">
-          <h3 className="ctx-block__title">待探究 / Open gaps</h3>
+          <h3 className="ctx-block__title">待探究缺口</h3>
           <ul className="ctx-list ctx-list--gaps">
             {gaps.map((g, i) => (
               <li key={`${g}-${i}`} className="ctx-list__item">

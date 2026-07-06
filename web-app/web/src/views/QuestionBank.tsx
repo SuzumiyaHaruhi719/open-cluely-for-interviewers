@@ -75,7 +75,7 @@ export function QuestionBank() {
 
       <div className="qbank-main">
         <div className="qbank-toolbar">
-          <div className="mode-toggle" role="tablist" aria-label="Search mode">
+          <div className="mode-toggle" role="tablist" aria-label="搜索模式">
             <button
               type="button"
               role="tab"
@@ -83,7 +83,7 @@ export function QuestionBank() {
               className={mode === 'browse' ? 'is-active' : ''}
               onClick={() => onChangeMode('browse')}
             >
-              Browse
+              浏览
             </button>
             <button
               type="button"
@@ -92,17 +92,17 @@ export function QuestionBank() {
               className={mode === 'semantic' ? 'is-active' : ''}
               onClick={() => onChangeMode('semantic')}
             >
-              Semantic
+              语义
             </button>
           </div>
           <div className="qbank-search">
             <input
               type="search"
-              aria-label="Search questions"
+              aria-label="搜索题目"
               placeholder={
                 isSemantic
-                  ? 'Describe a topic to find related questions…'
-                  : 'Filter questions by keyword…'
+                  ? '描述一个主题，查找相关题目…'
+                  : '输入关键词筛选题目…'
               }
               value={rawQuery}
               onChange={(e) => onChangeQuery(e.target.value)}
@@ -111,37 +111,37 @@ export function QuestionBank() {
         </div>
 
         <div className="qbank-results">
-          {companiesError ? <ErrorAlert message={companiesError} title="Companies" /> : null}
+          {companiesError ? <ErrorAlert message={companiesError} title="公司列表" /> : null}
           {error ? <ErrorAlert message={error} /> : null}
 
           {!error && !semanticAwaitingQuery ? (
             <div className="qbank-meta">
               <span>
                 {loading
-                  ? 'Searching…'
+                  ? '搜索中…'
                   : isSemantic
-                    ? `${items.length} related`
-                    : `${total.toLocaleString()} question${total === 1 ? '' : 's'}`}
+                    ? `${items.length} 个相关结果`
+                    : `${total.toLocaleString()} 道题`}
               </span>
-              {isSemantic && hasResults ? <span>by relevance</span> : null}
+              {isSemantic && hasResults ? <span>按相关性排序</span> : null}
             </div>
           ) : null}
 
-          {loading && !hasResults ? <Spinner label="Loading questions…" /> : null}
+          {loading && !hasResults ? <Spinner label="加载题目中…" /> : null}
 
           {semanticAwaitingQuery ? (
             <div className="empty">
               <div className="empty-icon" aria-hidden="true" />
-              <div className="empty-title">Semantic search</div>
-              <p>Type a topic or concept to find the closest questions by meaning.</p>
+              <div className="empty-title">语义搜索</div>
+              <p>输入主题或概念，按语义查找最接近的题目。</p>
             </div>
           ) : null}
 
           {!loading && !semanticAwaitingQuery && !hasResults && !error ? (
             <div className="empty">
               <div className="empty-icon" aria-hidden="true" />
-              <div className="empty-title">No matches</div>
-              <p>Try a different keyword{mode === 'browse' ? ' or clear the filters' : ''}.</p>
+              <div className="empty-title">没有匹配结果</div>
+              <p>{mode === 'browse' ? '换个关键词，或清空筛选条件。' : '换个主题或概念试试。'}</p>
             </div>
           ) : null}
 
@@ -165,10 +165,10 @@ export function QuestionBank() {
                 onClick={() => setPage((p) => Math.max(0, p - 1))}
                 disabled={page <= 0 || loading}
               >
-                ← Prev
+                ← 上一页
               </button>
               <span className="pager-info">
-                Page {page + 1} of {totalPages}
+                第 {page + 1} / {totalPages} 页
               </span>
               <button
                 type="button"
@@ -176,7 +176,7 @@ export function QuestionBank() {
                 onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1 || loading}
               >
-                Next →
+                下一页 →
               </button>
             </div>
           ) : null}

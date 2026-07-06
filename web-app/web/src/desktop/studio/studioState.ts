@@ -121,24 +121,24 @@ export function connect(
   toPort: string
 ): ConnectResult {
   if (fromNode === toNode) {
-    return { pipeline, error: 'cannot connect a node to itself' };
+    return { pipeline, error: '不能把节点连接到自身' };
   }
   const from = pipeline.nodes.find((n) => n.id === fromNode);
   const to = pipeline.nodes.find((n) => n.id === toNode);
   if (!from || !to) {
-    return { pipeline, error: 'unknown node' };
+    return { pipeline, error: '未知节点' };
   }
   const fromType = types[from.type];
   const toType = types[to.type];
   if (!fromType || !toType) {
-    return { pipeline, error: 'unknown block type' };
+    return { pipeline, error: '未知模块类型' };
   }
   const port = (toType.inputs || []).find((p) => p.name === toPort);
   if (!port) {
-    return { pipeline, error: `no input port "${toPort}"` };
+    return { pipeline, error: `没有输入端口“${toPort}”` };
   }
   if (port.type !== fromType.outputType) {
-    return { pipeline, error: `Type mismatch: ${fromType.outputType} → ${port.type}` };
+    return { pipeline, error: `类型不匹配：${fromType.outputType} → ${port.type}` };
   }
   const edge: PipelineEdge = { fromNode, fromPort: 'out', toNode, toPort };
   const edges = pipeline.edges
@@ -167,7 +167,7 @@ export function removeEdge(pipeline: Pipeline, edge: PipelineEdge): Pipeline {
  * Seed a brand-new editable pipeline from a base (the Expert preset). Deep-clones
  * the base, strips its id/builtin flag, and names it for the user to edit.
  */
-export function cloneAsNew(base: Pipeline, name = 'My pipeline'): Pipeline {
+export function cloneAsNew(base: Pipeline, name = '我的流程'): Pipeline {
   const copy: Pipeline = JSON.parse(JSON.stringify(base));
   return {
     ...copy,
@@ -184,7 +184,7 @@ export function cloneAsNew(base: Pipeline, name = 'My pipeline'): Pipeline {
  * name so "Save" on a builtin creates a new editable copy (matches the desktop).
  */
 export function buildForSave(pipeline: Pipeline, nameInput: string): Pipeline {
-  const name = nameInput.trim() || 'My pipeline';
+  const name = nameInput.trim() || '我的流程';
   const id = pipeline.id && !pipeline.builtin ? pipeline.id : slug(name);
   return {
     ...pipeline,

@@ -100,7 +100,7 @@ async function flushMount(): Promise<void> {
     const modal = document.getElementById('interview-type-modal');
     expect(modal?.classList.contains('hidden')).toBe(false);
   });
-  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+  fireEvent.click(screen.getByRole('button', { name: '取消' }));
   await waitFor(() => {
     expect(
       document.getElementById('interview-type-modal')?.classList.contains('hidden')
@@ -133,8 +133,8 @@ describe('Shell', () => {
     expect(indicator).toHaveAttribute('data-mode', 'expert');
 
     // Open settings, pick Fast.
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-    fireEvent.click(screen.getByRole('radio', { name: /Fast/ }));
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.click(screen.getByRole('radio', { name: /快速/ }));
 
     expect(document.getElementById('mode-indicator')).toHaveAttribute('data-mode', 'fast');
     expect(lastConfig(ws)).toMatchObject({ mode: 'fast' });
@@ -145,10 +145,27 @@ describe('Shell', () => {
     await flushMount();
     expect(document.body.classList.contains('rail-collapsed')).toBe(false);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Toggle right panel' }));
+    fireEvent.click(screen.getByRole('button', { name: '展开或收起右侧栏' }));
 
     expect(document.body.classList.contains('rail-collapsed')).toBe(true);
     expect(localStorage.getItem('open-cluely.railCollapsed')).toBe('true');
+  });
+
+  test('renders main shell chrome in Chinese', async () => {
+    render(<Shell />);
+    await flushMount();
+
+    expect(screen.getByRole('button', { name: /新建面试/ })).toBeInTheDocument();
+    expect(screen.getByText('实时助手')).toBeInTheDocument();
+    expect(screen.getByText('题库')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '设置' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '提问 AI' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '总结面试' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '生成追问' })).toBeInTheDocument();
+    expect(screen.getByLabelText('手动上下文输入')).toBeInTheDocument();
+    expect(screen.getByText('简历')).toBeInTheDocument();
+    expect(screen.getByText('职位描述')).toBeInTheDocument();
+    expect(screen.getByText('会话上下文')).toBeInTheDocument();
   });
 
   test('a manual note enables analyze and Generate Q sends an analyze request', async () => {
@@ -157,12 +174,12 @@ describe('Shell', () => {
     const ws = openSocket();
 
     // Add a note → fills the candidate-answer buffer.
-    fireEvent.change(screen.getByLabelText('Manual context input'), {
+    fireEvent.change(screen.getByLabelText('手动上下文输入'), {
       target: { value: 'We sharded by user id' }
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+    fireEvent.click(screen.getByRole('button', { name: '添加' }));
 
-    fireEvent.click(screen.getByRole('button', { name: 'Generate Q' }));
+    fireEvent.click(screen.getByRole('button', { name: '生成追问' }));
 
     const analyzeMsg = ws.sent.map((s) => JSON.parse(s)).find((m) => m.type === 'analyze');
     expect(analyzeMsg).toBeTruthy();
@@ -206,11 +223,11 @@ describe('Shell', () => {
     await flushMount();
     const ws = openSocket();
 
-    fireEvent.change(screen.getByLabelText('Manual context input'), {
+    fireEvent.change(screen.getByLabelText('手动上下文输入'), {
       target: { value: 'I used consistent hashing' }
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Generate Q' }));
+    fireEvent.click(screen.getByRole('button', { name: '添加' }));
+    fireEvent.click(screen.getByRole('button', { name: '生成追问' }));
 
     const analyzeMsg = ws.sent.map((s) => JSON.parse(s)).find((m) => m.type === 'analyze');
     act(() => {
@@ -242,11 +259,11 @@ describe('Shell', () => {
     await flushMount();
     const ws = openSocket();
 
-    fireEvent.change(screen.getByLabelText('Manual context input'), {
+    fireEvent.change(screen.getByLabelText('手动上下文输入'), {
       target: { value: 'I rolled out an idempotency key migration' }
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Generate Q' }));
+    fireEvent.click(screen.getByRole('button', { name: '添加' }));
+    fireEvent.click(screen.getByRole('button', { name: '生成追问' }));
 
     const analyzeMsg = ws.sent.map((s) => JSON.parse(s)).find((m) => m.type === 'analyze');
     act(() => {
@@ -270,8 +287,9 @@ describe('Shell', () => {
       });
     });
 
-    expect(screen.getByText('手动')).toBeInTheDocument();
-    expect(screen.queryByText('自动')).toBeNull();
+    const questionCard = document.querySelector('.is-question-card')!;
+    expect(within(questionCard as HTMLElement).getByText('手动')).toBeInTheDocument();
+    expect(within(questionCard as HTMLElement).queryByText('自动')).toBeNull();
   });
 
   test('an auto result renders the ranked list + 自动 badge; picking a candidate fills the analyze buffer', async () => {
@@ -306,13 +324,14 @@ describe('Shell', () => {
     });
 
     // 自动 badge + the top-pick score badge on the primary.
-    expect(screen.getByText('自动')).toBeInTheDocument();
+    const questionCard = document.querySelector('.is-question-card')!;
+    expect(within(questionCard as HTMLElement).getByText('自动')).toBeInTheDocument();
     expect(document.querySelector('.question-card__primary .question-card__score')?.textContent).toBe(
       '28/30'
     );
 
     // Generate Q is disabled until there is buffered text to analyze.
-    expect(screen.getByRole('button', { name: 'Generate Q' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: '生成追问' })).toBeDisabled();
 
     // Pick the second candidate → it fills the (internal) analyze buffer + flashes a hint.
     fireEvent.click(screen.getByText('What was the eviction policy?'));
@@ -321,7 +340,7 @@ describe('Shell', () => {
     );
 
     // The picked text is now the analyze buffer: Generate Q is enabled and analyzes it.
-    const generate = screen.getByRole('button', { name: 'Generate Q' });
+    const generate = screen.getByRole('button', { name: '生成追问' });
     expect(generate).toBeEnabled();
     fireEvent.click(generate);
     const analyzeMsg = ws.sent.map((s) => JSON.parse(s)).find((m) => m.type === 'analyze');
@@ -332,7 +351,7 @@ describe('Shell', () => {
     render(<Shell />);
     await flushMount();
 
-    fireEvent.click(screen.getByRole('button', { name: /New interview/ }));
+    fireEvent.click(screen.getByRole('button', { name: /新建面试/ }));
 
     // The interview-type picker is shown (not .hidden).
     const modal = document.getElementById('interview-type-modal');
@@ -340,7 +359,7 @@ describe('Shell', () => {
     expect(modal?.classList.contains('hidden')).toBe(false);
 
     // Picking the online card closes the picker and starts a fresh interview.
-    fireEvent.click(screen.getByText('线上面试 / Online').closest('button')!);
+    fireEvent.click(screen.getByText('线上面试').closest('button')!);
     await waitFor(() => {
       expect(modal?.classList.contains('hidden')).toBe(true);
     });
@@ -359,7 +378,7 @@ describe('Shell', () => {
     await flushMount();
     const ws = openSocket();
 
-    fireEvent.click(screen.getByRole('button', { name: /New interview/ }));
+    fireEvent.click(screen.getByRole('button', { name: /新建面试/ }));
 
     const resetConfig = ws.sent
       .map((s) => JSON.parse(s))
@@ -373,12 +392,12 @@ describe('Shell', () => {
     openSocket();
 
     // Seed the answer buffer so Ask AI has a prompt.
-    fireEvent.change(screen.getByLabelText('Manual context input'), {
+    fireEvent.change(screen.getByLabelText('手动上下文输入'), {
       target: { value: 'They optimised the cache layer.' }
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+    fireEvent.click(screen.getByRole('button', { name: '添加' }));
 
-    fireEvent.click(screen.getByRole('button', { name: /Ask AI/ }));
+    fireEvent.click(screen.getByRole('button', { name: /提问 AI/ }));
 
     // The results panel opens and renders the assistant reply.
     expect(await screen.findByText('Assistant reply.')).toBeInTheDocument();
@@ -389,7 +408,7 @@ describe('Shell', () => {
     expect(ask?.body).toMatchObject({ prompt: 'They optimised the cache layer.' });
 
     // Closing the panel hides it.
-    fireEvent.click(screen.getByRole('button', { name: 'Close response' }));
+    fireEvent.click(screen.getByRole('button', { name: '关闭回答' }));
     await waitFor(() => {
       expect(document.getElementById('results-panel')?.classList.contains('hidden')).toBe(true);
     });
@@ -403,7 +422,7 @@ describe('Shell', () => {
     // Default ASR provider pill reads Paraformer.
     expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'paraformer');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
 
     // Doubao creds now live in their own always-visible "Doubao API" section,
     // so the APP ID input is present regardless of the selected provider.
@@ -430,7 +449,7 @@ describe('Shell', () => {
     await flushMount();
     const ws = openSocket();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
     fireEvent.change(document.getElementById('setting-asr-provider')!, {
       target: { value: 'sim' }
     });
@@ -453,7 +472,7 @@ describe('Shell', () => {
 
     // Create an OFFLINE interview via the type picker (offline card). Ephemeral:
     // no session is persisted — the choice only flips the in-memory routing.
-    fireEvent.click(screen.getByRole('button', { name: /New interview/ }));
+    fireEvent.click(screen.getByRole('button', { name: /新建面试/ }));
     fireEvent.click(
       document.querySelector<HTMLButtonElement>('[data-interview-type="offline"]')!
     );
@@ -516,7 +535,7 @@ describe('Shell', () => {
 
     // The candidate-labeled segment text is fed into the analyze buffer, so
     // Generate Q is enabled and analyzes THAT text — not the empty display lane.
-    const generate = await screen.findByRole('button', { name: 'Generate Q' });
+    const generate = await screen.findByRole('button', { name: '生成追问' });
     await waitFor(() => expect(generate).toBeEnabled());
     fireEvent.click(generate);
 
@@ -529,11 +548,11 @@ describe('Shell', () => {
     /** Switch the live session to the Sim ASR provider (capture is synchronous,
      *  no real media) so start/stop drive the capturing state in jsdom. */
     function selectSimProvider(): void {
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: '设置' }));
       fireEvent.change(document.getElementById('setting-asr-provider')!, {
         target: { value: 'sim' }
       });
-      fireEvent.click(screen.getByRole('button', { name: 'Close settings' }));
+      fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
     }
 
     test('stopping the LAST active source auto-clears the candidate cache (segments cleared + server reset pushed)', async () => {
@@ -569,10 +588,10 @@ describe('Shell', () => {
       const micCard = document.getElementById('channel-mic')!;
       const dispCard = document.getElementById('channel-computer')!;
       await act(async () => {
-        fireEvent.click(within(micCard).getByRole('button', { name: 'Start' }));
+        fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
       });
       await act(async () => {
-        fireEvent.click(within(dispCard).getByRole('button', { name: 'Start' }));
+        fireEvent.click(within(dispCard).getByRole('button', { name: '开始' }));
       });
 
       // Mark where we start looking for the reset so earlier configures don't count.
@@ -581,7 +600,7 @@ describe('Shell', () => {
       // Stop the mic — the display is STILL capturing, so this is a partial stop:
       // NO auto-clear yet.
       await act(async () => {
-        fireEvent.click(within(micCard).getByRole('button', { name: 'Stop' }));
+        fireEvent.click(within(micCard).getByRole('button', { name: '停止' }));
       });
       const afterFirstStop = ws.sent
         .slice(sentBeforeStop)
@@ -594,7 +613,7 @@ describe('Shell', () => {
       // Stop the display — now NO source is capturing → interview ended → auto-clear.
       const sentBeforeLastStop = ws.sent.length;
       await act(async () => {
-        fireEvent.click(within(dispCard).getByRole('button', { name: 'Stop' }));
+        fireEvent.click(within(dispCard).getByRole('button', { name: '停止' }));
       });
 
       // A configure carrying resetGeneration:true is pushed (server-side reset,
@@ -621,12 +640,12 @@ describe('Shell', () => {
 
       const micCard = document.getElementById('channel-mic')!;
       await act(async () => {
-        fireEvent.click(within(micCard).getByRole('button', { name: 'Start' }));
+        fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
       });
 
       const before = ws.sent.length;
       await act(async () => {
-        fireEvent.click(within(micCard).getByRole('button', { name: 'Stop' }));
+        fireEvent.click(within(micCard).getByRole('button', { name: '停止' }));
       });
 
       const resets = ws.sent
@@ -644,8 +663,10 @@ describe('Shell', () => {
     const ws = openSocket();
 
     // Switch to Customize so the template row renders + fetches the gallery.
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-    fireEvent.click(screen.getByRole('radio', { name: /Customize/ }));
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.click(
+      document.querySelector<HTMLButtonElement>('#setting-interviewer-mode [data-mode="customize"]')!
+    );
 
     // The builtin role templates load from /api/pipelines; click the backend card.
     await waitFor(() => {
@@ -673,8 +694,10 @@ describe('Shell', () => {
     await flushMount();
     const ws = openSocket();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-    fireEvent.click(screen.getByRole('radio', { name: /Customize/ }));
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.click(
+      document.querySelector<HTMLButtonElement>('#setting-interviewer-mode [data-mode="customize"]')!
+    );
     await waitFor(() => {
       expect(document.getElementById('customize-ai-input')).toBeInTheDocument();
     });

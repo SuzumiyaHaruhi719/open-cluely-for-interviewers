@@ -127,7 +127,7 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
       className="summary-modal"
       role="dialog"
       aria-modal="true"
-      aria-label="面试总结 / Interview summary"
+      aria-label="面试总结"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -136,11 +136,11 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
     >
       <div className="summary-modal__card">
         <header className="summary-modal__header">
-          <h2 className="summary-modal__title">面试总结 · Interview summary</h2>
+          <h2 className="summary-modal__title">面试总结</h2>
           <button
             type="button"
             className="summary-modal__close"
-            aria-label="关闭 / Close"
+            aria-label="关闭"
             onClick={onClose}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -163,11 +163,11 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
                 <span className="summary-modal__progress-elapsed">⏱ {elapsedStr}</span>
                 {summary.tokens > 0 ? (
                   <span className="summary-modal__progress-tokens">
-                    {summary.tokens.toLocaleString()} tokens
+                    {summary.tokens.toLocaleString()} 令牌
                   </span>
                 ) : null}
                 <span className="summary-modal__progress-label">
-                  {isStreaming ? '正在生成… · Generating…' : '正在生成评估报告… · Generating evaluation report…'}
+                  {isStreaming ? '正在生成…' : '正在生成评估报告…'}
                 </span>
               </div>
             </div>
@@ -180,7 +180,7 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
           ) : summary.status === 'error' ? (
             <>
               <p className="summary-modal__error">
-                生成失败 · Failed to generate summary
+                生成总结失败
                 {summary.error ? `: ${summary.error}` : '.'}
               </p>
               {summary.debugEvents.length > 0 ? (
@@ -191,13 +191,13 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
             <p className="summary-modal__notice">
               {summary.text.trim().length > 0
                 ? summary.text
-                : '还没有可总结的面试内容。 · There is no interview content to summarize yet.'}
+                : '还没有可总结的面试内容。'}
             </p>
           ) : hasText ? (
             <SummaryReport text={summary.text} />
           ) : (
             <p className="summary-modal__empty">
-              还没有总结内容。点击"重新生成"开始。 · No summary yet — click Regenerate to start.
+              还没有总结内容。点击“重新生成”开始。
             </p>
           )}
         </div>
@@ -208,25 +208,25 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
             className="summary-modal__btn summary-modal__btn--secondary"
             onClick={onCopy}
             disabled={!hasText}
-            title="复制报告到剪贴板 / Copy report to clipboard"
+            title="复制报告到剪贴板"
           >
-            {copied ? '已复制 · Copied' : '复制 · Copy'}
+            {copied ? '已复制' : '复制'}
           </button>
           <button
             type="button"
             className="summary-modal__btn summary-modal__btn--secondary"
             onClick={onRegenerate}
             disabled={isGenerating}
-            title="重新生成总结 / Regenerate the summary"
+            title="重新生成总结"
           >
-            {isGenerating ? '生成中… · Generating…' : '重新生成 · Regenerate'}
+            {isGenerating ? '生成中…' : '重新生成'}
           </button>
           <button
             type="button"
             className="summary-modal__btn summary-modal__btn--primary"
             onClick={onClose}
           >
-            关闭 · Close
+            关闭
           </button>
         </footer>
       </div>
@@ -238,8 +238,8 @@ function SummaryDebugTimeline({ events }: { events: SummaryState['debugEvents'] 
   const visible = events.slice(-24);
   const baseAt = visible[0]?.at ?? Date.now();
   return (
-    <section className="summary-modal__debug" aria-label="Summary debug timeline">
-      <h3 className="summary-modal__debug-title">调试时间线 · Debug timeline</h3>
+    <section className="summary-modal__debug" aria-label="总结调试时间线">
+      <h3 className="summary-modal__debug-title">调试时间线</h3>
       <ol className="summary-modal__debug-list">
         {visible.map((event, index) => (
           <li className="summary-modal__debug-row" key={`${event.at}-${event.source}-${event.stage}-${index}`}>

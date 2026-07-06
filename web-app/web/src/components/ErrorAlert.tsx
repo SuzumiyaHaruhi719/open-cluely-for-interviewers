@@ -4,7 +4,7 @@ interface ErrorAlertProps {
 }
 
 /** Inline error banner. */
-export function ErrorAlert({ message, title = 'Error' }: ErrorAlertProps) {
+export function ErrorAlert({ message, title = '错误' }: ErrorAlertProps) {
   return (
     <div className="alert alert-error" role="alert">
       <span>

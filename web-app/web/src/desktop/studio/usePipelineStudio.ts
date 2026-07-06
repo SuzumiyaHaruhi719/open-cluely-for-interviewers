@@ -32,14 +32,14 @@ export interface StudioStatus {
   kind: '' | 'ok' | 'error';
 }
 
-const EMPTY_PIPELINE: Pipeline = { id: '', name: 'My pipeline', nodes: [], edges: [] };
+const EMPTY_PIPELINE: Pipeline = { id: '', name: '我的流程', nodes: [], edges: [] };
 const NEW_NODE_OFFSET = 40;
 
 function getErrorMessage(err: unknown): string {
   if (err instanceof ApiError || err instanceof Error) {
     return err.message;
   }
-  return 'request failed';
+  return '请求失败';
 }
 
 /** Where a freshly-added node lands (cascades so stacked adds don't overlap). */
@@ -88,7 +88,7 @@ export function usePipelineStudio(): PipelineStudioState {
   const [blockTypes, setBlockTypes] = useState<BlockTypeMeta[]>([]);
   const [library, setLibrary] = useState<PipelineSummary[]>([]);
   const [pipeline, setPipeline] = useState<Pipeline>(EMPTY_PIPELINE);
-  const [name, setNameState] = useState('My pipeline');
+  const [name, setNameState] = useState('我的流程');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [status, setStatusState] = useState<StudioStatus>({ message: '', kind: '' });
   const [dirty, setDirty] = useState(false);
@@ -120,7 +120,7 @@ export function usePipelineStudio(): PipelineStudioState {
       const res = await fetchPipelines();
       setLibrary(res.pipelines);
     } catch (err) {
-      setStatus(`Could not load pipelines: ${getErrorMessage(err)}`, 'error');
+      setStatus(`无法加载流程：${getErrorMessage(err)}`, 'error');
     }
   }, [setStatus]);
 
@@ -133,9 +133,9 @@ export function usePipelineStudio(): PipelineStudioState {
       setNameState(next.name);
       setSelectedId(null);
       setDirty(false);
-      setStatus('Cloned Expert — edit, then Save or Use this.');
+      setStatus('已克隆专家流程，可以编辑后保存或启用。');
     } catch (err) {
-      setStatus(`Could not clone Expert: ${getErrorMessage(err)}`, 'error');
+      setStatus(`无法克隆专家流程：${getErrorMessage(err)}`, 'error');
     }
   }, [setStatus]);
 
@@ -153,10 +153,10 @@ export function usePipelineStudio(): PipelineStudioState {
         setSelectedId(null);
         setDirty(false);
         setStatus(
-          loaded.builtin ? 'Built-in preset — Save will create an editable copy.' : ''
+          loaded.builtin ? '内置预设：保存时会创建一个可编辑副本。' : ''
         );
       } catch (err) {
-        setStatus(`Failed to load pipeline: ${getErrorMessage(err)}`, 'error');
+        setStatus(`加载流程失败：${getErrorMessage(err)}`, 'error');
       }
     },
     [newFromExpert, setStatus]
@@ -169,7 +169,7 @@ export function usePipelineStudio(): PipelineStudioState {
       setBlockTypes(types.blockTypes);
       await newFromExpert();
     } catch (err) {
-      setStatus(`Could not load the editor: ${getErrorMessage(err)}`, 'error');
+      setStatus(`无法加载编辑器：${getErrorMessage(err)}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -249,13 +249,13 @@ export function usePipelineStudio(): PipelineStudioState {
     try {
       const res = await validatePipelineApi(candidate);
       if (res.ok) {
-        setStatus('VALID ✓', 'ok');
+        setStatus('校验通过 ✓', 'ok');
         return true;
       }
-      setStatus(`INVALID: ${(res.errors.length ? res.errors : ['unknown']).join('; ')}`, 'error');
+      setStatus(`校验失败：${(res.errors.length ? res.errors : ['未知错误']).join('; ')}`, 'error');
       return false;
     } catch (err) {
-      setStatus(`Validation failed: ${getErrorMessage(err)}`, 'error');
+      setStatus(`校验失败：${getErrorMessage(err)}`, 'error');
       return false;
     }
   }, [pipeline, name, setStatus]);
@@ -267,11 +267,11 @@ export function usePipelineStudio(): PipelineStudioState {
       // Adopt the saved id so subsequent saves overwrite in place.
       setPipeline((prev) => ({ ...prev, id: res.id, builtin: false }));
       setDirty(false);
-      setStatus(`Saved "${candidate.name}"`, 'ok');
+      setStatus(`已保存“${candidate.name}”`, 'ok');
       await refreshLibrary();
       return res.id;
     } catch (err) {
-      setStatus(`Save failed: ${getErrorMessage(err)}`, 'error');
+      setStatus(`保存失败：${getErrorMessage(err)}`, 'error');
       return null;
     }
   }, [pipeline, name, refreshLibrary, setStatus]);

@@ -23,7 +23,7 @@ export function QuestionFilters({
   return (
     <aside className="qbank-sidebar">
       <div className="filter-group">
-        <div className="section-title">Difficulty</div>
+        <div className="section-title">难度</div>
         <div className="filter-list">
           {DIFFICULTY_FILTERS.map((filter) => {
             const isActive = selectedDifficulty === filter.value;
@@ -43,9 +43,9 @@ export function QuestionFilters({
       </div>
 
       <div className="filter-group">
-        <div className="section-title">Company</div>
+        <div className="section-title">公司</div>
         {companiesLoading ? (
-          <Spinner label="Loading companies…" />
+          <Spinner label="加载公司中…" />
         ) : (
           <div className="filter-list">
             <button
@@ -54,7 +54,7 @@ export function QuestionFilters({
               aria-pressed={selectedCompany === null}
               onClick={() => onSelectCompany(null)}
             >
-              <span className="filter-name">All companies</span>
+              <span className="filter-name">全部公司</span>
             </button>
             {companies.map((company) => {
               const isActive = selectedCompany === company.name;

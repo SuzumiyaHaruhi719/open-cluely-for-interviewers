@@ -37,12 +37,12 @@ afterEach(() => {
 describe('SummaryModal states', () => {
   test('loading state shows the generating spinner copy', () => {
     renderModal(state({ status: 'loading' }));
-    expect(screen.getByText(/Generating evaluation report/i)).toBeInTheDocument();
+    expect(screen.getByText(/正在生成评估报告/)).toBeInTheDocument();
   });
 
   test('error state shows the failure banner with the message', () => {
     renderModal(state({ status: 'error', error: 'no key' }));
-    expect(screen.getByText(/Failed to generate summary/i)).toBeInTheDocument();
+    expect(screen.getByText(/生成总结失败/)).toBeInTheDocument();
     expect(screen.getByText(/no key/)).toBeInTheDocument();
   });
 
@@ -60,7 +60,7 @@ describe('SummaryModal states', () => {
       })
     );
 
-    expect(screen.getByText(/Debug timeline/i)).toBeInTheDocument();
+    expect(screen.getByText(/调试时间线/)).toBeInTheDocument();
     expect(screen.getByText(/input-built/)).toBeInTheDocument();
     expect(screen.getByText(/message_start/)).toBeInTheDocument();
     expect(screen.getByText(/client:timeout-fired/)).toBeInTheDocument();

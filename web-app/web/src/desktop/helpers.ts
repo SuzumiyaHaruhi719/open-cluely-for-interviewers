@@ -13,31 +13,31 @@ export interface ModeMeta {
 
 export const MODE_META: Record<InterviewerMode, ModeMeta> = {
   fast: {
-    label: 'Fast',
+    label: '快速',
     attr: 'fast',
-    desc: 'Low-latency 2-stage follow-ups · default'
+    desc: '低延迟两段式追问 · 默认'
   },
   expert: {
-    label: 'Expert 1.0',
+    label: '专家 1.0',
     attr: 'expert',
     desc: '7-block 深链 · 独立排序 · 最稳 (~30–38s)'
   },
   expert2: {
-    label: 'Expert 2.0',
+    label: '专家 2.0',
     attr: 'expert2',
     desc: '合并 DE · 少一次调用 · 更快 (~23s)'
   },
   customize: {
-    label: 'Customize',
+    label: '自定义',
     attr: 'customize',
-    desc: 'Build your own block pipeline · drag & connect'
+    desc: '拖拽连线，搭建自己的追问流程'
   }
 };
 
 export const LANGUAGE_OPTIONS: ReadonlyArray<{ value: OutputLanguage; label: string }> = [
   { value: '', label: '自动（跟随对话语言）' },
   { value: 'zh', label: '中文' },
-  { value: 'en', label: 'English' }
+  { value: 'en', label: '英文' }
 ];
 
 /** Pad to two digits without locale surprises. */
@@ -68,12 +68,12 @@ export interface RecMeta {
 
 export function recMeta(status: SocketStatus, capturing: boolean): RecMeta {
   if (capturing) {
-    return { state: 'live', label: 'Live' };
+    return { state: 'live', label: '实时' };
   }
   if (status === 'connecting' || status === 'reconnecting') {
-    return { state: 'connecting', label: 'Connecting' };
+    return { state: 'connecting', label: '连接中' };
   }
-  return { state: 'idle', label: 'Idle' };
+  return { state: 'idle', label: '空闲' };
 }
 
 const MINUTE_MS = 60_000;
@@ -90,18 +90,18 @@ export function formatRelativeTime(ts: number, now: number = Date.now()): string
   const diff = Math.max(0, now - ts);
   const minutes = Math.floor(diff / MINUTE_MS);
   if (minutes < 1) {
-    return 'just now';
+    return '刚刚';
   }
   if (minutes < 60) {
-    return `${minutes}m ago`;
+    return `${minutes} 分钟前`;
   }
   const hours = Math.floor(diff / HOUR_MS);
   if (hours < 24) {
-    return `${hours}h ago`;
+    return `${hours} 小时前`;
   }
   const days = Math.floor(diff / DAY_MS);
   if (diff < WEEK_MS) {
-    return `${days}d ago`;
+    return `${days} 天前`;
   }
-  return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  return new Date(ts).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 }

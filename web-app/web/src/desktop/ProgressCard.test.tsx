@@ -65,7 +65,7 @@ describe('ProgressCard', () => {
 
     rerender(<ProgressCard progress={progress()} tokens={1234} />);
     const tokens = container.querySelector('.chat-progress__tokens');
-    expect(tokens?.textContent).toBe('1,234 tokens');
+    expect(tokens?.textContent).toBe('1,234 令牌');
   });
 
   test('uses the indeterminate variant + fallback label before any phase total is known', () => {
@@ -73,7 +73,7 @@ describe('ProgressCard', () => {
     const card = container.querySelector('.chat-progress-card');
     expect(card?.className).toContain('is-indeterminate');
     expect(container.querySelector('.chat-progress__label')?.textContent).toContain(
-      'Analyzing answer…'
+      '正在分析回答…'
     );
   });
 });

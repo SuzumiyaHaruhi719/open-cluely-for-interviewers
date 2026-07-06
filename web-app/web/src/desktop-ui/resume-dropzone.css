@@ -429,7 +429,7 @@
 
 /* Empty-state hint — only when no messages exist. */
 .resume-chat__messages:empty::before {
-  content: "Grounded only on the loaded résumé. Try: \201CSummarise their strongest evidence\201D or \201CWhat should I probe?\201D";
+  content: "仅基于已加载的简历回答。可以问：“总结最有力的证据”或“我该追问什么？”";
   display: block;
   font-size: var(--text-xs);
   line-height: 1.5;

@@ -70,7 +70,7 @@ function LaneLine({ lane, text, live = false }: LaneLineProps) {
           {lane === 'candidate' ? '◐' : '●'}
         </span>
         <span className="message-label">
-          {live ? '输入中…' : lane === 'candidate' ? 'Candidate' : 'You'}
+          {live ? '输入中…' : lane === 'candidate' ? '候选人' : '你'}
         </span>
       </div>
       <div className="message-content">{text}</div>
@@ -105,7 +105,7 @@ function NoteLine({ text }: { text: string }) {
         <span className="message-icon" aria-hidden="true">
           📝
         </span>
-        <span className="message-label">Note</span>
+        <span className="message-label">备注</span>
       </div>
       <div className="message-content">{text}</div>
     </div>
@@ -221,7 +221,7 @@ export function TranscriptStream({
       ref={containerRef}
       role="log"
       aria-live="polite"
-      aria-label="Live transcript"
+      aria-label="实时转写"
     >
       {/* Seeded (sample) or loaded (session) conversation, before the live lanes. */}
       {transcriptMessages.map((message, index) => {

@@ -82,8 +82,8 @@ describe('QuestionBank', () => {
     render(<QuestionBank />);
     await screen.findByText('What is a B+ tree?');
 
-    // Choosing "Hard" should issue a /questions request with difficulty=3.
-    fireEvent.click(screen.getByRole('button', { name: 'Hard' }));
+    // Choosing "困难" should issue a /questions request with difficulty=3.
+    fireEvent.click(screen.getByRole('button', { name: '困难' }));
 
     await waitFor(() => {
       const hasDifficulty = calls.some(
@@ -97,8 +97,8 @@ describe('QuestionBank', () => {
     render(<QuestionBank />);
     await screen.findByText('What is a B+ tree?');
 
-    fireEvent.click(screen.getByRole('tab', { name: 'Semantic' }));
-    fireEvent.change(screen.getByRole('searchbox', { name: /search questions/i }), {
+    fireEvent.click(screen.getByRole('tab', { name: '语义' }));
+    fireEvent.change(screen.getByRole('searchbox', { name: '搜索题目' }), {
       target: { value: 'database indexes' }
     });
 

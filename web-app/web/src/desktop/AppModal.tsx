@@ -27,7 +27,7 @@ export function ConfirmModal({
   open,
   title,
   message,
-  confirmLabel = 'Confirm',
+  confirmLabel = '确认',
   danger = false,
   onConfirm,
   onCancel
@@ -67,7 +67,7 @@ export function ConfirmModal({
             className="app-modal__btn app-modal__btn--secondary"
             onClick={onCancel}
           >
-            Cancel
+            取消
           </button>
           <button type="button" className={okClass} onClick={onConfirm} ref={okRef}>
             {confirmLabel}
@@ -95,7 +95,7 @@ export function PromptModal({
   title,
   label,
   initialValue = '',
-  confirmLabel = 'Save',
+  confirmLabel = '保存',
   onConfirm,
   onCancel
 }: PromptModalProps) {
@@ -155,7 +155,7 @@ export function PromptModal({
             className="app-modal__btn app-modal__btn--secondary"
             onClick={onCancel}
           >
-            Cancel
+            取消
           </button>
           <button
             type="button"

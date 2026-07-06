@@ -1120,7 +1120,7 @@ html[data-theme="dark"] .glp-theme-toggle .glp-theme-toggle__icon-light { displa
 /* Empty state — centered, subtle, actionable copy. The pseudo-element avoids
    any additional DOM node while giving the empty space breathing room. */
 .chat-messages:empty::before {
-  content: "Waiting for the first answer — start a channel below to begin.";
+  content: "等待第一段回答 — 请先在下方启动一个音频通道。";
   display: flex;
   align-items: center;
   justify-content: center;

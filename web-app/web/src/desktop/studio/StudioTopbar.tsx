@@ -15,7 +15,7 @@ interface StudioTopbarProps {
   onClose: () => void;
 }
 
-const NEW_LABEL = '+ New (clone Expert)';
+const NEW_LABEL = '+ 新建（克隆 Expert）';
 
 /**
  * Studio topbar (`.ps-topbar`): title, the library picker (a custom
@@ -57,7 +57,7 @@ export function StudioTopbar({
 
   return (
     <header className="ps-topbar">
-      <span className="ps-title">Pipeline Studio</span>
+      <span className="ps-title">流程工作台</span>
       <div id="ps-library" className="ps-libpick" ref={pickRef}>
         <button
           type="button"
@@ -109,24 +109,24 @@ export function StudioTopbar({
       <input
         id="ps-name"
         className="ps-input"
-        placeholder="Pipeline name"
+        placeholder="流程名称"
         value={name}
         onChange={(e) => onNameChange(e.target.value)}
       />
       <span className="ps-spacer" />
       <button id="ps-validate" className="ps-btn" type="button" onClick={onValidate}>
-        Validate
+        校验
       </button>
       <button id="ps-save" className="ps-btn" type="button" onClick={onSave}>
-        Save
+        保存
       </button>
       <button id="ps-use" className="ps-btn ps-btn--primary" type="button" onClick={onUse}>
-        Use this
+        启用
       </button>
       <button id="ps-export" className="ps-btn" type="button" onClick={onExport}>
-        Export
+        导出
       </button>
-      <button id="ps-close" className="ps-btn" type="button" aria-label="Close" onClick={onClose}>
+      <button id="ps-close" className="ps-btn" type="button" aria-label="关闭" onClick={onClose}>
         ✕
       </button>
     </header>

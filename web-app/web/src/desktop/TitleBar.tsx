@@ -17,7 +17,7 @@ export function TitleBar({ railCollapsed, onToggleRail }: TitleBarProps) {
         <span className="titlebar__logo" aria-hidden="true">
           <MicIcon size={14} />
         </span>
-        <span className="titlebar__title">Interviewer Copilot</span>
+        <span className="titlebar__title">面试官助手</span>
       </div>
 
       <div className="titlebar__status">
@@ -25,11 +25,11 @@ export function TitleBar({ railCollapsed, onToggleRail }: TitleBarProps) {
           id="mobile-server-pill"
           className="mobile-server-pill off"
           type="button"
-          title="Mobile companion — desktop only"
+          title="移动端伴侣仅桌面版可用"
           disabled
         >
           <MobileIcon size={11} />
-          <span id="mobile-server-pill-label">Mobile</span>
+          <span id="mobile-server-pill-label">移动端</span>
         </button>
       </div>
 
@@ -38,9 +38,9 @@ export function TitleBar({ railCollapsed, onToggleRail }: TitleBarProps) {
           id="toggle-rail-btn"
           className="titlebar__btn"
           type="button"
-          aria-label="Toggle right panel"
+          aria-label="展开或收起右侧栏"
           aria-pressed={railCollapsed}
-          title="Collapse / expand the right panel"
+          title="展开或收起右侧栏"
           onClick={onToggleRail}
         >
           <PanelIcon size={14} />

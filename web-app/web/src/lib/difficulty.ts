@@ -2,10 +2,10 @@
 export type DifficultyLevel = 0 | 1 | 2 | 3;
 
 const LABELS: Record<DifficultyLevel, string> = {
-  0: 'Unspecified',
-  1: 'Easy',
-  2: 'Medium',
-  3: 'Hard'
+  0: '未标注',
+  1: '简单',
+  2: '中等',
+  3: '困难'
 };
 
 /** Maps a numeric difficulty to a human label, clamping unknown values. */
@@ -22,9 +22,9 @@ export function normalizeDifficulty(value: number): DifficultyLevel {
 
 /** Filter options for the difficulty selector (All + the four levels). */
 export const DIFFICULTY_FILTERS: ReadonlyArray<{ value: number | null; label: string }> = [
-  { value: null, label: 'All' },
-  { value: 1, label: 'Easy' },
-  { value: 2, label: 'Medium' },
-  { value: 3, label: 'Hard' },
-  { value: 0, label: 'Unspecified' }
+  { value: null, label: '全部' },
+  { value: 1, label: '简单' },
+  { value: 2, label: '中等' },
+  { value: 3, label: '困难' },
+  { value: 0, label: '未标注' }
 ];

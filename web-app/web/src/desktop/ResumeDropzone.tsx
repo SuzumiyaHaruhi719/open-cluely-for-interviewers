@@ -34,7 +34,7 @@ function previewOf(text: string): string {
  */
 export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDropzoneProps) {
   const [state, setState] = useState<DropzoneState>(resumeText ? 'parsed' : 'idle');
-  const [filename, setFilename] = useState(resumeText ? 'Saved resume' : '');
+  const [filename, setFilename] = useState(resumeText ? '已保存的简历' : '');
   const [chars, setChars] = useState(resumeText.length);
   const [preview, setPreview] = useState(resumeText ? previewOf(resumeText) : '');
   const [errorText, setErrorText] = useState('');
@@ -54,7 +54,7 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
       setState((prev) => (prev === 'parsed' ? prev : 'parsed'));
       setChars(resumeText.length);
       setPreview(previewOf(resumeText));
-      setFilename((prev) => (prev && prev !== 'Saved resume' ? prev : 'Saved resume'));
+      setFilename((prev) => (prev && prev !== '已保存的简历' ? prev : '已保存的简历'));
     } else {
       setState('idle');
     }
@@ -82,25 +82,25 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
       }
       setState('parsing');
       setErrorText('');
-      setAnnounce(`Reading ${file.name || 'file'}…`);
+      setAnnounce(`正在读取 ${file.name || '文件'}…`);
       try {
         const contentBase64 = await readFileAsBase64(file);
         const res = await extractResume({ filename: file.name, contentBase64 });
         const text = res.text ?? '';
         setState('parsed');
-        setFilename(file.name || 'Resume');
+        setFilename(file.name || '简历');
         setChars(text.length);
         setPreview(previewOf(text));
-        setAnnounce(`Resume loaded: ${file.name || 'file'}, ${formatCharCount(text.length)}.`);
+        setAnnounce(`简历已加载：${file.name || '文件'}，${formatCharCount(text.length)}。`);
         onExtracted(text);
       } catch (err: unknown) {
         const message =
           err instanceof ApiError || err instanceof Error
             ? err.message
-            : 'Could not read resume';
+            : '无法读取简历';
         setState('error');
         setErrorText(message);
-        setAnnounce(`Resume upload failed. ${message}`);
+        setAnnounce(`简历上传失败。${message}`);
       }
     },
     [onExtracted]
@@ -143,7 +143,7 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
       void handleFile(file);
     } else {
       setState('error');
-      setErrorText('Could not read the dropped file — try clicking to browse');
+      setErrorText('无法读取拖入的文件，请点击选择文件重试');
     }
   };
 
@@ -152,7 +152,7 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
     event.stopPropagation();
     setState('idle');
     setErrorText('');
-    setAnnounce('Resume removed.');
+    setAnnounce('简历已移除。');
     onCleared();
   };
 
@@ -172,13 +172,13 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
       <button
         type="button"
         className="resume-dropzone__target"
-        aria-label={`Upload resume. ${RESUME_ACCEPT_HINT}. Drop a file here or press Enter to browse.`}
+        aria-label={`上传简历。${RESUME_ACCEPT_HINT}。拖入文件，或按 Enter 选择文件。`}
         onClick={() => inputRef.current?.click()}
       >
         <span className="resume-dropzone__icon" aria-hidden="true">
           <UploadIcon size={22} />
         </span>
-        <span className="resume-dropzone__primary">Drop resume or click to browse</span>
+        <span className="resume-dropzone__primary">拖入简历或点击选择文件</span>
         <span className="resume-dropzone__hint">{RESUME_ACCEPT_HINT}</span>
       </button>
 
@@ -189,8 +189,8 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
           <button
             type="button"
             className="resume-dropzone__remove"
-            aria-label="Remove resume"
-            title="Remove resume"
+            aria-label="移除简历"
+            title="移除简历"
             onClick={handleRemove}
           >
             <svg

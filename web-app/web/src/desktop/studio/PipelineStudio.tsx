@@ -61,7 +61,7 @@ export function PipelineStudio({ open, onClose, onUse }: PipelineStudioProps) {
   const onExport = (): void => {
     const p = buildForSave(studio.pipeline, studio.name);
     downloadJson(`${p.id || 'pipeline'}.json`, p);
-    studio.setStatus('Exported pipeline JSON', 'ok');
+    studio.setStatus('已导出流程 JSON', 'ok');
   };
 
   const onUseThis = async (): Promise<void> => {
@@ -72,7 +72,7 @@ export function PipelineStudio({ open, onClose, onUse }: PipelineStudioProps) {
     if (!id) {
       return;
     }
-    studio.setStatus(`Active: ${studio.name} (Customize mode)`, 'ok');
+    studio.setStatus(`已启用：${studio.name}（自定义模式）`, 'ok');
     onUse(id, studio.name);
     onClose();
   };
@@ -83,7 +83,7 @@ export function PipelineStudio({ open, onClose, onUse }: PipelineStudioProps) {
       className={`pipeline-studio${open ? '' : ' hidden'}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Pipeline Studio"
+      aria-label="流程工作台"
     >
       <StudioTopbar
         library={studio.library}

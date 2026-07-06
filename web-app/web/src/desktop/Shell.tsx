@@ -103,7 +103,7 @@ export function Shell() {
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
   // Topbar title for the current in-memory interview (sample name, else default).
-  const [interviewTitle, setInterviewTitle] = useState('New interview');
+  const [interviewTitle, setInterviewTitle] = useState('新面试');
   const [studioOpen, setStudioOpen] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [railCollapsed, toggleRail] = useRailCollapsed();
@@ -458,10 +458,10 @@ export function Shell() {
   const transcriptText = useMemo(() => {
     const lines: string[] = [];
     if (transcripts.display.finalText) {
-      lines.push(`Candidate: ${transcripts.display.finalText}`);
+      lines.push(`候选人：${transcripts.display.finalText}`);
     }
     if (transcripts.mic.finalText) {
-      lines.push(`Interviewer: ${transcripts.mic.finalText}`);
+      lines.push(`面试官：${transcripts.mic.finalText}`);
     }
     return lines.join('\n\n');
   }, [transcripts.display.finalText, transcripts.mic.finalText]);
@@ -470,7 +470,7 @@ export function Shell() {
     // Use the candidate-answer buffer as the prompt, grounded by the transcript.
     const prompt = answer.trim() || transcriptText.trim();
     if (prompt.length === 0) {
-      void assistant.ask('Summarise the conversation so far and suggest a strong follow-up.', transcriptText);
+      void assistant.ask('总结目前的对话，并建议一个有力的追问。', transcriptText);
       return;
     }
     void assistant.ask(prompt, transcriptText || undefined);
@@ -497,7 +497,7 @@ export function Shell() {
   // "New interview": reset all in-memory state and re-open the type picker.
   const onNewInterview = useCallback((): void => {
     onClearSession();
-    setInterviewTitle('New interview');
+    setInterviewTitle('新面试');
     setTypePickerOpen(true);
   }, [onClearSession]);
 
@@ -508,7 +508,7 @@ export function Shell() {
     (choice: InterviewTypeChoice): void => {
       setTypePickerOpen(false);
       const sample = choice.sample;
-      setInterviewTitle(sample ? sample.name : 'New interview');
+      setInterviewTitle(sample ? sample.name : '新面试');
 
       // Reset the live buffers for the fresh interview.
       onClearSession();
@@ -552,7 +552,7 @@ export function Shell() {
     setTypePickerOpen(true);
   }, []);
 
-  const sessionTitle = view === 'bank' ? 'Question bank' : interviewTitle;
+  const sessionTitle = view === 'bank' ? '题库' : interviewTitle;
 
   return (
     <div id="app" className="app-shell">

@@ -7,10 +7,10 @@ afterEach(cleanup);
 
 describe('DifficultyBadge', () => {
   test.each([
-    [0, 'Unspecified'],
-    [1, 'Easy'],
-    [2, 'Medium'],
-    [3, 'Hard']
+    [0, '未标注'],
+    [1, '简单'],
+    [2, '中等'],
+    [3, '困难']
   ])('maps difficulty %i to label "%s"', (difficulty, label) => {
     // Act
     render(<DifficultyBadge difficulty={difficulty} />);
@@ -19,8 +19,8 @@ describe('DifficultyBadge', () => {
     expect(screen.getByText(label)).toBeInTheDocument();
   });
 
-  test('treats out-of-range difficulty as Unspecified', () => {
+  test('treats out-of-range difficulty as 未标注', () => {
     render(<DifficultyBadge difficulty={99} />);
-    expect(screen.getByText('Unspecified')).toBeInTheDocument();
+    expect(screen.getByText('未标注')).toBeInTheDocument();
   });
 });

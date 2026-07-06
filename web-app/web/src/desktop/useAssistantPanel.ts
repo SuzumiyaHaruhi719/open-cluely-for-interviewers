@@ -20,7 +20,7 @@ function errorMessage(error: unknown): string {
   if (error instanceof ApiError || error instanceof Error) {
     return error.message;
   }
-  return 'Assistant request failed';
+  return '助手请求失败';
 }
 
 export interface UseAssistantPanel {
@@ -60,19 +60,19 @@ export function useAssistantPanel(): UseAssistantPanel {
 
   const ask = useCallback(
     (prompt: string, context?: string) =>
-      run('AI Response', () =>
+      run('AI 回答', () =>
         assistantAsk(context === undefined ? { prompt } : { prompt, context })
       ),
     [run]
   );
 
   const notes = useCallback(
-    (transcript: string) => run('Meeting notes', () => assistantNotes({ transcript })),
+    (transcript: string) => run('会议纪要', () => assistantNotes({ transcript })),
     [run]
   );
 
   const insights = useCallback(
-    (transcript: string) => run('Insights', () => assistantInsights({ transcript })),
+    (transcript: string) => run('洞察', () => assistantInsights({ transcript })),
     [run]
   );
 

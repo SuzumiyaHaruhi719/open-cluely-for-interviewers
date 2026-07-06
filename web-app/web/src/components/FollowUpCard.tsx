@@ -21,6 +21,16 @@ function formatElapsed(ms: number): string {
   return `${(ms / 1000).toFixed(1)} s`;
 }
 
+function formatModeLabel(mode: string): string {
+  const labels: Record<string, string> = {
+    fast: '快速',
+    expert: '专家 1.0',
+    expert2: '专家 2.0',
+    customize: '自定义'
+  };
+  return labels[mode] ?? mode;
+}
+
 /**
  * Renders a `FollowUpOutput`: the primary suggested question is prominent, with
  * the alternative, rationale, anchor quotes (as chips), and expected evidence
@@ -29,6 +39,7 @@ function formatElapsed(ms: number): string {
 export function FollowUpCard({ output, mode, tokensUsed, elapsedMs, outputLanguage = '' }: FollowUpCardProps) {
   const copy = followUpCopyFor(outputLanguage);
   const anchorQuotes = output.anchor_quotes ?? [];
+  const modeLabel = formatModeLabel(mode);
 
   return (
     <article className="card followup" aria-label={copy.ariaFollowUp}>
@@ -72,11 +83,11 @@ export function FollowUpCard({ output, mode, tokensUsed, elapsedMs, outputLangua
       <footer className="followup-footer">
         {mode ? (
           <>
-            <span className="tag-mode">{mode}</span>
+            <span className="tag-mode">{modeLabel}</span>
             <span className="dot" aria-hidden="true" />
           </>
         ) : null}
-        <span>{totalTokens(tokensUsed).toLocaleString()} tokens</span>
+        <span>{totalTokens(tokensUsed).toLocaleString()} 令牌</span>
         <span className="dot" aria-hidden="true" />
         <span>{formatElapsed(elapsedMs)}</span>
         {output.iteration_version ? (

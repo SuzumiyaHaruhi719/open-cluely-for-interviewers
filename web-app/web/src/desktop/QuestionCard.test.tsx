@@ -134,7 +134,7 @@ describe('QuestionCard ranked candidates', () => {
     expect(screen.queryByText('Why ask this')).toBeNull();
   });
 
-  test('localizes ranked-list chrome when English output is selected', () => {
+  test('keeps ranked-list chrome Chinese when English output is selected', () => {
     render(
       <QuestionCard
         output={OUTPUT}
@@ -147,10 +147,10 @@ describe('QuestionCard ranked candidates', () => {
       />
     );
 
-    expect(screen.getByText('More ranked candidates (3)')).toBeInTheDocument();
-    expect(screen.getByText(/Selected:/)).toBeInTheDocument();
-    expect(screen.queryByText('更多排序候选 (3)')).toBeNull();
-    expect(screen.queryByText(/已选用：/)).toBeNull();
+    expect(screen.getByText('更多排序候选 (3)')).toBeInTheDocument();
+    expect(screen.getByText(/已选用：/)).toBeInTheDocument();
+    expect(screen.queryByText('More ranked candidates (3)')).toBeNull();
+    expect(screen.queryByText(/Selected:/)).toBeNull();
   });
 
   test('clicking a candidate row calls onPickCandidate with its question', () => {

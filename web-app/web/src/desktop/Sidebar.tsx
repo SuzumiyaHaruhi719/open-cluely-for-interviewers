@@ -35,12 +35,12 @@ export function Sidebar({
         <span className="history-new-btn__icon" aria-hidden="true">
           <PlusIcon size={16} />
         </span>
-        <span className="history-new-btn__label">New interview</span>
+        <span className="history-new-btn__label">新建面试</span>
       </button>
 
-      <div id="session-list" className="history-list" role="list" aria-label="Navigation">
+      <div id="session-list" className="history-list" role="list" aria-label="导航">
         <div className="history-group">
-          <div className="history-group__label">Views</div>
+          <div className="history-group__label">视图</div>
           <button
             type="button"
             className={`history-row${view === 'copilot' ? ' is-active' : ''}`}
@@ -49,8 +49,8 @@ export function Sidebar({
             onClick={() => onSelectView('copilot')}
           >
             <span className="history-row__main">
-              <span className="history-row__title">Live copilot</span>
-              <span className="history-row__time">Realtime interview</span>
+              <span className="history-row__title">实时助手</span>
+              <span className="history-row__time">实时面试</span>
             </span>
           </button>
           <button
@@ -61,8 +61,8 @@ export function Sidebar({
             onClick={() => onSelectView('bank')}
           >
             <span className="history-row__main">
-              <span className="history-row__title">Question bank</span>
-              <span className="history-row__time">Browse · semantic search</span>
+              <span className="history-row__title">题库</span>
+              <span className="history-row__time">浏览 · 语义搜索</span>
             </span>
           </button>
         </div>
@@ -73,11 +73,11 @@ export function Sidebar({
           id="btn-settings"
           className="sidebar__settings-btn"
           type="button"
-          aria-label="Settings"
+          aria-label="设置"
           onClick={onOpenSettings}
         >
           <GearIcon size={15} />
-          <span>Settings</span>
+          <span>设置</span>
         </button>
       </div>
     </aside>

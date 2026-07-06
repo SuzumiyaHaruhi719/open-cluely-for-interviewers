@@ -39,10 +39,20 @@ function formatElapsed(ms: number): string {
   return `${(ms / 1000).toFixed(1)} s`;
 }
 
+function formatModeLabel(mode: string): string {
+  const labels: Record<string, string> = {
+    fast: '快速',
+    expert: '专家 1.0',
+    expert2: '专家 2.0',
+    customize: '自定义'
+  };
+  return labels[mode] ?? mode;
+}
+
 /** Compact "score/maxScore" badge (e.g. 27/30). */
 function ScoreBadge({ score, maxScore }: { score: number; maxScore: number }) {
   return (
-    <span className="question-card__score" title="Rubric score">
+    <span className="question-card__score" title="评分">
       {score}/{maxScore}
     </span>
   );
@@ -76,6 +86,7 @@ export function QuestionCard({
   const topPick = ranked.length > 0 ? ranked[0] : null;
   const others = ranked.slice(1);
   const copy = followUpCopyFor(outputLanguage);
+  const modeLabel = formatModeLabel(mode);
   const triggerLabel = trigger === 'auto' ? copy.triggerAuto : trigger === 'manual' ? copy.triggerManual : '';
   const triggerTitle =
     trigger === 'auto'
@@ -97,7 +108,7 @@ export function QuestionCard({
           </span>
         ) : null}
         <span className="question-card__priority" data-priority="high">
-          {mode}
+          {modeLabel}
         </span>
         <span className="message-time">{formatElapsed(elapsedMs)}</span>
       </div>
@@ -173,8 +184,8 @@ export function QuestionCard({
       ) : null}
 
       <footer className="question-card__footer">
-        <span className="tag-mode">{mode}</span>
-        <span>{totalTokens(tokensUsed).toLocaleString()} tokens</span>
+        <span className="tag-mode">{modeLabel}</span>
+        <span>{totalTokens(tokensUsed).toLocaleString()} 令牌</span>
         <span>{formatElapsed(elapsedMs)}</span>
         {output.iteration_version ? <span>v{output.iteration_version}</span> : null}
       </footer>
