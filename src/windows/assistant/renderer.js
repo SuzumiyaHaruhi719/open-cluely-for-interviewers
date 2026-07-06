@@ -1630,6 +1630,8 @@ async function init() {
     console.log('Renderer initialized - Ready for live transcription!');
     showFeedback('已就绪 — 在下方开启一个频道即可开始', 'success');
     addMonitorLog('info', 'init', '渲染器已初始化');
+    // Show newcomer guidance on first launch
+    setTimeout(showOnboardingIfNeeded, 600);
 }
 
 function updateWindowOpacityValueLabel(value) {
@@ -2535,6 +2537,25 @@ function setupIpcListeners() {
             }
         }
     });
+}
+
+// ── 新手指引 / Onboarding overlay ──
+function showOnboardingIfNeeded() {
+    const overlay = document.getElementById('onboarding-overlay');
+    if (!overlay) return;
+    try {
+        if (localStorage.getItem('onboarding-dismissed') === '1') return;
+    } catch { /* localStorage may be unavailable */ }
+    overlay.classList.remove('hidden');
+    const close = () => {
+        const cb = document.getElementById('onboarding-dont-show-again');
+        if (cb?.checked) {
+            try { localStorage.setItem('onboarding-dismissed', '1'); } catch {}
+        }
+        overlay.classList.add('hidden');
+    };
+    document.getElementById('onboarding-start')?.addEventListener('click', close);
+    document.getElementById('onboarding-close')?.addEventListener('click', close);
 }
 
 // Initialize on load

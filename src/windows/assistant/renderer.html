@@ -523,8 +523,53 @@
       </div>
       <footer class="ps-status" id="ps-status"></footer>
     </div>
-  </div>
 
-  <script type="module" src="renderer.js"></script>
+    <!-- ╔══ 新手指引 / Newcomer guidance ══╗ -->
+    <div id="onboarding-overlay" class="onboarding-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+      <div class="onboarding-card">
+        <button id="onboarding-close" class="onboarding-close" type="button" aria-label="关闭指引">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+        <h2 id="onboarding-title" class="onboarding-title">👋 欢迎使用面试官 Copilot</h2>
+        <p class="onboarding-subtitle">30 秒上手，4 步开始你的第一场 AI 辅助面试</p>
+        <div class="onboarding-steps">
+          <div class="onboarding-step">
+            <span class="onboarding-step__num">1</span>
+            <div class="onboarding-step__body">
+              <div class="onboarding-step__title">新建面试</div>
+              <div class="onboarding-step__desc">点击左上角「新建面试」按钮，选择线上/线下面试形式。</div>
+            </div>
+          </div>
+          <div class="onboarding-step">
+            <span class="onboarding-step__num">2</span>
+            <div class="onboarding-step__body">
+              <div class="onboarding-step__title">粘贴岗位描述（JD）</div>
+              <div class="onboarding-step__desc">在右侧「岗位描述」区域粘贴 JD，AI 会据此生成针对性追问。</div>
+            </div>
+          </div>
+          <div class="onboarding-step">
+            <span class="onboarding-step__num">3</span>
+            <div class="onboarding-step__body">
+              <div class="onboarding-step__title">上传简历</div>
+              <div class="onboarding-step__desc">在右侧「简历」区域拖入或点击上传候选人简历（txt/md/pdf/docx）。</div>
+            </div>
+          </div>
+          <div class="onboarding-step">
+            <span class="onboarding-step__num">4</span>
+            <div class="onboarding-step__body">
+              <div class="onboarding-step__title">开始录音</div>
+              <div class="onboarding-step__desc">在底部音频通道区，点击「电脑音频」采集候选人声音，点击「麦克风」采集你的声音。对话开始后随时点「问 AI」获取追问建议。</div>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding-footer">
+          <label class="onboarding-dont-show">
+            <input type="checkbox" id="onboarding-dont-show-again" /> 不再显示
+          </label>
+          <button id="onboarding-start" class="onboarding-start-btn" type="button">开始使用</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
