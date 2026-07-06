@@ -109,6 +109,25 @@
   );
 }
 
+/* Subtle sheen sweep across the tooltip for a premium feel. Sits beneath the
+   header strip + progress bar (z-index:0) and above the card body; pointer-events
+   none so it never intercepts taps. .tour-tooltip is position:fixed (positioning
+   context) + overflow:hidden so the sheen is clipped to the card. */
+.tour-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  animation: tour-sheen 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes tour-sheen {
+  0%, 100% { left: -100%; }
+  50%      { left: 100%; }
+}
+
 /* Completion progress bar — sits at the very top of the tooltip, above the
    gradient strip, and widens as the user advances through the steps. */
 .tour-progress-bar {
@@ -310,6 +329,9 @@
     animation: none !important;
   }
   .tour-spotlight-ring::before {
+    display: none;
+  }
+  .tour-tooltip::after {
     display: none;
   }
   .tour-step-badge,

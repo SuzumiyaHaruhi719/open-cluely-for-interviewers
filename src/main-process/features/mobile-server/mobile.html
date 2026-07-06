@@ -8,6 +8,9 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Remove the 300ms tap delay on mobile: all buttons respond instantly. */
+    button { touch-action: manipulation; }
+
     :root {
       --bg:           #0d1117;
       --surface:      #161b22;
@@ -271,10 +274,10 @@
       justify-content: center;
       flex-shrink: 0;
       -webkit-tap-highlight-color: transparent;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, transform 0.08s;
     }
 
-    .send-btn:active { opacity: 0.7; }
+    .send-btn:active { opacity: 0.7; transform: scale(0.95); }
 
     .send-btn svg { width: 18px; height: 18px; }
 
@@ -617,12 +620,14 @@
 
     function takeScreenshot() {
       if (!isConnected) { showToast('未连接', 'error'); return; }
+      if (navigator.vibrate) navigator.vibrate(10);
       sendJson({ type: 'take-screenshot' });
     }
 
     function askAi() {
       if (!isConnected) { showToast('未连接', 'error'); return; }
       const contextString = contextInput.value.trim();
+      if (navigator.vibrate) navigator.vibrate(10);
       sendJson({ type: 'ask-ai', contextString });
 
       if (contextString) {
