@@ -21,6 +21,12 @@ export function setupIpcListeners({
         return;
     }
 
+    // Throttle the "截图已捕获" toast: screenshots fire on every capture, so a
+    // rapid burst would spam the toast. The screenshot-count badge already
+    // updates per capture; the toast only reaffirms if 3s+ passed since last.
+    let lastScreenshotToastTime = 0;
+    const SCREENSHOT_TOAST_THROTTLE_MS = 3000;
+
     windowApi.onScreenshotTakenStealth((count) => {
         const payload = typeof count === 'object' && count !== null ? count : { count };
         setScreenshotsCount(Number(payload.count || 0));
@@ -28,7 +34,11 @@ export function setupIpcListeners({
         addChatMessage('screenshot', '截图已捕获', {
             screenshotId: typeof payload.screenshotId === 'string' ? payload.screenshotId : null
         });
-        showFeedback('截图已捕获', 'success');
+        const now = Date.now();
+        if (now - lastScreenshotToastTime >= SCREENSHOT_TOAST_THROTTLE_MS) {
+            lastScreenshotToastTime = now;
+            showFeedback('截图已捕获', 'success');
+        }
     });
 
     windowApi.onAnalysisStart(() => {

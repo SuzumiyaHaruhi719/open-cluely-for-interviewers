@@ -38,6 +38,11 @@ import { createTranscriptBufferManager } from './renderer/features/assembly-ai/t
 let screenshotsCount = 0;
 let isAnalyzing = false;
 let stealthHideTimeout = null;
+// Throttle the per-final "已捕获" toast so a burst of transcript finals
+// doesn't spam the toast. The screenshot-count badge already updates per
+// capture; the toast is only reaffirmed if 3s+ have passed since the last.
+let lastCapturedToastTime = 0;
+const CAPTURED_TOAST_THROTTLE_MS = 3000;
 const AI_CONTEXT_CHAR_BUDGET = 12000;
 const messageStore = createMessageStore();
 let chatMessagesArray = messageStore.getMessages();
@@ -358,7 +363,7 @@ async function handleGenerateQuestionClick() {
         await triggerInterviewerAnalysis(candidateAnswer, null);
     } catch (error) {
         console.error('Generate question failed:', error);
-        showFeedback('无法生成问题', 'error');
+        showFeedback(`无法生成问题：${error?.message || '未知错误'}。请检查网络或 API 密钥。`, 'error');
     } finally {
         generateQuestionInFlight = false;
         if (generateQuestionBtn) {
@@ -464,7 +469,14 @@ const transcriptBufferManager = createTranscriptBufferManager({
             segments,
             chars: text.length
         });
-        showFeedback('已捕获', 'success');
+        // Throttle the "已捕获" toast: the transcript bubble already updates live
+        // and finals often arrive in bursts, so showing a toast on every one
+        // spams. Only reaffirm if 3s+ passed since the last such toast.
+        const now = Date.now();
+        if (now - lastCapturedToastTime >= CAPTURED_TOAST_THROTTLE_MS) {
+            lastCapturedToastTime = now;
+            showFeedback('已捕获', 'success');
+        }
     }
 });
 
@@ -2531,6 +2543,7 @@ function updateUI() {
     }
 }
 
+let feedbackTimer = null;
 function showFeedback(message, type = 'info') {
     console.log(`Feedback (${type}):`, message);
 
@@ -2539,12 +2552,19 @@ function showFeedback(message, type = 'info') {
         statusText.className = `status-text ${type} show`;
         statusText.style.display = 'block';
 
-        setTimeout(() => {
+        // Clear any prior toast timer before scheduling a new one so rapid
+        // successive calls don't stack/overlap (the latest toast wins).
+        if (feedbackTimer) clearTimeout(feedbackTimer);
+        // Duration scales with message length so a short hint dismisses quickly
+        // while a long error stays readable: ~60ms per char, floor 2s.
+        const duration = Math.max(2000, (message || '').length * 60);
+        feedbackTimer = setTimeout(() => {
             statusText.classList.remove('show');
-            setTimeout(() => {
+            feedbackTimer = setTimeout(() => {
                 statusText.style.display = 'none';
+                feedbackTimer = null;
             }, 300);
-        }, 3000);
+        }, duration);
     }
 }
 
