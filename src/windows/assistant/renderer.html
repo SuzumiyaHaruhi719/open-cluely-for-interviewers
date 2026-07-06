@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
             <line x1="12" y1="19" x2="12" y2="22"></line>
           </svg>
         </span>
-        <span class="titlebar__title">Interviewer Copilot</span>
+        <span class="titlebar__title">面试官 Copilot</span>
       </div>
 
       <div class="titlebar__status">
@@ -37,20 +37,20 @@
             <rect x="6" y="2" width="12" height="20" rx="2"/>
             <line x1="12" y1="18" x2="12" y2="18"/>
           </svg>
-          <span id="mobile-server-pill-label">Mobile</span>
+          <span id="mobile-server-pill-label">手机端</span>
         </button>
       </div>
 
       <div class="titlebar__controls">
-        <button id="toggle-rail-btn" class="titlebar__btn" type="button" aria-label="Toggle right panel" aria-pressed="false" title="Collapse / expand the right panel">
+        <button id="toggle-rail-btn" class="titlebar__btn" type="button" aria-label="切换右侧面板" aria-pressed="false" title="折叠 / 展开右侧面板">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="15" y1="4" x2="15" y2="20"></line>
           </svg>
         </button>
-        <button id="btn-min" class="titlebar__btn" type="button" aria-label="Minimize">
+        <button id="btn-min" class="titlebar__btn" type="button" aria-label="最小化">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
-        <button id="btn-close" class="titlebar__btn titlebar__btn--danger" type="button" aria-label="Close">
+        <button id="btn-close" class="titlebar__btn titlebar__btn--danger" type="button" aria-label="关闭">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
         </button>
       </div>
@@ -62,14 +62,14 @@
       <!-- ── SIDEBAR: chat history ── -->
       <aside id="sidebar" class="sidebar">
         <button id="btn-new-interview" type="button"></button>
-        <div id="session-list" class="history-list" role="list" aria-label="Interview history"></div>
+        <div id="session-list" class="history-list" role="list" aria-label="面试历史"></div>
         <div class="sidebar__footer">
-          <button id="btn-settings" class="sidebar__settings-btn" type="button" aria-label="Settings">
+          <button id="btn-settings" class="sidebar__settings-btn" type="button" aria-label="设置">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
-            <span>Settings</span>
+            <span>设置</span>
           </button>
         </div>
       </aside>
@@ -79,48 +79,48 @@
         <!-- Topbar: session title · Fast/Expert · REC · actions -->
         <div id="topbar" class="topbar">
           <div class="topbar__lead">
-            <span id="session-title" class="topbar__title">New interview</span>
+            <span id="session-title" class="topbar__title">新面试</span>
             <span class="status-dot" aria-hidden="true"></span>
             <span class="timer">00:00</span>
           </div>
 
           <div class="topbar__meta">
-            <span id="mode-indicator" class="mode-indicator" data-mode="fast" title="Interviewer mode">
+            <span id="mode-indicator" class="mode-indicator" data-mode="fast" title="面试官模式">
               <span class="mode-indicator__dot" aria-hidden="true"></span>
-              <span id="mode-indicator-label" class="mode-indicator__label">Fast</span>
+              <span id="mode-indicator-label" class="mode-indicator__label">快速</span>
             </span>
             <span id="rec-indicator" class="rec-indicator" data-state="idle" role="status" aria-live="polite">
               <span class="rec-indicator__dot" aria-hidden="true"></span>
-              <span id="rec-indicator-label" class="rec-indicator__label">Idle</span>
+              <span id="rec-indicator-label" class="rec-indicator__label">待机</span>
             </span>
-            <span id="asr-indicator" class="mode-indicator" data-asr="paraformer" title="Speech-to-text engine">
+            <span id="asr-indicator" class="mode-indicator" data-asr="paraformer" title="语音转文字引擎">
               <span class="mode-indicator__dot" aria-hidden="true"></span>
               <span id="asr-indicator-label" class="mode-indicator__label">Paraformer</span>
             </span>
-            <span class="screenshot-count" id="screenshot-count" title="Screenshots captured">0</span>
+            <span class="screenshot-count" id="screenshot-count" title="已截取截图">0</span>
           </div>
 
           <div class="topbar__actions action-buttons">
-            <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="Take screenshot">
+            <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="截图">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
               </svg>
             </button>
-            <button id="analyze-btn" class="action-btn primary-btn" type="button">Ask AI</button>
-            <button id="screen-ai-btn" class="action-btn" type="button">Screen AI</button>
-            <button id="generate-question-btn" class="action-btn" type="button">Generate Q</button>
+            <button id="analyze-btn" class="action-btn primary-btn" type="button">问 AI</button>
+            <button id="screen-ai-btn" class="action-btn" type="button">屏幕 AI</button>
+            <button id="generate-question-btn" class="action-btn" type="button">生成问题</button>
 
             <div class="more-menu" id="more-menu">
-              <button id="more-menu-btn" class="action-btn icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <button id="more-menu-btn" class="action-btn icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="更多操作">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>
                 </svg>
               </button>
               <div id="more-menu-panel" class="more-menu-panel hidden" role="menu">
-                <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">Meeting notes</button>
-                <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">Insights</button>
+                <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">会议纪要</button>
+                <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">对话洞察</button>
                 <div class="more-menu-separator" role="separator"></div>
-                <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">Clear session</button>
+                <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">清空会话</button>
               </div>
             </div>
           </div>
@@ -129,26 +129,26 @@
         <!-- Transcription monitor — collapsed strip under the topbar -->
         <div id="transcription-monitor" class="transcription-monitor is-collapsed">
           <button id="monitor-toggle" class="monitor-toggle" type="button" aria-expanded="false" aria-controls="monitor-details">
-            <span class="monitor-pill" id="monitor-master-state">Idle</span>
+            <span class="monitor-pill" id="monitor-master-state">待机</span>
             <span class="monitor-source-inline">
-              <span class="monitor-source-dot" id="monitor-status-system" data-state="off" aria-label="Candidate / computer audio"></span>
-              <span class="monitor-source-mini-label">Candidate</span>
+              <span class="monitor-source-dot" id="monitor-status-system" data-state="off" aria-label="候选人 / 电脑音频"></span>
+              <span class="monitor-source-mini-label">候选人</span>
             </span>
             <span class="monitor-source-inline">
-              <span class="monitor-source-dot" id="monitor-status-mic" data-state="off" aria-label="You / microphone"></span>
-              <span class="monitor-source-mini-label">You</span>
+              <span class="monitor-source-dot" id="monitor-status-mic" data-state="off" aria-label="你 / 麦克风"></span>
+              <span class="monitor-source-mini-label">你</span>
             </span>
             <span class="monitor-toggle-caret" aria-hidden="true">›</span>
           </button>
           <div id="monitor-details" class="monitor-details">
             <div class="monitor-source-grid">
               <div class="monitor-source-row">
-                <span class="monitor-source-label">Candidate</span>
-                <span id="monitor-live-system" class="monitor-live-text">No transcript yet</span>
+                <span class="monitor-source-label">候选人</span>
+                <span id="monitor-live-system" class="monitor-live-text">暂无转写</span>
               </div>
               <div class="monitor-source-row">
-                <span class="monitor-source-label">You</span>
-                <span id="monitor-live-mic" class="monitor-live-text">No transcript yet</span>
+                <span class="monitor-source-label">你</span>
+                <span id="monitor-live-mic" class="monitor-live-text">暂无转写</span>
               </div>
             </div>
             <div id="monitor-log-list" class="monitor-log-list"></div>
@@ -156,7 +156,7 @@
         </div>
 
         <!-- Live transcript stream -->
-        <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="Live transcript"></div>
+        <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="实时转写"></div>
 
         <!-- Composer: two channel boxes + manual context input -->
         <div id="composer" class="composer">
@@ -169,17 +169,17 @@
               id="chat-manual-input"
               class="chat-manual-input"
               rows="1"
-              placeholder="Add a note to the context…"
-              aria-label="Manual context input"
+              placeholder="添加一条上下文备注…"
+              aria-label="手动上下文输入"
             ></textarea>
             <button
               id="chat-autoscroll-toggle"
               class="chat-autoscroll-toggle"
               type="button"
               aria-pressed="true"
-              title="Toggle auto-scroll"
+              title="切换自动滚动"
             >&#x21E9;</button>
-            <button id="chat-manual-send" class="chat-manual-send" type="button">Add</button>
+            <button id="chat-manual-send" class="chat-manual-send" type="button">添加</button>
           </div>
         </div>
       </main>
@@ -187,7 +187,7 @@
       <!-- ── RIGHT RAIL: resume / JD / session context ── -->
       <aside id="right-rail" class="right-rail">
         <section class="rail-section" id="resume-section">
-          <h2 class="rail-section__title">Resume</h2>
+          <h2 class="rail-section__title">简历</h2>
           <div class="rail-section__body">
             <div id="resume-dropzone"></div>
             <div id="resume-chat"></div>
@@ -196,33 +196,33 @@
 
         <section class="rail-section">
           <h2 class="rail-section__title">
-            <label for="jd-input">Job description</label>
+            <label for="jd-input">岗位描述（JD）</label>
           </h2>
           <textarea
             id="jd-input"
             class="jd-input"
             rows="5"
-            placeholder="Paste the JD so the copilot prioritises relevant hooks…"
-            aria-label="Job description"
+            placeholder="粘贴 JD，让 AI 优先关注相关追问方向…"
+            aria-label="岗位描述"
           ></textarea>
         </section>
 
         <section class="rail-section rail-section--grow">
-          <h2 class="rail-section__title">Session context <span class="rail-section__tag">auto</span></h2>
+          <h2 class="rail-section__title">会话上下文 <span class="rail-section__tag">自动</span></h2>
           <div id="session-context"></div>
         </section>
       </aside>
     </div>
 
     <!-- Status text for transient feedback (kept off-grid, fixed) -->
-    <div id="status-text" class="status-text" style="display: none;">Ready</div>
+    <div id="status-text" class="status-text" style="display: none;">就绪</div>
 
     <!-- Legacy results panel (kept hidden; close-results listener still wired) -->
     <div id="results-panel" class="results-panel hidden">
       <div class="results-header">
-        <div class="results-title"><span>AI Response</span></div>
+        <div class="results-title"><span>AI 回复</span></div>
         <div class="results-actions">
-          <button id="close-results" class="close-btn" aria-label="Close response">
+          <button id="close-results" class="close-btn" aria-label="关闭回复">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/></svg>
           </button>
         </div>
@@ -234,9 +234,9 @@
     <div id="settings-panel" class="settings-panel hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
       <div class="settings-dialog">
         <div class="settings-header">
-          <h2 id="settings-title" class="settings-title">Settings</h2>
+          <h2 id="settings-title" class="settings-title">设置</h2>
           <span id="settings-status" class="settings-status" data-state="idle" role="status" aria-live="polite"></span>
-          <button id="close-settings" class="settings-close" type="button" aria-label="Close settings">
+          <button id="close-settings" class="settings-close" type="button" aria-label="关闭设置">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
           </button>
         </div>
@@ -244,15 +244,15 @@
         <div class="settings-body">
           <!-- Interviewer mode — prominent glowing segmented toggle (Fast / Expert) -->
           <section class="settings-section settings-section--mode">
-            <h3 class="settings-section__title">Interviewer mode</h3>
-            <div class="mode-segmented" id="setting-interviewer-mode" role="radiogroup" aria-label="Interviewer mode">
+            <h3 class="settings-section__title">面试官模式</h3>
+            <div class="mode-segmented" id="setting-interviewer-mode" role="radiogroup" aria-label="面试官模式">
               <button type="button" class="mode-segmented__btn" data-mode="fast" role="radio" aria-checked="true">
                 <span class="mode-segmented__glow" aria-hidden="true"></span>
                 <span class="mode-segmented__top">
                   <span class="mode-segmented__dot" aria-hidden="true"></span>
-                  <span class="mode-segmented__label">Fast</span>
+                  <span class="mode-segmented__label">快速</span>
                 </span>
-                <span class="mode-segmented__desc">Low-latency 2-stage follow-ups · default</span>
+                <span class="mode-segmented__desc">低延迟两阶段追问 · 默认</span>
               </button>
               <button type="button" class="mode-segmented__btn" data-mode="expert" role="radio" aria-checked="false">
                 <span class="mode-segmented__glow" aria-hidden="true"></span>
@@ -274,9 +274,9 @@
                 <span class="mode-segmented__glow" aria-hidden="true"></span>
                 <span class="mode-segmented__top">
                   <span class="mode-segmented__dot" aria-hidden="true"></span>
-                  <span class="mode-segmented__label">Customize</span>
+                  <span class="mode-segmented__label">自定义</span>
                 </span>
-                <span class="mode-segmented__desc">Build your own block pipeline · drag &amp; connect</span>
+                <span class="mode-segmented__desc">自行搭建节点流程 · 拖拽连线</span>
               </button>
             </div>
             <div class="customize-row" id="customize-row">
@@ -300,14 +300,14 @@
 
           <!-- API key -->
           <section class="settings-section">
-            <h3 class="settings-section__title">API key</h3>
+            <h3 class="settings-section__title">API 密钥</h3>
             <div class="settings-field">
-              <label class="settings-field__label" for="setting-dashscope-key">DashScope key</label>
+              <label class="settings-field__label" for="setting-dashscope-key">DashScope 密钥</label>
               <div class="settings-key-row">
                 <input type="password" id="setting-dashscope-key" class="settings-input settings-input--mono" placeholder="sk-..." />
-                <button type="button" id="toggle-dashscope-key-visibility" class="settings-key-toggle" aria-label="Show DashScope API key" aria-pressed="false">Show</button>
+                <button type="button" id="toggle-dashscope-key-visibility" class="settings-key-toggle" aria-label="显示 DashScope API 密钥" aria-pressed="false">显示</button>
               </div>
-              <p class="settings-field__desc">One key drives AI, Paraformer ASR, and the interviewer copilot. Get it at <code>dashscope.console.aliyun.com</code>.</p>
+              <p class="settings-field__desc">一个密钥驱动 AI、Paraformer 语音识别和面试官 Copilot。在 <code>dashscope.console.aliyun.com</code> 获取。</p>
             </div>
           </section>
 
@@ -332,47 +332,47 @@
 
           <!-- Speech recognition -->
           <section class="settings-section">
-            <h3 class="settings-section__title">Speech recognition</h3>
+            <h3 class="settings-section__title">语音识别</h3>
             <div class="settings-field">
-              <label class="settings-field__label" for="setting-asr-provider">Provider</label>
+              <label class="settings-field__label" for="setting-asr-provider">服务商</label>
               <select id="setting-asr-provider" class="settings-select">
-                <option value="paraformer">DashScope Paraformer (recommended)</option>
-                <option value="xfyun">Xunfei RTASR (科大讯飞)</option>
-                <option value="volc">Doubao streaming (豆包 / 火山引擎)</option>
+                <option value="paraformer">DashScope Paraformer（推荐）</option>
+                <option value="xfyun">科大讯飞 RTASR</option>
+                <option value="volc">豆包流式（火山引擎）</option>
               </select>
-              <p class="settings-field__desc" id="paraformer-settings-group">Streams via <code>paraformer-realtime-8k-v2</code> using the DashScope key above.</p>
+              <p class="settings-field__desc" id="paraformer-settings-group">通过 <code>paraformer-realtime-8k-v2</code> 流式识别，使用上方的 DashScope 密钥。</p>
             </div>
             <div id="xfyun-settings-group" class="settings-field hidden">
               <div class="settings-field">
-                <label class="settings-field__label" for="setting-xfyun-appid">Xunfei AppID</label>
-                <input type="text" id="setting-xfyun-appid" class="settings-input" placeholder="from console.xfyun.cn" />
+                <label class="settings-field__label" for="setting-xfyun-appid">讯飞 AppID</label>
+                <input type="text" id="setting-xfyun-appid" class="settings-input" placeholder="来自 console.xfyun.cn" />
               </div>
               <div class="settings-field">
-                <label class="settings-field__label" for="setting-xfyun-key">Xunfei API key</label>
+                <label class="settings-field__label" for="setting-xfyun-key">讯飞 API 密钥</label>
                 <div class="settings-key-row">
-                  <input type="password" id="setting-xfyun-key" class="settings-input settings-input--mono" placeholder="real-time ASR service key" />
-                  <button type="button" id="toggle-xfyun-key-visibility" class="settings-key-toggle" aria-label="Show Xunfei API key" aria-pressed="false">Show</button>
+                  <input type="password" id="setting-xfyun-key" class="settings-input settings-input--mono" placeholder="实时语音转写服务密钥" />
+                  <button type="button" id="toggle-xfyun-key-visibility" class="settings-key-toggle" aria-label="显示讯飞 API 密钥" aria-pressed="false">显示</button>
                 </div>
-                <p class="settings-field__desc">Enable "实时语音转写" in the Xunfei console.</p>
+                <p class="settings-field__desc">请在讯飞控制台开通「实时语音转写」服务。</p>
               </div>
             </div>
 
             <div class="settings-field">
-              <label class="settings-field__label" for="setting-mic-device">Microphone (your voice)</label>
+              <label class="settings-field__label" for="setting-mic-device">麦克风（你的声音）</label>
               <select id="setting-mic-device" class="settings-select">
-                <option value="">System default microphone</option>
+                <option value="">系统默认麦克风</option>
               </select>
             </div>
             <div class="settings-field">
-              <label class="settings-field__label" for="setting-system-source">System audio (candidate's voice)</label>
+              <label class="settings-field__label" for="setting-system-source">系统音频（候选人声音）</label>
               <select id="setting-system-source" class="settings-select">
-                <option value="">Windows default loopback (recommended)</option>
+                <option value="">Windows 默认回环（推荐）</option>
               </select>
-              <p class="settings-field__desc">Loopback follows the Windows default playback device. Use <strong>OS sound</strong> to switch outputs. Stereo Mix / VB-Audio show up here as direct capture targets.</p>
+              <p class="settings-field__desc">回环采集跟随 Windows 默认播放设备。用 <strong>系统声音</strong> 切换输出设备。立体声混音 / VB-Audio 会作为直接采集目标显示在这里。</p>
             </div>
             <div class="settings-actions">
-              <button type="button" id="refresh-audio-devices-btn" class="settings-btn" aria-label="Refresh audio device list">Refresh devices</button>
-              <button type="button" id="open-sound-settings-btn" class="settings-btn" aria-label="Open Windows sound settings">OS sound</button>
+              <button type="button" id="refresh-audio-devices-btn" class="settings-btn" aria-label="刷新音频设备列表">刷新设备</button>
+              <button type="button" id="open-sound-settings-btn" class="settings-btn" aria-label="打开 Windows 声音设置">系统声音</button>
             </div>
           </section>
 
@@ -387,7 +387,7 @@
               <label class="settings-field__label" for="setting-volc-access-token">Access Token</label>
               <div class="settings-key-row">
                 <input type="password" id="setting-volc-access-token" class="settings-input settings-input--mono" placeholder="Volcengine access token" />
-                <button type="button" id="toggle-volc-access-token-visibility" class="settings-key-toggle" aria-label="Show Volcengine access token" aria-pressed="false">Show</button>
+                <button type="button" id="toggle-volc-access-token-visibility" class="settings-key-toggle" aria-label="显示火山引擎 Access Token" aria-pressed="false">显示</button>
               </div>
             </div>
             <div class="settings-field">
@@ -409,18 +409,18 @@
 
           <!-- Appearance -->
           <section class="settings-section">
-            <h3 class="settings-section__title">Appearance</h3>
+            <h3 class="settings-section__title">外观</h3>
             <div class="settings-field">
-              <span class="settings-field__label" id="setting-window-opacity-label">Window opacity</span>
+              <span class="settings-field__label" id="setting-window-opacity-label">窗口透明度</span>
               <div class="settings-range-row">
                 <input type="range" id="setting-window-opacity" class="settings-range" min="1" max="10" step="1" value="10" aria-labelledby="setting-window-opacity-label" />
                 <span id="setting-window-opacity-value" class="settings-range-value">10/10</span>
               </div>
             </div>
             <div class="settings-field">
-              <span class="settings-field__label">Keyboard shortcuts</span>
+              <span class="settings-field__label">快捷键</span>
               <div id="settings-shortcuts-list" class="settings-shortcuts-list"></div>
-              <p class="settings-field__desc">Read-only. Edit <code>src/config.js</code> to customize.</p>
+              <p class="settings-field__desc">只读。编辑 <code>src/config.js</code> 自定义。</p>
             </div>
           </section>
         </div>
@@ -430,11 +430,11 @@
     <!-- Close confirmation -->
     <div id="close-confirmation-dialog" class="close-confirmation hidden" role="dialog" aria-modal="true" aria-labelledby="close-confirmation-title">
       <div class="close-confirmation-card">
-        <div id="close-confirmation-title" class="close-confirmation-title">Close app?</div>
-        <div class="close-confirmation-text">This will stop voice capture and close the assistant.</div>
+        <div id="close-confirmation-title" class="close-confirmation-title">关闭应用？</div>
+        <div class="close-confirmation-text">这将停止语音采集并关闭助手。</div>
         <div class="close-confirmation-actions">
-          <button id="cancel-close-btn" class="close-confirmation-btn close-confirmation-btn-secondary">Cancel</button>
-          <button id="confirm-close-btn" class="close-confirmation-btn close-confirmation-btn-danger">Close</button>
+          <button id="cancel-close-btn" class="close-confirmation-btn close-confirmation-btn-secondary">取消</button>
+          <button id="confirm-close-btn" class="close-confirmation-btn close-confirmation-btn-danger">关闭</button>
         </div>
       </div>
     </div>
@@ -491,7 +491,7 @@
             <path d="M12 2a10 10 0 1 0 10 10"/>
           </svg>
         </div>
-        <div class="loading-text">Analyzing…</div>
+        <div class="loading-text">分析中…</div>
       </div>
     </div>
 
@@ -501,25 +501,25 @@
     </div>
 
     <!-- Pipeline Studio (SP3 2D editor) — full-window overlay -->
-    <div id="pipeline-studio" class="pipeline-studio hidden" role="dialog" aria-modal="true" aria-label="Pipeline Studio">
+    <div id="pipeline-studio" class="pipeline-studio hidden" role="dialog" aria-modal="true" aria-label="流程编辑器">
       <header class="ps-topbar">
-        <span class="ps-title">Pipeline Studio</span>
+        <span class="ps-title">流程编辑器</span>
         <div id="ps-library" class="ps-libpick">
-          <button type="button" id="ps-library-btn" class="ps-select ps-libpick__btn" aria-haspopup="listbox" aria-expanded="false">+ New (clone Expert) ▾</button>
+          <button type="button" id="ps-library-btn" class="ps-select ps-libpick__btn" aria-haspopup="listbox" aria-expanded="false">+ 新建（克隆 Expert）▾</button>
           <div id="ps-library-menu" class="ps-libpick__menu hidden" role="listbox"></div>
         </div>
-        <input id="ps-name" class="ps-input" placeholder="Pipeline name" />
+        <input id="ps-name" class="ps-input" placeholder="流程名称" />
         <span class="ps-spacer"></span>
-        <button id="ps-validate" class="ps-btn" type="button">Validate</button>
-        <button id="ps-save" class="ps-btn" type="button">Save</button>
-        <button id="ps-use" class="ps-btn ps-btn--primary" type="button">Use this</button>
-        <button id="ps-export" class="ps-btn" type="button">Export</button>
-        <button id="ps-close" class="ps-btn" type="button" aria-label="Close">✕</button>
+        <button id="ps-validate" class="ps-btn" type="button">验证</button>
+        <button id="ps-save" class="ps-btn" type="button">保存</button>
+        <button id="ps-use" class="ps-btn ps-btn--primary" type="button">使用此流程</button>
+        <button id="ps-export" class="ps-btn" type="button">导出</button>
+        <button id="ps-close" class="ps-btn" type="button" aria-label="关闭">✕</button>
       </header>
       <div class="ps-body">
         <aside class="ps-palette" id="ps-palette"></aside>
         <div class="ps-canvas-wrap"><div class="ps-canvas" id="ps-canvas"><svg class="ps-wires" id="ps-wires"></svg></div></div>
-        <aside class="ps-config" id="ps-config"><div class="ps-config__empty">Select a block to configure it.</div></aside>
+        <aside class="ps-config" id="ps-config"><div class="ps-config__empty">选择一个节点进行配置。</div></aside>
       </div>
       <footer class="ps-status" id="ps-status"></footer>
     </div>
