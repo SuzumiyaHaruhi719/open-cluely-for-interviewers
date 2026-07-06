@@ -188,7 +188,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   }
 
   function onError(source: AudioSource, message: string): void {
-    deps.emit({ source, text: `[ASR error: ${message}]`, isFinal: false });
+    deps.emit({ source, text: `[语音识别错误: ${message}]`, isFinal: false });
     stopSource(source);
   }
 

@@ -286,6 +286,25 @@ export function Shell() {
     };
   }, []);
 
+  // Ctrl/Cmd+B toggles the right rail (parity with the desktop app). Ignored when
+  // a modifier combo other than Ctrl/Cmd is held, and when focus is in an editable
+  // field so it never hijacks normal text entry.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b' && !e.shiftKey && !e.altKey) {
+        const target = e.target as HTMLElement | null;
+        const tag = target?.tagName?.toLowerCase() ?? '';
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || target?.isContentEditable) {
+          return;
+        }
+        e.preventDefault();
+        toggleRail();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [toggleRail]);
+
   // ASR provider / Doubao creds → persist locally AND push to the server so the
   // NEXT audio-control start uses the chosen recognizer. We always send the Volc
   // creds alongside the provider so flipping to Doubao (or editing a cred while

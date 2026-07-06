@@ -270,7 +270,7 @@ export function Topbar({
           title="即将推出"
           disabled
         >
-          屏幕 AI
+          屏幕 AI <span className="soon-badge">即将</span>
         </button>
         <button
           id="generate-question-btn"

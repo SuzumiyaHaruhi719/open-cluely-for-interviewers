@@ -2466,6 +2466,19 @@ if (toggleRailBtn) {
         applyRailCollapsed(!document.body.classList.contains('rail-collapsed'));
     });
 }
+// Ctrl/Cmd+B toggles the right rail (parity with the web app). Ignored when a
+// modifier combo other than Ctrl/Cmd is held, and when focus is inside an input
+// field so it never hijacks normal text editing.
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'b' && !e.shiftKey && !e.altKey) {
+        const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable)) {
+            return;
+        }
+        e.preventDefault();
+        toggleRailBtn?.click();
+    }
+});
 try {
     if (localStorage.getItem('open-cluely.railCollapsed') === '1') {
         applyRailCollapsed(true);
