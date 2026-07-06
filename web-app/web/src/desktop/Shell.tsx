@@ -305,6 +305,23 @@ export function Shell() {
     return () => document.removeEventListener('keydown', handler);
   }, [toggleRail]);
 
+  // "?" (Shift+/) — reset the spotlight tour and replay it. Mirrors the desktop
+  // app: ignored inside form fields so normal text entry is never hijacked. The
+  // tour reads its "have I shown already?" flag from localStorage on mount, so
+  // clearing it + reload is the simplest reliable way to re-trigger SpotlightTour
+  // (which is mounted once at the top of the shell).
+  useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      if (e.key === '?' && !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
+        e.preventDefault();
+        try { localStorage.removeItem('tour-completed-v2'); } catch {}
+        window.location.reload();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
+
   // ASR provider / Doubao creds → persist locally AND push to the server so the
   // NEXT audio-control start uses the chosen recognizer. We always send the Volc
   // creds alongside the provider so flipping to Doubao (or editing a cred while

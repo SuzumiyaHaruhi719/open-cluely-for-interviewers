@@ -2479,6 +2479,17 @@ document.addEventListener('keydown', (e) => {
         toggleRailBtn?.click();
     }
 });
+// "?" key = Shift+/ — triggers the spotlight tour from anywhere (parity with the
+// web app). Ignored inside form fields so it never hijacks normal text entry.
+document.addEventListener('keydown', (e) => {
+    if (e.key === '?' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target?.tagName)) {
+        e.preventDefault();
+        import('./tour.js').then(({ resetTour, startTour }) => {
+            resetTour();
+            startTour();
+        });
+    }
+});
 try {
     if (localStorage.getItem('open-cluely.railCollapsed') === '1') {
         applyRailCollapsed(true);
@@ -2506,6 +2517,14 @@ function updateUI() {
         // counter pill fades to 0.3 opacity when there's nothing to count.
         screenshotCount.setAttribute('data-count', String(screenshotsCount));
         screenshotCount.classList.toggle('is-zero', screenshotsCount <= 0);
+    }
+
+    // Show the chat-empty-state placeholder only while the transcript is empty;
+    // hide it as soon as the first message lands so it never overlaps real
+    // chat content.
+    const emptyState = document.getElementById('chat-empty-state');
+    if (emptyState) {
+        emptyState.style.display = (chatMessagesArray.length === 0) ? 'flex' : 'none';
     }
 
     const aiBundle = buildFilteredAiContextBundle({

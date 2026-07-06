@@ -372,6 +372,14 @@
     .messages::-webkit-scrollbar { width: 3px; }
     .messages::-webkit-scrollbar-track { background: transparent; }
     .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Allow selecting + copying transcript text on mobile (the toolbar buttons
+       set user-select:none so taps don't highlight them; re-enable it on the
+       message list itself). */
+    .messages, .messages * {
+      user-select: text;
+      -webkit-user-select: text;
+    }
   </style>
 </head>
 <body>
