@@ -784,6 +784,16 @@ body.stealth-on .app-shell { opacity: 0.92; }
   color: color-mix(in srgb, var(--bg-base) 55%, transparent);
 }
 
+/* "Coming soon" badge for not-yet-shipping actions (e.g. 屏幕 AI). Sits inline
+   after the button label, tinted with the --ai indigo family. */
+.soon-badge {
+  font-size: 9px; font-weight: 600; padding: 1px 5px;
+  border-radius: 6px; background: rgba(124, 140, 248, 0.15);
+  color: rgba(124, 140, 248, 0.8); margin-left: 4px;
+  vertical-align: middle; text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
 /* ── More menu dropdown ──────────────────────────────────────────────────── */
 .more-menu {
   position: relative;
@@ -1856,7 +1866,7 @@ body.rail-collapsed .right-rail {
   .resume-dropzone__icon, .history-empty__icon {
     animation: none !important;
   }
-  .channel-card--connecting .channel-card__toggle {
+  .channel-box.is-connecting .channel-toggle::after {
     animation: none !important;
   }
 }

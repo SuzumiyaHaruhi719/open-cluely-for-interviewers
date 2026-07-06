@@ -271,6 +271,8 @@
     border: 1px solid var(--hairline);
     border-radius: var(--radius-sm);
     cursor: pointer;
+    /* position: relative anchors the connecting-state spinner (::after). */
+    position: relative;
     /* Transitions for all interactive properties. */
     transition:
         color        var(--dur-1) var(--ease),
@@ -303,6 +305,21 @@
     color: var(--channel-accent, var(--fg));
     background: color-mix(in srgb, var(--channel-accent) 10%, var(--surface));
     border-color: color-mix(in srgb, var(--channel-accent) 40%, var(--hairline));
+}
+
+/* Connecting spinner: a small indigo ring spins on the toggle while the source
+   is connecting. Anchored to the toggle via its position: relative. */
+.channel-box.is-connecting .channel-toggle::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: rgba(124, 140, 248, 0.9);
+    border-radius: 50%;
+    animation: channel-spin 0.8s linear infinite;
+}
+@keyframes channel-spin {
+    to { transform: rotate(360deg); }
 }
 
 /* Live / on: filled with accent colour; text flips to card background. */
