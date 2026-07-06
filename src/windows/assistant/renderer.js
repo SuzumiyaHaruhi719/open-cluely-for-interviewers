@@ -1671,6 +1671,13 @@ async function init() {
     if (generateQuestionBtn) {
         generateQuestionBtn.addEventListener('click', handleGenerateQuestionClick);
     }
+    // Loading-overlay cancel: hide the overlay + confirm to the user that the
+    // in-flight analysis was cancelled. The actual AI request is not aborted
+    // here (the main process owns it); this only dismisses the waiting UI.
+    document.getElementById('loading-cancel-btn')?.addEventListener('click', () => {
+        hideLoadingOverlay();
+        showFeedback('已取消分析', 'info');
+    });
     if (window.electronAPI?.onClearFromMobile) {
         window.electronAPI.onClearFromMobile(() => {
             screenshotsCount = 0;

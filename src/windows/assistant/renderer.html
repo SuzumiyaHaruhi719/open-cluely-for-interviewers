@@ -229,7 +229,12 @@
 
         <section class="rail-section rail-section--grow">
           <h2 class="rail-section__title">会话上下文 <span class="rail-section__tag">自动</span></h2>
-          <div id="session-context"></div>
+          <div id="session-context">
+            <div class="session-context-empty">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <div class="session-context-empty__text">AI 上下文会在首次分析后自动生成</div>
+            </div>
+          </div>
         </section>
       </aside>
     </div>
@@ -531,6 +536,7 @@
         <div class="loading-text">分析中…</div>
         <div class="loading-timer" id="loading-timer">已等待 0 秒…</div>
         <div class="loading-hint">分析可能需要 30 秒，请耐心等待</div>
+        <button id="loading-cancel-btn" class="loading-cancel-btn" type="button">取消</button>
       </div>
     </div>
 

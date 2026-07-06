@@ -1191,6 +1191,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
   background: var(--surface-strong);
   border-color: var(--hairline-strong);
   color: var(--fg);
+  opacity: 0.8 !important;
 }
 
 .chat-autoscroll-toggle:active { transform: scale(0.95); }
@@ -1322,6 +1323,14 @@ body.stealth-on .app-shell { opacity: 0.92; }
    scroll region, so it can't be squeezed and overlapped). */
 .right-rail #session-context {
   flex: 0 0 auto;
+}
+
+.session-context-empty {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 24px 12px; color: var(--fg-subtle); text-align: center;
+}
+.session-context-empty__text {
+  font-size: 12px; line-height: 1.5; max-width: 200px;
 }
 
 /* Resume rail-section body wrapper — stacks the drop-zone + résumé chat. */
@@ -1540,6 +1549,17 @@ body.rail-collapsed .right-rail {
 }
 .loading-hint {
   font-size: 11px; color: var(--fg-subtle); margin-top: 4px; opacity: 0.7;
+}
+
+.loading-cancel-btn {
+  margin-top: 12px; padding: 6px 16px; font-size: 12px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--fg-muted); border-radius: 8px; cursor: pointer;
+  transition: all 0.2s;
+}
+.loading-cancel-btn:hover {
+  border-color: var(--fg-muted); color: var(--fg);
+  background: rgba(255,255,255,0.03);
 }
 
 @keyframes spin {
