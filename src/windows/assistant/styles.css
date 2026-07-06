@@ -132,6 +132,15 @@ body {
   user-select: none;
 }
 
+/* Re-enable selection on content surfaces so transcript/messages/JD text can
+   be copied. Chrome above stays non-selectable. */
+.chat-message, .message-content, .result-text,
+.resume-dropzone__preview, .resume-chat__messages,
+.monitor-live-text, .jd-input {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 button {
   font-family: inherit;
   cursor: pointer;
@@ -802,7 +811,9 @@ body.stealth-on .app-shell { opacity: 0.92; }
 
 /* Menu items: full-width, low-contrast at rest, reveal on hover. */
 .more-menu-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   padding: 8px 12px;
   border: none;
@@ -816,6 +827,10 @@ body.stealth-on .app-shell { opacity: 0.92; }
     background var(--dur-1) var(--ease),
     color var(--dur-1) var(--ease),
     transform var(--dur-1) var(--ease-spring);
+}
+
+.more-menu-item svg {
+  flex: 0 0 auto;
 }
 
 .more-menu-item:hover {

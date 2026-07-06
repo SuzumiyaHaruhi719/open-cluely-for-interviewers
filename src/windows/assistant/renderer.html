@@ -102,14 +102,14 @@
           </div>
 
           <div class="topbar__actions action-buttons">
-            <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="截图">
+            <button id="screenshot-btn" class="action-btn icon-btn" type="button" aria-label="截图" title="截图">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
               </svg>
             </button>
-            <button id="analyze-btn" class="action-btn primary-btn" type="button">问 AI</button>
+            <button id="analyze-btn" class="action-btn primary-btn" type="button" title="问 AI">问 AI</button>
             <button id="screen-ai-btn" class="action-btn" type="button">屏幕 AI</button>
-            <button id="generate-question-btn" class="action-btn" type="button">生成问题</button>
+            <button id="generate-question-btn" class="action-btn" type="button" title="生成追问">生成问题</button>
 
             <div class="more-menu" id="more-menu">
               <button id="more-menu-btn" class="action-btn icon-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="更多操作">
@@ -118,10 +118,19 @@
                 </svg>
               </button>
               <div id="more-menu-panel" class="more-menu-panel hidden" role="menu">
-                <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">会议纪要</button>
-                <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">对话洞察</button>
+                <button id="notes-btn" class="more-menu-item" type="button" role="menuitem">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+                  <span>会议纪要</span>
+                </button>
+                <button id="insights-btn" class="more-menu-item" type="button" role="menuitem">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+                  <span>对话洞察</span>
+                </button>
                 <div class="more-menu-separator" role="separator"></div>
-                <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">清空会话</button>
+                <button id="clear-btn" class="more-menu-item" type="button" role="menuitem">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  <span>清空会话</span>
+                </button>
               </div>
             </div>
           </div>
@@ -188,7 +197,7 @@
               class="chat-autoscroll-toggle"
               type="button"
               aria-pressed="true"
-              title="切换自动滚动"
+              title="自动滚动（点击切换）"
             >&#x21E9;</button>
             <button id="chat-manual-send" class="chat-manual-send" type="button">添加</button>
           </div>
