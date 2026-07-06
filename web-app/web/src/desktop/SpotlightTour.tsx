@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-
+import { useState, useEffect, useCallback } from 'react';
 /**
  * Spotlight Tour — interactive newcomer guidance for the web app.
  *
@@ -196,7 +195,6 @@ export function SpotlightTour() {
   const [rect, setRect] = useState<DOMRect | null>(null);
   const [ttPos, setTtPos] = useState<TooltipPosition | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const rafRef = useRef<number>(0);
 
   // Check if tour should start
   useEffect(() => {
