@@ -2359,6 +2359,27 @@ function showFeedback(message, type = 'info') {
     }
 }
 
+// Loading-overlay wait timer. Started when the overlay is shown and cleared
+// when hidden — updates #loading-timer's "已等待 N 秒…" text every second so the
+// user has a live progress signal during a long screen analysis.
+let loadingTimerInterval = null;
+function startLoadingTimer() {
+    const timerEl = document.getElementById('loading-timer');
+    let seconds = 0;
+    if (timerEl) timerEl.textContent = '已等待 0 秒…';
+    if (loadingTimerInterval) clearInterval(loadingTimerInterval);
+    loadingTimerInterval = setInterval(() => {
+        seconds += 1;
+        if (timerEl) timerEl.textContent = `已等待 ${seconds} 秒…`;
+    }, 1000);
+}
+function stopLoadingTimer() {
+    if (loadingTimerInterval) {
+        clearInterval(loadingTimerInterval);
+        loadingTimerInterval = null;
+    }
+}
+
 function showLoadingOverlay(message = '正在分析屏幕...') {
     if (loadingOverlay) {
         const loadingTextElement = loadingOverlay.querySelector('.loading-text');
@@ -2367,6 +2388,7 @@ function showLoadingOverlay(message = '正在分析屏幕...') {
             loadingTextElement.textContent = message;
         }
         loadingOverlay.classList.remove('hidden');
+        startLoadingTimer();
     }
 }
 
@@ -2378,6 +2400,7 @@ function hideLoadingOverlay() {
             loadingTextElement.textContent = '正在分析屏幕...';
         }
     }
+    stopLoadingTimer();
 }
 
 function showEmergencyOverlay() {

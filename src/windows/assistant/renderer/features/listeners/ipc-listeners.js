@@ -98,7 +98,7 @@ export function setupIpcListeners({
 
     if (windowApi.onToggleVoiceRecognition) {
         windowApi.onToggleVoiceRecognition(() => {
-            addMonitorLog('info', 'shortcut-event', 'Global shortcut toggled transcription');
+            addMonitorLog('info', 'shortcut-event', '全局快捷键已切换转写');
             toggleMasterTranscription().catch((error) => {
                 console.error('Global shortcut toggle failed:', error);
                 addMonitorLog('error', 'shortcut-toggle-failed', error.message);
@@ -109,11 +109,11 @@ export function setupIpcListeners({
     if (windowApi.onTriggerAskAi) {
         windowApi.onTriggerAskAi(() => {
             if (typeof isAskAiShortcutEnabled === 'function' && !isAskAiShortcutEnabled()) {
-                addMonitorLog('info', 'shortcut-ask-ai-blocked', 'Global Ask AI shortcut ignored because Ask AI is disabled');
+                addMonitorLog('info', 'shortcut-ask-ai-blocked', '全局 Ask AI 快捷键已忽略，因为 Ask AI 已禁用');
                 return;
             }
 
-            addMonitorLog('info', 'shortcut-event', 'Global Ask AI shortcut triggered');
+            addMonitorLog('info', 'shortcut-event', '全局 Ask AI 快捷键已触发');
             askAiWithSessionContext().catch((error) => {
                 console.error('Global Ask AI trigger failed:', error);
                 addMonitorLog('error', 'shortcut-ask-ai-failed', error.message);
@@ -136,14 +136,14 @@ export function setupIpcListeners({
     }
 
     window.addEventListener('error', (event) => {
-        addMonitorLog('error', 'renderer-error', event?.message || 'Renderer error');
+        addMonitorLog('error', 'renderer-error', event?.message || '渲染器错误');
     });
 
     window.addEventListener('unhandledrejection', (event) => {
         const reason = event?.reason;
         const message = typeof reason === 'string'
             ? reason
-            : reason?.message || 'Unhandled promise rejection';
+            : reason?.message || '未处理的 Promise 拒绝';
         addMonitorLog('error', 'renderer-rejection', message);
     });
 }

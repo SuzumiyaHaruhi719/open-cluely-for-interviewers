@@ -223,7 +223,7 @@ export function setupEventListeners({
 
         if (isShortcutPressed?.(event, 'askAi')) {
             event.preventDefault();
-            addMonitorLog('info', 'shortcut-local', 'Local Ask AI shortcut captured; awaiting global Ask AI event');
+            addMonitorLog('info', 'shortcut-local', '本地 Ask AI 快捷键已捕获；等待全局 Ask AI 事件');
             return;
         }
 
@@ -292,7 +292,7 @@ export function setupEventListeners({
 
         if (isShortcutPressed?.(event, 'toggleTranscription')) {
             event.preventDefault();
-            addMonitorLog('info', 'shortcut-local', 'Local transcription shortcut captured; awaiting global shortcut event');
+            addMonitorLog('info', 'shortcut-local', '本地转写快捷键已捕获；等待全局快捷键事件');
         }
     });
 
