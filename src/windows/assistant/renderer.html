@@ -156,6 +156,16 @@
           </div>
         </div>
 
+        <!-- Chat empty state — shown until messages appear (JS hides it) -->
+        <div id="chat-empty-state" class="chat-empty-state">
+          <svg class="chat-empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          </svg>
+          <div class="chat-empty-state__title">等待开始面试</div>
+          <div class="chat-empty-state__hint">在下方开启一个音频通道，对话转写会显示在这里</div>
+        </div>
+
         <!-- Live transcript stream -->
         <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="实时转写"></div>
 
@@ -445,6 +455,18 @@
       </div>
     </div>
 
+    <!-- Clear session confirmation -->
+    <div id="clear-confirmation-dialog" class="close-confirmation hidden" role="dialog" aria-modal="true" aria-labelledby="clear-confirmation-title">
+      <div class="close-confirmation-card">
+        <div id="clear-confirmation-title" class="close-confirmation-title">清空会话？</div>
+        <div class="close-confirmation-text">将清除当前转写与上下文，此操作无法撤销。</div>
+        <div class="close-confirmation-actions">
+          <button id="cancel-clear-session-btn" class="close-confirmation-btn close-confirmation-btn-secondary">取消</button>
+          <button id="confirm-clear-session-btn" class="close-confirmation-btn close-confirmation-btn-danger">清空</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ╔══ New-interview type picker (online vs offline) ══╗ -->
     <div id="interview-type-modal" class="interview-type-modal hidden" role="dialog" aria-modal="true" aria-labelledby="interview-type-title">
       <div class="interview-type-card-wrap" role="document">
@@ -498,12 +520,14 @@
           </svg>
         </div>
         <div class="loading-text">分析中…</div>
+        <div class="loading-timer" id="loading-timer">已等待 0 秒…</div>
+        <div class="loading-hint">分析可能需要 30 秒，请耐心等待</div>
       </div>
     </div>
 
     <!-- Emergency overlay -->
     <div id="emergency-overlay" class="emergency-overlay hidden">
-      <div class="emergency-message">HIDDEN</div>
+      <div class="emergency-message">已隐藏</div>
     </div>
 
     <!-- Pipeline Studio (SP3 2D editor) — full-window overlay -->

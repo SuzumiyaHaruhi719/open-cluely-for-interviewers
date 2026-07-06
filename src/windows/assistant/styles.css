@@ -24,7 +24,7 @@
   --border: rgba(255, 255, 255, .08);
   --fg: #E6EDF3;
   --fg-muted: #8B949E;
-  --fg-subtle: #6E7681;   /* tertiary: timestamps, hints, disabled labels */
+  --fg-subtle: #8B949E;   /* tertiary: timestamps, hints, disabled labels (WCAG AA ≥ ~4.5:1) */
 
   /* Semantic channel + role colours (never colour-alone: always icon+label) */
   --candidate: #2DD4BF;   /* teal  — computer audio / candidate */
@@ -1107,20 +1107,29 @@ body.stealth-on .app-shell { opacity: 0.92; }
 }
 
 /* Empty state — centered, subtle, actionable copy. The pseudo-element avoids
-   any additional DOM node while giving the empty space breathing room. */
-.chat-messages:empty::before {
-  content: "等待第一段回答 — 请先在下方启动一个音频通道。";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  margin: auto;
-  padding: 48px 32px;
-  text-align: center;
-  color: var(--fg-subtle);
-  font-size: 13px;
-  font-style: italic;
-  line-height: 1.6;
+   any additional DOM node while giving the empty space breathing room.
+   NOTE: The richer empty state (#chat-empty-state) is now a sibling DOM node
+   shown/hidden by JS; this ::after just reserves layout gracefully. */
+.chat-messages:empty::after {
+  content: '';
+  display: block;
+}
+
+/* Richer chat empty state — icon + title + hint, centered. Shown as a sibling
+   of .chat-messages (JS toggles its visibility when messages appear). */
+.chat-empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; gap: 12px; color: var(--fg-subtle);
+  pointer-events: none;
+}
+.chat-empty-state__icon {
+  width: 48px; height: 48px; opacity: 0.3;
+}
+.chat-empty-state__title {
+  font-size: 15px; font-weight: 500; color: var(--fg-muted);
+}
+.chat-empty-state__hint {
+  font-size: 12px; color: var(--fg-subtle); max-width: 280px; text-align: center; line-height: 1.5;
 }
 
 /* ── Composer ────────────────────────────────────────────────────────────── */
@@ -1495,6 +1504,14 @@ body.rail-collapsed .right-rail {
   letter-spacing: 0.01em;
 }
 
+.loading-timer {
+  font-size: 12px; color: var(--fg-subtle); margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.loading-hint {
+  font-size: 11px; color: var(--fg-subtle); margin-top: 4px; opacity: 0.7;
+}
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
@@ -1769,4 +1786,17 @@ body.rail-collapsed .right-rail {
  * disabled all transitions/animations app-wide. Per-component reduced-motion
  * guards in the partials were removed for the same reason. Keep motion subtle
  * (transform/opacity, 120–220ms var(--ease)) so this stays comfortable. */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Restore reduced-motion for infinite/looping animations only.
+     One-shot entrance transitions are kept for polish. */
+  .rec-indicator__dot, .mode-indicator__dot,
+  .analyzing-icon, .tour-spotlight-ring,
+  .resume-dropzone__icon, .history-empty__icon {
+    animation: none !important;
+  }
+  .channel-card--connecting .channel-card__toggle {
+    animation: none !important;
+  }
+}
 

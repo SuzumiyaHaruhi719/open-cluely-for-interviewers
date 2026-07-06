@@ -15,6 +15,11 @@ export function setupEventListeners({
     cancelCloseBtn,
     confirmCloseBtn,
     closeConfirmationDialog,
+    isCloseConfirmationOpen,
+    clearConfirmationDialog,
+    cancelClearSessionBtn,
+    confirmClearSessionBtn,
+    isClearConfirmationOpen,
     chatMessagesElement,
     suggestBtn,
     notesBtn,
@@ -42,6 +47,8 @@ export function setupEventListeners({
     setSourceSelected,
     openCloseConfirmation,
     closeCloseConfirmation,
+    openClearConfirmation,
+    closeClearConfirmation,
     closeApplication,
     toggleChatMessageInclusion,
     getResponseSuggestions,
@@ -54,7 +61,7 @@ export function setupEventListeners({
     if (screenshotBtn) screenshotBtn.addEventListener('click', takeStealthScreenshot);
     if (analyzeBtn) analyzeBtn.addEventListener('click', askAiWithSessionContext);
     if (screenAiBtn) screenAiBtn.addEventListener('click', analyzeScreenshotsOnly);
-    if (clearBtn) clearBtn.addEventListener('click', clearStealthData);
+    if (clearBtn) clearBtn.addEventListener('click', openClearConfirmation);
     if (hideBtn) hideBtn.addEventListener('click', emergencyHide);
     if (chatManualSend) chatManualSend.addEventListener('click', submitManualContextMessage);
 
@@ -114,6 +121,25 @@ export function setupEventListeners({
         });
     }
 
+    // Clear-session confirmation: cancel just hides; confirm hides + clears.
+    if (cancelClearSessionBtn) cancelClearSessionBtn.addEventListener('click', closeClearConfirmation);
+    if (confirmClearSessionBtn) {
+        confirmClearSessionBtn.addEventListener('click', () => {
+            closeClearConfirmation();
+            clearStealthData().catch((error) => {
+                console.error('Clear session error:', error);
+            });
+        });
+    }
+
+    if (clearConfirmationDialog) {
+        clearConfirmationDialog.addEventListener('click', (event) => {
+            if (event.target === clearConfirmationDialog) {
+                closeClearConfirmation();
+            }
+        });
+    }
+
     if (chatMessagesElement) {
         chatMessagesElement.addEventListener('click', (event) => {
             const copyButton = event.target?.closest?.('.message-copy-btn');
@@ -162,6 +188,23 @@ export function setupEventListeners({
             if (event.key === 'Enter') {
                 event.preventDefault();
                 closeApplication();
+                return;
+            }
+        }
+
+        if (isClearConfirmationOpen?.()) {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                closeClearConfirmation();
+                return;
+            }
+
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                closeClearConfirmation();
+                clearStealthData().catch((error) => {
+                    console.error('Clear session error:', error);
+                });
                 return;
             }
         }

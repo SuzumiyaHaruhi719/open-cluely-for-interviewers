@@ -611,6 +611,11 @@ const closeConfirmationDialog = document.getElementById('close-confirmation-dial
 const cancelCloseBtn = document.getElementById('cancel-close-btn');
 const confirmCloseBtn = document.getElementById('confirm-close-btn');
 
+// Clear-session confirmation (清空会话) — mirrors the close-confirmation flow.
+const clearConfirmationDialog = document.getElementById('clear-confirmation-dialog');
+const cancelClearSessionBtn = document.getElementById('cancel-clear-session-btn');
+const confirmClearSessionBtn = document.getElementById('confirm-clear-session-btn');
+
 // Title-bar controls
 const stealthBtn = document.getElementById('btn-stealth');
 const minimizeBtn = document.getElementById('btn-min');
@@ -2052,6 +2057,36 @@ function closeCloseConfirmation() {
     closeAppBtn?.focus();
 }
 
+// ── Clear-session confirmation dialog ────────────────────────────────────────
+// "清空会话" now asks for confirmation before actually clearing the transcript
+// and context. Mirrors openCloseConfirmation / closeCloseConfirmation above.
+let isClearConfirmationOpen = false;
+
+function openClearConfirmation() {
+    if (!clearConfirmationDialog) {
+        // No dialog available — fall back to clearing directly.
+        clearStealthData().catch((error) => {
+            console.error('Clear session error:', error);
+        });
+        return;
+    }
+
+    isClearConfirmationOpen = true;
+    clearConfirmationDialog.classList.remove('hidden');
+    confirmClearSessionBtn?.focus();
+}
+
+function closeClearConfirmation() {
+    if (!clearConfirmationDialog) {
+        isClearConfirmationOpen = false;
+        return;
+    }
+
+    isClearConfirmationOpen = false;
+    clearConfirmationDialog.classList.add('hidden');
+    clearBtn?.focus();
+}
+
 async function closeApplication() {
     try {
         console.log('Closing application...');
@@ -2473,6 +2508,11 @@ function setupEventListeners() {
         cancelCloseBtn,
         confirmCloseBtn,
         closeConfirmationDialog,
+        isCloseConfirmationOpen: () => isCloseConfirmationOpen,
+        clearConfirmationDialog,
+        cancelClearSessionBtn,
+        confirmClearSessionBtn,
+        isClearConfirmationOpen: () => isClearConfirmationOpen,
         chatMessagesElement,
         suggestBtn,
         notesBtn,
@@ -2488,6 +2528,8 @@ function setupEventListeners() {
         takeStealthScreenshot,
         askAiWithSessionContext,
         analyzeScreenshotsOnly,
+        // clearStealthData is invoked only after the clear-session confirmation
+        // is accepted (openClearConfirmation falls back to it when no dialog).
         clearStealthData,
         emergencyHide,
         copyChatMessageById,
@@ -2500,6 +2542,8 @@ function setupEventListeners() {
         setSourceSelected,
         openCloseConfirmation,
         closeCloseConfirmation,
+        openClearConfirmation,
+        closeClearConfirmation,
         closeApplication,
         toggleChatMessageInclusion,
         getResponseSuggestions,

@@ -270,18 +270,20 @@ export function startTour(opts = {}) {
 
     const isWelcomeStep = step.isWelcome;
     const isFinalStep = step.isFinal;
-    const showSkip = stepIdx === 0;
     const showPrev = stepIdx > 0 && !isWelcomeStep;
 
     tooltip.innerHTML = `
-      ${isWelcomeStep || isFinalStep ? `<div class="tour-final-icon">${step.icon || '✨'}</div>` : `<div class="tour-step-badge">第 ${stepIdx} / ${TOUR_STEPS.length - 2} 步</div>`}
+      <button class="tour-skip-btn" data-action="skip" title="跳过导览">✕ 跳过</button>
+      ${isWelcomeStep || isFinalStep
+        ? `<div class="tour-final-icon">${step.icon || '✨'}</div>`
+        : `<div class="tour-step-badge">第 ${stepIdx} / ${TOUR_STEPS.length - 2} 步</div>`
+      }
       <h3 class="tour-title">${step.title}</h3>
       <p class="tour-desc">${step.desc}</p>
       <div class="tour-actions">
         <div class="tour-dots">${dots}</div>
         <div class="tour-buttons">
-          ${showPrev ? '<button class="tour-btn tour-btn--ghost" data-action="prev">上一步</button>' : ''}
-          ${showSkip ? '<button class="tour-btn tour-btn--ghost" data-action="skip">跳过</button>' : ''}
+          ${showPrev ? '<button class="tour-btn tour-btn--ghost" data-action="prev">← 上一步</button>' : ''}
           ${isFinalStep
             ? '<button class="tour-btn tour-btn--primary" data-action="finish">开始使用 ✓</button>'
             : isWelcomeStep

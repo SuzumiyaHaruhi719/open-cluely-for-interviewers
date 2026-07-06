@@ -1,5 +1,17 @@
 const MAX_MONITOR_LOG_ENTRIES = 80;
 
+function friendlyError(error) {
+  const name = error?.name || '';
+  const msg = error?.message || String(error);
+  if (name === 'NotAllowedError' || /permission/i.test(msg))
+    return '麦克风权限被拒绝。请在系统设置 → 隐私 → 麦克风中允许此应用。';
+  if (name === 'NotFoundError' || /not found|notfound/i.test(msg))
+    return '未找到所选音频设备。请刷新设备列表或选择默认设备。';
+  if (name === 'NotReadableError' || /in use|occupied|not readable/i.test(msg))
+    return '设备被其他应用占用。请关闭其他录音软件后重试。';
+  return `音频采集失败：${msg}`;
+}
+
 export function createTranscriptionManager({
     transcriptionSourceState,
     normalizeSourceRule,
@@ -465,7 +477,7 @@ export function createTranscriptionManager({
             addMonitorLog('info', 'source-active', '麦克风音源已激活', 'mic');
         } catch (error) {
             console.error('Failed to start mic:', error);
-            showFeedback(`麦克风启动失败：${error.message}`, 'error');
+            showFeedback(`麦克风启动失败：${friendlyError(error)}`, 'error');
             addMonitorLog('error', 'source-failed', error.message, 'mic');
             stopAudioResources(micAudioContext, micMediaStream, micScriptProcessor);
             micAudioContext = null;
@@ -609,7 +621,7 @@ export function createTranscriptionManager({
             }
         } catch (error) {
             console.error('Failed to start system audio:', error);
-            showFeedback(`系统音频启动失败：${error.message}`, 'error');
+            showFeedback(`系统音频启动失败：${friendlyError(error)}`, 'error');
             addMonitorLog('error', 'source-failed', error.message, 'system');
             if (systemMediaStream === '__process_loopback__') {
                 try { await window.electronAPI?.stopProcessAudio?.(); } catch (_) {}
