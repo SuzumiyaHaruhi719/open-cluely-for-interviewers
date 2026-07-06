@@ -1299,3 +1299,39 @@ button.history-row {
   border-color: var(--brand-600);
   box-shadow: var(--shadow-md);
 }
+
+/* ╔══ 新手指引 / Onboarding overlay (web) ══╗ */
+.onboarding-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+}
+.onboarding-card {
+  position: relative; width: min(440px, 90vw); max-height: 86vh; overflow-y: auto;
+  background: var(--bg-1, #1e1e2e); border: 1px solid var(--border, rgba(255,255,255,.08));
+  border-radius: 14px; padding: 28px 26px 20px; box-shadow: 0 8px 40px rgba(0,0,0,.4);
+}
+.onboarding-close {
+  position: absolute; top: 12px; right: 12px;
+  background: none; border: none; color: var(--text-2, #888); cursor: pointer; padding: 4px;
+}
+.onboarding-close:hover { color: var(--text-1, #cdd); }
+.onboarding-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; color: var(--text-1, #cdd); }
+.onboarding-subtitle { font-size: 13px; color: var(--text-2, #888); margin: 0 0 20px; }
+.onboarding-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
+.onboarding-step { display: flex; gap: 12px; align-items: flex-start; }
+.onboarding-step__num {
+  flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent, #7c6fbb); color: #fff; font-size: 12px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+}
+.onboarding-step__title { font-size: 14px; font-weight: 500; color: var(--text-1, #cdd); margin-bottom: 2px; }
+.onboarding-step__desc { font-size: 12px; color: var(--text-2, #888); line-height: 1.5; }
+.onboarding-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.onboarding-dont-show { font-size: 12px; color: var(--text-2, #888); cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.onboarding-dont-show input { cursor: pointer; }
+.onboarding-start-btn {
+  padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer;
+  background: var(--accent, #7c6fbb); color: #fff; font-size: 13px; font-weight: 500;
+}
+.onboarding-start-btn:hover { opacity: .88; }
