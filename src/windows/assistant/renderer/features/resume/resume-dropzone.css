@@ -119,6 +119,16 @@
   letter-spacing: 0.02em;
 }
 
+/* Benefit line — a one-line value prop under the format hint, nudging the user
+   to actually drop a resume by stating what they get in return. */
+.resume-dropzone__benefit {
+  font-size: 11px;
+  color: var(--fg-subtle);
+  margin-top: 6px;
+  text-align: center;
+  opacity: 0.7;
+}
+
 /* ── Drag-over state (.is-dragover on rootEl) ─────────────────────────────── */
 /*
  * Border flips to solid + --ai accent. A soft --glow-ai bloom makes it obvious

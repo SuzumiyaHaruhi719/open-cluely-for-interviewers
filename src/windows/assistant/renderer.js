@@ -575,7 +575,15 @@ async function copyMobileUrlToClipboard() {
         await navigator.clipboard.writeText(url);
         showFeedback(`已复制 ${url}`, 'success');
     } catch (err) {
-        showFeedback('无法复制 URL', 'error');
+        // Fallback: the async Clipboard API can fail in non-secure contexts or
+        // when the document isn't focused. Rather than dead-end on an error
+        // toast, surface the URL in a prompt dialog so the user can copy it
+        // manually (Ctrl/Cmd+C the pre-selected value).
+        const picked = window.prompt('无法自动复制，请手动复制手机端 URL:', url);
+        if (picked === null) {
+            // User dismissed the prompt — nothing copied, so confirm explicitly.
+            showFeedback('无法复制 URL', 'error');
+        }
     }
 }
 // The legacy master/per-source transcription toggle trio was replaced by the

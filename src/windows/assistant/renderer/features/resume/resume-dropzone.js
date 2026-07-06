@@ -83,6 +83,7 @@ export function createResumeDropzone({ rootEl, onResumeParsed }) {
       ${UPLOAD_ICON_SVG}
       <span class="resume-dropzone__primary">拖拽简历或点击选择</span>
       <span class="resume-dropzone__hint">${ACCEPT_HINT}</span>
+      <div class="resume-dropzone__benefit">AI 会结合简历生成针对性追问</div>
     </button>
     <div class="resume-dropzone__result" hidden>
       <div class="resume-dropzone__meta">
