@@ -54,6 +54,13 @@ const TOUR_STEPS: TourStep[] = [
     desc: '对话进行中，点这里让 AI 分析上下文并推荐下一步追问。也可点「生成问题」快速出题。',
     icon: '🤖',
   },
+  {
+    selector: null,
+    title: '一切就绪！',
+    desc: '你现在可以开始第一场 AI 辅助面试了。遇到问题随时在设置里重播引导。',
+    icon: '🎉',
+    isFinal: true,
+  },
 ];
 
 interface TourStep {
@@ -62,13 +69,7 @@ interface TourStep {
   desc: string;
   icon: string;
   isWelcome?: boolean;
-}
-
-interface TourStep {
-  selector: string;
-  title: string;
-  desc: string;
-  icon: string;
+  isFinal?: boolean;
 }
 
 function getTargetRect(selector: string): DOMRect | null {
@@ -296,14 +297,16 @@ export function SpotlightTour() {
   if (!visible) return null;
 
   const step = TOUR_STEPS[stepIdx];
-  const isWelcome = step.isWelcome || !step.selector;
+  const isWelcome = step.isWelcome;
+  const isFinal = step.isFinal;
+  const isCentered = isWelcome || isFinal || !step.selector;
   const isLast = stepIdx === TOUR_STEPS.length - 1;
 
   const pad = 6;
   const r = 10;
 
-  // Welcome step: full dark mask, centered tooltip, no ring/arrow
-  if (isWelcome) {
+  // Welcome/final step: full dark mask, centered tooltip, no ring/arrow
+  if (isCentered) {
     return (
       <>
         <div className="tour-mask" style={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' }} onClick={() => finish(false)} />
@@ -325,8 +328,14 @@ export function SpotlightTour() {
               ))}
             </div>
             <div className="tour-buttons">
-              <button className="tour-btn tour-btn--ghost" onClick={() => finish(false)}>跳过</button>
-              <button className="tour-btn tour-btn--primary" onClick={next}>开始导览 →</button>
+              {isFinal ? (
+                <button className="tour-btn tour-btn--primary" onClick={() => finish(true)}>开始使用 ✓</button>
+              ) : (
+                <>
+                  <button className="tour-btn tour-btn--ghost" onClick={() => finish(false)}>跳过</button>
+                  <button className="tour-btn tour-btn--primary" onClick={next}>开始导览 →</button>
+                </>
+              )}
             </div>
           </div>
         </div>

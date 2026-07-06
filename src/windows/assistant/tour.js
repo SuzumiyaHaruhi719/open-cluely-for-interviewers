@@ -58,6 +58,13 @@ const TOUR_STEPS = [
     desc: '对话进行中，点这里让 AI 分析上下文并推荐下一步追问。也可点「生成问题」快速出题。',
     icon: '🤖',
   },
+  {
+    selector: null, // final step — centered, no spotlight
+    title: '一切就绪！',
+    desc: '你现在可以开始第一场 AI 辅助面试了。遇到问题随时在设置里重播引导。',
+    icon: '🎉',
+    isFinal: true,
+  },
 ];
 
 /**
@@ -261,18 +268,27 @@ export function startTour(opts = {}) {
       `<div class="tour-dot ${i === stepIdx ? 'active' : ''}" data-step="${i}"></div>`
     ).join('');
 
+    const isWelcomeStep = step.isWelcome;
+    const isFinalStep = step.isFinal;
+    const showSkip = stepIdx === 0;
+    const showPrev = stepIdx > 0 && !isWelcomeStep;
+
     tooltip.innerHTML = `
-      <div class="tour-step-badge">第 ${stepIdx + 1} / ${TOUR_STEPS.length} 步</div>
-      <h3 class="tour-title">${step.icon || ''} ${step.title}</h3>
+      ${isWelcomeStep || isFinalStep ? `<div class="tour-final-icon">${step.icon || '✨'}</div>` : `<div class="tour-step-badge">第 ${stepIdx} / ${TOUR_STEPS.length - 2} 步</div>`}
+      <h3 class="tour-title">${step.title}</h3>
       <p class="tour-desc">${step.desc}</p>
       <div class="tour-actions">
         <div class="tour-dots">${dots}</div>
         <div class="tour-buttons">
-          ${stepIdx > 0 ? '<button class="tour-btn tour-btn--ghost" data-action="prev">上一步</button>' : ''}
-          ${stepIdx === 0 ? '<button class="tour-btn tour-btn--ghost" data-action="skip">跳过</button>' : ''}
-          ${isLast
-            ? '<button class="tour-btn tour-btn--primary" data-action="finish">完成 ✓</button>'
-            : '<button class="tour-btn tour-btn--primary" data-action="next">下一步 →</button>'
+          ${showPrev ? '<button class="tour-btn tour-btn--ghost" data-action="prev">上一步</button>' : ''}
+          ${showSkip ? '<button class="tour-btn tour-btn--ghost" data-action="skip">跳过</button>' : ''}
+          ${isFinalStep
+            ? '<button class="tour-btn tour-btn--primary" data-action="finish">开始使用 ✓</button>'
+            : isWelcomeStep
+              ? '<button class="tour-btn tour-btn--primary" data-action="next">开始导览 →</button>'
+              : isLast
+                ? '<button class="tour-btn tour-btn--primary" data-action="finish">完成 ✓</button>'
+                : '<button class="tour-btn tour-btn--primary" data-action="next">下一步 →</button>'
           }
         </div>
       </div>
@@ -309,8 +325,8 @@ export function startTour(opts = {}) {
     currentStep = idx;
     const step = TOUR_STEPS[idx];
 
-    // Welcome step: no spotlight, centered tooltip
-    if (step.isWelcome || !step.selector) {
+    // Welcome/final step: no spotlight, centered tooltip
+    if (step.isWelcome || step.isFinal || !step.selector) {
       const isLast = idx === TOUR_STEPS.length - 1;
       tooltip.classList.remove('visible');
       ring.style.display = 'none';
