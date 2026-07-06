@@ -316,6 +316,7 @@ export function SpotlightTour() {
             opacity: tooltipVisible ? 1 : 0,
           }}
         >
+          <div className="tour-progress-bar" style={{ width: `${(stepIdx / (TOUR_STEPS.length - 1)) * 100}%` }} />
           <div className="tour-final-icon" style={{ fontSize: '28px' }}>{step.icon}</div>
           <h3 className="tour-title">{step.title}</h3>
           <p className="tour-desc">{step.desc}</p>
@@ -390,6 +391,7 @@ export function SpotlightTour() {
           transform: tooltipVisible ? 'scale(1)' : 'scale(0.92)',
         }}
       >
+        <div className="tour-progress-bar" style={{ width: `${(stepIdx / (TOUR_STEPS.length - 1)) * 100}%` }} />
         <div className="tour-step-badge">第 {stepIdx} / {TOUR_STEPS.length - 2} 步</div>
         <h3 className="tour-title">{step.icon} {step.title}</h3>
         <p className="tour-desc">{step.desc}</p>

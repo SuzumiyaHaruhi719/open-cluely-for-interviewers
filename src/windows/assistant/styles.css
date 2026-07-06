@@ -810,6 +810,20 @@ body.stealth-on .app-shell { opacity: 0.92; }
   color: color-mix(in srgb, var(--bg-base) 55%, transparent);
 }
 
+.action-btn.primary-btn:not(:disabled) {
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn.primary-btn:not(:disabled):active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
 /* "Coming soon" badge for not-yet-shipping actions (e.g. 屏幕 AI). Sits inline
    after the button label, tinted with the --ai indigo family. */
 .soon-badge {
