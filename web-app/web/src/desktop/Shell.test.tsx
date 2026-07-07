@@ -92,14 +92,13 @@ function lastConfig(ws: MockWebSocket): Record<string, unknown> | null {
 
 /**
  * The shell auto-opens the interview-type picker on mount (ephemeral: a fresh
- * in-memory interview every open). Dismiss it so tests run against the default
- * online interview, mirroring the pre-ephemeral "no active session" baseline.
+/**
+ * Helper: the app no longer auto-opens the type picker on mount.
+ * If a modal is visible, dismiss it; otherwise skip.
  */
 async function flushMount(): Promise<void> {
-  await waitFor(() => {
-    const modal = document.getElementById('interview-type-modal');
-    expect(modal?.classList.contains('hidden')).toBe(false);
-  });
+  const modal = document.getElementById('interview-type-modal');
+  if (!modal || modal.classList.contains('hidden')) return;
   fireEvent.click(screen.getByRole('button', { name: '取消' }));
   await waitFor(() => {
     expect(

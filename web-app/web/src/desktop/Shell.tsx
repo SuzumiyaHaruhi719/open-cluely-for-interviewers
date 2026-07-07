@@ -584,10 +584,9 @@ export function Shell() {
     [onClearSession, pushConfig]
   );
 
-  // On mount: open the type picker for a fresh interview (nothing to restore).
-  useEffect(() => {
-    setTypePickerOpen(true);
-  }, []);
+  // On mount: land directly on the main interview screen.
+  // The type picker opens only when the user clicks "新建面试".
+  // (Previously this auto-opened the modal on mount, blocking the main UI.)
 
   const sessionTitle = view === 'bank' ? '题库' : interviewTitle;
 
