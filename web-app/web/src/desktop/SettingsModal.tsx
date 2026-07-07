@@ -718,7 +718,7 @@ export function SettingsModal({
                 type="button"
                 className="settings-btn"
                 onClick={() => {
-                  try { localStorage.removeItem('tour-completed-v2'); } catch {}
+                  try { sessionStorage.removeItem('tour-shown-this-session'); } catch {}
                   window.location.reload();
                 }}
               >重新播放引导 Tour</button>

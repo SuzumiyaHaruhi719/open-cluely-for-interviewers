@@ -314,7 +314,7 @@ export function Shell() {
     const handler = (e: KeyboardEvent): void => {
       if (e.key === '?' && !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
         e.preventDefault();
-        try { localStorage.removeItem('tour-completed-v2'); } catch {}
+        try { sessionStorage.removeItem('tour-shown-this-session'); } catch {}
         window.location.reload();
       }
     };

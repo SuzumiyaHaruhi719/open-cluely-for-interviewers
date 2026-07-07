@@ -7,7 +7,18 @@ import { useState, useEffect, useCallback } from 'react';
  * "Next" advances; the spotlight animates to the next element.
  */
 
-const TOUR_STORAGE_KEY = 'tour-completed-v2';
+const TOUR_STORAGE_KEY = 'tour-shown-this-session';
+
+// Track across both sessionStorage (per-tab) so the tour shows on every fresh
+// page load but doesn't re-trigger during HMR or in-tab navigation.
+function hasSeenTour(): boolean {
+  try {
+    return sessionStorage.getItem(TOUR_STORAGE_KEY) === '1';
+  } catch { return false; }
+}
+function markTourSeen() {
+  try { sessionStorage.setItem(TOUR_STORAGE_KEY, '1'); } catch {}
+}
 
 const TOUR_STEPS: TourStep[] = [
   {
@@ -196,14 +207,12 @@ export function SpotlightTour() {
   const [ttPos, setTtPos] = useState<TooltipPosition | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  // Check if tour should start
+  // Check if tour should start — shows on every fresh page load
   useEffect(() => {
-    try {
-      if (localStorage.getItem(TOUR_STORAGE_KEY) !== '1') {
-        const t = setTimeout(() => setVisible(true), 800);
-        return () => clearTimeout(t);
-      }
-    } catch { /* localStorage unavailable */ }
+    if (!hasSeenTour()) {
+      const t = setTimeout(() => setVisible(true), 800);
+      return () => clearTimeout(t);
+    }
   }, []);
 
   // Position spotlight when step changes
@@ -288,7 +297,9 @@ export function SpotlightTour() {
   function finish(completed: boolean) {
     setVisible(false);
     if (completed) {
-      try { localStorage.setItem(TOUR_STORAGE_KEY, '1'); } catch {}
+      markTourSeen();
+    } else {
+      markTourSeen(); // also mark on skip so it doesn't re-show mid-session
     }
   }
 
