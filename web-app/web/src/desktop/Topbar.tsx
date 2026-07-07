@@ -264,15 +264,6 @@ export function Topbar({
           总结面试
         </button>
         <button
-          id="screen-ai-btn"
-          className="action-btn"
-          type="button"
-          title="即将推出"
-          disabled
-        >
-          屏幕 AI <span className="soon-badge">即将</span>
-        </button>
-        <button
           id="generate-question-btn"
           className="action-btn"
           type="button"
