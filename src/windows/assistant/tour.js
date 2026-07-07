@@ -76,6 +76,8 @@ export function startTour(opts = {}) {
   const { onComplete } = opts;
   let currentStep = 0;
   let dismissed = false;
+  let isScrolling = false; // suppress scroll-triggered reposition during scrollIntoView
+  let dismissed = false;
 
   // Remove any existing tour elements
   document.querySelectorAll('.tour-mask, .tour-spotlight-ring, .tour-tooltip, .tour-arrow').forEach(el => el.remove());
@@ -357,14 +359,18 @@ export function startTour(opts = {}) {
     // Normal step: scroll element into view if needed, then spotlight
     const el = document.querySelector(step.selector);
     if (el) {
+      // Suppress scroll-triggered reposition during programmatic scroll
+      isScrolling = true;
       el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      setTimeout(() => { isScrolling = false; }, 500);
     }
 
-    // Wait a tick for scroll to settle
+    // Wait for scroll to settle
     setTimeout(() => {
       const rect = getTargetRect(step.selector);
       if (!rect) {
-        goToStep(idx + 1);
+        // Element not visible — DON'T skip to next step, just leave as-is
+        // (prevents auto-advancing past steps the user hasn't seen)
         return;
       }
 
@@ -413,9 +419,11 @@ export function startTour(opts = {}) {
     else if (e.key === 'ArrowLeft') { e.preventDefault(); goToStep(currentStep - 1); }
   }
 
-  /** Reposition on resize/scroll */
+  /** Reposition on resize/scroll (but ignore programmatic scrollIntoView) */
   function handleResize() {
+    if (isScrolling) return;
     const step = TOUR_STEPS[currentStep];
+    if (!step.selector) return;
     const rect = getTargetRect(step.selector);
     if (rect) {
       positionSpotlight(rect);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 /**
  * Spotlight Tour — interactive newcomer guidance for the web app.
  *
@@ -218,8 +218,8 @@ export function SpotlightTour() {
   // Position spotlight when step changes
   const reposition = useCallback((idx: number) => {
     const step = TOUR_STEPS[idx];
-    // Welcome step: no spotlight, centered
-    if (step.isWelcome || !step.selector) {
+    // Welcome/final step: no spotlight, centered
+    if (step.isWelcome || step.isFinal || !step.selector) {
       setRect(null);
       setTtPos(null);
       return;
@@ -227,22 +227,26 @@ export function SpotlightTour() {
     // Auto-scroll element into view
     const el = document.querySelector(step.selector);
     if (el) {
+      // Suppress scroll-triggered reposition during programmatic scroll
+      isScrollingRef.current = true;
       el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      setTimeout(() => { isScrollingRef.current = false; }, 500);
     }
+    // Wait for scroll to settle, then position
     setTimeout(() => {
       const r = getTargetRect(step.selector!);
       if (!r) {
-        if (idx + 1 < TOUR_STEPS.length) {
-          setStepIdx(idx + 1);
-        } else {
-          setVisible(false);
-        }
+        // Element still not visible — DON'T skip, just leave current position
+        // (prevents auto-advancing past steps the user hasn't seen)
         return;
       }
       setRect(r);
       setTtPos(computeTooltipPos(r));
-    }, 300);
+    }, 400);
   }, []);
+
+  // Ref to suppress scroll-triggered reposition during programmatic scrollIntoView
+  const isScrollingRef = useRef(false);
 
   useEffect(() => {
     if (!visible) return;
@@ -257,7 +261,10 @@ export function SpotlightTour() {
   // Reposition on resize/scroll
   useEffect(() => {
     if (!visible) return;
-    const handler = () => reposition(stepIdx);
+    const handler = () => {
+      if (isScrollingRef.current) return; // ignore scroll from scrollIntoView
+      reposition(stepIdx);
+    };
     window.addEventListener('resize', handler);
     window.addEventListener('scroll', handler, true);
     return () => {
