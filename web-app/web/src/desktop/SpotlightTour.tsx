@@ -39,12 +39,14 @@ const TOUR_STEPS: TourStep[] = [
     title: '② 粘贴岗位描述',
     desc: '把 JD 粘贴到这里，AI 会据此生成针对性的追问方向。',
     icon: '📋',
+    requiresRightRail: true,
   },
   {
     selector: '#resume-dropzone',
     title: '③ 上传简历',
     desc: '拖入或点击上传候选人简历（txt / md / pdf / docx），AI 会结合简历提问。',
     icon: '📄',
+    requiresRightRail: true,
   },
   {
     selector: '#channel-computer',
@@ -80,11 +82,25 @@ interface TourStep {
   icon: string;
   isWelcome?: boolean;
   isFinal?: boolean;
+  requiresRightRail?: boolean;
 }
 
 function getTargetRect(selector: string): DOMRect | null {
-  const el = document.querySelector(selector);
+  const el = document.querySelector<HTMLElement>(selector);
   if (!el) return null;
+
+  for (let current: HTMLElement | null = el; current; current = current.parentElement) {
+    const style = window.getComputedStyle(current);
+    const opacity = Number.parseFloat(style.opacity);
+    if (
+      style.display === 'none'
+      || style.visibility === 'hidden'
+      || (Number.isFinite(opacity) && opacity === 0)
+    ) {
+      return null;
+    }
+  }
+
   const rect = el.getBoundingClientRect();
   if (rect.width === 0 || rect.height === 0) return null;
   return rect;
@@ -194,10 +210,10 @@ function computeTooltipPos(rect: DOMRect): TooltipPosition {
 }
 
 const arrowStyles: Record<string, React.CSSProperties> = {
-  up: { borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderBottom: '8px solid rgba(22,22,33,0.96)', borderTop: 'none' },
-  down: { borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '8px solid rgba(22,22,33,0.96)', borderBottom: 'none' },
-  left: { borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderRight: '8px solid rgba(22,22,33,0.96)', borderLeft: 'none' },
-  right: { borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '8px solid rgba(22,22,33,0.96)', borderRight: 'none' },
+  up: { borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderBottom: '8px solid var(--tour-arrow)', borderTop: 'none' },
+  down: { borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '8px solid var(--tour-arrow)', borderBottom: 'none' },
+  left: { borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderRight: '8px solid var(--tour-arrow)', borderLeft: 'none' },
+  right: { borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '8px solid var(--tour-arrow)', borderRight: 'none' },
 };
 
 export function SpotlightTour() {
@@ -206,6 +222,9 @@ export function SpotlightTour() {
   const [rect, setRect] = useState<DOMRect | null>(null);
   const [ttPos, setTtPos] = useState<TooltipPosition | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [centeredFallback, setCenteredFallback] = useState(false);
+  const positionRunRef = useRef(0);
+  const isScrollingRef = useRef(false);
 
   // Check if tour should start — shows on every fresh page load
   useEffect(() => {
@@ -217,43 +236,64 @@ export function SpotlightTour() {
 
   // Position spotlight when step changes
   const reposition = useCallback((idx: number) => {
+    const run = ++positionRunRef.current;
     const step = TOUR_STEPS[idx];
+    setTooltipVisible(false);
+    setRect(null);
+    setTtPos(null);
+    setCenteredFallback(false);
+    isScrollingRef.current = false;
+
     // Welcome/final step: no spotlight, centered
     if (step.isWelcome || step.isFinal || !step.selector) {
-      setRect(null);
-      setTtPos(null);
+      setTooltipVisible(true);
       return;
     }
-    // Auto-scroll element into view
-    const el = document.querySelector(step.selector);
-    if (el) {
-      // Suppress scroll-triggered reposition during programmatic scroll
-      isScrollingRef.current = true;
-      el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      setTimeout(() => { isScrollingRef.current = false; }, 500);
-    }
-    // Wait for scroll to settle, then position
-    setTimeout(() => {
-      const r = getTargetRect(step.selector!);
-      if (!r) {
-        // Element still not visible — DON'T skip, just leave current position
-        // (prevents auto-advancing past steps the user hasn't seen)
-        return;
-      }
-      setRect(r);
-      setTtPos(computeTooltipPos(r));
-    }, 400);
-  }, []);
 
-  // Ref to suppress scroll-triggered reposition during programmatic scrollIntoView
-  const isScrollingRef = useRef(false);
+    let revealDelay = 0;
+    if (step.requiresRightRail && document.body.classList.contains('rail-collapsed')) {
+      document.querySelector<HTMLButtonElement>('#toggle-rail-btn')?.click();
+      revealDelay = 350;
+    }
+
+    setTimeout(() => {
+      if (run !== positionRunRef.current) return;
+
+      const el = document.querySelector<HTMLElement>(step.selector!);
+      if (el) {
+        // Suppress scroll-triggered reposition during programmatic scroll.
+        isScrollingRef.current = true;
+        el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }
+
+      setTimeout(() => {
+        if (run !== positionRunRef.current) return;
+        isScrollingRef.current = false;
+
+        const r = getTargetRect(step.selector!);
+        if (!r) {
+          // Keep the requested step visible without reusing the prior target's geometry.
+          setCenteredFallback(true);
+          setTooltipVisible(true);
+          return;
+        }
+
+        setRect(r);
+        setTtPos(computeTooltipPos(r));
+        setTooltipVisible(true);
+      }, 400);
+    }, revealDelay);
+  }, []);
 
   useEffect(() => {
     if (!visible) return;
+    ++positionRunRef.current;
     setTooltipVisible(false);
+    setRect(null);
+    setTtPos(null);
+    setCenteredFallback(false);
     const t = setTimeout(() => {
       reposition(stepIdx);
-      requestAnimationFrame(() => setTooltipVisible(true));
     }, 150);
     return () => clearTimeout(t);
   }, [stepIdx, visible, reposition]);
@@ -302,6 +342,7 @@ export function SpotlightTour() {
   }
 
   function finish(completed: boolean) {
+    ++positionRunRef.current;
     setVisible(false);
     if (completed) {
       markTourSeen();
@@ -315,7 +356,7 @@ export function SpotlightTour() {
   const step = TOUR_STEPS[stepIdx];
   const isWelcome = step.isWelcome;
   const isFinal = step.isFinal;
-  const isCentered = isWelcome || isFinal || !step.selector;
+  const isCentered = isWelcome || isFinal || !step.selector || centeredFallback;
   const isLast = stepIdx === TOUR_STEPS.length - 1;
 
   const pad = 6;

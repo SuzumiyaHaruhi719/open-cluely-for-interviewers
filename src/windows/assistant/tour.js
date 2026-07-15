@@ -33,12 +33,14 @@ const TOUR_STEPS = [
     title: '② 粘贴岗位描述',
     desc: '把 JD 粘贴到这里，AI 会据此生成针对性的追问方向。',
     icon: '📋',
+    requiresRightRail: true,
   },
   {
     selector: '#resume-dropzone',
     title: '③ 上传简历',
     desc: '拖入或点击上传候选人简历（txt / md / pdf / docx），AI 会结合简历提问。',
     icon: '📄',
+    requiresRightRail: true,
   },
   {
     selector: '#channel-computer',
@@ -77,7 +79,7 @@ export function startTour(opts = {}) {
   let currentStep = 0;
   let dismissed = false;
   let isScrolling = false; // suppress scroll-triggered reposition during scrollIntoView
-  let dismissed = false;
+  let positionRun = 0;
 
   // Remove any existing tour elements
   document.querySelectorAll('.tour-mask, .tour-spotlight-ring, .tour-tooltip, .tour-arrow').forEach(el => el.remove());
@@ -108,6 +110,19 @@ export function startTour(opts = {}) {
   function getTargetRect(selector) {
     const el = document.querySelector(selector);
     if (!el) return null;
+
+    for (let current = el; current; current = current.parentElement) {
+      const style = window.getComputedStyle(current);
+      const opacity = Number.parseFloat(style.opacity);
+      if (
+        style.display === 'none'
+        || style.visibility === 'hidden'
+        || (Number.isFinite(opacity) && opacity === 0)
+      ) {
+        return null;
+      }
+    }
+
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return null;
     return rect;
@@ -183,7 +198,7 @@ export function startTour(opts = {}) {
     // Outer rectangle (full screen) → cut out the spotlight shape
     const sw = window.innerWidth;
     const sh = window.innerHeight;
-    const polygon = `polygon(0% 0%, ${sw}px 0%, ${sw}px ${sh}%, 0% ${sh}%, 0% 0%, ${rl}px 0%, ${points.join(', ')})`;
+    const polygon = `polygon(0% 0%, ${sw}px 0%, ${sw}px ${sh}px, 0% ${sh}px, 0% 0%, ${rl}px 0%, ${points.join(', ')})`;
     mask.style.clipPath = polygon;
   }
 
@@ -233,28 +248,28 @@ export function startTour(opts = {}) {
       arrowLeft = ttLeft + ttW / 2 - arrowSize;
       arrow.style.borderLeft = arrowSize + 'px solid transparent';
       arrow.style.borderRight = arrowSize + 'px solid transparent';
-      arrow.style.borderBottom = arrowSize + 'px solid rgba(22, 22, 33, 0.96)';
+      arrow.style.borderBottom = arrowSize + 'px solid var(--tour-arrow)';
       arrow.style.borderTop = 'none';
     } else if (arrowDir === 'down') {
       arrowTop = ttTop + ttH;
       arrowLeft = ttLeft + ttW / 2 - arrowSize;
       arrow.style.borderLeft = arrowSize + 'px solid transparent';
       arrow.style.borderRight = arrowSize + 'px solid transparent';
-      arrow.style.borderTop = arrowSize + 'px solid rgba(22, 22, 33, 0.96)';
+      arrow.style.borderTop = arrowSize + 'px solid var(--tour-arrow)';
       arrow.style.borderBottom = 'none';
     } else if (arrowDir === 'left') {
       arrowTop = ttTop + ttH / 2 - arrowSize;
       arrowLeft = ttLeft - arrowSize;
       arrow.style.borderTop = arrowSize + 'px solid transparent';
       arrow.style.borderBottom = arrowSize + 'px solid transparent';
-      arrow.style.borderRight = arrowSize + 'px solid rgba(22, 22, 33, 0.96)';
+      arrow.style.borderRight = arrowSize + 'px solid var(--tour-arrow)';
       arrow.style.borderLeft = 'none';
     } else { // right
       arrowTop = ttTop + ttH / 2 - arrowSize;
       arrowLeft = ttLeft + ttW;
       arrow.style.borderTop = arrowSize + 'px solid transparent';
       arrow.style.borderBottom = arrowSize + 'px solid transparent';
-      arrow.style.borderLeft = arrowSize + 'px solid rgba(22, 22, 33, 0.96)';
+      arrow.style.borderLeft = arrowSize + 'px solid var(--tour-arrow)';
       arrow.style.borderRight = 'none';
     }
     arrow.style.top = arrowTop + 'px';
@@ -323,6 +338,41 @@ export function startTour(opts = {}) {
     });
   }
 
+  function resetPosition() {
+    isScrolling = false;
+    tooltip.classList.remove('visible');
+    ring.style.display = 'none';
+    arrow.style.display = 'none';
+    mask.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+  }
+
+  function showCenteredStep(idx, run) {
+    const step = TOUR_STEPS[idx];
+    const isLast = idx === TOUR_STEPS.length - 1;
+    resetPosition();
+
+    setTimeout(() => {
+      if (dismissed || run !== positionRun) return;
+      const ttW = 340;
+      const ttH = 200;
+      tooltip.style.top = (window.innerHeight / 2 - ttH / 2) + 'px';
+      tooltip.style.left = (window.innerWidth / 2 - ttW / 2) + 'px';
+      tooltip.style.width = ttW + 'px';
+      renderTooltip(idx, isLast);
+      requestAnimationFrame(() => {
+        if (!dismissed && run === positionRun) tooltip.classList.add('visible');
+      });
+    }, 150);
+  }
+
+  function revealStepContainer(step) {
+    if (step.requiresRightRail && document.body.classList.contains('rail-collapsed')) {
+      document.querySelector('#toggle-rail-btn')?.click();
+      return 350;
+    }
+    return 0;
+  }
+
   /** Go to a specific step */
   function goToStep(idx) {
     if (idx < 0) idx = 0;
@@ -332,69 +382,55 @@ export function startTour(opts = {}) {
     }
     currentStep = idx;
     const step = TOUR_STEPS[idx];
+    const run = ++positionRun;
+    resetPosition();
 
     // Welcome/final step: no spotlight, centered tooltip
     if (step.isWelcome || step.isFinal || !step.selector) {
-      const isLast = idx === TOUR_STEPS.length - 1;
-      tooltip.classList.remove('visible');
-      ring.style.display = 'none';
-      arrow.style.display = 'none';
-      // Full dark mask (no cutout)
-      mask.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
-      setTimeout(() => {
-        // Center tooltip
-        const ttW = 340;
-        const ttH = 200;
-        tooltip.style.top = (window.innerHeight / 2 - ttH / 2) + 'px';
-        tooltip.style.left = (window.innerWidth / 2 - ttW / 2) + 'px';
-        tooltip.style.width = ttW + 'px';
-        renderTooltip(idx, isLast);
-        requestAnimationFrame(() => {
-          tooltip.classList.add('visible');
-        });
-      }, 150);
+      showCenteredStep(idx, run);
       return;
     }
 
-    // Normal step: scroll element into view if needed, then spotlight
-    const el = document.querySelector(step.selector);
-    if (el) {
-      // Suppress scroll-triggered reposition during programmatic scroll
-      isScrolling = true;
-      el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      setTimeout(() => { isScrolling = false; }, 500);
-    }
+    const revealDelay = revealStepContainer(step);
 
-    // Wait for scroll to settle
     setTimeout(() => {
-      const rect = getTargetRect(step.selector);
-      if (!rect) {
-        // Element not visible — DON'T skip to next step, just leave as-is
-        // (prevents auto-advancing past steps the user hasn't seen)
-        return;
+      if (dismissed || run !== positionRun) return;
+
+      const el = document.querySelector(step.selector);
+      if (el) {
+        isScrolling = true;
+        el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
       }
 
-      const isLast = idx === TOUR_STEPS.length - 1;
-      arrow.style.display = 'block';
-      tooltip.style.width = '300px';
-
-      // Fade out tooltip, reposition, fade in
-      tooltip.classList.remove('visible');
+      // Wait for the rail reveal and smooth scroll to settle before measuring.
       setTimeout(() => {
+        if (dismissed || run !== positionRun) return;
+        isScrolling = false;
+
+        const rect = getTargetRect(step.selector);
+        if (!rect) {
+          showCenteredStep(idx, run);
+          return;
+        }
+
+        const isLast = idx === TOUR_STEPS.length - 1;
+        arrow.style.display = 'block';
+        tooltip.style.width = '300px';
         positionSpotlight(rect);
         positionTooltip(rect, step);
         renderTooltip(idx, isLast);
         requestAnimationFrame(() => {
-          tooltip.classList.add('visible');
+          if (!dismissed && run === positionRun) tooltip.classList.add('visible');
         });
-      }, 150);
-    }, 300);
+      }, 400);
+    }, revealDelay);
   }
 
   /** Finish the tour */
   function finish(completed) {
     if (dismissed) return;
     dismissed = true;
+    ++positionRun;
     tooltip.classList.remove('visible');
     ring.style.display = 'none';
     mask.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)';
@@ -409,6 +445,7 @@ export function startTour(opts = {}) {
     }
     document.removeEventListener('keydown', handleKey);
     window.removeEventListener('resize', handleResize);
+    window.removeEventListener('scroll', handleResize, true);
     if (onComplete) onComplete();
   }
 

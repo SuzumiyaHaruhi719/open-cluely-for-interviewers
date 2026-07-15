@@ -4,13 +4,46 @@
  * Uses the app's design token system for visual consistency.
  */
 
+:root {
+  --tour-mask: rgba(10, 10, 15, 0.78);
+  --tour-surface: rgba(28, 28, 42, 0.97);
+  --tour-surface-end: rgba(20, 20, 32, 0.97);
+  --tour-border: rgba(124, 140, 248, 0.2);
+  --tour-title: #e8e6f5;
+  --tour-desc: #a098c0;
+  --tour-muted: #777088;
+  --tour-hover: rgba(255, 255, 255, 0.04);
+  --tour-dot: rgba(255, 255, 255, 0.12);
+  --tour-arrow: rgba(28, 28, 42, 0.97);
+  --tour-shadow: 0 16px 56px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --tour-sheen: rgba(255, 255, 255, 0.03);
+  --tour-ring-inner: rgba(255, 255, 255, 0.08);
+  --tour-primary-text: #fff;
+}
+
+html[data-theme="light"] {
+  --tour-mask: rgba(15, 23, 42, 0.46);
+  --tour-surface: rgba(255, 255, 255, 0.98);
+  --tour-surface-end: rgba(248, 250, 252, 0.98);
+  --tour-border: rgba(99, 102, 241, 0.3);
+  --tour-title: #0f172a;
+  --tour-desc: #475569;
+  --tour-muted: #64748b;
+  --tour-hover: rgba(15, 23, 42, 0.06);
+  --tour-dot: rgba(15, 23, 42, 0.18);
+  --tour-arrow: rgba(255, 255, 255, 0.98);
+  --tour-shadow: 0 16px 48px rgba(15, 23, 42, 0.2), 0 2px 8px rgba(15, 23, 42, 0.1);
+  --tour-sheen: rgba(255, 255, 255, 0.38);
+  --tour-ring-inner: rgba(255, 255, 255, 0.68);
+}
+
 /* Dark backdrop with SVG cutout for the spotlight hole */
 .tour-mask {
   position: fixed;
   inset: 0;
   z-index: 10000;
   pointer-events: auto;
-  background: rgba(10, 10, 15, 0.78);
+  background: var(--tour-mask);
   backdrop-filter: blur(2px) saturate(80%);
   -webkit-backdrop-filter: blur(2px) saturate(80%);
   transition: clip-path 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -20,12 +53,12 @@
 .tour-spotlight-ring {
   position: fixed;
   z-index: 10001;
-  border: 2px solid rgba(124, 140, 248, 0.7);
+  border: 2px solid color-mix(in srgb, var(--ai) 70%, transparent);
   border-radius: 12px;
   box-shadow:
-    0 0 0 4px rgba(124, 140, 248, 0.1),
-    0 0 28px rgba(124, 140, 248, 0.35),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    0 0 0 4px color-mix(in srgb, var(--ai) 10%, transparent),
+    0 0 28px color-mix(in srgb, var(--ai) 35%, transparent),
+    inset 0 0 0 1px var(--tour-ring-inner);
   pointer-events: none;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   animation: tour-pulse 2.5s ease-in-out infinite;
@@ -37,22 +70,22 @@
   position: absolute;
   inset: -2px;
   border-radius: inherit;
-  background: radial-gradient(circle at center, rgba(124, 140, 248, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle at center, color-mix(in srgb, var(--ai) 6%, transparent) 0%, transparent 70%);
   pointer-events: none;
 }
 
 @keyframes tour-pulse {
   0%, 100% {
     box-shadow:
-      0 0 0 4px rgba(124, 140, 248, 0.1),
-      0 0 28px rgba(124, 140, 248, 0.35),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      0 0 0 4px color-mix(in srgb, var(--ai) 10%, transparent),
+      0 0 28px color-mix(in srgb, var(--ai) 35%, transparent),
+      inset 0 0 0 1px var(--tour-ring-inner);
   }
   50% {
     box-shadow:
-      0 0 0 7px rgba(124, 140, 248, 0.16),
-      0 0 40px rgba(124, 140, 248, 0.5),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+      0 0 0 7px color-mix(in srgb, var(--ai) 16%, transparent),
+      0 0 40px color-mix(in srgb, var(--ai) 50%, transparent),
+      inset 0 0 0 1px var(--tour-ring-inner);
   }
 }
 
@@ -72,16 +105,15 @@
   position: fixed;
   z-index: 10002;
   width: 320px;
-  background: linear-gradient(180deg, rgba(28, 28, 42, 0.97) 0%, rgba(20, 20, 32, 0.97) 100%);
+  background: linear-gradient(180deg, var(--tour-surface) 0%, var(--tour-surface-end) 100%);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(124, 140, 248, 0.2);
+  border: 1px solid var(--tour-border);
   border-radius: 16px;
   padding: 0;
   box-shadow:
-    0 16px 56px rgba(0, 0, 0, 0.55),
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    var(--tour-shadow),
+    inset 0 1px 0 var(--tour-ring-inner);
   pointer-events: auto;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   opacity: 0;
@@ -103,9 +135,9 @@
   right: 0;
   height: 3px;
   background: linear-gradient(90deg,
-    rgba(124, 140, 248, 0) 0%,
-    rgba(124, 140, 248, 0.8) 50%,
-    rgba(124, 140, 248, 0) 100%
+    transparent 0%,
+    color-mix(in srgb, var(--ai) 80%, transparent) 50%,
+    transparent 100%
   );
 }
 
@@ -118,7 +150,7 @@
   position: absolute;
   top: 0; left: -100%;
   width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  background: linear-gradient(90deg, transparent, var(--tour-sheen), transparent);
   animation: tour-sheen 4s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
@@ -138,7 +170,7 @@
   /* Zero the inherited .tour-tooltip > * horizontal padding so the bar spans
      edge-to-edge from left:0 like the gradient strip above it. */
   padding: 0;
-  background: linear-gradient(90deg, rgba(124, 140, 248, 0.6), rgba(124, 140, 248, 1));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ai) 60%, transparent), var(--ai));
   border-radius: 0 3px 3px 0;
   transition: width 0.4s ease;
   z-index: 1;
@@ -156,8 +188,8 @@
   gap: 5px;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(124, 140, 248, 1);
-  background: rgba(124, 140, 248, 0.1);
+  color: var(--ai);
+  background: color-mix(in srgb, var(--ai) 10%, transparent);
   padding: 3px 10px;
   border-radius: 12px;
   margin-top: 20px;
@@ -169,7 +201,7 @@
 .tour-title {
   font-size: 16px;
   font-weight: 600;
-  color: #e8e6f5;
+  color: var(--tour-title);
   margin: 0 0 8px;
   line-height: 1.35;
   animation: tour-fade-in 0.4s ease 0.15s both;
@@ -177,7 +209,7 @@
 
 .tour-desc {
   font-size: 13px;
-  color: #a098c0;
+  color: var(--tour-desc);
   line-height: 1.6;
   margin: 0 0 18px;
   animation: tour-fade-in 0.4s ease 0.2s both;
@@ -213,19 +245,19 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--tour-dot);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 .tour-dot:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--tour-muted);
   transform: scale(1.4);
 }
 .tour-dot.active {
-  background: rgba(124, 140, 248, 0.9);
+  background: var(--ai);
   width: 18px;
   border-radius: 3px;
-  box-shadow: 0 0 8px rgba(124, 140, 248, 0.4);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--ai) 40%, transparent);
 }
 .tour-dot.active:hover {
   transform: scale(1.1);
@@ -248,20 +280,20 @@
 }
 .tour-btn--ghost {
   background: transparent;
-  color: #777088;
+  color: var(--tour-muted);
 }
 .tour-btn--ghost:hover {
-  color: #aaa0c0;
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--tour-title);
+  background: var(--tour-hover);
 }
 .tour-btn--primary {
-  background: linear-gradient(135deg, rgba(124, 140, 248, 0.9) 0%, rgba(100, 120, 240, 0.9) 100%);
-  color: #fff;
-  box-shadow: 0 2px 12px rgba(124, 140, 248, 0.3);
+  background: var(--ai);
+  color: var(--tour-primary-text);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--ai) 30%, transparent);
 }
 .tour-btn--primary:hover {
-  background: linear-gradient(135deg, rgba(124, 140, 248, 1) 0%, rgba(100, 120, 240, 1) 100%);
-  box-shadow: 0 4px 20px rgba(124, 140, 248, 0.5);
+  background: color-mix(in srgb, var(--ai) 86%, white);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--ai) 50%, transparent);
   transform: translateY(-1px);
 }
 .tour-btn--primary:active {
@@ -273,15 +305,15 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 140, 248, 0.15) 0%, rgba(124, 140, 248, 0.05) 100%);
-  border: 1px solid rgba(124, 140, 248, 0.2);
+  background: radial-gradient(circle, color-mix(in srgb, var(--ai) 15%, transparent) 0%, color-mix(in srgb, var(--ai) 5%, transparent) 100%);
+  border: 1px solid var(--tour-border);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 20px auto 12px;
   font-size: 26px;
   animation: tour-icon-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both, tour-breathe 3s ease-in-out 0.6s infinite;
-  box-shadow: 0 0 24px rgba(124, 140, 248, 0.15);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--ai) 15%, transparent);
 }
 
 @keyframes tour-icon-pop {
@@ -308,7 +340,7 @@
   right: 12px;
   background: none;
   border: none;
-  color: rgba(160, 152, 192, 0.4);
+  color: var(--tour-muted);
   cursor: pointer;
   font-size: 11px;
   padding: 4px 8px;
@@ -317,8 +349,8 @@
   z-index: 1;
 }
 .tour-skip-btn:hover {
-  color: rgba(160, 152, 192, 0.8);
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--tour-title);
+  background: var(--tour-hover);
 }
 
 /* Reduced motion */
