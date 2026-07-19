@@ -28,6 +28,7 @@
 // ============================================================================
 
 import { randomUUID } from 'node:crypto';
+import type { AsrStopResult } from './asr-relay';
 
 // Minimal structural type for the `ws` WebSocket we depend on. Declaring it
 // here (instead of importing ws's types) lets tests inject a fake constructor
@@ -65,11 +66,14 @@ export interface ParaformerSessionDeps {
   onReady?: () => void;
   /** Called on a terminal error with a human-readable message. */
   onError?: (message: string) => void;
+  /** Bounded wait for task-finished after finish-task. Defaults to 1500 ms. */
+  stopTimeoutMs?: number;
 }
 
 export const PARAFORMER_WS_URL = 'wss://dashscope.aliyuncs.com/api-ws/v1/inference/';
 export const PARAFORMER_DEFAULT_MODEL = 'paraformer-realtime-v2';
 export const PARAFORMER_DEFAULT_SAMPLE_RATE = 16000;
+export const PARAFORMER_DEFAULT_STOP_TIMEOUT_MS = 1500;
 /** The browser worklet always emits 16 kHz mono s16le (see web/src/lib/pcm.ts). */
 export const BROWSER_INPUT_SAMPLE_RATE = 16000;
 
@@ -156,7 +160,7 @@ export interface ParaformerSession {
   /** Forward one PCM frame (16-bit LE mono) to the recognizer. */
   sendAudio(pcm: Buffer): void;
   /** Gracefully finish the task and close the socket. */
-  stop(): void;
+  stop(): Promise<AsrStopResult>;
   /** True once the upstream task-started event has been received. */
   readonly isReady: boolean;
 }
@@ -171,32 +175,57 @@ export function createParaformerSession(deps: ParaformerSessionDeps): Paraformer
   const { WebSocket, apiKey, onTranscript, onReady, onError } = deps;
   const model = deps.model ?? PARAFORMER_DEFAULT_MODEL;
   const sampleRate = deps.sampleRate ?? PARAFORMER_DEFAULT_SAMPLE_RATE;
+  const stopTimeoutMs = deps.stopTimeoutMs ?? PARAFORMER_DEFAULT_STOP_TIMEOUT_MS;
   const taskId = randomUUID().replace(/-/g, '');
 
   let ready = false;
   let finished = false;
+  let stopRequested = false;
+  let finalReceived = false;
   let socket: WsLike | null = null;
+  let stopPromise: Promise<AsrStopResult> | null = null;
+  let resolveStop: ((result: AsrStopResult) => void) | null = null;
+  let stopTimer: ReturnType<typeof setTimeout> | null = null;
 
   function fail(message: string): void {
     if (finished) return;
-    finished = true;
     try {
       onError?.(message);
     } finally {
-      teardown();
+      if (stopPromise) {
+        finishStop({ finalReceived, timedOut: false, reason: message }, false);
+      } else {
+        finished = true;
+        ready = false;
+        teardown(false);
+      }
     }
   }
 
-  function teardown(): void {
+  function teardown(graceful: boolean): void {
     const sock = socket;
     socket = null;
     if (!sock) return;
     try {
-      if (typeof sock.terminate === 'function') sock.terminate();
-      else sock.close();
+      if (graceful || typeof sock.terminate !== 'function') sock.close();
+      else sock.terminate();
     } catch {
       /* ignore teardown errors */
     }
+  }
+
+  function finishStop(result: AsrStopResult, graceful: boolean): void {
+    const resolve = resolveStop;
+    if (!resolve) return;
+    resolveStop = null;
+    if (stopTimer !== null) {
+      clearTimeout(stopTimer);
+      stopTimer = null;
+    }
+    finished = true;
+    ready = false;
+    teardown(graceful);
+    resolve(result);
   }
 
   try {
@@ -233,12 +262,19 @@ export function createParaformerSession(deps: ParaformerSessionDeps): Paraformer
     }
     if (event === 'result-generated') {
       const sentence = extractSentence(msg);
-      if (sentence) onTranscript(sentence);
+      if (sentence) {
+        if (sentence.isFinal) finalReceived = true;
+        onTranscript(sentence);
+      }
       return;
     }
     if (event === 'task-finished') {
-      finished = true;
-      teardown();
+      if (stopPromise) finishStop({ finalReceived, timedOut: false }, true);
+      else {
+        finished = true;
+        ready = false;
+        teardown(true);
+      }
       return;
     }
     if (event === 'task-failed') {
@@ -256,11 +292,23 @@ export function createParaformerSession(deps: ParaformerSessionDeps): Paraformer
     // Unexpected drop (not our own stop()/task-finished): surface it so the relay
     // tears the source down instead of silently swallowing audio. fail() is a no-op
     // once finished, so a normal stop()/task-finished -> close does not double-fire.
-    if (!wasFinished) fail('Paraformer socket closed unexpectedly');
+    if (wasFinished) return;
+    if (stopPromise) {
+      finishStop(
+        {
+          finalReceived,
+          timedOut: false,
+          reason: 'Paraformer socket closed before task-finished'
+        },
+        false
+      );
+      return;
+    }
+    fail('Paraformer socket closed unexpectedly');
   });
 
   function sendAudio(pcm: Buffer): void {
-    if (finished || !ready || !socket) return;
+    if (finished || stopRequested || !ready || !socket) return;
     if (socket.readyState !== WebSocket.OPEN) return;
     // The browser always emits 16 kHz; downsample if the model wants less.
     const framed =
@@ -274,21 +322,47 @@ export function createParaformerSession(deps: ParaformerSessionDeps): Paraformer
     }
   }
 
-  function stop(): void {
+  function stop(): Promise<AsrStopResult> {
+    if (stopPromise) return stopPromise;
     if (finished) {
-      teardown();
-      return;
+      return Promise.resolve({
+        finalReceived,
+        timedOut: false,
+        reason: 'Paraformer session already closed'
+      });
     }
-    finished = true;
+    stopRequested = true;
+    stopPromise = new Promise<AsrStopResult>((resolve) => {
+      resolveStop = resolve;
+    });
     const sock = socket;
-    try {
-      if (sock && sock.readyState === WebSocket.OPEN) {
-        sock.send(JSON.stringify(buildFinishTaskPayload(taskId)));
-      }
-    } catch {
-      /* ignore — we're tearing down anyway */
+    if (!sock || sock.readyState !== WebSocket.OPEN) {
+      finishStop(
+        { finalReceived, timedOut: false, reason: 'Paraformer socket is not open' },
+        false
+      );
+      return stopPromise;
     }
-    teardown();
+    try {
+      sock.send(JSON.stringify(buildFinishTaskPayload(taskId)));
+    } catch (error) {
+      finishStop(
+        {
+          finalReceived,
+          timedOut: false,
+          reason: error instanceof Error ? error.message : 'failed to send finish-task'
+        },
+        false
+      );
+      return stopPromise;
+    }
+    stopTimer = setTimeout(() => {
+      finishStop(
+        { finalReceived, timedOut: true, reason: 'Paraformer finalization timeout' },
+        false
+      );
+    }, Math.max(1, stopTimeoutMs));
+    return stopPromise;
   }
 
   return {
@@ -306,8 +380,12 @@ function inertSession(): ParaformerSession {
     sendAudio() {
       /* no-op */
     },
-    stop() {
-      /* no-op */
+    async stop() {
+      return {
+        finalReceived: false,
+        timedOut: false,
+        reason: 'Paraformer session unavailable'
+      };
     },
     get isReady() {
       return false;

@@ -30,6 +30,7 @@
 
 import { randomUUID } from 'node:crypto';
 import zlib from 'node:zlib';
+import type { AsrStopResult } from './asr-relay';
 
 // Minimal structural type for the `ws` WebSocket we depend on — declared here
 // (like paraformer-client) so tests can inject a fake constructor without
@@ -72,6 +73,8 @@ export interface VolcSessionDeps {
   onReady?: () => void;
   /** Called on a terminal error with a human-readable message. */
   onError?: (message: string) => void;
+  /** Bounded wait for the terminal response after the last-packet frame. */
+  stopTimeoutMs?: number;
 }
 
 export const VOLC_WS_URL = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel';
@@ -85,6 +88,7 @@ export function endpointForResource(resourceId: string): string {
   return /seedasr/i.test(resourceId) ? VOLC_WS_URL_NOSTREAM : VOLC_WS_URL;
 }
 export const VOLC_DEFAULT_SAMPLE_RATE = 16000;
+export const VOLC_DEFAULT_STOP_TIMEOUT_MS = 1500;
 // Product policy: Doubao means Seed-ASR 2.0. Never silently send interview audio
 // to the legacy BigASR 1.0 resource when the deployment lacks 2.0 entitlement.
 export const VOLC_DEFAULT_RESOURCE_ID = 'volc.seedasr.sauc.duration';
@@ -118,6 +122,8 @@ export interface FrameInput {
 
 export interface ParsedFrame {
   messageType: number;
+  flags: number;
+  sequence: number | null;
   payload: Buffer;
 }
 
@@ -161,8 +167,13 @@ export function parseFrame(buf: Buffer): ParsedFrame | null {
   const flags = buf[1] & 0x0f;
   const compression = buf[2] & 0x0f;
   let offset = 4;
-  if (flags === FLAG_POS_SEQ || flags === FLAG_LAST_SEQ) offset += 4; // skip seq
-  if (buf.length < offset + 4) return { messageType, payload: Buffer.alloc(0) };
+  let sequence: number | null = null;
+  if (flags === FLAG_POS_SEQ || flags === FLAG_LAST_SEQ) {
+    if (buf.length < offset + 4) return { messageType, flags, sequence, payload: Buffer.alloc(0) };
+    sequence = buf.readInt32BE(offset);
+    offset += 4;
+  }
+  if (buf.length < offset + 4) return { messageType, flags, sequence, payload: Buffer.alloc(0) };
   const payloadSize = buf.readUInt32BE(offset);
   offset += 4;
   let payload = buf.subarray(offset, offset + payloadSize);
@@ -173,7 +184,7 @@ export function parseFrame(buf: Buffer): ParsedFrame | null {
       /* leave raw */
     }
   }
-  return { messageType, payload };
+  return { messageType, flags, sequence, payload };
 }
 
 /** Build the gzip(JSON) config payload sent on open. Mirrors the desktop service. */
@@ -230,7 +241,7 @@ export interface VolcSession {
   /** Forward one PCM frame (16-bit LE mono) to the recognizer. */
   sendAudio(pcm: Buffer): void;
   /** Gracefully finish (send the last-packet frame) and close the socket. */
-  stop(): void;
+  stop(): Promise<AsrStopResult>;
   /** True once the upstream session is ready to accept audio. */
   readonly isReady: boolean;
 }
@@ -247,33 +258,58 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
   const resourceId = (deps.resourceId ?? '').trim() || VOLC_DEFAULT_RESOURCE_ID;
   const model = (deps.model ?? '').trim() || VOLC_DEFAULT_MODEL;
   const sampleRate = deps.sampleRate ?? VOLC_DEFAULT_SAMPLE_RATE;
+  const stopTimeoutMs = deps.stopTimeoutMs ?? VOLC_DEFAULT_STOP_TIMEOUT_MS;
 
   let ready = false;
   let started = false; // true once the first server frame arrives (session-begin)
   let finished = false;
+  let stopRequested = false;
+  let finalReceived = false;
   let sequence = 1;
   let socket: WsLike | null = null;
+  let stopPromise: Promise<AsrStopResult> | null = null;
+  let resolveStop: ((result: AsrStopResult) => void) | null = null;
+  let stopTimer: ReturnType<typeof setTimeout> | null = null;
 
   function fail(message: string): void {
     if (finished) return;
-    finished = true;
     try {
       onError?.(message);
     } finally {
-      teardown();
+      if (stopPromise) {
+        finishStop({ finalReceived, timedOut: false, reason: message }, false);
+      } else {
+        finished = true;
+        ready = false;
+        teardown(false);
+      }
     }
   }
 
-  function teardown(): void {
+  function teardown(graceful: boolean): void {
     const sock = socket;
     socket = null;
     if (!sock) return;
     try {
-      if (typeof sock.terminate === 'function') sock.terminate();
-      else sock.close();
+      if (graceful || typeof sock.terminate !== 'function') sock.close();
+      else sock.terminate();
     } catch {
       /* ignore teardown errors */
     }
+  }
+
+  function finishStop(result: AsrStopResult, graceful: boolean): void {
+    const resolve = resolveStop;
+    if (!resolve) return;
+    resolveStop = null;
+    if (stopTimer !== null) {
+      clearTimeout(stopTimer);
+      stopTimer = null;
+    }
+    finished = true;
+    ready = false;
+    teardown(graceful);
+    resolve(result);
   }
 
   if (!isDoubaoAsr2Resource(resourceId)) {
@@ -302,7 +338,13 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
       ready = true;
       onReady?.();
     }
-    for (const t of extractTranscripts(frame.payload)) onTranscript(t);
+    for (const t of extractTranscripts(frame.payload)) {
+      if (t.isFinal) finalReceived = true;
+      onTranscript(t);
+    }
+    if (stopPromise && (frame.flags === FLAG_LAST_SEQ || (frame.sequence ?? 0) < 0)) {
+      finishStop({ finalReceived, timedOut: false }, true);
+    }
   }
 
   try {
@@ -349,11 +391,23 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
     // Unexpected drop (not our own stop()): surface it so the relay tears the
     // source down instead of silently swallowing all further audio. fail() is a
     // no-op once finished, so a normal stop()->close does not double-fire.
-    if (!wasFinished) fail('Doubao socket closed unexpectedly');
+    if (wasFinished) return;
+    if (stopPromise) {
+      finishStop(
+        {
+          finalReceived,
+          timedOut: false,
+          reason: 'Doubao socket closed before the terminal response'
+        },
+        false
+      );
+      return;
+    }
+    fail('Doubao socket closed unexpectedly');
   });
 
   function sendAudio(pcm: Buffer): void {
-    if (finished || !socket) return;
+    if (finished || stopRequested || !socket) return;
     if (socket.readyState !== WebSocket.OPEN) return;
     try {
       sequence += 1;
@@ -372,32 +426,55 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
     }
   }
 
-  function stop(): void {
+  function stop(): Promise<AsrStopResult> {
+    if (stopPromise) return stopPromise;
     if (finished) {
-      teardown();
-      return;
+      return Promise.resolve({
+        finalReceived,
+        timedOut: false,
+        reason: 'Doubao session already closed'
+      });
     }
-    finished = true;
+    stopRequested = true;
+    stopPromise = new Promise<AsrStopResult>((resolve) => {
+      resolveStop = resolve;
+    });
     const sock = socket;
-    try {
-      if (sock && sock.readyState === WebSocket.OPEN) {
-        // Empty audio frame with the last-packet flag tells the server to finalize.
-        sequence += 1;
-        sock.send(
-          buildFrame({
-            messageType: MSG_AUDIO_ONLY,
-            flags: FLAG_LAST_SEQ,
-            serialization: SER_RAW,
-            compression: COMP_GZIP,
-            sequence: -Math.abs(sequence),
-            payload: zlib.gzipSync(Buffer.alloc(0))
-          })
-        );
-      }
-    } catch {
-      /* ignore — we're tearing down anyway */
+    if (!sock || sock.readyState !== WebSocket.OPEN) {
+      finishStop({ finalReceived, timedOut: false, reason: 'Doubao socket is not open' }, false);
+      return stopPromise;
     }
-    teardown();
+    try {
+      // Empty audio frame with the last-packet flag tells the server to finalize.
+      sequence += 1;
+      sock.send(
+        buildFrame({
+          messageType: MSG_AUDIO_ONLY,
+          flags: FLAG_LAST_SEQ,
+          serialization: SER_RAW,
+          compression: COMP_GZIP,
+          sequence: -Math.abs(sequence),
+          payload: zlib.gzipSync(Buffer.alloc(0))
+        })
+      );
+    } catch (error) {
+      finishStop(
+        {
+          finalReceived,
+          timedOut: false,
+          reason: error instanceof Error ? error.message : 'failed to send Doubao last packet'
+        },
+        false
+      );
+      return stopPromise;
+    }
+    stopTimer = setTimeout(() => {
+      finishStop(
+        { finalReceived, timedOut: true, reason: 'Doubao finalization timeout' },
+        false
+      );
+    }, Math.max(1, stopTimeoutMs));
+    return stopPromise;
   }
 
   return {
@@ -415,8 +492,12 @@ function inertSession(): VolcSession {
     sendAudio() {
       /* no-op */
     },
-    stop() {
-      /* no-op */
+    async stop() {
+      return {
+        finalReceived: false,
+        timedOut: false,
+        reason: 'Doubao session unavailable'
+      };
     },
     get isReady() {
       return false;

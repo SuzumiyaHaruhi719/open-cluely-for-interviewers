@@ -31,6 +31,7 @@
 // ============================================================================
 
 import crypto from 'node:crypto';
+import type { AsrStopResult } from './asr-relay';
 
 // Minimal structural type for the `ws` WebSocket we depend on — declared here
 // (like volc-client) so tests can inject a fake constructor without pulling the
@@ -75,10 +76,13 @@ export interface XfyunSessionDeps {
   onReady?: () => void;
   /** Called on a terminal error with a human-readable message. */
   onError?: (message: string) => void;
+  /** Bounded wait for the provider's last result after `{end:true}`. */
+  stopTimeoutMs?: number;
 }
 
 export const XFYUN_DEFAULT_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
 export const XFYUN_DEFAULT_SAMPLE_RATE = 16000;
+export const XFYUN_DEFAULT_STOP_TIMEOUT_MS = 1500;
 
 /** Format a Date as ISO8601 with a fixed +0800 offset, e.g. 2026-06-04T15:39:44+0800. */
 export function utcPlus0800(now: Date = new Date()): string {
@@ -223,7 +227,7 @@ export interface XfyunSession {
   /** Forward one PCM frame (16-bit LE mono, 16 kHz) to the recognizer as-is. */
   sendAudio(pcm: Buffer): void;
   /** Gracefully finish (send {end:true}) and close the socket. */
-  stop(): void;
+  stop(): Promise<AsrStopResult>;
   /** True once the upstream session is ready (action:started) to accept audio. */
   readonly isReady: boolean;
 }
@@ -240,32 +244,57 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
   const { WebSocket, appId, apiKey, apiSecret, onTranscript, onReady, onError } = deps;
   const wsUrl = (deps.wsUrl ?? '').trim() || XFYUN_DEFAULT_WS_URL;
   const sampleRate = deps.sampleRate ?? XFYUN_DEFAULT_SAMPLE_RATE;
+  const stopTimeoutMs = deps.stopTimeoutMs ?? XFYUN_DEFAULT_STOP_TIMEOUT_MS;
 
   let ready = false;
   let finished = false;
+  let stopRequested = false;
+  let finalReceived = false;
   let lastSpeaker: number | null = null;
   let socket: WsLike | null = null;
+  let stopPromise: Promise<AsrStopResult> | null = null;
+  let resolveStop: ((result: AsrStopResult) => void) | null = null;
+  let stopTimer: ReturnType<typeof setTimeout> | null = null;
 
   function fail(message: string): void {
     if (finished) return;
-    finished = true;
     try {
       onError?.(message);
     } finally {
-      teardown();
+      if (stopPromise) {
+        finishStop({ finalReceived, timedOut: false, reason: message }, false);
+      } else {
+        finished = true;
+        ready = false;
+        teardown(false);
+      }
     }
   }
 
-  function teardown(): void {
+  function teardown(graceful: boolean): void {
     const sock = socket;
     socket = null;
     if (!sock) return;
     try {
-      if (typeof sock.terminate === 'function') sock.terminate();
-      else sock.close();
+      if (graceful || typeof sock.terminate !== 'function') sock.close();
+      else sock.terminate();
     } catch {
       /* ignore teardown errors */
     }
+  }
+
+  function finishStop(result: AsrStopResult, graceful: boolean): void {
+    const resolve = resolveStop;
+    if (!resolve) return;
+    resolveStop = null;
+    if (stopTimer !== null) {
+      clearTimeout(stopTimer);
+      stopTimer = null;
+    }
+    finished = true;
+    ready = false;
+    teardown(graceful);
+    resolve(result);
   }
 
   function handleServerFrame(raw: unknown): void {
@@ -306,6 +335,12 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
         ready = true;
         onReady?.();
       }
+      if (
+        stopPromise &&
+        (action === 'finished' || action === 'stopped' || action === 'ended')
+      ) {
+        finishStop({ finalReceived, timedOut: false }, true);
+      }
       return;
     }
 
@@ -316,7 +351,13 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
       const extracted = extractResult(obj.data, lastSpeaker);
       if (!extracted) return;
       lastSpeaker = extracted.speaker;
-      for (const run of extracted.runs) onTranscript(run);
+      for (const run of extracted.runs) {
+        if (run.isFinal) finalReceived = true;
+        onTranscript(run);
+      }
+      if (stopPromise && (obj.data as { ls?: unknown })?.ls === true) {
+        finishStop({ finalReceived, timedOut: false }, true);
+      }
     }
   }
 
@@ -351,11 +392,23 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
     socket = null;
     // Unexpected drop (not our own stop()): notify so the relay tears the source down
     // instead of silently swallowing all further audio. fail() is a no-op if finished.
-    if (!wasFinished) fail('iFlytek socket closed unexpectedly');
+    if (wasFinished) return;
+    if (stopPromise) {
+      finishStop(
+        {
+          finalReceived,
+          timedOut: false,
+          reason: 'iFlytek socket closed before the last result'
+        },
+        false
+      );
+      return;
+    }
+    fail('iFlytek socket closed unexpectedly');
   });
 
   function sendAudio(pcm: Buffer): void {
-    if (finished || !socket) return;
+    if (finished || stopRequested || !socket) return;
     // iFlytek rejects/ignores audio before it acks `action:started`; drop until ready.
     if (!ready || socket.readyState !== WebSocket.OPEN) return;
     try {
@@ -366,22 +419,46 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
     }
   }
 
-  function stop(): void {
+  function stop(): Promise<AsrStopResult> {
+    if (stopPromise) return stopPromise;
     if (finished) {
-      teardown();
-      return;
+      return Promise.resolve({
+        finalReceived,
+        timedOut: false,
+        reason: 'iFlytek session already closed'
+      });
     }
-    finished = true;
+    stopRequested = true;
+    stopPromise = new Promise<AsrStopResult>((resolve) => {
+      resolveStop = resolve;
+    });
     const sock = socket;
-    try {
-      if (sock && sock.readyState === WebSocket.OPEN) {
-        // A TEXT frame {"end":true} tells the server to finalize.
-        sock.send(JSON.stringify({ end: true }));
-      }
-    } catch {
-      /* ignore — we're tearing down anyway */
+    if (!sock || sock.readyState !== WebSocket.OPEN) {
+      finishStop({ finalReceived, timedOut: false, reason: 'iFlytek socket is not open' }, false);
+      return stopPromise;
     }
-    teardown();
+    try {
+      // A TEXT frame {"end":true} tells the server to finalize. Keep accepting
+      // result frames until `data.ls === true`, a terminal action, or timeout.
+      sock.send(JSON.stringify({ end: true }));
+    } catch (error) {
+      finishStop(
+        {
+          finalReceived,
+          timedOut: false,
+          reason: error instanceof Error ? error.message : 'failed to send iFlytek end frame'
+        },
+        false
+      );
+      return stopPromise;
+    }
+    stopTimer = setTimeout(() => {
+      finishStop(
+        { finalReceived, timedOut: true, reason: 'iFlytek finalization timeout' },
+        false
+      );
+    }, Math.max(1, stopTimeoutMs));
+    return stopPromise;
   }
 
   return {
@@ -399,8 +476,12 @@ function inertSession(): XfyunSession {
     sendAudio() {
       /* no-op */
     },
-    stop() {
-      /* no-op */
+    async stop() {
+      return {
+        finalReceived: false,
+        timedOut: false,
+        reason: 'iFlytek session unavailable'
+      };
     },
     get isReady() {
       return false;

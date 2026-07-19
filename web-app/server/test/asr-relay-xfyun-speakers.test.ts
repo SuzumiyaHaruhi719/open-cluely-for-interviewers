@@ -18,7 +18,14 @@ async function loadRelay() {
 function makeXfyunFactory() {
   const created: any[] = [];
   const factory = (deps: any) => {
-    const s = { isReady: true, sendAudio() {}, stop() {}, deps };
+    const s = {
+      isReady: true,
+      sendAudio() {},
+      async stop() {
+        return { finalReceived: true, timedOut: false };
+      },
+      deps
+    };
     created.push(s);
     return s;
   };

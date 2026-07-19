@@ -22,6 +22,7 @@ const MSG_FULL_CLIENT = 0x1;
 const MSG_AUDIO_ONLY = 0x2;
 const MSG_FULL_SERVER = 0x9;
 const FLAG_POS_SEQ = 0x1;
+const FLAG_LAST_SEQ = 0x3;
 const SER_JSON = 0x1;
 const SER_RAW = 0x0;
 const COMP_GZIP = 0x1;
@@ -271,21 +272,62 @@ test('a full-server-response frame surfaces partials then finals via onTranscrip
   ]);
 });
 
-test('stop sends a last-packet audio frame and terminates the socket', () => {
+test('stop waits for the last server frame and retains its final transcript', async () => {
   FakeWs.instances = [];
+  const got: Array<{ text: string; isFinal: boolean }> = [];
   const session = createVolcSession({
     WebSocket: FakeWsCtor,
     appId: 'a',
     accessToken: 'b',
-    onTranscript: () => {}
+    stopTimeoutMs: 50,
+    onTranscript: (transcript) => got.push(transcript)
   });
   const ws = FakeWs.instances.at(-1)!;
   ws.emit('open');
 
   const before = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d)).length;
-  session.stop();
+  const stopping = session.stop();
   const after = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d)).length;
   assert.equal(after, before + 1, 'expected a final last-packet frame');
+  assert.equal(ws.terminated, false, 'the socket must remain open for the terminal response');
+
+  ws.emit(
+    'message',
+    buildFrame({
+      messageType: MSG_FULL_SERVER,
+      flags: FLAG_LAST_SEQ,
+      serialization: SER_JSON,
+      compression: COMP_GZIP,
+      sequence: -2,
+      payload: zlib.gzipSync(
+        Buffer.from(
+          JSON.stringify({ result: { utterances: [{ text: '最后一句', definite: true }] } })
+        )
+      )
+    })
+  );
+
+  assert.deepEqual(await stopping, { finalReceived: true, timedOut: false });
+  assert.deepEqual(got, [{ text: '最后一句', isFinal: true }]);
+});
+
+test('stop terminates after a bounded timeout when Doubao never returns a terminal frame', async () => {
+  FakeWs.instances = [];
+  const session = createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    stopTimeoutMs: 5,
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+
+  const result = await session.stop();
+
+  assert.equal(result.finalReceived, false);
+  assert.equal(result.timedOut, true);
+  assert.match(result.reason ?? '', /timeout/i);
   assert.equal(ws.terminated, true);
 });
 
