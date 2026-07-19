@@ -1,16 +1,16 @@
 // ============================================================================
 // Autonomous question-generation trigger monitor (per WebSocket session).
 // ----------------------------------------------------------------------------
-// We do not generate on every interviewee sentence. A two-stage live path first
-// decides WHEN to fire, then ws.ts runs one dedicated Flash question call:
+// We do not generate on every interviewee sentence. A single-call live path
+// admits complete candidate thoughts locally, then ws.ts runs one Expert Flash
+// call that selects the evidence gap and renders the question together:
 //
 //   1. Local gates (no LLM, ~free): auto-generate on; not already generating;
 //      cooldown elapsed since the last fire; enough NEW transcript since then;
 //      and a short debounce so rapid finals coalesce into one decision (we act on
 //      a conversational pause, not on every partial sentence boundary).
-//   2. Flash gate (one thinking-off LLM call): only if the local gates pass, ask
-//      a fast monitor "is now a good moment to generate?" → strict JSON. Any
-//      failure is treated as "no" — the monitor NEVER throws into the socket.
+//   2. Local completeness/filler check: no network call and no second-model
+//      latency. The Expert generator owns the semantic `should_ask` decision.
 //
 // On a green light it marks `isGenerating`, runs the injected low-latency auto
 // question path, and on settle records the fire so the cooldown + new-chars gates
@@ -21,7 +21,6 @@
 // is unit-testable with a fake clock and no network — see test/auto-trigger.test.ts.
 // ============================================================================
 
-import { chat } from './dashscope';
 import { config as serverConfig } from './config';
 
 /** The monitor's strict-JSON verdict. */
@@ -37,6 +36,7 @@ export interface AutoTriggerConfig {
   cooldownMs: number;
   minNewChars: number;
   debounceMs: number;
+  /** Deprecated compatibility field; admission no longer calls a model. */
   monitorModel: string;
   /** Fixed wall-clock cadence (ms) for 'interval' mode. Default 30000. */
   intervalMs: number;
@@ -47,14 +47,14 @@ export type TimerHandle = unknown;
 
 export interface AutoTriggerDeps {
   /**
-   * The Flash trigger gate: given the recent transcript, decide whether to fire.
-   * Default impl calls the thinking-off Flash monitor. MUST resolve (never reject)
-   * — the default swallows all errors into `{ shouldGenerate: false }`.
+   * Admission decision: given the recent transcript, decide whether to fire.
+   * Production uses a deterministic completeness/filler check; injection remains
+   * for focused trigger-policy tests.
    */
   shouldGenerate?: (recentTranscript: string) => Promise<TriggerDecision>;
   /**
-   * Fire the dedicated automatic Flash question path. Manual Generate Q uses its
-   * separately selected pipeline. Resolves when generation settles.
+   * Fire the shared realtime Expert Flash path. Manual Generate Q uses the same
+   * path unless Customize mode is explicitly selected.
    */
   runAnalyze: (opts: { candidateAnswer: string; focusHint: string }) => Promise<void>;
   /** Clock. Defaults to Date.now; injected in tests for a deterministic cooldown. */
@@ -128,85 +128,34 @@ export interface AutoTrigger {
   flush: () => Promise<void>;
 }
 
-// --- Default Flash monitor --------------------------------------------------
+// --- Default local admission gate ------------------------------------------
 
-// Keep the monitor prompt focused and cheap. It returns STRICT JSON and nothing
-// else; we parse defensively and treat ANY deviation as "do not generate".
-const MONITOR_SYSTEM = [
-  'You are a real-time interview monitor. You watch the LATEST things the CANDIDATE said',
-  'and decide whether THIS is a good moment for the interviewer to generate a probing',
-  'follow-up question. Say yes only when the candidate has just finished a substantive,',
-  'self-contained thought worth probing (a claim, a decision, a result, a tradeoff).',
-  'Say no for filler, mid-sentence pauses, pleasantries, or when nothing new is worth a follow-up.',
-  'Respond with STRICT JSON ONLY, no prose, no markdown:',
-  '{"shouldGenerate": boolean, "reason": "<short>", "focusHint": "<what to probe, short>", "urgency": "low"|"med"|"high"}'
-].join(' ');
+// Gap detection and question rendering now happen together inside the single
+// Expert Flash call. Keeping a separate LLM monitor doubled latency and could
+// consume the entire SLO before generation even started. This local gate only
+// rejects obvious filler; the Expert call makes the semantic should_ask decision.
+const FILLER_ONLY = /^(?:好(?:的)?|谢谢(?:老师)?|嗯+|啊+|这个|怎么说|没有了|ok|okay)[，,。.啊嗯呢吧\s]*$/i;
 
-const MONITOR_MAX_TOKENS = 200;
-const MONITOR_TEMPERATURE = 0;
-const MONITOR_TIMEOUT_MS = 8_000;
-// Cap the transcript window we hand the monitor so its latency/cost stays flat
-// regardless of interview length — only the recent tail informs "is now a moment".
-const MONITOR_WINDOW_CHARS = 1200;
-
-function clampUrgency(value: unknown): 'low' | 'med' | 'high' {
-  return value === 'high' || value === 'med' || value === 'low' ? value : 'low';
-}
-
-/** Strip ```json fences and pull the first {...} object. Mirrors the orchestrator's safe parse. */
-function parseDecision(text: string): TriggerDecision {
-  const fallback: TriggerDecision = { shouldGenerate: false, reason: '', focusHint: '', urgency: 'low' };
-  if (!text) return fallback;
-  const cleaned = String(text)
-    .replace(/^```(?:json)?\s*/i, '')
-    .replace(/\s*```$/i, '')
-    .trim();
-  let obj: unknown;
-  try {
-    obj = JSON.parse(cleaned);
-  } catch {
-    const match = cleaned.match(/\{[\s\S]*\}/);
-    if (!match) return fallback;
-    try {
-      obj = JSON.parse(match[0]);
-    } catch {
-      return fallback;
-    }
+export function decideLocalTrigger(recentTranscript: string): TriggerDecision {
+  const text = String(recentTranscript ?? '').replace(/\s+/g, ' ').trim();
+  if (text.length < 24 || FILLER_ONLY.test(text)) {
+    return { shouldGenerate: false, reason: '内容过短或仅为语气词', focusHint: '', urgency: 'low' };
   }
-  if (!obj || typeof obj !== 'object') return fallback;
-  const rec = obj as Record<string, unknown>;
+  const selfContained = /[。！？!?]$/.test(text) || text.length >= 64;
+  if (!selfContained) {
+    return { shouldGenerate: false, reason: '可能仍在句中', focusHint: '', urgency: 'low' };
+  }
   return {
-    shouldGenerate: rec.shouldGenerate === true,
-    reason: typeof rec.reason === 'string' ? rec.reason : '',
-    focusHint: typeof rec.focusHint === 'string' ? rec.focusHint : '',
-    urgency: clampUrgency(rec.urgency)
+    shouldGenerate: true,
+    reason: '已形成完整、可追问的候选人回答',
+    focusHint: '优先找出责任边界、关键决策或可验证结果中信息增益最高的证据缺口',
+    urgency: 'med'
   };
 }
 
-/**
- * Default Flash trigger gate: one thinking-off monitor call over the recent
- * transcript tail. NEVER rejects — any error (no key, timeout, bad JSON) resolves
- * to `{ shouldGenerate: false }` so a monitor hiccup can never fire or throw.
- */
-function makeDefaultShouldGenerate(model: string) {
-  return async (recentTranscript: string): Promise<TriggerDecision> => {
-    try {
-      const window = recentTranscript.slice(-MONITOR_WINDOW_CHARS);
-      const text = await chat({
-        system: MONITOR_SYSTEM,
-        messages: [{ role: 'user', content: `Recent candidate transcript:\n"""\n${window}\n"""` }],
-        model,
-        maxTokens: MONITOR_MAX_TOKENS,
-        temperature: MONITOR_TEMPERATURE,
-        thinking: false,
-        timeoutMs: MONITOR_TIMEOUT_MS,
-        maxRetries: 0
-      });
-      return parseDecision(text);
-    } catch {
-      return { shouldGenerate: false, reason: '', focusHint: '', urgency: 'low' };
-    }
-  };
+function makeDefaultShouldGenerate() {
+  return async (recentTranscript: string): Promise<TriggerDecision> =>
+    decideLocalTrigger(recentTranscript);
 }
 
 // --- Factory ----------------------------------------------------------------
@@ -228,7 +177,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   const now = deps.now ?? Date.now;
   const setTimer = deps.setTimer ?? ((fn, ms) => setTimeout(fn, ms) as unknown as TimerHandle);
   const clearTimer = deps.clearTimer ?? ((h) => clearTimeout(h as ReturnType<typeof setTimeout>));
-  const shouldGenerate = deps.shouldGenerate ?? makeDefaultShouldGenerate(cfg.monitorModel);
+  const shouldGenerate = deps.shouldGenerate ?? makeDefaultShouldGenerate();
   const runAnalyze = deps.runAnalyze;
 
   // Per-instance state.

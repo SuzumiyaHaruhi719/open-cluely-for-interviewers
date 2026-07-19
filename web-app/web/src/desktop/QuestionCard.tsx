@@ -41,9 +41,9 @@ function formatElapsed(ms: number): string {
 
 function formatModeLabel(mode: string): string {
   const labels: Record<string, string> = {
-    fast: '快速',
-    expert: '专家 1.0',
-    expert2: '专家 2.0',
+    fast: '专家',
+    expert: '专家',
+    expert2: '专家',
     customize: '自定义'
   };
   return labels[mode] ?? mode;

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { formatTimer, recMeta, MODE_META, formatRelativeTime } from './helpers';
+import { ACTIVE_INTERVIEWER_MODES, formatTimer, recMeta, MODE_META, formatRelativeTime } from './helpers';
 
 describe('formatTimer', () => {
   test('formats sub-minute durations as mm:ss', () => {
@@ -40,6 +40,13 @@ describe('MODE_META', () => {
     expect(MODE_META.expert.attr).toBe('expert');
     expect(MODE_META.expert2.attr).toBe('expert2');
     expect(MODE_META.customize.attr).toBe('customize');
+  });
+
+  test('retires Fast and the legacy multi-call Expert modes from the product UI', () => {
+    expect(ACTIVE_INTERVIEWER_MODES).toEqual(['expert', 'customize']);
+    expect(MODE_META.expert.label).toBe('专家');
+    expect(MODE_META.expert.desc).toMatch(/DeepSeek v4 Flash/);
+    expect(MODE_META.expert.desc).toMatch(/<10/);
   });
 });
 

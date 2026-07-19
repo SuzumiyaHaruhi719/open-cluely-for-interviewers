@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { ServerMessage } from '@open-cluely/contract';
-import { runAutoQuestionAndEmit } from '../src/ws';
+import { runExpertQuestionAndEmit } from '../src/ws';
 
 function fakeSocket(messages: ServerMessage[]): any {
   return {
@@ -20,18 +20,19 @@ const GENERATED = {
     rationale_for_interviewer: '验证真实处置经验。',
     anchor_quotes: ['消防盲演'],
     expected_evidence_yield: '风险判断和处置证据',
-    iteration_version: 'auto_flash_v1'
+    iteration_version: 'expert_flash_v2'
   },
   model: 'deepseek-v4-flash',
   elapsedMs: 920,
-  fellBack: false
+  fellBack: false,
+  shouldAsk: true
 } as const;
 
-test('automatic question bypasses the selected Expert chain and emits one Flash result', async () => {
+test('automatic question emits one under-10s Expert result', async () => {
   const messages: ServerMessage[] = [];
   const calls: any[] = [];
 
-  await runAutoQuestionAndEmit(
+  await runExpertQuestionAndEmit(
     fakeSocket(messages),
     {
       requestId: 'auto-1',
@@ -40,6 +41,8 @@ test('automatic question bypasses the selected Expert chain and emits one Flash 
       jobDescription: '物业经理',
       resumeText: '',
       outputLanguage: 'zh',
+      questionHistory: [],
+      trigger: 'auto',
       isStale: () => false
     },
     {
@@ -60,10 +63,38 @@ test('automatic question bypasses the selected Expert chain and emits one Flash 
   assert.equal(result?.type, 'result');
   if (result?.type === 'result') {
     assert.equal(result.trigger, 'auto');
-    assert.equal(result.mode, 'fast');
+    assert.equal(result.mode, 'expert');
     assert.equal(result.elapsedMs, 920);
     assert.equal(result.output.primary_question, GENERATED.output.primary_question);
     assert.deepEqual(result.ranked, []);
+  }
+});
+
+test('manual Generate Q uses the same Expert Flash path as automatic generation', async () => {
+  const messages: ServerMessage[] = [];
+
+  await runExpertQuestionAndEmit(
+    fakeSocket(messages),
+    {
+      requestId: 'manual-1',
+      candidateAnswer: '我用消防盲演检查园区响应时间。',
+      focusHint: '',
+      jobDescription: '物业经理',
+      resumeText: '',
+      outputLanguage: 'zh',
+      questionHistory: ['你管理过多大的园区？'],
+      trigger: 'manual',
+      isStale: () => false
+    },
+    { generate: async () => GENERATED }
+  );
+
+  const result = messages.at(-1);
+  assert.equal(result?.type, 'result');
+  if (result?.type === 'result') {
+    assert.equal(result.trigger, 'manual');
+    assert.equal(result.mode, 'expert');
+    assert.equal(result.iterationVersion, 'expert_flash_v2');
   }
 });
 
@@ -71,11 +102,12 @@ test('a reset during Flash generation suppresses the stale completion and result
   const messages: ServerMessage[] = [];
   let stale = false;
 
-  await runAutoQuestionAndEmit(
+  await runExpertQuestionAndEmit(
     fakeSocket(messages),
     {
       requestId: 'auto-old',
       candidateAnswer: '旧面试回答',
+      trigger: 'auto',
       isStale: () => stale
     },
     {

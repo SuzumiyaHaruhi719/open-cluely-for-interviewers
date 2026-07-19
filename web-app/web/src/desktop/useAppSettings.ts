@@ -17,7 +17,7 @@ const KEYS = {
   summaryPromptText: 'open-cluely.summaryPromptText'
 } as const;
 
-export const DEFAULT_AI_MODEL: InterviewerModel = 'deepseek-v4-pro';
+export const DEFAULT_AI_MODEL: InterviewerModel = 'deepseek-v4-flash';
 const AI_MODELS: ReadonlySet<string> = new Set([
   'deepseek-v4-pro',
   'deepseek-v4-flash',

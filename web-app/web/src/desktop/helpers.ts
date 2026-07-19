@@ -11,21 +11,24 @@ export interface ModeMeta {
   desc: string;
 }
 
+/** Product-visible modes. Legacy wire values remain accepted only for migration. */
+export const ACTIVE_INTERVIEWER_MODES = ['expert', 'customize'] as const satisfies readonly InterviewerMode[];
+
 export const MODE_META: Record<InterviewerMode, ModeMeta> = {
   fast: {
-    label: '快速',
+    label: '专家',
     attr: 'fast',
-    desc: '低延迟两段式追问 · 默认'
+    desc: '兼容旧会话，实际使用新实时专家引擎'
   },
   expert: {
-    label: '专家 1.0',
+    label: '专家',
     attr: 'expert',
-    desc: '7-block 深链 · 独立排序 · 最稳 (~30–38s)'
+    desc: 'DeepSeek v4 Flash · 证据优先 · <10 秒'
   },
   expert2: {
-    label: '专家 2.0',
+    label: '专家',
     attr: 'expert2',
-    desc: '合并 DE · 少一次调用 · 更快 (~23s)'
+    desc: '兼容旧会话，实际使用新实时专家引擎'
   },
   customize: {
     label: '自定义',

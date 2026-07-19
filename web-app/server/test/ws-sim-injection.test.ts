@@ -18,9 +18,9 @@ const { attachWebSocket } = require('../src/ws') as typeof import('../src/ws');
 const DASHSCOPE_MARKER = 'apps/anthropic';
 
 const ORDER_QUESTION =
-  "你提到'订单状态同步延迟很高'，当时怎么判断根因确实在轮询，而不是下游消费慢?";
+  '你提到“订单状态同步延迟很高”，当时怎么验证根因确实在轮询而不是下游消费？';
 const EXPERIMENT_QUESTION =
-  "为了证明'实验组转化率提高'不是偶然波动，你会看哪些验证信号再决定扩大实验?";
+  '你提到“实验组转化率提高”，当时用哪个关键验证信号排除了偶然波动？';
 
 function anthropicResponse(text: string, model = 'stub-model'): Response {
   return new Response(
@@ -39,8 +39,20 @@ function blockReply(prompt: string): string {
   const anchor = isOrder ? '订单状态同步延迟很高' : '实验组转化率提高';
   const frame = isOrder ? 'diagnostic-debug' : 'evidence-verification';
   const expected = isOrder
-    ? 'how they diagnosed the real bottleneck before redesigning the sync path'
-    : 'how they verified an experiment result before broad rollout';
+    ? '改造同步链路前的真实根因验证方法'
+    : '扩大实验前的结果验证依据';
+
+  if (prompt.includes('[候选人最新回答]')) {
+    return JSON.stringify({
+      should_ask: true,
+      primary_question: primary,
+      rationale_for_interviewer: isOrder
+        ? '候选人说明了改造动作，但根因判断的验证链路还不清楚。'
+        : '候选人说明了暂缓扩大实验，但排除偶然波动的决策依据还不清楚。',
+      anchor_quotes: [anchor],
+      expected_evidence_yield: expected
+    });
+  }
 
   if (prompt.includes('ANATOMY block')) {
     return JSON.stringify({
@@ -199,7 +211,7 @@ async function runInjectedScript(port: number, text: string): Promise<{ result: 
         JSON.stringify({
           type: 'configure',
           config: {
-            mode: 'expert2',
+            mode: 'expert',
             asrProvider: 'sim',
             autoAnalyzeDisplay: true,
             simScript: [{ speakerId: 1, text }]

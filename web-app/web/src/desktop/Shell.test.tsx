@@ -122,7 +122,7 @@ describe('Shell', () => {
     expect(document.getElementById('channel-mic')).toBeInTheDocument();
   });
 
-  test('selecting a mode in settings updates #mode-indicator and sends configure', async () => {
+  test('settings exposes the new Expert mode and Customize, with legacy modes retired', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
@@ -131,28 +131,30 @@ describe('Shell', () => {
     const indicator = document.getElementById('mode-indicator');
     expect(indicator).toHaveAttribute('data-mode', 'expert');
 
-    // Open settings, pick Fast.
+    // Open settings: only the production Expert path and Customize remain.
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.click(screen.getByRole('radio', { name: /快速/ }));
+    const modes = within(screen.getByRole('radiogroup', { name: '面试模式' }));
+    expect(modes.queryByRole('radio', { name: /快速/ })).not.toBeInTheDocument();
+    expect(modes.queryByRole('radio', { name: /专家 1\.0/ })).not.toBeInTheDocument();
+    expect(modes.queryByRole('radio', { name: /专家 2\.0/ })).not.toBeInTheDocument();
 
-    expect(document.getElementById('mode-indicator')).toHaveAttribute('data-mode', 'fast');
-    expect(lastConfig(ws)).toMatchObject({ mode: 'fast' });
+    fireEvent.click(modes.getByRole('radio', { name: /自定义/ }));
+
+    expect(document.getElementById('mode-indicator')).toHaveAttribute('data-mode', 'customize');
+    expect(lastConfig(ws)).toMatchObject({ mode: 'customize' });
   });
 
-  test('switching the fast AI model persists it and configures the live session', async () => {
+  test('realtime Expert model is truthfully fixed to DeepSeek v4 Flash for the SLO', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
 
-    expect(lastConfig(ws)).toMatchObject({ interviewerModel: 'deepseek-v4-pro' });
+    expect(lastConfig(ws)).toMatchObject({ interviewerModel: 'deepseek-v4-flash', outputLanguage: 'zh' });
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.change(screen.getByLabelText('快速模式与通用 AI 模型'), {
-      target: { value: 'qwen3-vl-plus' }
-    });
-
-    expect(lastConfig(ws)).toMatchObject({ interviewerModel: 'qwen3-vl-plus' });
-    expect(localStorage.getItem('open-cluely.aiModel')).toBe('qwen3-vl-plus');
+    const model = screen.getByLabelText('实时专家模型');
+    expect(model).toHaveAttribute('readonly');
+    expect((model as HTMLInputElement).value).toContain('deepseek-v4-flash');
   });
 
   test('rail toggle flips body.rail-collapsed and persists to localStorage', async () => {

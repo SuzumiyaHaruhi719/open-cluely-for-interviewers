@@ -39,7 +39,7 @@ describe('FollowUpCard', () => {
     expect(screen.getByText(/avoided hot partitions/)).toBeInTheDocument();
 
     // Footer summary: mode + total tokens + elapsed.
-    expect(screen.getByText('专家 1.0')).toBeInTheDocument();
+    expect(screen.getByText('专家')).toBeInTheDocument();
     expect(screen.getByText(/1,500 令牌/)).toBeInTheDocument();
     expect(screen.getByText(/2\.4 s/)).toBeInTheDocument();
   });

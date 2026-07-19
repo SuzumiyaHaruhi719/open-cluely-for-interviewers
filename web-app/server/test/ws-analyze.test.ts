@@ -7,8 +7,7 @@ import type { ServerMessage } from '@open-cluely/contract';
 import { createApp } from '../src/app';
 import { attachWebSocket } from '../src/ws';
 
-// Anthropic-shape response factory. The runtime calls fetch with max_tokens=600
-// for hook detection (stage 1) and max_tokens=800 for follow-ups (stage 2).
+// Anthropic-shape response factory for the one-call realtime Expert path.
 function anthropicResponse(text: string, model = 'stub-model'): Response {
   const body = {
     content: [{ type: 'text', text }],
@@ -21,30 +20,17 @@ function anthropicResponse(text: string, model = 'stub-model'): Response {
   });
 }
 
-const HOOK_JSON = JSON.stringify({
-  score: 5,
-  pivot_signal: false,
-  concrete_hooks: ['x'],
-  missing_star_element: 'R',
-  recommended_direction: 'technical-depth'
-});
-
-const FOLLOWUP_JSON = JSON.stringify({
-  questions: [{ question: 'Q?', rationale: 'r' }]
+const EXPERT_JSON = JSON.stringify({
+  should_ask: true,
+  primary_question: 'Which design decision did you personally make to achieve the p99 latency reduction?',
+  rationale_for_interviewer: 'The result is stated, but the candidate ownership and decision boundary are not yet clear.',
+  anchor_quotes: ['p99 latency'],
+  expected_evidence_yield: 'A concrete personal decision, tradeoff, and measurable validation.'
 });
 
 function installFetchStub(): () => void {
   const original = global.fetch;
-  global.fetch = (async (_url: unknown, init?: { body?: unknown }) => {
-    let maxTokens = 0;
-    try {
-      const parsed = JSON.parse(String(init?.body ?? '{}')) as { max_tokens?: number };
-      maxTokens = Number(parsed.max_tokens ?? 0);
-    } catch {
-      maxTokens = 0;
-    }
-    return maxTokens === 600 ? anthropicResponse(HOOK_JSON) : anthropicResponse(FOLLOWUP_JSON);
-  }) as typeof global.fetch;
+  global.fetch = (async () => anthropicResponse(EXPERT_JSON)) as typeof global.fetch;
   return () => {
     global.fetch = original;
   };
@@ -62,7 +48,7 @@ async function startServer(): Promise<{ port: number; close: () => Promise<void>
   };
 }
 
-test('WS analyze (fast mode) yields ready, progress, and a synthesized result', async () => {
+test('WS analyze yields ready, progress, and one realtime Expert result', async () => {
   const restoreFetch = installFetchStub();
   const { port, close } = await startServer();
 
@@ -79,7 +65,7 @@ test('WS analyze (fast mode) yields ready, progress, and a synthesized result', 
     });
 
     ws.on('open', () => {
-      ws.send(JSON.stringify({ type: 'configure', config: { mode: 'fast' } }));
+      ws.send(JSON.stringify({ type: 'configure', config: { mode: 'expert', outputLanguage: 'en' } }));
       ws.send(
         JSON.stringify({
           type: 'analyze',
@@ -117,13 +103,17 @@ test('WS analyze (fast mode) yields ready, progress, and a synthesized result', 
   const progress = messages.filter((m) => m.type === 'progress');
   assert.ok(progress.length >= 1, 'expected at least one progress message');
 
-  // result with the synthesized fast-mode follow-up.
+  // result with the synthesized realtime Expert follow-up.
   const result = messages.find((m) => m.type === 'result');
   assert.ok(result, `expected a result message; got: ${JSON.stringify(messages)}`);
   if (result && result.type === 'result') {
     assert.equal(result.requestId, 'req-1');
     assert.equal(result.trigger, 'manual');
-    assert.equal(result.output.primary_question, 'Q?');
+    assert.equal(result.mode, 'expert');
+    assert.equal(
+      result.output.primary_question,
+      'Which design decision did you personally make to achieve the p99 latency reduction?'
+    );
     assert.equal(result.shouldShowFollowUps, true);
   }
 });

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { InterviewerMode, OutputLanguage } from '@open-cluely/contract';
-import { INTERVIEWER_MODES } from '@open-cluely/contract';
-import { MODE_META, LANGUAGE_OPTIONS } from './helpers';
+import { ACTIVE_INTERVIEWER_MODES, MODE_META, LANGUAGE_OPTIONS } from './helpers';
 import { CloseIcon } from './icons';
 import { SHORTCUTS } from './shortcuts';
 import { useMicDevices } from './useMicDevices';
@@ -24,7 +23,6 @@ interface SettingsModalProps {
   onClose: () => void;
   onModeChange: (mode: InterviewerMode) => void;
   onLanguageChange: (language: OutputLanguage) => void;
-  onAiModelChange: (value: string) => void;
   /** Change the report-generation model (Feature 2). */
   onSummaryModelChange: (value: string) => void;
   /** Change the summary prompt mode: 'default' or 'custom' (Feature 3). */
@@ -47,12 +45,6 @@ interface SettingsModalProps {
 
 /** Matches SETTINGS_CLOSE_MS on the desktop: hold the exit anim, then unmount. */
 const CLOSE_ANIM_MS = 200;
-
-const AI_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
-  { value: 'deepseek-v4-pro', label: 'deepseek-v4-pro · 推理最深' },
-  { value: 'deepseek-v4-flash', label: 'deepseek-v4-flash · 最快' },
-  { value: 'qwen3-vl-plus', label: 'qwen3-vl-plus · 截图分析' }
-];
 
 /**
  * Available models for the evaluation report (Feature 2).
@@ -121,7 +113,6 @@ export function SettingsModal({
   onClose,
   onModeChange,
   onLanguageChange,
-  onAiModelChange,
   onSummaryModelChange,
   onSummaryPromptModeChange,
   onSummaryPromptTextChange,
@@ -236,7 +227,7 @@ export function SettingsModal({
               role="radiogroup"
               aria-label="面试模式"
             >
-              {INTERVIEWER_MODES.map((value) => {
+              {ACTIVE_INTERVIEWER_MODES.map((value) => {
                 const meta = MODE_META[value];
                 const active = value === mode;
                 return (
@@ -429,25 +420,20 @@ export function SettingsModal({
           </section>
 
           <section className="settings-section">
-            <h3 className="settings-section__title">AI 模型（快速模式）</h3>
+            <h3 className="settings-section__title">实时专家与评估报告</h3>
             <div className="settings-field">
-              <label className="settings-field__label" htmlFor="setting-dashscope-ai-model">
-                快速模式与通用 AI 模型
+              <label className="settings-field__label" htmlFor="setting-realtime-expert-model">
+                实时专家模型
               </label>
-              <select
-                id="setting-dashscope-ai-model"
-                className="settings-select"
-                value={settings.aiModel}
-                onChange={(e) => onAiModelChange(e.target.value)}
-              >
-                {AI_MODEL_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+              <input
+                id="setting-realtime-expert-model"
+                className="settings-input settings-input--mono"
+                value="deepseek-v4-flash · 专家证据分析 · <10 秒"
+                readOnly
+                aria-readonly="true"
+              />
               <p className="settings-field__desc">
-                立即同步到当前会话，并从下一次「快速模式」分析开始生效；Expert 与 Customize 仍使用各节点配置的模型。
+                自动与手动追问使用同一条证据优先专家路径。一次调用同时完成缺口判断与问题生成，旧快速和多调用专家链已停用。
               </p>
             </div>
             <div className="settings-field">

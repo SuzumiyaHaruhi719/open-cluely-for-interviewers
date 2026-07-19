@@ -21,11 +21,11 @@ import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
 import {
-  AUTO_QUESTION_MODEL,
-  generateAutoQuestion,
-  type AutoQuestionInput,
-  type AutoQuestionResult
-} from './auto-question';
+  EXPERT_QUESTION_MODEL,
+  generateExpertQuestion,
+  type ExpertQuestionInput,
+  type ExpertQuestionResult
+} from './expert-question';
 import { createSessionContextAnalyzer } from './session-context-analyzer';
 import {
   analyzeSessionContext,
@@ -390,36 +390,36 @@ async function runAnalysis(ws: WebSocket, session: HeadlessSession, args: RunAna
   });
 }
 
-interface RunAutoQuestionArgs extends AutoQuestionInput {
+interface RunExpertQuestionArgs extends ExpertQuestionInput {
   requestId: string;
-  outputLanguage?: OutputLanguage;
+  trigger: GenerationTrigger;
   isStale?: () => boolean;
 }
 
-interface RunAutoQuestionDeps {
-  generate?: (input: AutoQuestionInput) => Promise<AutoQuestionResult>;
+interface RunExpertQuestionDeps {
+  generate?: (input: ExpertQuestionInput) => Promise<ExpertQuestionResult>;
 }
 
 /**
- * Dedicated autonomous SLO path. The trigger monitor has already found the gap;
- * one thinking-disabled Flash call turns it into a question. Manual Generate Q
- * still uses the selected Fast/Expert/Customize pipeline through runAnalysis().
+ * The production realtime Expert path shared by automatic and manual generation.
+ * One thinking-disabled Flash call performs gap selection + question rendering;
+ * legacy Fast / Expert 1.0 / Expert 2.0 chains are intentionally bypassed.
  */
-export async function runAutoQuestionAndEmit(
+export async function runExpertQuestionAndEmit(
   ws: WebSocket,
-  args: RunAutoQuestionArgs,
-  deps: RunAutoQuestionDeps = {}
+  args: RunExpertQuestionArgs,
+  deps: RunExpertQuestionDeps = {}
 ): Promise<void> {
   if (args.isStale?.()) return;
-  const generate = deps.generate ?? generateAutoQuestion;
+  const generate = deps.generate ?? generateExpertQuestion;
   send(ws, {
     type: 'progress',
     requestId: args.requestId,
-    phase: 'auto-question',
+    phase: 'expert-question',
     index: 1,
     total: 1,
     status: 'start',
-    model: AUTO_QUESTION_MODEL,
+    model: EXPERT_QUESTION_MODEL,
     tokens: null
   });
 
@@ -428,6 +428,7 @@ export async function runAutoQuestionAndEmit(
     focusHint: args.focusHint,
     jobDescription: args.jobDescription,
     resumeText: args.resumeText,
+    questionHistory: args.questionHistory,
     outputLanguage: args.outputLanguage
   });
   if (args.isStale?.()) return;
@@ -435,24 +436,29 @@ export async function runAutoQuestionAndEmit(
   send(ws, {
     type: 'progress',
     requestId: args.requestId,
-    phase: 'auto-question',
+    phase: 'expert-question',
     index: 1,
     total: 1,
     status: 'done',
     model: generated.model,
     tokens: null
   });
+
+  // The autonomous call is allowed to decide there is no valuable gap yet.
+  // A manual click always returns the deterministic evidence-anchored fallback.
+  if (args.trigger === 'auto' && !generated.shouldAsk) return;
+
   send(ws, {
     type: 'result',
     requestId: args.requestId,
-    mode: 'fast',
+    mode: 'expert',
     output: generated.output,
     shouldShowFollowUps: true,
     tokensUsed: ZERO_TOKENS,
     elapsedMs: generated.elapsedMs,
     iterationVersion: generated.output.iteration_version,
     ranked: [],
-    trigger: 'auto'
+    trigger: args.trigger
   });
 }
 
@@ -469,12 +475,30 @@ async function handleAnalyze(
 ): Promise<void> {
   trigger.markManualRun(msg.candidateAnswer);
   try {
-    await runAnalysis(ws, session, {
-      candidateAnswer: msg.candidateAnswer,
-      questionHistory: msg.questionHistory,
-      requestId: msg.requestId,
-      trigger: 'manual'
-    });
+    if (session.getMode() === 'customize') {
+      await runAnalysis(ws, session, {
+        candidateAnswer: msg.candidateAnswer,
+        questionHistory: msg.questionHistory,
+        requestId: msg.requestId,
+        trigger: 'manual'
+      });
+    } else {
+      const state = session.getState() as {
+        jobDescription?: string;
+        resumeText?: string;
+        outputLanguage?: OutputLanguage;
+      };
+      await runExpertQuestionAndEmit(ws, {
+        candidateAnswer: msg.candidateAnswer,
+        focusHint: '',
+        jobDescription: state.jobDescription,
+        resumeText: state.resumeText,
+        questionHistory: msg.questionHistory,
+        outputLanguage: state.outputLanguage,
+        requestId: msg.requestId,
+        trigger: 'manual'
+      });
+    }
   } finally {
     trigger.markRunDone(msg.candidateAnswer);
   }
@@ -1048,13 +1072,15 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             resumeText?: string;
             outputLanguage?: OutputLanguage;
           };
-          await runAutoQuestionAndEmit(ws, {
+          await runExpertQuestionAndEmit(ws, {
             candidateAnswer,
             focusHint,
             jobDescription: state.jobDescription,
             resumeText: state.resumeText,
+            questionHistory: [],
             outputLanguage: state.outputLanguage,
             requestId,
+            trigger: 'auto',
             isStale: () => trigger.getEpoch() !== startEpoch
           });
         } finally {

@@ -39,7 +39,7 @@ interface ConfigState {
 
 const INITIAL_CONFIG: ConfigState = {
   mode: 'expert',
-  outputLanguage: '',
+  outputLanguage: 'zh',
   jobDescription: '',
   resumeText: '',
   activePipelineId: null,
@@ -229,7 +229,7 @@ export function Shell() {
   // Toggle autonomous question generation: persist locally AND tell the server so
   // its trigger monitor starts/stops. The full-config re-push (above) carries
   // `autoGenerate` on every new sessionId, so this delta is enough for the live one.
-  const { setAutoGenerate, setAiModel } = appSettings;
+  const { setAutoGenerate } = appSettings;
   const onToggleAuto = useCallback((): void => {
     const next = !appSettings.settings.autoGenerate;
     setAutoGenerate(next);
@@ -399,14 +399,6 @@ export function Shell() {
       pushConfig({ resumeText });
     },
     [pushConfig]
-  );
-
-  const onAiModelChange = useCallback(
-    (interviewerModel: NonNullable<SessionConfig['interviewerModel']>): void => {
-      setAiModel(interviewerModel);
-      pushConfig({ interviewerModel });
-    },
-    [setAiModel, pushConfig]
   );
 
   // ── Re-push the FULL config on every new server session (connect + reconnect) ─
@@ -710,7 +702,6 @@ export function Shell() {
         onClose={() => setSettingsOpen(false)}
         onModeChange={onModeChange}
         onLanguageChange={onLanguageChange}
-        onAiModelChange={(value) => onAiModelChange(value as NonNullable<SessionConfig['interviewerModel']>)}
         onSummaryModelChange={(value) => {
           appSettings.setSummaryModel(value);
           pushConfig({ summaryModel: value });
