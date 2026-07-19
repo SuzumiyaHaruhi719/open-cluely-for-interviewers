@@ -28,7 +28,7 @@ function setRect(id: string, read: () => Box): void {
   vi.spyOn(element, 'getBoundingClientRect').mockImplementation(() => domRect(read()));
 }
 
-function TourHarness({ onToggleRail }: { onToggleRail: () => void }) {
+function TourHarness({ onToggleRail, replayToken = 0 }: { onToggleRail: () => void; replayToken?: number }) {
   return (
     <>
       <button id="toggle-rail-btn" onClick={onToggleRail}>Toggle rail</button>
@@ -40,7 +40,7 @@ function TourHarness({ onToggleRail }: { onToggleRail: () => void }) {
       <div id="channel-computer">Computer</div>
       <div id="channel-mic">Mic</div>
       <button id="analyze-btn">Analyze</button>
-      <SpotlightTour />
+      <SpotlightTour replayToken={replayToken} />
     </>
   );
 }
@@ -152,4 +152,18 @@ test('keeps the previous spotlight mounted until the next target is ready', asyn
   await advance(1200);
   expect(document.querySelector<HTMLElement>('.tour-spotlight-ring')?.style.left).toBe('494px');
   expect(screen.getByText(/② 粘贴岗位描述/)).toBeInTheDocument();
+});
+
+test('replays immediately when the parent changes replayToken without reloading the page', async () => {
+  sessionStorage.setItem('tour-shown-this-session', '1');
+  const onToggleRail = vi.fn();
+  const { rerender } = render(<TourHarness onToggleRail={onToggleRail} replayToken={0} />);
+
+  await advance(900);
+  expect(screen.queryByText('欢迎使用面试官 Copilot')).not.toBeInTheDocument();
+
+  rerender(<TourHarness onToggleRail={onToggleRail} replayToken={1} />);
+  await advance(1);
+
+  expect(screen.getByText('欢迎使用面试官 Copilot')).toBeInTheDocument();
 });

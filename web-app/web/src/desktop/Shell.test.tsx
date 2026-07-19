@@ -68,6 +68,7 @@ afterEach(() => {
   vi.restoreAllMocks();
   document.body.classList.remove('rail-collapsed');
   localStorage.clear();
+  sessionStorage.clear();
 });
 
 /** Open the socket so the shell reports a ready session. */
@@ -155,6 +156,27 @@ describe('Shell', () => {
     const model = screen.getByLabelText('实时专家模型');
     expect(model).toHaveAttribute('readonly');
     expect((model as HTMLInputElement).value).toContain('deepseek-v4-flash');
+  });
+
+  test('Settings replays the Tour without reloading or discarding the interview', async () => {
+    sessionStorage.setItem('tour-shown-this-session', '1');
+    render(<Shell />);
+    await flushMount();
+
+    fireEvent.change(screen.getByLabelText('手动上下文输入'), {
+      target: { value: '保留中的面试上下文' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: '添加' }));
+    expect(screen.getByText('保留中的面试上下文')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.click(screen.getByRole('button', { name: '重新播放引导 Tour' }));
+
+    expect(await screen.findByText('欢迎使用面试官 Copilot')).toBeInTheDocument();
+    expect(screen.getByText('保留中的面试上下文')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: '设置' })).not.toBeInTheDocument();
+    });
   });
 
   test('rail toggle flips body.rail-collapsed and persists to localStorage', async () => {

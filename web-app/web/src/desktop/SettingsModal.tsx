@@ -39,6 +39,8 @@ interface SettingsModalProps {
   /** Merge-patch the Doubao/Volc credential fields (revealed when provider = volc). */
   onVolcSettingsChange: (patch: Partial<VolcSettings>) => void;
   onOpacityChange: (step: number) => void;
+  /** Replay the mounted Tour without reloading or clearing the interview. */
+  onReplayTour: () => void;
   /** Pick a saved/builtin pipeline as the active Customize pipeline. */
   onSelectPipeline: (id: string) => void;
   /** Open the full-window Pipeline Studio (Customize-mode node editor). */
@@ -125,6 +127,7 @@ export function SettingsModal({
   onAutoIntervalChange,
   onVolcSettingsChange,
   onOpacityChange,
+  onReplayTour,
   onSelectPipeline,
   onOpenStudio
 }: SettingsModalProps) {
@@ -688,10 +691,7 @@ export function SettingsModal({
               <button
                 type="button"
                 className="settings-btn"
-                onClick={() => {
-                  try { sessionStorage.removeItem('tour-shown-this-session'); } catch {}
-                  window.location.reload();
-                }}
+                onClick={onReplayTour}
               >重新播放引导 Tour</button>
               <p className="settings-field__desc">重新查看面试官 Copilot 的功能导览。</p>
             </div>

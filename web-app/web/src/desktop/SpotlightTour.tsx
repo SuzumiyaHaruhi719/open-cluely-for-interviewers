@@ -216,7 +216,12 @@ const arrowStyles: Record<string, React.CSSProperties> = {
   right: { borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '8px solid var(--tour-arrow)', borderRight: 'none' },
 };
 
-export function SpotlightTour() {
+interface SpotlightTourProps {
+  /** Increment to replay from the welcome step without reloading the interview. */
+  replayToken?: number;
+}
+
+export function SpotlightTour({ replayToken = 0 }: SpotlightTourProps) {
   const [visible, setVisible] = useState(false);
   const [stepIdx, setStepIdx] = useState(0);
   const [rect, setRect] = useState<DOMRect | null>(null);
@@ -228,6 +233,7 @@ export function SpotlightTour() {
   const [layoutMode, setLayoutMode] = useState<'centered' | 'target'>('centered');
   const positionRunRef = useRef(0);
   const isScrollingRef = useRef(false);
+  const replayTokenRef = useRef(replayToken);
 
   // Check if tour should start — shows on every fresh page load
   useEffect(() => {
@@ -236,6 +242,20 @@ export function SpotlightTour() {
       return () => clearTimeout(t);
     }
   }, []);
+
+  // Settings/keyboard replay is an in-memory control signal. Reset the mounted
+  // tour instead of reloading the page, which would destroy the live interview.
+  useEffect(() => {
+    if (replayToken === replayTokenRef.current) return;
+    replayTokenRef.current = replayToken;
+    ++positionRunRef.current;
+    setStepIdx(0);
+    setRect(null);
+    setTtPos(null);
+    setLayoutMode('centered');
+    setTooltipVisible(false);
+    setVisible(true);
+  }, [replayToken]);
 
   // Position spotlight when step changes
   const reposition = useCallback((idx: number) => {

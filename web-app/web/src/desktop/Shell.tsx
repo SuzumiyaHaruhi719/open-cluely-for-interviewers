@@ -101,6 +101,7 @@ export function Shell() {
   const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
   const [clientSummaryTranscript, setClientSummaryTranscript] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [tourReplayToken, setTourReplayToken] = useState(0);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
   // Topbar title for the current in-memory interview (sample name, else default).
@@ -305,22 +306,23 @@ export function Shell() {
     return () => document.removeEventListener('keydown', handler);
   }, [toggleRail]);
 
-  // "?" (Shift+/) — reset the spotlight tour and replay it. Mirrors the desktop
-  // app: ignored inside form fields so normal text entry is never hijacked. The
-  // tour reads its "have I shown already?" flag from localStorage on mount, so
-  // clearing it + reload is the simplest reliable way to re-trigger SpotlightTour
-  // (which is mounted once at the top of the shell).
+  const onReplayTour = useCallback((): void => {
+    setSettingsOpen(false);
+    setTourReplayToken((token) => token + 1);
+  }, []);
+
+  // "?" (Shift+/) — replay the mounted spotlight tour without destroying the
+  // current interview. Ignore form fields so normal text entry is never hijacked.
   useEffect(() => {
     const handler = (e: KeyboardEvent): void => {
       if (e.key === '?' && !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
         e.preventDefault();
-        try { sessionStorage.removeItem('tour-shown-this-session'); } catch {}
-        window.location.reload();
+        onReplayTour();
       }
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, []);
+  }, [onReplayTour]);
 
   // ASR provider / Doubao creds → persist locally AND push to the server so the
   // NEXT audio-control start uses the chosen recognizer. We always send the Volc
@@ -731,6 +733,7 @@ export function Shell() {
         onAutoIntervalChange={onAutoIntervalChange}
         onVolcSettingsChange={onVolcSettingsChange}
         onOpacityChange={appSettings.setOpacityStep}
+        onReplayTour={onReplayTour}
         onSelectPipeline={onUseCustomPipeline}
         onOpenStudio={onOpenStudio}
       />
@@ -741,7 +744,7 @@ export function Shell() {
         onUse={(id) => onUseCustomPipeline(id)}
       />
 
-      <SpotlightTour />
+      <SpotlightTour replayToken={tourReplayToken} />
     </div>
   );
 }
