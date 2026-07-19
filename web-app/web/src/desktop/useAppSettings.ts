@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { InterviewerModel } from '@open-cluely/contract';
+import type { InterviewerModel, OutputLanguage } from '@open-cluely/contract';
 
 const KEYS = {
   aiModel: 'open-cluely.aiModel',
@@ -15,10 +15,12 @@ const KEYS = {
   summaryModel: 'open-cluely.summaryModel',
   summaryPromptMode: 'open-cluely.summaryPromptMode',
   summaryPromptText: 'open-cluely.summaryPromptText',
+  outputLanguage: 'open-cluely.outputLanguage',
   micDeviceId: 'mic.inputDeviceId'
 } as const;
 
 export const DEFAULT_AI_MODEL: InterviewerModel = 'deepseek-v4-flash';
+export const DEFAULT_OUTPUT_LANGUAGE: OutputLanguage = 'zh';
 const AI_MODELS: ReadonlySet<string> = new Set([
   'deepseek-v4-pro',
   'deepseek-v4-flash',
@@ -62,6 +64,8 @@ export type AutoMode = 'agent' | 'interval';
 
 export interface AppSettings {
   aiModel: InterviewerModel;
+  /** Follow-up language; Chinese is the product default and persists per browser. */
+  outputLanguage: OutputLanguage;
   /** Per-session summary model id. Sent to the server via `configure.summaryModel`. */
   summaryModel: string;
   /**
@@ -110,6 +114,11 @@ function readString(key: string, fallback: string): string {
 function readAiModel(): InterviewerModel {
   const value = readString(KEYS.aiModel, DEFAULT_AI_MODEL);
   return AI_MODELS.has(value) ? (value as InterviewerModel) : DEFAULT_AI_MODEL;
+}
+
+function readOutputLanguage(): OutputLanguage {
+  const value = readString(KEYS.outputLanguage, DEFAULT_OUTPUT_LANGUAGE);
+  return value === 'en' || value === '' ? value : 'zh';
 }
 
 /** Read a persisted boolean; only the literal string 'false' turns it off. */
@@ -168,6 +177,7 @@ export interface VolcSettings {
 export interface UseAppSettings {
   settings: AppSettings;
   setAiModel: (value: InterviewerModel) => void;
+  setOutputLanguage: (value: OutputLanguage) => void;
   setSummaryModel: (value: string) => void;
   /** Set the summary prompt mode ('default' | 'custom') and persist to localStorage. */
   setSummaryPromptMode: (mode: 'default' | 'custom') => void;
@@ -204,6 +214,7 @@ const VOLC_FIELD_KEYS: Record<keyof VolcSettings, string> = {
 export function useAppSettings(): UseAppSettings {
   const [settings, setSettings] = useState<AppSettings>(() => ({
     aiModel: readAiModel(),
+    outputLanguage: readOutputLanguage(),
     summaryModel: readString(KEYS.summaryModel, DEFAULT_SUMMARY_MODEL),
     summaryPromptMode: readString(KEYS.summaryPromptMode, DEFAULT_SUMMARY_PROMPT_MODE) === 'custom' ? 'custom' : 'default',
     summaryPromptText: readString(KEYS.summaryPromptText, DEFAULT_SUMMARY_PROMPT_TEXT),
@@ -223,6 +234,11 @@ export function useAppSettings(): UseAppSettings {
   const setAiModel = useCallback((value: InterviewerModel): void => {
     setSettings((prev) => ({ ...prev, aiModel: value }));
     persist(KEYS.aiModel, value);
+  }, []);
+
+  const setOutputLanguage = useCallback((value: OutputLanguage): void => {
+    setSettings((prev) => ({ ...prev, outputLanguage: value }));
+    persist(KEYS.outputLanguage, value);
   }, []);
 
   const setSummaryModel = useCallback((value: string): void => {
@@ -294,6 +310,7 @@ export function useAppSettings(): UseAppSettings {
   return {
     settings,
     setAiModel,
+    setOutputLanguage,
     setSummaryModel,
     setSummaryPromptMode,
     setSummaryPromptText,

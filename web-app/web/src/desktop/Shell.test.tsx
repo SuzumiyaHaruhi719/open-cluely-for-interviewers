@@ -158,6 +158,17 @@ describe('Shell', () => {
     expect((model as HTMLInputElement).value).toContain('deepseek-v4-flash');
   });
 
+  test('restores the persisted output language into the live Expert session', async () => {
+    localStorage.setItem('open-cluely.outputLanguage', 'en');
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    expect(lastConfig(ws)).toMatchObject({ outputLanguage: 'en' });
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    expect(screen.getByRole('combobox', { name: '追问输出语言' })).toHaveValue('en');
+  });
+
   test('Settings replays the Tour without reloading or discarding the interview', async () => {
     sessionStorage.setItem('tour-shown-this-session', '1');
     render(<Shell />);

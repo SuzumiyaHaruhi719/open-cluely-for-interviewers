@@ -93,8 +93,12 @@ export function Shell() {
     resetTranscripts
   } = socket;
 
+  const appSettings = useAppSettings();
   const [view, setView] = useState<AppView>('copilot');
-  const [config, setConfig] = useState<ConfigState>(INITIAL_CONFIG);
+  const [config, setConfig] = useState<ConfigState>(() => ({
+    ...INITIAL_CONFIG,
+    outputLanguage: appSettings.settings.outputLanguage
+  }));
   const [answer, setAnswer] = useState('');
   // Seeded (sample) or loaded (session) conversation, rendered as chat lines in
   // the transcript stream BEFORE any live socket transcript. Cleared on new/clear.
@@ -115,7 +119,6 @@ export function Shell() {
   const pickedHintTimerRef = useRef<number | null>(null);
 
   const assistant = useAssistantPanel();
-  const appSettings = useAppSettings();
 
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
@@ -221,10 +224,11 @@ export function Shell() {
 
   const onLanguageChange = useCallback(
     (outputLanguage: OutputLanguage): void => {
+      appSettings.setOutputLanguage(outputLanguage);
       setConfig((prev) => ({ ...prev, outputLanguage }));
       pushConfig({ outputLanguage });
     },
-    [pushConfig]
+    [appSettings.setOutputLanguage, pushConfig]
   );
 
   // Toggle autonomous question generation: persist locally AND tell the server so

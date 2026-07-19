@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, test } from 'vitest';
 import { DEFAULT_VOLC_RESOURCE_ID, useAppSettings } from './useAppSettings';
 
-describe('useAppSettings microphone device', () => {
+describe('useAppSettings persisted controls', () => {
   beforeEach(() => localStorage.clear());
 
   test('reads the capture device key and keeps one persisted source of truth', () => {
@@ -22,5 +22,15 @@ describe('useAppSettings microphone device', () => {
 
     expect(DEFAULT_VOLC_RESOURCE_ID).toBe('volc.bigasr.sauc.duration');
     expect(result.current.settings.volcResourceId).toBe('volc.bigasr.sauc.duration');
+  });
+
+  test('persists the selected follow-up output language', () => {
+    const { result } = renderHook(() => useAppSettings());
+    expect(result.current.settings.outputLanguage).toBe('zh');
+
+    act(() => result.current.setOutputLanguage('en'));
+
+    expect(result.current.settings.outputLanguage).toBe('en');
+    expect(localStorage.getItem('open-cluely.outputLanguage')).toBe('en');
   });
 });
