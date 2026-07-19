@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { InterviewerMode, OutputLanguage, SessionConfig } from '@open-cluely/contract';
+import type { AsrProvider, SessionConfig } from '@open-cluely/contract';
 import { useCopilotSocket } from '../lib/useCopilotSocket';
 import { QuestionBank } from '../views/QuestionBank';
 import { TitleBar } from './TitleBar';
@@ -12,24 +12,18 @@ import { SettingsModal } from './SettingsModal';
 import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from './InterviewTypeModal';
 import { ResultsPanel } from './ResultsPanel';
 import { SummaryModal } from './SummaryModal';
-import { PipelineStudio } from './studio/PipelineStudio';
 import { SpotlightTour } from './SpotlightTour';
 import { useRailCollapsed } from './useRailCollapsed';
 import { useAssistantPanel } from './useAssistantPanel';
-import { useAppSettings, type VolcSettings } from './useAppSettings';
-import type { AsrProvider } from '@open-cluely/contract';
+import { useAppSettings, type UserAsrProvider } from './useAppSettings';
 import { formatTimer } from './helpers';
 import { sampleTranscriptText } from './interviewSamples';
 import { SIM_SCENARIOS } from './simScenarios';
 import type { AppView } from './types';
 
 interface ConfigState {
-  mode: InterviewerMode;
-  outputLanguage: OutputLanguage;
   jobDescription: string;
   resumeText: string;
-  /** Customize mode: the saved pipeline the session runs (null = Expert fallback). */
-  activePipelineId: string | null;
   /**
    * Interview format from the loaded/created session. 'offline' uses one room
    * microphone plus automatic speaker-role partitioning; 'online' keeps two lanes.
@@ -38,17 +32,21 @@ interface ConfigState {
 }
 
 const INITIAL_CONFIG: ConfigState = {
-  mode: 'expert',
-  outputLanguage: 'zh',
   jobDescription: '',
   resumeText: '',
-  activePipelineId: null,
   interviewType: 'online'
 };
 
+/** Product policy: one truthful realtime path, independent from user preferences. */
+const EXPERT_CONFIG = {
+  mode: 'expert',
+  interviewerModel: 'deepseek-v4-flash',
+  outputLanguage: 'zh'
+} as const;
+
 function normalizeAsrProvider(value: string): AsrProvider {
   if (value === 'volc' || value === 'xfyun' || value === 'sim') return value;
-  return 'paraformer';
+  return 'xfyun';
 }
 
 function simScriptFor(provider: AsrProvider): SessionConfig['simScript'] | undefined {
@@ -64,8 +62,7 @@ function simScriptFor(provider: AsrProvider): SessionConfig['simScript'] | undef
  * interview-type picker opens for a fresh in-memory interview; "New interview"
  * resets all live state and re-opens the picker. Also wired here: the résumé
  * upload/chat rail, the topbar assistant actions (Ask AI / notes / insights →
- * results panel), and the functional settings (opacity, mic enumerate,
- * model/provider persistence).
+ * results panel), and the compact environment-backed audio/model preferences.
  */
 export function Shell() {
   const socket = useCopilotSocket();
@@ -95,10 +92,7 @@ export function Shell() {
 
   const appSettings = useAppSettings();
   const [view, setView] = useState<AppView>('copilot');
-  const [config, setConfig] = useState<ConfigState>(() => ({
-    ...INITIAL_CONFIG,
-    outputLanguage: appSettings.settings.outputLanguage
-  }));
+  const [config, setConfig] = useState<ConfigState>(INITIAL_CONFIG);
   const [answer, setAnswer] = useState('');
   // Seeded (sample) or loaded (session) conversation, rendered as chat lines in
   // the transcript stream BEFORE any live socket transcript. Cleared on new/clear.
@@ -110,7 +104,6 @@ export function Shell() {
   const [typePickerOpen, setTypePickerOpen] = useState(false);
   // Topbar title for the current in-memory interview (sample name, else default).
   const [interviewTitle, setInterviewTitle] = useState('新面试');
-  const [studioOpen, setStudioOpen] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [railCollapsed, toggleRail] = useRailCollapsed();
   // Transient "已选用" confirmation shown after picking a ranked candidate. Holds
@@ -190,56 +183,20 @@ export function Shell() {
     [sendConfigure]
   );
 
-  // ── Auto-clear the candidate speech cache when the interview ENDS ────────────
-  // "Interview ends" = the LAST active audio source is stopped (capture goes from
-  // some-source-capturing → none). At that transition we clear the candidate
-  // cache the same way "New interview" does: frontend speakerSegments + transcripts
-  // + in-flight summary/context (resetSpeakerSegments/resetTranscripts) AND the
-  // server-side candidate buffers via a resetGeneration configure (mirrors
-  // onClearSession's pushConfig). A mere PARTIAL stop (another source still live)
-  // does NOT clear. We track the previous capturing state so the clear fires once
-  // per end transition and never repeats while idle (idempotent). The manual
-  // "New interview" clear stays as-is.
-  const wasCapturingRef = useRef(false);
-  useEffect(() => {
-    if (wasCapturingRef.current && !capturing) {
-      // All sources just stopped → interview ended → clear the candidate cache.
-      pushConfig({ resetGeneration: true });
-      setAnswer('');
-      setTranscriptMessages([]);
-      lastDisplayFinalRef.current = '';
-      resetSpeakerSegments();
-      resetTranscripts();
-    }
-    wasCapturingRef.current = capturing;
-  }, [capturing, pushConfig, resetSpeakerSegments, resetTranscripts]);
-
-  const onModeChange = useCallback(
-    (mode: InterviewerMode): void => {
-      setConfig((prev) => ({ ...prev, mode }));
-      pushConfig({ mode });
-    },
-    [pushConfig]
-  );
-
-  const onLanguageChange = useCallback(
-    (outputLanguage: OutputLanguage): void => {
-      appSettings.setOutputLanguage(outputLanguage);
-      setConfig((prev) => ({ ...prev, outputLanguage }));
-      pushConfig({ outputLanguage });
-    },
-    [appSettings.setOutputLanguage, pushConfig]
-  );
-
   // Toggle autonomous question generation: persist locally AND tell the server so
   // its trigger monitor starts/stops. The full-config re-push (above) carries
   // `autoGenerate` on every new sessionId, so this delta is enough for the live one.
   const { setAutoGenerate } = appSettings;
+  const onAutoGenerateChange = useCallback(
+    (enabled: boolean): void => {
+      setAutoGenerate(enabled);
+      pushConfig({ autoGenerate: enabled });
+    },
+    [setAutoGenerate, pushConfig]
+  );
   const onToggleAuto = useCallback((): void => {
-    const next = !appSettings.settings.autoGenerate;
-    setAutoGenerate(next);
-    pushConfig({ autoGenerate: next });
-  }, [appSettings.settings.autoGenerate, setAutoGenerate, pushConfig]);
+    onAutoGenerateChange(!appSettings.settings.autoGenerate);
+  }, [appSettings.settings.autoGenerate, onAutoGenerateChange]);
 
   // Autonomous follow-up trigger MODE: persist locally AND tell the server so its
   // monitor switches between the AI-decided ('agent') and fixed-30s ('interval')
@@ -328,63 +285,19 @@ export function Shell() {
     return () => document.removeEventListener('keydown', handler);
   }, [onReplayTour]);
 
-  // ASR provider / Doubao creds → persist locally AND push to the server so the
-  // NEXT audio-control start uses the chosen recognizer. We always send the Volc
-  // creds alongside the provider so flipping to Doubao (or editing a cred while
-  // already on Doubao) carries everything in one configure message. Creds are
-  // sensitive: localStorage matches the desktop's local-store behaviour, and the
-  // server (not the browser) makes the Volc connection and never logs them.
-  const { setAsrProvider, setVolcSettings } = appSettings;
+  // Credentials are environment-owned. The renderer sends only the provider name
+  // so changing engines cannot leak or shadow deployment configuration.
+  const { setAsrProvider } = appSettings;
   const onAsrProviderChange = useCallback(
-    (value: string): void => {
+    (value: UserAsrProvider): void => {
       const provider = normalizeAsrProvider(value);
       setAsrProvider(value);
-      const s = appSettings.settings;
       pushConfig({
         asrProvider: provider,
-        simScript: simScriptFor(provider),
-        volcAppId: s.volcAppId,
-        volcAccessToken: s.volcAccessToken,
-        volcResourceId: s.volcResourceId,
-        volcModel: s.volcModel
+        simScript: simScriptFor(provider)
       });
     },
-    [pushConfig, setAsrProvider, appSettings.settings]
-  );
-
-  const onVolcSettingsChange = useCallback(
-    (patch: Partial<VolcSettings>): void => {
-      setVolcSettings(patch);
-      // Merge the patch over current settings for the push (state updates async).
-      const s = { ...appSettings.settings, ...patch };
-      const provider = normalizeAsrProvider(s.asrProvider);
-      pushConfig({
-        asrProvider: provider,
-        simScript: simScriptFor(provider),
-        volcAppId: s.volcAppId,
-        volcAccessToken: s.volcAccessToken,
-        volcResourceId: s.volcResourceId,
-        volcModel: s.volcModel
-      });
-    },
-    [pushConfig, setVolcSettings, appSettings.settings]
-  );
-
-  // Open the node editor (from the Customize section in Settings). Close Settings
-  // so the full-window studio overlay isn't competing with the modal.
-  const onOpenStudio = useCallback((): void => {
-    setSettingsOpen(false);
-    setStudioOpen(true);
-  }, []);
-
-  // "Use this" in the Studio: flip the live session to Customize running the saved
-  // pipeline. One configure carries both so the server never runs with a stale id.
-  const onUseCustomPipeline = useCallback(
-    (id: string): void => {
-      setConfig((prev) => ({ ...prev, mode: 'customize', activePipelineId: id }));
-      pushConfig({ mode: 'customize', activePipelineId: id });
-    },
-    [pushConfig]
+    [pushConfig, setAsrProvider]
   );
 
   const onStartAudio = useCallback(
@@ -410,59 +323,29 @@ export function Shell() {
   );
 
   // ── Re-push the FULL config on every new server session (connect + reconnect) ─
-  // The server spins up a fresh headless session (default mode 'fast') per WS
-  // connection, identified by a new sessionId. The per-change pushConfig calls
-  // only send deltas — so a fresh OR reconnected session silently ran Fast even
-  // when the UI showed Expert (and lost JD/résumé/Customize/ASR on reconnect).
-  // Keep the latest full config in a ref and resend it whenever a new sessionId
-  // arrives. This is the fix for "selected Expert but the progress shows fast".
+  // Every new/reconnected server session receives one complete, truthful product
+  // policy. JD and résumé remain context; they never become a separate prompt mode.
   const fullConfigRef = useRef<Partial<SessionConfig>>({});
   useEffect(() => {
     const s = appSettings.settings;
     fullConfigRef.current = {
-      mode: config.mode,
-      interviewerModel: s.aiModel,
-      outputLanguage: config.outputLanguage,
+      ...EXPERT_CONFIG,
       jobDescription: config.jobDescription,
       resumeText: config.resumeText,
-      activePipelineId: config.activePipelineId,
-      // Both interview formats keep the selected text engine. Offline enables the
-      // server's single-mic partition lifecycle; online keeps dual-lane routing.
-      // The volc creds are always included so flipping back online with Doubao
-      // selected re-applies them on the next audio start.
-      // `diarize` is the wire-compatible single-room-mic partition flag.
       asrProvider: normalizeAsrProvider(s.asrProvider),
       simScript: simScriptFor(normalizeAsrProvider(s.asrProvider)),
       diarize: offline,
-      volcAppId: s.volcAppId,
-      volcAccessToken: s.volcAccessToken,
-      volcResourceId: s.volcResourceId,
-      volcModel: s.volcModel,
-      // Part of the full config: re-push so a fresh/reconnected server session
-      // honours the auto-generate choice (the monitor is off until told on).
       autoGenerate: s.autoGenerate,
-      // Re-push the trigger mode too so a fresh/reconnected session uses the
-      // chosen cadence (AI-decided 'agent' vs fixed-30s 'interval').
       autoMode: s.autoMode,
-      // Re-push the interviewer-adjustable interval so a fresh/reconnected session
-      // honours the chosen cooldown (only used when autoMode === 'interval').
       autoIntervalMs: s.autoIntervalSec * 1000,
-      // Re-push the per-session summary model so a fresh/reconnected session uses
-      // the user's chosen model for the next summarize call (Feature 2).
-      summaryModel: s.summaryModel,
-      // Re-push prompt mode + text (Feature 3) so a fresh/reconnected session
-      // honours the user's prompt choice on the next summarize call.
-      summaryPromptMode: s.summaryPromptMode,
-      summaryPromptText: s.summaryPromptMode === 'custom' ? s.summaryPromptText : undefined
+      summaryModel: s.summaryModel
     };
   }, [config, offline, appSettings.settings]);
   useEffect(() => {
     if (socket.sessionId) {
       sendConfigure(fullConfigRef.current);
     }
-    // Re-push the FULL config (which carries diarize=offline) whenever the mode
-    // flips — not just on connect — or switching online<->offline mid-session
-    // leaves the server's diarize flag stale (offline shows no speaker bubbles).
+    // Re-push when the interview format flips so diarize cannot stay stale.
   }, [socket.sessionId, offline, sendConfigure]);
 
   const onAnalyze = useCallback((): void => {
@@ -617,7 +500,7 @@ export function Shell() {
             <>
               <Topbar
                 title={sessionTitle}
-                mode={config.mode}
+                mode="expert"
                 asrProvider={appSettings.settings.asrProvider}
                 status={status}
                 capturing={capturing}
@@ -640,7 +523,7 @@ export function Shell() {
                 transcripts={transcripts}
                 transcriptMessages={transcriptMessages}
                 lastResult={lastResult}
-                outputLanguage={config.outputLanguage}
+                outputLanguage="zh"
                 progress={progress}
                 progressTokens={progressTokens}
                 isAnalyzing={isAnalyzing}
@@ -705,47 +588,18 @@ export function Shell() {
 
       <SettingsModal
         open={settingsOpen}
-        mode={config.mode}
-        outputLanguage={config.outputLanguage}
         settings={appSettings.settings}
-        activePipelineId={config.activePipelineId}
         onClose={() => setSettingsOpen(false)}
-        onModeChange={onModeChange}
-        onLanguageChange={onLanguageChange}
         onSummaryModelChange={(value) => {
           appSettings.setSummaryModel(value);
           pushConfig({ summaryModel: value });
         }}
-        onSummaryPromptModeChange={(mode) => {
-          appSettings.setSummaryPromptMode(mode);
-          pushConfig({
-            summaryPromptMode: mode,
-            summaryPromptText: mode === 'custom' ? appSettings.settings.summaryPromptText : undefined
-          });
-        }}
-        onSummaryPromptTextChange={(text) => {
-          appSettings.setSummaryPromptText(text);
-          // Only push to server when in custom mode (no-op in default mode).
-          if (appSettings.settings.summaryPromptMode === 'custom') {
-            pushConfig({ summaryPromptMode: 'custom', summaryPromptText: text });
-          }
-        }}
         onAsrProviderChange={onAsrProviderChange}
         onMicDeviceChange={appSettings.setMicDeviceId}
         micDeviceDisabled={capturing}
+        onAutoGenerateChange={onAutoGenerateChange}
         onAutoModeChange={onAutoModeChange}
         onAutoIntervalChange={onAutoIntervalChange}
-        onVolcSettingsChange={onVolcSettingsChange}
-        onOpacityChange={appSettings.setOpacityStep}
-        onReplayTour={onReplayTour}
-        onSelectPipeline={onUseCustomPipeline}
-        onOpenStudio={onOpenStudio}
-      />
-
-      <PipelineStudio
-        open={studioOpen}
-        onClose={() => setStudioOpen(false)}
-        onUse={(id) => onUseCustomPipeline(id)}
       />
 
       <SpotlightTour replayToken={tourReplayToken} />
