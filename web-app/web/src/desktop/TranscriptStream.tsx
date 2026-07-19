@@ -41,6 +41,8 @@ interface TranscriptStreamProps {
   autoIntervalMs?: number;
   /** Whether the AUTO pill is on — countdown only shows when auto-generate is active. */
   autoGenerate?: boolean;
+  /** Server-confirmed ASR is live; interval countdown is meaningless while idle. */
+  capturing?: boolean;
   /** Timestamp (ms) of the last auto fire (or when interval mode became active). */
   lastAutoFireAt?: number | null;
   /**
@@ -133,14 +135,24 @@ function AutoCooldownLine({
   lastAutoFireAt: number | null;
 }) {
   const [now, setNow] = useState(() => Date.now());
-  // Fall back to "now" when no auto has fired yet so the bar starts a fresh window.
-  const [mountedAt] = useState(() => Date.now());
+  // The server restarts its interval timer whenever the cadence changes. Mirror
+  // that reset here instead of continuing to count from the old cadence anchor.
+  const [anchorAt, setAnchorAt] = useState(() => lastAutoFireAt ?? Date.now());
+  useEffect(() => {
+    const resetAt = Date.now();
+    setAnchorAt(resetAt);
+    setNow(resetAt);
+  }, [autoIntervalMs]);
+  useEffect(() => {
+    const resetAt = lastAutoFireAt ?? Date.now();
+    setAnchorAt(resetAt);
+    setNow(Date.now());
+  }, [lastAutoFireAt]);
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(id);
   }, []);
-  const anchor = lastAutoFireAt ?? mountedAt;
-  const remaining = Math.max(0, Math.round((autoIntervalMs - (now - anchor)) / 1000));
+  const remaining = Math.max(0, Math.round((autoIntervalMs - (now - anchorAt)) / 1000));
   return (
     <div className="chat-message auto-cooldown-line" role="status" aria-live="off">
       <span className="auto-cooldown-line__text">下次自动追问 ~{remaining}s</span>
@@ -173,6 +185,7 @@ export function TranscriptStream({
   autoMode = 'agent',
   autoIntervalMs = 30000,
   autoGenerate = false,
+  capturing = false,
   lastAutoFireAt = null
 }: TranscriptStreamProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -200,7 +213,7 @@ export function TranscriptStream({
 
   // Show the approximate cooldown only when interval mode + AUTO are on and no
   // generation is in flight (the progress card replaces it while analyzing).
-  const showCooldown = autoMode === 'interval' && autoGenerate && !isAnalyzing;
+  const showCooldown = autoMode === 'interval' && autoGenerate && capturing && !isAnalyzing;
 
   const display = transcripts.display;
   const mic = transcripts.mic;

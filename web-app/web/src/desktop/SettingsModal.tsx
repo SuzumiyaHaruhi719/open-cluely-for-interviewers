@@ -117,7 +117,7 @@ export function SettingsModal({
                 <h3 id="audio-settings-title" className="settings-section__title">
                   音频与识别
                 </h3>
-                <p className="settings-section__hint">识别引擎在下一次连接时生效</p>
+                <p className="settings-section__hint">切换后自动重连，凭证由服务端管理</p>
               </div>
               <span className="settings-section__state">服务端凭证</span>
             </div>

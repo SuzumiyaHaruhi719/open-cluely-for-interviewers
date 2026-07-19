@@ -531,6 +531,7 @@ export function Shell() {
                 autoMode={appSettings.settings.autoMode}
                 autoIntervalMs={appSettings.settings.autoIntervalSec * 1000}
                 autoGenerate={appSettings.settings.autoGenerate}
+                capturing={recognitionLive}
                 lastAutoFireAt={lastAutoFireAt}
               />
               <Composer

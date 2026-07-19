@@ -98,6 +98,15 @@ export function isDoubaoAsr2Resource(resourceId: string): boolean {
   return /^volc\.seedasr\./i.test(resourceId.trim());
 }
 
+/** Convert opaque transport failures into a safe, operator-actionable message. */
+export function formatDoubaoAsr2Error(message: string): string {
+  const normalized = String(message || '').trim();
+  if (/\b403\b/.test(normalized)) {
+    return '豆包 ASR 2.0 权限不足（HTTP 403），请检查当前 App ID / Access Token 是否已开通所选 Seed-ASR 2.0 资源';
+  }
+  return normalized || '豆包 ASR 2.0 连接失败';
+}
+
 // --- Frame protocol constants (PORTED VERBATIM from the desktop service) -----
 const PROTOCOL_VERSION = 0x1;
 const HEADER_SIZE = 0x1;
@@ -273,11 +282,12 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
 
   function fail(message: string): void {
     if (finished) return;
+    const safeMessage = formatDoubaoAsr2Error(message);
     try {
-      onError?.(message);
+      onError?.(safeMessage);
     } finally {
       if (stopPromise) {
-        finishStop({ finalReceived, timedOut: false, reason: message }, false);
+        finishStop({ finalReceived, timedOut: false, reason: safeMessage }, false);
       } else {
         finished = true;
         ready = false;

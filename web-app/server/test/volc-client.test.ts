@@ -7,6 +7,7 @@ import {
   buildConfigPayload,
   extractTranscripts,
   createVolcSession,
+  formatDoubaoAsr2Error,
   VOLC_DEFAULT_MODEL,
   VOLC_DEFAULT_RESOURCE_ID,
   type WsConstructor,
@@ -192,6 +193,31 @@ test('legacy Doubao ASR 1.0 resources are rejected instead of silently falling b
 
   assert.equal(FakeWs.instances.length, 0);
   assert.deepEqual(errors, ['Doubao ASR 2.0 requires a volc.seedasr.* resource']);
+});
+
+test('maps an upstream HTTP 403 handshake rejection to an actionable Doubao 2.0 message', () => {
+  assert.equal(
+    formatDoubaoAsr2Error('Unexpected server response: 403'),
+    '豆包 ASR 2.0 权限不足（HTTP 403），请检查当前 App ID / Access Token 是否已开通所选 Seed-ASR 2.0 资源'
+  );
+});
+
+test('surfaces the actionable Doubao 2.0 message through the session error callback', () => {
+  FakeWs.instances = [];
+  const errors: string[] = [];
+  createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    onTranscript: () => {},
+    onError: (message) => errors.push(message)
+  });
+
+  FakeWs.instances.at(-1)!.emit('error', new Error('Unexpected server response: 403'));
+
+  assert.deepEqual(errors, [
+    '豆包 ASR 2.0 权限不足（HTTP 403），请检查当前 App ID / Access Token 是否已开通所选 Seed-ASR 2.0 资源'
+  ]);
 });
 
 test('a custom resourceId + model flow into the headers and config frame', () => {
