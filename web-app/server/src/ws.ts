@@ -1,4 +1,3 @@
-import path from 'node:path';
 import type { Server as HttpServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { WebSocketServer, type WebSocket } from 'ws';
@@ -50,17 +49,6 @@ import {
 const BANK_GROUNDING_TOP_K = 6;
 
 /**
- * Resolve the dir Customize-mode pipelines live in — the SAME dir the pipelines
- * route writes to (`${DATA_DIR}/pipelines`). Passing it to the headless session
- * lets `getActivePipeline` load a saved custom pipeline by `activePipelineId`.
- * Resolved lazily (per connection) so a test can set DATA_DIR first.
- */
-function pipelinesDir(): string {
-  const base = process.env.DATA_DIR || path.join(__dirname, '..', '.data');
-  return path.join(base, 'pipelines');
-}
-
-/**
  * Retrieve high-frequency interview questions semantically similar to the
  * candidate's answer. NEVER throws and NEVER blocks analysis — any failure
  * (no key, embed error, missing vectors) resolves to []. The retriever itself
@@ -83,13 +71,12 @@ const audioSourceSchema = z.enum(['mic', 'display']);
 
 const sessionConfigSchema = z
   .object({
-    mode: z.enum(['fast', 'expert', 'expert2', 'customize']).optional(),
+    mode: z.literal('expert').optional(),
     interviewerModel: z.enum(['deepseek-v4-pro', 'deepseek-v4-flash', 'qwen3-vl-plus']).optional(),
     resumeText: z.string().optional(),
     jobDescription: z.string().optional(),
     interviewGuide: z.array(z.string().max(1_600)).max(20).optional(),
     outputLanguage: z.enum(['', 'zh', 'en']).optional(),
-    activePipelineId: z.string().nullable().optional(),
     // Opt-in: when true, a FINAL interviewee ('display') transcript auto-runs
     // analyze. Default off so live audio only streams transcripts (no surprise
     // model spend). The interviewer can still press Analyze manually.
@@ -477,32 +464,23 @@ async function handleAnalyze(
 ): Promise<void> {
   trigger.markManualRun(msg.candidateAnswer);
   try {
-    if (session.getMode() === 'customize') {
-      await runAnalysis(ws, session, {
-        candidateAnswer: msg.candidateAnswer,
-        questionHistory: msg.questionHistory,
-        requestId: msg.requestId,
-        trigger: 'manual'
-      });
-    } else {
-      const state = session.getState() as {
-        jobDescription?: string;
-        interviewGuide?: string[];
-        resumeText?: string;
-        outputLanguage?: OutputLanguage;
-      };
-      await runExpertQuestionAndEmit(ws, {
-        candidateAnswer: msg.candidateAnswer,
-        focusHint: '',
-        jobDescription: state.jobDescription,
-        interviewGuide: state.interviewGuide,
-        resumeText: state.resumeText,
-        questionHistory: msg.questionHistory,
-        outputLanguage: state.outputLanguage,
-        requestId: msg.requestId,
-        trigger: 'manual'
-      });
-    }
+    const state = session.getState() as {
+      jobDescription?: string;
+      interviewGuide?: string[];
+      resumeText?: string;
+      outputLanguage?: OutputLanguage;
+    };
+    await runExpertQuestionAndEmit(ws, {
+      candidateAnswer: msg.candidateAnswer,
+      focusHint: '',
+      jobDescription: state.jobDescription,
+      interviewGuide: state.interviewGuide,
+      resumeText: state.resumeText,
+      questionHistory: msg.questionHistory,
+      outputLanguage: state.outputLanguage,
+      requestId: msg.requestId,
+      trigger: 'manual'
+    });
   } finally {
     trigger.markRunDone(msg.candidateAnswer);
   }
@@ -981,11 +959,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     const session = createHeadlessSession({
       apiKey: config.dashscopeApiKey,
       // Suppress stale auto progress (a reset abandoned the in-flight chat).
-      emit: makeEmit(ws, autoIsStale),
-      // Customize mode RUNS a saved custom pipeline: the brain's
-      // getActivePipeline reads activePipelineId (set via configure) and loads
-      // the pipeline JSON from this dir — the same one the pipelines route saves to.
-      pipelinesDir: pipelinesDir()
+      emit: makeEmit(ws, autoIsStale)
     });
 
     // Per-connection speaker-role map. Native ASR clusters resolve here; providers
@@ -1060,8 +1034,8 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     }
 
     // The autonomous trigger owns a dedicated one-call Flash question path. This
-    // keeps the interviewer under the live SLO regardless of the UI's manual
-    // Expert/Customize selection; manual Generate Q still runs the chosen chain.
+    // keeps the interviewer under the live SLO; manual Generate Q uses the same
+    // one-call Expert path.
     const trigger: AutoTrigger = createAutoTrigger({
       runAnalyze: async ({ candidateAnswer, focusHint }) => {
         // Capture the epoch at the START so a reset() during this generation marks

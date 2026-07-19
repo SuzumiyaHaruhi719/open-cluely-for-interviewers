@@ -23,7 +23,7 @@ beforeEach(() => {
   restore = installMockWebSocket();
   fetchCalls = [];
   // Interviews are ephemeral — the shell makes NO session HTTP calls. Route the
-  // remaining endpoints (assistant / résumé / pipelines) to in-memory fakes.
+  // remaining endpoints (assistant / résumé) to in-memory fakes.
   const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof input === 'string' ? input : input.toString();
     const method = init?.method ?? 'GET';
@@ -35,26 +35,6 @@ beforeEach(() => {
     }
     if (url.includes('/api/resume/')) {
       return Promise.resolve(jsonResponse({ text: '', reply: '' }));
-    }
-    if (url.endsWith('/api/pipelines/generate') && method === 'POST') {
-      return Promise.resolve(
-        jsonResponse({
-          pipeline: { id: 'gen-be', name: 'AI Backend', builtin: false, nodes: [], edges: [] }
-        })
-      );
-    }
-    if (url.endsWith('/api/pipelines') && method === 'POST') {
-      return Promise.resolve(jsonResponse({ id: 'gen-be' }));
-    }
-    if (url.endsWith('/api/pipelines')) {
-      return Promise.resolve(
-        jsonResponse({
-          pipelines: [
-            { id: 'builtin-role-backend', name: '资深后端', builtin: true },
-            { id: 'builtin-role-pm', name: '产品经理', builtin: true }
-          ]
-        })
-      );
     }
     return Promise.reject(new Error(`unexpected url ${url}`));
   });
