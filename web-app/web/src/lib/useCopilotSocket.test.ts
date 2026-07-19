@@ -319,6 +319,40 @@ describe('useCopilotSocket', () => {
     expect(roleFrame).toEqual({ type: 'set-speaker-role', speakerId: 2, role: 'candidate' });
   });
 
+  test('automatic speaker partition relabels past native segments after live/end inference', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({ type: 'transcript', source: 'mic', text: '请坐', isFinal: true, speakerId: 9, speaker: 'unknown' });
+      socket.emit({ type: 'transcript', source: 'mic', text: '谢谢', isFinal: true, speakerId: 7, speaker: 'unknown' });
+    });
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(2));
+
+    act(() => {
+      socket.emit({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        segments: [
+          { seq: 0, speakerId: 9, role: 'interviewer', text: '请坐' },
+          { seq: 1, speakerId: 7, role: 'candidate', text: '谢谢' }
+        ]
+      });
+    });
+
+    await waitFor(() =>
+      expect(result.current.speakerSegments.map((s) => [s.speakerId, s.role])).toEqual([
+        [9, 'interviewer'],
+        [7, 'candidate']
+      ])
+    );
+  });
+
   test('surfaces server error messages', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {

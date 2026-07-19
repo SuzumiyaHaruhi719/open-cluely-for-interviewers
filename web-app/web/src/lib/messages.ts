@@ -21,6 +21,7 @@ const S2C = {
   PROGRESS: 'progress',
   RESULT: 'result',
   TRANSCRIPT: 'transcript',
+  SPEAKER_PARTITION: 'speaker-partition',
   SESSION_CONTEXT: 'session-context',
   SUMMARY_CHUNK: 'summary-chunk',
   SUMMARY_DONE: 'summary-done',
@@ -179,6 +180,41 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
         };
       }
       return null;
+
+    case S2C.SPEAKER_PARTITION: {
+      if (
+        (data.status !== 'live' && data.status !== 'final') ||
+        !isString(data.model) ||
+        !Array.isArray(data.segments)
+      ) {
+        return null;
+      }
+      const segments = data.segments.flatMap((entry) => {
+        if (!isRecord(entry)) return [];
+        const role: SpeakerRole | null =
+          entry.role === 'interviewer' || entry.role === 'candidate' || entry.role === 'unknown'
+            ? entry.role
+            : null;
+        if (
+          !isNumber(entry.seq) ||
+          !Number.isInteger(entry.seq) ||
+          !isNumber(entry.speakerId) ||
+          !Number.isInteger(entry.speakerId) ||
+          !role ||
+          !isString(entry.text)
+        ) {
+          return [];
+        }
+        return [{ seq: entry.seq, speakerId: entry.speakerId, role, text: entry.text }];
+      });
+      if (segments.length !== data.segments.length) return null;
+      return {
+        type: 'speaker-partition',
+        status: data.status,
+        model: data.model,
+        segments
+      };
+    }
 
     default:
       return null;

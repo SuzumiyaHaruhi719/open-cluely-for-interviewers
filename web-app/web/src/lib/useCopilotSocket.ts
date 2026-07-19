@@ -512,6 +512,22 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       }
+      case 'speaker-partition': {
+        // DeepSeek Flash resolves native acoustic clusters (or, for ASR models
+        // without clusters, finalized semantic turns) after enough evidence.
+        // Replace the provisional unknown-role list atomically so past bubbles,
+        // the candidate buffer, and future manual corrections share one view.
+        const next = message.segments.map((segment) => ({
+          id: segment.seq,
+          speakerId: segment.speakerId,
+          role: effectiveRole(segment.speakerId, segment.role, roleOverrideRef.current),
+          text: segment.text
+        }));
+        setSpeakerSegments(next);
+        const maxSeq = message.segments.reduce((max, segment) => Math.max(max, segment.seq), -1);
+        segSeqRef.current = Math.max(segSeqRef.current, maxSeq + 1);
+        break;
+      }
     }
   }, [clearSummaryTimeout]);
 

@@ -53,3 +53,14 @@ test('reset clears sticky speaker labels while preserving xfyun no-guess mode', 
   assert.equal(m.resolve(2), 'unknown');
   assert.equal(m.resolve(1), 'unknown');
 });
+
+test('automatic role inference never overwrites an interviewer manual correction', () => {
+  const m = createSpeakerRoleMap();
+  m.setGuess(false);
+  m.setRole(4, 'candidate');
+
+  assert.equal(m.setAutoRole(4, 'interviewer'), false);
+  assert.equal(m.resolve(4), 'candidate');
+  assert.equal(m.setAutoRole(8, 'interviewer'), true);
+  assert.equal(m.resolve(8), 'interviewer');
+});

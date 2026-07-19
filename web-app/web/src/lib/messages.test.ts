@@ -42,6 +42,43 @@ describe('transcript speaker fields', () => {
   });
 });
 
+describe('speaker partition messages', () => {
+  it('parses a complete Flash role partition', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        segments: [
+          { seq: 0, speakerId: 9, role: 'interviewer', text: '请坐' },
+          { seq: 1, speakerId: 7, role: 'candidate', text: '谢谢' }
+        ]
+      })
+    );
+    expect(out).toMatchObject({
+      type: 'speaker-partition',
+      status: 'live',
+      model: 'deepseek-v4-flash',
+      segments: [
+        { seq: 0, speakerId: 9, role: 'interviewer', text: '请坐' },
+        { seq: 1, speakerId: 7, role: 'candidate', text: '谢谢' }
+      ]
+    });
+  });
+
+  it('rejects a partially malformed partition instead of silently dropping turns', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'final',
+        model: 'deepseek-v4-flash',
+        segments: [{ seq: 0, speakerId: 9, role: 'robot', text: 'bad' }]
+      })
+    );
+    expect(out).toBeNull();
+  });
+});
+
 describe('result trigger fields', () => {
   const baseResult = {
     type: 'result',

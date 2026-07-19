@@ -2,7 +2,10 @@ import type { SpeakerRole } from '@open-cluely/contract';
 
 export interface SpeakerRoleMap {
   resolve(speakerId: number | null): SpeakerRole;
+  /** Manual interviewer correction. It is sticky and always wins over later inference. */
   setRole(speakerId: number, role: SpeakerRole): void;
+  /** Apply a model-inferred role unless that speaker was manually corrected. */
+  setAutoRole(speakerId: number, role: SpeakerRole): boolean;
   /**
    * Clear per-interview speaker labels + first-seen order without changing the
    * provider's guess/no-guess mode. Used when the client starts a new interview
@@ -21,6 +24,7 @@ export interface SpeakerRoleMap {
 
 export function createSpeakerRoleMap(): SpeakerRoleMap {
   const roles = new Map<number, SpeakerRole>();
+  const manual = new Set<number>();
   const order: number[] = [];
   let guess = true;
   function defaultFor(id: number): SpeakerRole {
@@ -35,6 +39,7 @@ export function createSpeakerRoleMap(): SpeakerRoleMap {
     },
     setRole(speakerId, role) {
       if (!order.includes(speakerId)) order.push(speakerId);
+      manual.add(speakerId);
       roles.set(speakerId, role);
       // GUESS mode (CAM++) only: the OTHER speaker sits on a fragile first-seen
       // default, so a single correction must complement it (flip the swap) — one
@@ -50,8 +55,15 @@ export function createSpeakerRoleMap(): SpeakerRoleMap {
         }
       }
     },
+    setAutoRole(speakerId, role) {
+      if (manual.has(speakerId)) return false;
+      if (!order.includes(speakerId)) order.push(speakerId);
+      roles.set(speakerId, role);
+      return true;
+    },
     reset() {
       roles.clear();
+      manual.clear();
       order.length = 0;
     },
     setGuess(enabled) {

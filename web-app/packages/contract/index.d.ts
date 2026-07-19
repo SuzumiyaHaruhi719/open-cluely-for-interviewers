@@ -7,6 +7,7 @@ export const S2C: {
   PROGRESS: 'progress';
   RESULT: 'result';
   TRANSCRIPT: 'transcript';
+  SPEAKER_PARTITION: 'speaker-partition';
   SESSION_CONTEXT: 'session-context';
   SUMMARY_CHUNK: 'summary-chunk';
   SUMMARY_DONE: 'summary-done';
@@ -50,6 +51,14 @@ export type AsrProvider = 'paraformer' | 'volc' | 'funasr' | 'xfyun' | 'sim';
 
 /** Per-segment speaker role resolved from a cluster ID. */
 export type SpeakerRole = 'interviewer' | 'candidate' | 'unknown';
+
+/** One finalized single-mic turn after native-cluster + Flash role resolution. */
+export interface SpeakerPartitionSegment {
+  seq: number;
+  speakerId: number;
+  role: SpeakerRole;
+  text: string;
+}
 
 /** Block G final output — the follow-up shown to the interviewer. */
 export interface FollowUpOutput {
@@ -294,6 +303,12 @@ export type ServerMessage =
       trigger?: GenerationTrigger;
     }
   | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
+  | {
+      type: 'speaker-partition';
+      status: 'live' | 'final';
+      model: string;
+      segments: SpeakerPartitionSegment[];
+    }
   | { type: 'session-context'; state: SessionContextState }
   /**
    * RESERVED for a future streamed summary: a slice appended in order by

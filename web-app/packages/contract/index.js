@@ -41,6 +41,7 @@ const S2C = Object.freeze({
   PROGRESS: 'progress',
   RESULT: 'result',
   TRANSCRIPT: 'transcript',
+  SPEAKER_PARTITION: 'speaker-partition',
   SESSION_CONTEXT: 'session-context',
   SUMMARY_CHUNK: 'summary-chunk',
   SUMMARY_DONE: 'summary-done',

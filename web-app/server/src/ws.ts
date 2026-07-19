@@ -33,6 +33,11 @@ import {
 import { createSummaryTelemetry, type SummaryTelemetry, type SummaryTelemetryEvent } from './summary-telemetry';
 import { createSpeakerRoleMap, type SpeakerRoleMap } from './speaker-roles';
 import { stampRole, isCandidateFinal } from './ws-speaker';
+import {
+  createSpeakerPartitioner,
+  type SpeakerPartitioner,
+  type SpeakerTurn
+} from './speaker-partitioner';
 
 // Top-K real interview questions threaded into Block D as OPTIONAL grounding.
 const BANK_GROUNDING_TOP_K = 6;
@@ -627,6 +632,8 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
   roles.setGuess(textProvider !== 'xfyun');
 }
 
+type SpeakerLifecycle = Pick<SpeakerPartitioner, 'setSingleMic' | 'finalize' | 'reset'>;
+
 export async function dispatch(
   ws: WebSocket,
   session: HeadlessSession,
@@ -646,7 +653,8 @@ export async function dispatch(
   setSummaryPrompt?: (prompt: string | undefined) => void,
   /** Getter for the per-session custom system prompt (Feature 3). */
   getSummaryPromptOverride?: () => string | undefined,
-  summarizeDeps: SummarizeDeps = {}
+  summarizeDeps: SummarizeDeps = {},
+  speakerLifecycle?: SpeakerLifecycle
 ): Promise<void> {
   switch (msg.type) {
     case 'configure':
@@ -659,7 +667,14 @@ export async function dispatch(
       if (msg.config.resetGeneration === true) {
         trigger.reset();
         roles.reset();
+        speakerLifecycle?.reset();
         resetAccumulated();
+      }
+      if (typeof msg.config.diarize === 'boolean') {
+        // `diarize` is retained on the wire as the single-room-mic flag. Native
+        // ASR clusters are resolved by Flash after enough evidence; it no longer
+        // implies that role labels are safe to guess from first-speaker order.
+        speakerLifecycle?.setSingleMic(msg.config.diarize);
       }
       session.configure(msg.config);
       // Capture JD/résumé so the session-context analyzer can ground on them. Only
@@ -729,6 +744,9 @@ export async function dispatch(
       // Gate autonomous follow-ups on capture state: auto (agent AND interval)
       // only fires while at least one audio source is live (the mic is On).
       trigger.setCapturing(relay.isCapturing());
+      if (msg.action === 'stop' && !relay.isCapturing()) {
+        void speakerLifecycle?.finalize();
+      }
       return;
     case 'set-speaker-role':
       roles.setRole(msg.speakerId, msg.role);
@@ -781,6 +799,7 @@ function onMessage(
   getSummaryModelOverride: () => string | undefined,
   setSummaryPrompt: (prompt: string | undefined) => void,
   getSummaryPromptOverride: () => string | undefined,
+  speakerLifecycle: SpeakerLifecycle,
   raw: unknown
 ): void {
   let requestId: string | undefined;
@@ -812,7 +831,9 @@ function onMessage(
         setSummaryModel,
         getSummaryModelOverride,
         setSummaryPrompt,
-        getSummaryPromptOverride
+        getSummaryPromptOverride,
+        {},
+        speakerLifecycle
       );
     } catch (err) {
       // A handler error must never close the socket.
@@ -981,6 +1002,32 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       }
     });
 
+    let speakerTurnSeq = 0;
+    const fedSingleMicSeqs = new Set<number>();
+    const speakerPartitioner = createSpeakerPartitioner({
+      applySpeakerRole: (speakerId, role) => {
+        roles.setAutoRole(speakerId, role);
+        return roles.resolve(speakerId);
+      },
+      onCandidateTurn: (turn: SpeakerTurn) => {
+        if (fedSingleMicSeqs.has(turn.seq)) return;
+        fedSingleMicSeqs.add(turn.seq);
+        feedCandidateAnswer(turn.text);
+      },
+      onPartition: (partition) => {
+        send(ws, { type: 'speaker-partition', ...partition });
+      }
+    });
+    const speakerLifecycle: SpeakerLifecycle = {
+      setSingleMic: (enabled) => speakerPartitioner.setSingleMic(enabled),
+      finalize: () => speakerPartitioner.finalize(),
+      reset: () => {
+        speakerPartitioner.reset();
+        speakerTurnSeq = 0;
+        fedSingleMicSeqs.clear();
+      }
+    };
+
     // One ASR relay per connection. Transcripts stream straight back as
     // `transcript` messages. TWO transcript-driven generation paths hang off the
     // interviewee ('display') lane: (1) the autonomous trigger monitor, fed the
@@ -990,6 +1037,15 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // trigger's in-flight bookkeeping so they never overlap.
     const relay = createAsrRelay({
       emit: (t) => {
+        const finalTurnSeq = t.isFinal ? speakerTurnSeq++ : null;
+        if (finalTurnSeq !== null) {
+          speakerPartitioner.record({
+            seq: finalTurnSeq,
+            source: t.source,
+            ...(typeof t.speakerId === 'number' ? { speakerId: t.speakerId } : {}),
+            text: t.text
+          });
+        }
         // Stamp the resolved speaker role + carry speakerId so the browser can
         // label lanes and offer a per-speaker role override.
         const stamped = stampRole(roles, t);
@@ -1042,6 +1098,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         // not source) feeds the SAME trigger path. Inert online: resolve(null) =
         // 'unknown' so isCandidateFinal is always false there.
         else if (isCandidateFinal(roles, t)) {
+          if (finalTurnSeq !== null) fedSingleMicSeqs.add(finalTurnSeq);
           feedCandidateAnswer(t.text);
         }
       },
@@ -1103,6 +1160,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         getSummaryModelOverride,
         setSummaryPrompt,
         getSummaryPromptOverride,
+        speakerLifecycle,
         data.toString()
       )
     );
@@ -1118,6 +1176,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       // Cancel any armed session-context debounce so its timer can't outlive the
       // connection (same leak guard as the trigger above).
       contextAnalyzer.cancel();
+      speakerPartitioner.reset();
     });
   });
 
