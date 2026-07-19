@@ -337,8 +337,9 @@ function makeRecordingFactory<TDeps>() {
       sendAudio(pcm: Buffer) {
         session.frames.push(pcm);
       },
-      stop() {
+      async stop() {
         session.stopped = true;
+        return { finalReceived: true, timedOut: false };
       }
     };
     created.push({ deps, session });
@@ -421,13 +422,14 @@ test('switching back to paraformer after volc routes new sessions to Paraformer'
   assert.equal(para.length, 1);
 });
 
-test('switching provider during active capture reconnects on the next audio frame', () => {
+test('switching provider during active capture reconnects after the old provider drains', async () => {
   const { relay, para, volc } = providerRelay();
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(para.length, 1);
 
   relay.setAsrProvider('volc', { appId: 'a', accessToken: 'b' });
   assert.equal(para[0].session.stopped, true, 'the old upstream session must stop');
+  await Promise.resolve();
 
   const pcm = Buffer.from([4, 3, 2, 1]);
   relay.handleAudio({ source: 'mic', pcmBase64: pcm.toString('base64') });
@@ -435,7 +437,7 @@ test('switching provider during active capture reconnects on the next audio fram
   assert.deepEqual(volc[0].session.frames[0], pcm);
 });
 
-test('changing an active server-owned Doubao 2.0 entitlement reconnects immediately', () => {
+test('changing an active server-owned Doubao 2.0 entitlement reconnects after drain', async () => {
   const { relay, volc } = providerRelay();
   relay.setAsrProvider('volc', {
     appId: 'a',
@@ -451,6 +453,7 @@ test('changing an active server-owned Doubao 2.0 entitlement reconnects immediat
     resourceId: 'volc.seedasr.sauc.duration'
   });
   assert.equal(volc[0].session.stopped, true, 'the old Doubao model must stop');
+  await Promise.resolve();
 
   relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([7, 7]).toString('base64') });
   assert.equal(volc.length, 2);

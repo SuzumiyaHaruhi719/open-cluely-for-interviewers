@@ -69,7 +69,7 @@ export interface SimSession {
   /** Audio is IGNORED — the sim replays its script regardless of incoming PCM. */
   sendAudio(pcm: Buffer): void;
   /** Stop the replay and cancel the pending timer. Idempotent. */
-  stop(): void;
+  stop(): Promise<{ finalReceived: boolean; timedOut: boolean; reason?: string }>;
   /** Always true once created (no upstream handshake to wait on). */
   readonly isReady: boolean;
 }
@@ -155,7 +155,7 @@ export function createSimSession(deps: SimSessionDeps): SimSession {
     /* IGNORED — the sim replays its script regardless of incoming audio. */
   }
 
-  function stop(): void {
+  async function stop(): Promise<{ finalReceived: boolean; timedOut: boolean }> {
     stopped = true;
     if (timer !== null) {
       try {
@@ -165,6 +165,7 @@ export function createSimSession(deps: SimSessionDeps): SimSession {
       }
       timer = null;
     }
+    return { finalReceived: true, timedOut: false };
   }
 
   return {
@@ -184,8 +185,8 @@ function inertSession(): SimSession {
     sendAudio() {
       /* no-op */
     },
-    stop() {
-      /* no-op */
+    async stop() {
+      return { finalReceived: false, timedOut: false, reason: 'sim session unavailable' };
     },
     get isReady() {
       return false;

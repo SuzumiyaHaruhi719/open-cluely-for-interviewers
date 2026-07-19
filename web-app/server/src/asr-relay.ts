@@ -46,10 +46,17 @@ export interface AudioControl {
   source: AudioSource;
 }
 
+/** Outcome of a bounded provider shutdown/final-result drain. */
+export interface AsrStopResult {
+  finalReceived: boolean;
+  timedOut: boolean;
+  reason?: string;
+}
+
 /** The common recognition-session surface both text providers expose. */
 export interface AsrSession {
   sendAudio(pcm: Buffer): void;
-  stop(): void;
+  stop(): Promise<AsrStopResult>;
   readonly isReady: boolean;
 }
 
@@ -100,7 +107,7 @@ export interface AsrRelayDeps {
 
 export interface AsrRelay {
   handleAudio(frame: { source: AudioSource; pcmBase64: string }): void;
-  handleAudioControl(control: AudioControl): void;
+  handleAudioControl(control: AudioControl): Promise<AsrStopResult | null>;
   /** Enable/disable auto-analyze of interviewee final transcripts. */
   setAutoAnalyzeDisplay(enabled: boolean): void;
   /** Choose the engine/Volc config; a real live change reconnects on the next PCM frame. */
@@ -112,7 +119,7 @@ export interface AsrRelay {
   setSimScript(script: ReadonlyArray<SimScriptTurn>): void;
   /** True while any audio source is actively capturing (used to gate auto-fire). */
   isCapturing(): boolean;
-  dispose(): void;
+  dispose(): Promise<void>;
 }
 
 const SOURCES: readonly AudioSource[] = ['mic', 'display'];
@@ -131,6 +138,10 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
   const sessions: Record<AudioSource, AsrSession | null> = { mic: null, display: null };
+  const stopping: Record<AudioSource, Promise<AsrStopResult> | null> = {
+    mic: null,
+    display: null
+  };
   let autoAnalyzeDisplay = false;
   let provider: AsrProvider = 'paraformer';
   let volcCreds: VolcCredentials | null = null;
@@ -158,7 +169,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
 
   function onError(source: AudioSource, message: string): void {
     deps.emit({ source, text: `[语音识别错误: ${message}]`, isFinal: false });
-    stopSource(source);
+    void stopSource(source);
   }
 
   // Create the TEXT recognition session for `source`, wired to `onText`. Returns
@@ -235,28 +246,65 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   }
 
   function startSource(source: AudioSource): void {
-    if (disposed || sessions[source]) return;
+    if (disposed || sessions[source] || stopping[source]) return;
     // Preserve native cluster ids verbatim. During fast hand-offs a provider may
     // over-cluster; the downstream Flash classifier can map multiple ids to the
     // same role without destructively folding acoustic evidence here.
     sessions[source] = makeTextSession(source, (t) => emitTranscript(source, t));
   }
 
-  function stopSource(source: AudioSource): void {
+  function stopSource(source: AudioSource): Promise<AsrStopResult | null> {
+    const existing = stopping[source];
+    if (existing) return existing;
     const session = sessions[source];
-    sessions[source] = null;
-    if (session) {
-      try {
-        session.stop();
-      } catch {
-        /* ignore */
-      }
+    if (!session) return Promise.resolve(null);
+
+    let settle!: (result: AsrStopResult) => void;
+    const pending = new Promise<AsrStopResult>((resolve) => {
+      settle = resolve;
+    });
+    stopping[source] = pending;
+
+    const finish = (raw?: AsrStopResult): void => {
+      const result =
+        raw && typeof raw.finalReceived === 'boolean' && typeof raw.timedOut === 'boolean'
+          ? raw
+          : {
+              finalReceived: false,
+              timedOut: false,
+              reason: 'recognizer did not report finalization'
+            };
+      if (sessions[source] === session) sessions[source] = null;
+      if (stopping[source] === pending) stopping[source] = null;
+      settle(result);
+    };
+
+    try {
+      // Invoke stop only after publishing `stopping[source]`, so a synchronous
+      // provider error cannot recursively start a second shutdown. Keep the
+      // session attached until its bounded drain resolves so capture state stays
+      // truthful and no reconnect can overtake late final transcripts.
+      void Promise.resolve(session.stop()).then(finish, (error: unknown) => {
+        finish({
+          finalReceived: false,
+          timedOut: false,
+          reason: error instanceof Error ? error.message : 'recognizer finalization failed'
+        });
+      });
+    } catch (error) {
+      finish({
+        finalReceived: false,
+        timedOut: false,
+        reason: error instanceof Error ? error.message : 'recognizer finalization failed'
+      });
     }
+    return pending;
   }
 
   function handleAudio(frame: { source: AudioSource; pcmBase64: string }): void {
     if (disposed) return;
     const source = frame.source;
+    if (stopping[source]) return;
     if (!sessions[source]) startSource(source);
     const session = sessions[source];
     if (!session) return;
@@ -270,10 +318,13 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     session.sendAudio(pcm);
   }
 
-  function handleAudioControl(control: AudioControl): void {
-    if (disposed) return;
-    if (control.action === 'start') startSource(control.source);
-    else stopSource(control.source);
+  async function handleAudioControl(control: AudioControl): Promise<AsrStopResult | null> {
+    if (disposed) return null;
+    if (control.action === 'start') {
+      startSource(control.source);
+      return null;
+    }
+    return stopSource(control.source);
   }
 
   function setAutoAnalyzeDisplay(enabled: boolean): void {
@@ -299,7 +350,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     // currently using. Tear down only the upstream ASR session; local capture
     // keeps sending PCM, so the next frame lazily reconnects to `provider`.
     if (providerChanged || volcCredentialsChanged) {
-      for (const source of SOURCES) stopSource(source);
+      for (const source of SOURCES) void stopSource(source);
     }
   }
 
@@ -311,10 +362,10 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
       : [];
   }
 
-  function dispose(): void {
+  async function dispose(): Promise<void> {
     if (disposed) return;
     disposed = true;
-    for (const source of SOURCES) stopSource(source);
+    await Promise.all(SOURCES.map((source) => stopSource(source)));
   }
 
   function isCapturing(): boolean {

@@ -25,8 +25,9 @@ function makeFakeFactory() {
       sendAudio(pcm: Buffer) {
         session.frames.push(pcm);
       },
-      stop() {
+      async stop() {
         session.stopped = true;
+        return { finalReceived: true, timedOut: false };
       }
     };
     created.push(session);
@@ -147,6 +148,33 @@ test('audio-control stop ends the session; dispose stops all sources', () => {
   assert.equal(created.length, before);
 });
 
+test('audio-control stop keeps capture active until the session finalization drain resolves', async () => {
+  let releaseStop!: () => void;
+  const stopGate = new Promise<void>((resolve) => {
+    releaseStop = resolve;
+  });
+  const relay = createAsrRelay({
+    emit() {},
+    apiKey: FAKE_KEY,
+    sessionFactory: () => ({
+      isReady: true,
+      sendAudio() {},
+      async stop() {
+        await stopGate;
+        return { finalReceived: true, timedOut: false };
+      }
+    })
+  });
+
+  await relay.handleAudioControl({ action: 'start', source: 'mic' });
+  const stopPromise = Promise.resolve(relay.handleAudioControl({ action: 'stop', source: 'mic' }));
+
+  assert.equal(relay.isCapturing(), true);
+  releaseStop();
+  assert.deepEqual(await stopPromise, { finalReceived: true, timedOut: false });
+  assert.equal(relay.isCapturing(), false);
+});
+
 test('with no API key, start emits a friendly error and creates no session', () => {
   const emits: TranscriptEmit[] = [];
   const { factory, created } = makeFakeFactory();
@@ -181,7 +209,14 @@ test('sim provider replays scripted speaker finals without any cloud ASR key', (
     emit: (t) => emits.push(t),
     apiKey: '',
     simSessionFactory: (deps: any) => {
-      const s = { isReady: true, sendAudio() {}, stop() {}, deps };
+      const s = {
+        isReady: true,
+        sendAudio() {},
+        async stop() {
+          return { finalReceived: true, timedOut: false };
+        },
+        deps
+      };
       simCreated.push(s);
       return s;
     }
