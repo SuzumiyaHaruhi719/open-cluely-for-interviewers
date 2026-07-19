@@ -4,10 +4,9 @@ import { chat } from './dashscope';
 export const SPEAKER_PARTITION_MODEL = 'deepseek-v4-flash';
 const CLASSIFY_TIMEOUT_MS = 8_000;
 const MAX_INPUT_CHARS = 6_000;
-const MIN_NATIVE_TURNS = 4;
-const MIN_NATIVE_CHARS = 80;
-const MIN_SEMANTIC_TURNS = 6;
-const MIN_SEMANTIC_CHARS = 200;
+const MIN_CONTENT_CHARS = 4;
+const MIN_TURNS_PER_NATIVE_SPEAKER = 2;
+const MIN_TOTAL_TURNS = 6;
 const REFRESH_TURNS = 3;
 
 export interface SpeakerTurn {
@@ -158,15 +157,24 @@ export async function classifySpeakerTurns(
   return parseSpeakerClassification(text, turns);
 }
 
+function isContentBearing(turn: SpeakerTurn): boolean {
+  return turn.text.replace(/\s+/g, '').length >= MIN_CONTENT_CHARS;
+}
+
 function enoughEvidence(turns: readonly SpeakerTurn[]): boolean {
-  const chars = turns.reduce((sum, turn) => sum + turn.text.length, 0);
+  const contentTurns = turns.filter(isContentBearing);
+  if (contentTurns.length >= MIN_TOTAL_TURNS) return true;
   const nativeIds = new Set(
-    turns.flatMap((turn) => (typeof turn.speakerId === 'number' ? [turn.speakerId] : []))
+    contentTurns.flatMap((turn) =>
+      typeof turn.speakerId === 'number' ? [turn.speakerId] : []
+    )
   );
-  if (nativeIds.size >= 2) {
-    return turns.length >= MIN_NATIVE_TURNS || chars >= MIN_NATIVE_CHARS;
-  }
-  return turns.length >= MIN_SEMANTIC_TURNS || chars >= MIN_SEMANTIC_CHARS;
+  if (nativeIds.size < 2) return false;
+  return [...nativeIds].every(
+    (speakerId) =>
+      contentTurns.filter((turn) => turn.speakerId === speakerId).length >=
+      MIN_TURNS_PER_NATIVE_SPEAKER
+  );
 }
 
 function coalesce(segments: SpeakerPartitionSegment[]): SpeakerPartitionSegment[] {
@@ -261,7 +269,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       }
     },
     finalize() {
-      if (!singleMic || turns.length === 0) return queue;
+      if (!singleMic || turns.filter(isContentBearing).length < 2) return queue;
       scheduledAt = turns.length;
       return schedule('final');
     },

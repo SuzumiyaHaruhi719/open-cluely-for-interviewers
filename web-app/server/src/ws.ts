@@ -785,12 +785,12 @@ export async function dispatch(
       relay.handleAudio({ source: msg.source, pcmBase64: msg.pcm });
       return;
     case 'audio-control':
-      relay.handleAudioControl({ action: msg.action, source: msg.source });
+      await relay.handleAudioControl({ action: msg.action, source: msg.source });
       // Gate autonomous follow-ups on capture state: auto (agent AND interval)
       // only fires while at least one audio source is live (the mic is On).
       trigger.setCapturing(relay.isCapturing());
       if (msg.action === 'stop' && !relay.isCapturing()) {
-        void speakerLifecycle?.finalize();
+        await speakerLifecycle?.finalize();
       }
       return;
     case 'set-speaker-role':

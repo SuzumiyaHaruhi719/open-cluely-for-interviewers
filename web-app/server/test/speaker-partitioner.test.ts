@@ -136,3 +136,63 @@ test('new-interview reset clears evidence but preserves the current single-mic m
   assert.equal(snapshots.length, 1);
   assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1, 2, 3]);
 });
+
+test('live role assignment waits for two substantive turns per native speaker', async () => {
+  const snapshots: SpeakerTurn[][] = [];
+  const p = createSpeakerPartitioner({
+    classify: async (turns) => {
+      snapshots.push(turns.map((turn) => ({ ...turn })));
+      return classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.95 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.95 }
+      ]);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: () => {}
+  });
+  p.setSingleMic(true);
+
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 1,
+    text: '我负责整个园区运营、年度预算、租户费用收缴和工程团队管理，并持续跟踪消防整改闭环与服务满意度。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 2,
+    text: '请具体说明你如何处理消防检查中的重大隐患，包括现场隔离、责任分工、整改时限、复验标准和台账留存。'
+  });
+  await p.flush();
+  assert.equal(snapshots.length, 0, 'one sample per cluster is not enough for a stable role map');
+
+  p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我先停用风险区域，再组织整改和复验。' });
+  p.record({ seq: 3, source: 'mic', speakerId: 2, text: '整改结果如何量化和留档？' });
+  await p.flush();
+  assert.equal(snapshots.length, 1);
+  assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1, 2, 3]);
+});
+
+test('final role assignment requires at least two substantive turns', async () => {
+  let calls = 0;
+  const p = createSpeakerPartitioner({
+    classify: async () => {
+      calls += 1;
+      return classification([]);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: () => {}
+  });
+  p.setSingleMic(true);
+
+  p.record({ seq: 0, source: 'mic', text: '只有一段完整回答。' });
+  await p.finalize();
+  assert.equal(calls, 0);
+
+  p.record({ seq: 1, source: 'mic', text: '现在补充了第二段有效对话。' });
+  await p.finalize();
+  assert.equal(calls, 1);
+});
