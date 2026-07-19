@@ -35,8 +35,8 @@ export const DEFAULT_SUMMARY_PROMPT_TEXT = '';
  */
 export const DEFAULT_SUMMARY_MODEL = 'deepseek-v4-pro';
 export const DEFAULT_ASR_PROVIDER = 'paraformer';
-/** Default Doubao ASR resource id — the 2.0 (seedasr) hourly model (most accurate). */
-export const DEFAULT_VOLC_RESOURCE_ID = 'volc.seedasr.sauc.duration';
+/** Default Doubao ASR resource id — 1.0 hourly is granted on the current account. */
+export const DEFAULT_VOLC_RESOURCE_ID = 'volc.bigasr.sauc.duration';
 /** Autonomous question generation defaults ON (the design's auto-on default). */
 export const DEFAULT_AUTO_GENERATE = true;
 /**

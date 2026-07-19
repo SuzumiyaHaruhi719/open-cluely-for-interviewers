@@ -401,3 +401,39 @@ test('switching back to paraformer after volc routes new sessions to Paraformer'
   relay.handleAudioControl({ action: 'start', source: 'display' });
   assert.equal(para.length, 1);
 });
+
+test('switching provider during active capture reconnects on the next audio frame', () => {
+  const { relay, para, volc } = providerRelay();
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+  assert.equal(para.length, 1);
+
+  relay.setAsrProvider('volc', { appId: 'a', accessToken: 'b' });
+  assert.equal(para[0].session.stopped, true, 'the old upstream session must stop');
+
+  const pcm = Buffer.from([4, 3, 2, 1]);
+  relay.handleAudio({ source: 'mic', pcmBase64: pcm.toString('base64') });
+  assert.equal(volc.length, 1, 'the next live frame must open the selected provider');
+  assert.deepEqual(volc[0].session.frames[0], pcm);
+});
+
+test('editing the active Doubao model reconnects with the new resource immediately', () => {
+  const { relay, volc } = providerRelay();
+  relay.setAsrProvider('volc', {
+    appId: 'a',
+    accessToken: 'b',
+    resourceId: 'volc.bigasr.sauc.duration'
+  });
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+  assert.equal(volc.length, 1);
+
+  relay.setAsrProvider('volc', {
+    appId: 'a',
+    accessToken: 'b',
+    resourceId: 'volc.seedasr.sauc.duration'
+  });
+  assert.equal(volc[0].session.stopped, true, 'the old Doubao model must stop');
+
+  relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([7, 7]).toString('base64') });
+  assert.equal(volc.length, 2);
+  assert.equal(volc[1].deps.resourceId, 'volc.seedasr.sauc.duration');
+});

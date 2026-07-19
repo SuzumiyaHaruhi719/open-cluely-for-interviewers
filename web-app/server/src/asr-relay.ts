@@ -103,7 +103,7 @@ export interface AsrRelay {
   handleAudioControl(control: AudioControl): void;
   /** Enable/disable auto-analyze of interviewee final transcripts. */
   setAutoAnalyzeDisplay(enabled: boolean): void;
-  /** Choose the recognition engine + optional Volc creds for subsequent starts. */
+  /** Choose the engine/Volc config; a real live change reconnects on the next PCM frame. */
   setAsrProvider(provider: AsrProvider, volc?: VolcCredentials): void;
   /**
    * Store the simulation script (mic-less harness). Used by the NEXT
@@ -285,8 +285,22 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     // Anything outside the current allowlist safely collapses to Paraformer.
     const resolved =
       next === 'volc' ? 'volc' : next === 'xfyun' ? 'xfyun' : next === 'sim' ? 'sim' : 'paraformer';
+    const providerChanged = provider !== resolved;
+    const volcCredentialsChanged =
+      resolved === 'volc' &&
+      volc !== undefined &&
+      (String(volcCreds?.appId ?? '').trim() !== String(volc.appId ?? '').trim() ||
+        String(volcCreds?.accessToken ?? '').trim() !== String(volc.accessToken ?? '').trim() ||
+        String(volcCreds?.resourceId ?? '').trim() !== String(volc.resourceId ?? '').trim() ||
+        String(volcCreds?.model ?? '').trim() !== String(volc.model ?? '').trim());
     provider = resolved;
     if (volc) volcCreds = { ...volc };
+    // A browser setting change must affect the stream the interviewer is
+    // currently using. Tear down only the upstream ASR session; local capture
+    // keeps sending PCM, so the next frame lazily reconnects to `provider`.
+    if (providerChanged || volcCredentialsChanged) {
+      for (const source of SOURCES) stopSource(source);
+    }
   }
 
   function setSimScript(script: ReadonlyArray<SimScriptTurn>): void {

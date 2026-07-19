@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { useAppSettings } from './useAppSettings';
+import { DEFAULT_VOLC_RESOURCE_ID, useAppSettings } from './useAppSettings';
 
 describe('useAppSettings microphone device', () => {
   beforeEach(() => localStorage.clear());
@@ -15,5 +15,12 @@ describe('useAppSettings microphone device', () => {
 
     expect(result.current.settings.micDeviceId).toBe('built-in-mic');
     expect(localStorage.getItem('mic.inputDeviceId')).toBe('built-in-mic');
+  });
+
+  test('defaults Doubao to the broadly available 1.0 hourly resource', () => {
+    const { result } = renderHook(() => useAppSettings());
+
+    expect(DEFAULT_VOLC_RESOURCE_ID).toBe('volc.bigasr.sauc.duration');
+    expect(result.current.settings.volcResourceId).toBe('volc.bigasr.sauc.duration');
   });
 });

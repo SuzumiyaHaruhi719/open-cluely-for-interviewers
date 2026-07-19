@@ -87,9 +87,9 @@ const AUTO_INTERVAL_OPTIONS: ReadonlyArray<{ value: number; label: string }> = [
 // must be enabled on the account or the handshake 400s; 1.0 (bigasr) is the
 // broadly-available fallback. Drives X-Api-Resource-Id on the server.
 const VOLC_RESOURCE_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
-  { value: 'volc.seedasr.sauc.duration', label: '豆包流式 2.0 · 小时版（推荐）' },
-  { value: 'volc.seedasr.sauc.concurrent', label: '豆包流式 2.0 · 并发版' },
-  { value: 'volc.bigasr.sauc.duration', label: '豆包流式 1.0 · 小时版' },
+  { value: 'volc.bigasr.sauc.duration', label: '豆包流式 1.0 · 小时版（兼容默认）' },
+  { value: 'volc.seedasr.sauc.duration', label: '豆包流式 2.0 · 小时版（需开通）' },
+  { value: 'volc.seedasr.sauc.concurrent', label: '豆包流式 2.0 · 并发版（需开通）' },
   { value: 'volc.bigasr.sauc.concurrent', label: '豆包流式 1.0 · 并发版' }
 ];
 
@@ -405,7 +405,7 @@ export function SettingsModal({
               <select
                 id="setting-volc-model"
                 className="settings-select"
-                value={settings.volcResourceId || 'volc.seedasr.sauc.duration'}
+                value={settings.volcResourceId || 'volc.bigasr.sauc.duration'}
                 onChange={(e) => onVolcSettingsChange({ volcResourceId: e.target.value })}
               >
                 {VOLC_RESOURCE_OPTIONS.map((opt) => (
@@ -593,7 +593,10 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                会保存在当前浏览器并应用于下一次采集。<code>讯飞</code> 在一次识别中返回原生
+                {micDeviceDisabled
+                  ? '正在采集：切换服务商或豆包模型会自动重连，不需要停止麦克风。'
+                  : '会保存在当前浏览器；启动采集时使用所选服务商。'}
+                <code>讯飞</code> 在一次识别中返回原生
                 speaker cluster；线下单麦克风模式会在样本足够后由 DeepSeek v4 Flash 自动判定
                 面试官和候选人。<code>Paraformer</code> 和当前豆包接入不返回 speaker cluster，
                 因此由 Flash 按对话语义实时刷新，并在结束时完成最终划分。

@@ -783,10 +783,10 @@ export async function dispatch(
       if (typeof msg.config.autoGenerate === 'boolean') {
         trigger.setAutoGenerate(msg.config.autoGenerate);
       }
-      // ASR provider + Volc creds are relay state too. Apply when present so the
-      // NEXT audio-control start uses the chosen provider/creds. Volc creds carry
-      // forward across configures (a later configure that only flips the provider
-      // keeps earlier-entered creds).
+      // ASR provider + Volc creds are relay state too. A real change ends only the
+      // upstream ASR session; live browser PCM opens the new provider on its next
+      // frame. Volc creds carry forward across configures (a later configure that
+      // only flips the provider keeps earlier-entered creds).
       applyAsrConfig(relay, roles, msg.config);
       // Per-session summary model override (Feature 2). Only overwrite when the
       // configure explicitly carries the field (partial configures must not clear it).
