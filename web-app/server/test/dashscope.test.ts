@@ -104,6 +104,20 @@ test('#2 a 429 retries (rate-limit is retryable)', async () => {
   assert.ok(calls >= 2, '429 must be retried');
 });
 
+test('#2 maxRetries:0 disables retry/backoff for latency-SLO calls', async () => {
+  let calls = 0;
+  global.fetch = (async () => {
+    calls += 1;
+    return httpError(500, 'server error');
+  }) as typeof global.fetch;
+
+  await assert.rejects(
+    () => chat({ messages: [{ role: 'user', content: 'hi' }], maxRetries: 0 }),
+    /DashScope 500/
+  );
+  assert.equal(calls, 1);
+});
+
 // ── #1 per-call timeout override ────────────────────────────────────────────
 
 test('#1 honors a longer timeoutMs override: a slow call under the override succeeds', async () => {

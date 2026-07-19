@@ -55,6 +55,11 @@ export interface ChatOptions {
    * call passes a generous budget here; omit it for the fast default callers.
    */
   readonly timeoutMs?: number;
+  /**
+   * Retry count for retryable 5xx/429/network failures. Defaults to 2. Set to 0
+   * for hard latency-SLO calls where backoff would be worse than a local fallback.
+   */
+  readonly maxRetries?: number;
 }
 
 /** The Anthropic-shape base URL (`.../apps/anthropic`) from the desktop config. */
@@ -90,6 +95,10 @@ export async function chat(options: ChatOptions): Promise<string> {
     typeof options.timeoutMs === 'number' && options.timeoutMs > 0
       ? options.timeoutMs
       : REQUEST_TIMEOUT_MS;
+  const maxRetries =
+    Number.isInteger(options.maxRetries) && Number(options.maxRetries) >= 0
+      ? Math.min(5, Number(options.maxRetries))
+      : MAX_RETRIES;
 
   const body: Record<string, unknown> = {
     model,
@@ -106,7 +115,7 @@ export async function chat(options: ChatOptions): Promise<string> {
   const url = `${getDashscopeBaseUrl()}/v1/messages`;
 
   let lastErr: unknown = null;
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
+  for (let attempt = 0; attempt <= maxRetries; attempt += 1) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
@@ -126,7 +135,7 @@ export async function chat(options: ChatOptions): Promise<string> {
         const text = await resp.text().catch(() => '');
         if (resp.status >= 500 || resp.status === 429) {
           lastErr = new Error(`DashScope ${resp.status}: ${text.slice(0, 300)}`);
-          if (attempt < MAX_RETRIES) {
+          if (attempt < maxRetries) {
             await delay(RETRY_BASE_DELAY_MS * 2 ** attempt);
             continue;
           }
@@ -150,7 +159,7 @@ export async function chat(options: ChatOptions): Promise<string> {
       // a 400/404 only wastes time and masks the real failure behind backoff.
       if (isNonRetryable(err)) throw err;
       lastErr = err;
-      if (attempt < MAX_RETRIES) {
+      if (attempt < maxRetries) {
         await delay(RETRY_BASE_DELAY_MS * 2 ** attempt);
       }
     }

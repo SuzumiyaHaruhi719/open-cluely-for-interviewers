@@ -1,8 +1,8 @@
 // ============================================================================
 // Autonomous question-generation trigger monitor (per WebSocket session).
 // ----------------------------------------------------------------------------
-// The Expert pipeline is deep but slow (~25-30s/fire). We do NOT run it on every
-// interviewee sentence. Instead, a two-stage gate decides WHEN to fire:
+// We do not generate on every interviewee sentence. A two-stage live path first
+// decides WHEN to fire, then ws.ts runs one dedicated Flash question call:
 //
 //   1. Local gates (no LLM, ~free): auto-generate on; not already generating;
 //      cooldown elapsed since the last fire; enough NEW transcript since then;
@@ -12,9 +12,9 @@
 //      a fast monitor "is now a good moment to generate?" → strict JSON. Any
 //      failure is treated as "no" — the monitor NEVER throws into the socket.
 //
-// On a green light it marks `isGenerating`, runs the SAME analyze path a manual
-// Generate Q uses (injected as `runAnalyze`), and on settle records the fire so
-// the cooldown + new-chars gates reset. Manual generations call `markManualRun()`
+// On a green light it marks `isGenerating`, runs the injected low-latency auto
+// question path, and on settle records the fire so the cooldown + new-chars gates
+// reset. Manual generations call `markManualRun()`
 // so auto and manual share the in-flight/cooldown bookkeeping and never overlap.
 //
 // EVERYTHING is injected (clock, timer, monitor, analyze) so the whole decision
@@ -53,9 +53,8 @@ export interface AutoTriggerDeps {
    */
   shouldGenerate?: (recentTranscript: string) => Promise<TriggerDecision>;
   /**
-   * Fire the Expert pipeline. Wired in ws.ts to the SHARED analyze-and-emit path
-   * (identical to manual Generate Q, only the `trigger` flag differs). Resolves
-   * when the generation settles (success or handled error).
+   * Fire the dedicated automatic Flash question path. Manual Generate Q uses its
+   * separately selected pipeline. Resolves when generation settles.
    */
   runAnalyze: (opts: { candidateAnswer: string; focusHint: string }) => Promise<void>;
   /** Clock. Defaults to Date.now; injected in tests for a deterministic cooldown. */
@@ -145,6 +144,7 @@ const MONITOR_SYSTEM = [
 
 const MONITOR_MAX_TOKENS = 200;
 const MONITOR_TEMPERATURE = 0;
+const MONITOR_TIMEOUT_MS = 8_000;
 // Cap the transcript window we hand the monitor so its latency/cost stays flat
 // regardless of interview length — only the recent tail informs "is now a moment".
 const MONITOR_WINDOW_CHARS = 1200;
@@ -198,7 +198,9 @@ function makeDefaultShouldGenerate(model: string) {
         model,
         maxTokens: MONITOR_MAX_TOKENS,
         temperature: MONITOR_TEMPERATURE,
-        thinking: false
+        thinking: false,
+        timeoutMs: MONITOR_TIMEOUT_MS,
+        maxRetries: 0
       });
       return parseDecision(text);
     } catch {

@@ -152,7 +152,8 @@ export async function classifySpeakerTurns(
     maxTokens: 500,
     temperature: 0,
     thinking: false,
-    timeoutMs: CLASSIFY_TIMEOUT_MS
+    timeoutMs: CLASSIFY_TIMEOUT_MS,
+    maxRetries: 0
   });
   return parseSpeakerClassification(text, turns);
 }

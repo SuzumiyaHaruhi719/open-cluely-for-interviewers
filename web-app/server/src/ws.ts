@@ -7,6 +7,7 @@ import { WS_PATH } from '@open-cluely/contract';
 import type {
   FollowUpOutput,
   GenerationTrigger,
+  OutputLanguage,
   RankedQuestion,
   ServerMessage,
   SessionContextState,
@@ -19,6 +20,12 @@ import { createAsrRelay, type AsrRelay, type VolcCredentials } from './asr-relay
 import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
+import {
+  AUTO_QUESTION_MODEL,
+  generateAutoQuestion,
+  type AutoQuestionInput,
+  type AutoQuestionResult
+} from './auto-question';
 import { createSessionContextAnalyzer } from './session-context-analyzer';
 import {
   analyzeSessionContext,
@@ -380,6 +387,72 @@ async function runAnalysis(ws: WebSocket, session: HeadlessSession, args: RunAna
     iterationVersion: result.iterationVersion ?? '',
     ranked,
     trigger: args.trigger
+  });
+}
+
+interface RunAutoQuestionArgs extends AutoQuestionInput {
+  requestId: string;
+  outputLanguage?: OutputLanguage;
+  isStale?: () => boolean;
+}
+
+interface RunAutoQuestionDeps {
+  generate?: (input: AutoQuestionInput) => Promise<AutoQuestionResult>;
+}
+
+/**
+ * Dedicated autonomous SLO path. The trigger monitor has already found the gap;
+ * one thinking-disabled Flash call turns it into a question. Manual Generate Q
+ * still uses the selected Fast/Expert/Customize pipeline through runAnalysis().
+ */
+export async function runAutoQuestionAndEmit(
+  ws: WebSocket,
+  args: RunAutoQuestionArgs,
+  deps: RunAutoQuestionDeps = {}
+): Promise<void> {
+  if (args.isStale?.()) return;
+  const generate = deps.generate ?? generateAutoQuestion;
+  send(ws, {
+    type: 'progress',
+    requestId: args.requestId,
+    phase: 'auto-question',
+    index: 1,
+    total: 1,
+    status: 'start',
+    model: AUTO_QUESTION_MODEL,
+    tokens: null
+  });
+
+  const generated = await generate({
+    candidateAnswer: args.candidateAnswer,
+    focusHint: args.focusHint,
+    jobDescription: args.jobDescription,
+    resumeText: args.resumeText,
+    outputLanguage: args.outputLanguage
+  });
+  if (args.isStale?.()) return;
+
+  send(ws, {
+    type: 'progress',
+    requestId: args.requestId,
+    phase: 'auto-question',
+    index: 1,
+    total: 1,
+    status: 'done',
+    model: generated.model,
+    tokens: null
+  });
+  send(ws, {
+    type: 'result',
+    requestId: args.requestId,
+    mode: 'fast',
+    output: generated.output,
+    shouldShowFollowUps: true,
+    tokensUsed: ZERO_TOKENS,
+    elapsedMs: generated.elapsedMs,
+    iterationVersion: generated.output.iteration_version,
+    ranked: [],
+    trigger: 'auto'
   });
 }
 
@@ -958,13 +1031,11 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       trigger.onCandidateFinal(accumulatedDisplayFinal);
     }
 
-    // The autonomous trigger monitor (per connection). `runAnalyze` reuses the
-    // SAME analyze-and-emit path manual Generate Q uses; only the `trigger` flag
-    // differs ('auto'). The monitor owns its own isGenerating slot for auto fires
-    // (set inside its evaluate()), so this runAnalyze just emits — it must NOT
-    // touch markManualRun/markRunDone or it would double-claim the slot.
+    // The autonomous trigger owns a dedicated one-call Flash question path. This
+    // keeps the interviewer under the live SLO regardless of the UI's manual
+    // Expert/Customize selection; manual Generate Q still runs the chosen chain.
     const trigger: AutoTrigger = createAutoTrigger({
-      runAnalyze: async ({ candidateAnswer }) => {
+      runAnalyze: async ({ candidateAnswer, focusHint }) => {
         // Capture the epoch at the START so a reset() during this generation marks
         // it stale (suppressing its progress + result). Record the in-flight auto
         // requestId so makeEmit/runAnalysis can match it; clear it on settle.
@@ -972,11 +1043,18 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         const startEpoch = trigger.getEpoch();
         autoInflight.set(requestId, startEpoch);
         try {
-          await runAnalysis(ws, session, {
+          const state = session.getState() as {
+            jobDescription?: string;
+            resumeText?: string;
+            outputLanguage?: OutputLanguage;
+          };
+          await runAutoQuestionAndEmit(ws, {
             candidateAnswer,
-            questionHistory: [],
+            focusHint,
+            jobDescription: state.jobDescription,
+            resumeText: state.resumeText,
+            outputLanguage: state.outputLanguage,
             requestId,
-            trigger: 'auto',
             isStale: () => trigger.getEpoch() !== startEpoch
           });
         } finally {
