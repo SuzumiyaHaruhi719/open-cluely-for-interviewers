@@ -4,6 +4,7 @@ import { useMicDevices } from './useMicDevices';
 import type {
   AppSettings,
   AutoMode,
+  QwenTtsModel,
   SummaryModel,
   UserAsrProvider
 } from './useAppSettings';
@@ -13,6 +14,7 @@ interface SettingsModalProps {
   settings: AppSettings;
   onClose: () => void;
   onAsrProviderChange: (value: UserAsrProvider) => void;
+  onTtsModelChange: (value: QwenTtsModel) => void;
   onMicDeviceChange: (deviceId: string) => void;
   micDeviceDisabled: boolean;
   onAutoGenerateChange: (enabled: boolean) => void;
@@ -25,7 +27,13 @@ const CLOSE_ANIM_MS = 200;
 
 const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: UserAsrProvider; label: string }> = [
   { value: 'xfyun', label: '讯飞实时转写 · 原生说话人分离（默认）' },
-  { value: 'volc', label: '豆包流式语音 2.0 · 服务端配置' }
+  { value: 'volc', label: '豆包流式语音 2.0 · 服务端配置' },
+  { value: 'paraformer', label: '阿里云 DashScope Paraformer · 服务端配置' }
+];
+
+const TTS_MODEL_OPTIONS: ReadonlyArray<{ value: QwenTtsModel; label: string }> = [
+  { value: 'qwen-audio-3.0-tts-plus', label: 'Qwen Audio 3.0 Plus · 标准音色（默认）' },
+  { value: 'qwen-audio-3.0-tts-flash', label: 'Qwen Audio 3.0 Flash · 快速合成' }
 ];
 
 const SUMMARY_MODEL_OPTIONS: ReadonlyArray<{ value: SummaryModel; label: string }> = [
@@ -41,6 +49,7 @@ export function SettingsModal({
   settings,
   onClose,
   onAsrProviderChange,
+  onTtsModelChange,
   onMicDeviceChange,
   micDeviceDisabled,
   onAutoGenerateChange,
@@ -142,6 +151,25 @@ export function SettingsModal({
                   </option>
                 ) : null}
               </select>
+            </div>
+
+            <div className="settings-field">
+              <label className="settings-field__label" htmlFor="setting-tts-model">
+                语音合成
+              </label>
+              <select
+                id="setting-tts-model"
+                className="settings-select"
+                value={settings.ttsModel}
+                onChange={(event) => onTtsModelChange(event.target.value as QwenTtsModel)}
+              >
+                {TTS_MODEL_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <span className="settings-field__desc">只在点击朗读追问时使用</span>
             </div>
 
             <div className="settings-field">

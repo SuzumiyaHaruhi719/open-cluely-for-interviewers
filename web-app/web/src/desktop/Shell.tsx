@@ -48,7 +48,7 @@ const EXPERT_CONFIG = {
 } as const;
 
 function normalizeAsrProvider(value: string): AsrProvider {
-  if (value === 'volc' || value === 'xfyun' || value === 'sim') return value;
+  if (value === 'volc' || value === 'xfyun' || value === 'paraformer' || value === 'sim') return value;
   return 'xfyun';
 }
 
@@ -582,6 +582,7 @@ export function Shell() {
           pushConfig({ summaryModel: value });
         }}
         onAsrProviderChange={onAsrProviderChange}
+        onTtsModelChange={appSettings.setTtsModel}
         onMicDeviceChange={appSettings.setMicDeviceId}
         micDeviceDisabled={capturing}
         onAutoGenerateChange={onAutoGenerateChange}

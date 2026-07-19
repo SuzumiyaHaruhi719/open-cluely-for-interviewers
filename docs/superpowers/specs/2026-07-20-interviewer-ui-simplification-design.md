@@ -58,12 +58,12 @@ Settings becomes a single compact GLP panel with progressive disclosure only whe
 
 #### Essentials
 
-- **Speech recognition:** Xunfei by default. Only providers confirmed available by server capability checks are selectable.
+- **Speech recognition:** Xunfei by default, with Doubao ASR 2.0 and DashScope Paraformer as explicit choices. Unavailable providers remain truthfully identified rather than silently relabelled or downgraded.
 - **Microphone:** the actual input device used for the next capture.
 - **Automatic follow-up:** on/off and trigger strategy. A fixed interval is shown only when that strategy is selected; its label reflects the current value instead of hard-coding 30 seconds.
 - **Evaluation model:** DeepSeek v4 Pro or Flash for the post-interview report. This does not alter realtime Expert generation.
 
-TTS is not exposed as a selector while only one configured model is usable. The server chooses the best verified model and reports its runtime status.
+TTS exposes one compact model selector because both newly released Qwen Audio 3.0 models are an explicit interviewer choice. Plus and Flash stay visible, but an unavailable entitlement is disabled with its reason; neither model is silently aliased to the other.
 
 #### Removed controls
 
@@ -151,7 +151,7 @@ If a provider has no native speaker separation, keep segments unassigned until F
 - Add a server-only DashScope TTS adapter for `qwen-audio-3.0-tts-plus` and `qwen-audio-3.0-tts-flash` using the supported WebSocket API.
 - Resolve the API key, endpoint, model entitlement, and voice on the server. An empty `voice` is invalid; the adapter must select a verified built-in voice or fail with a configuration error before synthesis.
 - Probe model capability at server startup and expose only a non-secret availability summary to the client.
-- Use Plus as the initial production default because the configured account has been verified to synthesize successfully. Keep Flash unavailable in the UI until its entitlement probe succeeds; do not silently alias Flash to Plus.
+- Use Plus as the initial production default. Show both Plus and Flash in Settings; capability results disable an unavailable model with a concise reason, and synthesis always requests the interviewer-selected model. Do not silently alias either model to the other.
 - Cache capability results for a bounded period and recheck after a provider error so a new entitlement can become available without a client release.
 - TTS output is Chinese by default and is tested for non-empty valid audio, bounded latency, and round-trip intelligibility through the selected ASR.
 - TTS failures never block capture, transcript finalization, speaker mapping, or manual interviewing.

@@ -12,7 +12,7 @@
 
 - Keep the existing GLP palette, tokens, spacing, radii, typography, and motion character.
 - Realtime generation is fixed to `deepseek-v4-flash` with `mode='expert'` and `outputLanguage='zh'`.
-- Xunfei is the default ASR provider.
+- Xunfei is the default ASR provider; Settings also exposes Doubao ASR 2.0 and DashScope Paraformer.
 - No language, prompt, mode, secret, workspace, opacity, shortcut, or pipeline-editor settings.
 - No App ID, API key, Access Token, or provider secret may enter renderer state, persisted browser data, or WebSocket configuration.
 - JD is structured Expert context, never a replacement system prompt.

@@ -2,17 +2,17 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a server-only, capability-gated Qwen Audio 3.0 TTS service with Plus as the verified default and optional interviewer-controlled playback of generated Chinese questions.
+**Goal:** Add a server-only, capability-gated Qwen Audio 3.0 TTS service with visible Plus/Flash selection and optional interviewer-controlled playback of generated Chinese questions.
 
-**Architecture:** Implement the DashScope WebSocket protocol behind a small `TtsService` interface; credentials, endpoint, voice, and entitlement remain server-side. A capability endpoint reports only model availability. A binary HTTP synthesis endpoint returns audio for a bounded validated Chinese text payload. The client exposes a non-autoplay “朗读” action on generated questions and never adds TTS credentials/model controls to Settings.
+**Architecture:** Implement the DashScope WebSocket protocol behind a small `TtsService` interface; credentials, endpoint, voice, and entitlement remain server-side. A capability endpoint reports only model availability. A binary HTTP synthesis endpoint returns audio for a bounded validated Chinese text payload and an allowlisted selected model. Settings shows both Qwen models and disables unavailable entitlements. The client exposes a non-autoplay “朗读” action on generated questions.
 
 **Tech Stack:** Node 20, TypeScript, `ws`, Express, Node test runner, React/Vitest, browser `Audio` playback.
 
 ## Global Constraints
 
 - Support model identifiers `qwen-audio-3.0-tts-plus` and `qwen-audio-3.0-tts-flash`.
-- Plus is the default because it is verified on the configured account.
-- Flash remains unavailable until its entitlement probe succeeds; never alias it to Plus.
+- Plus is the default; both Plus and Flash remain visible choices.
+- Capability probes independently enable each model; never alias Flash to Plus or Plus to Flash.
 - Credentials, endpoint, and voice are server environment values only.
 - Empty voice is rejected before provider connection; default to a verified built-in voice.
 - Chinese is the product/output default.
@@ -30,6 +30,8 @@
 - Create `web-app/server/test/tts-route.test.ts` — secret-safe API tests.
 - Modify `web-app/server/src/app.ts` — mount TTS router.
 - Modify `web-app/web/src/lib/api.ts` and tests — capability/synthesis wrappers.
+- Modify `web-app/web/src/desktop/useAppSettings.ts` and tests — persisted allowlisted `ttsModel`.
+- Modify `web-app/web/src/desktop/SettingsModal.tsx` and tests — visible Plus/Flash selector and capability state.
 - Modify `web-app/web/src/desktop/QuestionCard.tsx` and tests — opt-in playback.
 - Create `web-app/web/src/lib/useQuestionSpeech.ts` and test — object-URL lifecycle and concurrency.
 
@@ -50,7 +52,7 @@ assert.deepEqual(validateTtsConfig({ apiKey: 'sk', voice: '' }), {
   available: false,
   reason: 'TTS voice is not configured'
 });
-assert.equal(validateTtsConfig({ apiKey: 'sk', voice: 'longanlingxin' }).available, true);
+assert.equal(validateTtsConfig({ apiKey: 'sk', voice: 'longanlingxi' }).available, true);
 ```
 
 - [ ] **Step 2: Run the focused test and confirm the validator is absent**
@@ -62,9 +64,9 @@ Expected: FAIL because the TTS configuration fields/helper do not exist.
 - [ ] **Step 3: Add environment-only config**
 
 ```ts
-ttsWsUrl: String(process.env.DASHSCOPE_TTS_WS_URL ?? '').trim() || 'wss://dashscope.aliyuncs.com/api-ws/v1/inference',
+ttsWsUrl: String(process.env.DASHSCOPE_TTS_WS_URL ?? '').trim() || 'wss://llm-opv63ugogbbsgk6i.cn-beijing.maas.aliyuncs.com/api-ws/v1/inference',
 ttsDefaultModel: String(process.env.QWEN_TTS_MODEL ?? '').trim() || 'qwen-audio-3.0-tts-plus',
-ttsVoice: String(process.env.QWEN_TTS_VOICE ?? '').trim() || 'longanlingxin',
+ttsVoice: String(process.env.QWEN_TTS_VOICE ?? '').trim() || 'longanlingxi',
 ttsTimeoutMs: toInt(process.env.QWEN_TTS_TIMEOUT_MS, 10000)
 ```
 
@@ -100,7 +102,7 @@ git push origin main
 const result = await synthesizeQwenTts({
   text: '请具体说明您在这个项目中的个人决策。',
   model: 'qwen-audio-3.0-tts-plus',
-  voice: 'longanlingxin'
+  voice: 'longanlingxi'
 }, fakeDeps);
 assert.ok(result.audio.length > 0);
 assert.equal(result.model, 'qwen-audio-3.0-tts-plus');
@@ -155,7 +157,7 @@ git push origin main
 
 **Interfaces:**
 - Produces: `GET /api/tts/capabilities -> { defaultModel; models: [{id; available; reason?}] }`.
-- Produces: `POST /api/tts/synthesize { text } -> audio/mpeg` using only the server-selected available model.
+- Produces: `POST /api/tts/synthesize { text; model } -> audio/mpeg` using only an allowlisted, currently available model.
 
 - [ ] **Step 1: Write route security/capability tests**
 
@@ -163,9 +165,9 @@ git push origin main
 const capabilities = await (await fetch(`${base}/api/tts/capabilities`)).json();
 assert.equal(capabilities.defaultModel, 'qwen-audio-3.0-tts-plus');
 assert.equal(JSON.stringify(capabilities).includes('sk-'), false);
-assert.equal(JSON.stringify(capabilities).includes('longanlingxin'), false);
+assert.equal(JSON.stringify(capabilities).includes('longanlingxi'), false);
 
-const res = await fetch(`${base}/api/tts/synthesize`, post({ text: '请介绍一个具体案例。' }));
+const res = await fetch(`${base}/api/tts/synthesize`, post({ text: '请介绍一个具体案例。', model: 'qwen-audio-3.0-tts-plus' }));
 assert.equal(res.headers.get('content-type'), 'audio/mpeg');
 assert.ok((await res.arrayBuffer()).byteLength > 0);
 ```
@@ -191,7 +193,7 @@ router.post('/synthesize', async (req, res, next) => {
 });
 ```
 
-Probe Plus and Flash independently. Cache results for five minutes; invalidate the selected model after provider denial. Client input never chooses an unavailable model.
+Probe Plus and Flash independently. Cache results for five minutes; invalidate the selected model after provider denial. Client input may choose only the two allowlisted IDs and never an unavailable model.
 
 - [ ] **Step 4: Run route tests, server suite, and build**
 
@@ -218,7 +220,7 @@ git push origin main
 - Modify: `web-app/web/src/desktop/QuestionCard.test.tsx`
 
 **Interfaces:**
-- Produces: `synthesizeQuestion(text): Promise<Blob>`.
+- Produces: `synthesizeQuestion(text, model): Promise<Blob>`.
 - Produces: `useQuestionSpeech() { state:'idle'|'loading'|'playing'|'error'; play(text); stop() }`.
 
 - [ ] **Step 1: Write object-URL and non-autoplay tests**
@@ -227,7 +229,7 @@ git push origin main
 render(<QuestionCard result={result} />);
 expect(synthesizeQuestion).not.toHaveBeenCalled();
 fireEvent.click(screen.getByRole('button', { name: '朗读追问' }));
-await waitFor(() => expect(synthesizeQuestion).toHaveBeenCalledWith(result.output.primary_question));
+await waitFor(() => expect(synthesizeQuestion).toHaveBeenCalledWith(result.output.primary_question, 'qwen-audio-3.0-tts-plus'));
 expect(audio.play).toHaveBeenCalledTimes(1);
 ```
 
@@ -242,7 +244,7 @@ Expected: FAIL until the hook/action exist.
 - [ ] **Step 3: Implement safe playback lifecycle**
 
 ```ts
-const blob = await synthesizeQuestion(text);
+const blob = await synthesizeQuestion(text, model);
 const url = URL.createObjectURL(blob);
 const audio = new Audio(url);
 audio.onended = cleanup;

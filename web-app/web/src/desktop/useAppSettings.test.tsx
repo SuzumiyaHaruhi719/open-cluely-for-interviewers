@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, test } from 'vitest';
 import {
   DEFAULT_ASR_PROVIDER,
   DEFAULT_SUMMARY_MODEL,
+  DEFAULT_TTS_MODEL,
   MIN_AUTO_INTERVAL_SEC,
   useAppSettings
 } from './useAppSettings';
@@ -25,29 +26,35 @@ describe('useAppSettings persisted controls', () => {
   test('defaults to Xunfei and validates persisted model/provider values', () => {
     localStorage.setItem('open-cluely.asrProvider', 'retired-provider');
     localStorage.setItem('open-cluely.summaryModel', 'retired-model');
+    localStorage.setItem('open-cluely.ttsModel', 'retired-tts');
     localStorage.setItem('open-cluely.autoIntervalSec', '2');
     const { result } = renderHook(() => useAppSettings());
 
     expect(DEFAULT_ASR_PROVIDER).toBe('xfyun');
     expect(result.current.settings.asrProvider).toBe('xfyun');
     expect(result.current.settings.summaryModel).toBe(DEFAULT_SUMMARY_MODEL);
+    expect(result.current.settings.ttsModel).toBe(DEFAULT_TTS_MODEL);
     expect(result.current.settings.autoIntervalSec).toBe(MIN_AUTO_INTERVAL_SEC);
   });
 
   test('keeps valid ASR and evaluation model selections', () => {
-    localStorage.setItem('open-cluely.asrProvider', 'volc');
+    localStorage.setItem('open-cluely.asrProvider', 'paraformer');
     localStorage.setItem('open-cluely.summaryModel', 'deepseek-v4-flash');
+    localStorage.setItem('open-cluely.ttsModel', 'qwen-audio-3.0-tts-flash');
     const { result } = renderHook(() => useAppSettings());
 
-    expect(result.current.settings.asrProvider).toBe('volc');
+    expect(result.current.settings.asrProvider).toBe('paraformer');
     expect(result.current.settings.summaryModel).toBe('deepseek-v4-flash');
+    expect(result.current.settings.ttsModel).toBe('qwen-audio-3.0-tts-flash');
   });
 
-  test('migrates the unavailable Paraformer selection to Xunfei', () => {
-    localStorage.setItem('open-cluely.asrProvider', 'paraformer');
+  test('persists the selected Qwen TTS model', () => {
     const { result } = renderHook(() => useAppSettings());
 
-    expect(result.current.settings.asrProvider).toBe('xfyun');
+    act(() => result.current.setTtsModel('qwen-audio-3.0-tts-flash'));
+
+    expect(result.current.settings.ttsModel).toBe('qwen-audio-3.0-tts-flash');
+    expect(localStorage.getItem('open-cluely.ttsModel')).toBe('qwen-audio-3.0-tts-flash');
   });
 
   test('does not expose language, secrets, prompts, mode, or appearance state', () => {

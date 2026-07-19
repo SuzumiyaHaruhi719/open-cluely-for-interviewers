@@ -5,6 +5,7 @@ import type { AppSettings } from './useAppSettings';
 
 const ESSENTIAL_SETTINGS: AppSettings = {
   asrProvider: 'xfyun',
+  ttsModel: 'qwen-audio-3.0-tts-plus',
   micDeviceId: '',
   autoGenerate: true,
   autoMode: 'agent',
@@ -16,6 +17,7 @@ function renderSettings(settings: AppSettings = ESSENTIAL_SETTINGS) {
   const callbacks = {
     onClose: vi.fn(),
     onAsrProviderChange: vi.fn(),
+    onTtsModelChange: vi.fn(),
     onMicDeviceChange: vi.fn(),
     onAutoGenerateChange: vi.fn(),
     onAutoModeChange: vi.fn(),
@@ -34,7 +36,11 @@ describe('SettingsModal essentials', () => {
     expect(screen.getByRole('heading', { name: '设置' })).toBeInTheDocument();
     expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
     expect(screen.getByRole('option', { name: /豆包流式语音 2\.0/ })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: /DashScope Paraformer/ })).toBeInTheDocument();
     expect(screen.queryByRole('option', { name: /豆包流式语音 1\.0/ })).not.toBeInTheDocument();
+    expect(screen.getByLabelText('语音合成')).toHaveValue('qwen-audio-3.0-tts-plus');
+    expect(screen.getByRole('option', { name: /Qwen Audio 3\.0 Plus/ })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: /Qwen Audio 3\.0 Flash/ })).toBeInTheDocument();
     expect(screen.getByLabelText('麦克风')).toBeInTheDocument();
     expect(screen.getByRole('checkbox', { name: '自动追问' })).toBeChecked();
     expect(screen.getByLabelText('触发方式')).toHaveValue('agent');
@@ -56,11 +62,15 @@ describe('SettingsModal essentials', () => {
     expect(screen.getByText('每 45 秒检查一次候选人新回答')).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText('语音识别'), { target: { value: 'volc' } });
+    fireEvent.change(screen.getByLabelText('语音合成'), {
+      target: { value: 'qwen-audio-3.0-tts-flash' }
+    });
     fireEvent.change(screen.getByLabelText('评估报告模型'), {
       target: { value: 'deepseek-v4-flash' }
     });
 
     expect(callbacks.onAsrProviderChange).toHaveBeenCalledWith('volc');
+    expect(callbacks.onTtsModelChange).toHaveBeenCalledWith('qwen-audio-3.0-tts-flash');
     expect(callbacks.onSummaryModelChange).toHaveBeenCalledWith('deepseek-v4-flash');
   });
 });

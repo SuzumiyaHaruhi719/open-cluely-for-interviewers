@@ -6,6 +6,7 @@ const KEYS = {
   autoMode: 'open-cluely.autoMode',
   autoIntervalSec: 'open-cluely.autoIntervalSec',
   summaryModel: 'open-cluely.summaryModel',
+  ttsModel: 'open-cluely.ttsModel',
   micDeviceId: 'mic.inputDeviceId'
 } as const;
 
@@ -23,27 +24,35 @@ const RETIRED_KEYS = [
 ] as const;
 
 /** Only providers verified on the deployment are exposed to interviewers. */
-export type UserAsrProvider = 'xfyun' | 'volc' | 'sim';
+export type UserAsrProvider = 'xfyun' | 'volc' | 'paraformer' | 'sim';
 export type SummaryModel = 'deepseek-v4-pro' | 'deepseek-v4-flash';
+export type QwenTtsModel = 'qwen-audio-3.0-tts-plus' | 'qwen-audio-3.0-tts-flash';
 export type AutoMode = 'agent' | 'interval';
 
 export const DEFAULT_ASR_PROVIDER: UserAsrProvider = 'xfyun';
 export const DEFAULT_SUMMARY_MODEL: SummaryModel = 'deepseek-v4-pro';
+export const DEFAULT_TTS_MODEL: QwenTtsModel = 'qwen-audio-3.0-tts-plus';
 export const DEFAULT_AUTO_GENERATE = true;
 export const DEFAULT_AUTO_MODE: AutoMode = 'agent';
 export const DEFAULT_AUTO_INTERVAL_SEC = 30;
 export const MIN_AUTO_INTERVAL_SEC = 5;
 export const MAX_AUTO_INTERVAL_SEC = 300;
 
-const USER_ASR_PROVIDERS: ReadonlySet<string> = new Set(['xfyun', 'volc']);
+const USER_ASR_PROVIDERS: ReadonlySet<string> = new Set(['xfyun', 'volc', 'paraformer']);
 const SUMMARY_MODELS: ReadonlySet<string> = new Set([
   'deepseek-v4-pro',
   'deepseek-v4-flash'
+]);
+const QWEN_TTS_MODELS: ReadonlySet<string> = new Set([
+  'qwen-audio-3.0-tts-plus',
+  'qwen-audio-3.0-tts-flash'
 ]);
 
 export interface AppSettings {
   /** Recognition provider used for the next capture/reconnect. */
   asrProvider: UserAsrProvider;
+  /** Qwen voice used when the interviewer explicitly reads a generated question. */
+  ttsModel: QwenTtsModel;
   /** Shared room-microphone device used by Settings, Composer, and audio capture. */
   micDeviceId: string;
   /** Autonomous context-driven question generation. */
@@ -59,6 +68,7 @@ export interface AppSettings {
 export interface UseAppSettings {
   settings: AppSettings;
   setAsrProvider: (value: UserAsrProvider) => void;
+  setTtsModel: (value: QwenTtsModel) => void;
   setMicDeviceId: (value: string) => void;
   setAutoGenerate: (value: boolean) => void;
   setAutoMode: (value: AutoMode) => void;
@@ -79,6 +89,11 @@ function readAsrProvider(): UserAsrProvider {
 function readSummaryModel(): SummaryModel {
   const value = readString(KEYS.summaryModel, DEFAULT_SUMMARY_MODEL);
   return SUMMARY_MODELS.has(value) ? (value as SummaryModel) : DEFAULT_SUMMARY_MODEL;
+}
+
+function readTtsModel(): QwenTtsModel {
+  const value = readString(KEYS.ttsModel, DEFAULT_TTS_MODEL);
+  return QWEN_TTS_MODELS.has(value) ? (value as QwenTtsModel) : DEFAULT_TTS_MODEL;
 }
 
 function readBool(key: string, fallback: boolean): boolean {
@@ -124,6 +139,7 @@ export function useAppSettings(): UseAppSettings {
     purgeRetiredSettings();
     return {
       asrProvider: readAsrProvider(),
+      ttsModel: readTtsModel(),
       micDeviceId: readString(KEYS.micDeviceId, ''),
       autoGenerate: readBool(KEYS.autoGenerate, DEFAULT_AUTO_GENERATE),
       autoMode: readString(KEYS.autoMode, DEFAULT_AUTO_MODE) === 'interval' ? 'interval' : 'agent',
@@ -147,6 +163,12 @@ export function useAppSettings(): UseAppSettings {
   const setMicDeviceId = useCallback((value: string): void => {
     setSettings((prev) => ({ ...prev, micDeviceId: value }));
     persist(KEYS.micDeviceId, value);
+  }, []);
+
+  const setTtsModel = useCallback((value: QwenTtsModel): void => {
+    const normalized = QWEN_TTS_MODELS.has(value) ? value : DEFAULT_TTS_MODEL;
+    setSettings((prev) => ({ ...prev, ttsModel: normalized }));
+    persist(KEYS.ttsModel, normalized);
   }, []);
 
   const setAutoGenerate = useCallback((value: boolean): void => {
@@ -175,6 +197,7 @@ export function useAppSettings(): UseAppSettings {
   return {
     settings,
     setAsrProvider,
+    setTtsModel,
     setMicDeviceId,
     setAutoGenerate,
     setAutoMode,
