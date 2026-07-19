@@ -87,6 +87,7 @@ const sessionConfigSchema = z
     interviewerModel: z.enum(['deepseek-v4-pro', 'deepseek-v4-flash', 'qwen3-vl-plus']).optional(),
     resumeText: z.string().optional(),
     jobDescription: z.string().optional(),
+    interviewGuide: z.array(z.string().max(1_600)).max(20).optional(),
     outputLanguage: z.enum(['', 'zh', 'en']).optional(),
     activePipelineId: z.string().nullable().optional(),
     // Opt-in: when true, a FINAL interviewee ('display') transcript auto-runs
@@ -427,6 +428,7 @@ export async function runExpertQuestionAndEmit(
     candidateAnswer: args.candidateAnswer,
     focusHint: args.focusHint,
     jobDescription: args.jobDescription,
+    interviewGuide: args.interviewGuide,
     resumeText: args.resumeText,
     questionHistory: args.questionHistory,
     outputLanguage: args.outputLanguage
@@ -485,6 +487,7 @@ async function handleAnalyze(
     } else {
       const state = session.getState() as {
         jobDescription?: string;
+        interviewGuide?: string[];
         resumeText?: string;
         outputLanguage?: OutputLanguage;
       };
@@ -492,6 +495,7 @@ async function handleAnalyze(
         candidateAnswer: msg.candidateAnswer,
         focusHint: '',
         jobDescription: state.jobDescription,
+        interviewGuide: state.interviewGuide,
         resumeText: state.resumeText,
         questionHistory: msg.questionHistory,
         outputLanguage: state.outputLanguage,
@@ -1069,6 +1073,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         try {
           const state = session.getState() as {
             jobDescription?: string;
+            interviewGuide?: string[];
             resumeText?: string;
             outputLanguage?: OutputLanguage;
           };
@@ -1076,6 +1081,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             candidateAnswer,
             focusHint,
             jobDescription: state.jobDescription,
+            interviewGuide: state.interviewGuide,
             resumeText: state.resumeText,
             questionHistory: [],
             outputLanguage: state.outputLanguage,

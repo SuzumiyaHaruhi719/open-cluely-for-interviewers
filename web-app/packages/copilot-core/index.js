@@ -34,6 +34,9 @@ function applyConfig(appState, partial = {}) {
   if (typeof partial.mode === 'string') appState.interviewerMode = partial.mode;
   if (typeof partial.resumeText === 'string') appState.resumeText = partial.resumeText;
   if (typeof partial.jobDescription === 'string') appState.jobDescription = partial.jobDescription;
+  if (Array.isArray(partial.interviewGuide)) {
+    appState.interviewGuide = partial.interviewGuide.filter((item) => typeof item === 'string');
+  }
   if (typeof partial.outputLanguage === 'string') appState.outputLanguage = partial.outputLanguage;
   if ('activePipelineId' in partial) appState.activePipelineId = partial.activePipelineId || null;
   if (typeof partial.interviewerModel === 'string') {
@@ -67,6 +70,7 @@ function createHeadlessSession({ apiKey = '', config: cfg = {}, emit = () => {},
       interviewerMode: 'fast',
       resumeText: '',
       jobDescription: '',
+      interviewGuide: [],
       outputLanguage: '',
       activePipelineId: null,
       interviewerSessionState: null

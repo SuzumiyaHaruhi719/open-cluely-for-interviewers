@@ -1,36 +1,34 @@
-import { useEffect, useState } from 'react';
-import type { InterviewSample } from './interviewSamples';
-import { INTERVIEW_SAMPLES } from './interviewSamples';
+import { useEffect, useMemo, useState } from 'react';
 import { CloseIcon } from './icons';
+import { JOB_PROFILES, buildInterviewGuideLines } from './jobProfiles';
 
 export type InterviewType = 'online' | 'offline';
 
 export interface InterviewTypeChoice {
   interviewType: InterviewType;
-  sample: InterviewSample | null;
+  jobProfileId: string;
+  jobDescription: string;
+  interviewGuide: string[];
 }
 
 interface InterviewTypeModalProps {
   open: boolean;
   onClose: () => void;
-  /** Fires when a format card is clicked; carries the chosen sample (if any). */
   onPick: (choice: InterviewTypeChoice) => void;
 }
 
-/**
- * New-interview type picker, 1:1 with the desktop `#interview-type-modal`
- * (interview-type.css). Two large cards — 线上 Online (candidate/teal) and 线下
- * Offline (interviewer/amber) — plus an optional sample-transcript select.
- * Clicking a card fires `onPick` immediately (no intermediate "selected"
- * state), exactly like the desktop.
- */
-export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModalProps) {
-  const [sampleId, setSampleId] = useState('');
+const DEFAULT_JOB_PROFILE_ID = JOB_PROFILES[0]?.id ?? 'custom';
 
-  // Reset the sample choice whenever the modal re-opens.
+export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModalProps) {
+  const [interviewType, setInterviewType] = useState<InterviewType>('offline');
+  const [jobProfileId, setJobProfileId] = useState(DEFAULT_JOB_PROFILE_ID);
+  const [customJobDescription, setCustomJobDescription] = useState('');
+
   useEffect(() => {
     if (open) {
-      setSampleId('');
+      setInterviewType('offline');
+      setJobProfileId(DEFAULT_JOB_PROFILE_ID);
+      setCustomJobDescription('');
     }
   }, [open]);
 
@@ -47,32 +45,53 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
     return () => document.removeEventListener('keydown', onKey);
   }, [open, onClose]);
 
-  const choose = (interviewType: InterviewType): void => {
-    const sample = INTERVIEW_SAMPLES.find((s) => s.id === sampleId) ?? null;
-    onPick({ interviewType, sample });
-  };
+  const selectedProfile = useMemo(
+    () => JOB_PROFILES.find((profile) => profile.id === jobProfileId) ?? null,
+    [jobProfileId]
+  );
+  const isCustom = jobProfileId === 'custom';
+  const canStart = !isCustom || customJobDescription.trim().length > 0;
 
-  const modalClass = `interview-type-modal${open ? '' : ' hidden'}`;
+  const submit = (): void => {
+    if (!canStart) {
+      return;
+    }
+    onPick({
+      interviewType,
+      jobProfileId,
+      jobDescription: selectedProfile?.jobDescription ?? customJobDescription.trim(),
+      interviewGuide: selectedProfile ? buildInterviewGuideLines(selectedProfile) : []
+    });
+  };
 
   return (
     <div
       id="interview-type-modal"
-      className={modalClass}
+      className={`interview-type-modal${open ? '' : ' hidden'}`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="interview-type-title"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) {
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
           onClose();
         }
       }}
     >
-      <div className="interview-type-card-wrap" role="document">
+      <form
+        className="interview-type-card-wrap"
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit();
+        }}
+      >
         <div className="interview-type-head">
-          <h2 id="interview-type-title" className="interview-type-title">
-            开始新面试
-          </h2>
-          <p className="interview-type-subtitle">选择面试形式</p>
+          <div>
+            <span className="interview-type-kicker">专家面试</span>
+            <h2 id="interview-type-title" className="interview-type-title">
+              开始新面试
+            </h2>
+            <p className="interview-type-subtitle">确认采集方式和职位背景后开始。</p>
+          </div>
           <button
             id="interview-type-close"
             className="interview-type-close"
@@ -84,90 +103,131 @@ export function InterviewTypeModal({ open, onClose, onPick }: InterviewTypeModal
           </button>
         </div>
 
-        <div className="interview-type-options" role="group" aria-label="面试形式">
-          <button
-            className="interview-type-option"
-            type="button"
-            data-interview-type="online"
-            data-accent="candidate"
-            onClick={() => choose('online')}
-          >
-            <span className="interview-type-option__icon" aria-hidden="true">
-              <svg
-                width="26"
-                height="26"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+        <div className="interview-type-content">
+          <fieldset className="interview-type-section">
+            <legend className="interview-type-section__label">面试形式</legend>
+            <div className="interview-type-options">
+              <label
+                className="interview-type-option"
+                data-accent="candidate"
+                data-selected={interviewType === 'online' ? 'true' : 'false'}
               >
-                <rect x="2" y="3" width="20" height="14" rx="2" />
-                <line x1="8" y1="21" x2="16" y2="21" />
-                <line x1="12" y1="17" x2="12" y2="21" />
-              </svg>
-            </span>
-            <span className="interview-type-option__body">
-              <span className="interview-type-option__title">线上面试</span>
-              <span className="interview-type-option__desc">
-                远程面试 · 电脑音频(候选人) + 麦克风(你)
-              </span>
-            </span>
-          </button>
+                <input
+                  type="radio"
+                  name="interview-type"
+                  value="online"
+                  data-interview-type="online"
+                  aria-label="线上面试"
+                  checked={interviewType === 'online'}
+                  onChange={() => setInterviewType('online')}
+                />
+                <span className="interview-type-option__check" aria-hidden="true" />
+                <span className="interview-type-option__body">
+                  <span className="interview-type-option__title">线上面试</span>
+                  <span className="interview-type-option__desc">电脑音频采集候选人，麦克风采集面试官</span>
+                </span>
+              </label>
 
-          <button
-            className="interview-type-option"
-            type="button"
-            data-interview-type="offline"
-            data-accent="interviewer"
-            onClick={() => choose('offline')}
-          >
-            <span className="interview-type-option__icon" aria-hidden="true">
-              <svg
-                width="26"
-                height="26"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <label
+                className="interview-type-option"
+                data-accent="interviewer"
+                data-selected={interviewType === 'offline' ? 'true' : 'false'}
               >
-                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" y1="19" x2="12" y2="22" />
-              </svg>
-            </span>
-            <span className="interview-type-option__body">
-              <span className="interview-type-option__title">线下面试</span>
-              <span className="interview-type-option__desc">现场面试 · 仅房间麦克风 + 简历</span>
-            </span>
-          </button>
+                <input
+                  type="radio"
+                  name="interview-type"
+                  value="offline"
+                  data-interview-type="offline"
+                  aria-label="线下面试"
+                  checked={interviewType === 'offline'}
+                  onChange={() => setInterviewType('offline')}
+                />
+                <span className="interview-type-option__check" aria-hidden="true" />
+                <span className="interview-type-option__body">
+                  <span className="interview-type-option__title">线下面试</span>
+                  <span className="interview-type-option__desc">房间麦克风采集双方，结束后自动校正角色</span>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <section className="interview-type-section">
+            <label
+              id="job-context-label"
+              className="interview-type-section__label"
+              htmlFor="job-profile-select"
+            >
+              职位背景
+            </label>
+            <select
+              id="job-profile-select"
+              className="interview-type-input"
+              value={jobProfileId}
+              onChange={(event) => setJobProfileId(event.target.value)}
+            >
+              {JOB_PROFILES.map((profile) => (
+                <option key={profile.id} value={profile.id}>
+                  {profile.title} · {profile.department}
+                </option>
+              ))}
+              <option value="custom">自定义职位</option>
+            </select>
+
+            {selectedProfile ? (
+              <div className="job-context-review">
+                <div className="job-context-review__summary">
+                  <div>
+                    <strong>{selectedProfile.title}</strong>
+                    <span>
+                      {selectedProfile.department} · 汇报给 {selectedProfile.reportsTo}
+                    </span>
+                  </div>
+                  <span className="job-context-review__badge">已适配</span>
+                </div>
+                <p>{selectedProfile.summary}</p>
+
+                <div className="job-context-review__block">
+                  <span className="job-context-review__label">重点考察</span>
+                  <div className="job-context-review__competencies">
+                    {selectedProfile.interviewGuide.map((item) => (
+                      <span key={item.id}>{item.competency}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <details className="job-context-review__details">
+                  <summary>面试官准备清单</summary>
+                  <ul>
+                    {selectedProfile.interviewerPreparation.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </details>
+              </div>
+            ) : (
+              <div className="job-context-custom">
+                <label htmlFor="custom-job-description">职位描述</label>
+                <textarea
+                  id="custom-job-description"
+                  className="interview-type-input"
+                  rows={7}
+                  placeholder="粘贴职位职责和任职要求"
+                  value={customJobDescription}
+                  onChange={(event) => setCustomJobDescription(event.target.value)}
+                />
+                <p>职位描述仅作为专家模型的事实背景。</p>
+              </div>
+            )}
+          </section>
         </div>
 
-        <div className="interview-type-sample">
-          <label className="interview-type-sample__label" htmlFor="interview-sample-select">
-            样本对话（可选）
-          </label>
-          <select
-            id="interview-sample-select"
-            className="settings-input"
-            value={sampleId}
-            onChange={(e) => setSampleId(e.target.value)}
-          >
-            <option value="">空白（无对话）</option>
-            {INTERVIEW_SAMPLES.map((sample) => (
-              <option key={sample.id} value={sample.id}>
-                {sample.name}
-              </option>
-            ))}
-          </select>
-          <p className="interview-type-sample__desc">
-            选一个样本会预填简历/JD 和一段对话，方便直接试用生成追问。
-          </p>
+        <div className="interview-type-footer">
+          <span>固定使用中文 · 10 秒专家模式</span>
+          <button className="interview-type-start" type="submit" disabled={!canStart}>
+            开始面试
+          </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

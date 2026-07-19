@@ -30,6 +30,7 @@ export function Sidebar({
         id="btn-new-interview"
         className="history-new-btn"
         type="button"
+        aria-label="新建面试"
         onClick={onNewInterview}
       >
         <span className="history-new-btn__icon" aria-hidden="true">

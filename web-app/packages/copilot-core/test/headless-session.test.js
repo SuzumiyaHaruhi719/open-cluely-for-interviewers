@@ -84,9 +84,16 @@ test('headless analyze skips with no api key', async () => {
 
 test('configure switches mode and isConfigured tracks the key', () => {
   const session = createHeadlessSession({ apiKey: 'k', config: { mode: 'fast' } });
-  session.configure({ mode: 'expert', jobDescription: 'Staff SWE' });
+  session.configure({
+    mode: 'expert',
+    jobDescription: 'Staff SWE',
+    interviewGuide: ['20%｜系统设计｜可验证证据：容量假设｜警示信号：没有数据']
+  });
   assert.strictEqual(session.getMode(), 'expert');
   assert.strictEqual(session.getState().jobDescription, 'Staff SWE');
+  assert.deepStrictEqual(session.getState().interviewGuide, [
+    '20%｜系统设计｜可验证证据：容量假设｜警示信号：没有数据'
+  ]);
   session.setApiKey('');
   assert.strictEqual(session.isConfigured(), false);
 });

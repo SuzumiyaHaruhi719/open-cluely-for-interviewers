@@ -398,7 +398,7 @@ describe('Shell', () => {
     expect(analyzeMsg?.candidateAnswer).toBe('What was the eviction policy?');
   });
 
-  test('New interview opens the type picker and a card starts a fresh in-memory interview (no session POST)', async () => {
+  test('New interview reviews JD context and starts only after explicit confirmation', async () => {
     render(<Shell />);
     await flushMount();
 
@@ -409,8 +409,12 @@ describe('Shell', () => {
     expect(modal).toBeInTheDocument();
     expect(modal?.classList.contains('hidden')).toBe(false);
 
-    // Picking the online card closes the picker and starts a fresh interview.
-    fireEvent.click(screen.getByText('线上面试').closest('button')!);
+    // Picking the online radio only changes capture mode; the reviewed context is
+    // committed by the explicit start action.
+    fireEvent.click(screen.getByRole('radio', { name: '线上面试' }));
+    expect(modal?.classList.contains('hidden')).toBe(false);
+    expect(screen.getByLabelText('职位背景')).toHaveValue('property-manager');
+    fireEvent.click(screen.getByRole('button', { name: '开始面试' }));
     await waitFor(() => {
       expect(modal?.classList.contains('hidden')).toBe(true);
     });
@@ -419,7 +423,13 @@ describe('Shell', () => {
     // config for the online interview (diarize off — dual-lane routing).
     const ws = openSocket();
     await waitFor(() => {
-      expect(lastConfig(ws)).toMatchObject({ diarize: false });
+      expect(lastConfig(ws)).toMatchObject({
+        diarize: false,
+        jobDescription: expect.stringContaining('现场的安全及消防'),
+        interviewGuide: expect.arrayContaining([
+          expect.stringContaining('突发事件应对与复盘')
+        ])
+      });
     });
     expect(fetchCalls.some((c) => c.url.includes('/api/sessions'))).toBe(false);
   });
@@ -518,9 +528,8 @@ describe('Shell', () => {
     // Create an OFFLINE interview via the type picker (offline card). Ephemeral:
     // no session is persisted — the choice only flips the in-memory routing.
     fireEvent.click(screen.getByRole('button', { name: /新建面试/ }));
-    fireEvent.click(
-      document.querySelector<HTMLButtonElement>('[data-interview-type="offline"]')!
-    );
+    fireEvent.click(screen.getByRole('radio', { name: '线下面试' }));
+    fireEvent.click(screen.getByRole('button', { name: '开始面试' }));
     await waitFor(() => {
       expect(
         document.getElementById('interview-type-modal')?.classList.contains('hidden')

@@ -119,6 +119,8 @@ export interface SessionConfig {
   interviewerModel?: InterviewerModel;
   resumeText: string;
   jobDescription: string;
+  /** Structured scorecard lines used as evidence-seeking context by Expert. */
+  interviewGuide?: string[];
   outputLanguage: OutputLanguage;
   /**
    * Customize mode only: the saved pipeline the headless session should run.

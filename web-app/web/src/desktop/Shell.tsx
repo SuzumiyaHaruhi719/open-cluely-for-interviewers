@@ -17,13 +17,15 @@ import { useRailCollapsed } from './useRailCollapsed';
 import { useAssistantPanel } from './useAssistantPanel';
 import { useAppSettings, type UserAsrProvider } from './useAppSettings';
 import { formatTimer } from './helpers';
-import { sampleTranscriptText } from './interviewSamples';
+import { JOB_PROFILES } from './jobProfiles';
 import { SIM_SCENARIOS } from './simScenarios';
 import type { AppView } from './types';
 
 interface ConfigState {
   jobDescription: string;
   resumeText: string;
+  /** Evidence-oriented scorecard supplied as Expert context, never as a prompt. */
+  interviewGuide: string[];
   /**
    * Interview format from the loaded/created session. 'offline' uses one room
    * microphone plus automatic speaker-role partitioning; 'online' keeps two lanes.
@@ -34,6 +36,7 @@ interface ConfigState {
 const INITIAL_CONFIG: ConfigState = {
   jobDescription: '',
   resumeText: '',
+  interviewGuide: [],
   interviewType: 'online'
 };
 
@@ -94,15 +97,15 @@ export function Shell() {
   const [view, setView] = useState<AppView>('copilot');
   const [config, setConfig] = useState<ConfigState>(INITIAL_CONFIG);
   const [answer, setAnswer] = useState('');
-  // Seeded (sample) or loaded (session) conversation, rendered as chat lines in
-  // the transcript stream BEFORE any live socket transcript. Cleared on new/clear.
+  // Local notes rendered before live socket transcript lines. Cleared only for a
+  // genuinely new interview / explicit clear, not when audio capture stops.
   const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
   const [clientSummaryTranscript, setClientSummaryTranscript] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tourReplayToken, setTourReplayToken] = useState(0);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [typePickerOpen, setTypePickerOpen] = useState(false);
-  // Topbar title for the current in-memory interview (sample name, else default).
+  // Topbar title for the current in-memory interview.
   const [interviewTitle, setInterviewTitle] = useState('新面试');
   const [autoScroll, setAutoScroll] = useState(true);
   const [railCollapsed, toggleRail] = useRailCollapsed();
@@ -332,6 +335,7 @@ export function Shell() {
       ...EXPERT_CONFIG,
       jobDescription: config.jobDescription,
       resumeText: config.resumeText,
+      interviewGuide: config.interviewGuide,
       asrProvider: normalizeAsrProvider(s.asrProvider),
       simScript: simScriptFor(normalizeAsrProvider(s.asrProvider)),
       diarize: offline,
@@ -427,48 +431,31 @@ export function Shell() {
     setTypePickerOpen(true);
   }, [onClearSession]);
 
-  // Picking a type starts a fresh in-memory interview: reset live state, apply the
-  // online/offline choice (drives ASR routing), seed the sample conversation when
-  // chosen, and push the config to the server. No session is created or persisted.
+  // Starting from the reviewed modal resets live state, applies capture routing,
+  // and sends the selected JD + scorecard as Expert context. No prompt is authored
+  // and no session is persisted.
   const onPickInterviewType = useCallback(
     (choice: InterviewTypeChoice): void => {
       setTypePickerOpen(false);
-      const sample = choice.sample;
-      setInterviewTitle(sample ? sample.name : '新面试');
+      const profile = JOB_PROFILES.find((item) => item.id === choice.jobProfileId);
+      setInterviewTitle(profile ? `${profile.title}面试` : '自定义职位面试');
 
       // Reset the live buffers for the fresh interview.
       onClearSession();
 
-      // Apply the picked type + sample JD/résumé. interviewType drives offline
-      // (single-mic role partitioning) vs online routing.
-      const jd = sample ? sample.jd : '';
-      const resumeText = sample ? sample.resume : '';
       setConfig((prev) => ({
         ...prev,
-        jobDescription: jd,
-        resumeText,
+        jobDescription: choice.jobDescription,
+        resumeText: '',
+        interviewGuide: choice.interviewGuide,
         interviewType: choice.interviewType
       }));
-      pushConfig({ jobDescription: jd, resumeText });
-
-      if (sample) {
-        const sampleText = sampleTranscriptText(sample);
-        // Render the whole sample conversation as chat lines…
-        setTranscriptMessages(
-          sample.turns.map((turn) => ({
-            role: turn.speaker === 'interviewer' ? 'interviewer' : 'candidate',
-            text: turn.text
-          }))
-        );
-        setClientSummaryTranscript(sampleText);
-        // …and seed the analyze buffer with the LAST candidate turn so Generate Q
-        // has the most-recent answer to follow up on (falls back to the flattened
-        // transcript if the sample has no candidate turn).
-        const lastCandidate = [...sample.turns]
-          .reverse()
-          .find((turn) => turn.speaker === 'candidate');
-        setAnswer(lastCandidate ? lastCandidate.text : sampleText);
-      }
+      pushConfig({
+        jobDescription: choice.jobDescription,
+        resumeText: '',
+        interviewGuide: choice.interviewGuide,
+        diarize: choice.interviewType === 'offline'
+      });
     },
     [onClearSession, pushConfig]
   );
