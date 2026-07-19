@@ -40,6 +40,11 @@ export interface ServerConfig {
   readonly xfyunApiSecret: string;
   /** iFlytek realtime ASR WebSocket base URL. */
   readonly xfyunWsUrl: string;
+  /** Qwen Audio 3.0 TTS settings; all remain server-only. */
+  readonly ttsWsUrl: string;
+  readonly ttsDefaultModel: QwenTtsModel;
+  readonly ttsVoice: string;
+  readonly ttsTimeoutMs: number;
   /**
    * Autonomous question-generation trigger tuning (server-side monitor).
    * `autoCooldownMs`    — min gap between auto fires (anti-spam).
@@ -65,6 +70,16 @@ const DEFAULT_PARAFORMER_SAMPLE_RATE = 8000;
 const DEFAULT_VOLC_SAMPLE_RATE = 16000;
 // iFlytek 实时语音转写大模型 default endpoint (verified live by the probe).
 const DEFAULT_XFYUN_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
+export const QWEN_TTS_MODELS = [
+  'qwen-audio-3.0-tts-plus',
+  'qwen-audio-3.0-tts-flash'
+] as const;
+export type QwenTtsModel = (typeof QWEN_TTS_MODELS)[number];
+export const DEFAULT_QWEN_TTS_MODEL: QwenTtsModel = 'qwen-audio-3.0-tts-plus';
+export const DEFAULT_QWEN_TTS_VOICE = 'longanlingxi';
+export const DEFAULT_TTS_WS_URL =
+  'wss://llm-opv63ugogbbsgk6i.cn-beijing.maas.aliyuncs.com/api-ws/v1/inference';
+const DEFAULT_TTS_TIMEOUT_MS = 10_000;
 // Auto-trigger defaults (see ServerConfig + auto-trigger.ts). Tuned for a live
 // interview cadence: ~20s between auto fires, ~120 new chars (a sentence or two)
 // of fresh candidate speech, and a ~1.2s pause before deciding.
@@ -72,6 +87,19 @@ const DEFAULT_AUTO_COOLDOWN_MS = 20000;
 const DEFAULT_AUTO_MIN_NEW_CHARS = 120;
 const DEFAULT_AUTO_DEBOUNCE_MS = 1200;
 const DEFAULT_AUTO_MONITOR_MODEL = 'deepseek-v4-flash';
+
+export function isQwenTtsModel(value: string): value is QwenTtsModel {
+  return (QWEN_TTS_MODELS as readonly string[]).includes(value);
+}
+
+export function validateTtsConfig(input: {
+  apiKey: string;
+  voice: string;
+}): { available: true } | { available: false; reason: string } {
+  if (!input.apiKey.trim()) return { available: false, reason: 'DASHSCOPE_API_KEY 未配置' };
+  if (!input.voice.trim()) return { available: false, reason: 'QWEN_TTS_VOICE 未配置' };
+  return { available: true };
+}
 
 export const config: ServerConfig = Object.freeze({
   port: toInt(process.env.PORT, 8787),
@@ -90,6 +118,12 @@ export const config: ServerConfig = Object.freeze({
   xfyunApiKey: String(process.env.XFYUN_API_KEY ?? '').trim(),
   xfyunApiSecret: String(process.env.XFYUN_API_SECRET ?? '').trim(),
   xfyunWsUrl: String(process.env.XFYUN_WS_URL ?? '').trim() || DEFAULT_XFYUN_WS_URL,
+  ttsWsUrl: String(process.env.DASHSCOPE_TTS_WS_URL ?? '').trim() || DEFAULT_TTS_WS_URL,
+  ttsDefaultModel: isQwenTtsModel(String(process.env.QWEN_TTS_MODEL ?? '').trim())
+    ? (String(process.env.QWEN_TTS_MODEL).trim() as QwenTtsModel)
+    : DEFAULT_QWEN_TTS_MODEL,
+  ttsVoice: String(process.env.QWEN_TTS_VOICE ?? '').trim() || DEFAULT_QWEN_TTS_VOICE,
+  ttsTimeoutMs: toInt(process.env.QWEN_TTS_TIMEOUT_MS, DEFAULT_TTS_TIMEOUT_MS),
   // Auto-trigger tuning — all env-overridable.
   autoCooldownMs: toInt(process.env.AUTO_COOLDOWN_MS, DEFAULT_AUTO_COOLDOWN_MS),
   autoMinNewChars: toInt(process.env.AUTO_MIN_NEW_CHARS, DEFAULT_AUTO_MIN_NEW_CHARS),
