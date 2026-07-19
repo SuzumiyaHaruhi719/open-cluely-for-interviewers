@@ -92,13 +92,12 @@ export function startTour(opts = {}) {
 
   // Create spotlight ring
   const ring = document.createElement('div');
-  ring.className = 'tour-spotlight-ring';
-  ring.style.display = 'none';
+  ring.className = 'tour-spotlight-ring is-hidden';
   document.body.appendChild(ring);
 
   // Create arrow
   const arrow = document.createElement('div');
-  arrow.className = 'tour-arrow';
+  arrow.className = 'tour-arrow is-hidden';
   document.body.appendChild(arrow);
 
   // Create tooltip
@@ -338,31 +337,27 @@ export function startTour(opts = {}) {
     });
   }
 
-  function resetPosition() {
-    isScrolling = false;
-    tooltip.classList.remove('visible');
-    ring.style.display = 'none';
-    arrow.style.display = 'none';
-    mask.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+  function setSpotlightVisible(visible) {
+    ring.classList.toggle('is-hidden', !visible);
+    arrow.classList.toggle('is-hidden', !visible);
   }
 
   function showCenteredStep(idx, run) {
     const step = TOUR_STEPS[idx];
     const isLast = idx === TOUR_STEPS.length - 1;
-    resetPosition();
-
-    setTimeout(() => {
-      if (dismissed || run !== positionRun) return;
-      const ttW = 340;
-      const ttH = 200;
-      tooltip.style.top = (window.innerHeight / 2 - ttH / 2) + 'px';
-      tooltip.style.left = (window.innerWidth / 2 - ttW / 2) + 'px';
-      tooltip.style.width = ttW + 'px';
-      renderTooltip(idx, isLast);
-      requestAnimationFrame(() => {
-        if (!dismissed && run === positionRun) tooltip.classList.add('visible');
-      });
-    }, 150);
+    if (dismissed || run !== positionRun) return;
+    isScrolling = false;
+    setSpotlightVisible(false);
+    mask.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+    const ttW = 340;
+    const ttH = 200;
+    tooltip.style.top = (window.innerHeight / 2 - ttH / 2) + 'px';
+    tooltip.style.left = (window.innerWidth / 2 - ttW / 2) + 'px';
+    tooltip.style.width = ttW + 'px';
+    renderTooltip(idx, isLast);
+    requestAnimationFrame(() => {
+      if (!dismissed && run === positionRun) tooltip.classList.add('visible');
+    });
   }
 
   function revealStepContainer(step) {
@@ -383,7 +378,6 @@ export function startTour(opts = {}) {
     currentStep = idx;
     const step = TOUR_STEPS[idx];
     const run = ++positionRun;
-    resetPosition();
 
     // Welcome/final step: no spotlight, centered tooltip
     if (step.isWelcome || step.isFinal || !step.selector) {
@@ -414,11 +408,11 @@ export function startTour(opts = {}) {
         }
 
         const isLast = idx === TOUR_STEPS.length - 1;
-        arrow.style.display = 'block';
         tooltip.style.width = '300px';
         positionSpotlight(rect);
         positionTooltip(rect, step);
         renderTooltip(idx, isLast);
+        setSpotlightVisible(true);
         requestAnimationFrame(() => {
           if (!dismissed && run === positionRun) tooltip.classList.add('visible');
         });
@@ -432,7 +426,7 @@ export function startTour(opts = {}) {
     dismissed = true;
     ++positionRun;
     tooltip.classList.remove('visible');
-    ring.style.display = 'none';
+    setSpotlightVisible(false);
     mask.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)';
     setTimeout(() => {
       tooltip.remove();

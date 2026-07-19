@@ -120,6 +120,36 @@ test('centers the current step when its target remains unavailable', async () =>
   await openTourAndAdvanceToJd();
 
   expect(screen.getByText(/② 粘贴岗位描述/)).toBeInTheDocument();
-  expect(document.querySelector('.tour-spotlight-ring')).toBeNull();
+  expect(document.querySelector('.tour-spotlight-ring')).toHaveClass('is-hidden');
+  expect(document.querySelector('.tour-spotlight-ring')).toHaveAttribute('aria-hidden', 'true');
   expect(document.querySelector<HTMLElement>('.tour-tooltip')?.style.left).toBe('50%');
+});
+
+test('keeps the previous spotlight mounted until the next target is ready', async () => {
+  const onToggleRail = vi.fn();
+  render(<TourHarness onToggleRail={onToggleRail} />);
+
+  setRect('btn-new-interview', () => ({ left: 100, top: 80, width: 140, height: 40 }));
+  setRect('jd-input', () => ({ left: 500, top: 120, width: 260, height: 120 }));
+
+  await advance(900);
+  fireEvent.click(screen.getByRole('button', { name: '开始导览 →' }));
+  await advance(800);
+
+  const firstRing = document.querySelector<HTMLElement>('.tour-spotlight-ring');
+  expect(firstRing?.style.left).toBe('94px');
+
+  fireEvent.click(screen.getByRole('button', { name: '下一步 →' }));
+
+  // Smooth scrolling and rail reveals take time. The current implementation
+  // used to unmount the entire tour here, swallowing the CSS transition.
+  const ringDuringHandoff = document.querySelector<HTMLElement>('.tour-spotlight-ring');
+  expect(ringDuringHandoff).not.toBeNull();
+  expect(ringDuringHandoff?.style.left).toBe('94px');
+  expect(document.querySelector('.tour-mask')).not.toBeNull();
+  expect(document.querySelector('.tour-tooltip')).not.toBeNull();
+
+  await advance(1200);
+  expect(document.querySelector<HTMLElement>('.tour-spotlight-ring')?.style.left).toBe('494px');
+  expect(screen.getByText(/② 粘贴岗位描述/)).toBeInTheDocument();
 });

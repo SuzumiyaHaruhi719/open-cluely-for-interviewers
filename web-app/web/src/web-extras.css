@@ -1314,7 +1314,7 @@ button.history-row {
 
 /* ╔══ Spotlight Tour / 新手引导 — premium overlay ══╗ */
 :root {
-  --tour-mask: rgba(15, 23, 42, 0.46);
+  --tour-mask: rgba(15, 23, 42, 0.14);
   --tour-surface: var(--surface-elevated);
   --tour-surface-end: var(--surface-container);
   --tour-border: color-mix(in srgb, var(--brand-500) 28%, var(--border-default));
@@ -1329,7 +1329,7 @@ button.history-row {
 }
 
 html[data-theme="dark"] {
-  --tour-mask: rgba(10, 10, 15, 0.78);
+  --tour-mask: rgba(10, 10, 15, 0.28);
   --tour-ring-inner: rgba(255, 255, 255, 0.08);
 }
 
@@ -1337,8 +1337,6 @@ html[data-theme="dark"] {
   position: fixed; inset: 0; z-index: 10000;
   pointer-events: auto;
   background: var(--tour-mask);
-  backdrop-filter: blur(2px) saturate(80%);
-  -webkit-backdrop-filter: blur(2px) saturate(80%);
   transition: clip-path 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .tour-spotlight-ring {
@@ -1347,19 +1345,19 @@ html[data-theme="dark"] {
   border-radius: 12px;
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-500) 10%, transparent), 0 0 28px color-mix(in srgb, var(--brand-500) 35%, transparent), inset 0 0 0 1px var(--tour-ring-inner);
   pointer-events: none;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 1;
+  transition: top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.2s ease;
   animation: tour-pulse 2.5s ease-in-out infinite;
 }
 @keyframes tour-pulse {
   0%,100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-500) 10%, transparent), 0 0 28px color-mix(in srgb, var(--brand-500) 35%, transparent), inset 0 0 0 1px var(--tour-ring-inner); }
   50%     { box-shadow: 0 0 0 7px color-mix(in srgb, var(--brand-500) 16%, transparent), 0 0 40px color-mix(in srgb, var(--brand-500) 50%, transparent), inset 0 0 0 1px var(--tour-ring-inner); }
 }
-.tour-arrow { position: fixed; z-index: 10003; width: 0; height: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94); filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)); }
+.tour-arrow { position: fixed; z-index: 10003; width: 0; height: 0; pointer-events: none; opacity: 1; transition: top 0.4s cubic-bezier(0.25,0.46,0.45,0.94), left 0.4s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.2s ease; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)); }
+.tour-spotlight-ring.is-hidden, .tour-arrow.is-hidden { opacity: 0; }
 .tour-tooltip {
   position: fixed; z-index: 10002; width: 320px;
   background: linear-gradient(180deg, var(--tour-surface) 0%, var(--tour-surface-end) 100%);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--tour-border);
   border-radius: 16px; padding: 0;
   box-shadow: var(--tour-shadow), inset 0 1px 0 var(--tour-ring-inner);

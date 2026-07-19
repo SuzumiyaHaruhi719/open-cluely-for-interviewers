@@ -222,7 +222,10 @@ export function SpotlightTour() {
   const [rect, setRect] = useState<DOMRect | null>(null);
   const [ttPos, setTtPos] = useState<TooltipPosition | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [centeredFallback, setCenteredFallback] = useState(false);
+  // The rendered layout deliberately lags behind stepIdx while a new target is
+  // being revealed/scrolled into view. Keeping the previous geometry mounted is
+  // what gives CSS a real start and end point to interpolate between.
+  const [layoutMode, setLayoutMode] = useState<'centered' | 'target'>('centered');
   const positionRunRef = useRef(0);
   const isScrollingRef = useRef(false);
 
@@ -238,14 +241,11 @@ export function SpotlightTour() {
   const reposition = useCallback((idx: number) => {
     const run = ++positionRunRef.current;
     const step = TOUR_STEPS[idx];
-    setTooltipVisible(false);
-    setRect(null);
-    setTtPos(null);
-    setCenteredFallback(false);
     isScrollingRef.current = false;
 
     // Welcome/final step: no spotlight, centered
     if (step.isWelcome || step.isFinal || !step.selector) {
+      setLayoutMode('centered');
       setTooltipVisible(true);
       return;
     }
@@ -272,14 +272,16 @@ export function SpotlightTour() {
 
         const r = getTargetRect(step.selector!);
         if (!r) {
-          // Keep the requested step visible without reusing the prior target's geometry.
-          setCenteredFallback(true);
+          // Keep the requested step visible without leaving the spotlight on an
+          // unrelated control. The same mounted nodes animate back to center.
+          setLayoutMode('centered');
           setTooltipVisible(true);
           return;
         }
 
         setRect(r);
         setTtPos(computeTooltipPos(r));
+        setLayoutMode('target');
         setTooltipVisible(true);
       }, 400);
     }, revealDelay);
@@ -287,14 +289,9 @@ export function SpotlightTour() {
 
   useEffect(() => {
     if (!visible) return;
-    ++positionRunRef.current;
-    setTooltipVisible(false);
-    setRect(null);
-    setTtPos(null);
-    setCenteredFallback(false);
     const t = setTimeout(() => {
       reposition(stepIdx);
-    }, 150);
+    }, 0);
     return () => clearTimeout(t);
   }, [stepIdx, visible, reposition]);
 
@@ -356,62 +353,39 @@ export function SpotlightTour() {
   const step = TOUR_STEPS[stepIdx];
   const isWelcome = step.isWelcome;
   const isFinal = step.isFinal;
-  const isCentered = isWelcome || isFinal || !step.selector || centeredFallback;
+  const hasTargetLayout = layoutMode === 'target' && rect !== null && ttPos !== null;
   const isLast = stepIdx === TOUR_STEPS.length - 1;
 
   const pad = 6;
   const r = 10;
 
-  // Welcome/final step: full dark mask, centered tooltip, no ring/arrow
-  if (isCentered) {
-    return (
-      <>
-        <div className="tour-mask" style={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' }} onClick={() => finish(false)} />
-        <div
-          className="tour-tooltip"
-          style={{
-            top: '50%', left: '50%', width: '340px',
-            transform: tooltipVisible ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.92)',
-            opacity: tooltipVisible ? 1 : 0,
-          }}
-        >
-          <div className="tour-progress-bar" style={{ width: `${(stepIdx / (TOUR_STEPS.length - 1)) * 100}%` }} />
-          <div className="tour-final-icon" style={{ fontSize: '28px' }}>{step.icon}</div>
-          <h3 className="tour-title">{step.title}</h3>
-          <p className="tour-desc">{step.desc}</p>
-          <div className="tour-actions">
-            <div className="tour-dots">
-              {TOUR_STEPS.map((_, i) => (
-                <div key={i} className={`tour-dot ${i === stepIdx ? 'active' : ''}`} onClick={() => goToStep(i)} />
-              ))}
-            </div>
-            <div className="tour-buttons">
-              {isFinal ? (
-                <button className="tour-btn tour-btn--primary" onClick={() => finish(true)}>开始使用 ✓</button>
-              ) : (
-                <>
-                  <button className="tour-btn tour-btn--ghost" onClick={() => finish(false)}>跳过</button>
-                  <button className="tour-btn tour-btn--primary" onClick={next}>开始导览 →</button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  // Normal step: spotlight + arrow + tooltip
-  if (!rect || !ttPos) return null;
-  const clipPath = computeMaskClipPath(rect, pad, r);
-  const ringTop = rect.top - pad;
-  const ringLeft = rect.left - pad;
-  const ringW = rect.width + pad * 2;
-  const ringH = rect.height + pad * 2;
+  const clipPath = hasTargetLayout
+    ? computeMaskClipPath(rect, pad, r)
+    : 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+  const ringTop = rect ? rect.top - pad : 0;
+  const ringLeft = rect ? rect.left - pad : 0;
+  const ringW = rect ? rect.width + pad * 2 : 0;
+  const ringH = rect ? rect.height + pad * 2 : 0;
+  const tooltipStyle: React.CSSProperties = hasTargetLayout
+    ? {
+        top: `${ttPos.ttTop}px`,
+        left: `${ttPos.ttLeft}px`,
+        width: '300px',
+        opacity: tooltipVisible ? 1 : 0,
+        transform: tooltipVisible ? 'scale(1)' : 'scale(0.92)'
+      }
+    : {
+        top: '50%',
+        left: '50%',
+        width: '340px',
+        opacity: tooltipVisible ? 1 : 0,
+        transform: tooltipVisible
+          ? 'translate(-50%, -50%) scale(1)'
+          : 'translate(-50%, -50%) scale(0.92)'
+      };
 
   return (
     <>
-      {/* Dark mask with cutout */}
       <div
         className="tour-mask"
         style={{ clipPath }}
@@ -420,7 +394,8 @@ export function SpotlightTour() {
 
       {/* Spotlight ring */}
       <div
-        className="tour-spotlight-ring"
+        className={`tour-spotlight-ring ${hasTargetLayout ? '' : 'is-hidden'}`}
+        aria-hidden={!hasTargetLayout}
         style={{
           top: ringTop + 'px',
           left: ringLeft + 'px',
@@ -432,27 +407,26 @@ export function SpotlightTour() {
 
       {/* Arrow */}
       <div
-        className="tour-arrow"
+        className={`tour-arrow ${hasTargetLayout ? '' : 'is-hidden'}`}
+        aria-hidden={!hasTargetLayout}
         style={{
-          top: ttPos.arrowTop + 'px',
-          left: ttPos.arrowLeft + 'px',
-          ...arrowStyles[ttPos.arrowDir],
+          top: `${ttPos?.arrowTop ?? 0}px`,
+          left: `${ttPos?.arrowLeft ?? 0}px`,
+          ...(ttPos ? arrowStyles[ttPos.arrowDir] : {}),
         }}
       />
 
-      {/* Tooltip */}
       <div
-        className="tour-tooltip"
-        style={{
-          top: ttPos.ttTop + 'px',
-          left: ttPos.ttLeft + 'px',
-          opacity: tooltipVisible ? 1 : 0,
-          transform: tooltipVisible ? 'scale(1)' : 'scale(0.92)',
-        }}
+        className={`tour-tooltip ${tooltipVisible ? 'visible' : ''}`}
+        style={tooltipStyle}
       >
         <div className="tour-progress-bar" style={{ width: `${(stepIdx / (TOUR_STEPS.length - 1)) * 100}%` }} />
-        <div className="tour-step-badge">第 {stepIdx} / {TOUR_STEPS.length - 2} 步</div>
-        <h3 className="tour-title">{step.icon} {step.title}</h3>
+        {isWelcome || isFinal || !step.selector ? (
+          <div className="tour-final-icon" style={{ fontSize: '28px' }}>{step.icon}</div>
+        ) : (
+          <div className="tour-step-badge">第 {stepIdx} / {TOUR_STEPS.length - 2} 步</div>
+        )}
+        <h3 className="tour-title">{isWelcome || isFinal ? '' : `${step.icon} `}{step.title}</h3>
         <p className="tour-desc">{step.desc}</p>
         <div className="tour-actions">
           <div className="tour-dots">
@@ -465,16 +439,24 @@ export function SpotlightTour() {
             ))}
           </div>
           <div className="tour-buttons">
-            {stepIdx > 0 && (
-              <button className="tour-btn tour-btn--ghost" onClick={prev}>上一步</button>
-            )}
-            {stepIdx === 0 && (
-              <button className="tour-btn tour-btn--ghost" onClick={() => finish(false)}>跳过</button>
-            )}
-            {isLast ? (
-              <button className="tour-btn tour-btn--primary" onClick={() => finish(true)}>完成 ✓</button>
+            {isFinal ? (
+              <button className="tour-btn tour-btn--primary" onClick={() => finish(true)}>开始使用 ✓</button>
+            ) : isWelcome ? (
+              <>
+                <button className="tour-btn tour-btn--ghost" onClick={() => finish(false)}>跳过</button>
+                <button className="tour-btn tour-btn--primary" onClick={next}>开始导览 →</button>
+              </>
             ) : (
-              <button className="tour-btn tour-btn--primary" onClick={next}>下一步 →</button>
+              <>
+              {stepIdx > 0 && (
+              <button className="tour-btn tour-btn--ghost" onClick={prev}>上一步</button>
+              )}
+              {isLast ? (
+                <button className="tour-btn tour-btn--primary" onClick={() => finish(true)}>完成 ✓</button>
+              ) : (
+                <button className="tour-btn tour-btn--primary" onClick={next}>下一步 →</button>
+              )}
+              </>
             )}
           </div>
         </div>
