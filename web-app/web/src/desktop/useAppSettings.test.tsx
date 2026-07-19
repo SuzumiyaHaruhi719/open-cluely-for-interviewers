@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, test } from 'vitest';
 import {
   DEFAULT_ASR_PROVIDER,
   DEFAULT_SUMMARY_MODEL,
-  DEFAULT_TTS_MODEL,
   MIN_AUTO_INTERVAL_SEC,
   useAppSettings
 } from './useAppSettings';
@@ -33,28 +32,19 @@ describe('useAppSettings persisted controls', () => {
     expect(DEFAULT_ASR_PROVIDER).toBe('xfyun');
     expect(result.current.settings.asrProvider).toBe('xfyun');
     expect(result.current.settings.summaryModel).toBe(DEFAULT_SUMMARY_MODEL);
-    expect(result.current.settings.ttsModel).toBe(DEFAULT_TTS_MODEL);
     expect(result.current.settings.autoIntervalSec).toBe(MIN_AUTO_INTERVAL_SEC);
+    expect(localStorage.getItem('open-cluely.ttsModel')).toBeNull();
+    expect(result.current.settings).not.toHaveProperty('ttsModel');
+    expect(result.current).not.toHaveProperty('setTtsModel');
   });
 
   test('keeps valid ASR and evaluation model selections', () => {
     localStorage.setItem('open-cluely.asrProvider', 'paraformer');
     localStorage.setItem('open-cluely.summaryModel', 'deepseek-v4-flash');
-    localStorage.setItem('open-cluely.ttsModel', 'qwen-audio-3.0-tts-flash');
     const { result } = renderHook(() => useAppSettings());
 
     expect(result.current.settings.asrProvider).toBe('paraformer');
     expect(result.current.settings.summaryModel).toBe('deepseek-v4-flash');
-    expect(result.current.settings.ttsModel).toBe('qwen-audio-3.0-tts-flash');
-  });
-
-  test('persists the selected Qwen TTS model', () => {
-    const { result } = renderHook(() => useAppSettings());
-
-    act(() => result.current.setTtsModel('qwen-audio-3.0-tts-flash'));
-
-    expect(result.current.settings.ttsModel).toBe('qwen-audio-3.0-tts-flash');
-    expect(localStorage.getItem('open-cluely.ttsModel')).toBe('qwen-audio-3.0-tts-flash');
   });
 
   test('does not expose language, secrets, prompts, mode, or appearance state', () => {
@@ -72,9 +62,11 @@ describe('useAppSettings persisted controls', () => {
     expect(result.current.settings).not.toHaveProperty('summaryPromptText');
     expect(result.current.settings).not.toHaveProperty('volcAppId');
     expect(result.current.settings).not.toHaveProperty('volcAccessToken');
+    expect(result.current.settings).not.toHaveProperty('ttsModel');
     expect(result.current.settings).not.toHaveProperty('opacityStep');
     expect(result.current).not.toHaveProperty('setOutputLanguage');
     expect(result.current).not.toHaveProperty('setVolcSettings');
+    expect(result.current).not.toHaveProperty('setTtsModel');
     expect(result.current).not.toHaveProperty('setOpacityStep');
   });
 });

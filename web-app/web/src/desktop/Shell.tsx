@@ -582,7 +582,6 @@ export function Shell() {
           pushConfig({ summaryModel: value });
         }}
         onAsrProviderChange={onAsrProviderChange}
-        onTtsModelChange={appSettings.setTtsModel}
         onMicDeviceChange={appSettings.setMicDeviceId}
         micDeviceDisabled={capturing}
         onAutoGenerateChange={onAutoGenerateChange}
