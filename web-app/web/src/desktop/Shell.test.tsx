@@ -455,7 +455,7 @@ describe('Shell', () => {
     });
   });
 
-  test('selecting Doubao sends only the provider while credentials stay server-side', async () => {
+  test('selecting Doubao ASR 2.0 sends only the provider while credentials stay server-side', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
@@ -463,6 +463,8 @@ describe('Shell', () => {
     expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'xfyun');
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
+
+    expect(screen.getByRole('option', { name: /豆包流式语音 2\.0/ })).toBeInTheDocument();
 
     expect(document.getElementById('setting-volc-app-id')).not.toBeInTheDocument();
     expect(document.getElementById('setting-volc-access-token')).not.toBeInTheDocument();

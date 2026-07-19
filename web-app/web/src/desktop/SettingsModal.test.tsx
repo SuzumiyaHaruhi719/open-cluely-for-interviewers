@@ -33,6 +33,8 @@ describe('SettingsModal essentials', () => {
 
     expect(screen.getByRole('heading', { name: '设置' })).toBeInTheDocument();
     expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
+    expect(screen.getByRole('option', { name: /豆包流式语音 2\.0/ })).toBeInTheDocument();
+    expect(screen.queryByRole('option', { name: /豆包流式语音 1\.0/ })).not.toBeInTheDocument();
     expect(screen.getByLabelText('麦克风')).toBeInTheDocument();
     expect(screen.getByRole('checkbox', { name: '自动追问' })).toBeChecked();
     expect(screen.getByLabelText('触发方式')).toHaveValue('agent');

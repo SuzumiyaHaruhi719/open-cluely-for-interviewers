@@ -81,15 +81,9 @@ const sessionConfigSchema = z
     // analyze. Default off so live audio only streams transcripts (no surprise
     // model spend). The interviewer can still press Analyze manually.
     autoAnalyzeDisplay: z.boolean().optional(),
-    // Realtime ASR provider + (for 'volc') Doubao/Volcengine credentials. These
-    // are stored on the relay and used for the NEXT `audio-control start`. The
-    // creds are application secrets for the user's own Volc account; the server
-    // uses them to open the Volc WebSocket and NEVER logs them.
+    // Realtime ASR provider. All credentials and Doubao 2.0 resource selection
+    // are environment-owned and never accepted from the browser.
     asrProvider: z.enum(['paraformer', 'volc', 'xfyun', 'sim']).optional(),
-    volcAppId: z.string().optional(),
-    volcAccessToken: z.string().optional(),
-    volcResourceId: z.string().optional(),
-    volcModel: z.string().optional(),
     // Simulation script for asrProvider 'sim' (mic-less test harness): the relay
     // stores the latest one and replays it on the NEXT audio-control start.
     simScript: z.array(z.object({ speakerId: z.number(), text: z.string() })).optional(),
@@ -98,6 +92,7 @@ const sessionConfigSchema = z
     diarize: z.boolean().optional(),
     // How autonomous generation fires while autoGenerate is on: 'agent' (the Flash
     // monitor decides; default) or 'interval' (fixed ~30s wall-clock cadence, no gate).
+    autoGenerate: z.boolean().optional(),
     autoMode: z.enum(['agent', 'interval']).optional(),
     // Interviewer-adjustable cadence (ms) for 'interval' mode. Clamped server-side
     // to a 5s floor; absent leaves the current cadence (default 30000) untouched.
@@ -115,7 +110,9 @@ const sessionConfigSchema = z
     summaryPromptMode: z.enum(['default', 'custom']).optional(),
     summaryPromptText: z.string().optional()
   })
-  .passthrough();
+  // Strip retired/unknown renderer settings, including historical credential
+  // fields, before config reaches any session or relay service.
+  .strip();
 
 const clientMessageSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('configure'), config: sessionConfigSchema }),
@@ -638,41 +635,26 @@ export async function handleSummarize(
 
 type ConfigurePayload = Extract<ClientMessageParsed, { type: 'configure' }>['config'];
 
-/**
- * Resolve per-session Volc creds, falling back to VOLC_* env defaults for any
- * field the configure message omits. configure values ALWAYS win. SECURITY: the
- * returned object is handed to the relay (which opens the Volc socket) and is
- * NEVER logged here or by the relay.
- */
-function resolveVolcCreds(cfg: ConfigurePayload): VolcCredentials {
+/** Resolve environment-owned Doubao ASR 2.0 credentials for the relay. */
+function resolveVolcCreds(): VolcCredentials {
   return {
-    // `||` (not `??`) so a BLANK field from the browser ('' — not undefined) still
-    // falls back to the server's VOLC_* env creds (.env). With `??`, an empty
-    // string would win over the env default and break the fallback.
-    appId: String(cfg.volcAppId || config.volcAppId).trim(),
-    accessToken: String(cfg.volcAccessToken || config.volcAccessToken).trim(),
-    resourceId: String(cfg.volcResourceId || config.volcResourceId).trim() || undefined,
-    model: String(cfg.volcModel || config.volcModel).trim() || undefined
+    appId: config.volcAppId.trim(),
+    accessToken: config.volcAccessToken.trim(),
+    resourceId: config.volcResourceId.trim() || undefined,
+    model: config.volcModel.trim() || undefined
   };
 }
 
 /**
- * Push ASR provider + Volc creds from a configure message onto the relay. Called
- * only when at least one ASR field is present so an unrelated configure (e.g. a
- * mode change) does not reset the provider. The provider defaults to the env
- * default ('volc' only if VOLC creds exist, else 'paraformer') when the message
- * supplies creds but no explicit provider.
+ * Push the selected ASR provider onto the relay. Credentials and the Doubao 2.0
+ * resource stay environment-owned; unrelated configure messages do not restart ASR.
  */
 function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePayload): void {
   const hasAsrField =
     cfg.asrProvider !== undefined ||
-    cfg.volcAppId !== undefined ||
-    cfg.volcAccessToken !== undefined ||
-    cfg.volcResourceId !== undefined ||
-    cfg.volcModel !== undefined ||
     cfg.simScript !== undefined;
   if (!hasAsrField) return;
-  const creds = resolveVolcCreds(cfg);
+  const creds = resolveVolcCreds();
   // Stash the simulation script (mic-less harness) so the relay replays it on the
   // NEXT audio-control start. Stored regardless of provider so the script can be
   // configured before the provider flips to 'sim'.
@@ -765,10 +747,9 @@ export async function dispatch(
       if (typeof msg.config.autoGenerate === 'boolean') {
         trigger.setAutoGenerate(msg.config.autoGenerate);
       }
-      // ASR provider + Volc creds are relay state too. A real change ends only the
-      // upstream ASR session; live browser PCM opens the new provider on its next
-      // frame. Volc creds carry forward across configures (a later configure that
-      // only flips the provider keeps earlier-entered creds).
+      // The ASR provider is relay state. A real change ends only the upstream
+      // session; live browser PCM opens the new provider on its next frame.
+      // Doubao 2.0 credentials/resources remain environment-owned throughout.
       applyAsrConfig(relay, roles, msg.config);
       // Per-session summary model override (Feature 2). Only overwrite when the
       // configure explicitly carries the field (partial configures must not clear it).
@@ -1173,9 +1154,9 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, trigger, text)
     });
 
-    // Seed the relay from VOLC_* env defaults (if any) so a deployment can ship
-    // default Doubao creds without the browser sending them. A per-session
-    // configure still overrides this. Paraformer stays the default provider.
+    // Seed the relay with environment-owned Doubao 2.0 credentials without
+    // selecting it. The renderer explicitly selects Xunfei (product default) or
+    // Doubao; Paraformer remains an internal compatibility fallback.
     if (config.volcAppId && config.volcAccessToken) {
       relay.setAsrProvider('paraformer', {
         appId: config.volcAppId,

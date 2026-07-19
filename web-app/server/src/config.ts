@@ -20,9 +20,8 @@ export interface ServerConfig {
   /** PCM sample rate the ASR model expects (the relay downsamples 16k->this). */
   readonly paraformerSampleRate: number;
   /**
-   * Optional Doubao / Volcengine (豆包) defaults. Per-session `configure` values
-   * ALWAYS win over these — they only let a deployment ship default creds.
-   * Empty unless VOLC_* env vars are set.
+   * Doubao Seed-ASR 2.0 / Volcengine environment configuration. The renderer
+   * never receives or overrides these values.
    */
   readonly volcAppId: string;
   readonly volcAccessToken: string;
@@ -80,7 +79,7 @@ export const config: ServerConfig = Object.freeze({
   interviewerModel: String(process.env.INTERVIEWER_MODEL ?? '').trim(),
   paraformerModel: String(process.env.PARAFORMER_MODEL ?? '').trim() || DEFAULT_PARAFORMER_MODEL,
   paraformerSampleRate: toInt(process.env.PARAFORMER_SAMPLE_RATE, DEFAULT_PARAFORMER_SAMPLE_RATE),
-  // Optional Volc/Doubao env fallbacks — per-session configure values win.
+  // Volc/Doubao Seed-ASR 2.0 configuration — environment is the sole owner.
   volcAppId: String(process.env.VOLC_APP_ID ?? '').trim(),
   volcAccessToken: String(process.env.VOLC_ACCESS_TOKEN ?? '').trim(),
   volcResourceId: String(process.env.VOLC_RESOURCE_ID ?? '').trim(),

@@ -53,7 +53,7 @@ export interface AsrSession {
   readonly isReady: boolean;
 }
 
-/** Per-session Volc / Doubao credentials, injected via configure. */
+/** Environment-owned Volc / Doubao ASR 2.0 credentials. */
 export interface VolcCredentials {
   appId: string;
   accessToken: string;
@@ -204,7 +204,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
       if (!appId || !accessToken) {
         deps.emit({
           source,
-          text: '[Doubao unavailable: enter APP ID + Access Token in Settings]',
+          text: '[豆包 ASR 2.0 不可用：请在服务端配置 VOLC_APP_ID 和 VOLC_ACCESS_TOKEN]',
           isFinal: false
         });
         return null;

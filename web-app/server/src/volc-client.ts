@@ -60,7 +60,7 @@ export interface VolcSessionDeps {
   appId: string;
   /** Volc Access Token (X-Api-Access-Key). Required. */
   accessToken: string;
-  /** Volc resource id. Defaults to the 1.0 hourly model most accounts have. */
+  /** Volc Seed-ASR 2.0 resource id. Legacy 1.0 resources are rejected. */
   resourceId?: string;
   /** Optional model name override for the config frame (`request.model_name`). */
   model?: string;
@@ -85,11 +85,14 @@ export function endpointForResource(resourceId: string): string {
   return /seedasr/i.test(resourceId) ? VOLC_WS_URL_NOSTREAM : VOLC_WS_URL;
 }
 export const VOLC_DEFAULT_SAMPLE_RATE = 16000;
-// Default to the 1.0 hourly model — the resource most accounts have granted.
-// The 2.0 (volc.seedasr.*) model must be explicitly enabled on the account or
-// the handshake returns 400 "resourceId not allowed" (per the desktop client).
-export const VOLC_DEFAULT_RESOURCE_ID = 'volc.bigasr.sauc.duration';
+// Product policy: Doubao means Seed-ASR 2.0. Never silently send interview audio
+// to the legacy BigASR 1.0 resource when the deployment lacks 2.0 entitlement.
+export const VOLC_DEFAULT_RESOURCE_ID = 'volc.seedasr.sauc.duration';
 export const VOLC_DEFAULT_MODEL = 'bigmodel';
+
+export function isDoubaoAsr2Resource(resourceId: string): boolean {
+  return /^volc\.seedasr\./i.test(resourceId.trim());
+}
 
 // --- Frame protocol constants (PORTED VERBATIM from the desktop service) -----
 const PROTOCOL_VERSION = 0x1;
@@ -271,6 +274,11 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
     } catch {
       /* ignore teardown errors */
     }
+  }
+
+  if (!isDoubaoAsr2Resource(resourceId)) {
+    fail('Doubao ASR 2.0 requires a volc.seedasr.* resource');
+    return inertSession();
   }
 
   function handleServerFrame(raw: unknown): void {

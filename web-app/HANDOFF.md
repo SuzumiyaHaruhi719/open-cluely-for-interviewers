@@ -21,11 +21,11 @@ npm install                 # installs all workspaces (contract, copilot-core, q
 # Required: DashScope key (used for the LLM brain AND the Paraformer ASR fallback)
 DASHSCOPE_API_KEY=sk-xxxxxxxx
 
-# Optional: Doubao / Volcengine ASR defaults (better Chinese transcription than Paraformer-8k).
-# If omitted, you can still type them into Settings → "Doubao API (豆包语音)" in the UI.
+# Optional: Doubao / Volcengine Seed-ASR 2.0. These values are server-only;
+# the browser has no credential or resource-id fields.
 VOLC_APP_ID=...
 VOLC_ACCESS_TOKEN=...
-VOLC_RESOURCE_ID=volc.bigasr.sauc.duration   # 1.0 model; the 2.0 (seedasr) needs separate account enablement
+VOLC_RESOURCE_ID=volc.seedasr.sauc.duration  # 2.0 hourly entitlement; no 1.0 fallback
 
 # Optional but recommended for offline interviews: native speaker clusters.
 XFYUN_APP_ID=...
@@ -53,9 +53,9 @@ npm run dev                 # vite dev server + server in watch, in parallel
 
 ## Online vs offline interview modes
 
-- **Online** (default, two channels): candidate via shared-tab/system audio, interviewer
-  via mic. Just `npm start` + open the page. ASR = Paraformer (DashScope key) or Doubao
-  (creds), iFlytek, or the simulation provider.
+- **Online** (two channels): candidate via shared-tab/system audio, interviewer via mic.
+  Just `npm start` + open the page. The interviewer UI defaults to iFlytek and exposes
+  iFlytek or Doubao Seed-ASR 2.0; the simulation provider remains test-only.
 - **Offline** (single room mic): one microphone captures the room. iFlytek is recommended
   because `role_type=2` returns native acoustic speaker clusters. DeepSeek v4 Flash maps
   clusters to interviewer/candidate after enough conversational evidence and re-checks on
@@ -66,7 +66,7 @@ npm run dev                 # vite dev server + server in watch, in parallel
 
 ## Current state (what works)
 
-- Online + offline ASR; provider selectable (Paraformer / Doubao) in both modes.
+- Online + offline ASR; provider selectable (iFlytek / Doubao Seed-ASR 2.0) in both modes.
 - Native iFlytek speaker clusters plus DeepSeek v4 Flash automatic role mapping; semantic
   fallback for text-only providers; one-tap manual correction always wins.
 - **Add note to context** — folds the interviewer's manual note into the candidate context

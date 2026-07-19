@@ -133,19 +133,6 @@ export interface SessionConfig {
    */
   asrProvider?: AsrProvider;
   /**
-   * Doubao / Volcengine credentials (only used when `asrProvider === 'volc'`).
-   * SECURITY: these are sent to the SERVER, which opens the Volc WebSocket on the
-   * browser's behalf — the browser never connects to Volc directly. The server
-   * NEVER logs these values. They are application credentials for the user's own
-   * Volc account (distinct from the DashScope key).
-   */
-  volcAppId?: string;
-  volcAccessToken?: string;
-  /** Volc resource id, e.g. `volc.bigasr.sauc.duration`. Optional; server defaults. */
-  volcResourceId?: string;
-  /** Optional Volc model name override (config-frame `model_name`). */
-  volcModel?: string;
-  /**
    * Simulation script for `asrProvider === 'sim'` (the mic-less test harness):
    * an ordered two-speaker transcript the server replays instead of listening to
    * audio. Each turn's `speakerId` is stamped on its FINAL transcript (0 =

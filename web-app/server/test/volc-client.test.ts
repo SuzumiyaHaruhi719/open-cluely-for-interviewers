@@ -164,6 +164,8 @@ test('session opens with the Volc auth headers and sends a gzip config on open',
   });
 
   const ws = FakeWs.instances.at(-1)!;
+  assert.equal(VOLC_DEFAULT_RESOURCE_ID, 'volc.seedasr.sauc.duration');
+  assert.match(ws.url, /bigmodel_nostream$/);
   assert.equal(ws.headers?.['X-Api-App-Key'], 'app-123');
   assert.equal(ws.headers?.['X-Api-Access-Key'], 'tok-abc');
   assert.equal(ws.headers?.['X-Api-Resource-Id'], VOLC_DEFAULT_RESOURCE_ID);
@@ -172,6 +174,23 @@ test('session opens with the Volc auth headers and sends a gzip config on open',
   const config = decodeConfigFrame(ws);
   assert.equal(config.request.model_name, VOLC_DEFAULT_MODEL);
   assert.equal(config.audio.rate, 16000);
+});
+
+test('legacy Doubao ASR 1.0 resources are rejected instead of silently falling back', () => {
+  FakeWs.instances = [];
+  const errors: string[] = [];
+
+  createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'app-123',
+    accessToken: 'tok-abc',
+    resourceId: 'volc.bigasr.sauc.duration',
+    onTranscript: () => {},
+    onError: (message) => errors.push(message)
+  });
+
+  assert.equal(FakeWs.instances.length, 0);
+  assert.deepEqual(errors, ['Doubao ASR 2.0 requires a volc.seedasr.* resource']);
 });
 
 test('a custom resourceId + model flow into the headers and config frame', () => {
@@ -386,7 +405,7 @@ test('volc without creds emits a friendly error and creates no session', () => {
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(volc.length, 0);
   assert.equal(emits.length, 1);
-  assert.match(emits[0].text, /Doubao/i);
+  assert.match(emits[0].text, /豆包 ASR 2\.0/);
   assert.equal(emits[0].isFinal, false);
 });
 
@@ -416,12 +435,12 @@ test('switching provider during active capture reconnects on the next audio fram
   assert.deepEqual(volc[0].session.frames[0], pcm);
 });
 
-test('editing the active Doubao model reconnects with the new resource immediately', () => {
+test('changing an active server-owned Doubao 2.0 entitlement reconnects immediately', () => {
   const { relay, volc } = providerRelay();
   relay.setAsrProvider('volc', {
     appId: 'a',
     accessToken: 'b',
-    resourceId: 'volc.bigasr.sauc.duration'
+    resourceId: 'volc.seedasr.sauc.concurrent'
   });
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(volc.length, 1);
