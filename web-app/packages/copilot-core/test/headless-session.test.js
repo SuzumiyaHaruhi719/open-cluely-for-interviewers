@@ -49,7 +49,7 @@ test('headless fast-mode analyze runs the brain and emits progress', async () =>
   const restore = stubFetchAnthropic((body) =>
     body.max_tokens === 600
       ? JSON.stringify({
-          score: 5,
+          depth_worth_score: 5,
           pivot_signal: false,
           concrete_hooks: ['async queue'],
           missing_star_element: 'R',
@@ -140,7 +140,7 @@ test('headless fast-mode analyze passes outputLanguage into the Stage 2 prompt',
     prompts.push(body.messages[0].content);
     return body.max_tokens === 600
       ? JSON.stringify({
-          score: 5,
+          depth_worth_score: 5,
           pivot_signal: false,
           concrete_hooks: ['async queue'],
           missing_star_element: 'A',

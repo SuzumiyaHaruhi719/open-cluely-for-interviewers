@@ -349,7 +349,10 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     });
 
     const parsed = stage1.parsed || {};
-    const score = Number.parseInt(String(parsed.score ?? 0), 10) || 0;
+    // The champion Stage-1 schema names this field `depth_worth_score`. Accept
+    // legacy `score` responses as a compatibility fallback, but never let the
+    // old test-only spelling suppress a valid production trigger.
+    const score = Number.parseInt(String(parsed.depth_worth_score ?? parsed.score ?? 0), 10) || 0;
     const pivotSignal = parsed.pivot_signal === true;
 
     const result = {
