@@ -15,6 +15,9 @@ test('audio finalization drains the provider before the final speaker partition'
     },
     isCapturing() {
       return capturing;
+    },
+    getProvider() {
+      return 'xfyun';
     }
   };
   const trigger = {
@@ -31,7 +34,14 @@ test('audio finalization drains the provider before the final speaker partition'
   };
 
   await dispatch(
-    {} as never,
+    {
+      readyState: 1,
+      OPEN: 1,
+      send(raw: string) {
+        const message = JSON.parse(raw);
+        if (message.type === 'asr-status') order.push(`status:${message.state}`);
+      }
+    } as never,
     {} as never,
     relay as never,
     trigger as never,
@@ -49,5 +59,63 @@ test('audio finalization drains the provider before the final speaker partition'
     speakerLifecycle
   );
 
-  assert.deepEqual(order, ['drain-start', 'drain-done', 'capturing:false', 'partition']);
+  assert.deepEqual(order, [
+    'status:finalizing',
+    'drain-start',
+    'drain-done',
+    'capturing:false',
+    'partition',
+    'status:stopped'
+  ]);
+});
+
+test('audio finalization reports partial only after final speaker correction on provider timeout', async () => {
+  const order: string[] = [];
+  const relay = {
+    async handleAudioControl() {
+      order.push('drain');
+      return { finalReceived: false, timedOut: true, reason: 'final frame timeout' };
+    },
+    isCapturing() {
+      return false;
+    },
+    getProvider() {
+      return 'volc';
+    }
+  };
+  const ws = {
+    readyState: 1,
+    OPEN: 1,
+    send(raw: string) {
+      const message = JSON.parse(raw);
+      if (message.type === 'asr-status') order.push(`status:${message.state}`);
+    }
+  };
+
+  await dispatch(
+    ws as never,
+    {} as never,
+    relay as never,
+    { setCapturing() {} } as never,
+    {} as never,
+    () => {},
+    () => {},
+    () => {},
+    () => '',
+    { type: 'audio-control', action: 'stop', source: 'mic' } as never,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    {},
+    {
+      setSingleMic() {},
+      async finalize() {
+        order.push('partition');
+      },
+      reset() {}
+    }
+  );
+
+  assert.deepEqual(order, ['status:finalizing', 'drain', 'partition', 'status:partial']);
 });

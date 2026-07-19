@@ -145,6 +145,23 @@ function send(ws: WebSocket, msg: ServerMessage): void {
   }
 }
 
+/**
+ * Preserve arrival order for async WebSocket handlers. A rejected item is
+ * returned to its caller but absorbed by the internal tail so later messages
+ * still run; this prevents a stop/final-drain from being overtaken by configure,
+ * summarize, or another capture control on the same connection.
+ */
+export function createSerialMessageQueue<T>(
+  handle: (value: T) => Promise<void>
+): (value: T) => Promise<void> {
+  let tail = Promise.resolve();
+  return (value: T): Promise<void> => {
+    const current = tail.then(() => handle(value));
+    tail = current.catch(() => undefined);
+    return current;
+  };
+}
+
 function telemetryToDebugEvent(
   type: SummaryTelemetryEvent['type'],
   detail: Partial<SummaryTelemetryEvent>,
@@ -785,13 +802,35 @@ export async function dispatch(
       relay.handleAudio({ source: msg.source, pcmBase64: msg.pcm });
       return;
     case 'audio-control':
+      if (msg.action === 'stop') {
+        const provider = relay.getProvider(msg.source);
+        send(ws, {
+          type: 'asr-status',
+          source: msg.source,
+          provider,
+          state: 'finalizing'
+        });
+        const result = await relay.handleAudioControl({ action: msg.action, source: msg.source });
+        // Gate autonomous follow-ups before final semantic correction so no new
+        // question can race the end-of-interview role partition.
+        trigger.setCapturing(relay.isCapturing());
+        if (!relay.isCapturing()) {
+          await speakerLifecycle?.finalize();
+        }
+        const partial = Boolean(result && (result.timedOut || !result.finalReceived));
+        send(ws, {
+          type: 'asr-status',
+          source: msg.source,
+          provider,
+          state: partial ? 'partial' : 'stopped',
+          ...(result?.reason ? { message: result.reason } : {})
+        });
+        return;
+      }
       await relay.handleAudioControl({ action: msg.action, source: msg.source });
       // Gate autonomous follow-ups on capture state: auto (agent AND interval)
       // only fires while at least one audio source is live (the mic is On).
       trigger.setCapturing(relay.isCapturing());
-      if (msg.action === 'stop' && !relay.isCapturing()) {
-        await speakerLifecycle?.finalize();
-      }
       return;
     case 'set-speaker-role':
       roles.setRole(msg.speakerId, msg.role);
@@ -830,7 +869,7 @@ export async function dispatch(
   }
 }
 
-function onMessage(
+async function onMessage(
   ws: WebSocket,
   session: HeadlessSession,
   relay: AsrRelay,
@@ -846,46 +885,44 @@ function onMessage(
   getSummaryPromptOverride: () => string | undefined,
   speakerLifecycle: SpeakerLifecycle,
   raw: unknown
-): void {
+): Promise<void> {
   let requestId: string | undefined;
-  void (async () => {
-    try {
-      const text = typeof raw === 'string' ? raw : String(raw);
-      const json: unknown = JSON.parse(text);
-      const parsed = clientMessageSchema.safeParse(json);
-      if (!parsed.success) {
-        send(ws, { type: 'error', message: parsed.error.issues[0]?.message ?? 'invalid message' });
-        return;
-      }
-      // Correlate errors with the request: analyze + summarize both carry a
-      // requestId, so a thrown handler error can be reported against it.
-      if (parsed.data.type === 'analyze' || parsed.data.type === 'summarize') {
-        requestId = parsed.data.requestId;
-      }
-      await dispatch(
-        ws,
-        session,
-        relay,
-        trigger,
-        roles,
-        injectNote,
-        resetAccumulated,
-        setContextGrounding,
-        buildSummary,
-        parsed.data,
-        setSummaryModel,
-        getSummaryModelOverride,
-        setSummaryPrompt,
-        getSummaryPromptOverride,
-        {},
-        speakerLifecycle
-      );
-    } catch (err) {
-      // A handler error must never close the socket.
-      const message = err instanceof Error ? err.message : 'handler error';
-      send(ws, { type: 'error', requestId, message });
+  try {
+    const text = typeof raw === 'string' ? raw : String(raw);
+    const json: unknown = JSON.parse(text);
+    const parsed = clientMessageSchema.safeParse(json);
+    if (!parsed.success) {
+      send(ws, { type: 'error', message: parsed.error.issues[0]?.message ?? 'invalid message' });
+      return;
     }
-  })();
+    // Correlate errors with the request: analyze + summarize both carry a
+    // requestId, so a thrown handler error can be reported against it.
+    if (parsed.data.type === 'analyze' || parsed.data.type === 'summarize') {
+      requestId = parsed.data.requestId;
+    }
+    await dispatch(
+      ws,
+      session,
+      relay,
+      trigger,
+      roles,
+      injectNote,
+      resetAccumulated,
+      setContextGrounding,
+      buildSummary,
+      parsed.data,
+      setSummaryModel,
+      getSummaryModelOverride,
+      setSummaryPrompt,
+      getSummaryPromptOverride,
+      {},
+      speakerLifecycle
+    );
+  } catch (err) {
+    // A handler error must never close the socket.
+    const message = err instanceof Error ? err.message : 'handler error';
+    send(ws, { type: 'error', requestId, message });
+  }
 }
 
 /**
@@ -1085,6 +1122,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // Expert ungated on each display final (via onDisplayFinal). They share the
     // trigger's in-flight bookkeeping so they never overlap.
     const relay = createAsrRelay({
+      onStatus: (status) => send(ws, { type: 'asr-status', ...status }),
       emit: (t) => {
         const finalTurnSeq = t.isFinal ? speakerTurnSeq++ : null;
         if (finalTurnSeq !== null) {
@@ -1168,7 +1206,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
-    ws.on('message', (data) =>
+    const enqueueMessage = createSerialMessageQueue((raw: string) =>
       onMessage(
         ws,
         session,
@@ -1210,9 +1248,12 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         setSummaryPrompt,
         getSummaryPromptOverride,
         speakerLifecycle,
-        data.toString()
+        raw
       )
     );
+    ws.on('message', (data) => {
+      void enqueueMessage(data.toString());
+    });
     ws.on('error', () => {
       /* swallow socket errors — connection cleanup happens on 'close' */
     });

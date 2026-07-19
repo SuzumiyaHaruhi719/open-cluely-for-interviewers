@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
+  AsrProvider,
+  AsrRuntimeState,
   AudioSource,
   ClientMessage,
   ServerMessage,
@@ -61,6 +63,10 @@ export interface AudioState {
   level: number;
   /** Friendly capture error (denied / cancelled / unsupported), else null. */
   error: string | null;
+  /** Server-confirmed ASR lifecycle; independent from the browser capture graph. */
+  runtimeState?: AsrRuntimeState;
+  /** Provider that owns the current or most recently finalized server session. */
+  provider?: AsrProvider;
 }
 
 export type AudioLanes = Record<AudioSource, AudioState>;
@@ -70,7 +76,7 @@ export interface StartAudioOptions {
 }
 
 const EMPTY_LANE: LaneTranscript = { finalText: '', partial: '' };
-const IDLE_AUDIO: AudioState = { capturing: false, level: 0, error: null };
+const IDLE_AUDIO: AudioState = { capturing: false, level: 0, error: null, runtimeState: 'stopped' };
 
 export interface CopilotSocket {
   status: SocketStatus;
@@ -510,6 +516,21 @@ export function useCopilotSocket(): CopilotSocket {
         }
         break;
       }
+      case 'asr-status': {
+        setAudio((prev) => ({
+          ...prev,
+          [message.source]: {
+            ...prev[message.source],
+            provider: message.provider,
+            runtimeState: message.state,
+            error:
+              message.state === 'failed' || message.state === 'partial'
+                ? message.message ?? '语音识别未完整结束。'
+                : null
+          }
+        }));
+        break;
+      }
       case 'speaker-partition': {
         // DeepSeek Flash resolves native acoustic clusters (or, for ASR models
         // without clusters, finalized semantic turns) after enough evidence.
@@ -753,7 +774,7 @@ export function useCopilotSocket(): CopilotSocket {
       }
       // Tell the server to finish this source's ASR session. Safe if not open.
       send({ type: 'audio-control', action: 'stop', source });
-      setAudioState(source, { capturing: false, level: 0 });
+      setAudioState(source, { capturing: false, level: 0, runtimeState: 'finalizing' });
     },
     [send, setAudioState]
   );
@@ -763,7 +784,7 @@ export function useCopilotSocket(): CopilotSocket {
       // Already capturing — no-op (idempotent toggle).
       if (captureRef.current[source]) return;
 
-      setAudioState(source, { error: null });
+      setAudioState(source, { error: null, runtimeState: 'connecting' });
       // Tell the server to open the ASR session before frames arrive.
       send({ type: 'audio-control', action: 'start', source });
       seqRef.current[source] = 0;
@@ -796,7 +817,7 @@ export function useCopilotSocket(): CopilotSocket {
         const message =
           err instanceof AudioCaptureError ? err.message : '无法启动音频采集。';
         send({ type: 'audio-control', action: 'stop', source });
-        setAudioState(source, { capturing: false, level: 0, error: message });
+        setAudioState(source, { capturing: false, level: 0, error: message, runtimeState: 'failed' });
       }
     },
     [send, setAudioState]

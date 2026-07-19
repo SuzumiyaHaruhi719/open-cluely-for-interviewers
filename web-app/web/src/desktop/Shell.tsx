@@ -118,6 +118,13 @@ export function Shell() {
 
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
+  // Browser capture and cloud recognition are separate lifecycles. Keep the
+  // timer/settings lock tied to the local graph, but show global “实时” only
+  // when at least one captured lane is actually recognized by its provider.
+  const recognitionLive = (['display', 'mic'] as const).some((source) => {
+    const lane = audio[source];
+    return lane.capturing && (lane.runtimeState === 'live' || lane.runtimeState === undefined);
+  });
   // The Generate Q button's `disabled` must NOT depend on `isAnalyzing`. Toggling
   // the native `disabled` on the *focused* button blurs it (focus jumps to <body>)
   // and the click landing the instant it flips to disabled is silently eaten — the
@@ -490,9 +497,9 @@ export function Shell() {
                 mode="expert"
                 asrProvider={appSettings.settings.asrProvider}
                 status={status}
-                capturing={capturing}
+                capturing={recognitionLive}
                 timer={timer}
-                isLive={capturing}
+                isLive={recognitionLive}
                 screenshotCount={0}
                 canAnalyze={canAnalyze}
                 isAnalyzing={isAnalyzing}

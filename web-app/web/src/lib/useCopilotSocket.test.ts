@@ -232,6 +232,53 @@ describe('useCopilotSocket', () => {
     const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
     expect(frame).toEqual({ type: 'audio-control', action: 'stop', source: 'mic' });
     expect(result.current.audio.mic.capturing).toBe(false);
+    expect(result.current.audio.mic.runtimeState).toBe('finalizing');
+  });
+
+  test('ASR runtime status overrides optimistic local capture health without dropping late finals', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'xfyun',
+        state: 'failed',
+        message: '讯飞鉴权失败'
+      });
+    });
+    await waitFor(() => expect(result.current.audio.mic.runtimeState).toBe('failed'));
+    expect(result.current.audio.mic.provider).toBe('xfyun');
+    expect(result.current.audio.mic.error).toBe('讯飞鉴权失败');
+
+    act(() => {
+      result.current.stopAudio('mic');
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '停止后到达的最后一句',
+        isFinal: true,
+        speakerId: 2,
+        speaker: 'candidate'
+      });
+      socket.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'xfyun',
+        state: 'stopped'
+      });
+    });
+
+    await waitFor(() =>
+      expect(result.current.transcripts.mic.finalText).toContain('停止后到达的最后一句')
+    );
+    expect(result.current.audio.mic.runtimeState).toBe('stopped');
+    expect(result.current.speakerSegments.at(-1)?.role).toBe('candidate');
   });
 
   test('startAudio with skipLocalCapture opens the server ASR session without browser media capture', async () => {

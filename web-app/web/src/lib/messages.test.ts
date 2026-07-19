@@ -42,6 +42,41 @@ describe('transcript speaker fields', () => {
   });
 });
 
+describe('ASR runtime status messages', () => {
+  it('parses a provider failure with a concise public reason', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'xfyun',
+        state: 'failed',
+        message: '鉴权失败'
+      })
+    );
+
+    expect(out).toEqual({
+      type: 'asr-status',
+      source: 'mic',
+      provider: 'xfyun',
+      state: 'failed',
+      message: '鉴权失败'
+    });
+  });
+
+  it('rejects unknown ASR states and providers', () => {
+    expect(
+      parseServerMessage(
+        JSON.stringify({ type: 'asr-status', source: 'mic', provider: 'cam++', state: 'live' })
+      )
+    ).toBeNull();
+    expect(
+      parseServerMessage(
+        JSON.stringify({ type: 'asr-status', source: 'mic', provider: 'xfyun', state: 'healthy-ish' })
+      )
+    ).toBeNull();
+  });
+});
+
 describe('speaker partition messages', () => {
   it('parses a complete Flash role partition', () => {
     const out = parseServerMessage(

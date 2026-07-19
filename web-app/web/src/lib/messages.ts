@@ -1,4 +1,6 @@
 import type {
+  AsrProvider,
+  AsrRuntimeState,
   CompetencyStatus,
   FollowUpOutput,
   GenerationTrigger,
@@ -21,6 +23,7 @@ const S2C = {
   PROGRESS: 'progress',
   RESULT: 'result',
   TRANSCRIPT: 'transcript',
+  ASR_STATUS: 'asr-status',
   SPEAKER_PARTITION: 'speaker-partition',
   SESSION_CONTEXT: 'session-context',
   SUMMARY_CHUNK: 'summary-chunk',
@@ -180,6 +183,35 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
         };
       }
       return null;
+
+    case S2C.ASR_STATUS: {
+      const provider: AsrProvider | null =
+        data.provider === 'xfyun' ||
+        data.provider === 'volc' ||
+        data.provider === 'paraformer' ||
+        data.provider === 'sim'
+          ? data.provider
+          : null;
+      const state: AsrRuntimeState | null =
+        data.state === 'connecting' ||
+        data.state === 'live' ||
+        data.state === 'finalizing' ||
+        data.state === 'stopped' ||
+        data.state === 'partial' ||
+        data.state === 'failed'
+          ? data.state
+          : null;
+      if ((data.source !== 'mic' && data.source !== 'display') || !provider || !state) {
+        return null;
+      }
+      return {
+        type: 'asr-status',
+        source: data.source,
+        provider,
+        state,
+        ...(isString(data.message) ? { message: data.message } : {})
+      };
+    }
 
     case S2C.SPEAKER_PARTITION: {
       if (

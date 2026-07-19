@@ -16,7 +16,7 @@
 // ============================================================================
 
 import { WebSocket as WsWebSocket } from 'ws';
-import type { AsrProvider, AudioSource } from '@open-cluely/contract';
+import type { AsrProvider, AsrRuntimeState, AudioSource } from '@open-cluely/contract';
 import { config } from './config';
 import {
   createParaformerSession,
@@ -33,6 +33,14 @@ export interface TranscriptEmit {
   isFinal: boolean;
   /** Native provider speaker cluster id. Omitted when the provider has none. */
   speakerId?: number | null;
+}
+
+/** Credential-free lifecycle signal for one provider-backed source session. */
+export interface AsrStatusEmit {
+  source: AudioSource;
+  provider: AsrProvider;
+  state: AsrRuntimeState;
+  message?: string;
 }
 
 export interface AudioFrame {
@@ -86,6 +94,8 @@ type OnText = (t: { text: string; isFinal: boolean; speakerId?: number | null })
 export interface AsrRelayDeps {
   /** Send a `transcript` message back to this connection's browser. */
   emit: (t: TranscriptEmit) => void;
+  /** Report the actual provider session lifecycle to the browser. */
+  onStatus?: (status: AsrStatusEmit) => void;
   /** DashScope API key (Paraformer). Defaults to config.dashscopeApiKey. */
   apiKey?: string;
   /** Paraformer session factory (defaults to the real client). */
@@ -112,6 +122,8 @@ export interface AsrRelay {
   setAutoAnalyzeDisplay(enabled: boolean): void;
   /** Choose the engine/Volc config; a real live change reconnects on the next PCM frame. */
   setAsrProvider(provider: AsrProvider, volc?: VolcCredentials): void;
+  /** Provider that owns `source`, or the selected provider before it starts. */
+  getProvider(source?: AudioSource): AsrProvider;
   /**
    * Store the simulation script (mic-less harness). Used by the NEXT
    * `audio-control start` when `asrProvider === 'sim'`. Does not restart sessions.
@@ -138,6 +150,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
   const sessions: Record<AudioSource, AsrSession | null> = { mic: null, display: null };
+  const sessionProviders: Record<AudioSource, AsrProvider | null> = { mic: null, display: null };
   const stopping: Record<AudioSource, Promise<AsrStopResult> | null> = {
     mic: null,
     display: null
@@ -147,6 +160,19 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   let volcCreds: VolcCredentials | null = null;
   let simScript: ReadonlyArray<SimScriptTurn> = [];
   let disposed = false;
+
+  function emitStatus(status: AsrStatusEmit): void {
+    try {
+      deps.onStatus?.(status);
+    } catch {
+      /* status reporting must never break recognition */
+    }
+  }
+
+  function onReady(source: AudioSource, owner: AsrProvider): void {
+    if (disposed || stopping[source] || sessionProviders[source] !== owner) return;
+    emitStatus({ source, provider: owner, state: 'live' });
+  }
   // Shared emit: carries `speakerId` only when a provider supplied a native id.
   function emitTranscript(
     source: AudioSource,
@@ -167,33 +193,39 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     }
   }
 
-  function onError(source: AudioSource, message: string): void {
+  function onError(source: AudioSource, owner: AsrProvider, message: string): void {
+    if (sessionProviders[source] === owner) {
+      emitStatus({ source, provider: owner, state: 'failed', message });
+    }
     deps.emit({ source, text: `[语音识别错误: ${message}]`, isFinal: false });
     void stopSource(source);
   }
 
   // Create the TEXT recognition session for `source`, wired to `onText`. Returns
   // null (after emitting a friendly error) when the key/creds are missing.
-  function makeTextSession(source: AudioSource, onText: OnText): AsrSession | null {
-    if (provider === 'sim') {
+  function makeTextSession(source: AudioSource, owner: AsrProvider, onText: OnText): AsrSession | null {
+    if (owner === 'sim') {
       // Mic-less harness: replay the stored two-speaker script (audio ignored).
       // Like xfyun, the session carries its own speakerId on finals.
       if (!simScript.length) {
         deps.emit({ source, text: '[Sim unavailable: no simScript configured]', isFinal: false });
+        emitStatus({ source, provider: owner, state: 'failed', message: '模拟脚本未配置' });
         return null;
       }
       return simSessionFactory({
         script: simScript,
         onTranscript: onText,
-        onError: (message) => onError(source, message)
+        onReady: () => onReady(source, owner),
+        onError: (message) => onError(source, owner, message)
       });
     }
-    if (provider === 'xfyun') {
+    if (owner === 'xfyun') {
       const appId = config.xfyunAppId.trim();
       const apiKey = config.xfyunApiKey.trim();
       const apiSecret = config.xfyunApiSecret.trim();
       if (!appId || !apiKey || !apiSecret) {
         deps.emit({ source, text: '[Xunfei unavailable: set XFYUN_* in .env]', isFinal: false });
+        emitStatus({ source, provider: owner, state: 'failed', message: '讯飞服务端配置不完整' });
         return null;
       }
       // ONE cloud call returns text + speaker (角色分离 role_type=2); 16 kHz PCM,
@@ -206,10 +238,11 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
         wsUrl: config.xfyunWsUrl,
         sampleRate: 16000,
         onTranscript: onText,
-        onError: (message) => onError(source, message)
+        onReady: () => onReady(source, owner),
+        onError: (message) => onError(source, owner, message)
       });
     }
-    if (provider === 'volc') {
+    if (owner === 'volc') {
       const appId = (volcCreds?.appId ?? '').trim();
       const accessToken = (volcCreds?.accessToken ?? '').trim();
       if (!appId || !accessToken) {
@@ -218,6 +251,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
           text: '[豆包 ASR 2.0 不可用：请在服务端配置 VOLC_APP_ID 和 VOLC_ACCESS_TOKEN]',
           isFinal: false
         });
+        emitStatus({ source, provider: owner, state: 'failed', message: '豆包 ASR 2.0 服务端配置不完整' });
         return null;
       }
       return volcSessionFactory({
@@ -228,11 +262,13 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
         model: volcCreds?.model,
         sampleRate: config.volcSampleRate,
         onTranscript: onText,
-        onError: (message) => onError(source, message)
+        onReady: () => onReady(source, owner),
+        onError: (message) => onError(source, owner, message)
       });
     }
     if (!apiKey) {
       deps.emit({ source, text: '[ASR unavailable: DashScope API key not configured]', isFinal: false });
+      emitStatus({ source, provider: owner, state: 'failed', message: 'DashScope API Key 未配置' });
       return null;
     }
     return sessionFactory({
@@ -241,16 +277,27 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
       model: config.paraformerModel,
       sampleRate: config.paraformerSampleRate,
       onTranscript: onText,
-      onError: (message) => onError(source, message)
+      onReady: () => onReady(source, owner),
+      onError: (message) => onError(source, owner, message)
     });
   }
 
   function startSource(source: AudioSource): void {
     if (disposed || sessions[source] || stopping[source]) return;
+    const owner = provider;
+    sessionProviders[source] = owner;
+    emitStatus({ source, provider: owner, state: 'connecting' });
     // Preserve native cluster ids verbatim. During fast hand-offs a provider may
     // over-cluster; the downstream Flash classifier can map multiple ids to the
     // same role without destructively folding acoustic evidence here.
-    sessions[source] = makeTextSession(source, (t) => emitTranscript(source, t));
+    try {
+      sessions[source] = makeTextSession(source, owner, (t) => emitTranscript(source, t));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '语音识别会话启动失败';
+      emitStatus({ source, provider: owner, state: 'failed', message });
+      sessions[source] = null;
+    }
+    if (!sessions[source]) sessionProviders[source] = null;
   }
 
   function stopSource(source: AudioSource): Promise<AsrStopResult | null> {
@@ -275,6 +322,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
               reason: 'recognizer did not report finalization'
             };
       if (sessions[source] === session) sessions[source] = null;
+      if (sessionProviders[source] !== null) sessionProviders[source] = null;
       if (stopping[source] === pending) stopping[source] = null;
       settle(result);
     };
@@ -350,8 +398,26 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     // currently using. Tear down only the upstream ASR session; local capture
     // keeps sending PCM, so the next frame lazily reconnects to `provider`.
     if (providerChanged || volcCredentialsChanged) {
-      for (const source of SOURCES) void stopSource(source);
+      for (const source of SOURCES) {
+        const owner = sessionProviders[source];
+        if (!sessions[source] || !owner) continue;
+        emitStatus({ source, provider: owner, state: 'finalizing' });
+        void stopSource(source).then((result) => {
+          if (!result) return;
+          const partial = result.timedOut || !result.finalReceived;
+          emitStatus({
+            source,
+            provider: owner,
+            state: partial ? 'partial' : 'stopped',
+            ...(result.reason ? { message: result.reason } : {})
+          });
+        });
+      }
     }
+  }
+
+  function getProvider(source?: AudioSource): AsrProvider {
+    return source ? sessionProviders[source] ?? provider : provider;
   }
 
   function setSimScript(script: ReadonlyArray<SimScriptTurn>): void {
@@ -377,6 +443,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     handleAudioControl,
     setAutoAnalyzeDisplay,
     setAsrProvider,
+    getProvider,
     setSimScript,
     isCapturing,
     dispose

@@ -18,6 +18,10 @@ test('GET /api/health returns ok:true with metadata', async () => {
       version: string;
       questionBankReady: boolean;
       hasKey: boolean;
+      asrProviders: Record<
+        'xfyun' | 'paraformer' | 'volc',
+        { configured: boolean; available: boolean; reason?: string }
+      >;
     };
 
     assert.equal(body.ok, true);
@@ -25,6 +29,13 @@ test('GET /api/health returns ok:true with metadata', async () => {
     assert.ok(body.version.length > 0);
     assert.equal(typeof body.questionBankReady, 'boolean');
     assert.equal(typeof body.hasKey, 'boolean');
+    assert.deepEqual(Object.keys(body.asrProviders).sort(), ['paraformer', 'volc', 'xfyun']);
+    for (const capability of Object.values(body.asrProviders)) {
+      assert.equal(typeof capability.configured, 'boolean');
+      assert.equal(typeof capability.available, 'boolean');
+      assert.equal('apiKey' in capability, false);
+      assert.equal('accessToken' in capability, false);
+    }
   } finally {
     await new Promise<void>((resolve) => server.close(() => resolve()));
   }

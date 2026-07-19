@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { hasKey } from '../config';
 import { isQuestionBankReady } from '../question-bank';
+import { getAsrCapabilities } from '../asr-capabilities';
 
 // Read our own version once at module load.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -14,7 +15,8 @@ export function createHealthRouter(): Router {
       ok: true,
       version: pkg.version ?? '0.0.0',
       questionBankReady: isQuestionBankReady(),
-      hasKey: hasKey()
+      hasKey: hasKey(),
+      asrProviders: getAsrCapabilities()
     });
   });
 

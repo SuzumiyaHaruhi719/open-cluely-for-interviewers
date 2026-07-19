@@ -499,6 +499,42 @@ describe('Shell', () => {
     });
   });
 
+  test('a failed ASR session clears the optimistic global live state while capture can still be stopped', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.change(document.getElementById('setting-asr-provider')!, {
+      target: { value: 'sim' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
+
+    const micCard = document.getElementById('channel-mic')!;
+    await act(async () => {
+      fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
+    });
+    act(() => {
+      ws.emit({ type: 'asr-status', source: 'mic', provider: 'sim', state: 'live' });
+    });
+    expect(document.getElementById('rec-indicator')).toHaveAttribute('data-state', 'live');
+
+    act(() => {
+      ws.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'sim',
+        state: 'failed',
+        message: '模拟识别失败'
+      });
+    });
+
+    expect(document.getElementById('rec-indicator')).toHaveAttribute('data-state', 'idle');
+    expect(document.getElementById('topbar')).not.toHaveClass('is-live');
+    expect(within(micCard).getByText('错误')).toBeInTheDocument();
+    expect(within(micCard).getByRole('button', { name: '停止' })).toBeEnabled();
+  });
+
   test('an offline interview enables single-mic role partitioning without a CAM++ sidecar', async () => {
     render(<Shell />);
     await flushMount();

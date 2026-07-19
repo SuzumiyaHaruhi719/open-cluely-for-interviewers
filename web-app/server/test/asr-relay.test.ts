@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { AudioSource } from '@open-cluely/contract';
-import { createAsrRelay, type TranscriptEmit } from '../src/asr-relay';
+import { createAsrRelay, type AsrStatusEmit, type TranscriptEmit } from '../src/asr-relay';
 import type { ParaformerSession, ParaformerSessionDeps } from '../src/paraformer-client';
 
 // --- Fake Paraformer session ------------------------------------------------
@@ -40,15 +40,34 @@ const FAKE_KEY = 'sk-test-key';
 
 function relayWith(overrides: { onDisplayFinal?: (text: string) => void } = {}) {
   const emits: TranscriptEmit[] = [];
+  const statuses: AsrStatusEmit[] = [];
   const { factory, created } = makeFakeFactory();
   const relay = createAsrRelay({
     emit: (t) => emits.push(t),
+    onStatus: (status) => statuses.push(status),
     apiKey: FAKE_KEY,
     sessionFactory: factory,
     onDisplayFinal: overrides.onDisplayFinal
   });
-  return { relay, emits, created };
+  return { relay, emits, statuses, created };
 }
+
+test('reports connecting and live against the provider that owns the session', async () => {
+  const { relay, statuses, created } = relayWith();
+
+  await relay.handleAudioControl({ action: 'start', source: 'mic' });
+  assert.deepEqual(statuses, [
+    { source: 'mic', provider: 'paraformer', state: 'connecting' }
+  ]);
+
+  created[0].deps.onReady?.();
+  assert.deepEqual(statuses.at(-1), {
+    source: 'mic',
+    provider: 'paraformer',
+    state: 'live'
+  });
+
+});
 
 test('audio-control start lazily creates a session per source with the API key', () => {
   const { relay, created } = relayWith();
@@ -177,9 +196,11 @@ test('audio-control stop keeps capture active until the session finalization dra
 
 test('with no API key, start emits a friendly error and creates no session', () => {
   const emits: TranscriptEmit[] = [];
+  const statuses: AsrStatusEmit[] = [];
   const { factory, created } = makeFakeFactory();
   const relay = createAsrRelay({
     emit: (t) => emits.push(t),
+    onStatus: (status) => statuses.push(status),
     apiKey: '',
     sessionFactory: factory
   });
@@ -190,6 +211,35 @@ test('with no API key, start emits a friendly error and creates no session', () 
   assert.equal(emits[0].source, 'mic');
   assert.match(emits[0].text, /API key/i);
   assert.equal(emits[0].isFinal, false);
+  assert.deepEqual(statuses, [
+    { source: 'mic', provider: 'paraformer', state: 'connecting' },
+    {
+      source: 'mic',
+      provider: 'paraformer',
+      state: 'failed',
+      message: 'DashScope API Key 未配置'
+    }
+  ]);
+});
+
+test('reports a provider error as failed before draining the failed session', async () => {
+  const { relay, statuses, created } = relayWith();
+  await relay.handleAudioControl({ action: 'start', source: 'mic' });
+  created[0].deps.onReady?.();
+
+  created[0].deps.onError?.('upstream rejected credentials');
+  await Promise.resolve();
+  await Promise.resolve();
+
+  assert.ok(
+    statuses.some(
+      (status) =>
+        status.source === 'mic' &&
+        status.provider === 'paraformer' &&
+        status.state === 'failed' &&
+        status.message === 'upstream rejected credentials'
+    )
+  );
 });
 
 test('text-only Paraformer finals never invent an acoustic speaker id', () => {
