@@ -19,7 +19,9 @@ untouched and ships separately.
 - **Live audio (interviewee + interviewer):** browser capture → Paraformer ASR relay →
   live transcript. (Connectivity verified with the DashScope key; full speech-to-text needs
   a real mic / shared-tab audio in a Chromium browser.)
-- **Offline speaker diarization:** self-hosted FunASR streaming-SPK service (Paraformer / CAM++ models, © Alibaba Group, FunASR Model License) for single-room-mic diarization in offline interview mode; online mode is unaffected.
+- **Offline speaker partitioning:** iFlytek supplies native acoustic clusters when selected;
+  DeepSeek v4 Flash maps them to interviewer/candidate after enough evidence, with a semantic
+  final-pass fallback for text-only ASR providers. No local speaker model is required.
 
 ## Layout
 

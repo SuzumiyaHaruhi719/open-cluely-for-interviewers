@@ -35,30 +35,16 @@ docker compose up --build
 |---|---|---|---|
 | `DASHSCOPE_API_KEY` | **yes** | — | DashScope key. `x-api-key` for chat (Anthropic-shape) + `Authorization: Bearer` for `text-embedding-v4` (native). |
 | `PORT` | no | `8787` | HTTP/WS port. |
-| `CAMPP_URL` | no | `http://localhost:10097` | HTTP URL of the local CAM++ diarizer sidecar. Offline interview mode only. Via compose it's wired to `http://campp-sidecar:10097`. |
+| `XFYUN_APP_ID` / `XFYUN_API_KEY` / `XFYUN_API_SECRET` | no | — | Enables iFlytek realtime ASR with native acoustic speaker clusters; recommended for offline single-mic interviews. |
 
-## Offline speaker diarization (CAM++ sidecar)
+## Offline speaker partitioning
 
-Offline interview mode (single room microphone) keeps **transcription on cloud Paraformer**
-(same `DASHSCOPE_API_KEY` as online) and adds speaker labels via a small **local CAM++
-sidecar**. For each finalized utterance the server posts the audio to the sidecar, which
-computes a CAM++ speaker embedding and assigns a speaker id by online clustering: the first
-voice heard becomes the interviewer (cluster 0), the next distinct voice the candidate.
-Generate-Q is gated to candidate-labelled speech. Online mode is unaffected.
-
-**Starting the service:** the `docker-compose.yml` includes a `campp-sidecar` service that
-the server `depends_on`. Run `docker compose up --build` from `web-app/` and both containers
-start together; `CAMPP_URL` is wired to `http://campp-sidecar:10097` inside the server
-container. The sidecar image bakes in the CAM++ model, so it starts ready.
-
-For plain-Docker / dev (server running outside Docker), start the sidecar container and pass
-`CAMPP_URL=http://localhost:10097` to the server. If the sidecar is unreachable, offline
-transcription still works — segments are just left unlabelled (role `unknown`, never gated),
-so a momentarily-down sidecar never blocks the interview.
-
-**CPU is fine:** per-utterance CAM++ embeddings are light; no GPU required.
-
-> Speaker diarization in offline mode is powered by **FunASR / CAM++** (`speech_campplus_sv_zh-cn_16k-common`), © Alibaba Group, used under the FunASR Model License (attribution + model name retained per the license).
+Offline interview mode records one room microphone. With iFlytek selected, one ASR stream
+returns text plus native acoustic cluster IDs; DeepSeek v4 Flash maps those IDs to
+interviewer/candidate from speech acts after enough evidence. With a text-only provider
+(Paraformer or the current Doubao integration), Flash partitions finalized turns by semantics.
+The last audio stop always requests a final pass. No local model, sidecar, extra port, or
+speaker-order heuristic is required; manual corrections remain sticky.
 
 ## Health check
 
@@ -76,9 +62,7 @@ relevant questions. See `GET /api/question-bank/search?q=...` and the `/ws` prot
 
 ## Notes
 
-- **Live audio (interviewee capture) is not wired yet.** The text-driven copilot (paste the
-  candidate's answer) and the question bank are fully functional. Live audio needs browser
-  `getDisplayMedia`/`getUserMedia` → WS → an ASR provider, and ASR provider credentials
-  (Xfyun / Volcengine / Paraformer) which are separate from the DashScope key.
+- **Live audio is wired.** Browser `getDisplayMedia`/`getUserMedia` streams PCM over WS to
+  iFlytek, Volcengine, Paraformer, or the simulation harness.
 - **Rebuild the question bank** (optional) after a re-scrape: `npm run scrape && DASHSCOPE_API_KEY=... npm run build-embeddings` in `packages/question-bank`, then rebuild the image.
 - The desktop Electron app is unaffected by this deployment; it lives in `src/` and ships separately.
