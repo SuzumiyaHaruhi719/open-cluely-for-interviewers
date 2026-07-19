@@ -108,3 +108,31 @@ test('dual-channel interviews do not spend a classifier call', async () => {
   await p.finalize();
   assert.equal(calls, 0);
 });
+
+test('new-interview reset clears evidence but preserves the current single-mic mode', async () => {
+  const snapshots: SpeakerTurn[][] = [];
+  const p = createSpeakerPartitioner({
+    classify: async (turns) => {
+      snapshots.push(turns.map((turn) => ({ ...turn })));
+      return classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.9 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.9 }
+      ]);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: () => {}
+  });
+  p.setSingleMic(true);
+  p.record({ seq: 99, source: 'mic', speakerId: 1, text: '上一场面试的旧证据' });
+
+  p.reset();
+  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '候选人先介绍一个具体项目结果。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '面试官追问当时最大的风险。' });
+  p.record({ seq: 2, source: 'mic', speakerId: 1, text: '候选人说明处置动作和验证指标。' });
+  p.record({ seq: 3, source: 'mic', speakerId: 2, text: '面试官继续追问复盘结论。' });
+  await p.flush();
+
+  assert.equal(snapshots.length, 1);
+  assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1, 2, 3]);
+});

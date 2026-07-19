@@ -270,7 +270,6 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
     },
     reset() {
       epoch += 1;
-      singleMic = false;
       turns = [];
       fedCandidateSeqs = new Set<number>();
       scheduledAt = 0;
