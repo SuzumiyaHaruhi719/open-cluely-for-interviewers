@@ -10,7 +10,7 @@
 //
 // Like xfyun (角色分离), ONE "cloud call" returns BOTH the text AND the speaker id,
 // so the relay uses the PLAIN text-session path for 'sim' and forwards the
-// speakerId this session emits on finals — skipping the local CAM++ diarizer.
+// speakerId this session emits on finals for downstream role-mapping tests.
 //
 // REPLAY MODEL (per scripted turn, spaced ~2500 ms apart):
 //   1. emit a couple of PARTIALS — { text:<growing prefix>, isFinal:false } with

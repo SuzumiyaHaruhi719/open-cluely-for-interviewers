@@ -31,8 +31,8 @@ interface ConfigState {
   /** Customize mode: the saved pipeline the session runs (null = Expert fallback). */
   activePipelineId: string | null;
   /**
-   * Interview format from the loaded/created session. 'offline' routes ASR to
-   * FunASR (single room mic + diarization); 'online' keeps the dual-lane flow.
+   * Interview format from the loaded/created session. 'offline' uses one room
+   * microphone plus automatic speaker-role partitioning; 'online' keeps two lanes.
    */
   interviewType: InterviewType;
 }
@@ -125,7 +125,7 @@ export function Shell() {
   // already guards `isAnalyzing` (no double-fire), so keep the button enabled and
   // focusable and gate only on the STABLE ready + has-text conditions.
   const canAnalyze = isReady && answer.trim().length > 0;
-  // Offline (single-mic) interview: routes ASR to FunASR + diarized bubbles.
+  // Offline (single-mic) interview: enables automatic speaker-role partitioning.
   const offline = config.interviewType === 'offline';
 
   // Mirror the desktop: when the candidate (display) lane produces new FINAL
@@ -135,7 +135,7 @@ export function Shell() {
   useEffect(() => {
     // Feed the manual Generate Q buffer (`answer`) with the candidate's latest
     // words. Whenever diarized speakerSegments exist, the candidate is identified
-    // by ROLE, not by lane — this covers OFFLINE single-mic (CAM++) AND ONLINE
+    // by ROLE, not by lane — this covers OFFLINE single-mic partitioning AND ONLINE
     // iFlytek (讯飞), which carries its own speaker id on finals. Use the
     // candidate-labeled segment text so the buffer fills once the interviewer taps
     // 候选人 ("使用讯飞的时候也要能点候选人"); without this, online iFlytek fed only
@@ -426,17 +426,14 @@ export function Shell() {
       jobDescription: config.jobDescription,
       resumeText: config.resumeText,
       activePipelineId: config.activePipelineId,
-      // Offline (single-mic) interviews route to FunASR (streaming-SPK
-      // diarization) and carry the FunASR WS URL. Online keeps the existing
-      // provider choice (volc when selected, else the default Paraformer relay).
+      // Both interview formats keep the selected text engine. Offline enables the
+      // server's single-mic partition lifecycle; online keeps dual-lane routing.
       // The volc creds are always included so flipping back online with Doubao
       // selected re-applies them on the next audio start.
-      // asrProvider is the TEXT engine (follows the Settings choice in BOTH modes);
-      // `diarize` adds CAM++ speaker labelling for offline single-mic interviews.
+      // `diarize` is the wire-compatible single-room-mic partition flag.
       asrProvider: normalizeAsrProvider(s.asrProvider),
       simScript: simScriptFor(normalizeAsrProvider(s.asrProvider)),
       diarize: offline,
-      funasrUrl: s.funasrUrl,
       volcAppId: s.volcAppId,
       volcAccessToken: s.volcAccessToken,
       volcResourceId: s.volcResourceId,
@@ -560,7 +557,7 @@ export function Shell() {
       onClearSession();
 
       // Apply the picked type + sample JD/résumé. interviewType drives offline
-      // (FunASR single-mic) vs online routing.
+      // (single-mic role partitioning) vs online routing.
       const jd = sample ? sample.jd : '';
       const resumeText = sample ? sample.resume : '';
       setConfig((prev) => ({
@@ -736,7 +733,6 @@ export function Shell() {
         onAutoModeChange={onAutoModeChange}
         onAutoIntervalChange={onAutoIntervalChange}
         onVolcSettingsChange={onVolcSettingsChange}
-        onFunasrUrlChange={appSettings.setFunasrUrl}
         onOpacityChange={appSettings.setOpacityStep}
         onSelectPipeline={onUseCustomPipeline}
         onOpenStudio={onOpenStudio}

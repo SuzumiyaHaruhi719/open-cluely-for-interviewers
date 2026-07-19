@@ -266,7 +266,7 @@ describe('useCopilotSocket', () => {
     await waitFor(() => expect(result.current.transcripts.mic.finalText).toBe('hi'));
     expect(result.current.speakerSegments).toEqual([]);
 
-    // OFFLINE FunASR: a final carrying a numeric speakerId appends exactly one
+    // Native-cluster ASR: a final carrying a numeric speakerId appends exactly one
     // labelled segment using the server-provided speaker role.
     act(() => {
       socket.emit({

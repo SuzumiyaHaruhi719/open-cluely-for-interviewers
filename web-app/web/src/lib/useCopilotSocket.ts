@@ -113,8 +113,7 @@ export interface CopilotSocket {
   /** Stop capturing a source and tell the server to close its ASR session. */
   stopAudio: (source: AudioSource) => void;
   /**
-   * Ordered list of finalized speaker-labeled segments (offline FunASR only).
-   * Empty for online providers that omit speakerId.
+   * Ordered list of finalized speaker-partitioned segments.
    */
   speakerSegments: SpeakerSegment[];
   /**
@@ -312,7 +311,7 @@ export function useCopilotSocket(): CopilotSocket {
   // Live capture handles + per-source frame sequence counters.
   const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
   const seqRef = useRef<Record<AudioSource, number>>({ mic: 0, display: 0 });
-  // Speaker-segment state for offline FunASR diarization.
+  // Speaker-segment state for native clusters and Flash semantic partitioning.
   const roleOverrideRef = useRef<Map<number, SpeakerRole>>(new Map());
   const segSeqRef = useRef(0);
 
@@ -501,8 +500,8 @@ export function useCopilotSocket(): CopilotSocket {
             : { finalText: lane.finalText, partial: text };
           return { ...prev, [source]: next };
         });
-        // Offline FunASR: append a labelled segment for finals that carry a real speakerId.
-        // Online providers omit speakerId entirely — they must NOT create segments.
+        // Native-cluster ASR: append finals that carry a real speakerId. Text-only
+        // providers are populated later by a `speaker-partition` message.
         if (isFinal && typeof message.speakerId === 'number') {
           const sid = message.speakerId;
           const role = effectiveRole(sid, message.speaker, roleOverrideRef.current);
@@ -808,8 +807,8 @@ export function useCopilotSocket(): CopilotSocket {
     (speakerId: number, role: SpeakerRole): void => {
       roleOverrideRef.current.set(speakerId, role);
       // Re-label this speaker's past bubbles immediately; the server updates its
-      // candidate-gating + future stamping. iFlytek mode assigns each speaker
-      // independently (no auto-complement); CAM++ guess-mode complements server-side.
+      // candidate-gating + future stamping. Manual corrections remain sticky and
+      // win over every later automatic classifier refresh.
       setSpeakerSegments((prev) => relabelSegments(prev, speakerId, role));
       send({ type: 'set-speaker-role', speakerId, role });
     },

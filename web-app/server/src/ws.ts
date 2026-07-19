@@ -90,7 +90,7 @@ const sessionConfigSchema = z
     // are stored on the relay and used for the NEXT `audio-control start`. The
     // creds are application secrets for the user's own Volc account; the server
     // uses them to open the Volc WebSocket and NEVER logs them.
-    asrProvider: z.enum(['paraformer', 'volc', 'funasr', 'xfyun', 'sim']).optional(),
+    asrProvider: z.enum(['paraformer', 'volc', 'xfyun', 'sim']).optional(),
     volcAppId: z.string().optional(),
     volcAccessToken: z.string().optional(),
     volcResourceId: z.string().optional(),
@@ -98,9 +98,8 @@ const sessionConfigSchema = z
     // Simulation script for asrProvider 'sim' (mic-less test harness): the relay
     // stores the latest one and replays it on the NEXT audio-control start.
     simScript: z.array(z.object({ speakerId: z.number(), text: z.string() })).optional(),
-    // CAM++ diarizer sidecar URL (offline). The text engine is asrProvider;
-    // `diarize` adds local CAM++ speaker labelling on top of it.
-    funasrUrl: z.string().optional(),
+    // Single-room-mic interview: collect finalized turns for native-cluster +
+    // DeepSeek Flash role mapping (or end-of-interview semantic partitioning).
     diarize: z.boolean().optional(),
     // How autonomous generation fires while autoGenerate is on: 'agent' (the Flash
     // monitor decides; default) or 'interval' (fixed ~30s wall-clock cadence, no gate).
@@ -586,23 +585,12 @@ function resolveVolcCreds(cfg: ConfigurePayload): VolcCredentials {
  * supplies creds but no explicit provider.
  */
 function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePayload): void {
-  // Back-compat: older clients sent asrProvider:'funasr' to mean "paraformer text
-  // + diarize". The diarize flag is separate now, so funasr still implies it.
-  const legacyFunasr = cfg.asrProvider === 'funasr';
-  // Apply diarize INDEPENDENTLY of the ASR fields below: a configure carrying ONLY
-  // `diarize` (no provider/creds/sim) must still reach setDiarize, so this runs
-  // BEFORE the hasAsrField early-return. Only change it when EXPLICITLY present (or
-  // legacy funasr) — a partial configure that omits it must NOT clobber the flag.
-  if (cfg.diarize !== undefined || legacyFunasr) {
-    relay.setDiarize(cfg.diarize === true || legacyFunasr);
-  }
   const hasAsrField =
     cfg.asrProvider !== undefined ||
     cfg.volcAppId !== undefined ||
     cfg.volcAccessToken !== undefined ||
     cfg.volcResourceId !== undefined ||
     cfg.volcModel !== undefined ||
-    cfg.funasrUrl !== undefined ||
     cfg.simScript !== undefined;
   if (!hasAsrField) return;
   const creds = resolveVolcCreds(cfg);
@@ -612,24 +600,21 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
   if (Array.isArray(cfg.simScript)) {
     relay.setSimScript(cfg.simScript);
   }
-  // asrProvider is the TEXT engine (paraformer | volc | xfyun); `diarize` (applied
-  // above, independently of these ASR fields) adds local CAM++ speaker labelling on
-  // top (offline single-mic) — EXCEPT xfyun, which carries its own speaker (角色分离
-  // role_type=2) and needs no per-session creds (the server reads XFYUN_* from .env).
-  const textProvider: 'paraformer' | 'volc' | 'xfyun' | 'sim' = legacyFunasr
-    ? 'paraformer'
-    : cfg.asrProvider === 'sim'
+  // iFlytek carries native acoustic cluster ids (角色分离 role_type=2). The other
+  // cloud providers emit text only; single-mic semantic partitioning happens in
+  // speaker-partitioner after enough evidence or at the final stop.
+  const textProvider: 'paraformer' | 'volc' | 'xfyun' | 'sim' = cfg.asrProvider === 'sim'
       ? 'sim'
       : cfg.asrProvider === 'xfyun'
         ? 'xfyun'
         : cfg.asrProvider === 'volc' || (cfg.asrProvider === undefined && creds.appId && creds.accessToken)
           ? 'volc'
           : 'paraformer';
-  relay.setAsrProvider(textProvider, creds, { url: cfg.funasrUrl ?? '' });
-  // iFlytek carries its OWN speaker cluster ids (role_type=2) the interviewer
-  // labels manually → never guess for it (unassigned ids resolve to 'unknown',
-  // shown as "说话人 N"). CAM++/others keep the first-seen guess.
-  roles.setGuess(textProvider !== 'xfyun');
+  relay.setAsrProvider(textProvider, creds);
+  // Native cluster ids are deliberately not mapped by first-seen order. They
+  // remain unknown until Flash has enough conversational evidence; manual labels
+  // and later model refreshes then share SpeakerRoleMap.
+  roles.setGuess(textProvider !== 'xfyun' && textProvider !== 'sim');
 }
 
 type SpeakerLifecycle = Pick<SpeakerPartitioner, 'setSingleMic' | 'finalize' | 'reset'>;
@@ -902,9 +887,8 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       pipelinesDir: pipelinesDir()
     });
 
-    // Per-connection speaker-role map. FunASR segments carry a speakerId that
-    // resolves to a role here; online providers carry no id (resolve(null) =
-    // 'unknown') so the role gating below is inert for them.
+    // Per-connection speaker-role map. Native ASR clusters resolve here; providers
+    // without a speaker id stay unknown until the semantic final partition.
     const roles = createSpeakerRoleMap();
 
     // Per-connection summary model override (Feature 2). Set by configure when the
@@ -962,8 +946,8 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     // The SINGLE finalized-interviewee-answer seam: accumulate the new segment and
     // feed the running answer to the autonomous trigger monitor. ONLINE mode hits
-    // this via display finals; OFFLINE funasr hits the SAME function for candidate
-    // finals. Factored out so both paths share identical accumulation + trigger.
+    // this via display finals; single-mic role partitioning hits the SAME function
+    // for candidate finals. Factored so both paths share accumulation + trigger.
     function feedCandidateAnswer(rawSegment: string): void {
       const segment = rawSegment.trim();
       if (segment) {
@@ -1094,7 +1078,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         if (t.source === 'display' && t.isFinal) {
           feedCandidateAnswer(t.text);
         }
-        // OFFLINE seam (funasr): a finalized CANDIDATE segment (by speaker role,
+        // SINGLE-MIC seam: a finalized CANDIDATE segment (by speaker role,
         // not source) feeds the SAME trigger path. Inert online: resolve(null) =
         // 'unknown' so isCandidateFinal is always false there.
         else if (isCandidateFinal(roles, t)) {

@@ -25,7 +25,7 @@ export const C2S: {
 };
 
 /** Live-ASR providers the server can stream through. Default: 'paraformer'. */
-export const ASR_PROVIDERS: readonly ['paraformer', 'volc', 'funasr'];
+export const ASR_PROVIDERS: readonly ['paraformer', 'volc', 'xfyun', 'sim'];
 
 /** How a `result` was produced: autonomous monitor vs. manual Generate Q. */
 export const GENERATION_TRIGGERS: readonly ['auto', 'manual'];
@@ -40,14 +40,13 @@ export type AudioSource = 'mic' | 'display';
  *   'paraformer' — DashScope Paraformer (server uses its env DASHSCOPE key).
  *   'volc'       — Doubao / Volcengine streaming ASR (豆包). Needs the Volc
  *                  credentials below, which are SEPARATE from the DashScope key.
- *   'funasr'     — FunASR streaming-SPK WebSocket provider with per-segment
- *                  speaker labels. Requires `funasrUrl` in `SessionConfig`.
+ *   'xfyun'      — iFlytek realtime ASR with native acoustic speaker clusters.
  *   'sim'        — Simulation provider for the mic-less test harness: IGNORES
  *                  audio and replays a scripted two-speaker transcript supplied
  *                  via `simScript`, stamping each turn's speakerId on its final
- *                  (like xfyun, no CAM++). Used by scripts/sim/run-chats.mjs.
+ *                  (like xfyun). Used by scripts/sim/run-chats.mjs.
  */
-export type AsrProvider = 'paraformer' | 'volc' | 'funasr' | 'xfyun' | 'sim';
+export type AsrProvider = 'paraformer' | 'volc' | 'xfyun' | 'sim';
 
 /** Per-segment speaker role resolved from a cluster ID. */
 export type SpeakerRole = 'interviewer' | 'candidate' | 'unknown';
@@ -145,11 +144,6 @@ export interface SessionConfig {
   /** Optional Volc model name override (config-frame `model_name`). */
   volcModel?: string;
   /**
-   * CAM++ diarizer sidecar URL (offline single-mic). Falls back to the server's
-   * CAMPP_URL env var when omitted.
-   */
-  funasrUrl?: string;
-  /**
    * Simulation script for `asrProvider === 'sim'` (the mic-less test harness):
    * an ordered two-speaker transcript the server replays instead of listening to
    * audio. Each turn's `speakerId` is stamped on its FINAL transcript (0 =
@@ -157,9 +151,9 @@ export interface SessionConfig {
    */
   simScript?: Array<{ speakerId: number; text: string }>;
   /**
-   * Offline speaker diarization: when true, the server runs LOCAL CAM++ speaker
-   * labelling on top of `asrProvider`'s text and stamps `speakerId` on finals.
-   * The text engine still follows `asrProvider` (Paraformer or Doubao).
+   * Single-room-mic interview: when true, finalized turns are collected for
+   * native-cluster role mapping (when the ASR supplies ids) or DeepSeek Flash
+   * semantic partitioning. A final partition is always attempted on last stop.
    */
   diarize?: boolean;
   /**

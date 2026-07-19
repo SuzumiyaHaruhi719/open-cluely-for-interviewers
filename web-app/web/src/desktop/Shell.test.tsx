@@ -476,14 +476,13 @@ describe('Shell', () => {
     });
   });
 
-  test('an offline interview turns on diarize: full config carries the text asrProvider + diarize:true + funasrUrl', async () => {
-    // The FunASR URL lives in app settings (localStorage); seed a non-default one
-    // so the assertion proves the configured value flows through, not a constant.
-    const funasrUrl = 'ws://funasr.example:10096';
-    localStorage.setItem('open-cluely.funasrUrl', funasrUrl);
-
+  test('an offline interview enables single-mic role partitioning without a CAM++ sidecar', async () => {
     render(<Shell />);
     await flushMount();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    expect(document.getElementById('settings-funasr')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
 
     // Create an OFFLINE interview via the type picker (offline card). Ephemeral:
     // no session is persisted — the choice only flips the in-memory routing.
@@ -500,11 +499,13 @@ describe('Shell', () => {
 
     // Now open the socket: the new sessionId triggers the FULL-config re-push,
     // which for an offline interview keeps the text engine (paraformer here) and
-    // turns on diarize, carrying the sidecar URL.
+    // turns on the single-mic speaker-partition lifecycle. No local sidecar
+    // address is part of the protocol anymore.
     const ws = openSocket();
     await waitFor(() => {
-      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'paraformer', diarize: true, funasrUrl });
+      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'paraformer', diarize: true });
     });
+    expect(lastConfig(ws)).not.toHaveProperty('funasrUrl');
 
     // Offline composer shows only the room mic — no computer-audio/display card.
     expect(document.getElementById('channel-mic')).toBeInTheDocument();

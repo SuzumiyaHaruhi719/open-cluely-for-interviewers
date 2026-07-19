@@ -6,7 +6,7 @@
 // drops into the same asr-relay slot. UNLIKE volc/paraformer, ONE cloud call
 // returns BOTH the text AND the speaker id (角色分离 role_type=2) — so the relay
 // uses the PLAIN text-session path for 'xfyun' and forwards the speakerId this
-// client emits, skipping the local CAM++ diarizer entirely.
+// client emits directly for downstream Flash role mapping.
 //
 // Endpoint:   ${XFYUN_WS_URL}/ast/communicate/v1?<signed query>
 // Auth:       carried entirely in the handshake query params (HMAC-SHA1

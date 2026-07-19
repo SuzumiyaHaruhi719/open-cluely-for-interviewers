@@ -41,8 +41,6 @@ export interface ServerConfig {
   readonly xfyunApiSecret: string;
   /** iFlytek realtime ASR WebSocket base URL. */
   readonly xfyunWsUrl: string;
-  /** CAM++ diarizer sidecar URL (offline mode). Used when asrProvider === 'funasr'. */
-  readonly camppUrl: string;
   /**
    * Autonomous question-generation trigger tuning (server-side monitor).
    * `autoCooldownMs`    — min gap between auto fires (anti-spam).
@@ -68,9 +66,6 @@ const DEFAULT_PARAFORMER_SAMPLE_RATE = 8000;
 const DEFAULT_VOLC_SAMPLE_RATE = 16000;
 // iFlytek 实时语音转写大模型 default endpoint (verified live by the probe).
 const DEFAULT_XFYUN_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
-// Offline mode's local CAM++ diarizer sidecar (deploy/campp_sidecar.py).
-const DEFAULT_CAMPP_URL = 'http://localhost:10097';
-
 // Auto-trigger defaults (see ServerConfig + auto-trigger.ts). Tuned for a live
 // interview cadence: ~20s between auto fires, ~120 new chars (a sentence or two)
 // of fresh candidate speech, and a ~1.2s pause before deciding.
@@ -96,9 +91,6 @@ export const config: ServerConfig = Object.freeze({
   xfyunApiKey: String(process.env.XFYUN_API_KEY ?? '').trim(),
   xfyunApiSecret: String(process.env.XFYUN_API_SECRET ?? '').trim(),
   xfyunWsUrl: String(process.env.XFYUN_WS_URL ?? '').trim() || DEFAULT_XFYUN_WS_URL,
-  // CAM++ diarizer sidecar URL — per-session configure funasrUrl wins; defaults
-  // to the local sidecar so offline mode works out of the box.
-  camppUrl: String(process.env.CAMPP_URL ?? '').trim() || DEFAULT_CAMPP_URL,
   // Auto-trigger tuning — all env-overridable.
   autoCooldownMs: toInt(process.env.AUTO_COOLDOWN_MS, DEFAULT_AUTO_COOLDOWN_MS),
   autoMinNewChars: toInt(process.env.AUTO_MIN_NEW_CHARS, DEFAULT_AUTO_MIN_NEW_CHARS),

@@ -1,7 +1,7 @@
 // ============================================================================
 // Speaker-role stamping + candidate-final gating (pure helpers).
 // ----------------------------------------------------------------------------
-// FunASR emits per-segment speaker ids. The ws layer keeps a per-connection
+// Native diarizing providers emit per-segment speaker ids. The ws layer keeps a per-connection
 // SpeakerRoleMap (see ./speaker-roles) that resolves an id to a role
 // ('interviewer' | 'candidate' | 'unknown'). These two pure helpers let the ws
 // emit callback (a) stamp the resolved role onto every transcript it sends to
@@ -10,7 +10,7 @@
 //
 // Online providers (paraformer/volc) carry no speakerId → resolve(null) is
 // 'unknown' → isCandidateFinal is always false, so this gating is purely
-// additive for offline FunASR and never changes online behavior.
+// additive for native-cluster providers and never changes text-only ASR behavior.
 // ============================================================================
 
 import type { SpeakerRole } from '@open-cluely/contract';

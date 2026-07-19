@@ -49,7 +49,7 @@ interface TranscriptStreamProps {
    * callers omit this (defaults false) and are unaffected.
    */
   offline?: boolean;
-  /** Diarized speaker segments (offline FunASR only); rendered when `offline`. */
+  /** Speaker-partitioned finalized segments; rendered for the single-mic flow. */
   speakerSegments?: SpeakerSegment[];
   /** One-tap role override for a speaker id (offline only). */
   onSetSpeakerRole?: (speakerId: number, role: SpeakerRole) => void;

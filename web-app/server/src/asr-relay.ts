@@ -9,19 +9,13 @@
 // PCM, and turns partial/final transcripts into `transcript` ServerMessages via
 // the injected `emit`.
 //
-// TWO ORTHOGONAL KNOBS:
-//   1. asrProvider — the TEXT engine: 'paraformer' (DashScope, default) or
-//      'volc' (Doubao/Volcengine). Both clients expose the same sendAudio/stop/
-//      isReady surface.
-//   2. diarize — when true (offline single room-mic), the relay tees the mic PCM
-//      to a LOCAL CAM++ sidecar (./campp-diarizer) and stamps a per-utterance
-//      integer `speakerId` on each FINAL — on top of whichever text engine is
-//      chosen. So offline can use Paraformer OR Doubao for the words, plus CAM++
-//      for "who". Online (diarize=false) never emits speakerId — byte-identical.
+// `asrProvider` selects the recognition engine. Providers with native speaker
+// clusters (currently iFlytek and the simulation harness) forward `speakerId`;
+// providers without them emit text only. Single-mic semantic role partitioning
+// is handled after transcription by speaker-partitioner.ts, never in this relay.
 // ============================================================================
 
 import { WebSocket as WsWebSocket } from 'ws';
-import { randomUUID } from 'node:crypto';
 import type { AsrProvider, AudioSource } from '@open-cluely/contract';
 import { config } from './config';
 import {
@@ -32,13 +26,12 @@ import {
 import { createVolcSession, type VolcSessionDeps } from './volc-client';
 import { createXfyunSession, type XfyunSessionDeps } from './xfyun-client';
 import { createSimSession, type SimSessionDeps, type SimScriptTurn } from './sim-client';
-import { createCamppDiarizer, type CamppDiarizerDeps, type Diarizer } from './campp-diarizer';
 
 export interface TranscriptEmit {
   source: AudioSource;
   text: string;
   isFinal: boolean;
-  /** Diarized (offline CAM++) only: per-utterance speaker id. Omitted online. */
+  /** Native provider speaker cluster id. Omitted when the provider has none. */
   speakerId?: number | null;
 }
 
@@ -76,13 +69,10 @@ export type VolcSessionFactory = (deps: VolcSessionDeps) => AsrSession;
 export type XfyunSessionFactory = (deps: XfyunSessionDeps) => AsrSession;
 /** Factory used to create a simulation ('sim') session — overridable in tests with a fake. */
 export type SimSessionFactory = (deps: SimSessionDeps) => AsrSession;
-/** Factory used to create a CAM++ diarizer — overridable in tests with a fake. */
-export type DiarizerFactory = (deps: CamppDiarizerDeps) => Diarizer;
-
 /**
  * A transcript callback from a text session. Most providers carry text + isFinal
  * only; 'xfyun' (角色分离 role_type=2) ALSO carries its own per-utterance speakerId
- * (null on partials), which startSource forwards instead of running CAM++.
+ * (null on partials), which startSource forwards unchanged.
  */
 type OnText = (t: { text: string; isFinal: boolean; speakerId?: number | null }) => void;
 
@@ -99,8 +89,6 @@ export interface AsrRelayDeps {
   xfyunSessionFactory?: XfyunSessionFactory;
   /** Simulation ('sim') session factory (defaults to createSimSession). */
   simSessionFactory?: SimSessionFactory;
-  /** CAM++ diarizer factory (defaults to the real HTTP client). */
-  diarizerFactory?: DiarizerFactory;
   /** WebSocket constructor passed to the sessions (defaults to `ws`). */
   WebSocket?: WsConstructor;
   /**
@@ -115,33 +103,19 @@ export interface AsrRelay {
   handleAudioControl(control: AudioControl): void;
   /** Enable/disable auto-analyze of interviewee final transcripts. */
   setAutoAnalyzeDisplay(enabled: boolean): void;
-  /**
-   * Choose the TEXT engine + (for 'volc') its creds / the CAM++ sidecar URL for
-   * SUBSEQUENT starts. ('funasr' is accepted for back-compat and treated as
-   * 'paraformer'.) Does not restart live sessions.
-   */
-  setAsrProvider(provider: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void;
+  /** Choose the recognition engine + optional Volc creds for subsequent starts. */
+  setAsrProvider(provider: AsrProvider, volc?: VolcCredentials): void;
   /**
    * Store the simulation script (mic-less harness). Used by the NEXT
    * `audio-control start` when `asrProvider === 'sim'`. Does not restart sessions.
    */
   setSimScript(script: ReadonlyArray<SimScriptTurn>): void;
-  /**
-   * Turn local CAM++ speaker diarization on/off for SUBSEQUENT starts (offline
-   * single-mic). When on, the next session tees mic PCM to the sidecar and
-   * stamps an integer speakerId on each final.
-   */
-  setDiarize(enabled: boolean): void;
   /** True while any audio source is actively capturing (used to gate auto-fire). */
   isCapturing(): boolean;
   dispose(): void;
 }
 
 const SOURCES: readonly AudioSource[] = ['mic', 'display'];
-
-// Cap the per-utterance diarization buffer at ~30 s of 16 kHz mono s16le, so a
-// missing final (long monologue) can't grow it without bound.
-const MAX_DIAR_SEG_BYTES = 30 * 16000 * 2;
 
 /**
  * Create a relay bound to one browser connection. Sessions are created lazily
@@ -154,7 +128,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const volcSessionFactory = deps.volcSessionFactory ?? (createVolcSession as VolcSessionFactory);
   const xfyunSessionFactory = deps.xfyunSessionFactory ?? (createXfyunSession as XfyunSessionFactory);
   const simSessionFactory = deps.simSessionFactory ?? (createSimSession as SimSessionFactory);
-  const diarizerFactory = deps.diarizerFactory ?? createCamppDiarizer;
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
   const sessions: Record<AudioSource, AsrSession | null> = { mic: null, display: null };
@@ -162,12 +135,8 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   let provider: AsrProvider = 'paraformer';
   let volcCreds: VolcCredentials | null = null;
   let simScript: ReadonlyArray<SimScriptTurn> = [];
-  let camppUrl: string = config.camppUrl;
-  let diarize = false;
-  const diarSession = randomUUID();
   let disposed = false;
-  // Shared emit: carries `speakerId` only when present (diarized) — omitted for
-  // online so the wire stays byte-identical. Display finals may auto-analyze.
+  // Shared emit: carries `speakerId` only when a provider supplied a native id.
   function emitTranscript(
     source: AudioSource,
     t: { text: string; isFinal: boolean; speakerId?: number | null }
@@ -197,8 +166,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   function makeTextSession(source: AudioSource, onText: OnText): AsrSession | null {
     if (provider === 'sim') {
       // Mic-less harness: replay the stored two-speaker script (audio ignored).
-      // Like xfyun, the session carries its own speakerId on finals — onText
-      // forwards it and the plain path below skips CAM++.
+      // Like xfyun, the session carries its own speakerId on finals.
       if (!simScript.length) {
         deps.emit({ source, text: '[Sim unavailable: no simScript configured]', isFinal: false });
         return null;
@@ -268,71 +236,10 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
 
   function startSource(source: AudioSource): void {
     if (disposed || sessions[source]) return;
-    // xfyun (角色分离 role_type=2) AND sim (scripted) both carry their OWN speaker
-    // in the same call, so they use the PLAIN text path and forward that speakerId
-    // — never the local CAM++ diarize tee, even when `diarize` is on. Preserve
-    // xfyun's raw ids: during fast hand-offs it may create extra clusters, and
-    // folding them locally into 0/1 can misattribute a real hand-off to the
-    // previous speaker. Extra "说话人 N" bubbles are safer than merged speakers.
-    if (provider === 'xfyun' || provider === 'sim') {
-      sessions[source] = makeTextSession(source, (t) => {
-        emitTranscript(source, { text: t.text, isFinal: t.isFinal, speakerId: t.speakerId ?? null });
-      });
-      return;
-    }
-    if (!diarize) {
-      sessions[source] = makeTextSession(source, (t) => emitTranscript(source, t));
-      return;
-    }
-
-    // Offline: diarize each finalized utterance with the local CAM++ sidecar and
-    // stamp its integer speakerId. Partials emit immediately (no speaker).
-    const diarizer = diarizerFactory({ url: camppUrl, session: diarSession });
-    let segChunks: Buffer[] = [];
-    let segBytes = 0;
-    // Per-session cancellation guard: once this session is stopped/replaced, a
-    // late diarize() settle must NOT emit onto a dead-or-new session.
-    let stopped = false;
-    const onText: OnText = (t) => {
-      if (!t.isFinal) {
-        emitTranscript(source, { text: t.text, isFinal: false });
-        return;
-      }
-      const seg = Buffer.concat(segChunks);
-      segChunks = [];
-      segBytes = 0;
-      const { text } = t;
-      diarizer
-        .diarize(seg)
-        .then((spk) => {
-          if (stopped) return;
-          emitTranscript(source, { text, isFinal: true, speakerId: spk });
-        })
-        .catch(() => {
-          if (stopped) return;
-          emitTranscript(source, { text, isFinal: true });
-        });
-    };
-    const inner = makeTextSession(source, onText);
-    if (!inner) return;
-    sessions[source] = {
-      get isReady(): boolean {
-        return inner.isReady;
-      },
-      sendAudio(pcm: Buffer): void {
-        segChunks.push(pcm);
-        segBytes += pcm.length;
-        while (segBytes > MAX_DIAR_SEG_BYTES && segChunks.length > 1) {
-          segBytes -= segChunks.shift()!.length;
-        }
-        inner.sendAudio(pcm);
-      },
-      stop(): void {
-        stopped = true;
-        diarizer.reset();
-        inner.stop();
-      }
-    };
+    // Preserve native cluster ids verbatim. During fast hand-offs a provider may
+    // over-cluster; the downstream Flash classifier can map multiple ids to the
+    // same role without destructively folding acoustic evidence here.
+    sessions[source] = makeTextSession(source, (t) => emitTranscript(source, t));
   }
 
   function stopSource(source: AudioSource): void {
@@ -373,15 +280,13 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     autoAnalyzeDisplay = enabled;
   }
 
-  function setAsrProvider(next: AsrProvider, volc?: VolcCredentials, funasr?: { url: string }): void {
-    // 'funasr' is legacy for "paraformer + diarize"; the diarize flag is separate
-    // now. 'xfyun' is the iFlytek text+speaker engine (no per-session creds — the
-    // server reads XFYUN_* from .env). Anything else collapses to 'paraformer'.
+  function setAsrProvider(next: AsrProvider, volc?: VolcCredentials): void {
+    // iFlytek is the native text+speaker engine (server-side XFYUN_* creds).
+    // Anything outside the current allowlist safely collapses to Paraformer.
     const resolved =
       next === 'volc' ? 'volc' : next === 'xfyun' ? 'xfyun' : next === 'sim' ? 'sim' : 'paraformer';
     provider = resolved;
     if (volc) volcCreds = { ...volc };
-    camppUrl = funasr?.url || config.camppUrl;
   }
 
   function setSimScript(script: ReadonlyArray<SimScriptTurn>): void {
@@ -390,10 +295,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     simScript = Array.isArray(script)
       ? script.filter((t) => t && typeof t.text === 'string').map((t) => ({ speakerId: Number(t.speakerId) || 0, text: t.text }))
       : [];
-  }
-
-  function setDiarize(enabled: boolean): void {
-    diarize = enabled;
   }
 
   function dispose(): void {
@@ -412,7 +313,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     setAutoAnalyzeDisplay,
     setAsrProvider,
     setSimScript,
-    setDiarize,
     isCapturing,
     dispose
   };

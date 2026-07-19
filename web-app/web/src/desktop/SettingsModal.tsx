@@ -38,8 +38,6 @@ interface SettingsModalProps {
   onAutoIntervalChange: (sec: number) => void;
   /** Merge-patch the Doubao/Volc credential fields (revealed when provider = volc). */
   onVolcSettingsChange: (patch: Partial<VolcSettings>) => void;
-  /** Set the offline FunASR streaming-SPK WS URL (used for 线下 / offline interviews). */
-  onFunasrUrlChange: (value: string) => void;
   onOpacityChange: (step: number) => void;
   /** Pick a saved/builtin pipeline as the active Customize pipeline. */
   onSelectPipeline: (id: string) => void;
@@ -68,10 +66,10 @@ const SUMMARY_MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 ];
 
 const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
-  { value: 'paraformer', label: 'DashScope Paraformer（推荐）' },
-  { value: 'xfyun', label: '讯飞实时转写（科大讯飞）' },
-  { value: 'volc', label: '豆包流式语音（火山引擎）' },
-  { value: 'sim', label: '本地模拟注入脚本' }
+  { value: 'xfyun', label: '讯飞实时转写 · 原生说话人分离（线下推荐）' },
+  { value: 'paraformer', label: 'DashScope Paraformer · 无原生分离' },
+  { value: 'volc', label: '豆包流式语音 · 当前接入无原生分离' },
+  { value: 'sim', label: '本地模拟注入脚本 · 内置说话人标签' }
 ];
 
 // Autonomous follow-up trigger mode. 'agent' lets an AI monitor decide when to
@@ -131,7 +129,6 @@ export function SettingsModal({
   onAutoModeChange,
   onAutoIntervalChange,
   onVolcSettingsChange,
-  onFunasrUrlChange,
   onOpacityChange,
   onSelectPipeline,
   onOpenStudio
@@ -607,30 +604,10 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                会保存在当前浏览器并实时应用。<code>Paraformer</code> 使用服务端 DashScope 密钥。
-                <code>豆包</code> 通过火山引擎流式识别，请在上方 <strong>豆包 API</strong> 区域配置
-                APP ID / Access Token / 模型。<code>本地模拟注入脚本</code> 会回放一段本地脚本对话，
-                方便在没有麦克风或云端 ASR 时检查消息注入。<code>讯飞</code> 走实时语音转写通道。
-              </p>
-            </div>
-
-            <div id="settings-funasr" className="settings-field">
-              <label className="settings-field__label" htmlFor="setting-funasr-url">
-                线下 · CAM++ 说话人分离本地服务地址
-              </label>
-              <input
-                type="text"
-                id="setting-funasr-url"
-                className="settings-input settings-input--mono"
-                value={settings.funasrUrl}
-                autoComplete="off"
-                spellCheck={false}
-                placeholder="http://localhost:10097"
-                onChange={(e) => onFunasrUrlChange(e.target.value)}
-              />
-              <p className="settings-field__desc">
-                线下面试（单麦克风）转写仍走云端 Paraformer，另用本地 CAM++ sidecar 做说话人分离
-                （先说话=面试官）。这是该本地服务的 HTTP 地址；留空则用服务端默认地址。
+                会保存在当前浏览器并应用于下一次采集。<code>讯飞</code> 在一次识别中返回原生
+                speaker cluster；线下单麦克风模式会在样本足够后由 DeepSeek v4 Flash 自动判定
+                面试官和候选人。<code>Paraformer</code> 和当前豆包接入不返回 speaker cluster，
+                因此由 Flash 按对话语义实时刷新，并在结束时完成最终划分。
               </p>
             </div>
 

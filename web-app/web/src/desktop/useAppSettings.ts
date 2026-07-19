@@ -8,7 +8,6 @@ const KEYS = {
   volcAccessToken: 'open-cluely.volcAccessToken',
   volcResourceId: 'open-cluely.volcResourceId',
   volcModel: 'open-cluely.volcModel',
-  funasrUrl: 'open-cluely.funasrUrl',
   opacity: 'open-cluely.windowOpacity',
   autoGenerate: 'open-cluely.autoGenerate',
   autoMode: 'open-cluely.autoMode',
@@ -35,8 +34,6 @@ export const DEFAULT_SUMMARY_PROMPT_TEXT = '';
  */
 export const DEFAULT_SUMMARY_MODEL = 'deepseek-v4-pro';
 export const DEFAULT_ASR_PROVIDER = 'paraformer';
-/** Default offline diarizer URL — the local CAM++ sidecar (deploy/campp_sidecar.py). */
-export const DEFAULT_FUNASR_URL = 'http://localhost:10097';
 /** Default Doubao ASR resource id — the 2.0 (seedasr) hourly model (most accurate). */
 export const DEFAULT_VOLC_RESOURCE_ID = 'volc.seedasr.sauc.duration';
 /** Autonomous question generation defaults ON (the design's auto-on default). */
@@ -88,12 +85,6 @@ export interface AppSettings {
   volcAccessToken: string;
   volcResourceId: string;
   volcModel: string;
-  /**
-   * Offline CAM++ diarizer sidecar URL (only meaningful when asrProvider ===
-   * 'funasr' / an offline interview). Sent to the server, which calls the sidecar
-   * per finalized utterance; falls back to the server's CAMPP_URL when blank.
-   */
-  funasrUrl: string;
   opacityStep: number;
   /** Autonomous context-driven question generation (auto-on by default). */
   autoGenerate: boolean;
@@ -182,8 +173,6 @@ export interface UseAppSettings {
   setAsrProvider: (value: string) => void;
   /** Merge-patch the Volc credential fields (persists each touched field). */
   setVolcSettings: (patch: Partial<VolcSettings>) => void;
-  /** Set the offline FunASR streaming-SPK WS URL (persisted to localStorage). */
-  setFunasrUrl: (value: string) => void;
   setOpacityStep: (value: number) => void;
   /** Toggle autonomous question generation (persisted to localStorage). */
   setAutoGenerate: (value: boolean) => void;
@@ -219,7 +208,6 @@ export function useAppSettings(): UseAppSettings {
     volcAccessToken: readString(KEYS.volcAccessToken, ''),
     volcResourceId: readString(KEYS.volcResourceId, DEFAULT_VOLC_RESOURCE_ID),
     volcModel: readString(KEYS.volcModel, ''),
-    funasrUrl: readString(KEYS.funasrUrl, DEFAULT_FUNASR_URL),
     opacityStep: readOpacityStep(),
     autoGenerate: readBool(KEYS.autoGenerate, DEFAULT_AUTO_GENERATE),
     // Anything other than the literal 'interval' coerces to the 'agent' default.
@@ -262,11 +250,6 @@ export function useAppSettings(): UseAppSettings {
     }
   }, []);
 
-  const setFunasrUrl = useCallback((value: string): void => {
-    setSettings((prev) => ({ ...prev, funasrUrl: value }));
-    persist(KEYS.funasrUrl, value);
-  }, []);
-
   const setOpacityStep = useCallback((value: number): void => {
     const clamped = Math.min(MAX_OPACITY_STEP, Math.max(MIN_OPACITY_STEP, Math.round(value)));
     setSettings((prev) => ({ ...prev, opacityStep: clamped }));
@@ -306,7 +289,6 @@ export function useAppSettings(): UseAppSettings {
     setSummaryPromptText,
     setAsrProvider,
     setVolcSettings,
-    setFunasrUrl,
     setOpacityStep,
     setAutoGenerate,
     setAutoMode,

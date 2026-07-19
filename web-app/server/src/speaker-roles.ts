@@ -13,11 +13,9 @@ export interface SpeakerRoleMap {
    */
   reset(): void;
   /**
-   * Toggle first-seen role GUESSING. true (default): the first speaker id seen
-   * resolves to 'interviewer', every other to 'candidate' (CAM++ offline single-
-   * mic). false: unassigned ids resolve to 'unknown' — used for iFlytek (讯飞),
-   * whose own role_type=2 cluster ids the interviewer labels MANUALLY, so the
-   * server never guesses who is interviewer vs candidate.
+   * Toggle legacy first-seen role guessing. false keeps native cluster ids
+   * unknown until Flash has enough conversational evidence or the interviewer
+   * labels one manually.
    */
   setGuess(enabled: boolean): void;
 }
@@ -41,7 +39,7 @@ export function createSpeakerRoleMap(): SpeakerRoleMap {
       if (!order.includes(speakerId)) order.push(speakerId);
       manual.add(speakerId);
       roles.set(speakerId, role);
-      // GUESS mode (CAM++) only: the OTHER speaker sits on a fragile first-seen
+      // Legacy GUESS mode only: the OTHER speaker sits on a fragile first-seen
       // default, so a single correction must complement it (flip the swap) — one
       // tap fixes the whole session. In NO-GUESS mode (讯飞 roleids) every speaker
       // is labeled manually & independently; never auto-assign the others (iFlytek

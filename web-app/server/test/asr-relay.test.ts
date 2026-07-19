@@ -164,111 +164,14 @@ test('with no API key, start emits a friendly error and creates no session', () 
   assert.equal(emits[0].isFinal, false);
 });
 
-test('funasr (offline) transcribes via Paraformer and stamps the diarized speaker id on finals', async () => {
-  const emits: any[] = [];
-  const { factory, created } = makeFakeFactory();
-  let diarizedWith: Buffer | null = null;
-  const relay = createAsrRelay({
-    emit: (t) => emits.push(t),
-    apiKey: FAKE_KEY,
-    sessionFactory: factory,
-    diarizerFactory: () => ({
-      diarize: async (pcm: Buffer) => {
-        diarizedWith = pcm;
-        return 1;
-      },
-      reset: () => {}
-    })
-  });
-  relay.setDiarize(true);
-  relay.setAsrProvider('paraformer', undefined, { url: 'http://localhost:10097' });
-  relay.handleAudioControl({ action: 'start', source: 'mic' });
-
-  // Mic audio is teed into the per-utterance diarization buffer.
-  const pcm = Buffer.from([0x01, 0x02, 0x03, 0x04]);
-  relay.handleAudio({ source: 'mic', pcmBase64: pcm.toString('base64') });
-
-  // Paraformer drives a partial (no speaker) then a final (diarized).
-  const cb = created[0].deps.onTranscript;
-  cb({ text: '我做', isFinal: false });
-  cb({ text: '我做过分布式系统', isFinal: true });
-
-  // diarize() is async — let the microtask settle before asserting the final.
-  await new Promise((r) => setTimeout(r, 0));
-
-  assert.deepEqual(emits, [
-    { source: 'mic', text: '我做', isFinal: false },
-    { source: 'mic', text: '我做过分布式系统', isFinal: true, speakerId: 1 }
-  ]);
-  // The diarizer received exactly the utterance audio buffered since start, and
-  // the inner Paraformer session also got the raw frame (cloud transcription).
-  assert.deepEqual(diarizedWith, pcm);
-  assert.deepEqual(created[0].frames, [pcm]);
-});
-
-test('funasr finals still emit (without a speaker) when diarization is unavailable', async () => {
-  const emits: any[] = [];
-  const { factory, created } = makeFakeFactory();
-  const relay = createAsrRelay({
-    emit: (t) => emits.push(t),
-    apiKey: FAKE_KEY,
-    sessionFactory: factory,
-    diarizerFactory: () => ({
-      diarize: async () => null, // sidecar down / clip too short
-      reset: () => {}
-    })
-  });
-  relay.setDiarize(true);
-  relay.setAsrProvider('paraformer', undefined, { url: 'http://localhost:10097' });
+test('text-only Paraformer finals never invent an acoustic speaker id', () => {
+  const { relay, emits, created } = relayWith();
+  relay.setAsrProvider('paraformer');
   relay.handleAudioControl({ action: 'start', source: 'mic' });
 
   created[0].deps.onTranscript({ text: '候选人的回答', isFinal: true });
-  await new Promise((r) => setTimeout(r, 0));
 
   assert.deepEqual(emits, [{ source: 'mic', text: '候选人的回答', isFinal: true }]);
-});
-
-test('funasr (offline) still needs the DashScope key for the transcription text', () => {
-  const emits: any[] = [];
-  const { factory, created } = makeFakeFactory();
-  const relay = createAsrRelay({
-    emit: (t) => emits.push(t),
-    apiKey: '',
-    sessionFactory: factory,
-    diarizerFactory: () => ({ diarize: async () => 0, reset: () => {} })
-  });
-  relay.setDiarize(true);
-  relay.setAsrProvider('paraformer', undefined, { url: 'http://localhost:10097' });
-  relay.handleAudioControl({ action: 'start', source: 'mic' });
-
-  assert.equal(created.length, 0);
-  assert.equal(emits.length, 1);
-  assert.match(emits[0].text, /API key/i);
-  assert.equal(emits[0].isFinal, false);
-});
-
-test('offline diarize works with the Doubao (volc) text engine too', async () => {
-  const emits: any[] = [];
-  const volcCreated: any[] = [];
-  const relay = createAsrRelay({
-    emit: (t) => emits.push(t),
-    apiKey: FAKE_KEY,
-    volcSessionFactory: (deps: any) => {
-      const s = { isReady: true, sendAudio() {}, stop() {}, deps };
-      volcCreated.push(s);
-      return s;
-    },
-    diarizerFactory: () => ({ diarize: async () => 1, reset: () => {} })
-  });
-  relay.setDiarize(true);
-  relay.setAsrProvider('volc', { appId: 'a', accessToken: 't' }, { url: 'http://localhost:10097' });
-  relay.handleAudioControl({ action: 'start', source: 'mic' });
-
-  // Doubao supplies the text; CAM++ stamps the speaker id on the final.
-  volcCreated[0].deps.onTranscript({ text: '候选人答案', isFinal: true });
-  await new Promise((r) => setTimeout(r, 0));
-
-  assert.deepEqual(emits, [{ source: 'mic', text: '候选人答案', isFinal: true, speakerId: 1 }]);
 });
 
 test('sim provider replays scripted speaker finals without any cloud ASR key', () => {
