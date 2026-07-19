@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import type { ServerMessage } from '@open-cluely/contract';
+import type { ExpertQuestionResult } from '../src/expert-question';
 import { runExpertQuestionAndEmit } from '../src/ws';
 
 function fakeSocket(messages: ServerMessage[]): any {
@@ -26,7 +27,7 @@ const GENERATED = {
   elapsedMs: 920,
   fellBack: false,
   shouldAsk: true
-} as const;
+} satisfies ExpertQuestionResult;
 
 test('automatic question emits one under-10s Expert result', async () => {
   const messages: ServerMessage[] = [];
