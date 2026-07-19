@@ -2,6 +2,7 @@ import type { InterviewerMode, OutputLanguage } from '@open-cluely/contract';
 
 export interface HeadlessSessionConfig {
   mode?: InterviewerMode;
+  interviewerModel?: string;
   resumeText?: string;
   jobDescription?: string;
   outputLanguage?: OutputLanguage;

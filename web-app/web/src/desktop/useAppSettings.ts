@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import type { InterviewerModel } from '@open-cluely/contract';
 
 const KEYS = {
   aiModel: 'open-cluely.aiModel',
@@ -17,7 +18,12 @@ const KEYS = {
   summaryPromptText: 'open-cluely.summaryPromptText'
 } as const;
 
-export const DEFAULT_AI_MODEL = 'deepseek-v4-pro';
+export const DEFAULT_AI_MODEL: InterviewerModel = 'deepseek-v4-pro';
+const AI_MODELS: ReadonlySet<string> = new Set([
+  'deepseek-v4-pro',
+  'deepseek-v4-flash',
+  'qwen3-vl-plus'
+]);
 /** Default summary prompt mode — use the built-in polished evaluation prompt. */
 export const DEFAULT_SUMMARY_PROMPT_MODE: 'default' | 'custom' = 'default';
 /** Default custom prompt text — empty means not yet set. */
@@ -57,7 +63,7 @@ export const MAX_OPACITY_STEP = 10;
 export type AutoMode = 'agent' | 'interval';
 
 export interface AppSettings {
-  aiModel: string;
+  aiModel: InterviewerModel;
   /** Per-session summary model id. Sent to the server via `configure.summaryModel`. */
   summaryModel: string;
   /**
@@ -105,6 +111,11 @@ function readString(key: string, fallback: string): string {
     return fallback;
   }
   return localStorage.getItem(key) ?? fallback;
+}
+
+function readAiModel(): InterviewerModel {
+  const value = readString(KEYS.aiModel, DEFAULT_AI_MODEL);
+  return AI_MODELS.has(value) ? (value as InterviewerModel) : DEFAULT_AI_MODEL;
 }
 
 /** Read a persisted boolean; only the literal string 'false' turns it off. */
@@ -162,7 +173,7 @@ export interface VolcSettings {
 
 export interface UseAppSettings {
   settings: AppSettings;
-  setAiModel: (value: string) => void;
+  setAiModel: (value: InterviewerModel) => void;
   setSummaryModel: (value: string) => void;
   /** Set the summary prompt mode ('default' | 'custom') and persist to localStorage. */
   setSummaryPromptMode: (mode: 'default' | 'custom') => void;
@@ -193,13 +204,13 @@ const VOLC_FIELD_KEYS: Record<keyof VolcSettings, string> = {
  * Web-only app settings persisted to localStorage. The ASR provider select is
  * now FUNCTIONAL: changing it (and the Volc creds, when 'volc' is chosen) is
  * pushed to the server by the Shell via sendConfigure, which opens the matching
- * recognition session. The AI-model select remains UI continuity only (server
- * model selection is server-driven). The window-opacity step is applied to
- * `.app-shell` by the Shell.
+ * recognition session. The AI-model selection is persisted here and pushed by
+ * the Shell as SessionConfig.interviewerModel. The window-opacity step is
+ * applied to `.app-shell` by the Shell.
  */
 export function useAppSettings(): UseAppSettings {
   const [settings, setSettings] = useState<AppSettings>(() => ({
-    aiModel: readString(KEYS.aiModel, DEFAULT_AI_MODEL),
+    aiModel: readAiModel(),
     summaryModel: readString(KEYS.summaryModel, DEFAULT_SUMMARY_MODEL),
     summaryPromptMode: readString(KEYS.summaryPromptMode, DEFAULT_SUMMARY_PROMPT_MODE) === 'custom' ? 'custom' : 'default',
     summaryPromptText: readString(KEYS.summaryPromptText, DEFAULT_SUMMARY_PROMPT_TEXT),
@@ -216,7 +227,7 @@ export function useAppSettings(): UseAppSettings {
     autoIntervalSec: readNumber(KEYS.autoIntervalSec, DEFAULT_AUTO_INTERVAL_SEC, MIN_AUTO_INTERVAL_SEC)
   }));
 
-  const setAiModel = useCallback((value: string): void => {
+  const setAiModel = useCallback((value: InterviewerModel): void => {
     setSettings((prev) => ({ ...prev, aiModel: value }));
     persist(KEYS.aiModel, value);
   }, []);

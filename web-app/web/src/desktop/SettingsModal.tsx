@@ -108,8 +108,7 @@ const VOLC_RESOURCE_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
  *
  * Wired for the web:
  *  - Interviewer mode + output language → sendConfigure (via the shell).
- *  - AI model + ASR provider → persisted to localStorage (UI continuity only;
- *    server behaviour is fixed for this deployment, noted inline).
+ *  - AI model + ASR provider → persisted and pushed to the current server session.
  *  - Window opacity → applied to `.app-shell` (works on the web) + persisted.
  *  - Mic device → enumerated via navigator.mediaDevices; system audio →
  *    getDisplayMedia info; shortcuts → static read-only list.
@@ -451,7 +450,7 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                为了保持体验连续性，会保存在当前浏览器。本部署的服务端模型选择目前固定，因此暂时不会改变回复。
+                立即同步到当前会话，并从下一次「快速模式」分析开始生效；Expert 与 Customize 仍使用各节点配置的模型。
               </p>
             </div>
             <div className="settings-field">

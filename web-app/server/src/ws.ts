@@ -72,6 +72,7 @@ const audioSourceSchema = z.enum(['mic', 'display']);
 const sessionConfigSchema = z
   .object({
     mode: z.enum(['fast', 'expert', 'expert2', 'customize']).optional(),
+    interviewerModel: z.enum(['deepseek-v4-pro', 'deepseek-v4-flash', 'qwen3-vl-plus']).optional(),
     resumeText: z.string().optional(),
     jobDescription: z.string().optional(),
     outputLanguage: z.enum(['', 'zh', 'en']).optional(),

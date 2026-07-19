@@ -31,6 +31,7 @@ export const GENERATION_TRIGGERS: readonly ['auto', 'manual'];
 
 export type InterviewerMode = 'fast' | 'expert' | 'expert2' | 'customize';
 export type OutputLanguage = '' | 'zh' | 'en';
+export type InterviewerModel = 'deepseek-v4-pro' | 'deepseek-v4-flash' | 'qwen3-vl-plus';
 export type AudioSource = 'mic' | 'display';
 
 /**
@@ -106,6 +107,8 @@ export interface SessionContextState {
 
 export interface SessionConfig {
   mode: InterviewerMode;
+  /** Model used by the two-stage Fast interviewer pipeline. Takes effect on the next analysis. */
+  interviewerModel?: InterviewerModel;
   resumeText: string;
   jobDescription: string;
   outputLanguage: OutputLanguage;

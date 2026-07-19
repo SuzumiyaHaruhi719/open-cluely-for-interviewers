@@ -229,7 +229,7 @@ export function Shell() {
   // Toggle autonomous question generation: persist locally AND tell the server so
   // its trigger monitor starts/stops. The full-config re-push (above) carries
   // `autoGenerate` on every new sessionId, so this delta is enough for the live one.
-  const { setAutoGenerate } = appSettings;
+  const { setAutoGenerate, setAiModel } = appSettings;
   const onToggleAuto = useCallback((): void => {
     const next = !appSettings.settings.autoGenerate;
     setAutoGenerate(next);
@@ -401,6 +401,14 @@ export function Shell() {
     [pushConfig]
   );
 
+  const onAiModelChange = useCallback(
+    (interviewerModel: NonNullable<SessionConfig['interviewerModel']>): void => {
+      setAiModel(interviewerModel);
+      pushConfig({ interviewerModel });
+    },
+    [setAiModel, pushConfig]
+  );
+
   // ── Re-push the FULL config on every new server session (connect + reconnect) ─
   // The server spins up a fresh headless session (default mode 'fast') per WS
   // connection, identified by a new sessionId. The per-change pushConfig calls
@@ -413,6 +421,7 @@ export function Shell() {
     const s = appSettings.settings;
     fullConfigRef.current = {
       mode: config.mode,
+      interviewerModel: s.aiModel,
       outputLanguage: config.outputLanguage,
       jobDescription: config.jobDescription,
       resumeText: config.resumeText,
@@ -704,7 +713,7 @@ export function Shell() {
         onClose={() => setSettingsOpen(false)}
         onModeChange={onModeChange}
         onLanguageChange={onLanguageChange}
-        onAiModelChange={appSettings.setAiModel}
+        onAiModelChange={(value) => onAiModelChange(value as NonNullable<SessionConfig['interviewerModel']>)}
         onSummaryModelChange={(value) => {
           appSettings.setSummaryModel(value);
           pushConfig({ summaryModel: value });

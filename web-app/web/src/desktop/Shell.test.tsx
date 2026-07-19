@@ -139,6 +139,22 @@ describe('Shell', () => {
     expect(lastConfig(ws)).toMatchObject({ mode: 'fast' });
   });
 
+  test('switching the fast AI model persists it and configures the live session', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    expect(lastConfig(ws)).toMatchObject({ interviewerModel: 'deepseek-v4-pro' });
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.change(screen.getByLabelText('快速模式与通用 AI 模型'), {
+      target: { value: 'qwen3-vl-plus' }
+    });
+
+    expect(lastConfig(ws)).toMatchObject({ interviewerModel: 'qwen3-vl-plus' });
+    expect(localStorage.getItem('open-cluely.aiModel')).toBe('qwen3-vl-plus');
+  });
+
   test('rail toggle flips body.rail-collapsed and persists to localStorage', async () => {
     render(<Shell />);
     await flushMount();

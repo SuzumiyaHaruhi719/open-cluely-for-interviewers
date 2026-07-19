@@ -17,7 +17,8 @@ const {
 } = require('../../../services/ai/interviewer-prompts');
 const {
   getDashscopeBaseUrl,
-  getDefaultInterviewerModel
+  getDefaultInterviewerModel,
+  resolveInterviewerModel
 } = require('../../../config');
 const { runPipelineChain, EXPERT_ITERATION_VERSION } = require('./expert-orchestrator');
 const { logExpertRun } = require('./expert-run-logger');
@@ -146,6 +147,11 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     return 'fast';
   }
 
+  function getFastModel() {
+    const state = getAppState() || {};
+    return resolveInterviewerModel(state.dashscopeAiModel || getDefaultInterviewerModel());
+  }
+
   // The active custom pipeline for Customize mode — resolved from the library by
   // app-state.activePipelineId, falling back to the Expert preset if unset/invalid.
   function getActivePipeline() {
@@ -177,7 +183,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     const prompt = buildHookDetectionPrompt(input);
     const { text, usage } = await dashscopeChat({
       apiKey: getApiKey(),
-      model: getDefaultInterviewerModel(),
+      model: getFastModel(),
       prompt,
       temperature: 0.15,
       maxTokens: 600
@@ -189,7 +195,7 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
     const prompt = buildFollowUpQuestionPrompt(input);
     const { text, usage } = await dashscopeChat({
       apiKey: getApiKey(),
-      model: getDefaultInterviewerModel(),
+      model: getFastModel(),
       prompt,
       temperature: 0.4,
       maxTokens: 800
@@ -326,9 +332,9 @@ function createInterviewerRuntime({ getAppState, saveSessionState = null, sendTo
 
     const { resumeChunk, jobDescription, outputLanguage } = getContext();
 
-    // Fast mode runs on the default interviewer model (both stages). Report it via
+    // Fast mode runs on the session-selected interviewer model (both stages). Report it via
     // the progress channel so the card shows the model, like Expert/Customize do.
-    const fastModel = getDefaultInterviewerModel();
+    const fastModel = getFastModel();
     const fastStartedAt = Date.now();
     if (typeof sendToRenderer === 'function') {
       try { sendToRenderer('interviewer-progress', { requestId, phase: 'fast', index: 1, total: 1, status: 'start', model: fastModel }); } catch (_) { /* best-effort */ }

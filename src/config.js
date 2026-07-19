@@ -28,6 +28,14 @@ const DEFAULT_DASHSCOPE_AI_MODEL = DASHSCOPE_AI_MODELS[0];
 // pipeline; swap to deepseek-v4-pro if you want deeper reasoning at higher
 // latency.
 const DEFAULT_INTERVIEWER_MODEL = 'deepseek-v4-flash';
+// Fast interviewer models exposed in the product settings. Keep this narrower
+// than DASHSCOPE_AI_MODELS: every entry must support the text-only interviewer
+// prompt contract on the Anthropic-shape endpoint.
+const INTERVIEWER_AI_MODELS = [
+  'deepseek-v4-pro',
+  'deepseek-v4-flash',
+  'qwen3-vl-plus'
+];
 
 // Programming language configuration.
 // The first language in this list is treated as the default language everywhere.
@@ -182,6 +190,16 @@ function getDefaultInterviewerModel() {
   return DEFAULT_INTERVIEWER_MODEL;
 }
 
+function getInterviewerModels() {
+  return [...INTERVIEWER_AI_MODELS];
+}
+
+function resolveInterviewerModel(modelName) {
+  return INTERVIEWER_AI_MODELS.includes(modelName)
+    ? modelName
+    : DEFAULT_INTERVIEWER_MODEL;
+}
+
 function getProgrammingLanguages() {
   if (!Array.isArray(PROGRAMMING_LANGUAGES) || PROGRAMMING_LANGUAGES.length === 0) {
     throw new Error('Programming languages are not configured. Add at least one language to src/config.js.');
@@ -238,6 +256,8 @@ module.exports = {
   isConfiguredDashscopeAiModel,
   resolveDashscopeAiModel,
   getDefaultInterviewerModel,
+  getInterviewerModels,
+  resolveInterviewerModel,
   getProgrammingLanguages,
   getDefaultProgrammingLanguage,
   isConfiguredProgrammingLanguage,

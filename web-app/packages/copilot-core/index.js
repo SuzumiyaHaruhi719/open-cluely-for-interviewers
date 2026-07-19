@@ -36,6 +36,9 @@ function applyConfig(appState, partial = {}) {
   if (typeof partial.jobDescription === 'string') appState.jobDescription = partial.jobDescription;
   if (typeof partial.outputLanguage === 'string') appState.outputLanguage = partial.outputLanguage;
   if ('activePipelineId' in partial) appState.activePipelineId = partial.activePipelineId || null;
+  if (typeof partial.interviewerModel === 'string') {
+    appState.dashscopeAiModel = config.resolveInterviewerModel(partial.interviewerModel);
+  }
   return appState;
 }
 
@@ -60,6 +63,7 @@ function createHeadlessSession({ apiKey = '', config: cfg = {}, emit = () => {},
   const appState = applyConfig(
     {
       dashscopeApiKey: String(apiKey || ''),
+      dashscopeAiModel: config.getDefaultInterviewerModel(),
       interviewerMode: 'fast',
       resumeText: '',
       jobDescription: '',

@@ -91,6 +91,44 @@ test('configure switches mode and isConfigured tracks the key', () => {
   assert.strictEqual(session.isConfigured(), false);
 });
 
+test('fast-mode model follows the session config and can change mid-session', async () => {
+  const requestedModels = [];
+  const session = createHeadlessSession({
+    apiKey: 'test-key',
+    config: { mode: 'fast', interviewerModel: 'deepseek-v4-pro' }
+  });
+
+  const restore = stubFetchAnthropic((body) => {
+    requestedModels.push(body.model);
+    return JSON.stringify({ score: 0, pivot_signal: false, concrete_hooks: [] });
+  });
+
+  try {
+    await session.analyze({
+      candidateAnswer: 'This answer is deliberately long enough to reach the configured fast model.',
+      requestId: 'model-pro'
+    });
+    session.configure({ interviewerModel: 'qwen3-vl-plus' });
+    await session.analyze({
+      candidateAnswer: 'This second answer verifies that switching models affects the next request.',
+      requestId: 'model-qwen'
+    });
+  } finally {
+    restore();
+  }
+
+  assert.deepStrictEqual(requestedModels, ['deepseek-v4-pro', 'qwen3-vl-plus']);
+  assert.strictEqual(session.getState().dashscopeAiModel, 'qwen3-vl-plus');
+});
+
+test('unsupported fast-mode model falls back to the safe default', () => {
+  const session = createHeadlessSession({
+    apiKey: 'test-key',
+    config: { mode: 'fast', interviewerModel: 'not-a-real-model' }
+  });
+  assert.strictEqual(session.getState().dashscopeAiModel, 'deepseek-v4-flash');
+});
+
 test('headless fast-mode analyze passes outputLanguage into the Stage 2 prompt', async () => {
   const prompts = [];
   const session = createHeadlessSession({
