@@ -461,6 +461,26 @@ describe('Shell', () => {
     expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc', volcAppId: 'app-123' });
   });
 
+  test('editing Doubao credentials does not silently switch the active ASR provider', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'paraformer');
+
+    fireEvent.change(document.getElementById('setting-volc-app-id')!, {
+      target: { value: 'saved-for-later' }
+    });
+
+    expect(localStorage.getItem('open-cluely.volcAppId')).toBe('saved-for-later');
+    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'paraformer');
+    expect(lastConfig(ws)).toMatchObject({
+      asrProvider: 'paraformer',
+      volcAppId: 'saved-for-later'
+    });
+  });
+
   test('selecting the Sim ASR provider configures the generated local injection script', async () => {
     render(<Shell />);
     await flushMount();

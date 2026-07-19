@@ -351,8 +351,10 @@ export function Shell() {
       setVolcSettings(patch);
       // Merge the patch over current settings for the push (state updates async).
       const s = { ...appSettings.settings, ...patch };
+      const provider = normalizeAsrProvider(s.asrProvider);
       pushConfig({
-        asrProvider: 'volc',
+        asrProvider: provider,
+        simScript: simScriptFor(provider),
         volcAppId: s.volcAppId,
         volcAccessToken: s.volcAccessToken,
         volcResourceId: s.volcResourceId,
