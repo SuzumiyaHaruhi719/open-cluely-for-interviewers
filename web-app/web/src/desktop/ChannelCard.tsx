@@ -14,19 +14,11 @@ interface ChannelCardProps {
   title: string;
   state: AudioState;
   disabled: boolean;
+  /** Shared selected microphone device id (empty = OS default). */
+  micDeviceId?: string;
+  onMicDeviceChange?: (deviceId: string) => void;
   onStart: (source: AudioSource) => void;
   onStop: (source: AudioSource) => void;
-}
-
-/** localStorage key audioCapture.ts reads to pick the mic input device ('' = OS default). */
-const MIC_DEVICE_KEY = 'mic.inputDeviceId';
-
-function readStoredMic(): string {
-  try {
-    return localStorage.getItem(MIC_DEVICE_KEY) ?? '';
-  } catch {
-    return '';
-  }
 }
 
 /**
@@ -38,7 +30,6 @@ function readStoredMic(): string {
 function useMicDevices(enabled: boolean) {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [needsPermission, setNeedsPermission] = useState(false);
-  const [selectedId, setSelectedId] = useState<string>(() => readStoredMic());
 
   const load = useCallback(async (withPrompt: boolean) => {
     if (typeof navigator === 'undefined' || !navigator.mediaDevices?.enumerateDevices) {
@@ -74,16 +65,7 @@ function useMicDevices(enabled: boolean) {
     };
   }, [enabled, load]);
 
-  const select = useCallback((deviceId: string) => {
-    try {
-      localStorage.setItem(MIC_DEVICE_KEY, deviceId);
-    } catch {
-      /* ignore */
-    }
-    setSelectedId(deviceId);
-  }, []);
-
-  return { devices, needsPermission, selectedId, select, grant: () => void load(true) };
+  return { devices, needsPermission, grant: () => void load(true) };
 }
 
 /** Status pill text + `data-state` from the capture state. */
@@ -111,6 +93,8 @@ export function ChannelCard({
   title,
   state,
   disabled,
+  micDeviceId = '',
+  onMicDeviceChange = () => {},
   onStart,
   onStop
 }: ChannelCardProps) {
@@ -182,10 +166,10 @@ export function ChannelCard({
               <select
                 className="channel-device-select"
                 style={{ flex: '1 1 auto', minWidth: 0 }}
-                value={mic.selectedId}
+                value={micDeviceId}
                 disabled={micSelectDisabled}
                 title={state.capturing ? '停止后才能切换麦克风' : '选择麦克风输入设备'}
-                onChange={(e) => mic.select(e.target.value)}
+                onChange={(e) => onMicDeviceChange(e.target.value)}
               >
                 <option value="">系统默认麦克风</option>
                 {mic.devices.map((d, i) => (

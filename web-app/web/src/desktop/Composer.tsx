@@ -10,6 +10,8 @@ interface ComposerProps {
   onToggleAutoScroll: () => void;
   onStartAudio: (source: AudioSource) => void;
   onStopAudio: (source: AudioSource) => void;
+  micDeviceId?: string;
+  onMicDeviceChange?: (deviceId: string) => void;
   /** Append a manual note to the candidate-answer buffer. */
   onAddNote: (note: string) => void;
   /**
@@ -32,6 +34,8 @@ export function Composer({
   onToggleAutoScroll,
   onStartAudio,
   onStopAudio,
+  micDeviceId = '',
+  onMicDeviceChange = () => {},
   onAddNote,
   offline = false
 }: ComposerProps) {
@@ -77,6 +81,8 @@ export function Composer({
           title={offline ? '房间麦克风' : '你 · 麦克风'}
           state={audio.mic}
           disabled={disabled}
+          micDeviceId={micDeviceId}
+          onMicDeviceChange={onMicDeviceChange}
           onStart={onStartAudio}
           onStop={onStopAudio}
         />

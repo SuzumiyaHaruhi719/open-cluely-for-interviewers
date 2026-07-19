@@ -655,6 +655,8 @@ export function Shell() {
                 onToggleAutoScroll={() => setAutoScroll((on) => !on)}
                 onStartAudio={onStartAudio}
                 onStopAudio={stopAudio}
+                micDeviceId={appSettings.settings.micDeviceId}
+                onMicDeviceChange={appSettings.setMicDeviceId}
                 onAddNote={onAddNote}
                 offline={offline}
               />
@@ -721,6 +723,8 @@ export function Shell() {
           }
         }}
         onAsrProviderChange={onAsrProviderChange}
+        onMicDeviceChange={appSettings.setMicDeviceId}
+        micDeviceDisabled={capturing}
         onAutoModeChange={onAutoModeChange}
         onAutoIntervalChange={onAutoIntervalChange}
         onVolcSettingsChange={onVolcSettingsChange}

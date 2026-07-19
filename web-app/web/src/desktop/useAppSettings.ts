@@ -14,7 +14,8 @@ const KEYS = {
   autoIntervalSec: 'open-cluely.autoIntervalSec',
   summaryModel: 'open-cluely.summaryModel',
   summaryPromptMode: 'open-cluely.summaryPromptMode',
-  summaryPromptText: 'open-cluely.summaryPromptText'
+  summaryPromptText: 'open-cluely.summaryPromptText',
+  micDeviceId: 'mic.inputDeviceId'
 } as const;
 
 export const DEFAULT_AI_MODEL: InterviewerModel = 'deepseek-v4-flash';
@@ -75,6 +76,8 @@ export interface AppSettings {
    */
   summaryPromptText: string;
   asrProvider: string;
+  /** Shared room-microphone device used by Settings, Composer, and audioCapture. */
+  micDeviceId: string;
   /**
    * Doubao / Volcengine credentials (only meaningful when asrProvider === 'volc').
    * SECURITY: stored in this browser's localStorage — same local-store behaviour
@@ -171,6 +174,7 @@ export interface UseAppSettings {
   /** Set the custom summary prompt text and persist to localStorage. */
   setSummaryPromptText: (text: string) => void;
   setAsrProvider: (value: string) => void;
+  setMicDeviceId: (value: string) => void;
   /** Merge-patch the Volc credential fields (persists each touched field). */
   setVolcSettings: (patch: Partial<VolcSettings>) => void;
   setOpacityStep: (value: number) => void;
@@ -204,6 +208,7 @@ export function useAppSettings(): UseAppSettings {
     summaryPromptMode: readString(KEYS.summaryPromptMode, DEFAULT_SUMMARY_PROMPT_MODE) === 'custom' ? 'custom' : 'default',
     summaryPromptText: readString(KEYS.summaryPromptText, DEFAULT_SUMMARY_PROMPT_TEXT),
     asrProvider: readString(KEYS.asrProvider, DEFAULT_ASR_PROVIDER),
+    micDeviceId: readString(KEYS.micDeviceId, ''),
     volcAppId: readString(KEYS.volcAppId, ''),
     volcAccessToken: readString(KEYS.volcAccessToken, ''),
     volcResourceId: readString(KEYS.volcResourceId, DEFAULT_VOLC_RESOURCE_ID),
@@ -238,6 +243,11 @@ export function useAppSettings(): UseAppSettings {
   const setAsrProvider = useCallback((value: string): void => {
     setSettings((prev) => ({ ...prev, asrProvider: value }));
     persist(KEYS.asrProvider, value);
+  }, []);
+
+  const setMicDeviceId = useCallback((value: string): void => {
+    setSettings((prev) => ({ ...prev, micDeviceId: value }));
+    persist(KEYS.micDeviceId, value);
   }, []);
 
   const setVolcSettings = useCallback((patch: Partial<VolcSettings>): void => {
@@ -288,6 +298,7 @@ export function useAppSettings(): UseAppSettings {
     setSummaryPromptMode,
     setSummaryPromptText,
     setAsrProvider,
+    setMicDeviceId,
     setVolcSettings,
     setOpacityStep,
     setAutoGenerate,

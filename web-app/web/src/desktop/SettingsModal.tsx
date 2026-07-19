@@ -30,6 +30,8 @@ interface SettingsModalProps {
   /** Update the custom summary prompt text (Feature 3). */
   onSummaryPromptTextChange: (text: string) => void;
   onAsrProviderChange: (value: string) => void;
+  onMicDeviceChange: (deviceId: string) => void;
+  micDeviceDisabled: boolean;
   /** Set the autonomous follow-up trigger mode (AI monitor vs fixed 30s). */
   onAutoModeChange: (mode: AutoMode) => void;
   /** Set the interval-mode cooldown in SECONDS (pushed as autoIntervalMs). */
@@ -117,6 +119,8 @@ export function SettingsModal({
   onSummaryPromptModeChange,
   onSummaryPromptTextChange,
   onAsrProviderChange,
+  onMicDeviceChange,
+  micDeviceDisabled,
   onAutoModeChange,
   onAutoIntervalChange,
   onVolcSettingsChange,
@@ -127,7 +131,6 @@ export function SettingsModal({
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
   const { devices } = useMicDevices(open);
-  const [micDeviceId, setMicDeviceId] = useState('');
   const [aiPrompt, setAiPrompt] = useState('');
 
   // Customize-row gallery + AI generator. Only fetches while the modal is open in
@@ -604,8 +607,9 @@ export function SettingsModal({
               <select
                 id="setting-mic-device"
                 className="settings-select"
-                value={micDeviceId}
-                onChange={(e) => setMicDeviceId(e.target.value)}
+                value={settings.micDeviceId}
+                disabled={micDeviceDisabled}
+                onChange={(e) => onMicDeviceChange(e.target.value)}
               >
                 <option value="">系统默认麦克风</option>
                 {devices.map((device) => (
@@ -615,7 +619,9 @@ export function SettingsModal({
                 ))}
               </select>
               <p className="settings-field__desc">
-                授权一次麦克风权限后，会显示设备名称。
+                {micDeviceDisabled
+                  ? '正在采集，请先停止再切换麦克风。'
+                  : '与主采集区共用同一设备；下一次启动立即生效。'}
               </p>
             </div>
 
