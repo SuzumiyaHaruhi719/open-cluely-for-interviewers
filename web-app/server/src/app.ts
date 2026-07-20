@@ -5,7 +5,6 @@ import { WS_PATH } from '@open-cluely/contract';
 import { createHealthRouter } from './routes/health';
 import { createQuestionBankRouter } from './routes/question-bank';
 import { createResumeRouter } from './routes/resume';
-import { createAssistantRouter } from './routes/assistant';
 
 // Resolve ../web/dist (the separately-built browser client) relative to source.
 // At runtime from dist/, __dirname is server/dist, so ../../web/dist; from tsx
@@ -34,7 +33,6 @@ export function createApp(): Express {
   app.use('/api', createHealthRouter());
   app.use('/api/question-bank', createQuestionBankRouter());
   app.use('/api/resume', createResumeRouter());
-  app.use('/api/assistant', createAssistantRouter());
 
   // Serve the built web client if it exists; otherwise skip (built separately).
   const hasWebDist = fs.existsSync(path.join(WEB_DIST, 'index.html'));

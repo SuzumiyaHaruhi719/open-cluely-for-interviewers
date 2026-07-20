@@ -133,7 +133,7 @@ git push origin main
 - Consumes: `createApp(): Express` and Express default 404 behavior.
 - Produces: no mounted `/api/assistant` router; all three legacy endpoint requests receive HTTP 404 without a DashScope call.
 
-- [ ] **Step 1: Write the failing removed-route test**
+- [x] **Step 1: Write the failing removed-route test**
 
 Create `removed-assistant-routes.test.ts`:
 
@@ -162,7 +162,7 @@ test('legacy assistant endpoints are not mounted', async () => {
 });
 ```
 
-- [ ] **Step 2: Run the focused server test and verify RED**
+- [x] **Step 2: Run the focused server test and verify RED**
 
 Run:
 
@@ -172,7 +172,7 @@ npm test --workspace @open-cluely/server -- removed-assistant-routes.test.ts
 
 Expected: FAIL because `/api/assistant/ask`, `/notes`, and `/insights` are still mounted and return 200 with configured test credentials or 503 without them, not 404.
 
-- [ ] **Step 3: Remove the server subsystem**
+- [x] **Step 3: Remove the server subsystem**
 
 Delete the import and mount from `server/src/app.ts`:
 
@@ -184,7 +184,7 @@ app.use('/api/assistant', createAssistantRouter());
 
 Delete `server/src/routes/assistant.ts`. Remove only the three assistant-route cases from `assistant.test.ts`; retain the fetch stub and résumé-chat tests because `/api/resume/chat` still uses DashScope.
 
-- [ ] **Step 4: Run focused and full server tests plus typecheck**
+- [x] **Step 4: Run focused and full server tests plus typecheck**
 
 Run:
 
@@ -196,7 +196,7 @@ npm run typecheck --workspace @open-cluely/server
 
 Expected: PASS and `rg -n "createAssistantRouter|/api/assistant|assistantNotes|assistantInsights" web-app/server/src web-app/web/src` returns no matches.
 
-- [ ] **Step 5: Commit and push the server checkpoint**
+- [x] **Step 5: Commit and push the server checkpoint**
 
 ```bash
 git add web-app/server/src web-app/server/test

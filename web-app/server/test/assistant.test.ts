@@ -74,63 +74,6 @@ const post = (body: unknown): RequestInit => ({
   body: JSON.stringify(body)
 });
 
-test('POST /api/assistant/ask returns the stubbed Anthropic reply', async () => {
-  installFetchStub();
-  try {
-    await withServer(async (base) => {
-      const res = await fetch(`${base}/api/assistant/ask`, post({ prompt: 'What is 2+2?' }));
-      assert.equal(res.status, 200);
-      const body = (await res.json()) as { reply: string };
-      assert.equal(body.reply, STUB_REPLY);
-
-      // The DashScope call used the Anthropic-shape contract.
-      assert.equal(captured.length, 1);
-      const call = captured[0];
-      assert.ok(call.url.endsWith('/v1/messages'), `unexpected url ${call.url}`);
-      assert.equal(call.headers['x-api-key'], 'test-key-123');
-      assert.equal(call.headers['anthropic-version'], '2023-06-01');
-      assert.equal(call.body.messages.at(-1)?.content, 'What is 2+2?');
-      assert.ok(typeof call.body.max_tokens === 'number');
-      assert.ok(call.body.model.length > 0);
-    });
-  } finally {
-    restoreFetch();
-  }
-});
-
-test('POST /api/assistant/ask folds context into the prompt', async () => {
-  installFetchStub();
-  try {
-    await withServer(async (base) => {
-      const res = await fetch(
-        `${base}/api/assistant/ask`,
-        post({ prompt: 'Summarize', context: 'The candidate mentioned Redis.' })
-      );
-      assert.equal(res.status, 200);
-      const content = captured[0].body.messages.at(-1)?.content ?? '';
-      assert.ok(content.includes('The candidate mentioned Redis.'), 'context present');
-      assert.ok(content.includes('Summarize'), 'prompt present');
-    });
-  } finally {
-    restoreFetch();
-  }
-});
-
-test('POST /api/assistant/notes sends a meeting-notes system prompt', async () => {
-  installFetchStub();
-  try {
-    await withServer(async (base) => {
-      const res = await fetch(`${base}/api/assistant/notes`, post({ transcript: 'A: hi\nB: hello' }));
-      assert.equal(res.status, 200);
-      const body = (await res.json()) as { reply: string };
-      assert.equal(body.reply, STUB_REPLY);
-      assert.ok((captured[0].body.system ?? '').toLowerCase().includes('notes'), 'notes system prompt');
-    });
-  } finally {
-    restoreFetch();
-  }
-});
-
 test('POST /api/resume/chat composes the résumé into the DashScope call', async () => {
   installFetchStub();
   try {
