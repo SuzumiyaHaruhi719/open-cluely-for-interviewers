@@ -47,13 +47,23 @@ interface Harness {
   fireTimer: () => void;
   setTimerCalls: number;
   clearTimerCalls: number;
-  analyzeCalls: Array<{ candidateAnswer: string; focusHint: string; anchorSeq?: number }>;
-  monitorCalls: string[];
+  analyzeCalls: Array<{
+    candidateAnswer: string;
+    interviewerContext: string;
+    focusHint: string;
+    anchorSeq?: number;
+  }>;
+  monitorCalls: Array<{ candidateAnswer: string; interviewerContext: string }>;
   monitorStates: string[];
 }
 
+interface MonitorInput {
+  candidateAnswer: string;
+  interviewerContext: string;
+}
+
 function makeTrigger(opts: {
-  decision?: TriggerDecision | ((t: string) => Promise<TriggerDecision> | TriggerDecision);
+  decision?: TriggerDecision | ((input: MonitorInput) => Promise<TriggerDecision> | TriggerDecision);
   throwInMonitor?: boolean;
 } = {}) {
   const h: Harness = {
@@ -79,17 +89,17 @@ function makeTrigger(opts: {
   let pendingFn: (() => void) | null = null;
   let pendingHandle = 1;
 
-  const shouldGenerate = async (recent: string): Promise<TriggerDecision> => {
-    h.monitorCalls.push(recent);
+  const shouldGenerate = async (input: MonitorInput): Promise<TriggerDecision> => {
+    h.monitorCalls.push(input);
     if (opts.throwInMonitor) throw new Error('monitor boom');
     const d = opts.decision ?? yes();
-    return typeof d === 'function' ? d(recent) : d;
+    return typeof d === 'function' ? d(input) : d;
   };
 
   const deps: AutoTriggerDeps = {
     shouldGenerate,
-    runAnalyze: async ({ candidateAnswer, focusHint, anchorSeq }) => {
-      h.analyzeCalls.push({ candidateAnswer, focusHint, anchorSeq });
+    runAnalyze: async ({ candidateAnswer, interviewerContext, focusHint, anchorSeq }) => {
+      h.analyzeCalls.push({ candidateAnswer, interviewerContext, focusHint, anchorSeq });
     },
     onMonitorState: (state) => h.monitorStates.push(state.status),
     now: () => h.nowMs,
@@ -125,6 +135,8 @@ test('fires once when all local gates pass and the monitor says yes', async () =
   await trigger.flush();
 
   assert.equal(h.monitorCalls.length, 1, 'monitor consulted once');
+  assert.equal(h.monitorCalls[0].candidateAnswer, LONG_ANSWER);
+  assert.equal(h.monitorCalls[0].interviewerContext, '');
   assert.equal(h.analyzeCalls.length, 1, 'analyze fired once');
   assert.equal(h.analyzeCalls[0].candidateAnswer, LONG_ANSWER);
   assert.equal(h.analyzeCalls[0].focusHint, 'probe the bug');
@@ -429,7 +441,7 @@ test('a confirmed interviewer turn invalidates an in-flight autonomous chain', a
   await Promise.resolve();
   await Promise.resolve();
 
-  trigger.onInterviewerFinal();
+  trigger.onInterviewerFinal('接下来请另一位面试官继续追问。');
   assert.equal(trigger.getEpoch(), epochAtStart + 1);
   assert.equal(invalidationCalls, 1);
 
@@ -441,7 +453,7 @@ test('an interviewer turn cancels the old answer instead of blending it into the
   const { trigger, h } = makeTrigger({ decision: yes() });
 
   trigger.onCandidateFinal(LONG_ANSWER);
-  trigger.onInterviewerFinal();
+  trigger.onInterviewerFinal('请继续说明下一阶段的处理。');
   await trigger.flush();
   assert.equal(h.analyzeCalls.length, 0, 'the interviewer moving on cancels the pending follow-up');
 
@@ -454,6 +466,65 @@ test('an interviewer turn cancels the old answer instead of blending it into the
     LONG_SUFFIX.trim(),
     'the next follow-up sees only the new answer window'
   );
+});
+
+test('back-to-back panel interviewer turns accumulate before the candidate reply', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes('追问候选人的取舍依据') });
+
+  trigger.onInterviewerFinal('第一位面试官：请介绍你负责的核心改造。');
+  trigger.onInterviewerFinal('第二位面试官：也请说明一致性方面的关键取舍。');
+  trigger.onCandidateFinal(LONG_ANSWER, 52);
+  await trigger.flush();
+
+  assert.deepEqual(h.monitorCalls[0], {
+    candidateAnswer: LONG_ANSWER,
+    interviewerContext:
+      '第一位面试官：请介绍你负责的核心改造。 第二位面试官：也请说明一致性方面的关键取舍。'
+  });
+  assert.equal(
+    h.analyzeCalls[0].interviewerContext,
+    h.monitorCalls[0].interviewerContext,
+    'the delegated Expert receives the same panel context'
+  );
+});
+
+test('a new interviewer turn after candidate evidence replaces stale panel context', async () => {
+  let decisionCount = 0;
+  const { trigger, h } = makeTrigger({
+    decision: () => {
+      decisionCount += 1;
+      return decisionCount === 1 ? no() : yes('追问新的验证证据');
+    }
+  });
+
+  trigger.onInterviewerFinal('第一轮问题：请介绍项目背景。');
+  trigger.onCandidateFinal(LONG_ANSWER, 61);
+  await trigger.flush();
+  trigger.onInterviewerFinal('新一轮问题：请只说明故障后的验证方法。');
+  trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX, 62);
+  await trigger.flush();
+
+  assert.equal(h.monitorCalls.length, 2);
+  assert.deepEqual(h.monitorCalls[1], {
+    candidateAnswer: LONG_SUFFIX.trim(),
+    interviewerContext: '新一轮问题：请只说明故障后的验证方法。'
+  });
+  assert.doesNotMatch(h.monitorCalls[1].candidateAnswer, /第一轮问题|新一轮问题/);
+});
+
+test('reset clears both candidate evidence and panel interviewer context', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes() });
+
+  trigger.onInterviewerFinal('旧面试中的面试官问题。');
+  trigger.reset();
+  trigger.onCandidateFinal(LONG_ANSWER, 71);
+  await trigger.flush();
+
+  assert.deepEqual(h.monitorCalls[0], {
+    candidateAnswer: LONG_ANSWER,
+    interviewerContext: ''
+  });
+  assert.equal(h.analyzeCalls[0].interviewerContext, '');
 });
 
 test('markManualRun blocks an immediate auto fire (shared bookkeeping)', async () => {

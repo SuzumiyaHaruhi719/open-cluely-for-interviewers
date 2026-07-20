@@ -52,13 +52,17 @@ export interface AutoTriggerDeps {
    * Admission decision: given recent candidate evidence, decide whether to fire.
    * Production injects the bounded DeepSeek v4 Flash sentinel from ws.ts.
    */
-  shouldGenerate?: (recentTranscript: string) => Promise<TriggerDecision>;
+  shouldGenerate?: (input: {
+    candidateAnswer: string;
+    interviewerContext: string;
+  }) => Promise<TriggerDecision>;
   /**
    * Fire the shared realtime Expert Flash path. Manual Generate Q uses the same
    * path unless Customize mode is explicitly selected.
    */
   runAnalyze: (opts: {
     candidateAnswer: string;
+    interviewerContext: string;
     focusHint: string;
     anchorSeq?: number;
     monitorTokensUsed?: TokenUsage;
@@ -87,7 +91,7 @@ export interface AutoTrigger {
   /** Record raw ASR activity for interval cadence; agent checkpoints are unaffected. */
   noteSpeechActivity: () => void;
   /** The interviewer started/finished a new turn, so the prior answer window is stale. */
-  onInterviewerFinal: () => void;
+  onInterviewerFinal: (text: string) => void;
   /** Enable/disable autonomous generation. When off, no LLM call is ever made. */
   setAutoGenerate: (enabled: boolean) => void;
   /**
@@ -195,8 +199,8 @@ export function decideLocalTrigger(recentTranscript: string): TriggerDecision {
 }
 
 function makeDefaultShouldGenerate() {
-  return async (recentTranscript: string): Promise<TriggerDecision> =>
-    decideLocalTrigger(recentTranscript);
+  return async (input: { candidateAnswer: string }): Promise<TriggerDecision> =>
+    decideLocalTrigger(input.candidateAnswer);
 }
 
 // --- Factory ----------------------------------------------------------------
@@ -255,6 +259,9 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let lastCandidateFullText = '';
   let latestCandidateAnchor: number | undefined;
   let candidateRevision = 0;
+  const PANEL_CONTEXT_CHARS = 1_500;
+  let interviewerContext = '';
+  let candidateStartedSinceInterviewer = false;
   // Rolling CANDIDATE transcript accumulated SINCE the last fire (auto OR manual).
   // Every follow-up is generated from ONLY this candidate window — not interviewer
   // prompts and not the whole conversation — so the model never probes the
@@ -375,6 +382,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     try {
       await runAnalyze({
         candidateAnswer: text,
+        interviewerContext,
         focusHint: '',
         ...(typeof latestCandidateAnchor === 'number'
           ? { anchorSeq: latestCandidateAnchor }
@@ -412,6 +420,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     const startRevision = candidateRevision;
     const firedRaw = sinceFire;
     const candidateWindow = firedRaw.trim() || text.trim();
+    const interviewerWindow = interviewerContext;
     let delegated = false;
     isGenerating = true;
     activeAuto = true;
@@ -421,7 +430,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     try {
       let decision: TriggerDecision;
       try {
-        decision = await shouldGenerate(candidateWindow);
+        decision = await shouldGenerate({
+          candidateAnswer: candidateWindow,
+          interviewerContext: interviewerWindow
+        });
       } catch {
         emitMonitorState('waiting', monitorStartedAt);
         return;
@@ -438,6 +450,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       emitMonitorState('delegating', monitorStartedAt);
       await runAnalyze({
         candidateAnswer: candidateWindow,
+        interviewerContext: interviewerWindow,
         focusHint: decision.focusHint,
         ...(typeof anchorSeq === 'number' ? { anchorSeq } : {}),
         ...(decision.tokensUsed ? { monitorTokensUsed: decision.tokensUsed } : {})
@@ -490,7 +503,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // timestamp to avoid firing blindly in the middle of audible speech.
   }
 
-  function onInterviewerFinal(): void {
+  function onInterviewerFinal(rawText: string): void {
+    const text = String(rawText ?? '').replace(/\s+/g, ' ').trim();
     lastSpeechAt = now();
     clearPending();
     // A confirmed interviewer turn is the semantic cancellation boundary. It
@@ -503,6 +517,15 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // delta contains only the new answer rather than blending two questions.
     sinceFire = '';
     charsAtLastGen = latestCandidateText.length;
+    if (text) {
+      interviewerContext = candidateStartedSinceInterviewer
+        ? text
+        : `${interviewerContext}${interviewerContext ? ' ' : ''}${text}`;
+      if (interviewerContext.length > PANEL_CONTEXT_CHARS) {
+        interviewerContext = interviewerContext.slice(-PANEL_CONTEXT_CHARS);
+      }
+    }
+    candidateStartedSinceInterviewer = false;
   }
 
   function rememberCandidateFinal(fullCandidateText: string, anchorSeq?: number): void {
@@ -521,6 +544,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
     if (!delta) return;
     candidateRevision += 1;
+    candidateStartedSinceInterviewer = true;
     sinceFire = sinceFire ? `${sinceFire} ${delta}` : delta;
     if (sinceFire.length > 4000) sinceFire = sinceFire.slice(-4000);
   }
@@ -622,6 +646,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     lastCandidateFullText = '';
     latestCandidateAnchor = undefined;
     candidateRevision = 0;
+    interviewerContext = '';
+    candidateStartedSinceInterviewer = false;
     sinceFire = '';
     lastSpeechAt = Number.NEGATIVE_INFINITY;
     // Cancel any armed agent debounce/pending so no late fire from the old chat.

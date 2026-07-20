@@ -21,6 +21,7 @@ test('Flash sentinel asks on a concrete evidence gap with bounded low-latency op
   const decision = await evaluateAutoMonitor(
     {
       candidateAnswer: `${'早期背景。'.repeat(800)}${ANSWER}`,
+      interviewerContext: `${'较早的面试官问题。'.repeat(300)}第二位面试官要求说明复检方法。`,
       jobDescription: `${'物业经理职责。'.repeat(300)}`,
       interviewGuide: ['消防应急', '现场团队管理']
     },
@@ -48,9 +49,12 @@ test('Flash sentinel asks on a concrete evidence gap with bounded low-latency op
   assert.equal(options.timeoutMs, AUTO_MONITOR_TIMEOUT_MS);
   assert.equal(options.maxRetries, 0);
   assert.equal(options.temperature, 0);
-  assert.ok((options.messages[0]?.content.length ?? 0) < 4_500, 'prompt remains bounded');
+  assert.ok((options.messages[0]?.content.length ?? 0) < 6_200, 'prompt remains bounded');
+  assert.match(options.system, /面试官上下文.*不得.*候选人证据/s);
   assert.match(options.messages[0]?.content ?? '', /消防应急/);
   assert.match(options.messages[0]?.content ?? '', /故障复发率/);
+  assert.match(options.messages[0]?.content ?? '', /\[最近面试官上下文\]/);
+  assert.match(options.messages[0]?.content ?? '', /第二位面试官要求说明复检方法/);
 });
 
 test('Flash sentinel returns wait for explicit wait, malformed JSON, and provider failure', async () => {
