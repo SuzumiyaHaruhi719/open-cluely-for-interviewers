@@ -117,6 +117,25 @@ test('weak correction keeps one split grammatical question on the interviewer ro
   );
 });
 
+test('two adjacent fragments never form a continuity group without model-backed outer edges', () => {
+  const input = buildSpeakerClassifierInput([
+    {
+      seq: 0,
+      source: 'mic',
+      speakerId: 2,
+      text: '请结合具体经历说明你如何处理园区突发消防风险'
+    },
+    {
+      seq: 1,
+      source: 'mic',
+      speakerId: 1,
+      text: '那么我会先隔离风险区域，再组织整改和复验。'
+    }
+  ]);
+
+  assert.doesNotMatch(input, /\[continuity-group/);
+});
+
 test('text-only classifier input uses a bounded recent window for incremental role caching', () => {
   const turns: SpeakerTurn[] = Array.from({ length: 40 }, (_, seq) => ({
     seq,

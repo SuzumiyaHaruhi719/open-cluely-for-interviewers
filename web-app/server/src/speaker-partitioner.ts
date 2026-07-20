@@ -109,7 +109,10 @@ function findContinuityGroups(turns: readonly SpeakerTurn[]): SpeakerTurn[][] {
   const groups: SpeakerTurn[][] = [];
   let current: SpeakerTurn[] = [];
   const flush = () => {
-    if (current.length >= 2) groups.push(current);
+    // Two adjacent fragments can still be a real speaker hand-off when ASR omits
+    // punctuation. Require a three-part sandwich so matching outer model roles
+    // can safely constrain only the lower-confidence middle fragment(s).
+    if (current.length >= 3) groups.push(current);
     current = [];
   };
 
