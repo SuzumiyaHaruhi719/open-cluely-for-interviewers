@@ -245,6 +245,31 @@ describe('TranscriptStream online iFlytek speaker bubbles', () => {
     expect(onSetRole).toHaveBeenCalledWith(2, 'candidate');
   });
 
+  it('keeps the live partial visible while finalized speaker bubbles are already present', () => {
+    render(
+      <TranscriptStream
+        offline={false}
+        speakerSegments={[
+          { id: 1, speakerId: 1, role: 'interviewer', text: '请介绍一下你的项目' }
+        ]}
+        transcripts={{
+          mic: { finalText: '请介绍一下你的项目', partial: '' },
+          display: { finalText: '', partial: '我负责的是推荐系统实时特征' }
+        }}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+
+    expect(screen.getByText('请介绍一下你的项目')).toBeInTheDocument();
+    expect(screen.getByText('我负责的是推荐系统实时特征')).toBeInTheDocument();
+    expect(screen.getByText('输入中…')).toBeInTheDocument();
+  });
+
   it('online (offline=false) WITHOUT segments (paraformer/volc): renders the two channel lanes, NO toggles', () => {
     const onSetRole = vi.fn();
     render(

@@ -46,6 +46,25 @@ export interface CaptureHandle {
   stop: () => void;
 }
 
+/**
+ * Chrome can keep a shared tab's audio track flowing to the AudioWorklet while
+ * suppressing local speaker playback. The constraint is still experimental, so
+ * unsupported browsers must fall back without failing capture.
+ */
+export async function suppressLocalAudioPlayback(track: MediaStreamTrack): Promise<boolean> {
+  try {
+    await track.applyConstraints({
+      suppressLocalAudioPlayback: true
+    } as MediaTrackConstraints);
+    const settings = track.getSettings() as MediaTrackSettings & {
+      suppressLocalAudioPlayback?: boolean;
+    };
+    return settings.suppressLocalAudioPlayback === true;
+  } catch {
+    return false;
+  }
+}
+
 /** True if this browser can capture tab/system audio via getDisplayMedia. */
 export function supportsDisplayAudio(): boolean {
   return (
@@ -101,6 +120,10 @@ async function acquireStream(source: AudioSource): Promise<MediaStream> {
         '没有共享到音频。请重新共享浏览器标签页并勾选“共享标签页音频”，或选择“整个屏幕”并勾选“共享系统音频”。原生应用窗口（例如网易云音乐）不会携带音频。'
       );
     }
+    // Keep the shared MP3/meeting tab silent on the interviewer's speakers while
+    // preserving the captured audio track. Unsupported browsers simply continue
+    // with their native monitoring behavior rather than losing transcription.
+    await Promise.all(audioTracks.map((track) => suppressLocalAudioPlayback(track)));
     // We only want the audio. Drop the video track immediately.
     raw.getVideoTracks().forEach((t) => t.stop());
     return new MediaStream(audioTracks);
