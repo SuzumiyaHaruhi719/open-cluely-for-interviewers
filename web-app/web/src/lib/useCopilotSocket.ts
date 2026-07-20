@@ -63,6 +63,8 @@ export interface AudioState {
   level: number;
   /** Friendly capture error (denied / cancelled / unsupported), else null. */
   error: string | null;
+  /** Non-fatal ASR completion notice; never used to mark the capture as failed. */
+  notice?: string | null;
   /** Server-confirmed ASR lifecycle; independent from the browser capture graph. */
   runtimeState?: AsrRuntimeState;
   /** Provider that owns the current or most recently finalized server session. */
@@ -76,7 +78,13 @@ export interface StartAudioOptions {
 }
 
 const EMPTY_LANE: LaneTranscript = { finalText: '', partial: '' };
-const IDLE_AUDIO: AudioState = { capturing: false, level: 0, error: null, runtimeState: 'stopped' };
+const IDLE_AUDIO: AudioState = {
+  capturing: false,
+  level: 0,
+  error: null,
+  notice: null,
+  runtimeState: 'stopped'
+};
 
 export interface CopilotSocket {
   status: SocketStatus;
@@ -523,9 +531,10 @@ export function useCopilotSocket(): CopilotSocket {
             ...prev[message.source],
             provider: message.provider,
             runtimeState: message.state,
-            error:
-              message.state === 'failed' || message.state === 'partial'
-                ? message.message ?? '语音识别未完整结束。'
+            error: message.state === 'failed' ? message.message ?? '语音识别失败。' : null,
+            notice:
+              message.state === 'partial'
+                ? '转写已保存；最后一小段可能未确认。'
                 : null
           }
         }));
@@ -774,7 +783,13 @@ export function useCopilotSocket(): CopilotSocket {
       }
       // Tell the server to finish this source's ASR session. Safe if not open.
       send({ type: 'audio-control', action: 'stop', source });
-      setAudioState(source, { capturing: false, level: 0, runtimeState: 'finalizing' });
+      setAudioState(source, {
+        capturing: false,
+        level: 0,
+        error: null,
+        notice: null,
+        runtimeState: 'finalizing'
+      });
     },
     [send, setAudioState]
   );
@@ -784,7 +799,7 @@ export function useCopilotSocket(): CopilotSocket {
       // Already capturing — no-op (idempotent toggle).
       if (captureRef.current[source]) return;
 
-      setAudioState(source, { error: null, runtimeState: 'connecting' });
+      setAudioState(source, { error: null, notice: null, runtimeState: 'connecting' });
       seqRef.current[source] = 0;
 
       if (options?.skipLocalCapture) {
@@ -822,7 +837,13 @@ export function useCopilotSocket(): CopilotSocket {
         const message =
           err instanceof AudioCaptureError ? err.message : '无法启动音频采集。';
         send({ type: 'audio-control', action: 'stop', source });
-        setAudioState(source, { capturing: false, level: 0, error: message, runtimeState: 'failed' });
+        setAudioState(source, {
+          capturing: false,
+          level: 0,
+          error: message,
+          notice: null,
+          runtimeState: 'failed'
+        });
       }
     },
     [send, setAudioState]

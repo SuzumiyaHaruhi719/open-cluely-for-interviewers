@@ -288,6 +288,28 @@ describe('useCopilotSocket', () => {
     expect(result.current.speakerSegments.at(-1)?.role).toBe('candidate');
   });
 
+  test('partial ASR finalization is a non-fatal Chinese notice, not a capture error', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    act(() => {
+      MockWebSocket.last().emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'xfyun',
+        state: 'partial',
+        message: 'iFlytek finalization timeout'
+      });
+    });
+
+    await waitFor(() => expect(result.current.audio.mic.runtimeState).toBe('partial'));
+    expect(result.current.audio.mic.error).toBeNull();
+    expect(result.current.audio.mic.notice).toBe('转写已保存；最后一小段可能未确认。');
+  });
+
   test('startAudio with skipLocalCapture opens the server ASR session without browser media capture', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {

@@ -91,5 +91,21 @@ describe('ChannelCard microphone selection', () => {
     );
     expect(screen.getByText('错误')).toBeInTheDocument();
     expect(screen.queryByText('实时')).not.toBeInTheDocument();
+
+    rerender(
+      <ChannelCard
+        {...baseProps}
+        state={{
+          capturing: false,
+          level: 0,
+          error: null,
+          notice: '转写已保存；最后一小段可能未确认。',
+          runtimeState: 'partial'
+        }}
+      />
+    );
+    expect(screen.getByText('部分完成')).toBeInTheDocument();
+    expect(screen.queryByText('错误')).not.toBeInTheDocument();
+    expect(screen.getByText('转写已保存；最后一小段可能未确认。')).toBeInTheDocument();
   });
 });
