@@ -45,8 +45,8 @@ export interface ServerConfig {
    * `autoCooldownMs`    — min gap between auto fires (anti-spam).
    * `autoMinNewChars`   — min NEW interviewee transcript chars since the last
    *                       generation before the monitor may even consider firing.
-   * `autoDebounceMs`    — quiet period after a final segment before evaluating,
-   *                       so rapid finals coalesce into one decision (act on a pause).
+   * `autoDebounceMs`    — semantic-final coalescing window before evaluating;
+   *                       raw PCM activity does not reset it.
    * `autoMonitorModel`  — the thinking-off Flash model the trigger gate calls.
    */
   readonly autoCooldownMs: number;
@@ -67,9 +67,8 @@ const DEFAULT_VOLC_SAMPLE_RATE = 16000;
 const DEFAULT_XFYUN_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
 // Auto-trigger defaults (see ServerConfig + auto-trigger.ts). Tuned for a live
 // interview cadence: ~20s between auto fires, ~120 new chars (a sentence or two)
-// of fresh candidate speech, and a 3s no-speech window before deciding. Live ASR
-// partials cancel this timer, so Expert never talks over an active turn while the
-// remaining ~7s budget still fits the under-10s question SLO.
+// of fresh candidate speech, and a 3s semantic-final coalescing window. Live ASR
+// partials do not cancel confirmed evidence; confirmed interviewer turns do.
 const DEFAULT_AUTO_COOLDOWN_MS = 20000;
 const DEFAULT_AUTO_MIN_NEW_CHARS = 120;
 const DEFAULT_AUTO_DEBOUNCE_MS = 3000;

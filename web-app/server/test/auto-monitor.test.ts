@@ -6,9 +6,15 @@ import {
   evaluateAutoMonitor
 } from '../src/auto-monitor';
 import type { ChatOptions } from '../src/dashscope';
+import { EXPERT_QUESTION_TIMEOUT_MS } from '../src/expert-question';
 
 const ANSWER =
   '我负责园区消防整改，先核对巡检记录，再协调工程团队修复，但最终复检耗时和故障复发率还没有说明。';
+
+test('sentinel gets a viable network window while the sequential hard budget stays below 10s', () => {
+  assert.ok(AUTO_MONITOR_TIMEOUT_MS >= 2_800);
+  assert.ok(AUTO_MONITOR_TIMEOUT_MS + EXPERT_QUESTION_TIMEOUT_MS <= 9_800);
+});
 
 test('Flash sentinel asks on a concrete evidence gap with bounded low-latency options', async () => {
   const calls: ChatOptions[] = [];

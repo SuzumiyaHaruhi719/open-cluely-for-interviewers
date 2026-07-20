@@ -30,8 +30,8 @@ The sentinel is continuous at semantic checkpoints, not on raw PCM frames: each 
 
 ## Latency and failure behavior
 
-- Sentinel: `deepseek-v4-flash`, thinking disabled, no retries, bounded recent context, 1.8-second timeout.
-- Expert: existing `deepseek-v4-flash`, thinking disabled, no retries, 8-second timeout.
+- Sentinel: `deepseek-v4-flash`, thinking disabled, no retries, bounded recent context, 3-second timeout. Repeated live probes showed 1.8- and 2.2-second ceilings discarded valid responses near the boundary.
+- Expert: existing `deepseek-v4-flash`, thinking disabled, no retries, 6.5-second timeout. Its deterministic fallback still guarantees a delegated question when the model exceeds this ceiling.
 - The sequential hard ceiling is kept below ten seconds apart from negligible local serialization.
 - Sentinel timeout, invalid JSON, or provider error fails closed as `wait` and may retry on later candidate evidence.
 - Expert timeout or invalid output uses the existing evidence-anchored Chinese fallback so a valid delegation never ends with a full progress bar and no question.

@@ -2,7 +2,7 @@ import type { FollowUpOutput, OutputLanguage, TokenUsage } from '@open-cluely/co
 import { chat, type ChatOptions } from './dashscope';
 
 export const EXPERT_QUESTION_MODEL = 'deepseek-v4-flash';
-export const EXPERT_QUESTION_TIMEOUT_MS = 8_000;
+export const EXPERT_QUESTION_TIMEOUT_MS = 6_500;
 export const EXPERT_QUESTION_VERSION = 'expert_flash_v2';
 
 const EXPERT_QUESTION_SYSTEM = `
@@ -114,6 +114,8 @@ function firstQuestion(value: unknown): string {
 }
 
 const GENERIC_QUESTION = /(?:能否|可以|请)?(?:详细)?(?:展开|多)?(?:说说|介绍一下)|tell\s+me\s+more|could\s+you\s+elaborate/i;
+const COMPOUND_EVIDENCE_QUESTION =
+  /(?:多长时间|多久|多少|是多少|哪些|什么|如何|怎么|为什么|是否)[^？?]{0,120}(?:、|以及|并且|同时|和)[^？?]{0,120}(?:多长时间|多久|多少|是多少|哪些|什么|如何|怎么|为什么|是否)/;
 
 function hasUngroundedEnglish(text: string, source: string): boolean {
   const tokens = text.match(/[A-Za-z][A-Za-z0-9+.#/_-]*/g) ?? [];
@@ -143,6 +145,7 @@ function parseOutput(
     primary.length > 180 ||
     !/[？?]$/.test(primary) ||
     GENERIC_QUESTION.test(primary) ||
+    COMPOUND_EVIDENCE_QUESTION.test(primary) ||
     rationale.length < 10 ||
     expected.length < 6 ||
     anchors.length === 0

@@ -130,3 +130,19 @@ test('trims compound questions to exactly one decision-ready question', async ()
   assert.equal(result.output.primary_question, '盲演中你亲自做了哪个关键决策？');
   assert.equal((result.output.primary_question.match(/[？?]/g) ?? []).length, 1);
 });
+
+test('rejects a single sentence that bundles multiple evidence dimensions', async () => {
+  const result = await generateExpertQuestion(INPUT, {
+    chat: async () => JSON.stringify({
+      should_ask: true,
+      primary_question: '那次复检用了多长时间、复发率是多少，以及你做了哪些关键决策？',
+      rationale_for_interviewer: '候选人的结果、验证和个人决策都不清楚，需要继续核实。',
+      anchor_quotes: ['消防盲演'],
+      expected_evidence_yield: '复检耗时、复发率和个人决策'
+    })
+  });
+
+  assert.equal(result.fellBack, true);
+  assert.doesNotMatch(result.output.primary_question, /多长时间.*复发率.*关键决策/);
+  assert.equal((result.output.primary_question.match(/[？?]/g) ?? []).length, 1);
+});

@@ -1,16 +1,15 @@
 // ============================================================================
 // Autonomous question-generation trigger monitor (per WebSocket session).
 // ----------------------------------------------------------------------------
-// We do not generate on every interviewee sentence. A single-call live path
-// admits complete candidate thoughts locally, then ws.ts runs one Expert Flash
-// call that selects the evidence gap and renders the question together:
+// We do not generate on every interviewee sentence. Semantic candidate finals
+// feed a two-stage, thinking-disabled Flash workflow:
 //
 //   1. Local gates (no LLM, ~free): auto-generate on; not already generating;
 //      cooldown elapsed since the last fire; enough NEW transcript since then;
-//      and a short debounce so rapid finals coalesce into one decision (we act on
-//      a conversational pause, not on every partial sentence boundary).
-//   2. Local completeness/filler check: no network call and no second-model
-//      latency. The Expert generator owns the semantic `should_ask` decision.
+//      and a short SEMANTIC debounce so rapid finalized chunks coalesce. Raw PCM
+//      never erases or postpones a role-confirmed checkpoint.
+//   2. Flash sentinel: decide `wait` or delegate one concrete evidence gap. When
+//      delegated, ws.ts runs the separate Expert Flash question generator.
 //
 // On a green light it marks `isGenerating`, runs the injected low-latency auto
 // question path, and on settle records the fire so the cooldown + new-chars gates
@@ -39,7 +38,7 @@ export interface AutoTriggerConfig {
   cooldownMs: number;
   minNewChars: number;
   debounceMs: number;
-  /** Deprecated compatibility field; admission no longer calls a model. */
+  /** Thinking-disabled Flash sentinel model id. */
   monitorModel: string;
   /** Fixed wall-clock cadence (ms) for 'interval' mode. Default 30000. */
   intervalMs: number;
@@ -50,9 +49,8 @@ export type TimerHandle = unknown;
 
 export interface AutoTriggerDeps {
   /**
-   * Admission decision: given the recent transcript, decide whether to fire.
-   * Production uses a deterministic completeness/filler check; injection remains
-   * for focused trigger-policy tests.
+   * Admission decision: given recent candidate evidence, decide whether to fire.
+   * Production injects the bounded DeepSeek v4 Flash sentinel from ws.ts.
    */
   shouldGenerate?: (recentTranscript: string) => Promise<TriggerDecision>;
   /**
@@ -86,7 +84,7 @@ export interface AutoTriggerDeps {
 export interface AutoTrigger {
   /** A new interviewee FINAL segment arrived; `fullCandidateText` is the accumulated final text. */
   onCandidateFinal: (fullCandidateText: string, anchorSeq?: number) => void;
-  /** Any live ASR activity (partial or final) postpones a pending question. */
+  /** Record raw ASR activity for interval cadence; agent checkpoints are unaffected. */
   noteSpeechActivity: () => void;
   /** The interviewer started/finished a new turn, so the prior answer window is stale. */
   onInterviewerFinal: () => void;
@@ -148,12 +146,10 @@ export interface AutoTrigger {
   flush: () => Promise<void>;
 }
 
-// --- Default local admission gate ------------------------------------------
+// --- Fail-safe local admission gate ----------------------------------------
 
-// Gap detection and question rendering now happen together inside the single
-// Expert Flash call. Keeping a separate LLM monitor doubled latency and could
-// consume the entire SLO before generation even started. This local gate only
-// rejects obvious filler; the Expert call makes the semantic should_ask decision.
+// Production ws.ts injects the Flash sentinel. This deterministic gate remains
+// as a dependency-safe fallback for isolated trigger consumers and focused tests.
 const FILLER_ONLY = /^(?:好(?:的)?|谢谢(?:老师)?|嗯+|啊+|这个|怎么说|没有了|ok|okay)[，,。.啊嗯呢吧\s]*$/i;
 const INCOMPLETE_ENDING = /(?:因为|由于|所以|然后|但是|不过|如果|只要|比如|例如|包括|以及|并且|而且|同时|接下来|首先|其次|最后|让|把|被|对|和|与|或|because|then|but|if|for example|and|or)[，,、。.!！?？:：;；\s]*$/i;
 const TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;

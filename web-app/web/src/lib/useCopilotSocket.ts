@@ -443,9 +443,9 @@ export function useCopilotSocket(): CopilotSocket {
         // progress UI and show it. Previously this cleared isAnalyzing only when
         // the result's requestId matched the adopted one; on any mismatch (the
         // autonomous adoption path is fragile) isAnalyzing stayed true, so the
-        // single-bubble render kept the card hidden and the progress bar stuck
-        // ("bar fills to 100%, no question"). With the single-bubble model the
-        // latest result is simply the one shown, so unconditional is correct.
+        // old singleton render kept the card hidden and progress stuck. Results
+        // now accumulate as timeline events, but terminal cleanup is still global
+        // because the server enforces one visible generation at a time.
         activeRequestRef.current = null;
         setIsAnalyzing(false);
         setProgress(null);

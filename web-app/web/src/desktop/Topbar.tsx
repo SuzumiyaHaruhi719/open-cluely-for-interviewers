@@ -93,9 +93,8 @@ interface TopbarProps {
  * Live-interview topbar, 1:1 with the desktop `.topbar`. The mode/REC/ASR pills
  * reflect real state (mode from config; REC derived from capture + socket; ASR
  * shows the active provider — Paraformer, 讯飞, or 豆包 — from settings). "Generate Q"
- * runs a copilot analysis
- * (follow-up question); "Ask AI" + the meeting-notes / insights menu items call
- * the assistant HTTP endpoints and surface replies in the results panel. The
+ * runs a manual copilot analysis; the Auto pill exposes the continuous Flash
+ * sentinel state. Meeting-notes / insights call the assistant HTTP endpoints. The
  * screenshot + Screen AI actions stay faithful-but-inert stubs (image capture
  * is out of scope; title="Coming soon").
  */

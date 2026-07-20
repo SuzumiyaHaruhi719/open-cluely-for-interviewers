@@ -17,7 +17,7 @@
 
 ## 3. Continuous Flash sentinel
 
-- Add a strict, thinking-disabled `deepseek-v4-flash` sentinel with a 1.8-second timeout, no retries, bounded candidate/JD/guide context, and fail-closed parsing.
+- Add a strict, thinking-disabled `deepseek-v4-flash` sentinel with a 3-second timeout, no retries, bounded candidate/JD/guide context, and fail-closed parsing.
 - Make semantic candidate finals schedule evaluation independently of raw PCM activity.
 - Keep confirmed interviewer turns, Stop, Auto off, manual generation, and New Interview as hard stale-work boundaries.
 - Once delegated, make the Expert path always emit a validated question or deterministic fallback.

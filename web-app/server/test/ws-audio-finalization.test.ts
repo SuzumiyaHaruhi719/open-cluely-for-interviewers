@@ -69,7 +69,7 @@ test('audio finalization drains the provider before the final speaker partition'
   ]);
 });
 
-test('audible PCM postpones Auto even when the ASR provider emits no partial', async () => {
+test('audible PCM reaches the cadence activity tracker even when ASR emits no partial', async () => {
   const order: string[] = [];
   const samples = new Int16Array(1600).fill(2400);
   const pcm = Buffer.from(samples.buffer).toString('base64');
@@ -98,7 +98,7 @@ test('audible PCM postpones Auto even when the ASR provider emits no partial', a
   assert.deepEqual(order, ['speech', 'audio']);
 });
 
-test('silent PCM does not postpone a valid completed answer', async () => {
+test('silent PCM does not reach the cadence activity tracker', async () => {
   const order: string[] = [];
   const pcm = Buffer.alloc(3200).toString('base64');
 

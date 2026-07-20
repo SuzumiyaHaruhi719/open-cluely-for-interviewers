@@ -2,7 +2,7 @@ import type { TokenUsage } from '@open-cluely/contract';
 import { chat, type ChatOptions } from './dashscope';
 
 export const AUTO_MONITOR_MODEL = 'deepseek-v4-flash';
-export const AUTO_MONITOR_TIMEOUT_MS = 1_800;
+export const AUTO_MONITOR_TIMEOUT_MS = 3_000;
 
 const EMPTY_TOKENS: TokenUsage = { input: 0, output: 0, total: 0 };
 const CANDIDATE_WINDOW_CHARS = 2_000;

@@ -409,9 +409,9 @@ interface RunExpertQuestionDeps {
 }
 
 /**
- * The production realtime Expert path shared by automatic and manual generation.
- * One thinking-disabled Flash call performs gap selection + question rendering;
- * legacy Fast / Expert 1.0 / Expert 2.0 chains are intentionally bypassed.
+ * The production realtime Expert renderer shared by automatic and manual runs.
+ * Automatic runs arrive only after the separate thinking-disabled Flash sentinel
+ * delegates a concrete gap; legacy multi-block pipelines remain bypassed.
  */
 export async function runExpertQuestionAndEmit(
   ws: WebSocket,
