@@ -8,6 +8,8 @@ const MIN_CONTENT_CHARS = 4;
 const MIN_TURNS_PER_NATIVE_SPEAKER = 2;
 const MIN_TOTAL_TURNS = 6;
 const REFRESH_TURNS = 3;
+const MAX_CLASSIFIER_TURNS = 12;
+const MAX_CLASSIFIER_TURN_CHARS = 360;
 
 export interface SpeakerTurn {
   seq: number;
@@ -133,17 +135,60 @@ export function parseSpeakerClassification(
   return { speakerRoles, turnRoles, model };
 }
 
+function compactTurnText(text: string): string {
+  return String(text || '').replace(/\s+/g, ' ').trim().slice(0, MAX_CLASSIFIER_TURN_CHARS);
+}
+
+function formatClassifierTurn(turn: SpeakerTurn): string {
+  return `[seq=${turn.seq} source=${turn.source} speaker=${
+    typeof turn.speakerId === 'number' ? turn.speakerId : 'none'
+  }] ${compactTurnText(turn.text)}`;
+}
+
+/**
+ * Keep long interviews inside a predictable input/output budget. Native ASR
+ * needs representative evidence per acoustic cluster, not every verbatim turn;
+ * text-only ASR is classified incrementally over a recent turn window.
+ */
+export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): string {
+  const nativeTurns = turns.filter((turn) => typeof turn.speakerId === 'number');
+  if (nativeTurns.length > 0) {
+    const bySpeaker = new Map<number, SpeakerTurn[]>();
+    for (const turn of nativeTurns) {
+      const speakerId = turn.speakerId as number;
+      const group = bySpeaker.get(speakerId) ?? [];
+      group.push(turn);
+      bySpeaker.set(speakerId, group);
+    }
+    const representatives = [...bySpeaker.values()]
+      .flatMap((group) =>
+        group.length <= 4 ? group : [...group.slice(0, 2), ...group.slice(-2)]
+      )
+      .sort((a, b) => a.seq - b.seq)
+      .slice(0, MAX_CLASSIFIER_TURNS);
+    return [
+      '[classification-mode=native-clusters]',
+      '请为每个出现的 speakerId 返回一条 speakerRoles；turnRoles 必须返回空数组。',
+      ...representatives.map(formatClassifierTurn)
+    ]
+      .join('\n')
+      .slice(0, MAX_INPUT_CHARS);
+  }
+
+  const recentTurns = turns.slice(-MAX_CLASSIFIER_TURNS);
+  return [
+    '[classification-mode=turns-without-clusters]',
+    '请为每个列出的 seq 返回一条 turnRoles；speakerRoles 必须返回空数组。',
+    ...recentTurns.map(formatClassifierTurn)
+  ]
+    .join('\n')
+    .slice(0, MAX_INPUT_CHARS);
+}
+
 export async function classifySpeakerTurns(
   turns: readonly SpeakerTurn[]
 ): Promise<SpeakerClassification> {
-  const transcript = turns
-    .map((turn) =>
-      `[seq=${turn.seq} source=${turn.source} speaker=${
-        typeof turn.speakerId === 'number' ? turn.speakerId : 'none'
-      }] ${turn.text}`
-    )
-    .join('\n')
-    .slice(-MAX_INPUT_CHARS);
+  const transcript = buildSpeakerClassifierInput(turns);
   const text = await chat({
     system: CLASSIFIER_SYSTEM,
     messages: [{ role: 'user', content: transcript }],
@@ -195,6 +240,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
   let singleMic = false;
   let turns: SpeakerTurn[] = [];
   let fedCandidateSeqs = new Set<number>();
+  let cachedSpeakerRoles = new Map<number, SpeakerRole>();
+  let cachedTurnRoles = new Map<number, SpeakerRole>();
   let scheduledAt = 0;
   let epoch = 0;
   let queue: Promise<void> = Promise.resolve();
@@ -212,7 +259,13 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       }
       if (scheduledEpoch !== epoch) return;
 
+      // A timeout or truncated JSON near the end of a long interview must not
+      // erase a role map that was already established live. Re-apply cached
+      // roles through the external map so a sticky manual correction still wins.
       const roleBySpeaker = new Map<number, SpeakerRole>();
+      for (const [speakerId, role] of cachedSpeakerRoles) {
+        roleBySpeaker.set(speakerId, deps.applySpeakerRole(speakerId, role));
+      }
       for (const assignment of result.speakerRoles) {
         if (assignment.role === 'unknown') continue;
         roleBySpeaker.set(
@@ -220,7 +273,12 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           deps.applySpeakerRole(assignment.speakerId, assignment.role)
         );
       }
-      const roleByTurn = new Map(result.turnRoles.map((assignment) => [assignment.seq, assignment.role]));
+      cachedSpeakerRoles = new Map(roleBySpeaker);
+      const roleByTurn = new Map(cachedTurnRoles);
+      for (const assignment of result.turnRoles) {
+        if (assignment.role !== 'unknown') roleByTurn.set(assignment.seq, assignment.role);
+      }
+      cachedTurnRoles = new Map(roleByTurn);
       const segments = coalesce(
         snapshot.map((turn): SpeakerPartitionSegment => {
           const hasClusterRole =
@@ -280,6 +338,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       epoch += 1;
       turns = [];
       fedCandidateSeqs = new Set<number>();
+      cachedSpeakerRoles = new Map<number, SpeakerRole>();
+      cachedTurnRoles = new Map<number, SpeakerRole>();
       scheduledAt = 0;
       queue = Promise.resolve();
     }

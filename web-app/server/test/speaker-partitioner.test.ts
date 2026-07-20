@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  buildSpeakerClassifierInput,
   createSpeakerPartitioner,
   type SpeakerClassification,
   type SpeakerTurn
@@ -12,6 +13,75 @@ function classification(
 ): SpeakerClassification {
   return { speakerRoles, turnRoles, model: 'deepseek-v4-flash' };
 }
+
+test('native-cluster classifier input stays compact across a full interview', () => {
+  const turns: SpeakerTurn[] = Array.from({ length: 60 }, (_, seq) => ({
+    seq,
+    source: 'mic',
+    speakerId: seq > 57 ? 4 : seq > 54 ? 3 : seq % 2 === 0 ? 1 : 2,
+    text: `${seq % 2 === 0 ? '候选人回答' : '面试官提问'}${seq}：${'具体证据'.repeat(120)}`
+  }));
+
+  const input = buildSpeakerClassifierInput(turns);
+
+  assert.match(input, /mode=native-clusters/);
+  assert.match(input, /speaker=1/);
+  assert.match(input, /speaker=2/);
+  assert.match(input, /speaker=3/);
+  assert.match(input, /speaker=4/);
+  assert.match(input, /turnRoles 必须返回空数组/);
+  assert.ok(input.length <= 6_000);
+  assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12, 'only representative turns should be sent');
+});
+
+test('text-only classifier input uses a bounded recent window for incremental role caching', () => {
+  const turns: SpeakerTurn[] = Array.from({ length: 40 }, (_, seq) => ({
+    seq,
+    source: 'mic',
+    text: `${seq}：${'一段足够长的转写'.repeat(80)}`
+  }));
+
+  const input = buildSpeakerClassifierInput(turns);
+
+  assert.match(input, /mode=turns-without-clusters/);
+  assert.doesNotMatch(input, /\[seq=0 /);
+  assert.match(input, /\[seq=39 /);
+  assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12);
+  assert.ok(input.length <= 6_000);
+});
+
+test('a failed final classification preserves the last stable live role map', async () => {
+  const partitions: any[] = [];
+  let calls = 0;
+  const p = createSpeakerPartitioner({
+    classify: async () => {
+      calls += 1;
+      return calls === 1
+        ? classification([
+            { speakerId: 1, role: 'candidate', confidence: 0.96 },
+            { speakerId: 2, role: 'interviewer', confidence: 0.97 }
+          ])
+        : classification([]);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setSingleMic(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '我负责园区运营。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '你如何处理消防风险？' });
+  p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我先隔离现场并组织复验。' });
+  p.record({ seq: 3, source: 'mic', speakerId: 2, text: '结果如何留档？' });
+  await p.flush();
+  await p.finalize();
+
+  assert.equal(calls, 2);
+  assert.equal(partitions.at(-1).status, 'final');
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => segment.role),
+    ['candidate', 'interviewer', 'candidate', 'interviewer']
+  );
+});
 
 test('native speaker clusters are mapped live and candidate history is released once', async () => {
   const partitions: any[] = [];
