@@ -140,6 +140,23 @@ test('keeps the previous spotlight mounted until the next target is ready', asyn
   expect(screen.getByText(/② 采集候选人音频/)).toBeInTheDocument();
 });
 
+test('does not horizontally center targets inside the clipped workspace', async () => {
+  const onToggleRail = vi.fn();
+  render(<TourHarness onToggleRail={onToggleRail} />);
+
+  setRect('btn-new-interview', () => ({ left: 100, top: 80, width: 140, height: 40 }));
+
+  await advance(900);
+  fireEvent.click(screen.getByRole('button', { name: '开始导览 →' }));
+  await advance(1);
+
+  expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({
+    behavior: 'smooth',
+    block: 'center',
+    inline: 'nearest'
+  });
+});
+
 test('replays immediately when the parent changes replayToken without reloading the page', async () => {
   sessionStorage.setItem('tour-shown-this-session', '1');
   const onToggleRail = vi.fn();

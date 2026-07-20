@@ -262,7 +262,11 @@ export function SpotlightTour({ replayToken = 0 }: SpotlightTourProps) {
       if (el) {
         // Suppress scroll-triggered reposition during programmatic scroll.
         isScrollingRef.current = true;
-        el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        // Keep the target vertically visible without centering it inside every
+        // horizontal scroll container. `inline: center` made the clipped
+        // workspace grid scroll sideways on narrow windows, shifting the whole
+        // interview surface while the spotlight moved to the AI action.
+        el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
       }
 
       setTimeout(() => {
