@@ -84,7 +84,7 @@ export function startTour(opts = {}) {
   // Remove any existing tour elements
   document.querySelectorAll('.tour-mask, .tour-spotlight-ring, .tour-tooltip, .tour-arrow').forEach(el => el.remove());
 
-  // Create mask (dark backdrop with cutout)
+  // Create a transparent interaction mask; the ring alone provides focus.
   const mask = document.createElement('div');
   mask.className = 'tour-mask';
   mask.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)';

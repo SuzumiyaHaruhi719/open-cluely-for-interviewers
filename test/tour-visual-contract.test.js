@@ -14,11 +14,13 @@ function cssRule(source, selector) {
   return match[1];
 }
 
-test('tour masks keep the real interface sharp instead of blurring it', () => {
+test('tour masks keep the real interface fully visible without dimming or blur', () => {
   for (const file of CSS_FILES) {
     const css = fs.readFileSync(file, 'utf8');
     const mask = cssRule(css, '.tour-mask');
     assert.doesNotMatch(mask, /backdrop-filter/, `${file} still blurs the interface`);
+    assert.match(css, /--tour-mask:\s*transparent\s*;/, `${file} does not define a transparent mask`);
+    assert.doesNotMatch(css, /--tour-mask:\s*rgba\(/, `${file} still dims the interface`);
   }
 });
 

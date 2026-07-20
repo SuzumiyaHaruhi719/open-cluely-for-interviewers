@@ -5,7 +5,7 @@
  */
 
 :root {
-  --tour-mask: rgba(10, 10, 15, 0.28);
+  --tour-mask: transparent;
   --tour-surface: rgba(28, 28, 42, 0.97);
   --tour-surface-end: rgba(20, 20, 32, 0.97);
   --tour-border: rgba(124, 140, 248, 0.2);
@@ -22,7 +22,6 @@
 }
 
 html[data-theme="light"] {
-  --tour-mask: rgba(15, 23, 42, 0.14);
   --tour-surface: rgba(255, 255, 255, 0.98);
   --tour-surface-end: rgba(248, 250, 252, 0.98);
   --tour-border: rgba(99, 102, 241, 0.3);
@@ -37,7 +36,7 @@ html[data-theme="light"] {
   --tour-ring-inner: rgba(255, 255, 255, 0.68);
 }
 
-/* Dark backdrop with SVG cutout for the spotlight hole */
+/* Transparent interaction layer; the animated ring provides visual focus. */
 .tour-mask {
   position: fixed;
   inset: 0;
