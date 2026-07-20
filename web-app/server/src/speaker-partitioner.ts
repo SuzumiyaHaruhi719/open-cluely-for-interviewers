@@ -11,6 +11,7 @@ const MIN_TOTAL_TURNS = 6;
 const REFRESH_TURNS = 3;
 const MAX_CLASSIFIER_TURNS = 12;
 const MAX_CLASSIFIER_TURN_CHARS = 360;
+const MIN_TURN_OVERRIDE_CONFIDENCE = 0.85;
 
 export interface SpeakerTurn {
   seq: number;
@@ -63,6 +64,8 @@ export interface SpeakerPartitionerDeps {
   classify?: (turns: readonly SpeakerTurn[]) => Promise<SpeakerClassification>;
   /** Applies an automatic cluster role and returns the effective role (manual corrections may win). */
   applySpeakerRole: (speakerId: number, role: SpeakerRole) => SpeakerRole;
+  /** Applies one semantic turn exception without changing the acoustic cluster's stable role. */
+  resolveTurnRole?: (speakerId: number, role: SpeakerRole) => SpeakerRole;
   onCandidateTurn: (turn: SpeakerTurn) => void;
   onInterviewerTurn?: (turn: SpeakerTurn) => void;
   onPartition: (partition: SpeakerPartition) => void;
@@ -171,7 +174,7 @@ export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): stri
       .slice(0, MAX_CLASSIFIER_TURNS);
     return [
       '[classification-mode=native-clusters]',
-      '请为每个出现的 speakerId 返回一条 speakerRoles；turnRoles 必须返回空数组。',
+      '请为每个出现的 speakerId 返回一条 speakerRoles；只在单条 turn 的语义角色与 speakerId 的主角色冲突时，为该 seq 返回高置信度 turnRoles 例外，否则省略。',
       ...representatives.map(formatClassifierTurn)
     ]
       .join('\n')
@@ -290,16 +293,25 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       cachedSpeakerRoles = new Map(roleBySpeaker);
       const roleByTurn = new Map(cachedTurnRoles);
       for (const assignment of result.turnRoles) {
-        if (assignment.role !== 'unknown') roleByTurn.set(assignment.seq, assignment.role);
+        if (
+          assignment.role !== 'unknown' &&
+          assignment.confidence >= MIN_TURN_OVERRIDE_CONFIDENCE
+        ) {
+          roleByTurn.set(assignment.seq, assignment.role);
+        }
       }
       cachedTurnRoles = new Map(roleByTurn);
       const segments = coalesce(
         snapshot.map((turn): SpeakerPartitionSegment => {
           const hasClusterRole =
             typeof turn.speakerId === 'number' && roleBySpeaker.has(turn.speakerId);
+          const turnRole = roleByTurn.get(turn.seq);
           let role = hasClusterRole
             ? roleBySpeaker.get(turn.speakerId as number) ?? 'unknown'
-            : roleByTurn.get(turn.seq) ?? 'unknown';
+            : turnRole ?? 'unknown';
+          if (typeof turn.speakerId === 'number' && turnRole && turnRole !== 'unknown') {
+            role = deps.resolveTurnRole?.(turn.speakerId, turnRole) ?? turnRole;
+          }
           if (typeof turn.speakerId === 'number' && !hasClusterRole && role !== 'unknown') {
             role = deps.applySpeakerRole(turn.speakerId, role);
           }

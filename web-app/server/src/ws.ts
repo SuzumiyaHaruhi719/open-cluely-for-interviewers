@@ -1096,6 +1096,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         roles.setAutoRole(speakerId, role);
         return roles.resolve(speakerId);
       },
+      resolveTurnRole: (speakerId, role) => roles.resolveTurnRole(speakerId, role),
       onCandidateTurn: (turn: SpeakerTurn) => {
         if (fedSemanticCandidateSeqs.has(turn.seq)) return;
         fedSemanticCandidateSeqs.add(turn.seq);

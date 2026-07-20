@@ -29,7 +29,7 @@ test('native-cluster classifier input stays compact across a full interview', ()
   assert.match(input, /speaker=2/);
   assert.match(input, /speaker=3/);
   assert.match(input, /speaker=4/);
-  assert.match(input, /turnRoles 必须返回空数组/);
+  assert.match(input, /语义角色与 speakerId 的主角色冲突时.*turnRoles/);
   assert.ok(input.length <= 6_000);
   assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12, 'only representative turns should be sent');
 });
@@ -127,6 +127,48 @@ test('native speaker clusters are mapped live and candidate history is released 
   await p.finalize();
   assert.equal(partitions.at(-1)?.status, 'final');
   assert.deepEqual(candidates.map((turn) => turn.seq), [0, 2], 'final pass must not feed the same answer twice');
+});
+
+test('native clusters accept a high-confidence semantic override for a drifted turn', async () => {
+  const partitions: any[] = [];
+  const candidates: SpeakerTurn[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification(
+        [
+          { speakerId: 1, role: 'candidate', confidence: 0.98 },
+          { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+        ],
+        [{ seq: 3, role: 'candidate', confidence: 0.97 }]
+      ),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+
+  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '我先说明消防演练的准备和动员方案。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '请继续说明现场实施和复盘。' });
+  p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我会邀请消防人员讲解逃生和器材操作。' });
+  p.record({ seq: 3, source: 'mic', speakerId: 2, text: '以及实操演练。' });
+  await p.finalize();
+
+  const final = partitions.at(-1);
+  assert.equal(final.status, 'final');
+  assert.deepEqual(
+    final.segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'candidate'],
+      [1, 'interviewer'],
+      [2, 'candidate'],
+      [3, 'candidate']
+    ]
+  );
+  assert.deepEqual(candidates.map((turn) => turn.seq), [0, 2, 3]);
+  assert.deepEqual(interviewers.map((turn) => turn.seq), [1]);
 });
 
 test('ASR without native clusters receives a final Flash semantic partition', async () => {

@@ -64,3 +64,14 @@ test('automatic role inference never overwrites an interviewer manual correction
   assert.equal(m.setAutoRole(8, 'interviewer'), true);
   assert.equal(m.resolve(8), 'interviewer');
 });
+
+test('semantic turn overrides apply automatically but never beat a manual correction', () => {
+  const m = createSpeakerRoleMap();
+  m.setGuess(false);
+  m.setAutoRole(4, 'interviewer');
+
+  assert.equal(m.resolveTurnRole(4, 'candidate'), 'candidate');
+
+  m.setRole(4, 'interviewer');
+  assert.equal(m.resolveTurnRole(4, 'candidate'), 'interviewer');
+});
