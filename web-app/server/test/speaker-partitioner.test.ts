@@ -34,6 +34,36 @@ test('native-cluster classifier input stays compact across a full interview', ()
   assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12, 'only representative turns should be sent');
 });
 
+test('native classifier preserves recent question-answer adjacency for weak correction', () => {
+  const turns: SpeakerTurn[] = Array.from({ length: 20 }, (_, seq) => ({
+    seq,
+    source: 'mic',
+    speakerId: seq % 2 === 0 ? 9 : 7,
+    text: `早期样本 ${seq}：园区运营职责和现场管理证据。`
+  }));
+  turns[12] = {
+    seq: 12,
+    source: 'mic',
+    speakerId: 9,
+    text: '请结合一次具体经历，说明你如何组织园区消防演练并验证演练结果。'
+  };
+  turns[13] = {
+    seq: 13,
+    source: 'mic',
+    speakerId: 7,
+    text: '我先按楼栋划分责任区，再邀请消防人员培训逃生和器材操作；演练当天记录各组到场时间，复盘后调整排班，把平均响应时间从八分钟缩短到五分钟。'
+  };
+
+  const input = buildSpeakerClassifierInput(turns);
+
+  assert.match(input, /\[recent-context-for-weak-correction\]/);
+  assert.match(input, /\[seq=12 .*如何组织园区消防演练/);
+  assert.match(input, /\[seq=13 .*平均响应时间从八分钟缩短到五分钟/);
+  assert.match(input, /明显在回答相邻问题.*turnRoles/);
+  assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12);
+  assert.ok(input.length <= 6_000);
+});
+
 test('text-only classifier input uses a bounded recent window for incremental role caching', () => {
   const turns: SpeakerTurn[] = Array.from({ length: 40 }, (_, seq) => ({
     seq,
@@ -157,7 +187,7 @@ test('native speaker clusters are mapped live and candidate history is released 
   assert.deepEqual(candidates.map((turn) => turn.seq), [0, 2], 'final pass must not feed the same answer twice');
 });
 
-test('native clusters accept a high-confidence semantic override for a drifted turn', async () => {
+test('native clusters weak-correct one clear answer without remapping the shared acoustic id', async () => {
   const partitions: any[] = [];
   const candidates: SpeakerTurn[] = [];
   const interviewers: SpeakerTurn[] = [];
@@ -168,7 +198,7 @@ test('native clusters accept a high-confidence semantic override for a drifted t
           { speakerId: 1, role: 'candidate', confidence: 0.98 },
           { speakerId: 2, role: 'interviewer', confidence: 0.99 }
         ],
-        [{ seq: 3, role: 'candidate', confidence: 0.97 }]
+        [{ seq: 1, role: 'candidate', confidence: 0.97 }]
       ),
     applySpeakerRole: (_speakerId, role) => role,
     resolveTurnRole: (_speakerId, role) => role,
@@ -178,10 +208,15 @@ test('native clusters accept a high-confidence semantic override for a drifted t
   });
   p.setEnabled(true);
 
-  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '我先说明消防演练的准备和动员方案。' });
-  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '请继续说明现场实施和复盘。' });
-  p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我会邀请消防人员讲解逃生和器材操作。' });
-  p.record({ seq: 3, source: 'mic', speakerId: 2, text: '以及实操演练。' });
+  p.record({ seq: 0, source: 'mic', speakerId: 2, text: '请结合一次具体经历说明，你如何组织园区消防演练。' });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 2,
+    text: '我先按楼栋划分责任区，再邀请消防人员培训；演练当天记录各组响应时间，复盘后调整排班，把平均到场时间从八分钟缩短到五分钟。'
+  });
+  p.record({ seq: 2, source: 'mic', speakerId: 2, text: '这次演练暴露出的最大风险是什么？' });
+  p.record({ seq: 3, source: 'mic', speakerId: 1, text: '最大风险是夜班人员对消防器材位置不熟悉。' });
   await p.finalize();
 
   const final = partitions.at(-1);
@@ -189,14 +224,84 @@ test('native clusters accept a high-confidence semantic override for a drifted t
   assert.deepEqual(
     final.segments.map((segment: any) => [segment.seq, segment.role]),
     [
-      [0, 'candidate'],
-      [1, 'interviewer'],
-      [2, 'candidate'],
+      [0, 'interviewer'],
+      [1, 'candidate'],
+      [2, 'interviewer'],
       [3, 'candidate']
     ]
   );
-  assert.deepEqual(candidates.map((turn) => turn.seq), [0, 2, 3]);
-  assert.deepEqual(interviewers.map((turn) => turn.seq), [1]);
+  assert.deepEqual(candidates.map((turn) => turn.seq), [1, 3]);
+  assert.deepEqual(interviewers.map((turn) => turn.seq), [0, 2]);
+});
+
+test('one long post-baseline turn requests an immediate semantic correction refresh', async () => {
+  const snapshots: SpeakerTurn[][] = [];
+  const p = createSpeakerPartitioner({
+    classify: async (turns) => {
+      snapshots.push(turns.map((turn) => ({ ...turn })));
+      return classification([
+        { speakerId: 7, role: 'candidate', confidence: 0.98 },
+        { speakerId: 9, role: 'interviewer', confidence: 0.98 }
+      ]);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: () => {}
+  });
+  p.setEnabled(true);
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 9,
+    text: '请结合一次具体经历说明，你如何识别园区消防隐患、推动整改并验证闭环结果。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 7,
+    text: '我先核对巡检台账，再隔离风险区域，明确责任人和整改时限，最后组织复验并把现场证据归档。'
+  });
+  await p.flush();
+  assert.equal(snapshots.length, 1);
+
+  p.record({
+    seq: 2,
+    source: 'mic',
+    speakerId: 9,
+    text: '我还组织夜间盲演，逐项记录各岗位到场时间和处置动作，复盘后调整排班，把平均响应时间从八分钟缩短到五分钟。'
+  });
+  await p.flush();
+
+  assert.equal(snapshots.length, 2, 'a long new turn must not wait for two unrelated finals');
+  assert.deepEqual(snapshots[1].map((turn) => turn.seq), [0, 1, 2]);
+});
+
+test('low-confidence cluster guesses cannot become sticky speaker roles', async () => {
+  const applied: Array<{ speakerId: number; role: string }> = [];
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 7, role: 'candidate', confidence: 0.61 },
+        { speakerId: 9, role: 'interviewer', confidence: 0.58 }
+      ]),
+    applySpeakerRole: (speakerId, role) => {
+      applied.push({ speakerId, role });
+      return role;
+    },
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 9, text: '请介绍一次具体的消防整改经历。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 7, text: '我负责识别风险、组织整改和最终复验。' });
+  await p.finalize();
+
+  assert.deepEqual(applied, []);
+  assert.deepEqual(partitions.at(-1).segments.map((segment: any) => segment.role), [
+    'unknown',
+    'unknown'
+  ]);
 });
 
 test('ASR without native clusters receives a final Flash semantic partition', async () => {

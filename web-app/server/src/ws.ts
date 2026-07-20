@@ -1228,16 +1228,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
           }
         }
         if (t.isFinal && speakerPartitioner.isEnabled()) {
-          // The channel is not a role: a shared browser tab can contain both
-          // sides. Release only a Flash-confirmed/native-role candidate turn.
-          const resolvedRole = roles.resolve(t.speakerId ?? null);
-          if (resolvedRole === 'candidate') {
-            if (finalTurnSeq !== null) fedSemanticCandidateSeqs.add(finalTurnSeq);
-            feedCandidateAnswer(t.text);
-          } else if (resolvedRole === 'interviewer') {
-            if (finalTurnSeq !== null) handledSemanticInterviewerSeqs.add(finalTurnSeq);
-            trigger.onInterviewerFinal();
-          }
+          // The native acoustic role is provisional. The partitioner owns the
+          // role-sensitive Auto seam so a stale cluster map cannot release a
+          // candidate answer as interviewer (or vice versa) before Flash checks
+          // recent question/answer context.
         } else if (t.source === 'display' && t.isFinal) {
           // Backward compatibility for clients that have not enabled semantic
           // partitioning. The current web client always enables it.

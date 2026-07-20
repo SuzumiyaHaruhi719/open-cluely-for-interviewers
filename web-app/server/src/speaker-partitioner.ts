@@ -10,9 +10,12 @@ const MIN_NATIVE_TOTAL_CHARS = 48;
 const MIN_TOTAL_TURNS = 6;
 const REFRESH_TURNS = 3;
 const MAX_CLASSIFIER_TURNS = 12;
+const MAX_RECENT_NATIVE_TURNS = 8;
 const MAX_HYBRID_TEXT_TURNS = 8;
 const MAX_CLASSIFIER_TURN_CHARS = 360;
+const MIN_SPEAKER_ROLE_CONFIDENCE = 0.75;
 const MIN_TURN_OVERRIDE_CONFIDENCE = 0.85;
+const MIN_SEMANTIC_REFRESH_CHARS = 48;
 
 export interface SpeakerTurn {
   seq: number;
@@ -77,6 +80,9 @@ const CLASSIFIER_SYSTEM = [
   'Use speech acts and cross-turn context, never numeric speaker order.',
   'An interviewer asks, frames, redirects, or evaluates; a candidate answers with experience, evidence, decisions, and results.',
   'Acoustic diarization may over-cluster one person into multiple speakerIds, so multiple ids may share a role.',
+  'A native speakerId role is only a baseline: inspect every recent-context turn and return a high-confidence turnRoles exception when its speech act clearly conflicts with that baseline.',
+  'A substantive answer to an adjacent question is candidate even if its acoustic id is mapped interviewer; a genuine new question is interviewer even if its id is mapped candidate.',
+  'A turnRoles exception applies only to that seq and must never be used to remap the whole acoustic cluster.',
   'When speakerId is absent, classify each turn by seq. Use unknown when evidence is insufficient.',
   'Return STRICT JSON only:',
   '{"speakerRoles":[{"speakerId":1,"role":"interviewer|candidate|unknown","confidence":0.0}],',
@@ -152,10 +158,7 @@ function formatClassifierTurn(turn: SpeakerTurn): string {
   }] ${compactTurnText(turn.text)}`;
 }
 
-function representativeNativeTurns(
-  nativeTurns: readonly SpeakerTurn[],
-  limit = MAX_CLASSIFIER_TURNS
-): SpeakerTurn[] {
+function groupNativeTurns(nativeTurns: readonly SpeakerTurn[]): Map<number, SpeakerTurn[]> {
   const bySpeaker = new Map<number, SpeakerTurn[]>();
   for (const turn of nativeTurns) {
     const speakerId = turn.speakerId as number;
@@ -163,10 +166,49 @@ function representativeNativeTurns(
     group.push(turn);
     bySpeaker.set(speakerId, group);
   }
-  return [...bySpeaker.values()]
-    .flatMap((group) => (group.length <= 4 ? group : [...group.slice(0, 2), ...group.slice(-2)]))
-    .sort((a, b) => a.seq - b.seq)
-    .slice(0, Math.max(0, limit));
+  return bySpeaker;
+}
+
+function mostSubstantiveTurn(turns: readonly SpeakerTurn[]): SpeakerTurn | undefined {
+  return turns.reduce<SpeakerTurn | undefined>((best, turn) => {
+    if (!best) return turn;
+    const chars = turn.text.replace(/\s+/g, '').length;
+    const bestChars = best.text.replace(/\s+/g, '').length;
+    return chars > bestChars ? turn : best;
+  }, undefined);
+}
+
+/**
+ * Stable acoustic-role mapping needs one substantive anchor per cluster, while
+ * weak semantic correction needs the actual recent question/answer adjacency.
+ * Keep both without sending a full interview or duplicating recent rows.
+ */
+function selectNativeClassifierEvidence(
+  nativeTurns: readonly SpeakerTurn[],
+  limit = MAX_CLASSIFIER_TURNS
+): { anchors: SpeakerTurn[]; recent: SpeakerTurn[] } {
+  const safeLimit = Math.max(0, limit);
+  const recent = nativeTurns.slice(-Math.min(MAX_RECENT_NATIVE_TURNS, safeLimit));
+  const recentSeqs = new Set(recent.map((turn) => turn.seq));
+  const recentSpeakerIds = new Set(recent.map((turn) => turn.speakerId as number));
+  const capacity = Math.max(0, safeLimit - recent.length);
+  const candidates = [...groupNativeTurns(nativeTurns).entries()]
+    .flatMap(([speakerId, group]) => {
+      const outsideRecent = group.filter((turn) => !recentSeqs.has(turn.seq));
+      const anchor = mostSubstantiveTurn(outsideRecent);
+      return anchor
+        ? [{ anchor, missingFromRecent: !recentSpeakerIds.has(speakerId) }]
+        : [];
+    })
+    .sort((a, b) => {
+      if (a.missingFromRecent !== b.missingFromRecent) return a.missingFromRecent ? -1 : 1;
+      return a.anchor.seq - b.anchor.seq;
+    });
+  const anchors = candidates
+    .slice(0, capacity)
+    .map(({ anchor }) => anchor)
+    .sort((a, b) => a.seq - b.seq);
+  return { anchors, recent };
 }
 
 /**
@@ -183,16 +225,23 @@ export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): stri
     // vice versa). Preserve recent text-only evidence instead of silently
     // switching the entire classifier into native-only mode.
     const recentTextOnly = textOnlyTurns.slice(-MAX_HYBRID_TEXT_TURNS);
-    const nativeRepresentatives = representativeNativeTurns(
+    const nativeEvidence = selectNativeClassifierEvidence(
       nativeTurns,
       Math.max(1, MAX_CLASSIFIER_TURNS - recentTextOnly.length)
     );
-    const representatives = [...nativeRepresentatives, ...recentTextOnly]
+    const representatives = [
+      ...nativeEvidence.anchors,
+      ...nativeEvidence.recent,
+      ...recentTextOnly
+    ]
+      .filter(
+        (turn, index, all) => all.findIndex((candidate) => candidate.seq === turn.seq) === index
+      )
       .sort((a, b) => a.seq - b.seq)
       .slice(-MAX_CLASSIFIER_TURNS);
     return [
       '[classification-mode=hybrid]',
-      '请为每个出现的 speakerId 返回一条 speakerRoles；请对每条 speaker=none 的 seq 返回 turnRoles；有 speakerId 的 turn 只在语义角色与该 cluster 主角色冲突时返回高置信度 turnRoles 例外。',
+      '请为每个出现的 speakerId 返回一条 speakerRoles；请对每条 speaker=none 的 seq 返回 turnRoles；有 speakerId 的 turn 只在语义角色与该 cluster 主角色冲突时返回高置信度 turnRoles 例外。明显在回答相邻问题的内容应为 candidate；turnRoles 只纠正该 seq，不能重映射整个 cluster。',
       '连续 ASR 可能把同一个人的一句话切成多个 turn；短片段必须结合相邻句继承语义角色，不要仅因片段不完整返回 unknown。',
       ...representatives.map(formatClassifierTurn)
     ]
@@ -200,11 +249,15 @@ export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): stri
       .slice(0, MAX_INPUT_CHARS);
   }
   if (nativeTurns.length > 0) {
-    const representatives = representativeNativeTurns(nativeTurns);
+    const { anchors, recent } = selectNativeClassifierEvidence(nativeTurns);
     return [
       '[classification-mode=native-clusters]',
-      '请为每个出现的 speakerId 返回一条 speakerRoles；只在单条 turn 的语义角色与 speakerId 的主角色冲突时，为该 seq 返回高置信度 turnRoles 例外，否则省略。',
-      ...representatives.map(formatClassifierTurn)
+      '请为每个出现的 speakerId 返回一条 speakerRoles；confidence 低于 0.75 时返回 unknown。',
+      '[cluster-anchors]',
+      ...anchors.map(formatClassifierTurn),
+      '[recent-context-for-weak-correction]',
+      '逐条检查最近上下文：明显在回答相邻问题的内容应为 candidate；语义角色与 speakerId 的主角色冲突时，为该 seq 返回高置信度 turnRoles；真正提出新问题的内容应为 interviewer。turnRoles 只纠正单条 turn，不能重映射整个 cluster。',
+      ...recent.map(formatClassifierTurn)
     ]
       .join('\n')
       .slice(0, MAX_INPUT_CHARS);
@@ -313,7 +366,12 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
         roleBySpeaker.set(speakerId, deps.applySpeakerRole(speakerId, role));
       }
       for (const assignment of result.speakerRoles) {
-        if (assignment.role === 'unknown') continue;
+        if (
+          assignment.role === 'unknown' ||
+          assignment.confidence < MIN_SPEAKER_ROLE_CONFIDENCE
+        ) {
+          continue;
+        }
         roleBySpeaker.set(
           assignment.speakerId,
           deps.applySpeakerRole(assignment.speakerId, assignment.role)
@@ -378,9 +436,16 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       const text = String(turn.text || '').trim();
       if (!text) return;
       turns.push({ ...turn, text });
+      const latestChars = text.replace(/\s+/g, '').length;
+      const correctionRefreshDue =
+        scheduledAt > 0 &&
+        turns.length > scheduledAt &&
+        latestChars >= MIN_SEMANTIC_REFRESH_CHARS;
       if (
         enoughEvidence(turns) &&
-        (scheduledAt === 0 || turns.length - scheduledAt >= REFRESH_TURNS)
+        (scheduledAt === 0 ||
+          turns.length - scheduledAt >= REFRESH_TURNS ||
+          correctionRefreshDue)
       ) {
         scheduledAt = turns.length;
         void schedule('live');
