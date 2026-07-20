@@ -541,7 +541,9 @@ describe('Shell', () => {
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
 
-    expect(screen.getByRole('option', { name: /豆包流式语音 2\.0/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole('option', { name: '豆包 Seed ASR 2.0 · 原生说话人分离' })
+    ).toBeInTheDocument();
 
     expect(document.getElementById('setting-volc-app-id')).not.toBeInTheDocument();
     expect(document.getElementById('setting-volc-access-token')).not.toBeInTheDocument();
