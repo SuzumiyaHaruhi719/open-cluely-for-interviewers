@@ -1,3 +1,11 @@
+export function parseLiveAsrOptions(argv) {
+  const args = Array.isArray(argv) ? argv : [];
+  return {
+    autoGenerate: args.includes('--auto-generate'),
+    diarize: !args.includes('--no-diarize')
+  };
+}
+
 export function parsePcm16Wav(input) {
   if (!Buffer.isBuffer(input) || input.length < 12) {
     throw new Error('Audio must be a RIFF/WAVE buffer');
@@ -87,6 +95,24 @@ export function summarizeAsrRun(events) {
   const stoppedEvent = safeEvents.find(
     (event) => event.message?.type === 'asr-status' && event.message.state === 'stopped'
   );
+  const autoMonitorStates = safeEvents
+    .filter((event) => event.message?.type === 'auto-monitor')
+    .map((event) => ({
+      status: event.message.status,
+      model: event.message.model,
+      ...(Number.isFinite(event.message.elapsedMs) ? { elapsedMs: event.message.elapsedMs } : {}),
+      atMs: event.at - startedAt
+    }));
+  const autoQuestions = safeEvents
+    .filter((event) => event.message?.type === 'result' && event.message.trigger === 'auto')
+    .map((event) => ({
+      requestId: String(event.message.requestId ?? ''),
+      question: String(event.message.output?.primary_question ?? ''),
+      ...(Number.isInteger(event.message.anchorSeq) ? { anchorSeq: event.message.anchorSeq } : {}),
+      tokensUsed: event.message.tokensUsed ?? { input: 0, output: 0, total: 0 },
+      elapsedMs: Number.isFinite(event.message.elapsedMs) ? event.message.elapsedMs : 0,
+      atMs: event.at - startedAt
+    }));
 
   return {
     statuses,
@@ -104,6 +130,9 @@ export function summarizeAsrRun(events) {
     errors,
     firstFinalMs: finals.length ? finals[0].at - startedAt : null,
     durationMs: safeEvents.length ? safeEvents.at(-1).at - startedAt : 0,
-    finalTexts: finals.map((event) => String(event.message.text ?? ''))
+    finalTexts: finals.map((event) => String(event.message.text ?? '')),
+    autoMonitorStates,
+    autoQuestions,
+    autoQuestionCount: autoQuestions.length
   };
 }

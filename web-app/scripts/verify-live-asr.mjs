@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { WebSocket } from 'ws';
-import { parsePcm16Wav, summarizeAsrRun } from './live-asr-lib.mjs';
+import { parseLiveAsrOptions, parsePcm16Wav, summarizeAsrRun } from './live-asr-lib.mjs';
 
 const argv = process.argv.slice(2);
 const valueOf = (name, fallback = '') => {
@@ -22,6 +22,7 @@ Options:
   --speed 1                       Playback speed; 1 is realtime
   --limit-seconds N               Replay only the first N seconds
   --out report.json               Save the JSON evidence report
+  --auto-generate                 Enable continuous Flash delegation + Expert question generation
   --no-diarize                    Disable final DeepSeek role partition
 `);
   process.exit(0);
@@ -35,7 +36,7 @@ const frameMs = Number(valueOf('--frame-ms', '40'));
 const speed = Number(valueOf('--speed', '1'));
 const limitSeconds = Number(valueOf('--limit-seconds', '0'));
 const outPath = valueOf('--out');
-const diarize = !has('--no-diarize');
+const { autoGenerate, diarize } = parseLiveAsrOptions(argv);
 
 if (!['xfyun', 'volc', 'paraformer'].includes(provider)) {
   throw new Error('--provider must be xfyun, volc, or paraformer');
@@ -117,7 +118,7 @@ send({
     interviewerModel: 'deepseek-v4-flash',
     outputLanguage: 'zh',
     asrProvider: provider,
-    autoGenerate: false,
+    autoGenerate,
     diarize,
     resetGeneration: true,
     jobDescription: '物业经理：负责园区现场运营、安全消防、人员管理、设备维护与租户服务。'
@@ -184,6 +185,7 @@ const report = {
   wallPlaybackMs: Date.now() - playbackStartedAt,
   frameMs,
   speed,
+  autoGenerate,
   ...summarizeAsrRun(events),
   transcripts: events
     .filter((event) => event.message.type === 'transcript')
