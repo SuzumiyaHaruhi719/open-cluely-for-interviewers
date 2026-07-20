@@ -72,8 +72,12 @@ test('buildConfigPayload encodes a gzip JSON config carrying the model + rate', 
   const payload = buildConfigPayload('bigmodel', 16000);
   const config = JSON.parse(zlib.gunzipSync(payload).toString('utf8'));
   assert.equal(config.request.model_name, 'bigmodel');
+  assert.equal(config.request.enable_speaker_info, true);
+  assert.equal(config.request.ssd_version, '200');
+  assert.equal(config.request.enable_nonstream, undefined);
   assert.equal(config.audio.rate, 16000);
   assert.equal(config.audio.format, 'pcm');
+  assert.equal(config.audio.language, undefined);
 });
 
 // --- result-frame parsing ----------------------------------------------------
@@ -96,6 +100,52 @@ test('extractTranscripts returns finals from definite utterances', () => {
     })
   );
   assert.deepEqual(extractTranscripts(payload), [{ text: 'hello world.', isFinal: true }]);
+});
+
+test('extractTranscripts normalizes native speaker clusters from Seed ASR 2.0 utterances', () => {
+  const payload = Buffer.from(
+    JSON.stringify({
+      result: {
+        utterances: [
+          { text: 'first interviewer', definite: true, speaker_id: '3' },
+          { text: 'second interviewer', definite: true, additions: { speakerId: 4 } },
+          { text: 'candidate answer', definite: true, additions: '{"speaker":"5"}' },
+          { text: 'top-level alias', definite: true, speaker: 6 }
+        ]
+      }
+    })
+  );
+
+  assert.deepEqual(extractTranscripts(payload), [
+    { text: 'first interviewer', isFinal: true, speakerId: 3 },
+    { text: 'second interviewer', isFinal: true, speakerId: 4 },
+    { text: 'candidate answer', isFinal: true, speakerId: 5 },
+    { text: 'top-level alias', isFinal: true, speakerId: 6 }
+  ]);
+});
+
+test('extractTranscripts omits malformed native speaker clusters', () => {
+  const payload = Buffer.from(
+    JSON.stringify({
+      result: {
+        utterances: [
+          { text: 'negative', definite: true, speaker_id: -1 },
+          { text: 'fractional', definite: true, speakerId: 1.5 },
+          { text: 'empty', definite: true, additions: { speaker: '' } },
+          { text: 'nonnumeric', definite: true, additions: '{"speaker_id":"host"}' },
+          { text: 'invalid additions JSON', definite: true, additions: '{not-json}' }
+        ]
+      }
+    })
+  );
+
+  assert.deepEqual(extractTranscripts(payload), [
+    { text: 'negative', isFinal: true },
+    { text: 'fractional', isFinal: true },
+    { text: 'empty', isFinal: true },
+    { text: 'nonnumeric', isFinal: true },
+    { text: 'invalid additions JSON', isFinal: true }
+  ]);
 });
 
 test('extractTranscripts is empty for unparseable / empty frames', () => {

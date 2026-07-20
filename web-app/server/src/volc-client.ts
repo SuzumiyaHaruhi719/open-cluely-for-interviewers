@@ -52,6 +52,8 @@ export interface WsConstructor {
 export interface VolcTranscript {
   text: string;
   isFinal: boolean;
+  /** Native Seed ASR 2.0 acoustic speaker cluster, when supplied. */
+  speakerId?: number;
 }
 
 export interface VolcSessionDeps {
@@ -205,10 +207,44 @@ export function buildConfigPayload(model: string, sampleRate: number): Buffer {
       model_name: model,
       enable_punc: true,
       result_type: 'single',
-      show_utterances: true
+      show_utterances: true,
+      enable_speaker_info: true,
+      ssd_version: '200'
     }
   };
   return zlib.gzipSync(Buffer.from(JSON.stringify(config), 'utf8'));
+}
+
+function asSpeakerId(value: unknown): number | undefined {
+  if (typeof value !== 'number' && typeof value !== 'string') return undefined;
+  if (typeof value === 'string' && value.trim() === '') return undefined;
+  const speakerId = typeof value === 'number' ? value : Number(value.trim());
+  return Number.isInteger(speakerId) && speakerId >= 0 ? speakerId : undefined;
+}
+
+function speakerIdFromRecord(value: unknown): number | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  const record = value as Record<string, unknown>;
+  for (const key of ['speakerId', 'speaker_id', 'speaker'] as const) {
+    const speakerId = asSpeakerId(record[key]);
+    if (speakerId !== undefined) return speakerId;
+  }
+  return undefined;
+}
+
+function speakerIdFromUtterance(utterance: Record<string, unknown>): number | undefined {
+  const direct = speakerIdFromRecord(utterance);
+  if (direct !== undefined) return direct;
+
+  let additions: unknown = utterance.additions;
+  if (typeof additions === 'string') {
+    try {
+      additions = JSON.parse(additions);
+    } catch {
+      return undefined;
+    }
+  }
+  return speakerIdFromRecord(additions);
 }
 
 /**
@@ -230,15 +266,17 @@ export function extractTranscripts(payload: Buffer): VolcTranscript[] {
   if (!result || typeof result !== 'object') return [];
 
   const utterances = Array.isArray(result.utterances) ? result.utterances : [];
-  const definite = utterances
-    .filter(
-      (u): u is { text: string; definite: boolean } =>
-        !!u && (u as { definite?: unknown }).definite === true && typeof (u as { text?: unknown }).text === 'string'
-    )
-    .map((u) => u.text.trim())
-    .filter((t) => t.length > 0);
+  const definite = utterances.flatMap((utterance): VolcTranscript[] => {
+    if (!utterance || typeof utterance !== 'object' || Array.isArray(utterance)) return [];
+    const record = utterance as Record<string, unknown>;
+    if (record.definite !== true || typeof record.text !== 'string') return [];
+    const text = record.text.trim();
+    if (!text) return [];
+    const speakerId = speakerIdFromUtterance(record);
+    return [{ text, isFinal: true, ...(speakerId === undefined ? {} : { speakerId }) }];
+  });
   if (definite.length) {
-    return definite.map((text) => ({ text, isFinal: true as const }));
+    return definite;
   }
   const rollingText = typeof result.text === 'string' ? result.text.trim() : '';
   if (rollingText) return [{ text: rollingText, isFinal: false }];

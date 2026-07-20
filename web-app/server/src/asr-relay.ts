@@ -10,9 +10,10 @@
 // the injected `emit`.
 //
 // `asrProvider` selects the recognition engine. Providers with native speaker
-// clusters (currently iFlytek and the simulation harness) forward `speakerId`;
-// providers without them emit text only. Single-mic semantic role partitioning
-// is handled after transcription by speaker-partitioner.ts, never in this relay.
+// clusters (iFlytek, Doubao Seed ASR 2.0, and the simulation harness) forward
+// `speakerId`; providers without them emit text only. Single-mic semantic role
+// partitioning is handled after transcription by speaker-partitioner.ts, never
+// in this relay.
 // ============================================================================
 
 import { WebSocket as WsWebSocket } from 'ws';
@@ -86,8 +87,8 @@ export type XfyunSessionFactory = (deps: XfyunSessionDeps) => AsrSession;
 export type SimSessionFactory = (deps: SimSessionDeps) => AsrSession;
 /**
  * A transcript callback from a text session. Most providers carry text + isFinal
- * only; 'xfyun' (角色分离 role_type=2) ALSO carries its own per-utterance speakerId
- * (null on partials), which startSource forwards unchanged.
+ * only; providers with native clustering ALSO carry their own per-utterance
+ * speakerId (null on partials), which startSource forwards unchanged.
  */
 type OnText = (t: { text: string; isFinal: boolean; speakerId?: number | null }) => void;
 
