@@ -433,6 +433,7 @@ export async function runExpertQuestionAndEmit(
 
   const generated = await generate({
     candidateAnswer: args.candidateAnswer,
+    interviewerContext: args.interviewerContext,
     focusHint: args.focusHint,
     jobDescription: args.jobDescription,
     interviewGuide: args.interviewGuide,
@@ -1108,18 +1109,25 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     const trigger: AutoTrigger = createAutoTrigger({
       onAutoInvalidated: terminateVisibleAutoAttempt,
       onMonitorState: (state) => send(ws, { type: 'auto-monitor', ...state }),
-      shouldGenerate: async (candidateAnswer) => {
+      shouldGenerate: async ({ candidateAnswer, interviewerContext }) => {
         const state = session.getState() as {
           jobDescription?: string;
           interviewGuide?: string[];
         };
         return evaluateAutoMonitor({
           candidateAnswer,
+          interviewerContext,
           jobDescription: state.jobDescription,
           interviewGuide: state.interviewGuide
         });
       },
-      runAnalyze: async ({ candidateAnswer, focusHint, anchorSeq, monitorTokensUsed }) => {
+      runAnalyze: async ({
+        candidateAnswer,
+        interviewerContext,
+        focusHint,
+        anchorSeq,
+        monitorTokensUsed
+      }) => {
         // Capture the epoch at the START so a reset() during this generation marks
         // it stale (suppressing its progress + result). Record the in-flight auto
         // requestId so makeEmit/runAnalysis can match it; clear it on settle.
@@ -1136,6 +1144,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
           };
           await runExpertQuestionAndEmit(ws, {
             candidateAnswer,
+            interviewerContext,
             focusHint,
             jobDescription: state.jobDescription,
             interviewGuide: state.interviewGuide,
@@ -1173,7 +1182,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       onInterviewerTurn: (turn: SpeakerTurn) => {
         if (handledSemanticInterviewerSeqs.has(turn.seq)) return;
         handledSemanticInterviewerSeqs.add(turn.seq);
-        trigger.onInterviewerFinal();
+        trigger.onInterviewerFinal(turn.text);
       },
       onPartition: (partition) => {
         send(ws, { type: 'speaker-partition', ...partition });

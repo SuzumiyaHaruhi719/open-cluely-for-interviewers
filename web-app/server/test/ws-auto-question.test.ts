@@ -39,6 +39,7 @@ test('automatic question emits one under-10s Expert result', async () => {
     {
       requestId: 'auto-1',
       candidateAnswer: '我用消防盲演检查园区响应时间。',
+      interviewerContext: '两位面试官分别追问了园区规模和盲演验证方法。',
       focusHint: '追问盲演发现的风险',
       jobDescription: '物业经理',
       resumeText: '',
@@ -59,6 +60,7 @@ test('automatic question emits one under-10s Expert result', async () => {
 
   assert.equal(calls.length, 1);
   assert.equal(calls[0].focusHint, '追问盲演发现的风险');
+  assert.equal(calls[0].interviewerContext, '两位面试官分别追问了园区规模和盲演验证方法。');
   assert.deepEqual(
     messages.map((message) => message.type),
     ['progress', 'progress', 'result']

@@ -350,6 +350,70 @@ test('native speaker clusters are mapped live and candidate history is released 
   assert.deepEqual(candidates.map((turn) => turn.seq), [0, 2], 'final pass must not feed the same answer twice');
 });
 
+test('multiple native interviewer clusters map to one interviewer role around one candidate', async () => {
+  const partitions: any[] = [];
+  const candidates: SpeakerTurn[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 10, role: 'interviewer', confidence: 0.99 },
+        { speakerId: 11, role: 'interviewer', confidence: 0.98 },
+        { speakerId: 20, role: 'candidate', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 10,
+    text: '第一位面试官：请说明你负责的园区消防整改项目和个人职责。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 20,
+    text: '我负责三万平方米园区，先核对巡检台账，再组织工程人员整改并安排复验。'
+  });
+  p.record({
+    seq: 2,
+    source: 'mic',
+    speakerId: 11,
+    text: '第二位面试官：你如何验证整改后没有再次发生同类故障？'
+  });
+  p.record({
+    seq: 3,
+    source: 'mic',
+    speakerId: 20,
+    text: '我连续复查三周的告警和工单，并用消防盲演确认平均响应时间缩短到五分钟。'
+  });
+  await p.finalize();
+
+  assert.deepEqual(interviewers.map((turn) => [turn.seq, turn.speakerId]), [
+    [0, 10],
+    [2, 11]
+  ]);
+  assert.deepEqual(candidates.map((turn) => [turn.seq, turn.speakerId]), [
+    [1, 20],
+    [3, 20]
+  ]);
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.speakerId, segment.role]),
+    [
+      [10, 'interviewer'],
+      [20, 'candidate'],
+      [11, 'interviewer'],
+      [20, 'candidate']
+    ]
+  );
+});
+
 test('native clusters weak-correct one clear answer without remapping the shared acoustic id', async () => {
   const partitions: any[] = [];
   const candidates: SpeakerTurn[] = [];

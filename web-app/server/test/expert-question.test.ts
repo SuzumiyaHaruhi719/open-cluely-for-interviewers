@@ -11,6 +11,7 @@ const INPUT = {
   candidateAnswer:
     '我负责三万平方米园区，先重排巡检路线，再用消防盲演验证响应时间，最后将平均到场时间从八分钟降到五分钟。',
   focusHint: '追问盲演如何发现真实风险',
+  interviewerContext: '第一位面试官问了园区规模，第二位面试官要求聚焦消防盲演的验证方法。',
   jobDescription: '物业经理：负责园区安全、消防、巡检和突发事件处理。',
   interviewGuide: [
     '15%｜突发事件应对与复盘｜可验证证据：指挥链路与事后整改｜警示信号：只背预案'
@@ -52,6 +53,8 @@ test('one Flash call performs expert gap analysis and emits one evidence-anchore
   assert.match(calls[0].messages[0].content, /结构化面试评分表/);
   assert.match(calls[0].messages[0].content, /突发事件应对与复盘/);
   assert.match(calls[0].messages[0].content, /已问问题/);
+  assert.match(calls[0].messages[0].content, /最近面试官上下文/);
+  assert.match(calls[0].messages[0].content, /第二位面试官要求聚焦消防盲演的验证方法/);
   assert.equal(result.output.primary_question.includes('？'), true);
   assert.equal((result.output.primary_question.match(/[？?]/g) ?? []).length, 1);
   assert.deepEqual(result.output.anchor_quotes, ['平均到场时间从八分钟降到五分钟']);
@@ -59,6 +62,30 @@ test('one Flash call performs expert gap analysis and emits one evidence-anchore
   assert.equal(result.fellBack, false);
   assert.equal(result.output.iteration_version, EXPERT_QUESTION_VERSION);
   assert.deepEqual((result as any).tokensUsed, { input: 321, output: 87, total: 408 });
+});
+
+test('interviewer context prevents repetition but can never satisfy an evidence anchor', async () => {
+  const calls: any[] = [];
+  const result = await generateExpertQuestion(INPUT, {
+    chat: async (options) => {
+      calls.push(options);
+      return JSON.stringify({
+        should_ask: true,
+        primary_question: '第二位面试官提到验证方法，你能说明验证结果吗？',
+        rationale_for_interviewer: '需要避免重复园区规模问题，并继续验证结果。',
+        anchor_quotes: ['第二位面试官要求聚焦消防盲演的验证方法'],
+        expected_evidence_yield: '验证方法和可核实结果'
+      });
+    }
+  });
+
+  assert.match(calls[0].system, /面试官上下文.*不得.*证据锚点/s);
+  assert.match(calls[0].messages[0].content, /第一位面试官问了园区规模/);
+  assert.equal(result.fellBack, true, 'an anchor copied from interviewer context is rejected');
+  assert.ok(
+    result.output.anchor_quotes.every((anchor) => INPUT.candidateAnswer.includes(anchor)),
+    'fallback anchors remain candidate-only'
+  );
 });
 
 test('rejects generic low-signal model output and falls back to a concrete Chinese question', async () => {
