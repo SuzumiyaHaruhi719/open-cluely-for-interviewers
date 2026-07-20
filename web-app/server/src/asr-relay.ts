@@ -435,7 +435,10 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   }
 
   function isCapturing(): boolean {
-    return SOURCES.some((source) => sessions[source] !== null);
+    // A draining recognizer may still deliver one late final, but the browser has
+    // already stopped sending live audio. Treat that lane as inactive immediately
+    // so autonomous UI work cannot race the provider-finalization window.
+    return SOURCES.some((source) => sessions[source] !== null && stopping[source] === null);
   }
 
   return {

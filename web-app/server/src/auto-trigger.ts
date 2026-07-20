@@ -229,6 +229,29 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     pendingText = null;
   }
 
+  function quietPeriodElapsed(): boolean {
+    return now() - lastSpeechAt >= cfg.debounceMs;
+  }
+
+  function runPendingWhenQuiet(): void {
+    timer = null;
+    if (pendingText === null) return;
+    const quietFor = now() - lastSpeechAt;
+    if (quietFor < cfg.debounceMs) {
+      timer = setTimer(runPendingWhenQuiet, Math.max(1, cfg.debounceMs - quietFor));
+      return;
+    }
+    const pending = pendingText;
+    pendingText = null;
+    void evaluate(pending);
+  }
+
+  function armPendingAfterQuiet(): void {
+    if (pendingText === null) return;
+    if (timer !== null) clearTimer(timer);
+    timer = setTimer(runPendingWhenQuiet, cfg.debounceMs);
+  }
+
   /** True iff the cheap local gates currently allow a fire for `text`. */
   function localGatesPass(text: string): boolean {
     if (!autoGenerate) return false;
@@ -259,7 +282,15 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   /** Mic on/off gate — auto only fires while an audio source is capturing. */
   function setCapturing(on: boolean): void {
-    capturing = !!on;
+    const next = !!on;
+    const ended = capturing && !next;
+    capturing = next;
+    if (!ended) return;
+    // Stop is a hard product boundary: no pending or already-running autonomous
+    // suggestion may surface after the interviewer ends capture. Bumping the
+    // epoch lets ws.ts suppress a Flash result that was already in flight.
+    clearPending();
+    epoch += 1;
   }
 
   // --- Interval mode ---------------------------------------------------------
@@ -314,6 +345,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
    * error in the monitor/analyze is swallowed so the relay is never disrupted.
    */
   async function evaluate(text: string): Promise<void> {
+    if (!quietPeriodElapsed()) return;
     if (!localGatesPass(text)) return;
     let decision: TriggerDecision;
     try {
@@ -324,7 +356,9 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     }
     if (!decision.shouldGenerate) return;
     // Re-check gates AFTER the await — a manual run (or another auto) may have
-    // claimed the slot while the monitor was thinking.
+    // claimed the slot while the monitor was thinking. Real audio may also have
+    // resumed while the decision was being made.
+    if (!quietPeriodElapsed()) return;
     if (!localGatesPass(text)) return;
 
     const startEpoch = epoch;
@@ -360,14 +394,18 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   function noteSpeechActivity(): void {
     lastSpeechAt = now();
-    // A final may have armed the question timer, then the provider starts sending
-    // the next rolling partial. Cancel immediately so the UI never talks over a
-    // person who is still speaking. The next candidate final may arm a fresh pause.
-    clearPending();
+    // If speech resumes while Flash is already working, invalidate that autonomous
+    // request so ws.ts drops its completion instead of surfacing over the speaker.
+    if (isGenerating) epoch += 1;
+    // Preserve the latest candidate evidence while continuously postponing its
+    // timer. Some providers split audio without emitting another final, so dropping
+    // the pending text here would force the interviewer back to manual mode.
+    armPendingAfterQuiet();
   }
 
   function onInterviewerFinal(): void {
     noteSpeechActivity();
+    clearPending();
     // Once the interviewer has moved on, a follow-up for the previous answer is
     // stale. Preserve the accumulated full-text baseline so the next candidate
     // delta contains only the new answer rather than blending two questions.
@@ -404,13 +442,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // an optimization — it also keeps a disabled monitor completely silent.)
     if (!localGatesPass(text)) return;
     pendingText = text;
-    if (timer !== null) clearTimer(timer);
-    timer = setTimer(() => {
-      const pending = pendingText;
-      timer = null;
-      pendingText = null;
-      if (pending !== null) void evaluate(pending);
-    }, cfg.debounceMs);
+    armPendingAfterQuiet();
   }
 
   function setAutoGenerate(enabled: boolean): void {
@@ -486,6 +518,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     latestCandidateText = '';
     lastCandidateFullText = '';
     sinceFire = '';
+    lastSpeechAt = Number.NEGATIVE_INFINITY;
     // Cancel any armed agent debounce/pending so no late fire from the old chat.
     clearPending();
     // Free the in-flight slot (the abandoned generation is suppressed) and reset
@@ -497,10 +530,11 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   }
 
   async function flush(): Promise<void> {
-    if (timer !== null) {
-      clearTimer(timer);
-      timer = null;
-    }
+    // The test seat bypasses the wall-clock timer only after a real quiet period.
+    // While speech is active, preserve the pending evidence and its re-armed timer.
+    if (!quietPeriodElapsed()) return;
+    if (timer !== null) clearTimer(timer);
+    timer = null;
     const pending = pendingText;
     pendingText = null;
     if (pending !== null) await evaluate(pending);

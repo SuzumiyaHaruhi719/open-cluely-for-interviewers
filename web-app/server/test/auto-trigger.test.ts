@@ -301,13 +301,73 @@ test('ongoing speech cancels a pending question until a later candidate final cl
   trigger.noteSpeechActivity();
   await trigger.flush();
   assert.equal(h.analyzeCalls.length, 0, 'no question while speech continues');
-  assert.ok(h.clearTimerCalls >= 1, 'speech cancels the armed quiet-period timer');
+  assert.ok(h.clearTimerCalls >= 1, 'speech postpones the armed quiet-period timer');
+  assert.equal(h.setTimerCalls, 2, 'speech re-arms the same candidate evidence after a new quiet period');
 
-  // The provider's next final closes the live phrase and starts a fresh pause.
-  trigger.onCandidateFinal(LONG_ANSWER);
-  await trigger.flush();
-  assert.equal(h.analyzeCalls.length, 1, 'a later candidate final may fire after quiet');
+  // Some providers do not emit another final after the last rolling chunk. Once
+  // the real audio has stayed quiet for the full debounce, the postponed evidence
+  // must still fire without requiring another transcript boundary.
+  h.advance(DEBOUNCE_MS);
+  h.fireTimer();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(h.analyzeCalls.length, 1, 'the postponed answer fires only after real quiet');
   assert.equal(h.analyzeCalls[0].candidateAnswer, LONG_ANSWER);
+});
+
+test('stopping capture cancels pending Auto work and invalidates an in-flight result', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes() });
+  const epochBeforeStop = trigger.getEpoch();
+
+  trigger.onCandidateFinal(LONG_ANSWER);
+  assert.equal(h.setTimerCalls, 1);
+
+  trigger.setCapturing(false);
+
+  assert.ok(h.clearTimerCalls >= 1, 'mic stop cancels the pending quiet-period timer');
+  assert.equal(trigger.getEpoch(), epochBeforeStop + 1, 'an Auto result started before stop becomes stale');
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'nothing fires after the interview capture stops');
+});
+
+test('speech resuming during Auto generation invalidates the result before it can surface', async () => {
+  let releaseAnalyze!: () => void;
+  const analyzeGate = new Promise<void>((resolve) => {
+    releaseAnalyze = resolve;
+  });
+  let pendingFn: (() => void) | null = null;
+  const trigger = createAutoTrigger({
+    shouldGenerate: async () => yes(),
+    runAnalyze: async () => analyzeGate,
+    setTimer: (fn) => {
+      pendingFn = fn;
+      return 1;
+    },
+    clearTimer: () => {
+      pendingFn = null;
+    },
+    config: {
+      cooldownMs: COOLDOWN_MS,
+      minNewChars: MIN_NEW_CHARS,
+      debounceMs: DEBOUNCE_MS,
+      monitorModel: 'stub'
+    }
+  });
+  trigger.setCapturing(true);
+  trigger.onCandidateFinal(LONG_ANSWER);
+  assert.ok(pendingFn);
+
+  const epochAtStart = trigger.getEpoch();
+  const run = trigger.flush();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(trigger.getIsGenerating(), true);
+
+  trigger.noteSpeechActivity();
+  assert.equal(trigger.getEpoch(), epochAtStart + 1, 'the caller can suppress the stale Auto frame');
+
+  releaseAnalyze();
+  await run;
 });
 
 test('an interviewer turn cancels the old answer instead of blending it into the next candidate answer', async () => {
@@ -319,6 +379,7 @@ test('an interviewer turn cancels the old answer instead of blending it into the
   assert.equal(h.analyzeCalls.length, 0, 'the interviewer moving on cancels the pending follow-up');
 
   trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX);
+  h.advance(DEBOUNCE_MS);
   await trigger.flush();
   assert.equal(h.analyzeCalls.length, 1);
   assert.equal(

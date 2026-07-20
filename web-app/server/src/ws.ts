@@ -16,6 +16,7 @@ import type {
 import { createHeadlessSession } from '@open-cluely/copilot-core';
 import { config } from './config';
 import { createAsrRelay, type AsrRelay, type VolcCredentials } from './asr-relay';
+import { isAudiblePcm16Base64 } from './audio-activity';
 import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
@@ -799,6 +800,7 @@ export async function dispatch(
       await handleAnalyze(ws, session, trigger, msg);
       return;
     case 'audio':
+      if (isAudiblePcm16Base64(msg.pcm)) trigger.noteSpeechActivity();
       relay.handleAudio({ source: msg.source, pcmBase64: msg.pcm });
       return;
     case 'audio-control':
@@ -810,10 +812,14 @@ export async function dispatch(
           provider,
           state: 'finalizing'
         });
-        const result = await relay.handleAudioControl({ action: msg.action, source: msg.source });
-        // Gate autonomous follow-ups before final semantic correction so no new
-        // question can race the end-of-interview role partition.
+        const stopPromise = relay.handleAudioControl({ action: msg.action, source: msg.source });
+        // stopSource marks the lane as draining synchronously. Gate and invalidate
+        // Auto before awaiting the provider's late-final window, otherwise a
+        // pending 3-second timer can surface a question after the user pressed Stop.
         trigger.setCapturing(relay.isCapturing());
+        const result = await stopPromise;
+        // With Auto already gated, apply the final semantic correction before
+        // publishing the terminal provider status.
         if (!relay.isCapturing()) {
           await speakerLifecycle?.finalize();
         }

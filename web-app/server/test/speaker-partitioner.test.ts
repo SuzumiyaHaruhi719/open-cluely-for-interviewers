@@ -50,6 +50,34 @@ test('text-only classifier input uses a bounded recent window for incremental ro
   assert.ok(input.length <= 6_000);
 });
 
+test('hybrid classifier input keeps text-only turns when the ASR provider changes mid-interview', () => {
+  const turns: SpeakerTurn[] = [
+    {
+      seq: 0,
+      source: 'mic',
+      speakerId: 9,
+      text: '请结合一次具体经历说明，你如何处理园区消防检查发现的重大隐患。'
+    },
+    {
+      seq: 1,
+      source: 'mic',
+      speakerId: 7,
+      text: '我先隔离风险区域，再明确责任人、整改时限和复验标准。'
+    },
+    { seq: 2, source: 'mic', text: '最后把复验结果和现场照片写入消防台账。' },
+    { seq: 3, source: 'mic', text: '这个整改结果如何向租户解释？' }
+  ];
+
+  const input = buildSpeakerClassifierInput(turns);
+
+  assert.match(input, /mode=hybrid/);
+  assert.match(input, /\[seq=0 .*speaker=9\]/);
+  assert.match(input, /\[seq=1 .*speaker=7\]/);
+  assert.match(input, /\[seq=2 .*speaker=none\]/);
+  assert.match(input, /\[seq=3 .*speaker=none\]/);
+  assert.match(input, /speaker=none.*turnRoles/);
+});
+
 test('a failed final classification preserves the last stable live role map', async () => {
   const partitions: any[] = [];
   let calls = 0;

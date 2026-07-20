@@ -8,9 +8,9 @@ test('audio finalization drains the provider before the final speaker partition'
   const relay = {
     async handleAudioControl() {
       order.push('drain-start');
+      capturing = false;
       await Promise.resolve();
       order.push('drain-done');
-      capturing = false;
       return { finalReceived: true, timedOut: false };
     },
     isCapturing() {
@@ -62,11 +62,68 @@ test('audio finalization drains the provider before the final speaker partition'
   assert.deepEqual(order, [
     'status:finalizing',
     'drain-start',
-    'drain-done',
     'capturing:false',
+    'drain-done',
     'partition',
     'status:stopped'
   ]);
+});
+
+test('audible PCM postpones Auto even when the ASR provider emits no partial', async () => {
+  const order: string[] = [];
+  const samples = new Int16Array(1600).fill(2400);
+  const pcm = Buffer.from(samples.buffer).toString('base64');
+
+  await dispatch(
+    {} as never,
+    {} as never,
+    {
+      handleAudio() {
+        order.push('audio');
+      }
+    } as never,
+    {
+      noteSpeechActivity() {
+        order.push('speech');
+      }
+    } as never,
+    {} as never,
+    () => {},
+    () => {},
+    () => {},
+    () => '',
+    { type: 'audio', seq: 1, source: 'mic', pcm } as never
+  );
+
+  assert.deepEqual(order, ['speech', 'audio']);
+});
+
+test('silent PCM does not postpone a valid completed answer', async () => {
+  const order: string[] = [];
+  const pcm = Buffer.alloc(3200).toString('base64');
+
+  await dispatch(
+    {} as never,
+    {} as never,
+    {
+      handleAudio() {
+        order.push('audio');
+      }
+    } as never,
+    {
+      noteSpeechActivity() {
+        order.push('speech');
+      }
+    } as never,
+    {} as never,
+    () => {},
+    () => {},
+    () => {},
+    () => '',
+    { type: 'audio', seq: 1, source: 'mic', pcm } as never
+  );
+
+  assert.deepEqual(order, ['audio']);
 });
 
 test('audio finalization reports partial only after final speaker correction on provider timeout', async () => {

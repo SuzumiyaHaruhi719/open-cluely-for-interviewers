@@ -10,6 +10,7 @@ const MIN_NATIVE_TOTAL_CHARS = 48;
 const MIN_TOTAL_TURNS = 6;
 const REFRESH_TURNS = 3;
 const MAX_CLASSIFIER_TURNS = 12;
+const MAX_HYBRID_TEXT_TURNS = 8;
 const MAX_CLASSIFIER_TURN_CHARS = 360;
 const MIN_TURN_OVERRIDE_CONFIDENCE = 0.85;
 
@@ -151,6 +152,23 @@ function formatClassifierTurn(turn: SpeakerTurn): string {
   }] ${compactTurnText(turn.text)}`;
 }
 
+function representativeNativeTurns(
+  nativeTurns: readonly SpeakerTurn[],
+  limit = MAX_CLASSIFIER_TURNS
+): SpeakerTurn[] {
+  const bySpeaker = new Map<number, SpeakerTurn[]>();
+  for (const turn of nativeTurns) {
+    const speakerId = turn.speakerId as number;
+    const group = bySpeaker.get(speakerId) ?? [];
+    group.push(turn);
+    bySpeaker.set(speakerId, group);
+  }
+  return [...bySpeaker.values()]
+    .flatMap((group) => (group.length <= 4 ? group : [...group.slice(0, 2), ...group.slice(-2)]))
+    .sort((a, b) => a.seq - b.seq)
+    .slice(0, Math.max(0, limit));
+}
+
 /**
  * Keep long interviews inside a predictable input/output budget. Native ASR
  * needs representative evidence per acoustic cluster, not every verbatim turn;
@@ -158,20 +176,31 @@ function formatClassifierTurn(turn: SpeakerTurn): string {
  */
 export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): string {
   const nativeTurns = turns.filter((turn) => typeof turn.speakerId === 'number');
-  if (nativeTurns.length > 0) {
-    const bySpeaker = new Map<number, SpeakerTurn[]>();
-    for (const turn of nativeTurns) {
-      const speakerId = turn.speakerId as number;
-      const group = bySpeaker.get(speakerId) ?? [];
-      group.push(turn);
-      bySpeaker.set(speakerId, group);
-    }
-    const representatives = [...bySpeaker.values()]
-      .flatMap((group) =>
-        group.length <= 4 ? group : [...group.slice(0, 2), ...group.slice(-2)]
-      )
+  const textOnlyTurns = turns.filter((turn) => typeof turn.speakerId !== 'number');
+  if (nativeTurns.length > 0 && textOnlyTurns.length > 0) {
+    // Provider changes are intentionally seamless, so one interview can contain
+    // native iFlytek clusters followed by text-only Paraformer/Doubao turns (or
+    // vice versa). Preserve recent text-only evidence instead of silently
+    // switching the entire classifier into native-only mode.
+    const recentTextOnly = textOnlyTurns.slice(-MAX_HYBRID_TEXT_TURNS);
+    const nativeRepresentatives = representativeNativeTurns(
+      nativeTurns,
+      Math.max(1, MAX_CLASSIFIER_TURNS - recentTextOnly.length)
+    );
+    const representatives = [...nativeRepresentatives, ...recentTextOnly]
       .sort((a, b) => a.seq - b.seq)
-      .slice(0, MAX_CLASSIFIER_TURNS);
+      .slice(-MAX_CLASSIFIER_TURNS);
+    return [
+      '[classification-mode=hybrid]',
+      '请为每个出现的 speakerId 返回一条 speakerRoles；请对每条 speaker=none 的 seq 返回 turnRoles；有 speakerId 的 turn 只在语义角色与该 cluster 主角色冲突时返回高置信度 turnRoles 例外。',
+      '连续 ASR 可能把同一个人的一句话切成多个 turn；短片段必须结合相邻句继承语义角色，不要仅因片段不完整返回 unknown。',
+      ...representatives.map(formatClassifierTurn)
+    ]
+      .join('\n')
+      .slice(0, MAX_INPUT_CHARS);
+  }
+  if (nativeTurns.length > 0) {
+    const representatives = representativeNativeTurns(nativeTurns);
     return [
       '[classification-mode=native-clusters]',
       '请为每个出现的 speakerId 返回一条 speakerRoles；只在单条 turn 的语义角色与 speakerId 的主角色冲突时，为该 seq 返回高置信度 turnRoles 例外，否则省略。',

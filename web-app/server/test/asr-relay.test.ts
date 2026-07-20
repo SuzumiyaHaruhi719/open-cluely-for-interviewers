@@ -167,7 +167,7 @@ test('audio-control stop ends the session; dispose stops all sources', () => {
   assert.equal(created.length, before);
 });
 
-test('audio-control stop keeps capture active until the session finalization drain resolves', async () => {
+test('audio-control stop makes capture inactive while the provider drains its final frame', async () => {
   let releaseStop!: () => void;
   const stopGate = new Promise<void>((resolve) => {
     releaseStop = resolve;
@@ -188,7 +188,7 @@ test('audio-control stop keeps capture active until the session finalization dra
   await relay.handleAudioControl({ action: 'start', source: 'mic' });
   const stopPromise = Promise.resolve(relay.handleAudioControl({ action: 'stop', source: 'mic' }));
 
-  assert.equal(relay.isCapturing(), true);
+  assert.equal(relay.isCapturing(), false, 'Auto must be gated immediately after the user presses Stop');
   releaseStop();
   assert.deepEqual(await stopPromise, { finalReceived: true, timedOut: false });
   assert.equal(relay.isCapturing(), false);
