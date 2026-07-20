@@ -120,6 +120,7 @@ describe('Shell', () => {
     });
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    expect(lastConfig(ws)).toMatchObject({ autoMode: 'agent' });
     expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
     expect(screen.getByLabelText('评估报告模型')).toBeInTheDocument();
     expect(screen.queryByText('面试模式')).not.toBeInTheDocument();
@@ -160,26 +161,18 @@ describe('Shell', () => {
 
     fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
     expect(lastConfig(ws)).toMatchObject({ autoGenerate: false });
-    expect(screen.getByLabelText('触发方式')).toBeDisabled();
+    expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
-    fireEvent.change(screen.getByLabelText('触发方式'), {
-      target: { value: 'interval' }
-    });
-    expect(lastConfig(ws)).toMatchObject({ autoMode: 'interval' });
-
-    fireEvent.change(screen.getByLabelText('自动追问间隔'), {
-      target: { value: '60' }
-    });
-    expect(lastConfig(ws)).toMatchObject({ autoIntervalMs: 60_000 });
-    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBe('60');
+    expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
+    expect(localStorage.getItem('open-cluely.autoMode')).toBeNull();
+    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBeNull();
 
     fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
     expect(screen.getByLabelText('语音识别')).toHaveValue('paraformer');
     expect(screen.getByLabelText('评估报告模型')).toHaveValue('deepseek-v4-flash');
-    expect(screen.getByLabelText('触发方式')).toHaveValue('interval');
-    expect(screen.getByLabelText('自动追问间隔')).toHaveValue('60');
+    expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
   });
 
   test('ignores a legacy language preference and always configures Chinese', async () => {

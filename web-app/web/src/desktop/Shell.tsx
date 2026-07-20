@@ -209,32 +209,6 @@ export function Shell() {
     onAutoGenerateChange(!appSettings.settings.autoGenerate);
   }, [appSettings.settings.autoGenerate, onAutoGenerateChange]);
 
-  // Autonomous follow-up trigger MODE: persist locally AND tell the server so its
-  // monitor switches between the AI-decided ('agent') and fixed-30s ('interval')
-  // cadence. The full-config re-push carries `autoMode` on every new sessionId, so
-  // this delta is enough for the live one (mirrors onModeChange/onToggleAuto).
-  const { setAutoMode } = appSettings;
-  const onAutoModeChange = useCallback(
-    (mode: 'agent' | 'interval'): void => {
-      setAutoMode(mode);
-      pushConfig({ autoMode: mode });
-    },
-    [setAutoMode, pushConfig]
-  );
-
-  // Interviewer-adjustable interval (cooldown) for interval mode: persist locally
-  // AND push to the server as autoIntervalMs so its monitor uses the new cadence.
-  // The full-config re-push carries autoIntervalMs on every new sessionId, so this
-  // delta is enough for the live one (mirrors onAutoModeChange).
-  const { setAutoIntervalSec } = appSettings;
-  const onAutoIntervalChange = useCallback(
-    (sec: number): void => {
-      setAutoIntervalSec(sec);
-      pushConfig({ autoIntervalMs: sec * 1000 });
-    },
-    [setAutoIntervalSec, pushConfig]
-  );
-
   // Promote a ranked candidate: copy it into the analyze buffer (so Generate Q /
   // the next analyze uses it) and flash a brief "已选用" confirmation. No server
   // round-trip — picking is a purely local selection.
@@ -351,8 +325,9 @@ export function Shell() {
       // capture routing is still controlled separately by `offline`.
       diarize: true,
       autoGenerate: s.autoGenerate,
-      autoMode: s.autoMode,
-      autoIntervalMs: s.autoIntervalSec * 1000,
+      // Product policy: one evidence-aware quiet-period trigger. Legacy interval
+      // wire support remains server-side only for older clients.
+      autoMode: 'agent',
       summaryModel: s.summaryModel
     };
   }, [config, offline, appSettings.settings]);
@@ -532,8 +507,6 @@ export function Shell() {
                 offline={offline}
                 speakerSegments={speakerSegments}
                 onSetSpeakerRole={setSpeakerRole}
-                autoMode={appSettings.settings.autoMode}
-                autoIntervalMs={appSettings.settings.autoIntervalSec * 1000}
                 autoGenerate={appSettings.settings.autoGenerate}
                 capturing={recognitionLive}
                 lastAutoFireAt={lastAutoFireAt}
@@ -597,8 +570,6 @@ export function Shell() {
         onMicDeviceChange={appSettings.setMicDeviceId}
         micDeviceDisabled={capturing}
         onAutoGenerateChange={onAutoGenerateChange}
-        onAutoModeChange={onAutoModeChange}
-        onAutoIntervalChange={onAutoIntervalChange}
       />
 
       <SpotlightTour replayToken={tourReplayToken} />

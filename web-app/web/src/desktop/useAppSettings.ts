@@ -3,8 +3,6 @@ import { useCallback, useState } from 'react';
 const KEYS = {
   asrProvider: 'open-cluely.asrProvider',
   autoGenerate: 'open-cluely.autoGenerate',
-  autoMode: 'open-cluely.autoMode',
-  autoIntervalSec: 'open-cluely.autoIntervalSec',
   summaryModel: 'open-cluely.summaryModel',
   micDeviceId: 'mic.inputDeviceId'
 } as const;
@@ -13,6 +11,8 @@ const KEYS = {
 const RETIRED_KEYS = [
   'open-cluely.aiModel',
   'open-cluely.outputLanguage',
+  'open-cluely.autoMode',
+  'open-cluely.autoIntervalSec',
   'open-cluely.summaryPromptMode',
   'open-cluely.summaryPromptText',
   'open-cluely.volcAppId',
@@ -26,15 +26,12 @@ const RETIRED_KEYS = [
 /** Only providers verified on the deployment are exposed to interviewers. */
 export type UserAsrProvider = 'xfyun' | 'volc' | 'paraformer' | 'sim';
 export type SummaryModel = 'deepseek-v4-pro' | 'deepseek-v4-flash';
+/** Backward-compatible rendering type; the product always configures `agent`. */
 export type AutoMode = 'agent' | 'interval';
 
 export const DEFAULT_ASR_PROVIDER: UserAsrProvider = 'xfyun';
 export const DEFAULT_SUMMARY_MODEL: SummaryModel = 'deepseek-v4-pro';
 export const DEFAULT_AUTO_GENERATE = true;
-export const DEFAULT_AUTO_MODE: AutoMode = 'agent';
-export const DEFAULT_AUTO_INTERVAL_SEC = 30;
-export const MIN_AUTO_INTERVAL_SEC = 5;
-export const MAX_AUTO_INTERVAL_SEC = 300;
 
 const USER_ASR_PROVIDERS: ReadonlySet<string> = new Set(['xfyun', 'volc', 'paraformer']);
 const SUMMARY_MODELS: ReadonlySet<string> = new Set([
@@ -49,10 +46,6 @@ export interface AppSettings {
   micDeviceId: string;
   /** Autonomous context-driven question generation. */
   autoGenerate: boolean;
-  /** AI evidence monitor or a fixed wall-clock interval. */
-  autoMode: AutoMode;
-  /** Fixed-interval cadence in seconds; ignored when autoMode is `agent`. */
-  autoIntervalSec: number;
   /** Post-interview evaluation model; realtime Expert remains fixed separately. */
   summaryModel: SummaryModel;
 }
@@ -62,8 +55,6 @@ export interface UseAppSettings {
   setAsrProvider: (value: UserAsrProvider) => void;
   setMicDeviceId: (value: string) => void;
   setAutoGenerate: (value: boolean) => void;
-  setAutoMode: (value: AutoMode) => void;
-  setAutoIntervalSec: (value: number) => void;
   setSummaryModel: (value: SummaryModel) => void;
 }
 
@@ -88,16 +79,6 @@ function readBool(key: string, fallback: boolean): boolean {
   if (raw === 'true') return true;
   if (raw === 'false') return false;
   return fallback;
-}
-
-function clampInterval(value: number): number {
-  const finite = Number.isFinite(value) ? Math.round(value) : DEFAULT_AUTO_INTERVAL_SEC;
-  return Math.min(MAX_AUTO_INTERVAL_SEC, Math.max(MIN_AUTO_INTERVAL_SEC, finite));
-}
-
-function readInterval(): number {
-  const raw = readString(KEYS.autoIntervalSec, String(DEFAULT_AUTO_INTERVAL_SEC));
-  return clampInterval(Number(raw));
 }
 
 function persist(key: string, value: string): void {
@@ -127,8 +108,6 @@ export function useAppSettings(): UseAppSettings {
       asrProvider: readAsrProvider(),
       micDeviceId: readString(KEYS.micDeviceId, ''),
       autoGenerate: readBool(KEYS.autoGenerate, DEFAULT_AUTO_GENERATE),
-      autoMode: readString(KEYS.autoMode, DEFAULT_AUTO_MODE) === 'interval' ? 'interval' : 'agent',
-      autoIntervalSec: readInterval(),
       summaryModel: readSummaryModel()
     };
   });
@@ -155,18 +134,6 @@ export function useAppSettings(): UseAppSettings {
     persist(KEYS.autoGenerate, String(value));
   }, []);
 
-  const setAutoMode = useCallback((value: AutoMode): void => {
-    const normalized: AutoMode = value === 'interval' ? 'interval' : 'agent';
-    setSettings((prev) => ({ ...prev, autoMode: normalized }));
-    persist(KEYS.autoMode, normalized);
-  }, []);
-
-  const setAutoIntervalSec = useCallback((value: number): void => {
-    const normalized = clampInterval(value);
-    setSettings((prev) => ({ ...prev, autoIntervalSec: normalized }));
-    persist(KEYS.autoIntervalSec, String(normalized));
-  }, []);
-
   const setSummaryModel = useCallback((value: SummaryModel): void => {
     const normalized = SUMMARY_MODELS.has(value) ? value : DEFAULT_SUMMARY_MODEL;
     setSettings((prev) => ({ ...prev, summaryModel: normalized }));
@@ -178,8 +145,6 @@ export function useAppSettings(): UseAppSettings {
     setAsrProvider,
     setMicDeviceId,
     setAutoGenerate,
-    setAutoMode,
-    setAutoIntervalSec,
     setSummaryModel
   };
 }

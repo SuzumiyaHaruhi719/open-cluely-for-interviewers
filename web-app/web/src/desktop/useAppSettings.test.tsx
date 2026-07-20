@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, test } from 'vitest';
 import {
   DEFAULT_ASR_PROVIDER,
   DEFAULT_SUMMARY_MODEL,
-  MIN_AUTO_INTERVAL_SEC,
   useAppSettings
 } from './useAppSettings';
 
@@ -26,14 +25,18 @@ describe('useAppSettings persisted controls', () => {
     localStorage.setItem('open-cluely.asrProvider', 'retired-provider');
     localStorage.setItem('open-cluely.summaryModel', 'retired-model');
     localStorage.setItem('open-cluely.ttsModel', 'retired-tts');
+    localStorage.setItem('open-cluely.autoMode', 'interval');
     localStorage.setItem('open-cluely.autoIntervalSec', '2');
     const { result } = renderHook(() => useAppSettings());
 
     expect(DEFAULT_ASR_PROVIDER).toBe('xfyun');
     expect(result.current.settings.asrProvider).toBe('xfyun');
     expect(result.current.settings.summaryModel).toBe(DEFAULT_SUMMARY_MODEL);
-    expect(result.current.settings.autoIntervalSec).toBe(MIN_AUTO_INTERVAL_SEC);
     expect(localStorage.getItem('open-cluely.ttsModel')).toBeNull();
+    expect(localStorage.getItem('open-cluely.autoMode')).toBeNull();
+    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBeNull();
+    expect(result.current.settings).not.toHaveProperty('autoMode');
+    expect(result.current.settings).not.toHaveProperty('autoIntervalSec');
     expect(result.current.settings).not.toHaveProperty('ttsModel');
     expect(result.current).not.toHaveProperty('setTtsModel');
   });
@@ -54,8 +57,6 @@ describe('useAppSettings persisted controls', () => {
       result.current.setAsrProvider('paraformer');
       result.current.setMicDeviceId('room-mic');
       result.current.setAutoGenerate(false);
-      result.current.setAutoMode('interval');
-      result.current.setAutoIntervalSec(60);
       result.current.setSummaryModel('deepseek-v4-flash');
     });
 
@@ -63,15 +64,11 @@ describe('useAppSettings persisted controls', () => {
       asrProvider: 'paraformer',
       micDeviceId: 'room-mic',
       autoGenerate: false,
-      autoMode: 'interval',
-      autoIntervalSec: 60,
       summaryModel: 'deepseek-v4-flash'
     });
     expect(localStorage.getItem('open-cluely.asrProvider')).toBe('paraformer');
     expect(localStorage.getItem('mic.inputDeviceId')).toBe('room-mic');
     expect(localStorage.getItem('open-cluely.autoGenerate')).toBe('false');
-    expect(localStorage.getItem('open-cluely.autoMode')).toBe('interval');
-    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBe('60');
     expect(localStorage.getItem('open-cluely.summaryModel')).toBe('deepseek-v4-flash');
   });
 

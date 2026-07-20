@@ -3,7 +3,6 @@ import { CloseIcon } from './icons';
 import { useMicDevices } from './useMicDevices';
 import type {
   AppSettings,
-  AutoMode,
   SummaryModel,
   UserAsrProvider
 } from './useAppSettings';
@@ -16,8 +15,6 @@ interface SettingsModalProps {
   onMicDeviceChange: (deviceId: string) => void;
   micDeviceDisabled: boolean;
   onAutoGenerateChange: (enabled: boolean) => void;
-  onAutoModeChange: (mode: AutoMode) => void;
-  onAutoIntervalChange: (seconds: number) => void;
   onSummaryModelChange: (value: SummaryModel) => void;
 }
 
@@ -34,8 +31,6 @@ const SUMMARY_MODEL_OPTIONS: ReadonlyArray<{ value: SummaryModel; label: string 
   { value: 'deepseek-v4-flash', label: 'DeepSeek v4 Flash · 快速评估' }
 ];
 
-const AUTO_INTERVAL_OPTIONS = [15, 30, 45, 60, 90] as const;
-
 /** Compact, auto-saving settings containing only observable interviewer choices. */
 export function SettingsModal({
   open,
@@ -45,8 +40,6 @@ export function SettingsModal({
   onMicDeviceChange,
   micDeviceDisabled,
   onAutoGenerateChange,
-  onAutoModeChange,
-  onAutoIntervalChange,
   onSummaryModelChange
 }: SettingsModalProps) {
   const [mounted, setMounted] = useState(open);
@@ -195,43 +188,6 @@ export function SettingsModal({
               </label>
             </div>
 
-            <div className="settings-field">
-              <label className="settings-field__label" htmlFor="setting-auto-mode">
-                触发方式
-              </label>
-              <select
-                id="setting-auto-mode"
-                className="settings-select"
-                value={settings.autoMode}
-                disabled={!settings.autoGenerate}
-                onChange={(event) => onAutoModeChange(event.target.value as AutoMode)}
-              >
-                <option value="agent">AI 判断 · 推荐</option>
-                <option value="interval">固定间隔</option>
-              </select>
-            </div>
-
-            {settings.autoMode === 'interval' ? (
-              <div className="settings-field">
-                <label className="settings-field__label" htmlFor="setting-auto-interval">
-                  自动追问间隔
-                </label>
-                <select
-                  id="setting-auto-interval"
-                  className="settings-select"
-                  value={String(settings.autoIntervalSec)}
-                  disabled={!settings.autoGenerate}
-                  onChange={(event) => onAutoIntervalChange(Number(event.target.value))}
-                >
-                  {AUTO_INTERVAL_OPTIONS.map((seconds) => (
-                    <option key={seconds} value={seconds}>
-                      {seconds} 秒
-                    </option>
-                  ))}
-                </select>
-                <span className="settings-field__desc">{`每 ${settings.autoIntervalSec} 秒检查一次候选人新回答`}</span>
-              </div>
-            ) : null}
           </section>
 
           <section className="settings-section settings-section--card" aria-labelledby="report-settings-title">
