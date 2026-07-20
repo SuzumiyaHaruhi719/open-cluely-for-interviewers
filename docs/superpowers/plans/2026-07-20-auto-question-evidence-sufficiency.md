@@ -27,7 +27,7 @@
 - Consumes: `decideLocalTrigger(recentTranscript: string): TriggerDecision`
 - Produces: a deterministic admission verdict before the existing Expert call.
 
-- [ ] **Step 1: Write the failing behavior tests**
+- [x] **Step 1: Write the failing behavior tests**
 
 Append these cases to `auto-trigger-local-decision.test.ts`:
 
@@ -56,7 +56,7 @@ test('information-rich ASR text may be admitted without terminal punctuation', (
 });
 ```
 
-- [ ] **Step 2: Run the focused test and verify RED**
+- [x] **Step 2: Run the focused test and verify RED**
 
 Run:
 
@@ -67,7 +67,7 @@ npm exec -- tsx --test test/auto-trigger-local-decision.test.ts
 
 Expected: the cut-off and padding cases fail with `true !== false`; existing substantive and filler cases stay green.
 
-- [ ] **Step 3: Implement the minimal local gate**
+- [x] **Step 3: Implement the minimal local gate**
 
 In `auto-trigger.ts`, add local patterns for incomplete tails, terminal punctuation, completed ASR endings, concrete actions, outcomes, and operational details. Add this evidence combiner and call it from `decideLocalTrigger()` after completeness:
 
@@ -101,7 +101,7 @@ if (!hasEnoughEvidence(text)) {
 }
 ```
 
-- [ ] **Step 4: Run focused and surrounding tests and verify GREEN**
+- [x] **Step 4: Run focused and surrounding tests and verify GREEN**
 
 Run:
 
@@ -112,7 +112,7 @@ npm exec -- tsx --test test/auto-trigger-local-decision.test.ts test/auto-trigge
 
 Expected: all selected tests pass with zero failures.
 
-- [ ] **Step 5: Commit the behavior checkpoint**
+- [x] **Step 5: Commit the behavior checkpoint**
 
 ```bash
 git add web-app/server/src/auto-trigger.ts web-app/server/test/auto-trigger-local-decision.test.ts
@@ -128,7 +128,7 @@ git commit -m "fix: require substantive evidence before auto questions"
 - Consumes: the finalized trigger behavior from Task 1.
 - Produces: contributor-facing invariants and full regression evidence.
 
-- [ ] **Step 1: Update the implementation note**
+- [x] **Step 1: Update the implementation note**
 
 Add this invariant to the data flow and Gotchas sections:
 
@@ -136,7 +136,7 @@ Add this invariant to the data flow and Gotchas sections:
 Length is necessary but not sufficient: a candidate window must end cleanly and contain multiple substantive clauses plus concrete actions or an action/outcome/detail combination. Connective tails wait for more speech; completed evidence-rich ASR text may pass without final punctuation.
 ```
 
-- [ ] **Step 2: Run full verification**
+- [x] **Step 2: Run full verification**
 
 ```bash
 cd web-app/server && npm test && npm run typecheck && npm run build
@@ -145,11 +145,10 @@ cd ../web && npm test && npm run build
 
 Expected: every command exits 0; no test or type error is introduced.
 
-- [ ] **Step 3: Commit documentation and push**
+- [x] **Step 3: Commit documentation and push**
 
 ```bash
 git add docs/superpowers/specs/2026-07-20-auto-question-evidence-sufficiency-design.md docs/superpowers/plans/2026-07-20-auto-question-evidence-sufficiency.md
 git commit -m "docs: define auto-question evidence sufficiency"
 git push origin codex/interviewer-hardening
 ```
-
