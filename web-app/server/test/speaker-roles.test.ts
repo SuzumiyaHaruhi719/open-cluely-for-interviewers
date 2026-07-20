@@ -31,7 +31,7 @@ test('guess mode: setRole complements the other seen speaker', () => {
   assert.equal(m.resolve(0), 'interviewer');
   assert.equal(m.resolve(1), 'candidate');
 });
-test('no-guess (xfyun): unassigned ids resolve to unknown, no complement on setRole', () => {
+test('no-guess (native clusters): unassigned ids resolve to unknown, no complement on setRole', () => {
   const m = createSpeakerRoleMap();
   m.setGuess(false);
   assert.equal(m.resolve(1), 'unknown');
@@ -42,7 +42,7 @@ test('no-guess (xfyun): unassigned ids resolve to unknown, no complement on setR
   assert.equal(m.resolve(1), 'unknown');
 });
 
-test('reset clears sticky speaker labels while preserving xfyun no-guess mode', () => {
+test('reset clears sticky speaker labels while preserving native-cluster no-guess mode', () => {
   const m = createSpeakerRoleMap();
   m.setGuess(false);
   m.setRole(2, 'candidate');

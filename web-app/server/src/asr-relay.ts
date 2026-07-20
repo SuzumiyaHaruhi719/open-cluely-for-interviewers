@@ -10,7 +10,7 @@
 // the injected `emit`.
 //
 // `asrProvider` selects the recognition engine. Providers with native speaker
-// clusters (iFlytek, Doubao Seed ASR 2.0, and the simulation harness) forward
+// clusters (Doubao Seed ASR 2.0 and the simulation harness) forward
 // `speakerId`; providers without them emit text only. Single-mic semantic role
 // partitioning is handled after transcription by speaker-partitioner.ts, never
 // in this relay.
@@ -25,7 +25,6 @@ import {
   type WsConstructor
 } from './paraformer-client';
 import { createVolcSession, type VolcSessionDeps } from './volc-client';
-import { createXfyunSession, type XfyunSessionDeps } from './xfyun-client';
 import { createSimSession, type SimSessionDeps, type SimScriptTurn } from './sim-client';
 
 export interface TranscriptEmit {
@@ -81,8 +80,6 @@ export interface VolcCredentials {
 export type ParaformerSessionFactory = (deps: ParaformerSessionDeps) => AsrSession;
 /** Factory used to create a Volc/Doubao session — overridable in tests with a fake. */
 export type VolcSessionFactory = (deps: VolcSessionDeps) => AsrSession;
-/** Factory used to create an iFlytek (讯飞) session — overridable in tests with a fake. */
-export type XfyunSessionFactory = (deps: XfyunSessionDeps) => AsrSession;
 /** Factory used to create a simulation ('sim') session — overridable in tests with a fake. */
 export type SimSessionFactory = (deps: SimSessionDeps) => AsrSession;
 /**
@@ -103,8 +100,6 @@ export interface AsrRelayDeps {
   sessionFactory?: ParaformerSessionFactory;
   /** Volc/Doubao session factory (defaults to the real client). */
   volcSessionFactory?: VolcSessionFactory;
-  /** iFlytek (讯飞) session factory (defaults to the real client). */
-  xfyunSessionFactory?: XfyunSessionFactory;
   /** Simulation ('sim') session factory (defaults to createSimSession). */
   simSessionFactory?: SimSessionFactory;
   /** WebSocket constructor passed to the sessions (defaults to `ws`). */
@@ -146,7 +141,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   const apiKey = deps.apiKey ?? config.dashscopeApiKey;
   const sessionFactory = deps.sessionFactory ?? (createParaformerSession as ParaformerSessionFactory);
   const volcSessionFactory = deps.volcSessionFactory ?? (createVolcSession as VolcSessionFactory);
-  const xfyunSessionFactory = deps.xfyunSessionFactory ?? (createXfyunSession as XfyunSessionFactory);
   const simSessionFactory = deps.simSessionFactory ?? (createSimSession as SimSessionFactory);
   const WebSocketCtor = (deps.WebSocket ?? (WsWebSocket as unknown)) as WsConstructor;
 
@@ -162,7 +156,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     display: null
   };
   let autoAnalyzeDisplay = false;
-  let provider: AsrProvider = 'paraformer';
+  let provider: AsrProvider = 'volc';
   let volcCreds: VolcCredentials | null = null;
   let simScript: ReadonlyArray<SimScriptTurn> = [];
   let disposed = false;
@@ -217,7 +211,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   function makeTextSession(source: AudioSource, owner: AsrProvider, onText: OnText): AsrSession | null {
     if (owner === 'sim') {
       // Mic-less harness: replay the stored two-speaker script (audio ignored).
-      // Like xfyun, the session carries its own speakerId on finals.
+      // Like Doubao, the session carries its own speakerId on finals.
       if (!simScript.length) {
         deps.emit({ source, text: '[Sim unavailable: no simScript configured]', isFinal: false });
         emitStatus({ source, provider: owner, state: 'failed', message: '模拟脚本未配置' });
@@ -225,29 +219,6 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
       }
       return simSessionFactory({
         script: simScript,
-        onTranscript: onText,
-        onReady: () => onReady(source, owner),
-        onError: (message) => onError(source, owner, message)
-      });
-    }
-    if (owner === 'xfyun') {
-      const appId = config.xfyunAppId.trim();
-      const apiKey = config.xfyunApiKey.trim();
-      const apiSecret = config.xfyunApiSecret.trim();
-      if (!appId || !apiKey || !apiSecret) {
-        deps.emit({ source, text: '[Xunfei unavailable: set XFYUN_* in .env]', isFinal: false });
-        emitStatus({ source, provider: owner, state: 'failed', message: '讯飞服务端配置不完整' });
-        return null;
-      }
-      // ONE cloud call returns text + speaker (角色分离 role_type=2); 16 kHz PCM,
-      // forwarded as-is. onText carries the provider's own speakerId on finals.
-      return xfyunSessionFactory({
-        WebSocket: WebSocketCtor,
-        appId,
-        apiKey,
-        apiSecret,
-        wsUrl: config.xfyunWsUrl,
-        sampleRate: 16000,
         onTranscript: onText,
         onReady: () => onReady(source, owner),
         onError: (message) => onError(source, owner, message)
@@ -397,10 +368,10 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   }
 
   function setAsrProvider(next: AsrProvider, volc?: VolcCredentials): void {
-    // iFlytek is the native text+speaker engine (server-side XFYUN_* creds).
-    // Anything outside the current allowlist safely collapses to Paraformer.
-    const resolved =
-      next === 'volc' ? 'volc' : next === 'xfyun' ? 'xfyun' : next === 'sim' ? 'sim' : 'paraformer';
+    // Doubao is the fixed product provider. Paraformer and the simulation
+    // harness remain explicit internal paths; invalid runtime input collapses
+    // to Doubao instead of silently selecting a different cloud provider.
+    const resolved = next === 'paraformer' ? 'paraformer' : next === 'sim' ? 'sim' : 'volc';
     const providerChanged = provider !== resolved;
     const volcCredentialsChanged =
       resolved === 'volc' &&

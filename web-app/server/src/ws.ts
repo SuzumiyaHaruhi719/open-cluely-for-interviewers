@@ -85,7 +85,7 @@ const sessionConfigSchema = z
     autoAnalyzeDisplay: z.boolean().optional(),
     // Realtime ASR provider. All credentials and Doubao 2.0 resource selection
     // are environment-owned and never accepted from the browser.
-    asrProvider: z.enum(['paraformer', 'volc', 'xfyun', 'sim']).optional(),
+    asrProvider: z.enum(['paraformer', 'volc', 'sim']).optional(),
     // Simulation script for asrProvider 'sim' (mic-less test harness): the relay
     // stores the latest one and replays it on the NEXT audio-control start.
     simScript: z.array(z.object({ speakerId: z.number(), text: z.string() })).optional(),
@@ -708,21 +708,18 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
   if (Array.isArray(cfg.simScript)) {
     relay.setSimScript(cfg.simScript);
   }
-  // iFlytek carries native acoustic cluster ids (角色分离 role_type=2). The other
-  // cloud providers emit text only; semantic partitioning happens in
-  // speaker-partitioner after enough evidence or at the final stop.
-  const textProvider: 'paraformer' | 'volc' | 'xfyun' | 'sim' = cfg.asrProvider === 'sim'
-      ? 'sim'
-      : cfg.asrProvider === 'xfyun'
-        ? 'xfyun'
-        : cfg.asrProvider === 'volc' || (cfg.asrProvider === undefined && creds.appId && creds.accessToken)
-          ? 'volc'
-          : 'paraformer';
+  // Doubao carries native acoustic clusters. Paraformer emits text only;
+  // semantic partitioning then supplies roles after enough evidence or at Stop.
+  const textProvider: 'paraformer' | 'volc' | 'sim' = cfg.asrProvider === 'sim'
+    ? 'sim'
+    : cfg.asrProvider === 'paraformer'
+      ? 'paraformer'
+      : 'volc';
   relay.setAsrProvider(textProvider, creds);
   // Native cluster ids are deliberately not mapped by first-seen order. They
   // remain unknown until Flash has enough conversational evidence; manual labels
   // and later model refreshes then share SpeakerRoleMap.
-  roles.setGuess(textProvider !== 'xfyun' && textProvider !== 'sim');
+  roles.setGuess(textProvider === 'paraformer');
 }
 
 type SpeakerLifecycle = Pick<SpeakerPartitioner, 'setEnabled' | 'finalize' | 'reset'>;
@@ -1279,17 +1276,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, trigger, text)
     });
 
-    // Seed the relay with environment-owned Doubao 2.0 credentials without
-    // selecting it. The renderer explicitly selects Xunfei (product default) or
-    // Doubao; Paraformer remains an internal compatibility fallback.
-    if (config.volcAppId && config.volcAccessToken) {
-      relay.setAsrProvider('paraformer', {
-        appId: config.volcAppId,
-        accessToken: config.volcAccessToken,
-        resourceId: config.volcResourceId || undefined,
-        model: config.volcModel || undefined
-      });
-    }
+    // Every normal connection starts on the fixed product provider. Credentials
+    // remain server-owned; missing configuration surfaces as a Doubao status
+    // failure instead of silently falling back to another engine.
+    relay.setAsrProvider('volc', resolveVolcCreds());
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 

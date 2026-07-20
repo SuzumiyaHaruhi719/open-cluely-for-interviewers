@@ -48,7 +48,7 @@ describe('ASR runtime status messages', () => {
       JSON.stringify({
         type: 'asr-status',
         source: 'mic',
-        provider: 'xfyun',
+        provider: 'volc',
         state: 'failed',
         message: '鉴权失败'
       })
@@ -57,7 +57,7 @@ describe('ASR runtime status messages', () => {
     expect(out).toEqual({
       type: 'asr-status',
       source: 'mic',
-      provider: 'xfyun',
+      provider: 'volc',
       state: 'failed',
       message: '鉴权失败'
     });
@@ -71,7 +71,12 @@ describe('ASR runtime status messages', () => {
     ).toBeNull();
     expect(
       parseServerMessage(
-        JSON.stringify({ type: 'asr-status', source: 'mic', provider: 'xfyun', state: 'healthy-ish' })
+        JSON.stringify({ type: 'asr-status', source: 'mic', provider: 'volc', state: 'healthy-ish' })
+      )
+    ).toBeNull();
+    expect(
+      parseServerMessage(
+        JSON.stringify({ type: 'asr-status', source: 'mic', provider: 'xfyun', state: 'live' })
       )
     ).toBeNull();
   });

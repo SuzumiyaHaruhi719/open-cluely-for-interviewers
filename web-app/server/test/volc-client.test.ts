@@ -514,8 +514,14 @@ function providerRelay() {
   return { relay, emits, para: para.created, volc: volc.created };
 }
 
-test('default provider routes audio to the Paraformer client, not Volc', () => {
+test('default selected provider is Doubao Seed ASR 2.0', () => {
+  const { relay } = providerRelay();
+  assert.equal(relay.getProvider(), 'volc');
+});
+
+test('the internal Paraformer compatibility path remains explicitly selectable', () => {
   const { relay, para, volc } = providerRelay();
+  relay.setAsrProvider('paraformer');
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([1, 2, 3]).toString('base64') });
 
@@ -569,7 +575,7 @@ test('switching back to paraformer after volc routes new sessions to Paraformer'
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(volc.length, 1);
 
-  // Flip back to the default. The NEXT source start uses Paraformer.
+  // Flip to the internal compatibility provider. The NEXT source uses Paraformer.
   relay.setAsrProvider('paraformer');
   relay.handleAudioControl({ action: 'start', source: 'display' });
   assert.equal(para.length, 1);
@@ -577,6 +583,7 @@ test('switching back to paraformer after volc routes new sessions to Paraformer'
 
 test('switching provider during active capture reconnects after the old provider drains', async () => {
   const { relay, para, volc } = providerRelay();
+  relay.setAsrProvider('paraformer');
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(para.length, 1);
 

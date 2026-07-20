@@ -351,14 +351,14 @@ describe('useCopilotSocket', () => {
       socket.emit({
         type: 'asr-status',
         source: 'mic',
-        provider: 'xfyun',
+        provider: 'volc',
         state: 'failed',
-        message: '讯飞鉴权失败'
+        message: '豆包鉴权失败'
       });
     });
     await waitFor(() => expect(result.current.audio.mic.runtimeState).toBe('failed'));
-    expect(result.current.audio.mic.provider).toBe('xfyun');
-    expect(result.current.audio.mic.error).toBe('讯飞鉴权失败');
+    expect(result.current.audio.mic.provider).toBe('volc');
+    expect(result.current.audio.mic.error).toBe('豆包鉴权失败');
 
     act(() => {
       result.current.stopAudio('mic');
@@ -373,7 +373,7 @@ describe('useCopilotSocket', () => {
       socket.emit({
         type: 'asr-status',
         source: 'mic',
-        provider: 'xfyun',
+        provider: 'volc',
         state: 'stopped'
       });
     });
@@ -396,9 +396,9 @@ describe('useCopilotSocket', () => {
       MockWebSocket.last().emit({
         type: 'asr-status',
         source: 'mic',
-        provider: 'xfyun',
+        provider: 'volc',
         state: 'partial',
-        message: 'iFlytek finalization timeout'
+        message: 'Doubao finalization timeout'
       });
     });
 
@@ -569,7 +569,7 @@ describe('useCopilotSocket', () => {
     });
   });
 
-  test('iFlytek raw speaker ids remain independently labelable', async () => {
+  test('Doubao raw speaker ids remain independently labelable', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
       MockWebSocket.last().open();
@@ -577,7 +577,7 @@ describe('useCopilotSocket', () => {
     await waitFor(() => expect(result.current.status).toBe('open'));
     const socket = MockWebSocket.last();
 
-    // iFlytek may over-segment fast hand-offs into extra raw ids. The client
+    // A native ASR may over-segment fast hand-offs into extra raw ids. The client
     // keeps those ids distinct so the interviewer can label each "说话人 N"
     // instead of receiving locally merged speakers.
     act(() => {

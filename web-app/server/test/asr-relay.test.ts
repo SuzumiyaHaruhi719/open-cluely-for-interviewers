@@ -49,6 +49,7 @@ function relayWith(overrides: { onDisplayFinal?: (text: string) => void } = {}) 
     sessionFactory: factory,
     onDisplayFinal: overrides.onDisplayFinal
   });
+  relay.setAsrProvider('paraformer');
   return { relay, emits, statuses, created };
 }
 
@@ -184,6 +185,7 @@ test('audio-control stop makes capture inactive while the provider drains its fi
       }
     })
   });
+  relay.setAsrProvider('paraformer');
 
   await relay.handleAudioControl({ action: 'start', source: 'mic' });
   const stopPromise = Promise.resolve(relay.handleAudioControl({ action: 'stop', source: 'mic' }));
@@ -204,6 +206,7 @@ test('with no API key, start emits a friendly error and creates no session', () 
     apiKey: '',
     sessionFactory: factory
   });
+  relay.setAsrProvider('paraformer');
 
   relay.handleAudioControl({ action: 'start', source: 'mic' as AudioSource });
   assert.equal(created.length, 0);
@@ -263,6 +266,7 @@ test('missing credentials fail once instead of reconnecting on every PCM frame',
     apiKey: '',
     sessionFactory: factory
   });
+  relay.setAsrProvider('paraformer');
 
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([1]).toString('base64') });

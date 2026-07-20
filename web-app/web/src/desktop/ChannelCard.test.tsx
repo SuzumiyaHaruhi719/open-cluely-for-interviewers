@@ -84,7 +84,7 @@ describe('ChannelCard microphone selection', () => {
         state={{
           capturing: true,
           level: 0,
-          error: '讯飞鉴权失败',
+          error: '豆包鉴权失败',
           runtimeState: 'failed'
         }}
       />

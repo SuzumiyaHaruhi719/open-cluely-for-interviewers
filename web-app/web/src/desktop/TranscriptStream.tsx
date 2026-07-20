@@ -307,11 +307,11 @@ export function TranscriptStream({
   const mic = transcripts.mic;
 
   // Render the labelable speaker-segment view whenever diarized segments exist
-  // OR the interview is offline. iFlytek (讯飞) carries its OWN speaker id on
+  // OR the interview is offline. Doubao carries its OWN speaker id on
   // ONLINE finals, so segments DO exist in online mode — show the bubbles with
   // 面试官/候选人 toggles so the interviewer can label them. Without this, online
   // mode always showed the two fixed channel lanes and the toggles never appeared
-  // ("使用讯飞的时候也要能点候选人"). Pure online with a non-diarizing provider
+  // (native cluster labels must remain editable). Pure online with a non-diarizing provider
   // (paraformer/volc) has no segments → falls through to the two-lane view.
   const showSpeakers = offline || (speakerSegments?.length ?? 0) > 0;
   const visibleSegmentIds = new Set((speakerSegments ?? []).map((segment) => segment.id));
@@ -358,14 +358,14 @@ export function TranscriptStream({
       })}
 
       {showSpeakers ? (
-        // Diarized speaker bubbles (offline single-mic OR online iFlytek, which
+        // Diarized speaker bubbles (offline single-mic OR online Doubao, which
         // carries its own speaker id). Each bubble offers the 面试官/候选人 toggle.
         // The OFFLINE-only fallback below shows the raw room-mic text until
         // diarization tags a speaker (sidecar resolving/unavailable), plus the
         // live partial for real-time feedback.
         <>
           {(speakerSegments ?? []).map((seg) => {
-            // iFlytek 'unknown' speakers (not yet manually labeled) show as
+            // Native 'unknown' speakers (not yet manually labeled) show as
             // "说话人 N"; the interviewer taps to assign. Assigned speakers show
             // their role. Each button labels THIS speaker only (manual per-roleid).
             const icon = seg.role === 'interviewer' ? '●' : seg.role === 'candidate' ? '◐' : '○';
@@ -411,7 +411,7 @@ export function TranscriptStream({
           {offline && (speakerSegments ?? []).length === 0 && mic.finalText ? (
             <LaneLine lane="candidate" text={mic.finalText} />
           ) : null}
-          {/* Native speaker IDs are attached only to finalized iFlytek runs.
+          {/* Native speaker IDs are attached only to finalized ASR runs.
               Keep the provider's rolling partial visible as a neutral live line
               until that run finalizes and semantic role assignment can label it. */}
           {display.partial ? <LaneLine lane="unknown" text={display.partial} live onLiveReveal={scrollToLatest} /> : null}

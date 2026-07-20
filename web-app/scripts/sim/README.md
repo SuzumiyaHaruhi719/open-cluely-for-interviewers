@@ -113,10 +113,10 @@ retryable hiccups are visible but don't fail the run.
 ## How it fits together
 
 - `server/src/sim-client.ts` — `createSimSession(deps)`: a fake ASR session
-  (same `sendAudio`/`stop`/`isReady` shape as the volc/xfyun clients) that
+  (same `sendAudio`/`stop`/`isReady` shape as the Volc client) that
   ignores audio and replays the script on a ~2.5s/turn timer, looping forever.
 - `server/src/asr-relay.ts` — `provider === 'sim'` uses the plain text path and
-  forwards the script's per-turn `speakerId` (like xfyun; no CAM++).
+  forwards the script's per-turn `speakerId` (like Doubao; no CAM++).
   `relay.setSimScript(...)` stores the latest script for the next start.
 - `server/src/ws.ts` — the zod `configure` schema accepts `asrProvider:'sim'` +
   `simScript`; the script is pushed onto the relay.

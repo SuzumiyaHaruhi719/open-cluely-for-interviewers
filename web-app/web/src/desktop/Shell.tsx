@@ -133,9 +133,9 @@ export function Shell() {
     // Feed the manual Generate Q buffer (`answer`) with the candidate's latest
     // words. Whenever diarized speakerSegments exist, the candidate is identified
     // by ROLE, not by lane — this covers OFFLINE single-mic partitioning AND ONLINE
-    // iFlytek (讯飞), which carries its own speaker id on finals. Use the
+    // Doubao, which carries its own speaker id on finals. Use the
     // candidate-labeled segment text so the buffer fills once the interviewer taps
-    // 候选人 ("使用讯飞的时候也要能点候选人"); without this, online iFlytek fed only
+    // 候选人; without this, native-cluster online capture fed only
     // from the empty 'display' lane and Generate Q stayed disabled all interview.
     // OFFLINE additionally falls back to the raw room-mic transcript before any
     // speaker is labelled. PURE ONLINE with a non-diarizing provider

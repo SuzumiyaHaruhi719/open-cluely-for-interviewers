@@ -315,7 +315,7 @@ describe('TranscriptStream offline speaker bubbles', () => {
   });
 });
 
-describe('TranscriptStream online iFlytek speaker bubbles', () => {
+describe('TranscriptStream online native-speaker bubbles', () => {
   it('online (offline=false) WITH speaker segments: renders the labelable bubbles + toggles', () => {
     const onSetRole = vi.fn();
     render(
@@ -335,7 +335,7 @@ describe('TranscriptStream online iFlytek speaker bubbles', () => {
         autoScroll={false}
       />
     );
-    // Both iFlytek-online segments render as bubbles…
+    // Both Doubao-online segments render as bubbles…
     expect(screen.getByText('请介绍一下你的项目')).toBeInTheDocument();
     expect(screen.getByText('我做了一个推荐系统')).toBeInTheDocument();
     // …and EACH bubble offers the 面试官 / 候选人 toggles (2 bubbles × 2 buttons).

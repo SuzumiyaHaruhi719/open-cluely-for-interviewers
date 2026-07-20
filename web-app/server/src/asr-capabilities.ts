@@ -7,7 +7,7 @@ export interface AsrProviderCapability {
 }
 
 export type AsrCapabilities = Record<
-  'xfyun' | 'paraformer' | 'volc',
+  'paraformer' | 'volc',
   AsrProviderCapability
 >;
 
@@ -17,9 +17,6 @@ function capability(configured: boolean, reason: string): AsrProviderCapability 
 
 /** Non-secret cold-start capability summary; live entitlement is verified on capture. */
 export function getAsrCapabilities(): AsrCapabilities {
-  const xfyunConfigured = Boolean(
-    config.xfyunAppId.trim() && config.xfyunApiKey.trim() && config.xfyunApiSecret.trim()
-  );
   const paraformerConfigured = Boolean(config.dashscopeApiKey.trim());
   const volcCredentials = Boolean(config.volcAppId.trim() && config.volcAccessToken.trim());
   const volcResourceIs2 =
@@ -27,7 +24,6 @@ export function getAsrCapabilities(): AsrCapabilities {
   const volcConfigured = volcCredentials && volcResourceIs2;
 
   return {
-    xfyun: capability(xfyunConfigured, '服务端未完整配置 XFYUN_*'),
     paraformer: capability(paraformerConfigured, '服务端未配置 DASHSCOPE_API_KEY'),
     volc: capability(
       volcConfigured,

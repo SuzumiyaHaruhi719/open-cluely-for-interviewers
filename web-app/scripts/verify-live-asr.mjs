@@ -13,7 +13,7 @@ const valueOf = (name, fallback = '') => {
 const has = (name) => argv.includes(name);
 
 if (has('--help')) {
-  console.log(`Usage: node scripts/verify-live-asr.mjs --provider xfyun --audio source-16k.wav [options]
+  console.log(`Usage: node scripts/verify-live-asr.mjs --provider volc --audio source-16k.wav [options]
 
 Options:
   --url ws://127.0.0.1:8788/ws  Copilot WebSocket endpoint
@@ -38,8 +38,8 @@ const limitSeconds = Number(valueOf('--limit-seconds', '0'));
 const outPath = valueOf('--out');
 const { autoGenerate, diarize } = parseLiveAsrOptions(argv);
 
-if (!['xfyun', 'volc', 'paraformer'].includes(provider)) {
-  throw new Error('--provider must be xfyun, volc, or paraformer');
+if (!['volc', 'paraformer'].includes(provider)) {
+  throw new Error('--provider must be volc or paraformer');
 }
 if (!['mic', 'display'].includes(source)) throw new Error('--source must be mic or display');
 if (!audioPath || !fs.existsSync(audioPath)) throw new Error(`Audio file not found: ${audioPath}`);

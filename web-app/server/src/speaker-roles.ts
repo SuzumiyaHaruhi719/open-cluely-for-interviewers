@@ -47,8 +47,8 @@ export function createSpeakerRoleMap(): SpeakerRoleMap {
       roles.set(speakerId, role);
       // Legacy GUESS mode only: the OTHER speaker sits on a fragile first-seen
       // default, so a single correction must complement it (flip the swap) — one
-      // tap fixes the whole session. In NO-GUESS mode (讯飞 roleids) every speaker
-      // is labeled manually & independently; never auto-assign the others (iFlytek
+      // tap fixes the whole session. In NO-GUESS mode (native cluster ids) every speaker
+      // is labeled manually & independently; never auto-assign the others (providers
       // may over-segment into >2 clusters during fast cross-talk).
       if (!guess) return;
       const opposite: SpeakerRole | null =

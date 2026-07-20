@@ -21,16 +21,11 @@ npm install                 # installs all workspaces (contract, copilot-core, q
 # Required: DashScope key (used for the LLM brain AND the Paraformer ASR fallback)
 DASHSCOPE_API_KEY=sk-xxxxxxxx
 
-# Optional: Doubao / Volcengine Seed-ASR 2.0. These values are server-only;
+# Required: Doubao / Volcengine Seed-ASR 2.0. These values are server-only;
 # the browser has no credential or resource-id fields.
 VOLC_APP_ID=...
 VOLC_ACCESS_TOKEN=...
 VOLC_RESOURCE_ID=volc.seedasr.sauc.duration  # 2.0 hourly entitlement; no 1.0 fallback
-
-# Optional but recommended for offline interviews: native speaker clusters.
-XFYUN_APP_ID=...
-XFYUN_API_KEY=...
-XFYUN_API_SECRET=...
 ```
 
 **2a. Run (production-like — build once, serve):**
@@ -54,20 +49,19 @@ npm run dev                 # vite dev server + server in watch, in parallel
 ## Online vs offline interview modes
 
 - **Online** (two channels): candidate via shared-tab/system audio, interviewer via mic.
-  Just `npm start` + open the page. The interviewer UI defaults to iFlytek and exposes
-  iFlytek or Doubao Seed-ASR 2.0; the simulation provider remains test-only.
-- **Offline** (single room mic): one microphone captures the room. iFlytek is recommended
-  because `role_type=2` returns native acoustic speaker clusters. DeepSeek v4 Flash maps
-  clusters to interviewer/candidate after enough conversational evidence and re-checks on
-  stop. Paraformer/Doubao have no native cluster in the current integration, so Flash
-  partitions their finalized turns semantically and performs a final pass at interview end.
+  Just `npm start` + open the page. Doubao Seed ASR 2.0 is fixed by product policy;
+  the simulation provider remains test-only.
+- **Offline** (single room mic): one microphone captures the room. Doubao returns native
+  acoustic speaker clusters. DeepSeek v4 Flash maps clusters to interviewer/candidate after
+  enough conversational evidence and re-checks on Stop. The internal Paraformer compatibility
+  path has no native clusters, so Flash partitions its finalized turns semantically.
 
 ---
 
 ## Current state (what works)
 
-- Online + offline ASR; provider selectable (iFlytek / Doubao Seed-ASR 2.0) in both modes.
-- Native iFlytek speaker clusters plus DeepSeek v4 Flash automatic role mapping; semantic
+- Online + offline ASR with Doubao Seed ASR 2.0 fixed as the only user-facing provider.
+- Native Doubao speaker clusters plus DeepSeek v4 Flash automatic role mapping; semantic
   fallback for text-only providers; one-tap manual correction always wins.
 - **Add note to context** — folds the interviewer's manual note into the candidate context
   the autonomous trigger watches (auto + manual Generate-Q both see it); shows a 📝 Note line.

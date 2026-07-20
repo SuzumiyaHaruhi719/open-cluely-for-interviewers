@@ -26,8 +26,8 @@ export const C2S: {
   SUMMARIZE: 'summarize';
 };
 
-/** Live-ASR providers the server can stream through. Product default: 'xfyun'. */
-export const ASR_PROVIDERS: readonly ['xfyun', 'volc', 'paraformer', 'sim'];
+/** Live-ASR providers the server can stream through. Product default: 'volc'. */
+export const ASR_PROVIDERS: readonly ['volc', 'paraformer', 'sim'];
 
 /** How a `result` was produced: autonomous monitor vs. manual Generate Q. */
 export const GENERATION_TRIGGERS: readonly ['auto', 'manual'];
@@ -43,13 +43,12 @@ export type AutoMonitorStatus = 'idle' | 'evaluating' | 'waiting' | 'delegating'
  *   'paraformer' — DashScope Paraformer (server uses its env DASHSCOPE key).
  *   'volc'       — Doubao / Volcengine streaming ASR (豆包). Needs the Volc
  *                  credentials below, which are SEPARATE from the DashScope key.
- *   'xfyun'      — iFlytek realtime ASR with native acoustic speaker clusters.
  *   'sim'        — Simulation provider for the mic-less test harness: IGNORES
  *                  audio and replays a scripted two-speaker transcript supplied
  *                  via `simScript`, stamping each turn's speakerId on its final
- *                  (like xfyun). Used by scripts/sim/run-chats.mjs.
+ *                  (like Volc). Used by scripts/sim/run-chats.mjs.
  */
-export type AsrProvider = 'paraformer' | 'volc' | 'xfyun' | 'sim';
+export type AsrProvider = 'paraformer' | 'volc' | 'sim';
 export type AsrRuntimeState =
   | 'connecting'
   | 'live'
@@ -139,7 +138,7 @@ export interface SessionConfig {
   activePipelineId?: string | null;
   /**
    * Realtime ASR provider for subsequent `audio-control start` controls.
-   * Omitted values are normalized by the product client to the Xunfei default.
+   * Omitted values are normalized by the product runtime to Doubao Seed ASR 2.0.
    */
   asrProvider?: AsrProvider;
   /**

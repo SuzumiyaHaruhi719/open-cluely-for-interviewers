@@ -544,12 +544,6 @@ body.stealth-on .app-shell { opacity: 0.92; }
   background: color-mix(in srgb, var(--lane-candidate) 8%, transparent);
 }
 .mode-indicator[data-asr="paraformer"] .mode-indicator__dot { background: var(--lane-candidate); box-shadow: 0 0 6px color-mix(in srgb, var(--lane-candidate) 50%, transparent); }
-.mode-indicator[data-asr="xfyun"] {
-  color: var(--warning);
-  border-color: color-mix(in srgb, var(--warning) 35%, var(--border-default));
-  background: color-mix(in srgb, var(--warning) 8%, transparent);
-}
-.mode-indicator[data-asr="xfyun"] .mode-indicator__dot { background: var(--warning); box-shadow: 0 0 6px color-mix(in srgb, var(--warning) 50%, transparent); }
 .mode-indicator[data-asr="volc"] {
   color: var(--lane-interviewer);
   border-color: color-mix(in srgb, var(--lane-interviewer) 40%, var(--border-default));

@@ -17,7 +17,7 @@ test('audio finalization drains the provider before the final speaker partition'
       return capturing;
     },
     getProvider() {
-      return 'xfyun';
+      return 'volc';
     }
   };
   const trigger = {
@@ -67,6 +67,49 @@ test('audio finalization drains the provider before the final speaker partition'
     'partition',
     'status:stopped'
   ]);
+});
+
+test('configure selects Doubao and disables source-order speaker guessing', async () => {
+  const configured: string[] = [];
+  const guesses: boolean[] = [];
+
+  await dispatch(
+    {} as never,
+    {
+      configure() {
+        configured.push('session');
+      }
+    } as never,
+    {
+      setAsrProvider(provider: string) {
+        configured.push(`provider:${provider}`);
+      },
+      setSimScript() {}
+    } as never,
+    {} as never,
+    {
+      setGuess(value: boolean) {
+        guesses.push(value);
+      }
+    } as never,
+    () => {},
+    () => {},
+    () => {},
+    () => '',
+    {
+      type: 'configure',
+      config: {
+        mode: 'expert',
+        resumeText: '',
+        jobDescription: '',
+        outputLanguage: 'zh',
+        asrProvider: 'volc'
+      }
+    } as never
+  );
+
+  assert.deepEqual(configured, ['session', 'provider:volc']);
+  assert.deepEqual(guesses, [false]);
 });
 
 test('audible PCM reaches the cadence activity tracker even when ASR emits no partial', async () => {

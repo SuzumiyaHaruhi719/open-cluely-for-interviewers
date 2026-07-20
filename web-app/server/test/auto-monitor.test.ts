@@ -50,7 +50,7 @@ test('Flash sentinel asks on a concrete evidence gap with bounded low-latency op
   assert.equal(options.maxRetries, 0);
   assert.equal(options.temperature, 0);
   assert.ok((options.messages[0]?.content.length ?? 0) < 6_200, 'prompt remains bounded');
-  assert.match(options.system, /面试官上下文.*不得.*候选人证据/s);
+  assert.match(options.system ?? '', /面试官上下文.*不得.*候选人证据/s);
   assert.match(options.messages[0]?.content ?? '', /消防应急/);
   assert.match(options.messages[0]?.content ?? '', /故障复发率/);
   assert.match(options.messages[0]?.content ?? '', /\[最近面试官上下文\]/);

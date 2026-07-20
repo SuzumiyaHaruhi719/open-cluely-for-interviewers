@@ -209,7 +209,6 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
 
     case S2C.ASR_STATUS: {
       const provider: AsrProvider | null =
-        data.provider === 'xfyun' ||
         data.provider === 'volc' ||
         data.provider === 'paraformer' ||
         data.provider === 'sim'

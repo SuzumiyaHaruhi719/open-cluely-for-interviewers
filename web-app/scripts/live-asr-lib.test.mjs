@@ -52,8 +52,8 @@ test('parseLiveAsrOptions makes automatic generation explicit and keeps diarizat
 
 test('summarizeAsrRun separates provider lifecycle, finals, speakers, and final role correction', () => {
   const report = summarizeAsrRun([
-    { at: 100, message: { type: 'asr-status', provider: 'xfyun', state: 'connecting' } },
-    { at: 180, message: { type: 'asr-status', provider: 'xfyun', state: 'live' } },
+    { at: 100, message: { type: 'asr-status', provider: 'volc', state: 'connecting' } },
+    { at: 180, message: { type: 'asr-status', provider: 'volc', state: 'live' } },
     { at: 420, message: { type: 'transcript', text: '面试官提问', isFinal: true, speakerId: 1 } },
     { at: 610, message: { type: 'transcript', text: '候选人回答', isFinal: true, speakerId: 2 } },
     {
@@ -93,7 +93,7 @@ test('summarizeAsrRun separates provider lifecycle, finals, speakers, and final 
         ]
       }
     },
-    { at: 920, message: { type: 'asr-status', provider: 'xfyun', state: 'stopped' } }
+    { at: 920, message: { type: 'asr-status', provider: 'volc', state: 'stopped' } }
   ]);
 
   assert.deepEqual(report.statuses, ['connecting', 'live', 'stopped']);

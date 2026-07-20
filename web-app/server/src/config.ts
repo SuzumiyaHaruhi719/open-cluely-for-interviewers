@@ -30,17 +30,6 @@ export interface ServerConfig {
   /** PCM sample rate forwarded to Volc (Doubao expects 16 kHz mono s16le). */
   readonly volcSampleRate: number;
   /**
-   * iFlytek (讯飞) 实时语音转写大模型 credentials, read from XFYUN_* env. Used when
-   * asrProvider === 'xfyun' — the cloud call returns BOTH text AND speaker id
-   * (角色分离 role_type=2) for mixed room-mic or shared-tab audio. No per-session
-   * creds: the server reads these from .env. Empty unless XFYUN_* are set.
-   */
-  readonly xfyunAppId: string;
-  readonly xfyunApiKey: string;
-  readonly xfyunApiSecret: string;
-  /** iFlytek realtime ASR WebSocket base URL. */
-  readonly xfyunWsUrl: string;
-  /**
    * Autonomous question-generation trigger tuning (server-side monitor).
    * `autoCooldownMs`    — min gap between auto fires (anti-spam).
    * `autoMinNewChars`   — min NEW interviewee transcript chars since the last
@@ -63,8 +52,6 @@ const DEFAULT_PARAFORMER_MODEL = 'paraformer-realtime-8k-v2';
 const DEFAULT_PARAFORMER_SAMPLE_RATE = 8000;
 // Doubao streams the browser's native 16 kHz mono PCM directly (no downsample).
 const DEFAULT_VOLC_SAMPLE_RATE = 16000;
-// iFlytek 实时语音转写大模型 default endpoint (verified live by the probe).
-const DEFAULT_XFYUN_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
 // Auto-trigger defaults (see ServerConfig + auto-trigger.ts). Tuned for a live
 // interview cadence: ~20s between auto fires, ~120 new chars (a sentence or two)
 // of fresh candidate speech, and a 3s semantic-final coalescing window. Live ASR
@@ -86,11 +73,6 @@ export const config: ServerConfig = Object.freeze({
   volcResourceId: String(process.env.VOLC_RESOURCE_ID ?? '').trim(),
   volcModel: String(process.env.VOLC_MODEL ?? '').trim(),
   volcSampleRate: toInt(process.env.VOLC_SAMPLE_RATE, DEFAULT_VOLC_SAMPLE_RATE),
-  // iFlytek (讯飞) 实时语音转写大模型 creds — server-side only, read from .env.
-  xfyunAppId: String(process.env.XFYUN_APP_ID ?? '').trim(),
-  xfyunApiKey: String(process.env.XFYUN_API_KEY ?? '').trim(),
-  xfyunApiSecret: String(process.env.XFYUN_API_SECRET ?? '').trim(),
-  xfyunWsUrl: String(process.env.XFYUN_WS_URL ?? '').trim() || DEFAULT_XFYUN_WS_URL,
   // Auto-trigger tuning — all env-overridable.
   autoCooldownMs: toInt(process.env.AUTO_COOLDOWN_MS, DEFAULT_AUTO_COOLDOWN_MS),
   autoMinNewChars: toInt(process.env.AUTO_MIN_NEW_CHARS, DEFAULT_AUTO_MIN_NEW_CHARS),

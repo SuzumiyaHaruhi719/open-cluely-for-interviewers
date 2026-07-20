@@ -175,7 +175,7 @@ button.history-row {
   box-shadow: var(--focus-ring);
 }
 
-/* Two-way speaker assign (iFlytek manual labelling): button group + active state.
+/* Two-way speaker assign (native-cluster manual labelling): button group + active state.
  * The GROUP carries margin-left:auto (pushed right in the flex header); the
  * buttons inside sit together, so reset their individual margin-left. */
 .speaker-role-actions {

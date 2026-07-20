@@ -15,12 +15,11 @@ const AUDIO_SOURCES = Object.freeze(['mic', 'display']);
 
 const INTERVIEWER_MODES = Object.freeze(['fast', 'expert', 'expert2', 'customize']);
 
-// Realtime ASR providers the server can stream through. 'xfyun' is the product
-// default; 'volc' is Doubao / Volcengine streaming ASR (豆包),
-// with credentials supplied by the server environment;
-// 'xfyun' is iFlytek 实时语音转写大模型 (text + native speaker clusters); 'sim' is the
-// mic-less simulation provider (replays a scripted two-speaker transcript).
-const ASR_PROVIDERS = Object.freeze(['xfyun', 'volc', 'paraformer', 'sim']);
+// Realtime ASR providers the server can stream through. 'volc' is the fixed
+// product provider (Doubao Seed ASR 2.0), with credentials supplied by the
+// server environment. 'paraformer' is an internal compatibility path and 'sim'
+// is the mic-less transcript-replay test harness; neither is user-selectable.
+const ASR_PROVIDERS = Object.freeze(['volc', 'paraformer', 'sim']);
 
 // How a `result` was produced: 'auto' = the server's autonomous trigger monitor
 // fired the Expert pipeline from the live transcript; 'manual' = the interviewer

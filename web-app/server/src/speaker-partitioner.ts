@@ -354,7 +354,7 @@ export function buildSpeakerClassifierInput(
   const textOnlyTurns = turns.filter((turn) => typeof turn.speakerId !== 'number');
   if (nativeTurns.length > 0 && textOnlyTurns.length > 0) {
     // Provider changes are intentionally seamless, so one interview can contain
-    // native iFlytek clusters followed by text-only Paraformer/Doubao turns (or
+    // native Doubao clusters followed by text-only Paraformer turns (or
     // vice versa). Preserve recent text-only evidence instead of silently
     // switching the entire classifier into native-only mode.
     const recentTextOnly = textOnlyTurns.slice(-MAX_HYBRID_TEXT_TURNS);

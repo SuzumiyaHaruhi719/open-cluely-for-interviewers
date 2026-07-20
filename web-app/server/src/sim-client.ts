@@ -1,14 +1,14 @@
 // ============================================================================
 // Simulation ('sim') ASR session — a fake recognizer for the mic-less test harness.
 // ----------------------------------------------------------------------------
-// REUSE NOTE: this mirrors xfyun-client.ts / volc-client.ts's exported shape
+// REUSE NOTE: this mirrors volc-client.ts's exported shape
 // (a session with sendAudio/stop/isReady + onTranscript/onReady/onError deps) so
 // it drops into the SAME asr-relay slot. UNLIKE the real clients it IGNORES all
 // audio; instead it REPLAYS a scripted two-speaker transcript on a wall-clock
 // timer, so the rest of the pipeline (auto-trigger / 30s-interval / multi-speaker
 // role mapping) runs end-to-end WITHOUT a microphone.
 //
-// Like xfyun (角色分离), ONE "cloud call" returns BOTH the text AND the speaker id,
+// Like Doubao native clustering, one simulated call returns text + speaker id,
 // so the relay uses the PLAIN text-session path for 'sim' and forwards the
 // speakerId this session emits on finals for downstream role-mapping tests.
 //

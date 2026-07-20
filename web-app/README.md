@@ -16,10 +16,10 @@ untouched and ships separately.
 - **RAG grounding:** each analysis retrieves the top-6 most-similar real questions and feeds
   them into Block D as direction hints (additive; off = identical to the desktop pipeline).
 - **One server** serves the API, the copilot WebSocket, and the React SPA.
-- **Live audio (interviewee + interviewer):** browser capture → Paraformer ASR relay →
+- **Live audio (interviewee + interviewer):** browser capture → Doubao Seed ASR 2.0 relay →
   live transcript. (Connectivity verified with the DashScope key; full speech-to-text needs
   a real mic / shared-tab audio in a Chromium browser.)
-- **Offline speaker partitioning:** iFlytek supplies native acoustic clusters when selected;
+- **Offline speaker partitioning:** Doubao supplies native acoustic clusters;
   DeepSeek v4 Flash maps them to interviewer/candidate after enough evidence, with a semantic
   final-pass fallback for text-only ASR providers. No local speaker model is required.
 
@@ -56,7 +56,7 @@ npm run dev                # server (:8787) + web (vite dev, proxies /api and /w
 npm test                   # contract/copilot-core/question-bank (node:test) + server (tsx) + web (vitest)
 ```
 
-41+ tests. (Note: run tests via `npm test`, not a bare repo-root `node --test`, which would
+Run tests via `npm test`, not a bare repo-root `node --test`, which would
 also sweep the web's vitest files.)
 
 ## Build & run (production)
@@ -81,7 +81,6 @@ DASHSCOPE_API_KEY=... npm run build-embeddings  # → data/vectors.bin + data/ba
 
 ## Notes
 
-- **Use Expert mode** for real follow-ups. Fast mode inherits a known desktop-brain gate bug
-  and produces no question.
+- The interviewer experience uses the fixed sub-10-second Expert question workflow.
 - Interviewee audio in the browser uses `getDisplayMedia` (Chrome/Edge; tick "share tab audio") —
   the browser cannot do the desktop app's per-process loopback capture.
