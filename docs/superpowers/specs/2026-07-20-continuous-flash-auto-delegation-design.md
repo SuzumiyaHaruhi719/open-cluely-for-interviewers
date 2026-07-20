@@ -40,6 +40,16 @@ The sentinel is continuous at semantic checkpoints, not on raw PCM frames: each 
 
 The server emits a credential-free `auto-monitor` state: `evaluating`, `waiting`, `delegating`, or `idle`, with model and elapsed milliseconds where relevant. The existing GLP Auto pill shows a compact Chinese state (`监控中`, `待证据`, `生成中`) without adding a setting or another panel. Candidate text, model reasoning, and API credentials are never included in telemetry.
 
+## Transcript timeline placement
+
+An AI follow-up is a durable interview event, not a singleton card pinned below the live transcript. Every automatic delegation carries the semantic candidate-turn sequence that caused the sentinel to emit `ask`. The server returns that sequence as an optional `anchorSeq` on the `result`; the client accumulates result events and interleaves each rich question card immediately after its anchored transcript segment. Later interviewer and candidate turns continue below it, so the visual order preserves when and why the question appeared.
+
+- Automatic questions use the exact candidate `SpeakerTurn.seq` that triggered monitoring.
+- Manual questions snapshot the latest visible speaker segment when the request begins; if no segment exists, the result is appended at the current transcript tail.
+- Multiple questions remain in chronological history and never overwrite each other.
+- A late semantic repartition may relabel or replace transcript text, but stable turn sequence ids keep existing questions attached to the same evidence.
+- In-flight progress renders at the current live tail, then is replaced by the anchored question when the result arrives.
+
 ## Alternatives considered
 
 - **Keep the single Expert call behind silence detection:** lowest call count, but it is the reproduced reason Auto never fires on tightly paced speech.
@@ -51,6 +61,6 @@ The server emits a credential-free `auto-monitor` state: `evaluating`, `waiting`
 - Unit-test strict sentinel parsing, bounded prompt construction, timeout/no-retry options, and fail-closed behavior.
 - State-machine tests prove continuous speech does not cancel candidate checkpoints, confirmed interviewer speech does cancel, and candidate evidence arriving mid-monitor is retried.
 - WebSocket integration proves semantic partitioning precedes monitoring and produces one automatic Expert result under continuous candidate speech.
-- Client tests prove `auto-monitor` parsing/state and GLP Auto pill labels.
+- Client tests prove `auto-monitor` parsing/state, GLP Auto pill labels, accumulated question history, and insertion directly after the anchored candidate segment.
 - Full server/web suites, typecheck, and builds must pass.
 - Replay the supplied MP3 silently through BlackHole 2ch with Xunfei: observe `监控中`/`生成中`, a meaningful Chinese auto question, correct candidate/interviewer labels, and no question before any confirmed candidate evidence.
