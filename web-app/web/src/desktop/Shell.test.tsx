@@ -44,6 +44,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   restore();
+  vi.useRealTimers();
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
   document.body.classList.remove('rail-collapsed');
@@ -493,6 +494,45 @@ describe('Shell', () => {
       .map((s) => JSON.parse(s))
       .find((m) => m.type === 'configure' && m.config?.resetGeneration === true);
     expect(resetConfig).toBeTruthy();
+  });
+
+  test('New interview stops capture and resets the runtime badge and elapsed clock', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-07-20T00:00:00Z'));
+    render(<Shell />);
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.change(document.getElementById('setting-asr-provider')!, {
+      target: { value: 'sim' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
+
+    const micCard = document.getElementById('channel-mic')!;
+    await act(async () => {
+      fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
+    });
+    act(() => {
+      ws.emit({ type: 'asr-status', source: 'mic', provider: 'sim', state: 'live' });
+      vi.advanceTimersByTime(65_000);
+    });
+    expect(document.querySelector('.timer')).toHaveTextContent('01:05');
+
+    fireEvent.click(screen.getByRole('button', { name: /新建面试/ }));
+
+    expect(document.querySelector('.timer')).toHaveTextContent('00:00');
+    expect(within(micCard).getByRole('button', { name: '开始' })).toBeEnabled();
+    expect(within(micCard).getByText('关闭')).toBeInTheDocument();
+    expect(
+      ws.sent.map((frame) => JSON.parse(frame)).filter(
+        (message) => message.type === 'audio-control' && message.action === 'stop'
+      )
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ source: 'mic' }),
+        expect.objectContaining({ source: 'display' })
+      ])
+    );
   });
 
   test('selecting Doubao ASR 2.0 sends only the provider while credentials stay server-side', async () => {

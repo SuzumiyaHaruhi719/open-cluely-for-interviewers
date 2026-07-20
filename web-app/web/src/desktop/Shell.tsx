@@ -85,6 +85,7 @@ export function Shell() {
     audio,
     startAudio,
     stopAudio,
+    resetAudioSession,
     speakerSegments,
     setSpeakerRole,
     resetSpeakerSegments,
@@ -403,10 +404,13 @@ export function Shell() {
   // ── Interview lifecycle (ephemeral — nothing persists across reload) ─────────
   // "New interview": reset all in-memory state and re-open the type picker.
   const onNewInterview = useCallback((): void => {
+    resetAudioSession();
     onClearSession();
+    setStartedAt(null);
+    setNow(Date.now());
     setInterviewTitle('新面试');
     setTypePickerOpen(true);
-  }, [onClearSession]);
+  }, [onClearSession, resetAudioSession]);
 
   // Starting from the reviewed modal resets live state, applies capture routing,
   // and sends the selected JD + scorecard as Expert context. No prompt is authored

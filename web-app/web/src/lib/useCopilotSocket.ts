@@ -137,6 +137,9 @@ export interface CopilotSocket {
   startAudio: (source: AudioSource, options?: StartAudioOptions) => Promise<void>;
   /** Stop capturing a source and tell the server to close its ASR session. */
   stopAudio: (source: AudioSource) => void;
+  /** End every capture lane for a new interview and quarantine late events from
+   *  the previous provider sessions until a fresh ASR connection is confirmed. */
+  resetAudioSession: () => void;
   /**
    * Ordered list of finalized speaker-partitioned segments.
    */
@@ -339,6 +342,12 @@ export function useCopilotSocket(): CopilotSocket {
   // Live capture handles + per-source frame sequence counters.
   const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
   const seqRef = useRef<Record<AudioSource, number>>({ mic: 0, display: 0 });
+  // A new interview can reset the UI before the old provider's bounded drain
+  // finishes. Quarantine those late transcript/status frames until a locally
+  // requested fresh Start is acknowledged by connecting/live.
+  const suppressAudioEventsRef = useRef<Record<AudioSource, boolean>>({ mic: false, display: false });
+  const freshAudioStartPendingRef = useRef<Record<AudioSource, boolean>>({ mic: false, display: false });
+  const suppressSpeakerPartitionsRef = useRef(false);
   // Speaker-segment state for native clusters and Flash semantic partitioning.
   const roleOverrideRef = useRef<Map<number, SpeakerRole>>(new Map());
   const segSeqRef = useRef(0);
@@ -559,6 +568,7 @@ export function useCopilotSocket(): CopilotSocket {
         break;
       case 'transcript': {
         const { source, text, isFinal } = message;
+        if (suppressAudioEventsRef.current[source]) break;
         setTranscripts((prev) => {
           const lane = prev[source];
           const next: LaneTranscript = isFinal
@@ -585,6 +595,15 @@ export function useCopilotSocket(): CopilotSocket {
         break;
       }
       case 'asr-status': {
+        if (suppressAudioEventsRef.current[message.source]) {
+          const startsFreshSession =
+            freshAudioStartPendingRef.current[message.source] &&
+            (message.state === 'connecting' || message.state === 'live');
+          if (!startsFreshSession) break;
+          suppressAudioEventsRef.current[message.source] = false;
+          freshAudioStartPendingRef.current[message.source] = false;
+          suppressSpeakerPartitionsRef.current = false;
+        }
         setAudio((prev) => ({
           ...prev,
           [message.source]: {
@@ -601,6 +620,7 @@ export function useCopilotSocket(): CopilotSocket {
         break;
       }
       case 'speaker-partition': {
+        if (suppressSpeakerPartitionsRef.current) break;
         // DeepSeek Flash resolves native acoustic clusters (or, for ASR models
         // without clusters, finalized semantic turns) after enough evidence.
         // Replace the provisional unknown-role list atomically so past bubbles,
@@ -856,11 +876,26 @@ export function useCopilotSocket(): CopilotSocket {
     [send, setAudioState]
   );
 
+  const resetAudioSession = useCallback((): void => {
+    for (const source of ['mic', 'display'] as AudioSource[]) {
+      suppressAudioEventsRef.current[source] = true;
+      freshAudioStartPendingRef.current[source] = false;
+      const handle = captureRef.current[source];
+      captureRef.current[source] = null;
+      if (handle) handle.stop();
+      seqRef.current[source] = 0;
+      send({ type: 'audio-control', action: 'stop', source });
+    }
+    suppressSpeakerPartitionsRef.current = true;
+    setAudio({ mic: { ...IDLE_AUDIO }, display: { ...IDLE_AUDIO } });
+  }, [send]);
+
   const startAudio = useCallback(
     async (source: AudioSource, options?: StartAudioOptions): Promise<void> => {
       // Already capturing — no-op (idempotent toggle).
       if (captureRef.current[source]) return;
 
+      freshAudioStartPendingRef.current[source] = true;
       setAudioState(source, { error: null, notice: null, runtimeState: 'connecting' });
       seqRef.current[source] = 0;
 
@@ -899,6 +934,7 @@ export function useCopilotSocket(): CopilotSocket {
         const message =
           err instanceof AudioCaptureError ? err.message : '无法启动音频采集。';
         send({ type: 'audio-control', action: 'stop', source });
+        freshAudioStartPendingRef.current[source] = false;
         setAudioState(source, {
           capturing: false,
           level: 0,
@@ -994,6 +1030,7 @@ export function useCopilotSocket(): CopilotSocket {
     audio,
     startAudio,
     stopAudio,
+    resetAudioSession,
     speakerSegments,
     setSpeakerRole,
     resetSpeakerSegments,

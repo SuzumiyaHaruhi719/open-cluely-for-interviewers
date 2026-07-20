@@ -407,6 +407,83 @@ describe('useCopilotSocket', () => {
     expect(result.current.audio.mic.notice).toBe('转写已保存；最后一小段可能未确认。');
   });
 
+  test('a new audio session drops stale provider state and ignores late events until the fresh ASR connects', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    await act(async () => {
+      await result.current.startAudio('mic', { skipLocalCapture: true });
+    });
+    act(() => {
+      socket.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'volc',
+        state: 'failed',
+        message: '豆包 ASR 2.0 权限不足'
+      });
+    });
+    expect(result.current.audio.mic.runtimeState).toBe('failed');
+
+    act(() => result.current.resetAudioSession());
+    expect(result.current.audio.mic).toMatchObject({
+      capturing: false,
+      runtimeState: 'stopped',
+      error: null,
+      notice: null
+    });
+    expect(JSON.parse(socket.sent.at(-1) as string)).toEqual({
+      type: 'audio-control',
+      action: 'stop',
+      source: 'display'
+    });
+
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '旧面试停止后迟到的最后一句',
+        isFinal: true
+      });
+      socket.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'volc',
+        state: 'partial'
+      });
+      socket.emit({
+        type: 'speaker-partition',
+        segments: [
+          { seq: 99, speakerId: 1, role: 'candidate', text: '旧面试角色结果' }
+        ]
+      });
+    });
+    expect(result.current.transcripts.mic.finalText).toBe('');
+    expect(result.current.speakerSegments).toEqual([]);
+    expect(result.current.audio.mic.runtimeState).toBe('stopped');
+
+    await act(async () => {
+      await result.current.startAudio('mic', { skipLocalCapture: true });
+    });
+    act(() => {
+      socket.emit({ type: 'asr-status', source: 'mic', provider: 'paraformer', state: 'partial' });
+    });
+    expect(result.current.audio.mic.runtimeState).toBe('connecting');
+
+    act(() => {
+      socket.emit({ type: 'asr-status', source: 'mic', provider: 'paraformer', state: 'connecting' });
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '新面试第一句',
+        isFinal: true
+      });
+    });
+    expect(result.current.transcripts.mic.finalText).toBe('新面试第一句');
+  });
+
   test('startAudio with skipLocalCapture opens the server ASR session without browser media capture', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
