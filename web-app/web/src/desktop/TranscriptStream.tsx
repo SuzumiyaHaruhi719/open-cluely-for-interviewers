@@ -386,16 +386,16 @@ export function TranscriptStream({
         // live partial for real-time feedback.
         <>
           {visibleSegments.map((seg) => {
-            // Native 'unknown' speakers (not yet manually labeled) show as
-            // "说话人 N"; the interviewer taps to assign. Assigned speakers show
-            // their role. Each button labels THIS speaker only (manual per-roleid).
+            // Never present unresolved semantic evidence as a confident identity.
+            // The explicit pending label remains actionable through the manual role
+            // controls while the server's final audit is still inconclusive.
             const icon = seg.role === 'interviewer' ? '●' : seg.role === 'candidate' ? '◐' : '○';
             const label =
               seg.role === 'interviewer'
                 ? '面试官'
                 : seg.role === 'candidate'
                   ? '候选人'
-                  : `说话人 ${seg.speakerId}`;
+                  : `待确认 · 说话人 ${seg.speakerId}`;
             return (
               <Fragment key={seg.id}>
                 <div className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}>

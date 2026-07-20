@@ -13,9 +13,10 @@ const MAX_CLASSIFIER_TURNS = 12;
 const MAX_RECENT_NATIVE_TURNS = 8;
 const MAX_HYBRID_TEXT_TURNS = 8;
 const MAX_CLASSIFIER_TURN_CHARS = 360;
-const MIN_SPEAKER_ROLE_CONFIDENCE = 0.75;
-const MIN_TURN_OVERRIDE_CONFIDENCE = 0.85;
-const MIN_FINAL_PRIORITY_TURN_CONFIDENCE = 0.65;
+const REVIEW_BATCH_SIZE = 6;
+const REVIEW_CONCURRENCY = 4;
+const MIN_LIVE_TURN_ROLE_CONFIDENCE = 0.8;
+const MIN_FINAL_TURN_ROLE_CONFIDENCE = 0.72;
 const MIN_CONTINUITY_EDGE_CONFIDENCE = 0.9;
 const MIN_SEMANTIC_REFRESH_CHARS = 48;
 const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
@@ -59,6 +60,10 @@ export interface SpeakerClassification {
 export interface SpeakerClassificationRequest {
   final?: boolean;
   prioritySeqs?: readonly number[];
+  /** Turns that must receive an explicit semantic verdict in this bounded review. */
+  reviewSeqs?: readonly number[];
+  /** Independent passes must agree before a turn becomes role-confirmed. */
+  auditPass?: 'primary' | 'verification';
 }
 
 export interface SpeakerPartitionSegment {
@@ -102,10 +107,10 @@ const CLASSIFIER_SYSTEM = [
   'Use speech acts and cross-turn context, never numeric speaker order.',
   'An interviewer asks, frames, redirects, or evaluates; a candidate answers with experience, evidence, decisions, and results.',
   'Acoustic diarization may over-cluster one person into multiple speakerIds, so multiple ids may share a role.',
-  'A native speakerId role is only a baseline: inspect every recent-context turn and return a high-confidence turnRoles exception when its speech act clearly conflicts with that baseline.',
+  'A native speakerId is acoustic evidence, never identity. Inspect every required turn and classify its speech act independently of the cluster baseline.',
   'A substantive answer to an adjacent question is candidate even if its acoustic id is mapped interviewer; a genuine new question is interviewer even if its id is mapped candidate.',
   'A short fragment that grammatically continues an adjacent question or answer inherits that same speech act even when its acoustic id changes.',
-  'For every seq in recent-context return one turnRoles item; use unknown when its semantic role is ambiguous instead of copying the acoustic baseline blindly.',
+  'For every required seq return exactly one turnRoles item; use unknown when its semantic role is ambiguous instead of copying the acoustic baseline blindly.',
   'When a continuity-group is listed, its seqs are one grammatical ASR turn and must share one semantic role unless the text contains an explicit interruption.',
   'A turnRoles exception applies only to that seq and must never be used to remap the whole acoustic cluster.',
   'When speakerId is absent, classify each turn by seq. Use unknown when evidence is insufficient.',
@@ -356,10 +361,69 @@ function selectTextOnlyClassifierEvidence(
   return [...selected.values()].sort((a, b) => a.seq - b.seq);
 }
 
+/**
+ * Build a bounded local context around mandatory semantic-review targets. Add
+ * every target before neighbours/anchors so no requested verdict can disappear
+ * when a provider has produced many acoustic clusters.
+ */
+function selectReviewClassifierEvidence(
+  turns: readonly SpeakerTurn[],
+  reviewSeqs: readonly number[]
+): SpeakerTurn[] {
+  const bySeq = new Map(turns.map((turn) => [turn.seq, turn]));
+  const targets = [...new Set(reviewSeqs)]
+    .filter((seq) => bySeq.has(seq))
+    .sort((a, b) => a - b)
+    .slice(0, MAX_CLASSIFIER_TURNS);
+  const selected = new Map<number, SpeakerTurn>();
+  const add = (turn: SpeakerTurn | undefined) => {
+    if (turn && selected.size < MAX_CLASSIFIER_TURNS) selected.set(turn.seq, turn);
+  };
+
+  for (const seq of targets) add(bySeq.get(seq));
+  for (const seq of targets) {
+    add(bySeq.get(seq - 1));
+    add(bySeq.get(seq + 1));
+  }
+
+  const nativeAnchors = [...groupNativeTurns(
+    turns.filter((turn) => typeof turn.speakerId === 'number')
+  ).values()]
+    .map((group) => mostSubstantiveTurn(group))
+    .filter((turn): turn is SpeakerTurn => Boolean(turn))
+    .sort((a, b) => a.seq - b.seq);
+  for (const anchor of nativeAnchors) add(anchor);
+
+  for (let index = turns.length - 1; index >= 0 && selected.size < MAX_CLASSIFIER_TURNS; index -= 1) {
+    add(turns[index]);
+  }
+  return [...selected.values()].sort((a, b) => a.seq - b.seq);
+}
+
 export function buildSpeakerClassifierInput(
   turns: readonly SpeakerTurn[],
   request: SpeakerClassificationRequest = {}
 ): string {
+  const reviewSeqs = [...new Set(request.reviewSeqs ?? [])]
+    .filter((seq) => turns.some((turn) => turn.seq === seq))
+    .sort((a, b) => a - b);
+  if (reviewSeqs.length > 0) {
+    const evidence = selectReviewClassifierEvidence(turns, reviewSeqs);
+    return [
+      `[classification-mode=${request.final ? 'final' : 'live'}-turn-audit]`,
+      `[review-pass=${request.auditPass ?? 'primary'}]`,
+      `[required-turn-verdicts seqs=${reviewSeqs.join(',')}]`,
+      '必须为 required-turn-verdicts 中的每个 seq 返回且只返回一条 turnRoles。逐条根据提问、回答、评价、追问等语义行为判断角色，不得用 speakerId 直接复制角色；证据不足必须返回 unknown。',
+      '相邻上下文只用于理解 required seq；speakerRoles 可以提供声学先验，但不能替代任何 required seq 的 turnRoles。',
+      ...findContinuityGroups(evidence).map(
+        (group) => `[continuity-group seqs=${group.map((turn) => turn.seq).join(',')}]`
+      ),
+      ...evidence.map(formatClassifierTurn)
+    ]
+      .join('\n')
+      .slice(0, MAX_INPUT_CHARS);
+  }
+
   const nativeTurns = turns.filter((turn) => typeof turn.speakerId === 'number');
   const textOnlyTurns = turns.filter((turn) => typeof turn.speakerId !== 'number');
   if (nativeTurns.length > 0 && textOnlyTurns.length > 0) {
@@ -628,83 +692,134 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
   let turns: SpeakerTurn[] = [];
   let fedCandidateSeqs = new Set<number>();
   let fedInterviewerSeqs = new Set<number>();
-  let cachedSpeakerRoles = new Map<number, SpeakerRole>();
-  let cachedTurnRoles = new Map<number, SpeakerRole>();
+  let semanticLedger = new Map<number, InferredTurnRole>();
   let scheduledAt = 0;
   let epoch = 0;
   let queue: Promise<void> = Promise.resolve();
+
+  interface ClassificationRun {
+    request: SpeakerClassificationRequest;
+    result: SpeakerClassification | null;
+  }
+
+  function liveReviewSeqs(snapshot: readonly SpeakerTurn[]): number[] {
+    return snapshot.slice(-REVIEW_BATCH_SIZE).map((turn) => turn.seq);
+  }
+
+  function finalReviewBatches(snapshot: readonly SpeakerTurn[]): number[][] {
+    const seqs = snapshot.map((turn) => turn.seq);
+    const batches: number[][] = [];
+    for (let index = 0; index < seqs.length; index += REVIEW_BATCH_SIZE) {
+      batches.push(seqs.slice(index, index + REVIEW_BATCH_SIZE));
+    }
+    return batches;
+  }
+
+  function reviewRequests(
+    snapshot: readonly SpeakerTurn[],
+    status: 'live' | 'final'
+  ): SpeakerClassificationRequest[] {
+    const batches = status === 'final'
+      ? finalReviewBatches(snapshot)
+      : [liveReviewSeqs(snapshot)];
+    return batches.flatMap((reviewSeqs) => [
+      { final: status === 'final', reviewSeqs, auditPass: 'primary' as const },
+      { final: status === 'final', reviewSeqs, auditPass: 'verification' as const }
+    ]);
+  }
+
+  async function runClassifications(
+    snapshot: readonly SpeakerTurn[],
+    requests: readonly SpeakerClassificationRequest[]
+  ): Promise<ClassificationRun[]> {
+    const runs: ClassificationRun[] = [];
+    for (let index = 0; index < requests.length; index += REVIEW_CONCURRENCY) {
+      const wave = requests.slice(index, index + REVIEW_CONCURRENCY);
+      const settled = await Promise.all(
+        wave.map(async (request): Promise<ClassificationRun> => {
+          try {
+            return { request, result: await classify(snapshot, request) };
+          } catch {
+            return { request, result: null };
+          }
+        })
+      );
+      runs.push(...settled);
+    }
+    return runs;
+  }
+
+  function consensusForSeq(
+    seq: number,
+    runs: readonly ClassificationRun[],
+    minimumConfidence: number
+  ): InferredTurnRole | null {
+    const relevant = runs.filter((run) => run.request.reviewSeqs?.includes(seq));
+    const byPass = new Map<'primary' | 'verification', InferredTurnRole>();
+    for (const run of relevant) {
+      const pass = run.request.auditPass;
+      if (!pass || !run.result) continue;
+      const assignment = run.result.turnRoles
+        .filter((candidate) => candidate.seq === seq)
+        .sort((left, right) => right.confidence - left.confidence)[0];
+      if (assignment) byPass.set(pass, assignment);
+    }
+    const primary = byPass.get('primary');
+    const verification = byPass.get('verification');
+    if (
+      !primary ||
+      !verification ||
+      primary.role === 'unknown' ||
+      verification.role === 'unknown' ||
+      primary.role !== verification.role ||
+      primary.confidence < minimumConfidence ||
+      verification.confidence < minimumConfidence
+    ) {
+      return null;
+    }
+    return {
+      seq,
+      role: primary.role,
+      confidence: Math.min(primary.confidence, verification.confidence)
+    };
+  }
 
   function schedule(status: 'live' | 'final'): Promise<void> {
     const scheduledEpoch = epoch;
     const snapshot = turns.map((turn) => ({ ...turn }));
     queue = queue.then(async () => {
       if (scheduledEpoch !== epoch || !enabled || snapshot.length === 0) return;
-      const prioritySeqs = status === 'final'
-        ? snapshot
-            .filter(
-              (turn) =>
-                typeof turn.speakerId !== 'number' && !cachedTurnRoles.has(turn.seq)
-            )
-            .map((turn) => turn.seq)
-        : [];
-      const finalPrioritySeqs = new Set(prioritySeqs);
-      let result: SpeakerClassification;
-      try {
-        result = await classify(
-          snapshot,
-          status === 'final' ? { final: true, prioritySeqs } : undefined
-        );
-      } catch {
-        result = { speakerRoles: [], turnRoles: [], model: SPEAKER_PARTITION_MODEL };
-      }
+      const requests = reviewRequests(snapshot, status);
+      const runs = await runClassifications(snapshot, requests);
       if (scheduledEpoch !== epoch) return;
 
-      // A timeout or truncated JSON near the end of a long interview must not
-      // erase a role map that was already established live. Re-apply cached
-      // roles through the external map so a sticky manual correction still wins.
-      const roleBySpeaker = new Map<number, SpeakerRole>();
-      for (const [speakerId, role] of cachedSpeakerRoles) {
-        roleBySpeaker.set(speakerId, deps.applySpeakerRole(speakerId, role));
+      const reviewedSeqs = [...new Set(requests.flatMap((request) => request.reviewSeqs ?? []))];
+      const minimumConfidence = status === 'final'
+        ? MIN_FINAL_TURN_ROLE_CONFIDENCE
+        : MIN_LIVE_TURN_ROLE_CONFIDENCE;
+      const roleByTurn = status === 'final'
+        ? new Map<number, InferredTurnRole>()
+        : new Map(semanticLedger);
+      // Every requested turn replaces its old observation. Missing, conflicting,
+      // low-confidence, or explicit-unknown responses revoke stale live state.
+      for (const seq of reviewedSeqs) {
+        const consensus = consensusForSeq(seq, runs, minimumConfidence);
+        if (consensus) roleByTurn.set(seq, consensus);
+        else roleByTurn.delete(seq);
       }
-      for (const assignment of result.speakerRoles) {
-        if (
-          assignment.role === 'unknown' ||
-          assignment.confidence < MIN_SPEAKER_ROLE_CONFIDENCE
-        ) {
-          continue;
-        }
-        roleBySpeaker.set(
-          assignment.speakerId,
-          deps.applySpeakerRole(assignment.speakerId, assignment.role)
-        );
-      }
-      cachedSpeakerRoles = new Map(roleBySpeaker);
-      const roleByTurn = new Map(cachedTurnRoles);
-      for (const assignment of result.turnRoles) {
-        const minimumConfidence =
-          status === 'final' && finalPrioritySeqs.has(assignment.seq)
-            ? MIN_FINAL_PRIORITY_TURN_CONFIDENCE
-            : MIN_TURN_OVERRIDE_CONFIDENCE;
-        if (
-          assignment.role !== 'unknown' &&
-          assignment.confidence >= minimumConfidence
-        ) {
-          roleByTurn.set(assignment.seq, assignment.role);
-        }
-      }
-      cachedTurnRoles = new Map(roleByTurn);
+      semanticLedger = new Map(roleByTurn);
+
+      const confirmedSeqs = new Set(roleByTurn.keys());
       const preliminary = snapshot.map((turn): ResolvedSpeakerTurn => {
-        const hasClusterRole =
-          typeof turn.speakerId === 'number' && roleBySpeaker.has(turn.speakerId);
-        const turnRole = roleByTurn.get(turn.seq);
-        let role = hasClusterRole
-          ? roleBySpeaker.get(turn.speakerId as number) ?? 'unknown'
-          : turnRole ?? 'unknown';
-        if (typeof turn.speakerId === 'number' && turnRole && turnRole !== 'unknown') {
-          role = deps.resolveTurnRole?.(turn.speakerId, turnRole) ?? turnRole;
-        }
-        if (typeof turn.speakerId === 'number' && !hasClusterRole && role !== 'unknown') {
-          role = deps.applySpeakerRole(turn.speakerId, role);
+        const semanticRole = roleByTurn.get(turn.seq)?.role ?? 'unknown';
+        let role = semanticRole;
+        if (typeof turn.speakerId === 'number') {
+          role = deps.resolveTurnRole?.(turn.speakerId, semanticRole) ?? semanticRole;
+          // A non-unknown result in the absence of semantic evidence can only be
+          // a sticky manual correction supplied by resolveTurnRole().
+          if (semanticRole === 'unknown' && role !== 'unknown') {
+            confirmedSeqs.add(turn.seq);
+          }
         }
         const speakerId =
           typeof turn.speakerId === 'number'
@@ -720,6 +835,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       const resolved = preliminary.map((entry): ResolvedSpeakerTurn => {
         const suggested = localOverrides.get(entry.turn.seq);
         if (!suggested) return entry;
+        confirmedSeqs.add(entry.turn.seq);
         const role =
           typeof entry.turn.speakerId === 'number'
             ? deps.resolveTurnRole?.(entry.turn.speakerId, suggested) ?? suggested
@@ -729,6 +845,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       for (const [index, entry] of resolved.entries()) {
         const { turn, role } = entry;
         if (
+          confirmedSeqs.has(turn.seq) &&
           role === 'candidate' &&
           !fedCandidateSeqs.has(turn.seq) &&
           !shouldDeferPossibleQuestionStem(resolved, index, status)
@@ -737,6 +854,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           deps.onCandidateTurn(turn);
         }
         if (
+          confirmedSeqs.has(turn.seq) &&
           role === 'interviewer' &&
           !fedInterviewerSeqs.has(turn.seq) &&
           !shouldDeferPossibleAnswerContinuation(resolved, index, status)
@@ -753,7 +871,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           text: turn.text
         }))
       );
-      deps.onPartition({ status, model: result.model || SPEAKER_PARTITION_MODEL, segments });
+      const model = runs.find((run) => run.result?.model)?.result?.model ?? SPEAKER_PARTITION_MODEL;
+      deps.onPartition({ status, model, segments });
     });
     return queue;
   }
@@ -796,8 +915,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       turns = [];
       fedCandidateSeqs = new Set<number>();
       fedInterviewerSeqs = new Set<number>();
-      cachedSpeakerRoles = new Map<number, SpeakerRole>();
-      cachedTurnRoles = new Map<number, SpeakerRole>();
+      semanticLedger = new Map<number, InferredTurnRole>();
       scheduledAt = 0;
       queue = Promise.resolve();
     }

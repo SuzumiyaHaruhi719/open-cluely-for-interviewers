@@ -15,6 +15,26 @@ function classification(
   return { speakerRoles, turnRoles, model: 'deepseek-v4-flash' };
 }
 
+/** Test fixture for the production contract: every requested transcript turn
+ * receives an explicit semantic verdict; acoustic roles are evidence only. */
+function classificationForTurns(
+  turns: readonly SpeakerTurn[],
+  speakerRoles: SpeakerClassification['speakerRoles'],
+  turnOverrides: SpeakerClassification['turnRoles'] = []
+): SpeakerClassification {
+  const speakerRoleById = new Map(speakerRoles.map((entry) => [entry.speakerId, entry]));
+  const overrideBySeq = new Map(turnOverrides.map((entry) => [entry.seq, entry]));
+  const turnRoles = turns.flatMap((turn): SpeakerClassification['turnRoles'] => {
+    const override = overrideBySeq.get(turn.seq);
+    if (override) return [override];
+    if (typeof turn.speakerId !== 'number') return [];
+    const speakerRole = speakerRoleById.get(turn.speakerId);
+    if (!speakerRole || speakerRole.role === 'unknown') return [];
+    return [{ seq: turn.seq, role: speakerRole.role, confidence: speakerRole.confidence }];
+  });
+  return classification(speakerRoles, turnRoles);
+}
+
 test('native-cluster classifier input stays compact across a full interview', () => {
   const turns: SpeakerTurn[] = Array.from({ length: 60 }, (_, seq) => ({
     seq,
@@ -63,6 +83,31 @@ test('native classifier preserves recent question-answer adjacency for weak corr
   assert.match(input, /明显在回答相邻问题.*turnRoles/);
   assert.match(input, /短片段.*相邻.*继承同一个语义角色/);
   assert.match(input, /最近上下文中的每个 seq 都必须返回 turnRoles/);
+  assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12);
+  assert.ok(input.length <= 6_000);
+});
+
+test('native final audit input includes every requested turn with adjacent context', () => {
+  const turns: SpeakerTurn[] = Array.from({ length: 20 }, (_, seq) => ({
+    seq,
+    source: 'mic',
+    speakerId: seq % 3,
+    text: `第 ${seq} 段面试转写，包含可核验的上下文证据。`
+  }));
+
+  const input = buildSpeakerClassifierInput(turns, {
+    final: true,
+    reviewSeqs: [7, 8],
+    auditPass: 'verification'
+  });
+
+  assert.match(input, /classification-mode=final-turn-audit/);
+  assert.match(input, /required-turn-verdicts seqs=7,8/);
+  assert.match(input, /review-pass=verification/);
+  assert.match(input, /\[seq=6 /, 'left context must be included');
+  assert.match(input, /\[seq=7 /);
+  assert.match(input, /\[seq=8 /);
+  assert.match(input, /\[seq=9 /, 'right context must be included');
   assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12);
   assert.ok(input.length <= 6_000);
 });
@@ -201,20 +246,20 @@ test('hybrid classifier input keeps text-only turns when the ASR provider change
   assert.match(input, /speaker=none.*turnRoles/);
 });
 
-test('a failed final classification preserves the last stable live role map', async () => {
+test('a failed final audit never preserves an unverified live role as final truth', async () => {
   const partitions: any[] = [];
   let calls = 0;
   const p = createSpeakerPartitioner({
-    classify: async () => {
+    classify: async (turns, request) => {
       calls += 1;
-      return calls === 1
-        ? classification([
-            { speakerId: 1, role: 'candidate', confidence: 0.96 },
-            { speakerId: 2, role: 'interviewer', confidence: 0.97 }
-          ])
-        : classification([]);
+      if (request?.final) throw new Error('final classifier unavailable');
+      return classificationForTurns(turns, [
+        { speakerId: 1, role: 'candidate', confidence: 0.96 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.97 }
+      ]);
     },
     applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
     onCandidateTurn: () => {},
     onPartition: (partition) => partitions.push(partition)
   });
@@ -226,33 +271,34 @@ test('a failed final classification preserves the last stable live role map', as
   await p.flush();
   await p.finalize();
 
-  assert.equal(calls, 2);
+  assert.equal(calls, 4);
   assert.equal(partitions.at(-1).status, 'final');
   assert.deepEqual(
     partitions.at(-1).segments.map((segment: any) => segment.role),
-    ['candidate', 'interviewer', 'candidate', 'interviewer']
+    ['unknown', 'unknown', 'unknown', 'unknown']
   );
 });
 
-test('final pass tells Flash to revisit every text-only turn still unresolved after live inference', async () => {
-  const requests: Array<{ prioritySeqs?: readonly number[]; final?: boolean } | undefined> = [];
+test('final pass independently revisits every text-only turn', async () => {
+  const requests: Array<{
+    reviewSeqs?: readonly number[];
+    final?: boolean;
+    auditPass?: 'primary' | 'verification';
+  }> = [];
   const partitions: any[] = [];
   let calls = 0;
   const p = createSpeakerPartitioner({
     classify: async (_turns, request) => {
-      requests.push(request);
+      if (request) requests.push(request);
       calls += 1;
-      return calls === 1
-        ? classification([], [
-            { seq: 2, role: 'candidate', confidence: 0.98 },
-            { seq: 3, role: 'candidate', confidence: 0.98 },
-            { seq: 4, role: 'interviewer', confidence: 0.98 },
-            { seq: 5, role: 'candidate', confidence: 0.98 }
-          ])
-        : classification([], [
-            { seq: 0, role: 'candidate', confidence: 0.7 },
-            { seq: 1, role: 'candidate', confidence: 0.7 }
-          ]);
+      return classification(
+        [],
+        (request?.reviewSeqs ?? []).map((seq) => ({
+          seq,
+          role: seq === 4 ? 'interviewer' : 'candidate',
+          confidence: 0.76
+        }))
+      );
     },
     applySpeakerRole: (_speakerId, role) => role,
     onCandidateTurn: () => {},
@@ -268,16 +314,210 @@ test('final pass tells Flash to revisit every text-only turn still unresolved af
   await p.flush();
   await p.finalize();
 
-  assert.equal(calls, 2);
-  assert.deepEqual(requests[1], { final: true, prioritySeqs: [0, 1] });
+  assert.equal(calls, 4);
+  const finalRequests = requests.filter((request) => request.final);
+  assert.equal(finalRequests.length, 2);
+  assert.deepEqual(finalRequests.map((request) => request.auditPass).sort(), [
+    'primary',
+    'verification'
+  ]);
+  assert.deepEqual(finalRequests[0].reviewSeqs, [0, 1, 2, 3, 4, 5]);
   const final = partitions.at(-1);
   assert.equal(final.segments[0].role, 'candidate');
   assert.match(final.segments[0].text, /我们的。 人员进行。/);
   assert.equal(
     final.segments.some((segment: any) => segment.role === 'unknown'),
     false,
-    'moderate-confidence final weak correction is preferable to permanent unknown labels'
+    'two agreeing moderate-confidence final audits are sufficient'
   );
+});
+
+test('final native audit covers every transcript turn twice', async () => {
+  const requests: Array<{
+    final?: boolean;
+    reviewSeqs?: readonly number[];
+    auditPass?: 'primary' | 'verification';
+  }> = [];
+  const p = createSpeakerPartitioner({
+    classify: async (_turns, request) => {
+      if (request?.final) requests.push(request);
+      return classification(
+        [],
+        (request?.reviewSeqs ?? []).map((seq) => ({
+          seq,
+          role: seq % 2 === 0 ? 'interviewer' : 'candidate',
+          confidence: 0.97
+        }))
+      );
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: () => {}
+  });
+  p.setEnabled(true);
+  for (let seq = 0; seq < 17; seq += 1) {
+    p.record({
+      seq,
+      source: 'mic',
+      speakerId: seq % 3,
+      text: `第 ${seq} 段完整面试证据，包含具体动作、判断依据和结果。`
+    });
+  }
+
+  await p.finalize();
+
+  const coverage = new Map<number, Set<string>>();
+  for (const request of requests) {
+    for (const seq of request.reviewSeqs ?? []) {
+      const passes = coverage.get(seq) ?? new Set<string>();
+      passes.add(request.auditPass ?? 'missing');
+      coverage.set(seq, passes);
+    }
+  }
+  assert.deepEqual([...coverage.keys()].sort((a, b) => a - b),
+    Array.from({ length: 17 }, (_, seq) => seq));
+  for (let seq = 0; seq < 17; seq += 1) {
+    assert.deepEqual([...coverage.get(seq)!].sort(), ['primary', 'verification']);
+  }
+});
+
+test('an explicit final unknown revokes a stale live turn verdict', async () => {
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async (_turns, request) =>
+      request?.final
+        ? classification(
+            [],
+            (request.reviewSeqs ?? []).map((seq) => ({
+              seq,
+              role: 'unknown',
+              confidence: 0.99
+            }))
+          )
+        : classification(
+            [],
+            (request?.reviewSeqs ?? []).map((seq) => ({
+              seq,
+              role: 'interviewer',
+              confidence: 0.98
+            }))
+          ),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 1,
+    text: '这是一段语义暂时无法确认的完整发言内容，包含足够长的现场信息和处理背景。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 2,
+    text: '这是另一段语义暂时无法确认的完整发言内容，也包含足够长的现场信息和处理背景。'
+  });
+  await p.flush();
+  assert.equal(partitions.at(-1).segments[0].role, 'interviewer');
+
+  await p.finalize();
+
+  assert.deepEqual(partitions.at(-1).segments.map((segment: any) => segment.role), [
+    'unknown',
+    'unknown'
+  ]);
+});
+
+test('conflicting final audit passes fail safe to unknown', async () => {
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async (_turns, request) =>
+      classification(
+        [],
+        (request?.reviewSeqs ?? []).map((seq) => ({
+          seq,
+          role: request?.auditPass === 'verification' ? 'interviewer' : 'candidate',
+          confidence: 0.98
+        }))
+      ),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '第一段完整但角色冲突的面试内容。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '第二段完整但角色冲突的面试内容。' });
+
+  await p.finalize();
+
+  assert.deepEqual(partitions.at(-1).segments.map((segment: any) => segment.role), [
+    'unknown',
+    'unknown'
+  ]);
+});
+
+test('an acoustic cluster baseline alone cannot feed role-sensitive Auto callbacks', async () => {
+  const candidates: number[] = [];
+  const interviewers: number[] = [];
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.99 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn.seq),
+    onInterviewerTurn: (turn) => interviewers.push(turn.seq),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 2, text: '请说明一个具体项目。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 1, text: '我负责园区消防整改并完成复验。' });
+
+  await p.finalize();
+
+  assert.deepEqual(candidates, []);
+  assert.deepEqual(interviewers, []);
+  assert.deepEqual(partitions.at(-1).segments.map((segment: any) => segment.role), [
+    'unknown',
+    'unknown'
+  ]);
+});
+
+test('two agreeing semantic passes release each confirmed turn exactly once', async () => {
+  const candidates: number[] = [];
+  const interviewers: number[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async (_turns, request) =>
+      classification(
+        [],
+        (request?.reviewSeqs ?? []).map((seq) => ({
+          seq,
+          role: seq === 0 ? 'interviewer' : 'candidate',
+          confidence: 0.98
+        }))
+      ),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn.seq),
+    onInterviewerTurn: (turn) => interviewers.push(turn.seq),
+    onPartition: () => {}
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 2, text: '请说明一个具体项目。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 1, text: '我负责园区消防整改并完成复验。' });
+  await p.flush();
+  await p.finalize();
+
+  assert.deepEqual(interviewers, [0]);
+  assert.deepEqual(candidates, [1]);
 });
 
 test('final weak-correction threshold never promotes a native acoustic cluster role', async () => {
@@ -304,13 +544,13 @@ test('final weak-correction threshold never promotes a native acoustic cluster r
   ]);
 });
 
-test('native speaker clusters are mapped live and candidate history is released once', async () => {
+test('native turns are semantically mapped live and candidate history is released once', async () => {
   const partitions: any[] = [];
   const candidates: SpeakerTurn[] = [];
   const applied: Array<{ speakerId: number; role: string }> = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 7, role: 'candidate', confidence: 0.98 },
         { speakerId: 9, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -329,10 +569,7 @@ test('native speaker clusters are mapped live and candidate history is released 
   p.record({ seq: 3, source: 'mic', speakerId: 9, text: '结果如何验证？' });
   await p.flush();
 
-  assert.deepEqual(applied, [
-    { speakerId: 7, role: 'candidate' },
-    { speakerId: 9, role: 'interviewer' }
-  ]);
+  assert.deepEqual(applied, [], 'acoustic cluster roles must not become global identity state');
   assert.deepEqual(candidates.map((turn) => turn.seq), [0, 2]);
   assert.equal(partitions.at(-1)?.status, 'live');
   assert.deepEqual(
@@ -355,8 +592,8 @@ test('multiple native interviewer clusters map to one interviewer role around on
   const candidates: SpeakerTurn[] = [];
   const interviewers: SpeakerTurn[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 10, role: 'interviewer', confidence: 0.99 },
         { speakerId: 11, role: 'interviewer', confidence: 0.98 },
         { speakerId: 20, role: 'candidate', confidence: 0.99 }
@@ -419,8 +656,9 @@ test('native clusters weak-correct one clear answer without remapping the shared
   const candidates: SpeakerTurn[] = [];
   const interviewers: SpeakerTurn[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification(
+    classify: async (turns) =>
+      classificationForTurns(
+        turns,
         [
           { speakerId: 1, role: 'candidate', confidence: 0.98 },
           { speakerId: 2, role: 'interviewer', confidence: 0.99 }
@@ -466,8 +704,8 @@ test('repairs the real Seed answer split without releasing a false interviewer t
   const candidates: SpeakerTurn[] = [];
   const interviewers: SpeakerTurn[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -540,8 +778,8 @@ test('repairs the real Seed answer split without releasing a false interviewer t
 test('keeps a split score announcement on the interviewer role', async () => {
   const partitions: any[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -586,8 +824,8 @@ test('keeps a split score announcement on the interviewer role', async () => {
 test('keeps an explicit interviewer handoff between two candidate turns', async () => {
   const partitions: any[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -617,8 +855,8 @@ test('repairs a short connective candidate fragment across sentence boundaries',
   const candidates: SpeakerTurn[] = [];
   const interviewers: SpeakerTurn[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -674,8 +912,8 @@ test('repairs an interviewer question stem split into the candidate acoustic clu
   const candidates: SpeakerTurn[] = [];
   const interviewers: SpeakerTurn[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -718,8 +956,8 @@ test('repairs a short interviewer question tail attached to the candidate cluste
   const candidates: SpeakerTurn[] = [];
   const interviewers: SpeakerTurn[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -765,8 +1003,8 @@ test('repairs a short interviewer question tail attached to the candidate cluste
 test('keeps a candidate rhetorical question inside a substantive answer', async () => {
   const partitions: any[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -802,8 +1040,8 @@ test('keeps a candidate rhetorical question inside a substantive answer', async 
 test('keeps a short first-person answer between two interviewer turns', async () => {
   const partitions: any[] = [];
   const p = createSpeakerPartitioner({
-    classify: async () =>
-      classification([
+    classify: async (turns) =>
+      classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.98 },
         { speakerId: 2, role: 'interviewer', confidence: 0.99 }
       ]),
@@ -833,7 +1071,7 @@ test('one long post-baseline turn requests an immediate semantic correction refr
   const p = createSpeakerPartitioner({
     classify: async (turns) => {
       snapshots.push(turns.map((turn) => ({ ...turn })));
-      return classification([
+      return classificationForTurns(turns, [
         { speakerId: 7, role: 'candidate', confidence: 0.98 },
         { speakerId: 9, role: 'interviewer', confidence: 0.98 }
       ]);
@@ -856,7 +1094,7 @@ test('one long post-baseline turn requests an immediate semantic correction refr
     text: '我先核对巡检台账，再隔离风险区域，明确责任人和整改时限，最后组织复验并把现场证据归档。'
   });
   await p.flush();
-  assert.equal(snapshots.length, 1);
+  assert.equal(snapshots.length, 2, 'primary and verification passes inspect the same window');
 
   p.record({
     seq: 2,
@@ -866,8 +1104,9 @@ test('one long post-baseline turn requests an immediate semantic correction refr
   });
   await p.flush();
 
-  assert.equal(snapshots.length, 2, 'a long new turn must not wait for two unrelated finals');
-  assert.deepEqual(snapshots[1].map((turn) => turn.seq), [0, 1, 2]);
+  assert.equal(snapshots.length, 4, 'a long new turn must not wait for two unrelated finals');
+  assert.deepEqual(snapshots[2].map((turn) => turn.seq), [0, 1, 2]);
+  assert.deepEqual(snapshots[3].map((turn) => turn.seq), [0, 1, 2]);
 });
 
 test('low-confidence cluster guesses cannot become sticky speaker roles', async () => {
@@ -953,7 +1192,7 @@ test('new-interview reset clears evidence but preserves the current enabled stat
   const p = createSpeakerPartitioner({
     classify: async (turns) => {
       snapshots.push(turns.map((turn) => ({ ...turn })));
-      return classification([
+      return classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.9 },
         { speakerId: 2, role: 'interviewer', confidence: 0.9 }
       ]);
@@ -972,8 +1211,9 @@ test('new-interview reset clears evidence but preserves the current enabled stat
   p.record({ seq: 3, source: 'mic', speakerId: 2, text: '面试官继续追问复盘结论。' });
   await p.flush();
 
-  assert.equal(snapshots.length, 1);
+  assert.equal(snapshots.length, 2);
   assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1, 2, 3]);
+  assert.deepEqual(snapshots[1].map((turn) => turn.seq), [0, 1, 2, 3]);
 });
 
 test('live role assignment accepts one sufficiently substantive turn per native speaker', async () => {
@@ -981,7 +1221,7 @@ test('live role assignment accepts one sufficiently substantive turn per native 
   const p = createSpeakerPartitioner({
     classify: async (turns) => {
       snapshots.push(turns.map((turn) => ({ ...turn })));
-      return classification([
+      return classificationForTurns(turns, [
         { speakerId: 1, role: 'candidate', confidence: 0.95 },
         { speakerId: 2, role: 'interviewer', confidence: 0.95 }
       ]);
@@ -1005,13 +1245,14 @@ test('live role assignment accepts one sufficiently substantive turn per native 
     text: '请具体说明你如何处理消防检查中的重大隐患，包括现场隔离、责任分工、整改时限、复验标准和台账留存。'
   });
   await p.flush();
-  assert.equal(snapshots.length, 1, 'substantive speech-act evidence is enough for a stable role map');
+  assert.equal(snapshots.length, 2, 'two independent passes confirm the substantive speech acts');
   assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1]);
+  assert.deepEqual(snapshots[1].map((turn) => turn.seq), [0, 1]);
 
   p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我先停用风险区域，再组织整改和复验。' });
   p.record({ seq: 3, source: 'mic', speakerId: 2, text: '整改结果如何量化和留档？' });
   await p.flush();
-  assert.equal(snapshots.length, 1, 'the refresh cadence still waits for three additional turns');
+  assert.equal(snapshots.length, 2, 'the refresh cadence still waits for three additional turns');
 });
 
 test('final role assignment requires at least two substantive turns', async () => {
@@ -1033,7 +1274,7 @@ test('final role assignment requires at least two substantive turns', async () =
 
   p.record({ seq: 1, source: 'mic', text: '现在补充了第二段有效对话。' });
   await p.finalize();
-  assert.equal(calls, 1);
+  assert.equal(calls, 2);
 });
 
 test('a mixed shared-audio lane classifies interviewer and candidate before releasing answer text', async () => {
@@ -1041,9 +1282,9 @@ test('a mixed shared-audio lane classifies interviewer and candidate before rele
   const interviewers: number[] = [];
   let calls = 0;
   const p = createSpeakerPartitioner({
-    classify: async () => {
+    classify: async (turns) => {
       calls += 1;
-      return classification([
+      return classificationForTurns(turns, [
         { speakerId: 1, role: 'interviewer', confidence: 0.98 },
         { speakerId: 2, role: 'candidate', confidence: 0.98 }
       ]);
@@ -1069,7 +1310,7 @@ test('a mixed shared-audio lane classifies interviewer and candidate before rele
   });
   await p.flush();
 
-  assert.equal(calls, 1, 'one substantial sample per native cluster is enough to classify');
+  assert.equal(calls, 2, 'two independent semantic passes classify the substantial samples');
   assert.deepEqual(interviewers, [0]);
   assert.deepEqual(candidates, [1]);
 });

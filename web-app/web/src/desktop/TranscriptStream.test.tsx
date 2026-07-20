@@ -349,6 +349,26 @@ describe('TranscriptStream online native-speaker bubbles', () => {
     expect(onSetRole).toHaveBeenCalledWith(2, 'candidate');
   });
 
+  it('marks an unresolved semantic role as pending confirmation instead of guessing', () => {
+    render(
+      <TranscriptStream
+        offline={false}
+        speakerSegments={[
+          { id: 7, speakerId: 42, role: 'unknown', text: '这段发言没有足够证据确认角色。' }
+        ]}
+        transcripts={EMPTY_LANES}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+
+    expect(screen.getByText('待确认 · 说话人 42')).toBeInTheDocument();
+  });
+
   it('keeps the live partial visible while finalized speaker bubbles are already present', () => {
     render(
       <TranscriptStream

@@ -42,13 +42,24 @@ function blockReply(prompt: string): string {
     ? '改造同步链路前的真实根因验证方法'
     : '扩大实验前的结果验证依据';
 
-  if (prompt.includes('[classification-mode=native-clusters]')) {
+  if (
+    prompt.includes('[classification-mode=native-clusters]') ||
+    prompt.includes('-turn-audit]')
+  ) {
+    const requiredSeqs = (prompt.match(/\[required-turn-verdicts seqs=([^\]]*)\]/)?.[1] ?? '')
+      .split(',')
+      .map((value) => Number(value.trim()))
+      .filter(Number.isInteger);
     return JSON.stringify({
       speakerRoles: [
         { speakerId: 1, role: 'interviewer', confidence: 0.99 },
         { speakerId: 2, role: 'candidate', confidence: 0.99 }
       ],
-      turnRoles: []
+      turnRoles: requiredSeqs.map((seq) => ({
+        seq,
+        role: seq === 0 ? 'interviewer' : 'candidate',
+        confidence: 0.99
+      }))
     });
   }
 
