@@ -72,12 +72,24 @@ function parseObject(text: string): Record<string, unknown> | null {
   }
 }
 
+const LOW_SIGNAL_ENDING = /^(?:以上就是|我的回答完毕|谢谢(?:考官)?|就这些|没有了)/;
+const EVIDENCE_TERMS = /(?:我|本人|亲自|负责|决定|选择|检查|核对|协调|提交|调整|复检|验证|解决|降低|提升|结果|因为|如果|风险|预算|记录|质量)/g;
+
+function anchorScore(fragment: string): number {
+  const evidenceHits = fragment.match(EVIDENCE_TERMS)?.length ?? 0;
+  const usefulLength = Math.min(fragment.length, 80);
+  const boilerplatePenalty = LOW_SIGNAL_ENDING.test(fragment) ? 200 : 0;
+  return evidenceHits * 18 + usefulLength - boilerplatePenalty;
+}
+
 function deriveAnchor(answer: string): string {
-  const sentences = answer
-    .split(/[。！？!?] *|[\n；;]/)
-    .map((part) => clean(part, 52))
-    .filter((part) => part.length >= 4);
-  return sentences.at(-1) || clean(answer, 52) || '刚才这项经历';
+  const ranked = answer
+    .split(/[。！？!?]\s*|[\n；;]/)
+    .map((part) => part.trim().slice(0, 100))
+    .filter((part) => part.length >= 4)
+    .map((fragment, index) => ({ fragment, index, score: anchorScore(fragment) }))
+    .sort((a, b) => b.score - a.score || b.index - a.index);
+  return ranked[0]?.fragment.trim().slice(0, 52) || answer.trim().slice(0, 52) || '刚才这项经历';
 }
 
 function fallbackOutput(answer: string): FollowUpOutput {

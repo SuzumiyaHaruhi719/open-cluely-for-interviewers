@@ -75,6 +75,28 @@ test('rejects generic low-signal model output and falls back to a concrete Chine
   assert.equal((result.output.primary_question.match(/[？?]/g) ?? []).length, 1);
 });
 
+test('fallback ignores cut-off closing boilerplate and anchors concrete candidate evidence', async () => {
+  const candidateAnswer = [
+    '我先检查维修记录和现场施工质量，再核对采购单据确认材料是否达标。',
+    '如果资金不足，我会提交预算调整并安排复检，确保水管不再反复破裂。',
+    '以上就是我对这个事情的处理，以及这件事情对我的意。'
+  ].join('');
+
+  const result = await generateExpertQuestion(
+    { ...INPUT, candidateAnswer },
+    {
+      chat: async () => {
+        throw new Error('transient provider failure');
+      }
+    }
+  );
+
+  assert.equal(result.fellBack, true);
+  assert.doesNotMatch(result.output.primary_question, /以上就是/);
+  assert.match(result.output.primary_question, /预算调整|复检|水管/);
+  assert.equal(candidateAnswer.includes(result.output.anchor_quotes[0]), true);
+});
+
 test('rejects accidental English clauses in Chinese mode while allowing source acronyms', async () => {
   const mixed = await generateExpertQuestion(INPUT, {
     chat: async () => JSON.stringify({

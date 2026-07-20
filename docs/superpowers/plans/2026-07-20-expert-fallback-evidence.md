@@ -88,12 +88,12 @@ function anchorScore(fragment: string): number {
 function deriveAnchor(answer: string): string {
   const sentences = answer
     .split(/[。！？!?]\s*|[\n；;]/)
-    .map((part) => clean(part, 100))
+    .map((part) => part.trim().slice(0, 100))
     .filter((part) => part.length >= 4);
   const ranked = sentences
     .map((fragment, index) => ({ fragment, index, score: anchorScore(fragment) }))
     .sort((a, b) => b.score - a.score || b.index - a.index);
-  return clean(ranked[0]?.fragment, 52) || clean(answer, 52) || '刚才这项经历';
+  return ranked[0]?.fragment.trim().slice(0, 52) || answer.trim().slice(0, 52) || '刚才这项经历';
 }
 ```
 
