@@ -21,10 +21,10 @@
 **Files:**
 - Modify: `web-app/server/test/speaker-partitioner.test.ts`
 
-- [ ] Add a failing input-selection test where the old per-cluster sampler omits the latest question and long answer.
-- [ ] Add a failing cadence test proving one long post-baseline turn requests a semantic refresh immediately.
-- [ ] Strengthen the per-turn override test so a candidate answer and a genuine interviewer question share one acoustic ID, while only the answer changes role.
-- [ ] Run the focused test and capture the expected RED failures.
+- [x] Add a failing input-selection test where the old per-cluster sampler omits the latest question and long answer.
+- [x] Add a failing cadence test proving one long post-baseline turn requests a semantic refresh immediately.
+- [x] Strengthen the per-turn override test so a candidate answer and a genuine interviewer question share one acoustic ID, while only the answer changes role.
+- [x] Run the focused test and capture the expected RED failures.
 
 ### Task 2: Implement bounded weak correction
 
@@ -32,23 +32,22 @@
 - Modify: `web-app/server/src/speaker-partitioner.ts`
 - Modify: `web-app/server/src/ws.ts`
 
-- [ ] Select compact native cluster anchors plus a deduplicated recent chronological window.
-- [ ] Tighten the prompt to request sparse, high-confidence semantic conflicts for every recent turn.
-- [ ] Ignore low-confidence stable cluster assignments and retain the stricter turn-override threshold.
-- [ ] Schedule a correction refresh for each new long finalized turn after the baseline exists.
-- [ ] Route role-sensitive Auto events only through semantic partition output when partitioning is enabled.
-- [ ] Run the focused and surrounding WebSocket/trigger tests and verify GREEN.
+- [x] Select compact native cluster anchors plus a deduplicated recent chronological window.
+- [x] Tighten the prompt to request sparse, high-confidence semantic conflicts for every recent turn.
+- [x] Ignore low-confidence stable cluster assignments and retain the stricter turn-override threshold.
+- [x] Schedule a correction refresh for each new long finalized turn after the baseline exists.
+- [x] Route role-sensitive Auto events only through semantic partition output when partitioning is enabled.
+- [x] Run the focused and surrounding WebSocket/trigger tests and verify GREEN.
 
 ### Task 3: Verify and document production behavior
 
 **Files:**
 - Modify: `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/speaker-role-auto-partition.md`
 
-- [ ] Run all server tests, typecheck, and build.
-- [ ] Run all web tests and build.
+- [x] Run all server tests, typecheck, and build.
+- [x] Run all web tests and build.
 - [ ] Replay the supplied MP3 silently through BlackHole with Xunfei selected.
 - [ ] Confirm clear answers become `候选人`, genuine questions remain `面试官`, and final partitioning preserves those corrections.
 - [ ] Confirm Auto waits during speech and produces a meaningful question only after a complete candidate answer.
-- [ ] Update implementation notes with the role-precedence and recent-window invariants.
+- [x] Update implementation notes with the role-precedence and recent-window invariants.
 - [ ] Commit and push each verified checkpoint.
-

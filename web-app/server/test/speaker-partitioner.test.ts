@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   buildSpeakerClassifierInput,
   createSpeakerPartitioner,
+  parseSpeakerClassification,
   type SpeakerClassification,
   type SpeakerTurn
 } from '../src/speaker-partitioner';
@@ -29,7 +30,7 @@ test('native-cluster classifier input stays compact across a full interview', ()
   assert.match(input, /speaker=2/);
   assert.match(input, /speaker=3/);
   assert.match(input, /speaker=4/);
-  assert.match(input, /语义角色与 speakerId 的主角色冲突时.*turnRoles/);
+  assert.match(input, /每个 seq 都必须返回 turnRoles/);
   assert.ok(input.length <= 6_000);
   assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12, 'only representative turns should be sent');
 });
@@ -61,8 +62,59 @@ test('native classifier preserves recent question-answer adjacency for weak corr
   assert.match(input, /\[seq=13 .*平均响应时间从八分钟缩短到五分钟/);
   assert.match(input, /明显在回答相邻问题.*turnRoles/);
   assert.match(input, /短片段.*相邻.*继承同一个语义角色/);
+  assert.match(input, /最近上下文中的每个 seq 都必须返回 turnRoles/);
   assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12);
   assert.ok(input.length <= 6_000);
+});
+
+test('weak correction keeps one split grammatical question on the interviewer role', () => {
+  const turns: SpeakerTurn[] = [
+    {
+      seq: 7,
+      source: 'mic',
+      speakerId: 2,
+      text: '好，请听第二题，为了防范火灾，你单位组织消防演练'
+    },
+    {
+      seq: 8,
+      source: 'mic',
+      speakerId: 1,
+      text: '但是同事们的参与热情都不高，敷衍了事'
+    },
+    {
+      seq: 9,
+      source: 'mic',
+      speakerId: 2,
+      text: '领导交由你负责本次演练，作为组织负责人，你将如何开展？'
+    }
+  ];
+
+  const input = buildSpeakerClassifierInput(turns);
+  assert.match(input, /\[continuity-group seqs=7,8,9\]/);
+
+  const parsed = parseSpeakerClassification(
+    JSON.stringify({
+      speakerRoles: [
+        { speakerId: 1, role: 'candidate', confidence: 0.95 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.95 }
+      ],
+      turnRoles: [
+        { seq: 7, role: 'interviewer', confidence: 0.95 },
+        { seq: 8, role: 'candidate', confidence: 0.85 },
+        { seq: 9, role: 'interviewer', confidence: 0.95 }
+      ]
+    }),
+    turns
+  );
+
+  assert.deepEqual(
+    parsed.turnRoles.map(({ seq, role, confidence }) => [seq, role, confidence]),
+    [
+      [7, 'interviewer', 0.95],
+      [8, 'interviewer', 0.95],
+      [9, 'interviewer', 0.95]
+    ]
+  );
 });
 
 test('text-only classifier input uses a bounded recent window for incremental role caching', () => {

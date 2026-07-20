@@ -15,7 +15,10 @@ const MAX_HYBRID_TEXT_TURNS = 8;
 const MAX_CLASSIFIER_TURN_CHARS = 360;
 const MIN_SPEAKER_ROLE_CONFIDENCE = 0.75;
 const MIN_TURN_OVERRIDE_CONFIDENCE = 0.85;
+const MIN_CONTINUITY_EDGE_CONFIDENCE = 0.9;
 const MIN_SEMANTIC_REFRESH_CHARS = 48;
+const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
+const CONTINUATION_PREFIX = /^(?:[，,、。；;：:\s]*)?(?:但是|但|并且|而且|所以|同时|以及|然后|接着|另外|另一方面|其次|最后|那么|其中|例如|比如|领导|作为|如果|由于|因为|为了|并|也|再|还|或|与|及)/;
 
 export interface SpeakerTurn {
   seq: number;
@@ -83,6 +86,8 @@ const CLASSIFIER_SYSTEM = [
   'A native speakerId role is only a baseline: inspect every recent-context turn and return a high-confidence turnRoles exception when its speech act clearly conflicts with that baseline.',
   'A substantive answer to an adjacent question is candidate even if its acoustic id is mapped interviewer; a genuine new question is interviewer even if its id is mapped candidate.',
   'A short fragment that grammatically continues an adjacent question or answer inherits that same speech act even when its acoustic id changes.',
+  'For every seq in recent-context return one turnRoles item; use unknown when its semantic role is ambiguous instead of copying the acoustic baseline blindly.',
+  'When a continuity-group is listed, its seqs are one grammatical ASR turn and must share one semantic role unless the text contains an explicit interruption.',
   'A turnRoles exception applies only to that seq and must never be used to remap the whole acoustic cluster.',
   'When speakerId is absent, classify each turn by seq. Use unknown when evidence is insufficient.',
   'Return STRICT JSON only:',
@@ -98,6 +103,82 @@ function clampConfidence(value: unknown): number {
 
 function asRole(value: unknown): SpeakerRole {
   return value === 'interviewer' || value === 'candidate' ? value : 'unknown';
+}
+
+function findContinuityGroups(turns: readonly SpeakerTurn[]): SpeakerTurn[][] {
+  const groups: SpeakerTurn[][] = [];
+  let current: SpeakerTurn[] = [];
+  const flush = () => {
+    if (current.length >= 2) groups.push(current);
+    current = [];
+  };
+
+  for (const turn of turns) {
+    const previous = current[current.length - 1];
+    if (!previous) {
+      current = [turn];
+      continue;
+    }
+    const isDirectContinuation =
+      turn.seq === previous.seq + 1 &&
+      turn.source === previous.source &&
+      !TURN_TERMINAL_PUNCTUATION.test(previous.text.trim()) &&
+      CONTINUATION_PREFIX.test(turn.text.trim());
+    if (isDirectContinuation) {
+      current.push(turn);
+    } else {
+      flush();
+      current = [turn];
+    }
+  }
+  flush();
+  return groups;
+}
+
+function reconcileContinuityTurnRoles(
+  assignments: readonly InferredTurnRole[],
+  turns: readonly SpeakerTurn[]
+): InferredTurnRole[] {
+  const roleBySeq = new Map<number, InferredTurnRole>();
+  for (const assignment of assignments) {
+    const previous = roleBySeq.get(assignment.seq);
+    if (!previous || assignment.confidence > previous.confidence) {
+      roleBySeq.set(assignment.seq, { ...assignment });
+    }
+  }
+
+  for (const group of findContinuityGroups(turns)) {
+    if (group.length < 3) continue;
+    const first = roleBySeq.get(group[0].seq);
+    const last = roleBySeq.get(group[group.length - 1].seq);
+    if (
+      !first ||
+      !last ||
+      first.role === 'unknown' ||
+      first.role !== last.role ||
+      first.confidence < MIN_CONTINUITY_EDGE_CONFIDENCE ||
+      last.confidence < MIN_CONTINUITY_EDGE_CONFIDENCE
+    ) {
+      continue;
+    }
+    const consensusConfidence = Math.min(first.confidence, last.confidence);
+    for (const turn of group) {
+      const existing = roleBySeq.get(turn.seq);
+      if (
+        existing?.role === first.role ||
+        (existing && existing.confidence >= consensusConfidence)
+      ) {
+        continue;
+      }
+      roleBySeq.set(turn.seq, {
+        seq: turn.seq,
+        role: first.role,
+        confidence: consensusConfidence
+      });
+    }
+  }
+
+  return [...roleBySeq.values()].sort((a, b) => a.seq - b.seq);
 }
 
 function parseObject(text: string): Record<string, unknown> | null {
@@ -138,7 +219,7 @@ export function parseSpeakerClassification(
       if (!Number.isInteger(speakerId) || !validSpeakerIds.has(speakerId)) return [];
       return [{ speakerId, role: asRole(rec.role), confidence: clampConfidence(rec.confidence) }];
     });
-  const turnRoles = (Array.isArray(obj.turnRoles) ? obj.turnRoles : [])
+  const parsedTurnRoles = (Array.isArray(obj.turnRoles) ? obj.turnRoles : [])
     .flatMap((entry): InferredTurnRole[] => {
       if (!entry || typeof entry !== 'object') return [];
       const rec = entry as Record<string, unknown>;
@@ -146,6 +227,7 @@ export function parseSpeakerClassification(
       if (!Number.isInteger(seq) || !validSeqs.has(seq)) return [];
       return [{ seq, role: asRole(rec.role), confidence: clampConfidence(rec.confidence) }];
     });
+  const turnRoles = reconcileContinuityTurnRoles(parsedTurnRoles, turns);
   return { speakerRoles, turnRoles, model };
 }
 
@@ -257,7 +339,10 @@ export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): stri
       '[cluster-anchors]',
       ...anchors.map(formatClassifierTurn),
       '[recent-context-for-weak-correction]',
-      '逐条检查最近上下文：明显在回答相邻问题的内容应为 candidate；真正提出新问题的内容应为 interviewer；被 ASR 切开的短片段如果在语法上延续相邻的提问或回答，必须继承同一个语义角色，即使 speakerId 改变。语义角色与 speakerId 的主角色冲突时，为该 seq 返回高置信度 turnRoles。turnRoles 只纠正单条 turn，不能重映射整个 cluster。',
+      '逐条检查最近上下文：最近上下文中的每个 seq 都必须返回 turnRoles，语义不充分时返回 unknown，不要盲目复制 speakerId 主角色。明显在回答相邻问题的内容应为 candidate；真正提出新问题的内容应为 interviewer；被 ASR 切开的短片段如果在语法上延续相邻的提问或回答，必须继承同一个语义角色，即使 speakerId 改变。turnRoles 只纠正单条 turn，不能重映射整个 cluster。',
+      ...findContinuityGroups(recent).map(
+        (group) => `[continuity-group seqs=${group.map((turn) => turn.seq).join(',')}]`
+      ),
       ...recent.map(formatClassifierTurn)
     ]
       .join('\n')
