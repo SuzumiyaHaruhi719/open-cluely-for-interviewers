@@ -30,7 +30,9 @@ describe('SettingsModal essentials', () => {
     expect(screen.getByRole('heading', { name: '设置' })).toBeInTheDocument();
     expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
     expect(screen.getByText('切换后自动重连，凭证由服务端管理')).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: /豆包流式语音 2\.0/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole('option', { name: '豆包 Seed ASR 2.0 · 原生说话人分离' })
+    ).toBeInTheDocument();
     expect(screen.getByRole('option', { name: /DashScope Paraformer/ })).toBeInTheDocument();
     expect(screen.queryByRole('option', { name: /豆包流式语音 1\.0/ })).not.toBeInTheDocument();
     expect(screen.queryByLabelText('语音合成')).not.toBeInTheDocument();

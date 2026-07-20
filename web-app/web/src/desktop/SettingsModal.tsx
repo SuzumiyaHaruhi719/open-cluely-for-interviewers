@@ -22,7 +22,7 @@ const CLOSE_ANIM_MS = 200;
 
 const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: UserAsrProvider; label: string }> = [
   { value: 'xfyun', label: '讯飞实时转写 · 原生说话人分离（默认）' },
-  { value: 'volc', label: '豆包流式语音 2.0 · 服务端配置' },
+  { value: 'volc', label: '豆包 Seed ASR 2.0 · 原生说话人分离' },
   { value: 'paraformer', label: '阿里云 DashScope Paraformer · 服务端配置' }
 ];
 
