@@ -8,6 +8,14 @@ Correct clearly mislabelled interviewer/candidate turns when native ASR acoustic
 
 The current native-cluster path learns one stable role per `speakerId` and reuses it across the interview. DeepSeek can return a per-turn exception, but the classifier input samples only the first two and last two turns of each cluster. A long candidate answer can therefore be absent from the model's context while the stale cluster role still labels it as interviewer. Xunfei can also split one grammatical question across changing acoustic IDs; in real replays Flash labelled the two outer fragments as interviewer but gave the connective middle fragment a candidate verdict, sometimes with higher isolated confidence. The WebSocket path also releases the provisional cluster role to Auto before the semantic partition finishes, allowing one acoustic error to affect question timing.
 
+A Doubao Seed ASR 2.0 BlackHole replay exposed a second boundary: one continuous, multi-sentence candidate answer was split into candidate/interviewer/candidate acoustic turns. The middle fragment (`目前会向双方进行一下询问…`) was an answer-plan continuation, but it ended and began on sentence boundaries, so the narrow no-terminal-punctuation continuity rule did not apply. Prompting and a final Flash pass both preserved the false interviewer label.
+
+## Considered approaches
+
+1. **Prompt-only correction.** Keep asking Flash to inspect every turn. This is cheap to implement but the real replay proves one high-confidence semantic miss can survive finalization.
+2. **Remap the whole acoustic cluster.** This fixes the visible fragment but corrupts genuine turns when Seed assigns one cluster to multiple speakers, and it breaks panel interviews with several interviewer clusters.
+3. **Conservative turn-level answer-envelope repair.** Recommended. Preserve the model and cluster map, but repair only a single interviewer-labelled middle turn that is surrounded by candidate turns, is a direct same-source sequence neighbour, contains explicit first-person/action-plan language, and is not an explicit interviewer hand-off. The correction remains per-turn and passes through manual-role precedence.
+
 ## Decision
 
 Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-correction layer.
@@ -15,6 +23,7 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 - Native classifier input contains compact per-cluster anchors plus the latest chronological question/answer window.
 - The prompt requires one semantic `turnRoles` verdict (or `unknown`) for every recent seq, including obvious speech-act conflicts such as a substantive answer following an interviewer question even when the acoustic ID baseline says interviewer.
 - Direct same-source fragments that are grammatically continuous and lack a terminal boundary are marked as a continuity group. Matching 0.90+ Flash roles on both outer fragments constrain every conflicting middle fragment, because the grouped speech act is stronger evidence than an isolated-clause score; endpoint disagreement or ambiguity leaves the group untouched.
+- After model confidence filtering, a conservative candidate-answer envelope repairs one remaining candidate/interviewer/candidate sandwich when the middle fragment is a direct same-source neighbour with explicit first-person/action-plan wording and no interviewer hand-off. This covers sentence-boundary ASR fragmentation without remapping its acoustic cluster.
 - A turn exception affects only its `seq`; it never changes the stable `speakerId` role.
 - Manual role corrections remain authoritative over both cluster roles and semantic exceptions.
 - Low-confidence cluster assignments are ignored, and per-turn exceptions retain the stricter existing confidence floor.
@@ -25,9 +34,10 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 ## Role precedence
 
 1. Manual role correction for the acoustic ID.
-2. High-confidence DeepSeek per-turn semantic exception.
-3. High-confidence DeepSeek stable acoustic-cluster role.
-4. `unknown` while evidence is insufficient.
+2. A conservative local turn correction supported by candidate context on both sides.
+3. High-confidence DeepSeek per-turn semantic exception.
+4. High-confidence DeepSeek stable acoustic-cluster role.
+5. `unknown` while evidence is insufficient.
 
 ## Data flow
 
@@ -41,7 +51,7 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 ## Boundaries
 
 - Length alone never determines a role; it only decides whether a fresh semantic check is worth scheduling.
-- Short acknowledgements and ambiguous fragments inherit the acoustic baseline unless DeepSeek is highly confident. Continuity propagation additionally requires matching high-confidence model verdicts on both outer fragments; text shape alone cannot assign a role.
+- Short acknowledgements and ambiguous fragments inherit the acoustic baseline unless DeepSeek is highly confident. Grammatical continuity propagation requires matching high-confidence model verdicts on both outer fragments. The candidate-answer envelope is the sole text-shape exception and requires candidate roles on both direct neighbours plus explicit answer-plan language; a clear interviewer prompt, transition, evaluation, or manual role lock always blocks it.
 - The recent window is bounded, so classifier latency and output stay inside the existing live budget.
 - Text-only and hybrid provider paths remain supported; hybrid input keeps both recent text-only turns and native context.
 
@@ -50,5 +60,6 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 - A regression test reproduces a recent long candidate answer omitted by the old first/last cluster sampler.
 - A cadence test proves one long drift turn gets an immediate correction refresh.
 - A behavior test proves one corrected candidate turn does not remap a genuine interviewer turn sharing the same acoustic ID.
+- A real-transcript regression proves the sentence-boundary fragment `目前会向双方进行一下询问…` remains inside its surrounding candidate answer, while `好，请考生确认分数并离场` remains interviewer.
 - Existing manual-precedence tests remain green.
 - Full server/web tests, typecheck, build, and a silent MP3/BlackHole browser replay validate the integrated behavior.
