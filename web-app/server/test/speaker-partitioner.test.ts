@@ -461,6 +461,111 @@ test('native clusters weak-correct one clear answer without remapping the shared
   assert.deepEqual(interviewers.map((turn) => turn.seq), [0, 2]);
 });
 
+test('repairs the real Seed answer split without releasing a false interviewer turn', async () => {
+  const partitions: any[] = [];
+  const candidates: SpeakerTurn[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 2,
+    text: '好，请听第三题。某小区自来水管道总是破裂，如果你是社区工作人员应该怎么解决？'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 1,
+    text: '各位考官，作为社区工作人员，我会立即赶赴现场，拉开争执双方并说明应当冷静协商。'
+  });
+  p.record({
+    seq: 2,
+    source: 'mic',
+    speakerId: 2,
+    text: '目前会向双方进行一下询问，首先向居民询问水管破裂频次以及是否通过正规渠道反映。'
+  });
+  p.record({
+    seq: 3,
+    source: 'mic',
+    speakerId: 1,
+    text: '然后向维修人员询问破裂原因，并根据情况协调处理和跟踪复验。'
+  });
+  p.record({
+    seq: 4,
+    source: 'mic',
+    speakerId: 1,
+    text: '最高分八十九分，最低分八十三点五分，二号考生最终成绩为八十点六分。'
+  });
+  p.record({
+    seq: 5,
+    source: 'mic',
+    speakerId: 2,
+    text: '好，请考生确认分数并离场。'
+  });
+  await p.flush();
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'interviewer'],
+      [1, 'candidate'],
+      [2, 'candidate'],
+      [3, 'candidate'],
+      [4, 'interviewer'],
+      [5, 'interviewer']
+    ]
+  );
+  assert.deepEqual(candidates.map((turn) => turn.seq), [1, 2, 3]);
+  assert.deepEqual(
+    interviewers.map((turn) => turn.seq),
+    [0, 4, 5],
+    'a provisional acoustic mismatch must not close Auto as a real interviewer turn'
+  );
+});
+
+test('keeps an explicit interviewer handoff between two candidate turns', async () => {
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '我先隔离风险区域，再组织工程团队整改。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '请具体说明你本人做了什么关键决策？' });
+  p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我决定先停用故障设备，并要求当天完成复验。' });
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'candidate'],
+      [1, 'interviewer'],
+      [2, 'candidate']
+    ]
+  );
+});
+
 test('one long post-baseline turn requests an immediate semantic correction refresh', async () => {
   const snapshots: SpeakerTurn[][] = [];
   const p = createSpeakerPartitioner({

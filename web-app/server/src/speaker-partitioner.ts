@@ -20,6 +20,9 @@ const MIN_CONTINUITY_EDGE_CONFIDENCE = 0.9;
 const MIN_SEMANTIC_REFRESH_CHARS = 48;
 const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
 const CONTINUATION_PREFIX = /^(?:[，,、。；;：:\s]*)?(?:但是|但|并且|而且|所以|同时|以及|然后|接着|另外|另一方面|其次|最后|那么|其中|例如|比如|领导|作为|如果|由于|因为|为了|并|也|再|还|或|与|及)/;
+const INTERVIEWER_HANDOFF = /^(?:好[，,。]?|谢谢|请(?:听|问|结合|确认|(?:具体)?(?:介绍|说明|谈|回答))|下面|下一题|接下来请|你(?:如何|为什么|是否|能否)|能否|请考生)/;
+const CANDIDATE_PLAN = /(?:^|[，。；：,\s])(?:我(?:会|将|要|先|再|还|可以|需要|负责|认为|觉得|就)|作为[^，。]{0,18}我|首先|其次|然后|随后|那么|目前(?:我)?会|根据[^，。]{0,24}(?:情况|结果))/;
+const SCORE_ANNOUNCEMENT = /(?:最高分|最低分).{0,100}(?:号)?考生(?:的)?最终成绩/;
 
 export interface SpeakerTurn {
   seq: number;
@@ -477,6 +480,75 @@ function coalesce(segments: SpeakerPartitionSegment[]): SpeakerPartitionSegment[
   return out;
 }
 
+interface ResolvedSpeakerTurn {
+  turn: SpeakerTurn;
+  speakerId: number;
+  role: SpeakerRole;
+}
+
+function areDirectNeighbours(left: ResolvedSpeakerTurn, right: ResolvedSpeakerTurn): boolean {
+  return right.turn.seq === left.turn.seq + 1 && right.turn.source === left.turn.source;
+}
+
+/**
+ * Repair only locally provable ASR drift. This never changes a cluster role:
+ * callers apply each suggested role to one seq through manual-role precedence.
+ */
+function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<number, SpeakerRole> {
+  const overrides = new Map<number, SpeakerRole>();
+
+  for (const entry of turns) {
+    if (
+      typeof entry.turn.speakerId === 'number' &&
+      entry.role !== 'interviewer' &&
+      SCORE_ANNOUNCEMENT.test(entry.turn.text)
+    ) {
+      overrides.set(entry.turn.seq, 'interviewer');
+    }
+  }
+
+  const roleFor = (entry: ResolvedSpeakerTurn): SpeakerRole =>
+    overrides.get(entry.turn.seq) ?? entry.role;
+  for (let index = 1; index < turns.length - 1; index += 1) {
+    const previous = turns[index - 1];
+    const current = turns[index];
+    const next = turns[index + 1];
+    const text = current.turn.text.trim();
+    if (
+      typeof current.turn.speakerId === 'number' &&
+      areDirectNeighbours(previous, current) &&
+      areDirectNeighbours(current, next) &&
+      roleFor(previous) === 'candidate' &&
+      roleFor(current) === 'interviewer' &&
+      roleFor(next) === 'candidate' &&
+      CANDIDATE_PLAN.test(text) &&
+      !INTERVIEWER_HANDOFF.test(text)
+    ) {
+      overrides.set(current.turn.seq, 'candidate');
+    }
+  }
+
+  return overrides;
+}
+
+function shouldDeferPossibleAnswerContinuation(
+  turns: readonly ResolvedSpeakerTurn[],
+  index: number,
+  status: 'live' | 'final'
+): boolean {
+  if (status !== 'live' || index !== turns.length - 1) return false;
+  const current = turns[index];
+  const previous = turns[index - 1];
+  if (!previous || !areDirectNeighbours(previous, current)) return false;
+  const text = current.turn.text.trim();
+  return (
+    previous.role === 'candidate' &&
+    current.role === 'interviewer' &&
+    CANDIDATE_PLAN.test(text) &&
+    !INTERVIEWER_HANDOFF.test(text)
+  );
+}
+
 export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerPartitioner {
   const classify = deps.classify ?? classifySpeakerTurns;
   let enabled = false;
@@ -548,38 +620,61 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
         }
       }
       cachedTurnRoles = new Map(roleByTurn);
+      const preliminary = snapshot.map((turn): ResolvedSpeakerTurn => {
+        const hasClusterRole =
+          typeof turn.speakerId === 'number' && roleBySpeaker.has(turn.speakerId);
+        const turnRole = roleByTurn.get(turn.seq);
+        let role = hasClusterRole
+          ? roleBySpeaker.get(turn.speakerId as number) ?? 'unknown'
+          : turnRole ?? 'unknown';
+        if (typeof turn.speakerId === 'number' && turnRole && turnRole !== 'unknown') {
+          role = deps.resolveTurnRole?.(turn.speakerId, turnRole) ?? turnRole;
+        }
+        if (typeof turn.speakerId === 'number' && !hasClusterRole && role !== 'unknown') {
+          role = deps.applySpeakerRole(turn.speakerId, role);
+        }
+        const speakerId =
+          typeof turn.speakerId === 'number'
+            ? turn.speakerId
+            : role === 'interviewer'
+              ? 0
+              : role === 'candidate'
+                ? 1
+                : 100_000 + turn.seq;
+        return { turn, speakerId, role };
+      });
+      const localOverrides = findLocalRoleOverrides(preliminary);
+      const resolved = preliminary.map((entry): ResolvedSpeakerTurn => {
+        const suggested = localOverrides.get(entry.turn.seq);
+        if (!suggested) return entry;
+        const role =
+          typeof entry.turn.speakerId === 'number'
+            ? deps.resolveTurnRole?.(entry.turn.speakerId, suggested) ?? suggested
+            : suggested;
+        return { ...entry, role };
+      });
+      for (const [index, entry] of resolved.entries()) {
+        const { turn, role } = entry;
+        if (role === 'candidate' && !fedCandidateSeqs.has(turn.seq)) {
+          fedCandidateSeqs.add(turn.seq);
+          deps.onCandidateTurn(turn);
+        }
+        if (
+          role === 'interviewer' &&
+          !fedInterviewerSeqs.has(turn.seq) &&
+          !shouldDeferPossibleAnswerContinuation(resolved, index, status)
+        ) {
+          fedInterviewerSeqs.add(turn.seq);
+          deps.onInterviewerTurn?.(turn);
+        }
+      }
       const segments = coalesce(
-        snapshot.map((turn): SpeakerPartitionSegment => {
-          const hasClusterRole =
-            typeof turn.speakerId === 'number' && roleBySpeaker.has(turn.speakerId);
-          const turnRole = roleByTurn.get(turn.seq);
-          let role = hasClusterRole
-            ? roleBySpeaker.get(turn.speakerId as number) ?? 'unknown'
-            : turnRole ?? 'unknown';
-          if (typeof turn.speakerId === 'number' && turnRole && turnRole !== 'unknown') {
-            role = deps.resolveTurnRole?.(turn.speakerId, turnRole) ?? turnRole;
-          }
-          if (typeof turn.speakerId === 'number' && !hasClusterRole && role !== 'unknown') {
-            role = deps.applySpeakerRole(turn.speakerId, role);
-          }
-          if (role === 'candidate' && !fedCandidateSeqs.has(turn.seq)) {
-            fedCandidateSeqs.add(turn.seq);
-            deps.onCandidateTurn(turn);
-          }
-          if (role === 'interviewer' && !fedInterviewerSeqs.has(turn.seq)) {
-            fedInterviewerSeqs.add(turn.seq);
-            deps.onInterviewerTurn?.(turn);
-          }
-          const speakerId =
-            typeof turn.speakerId === 'number'
-              ? turn.speakerId
-              : role === 'interviewer'
-                ? 0
-                : role === 'candidate'
-                  ? 1
-                  : 100_000 + turn.seq;
-          return { seq: turn.seq, speakerId, role, text: turn.text };
-        })
+        resolved.map(({ turn, speakerId, role }) => ({
+          seq: turn.seq,
+          speakerId,
+          role,
+          text: turn.text
+        }))
       );
       deps.onPartition({ status, model: result.model || SPEAKER_PARTITION_MODEL, segments });
     });
