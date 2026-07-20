@@ -537,6 +537,52 @@ test('repairs the real Seed answer split without releasing a false interviewer t
   );
 });
 
+test('keeps a split score announcement on the interviewer role', async () => {
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 2, text: '好，请考生现场候分。' });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 1,
+    text: '88分，85.5分，86分，89分，80.5分，86分，83.5分。'
+  });
+  p.record({
+    seq: 2,
+    source: 'mic',
+    speakerId: 2,
+    text: '去掉一个最高分89分，去掉一个最低分83.5分。'
+  });
+  p.record({
+    seq: 3,
+    source: 'mic',
+    speakerId: 1,
+    text: '二号选手最终成绩为86.6分。'
+  });
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'interviewer'],
+      [1, 'interviewer'],
+      [2, 'interviewer'],
+      [3, 'interviewer']
+    ]
+  );
+});
+
 test('keeps an explicit interviewer handoff between two candidate turns', async () => {
   const partitions: any[] = [];
   const p = createSpeakerPartitioner({
@@ -665,6 +711,92 @@ test('repairs an interviewer question stem split into the candidate acoustic clu
   );
   assert.deepEqual(candidates.map((turn) => turn.seq), []);
   assert.deepEqual(interviewers.map((turn) => turn.seq), [0, 1, 2]);
+});
+
+test('repairs a short interviewer question tail attached to the candidate cluster', async () => {
+  const partitions: any[] = [];
+  const candidates: SpeakerTurn[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 2,
+    text: '好，请听第三题。某小区自来水管道总是破裂，两方发生冲突，如果你是社区的。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 1,
+    text: '工作人员应该怎么解决？'
+  });
+  p.record({
+    seq: 2,
+    source: 'mic',
+    speakerId: 1,
+    text: '各位考官，作为社区工作人员，我会立即赶赴现场并先隔离冲突双方。'
+  });
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'interviewer'],
+      [1, 'interviewer'],
+      [2, 'candidate']
+    ]
+  );
+  assert.deepEqual(candidates.map((turn) => turn.seq), [2]);
+  assert.deepEqual(interviewers.map((turn) => turn.seq), [0, 1]);
+});
+
+test('keeps a candidate rhetorical question inside a substantive answer', async () => {
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 2,
+    text: '请说明你会如何调动同事参与消防演练。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 1,
+    text: '那么我们应该怎么做呢？首先我会召开动员会，说明演练与人身安全的关系。'
+  });
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'interviewer'],
+      [1, 'candidate']
+    ]
+  );
 });
 
 test('keeps a short first-person answer between two interviewer turns', async () => {

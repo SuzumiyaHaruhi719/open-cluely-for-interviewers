@@ -22,9 +22,14 @@ const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
 const CONTINUATION_PREFIX = /^(?:[，,、。；;：:\s]*)?(?:但是|但|并且|而且|所以|同时|以及|然后|接着|另外|另一方面|其次|最后|那么|其中|例如|比如|领导|作为|如果|由于|因为|为了|并|也|再|还|或|与|及)/;
 const INTERVIEWER_HANDOFF = /^(?:好[，,。]?|谢谢|请(?:听|问|结合|确认|(?:具体)?(?:介绍|说明|谈|回答))|下面|下一题|接下来请|能否|请考生|(?:(?:所以(?:说)?|那么|然后)[，,]?)?(?:你|考生).{0,24}(?:如何|怎么|为什么|是否|能否|做了什么|会怎么))/;
 const INTERVIEWER_PROMPT_TAIL = /^(?:(?:对此|关于此事|针对上述|基于上述|就此|那么)[，,]?)?(?:请(?:你|考生)?|你|考生).{0,40}(?:谈谈|说明|介绍|回答|如何|怎么|为什么|看法|理解)/;
+const INTERVIEWER_QUESTION_FRAGMENT = /^[^。！？?]{0,56}(?:如何|怎么|为什么|能否|是否|哪(?:个|些)|什么)[^。！？?]{0,10}[？?]$/;
 const CANDIDATE_PLAN = /(?:^|[，。；：,\s])(?:我(?:会|将|要|先|再|还|可以|需要|负责|认为|觉得|就)|作为[^，。]{0,18}我|首先|其次|然后|随后|那么|目前(?:我)?会|根据[^，。]{0,24}(?:情况|结果))/;
 const CANDIDATE_ANSWER_OPENING = /^(?:各位考官|我|先(?:要|将|把|对|从|进行)|通过|在(?:我|当时|现场|处理)|作为)/;
-const SCORE_ANNOUNCEMENT = /(?:最高分|最低分).{0,100}(?:号)?考生(?:的)?最终成绩/;
+const SCORE_VALUE = '(?:\\d+(?:\\.\\d+)?|[零〇一二三四五六七八九十百]+(?:点[零〇一二三四五六七八九]+)?)分';
+const SCORE_ANNOUNCEMENT = new RegExp(
+  `(?:(?:最高分|最低分).{0,100}(?:号)?(?:考生|选手)(?:的)?最终成绩|` +
+    `(?:号)?(?:考生|选手)(?:的)?最终成绩|(?:${SCORE_VALUE}[，,、\\s]*){3,})`
+);
 
 export interface SpeakerTurn {
   seq: number;
@@ -522,6 +527,23 @@ function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<numb
 
   const roleFor = (entry: ResolvedSpeakerTurn): SpeakerRole =>
     overrides.get(entry.turn.seq) ?? entry.role;
+  for (let index = 1; index < turns.length; index += 1) {
+    const previous = turns[index - 1];
+    const current = turns[index];
+    const text = current.turn.text.trim();
+    if (
+      typeof current.turn.speakerId === 'number' &&
+      areDirectNeighbours(previous, current) &&
+      roleFor(previous) === 'interviewer' &&
+      roleFor(current) === 'candidate' &&
+      text.replace(/\s+/g, '').length <= 60 &&
+      !hasStrongCandidateAnswerSignal(text) &&
+      INTERVIEWER_QUESTION_FRAGMENT.test(text)
+    ) {
+      overrides.set(current.turn.seq, 'interviewer');
+    }
+  }
+
   for (let index = 1; index < turns.length - 1; index += 1) {
     const previous = turns[index - 1];
     const current = turns[index];
