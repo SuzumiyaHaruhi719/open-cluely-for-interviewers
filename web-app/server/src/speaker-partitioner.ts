@@ -20,7 +20,7 @@ const MIN_CONTINUITY_EDGE_CONFIDENCE = 0.9;
 const MIN_SEMANTIC_REFRESH_CHARS = 48;
 const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
 const CONTINUATION_PREFIX = /^(?:[，,、。；;：:\s]*)?(?:但是|但|并且|而且|所以|同时|以及|然后|接着|另外|另一方面|其次|最后|那么|其中|例如|比如|领导|作为|如果|由于|因为|为了|并|也|再|还|或|与|及)/;
-const INTERVIEWER_HANDOFF = /^(?:好[，,。]?|谢谢|请(?:听|问|结合|确认|(?:具体)?(?:介绍|说明|谈|回答))|下面|下一题|接下来请|你(?:如何|为什么|是否|能否)|能否|请考生)/;
+const INTERVIEWER_HANDOFF = /^(?:好[，,。]?|谢谢|请(?:听|问|结合|确认|(?:具体)?(?:介绍|说明|谈|回答))|下面|下一题|接下来请|能否|请考生|(?:(?:所以(?:说)?|那么|然后)[，,]?)?(?:你|考生).{0,24}(?:如何|怎么|为什么|是否|能否|做了什么|会怎么))/;
 const CANDIDATE_PLAN = /(?:^|[，。；：,\s])(?:我(?:会|将|要|先|再|还|可以|需要|负责|认为|觉得|就)|作为[^，。]{0,18}我|首先|其次|然后|随后|那么|目前(?:我)?会|根据[^，。]{0,24}(?:情况|结果))/;
 const SCORE_ANNOUNCEMENT = /(?:最高分|最低分).{0,100}(?:号)?考生(?:的)?最终成绩/;
 
@@ -486,6 +486,13 @@ interface ResolvedSpeakerTurn {
   role: SpeakerRole;
 }
 
+function hasCandidateEnvelopeSignal(text: string): boolean {
+  return (
+    CANDIDATE_PLAN.test(text) ||
+    (text.replace(/\s+/g, '').length <= 80 && CONTINUATION_PREFIX.test(text))
+  );
+}
+
 function areDirectNeighbours(left: ResolvedSpeakerTurn, right: ResolvedSpeakerTurn): boolean {
   return right.turn.seq === left.turn.seq + 1 && right.turn.source === left.turn.source;
 }
@@ -521,7 +528,7 @@ function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<numb
       roleFor(previous) === 'candidate' &&
       roleFor(current) === 'interviewer' &&
       roleFor(next) === 'candidate' &&
-      CANDIDATE_PLAN.test(text) &&
+      hasCandidateEnvelopeSignal(text) &&
       !INTERVIEWER_HANDOFF.test(text)
     ) {
       overrides.set(current.turn.seq, 'candidate');
@@ -544,7 +551,7 @@ function shouldDeferPossibleAnswerContinuation(
   return (
     previous.role === 'candidate' &&
     current.role === 'interviewer' &&
-    CANDIDATE_PLAN.test(text) &&
+    hasCandidateEnvelopeSignal(text) &&
     !INTERVIEWER_HANDOFF.test(text)
   );
 }

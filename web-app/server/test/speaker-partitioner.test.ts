@@ -552,7 +552,7 @@ test('keeps an explicit interviewer handoff between two candidate turns', async 
   });
   p.setEnabled(true);
   p.record({ seq: 0, source: 'mic', speakerId: 1, text: '我先隔离风险区域，再组织工程团队整改。' });
-  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '请具体说明你本人做了什么关键决策？' });
+  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '所以你当时如何确认根本原因？' });
   p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我决定先停用故障设备，并要求当天完成复验。' });
   await p.finalize();
 
@@ -564,6 +564,63 @@ test('keeps an explicit interviewer handoff between two candidate turns', async 
       [2, 'candidate']
     ]
   );
+});
+
+test('repairs a short connective candidate fragment across sentence boundaries', async () => {
+  const partitions: any[] = [];
+  const candidates: SpeakerTurn[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 2,
+    text: '好，考生请听第一题，对此请谈谈你的理解。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 1,
+    text: '那么我们现在年轻的青年干部，国家和党的未来是他们的希望。'
+  });
+  p.record({
+    seq: 2,
+    source: 'mic',
+    speakerId: 2,
+    text: '所以说我们的年轻干部都要打到'
+  });
+  p.record({
+    seq: 3,
+    source: 'mic',
+    speakerId: 1,
+    text: '基础增长才干，心无旁骛地做好自己的本职工作，才能将工作做实做牢。'
+  });
+  await p.flush();
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'interviewer'],
+      [1, 'candidate'],
+      [2, 'candidate'],
+      [3, 'candidate']
+    ]
+  );
+  assert.deepEqual(candidates.map((turn) => turn.seq), [1, 2, 3]);
+  assert.deepEqual(interviewers.map((turn) => turn.seq), [0]);
 });
 
 test('one long post-baseline turn requests an immediate semantic correction refresh', async () => {
