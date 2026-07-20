@@ -615,7 +615,7 @@ describe('Shell', () => {
     expect(analyzeMsg.candidateAnswer).toContain('我用一致性哈希做了分片');
   });
 
-  describe('auto-clear candidate cache on interview end (last source stopped)', () => {
+  describe('preserve interview history when audio capture stops', () => {
     /** Switch the live session to the Sim ASR provider (capture is synchronous,
      *  no real media) so start/stop drive the capturing state in jsdom. */
     function selectSimProvider(): void {
@@ -626,21 +626,14 @@ describe('Shell', () => {
       fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
     }
 
-    test('stopping the LAST active source auto-clears the candidate cache (segments cleared + server reset pushed)', async () => {
-      // Make the computer-audio (display) channel selectable in jsdom so we can
-      // run two sources; Sim's skipLocalCapture means getDisplayMedia is never
-      // actually called — we only need the capability check to pass.
-      vi.stubGlobal('navigator', {
-        ...navigator,
-        mediaDevices: { ...navigator.mediaDevices, getDisplayMedia: () => {} }
-      });
-
+    test('stopping the microphone keeps transcript history and generation context', async () => {
       render(<Shell />);
       await flushMount();
       const ws = openSocket();
       selectSimProvider();
 
-      // Seed a diarized candidate segment so we can prove the cache is cleared.
+      // Seed both socket transcript history and a local note so stopping capture
+      // cannot silently behave like "New interview" for either history source.
       act(() => {
         ws.emit({
           type: 'transcript',
@@ -651,80 +644,33 @@ describe('Shell', () => {
           speaker: 'candidate'
         });
       });
+      fireEvent.change(screen.getByLabelText('手动上下文输入'), {
+        target: { value: '保留这条面试记录' }
+      });
+      fireEvent.click(screen.getByRole('button', { name: '添加' }));
       await waitFor(() => {
         expect(document.querySelector('.chat-message .speaker-role-toggle')).toBeInTheDocument();
       });
+      expect(screen.getByText('保留这条面试记录')).toBeInTheDocument();
 
-      // Start BOTH sources (Sim → capturing flips on synchronously).
-      const micCard = document.getElementById('channel-mic')!;
-      const dispCard = document.getElementById('channel-computer')!;
-      await act(async () => {
-        fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
-      });
-      await act(async () => {
-        fireEvent.click(within(dispCard).getByRole('button', { name: '开始' }));
-      });
-
-      // Mark where we start looking for the reset so earlier configures don't count.
-      const sentBeforeStop = ws.sent.length;
-
-      // Stop the mic — the display is STILL capturing, so this is a partial stop:
-      // NO auto-clear yet.
-      await act(async () => {
-        fireEvent.click(within(micCard).getByRole('button', { name: '停止' }));
-      });
-      const afterFirstStop = ws.sent
-        .slice(sentBeforeStop)
-        .map((s) => JSON.parse(s))
-        .filter((m) => m.type === 'configure' && m.config?.resetGeneration === true);
-      expect(afterFirstStop).toHaveLength(0);
-      // The candidate segment is still on screen (interview not over).
-      expect(document.querySelector('.chat-message .speaker-role-toggle')).toBeInTheDocument();
-
-      // Stop the display — now NO source is capturing → interview ended → auto-clear.
-      const sentBeforeLastStop = ws.sent.length;
-      await act(async () => {
-        fireEvent.click(within(dispCard).getByRole('button', { name: '停止' }));
-      });
-
-      // A configure carrying resetGeneration:true is pushed (server-side reset,
-      // mirroring onClearSession).
-      await waitFor(() => {
-        const reset = ws.sent
-          .slice(sentBeforeLastStop)
-          .map((s) => JSON.parse(s))
-          .filter((m) => m.type === 'configure' && m.config?.resetGeneration === true);
-        expect(reset).toHaveLength(1);
-      });
-      // The candidate speech cache (segments) is cleared from the UI.
-      await waitFor(() => {
-        expect(document.querySelector('.chat-message .speaker-role-toggle')).toBeNull();
-      });
-    });
-
-    test('auto-clear fires only ONCE per interview end (idempotent — no repeat resets while stopped)', async () => {
-      // Single mic source only — no display channel needed.
-      render(<Shell />);
-      await flushMount();
-      const ws = openSocket();
-      selectSimProvider();
-
+      // Sim capture flips the microphone state synchronously without real media.
       const micCard = document.getElementById('channel-mic')!;
       await act(async () => {
         fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
       });
 
-      const before = ws.sent.length;
+      const beforeStop = ws.sent.length;
       await act(async () => {
         fireEvent.click(within(micCard).getByRole('button', { name: '停止' }));
       });
 
       const resets = ws.sent
-        .slice(before)
+        .slice(beforeStop)
         .map((s) => JSON.parse(s))
         .filter((m) => m.type === 'configure' && m.config?.resetGeneration === true);
-      // Exactly one reset for this single interview-end transition.
-      expect(resets).toHaveLength(1);
+      expect(resets).toHaveLength(0);
+      expect(document.querySelector('.chat-message .speaker-role-toggle')).toBeInTheDocument();
+      expect(screen.getByText('保留这条面试记录')).toBeInTheDocument();
     });
   });
 

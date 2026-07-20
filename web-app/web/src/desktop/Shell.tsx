@@ -190,30 +190,6 @@ export function Shell() {
     [sendConfigure]
   );
 
-  // ── Auto-clear the candidate speech cache when the interview ENDS ────────────
-  // "Interview ends" = the LAST active audio source is stopped (capture goes from
-  // some-source-capturing → none). At that transition we clear the candidate
-  // cache the same way "New interview" does: frontend speakerSegments + transcripts
-  // + in-flight summary/context (resetSpeakerSegments/resetTranscripts) AND the
-  // server-side candidate buffers via a resetGeneration configure (mirrors
-  // onClearSession's pushConfig). A mere PARTIAL stop (another source still live)
-  // does NOT clear. We track the previous capturing state so the clear fires once
-  // per end transition and never repeats while idle (idempotent). The manual
-  // "New interview" clear stays as-is.
-  const wasCapturingRef = useRef(false);
-  useEffect(() => {
-    if (wasCapturingRef.current && !capturing) {
-      // All sources just stopped → interview ended → clear the candidate cache.
-      pushConfig({ resetGeneration: true });
-      setAnswer('');
-      setTranscriptMessages([]);
-      lastDisplayFinalRef.current = '';
-      resetSpeakerSegments();
-      resetTranscripts();
-    }
-    wasCapturingRef.current = capturing;
-  }, [capturing, pushConfig, resetSpeakerSegments, resetTranscripts]);
-
   const onModeChange = useCallback(
     (mode: InterviewerMode): void => {
       setConfig((prev) => ({ ...prev, mode }));
