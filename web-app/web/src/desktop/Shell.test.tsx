@@ -233,7 +233,7 @@ describe('Shell', () => {
     expect(screen.getByText('实时助手')).toBeInTheDocument();
     expect(screen.getByText('题库')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '设置' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '提问 AI' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '提问 AI' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '总结面试' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '生成追问' })).toBeInTheDocument();
     expect(screen.getByLabelText('手动上下文输入')).toBeInTheDocument();
@@ -469,34 +469,6 @@ describe('Shell', () => {
       .map((s) => JSON.parse(s))
       .find((m) => m.type === 'configure' && m.config?.resetGeneration === true);
     expect(resetConfig).toBeTruthy();
-  });
-
-  test('Ask AI calls the assistant endpoint and shows the reply in the results panel', async () => {
-    render(<Shell />);
-    await flushMount();
-    openSocket();
-
-    // Seed the answer buffer so Ask AI has a prompt.
-    fireEvent.change(screen.getByLabelText('手动上下文输入'), {
-      target: { value: 'They optimised the cache layer.' }
-    });
-    fireEvent.click(screen.getByRole('button', { name: '添加' }));
-
-    fireEvent.click(screen.getByRole('button', { name: /提问 AI/ }));
-
-    // The results panel opens and renders the assistant reply.
-    expect(await screen.findByText('Assistant reply.')).toBeInTheDocument();
-    const panel = document.getElementById('results-panel');
-    expect(panel?.classList.contains('hidden')).toBe(false);
-
-    const ask = fetchCalls.find((c) => c.url.includes('/api/assistant/ask'));
-    expect(ask?.body).toMatchObject({ prompt: 'They optimised the cache layer.' });
-
-    // Closing the panel hides it.
-    fireEvent.click(screen.getByRole('button', { name: '关闭回答' }));
-    await waitFor(() => {
-      expect(document.getElementById('results-panel')?.classList.contains('hidden')).toBe(true);
-    });
   });
 
   test('selecting Doubao ASR 2.0 sends only the provider while credentials stay server-side', async () => {

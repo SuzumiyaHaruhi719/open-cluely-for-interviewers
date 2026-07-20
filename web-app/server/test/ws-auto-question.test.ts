@@ -26,8 +26,9 @@ const GENERATED = {
   model: 'deepseek-v4-flash',
   elapsedMs: 920,
   fellBack: false,
-  shouldAsk: true
-} satisfies ExpertQuestionResult;
+  shouldAsk: true,
+  tokensUsed: { input: 321, output: 87, total: 408 }
+} as ExpertQuestionResult & { tokensUsed: { input: number; output: number; total: number } };
 
 test('automatic question emits one under-10s Expert result', async () => {
   const messages: ServerMessage[] = [];
@@ -68,6 +69,7 @@ test('automatic question emits one under-10s Expert result', async () => {
     assert.equal(result.elapsedMs, 920);
     assert.equal(result.output.primary_question, GENERATED.output.primary_question);
     assert.deepEqual(result.ranked, []);
+    assert.deepEqual(result.tokensUsed, { input: 321, output: 87, total: 408 });
   }
 });
 

@@ -382,16 +382,6 @@ export function Shell() {
     return lines.join('\n\n');
   }, [transcripts.display.finalText, transcripts.mic.finalText]);
 
-  const onAskAi = useCallback((): void => {
-    // Use the candidate-answer buffer as the prompt, grounded by the transcript.
-    const prompt = answer.trim() || transcriptText.trim();
-    if (prompt.length === 0) {
-      void assistant.ask('总结目前的对话，并建议一个有力的追问。', transcriptText);
-      return;
-    }
-    void assistant.ask(prompt, transcriptText || undefined);
-  }, [answer, transcriptText, assistant]);
-
   const onMeetingNotes = useCallback((): void => {
     void assistant.notes(transcriptText);
   }, [assistant, transcriptText]);
@@ -484,7 +474,6 @@ export function Shell() {
                 isAnalyzing={isAnalyzing}
                 onAnalyze={onAnalyze}
                 onClearSession={onClearSession}
-                onAskAi={onAskAi}
                 onSummarize={onSummarize}
                 onMeetingNotes={onMeetingNotes}
                 onInsights={onInsights}

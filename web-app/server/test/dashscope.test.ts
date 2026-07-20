@@ -172,6 +172,28 @@ test('#1 default callers (no timeoutMs) still get a working call', async () => {
   assert.equal(text, 'default-budget');
 });
 
+test('chat reports one-shot token usage to the caller', async () => {
+  global.fetch = (async () =>
+    new Response(
+      JSON.stringify({
+        content: [{ type: 'text', text: 'done' }],
+        usage: { input_tokens: 321, output_tokens: 87 }
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    )) as typeof global.fetch;
+
+  let usage: { input: number; output: number } | null = null;
+  const text = await chat({
+    messages: [{ role: 'user', content: 'hi' }],
+    onUsage: (next: { input: number; output: number }) => {
+      usage = next;
+    }
+  } as any);
+
+  assert.equal(text, 'done');
+  assert.deepEqual(usage, { input: 321, output: 87 });
+});
+
 test('chatStream resolves on message_stop even when the SSE connection stays open', async () => {
   const encoder = new TextEncoder();
   let cancelCalled = false;

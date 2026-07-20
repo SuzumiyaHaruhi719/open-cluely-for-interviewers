@@ -25,6 +25,7 @@ test('one Flash call performs expert gap analysis and emits one evidence-anchore
   const result = await generateExpertQuestion(INPUT, {
     chat: async (options) => {
       calls.push(options);
+      (options as any).onUsage?.({ input: 321, output: 87 });
       return JSON.stringify({
         should_ask: true,
         primary_question: '你提到“平均到场时间从八分钟降到五分钟”，这三分钟改善中哪个关键决策是你亲自做出的？',
@@ -57,6 +58,7 @@ test('one Flash call performs expert gap analysis and emits one evidence-anchore
   assert.equal(result.elapsedMs, 3_140);
   assert.equal(result.fellBack, false);
   assert.equal(result.output.iteration_version, EXPERT_QUESTION_VERSION);
+  assert.deepEqual((result as any).tokensUsed, { input: 321, output: 87, total: 408 });
 });
 
 test('rejects generic low-signal model output and falls back to a concrete Chinese question', async () => {

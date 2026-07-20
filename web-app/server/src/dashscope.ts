@@ -60,6 +60,8 @@ export interface ChatOptions {
    * for hard latency-SLO calls where backoff would be worse than a local fallback.
    */
   readonly maxRetries?: number;
+  /** Receives provider-reported one-shot usage; absent when the provider omits it. */
+  readonly onUsage?: (usage: { input: number; output: number }) => void;
 }
 
 /** The Anthropic-shape base URL (`.../apps/anthropic`) from the desktop config. */
@@ -147,7 +149,16 @@ export async function chat(options: ChatOptions): Promise<string> {
         throw markNonRetryable(new Error(`DashScope ${resp.status}: ${text.slice(0, 500)}`));
       }
 
-      const json = (await resp.json()) as { content?: Array<{ type?: string; text?: string }> };
+      const json = (await resp.json()) as {
+        content?: Array<{ type?: string; text?: string }>;
+        usage?: { input_tokens?: number; output_tokens?: number };
+      };
+      if (json.usage) {
+        options.onUsage?.({
+          input: Number(json.usage.input_tokens ?? 0),
+          output: Number(json.usage.output_tokens ?? 0)
+        });
+      }
       const blocks = Array.isArray(json.content) ? json.content : [];
       return blocks
         .filter((b) => b?.type === 'text' && typeof b.text === 'string')

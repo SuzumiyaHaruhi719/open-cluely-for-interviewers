@@ -1,4 +1,4 @@
-import type { FollowUpOutput, OutputLanguage } from '@open-cluely/contract';
+import type { FollowUpOutput, OutputLanguage, TokenUsage } from '@open-cluely/contract';
 import { chat, type ChatOptions } from './dashscope';
 
 export const EXPERT_QUESTION_MODEL = 'deepseek-v4-flash';
@@ -41,6 +41,7 @@ export interface ExpertQuestionResult {
   elapsedMs: number;
   fellBack: boolean;
   shouldAsk: boolean;
+  tokensUsed: TokenUsage;
 }
 
 export interface ExpertQuestionDeps {
@@ -206,6 +207,7 @@ export async function generateExpertQuestion(
   ].join('\n\n');
 
   let parsed: { output: FollowUpOutput | null; shouldAsk: boolean } | null = null;
+  let tokensUsed: TokenUsage = { input: 0, output: 0, total: 0 };
   try {
     const text = await runChat({
       system: EXPERT_QUESTION_SYSTEM,
@@ -215,7 +217,10 @@ export async function generateExpertQuestion(
       temperature: 0.15,
       thinking: false,
       timeoutMs: EXPERT_QUESTION_TIMEOUT_MS,
-      maxRetries: 0
+      maxRetries: 0,
+      onUsage: (usage) => {
+        tokensUsed = { ...usage, total: usage.input + usage.output };
+      }
     });
     parsed = parseOutput(text, input, answer);
   } catch {
@@ -230,6 +235,7 @@ export async function generateExpertQuestion(
     model: EXPERT_QUESTION_MODEL,
     elapsedMs: Math.max(0, now() - startedAt),
     fellBack: output === null || output === undefined,
-    shouldAsk
+    shouldAsk,
+    tokensUsed
   };
 }

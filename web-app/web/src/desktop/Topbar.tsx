@@ -73,8 +73,6 @@ interface TopbarProps {
   isAnalyzing: boolean;
   onAnalyze: () => void;
   onClearSession: () => void;
-  /** Ask the assistant a free-form question (legacy results panel). */
-  onAskAi: () => void;
   /** Open the interview-summary modal + kick off a DeepSeek v4 pro evaluation. */
   onSummarize: () => void;
   /** Generate meeting notes from the current transcript. */
@@ -112,7 +110,6 @@ export function Topbar({
   isAnalyzing,
   onAnalyze,
   onClearSession,
-  onAskAi,
   onSummarize,
   onMeetingNotes,
   onInsights,
@@ -149,8 +146,6 @@ export function Topbar({
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [menuOpen]);
-
-  const askLabel = assistantBusy ? '提问中…' : '提问 AI';
 
   return (
     <div id="topbar" className={`topbar${isLive ? ' is-live' : ''}`}>
@@ -237,22 +232,6 @@ export function Topbar({
           disabled
         >
           <CameraIcon size={14} />
-        </button>
-        <button
-          id="analyze-btn"
-          className="action-btn primary-btn"
-          type="button"
-          onClick={onAskAi}
-          disabled={assistantBusy}
-          title={
-            isAnalyzing
-              ? '分析中…'
-              : !canAnalyze
-                ? '未连接服务'
-                : '问 AI'
-          }
-        >
-          {askLabel}
         </button>
         <button
           id="summarize-btn"

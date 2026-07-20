@@ -94,6 +94,7 @@ export function QuestionCard({
       : trigger === 'manual'
         ? copy.triggerManualTitle
         : '';
+  const tokenCount = totalTokens(tokensUsed);
 
   return (
     <article className="chat-message lane-ai is-question-card" aria-label={copy.ariaFollowUp}>
@@ -185,7 +186,7 @@ export function QuestionCard({
 
       <footer className="question-card__footer">
         <span className="tag-mode">{modeLabel}</span>
-        <span>{totalTokens(tokensUsed).toLocaleString()} 令牌</span>
+        {tokenCount > 0 ? <span>{tokenCount.toLocaleString()} 令牌</span> : null}
         <span>{formatElapsed(elapsedMs)}</span>
         {output.iteration_version ? <span>v{output.iteration_version}</span> : null}
       </footer>

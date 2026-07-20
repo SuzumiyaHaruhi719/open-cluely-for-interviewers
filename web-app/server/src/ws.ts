@@ -473,7 +473,7 @@ export async function runExpertQuestionAndEmit(
     mode: 'expert',
     output: generated.output,
     shouldShowFollowUps: true,
-    tokensUsed: ZERO_TOKENS,
+    tokensUsed: generated.tokensUsed,
     elapsedMs: generated.elapsedMs,
     iterationVersion: generated.output.iteration_version,
     ranked: [],

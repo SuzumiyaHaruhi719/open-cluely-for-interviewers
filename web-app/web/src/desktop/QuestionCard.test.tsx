@@ -181,4 +181,17 @@ describe('QuestionCard ranked candidates', () => {
     expect(container.querySelector('.question-card__score')).toBeNull();
     expect(container.querySelector('.question-card__ranked')).toBeNull();
   });
+
+  test('hides token telemetry when the provider did not report usage', () => {
+    render(
+      <QuestionCard
+        output={OUTPUT}
+        mode="expert"
+        tokensUsed={{ input: 0, output: 0, total: 0 }}
+        elapsedMs={900}
+      />
+    );
+
+    expect(screen.queryByText('0 令牌')).toBeNull();
+  });
 });
