@@ -60,9 +60,15 @@ test('summarizeAsrRun separates provider lifecycle, finals, speakers, and final 
   ]);
 
   assert.deepEqual(report.statuses, ['connecting', 'live', 'stopped']);
+  assert.deepEqual(report.statusEvents, [
+    { state: 'connecting', atMs: 0 },
+    { state: 'live', atMs: 80 },
+    { state: 'stopped', atMs: 820 }
+  ]);
   assert.equal(report.finalCount, 2);
   assert.deepEqual(report.speakerIds, [1, 2]);
   assert.equal(report.finalPartition?.model, 'deepseek-v4-flash');
   assert.deepEqual(report.finalPartition?.roles, { interviewer: 1, candidate: 1, unknown: 0 });
+  assert.equal(report.finalPartitionBeforeStopped, true);
   assert.equal(report.firstFinalMs, 320);
 });

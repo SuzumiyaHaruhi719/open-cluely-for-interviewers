@@ -785,11 +785,12 @@ export function useCopilotSocket(): CopilotSocket {
       if (captureRef.current[source]) return;
 
       setAudioState(source, { error: null, runtimeState: 'connecting' });
-      // Tell the server to open the ASR session before frames arrive.
-      send({ type: 'audio-control', action: 'start', source });
       seqRef.current[source] = 0;
 
       if (options?.skipLocalCapture) {
+        // Simulation has no permission/media setup, so its server session can
+        // start immediately.
+        send({ type: 'audio-control', action: 'start', source });
         captureRef.current[source] = { stop: () => {} };
         setAudioState(source, { capturing: true, level: 0 });
         return;
@@ -811,6 +812,10 @@ export function useCopilotSocket(): CopilotSocket {
           return;
         }
         captureRef.current[source] = handle;
+        // Browser permission prompts can remain open longer than an upstream
+        // recognizer's idle timeout. Open ASR only after local media is ready;
+        // an early worklet frame is still safe because the relay starts lazily.
+        send({ type: 'audio-control', action: 'start', source });
         setAudioState(source, { capturing: true });
       } catch (err) {
         // User cancelled/denied or unsupported — surface friendly, don't crash.

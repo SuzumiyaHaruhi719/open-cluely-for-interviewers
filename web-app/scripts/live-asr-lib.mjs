@@ -43,9 +43,10 @@ export function summarizeAsrRun(events) {
   const safeEvents = Array.isArray(events) ? events : [];
   const startedAt = safeEvents[0]?.at ?? 0;
   const messages = safeEvents.map((event) => event.message).filter(Boolean);
-  const statuses = messages
-    .filter((message) => message.type === 'asr-status')
-    .map((message) => message.state);
+  const statusEvents = safeEvents
+    .filter((event) => event.message?.type === 'asr-status')
+    .map((event) => ({ state: event.message.state, atMs: event.at - startedAt }));
+  const statuses = statusEvents.map((event) => event.state);
   const finals = safeEvents.filter(
     (event) => event.message?.type === 'transcript' && event.message.isFinal === true
   );
@@ -56,9 +57,10 @@ export function summarizeAsrRun(events) {
         .filter((speakerId) => Number.isInteger(speakerId))
     )
   ).sort((a, b) => a - b);
-  const finalPartitionMessage = messages
-    .filter((message) => message.type === 'speaker-partition' && message.status === 'final')
+  const finalPartitionEvent = safeEvents
+    .filter((event) => event.message?.type === 'speaker-partition' && event.message.status === 'final')
     .at(-1);
+  const finalPartitionMessage = finalPartitionEvent?.message;
   const finalPartition = finalPartitionMessage
     ? {
         model: finalPartitionMessage.model,
@@ -82,15 +84,23 @@ export function summarizeAsrRun(events) {
     }
     return [];
   });
+  const stoppedEvent = safeEvents.find(
+    (event) => event.message?.type === 'asr-status' && event.message.state === 'stopped'
+  );
 
   return {
     statuses,
+    statusEvents,
     finalCount: finals.length,
     partialCount: messages.filter(
       (message) => message.type === 'transcript' && message.isFinal === false
     ).length,
     speakerIds,
     finalPartition,
+    finalPartitionBeforeStopped:
+      finalPartitionEvent !== undefined &&
+      stoppedEvent !== undefined &&
+      safeEvents.indexOf(finalPartitionEvent) < safeEvents.indexOf(stoppedEvent),
     errors,
     firstFinalMs: finals.length ? finals[0].at - startedAt : null,
     durationMs: safeEvents.length ? safeEvents.at(-1).at - startedAt : 0,

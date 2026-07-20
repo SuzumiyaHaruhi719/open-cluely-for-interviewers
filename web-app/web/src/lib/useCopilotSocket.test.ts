@@ -3,12 +3,19 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { useCopilotSocket } from './useCopilotSocket';
 import { installMockWebSocket, MockWebSocket } from '../test/mockWebSocket';
 
+const { startCaptureMock } = vi.hoisted(() => ({ startCaptureMock: vi.fn() }));
+vi.mock('./audioCapture', async () => {
+  const actual = await vi.importActual<typeof import('./audioCapture')>('./audioCapture');
+  return { ...actual, startCapture: startCaptureMock };
+});
+
 describe('useCopilotSocket', () => {
   let restore: () => void;
 
   beforeEach(() => {
     restore = installMockWebSocket();
     vi.spyOn(crypto, 'randomUUID').mockReturnValue('11111111-1111-4111-8111-111111111111');
+    startCaptureMock.mockResolvedValue({ stop: vi.fn() });
   });
 
   afterEach(() => {
@@ -295,6 +302,39 @@ describe('useCopilotSocket', () => {
     const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
     expect(frame).toEqual({ type: 'audio-control', action: 'start', source: 'mic' });
     expect(result.current.audio.mic).toMatchObject({ capturing: true, error: null });
+  });
+
+  test('normal microphone capture waits for browser media before opening the upstream ASR session', async () => {
+    let resolveCapture!: (handle: { stop: () => void }) => void;
+    startCaptureMock.mockReturnValue(
+      new Promise((resolve) => {
+        resolveCapture = resolve;
+      })
+    );
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let starting!: Promise<void>;
+    act(() => {
+      starting = result.current.startAudio('mic');
+    });
+    expect(socket.sent).toHaveLength(0);
+
+    resolveCapture({ stop: vi.fn() });
+    await act(async () => {
+      await starting;
+    });
+
+    expect(JSON.parse(socket.sent.at(-1) as string)).toEqual({
+      type: 'audio-control',
+      action: 'start',
+      source: 'mic'
+    });
+    expect(result.current.audio.mic.capturing).toBe(true);
   });
 
   test('speakerSegments: online finals (no speakerId) add nothing; offline finals (numeric speakerId) append one labelled segment', async () => {
