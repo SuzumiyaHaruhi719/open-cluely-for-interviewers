@@ -1369,85 +1369,6 @@ body.rail-collapsed .right-rail {
 .status-text.error   { color: var(--error); }
 .status-text.info    { color: var(--info); }
 
-/* ── Legacy results panel ────────────────────────────────────────────────── */
-/* Kept for wired "close-results" listener. Glass elevation matches the toast. */
-.results-panel {
-  position: fixed;
-  top: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(440px, 80vw);
-  max-height: 320px;
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--border-default);
-  background: var(--surface-container);
-  box-shadow: var(--shadow-lg);
-  z-index: 900;
-}
-
-.results-panel.hidden { display: none; }
-
-.results-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-2-5, 10px) var(--space-3-5, 14px);
-  border-bottom: 1px solid var(--border-default);
-}
-
-.results-title {
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.close-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  background: var(--surface-elevated);
-  color: var(--text-secondary);
-  transition:
-    color var(--dur-2) var(--ease),
-    background var(--dur-2) var(--ease),
-    border-color var(--dur-2) var(--ease),
-    transform var(--dur-1) var(--ease-spring);
-}
-
-.close-btn:hover {
-  color: var(--error);
-  background: var(--error-bg);
-  border-color: color-mix(in srgb, var(--error) 40%, var(--border-default));
-}
-
-.close-btn:active { transform: scale(0.93); }
-
-.close-btn:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
-.results-content {
-  flex: 1;
-  padding: var(--space-3-5, 14px);
-  overflow-y: auto;
-}
-
-.result-text {
-  font-size: var(--text-sm);
-  line-height: 1.55;
-  color: var(--text-primary);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
 /* ── Loading overlay ─────────────────────────────────────────────────────── */
 /* Full-viewport glass scrim; card rises from center via spring entrance. */
 .loading-overlay {
@@ -1662,7 +1583,6 @@ body.rail-collapsed .right-rail {
    more fill without jumping the thumb. */
 .chat-messages::-webkit-scrollbar,
 .right-rail::-webkit-scrollbar,
-.results-content::-webkit-scrollbar,
 .monitor-log-list::-webkit-scrollbar,
 .settings-body::-webkit-scrollbar,
 #session-list::-webkit-scrollbar,
@@ -1672,7 +1592,6 @@ body.rail-collapsed .right-rail {
 
 .chat-messages::-webkit-scrollbar-track,
 .right-rail::-webkit-scrollbar-track,
-.results-content::-webkit-scrollbar-track,
 .monitor-log-list::-webkit-scrollbar-track,
 .settings-body::-webkit-scrollbar-track,
 #session-list::-webkit-scrollbar-track,
@@ -1682,7 +1601,6 @@ body.rail-collapsed .right-rail {
 
 .chat-messages::-webkit-scrollbar-thumb,
 .right-rail::-webkit-scrollbar-thumb,
-.results-content::-webkit-scrollbar-thumb,
 .monitor-log-list::-webkit-scrollbar-thumb,
 .settings-body::-webkit-scrollbar-thumb,
 #session-list::-webkit-scrollbar-thumb,
@@ -1696,7 +1614,6 @@ body.rail-collapsed .right-rail {
 
 .chat-messages::-webkit-scrollbar-thumb:hover,
 .right-rail::-webkit-scrollbar-thumb:hover,
-.results-content::-webkit-scrollbar-thumb:hover,
 .monitor-log-list::-webkit-scrollbar-thumb:hover,
 .settings-body::-webkit-scrollbar-thumb:hover,
 #session-list::-webkit-scrollbar-thumb:hover,

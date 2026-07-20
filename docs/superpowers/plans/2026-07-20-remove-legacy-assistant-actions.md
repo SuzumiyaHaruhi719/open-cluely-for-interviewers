@@ -35,7 +35,7 @@
 - Consumes: existing `TopbarProps`, `Shell`, `sendJson()`, GLP `.more-menu*` classes.
 - Produces: `Topbar` with `onClearSession` as the only more-menu action; no assistant-panel state or assistant HTTP wrappers.
 
-- [ ] **Step 1: Write the failing topbar test**
+- [x] **Step 1: Write the failing topbar test**
 
 Create `Topbar.test.tsx` with a complete baseline render and assert the menu contains only the retained destructive utility:
 
@@ -78,7 +78,7 @@ describe('Topbar interviewer actions', () => {
 });
 ```
 
-- [ ] **Step 2: Run the focused test and verify RED**
+- [x] **Step 2: Run the focused test and verify RED**
 
 Run:
 
@@ -88,7 +88,7 @@ npm test --workspace @open-cluely/web -- Topbar.test.tsx
 
 Expected: FAIL because current `TopbarProps` still requires `onMeetingNotes`, `onInsights`, and `assistantBusy`, and the menu still renders both removed actions.
 
-- [ ] **Step 3: Remove the legacy client path**
+- [x] **Step 3: Remove the legacy client path**
 
 Apply these exact interface changes:
 
@@ -102,7 +102,7 @@ onToggleAuto: () => void;
 
 Remove the two legacy menu buttons while retaining the existing separator-free “清空会话” item. In `Shell.tsx`, remove `ResultsPanel`, `useAssistantPanel`, `assistant`, `transcriptText`, `onMeetingNotes`, `onInsights`, their `Topbar` props, and the `<ResultsPanel />` render. In `api.ts`, delete `AssistantReplyResponse`, `assistantAsk`, `assistantNotes`, and `assistantInsights`. Remove their three request assertions/imports from `api.test.ts`. Delete the two dead component/hook files and remove `.results-*`, `.result-text`, panel-only scrollbar selectors, and the panel-only `.plain-text__p` rule.
 
-- [ ] **Step 4: Run focused and full web tests**
+- [x] **Step 4: Run focused and full web tests**
 
 Run:
 
@@ -113,7 +113,7 @@ npm run test:web
 
 Expected: PASS with no references to meeting notes, insights, `ResultsPanel`, `useAssistantPanel`, or `/api/assistant/*` under `web-app/web/src`.
 
-- [ ] **Step 5: Commit and push the client checkpoint**
+- [x] **Step 5: Commit and push the client checkpoint**
 
 ```bash
 git add web-app/web/src

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { AsrProvider, SessionConfig } from '@open-cluely/contract';
 import { useCopilotSocket } from '../lib/useCopilotSocket';
 import { QuestionBank } from '../views/QuestionBank';
@@ -10,11 +10,9 @@ import { Composer } from './Composer';
 import { RightRail } from './RightRail';
 import { SettingsModal } from './SettingsModal';
 import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from './InterviewTypeModal';
-import { ResultsPanel } from './ResultsPanel';
 import { SummaryModal } from './SummaryModal';
 import { SpotlightTour } from './SpotlightTour';
 import { useRailCollapsed } from './useRailCollapsed';
-import { useAssistantPanel } from './useAssistantPanel';
 import { useAppSettings, type UserAsrProvider } from './useAppSettings';
 import { formatTimer } from './helpers';
 import { JOB_PROFILES } from './jobProfiles';
@@ -64,8 +62,7 @@ function simScriptFor(provider: AsrProvider): SessionConfig['simScript'] | undef
  * Interviews are EPHEMERAL: nothing persists across reload. On mount the
  * interview-type picker opens for a fresh in-memory interview; "New interview"
  * resets all live state and re-opens the picker. Also wired here: the résumé
- * upload/chat rail, notes/insights actions, and the compact environment-backed
- * audio/model preferences.
+ * upload/chat rail and the compact environment-backed audio/model preferences.
  */
 export function Shell() {
   const socket = useCopilotSocket();
@@ -115,8 +112,6 @@ export function Shell() {
   // the chosen text; cleared on a timer so it doesn't linger past the next turn.
   const [pickedHint, setPickedHint] = useState<string | null>(null);
   const pickedHintTimerRef = useRef<number | null>(null);
-
-  const assistant = useAssistantPanel();
 
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
@@ -371,27 +366,6 @@ export function Shell() {
     resetTranscripts();
   }, [pushConfig, resetSpeakerSegments, resetTranscripts]);
 
-  // ── Topbar assistant actions ───────────────────────────────────────────────
-  // Build the running transcript text (both lanes, finals only) for notes/insights.
-  const transcriptText = useMemo(() => {
-    const lines: string[] = [];
-    if (transcripts.display.finalText) {
-      lines.push(`候选人：${transcripts.display.finalText}`);
-    }
-    if (transcripts.mic.finalText) {
-      lines.push(`面试官：${transcripts.mic.finalText}`);
-    }
-    return lines.join('\n\n');
-  }, [transcripts.display.finalText, transcripts.mic.finalText]);
-
-  const onMeetingNotes = useCallback((): void => {
-    void assistant.notes(transcriptText);
-  }, [assistant, transcriptText]);
-
-  const onInsights = useCallback((): void => {
-    void assistant.insights(transcriptText);
-  }, [assistant, transcriptText]);
-
   // ── Interview summary (DeepSeek v4 pro) ─────────────────────────────────────
   // Open the modal AND kick off a fresh summary. The server builds the report from
   // its own accumulated transcript (both lanes) + JD/résumé — no payload needed
@@ -480,9 +454,6 @@ export function Shell() {
                 onAnalyze={onAnalyze}
                 onClearSession={onClearSession}
                 onSummarize={onSummarize}
-                onMeetingNotes={onMeetingNotes}
-                onInsights={onInsights}
-                assistantBusy={assistant.busy}
                 autoGenerate={appSettings.settings.autoGenerate}
                 autoMonitorStatus={autoMonitor?.status}
                 onToggleAuto={onToggleAuto}
@@ -531,15 +502,6 @@ export function Shell() {
           sessionContext={sessionContext}
         />
       </div>
-
-      <ResultsPanel
-        open={assistant.panel.open}
-        title={assistant.panel.title}
-        text={assistant.panel.text}
-        loading={assistant.panel.loading}
-        error={assistant.panel.error}
-        onClose={assistant.close}
-      />
 
       <SummaryModal
         open={summaryOpen}

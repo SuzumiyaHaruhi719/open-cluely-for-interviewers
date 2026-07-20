@@ -23,16 +23,13 @@ beforeEach(() => {
   restore = installMockWebSocket();
   fetchCalls = [];
   // Interviews are ephemeral — the shell makes NO session HTTP calls. Route the
-  // remaining endpoints (assistant / résumé) to in-memory fakes.
+  // remaining résumé endpoints to in-memory fakes.
   const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof input === 'string' ? input : input.toString();
     const method = init?.method ?? 'GET';
     const body = init?.body ? JSON.parse(String(init.body)) : undefined;
     fetchCalls.push({ url, method, body });
 
-    if (url.includes('/api/assistant/')) {
-      return Promise.resolve(jsonResponse({ reply: 'Assistant reply.' }));
-    }
     if (url.includes('/api/resume/')) {
       return Promise.resolve(jsonResponse({ text: '', reply: '' }));
     }

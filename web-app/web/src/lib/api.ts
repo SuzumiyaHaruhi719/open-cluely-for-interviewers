@@ -182,32 +182,5 @@ export function resumeChat(
   return sendJson<ResumeChatResponse>('/api/resume/chat', 'POST', payload, signal);
 }
 
-/* ── Assistant (legacy actions) ────────────────────────────────────────────── */
-
-export interface AssistantReplyResponse {
-  reply: string;
-}
-
-export function assistantAsk(
-  payload: { prompt: string; context?: string },
-  signal?: AbortSignal
-): Promise<AssistantReplyResponse> {
-  return sendJson<AssistantReplyResponse>('/api/assistant/ask', 'POST', payload, signal);
-}
-
-export function assistantNotes(
-  payload: { transcript: string },
-  signal?: AbortSignal
-): Promise<AssistantReplyResponse> {
-  return sendJson<AssistantReplyResponse>('/api/assistant/notes', 'POST', payload, signal);
-}
-
-export function assistantInsights(
-  payload: { transcript: string },
-  signal?: AbortSignal
-): Promise<AssistantReplyResponse> {
-  return sendJson<AssistantReplyResponse>('/api/assistant/insights', 'POST', payload, signal);
-}
-
 /** Re-exported for consumers building create-session payloads. */
 export type { InterviewerMode };

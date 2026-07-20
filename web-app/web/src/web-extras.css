@@ -70,16 +70,6 @@ button.history-row {
   overflow: hidden;
 }
 
-/* ── Safe plain-text/markdown-ish rendering for assistant replies ──────────
- *    Used inside .result-text (results panel). Tight paragraph rhythm; the
- *    container owns colour/size, so paragraphs only manage spacing. ──────── */
-.plain-text__p {
-  margin: 0 0 8px;
-}
-.plain-text__p:last-child {
-  margin-bottom: 0;
-}
-
 /* ── Résumé rail body: stack the dropzone, manual textarea, and chat with the
  *    same 8px rhythm the desktop section uses. The manual textarea is a web-
  *    only fallback editor kept compact under the real dropzone. ──────────── */

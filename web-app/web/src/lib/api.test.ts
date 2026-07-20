@@ -1,11 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import {
-  assistantAsk,
-  assistantInsights,
-  assistantNotes,
-  extractResume,
-  resumeChat
-} from './api';
+import { extractResume, resumeChat } from './api';
 
 interface FetchCall {
   url: string;
@@ -42,7 +36,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe('resume + assistant api wrappers', () => {
+describe('resume api wrappers', () => {
   test('extractResume POSTs filename + base64 and returns text', async () => {
     stubFetch(() => jsonResponse({ text: 'Resume text' }));
 
@@ -72,15 +66,4 @@ describe('resume + assistant api wrappers', () => {
     expect(res.reply).toContain('distributed');
   });
 
-  test('assistant endpoints map to the right URLs', async () => {
-    stubFetch(() => jsonResponse({ reply: 'ok' }));
-
-    await assistantAsk({ prompt: 'p', context: 'c' });
-    await assistantNotes({ transcript: 't' });
-    await assistantInsights({ transcript: 't' });
-
-    expect(calls[0]).toMatchObject({ url: '/api/assistant/ask', body: { prompt: 'p', context: 'c' } });
-    expect(calls[1]).toMatchObject({ url: '/api/assistant/notes', body: { transcript: 't' } });
-    expect(calls[2]).toMatchObject({ url: '/api/assistant/insights', body: { transcript: 't' } });
-  });
 });

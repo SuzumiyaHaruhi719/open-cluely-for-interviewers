@@ -75,12 +75,6 @@ interface TopbarProps {
   onClearSession: () => void;
   /** Open the interview-summary modal + kick off a DeepSeek v4 pro evaluation. */
   onSummarize: () => void;
-  /** Generate meeting notes from the current transcript. */
-  onMeetingNotes: () => void;
-  /** Generate insights from the current transcript. */
-  onInsights: () => void;
-  /** Disable the assistant actions while a request is in flight / unavailable. */
-  assistantBusy: boolean;
   /** Autonomous question generation on/off (the Auto pill state). */
   autoGenerate: boolean;
   /** Live state of the continuous Flash sentinel. */
@@ -94,9 +88,8 @@ interface TopbarProps {
  * reflect real state (mode from config; REC derived from capture + socket; ASR
  * shows the active provider — Paraformer, 讯飞, or 豆包 — from settings). "Generate Q"
  * runs a manual copilot analysis; the Auto pill exposes the continuous Flash
- * sentinel state. Meeting-notes / insights call the assistant HTTP endpoints. The
- * screenshot + Screen AI actions stay faithful-but-inert stubs (image capture
- * is out of scope; title="Coming soon").
+ * sentinel state. The screenshot action stays a faithful-but-inert stub (image
+ * capture is out of scope; title="Coming soon").
  */
 export function Topbar({
   title,
@@ -112,9 +105,6 @@ export function Topbar({
   onAnalyze,
   onClearSession,
   onSummarize,
-  onMeetingNotes,
-  onInsights,
-  assistantBusy,
   autoGenerate,
   autoMonitorStatus = 'idle',
   onToggleAuto
@@ -281,33 +271,6 @@ export function Topbar({
             className={`more-menu-panel${menuOpen ? '' : ' hidden'}`}
             role="menu"
           >
-            <button
-              id="notes-btn"
-              className="more-menu-item"
-              type="button"
-              role="menuitem"
-              disabled={assistantBusy}
-              onClick={() => {
-                setMenuOpen(false);
-                onMeetingNotes();
-              }}
-            >
-              会议纪要
-            </button>
-            <button
-              id="insights-btn"
-              className="more-menu-item"
-              type="button"
-              role="menuitem"
-              disabled={assistantBusy}
-              onClick={() => {
-                setMenuOpen(false);
-                onInsights();
-              }}
-            >
-              洞察
-            </button>
-            <div className="more-menu-separator" role="separator" />
             <button
               id="clear-btn"
               className="more-menu-item"
