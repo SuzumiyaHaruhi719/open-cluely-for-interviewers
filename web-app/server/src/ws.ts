@@ -435,7 +435,22 @@ export async function runExpertQuestionAndEmit(
     questionHistory: args.questionHistory,
     outputLanguage: args.outputLanguage
   });
-  if (args.isStale?.()) return;
+  if (args.isStale?.()) {
+    // A speech/Stop/reset invalidation may leave the browser holding the adopted
+    // server-initiated request. Always provide its terminal progress frame while
+    // still suppressing the stale question result.
+    send(ws, {
+      type: 'progress',
+      requestId: args.requestId,
+      phase: 'expert-question',
+      index: 1,
+      total: 1,
+      status: 'done',
+      model: generated.model,
+      tokens: null
+    });
+    return;
+  }
 
   send(ws, {
     type: 'progress',
@@ -1057,10 +1072,28 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       trigger.onCandidateFinal(accumulatedDisplayFinal);
     }
 
+    let visibleAutoRequestId: string | null = null;
+    const terminateVisibleAutoAttempt = (): void => {
+      const requestId = visibleAutoRequestId;
+      if (!requestId) return;
+      visibleAutoRequestId = null;
+      send(ws, {
+        type: 'progress',
+        requestId,
+        phase: 'expert-question',
+        index: 1,
+        total: 1,
+        status: 'done',
+        model: EXPERT_QUESTION_MODEL,
+        tokens: null
+      });
+    };
+
     // The autonomous trigger owns a dedicated one-call Flash question path. This
     // keeps the interviewer under the live SLO; manual Generate Q uses the same
     // one-call Expert path.
     const trigger: AutoTrigger = createAutoTrigger({
+      onAutoInvalidated: terminateVisibleAutoAttempt,
       runAnalyze: async ({ candidateAnswer, focusHint }) => {
         // Capture the epoch at the START so a reset() during this generation marks
         // it stale (suppressing its progress + result). Record the in-flight auto
@@ -1068,6 +1101,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         const requestId = randomUUID();
         const startEpoch = trigger.getEpoch();
         autoInflight.set(requestId, startEpoch);
+        visibleAutoRequestId = requestId;
         try {
           const state = session.getState() as {
             jobDescription?: string;
@@ -1088,6 +1122,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             isStale: () => trigger.getEpoch() !== startEpoch
           });
         } finally {
+          if (visibleAutoRequestId === requestId) visibleAutoRequestId = null;
           // Drop our own entry on settle (the Map only holds genuinely in-flight ids).
           autoInflight.delete(requestId);
         }

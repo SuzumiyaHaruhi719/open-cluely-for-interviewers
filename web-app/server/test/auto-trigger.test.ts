@@ -332,6 +332,7 @@ test('stopping capture cancels pending Auto work and invalidates an in-flight re
 
 test('speech resuming during Auto generation invalidates the result before it can surface', async () => {
   let releaseAnalyze!: () => void;
+  let invalidationCalls = 0;
   const analyzeGate = new Promise<void>((resolve) => {
     releaseAnalyze = resolve;
   });
@@ -339,6 +340,9 @@ test('speech resuming during Auto generation invalidates the result before it ca
   const trigger = createAutoTrigger({
     shouldGenerate: async () => yes(),
     runAnalyze: async () => analyzeGate,
+    onAutoInvalidated: () => {
+      invalidationCalls += 1;
+    },
     setTimer: (fn) => {
       pendingFn = fn;
       return 1;
@@ -365,6 +369,7 @@ test('speech resuming during Auto generation invalidates the result before it ca
 
   trigger.noteSpeechActivity();
   assert.equal(trigger.getEpoch(), epochAtStart + 1, 'the caller can suppress the stale Auto frame');
+  assert.equal(invalidationCalls, 1, 'the visible Auto attempt is terminated as soon as speech resumes');
 
   releaseAnalyze();
   await run;

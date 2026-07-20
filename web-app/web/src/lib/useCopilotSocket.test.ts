@@ -116,6 +116,43 @@ describe('useCopilotSocket', () => {
     expect(result.current.error).toBeNull();
   });
 
+  test('a terminal progress frame clears an adopted Auto attempt when no question is emitted', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId: 'auto-no-question',
+        phase: 'expert-question',
+        index: 1,
+        total: 1,
+        status: 'start'
+      });
+    });
+    await waitFor(() => expect(result.current.isAnalyzing).toBe(true));
+
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId: 'auto-no-question',
+        phase: 'expert-question',
+        index: 1,
+        total: 1,
+        status: 'done'
+      });
+    });
+
+    await waitFor(() => expect(result.current.isAnalyzing).toBe(false));
+    expect(result.current.progress).toBeNull();
+    expect(result.current.lastResult).toBeNull();
+    expect(result.current.error).toBeNull();
+  });
+
   test('progressTokens accumulates per-phase token payloads and resets on a new analyze', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {

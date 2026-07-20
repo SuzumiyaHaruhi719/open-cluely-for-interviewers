@@ -394,6 +394,19 @@ export function useCopilotSocket(): CopilotSocket {
             const delta = message.tokens.input + message.tokens.output;
             setProgressTokens((prev) => prev + delta);
           }
+          // A server-initiated Auto request may validly end without a question
+          // (should_ask:false) or be cancelled when speech resumes. Its final
+          // progress frame is therefore a terminal protocol event, not merely
+          // decoration while waiting for a result that will never arrive.
+          const terminal =
+            message.status === 'done' &&
+            message.total > 0 &&
+            message.index >= message.total - 1;
+          if (terminal) {
+            activeRequestRef.current = null;
+            setIsAnalyzing(false);
+            setProgress(null);
+          }
         }
         break;
       case 'result':

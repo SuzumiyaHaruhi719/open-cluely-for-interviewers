@@ -57,6 +57,8 @@ export interface AutoTriggerDeps {
    * path unless Customize mode is explicitly selected.
    */
   runAnalyze: (opts: { candidateAnswer: string; focusHint: string }) => Promise<void>;
+  /** Immediately terminate the visible autonomous attempt when speech/Stop/reset invalidates it. */
+  onAutoInvalidated?: () => void;
   /** Clock. Defaults to Date.now; injected in tests for a deterministic cooldown. */
   now?: () => number;
   /** Schedule the debounce. Defaults to setTimeout; injected to control timing in tests. */
@@ -183,6 +185,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   const clearTimer = deps.clearTimer ?? ((h) => clearTimeout(h as ReturnType<typeof setTimeout>));
   const shouldGenerate = deps.shouldGenerate ?? makeDefaultShouldGenerate();
   const runAnalyze = deps.runAnalyze;
+  const onAutoInvalidated = deps.onAutoInvalidated ?? (() => undefined);
 
   // Per-instance state.
   let autoGenerate = true;
@@ -290,6 +293,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // suggestion may surface after the interviewer ends capture. Bumping the
     // epoch lets ws.ts suppress a Flash result that was already in flight.
     clearPending();
+    if (isGenerating) onAutoInvalidated();
     epoch += 1;
   }
 
@@ -396,7 +400,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     lastSpeechAt = now();
     // If speech resumes while Flash is already working, invalidate that autonomous
     // request so ws.ts drops its completion instead of surfacing over the speaker.
-    if (isGenerating) epoch += 1;
+    if (isGenerating) {
+      epoch += 1;
+      onAutoInvalidated();
+    }
     // Preserve the latest candidate evidence while continuously postponing its
     // timer. Some providers split audio without emitting another final, so dropping
     // the pending text here would force the interviewer back to manual mode.
@@ -511,6 +518,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   function reset(): void {
     // Bump the epoch FIRST so any in-flight generation (whose finally compares the
     // captured epoch) neither records a fire nor lets the caller emit its result.
+    if (isGenerating) onAutoInvalidated();
     epoch += 1;
     // Drop the interval-mode accumulated transcript + the since-last-fire window
     // so the new chat starts blank.
