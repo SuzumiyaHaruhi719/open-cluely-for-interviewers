@@ -42,6 +42,16 @@ function blockReply(prompt: string): string {
     ? '改造同步链路前的真实根因验证方法'
     : '扩大实验前的结果验证依据';
 
+  if (prompt.includes('[classification-mode=native-clusters]')) {
+    return JSON.stringify({
+      speakerRoles: [
+        { speakerId: 1, role: 'interviewer', confidence: 0.99 },
+        { speakerId: 2, role: 'candidate', confidence: 0.99 }
+      ],
+      turnRoles: []
+    });
+  }
+
   if (prompt.includes('[候选人最新回答]')) {
     return JSON.stringify({
       should_ask: true,
@@ -232,6 +242,63 @@ async function runInjectedScript(port: number, text: string): Promise<{ result: 
   });
 }
 
+async function runInjectedAutoScript(port: number): Promise<{
+  results: Extract<ServerMessage, { type: 'result' }>[];
+  partitions: Extract<ServerMessage, { type: 'speaker-partition' }>[];
+}> {
+  const ws = new WebSocket(`ws://127.0.0.1:${port}/ws`);
+  const partitions: Extract<ServerMessage, { type: 'speaker-partition' }>[] = [];
+  const results: Extract<ServerMessage, { type: 'result' }>[] = [];
+  const seenTypes: string[] = [];
+
+  return await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      ws.close();
+      if (partitions.length === 0) {
+        reject(new Error(`timed out waiting for semantic partition; saw ${seenTypes.join(',')}`));
+        return;
+      }
+      resolve({ results, partitions });
+    }, 10000);
+    ws.on('error', (err) => {
+      clearTimeout(timer);
+      reject(err);
+    });
+    ws.on('open', () => {
+      ws.send(
+        JSON.stringify({
+          type: 'configure',
+          config: {
+            mode: 'expert',
+            asrProvider: 'sim',
+            diarize: true,
+            autoGenerate: true,
+            autoMode: 'agent',
+            autoAnalyzeDisplay: false,
+            simScript: [
+              {
+                speakerId: 1,
+                text: '请结合一个具体项目，说明你如何验证订单同步链路的真正根因。'
+              },
+              {
+                speakerId: 2,
+                text: '订单状态同步延迟很高，我把五分钟轮询改成消息队列，并加了幂等写入。我先用链路追踪确认延迟发生在轮询等待，而不是下游消费，再用影子流量对比新旧链路的端到端耗时和重复写入率。上线前我补齐了失败重试、死信告警和回滚开关，上线后连续观察一周，确认九十九分位延迟下降且没有新增重复订单。'
+              }
+            ]
+          }
+        })
+      );
+      ws.send(JSON.stringify({ type: 'audio-control', action: 'start', source: 'display' }));
+    });
+    ws.on('message', (data) => {
+      const msg = JSON.parse(data.toString()) as ServerMessage;
+      seenTypes.push(msg.type);
+      if (msg.type === 'speaker-partition') partitions.push(msg);
+      if (msg.type === 'result') results.push(msg);
+    });
+  });
+}
+
 test('sim injection scripts drive different Expert follow-up frames through the websocket path', async () => {
   const restoreFetch = installFetchStub();
   const { port, close } = await startServer();
@@ -263,6 +330,31 @@ test('sim injection scripts drive different Expert follow-up frames through the 
       assert.ok(!order.result.output.primary_question.includes('你个人'));
       assert.ok(!experiment.result.output.primary_question.includes('你个人'));
     }
+  } finally {
+    await close();
+    restoreFetch();
+  }
+});
+
+test('mixed shared audio partitions roles and continuous speech suppresses Auto', async () => {
+  const restoreFetch = installFetchStub();
+  const { port, close } = await startServer();
+  try {
+    const run = await runInjectedAutoScript(port);
+    assert.ok(run.partitions.length >= 1, 'DeepSeek role partition must arrive before Auto');
+    const latest = run.partitions.at(-1)!;
+    assert.deepEqual(
+      latest.segments.map((segment) => [segment.speakerId, segment.role]),
+      [
+        [1, 'interviewer'],
+        [2, 'candidate']
+      ]
+    );
+    assert.deepEqual(
+      run.results,
+      [],
+      'the next interviewer partial arrives before the quiet window, so Auto must remain silent'
+    );
   } finally {
     await close();
     restoreFetch();

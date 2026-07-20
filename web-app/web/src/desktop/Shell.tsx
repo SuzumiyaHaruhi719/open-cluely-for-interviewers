@@ -132,7 +132,8 @@ export function Shell() {
   // already guards `isAnalyzing` (no double-fire), so keep the button enabled and
   // focusable and gate only on the STABLE ready + has-text conditions.
   const canAnalyze = isReady && answer.trim().length > 0;
-  // Offline (single-mic) interview: enables automatic speaker-role partitioning.
+  // Offline controls capture layout only; semantic role partitioning is enabled
+  // for both formats because a shared online stream can contain both voices.
   const offline = config.interviewType === 'offline';
 
   // Mirror the desktop: when the candidate (display) lane produces new FINAL
@@ -345,7 +346,10 @@ export function Shell() {
       interviewGuide: config.interviewGuide,
       asrProvider: normalizeAsrProvider(s.asrProvider),
       simScript: simScriptFor(normalizeAsrProvider(s.asrProvider)),
-      diarize: offline,
+      // A shared tab/window may carry both interviewer and candidate voices.
+      // Keep semantic role partitioning enabled in online and room-mic modes;
+      // capture routing is still controlled separately by `offline`.
+      diarize: true,
       autoGenerate: s.autoGenerate,
       autoMode: s.autoMode,
       autoIntervalMs: s.autoIntervalSec * 1000,
@@ -356,7 +360,7 @@ export function Shell() {
     if (socket.sessionId) {
       sendConfigure(fullConfigRef.current);
     }
-    // Re-push when the interview format flips so diarize cannot stay stale.
+    // Re-push when the interview format flips so capture/context policy stays current.
   }, [socket.sessionId, offline, sendConfigure]);
 
   const onAnalyze = useCallback((): void => {
@@ -461,7 +465,7 @@ export function Shell() {
         jobDescription: choice.jobDescription,
         resumeText: '',
         interviewGuide: choice.interviewGuide,
-        diarize: choice.interviewType === 'offline'
+        diarize: true
       });
     },
     [onClearSession, pushConfig]

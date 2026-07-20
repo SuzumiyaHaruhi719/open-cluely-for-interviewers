@@ -26,7 +26,7 @@ test('audio finalization drains the provider before the final speaker partition'
     }
   };
   const speakerLifecycle = {
-    setSingleMic() {},
+    setEnabled() {},
     async finalize() {
       order.push('partition');
     },
@@ -109,7 +109,7 @@ test('audio finalization reports partial only after final speaker correction on 
     undefined,
     {},
     {
-      setSingleMic() {},
+      setEnabled() {},
       async finalize() {
         order.push('partition');
       },

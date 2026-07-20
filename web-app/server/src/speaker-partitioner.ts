@@ -5,7 +5,8 @@ export const SPEAKER_PARTITION_MODEL = 'deepseek-v4-flash';
 const CLASSIFY_TIMEOUT_MS = 8_000;
 const MAX_INPUT_CHARS = 6_000;
 const MIN_CONTENT_CHARS = 4;
-const MIN_TURNS_PER_NATIVE_SPEAKER = 2;
+const MIN_NATIVE_CHARS_PER_SPEAKER = 16;
+const MIN_NATIVE_TOTAL_CHARS = 48;
 const MIN_TOTAL_TURNS = 6;
 const REFRESH_TURNS = 3;
 const MAX_CLASSIFIER_TURNS = 12;
@@ -50,7 +51,8 @@ export interface SpeakerPartition {
 }
 
 export interface SpeakerPartitioner {
-  setSingleMic(enabled: boolean): void;
+  setEnabled(enabled: boolean): void;
+  isEnabled(): boolean;
   record(turn: SpeakerTurn): void;
   finalize(): Promise<void>;
   flush(): Promise<void>;
@@ -62,6 +64,7 @@ export interface SpeakerPartitionerDeps {
   /** Applies an automatic cluster role and returns the effective role (manual corrections may win). */
   applySpeakerRole: (speakerId: number, role: SpeakerRole) => SpeakerRole;
   onCandidateTurn: (turn: SpeakerTurn) => void;
+  onInterviewerTurn?: (turn: SpeakerTurn) => void;
   onPartition: (partition: SpeakerPartition) => void;
 }
 
@@ -215,10 +218,20 @@ function enoughEvidence(turns: readonly SpeakerTurn[]): boolean {
     )
   );
   if (nativeIds.size < 2) return false;
-  return [...nativeIds].every(
-    (speakerId) =>
-      contentTurns.filter((turn) => turn.speakerId === speakerId).length >=
-      MIN_TURNS_PER_NATIVE_SPEAKER
+  const charsBySpeaker = new Map<number, number>();
+  for (const turn of contentTurns) {
+    if (typeof turn.speakerId !== 'number') continue;
+    charsBySpeaker.set(
+      turn.speakerId,
+      (charsBySpeaker.get(turn.speakerId) ?? 0) + turn.text.replace(/\s+/g, '').length
+    );
+  }
+  const totalChars = [...charsBySpeaker.values()].reduce((sum, chars) => sum + chars, 0);
+  return (
+    totalChars >= MIN_NATIVE_TOTAL_CHARS &&
+    [...nativeIds].every((speakerId) =>
+      (charsBySpeaker.get(speakerId) ?? 0) >= MIN_NATIVE_CHARS_PER_SPEAKER
+    )
   );
 }
 
@@ -237,9 +250,10 @@ function coalesce(segments: SpeakerPartitionSegment[]): SpeakerPartitionSegment[
 
 export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerPartitioner {
   const classify = deps.classify ?? classifySpeakerTurns;
-  let singleMic = false;
+  let enabled = false;
   let turns: SpeakerTurn[] = [];
   let fedCandidateSeqs = new Set<number>();
+  let fedInterviewerSeqs = new Set<number>();
   let cachedSpeakerRoles = new Map<number, SpeakerRole>();
   let cachedTurnRoles = new Map<number, SpeakerRole>();
   let scheduledAt = 0;
@@ -250,7 +264,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
     const scheduledEpoch = epoch;
     const snapshot = turns.map((turn) => ({ ...turn }));
     queue = queue.then(async () => {
-      if (scheduledEpoch !== epoch || !singleMic || snapshot.length === 0) return;
+      if (scheduledEpoch !== epoch || !enabled || snapshot.length === 0) return;
       let result: SpeakerClassification;
       try {
         result = await classify(snapshot);
@@ -293,6 +307,10 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
             fedCandidateSeqs.add(turn.seq);
             deps.onCandidateTurn(turn);
           }
+          if (role === 'interviewer' && !fedInterviewerSeqs.has(turn.seq)) {
+            fedInterviewerSeqs.add(turn.seq);
+            deps.onInterviewerTurn?.(turn);
+          }
           const speakerId =
             typeof turn.speakerId === 'number'
               ? turn.speakerId
@@ -310,11 +328,12 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
   }
 
   return {
-    setSingleMic(enabled) {
-      singleMic = enabled;
+    setEnabled(nextEnabled) {
+      enabled = nextEnabled;
     },
+    isEnabled: () => enabled,
     record(turn) {
-      if (!singleMic) return;
+      if (!enabled) return;
       const text = String(turn.text || '').trim();
       if (!text) return;
       turns.push({ ...turn, text });
@@ -327,7 +346,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       }
     },
     finalize() {
-      if (!singleMic || turns.filter(isContentBearing).length < 2) return queue;
+      if (!enabled || turns.filter(isContentBearing).length < 2) return queue;
       scheduledAt = turns.length;
       return schedule('final');
     },
@@ -338,6 +357,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       epoch += 1;
       turns = [];
       fedCandidateSeqs = new Set<number>();
+      fedInterviewerSeqs = new Set<number>();
       cachedSpeakerRoles = new Map<number, SpeakerRole>();
       cachedTurnRoles = new Map<number, SpeakerRole>();
       scheduledAt = 0;

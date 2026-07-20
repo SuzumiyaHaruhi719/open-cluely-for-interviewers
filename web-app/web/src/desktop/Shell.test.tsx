@@ -450,11 +450,12 @@ describe('Shell', () => {
     });
 
     // Ephemeral: NO session is persisted. Opening the socket re-pushes the full
-    // config for the online interview (diarize off — dual-lane routing).
+    // config for the online interview. Semantic diarization stays on because a
+    // shared meeting/tab stream can contain both interviewer and candidate.
     const ws = openSocket();
     await waitFor(() => {
       expect(lastConfig(ws)).toMatchObject({
-        diarize: false,
+        diarize: true,
         jobDescription: expect.stringContaining('现场的安全及消防'),
         interviewGuide: expect.arrayContaining([
           expect.stringContaining('突发事件应对与复盘')

@@ -87,8 +87,8 @@ const sessionConfigSchema = z
     // Simulation script for asrProvider 'sim' (mic-less test harness): the relay
     // stores the latest one and replays it on the NEXT audio-control start.
     simScript: z.array(z.object({ speakerId: z.number(), text: z.string() })).optional(),
-    // Single-room-mic interview: collect finalized turns for native-cluster +
-    // DeepSeek Flash role mapping (or end-of-interview semantic partitioning).
+    // Collect finalized turns for native-cluster + DeepSeek Flash role mapping.
+    // The current web client enables this for room-mic and shared-tab audio.
     diarize: z.boolean().optional(),
     // How autonomous generation fires while autoGenerate is on: 'agent' (the Flash
     // monitor decides; default) or 'interval' (fixed ~30s wall-clock cadence, no gate).
@@ -679,7 +679,7 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
     relay.setSimScript(cfg.simScript);
   }
   // iFlytek carries native acoustic cluster ids (角色分离 role_type=2). The other
-  // cloud providers emit text only; single-mic semantic partitioning happens in
+  // cloud providers emit text only; semantic partitioning happens in
   // speaker-partitioner after enough evidence or at the final stop.
   const textProvider: 'paraformer' | 'volc' | 'xfyun' | 'sim' = cfg.asrProvider === 'sim'
       ? 'sim'
@@ -695,7 +695,7 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
   roles.setGuess(textProvider !== 'xfyun' && textProvider !== 'sim');
 }
 
-type SpeakerLifecycle = Pick<SpeakerPartitioner, 'setSingleMic' | 'finalize' | 'reset'>;
+type SpeakerLifecycle = Pick<SpeakerPartitioner, 'setEnabled' | 'finalize' | 'reset'>;
 
 export async function dispatch(
   ws: WebSocket,
@@ -734,10 +734,10 @@ export async function dispatch(
         resetAccumulated();
       }
       if (typeof msg.config.diarize === 'boolean') {
-        // `diarize` is retained on the wire as the single-room-mic flag. Native
-        // ASR clusters are resolved by Flash after enough evidence; it no longer
-        // implies that role labels are safe to guess from first-speaker order.
-        speakerLifecycle?.setSingleMic(msg.config.diarize);
+        // `diarize` is retained as the semantic-role enable flag. Native ASR
+        // clusters are resolved by Flash after enough evidence; it never implies
+        // roles are safe to guess from source or first-speaker order.
+        speakerLifecycle?.setEnabled(msg.config.diarize);
       }
       session.configure(msg.config);
       // Capture JD/résumé so the session-context analyzer can ground on them. Only
@@ -981,7 +981,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     });
 
     // Per-connection speaker-role map. Native ASR clusters resolve here; providers
-    // without a speaker id stay unknown until the semantic final partition.
+    // without a speaker id stay unknown until semantic partitioning.
     const roles = createSpeakerRoleMap();
 
     // Per-connection summary model override (Feature 2). Set by configure when the
@@ -1039,7 +1039,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     // The SINGLE finalized-interviewee-answer seam: accumulate the new segment and
     // feed the running answer to the autonomous trigger monitor. ONLINE mode hits
-    // this via display finals; single-mic role partitioning hits the SAME function
+    // this via display finals; semantic role partitioning hits the SAME function
     // for candidate finals. Factored so both paths share accumulation + trigger.
     function feedCandidateAnswer(rawSegment: string): void {
       const segment = rawSegment.trim();
@@ -1089,41 +1089,50 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     });
 
     let speakerTurnSeq = 0;
-    const fedSingleMicSeqs = new Set<number>();
+    const fedSemanticCandidateSeqs = new Set<number>();
+    const handledSemanticInterviewerSeqs = new Set<number>();
     const speakerPartitioner = createSpeakerPartitioner({
       applySpeakerRole: (speakerId, role) => {
         roles.setAutoRole(speakerId, role);
         return roles.resolve(speakerId);
       },
       onCandidateTurn: (turn: SpeakerTurn) => {
-        if (fedSingleMicSeqs.has(turn.seq)) return;
-        fedSingleMicSeqs.add(turn.seq);
+        if (fedSemanticCandidateSeqs.has(turn.seq)) return;
+        fedSemanticCandidateSeqs.add(turn.seq);
         feedCandidateAnswer(turn.text);
+      },
+      onInterviewerTurn: (turn: SpeakerTurn) => {
+        if (handledSemanticInterviewerSeqs.has(turn.seq)) return;
+        handledSemanticInterviewerSeqs.add(turn.seq);
+        trigger.onInterviewerFinal();
       },
       onPartition: (partition) => {
         send(ws, { type: 'speaker-partition', ...partition });
       }
     });
     const speakerLifecycle: SpeakerLifecycle = {
-      setSingleMic: (enabled) => speakerPartitioner.setSingleMic(enabled),
+      setEnabled: (enabled) => speakerPartitioner.setEnabled(enabled),
       finalize: () => speakerPartitioner.finalize(),
       reset: () => {
         speakerPartitioner.reset();
         speakerTurnSeq = 0;
-        fedSingleMicSeqs.clear();
+        fedSemanticCandidateSeqs.clear();
+        handledSemanticInterviewerSeqs.clear();
       }
     };
 
     // One ASR relay per connection. Transcripts stream straight back as
-    // `transcript` messages. TWO transcript-driven generation paths hang off the
-    // interviewee ('display') lane: (1) the autonomous trigger monitor, fed the
-    // accumulated final text on EVERY display final (it gates/debounces/asks
-    // Flash internally); (2) the legacy opt-in autoAnalyzeDisplay, which fires
-    // Expert ungated on each display final (via onDisplayFinal). They share the
-    // trigger's in-flight bookkeeping so they never overlap.
+    // `transcript` messages. The autonomous trigger receives only role-confirmed
+    // candidate turns when semantic partitioning is enabled. Legacy opt-in
+    // autoAnalyzeDisplay still fires Expert on display finals; both paths share
+    // in-flight bookkeeping so they never overlap.
     const relay = createAsrRelay({
       onStatus: (status) => send(ws, { type: 'asr-status', ...status }),
       emit: (t) => {
+        // Any rolling partial/final proves that somebody is still speaking. It
+        // cancels a pending follow-up; a role-confirmed candidate FINAL below may
+        // arm a fresh quiet period after this activity marker.
+        trigger.noteSpeechActivity();
         const finalTurnSeq = t.isFinal ? speakerTurnSeq++ : null;
         if (finalTurnSeq !== null) {
           speakerPartitioner.record({
@@ -1176,16 +1185,23 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             contextAnalyzer.schedule();
           }
         }
-        // ONLINE seam (paraformer/volc): interviewee answers arrive on the
-        // 'display' lane with no speakerId — unchanged byte-for-byte.
-        if (t.source === 'display' && t.isFinal) {
+        if (t.isFinal && speakerPartitioner.isEnabled()) {
+          // The channel is not a role: a shared browser tab can contain both
+          // sides. Release only a Flash-confirmed/native-role candidate turn.
+          const resolvedRole = roles.resolve(t.speakerId ?? null);
+          if (resolvedRole === 'candidate') {
+            if (finalTurnSeq !== null) fedSemanticCandidateSeqs.add(finalTurnSeq);
+            feedCandidateAnswer(t.text);
+          } else if (resolvedRole === 'interviewer') {
+            if (finalTurnSeq !== null) handledSemanticInterviewerSeqs.add(finalTurnSeq);
+            trigger.onInterviewerFinal();
+          }
+        } else if (t.source === 'display' && t.isFinal) {
+          // Backward compatibility for clients that have not enabled semantic
+          // partitioning. The current web client always enables it.
           feedCandidateAnswer(t.text);
-        }
-        // SINGLE-MIC seam: a finalized CANDIDATE segment (by speaker role,
-        // not source) feeds the SAME trigger path. Inert online: resolve(null) =
-        // 'unknown' so isCandidateFinal is always false there.
-        else if (isCandidateFinal(roles, t)) {
-          if (finalTurnSeq !== null) fedSingleMicSeqs.add(finalTurnSeq);
+        } else if (isCandidateFinal(roles, t)) {
+          if (finalTurnSeq !== null) fedSemanticCandidateSeqs.add(finalTurnSeq);
           feedCandidateAnswer(t.text);
         }
       },

@@ -290,6 +290,44 @@ test('debounce coalesces rapid onCandidateFinal calls into ONE evaluation', asyn
   assert.equal(h.analyzeCalls[0].candidateAnswer, latest, 'fires with the LATEST accumulated text');
 });
 
+test('ongoing speech cancels a pending question until a later candidate final closes the turn', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes() });
+
+  trigger.onCandidateFinal(LONG_ANSWER);
+  assert.equal(h.setTimerCalls, 1, 'candidate final arms the quiet-period timer');
+
+  // A provider partial means somebody is still speaking. Auto must not surface a
+  // question over that speech even if the prior final was already substantive.
+  trigger.noteSpeechActivity();
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'no question while speech continues');
+  assert.ok(h.clearTimerCalls >= 1, 'speech cancels the armed quiet-period timer');
+
+  // The provider's next final closes the live phrase and starts a fresh pause.
+  trigger.onCandidateFinal(LONG_ANSWER);
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 1, 'a later candidate final may fire after quiet');
+  assert.equal(h.analyzeCalls[0].candidateAnswer, LONG_ANSWER);
+});
+
+test('an interviewer turn cancels the old answer instead of blending it into the next candidate answer', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes() });
+
+  trigger.onCandidateFinal(LONG_ANSWER);
+  trigger.onInterviewerFinal();
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'the interviewer moving on cancels the pending follow-up');
+
+  trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX);
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 1);
+  assert.equal(
+    h.analyzeCalls[0].candidateAnswer,
+    LONG_SUFFIX.trim(),
+    'the next follow-up sees only the new answer window'
+  );
+});
+
 test('markManualRun blocks an immediate auto fire (shared bookkeeping)', async () => {
   const { trigger, h } = makeTrigger({ decision: yes() });
 

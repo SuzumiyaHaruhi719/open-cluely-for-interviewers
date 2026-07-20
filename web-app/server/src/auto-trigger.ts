@@ -70,6 +70,10 @@ export interface AutoTriggerDeps {
 export interface AutoTrigger {
   /** A new interviewee FINAL segment arrived; `fullCandidateText` is the accumulated final text. */
   onCandidateFinal: (fullCandidateText: string) => void;
+  /** Any live ASR activity (partial or final) postpones a pending question. */
+  noteSpeechActivity: () => void;
+  /** The interviewer started/finished a new turn, so the prior answer window is stale. */
+  onInterviewerFinal: () => void;
   /** Enable/disable autonomous generation. When off, no LLM call is ever made. */
   setAutoGenerate: (enabled: boolean) => void;
   /**
@@ -201,6 +205,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   // interviewer's question as if it were the candidate's answer.
   let sinceFire = '';
   let intervalHandle: ReturnType<typeof setInterval> | null = null;
+  let lastSpeechAt = Number.NEGATIVE_INFINITY;
   // Auto NEVER fires unless an audio source is actively capturing (the mic is On).
   // Set from ws.ts on every audio-control start/stop. Default false = nothing fires
   // until capture begins, and firing stops the moment the mic is turned off.
@@ -272,6 +277,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   async function intervalTick(): Promise<void> {
     if (!autoGenerate || mode !== 'interval' || isGenerating || !capturing) return;
+    if (now() - lastSpeechAt < cfg.debounceMs) return;
     // Fire from ONLY the transcript since the last follow-up. If nothing new was
     // said by the candidate since then, skip this tick — generating from the
     // interviewer's prompt would produce generic/meta follow-ups.
@@ -350,6 +356,23 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // It intentionally does NOT feed sinceFire: generation must be candidate-only.
     latestText = latestText ? `${latestText} ${s}` : s;
     if (latestText.length > 4000) latestText = latestText.slice(-4000);
+  }
+
+  function noteSpeechActivity(): void {
+    lastSpeechAt = now();
+    // A final may have armed the question timer, then the provider starts sending
+    // the next rolling partial. Cancel immediately so the UI never talks over a
+    // person who is still speaking. The next candidate final may arm a fresh pause.
+    clearPending();
+  }
+
+  function onInterviewerFinal(): void {
+    noteSpeechActivity();
+    // Once the interviewer has moved on, a follow-up for the previous answer is
+    // stale. Preserve the accumulated full-text baseline so the next candidate
+    // delta contains only the new answer rather than blending two questions.
+    sinceFire = '';
+    charsAtLastGen = latestCandidateText.length;
   }
 
   function rememberCandidateFinal(fullCandidateText: string): void {
@@ -438,6 +461,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // A manual Generate Q covers the recent transcript — drop the since-fire window
     // so the next AUTO follow-up doesn't re-ask what the manual one just covered.
     sinceFire = '';
+    lastSpeechAt = Number.NEGATIVE_INFINITY;
     clearPending();
   }
 
@@ -484,6 +508,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   return {
     onCandidateFinal,
+    noteSpeechActivity,
+    onInterviewerFinal,
     setAutoGenerate,
     setMode,
     setIntervalMs,

@@ -67,9 +67,9 @@ test('a failed final classification preserves the last stable live role map', as
     onCandidateTurn: () => {},
     onPartition: (partition) => partitions.push(partition)
   });
-  p.setSingleMic(true);
-  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '我负责园区运营。' });
-  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '你如何处理消防风险？' });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 1, text: '我独立负责园区运营、消防整改、租户服务和工程团队协同。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 2, text: '请具体说明你如何识别消防风险，并验证整改已经真正闭环。' });
   p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我先隔离现场并组织复验。' });
   p.record({ seq: 3, source: 'mic', speakerId: 2, text: '结果如何留档？' });
   await p.flush();
@@ -100,7 +100,7 @@ test('native speaker clusters are mapped live and candidate history is released 
     onCandidateTurn: (turn) => candidates.push(turn),
     onPartition: (partition) => partitions.push(partition)
   });
-  p.setSingleMic(true);
+  p.setEnabled(true);
 
   p.record({ seq: 0, source: 'mic', speakerId: 7, text: '我负责过园区的消防演练。' });
   p.record({ seq: 1, source: 'mic', speakerId: 9, text: '当时遇到的最大风险是什么？' });
@@ -142,7 +142,7 @@ test('ASR without native clusters receives a final Flash semantic partition', as
     onCandidateTurn: () => {},
     onPartition: (partition) => partitions.push(partition)
   });
-  p.setSingleMic(true);
+  p.setEnabled(true);
   p.record({ seq: 0, source: 'mic', text: '请介绍一个你独立负责的项目。' });
   p.record({ seq: 1, source: 'mic', text: '我独立负责三万平方米园区的日常运营。' });
   p.record({ seq: 2, source: 'mic', text: '你如何处理消防检查不合格？' });
@@ -161,7 +161,7 @@ test('ASR without native clusters receives a final Flash semantic partition', as
   );
 });
 
-test('dual-channel interviews do not spend a classifier call', async () => {
+test('semantic partitioning stays disabled when the client does not request it', async () => {
   let calls = 0;
   const p = createSpeakerPartitioner({
     classify: async () => {
@@ -172,14 +172,14 @@ test('dual-channel interviews do not spend a classifier call', async () => {
     onCandidateTurn: () => {},
     onPartition: () => {}
   });
-  p.setSingleMic(false);
+  p.setEnabled(false);
   p.record({ seq: 0, source: 'mic', text: '面试官问题' });
   p.record({ seq: 1, source: 'display', text: '候选人回答' });
   await p.finalize();
   assert.equal(calls, 0);
 });
 
-test('new-interview reset clears evidence but preserves the current single-mic mode', async () => {
+test('new-interview reset clears evidence but preserves the current enabled state', async () => {
   const snapshots: SpeakerTurn[][] = [];
   const p = createSpeakerPartitioner({
     classify: async (turns) => {
@@ -193,7 +193,7 @@ test('new-interview reset clears evidence but preserves the current single-mic m
     onCandidateTurn: () => {},
     onPartition: () => {}
   });
-  p.setSingleMic(true);
+  p.setEnabled(true);
   p.record({ seq: 99, source: 'mic', speakerId: 1, text: '上一场面试的旧证据' });
 
   p.reset();
@@ -207,7 +207,7 @@ test('new-interview reset clears evidence but preserves the current single-mic m
   assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1, 2, 3]);
 });
 
-test('live role assignment waits for two substantive turns per native speaker', async () => {
+test('live role assignment accepts one sufficiently substantive turn per native speaker', async () => {
   const snapshots: SpeakerTurn[][] = [];
   const p = createSpeakerPartitioner({
     classify: async (turns) => {
@@ -221,7 +221,7 @@ test('live role assignment waits for two substantive turns per native speaker', 
     onCandidateTurn: () => {},
     onPartition: () => {}
   });
-  p.setSingleMic(true);
+  p.setEnabled(true);
 
   p.record({
     seq: 0,
@@ -236,13 +236,13 @@ test('live role assignment waits for two substantive turns per native speaker', 
     text: '请具体说明你如何处理消防检查中的重大隐患，包括现场隔离、责任分工、整改时限、复验标准和台账留存。'
   });
   await p.flush();
-  assert.equal(snapshots.length, 0, 'one sample per cluster is not enough for a stable role map');
+  assert.equal(snapshots.length, 1, 'substantive speech-act evidence is enough for a stable role map');
+  assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1]);
 
   p.record({ seq: 2, source: 'mic', speakerId: 1, text: '我先停用风险区域，再组织整改和复验。' });
   p.record({ seq: 3, source: 'mic', speakerId: 2, text: '整改结果如何量化和留档？' });
   await p.flush();
-  assert.equal(snapshots.length, 1);
-  assert.deepEqual(snapshots[0].map((turn) => turn.seq), [0, 1, 2, 3]);
+  assert.equal(snapshots.length, 1, 'the refresh cadence still waits for three additional turns');
 });
 
 test('final role assignment requires at least two substantive turns', async () => {
@@ -256,7 +256,7 @@ test('final role assignment requires at least two substantive turns', async () =
     onCandidateTurn: () => {},
     onPartition: () => {}
   });
-  p.setSingleMic(true);
+  p.setEnabled(true);
 
   p.record({ seq: 0, source: 'mic', text: '只有一段完整回答。' });
   await p.finalize();
@@ -265,4 +265,42 @@ test('final role assignment requires at least two substantive turns', async () =
   p.record({ seq: 1, source: 'mic', text: '现在补充了第二段有效对话。' });
   await p.finalize();
   assert.equal(calls, 1);
+});
+
+test('a mixed shared-audio lane classifies interviewer and candidate before releasing answer text', async () => {
+  const candidates: number[] = [];
+  const interviewers: number[] = [];
+  let calls = 0;
+  const p = createSpeakerPartitioner({
+    classify: async () => {
+      calls += 1;
+      return classification([
+        { speakerId: 1, role: 'interviewer', confidence: 0.98 },
+        { speakerId: 2, role: 'candidate', confidence: 0.98 }
+      ]);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn.seq),
+    onInterviewerTurn: (turn) => interviewers.push(turn.seq),
+    onPartition: () => {}
+  });
+  p.setEnabled(true);
+
+  p.record({
+    seq: 0,
+    source: 'display',
+    speakerId: 1,
+    text: '请结合一次具体经历说明，你如何处理园区消防检查发现的重大隐患。'
+  });
+  p.record({
+    seq: 1,
+    source: 'display',
+    speakerId: 2,
+    text: '我先隔离风险区域，再明确责任人、整改时限和复验标准，最后把证据写入消防台账。'
+  });
+  await p.flush();
+
+  assert.equal(calls, 1, 'one substantial sample per native cluster is enough to classify');
+  assert.deepEqual(interviewers, [0]);
+  assert.deepEqual(candidates, [1]);
 });
