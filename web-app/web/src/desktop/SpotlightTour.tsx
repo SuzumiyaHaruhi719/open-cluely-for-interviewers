@@ -24,52 +24,38 @@ const TOUR_STEPS: TourStep[] = [
   {
     selector: null,
     title: '欢迎使用面试官 Copilot',
-    desc: '这是一个 AI 辅助面试工具。30 秒带你了解核心功能：新建面试、粘贴 JD、上传简历、开始录音、获取 AI 追问。',
+    desc: '这是一个 AI 辅助面试工具。20 秒带你了解核心功能：建立职位背景和简历、采集双方音频、获取 AI 专家追问。',
     icon: '👋',
     isWelcome: true,
   },
   {
     selector: '#btn-new-interview',
     title: '① 新建面试',
-    desc: '点这里开始一场新面试。选择「线上」采集电脑音频，或「线下」仅用房间麦克风。',
+    desc: '点这里选择线上或线下面试，再选择职位背景：使用已适配职位或粘贴自定义 JD。简历可在右侧补充，JD 只作为专家模型的事实背景。',
     icon: '✏️',
   },
   {
-    selector: '#jd-input',
-    title: '② 粘贴岗位描述',
-    desc: '把 JD 粘贴到这里，AI 会据此生成针对性的追问方向。',
-    icon: '📋',
-    requiresRightRail: true,
-  },
-  {
-    selector: '#resume-dropzone',
-    title: '③ 上传简历',
-    desc: '拖入或点击上传候选人简历（txt / md / pdf / docx），AI 会结合简历提问。',
-    icon: '📄',
-    requiresRightRail: true,
-  },
-  {
     selector: '#channel-computer',
-    title: '④ 采集候选人音频',
+    title: '② 采集候选人音频',
     desc: '点击这里开启「电脑音频」通道，采集候选人的声音（线上面试用）。',
     icon: '🎙️',
   },
   {
     selector: '#channel-mic',
-    title: '⑤ 采集你的声音',
+    title: '③ 采集你的声音',
     desc: '点击这里开启「麦克风」通道，采集你的提问和对话。',
     icon: '🎤',
   },
   {
     selector: '#analyze-btn',
-    title: '⑥ 随时问 AI',
+    title: '④ 随时问 AI',
     desc: '对话进行中，点这里让 AI 分析上下文并推荐下一步追问。也可点「生成问题」快速出题。',
     icon: '🤖',
   },
   {
     selector: null,
     title: '一切就绪！',
-    desc: '你现在可以开始第一场 AI 辅助面试了。遇到问题随时在设置里重播引导。',
+    desc: '你现在可以开始第一场 AI 辅助面试了。需要重看时，在页面空白处按下「?」即可重播引导。',
     icon: '🎉',
     isFinal: true,
   },
@@ -82,7 +68,6 @@ interface TourStep {
   icon: string;
   isWelcome?: boolean;
   isFinal?: boolean;
-  requiresRightRail?: boolean;
 }
 
 function getTargetRect(selector: string): DOMRect | null {
@@ -270,12 +255,6 @@ export function SpotlightTour({ replayToken = 0 }: SpotlightTourProps) {
       return;
     }
 
-    let revealDelay = 0;
-    if (step.requiresRightRail && document.body.classList.contains('rail-collapsed')) {
-      document.querySelector<HTMLButtonElement>('#toggle-rail-btn')?.click();
-      revealDelay = 350;
-    }
-
     setTimeout(() => {
       if (run !== positionRunRef.current) return;
 
@@ -304,7 +283,7 @@ export function SpotlightTour({ replayToken = 0 }: SpotlightTourProps) {
         setLayoutMode('target');
         setTooltipVisible(true);
       }, 400);
-    }, revealDelay);
+    }, 0);
   }, []);
 
   useEffect(() => {
