@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   createXfyunSession,
   extractResult,
+  formatXfyunTransportError,
   type WsConstructor,
   type WsLike,
   type XfyunTranscript
@@ -196,6 +197,20 @@ test('extractResult: an empty / wordless frame returns null', () => {
   assert.equal(extractResult({ cn: { st: { type: '0', rt: [] } } }, 0), null);
   assert.equal(extractResult({}, 0), null);
   assert.equal(extractResult(null, 0), null);
+});
+
+test('formats the provider 35022 quota response hidden inside Node rawPacket', () => {
+  const error = Object.assign(new Error('Parse Error: Invalid response status'), {
+    code: 'HPE_INVALID_STATUS',
+    rawPacket: Buffer.from(
+      'HTTP/1.1 35022 Unknown Status (35022)\r\nerror: usedQuantity exceeds the limit\r\ncontent-length: 0\r\n\r\n'
+    )
+  });
+
+  assert.equal(
+    formatXfyunTransportError(error),
+    '讯飞实时转写额度已用尽（35022），请在讯飞控制台续费或补充可用额度'
+  );
 });
 
 // --- createXfyunSession: emits one onTranscript PER run --------------------

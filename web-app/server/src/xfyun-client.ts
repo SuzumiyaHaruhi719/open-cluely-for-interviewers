@@ -84,6 +84,23 @@ export const XFYUN_DEFAULT_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
 export const XFYUN_DEFAULT_SAMPLE_RATE = 16000;
 export const XFYUN_DEFAULT_STOP_TIMEOUT_MS = 1500;
 
+/** Recover provider detail that Node's HTTP parser hides behind an invalid-status error. */
+export function formatXfyunTransportError(error: unknown): string {
+  const value = error as { message?: unknown; rawPacket?: unknown } | null;
+  const rawPacket = value?.rawPacket;
+  const raw = Buffer.isBuffer(rawPacket)
+    ? rawPacket.toString('utf8')
+    : rawPacket instanceof Uint8Array
+      ? Buffer.from(rawPacket).toString('utf8')
+      : '';
+  if (/\b35022\b|usedQuantity exceeds the limit/i.test(raw)) {
+    return '讯飞实时转写额度已用尽（35022），请在讯飞控制台续费或补充可用额度';
+  }
+  return typeof value?.message === 'string' && value.message.trim()
+    ? value.message.trim()
+    : '讯飞实时转写连接失败';
+}
+
 /** Format a Date as ISO8601 with a fixed +0800 offset, e.g. 2026-06-04T15:39:44+0800. */
 export function utcPlus0800(now: Date = new Date()): string {
   // Shift to UTC+8 then render the wall-clock parts; append the literal +0800.
@@ -384,7 +401,7 @@ export function createXfyunSession(deps: XfyunSessionDeps): XfyunSession {
   socket.on('message', (raw: unknown) => handleServerFrame(raw));
 
   socket.on('error', (err: unknown) => {
-    fail(err instanceof Error ? err.message : 'iFlytek socket error');
+    fail(formatXfyunTransportError(err));
   });
 
   socket.on('close', () => {

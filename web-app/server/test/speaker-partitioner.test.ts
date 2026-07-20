@@ -155,6 +155,24 @@ test('text-only classifier input uses a bounded recent window for incremental ro
   assert.ok(input.length <= 6_000);
 });
 
+test('final text-only classifier input restores unresolved early fragments with adjacent context', () => {
+  const turns: SpeakerTurn[] = Array.from({ length: 40 }, (_, seq) => ({
+    seq,
+    source: 'mic',
+    text: seq === 0 ? '我们的。' : seq === 1 ? '人员进行。' : `${seq}：${'具体面试证据'.repeat(20)}`
+  }));
+
+  const input = buildSpeakerClassifierInput(turns, { prioritySeqs: [0, 1] });
+
+  assert.match(input, /priority-unresolved seqs=0,1/);
+  assert.match(input, /\[seq=0 .*我们的/);
+  assert.match(input, /\[seq=1 .*人员进行/);
+  assert.match(input, /\[seq=2 /, 'adjacent context must accompany the fragments');
+  assert.match(input, /\[seq=39 /, 'recent context must remain represented');
+  assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12);
+  assert.ok(input.length <= 6_000);
+});
+
 test('hybrid classifier input keeps text-only turns when the ASR provider changes mid-interview', () => {
   const turns: SpeakerTurn[] = [
     {
@@ -214,6 +232,76 @@ test('a failed final classification preserves the last stable live role map', as
     partitions.at(-1).segments.map((segment: any) => segment.role),
     ['candidate', 'interviewer', 'candidate', 'interviewer']
   );
+});
+
+test('final pass tells Flash to revisit every text-only turn still unresolved after live inference', async () => {
+  const requests: Array<{ prioritySeqs?: readonly number[]; final?: boolean } | undefined> = [];
+  const partitions: any[] = [];
+  let calls = 0;
+  const p = createSpeakerPartitioner({
+    classify: async (_turns, request) => {
+      requests.push(request);
+      calls += 1;
+      return calls === 1
+        ? classification([], [
+            { seq: 2, role: 'candidate', confidence: 0.98 },
+            { seq: 3, role: 'candidate', confidence: 0.98 },
+            { seq: 4, role: 'interviewer', confidence: 0.98 },
+            { seq: 5, role: 'candidate', confidence: 0.98 }
+          ])
+        : classification([], [
+            { seq: 0, role: 'candidate', confidence: 0.7 },
+            { seq: 1, role: 'candidate', confidence: 0.7 }
+          ]);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', text: '我们的。' });
+  p.record({ seq: 1, source: 'mic', text: '人员进行。' });
+  p.record({ seq: 2, source: 'mic', text: '我会先说明安全事项，再安排工作人员观看完整演练。' });
+  p.record({ seq: 3, source: 'mic', text: '随后让所有参训人员亲自操作并记录复盘结论。' });
+  p.record({ seq: 4, source: 'mic', text: '请说明你如何验证这次演练真正有效？' });
+  p.record({ seq: 5, source: 'mic', text: '我会检查到场时间和关键动作完成率。' });
+  await p.flush();
+  await p.finalize();
+
+  assert.equal(calls, 2);
+  assert.deepEqual(requests[1], { final: true, prioritySeqs: [0, 1] });
+  const final = partitions.at(-1);
+  assert.equal(final.segments[0].role, 'candidate');
+  assert.match(final.segments[0].text, /我们的。 人员进行。/);
+  assert.equal(
+    final.segments.some((segment: any) => segment.role === 'unknown'),
+    false,
+    'moderate-confidence final weak correction is preferable to permanent unknown labels'
+  );
+});
+
+test('final weak-correction threshold never promotes a native acoustic cluster role', async () => {
+  const applied: Array<{ speakerId: number; role: string }> = [];
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([], [{ seq: 0, role: 'candidate', confidence: 0.7 }]),
+    applySpeakerRole: (speakerId, role) => {
+      applied.push({ speakerId, role });
+      return role;
+    },
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 9, text: '语义仍然不完整的短片段。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 9, text: '同一个声纹的另一段模糊内容。' });
+  await p.finalize();
+
+  assert.deepEqual(applied, []);
+  assert.deepEqual(partitions.at(-1).segments.map((segment: any) => segment.role), [
+    'unknown'
+  ]);
 });
 
 test('native speaker clusters are mapped live and candidate history is released once', async () => {

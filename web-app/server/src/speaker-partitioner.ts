@@ -15,6 +15,7 @@ const MAX_HYBRID_TEXT_TURNS = 8;
 const MAX_CLASSIFIER_TURN_CHARS = 360;
 const MIN_SPEAKER_ROLE_CONFIDENCE = 0.75;
 const MIN_TURN_OVERRIDE_CONFIDENCE = 0.85;
+const MIN_FINAL_PRIORITY_TURN_CONFIDENCE = 0.65;
 const MIN_CONTINUITY_EDGE_CONFIDENCE = 0.9;
 const MIN_SEMANTIC_REFRESH_CHARS = 48;
 const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
@@ -45,6 +46,11 @@ export interface SpeakerClassification {
   model: string;
 }
 
+export interface SpeakerClassificationRequest {
+  final?: boolean;
+  prioritySeqs?: readonly number[];
+}
+
 export interface SpeakerPartitionSegment {
   seq: number;
   speakerId: number;
@@ -68,7 +74,10 @@ export interface SpeakerPartitioner {
 }
 
 export interface SpeakerPartitionerDeps {
-  classify?: (turns: readonly SpeakerTurn[]) => Promise<SpeakerClassification>;
+  classify?: (
+    turns: readonly SpeakerTurn[],
+    request?: SpeakerClassificationRequest
+  ) => Promise<SpeakerClassification>;
   /** Applies an automatic cluster role and returns the effective role (manual corrections may win). */
   applySpeakerRole: (speakerId: number, role: SpeakerRole) => SpeakerRole;
   /** Applies one semantic turn exception without changing the acoustic cluster's stable role. */
@@ -304,7 +313,43 @@ function selectNativeClassifierEvidence(
  * needs representative evidence per acoustic cluster, not every verbatim turn;
  * text-only ASR is classified incrementally over a recent turn window.
  */
-export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): string {
+function selectTextOnlyClassifierEvidence(
+  turns: readonly SpeakerTurn[],
+  prioritySeqs: readonly number[] = []
+): SpeakerTurn[] {
+  const validPriorities = [...new Set(prioritySeqs)]
+    .filter((seq) => turns.some((turn) => turn.seq === seq))
+    .sort((a, b) => a - b);
+  if (validPriorities.length === 0) return turns.slice(-MAX_CLASSIFIER_TURNS);
+
+  const bySeq = new Map(turns.map((turn) => [turn.seq, turn]));
+  const selected = new Map<number, SpeakerTurn>();
+  const add = (turn: SpeakerTurn | undefined) => {
+    if (turn && selected.size < MAX_CLASSIFIER_TURNS) selected.set(turn.seq, turn);
+  };
+  // Reserve room for current interview context so old orphan fragments are not
+  // classified in isolation from the conversation that established the roles.
+  const priorityBudget = Math.max(1, MAX_CLASSIFIER_TURNS - 4);
+  for (const seq of validPriorities) {
+    if (selected.size >= priorityBudget) break;
+    add(bySeq.get(seq));
+  }
+  for (const seq of validPriorities) {
+    if (selected.size >= priorityBudget) break;
+    add(bySeq.get(seq - 1));
+    add(bySeq.get(seq + 1));
+  }
+  for (const turn of turns.slice(-4)) add(turn);
+  for (let index = turns.length - 1; index >= 0 && selected.size < MAX_CLASSIFIER_TURNS; index -= 1) {
+    add(turns[index]);
+  }
+  return [...selected.values()].sort((a, b) => a.seq - b.seq);
+}
+
+export function buildSpeakerClassifierInput(
+  turns: readonly SpeakerTurn[],
+  request: SpeakerClassificationRequest = {}
+): string {
   const nativeTurns = turns.filter((turn) => typeof turn.speakerId === 'number');
   const textOnlyTurns = turns.filter((turn) => typeof turn.speakerId !== 'number');
   if (nativeTurns.length > 0 && textOnlyTurns.length > 0) {
@@ -354,10 +399,17 @@ export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): stri
       .slice(0, MAX_INPUT_CHARS);
   }
 
-  const recentTurns = turns.slice(-MAX_CLASSIFIER_TURNS);
+  const prioritySeqs = request.prioritySeqs ?? [];
+  const recentTurns = selectTextOnlyClassifierEvidence(turns, prioritySeqs);
   return [
     '[classification-mode=turns-without-clusters]',
     '请为每个列出的 seq 返回一条 turnRoles；speakerRoles 必须返回空数组。',
+    ...(prioritySeqs.length > 0
+      ? [
+          `[priority-unresolved seqs=${prioritySeqs.join(',')}]`,
+          '这些 seq 在实时判断中仍未定角色；请结合同时列出的相邻片段和最近上下文进行弱纠错，不要因为片段短就直接返回 unknown。'
+        ]
+      : []),
     ...recentTurns.map(formatClassifierTurn)
   ]
     .join('\n')
@@ -365,9 +417,10 @@ export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): stri
 }
 
 export async function classifySpeakerTurns(
-  turns: readonly SpeakerTurn[]
+  turns: readonly SpeakerTurn[],
+  request: SpeakerClassificationRequest = {}
 ): Promise<SpeakerClassification> {
-  const transcript = buildSpeakerClassifierInput(turns);
+  const transcript = buildSpeakerClassifierInput(turns, request);
   const text = await chat({
     system: CLASSIFIER_SYSTEM,
     messages: [{ role: 'user', content: transcript }],
@@ -441,9 +494,21 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
     const snapshot = turns.map((turn) => ({ ...turn }));
     queue = queue.then(async () => {
       if (scheduledEpoch !== epoch || !enabled || snapshot.length === 0) return;
+      const prioritySeqs = status === 'final'
+        ? snapshot
+            .filter(
+              (turn) =>
+                typeof turn.speakerId !== 'number' && !cachedTurnRoles.has(turn.seq)
+            )
+            .map((turn) => turn.seq)
+        : [];
+      const finalPrioritySeqs = new Set(prioritySeqs);
       let result: SpeakerClassification;
       try {
-        result = await classify(snapshot);
+        result = await classify(
+          snapshot,
+          status === 'final' ? { final: true, prioritySeqs } : undefined
+        );
       } catch {
         result = { speakerRoles: [], turnRoles: [], model: SPEAKER_PARTITION_MODEL };
       }
@@ -471,9 +536,13 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       cachedSpeakerRoles = new Map(roleBySpeaker);
       const roleByTurn = new Map(cachedTurnRoles);
       for (const assignment of result.turnRoles) {
+        const minimumConfidence =
+          status === 'final' && finalPrioritySeqs.has(assignment.seq)
+            ? MIN_FINAL_PRIORITY_TURN_CONFIDENCE
+            : MIN_TURN_OVERRIDE_CONFIDENCE;
         if (
           assignment.role !== 'unknown' &&
-          assignment.confidence >= MIN_TURN_OVERRIDE_CONFIDENCE
+          assignment.confidence >= minimumConfidence
         ) {
           roleByTurn.set(assignment.seq, assignment.role);
         }
