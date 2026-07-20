@@ -217,7 +217,7 @@ describe('TranscriptStream seeded messages', () => {
 });
 
 describe('TranscriptStream offline speaker bubbles', () => {
-  it('inserts every AI question immediately after its anchored candidate segment', () => {
+  it('inserts every AI question after the coalesced segment containing its anchor', () => {
     const makeResult = (requestId: string, question: string): CopilotResult => ({
       type: 'result',
       requestId,
@@ -237,7 +237,7 @@ describe('TranscriptStream offline speaker bubbles', () => {
       trigger: 'auto'
     });
     const questionEvents: CopilotQuestionEvent[] = [
-      { id: 'auto-1', anchorSeq: 3, result: makeResult('auto-1', '第一个追问？') },
+      { id: 'auto-1', anchorSeq: 2, result: makeResult('auto-1', '第一个追问？') },
       { id: 'auto-2', anchorSeq: 3, result: makeResult('auto-2', '第二个追问？') }
     ];
 
@@ -245,7 +245,9 @@ describe('TranscriptStream offline speaker bubbles', () => {
       <TranscriptStream
         offline
         speakerSegments={[
-          { id: 3, speakerId: 7, role: 'candidate', text: '候选人证据' },
+          // Server coalescing keeps the first seq as the bubble id, while Auto
+          // may anchor to any later seq folded into that same bubble.
+          { id: 1, speakerId: 7, role: 'candidate', text: '候选人证据' },
           { id: 4, speakerId: 9, role: 'interviewer', text: '后续面试官发言' }
         ]}
         questionEvents={questionEvents}

@@ -205,6 +205,26 @@ function roleToLane(role: SpeakerRole): 'candidate' | 'interviewer' | 'unknown' 
 }
 
 /**
+ * Server partitions coalesce consecutive same-role ASR turns and retain the
+ * first turn's seq as the visible bubble id. Auto can anchor to a later seq
+ * inside that bubble, so exact-id matching would orphan the question at the
+ * bottom of the transcript. The containing bubble is the latest visible start
+ * at or before the semantic anchor.
+ */
+function containingSegmentId(
+  anchorSeq: number | null,
+  segments: readonly SpeakerSegment[]
+): number | null {
+  if (anchorSeq === null) return null;
+  let containingId: number | null = null;
+  for (const segment of segments) {
+    if (segment.id > anchorSeq) break;
+    containingId = segment.id;
+  }
+  return containingId;
+}
+
+/**
  * An approximate client-side countdown to the next interval-mode auto follow-up:
  * "下次自动追问 ~Ns". Drives a 1s tick (cleaned up on unmount) and computes the
  * remaining seconds from `autoIntervalMs - (now - lastAutoFireAt)`. The caller is
@@ -314,11 +334,12 @@ export function TranscriptStream({
   // (native cluster labels must remain editable). Pure online with a non-diarizing provider
   // (paraformer/volc) has no segments → falls through to the two-lane view.
   const showSpeakers = offline || (speakerSegments?.length ?? 0) > 0;
-  const visibleSegmentIds = new Set((speakerSegments ?? []).map((segment) => segment.id));
+  const visibleSegments = speakerSegments ?? [];
+  const questionAnchorIds = new Map(
+    questionEvents.map((event) => [event.id, containingSegmentId(event.anchorSeq, visibleSegments)])
+  );
   const tailQuestions = showSpeakers
-    ? questionEvents.filter(
-        (event) => event.anchorSeq === null || !visibleSegmentIds.has(event.anchorSeq)
-      )
+    ? questionEvents.filter((event) => questionAnchorIds.get(event.id) === null)
     : questionEvents;
   const newestQuestionId = questionEvents.at(-1)?.id;
 
@@ -364,7 +385,7 @@ export function TranscriptStream({
         // diarization tags a speaker (sidecar resolving/unavailable), plus the
         // live partial for real-time feedback.
         <>
-          {(speakerSegments ?? []).map((seg) => {
+          {visibleSegments.map((seg) => {
             // Native 'unknown' speakers (not yet manually labeled) show as
             // "说话人 N"; the interviewer taps to assign. Assigned speakers show
             // their role. Each button labels THIS speaker only (manual per-roleid).
@@ -403,7 +424,7 @@ export function TranscriptStream({
                   <div className="message-content">{seg.text}</div>
                 </div>
                 {questionEvents
-                  .filter((event) => event.anchorSeq === seg.id)
+                  .filter((event) => questionAnchorIds.get(event.id) === seg.id)
                   .map(renderQuestion)}
               </Fragment>
             );
