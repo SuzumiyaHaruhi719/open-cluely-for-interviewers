@@ -175,11 +175,18 @@ describe('Shell', () => {
     render(<Shell />);
     await flushMount();
     expect(document.body.classList.contains('rail-collapsed')).toBe(false);
+    const toggle = screen.getByRole('button', { name: '收起右侧栏' });
+    expect(toggle).toHaveAttribute('aria-controls', 'right-rail');
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
-    fireEvent.click(screen.getByRole('button', { name: '展开或收起右侧栏' }));
+    fireEvent.click(toggle);
 
     expect(document.body.classList.contains('rail-collapsed')).toBe(true);
     expect(localStorage.getItem('open-cluely.railCollapsed')).toBe('true');
+    expect(screen.getByRole('button', { name: '展开右侧栏' })).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
   });
 
   test('renders main shell chrome in Chinese', async () => {

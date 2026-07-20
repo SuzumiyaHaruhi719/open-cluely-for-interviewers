@@ -11,6 +11,8 @@ interface TitleBarProps {
  * can't minimise or close itself. The mobile pill stays an inert "desktop only".
  */
 export function TitleBar({ railCollapsed, onToggleRail }: TitleBarProps) {
+  const railLabel = railCollapsed ? '展开右侧栏' : '收起右侧栏';
+
   return (
     <header id="titlebar" className="titlebar">
       <div className="titlebar__brand">
@@ -38,9 +40,10 @@ export function TitleBar({ railCollapsed, onToggleRail }: TitleBarProps) {
           id="toggle-rail-btn"
           className="titlebar__btn"
           type="button"
-          aria-label="展开或收起右侧栏"
-          aria-pressed={railCollapsed}
-          title="展开或收起右侧栏"
+          aria-label={railLabel}
+          aria-controls="right-rail"
+          aria-expanded={!railCollapsed}
+          title={railLabel}
           onClick={onToggleRail}
         >
           <PanelIcon size={14} />
