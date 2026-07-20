@@ -214,7 +214,7 @@ git push origin main
 - Consumes: production build served by `PORT=8788 npm start`, in-app browser at `http://127.0.0.1:8788/`.
 - Produces: a contributor-facing implementation note and browser-verified production artifact.
 
-- [ ] **Step 1: Write the implementation note**
+- [x] **Step 1: Write the implementation note**
 
 Create a note containing the required sections:
 
@@ -237,7 +237,7 @@ List `autoGenerate`, `summaryModel`, socket question events, session context, an
 State that generic assistant HTTP routes and floating results panels must not be reintroduced because they bypass corrected roles and JD-grounded Expert context.
 ```
 
-- [ ] **Step 2: Run complete verification**
+- [x] **Step 2: Run complete verification**
 
 Run:
 
@@ -250,7 +250,7 @@ git status --short
 
 Expected: all suites and both production builds pass; no whitespace errors; the application repository is clean after its code checkpoints. The Obsidian note appears only in the vault repository.
 
-- [ ] **Step 3: Verify the implementation note is queued for vault sync**
+- [x] **Step 3: Verify the implementation note is queued for vault sync**
 
 ```bash
 git -C /Users/thomasli/Documents/github/Obsidian status --short -- 'Interview Copilot/Implementation/interviewer-ai-surfaces.md'
@@ -258,7 +258,7 @@ git -C /Users/thomasli/Documents/github/Obsidian status --short -- 'Interview Co
 
 Expected: the note is listed as added or modified. The vault's session-end automation owns its commit and push, as required by this repository's `AGENTS.md`.
 
-- [ ] **Step 4: Rebuild and launch the production server**
+- [x] **Step 4: Rebuild and launch the production server**
 
 Run:
 
@@ -268,7 +268,7 @@ PORT=8788 npm start
 
 Expected: health endpoint returns HTTP 200 and the rebuilt browser client loads at `http://127.0.0.1:8788/`.
 
-- [ ] **Step 5: Verify in the in-app browser**
+- [x] **Step 5: Verify in the in-app browser**
 
 Open the topbar more-menu and assert visually/semantically:
 
