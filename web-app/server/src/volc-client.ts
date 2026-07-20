@@ -90,7 +90,10 @@ export function endpointForResource(resourceId: string): string {
   return /seedasr/i.test(resourceId) ? VOLC_WS_URL_NOSTREAM : VOLC_WS_URL;
 }
 export const VOLC_DEFAULT_SAMPLE_RATE = 16000;
-export const VOLC_DEFAULT_STOP_TIMEOUT_MS = 1500;
+// Long Seed 2.0 utterances can need several seconds to finish speaker
+// clustering after the terminal PCM frame. Keep the wait bounded but large
+// enough to receive the provider's final negative-sequence response.
+export const VOLC_DEFAULT_STOP_TIMEOUT_MS = 6000;
 // Product policy: Doubao means Seed-ASR 2.0. Never silently send interview audio
 // to the legacy BigASR 1.0 resource when the deployment lacks 2.0 entitlement.
 export const VOLC_DEFAULT_RESOURCE_ID = 'volc.seedasr.sauc.duration';

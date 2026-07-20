@@ -10,6 +10,7 @@ import {
   formatDoubaoAsr2Error,
   VOLC_DEFAULT_MODEL,
   VOLC_DEFAULT_RESOURCE_ID,
+  VOLC_DEFAULT_STOP_TIMEOUT_MS,
   type WsConstructor,
   type WsLike
 } from '../src/volc-client';
@@ -78,6 +79,11 @@ test('buildConfigPayload encodes a gzip JSON config carrying the model + rate', 
   assert.equal(config.audio.rate, 16000);
   assert.equal(config.audio.format, 'pcm');
   assert.equal(config.audio.language, undefined);
+});
+
+test('Seed ASR finalization budget covers long utterance clustering without hanging forever', () => {
+  assert.ok(VOLC_DEFAULT_STOP_TIMEOUT_MS >= 5_000);
+  assert.ok(VOLC_DEFAULT_STOP_TIMEOUT_MS <= 8_000);
 });
 
 // --- result-frame parsing ----------------------------------------------------
