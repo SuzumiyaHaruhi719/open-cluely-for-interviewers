@@ -257,6 +257,27 @@ test('monitor returning false → no fire', async () => {
   assert.equal(h.analyzeCalls.length, 0, 'but no analyze when it says no');
 });
 
+test('three consecutive monitor waits on a sustained answer delegate one evidence-safe Expert question', async () => {
+  const { trigger, h } = makeTrigger({ decision: no() });
+  const second = LONG_ANSWER + LONG_SUFFIX;
+  const third = `${second} I then monitored chargebacks for thirty days and reported the remaining risk to finance.`;
+
+  trigger.onCandidateFinal(LONG_ANSWER, 80);
+  await trigger.flush();
+  trigger.onCandidateFinal(second, 81);
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'two cautious waits remain silent');
+
+  trigger.onCandidateFinal(third, 82);
+  await trigger.flush();
+
+  assert.equal(h.monitorCalls.length, 3);
+  assert.equal(h.analyzeCalls.length, 1, 'the liveness guard prevents permanent silence');
+  assert.equal(h.analyzeCalls[0].candidateAnswer, third);
+  assert.match(h.analyzeCalls[0].focusHint, /实质性回答.*可验证/);
+  assert.equal(h.analyzeCalls[0].anchorSeq, 82);
+});
+
 test('candidate evidence arriving during a monitor wait is retained and re-evaluated', async () => {
   let releaseFirst!: (decision: TriggerDecision) => void;
   let monitorCall = 0;
