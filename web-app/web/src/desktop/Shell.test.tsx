@@ -2,7 +2,14 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen, cleanup, fireEvent, act, waitFor, within } from '@testing-library/react';
 import { installMockWebSocket, MockWebSocket } from '../test/mockWebSocket';
 import { Shell } from './Shell';
-import { SIM_SCENARIOS } from './simScenarios';
+
+vi.mock('../lib/audioCapture', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../lib/audioCapture')>();
+  return {
+    ...actual,
+    startCapture: vi.fn(async () => ({ stop: vi.fn() }))
+  };
+});
 
 let restore: () => void;
 
@@ -114,12 +121,15 @@ describe('Shell', () => {
       mode: 'expert',
       interviewerModel: 'deepseek-v4-flash',
       outputLanguage: 'zh',
-      asrProvider: 'xfyun'
+      asrProvider: 'volc',
+      autoGenerate: true
     });
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
     expect(lastConfig(ws)).toMatchObject({ autoMode: 'agent' });
-    expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
+    expect(screen.queryByLabelText('语音识别')).not.toBeInTheDocument();
+    expect(screen.queryByRole('checkbox', { name: '自动追问' })).not.toBeInTheDocument();
+    expect(document.getElementById('auto-indicator')).toBeNull();
     expect(screen.getByLabelText('评估报告模型')).toBeInTheDocument();
     expect(screen.queryByText('面试模式')).not.toBeInTheDocument();
     expect(screen.queryByText(/Customize|Pipeline/i)).not.toBeInTheDocument();
@@ -138,18 +148,12 @@ describe('Shell', () => {
     expect(screen.queryByLabelText('实时专家模型')).not.toBeInTheDocument();
   });
 
-  test('every retained setting persists and reaches the live server session', async () => {
+  test('every retained setting persists while fixed policies reach the live server session', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-
-    fireEvent.change(screen.getByLabelText('语音识别'), {
-      target: { value: 'paraformer' }
-    });
-    expect(lastConfig(ws)).toMatchObject({ asrProvider: 'paraformer' });
-    expect(localStorage.getItem('open-cluely.asrProvider')).toBe('paraformer');
 
     fireEvent.change(screen.getByLabelText('评估报告模型'), {
       target: { value: 'deepseek-v4-flash' }
@@ -157,18 +161,19 @@ describe('Shell', () => {
     expect(lastConfig(ws)).toMatchObject({ summaryModel: 'deepseek-v4-flash' });
     expect(localStorage.getItem('open-cluely.summaryModel')).toBe('deepseek-v4-flash');
 
-    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
-    expect(lastConfig(ws)).toMatchObject({ autoGenerate: false });
-    expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
-    expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
+    const policyConfig = ws.sent
+      .map((frame) => JSON.parse(frame))
+      .find((message) => message.type === 'configure' && message.config?.asrProvider === 'volc');
+    expect(policyConfig?.config).toMatchObject({ asrProvider: 'volc', autoGenerate: true });
+    expect(localStorage.getItem('open-cluely.asrProvider')).toBeNull();
+    expect(localStorage.getItem('open-cluely.autoGenerate')).toBeNull();
     expect(localStorage.getItem('open-cluely.autoMode')).toBeNull();
     expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBeNull();
 
     fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    expect(screen.getByLabelText('语音识别')).toHaveValue('paraformer');
+    expect(screen.queryByLabelText('语音识别')).not.toBeInTheDocument();
+    expect(screen.queryByRole('checkbox', { name: '自动追问' })).not.toBeInTheDocument();
     expect(screen.getByLabelText('评估报告模型')).toHaveValue('deepseek-v4-flash');
     expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
   });
@@ -258,60 +263,15 @@ describe('Shell', () => {
     expect(analyzeMsg.candidateAnswer).toContain('We sharded by user id');
   });
 
-  test('Auto toggle is ON by default and full config re-push carries autoGenerate', async () => {
+  test('Auto is fixed ON without a user-facing toggle', async () => {
+    localStorage.setItem('open-cluely.autoGenerate', 'false');
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
 
-    // The pill defaults ON.
-    const pill = document.getElementById('auto-indicator');
-    expect(pill).toHaveAttribute('data-auto', 'on');
-
-    // The full-config re-push (fired on the new sessionId) includes autoGenerate.
+    expect(document.getElementById('auto-indicator')).toBeNull();
     expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
-  });
-
-  test('Auto pill exposes the continuous Flash monitor and delegation state', async () => {
-    render(<Shell />);
-    await flushMount();
-    const ws = openSocket();
-
-    act(() => {
-      ws.emit({
-        type: 'auto-monitor',
-        status: 'evaluating',
-        model: 'deepseek-v4-flash'
-      });
-    });
-    expect(document.getElementById('auto-indicator')).toHaveTextContent('监控中');
-
-    act(() => {
-      ws.emit({
-        type: 'auto-monitor',
-        status: 'delegating',
-        model: 'deepseek-v4-flash'
-      });
-    });
-    expect(document.getElementById('auto-indicator')).toHaveTextContent('生成中');
-  });
-
-  test('toggling Auto off persists the setting and sends configure({ autoGenerate:false })', async () => {
-    render(<Shell />);
-    await flushMount();
-    const ws = openSocket();
-
-    const pill = document.getElementById('auto-indicator')!;
-    fireEvent.click(pill);
-
-    // Pill flips OFF, the delta configure is sent, and the choice persists.
-    expect(document.getElementById('auto-indicator')).toHaveAttribute('data-auto', 'off');
-    expect(lastConfig(ws)).toMatchObject({ autoGenerate: false });
-    expect(localStorage.getItem('open-cluely.autoGenerate')).toBe('false');
-
-    // Toggling back ON sends true again.
-    fireEvent.click(document.getElementById('auto-indicator')!);
-    expect(document.getElementById('auto-indicator')).toHaveAttribute('data-auto', 'on');
-    expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
+    expect(localStorage.getItem('open-cluely.autoGenerate')).toBeNull();
   });
 
   test('renders the AI question card when a result arrives', async () => {
@@ -499,18 +459,12 @@ describe('Shell', () => {
     render(<Shell />);
     const ws = openSocket();
 
-    fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.change(document.getElementById('setting-asr-provider')!, {
-      target: { value: 'sim' }
-    });
-    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
-
     const micCard = document.getElementById('channel-mic')!;
     await act(async () => {
       fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
     });
     act(() => {
-      ws.emit({ type: 'asr-status', source: 'mic', provider: 'sim', state: 'live' });
+      ws.emit({ type: 'asr-status', source: 'mic', provider: 'volc', state: 'live' });
       vi.advanceTimersByTime(65_000);
     });
     expect(document.querySelector('.timer')).toHaveTextContent('01:05');
@@ -532,50 +486,28 @@ describe('Shell', () => {
     );
   });
 
-  test('selecting Doubao ASR 2.0 sends only the provider while credentials stay server-side', async () => {
+  test('Doubao ASR 2.0 is fixed while credentials stay server-side', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
 
-    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'xfyun');
+    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'volc');
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-
-    expect(
-      screen.getByRole('option', { name: '豆包 Seed ASR 2.0 · 原生说话人分离' })
-    ).toBeInTheDocument();
+    expect(screen.queryByLabelText('语音识别')).not.toBeInTheDocument();
 
     expect(document.getElementById('setting-volc-app-id')).not.toBeInTheDocument();
     expect(document.getElementById('setting-volc-access-token')).not.toBeInTheDocument();
 
-    fireEvent.change(document.getElementById('setting-asr-provider')!, {
-      target: { value: 'volc' }
-    });
-
-    // The topbar pill flips to Doubao and a configure carries the provider.
     expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'volc');
-    expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc' });
-    expect(lastConfig(ws)).not.toHaveProperty('volcAppId');
-    expect(lastConfig(ws)).not.toHaveProperty('volcAccessToken');
+    const policyConfig = ws.sent
+      .map((frame) => JSON.parse(frame))
+      .find((message) => message.type === 'configure' && message.config?.asrProvider === 'volc');
+    expect(policyConfig?.config).toMatchObject({ asrProvider: 'volc', autoGenerate: true });
+    expect(policyConfig?.config).not.toHaveProperty('volcAppId');
+    expect(policyConfig?.config).not.toHaveProperty('volcAccessToken');
     expect(localStorage.getItem('open-cluely.volcAppId')).toBeNull();
     expect(localStorage.getItem('open-cluely.volcAccessToken')).toBeNull();
-  });
-
-  test('selecting the Sim ASR provider configures the generated local injection script', async () => {
-    render(<Shell />);
-    await flushMount();
-    const ws = openSocket();
-
-    fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.change(document.getElementById('setting-asr-provider')!, {
-      target: { value: 'sim' }
-    });
-
-    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'sim');
-    expect(lastConfig(ws)).toMatchObject({
-      asrProvider: 'sim',
-      simScript: SIM_SCENARIOS[0].turns
-    });
   });
 
   test('a failed ASR session clears the optimistic global live state while capture can still be stopped', async () => {
@@ -583,18 +515,12 @@ describe('Shell', () => {
     await flushMount();
     const ws = openSocket();
 
-    fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.change(document.getElementById('setting-asr-provider')!, {
-      target: { value: 'sim' }
-    });
-    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
-
     const micCard = document.getElementById('channel-mic')!;
     await act(async () => {
       fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
     });
     act(() => {
-      ws.emit({ type: 'asr-status', source: 'mic', provider: 'sim', state: 'live' });
+      ws.emit({ type: 'asr-status', source: 'mic', provider: 'volc', state: 'live' });
     });
     expect(document.getElementById('rec-indicator')).toHaveAttribute('data-state', 'live');
 
@@ -602,7 +528,7 @@ describe('Shell', () => {
       ws.emit({
         type: 'asr-status',
         source: 'mic',
-        provider: 'sim',
+        provider: 'volc',
         state: 'failed',
         message: '模拟识别失败'
       });
@@ -635,12 +561,12 @@ describe('Shell', () => {
     expect(fetchCalls.some((c) => c.url.includes('/api/sessions'))).toBe(false);
 
     // Now open the socket: the new sessionId triggers the FULL-config re-push,
-    // which for an offline interview keeps Xunfei and
+    // which for an offline interview keeps Doubao and
     // turns on the single-mic speaker-partition lifecycle. No local sidecar
     // address is part of the protocol anymore.
     const ws = openSocket();
     await waitFor(() => {
-      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'xfyun', diarize: true });
+      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc', diarize: true });
     });
     expect(lastConfig(ws)).not.toHaveProperty('funasrUrl');
 
@@ -649,14 +575,14 @@ describe('Shell', () => {
     expect(document.getElementById('channel-computer')).not.toBeInTheDocument();
   });
 
-  test('online iFlytek: a candidate-labeled speaker segment feeds the analyze buffer (Generate Q uses it)', async () => {
-    // Stay in the default ONLINE interview (dismiss the picker). iFlytek carries
+  test('online native ASR: a candidate-labeled speaker segment feeds the analyze buffer (Generate Q uses it)', async () => {
+    // Stay in the default ONLINE interview. Doubao carries
     // its own speaker id on finals, so segments appear even online.
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
 
-    // iFlytek online final → a diarized segment (still 'unknown' until labeled).
+    // A native-cluster final becomes a diarized segment (still unknown until labeled).
     act(() => {
       ws.emit({
         type: 'transcript',
@@ -698,21 +624,10 @@ describe('Shell', () => {
   });
 
   describe('preserve interview history when audio capture stops', () => {
-    /** Switch the live session to the Sim ASR provider (capture is synchronous,
-     *  no real media) so start/stop drive the capturing state in jsdom. */
-    function selectSimProvider(): void {
-      fireEvent.click(screen.getByRole('button', { name: '设置' }));
-      fireEvent.change(document.getElementById('setting-asr-provider')!, {
-        target: { value: 'sim' }
-      });
-      fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
-    }
-
     test('stopping the microphone keeps transcript history and generation context', async () => {
       render(<Shell />);
       await flushMount();
       const ws = openSocket();
-      selectSimProvider();
 
       // Seed both socket transcript history and a local note so stopping capture
       // cannot silently behave like "New interview" for either history source.
@@ -735,10 +650,12 @@ describe('Shell', () => {
       });
       expect(screen.getByText('保留这条面试记录')).toBeInTheDocument();
 
-      // Sim capture flips the microphone state synchronously without real media.
       const micCard = document.getElementById('channel-mic')!;
       await act(async () => {
         fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
+      });
+      act(() => {
+        ws.emit({ type: 'asr-status', source: 'mic', provider: 'volc', state: 'live' });
       });
 
       const beforeStop = ws.sent.length;

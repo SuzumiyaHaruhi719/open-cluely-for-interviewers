@@ -3,19 +3,15 @@ import { describe, expect, test, vi } from 'vitest';
 import { SettingsModal } from './SettingsModal';
 import type { AppSettings } from './useAppSettings';
 
-const ESSENTIAL_SETTINGS: AppSettings = {
-  asrProvider: 'xfyun',
+const ESSENTIAL_SETTINGS = {
   micDeviceId: '',
-  autoGenerate: true,
   summaryModel: 'deepseek-v4-pro'
-};
+} as AppSettings;
 
 function renderSettings(settings: AppSettings = ESSENTIAL_SETTINGS) {
   const callbacks = {
     onClose: vi.fn(),
-    onAsrProviderChange: vi.fn(),
     onMicDeviceChange: vi.fn(),
-    onAutoGenerateChange: vi.fn(),
     onSummaryModelChange: vi.fn()
   };
 
@@ -28,17 +24,13 @@ describe('SettingsModal essentials', () => {
     renderSettings();
 
     expect(screen.getByRole('heading', { name: '设置' })).toBeInTheDocument();
-    expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
-    expect(screen.getByText('切换后自动重连，凭证由服务端管理')).toBeInTheDocument();
-    expect(
-      screen.getByRole('option', { name: '豆包 Seed ASR 2.0 · 原生说话人分离' })
-    ).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: /DashScope Paraformer/ })).toBeInTheDocument();
-    expect(screen.queryByRole('option', { name: /豆包流式语音 1\.0/ })).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('语音识别')).not.toBeInTheDocument();
+    expect(screen.queryByText(/讯飞|Paraformer/)).not.toBeInTheDocument();
     expect(screen.queryByLabelText('语音合成')).not.toBeInTheDocument();
     expect(screen.queryByText(/Qwen Audio 3\.0/)).not.toBeInTheDocument();
     expect(screen.getByLabelText('麦克风')).toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: '自动追问' })).toBeChecked();
+    expect(screen.queryByRole('checkbox', { name: '自动追问' })).not.toBeInTheDocument();
+    expect(screen.queryByText('专家追问')).not.toBeInTheDocument();
     expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
     expect(screen.queryByLabelText('自动追问间隔')).not.toBeInTheDocument();
     expect(screen.getByLabelText('评估报告模型')).toHaveValue('deepseek-v4-pro');
@@ -52,38 +44,30 @@ describe('SettingsModal essentials', () => {
     expect(screen.queryByText('键盘快捷键')).not.toBeInTheDocument();
   });
 
-  test('applies the retained provider and evaluation model choices', () => {
+  test('applies the retained evaluation model choice', () => {
     const callbacks = renderSettings();
 
-    fireEvent.change(screen.getByLabelText('语音识别'), { target: { value: 'volc' } });
     fireEvent.change(screen.getByLabelText('评估报告模型'), {
       target: { value: 'deepseek-v4-flash' }
     });
 
-    expect(callbacks.onAsrProviderChange).toHaveBeenCalledWith('volc');
     expect(callbacks.onSummaryModelChange).toHaveBeenCalledWith('deepseek-v4-flash');
   });
 
-  test('wires every retained expert control to its owning callback', () => {
+  test('wires every retained control to its owning callback', () => {
     const callbacks = renderSettings();
 
-    fireEvent.change(screen.getByLabelText('语音识别'), { target: { value: 'paraformer' } });
-    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
     fireEvent.change(screen.getByLabelText('评估报告模型'), {
       target: { value: 'deepseek-v4-flash' }
     });
 
-    expect(callbacks.onAsrProviderChange).toHaveBeenCalledWith('paraformer');
-    expect(callbacks.onAutoGenerateChange).toHaveBeenCalledWith(false);
     expect(callbacks.onSummaryModelChange).toHaveBeenCalledWith('deepseek-v4-flash');
   });
 
   test('locks capture-owned controls while recording without hiding their values', () => {
     const callbacks = {
       onClose: vi.fn(),
-      onAsrProviderChange: vi.fn(),
       onMicDeviceChange: vi.fn(),
-      onAutoGenerateChange: vi.fn(),
       onSummaryModelChange: vi.fn()
     };
 
@@ -91,6 +75,6 @@ describe('SettingsModal essentials', () => {
 
     expect(screen.getByLabelText('麦克风')).toBeDisabled();
     expect(screen.getByText('停止录音后可切换设备')).toBeInTheDocument();
-    expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
+    expect(screen.queryByLabelText('语音识别')).not.toBeInTheDocument();
   });
 });

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { AsrProvider, SessionConfig } from '@open-cluely/contract';
+import type { SessionConfig } from '@open-cluely/contract';
 import { useCopilotSocket } from '../lib/useCopilotSocket';
 import { QuestionBank } from '../views/QuestionBank';
 import { TitleBar } from './TitleBar';
@@ -13,10 +13,9 @@ import { InterviewTypeModal, type InterviewType, type InterviewTypeChoice } from
 import { SummaryModal } from './SummaryModal';
 import { SpotlightTour } from './SpotlightTour';
 import { useRailCollapsed } from './useRailCollapsed';
-import { useAppSettings, type UserAsrProvider } from './useAppSettings';
+import { useAppSettings } from './useAppSettings';
 import { formatTimer } from './helpers';
 import { JOB_PROFILES } from './jobProfiles';
-import { SIM_SCENARIOS } from './simScenarios';
 import type { AppView } from './types';
 
 interface ConfigState {
@@ -45,14 +44,8 @@ const EXPERT_CONFIG = {
   outputLanguage: 'zh'
 } as const;
 
-function normalizeAsrProvider(value: string): AsrProvider {
-  if (value === 'volc' || value === 'xfyun' || value === 'paraformer' || value === 'sim') return value;
-  return 'xfyun';
-}
-
-function simScriptFor(provider: AsrProvider): SessionConfig['simScript'] | undefined {
-  return provider === 'sim' ? SIM_SCENARIOS[0]?.turns : undefined;
-}
+const FIXED_ASR_PROVIDER = 'volc' as const;
+const FIXED_AUTO_GENERATE = true;
 
 /**
  * The re-skinned app shell. Reproduces the desktop `renderer.html` structure
@@ -72,7 +65,6 @@ export function Shell() {
     analyze,
     addContextNote,
     questionEvents,
-    autoMonitor,
     lastAutoFireAt,
     progress,
     progressTokens,
@@ -191,21 +183,6 @@ export function Shell() {
     [sendConfigure]
   );
 
-  // Toggle autonomous question generation: persist locally AND tell the server so
-  // its trigger monitor starts/stops. The full-config re-push (above) carries
-  // `autoGenerate` on every new sessionId, so this delta is enough for the live one.
-  const { setAutoGenerate } = appSettings;
-  const onAutoGenerateChange = useCallback(
-    (enabled: boolean): void => {
-      setAutoGenerate(enabled);
-      pushConfig({ autoGenerate: enabled });
-    },
-    [setAutoGenerate, pushConfig]
-  );
-  const onToggleAuto = useCallback((): void => {
-    onAutoGenerateChange(!appSettings.settings.autoGenerate);
-  }, [appSettings.settings.autoGenerate, onAutoGenerateChange]);
-
   // Promote a ranked candidate: copy it into the analyze buffer (so Generate Q /
   // the next analyze uses it) and flash a brief "已选用" confirmation. No server
   // round-trip — picking is a purely local selection.
@@ -267,25 +244,9 @@ export function Shell() {
     return () => document.removeEventListener('keydown', handler);
   }, [onReplayTour]);
 
-  // Credentials are environment-owned. The renderer sends only the provider name
-  // so changing engines cannot leak or shadow deployment configuration.
-  const { setAsrProvider } = appSettings;
-  const onAsrProviderChange = useCallback(
-    (value: UserAsrProvider): void => {
-      const provider = normalizeAsrProvider(value);
-      setAsrProvider(value);
-      pushConfig({
-        asrProvider: provider,
-        simScript: simScriptFor(provider)
-      });
-    },
-    [pushConfig, setAsrProvider]
-  );
-
   const onStartAudio = useCallback(
-    (source: Parameters<typeof startAudio>[0]): Promise<void> =>
-      startAudio(source, { skipLocalCapture: appSettings.settings.asrProvider === 'sim' }),
-    [startAudio, appSettings.settings.asrProvider]
+    (source: Parameters<typeof startAudio>[0]): Promise<void> => startAudio(source),
+    [startAudio]
   );
 
   const onJobDescriptionChange = useCallback(
@@ -315,13 +276,12 @@ export function Shell() {
       jobDescription: config.jobDescription,
       resumeText: config.resumeText,
       interviewGuide: config.interviewGuide,
-      asrProvider: normalizeAsrProvider(s.asrProvider),
-      simScript: simScriptFor(normalizeAsrProvider(s.asrProvider)),
+      asrProvider: FIXED_ASR_PROVIDER,
       // A shared tab/window may carry both interviewer and candidate voices.
       // Keep semantic role partitioning enabled in online and room-mic modes;
       // capture routing is still controlled separately by `offline`.
       diarize: true,
-      autoGenerate: s.autoGenerate,
+      autoGenerate: FIXED_AUTO_GENERATE,
       // Product policy: one evidence-aware quiet-period trigger. Legacy interval
       // wire support remains server-side only for older clients.
       autoMode: 'agent',
@@ -443,7 +403,6 @@ export function Shell() {
               <Topbar
                 title={sessionTitle}
                 mode="expert"
-                asrProvider={appSettings.settings.asrProvider}
                 status={status}
                 capturing={recognitionLive}
                 timer={timer}
@@ -454,9 +413,6 @@ export function Shell() {
                 onAnalyze={onAnalyze}
                 onClearSession={onClearSession}
                 onSummarize={onSummarize}
-                autoGenerate={appSettings.settings.autoGenerate}
-                autoMonitorStatus={autoMonitor?.status}
-                onToggleAuto={onToggleAuto}
               />
               <TranscriptStream
                 transcripts={transcripts}
@@ -474,7 +430,7 @@ export function Shell() {
                 offline={offline}
                 speakerSegments={speakerSegments}
                 onSetSpeakerRole={setSpeakerRole}
-                autoGenerate={appSettings.settings.autoGenerate}
+                autoGenerate={FIXED_AUTO_GENERATE}
                 capturing={recognitionLive}
                 lastAutoFireAt={lastAutoFireAt}
               />
@@ -524,10 +480,8 @@ export function Shell() {
           appSettings.setSummaryModel(value);
           pushConfig({ summaryModel: value });
         }}
-        onAsrProviderChange={onAsrProviderChange}
         onMicDeviceChange={appSettings.setMicDeviceId}
         micDeviceDisabled={capturing}
-        onAutoGenerateChange={onAutoGenerateChange}
       />
 
       <SpotlightTour replayToken={tourReplayToken} />

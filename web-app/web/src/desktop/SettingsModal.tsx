@@ -3,28 +3,19 @@ import { CloseIcon } from './icons';
 import { useMicDevices } from './useMicDevices';
 import type {
   AppSettings,
-  SummaryModel,
-  UserAsrProvider
+  SummaryModel
 } from './useAppSettings';
 
 interface SettingsModalProps {
   open: boolean;
   settings: AppSettings;
   onClose: () => void;
-  onAsrProviderChange: (value: UserAsrProvider) => void;
   onMicDeviceChange: (deviceId: string) => void;
   micDeviceDisabled: boolean;
-  onAutoGenerateChange: (enabled: boolean) => void;
   onSummaryModelChange: (value: SummaryModel) => void;
 }
 
 const CLOSE_ANIM_MS = 200;
-
-const ASR_PROVIDER_OPTIONS: ReadonlyArray<{ value: UserAsrProvider; label: string }> = [
-  { value: 'xfyun', label: '讯飞实时转写 · 原生说话人分离（默认）' },
-  { value: 'volc', label: '豆包 Seed ASR 2.0 · 原生说话人分离' },
-  { value: 'paraformer', label: '阿里云 DashScope Paraformer · 服务端配置' }
-];
 
 const SUMMARY_MODEL_OPTIONS: ReadonlyArray<{ value: SummaryModel; label: string }> = [
   { value: 'deepseek-v4-pro', label: 'DeepSeek v4 Pro · 深度评估' },
@@ -36,10 +27,8 @@ export function SettingsModal({
   open,
   settings,
   onClose,
-  onAsrProviderChange,
   onMicDeviceChange,
   micDeviceDisabled,
-  onAutoGenerateChange,
   onSummaryModelChange
 }: SettingsModalProps) {
   const [mounted, setMounted] = useState(open);
@@ -108,34 +97,10 @@ export function SettingsModal({
             <div className="settings-section__head">
               <div>
                 <h3 id="audio-settings-title" className="settings-section__title">
-                  音频与识别
+                  音频
                 </h3>
-                <p className="settings-section__hint">切换后自动重连，凭证由服务端管理</p>
+                <p className="settings-section__hint">选择本次面试使用的麦克风</p>
               </div>
-              <span className="settings-section__state">服务端凭证</span>
-            </div>
-
-            <div className="settings-field">
-              <label className="settings-field__label" htmlFor="setting-asr-provider">
-                语音识别
-              </label>
-              <select
-                id="setting-asr-provider"
-                className="settings-select"
-                value={settings.asrProvider}
-                onChange={(event) => onAsrProviderChange(event.target.value as UserAsrProvider)}
-              >
-                {ASR_PROVIDER_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-                {import.meta.env.MODE === 'test' ? (
-                  <option value="sim" hidden aria-hidden="true">
-                    自动化测试模拟
-                  </option>
-                ) : null}
-              </select>
             </div>
 
             <div className="settings-field">
@@ -160,34 +125,6 @@ export function SettingsModal({
                 <span className="settings-field__desc">停止录音后可切换设备</span>
               ) : null}
             </div>
-          </section>
-
-          <section className="settings-section settings-section--card" aria-labelledby="expert-settings-title">
-            <div className="settings-section__head">
-              <div>
-                <h3 id="expert-settings-title" className="settings-section__title">
-                  专家追问
-                </h3>
-                <p className="settings-section__hint">固定使用 DeepSeek v4 Flash，目标 10 秒内</p>
-              </div>
-            </div>
-
-            <div className="settings-toggle-row">
-              <span className="settings-toggle-row__text">
-                <span className="settings-field__label">自动追问</span>
-                <span className="settings-field__desc">根据候选人的新证据自动发现追问点</span>
-              </span>
-              <label className="settings-switch">
-                <input
-                  type="checkbox"
-                  aria-label="自动追问"
-                  checked={settings.autoGenerate}
-                  onChange={(event) => onAutoGenerateChange(event.target.checked)}
-                />
-                <span className="settings-switch__track" aria-hidden="true" />
-              </label>
-            </div>
-
           </section>
 
           <section className="settings-section settings-section--card" aria-labelledby="report-settings-title">

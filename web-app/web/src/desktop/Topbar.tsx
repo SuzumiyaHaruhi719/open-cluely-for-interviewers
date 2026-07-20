@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { AutoMonitorStatus, InterviewerMode } from '@open-cluely/contract';
+import type { InterviewerMode } from '@open-cluely/contract';
 import { MODE_META, recMeta } from './helpers';
 import type { SocketStatus } from '../lib/useCopilotSocket';
 import { useTheme } from '../lib/useTheme';
@@ -51,19 +51,9 @@ function MoonIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-/** ASR engine pill label + `data-asr` attribute (CSS colours each provider). */
-const ASR_META: Record<string, { label: string; attr: string }> = {
-  paraformer: { label: 'Paraformer', attr: 'paraformer' },
-  volc: { label: '豆包 2.0', attr: 'volc' },
-  xfyun: { label: '讯飞', attr: 'xfyun' },
-  sim: { label: '模拟', attr: 'sim' }
-};
-
 interface TopbarProps {
   title: string;
   mode: InterviewerMode;
-  /** Active speech-to-text provider (drives the #asr-indicator pill). */
-  asrProvider: string;
   status: SocketStatus;
   capturing: boolean;
   timer: string;
@@ -75,26 +65,18 @@ interface TopbarProps {
   onClearSession: () => void;
   /** Open the interview-summary modal + kick off a DeepSeek v4 pro evaluation. */
   onSummarize: () => void;
-  /** Autonomous question generation on/off (the Auto pill state). */
-  autoGenerate: boolean;
-  /** Live state of the continuous Flash sentinel. */
-  autoMonitorStatus?: AutoMonitorStatus;
-  /** Toggle autonomous question generation. */
-  onToggleAuto: () => void;
 }
 
 /**
  * Live-interview topbar, 1:1 with the desktop `.topbar`. The mode/REC/ASR pills
  * reflect real state (mode from config; REC derived from capture + socket; ASR
- * shows the active provider — Paraformer, 讯飞, or 豆包 — from settings). "Generate Q"
- * runs a manual copilot analysis; the Auto pill exposes the continuous Flash
- * sentinel state. The screenshot action stays a faithful-but-inert stub (image
+ * is the fixed Doubao Seed 2.0 product policy). "Generate Q" runs a manual
+ * copilot analysis. The screenshot action stays a faithful-but-inert stub (image
  * capture is out of scope; title="Coming soon").
  */
 export function Topbar({
   title,
   mode,
-  asrProvider,
   status,
   capturing,
   timer,
@@ -104,25 +86,13 @@ export function Topbar({
   isAnalyzing,
   onAnalyze,
   onClearSession,
-  onSummarize,
-  autoGenerate,
-  autoMonitorStatus = 'idle',
-  onToggleAuto
+  onSummarize
 }: TopbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const { theme, toggle: toggleTheme } = useTheme();
   const modeMeta = MODE_META[mode];
   const rec = recMeta(status, capturing);
-  const asrMeta = ASR_META[asrProvider] ?? ASR_META.paraformer;
-  const autoLabel =
-    autoGenerate && autoMonitorStatus === 'evaluating'
-      ? '监控中'
-      : autoGenerate && autoMonitorStatus === 'waiting'
-        ? '待证据'
-        : autoGenerate && autoMonitorStatus === 'delegating'
-          ? '生成中'
-          : '自动';
 
   // Close the more-menu on outside click / Escape, like the desktop.
   useEffect(() => {
@@ -184,31 +154,14 @@ export function Topbar({
         <span
           id="asr-indicator"
           className="mode-indicator"
-          data-asr={asrMeta.attr}
+          data-asr="volc"
           title="语音转文字引擎"
         >
           <span className="mode-indicator__dot" aria-hidden="true" />
           <span id="asr-indicator-label" className="mode-indicator__label">
-            {asrMeta.label}
+            豆包 2.0
           </span>
         </span>
-        <button
-          id="auto-indicator"
-          className="mode-indicator auto-indicator"
-          type="button"
-          data-auto={autoGenerate ? 'on' : 'off'}
-          data-monitor={autoMonitorStatus}
-          aria-pressed={autoGenerate}
-          onClick={onToggleAuto}
-          title={
-            autoGenerate
-              ? '自动追问已开启：助手会根据实时对话触发。点击关闭。'
-              : '自动追问已关闭：只会手动生成追问。点击开启。'
-          }
-        >
-          <span className="mode-indicator__dot" aria-hidden="true" />
-          <span className="mode-indicator__label">{autoLabel}</span>
-        </button>
         <span className="screenshot-count" id="screenshot-count" title="已截屏数量">
           {screenshotCount}
         </span>

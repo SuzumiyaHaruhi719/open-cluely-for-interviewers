@@ -8,7 +8,6 @@ describe('Topbar interviewer actions', () => {
       <Topbar
         title="物业经理面试"
         mode="expert"
-        asrProvider="xfyun"
         status="open"
         capturing={false}
         timer="00:00"
@@ -19,9 +18,6 @@ describe('Topbar interviewer actions', () => {
         onAnalyze={vi.fn()}
         onClearSession={vi.fn()}
         onSummarize={vi.fn()}
-        autoGenerate
-        autoMonitorStatus="waiting"
-        onToggleAuto={vi.fn()}
       />
     );
 
@@ -32,5 +28,7 @@ describe('Topbar interviewer actions', () => {
     expect(screen.queryByRole('menuitem', { name: '洞察' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '总结面试' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '生成追问' })).toBeInTheDocument();
+    expect(screen.getByTitle('语音转文字引擎')).toHaveTextContent('豆包 2.0');
+    expect(document.getElementById('auto-indicator')).toBeNull();
   });
 });
