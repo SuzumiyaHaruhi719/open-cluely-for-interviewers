@@ -151,6 +151,11 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
 
   const sessions: Record<AudioSource, AsrSession | null> = { mic: null, display: null };
   const sessionProviders: Record<AudioSource, AsrProvider | null> = { mic: null, display: null };
+  // Terminal upstream failures are latched per source/provider. Browser PCM can
+  // continue after a cloud denial, but it must not reopen a new WebSocket on
+  // every frame and make the UI oscillate from Error back to Connecting. An
+  // explicit Start or a real provider/config change clears the latch.
+  const failedProviders: Record<AudioSource, AsrProvider | null> = { mic: null, display: null };
   const stopping: Record<AudioSource, Promise<AsrStopResult> | null> = {
     mic: null,
     display: null
@@ -171,6 +176,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
 
   function onReady(source: AudioSource, owner: AsrProvider): void {
     if (disposed || stopping[source] || sessionProviders[source] !== owner) return;
+    if (provider === owner) failedProviders[source] = null;
     emitStatus({ source, provider: owner, state: 'live' });
   }
   // Shared emit: carries `speakerId` only when a provider supplied a native id.
@@ -195,9 +201,13 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
 
   function onError(source: AudioSource, owner: AsrProvider, message: string): void {
     if (sessionProviders[source] === owner) {
+      failedProviders[source] = owner;
       emitStatus({ source, provider: owner, state: 'failed', message });
     }
-    deps.emit({ source, text: `[语音识别错误: ${message}]`, isFinal: false });
+    // Provider failures are lifecycle state, not speech. Rendering them as a
+    // rolling transcript leaves a fake "输入中…" line and can feed error prose
+    // into diarization/Auto. The asr-status channel already carries the complete
+    // actionable message.
     void stopSource(source);
   }
 
@@ -285,6 +295,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   function startSource(source: AudioSource): void {
     if (disposed || sessions[source] || stopping[source]) return;
     const owner = provider;
+    if (failedProviders[source] === owner) return;
     sessionProviders[source] = owner;
     emitStatus({ source, provider: owner, state: 'connecting' });
     // Preserve native cluster ids verbatim. During fast hand-offs a provider may
@@ -294,10 +305,14 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
       sessions[source] = makeTextSession(source, owner, (t) => emitTranscript(source, t));
     } catch (error) {
       const message = error instanceof Error ? error.message : '语音识别会话启动失败';
+      failedProviders[source] = owner;
       emitStatus({ source, provider: owner, state: 'failed', message });
       sessions[source] = null;
     }
-    if (!sessions[source]) sessionProviders[source] = null;
+    if (!sessions[source]) {
+      failedProviders[source] = owner;
+      sessionProviders[source] = null;
+    }
   }
 
   function stopSource(source: AudioSource): Promise<AsrStopResult | null> {
@@ -353,7 +368,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     if (disposed) return;
     const source = frame.source;
     if (stopping[source]) return;
-    if (!sessions[source]) startSource(source);
+    if (!sessions[source] && failedProviders[source] !== provider) startSource(source);
     const session = sessions[source];
     if (!session) return;
     let pcm: Buffer;
@@ -369,6 +384,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   async function handleAudioControl(control: AudioControl): Promise<AsrStopResult | null> {
     if (disposed) return null;
     if (control.action === 'start') {
+      failedProviders[control.source] = null;
       startSource(control.source);
       return null;
     }
@@ -399,6 +415,7 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
     // keeps sending PCM, so the next frame lazily reconnects to `provider`.
     if (providerChanged || volcCredentialsChanged) {
       for (const source of SOURCES) {
+        failedProviders[source] = null;
         const owner = sessionProviders[source];
         if (!sessions[source] || !owner) continue;
         emitStatus({ source, provider: owner, state: 'finalizing' });

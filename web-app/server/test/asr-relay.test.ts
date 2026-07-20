@@ -223,13 +223,12 @@ test('with no API key, start emits a friendly error and creates no session', () 
 });
 
 test('reports a provider error as failed before draining the failed session', async () => {
-  const { relay, statuses, created } = relayWith();
+  const { relay, emits, statuses, created } = relayWith();
   await relay.handleAudioControl({ action: 'start', source: 'mic' });
   created[0].deps.onReady?.();
 
   created[0].deps.onError?.('upstream rejected credentials');
-  await Promise.resolve();
-  await Promise.resolve();
+  await new Promise<void>((resolve) => setImmediate(resolve));
 
   assert.ok(
     statuses.some(
@@ -240,6 +239,39 @@ test('reports a provider error as failed before draining the failed session', as
         status.message === 'upstream rejected credentials'
     )
   );
+  assert.deepEqual(emits, [], 'provider failures belong in ASR status, not a fake live caption');
+
+  relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([1, 2]).toString('base64') });
+  assert.equal(created.length, 1, 'continued PCM must not reopen a terminally failed provider');
+  assert.equal(
+    statuses.filter((status) => status.source === 'mic' && status.state === 'connecting').length,
+    1,
+    'the UI must stay failed instead of oscillating back to connecting'
+  );
+
+  await relay.handleAudioControl({ action: 'start', source: 'mic' });
+  assert.equal(created.length, 2, 'an explicit Start action clears the failure latch and retries');
+});
+
+test('missing credentials fail once instead of reconnecting on every PCM frame', () => {
+  const emits: TranscriptEmit[] = [];
+  const statuses: AsrStatusEmit[] = [];
+  const { factory, created } = makeFakeFactory();
+  const relay = createAsrRelay({
+    emit: (t) => emits.push(t),
+    onStatus: (status) => statuses.push(status),
+    apiKey: '',
+    sessionFactory: factory
+  });
+
+  relay.handleAudioControl({ action: 'start', source: 'mic' });
+  relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([1]).toString('base64') });
+  relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([2]).toString('base64') });
+
+  assert.equal(created.length, 0);
+  assert.equal(emits.length, 1);
+  assert.equal(statuses.filter((status) => status.state === 'connecting').length, 1);
+  assert.equal(statuses.filter((status) => status.state === 'failed').length, 1);
 });
 
 test('text-only Paraformer finals never invent an acoustic speaker id', () => {
