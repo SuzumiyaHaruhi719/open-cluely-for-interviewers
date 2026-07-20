@@ -141,19 +141,44 @@ export interface AutoTrigger {
 // consume the entire SLO before generation even started. This local gate only
 // rejects obvious filler; the Expert call makes the semantic should_ask decision.
 const FILLER_ONLY = /^(?:好(?:的)?|谢谢(?:老师)?|嗯+|啊+|这个|怎么说|没有了|ok|okay)[，,。.啊嗯呢吧\s]*$/i;
+const INCOMPLETE_ENDING = /(?:因为|由于|所以|然后|但是|不过|如果|只要|比如|例如|包括|以及|并且|而且|同时|接下来|首先|其次|最后|让|把|被|对|和|与|或|because|then|but|if|for example|and|or)[，,、。.!！?？:：;；\s]*$/i;
+const TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
+const CLOSED_ASR_ENDING = /(?:完成|结束|解决|改善|降低|提升|缩短|减少|增加|达成|落地|闭环|复盘|验证|确认|成功|失败|稳定|安全|质量|效率|成本|结果|反馈|分钟|小时|天|月|年|completed|finished|resolved|improved|reduced|increased|minutes?|seconds?|hours?|days?)$/i;
+const CONCRETE_ACTIONS = /(?:负责|主导|亲自|核对|检查|组织|协调|决定|选择|分析|制定|实施|调整|验证|复检|提交|跟进|统计|巡查|维修|培训|沟通|解决|处理|复盘|排查|推动|安排|发现|built|implemented|designed|led|owned|migrated|measured|validated|launched|resolved|debugged|tested|decided|coordinated)/gi;
+const OUTCOME_SIGNAL = /(?:结果|最终|从[^，。；]{1,24}到|提升|降低|缩短|减少|增加|完成|达成|改善|避免|成功|失败|\d+(?:\.\d+)?\s*(?:[%％]|分钟|小时|天|月|年|秒|万元|元)?|result|outcome|reduced|increased|improved|completed|failed|\d+(?:\.\d+)?\s*(?:%|minutes?|seconds?|hours?|days?))/i;
+const SPECIFIC_DETAIL = /(?:记录|时间|金额|比例|人员|客户|租户|设备|系统|流程|预算|成本|风险|质量|指标|数据|故障|消防|巡检|工单|投诉|项目|团队|方案|响应|现场|排班|材料|水管|演练|latency|revenue|customer|system|incident|metric|budget|risk|project|team)/i;
+
+function hasEnoughEvidence(text: string): boolean {
+  const clauses = text
+    .split(/[，,。！？!?；;：:]/)
+    .map((part) => part.trim())
+    .filter((part) => part.length >= 6);
+  if (clauses.length < 2) return false;
+
+  const distinctActions = new Set(
+    (text.match(CONCRETE_ACTIONS) ?? []).map((match) => match.toLowerCase())
+  );
+  if (distinctActions.size >= 2) return true;
+  return distinctActions.size >= 1 && OUTCOME_SIGNAL.test(text) && SPECIFIC_DETAIL.test(text);
+}
 
 export function decideLocalTrigger(recentTranscript: string): TriggerDecision {
   const text = String(recentTranscript ?? '').replace(/\s+/g, ' ').trim();
   if (text.length < 24 || FILLER_ONLY.test(text)) {
     return { shouldGenerate: false, reason: '内容过短或仅为语气词', focusHint: '', urgency: 'low' };
   }
-  const selfContained = /[。！？!?]$/.test(text) || text.length >= 64;
-  if (!selfContained) {
-    return { shouldGenerate: false, reason: '可能仍在句中', focusHint: '', urgency: 'low' };
+  if (
+    INCOMPLETE_ENDING.test(text) ||
+    (!TERMINAL_PUNCTUATION.test(text) && !CLOSED_ASR_ENDING.test(text))
+  ) {
+    return { shouldGenerate: false, reason: '回答疑似未结束，等待更多信息', focusHint: '', urgency: 'low' };
+  }
+  if (!hasEnoughEvidence(text)) {
+    return { shouldGenerate: false, reason: '尚未形成足够的具体行动或结果证据', focusHint: '', urgency: 'low' };
   }
   return {
     shouldGenerate: true,
-    reason: '已形成完整、可追问的候选人回答',
+    reason: '已形成完整且有具体证据的候选人回答',
     focusHint: '优先找出责任边界、关键决策或可验证结果中信息增益最高的证据缺口',
     urgency: 'med'
   };
