@@ -80,6 +80,51 @@ test('does not promise an interval follow-up while no ASR session is live', () =
   expect(screen.queryByText(/下次自动追问/)).not.toBeInTheDocument();
 });
 
+test('reveals provider partials one grapheme at a time while finals land immediately', () => {
+  vi.useFakeTimers();
+  const baseProps = {
+    transcriptMessages: [],
+    lastResult: null,
+    progress: null,
+    isAnalyzing: false,
+    error: null,
+    autoScroll: false
+  };
+  const partial = '候选人回答完整';
+  const { container, rerender } = render(
+    <TranscriptStream
+      {...baseProps}
+      transcripts={{
+        mic: { finalText: '', partial },
+        display: { finalText: '', partial: '' }
+      }}
+    />
+  );
+
+  const visual = container.querySelector('[data-live-caption="visual"]');
+  expect(visual).toHaveTextContent('候');
+  expect(visual).not.toHaveTextContent(partial);
+
+  act(() => vi.advanceTimersByTime(20));
+  expect(visual).toHaveTextContent('候选');
+  expect(visual).not.toHaveTextContent(partial);
+
+  act(() => vi.advanceTimersByTime(200));
+  expect(visual).toHaveTextContent(partial);
+
+  rerender(
+    <TranscriptStream
+      {...baseProps}
+      transcripts={{
+        mic: { finalText: `${partial}。`, partial: '' },
+        display: { finalText: '', partial: '' }
+      }}
+    />
+  );
+  expect(container.querySelector('[data-live-caption="visual"]')).toBeNull();
+  expect(screen.getByText(`${partial}。`)).toBeInTheDocument();
+});
+
 describe('TranscriptStream seeded messages', () => {
   test('renders candidate + interviewer messages as colour-coded lanes', () => {
     const messages: TranscriptMessage[] = [

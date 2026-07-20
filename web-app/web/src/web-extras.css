@@ -124,6 +124,22 @@ button.history-row {
   opacity: 1;
 }
 
+/* Live ASR hypotheses reveal visually one grapheme at a time. Keep one complete
+   provider hypothesis available to assistive technology so screen readers do
+   not announce every animated character. */
+.live-caption__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ── Offline speaker bubble: one-tap role toggle chip ────────────────────────
  *    Sits in the bubble's `.message-header` (offline diarization only). Picks up
  *    the lane's `--lane-accent` (chat.css sets it per lane-candidate/interviewer)

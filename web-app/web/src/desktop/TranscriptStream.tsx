@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import type { OutputLanguage, SpeakerRole } from '@open-cluely/contract';
 import type {
   CopilotProgress,
@@ -69,10 +69,85 @@ interface LaneLineProps {
   lane: 'candidate' | 'interviewer' | 'unknown';
   text: string;
   live?: boolean;
+  onLiveReveal?: () => void;
+}
+
+const LIVE_CAPTION_INTERVAL_MS = 20;
+
+type GraphemeSegmenter = {
+  segment: (input: string) => Iterable<{ segment: string }>;
+};
+type GraphemeSegmenterConstructor = new (
+  locale?: string,
+  options?: { granularity: 'grapheme' }
+) => GraphemeSegmenter;
+
+function splitGraphemes(text: string): string[] {
+  const Segmenter = (Intl as unknown as { Segmenter?: GraphemeSegmenterConstructor }).Segmenter;
+  if (Segmenter) {
+    return Array.from(new Segmenter('zh', { granularity: 'grapheme' }).segment(text), (part) => part.segment);
+  }
+  return Array.from(text);
+}
+
+function commonPrefixLength(left: string[], right: string[]): number {
+  const limit = Math.min(left.length, right.length);
+  let index = 0;
+  while (index < limit && left[index] === right[index]) index += 1;
+  return index;
+}
+
+/** Smooth provider-sized rolling hypotheses into a legible character stream.
+ * Durable finals never pass through this component and therefore land at once. */
+function ProgressiveLiveText({ text, onReveal }: { text: string; onReveal?: () => void }) {
+  const targetRef = useRef(text);
+  const [displayed, setDisplayed] = useState(() => splitGraphemes(text).slice(0, 1).join(''));
+
+  useEffect(() => {
+    targetRef.current = text;
+    setDisplayed((current) => {
+      const target = splitGraphemes(text);
+      const shown = splitGraphemes(current);
+      const shared = commonPrefixLength(shown, target);
+      if (shared === shown.length) return current;
+      return target.slice(0, Math.max(1, shared)).join('');
+    });
+  }, [text]);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setDisplayed((current) => {
+        const target = splitGraphemes(targetRef.current);
+        const shown = splitGraphemes(current);
+        const shared = commonPrefixLength(shown, target);
+        if (shared < shown.length) {
+          return target.slice(0, Math.max(1, shared)).join('');
+        }
+        if (shown.length >= target.length) return current;
+        return target.slice(0, shown.length + 1).join('');
+      });
+    }, LIVE_CAPTION_INTERVAL_MS);
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    onReveal?.();
+  }, [displayed, onReveal]);
+
+  return (
+    <>
+      <span data-live-caption="visual" aria-hidden="true">
+        {displayed}
+      </span>
+      <span className="live-caption__sr" role="status" aria-live="polite" aria-atomic="true">
+        {text}
+      </span>
+    </>
+  );
 }
 
 /** One transcript line — desktop `.chat-message.lane-candidate|interviewer`. */
-function LaneLine({ lane, text, live = false }: LaneLineProps) {
+function LaneLine({ lane, text, live = false, onLiveReveal }: LaneLineProps) {
   return (
     <div className={`chat-message lane-${lane}${live ? ' is-live' : ''}`}>
       <div className="message-header">
@@ -83,7 +158,9 @@ function LaneLine({ lane, text, live = false }: LaneLineProps) {
           {live ? '输入中…' : lane === 'candidate' ? '候选人' : lane === 'interviewer' ? '你' : '说话人'}
         </span>
       </div>
-      <div className="message-content">{text}</div>
+      <div className="message-content">
+        {live ? <ProgressiveLiveText text={text} onReveal={onLiveReveal} /> : text}
+      </div>
     </div>
   );
 }
@@ -198,14 +275,16 @@ export function TranscriptStream({
 }: TranscriptStreamProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
+  const scrollToLatest = useCallback((): void => {
+    const el = containerRef.current;
+    if (autoScroll && el) el.scrollTop = el.scrollHeight;
+  }, [autoScroll]);
+
   // Keep the newest content in view as lines / cards arrive (desktop autoscroll).
   // Scroll the CONTAINER (not a trailing sentinel) so `.chat-messages` can be
   // truly `:empty` — that's what triggers the desktop `:empty::before` prompt.
   useEffect(() => {
-    const el = containerRef.current;
-    if (autoScroll && el) {
-      el.scrollTop = el.scrollHeight;
-    }
+    scrollToLatest();
   }, [
     autoScroll,
     transcriptMessages,
@@ -216,7 +295,8 @@ export function TranscriptStream({
     speakerSegments,
     questionEvents,
     progress,
-    isAnalyzing
+    isAnalyzing,
+    scrollToLatest
   ]);
 
   // Show the approximate cooldown only when interval mode + AUTO are on and no
@@ -334,16 +414,16 @@ export function TranscriptStream({
           {/* Native speaker IDs are attached only to finalized iFlytek runs.
               Keep the provider's rolling partial visible as a neutral live line
               until that run finalizes and semantic role assignment can label it. */}
-          {display.partial ? <LaneLine lane="unknown" text={display.partial} live /> : null}
-          {mic.partial ? <LaneLine lane="unknown" text={mic.partial} live /> : null}
+          {display.partial ? <LaneLine lane="unknown" text={display.partial} live onLiveReveal={scrollToLatest} /> : null}
+          {mic.partial ? <LaneLine lane="unknown" text={mic.partial} live onLiveReveal={scrollToLatest} /> : null}
         </>
       ) : (
         <>
           {display.finalText ? <LaneLine lane="candidate" text={display.finalText} /> : null}
-          {display.partial ? <LaneLine lane="candidate" text={display.partial} live /> : null}
+          {display.partial ? <LaneLine lane="candidate" text={display.partial} live onLiveReveal={scrollToLatest} /> : null}
 
           {mic.finalText ? <LaneLine lane="interviewer" text={mic.finalText} /> : null}
-          {mic.partial ? <LaneLine lane="interviewer" text={mic.partial} live /> : null}
+          {mic.partial ? <LaneLine lane="interviewer" text={mic.partial} live onLiveReveal={scrollToLatest} /> : null}
         </>
       )}
 
