@@ -75,6 +75,7 @@ export function Shell() {
     analyze,
     addContextNote,
     questionEvents,
+    autoMonitor,
     lastAutoFireAt,
     progress,
     progressTokens,
@@ -479,6 +480,7 @@ export function Shell() {
                 onInsights={onInsights}
                 assistantBusy={assistant.busy}
                 autoGenerate={appSettings.settings.autoGenerate}
+                autoMonitorStatus={autoMonitor?.status}
                 onToggleAuto={onToggleAuto}
               />
               <TranscriptStream

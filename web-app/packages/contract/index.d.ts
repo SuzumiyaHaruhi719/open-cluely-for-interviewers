@@ -5,6 +5,7 @@ export const PCM: { sampleRate: number; channels: number; format: string };
 export const S2C: {
   READY: 'ready';
   PROGRESS: 'progress';
+  AUTO_MONITOR: 'auto-monitor';
   RESULT: 'result';
   TRANSCRIPT: 'transcript';
   ASR_STATUS: 'asr-status';
@@ -35,6 +36,7 @@ export type InterviewerMode = 'fast' | 'expert' | 'expert2' | 'customize';
 export type OutputLanguage = '' | 'zh' | 'en';
 export type InterviewerModel = 'deepseek-v4-pro' | 'deepseek-v4-flash' | 'qwen3-vl-plus';
 export type AudioSource = 'mic' | 'display';
+export type AutoMonitorStatus = 'idle' | 'evaluating' | 'waiting' | 'delegating';
 
 /**
  * Realtime ASR provider:
@@ -265,6 +267,12 @@ export type ClientMessage =
 
 export type ServerMessage =
   | { type: 'ready'; sessionId: string }
+  | {
+      type: 'auto-monitor';
+      status: AutoMonitorStatus;
+      model: string;
+      elapsedMs?: number;
+    }
   | {
       type: 'progress';
       requestId: string;

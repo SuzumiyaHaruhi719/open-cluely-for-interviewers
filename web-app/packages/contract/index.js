@@ -38,6 +38,7 @@ const PCM = Object.freeze({ sampleRate: 16000, channels: 1, format: 's16le' });
 const S2C = Object.freeze({
   READY: 'ready',
   PROGRESS: 'progress',
+  AUTO_MONITOR: 'auto-monitor',
   RESULT: 'result',
   TRANSCRIPT: 'transcript',
   ASR_STATUS: 'asr-status',

@@ -20,6 +20,7 @@ import { isAudiblePcm16Base64 } from './audio-activity';
 import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
+import { evaluateAutoMonitor } from './auto-monitor';
 import {
   EXPERT_QUESTION_MODEL,
   generateExpertQuestion,
@@ -396,6 +397,10 @@ async function runAnalysis(ws: WebSocket, session: HeadlessSession, args: RunAna
 interface RunExpertQuestionArgs extends ExpertQuestionInput {
   requestId: string;
   trigger: GenerationTrigger;
+  /** Semantic candidate turn that caused the sentinel delegation. */
+  anchorSeq?: number;
+  /** Sentinel usage so the visible result reports the full two-call cost. */
+  monitorTokensUsed?: TokenUsage;
   isStale?: () => boolean;
 }
 
@@ -463,9 +468,16 @@ export async function runExpertQuestionAndEmit(
     tokens: null
   });
 
-  // The autonomous call is allowed to decide there is no valuable gap yet.
-  // A manual click always returns the deterministic evidence-anchored fallback.
-  if (args.trigger === 'auto' && !generated.shouldAsk) return;
+  const monitorTokens = args.monitorTokensUsed ?? ZERO_TOKENS;
+  const tokensUsed: TokenUsage = {
+    input: monitorTokens.input + generated.tokensUsed.input,
+    output: monitorTokens.output + generated.tokensUsed.output,
+    total:
+      monitorTokens.input +
+      monitorTokens.output +
+      generated.tokensUsed.input +
+      generated.tokensUsed.output
+  };
 
   send(ws, {
     type: 'result',
@@ -473,11 +485,12 @@ export async function runExpertQuestionAndEmit(
     mode: 'expert',
     output: generated.output,
     shouldShowFollowUps: true,
-    tokensUsed: generated.tokensUsed,
+    tokensUsed,
     elapsedMs: generated.elapsedMs,
     iterationVersion: generated.output.iteration_version,
     ranked: [],
-    trigger: args.trigger
+    trigger: args.trigger,
+    ...(typeof args.anchorSeq === 'number' ? { anchorSeq: args.anchorSeq } : {})
   });
 }
 
@@ -1062,14 +1075,14 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // feed the running answer to the autonomous trigger monitor. ONLINE mode hits
     // this via display finals; semantic role partitioning hits the SAME function
     // for candidate finals. Factored so both paths share accumulation + trigger.
-    function feedCandidateAnswer(rawSegment: string): void {
+    function feedCandidateAnswer(rawSegment: string, anchorSeq?: number): void {
       const segment = rawSegment.trim();
       if (segment) {
         accumulatedDisplayFinal = accumulatedDisplayFinal
           ? `${accumulatedDisplayFinal} ${segment}`
           : segment;
       }
-      trigger.onCandidateFinal(accumulatedDisplayFinal);
+      trigger.onCandidateFinal(accumulatedDisplayFinal, anchorSeq);
     }
 
     let visibleAutoRequestId: string | null = null;
@@ -1094,7 +1107,19 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // one-call Expert path.
     const trigger: AutoTrigger = createAutoTrigger({
       onAutoInvalidated: terminateVisibleAutoAttempt,
-      runAnalyze: async ({ candidateAnswer, focusHint }) => {
+      onMonitorState: (state) => send(ws, { type: 'auto-monitor', ...state }),
+      shouldGenerate: async (candidateAnswer) => {
+        const state = session.getState() as {
+          jobDescription?: string;
+          interviewGuide?: string[];
+        };
+        return evaluateAutoMonitor({
+          candidateAnswer,
+          jobDescription: state.jobDescription,
+          interviewGuide: state.interviewGuide
+        });
+      },
+      runAnalyze: async ({ candidateAnswer, focusHint, anchorSeq, monitorTokensUsed }) => {
         // Capture the epoch at the START so a reset() during this generation marks
         // it stale (suppressing its progress + result). Record the in-flight auto
         // requestId so makeEmit/runAnalysis can match it; clear it on settle.
@@ -1119,6 +1144,8 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             outputLanguage: state.outputLanguage,
             requestId,
             trigger: 'auto',
+            ...(typeof anchorSeq === 'number' ? { anchorSeq } : {}),
+            ...(monitorTokensUsed ? { monitorTokensUsed } : {}),
             isStale: () => trigger.getEpoch() !== startEpoch
           });
         } finally {
@@ -1141,7 +1168,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       onCandidateTurn: (turn: SpeakerTurn) => {
         if (fedSemanticCandidateSeqs.has(turn.seq)) return;
         fedSemanticCandidateSeqs.add(turn.seq);
-        feedCandidateAnswer(turn.text);
+        feedCandidateAnswer(turn.text, turn.seq);
       },
       onInterviewerTurn: (turn: SpeakerTurn) => {
         if (handledSemanticInterviewerSeqs.has(turn.seq)) return;
@@ -1171,9 +1198,8 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     const relay = createAsrRelay({
       onStatus: (status) => send(ws, { type: 'asr-status', ...status }),
       emit: (t) => {
-        // Any rolling partial/final proves that somebody is still speaking. It
-        // cancels a pending follow-up; a role-confirmed candidate FINAL below may
-        // arm a fresh quiet period after this activity marker.
+        // Raw activity is retained only for interval-mode cadence. Agent mode is
+        // driven by role-confirmed semantic finals, so audible PCM cannot starve it.
         trigger.noteSpeechActivity();
         const finalTurnSeq = t.isFinal ? speakerTurnSeq++ : null;
         if (finalTurnSeq !== null) {
@@ -1235,10 +1261,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         } else if (t.source === 'display' && t.isFinal) {
           // Backward compatibility for clients that have not enabled semantic
           // partitioning. The current web client always enables it.
-          feedCandidateAnswer(t.text);
+          feedCandidateAnswer(t.text, finalTurnSeq ?? undefined);
         } else if (isCandidateFinal(roles, t)) {
           if (finalTurnSeq !== null) fedSemanticCandidateSeqs.add(finalTurnSeq);
-          feedCandidateAnswer(t.text);
+          feedCandidateAnswer(t.text, finalTurnSeq ?? undefined);
         }
       },
       onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, trigger, text)

@@ -46,6 +46,27 @@ describe('useCopilotSocket', () => {
     await waitFor(() => expect(result.current.sessionId).toBe('sess-42'));
   });
 
+  test('surfaces the current continuous Flash monitor lifecycle', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    act(() => {
+      MockWebSocket.last().emit({
+        type: 'auto-monitor',
+        status: 'delegating',
+        model: 'deepseek-v4-flash',
+        elapsedMs: 712
+      });
+    });
+
+    await waitFor(() => expect(result.current.autoMonitor?.status).toBe('delegating'));
+    expect(result.current.autoMonitor).toMatchObject({
+      model: 'deepseek-v4-flash',
+      elapsedMs: 712
+    });
+  });
+
   test('analyze sends a message and a result surfaces as lastResult', async () => {
     const { result } = renderHook(() => useCopilotSocket());
 

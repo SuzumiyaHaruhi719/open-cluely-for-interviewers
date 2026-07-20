@@ -22,6 +22,7 @@
 // ============================================================================
 
 import { config as serverConfig } from './config';
+import type { AutoMonitorStatus, TokenUsage } from '@open-cluely/contract';
 
 /** The monitor's strict-JSON verdict. */
 export interface TriggerDecision {
@@ -29,6 +30,8 @@ export interface TriggerDecision {
   reason: string;
   focusHint: string;
   urgency: 'low' | 'med' | 'high';
+  /** Provider-reported sentinel usage, included in the final visible total. */
+  tokensUsed?: TokenUsage;
 }
 
 /** Tunables (defaults from server config; overridable per-instance in tests). */
@@ -56,9 +59,20 @@ export interface AutoTriggerDeps {
    * Fire the shared realtime Expert Flash path. Manual Generate Q uses the same
    * path unless Customize mode is explicitly selected.
    */
-  runAnalyze: (opts: { candidateAnswer: string; focusHint: string }) => Promise<void>;
+  runAnalyze: (opts: {
+    candidateAnswer: string;
+    focusHint: string;
+    anchorSeq?: number;
+    monitorTokensUsed?: TokenUsage;
+  }) => Promise<void>;
   /** Immediately terminate the visible autonomous attempt when speech/Stop/reset invalidates it. */
   onAutoInvalidated?: () => void;
+  /** Credential-free lifecycle for the existing GLP Auto pill. */
+  onMonitorState?: (state: {
+    status: AutoMonitorStatus;
+    model: string;
+    elapsedMs?: number;
+  }) => void;
   /** Clock. Defaults to Date.now; injected in tests for a deterministic cooldown. */
   now?: () => number;
   /** Schedule the debounce. Defaults to setTimeout; injected to control timing in tests. */
@@ -71,7 +85,7 @@ export interface AutoTriggerDeps {
 
 export interface AutoTrigger {
   /** A new interviewee FINAL segment arrived; `fullCandidateText` is the accumulated final text. */
-  onCandidateFinal: (fullCandidateText: string) => void;
+  onCandidateFinal: (fullCandidateText: string, anchorSeq?: number) => void;
   /** Any live ASR activity (partial or final) postpones a pending question. */
   noteSpeechActivity: () => void;
   /** The interviewer started/finished a new turn, so the prior answer window is stale. */
@@ -211,6 +225,21 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   const shouldGenerate = deps.shouldGenerate ?? makeDefaultShouldGenerate();
   const runAnalyze = deps.runAnalyze;
   const onAutoInvalidated = deps.onAutoInvalidated ?? (() => undefined);
+  const onMonitorState = deps.onMonitorState ?? (() => undefined);
+
+  function emitMonitorState(status: AutoMonitorStatus, startedAt?: number): void {
+    try {
+      onMonitorState({
+        status,
+        model: cfg.monitorModel,
+        ...(typeof startedAt === 'number'
+          ? { elapsedMs: Math.max(0, now() - startedAt) }
+          : {})
+      });
+    } catch {
+      /* UI observability must never interrupt audio or generation */
+    }
+  }
 
   // Per-instance state.
   let autoGenerate = true;
@@ -219,6 +248,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let lastGenAt = now() - cfg.cooldownMs;
   let charsAtLastGen = 0;
   let isGenerating = false;
+  let activeAuto = false;
 
   // Firing mode + recent transcript bookkeeping. `latestText` is the full recent
   // transcript across all speakers; generation content is candidate-only and
@@ -227,6 +257,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let latestText = '';
   let latestCandidateText = '';
   let lastCandidateFullText = '';
+  let latestCandidateAnchor: number | undefined;
+  let candidateRevision = 0;
   // Rolling CANDIDATE transcript accumulated SINCE the last fire (auto OR manual).
   // Every follow-up is generated from ONLY this candidate window — not interviewer
   // prompts and not the whole conversation — so the model never probes the
@@ -241,6 +273,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   // Debounce bookkeeping: the latest accumulated text + the pending timer.
   let pendingText: string | null = null;
+  let pendingAnchor: number | undefined;
   let timer: TimerHandle | null = null;
 
   // Monotonic epoch bumped by reset() (new/switched chat). A generation captures
@@ -255,29 +288,23 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       timer = null;
     }
     pendingText = null;
+    pendingAnchor = undefined;
   }
 
-  function quietPeriodElapsed(): boolean {
-    return now() - lastSpeechAt >= cfg.debounceMs;
-  }
-
-  function runPendingWhenQuiet(): void {
+  function runPendingAfterDebounce(): void {
     timer = null;
     if (pendingText === null) return;
-    const quietFor = now() - lastSpeechAt;
-    if (quietFor < cfg.debounceMs) {
-      timer = setTimer(runPendingWhenQuiet, Math.max(1, cfg.debounceMs - quietFor));
-      return;
-    }
     const pending = pendingText;
+    const anchorSeq = pendingAnchor;
     pendingText = null;
-    void evaluate(pending);
+    pendingAnchor = undefined;
+    void evaluate(pending, anchorSeq);
   }
 
-  function armPendingAfterQuiet(): void {
+  function armPendingAfterDebounce(): void {
     if (pendingText === null) return;
     if (timer !== null) clearTimer(timer);
-    timer = setTimer(runPendingWhenQuiet, cfg.debounceMs);
+    timer = setTimer(runPendingAfterDebounce, cfg.debounceMs);
   }
 
   /** True iff the cheap local gates currently allow a fire for `text`. */
@@ -313,12 +340,15 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     const next = !!on;
     const ended = capturing && !next;
     capturing = next;
+    emitMonitorState(
+      capturing && autoGenerate && mode === 'agent' ? 'waiting' : 'idle'
+    );
     if (!ended) return;
     // Stop is a hard product boundary: no pending or already-running autonomous
     // suggestion may surface after the interviewer ends capture. Bumping the
     // epoch lets ws.ts suppress a Flash result that was already in flight.
     clearPending();
-    if (isGenerating) onAutoInvalidated();
+    if (activeAuto) onAutoInvalidated();
     epoch += 1;
   }
 
@@ -347,7 +377,13 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     const startEpoch = epoch;
     isGenerating = true;
     try {
-      await runAnalyze({ candidateAnswer: text, focusHint: '' });
+      await runAnalyze({
+        candidateAnswer: text,
+        focusHint: '',
+        ...(typeof latestCandidateAnchor === 'number'
+          ? { anchorSeq: latestCandidateAnchor }
+          : {})
+      });
     } catch {
       /* analyze failures are handled by the caller's path; never disrupt the relay */
     } finally {
@@ -373,42 +409,71 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
    * the quiet period), then the Flash gate, then fire. Resolves when settled. Any
    * error in the monitor/analyze is swallowed so the relay is never disrupted.
    */
-  async function evaluate(text: string): Promise<void> {
-    if (!quietPeriodElapsed()) return;
-    if (!localGatesPass(text)) return;
-    let decision: TriggerDecision;
-    try {
-      decision = await shouldGenerate(text);
-    } catch {
-      // Belt-and-suspenders: the default impl never rejects, but a custom one might.
-      return;
-    }
-    if (!decision.shouldGenerate) return;
-    // Re-check gates AFTER the await — a manual run (or another auto) may have
-    // claimed the slot while the monitor was thinking. Real audio may also have
-    // resumed while the decision was being made.
-    if (!quietPeriodElapsed()) return;
+  async function evaluate(text: string, anchorSeq?: number): Promise<void> {
     if (!localGatesPass(text)) return;
 
     const startEpoch = epoch;
-    isGenerating = true;
-    // Generate from ONLY the transcript since the last follow-up (fall back to the
-    // gate text if that window is somehow empty), so the follow-up targets new
-    // material instead of re-probing what an earlier follow-up already covered.
+    const startRevision = candidateRevision;
     const firedRaw = sinceFire;
-    const since = firedRaw.trim();
+    const candidateWindow = firedRaw.trim() || text.trim();
+    let delegated = false;
+    isGenerating = true;
+    activeAuto = true;
+    const monitorStartedAt = now();
+    emitMonitorState('evaluating');
+
     try {
-      await runAnalyze({ candidateAnswer: since || text, focusHint: decision.focusHint });
+      let decision: TriggerDecision;
+      try {
+        decision = await shouldGenerate(candidateWindow);
+      } catch {
+        emitMonitorState('waiting', monitorStartedAt);
+        return;
+      }
+      // Only semantic boundaries may stale a chain. Raw PCM/partials deliberately
+      // do not change the epoch, so tightly paced speech cannot starve Auto.
+      if (epoch !== startEpoch || !autoGenerate || !capturing) return;
+      if (!decision.shouldGenerate) {
+        emitMonitorState('waiting', monitorStartedAt);
+        return;
+      }
+
+      delegated = true;
+      emitMonitorState('delegating', monitorStartedAt);
+      await runAnalyze({
+        candidateAnswer: candidateWindow,
+        focusHint: decision.focusHint,
+        ...(typeof anchorSeq === 'number' ? { anchorSeq } : {}),
+        ...(decision.tokensUsed ? { monitorTokensUsed: decision.tokensUsed } : {})
+      });
     } catch {
-      /* analyze failures are handled by the caller's path; never disrupt the relay */
+      /* monitor/analyze failures are fail-closed and never disrupt the relay */
     } finally {
-      // A reset() mid-flight (new/switched chat) means this fire belongs to an
-      // abandoned chat — do NOT advance the cooldown for the new chat.
-      if (epoch === startEpoch) {
+      if (delegated && epoch === startEpoch) {
         recordFire(text);
         consumeSinceFire(firedRaw);
       }
+      activeAuto = false;
       isGenerating = false;
+      if (delegated) {
+        emitMonitorState(
+          autoGenerate && capturing && mode === 'agent' ? 'waiting' : 'idle',
+          monitorStartedAt
+        );
+      } else if (epoch !== startEpoch || !autoGenerate || !capturing) {
+        emitMonitorState(autoGenerate && capturing && mode === 'agent' ? 'waiting' : 'idle');
+      }
+
+      // A newer candidate final may have arrived while the sentinel was waiting.
+      // Keep it queued and evaluate it once this chain releases the single slot.
+      if (
+        (!delegated || epoch !== startEpoch) &&
+        candidateRevision > startRevision &&
+        pendingText !== null &&
+        localGatesPass(pendingText)
+      ) {
+        armPendingAfterDebounce();
+      }
     }
   }
 
@@ -423,21 +488,20 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   function noteSpeechActivity(): void {
     lastSpeechAt = now();
-    // If speech resumes while Flash is already working, invalidate that autonomous
-    // request so ws.ts drops its completion instead of surfacing over the speaker.
-    if (isGenerating) {
-      epoch += 1;
-      onAutoInvalidated();
-    }
-    // Preserve the latest candidate evidence while continuously postponing its
-    // timer. Some providers split audio without emitting another final, so dropping
-    // the pending text here would force the interviewer back to manual mode.
-    armPendingAfterQuiet();
+    // Raw PCM and rolling partials are acoustic activity, not a role-confirmed
+    // conversational boundary. They never postpone or invalidate the semantic
+    // candidate checkpoint used by agent mode. Interval mode still reads this
+    // timestamp to avoid firing blindly in the middle of audible speech.
   }
 
   function onInterviewerFinal(): void {
-    noteSpeechActivity();
+    lastSpeechAt = now();
     clearPending();
+    // A confirmed interviewer turn is the semantic cancellation boundary. It
+    // invalidates the old autonomous chain while raw audio never does.
+    if (activeAuto) onAutoInvalidated();
+    epoch += 1;
+    emitMonitorState(autoGenerate && capturing && mode === 'agent' ? 'waiting' : 'idle');
     // Once the interviewer has moved on, a follow-up for the previous answer is
     // stale. Preserve the accumulated full-text baseline so the next candidate
     // delta contains only the new answer rather than blending two questions.
@@ -445,10 +509,11 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     charsAtLastGen = latestCandidateText.length;
   }
 
-  function rememberCandidateFinal(fullCandidateText: string): void {
+  function rememberCandidateFinal(fullCandidateText: string, anchorSeq?: number): void {
     const text = String(fullCandidateText ?? '').trim();
     if (!text) return;
     latestCandidateText = text;
+    if (typeof anchorSeq === 'number') latestCandidateAnchor = anchorSeq;
 
     let delta = text;
     if (lastCandidateFullText && text.startsWith(lastCandidateFullText)) {
@@ -459,22 +524,27 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     lastCandidateFullText = text;
 
     if (!delta) return;
+    candidateRevision += 1;
     sinceFire = sinceFire ? `${sinceFire} ${delta}` : delta;
     if (sinceFire.length > 4000) sinceFire = sinceFire.slice(-4000);
   }
 
-  function onCandidateFinal(fullCandidateText: string): void {
+  function onCandidateFinal(fullCandidateText: string, anchorSeq?: number): void {
     const text = String(fullCandidateText ?? '');
-    rememberCandidateFinal(text);
+    rememberCandidateFinal(text, anchorSeq);
     // 'interval' mode is timer-driven and fires from the candidate-only
     // `sinceFire` window; the agent gate/debounce below stays unchanged.
     if (mode !== 'agent') return;
     // Cheap pre-filter: if the local gates can't pass for this text, don't even
     // arm the debounce. (The post-debounce evaluate() re-checks, so this is purely
     // an optimization — it also keeps a disabled monitor completely silent.)
-    if (!localGatesPass(text)) return;
+    // Always retain the newest semantic checkpoint, even while the sentinel or
+    // Expert owns the single in-flight slot. The chain's finally block re-arms it
+    // after a `wait` so evidence arriving mid-monitor is not lost.
     pendingText = text;
-    armPendingAfterQuiet();
+    pendingAnchor = anchorSeq;
+    if (!localGatesPass(text)) return;
+    armPendingAfterDebounce();
   }
 
   function setAutoGenerate(enabled: boolean): void {
@@ -485,6 +555,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // disable; (re)start only if we're enabling AND already in interval mode.
     if (!autoGenerate) stopInterval();
     else if (mode === 'interval') startInterval();
+    emitMonitorState(autoGenerate && capturing && mode === 'agent' ? 'waiting' : 'idle');
   }
 
   function setMode(next: 'agent' | 'interval'): void {
@@ -495,6 +566,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // and hands firing back to the gate/debounce path untouched.
     stopInterval();
     if (mode === 'interval' && autoGenerate) startInterval();
+    emitMonitorState(autoGenerate && capturing && mode === 'agent' ? 'waiting' : 'idle');
   }
 
   function setIntervalMs(ms: number): void {
@@ -515,6 +587,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // Claim the in-flight slot + reset the cooldown so auto won't overlap or fire
     // right after a manual generation. Cancel any pending auto evaluation too.
     isGenerating = true;
+    activeAuto = false;
     lastGenAt = now();
     if (typeof fullCandidateText === 'string') {
       const text = fullCandidateText.trim();
@@ -531,6 +604,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   function markRunDone(fullCandidateText?: string): void {
     isGenerating = false;
+    activeAuto = false;
     lastGenAt = now();
     if (typeof fullCandidateText === 'string') {
       const text = fullCandidateText.trim();
@@ -543,13 +617,15 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   function reset(): void {
     // Bump the epoch FIRST so any in-flight generation (whose finally compares the
     // captured epoch) neither records a fire nor lets the caller emit its result.
-    if (isGenerating) onAutoInvalidated();
+    if (activeAuto) onAutoInvalidated();
     epoch += 1;
     // Drop the interval-mode accumulated transcript + the since-last-fire window
     // so the new chat starts blank.
     latestText = '';
     latestCandidateText = '';
     lastCandidateFullText = '';
+    latestCandidateAnchor = undefined;
+    candidateRevision = 0;
     sinceFire = '';
     lastSpeechAt = Number.NEGATIVE_INFINITY;
     // Cancel any armed agent debounce/pending so no late fire from the old chat.
@@ -558,19 +634,22 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // the cooldown one window into the past so the NEW chat's first substantive
     // segment is eligible immediately — same as a fresh session.
     isGenerating = false;
+    activeAuto = false;
     lastGenAt = now() - cfg.cooldownMs;
     charsAtLastGen = 0;
+    emitMonitorState(autoGenerate && capturing && mode === 'agent' ? 'waiting' : 'idle');
   }
 
   async function flush(): Promise<void> {
-    // The test seat bypasses the wall-clock timer only after a real quiet period.
-    // While speech is active, preserve the pending evidence and its re-armed timer.
-    if (!quietPeriodElapsed()) return;
+    // The test seat bypasses the semantic debounce. Raw acoustic activity does
+    // not gate agent evaluation.
     if (timer !== null) clearTimer(timer);
     timer = null;
     const pending = pendingText;
+    const anchorSeq = pendingAnchor;
     pendingText = null;
-    if (pending !== null) await evaluate(pending);
+    pendingAnchor = undefined;
+    if (pending !== null) await evaluate(pending, anchorSeq);
   }
 
   return {

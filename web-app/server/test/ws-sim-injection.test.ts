@@ -52,6 +52,14 @@ function blockReply(prompt: string): string {
     });
   }
 
+  if (prompt.includes('[候选人最新证据]')) {
+    return JSON.stringify({
+      action: 'ask',
+      gap: '候选人的根因验证仍需要核对证据链',
+      focusHint: '追问如何排除下游消费以及使用了哪些对照指标'
+    });
+  }
+
   if (prompt.includes('[候选人最新回答]')) {
     return JSON.stringify({
       should_ask: true,
@@ -294,7 +302,12 @@ async function runInjectedAutoScript(port: number): Promise<{
       const msg = JSON.parse(data.toString()) as ServerMessage;
       seenTypes.push(msg.type);
       if (msg.type === 'speaker-partition') partitions.push(msg);
-      if (msg.type === 'result') results.push(msg);
+      if (msg.type === 'result') {
+        results.push(msg);
+        clearTimeout(timer);
+        ws.close();
+        resolve({ results, partitions });
+      }
     });
   });
 }
@@ -336,7 +349,7 @@ test('sim injection scripts drive different Expert follow-up frames through the 
   }
 });
 
-test('mixed shared audio partitions roles and continuous speech suppresses Auto', async () => {
+test('mixed shared audio partitions roles and continuous speech still delegates one Auto question', async () => {
   const restoreFetch = installFetchStub();
   const { port, close } = await startServer();
   try {
@@ -350,11 +363,10 @@ test('mixed shared audio partitions roles and continuous speech suppresses Auto'
         [2, 'candidate']
       ]
     );
-    assert.deepEqual(
-      run.results,
-      [],
-      'the next interviewer partial arrives before the quiet window, so Auto must remain silent'
-    );
+    assert.equal(run.results.length, 1, 'semantic candidate evidence delegates despite continuous audio');
+    assert.equal(run.results[0].trigger, 'auto');
+    assert.equal(run.results[0].anchorSeq, 1);
+    assert.equal(run.results[0].output.primary_question, ORDER_QUESTION);
   } finally {
     await close();
     restoreFetch();

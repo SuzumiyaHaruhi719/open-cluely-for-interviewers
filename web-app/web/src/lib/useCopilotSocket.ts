@@ -24,6 +24,7 @@ export type SocketStatus = 'connecting' | 'open' | 'closed' | 'reconnecting';
  */
 export type CopilotResult = Extract<ServerMessage, { type: 'result' }>;
 export type CopilotProgress = Extract<ServerMessage, { type: 'progress' }>;
+export type AutoMonitorState = Extract<ServerMessage, { type: 'auto-monitor' }>;
 
 /** A durable AI follow-up placed after the transcript segment that triggered it. */
 export interface CopilotQuestionEvent {
@@ -109,6 +110,8 @@ export interface CopilotSocket {
   lastResult: CopilotResult | null;
   /** Chronological AI follow-ups interleaved into the transcript timeline. */
   questionEvents: CopilotQuestionEvent[];
+  /** Latest credential-free sentinel lifecycle emitted by the server. */
+  autoMonitor: AutoMonitorState | null;
   /**
    * Timestamp (ms) of the last `trigger === 'auto'` result, or of when interval
    * mode last became active. Drives the client-side "next auto follow-up" cooldown
@@ -295,6 +298,7 @@ export function useCopilotSocket(): CopilotSocket {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<CopilotResult | null>(null);
   const [questionEvents, setQuestionEvents] = useState<CopilotQuestionEvent[]>([]);
+  const [autoMonitor, setAutoMonitor] = useState<AutoMonitorState | null>(null);
   // Timestamp of the last auto fire, for the interval-mode cooldown countdown.
   const [lastAutoFireAt, setLastAutoFireAt] = useState<number | null>(null);
   const [progress, setProgress] = useState<CopilotProgress | null>(null);
@@ -390,6 +394,9 @@ export function useCopilotSocket(): CopilotSocket {
     switch (message.type) {
       case 'ready':
         setSessionId(message.sessionId);
+        break;
+      case 'auto-monitor':
+        setAutoMonitor(message);
         break;
       case 'progress':
         if (abandonedRequestIdsRef.current.has(message.requestId)) {
@@ -937,6 +944,7 @@ export function useCopilotSocket(): CopilotSocket {
     setTranscripts({ mic: { ...EMPTY_LANE }, display: { ...EMPTY_LANE } });
     setLastResult(null);
     setQuestionEvents([]);
+    setAutoMonitor(null);
     setLastAutoFireAt(null);
     setProgress(null);
     setProgressTokens(0);
@@ -976,6 +984,7 @@ export function useCopilotSocket(): CopilotSocket {
     addContextNote,
     lastResult,
     questionEvents,
+    autoMonitor,
     lastAutoFireAt,
     progress,
     progressTokens,

@@ -47,8 +47,9 @@ interface Harness {
   fireTimer: () => void;
   setTimerCalls: number;
   clearTimerCalls: number;
-  analyzeCalls: Array<{ candidateAnswer: string; focusHint: string }>;
+  analyzeCalls: Array<{ candidateAnswer: string; focusHint: string; anchorSeq?: number }>;
   monitorCalls: string[];
+  monitorStates: string[];
 }
 
 function makeTrigger(opts: {
@@ -71,7 +72,8 @@ function makeTrigger(opts: {
     setTimerCalls: 0,
     clearTimerCalls: 0,
     analyzeCalls: [],
-    monitorCalls: []
+    monitorCalls: [],
+    monitorStates: []
   };
 
   let pendingFn: (() => void) | null = null;
@@ -86,9 +88,10 @@ function makeTrigger(opts: {
 
   const deps: AutoTriggerDeps = {
     shouldGenerate,
-    runAnalyze: async ({ candidateAnswer, focusHint }) => {
-      h.analyzeCalls.push({ candidateAnswer, focusHint });
+    runAnalyze: async ({ candidateAnswer, focusHint, anchorSeq }) => {
+      h.analyzeCalls.push({ candidateAnswer, focusHint, anchorSeq });
     },
+    onMonitorState: (state) => h.monitorStates.push(state.status),
     now: () => h.nowMs,
     setTimer: (fn: () => void): TimerHandle => {
       h.setTimerCalls += 1;
@@ -114,7 +117,7 @@ function makeTrigger(opts: {
 test('fires once when all local gates pass and the monitor says yes', async () => {
   const { trigger, h } = makeTrigger({ decision: yes('probe the bug') });
 
-  trigger.onCandidateFinal(LONG_ANSWER);
+  trigger.onCandidateFinal(LONG_ANSWER, 7);
   // Debounce armed but not yet evaluated.
   assert.equal(h.setTimerCalls, 1);
   assert.equal(h.analyzeCalls.length, 0);
@@ -125,6 +128,12 @@ test('fires once when all local gates pass and the monitor says yes', async () =
   assert.equal(h.analyzeCalls.length, 1, 'analyze fired once');
   assert.equal(h.analyzeCalls[0].candidateAnswer, LONG_ANSWER);
   assert.equal(h.analyzeCalls[0].focusHint, 'probe the bug');
+  assert.equal(h.analyzeCalls[0].anchorSeq, 7, 'the semantic candidate turn anchors the question');
+  assert.deepEqual(
+    h.monitorStates.slice(-3),
+    ['evaluating', 'delegating', 'waiting'],
+    'the UI can see sentinel → Expert delegation → continued monitoring'
+  );
   assert.equal(trigger.getIsGenerating(), false, 'in-flight slot released after settle');
 });
 
@@ -236,6 +245,35 @@ test('monitor returning false → no fire', async () => {
   assert.equal(h.analyzeCalls.length, 0, 'but no analyze when it says no');
 });
 
+test('candidate evidence arriving during a monitor wait is retained and re-evaluated', async () => {
+  let releaseFirst!: (decision: TriggerDecision) => void;
+  let monitorCall = 0;
+  const { trigger, h } = makeTrigger({
+    decision: () => {
+      monitorCall += 1;
+      if (monitorCall === 1) {
+        return new Promise<TriggerDecision>((resolve) => {
+          releaseFirst = resolve;
+        });
+      }
+      return yes('追问新增的验证证据');
+    }
+  });
+
+  trigger.onCandidateFinal(LONG_ANSWER, 30);
+  const first = trigger.flush();
+  await Promise.resolve();
+  trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX, 31);
+  releaseFirst(no());
+  await first;
+
+  await trigger.flush();
+  assert.equal(h.monitorCalls.length, 2, 'the newer candidate checkpoint is evaluated after wait');
+  assert.equal(h.analyzeCalls.length, 1);
+  assert.equal(h.analyzeCalls[0].anchorSeq, 31);
+  assert.match(h.analyzeCalls[0].candidateAnswer, /idempotency key/);
+});
+
 test('monitor throwing → no fire (swallowed)', async () => {
   const { trigger, h } = makeTrigger({ throwInMonitor: true });
 
@@ -290,29 +328,20 @@ test('debounce coalesces rapid onCandidateFinal calls into ONE evaluation', asyn
   assert.equal(h.analyzeCalls[0].candidateAnswer, latest, 'fires with the LATEST accumulated text');
 });
 
-test('ongoing speech cancels a pending question until a later candidate final closes the turn', async () => {
+test('ongoing raw speech does not erase a confirmed semantic candidate checkpoint', async () => {
   const { trigger, h } = makeTrigger({ decision: yes() });
 
-  trigger.onCandidateFinal(LONG_ANSWER);
-  assert.equal(h.setTimerCalls, 1, 'candidate final arms the quiet-period timer');
+  trigger.onCandidateFinal(LONG_ANSWER, 12);
+  assert.equal(h.setTimerCalls, 1, 'candidate final arms the semantic debounce');
 
-  // A provider partial means somebody is still speaking. Auto must not surface a
-  // question over that speech even if the prior final was already substantive.
+  // Audible PCM and rolling partials may continue for the same uninterrupted
+  // answer. They must not postpone or invalidate the semantic checkpoint.
+  trigger.noteSpeechActivity();
   trigger.noteSpeechActivity();
   await trigger.flush();
-  assert.equal(h.analyzeCalls.length, 0, 'no question while speech continues');
-  assert.ok(h.clearTimerCalls >= 1, 'speech postpones the armed quiet-period timer');
-  assert.equal(h.setTimerCalls, 2, 'speech re-arms the same candidate evidence after a new quiet period');
-
-  // Some providers do not emit another final after the last rolling chunk. Once
-  // the real audio has stayed quiet for the full debounce, the postponed evidence
-  // must still fire without requiring another transcript boundary.
-  h.advance(DEBOUNCE_MS);
-  h.fireTimer();
-  await Promise.resolve();
-  await Promise.resolve();
-  assert.equal(h.analyzeCalls.length, 1, 'the postponed answer fires only after real quiet');
+  assert.equal(h.analyzeCalls.length, 1, 'the confirmed answer still delegates during continuous audio');
   assert.equal(h.analyzeCalls[0].candidateAnswer, LONG_ANSWER);
+  assert.equal(h.analyzeCalls[0].anchorSeq, 12);
 });
 
 test('stopping capture cancels pending Auto work and invalidates an in-flight result', async () => {
@@ -330,7 +359,7 @@ test('stopping capture cancels pending Auto work and invalidates an in-flight re
   assert.equal(h.analyzeCalls.length, 0, 'nothing fires after the interview capture stops');
 });
 
-test('speech resuming during Auto generation invalidates the result before it can surface', async () => {
+test('raw speech during Auto generation does not invalidate the delegated result', async () => {
   let releaseAnalyze!: () => void;
   let invalidationCalls = 0;
   const analyzeGate = new Promise<void>((resolve) => {
@@ -368,8 +397,41 @@ test('speech resuming during Auto generation invalidates the result before it ca
   assert.equal(trigger.getIsGenerating(), true);
 
   trigger.noteSpeechActivity();
-  assert.equal(trigger.getEpoch(), epochAtStart + 1, 'the caller can suppress the stale Auto frame');
-  assert.equal(invalidationCalls, 1, 'the visible Auto attempt is terminated as soon as speech resumes');
+  assert.equal(trigger.getEpoch(), epochAtStart, 'raw PCM is not a semantic cancellation boundary');
+  assert.equal(invalidationCalls, 0, 'the delegated Expert remains visible while the same answer continues');
+
+  releaseAnalyze();
+  await run;
+});
+
+test('a confirmed interviewer turn invalidates an in-flight autonomous chain', async () => {
+  let releaseAnalyze!: () => void;
+  let invalidationCalls = 0;
+  const trigger = createAutoTrigger({
+    shouldGenerate: async () => yes(),
+    runAnalyze: () => new Promise<void>((resolve) => (releaseAnalyze = resolve)),
+    onAutoInvalidated: () => {
+      invalidationCalls += 1;
+    },
+    setTimer: () => 1,
+    clearTimer: () => undefined,
+    config: {
+      cooldownMs: COOLDOWN_MS,
+      minNewChars: MIN_NEW_CHARS,
+      debounceMs: DEBOUNCE_MS,
+      monitorModel: 'stub'
+    }
+  });
+  trigger.setCapturing(true);
+  trigger.onCandidateFinal(LONG_ANSWER, 21);
+  const epochAtStart = trigger.getEpoch();
+  const run = trigger.flush();
+  await Promise.resolve();
+  await Promise.resolve();
+
+  trigger.onInterviewerFinal();
+  assert.equal(trigger.getEpoch(), epochAtStart + 1);
+  assert.equal(invalidationCalls, 1);
 
   releaseAnalyze();
   await run;

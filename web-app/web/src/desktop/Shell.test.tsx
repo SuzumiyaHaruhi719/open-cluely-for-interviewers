@@ -273,6 +273,30 @@ describe('Shell', () => {
     expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
   });
 
+  test('Auto pill exposes the continuous Flash monitor and delegation state', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    act(() => {
+      ws.emit({
+        type: 'auto-monitor',
+        status: 'evaluating',
+        model: 'deepseek-v4-flash'
+      });
+    });
+    expect(document.getElementById('auto-indicator')).toHaveTextContent('监控中');
+
+    act(() => {
+      ws.emit({
+        type: 'auto-monitor',
+        status: 'delegating',
+        model: 'deepseek-v4-flash'
+      });
+    });
+    expect(document.getElementById('auto-indicator')).toHaveTextContent('生成中');
+  });
+
   test('toggling Auto off persists the setting and sends configure({ autoGenerate:false })', async () => {
     render(<Shell />);
     await flushMount();

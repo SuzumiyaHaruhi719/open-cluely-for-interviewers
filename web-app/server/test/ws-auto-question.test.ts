@@ -45,6 +45,8 @@ test('automatic question emits one under-10s Expert result', async () => {
       outputLanguage: 'zh',
       questionHistory: [],
       trigger: 'auto',
+      anchorSeq: 17,
+      monitorTokensUsed: { input: 12, output: 3, total: 15 },
       isStale: () => false
     },
     {
@@ -67,9 +69,31 @@ test('automatic question emits one under-10s Expert result', async () => {
     assert.equal(result.trigger, 'auto');
     assert.equal(result.mode, 'expert');
     assert.equal(result.elapsedMs, 920);
+    assert.equal(result.anchorSeq, 17);
     assert.equal(result.output.primary_question, GENERATED.output.primary_question);
     assert.deepEqual(result.ranked, []);
-    assert.deepEqual(result.tokensUsed, { input: 321, output: 87, total: 408 });
+    assert.deepEqual(result.tokensUsed, { input: 333, output: 90, total: 423 });
+  }
+});
+
+test('once the sentinel delegates, Expert always emits its validated fallback', async () => {
+  const messages: ServerMessage[] = [];
+  await runExpertQuestionAndEmit(
+    fakeSocket(messages),
+    {
+      requestId: 'auto-delegated',
+      candidateAnswer: '我负责消防整改，但没有说明复检结果。',
+      trigger: 'auto',
+      anchorSeq: 8
+    },
+    { generate: async () => ({ ...GENERATED, shouldAsk: false, fellBack: true }) }
+  );
+
+  const result = messages.at(-1);
+  assert.equal(result?.type, 'result');
+  if (result?.type === 'result') {
+    assert.equal(result.anchorSeq, 8);
+    assert.equal(result.output.primary_question, GENERATED.output.primary_question);
   }
 });
 

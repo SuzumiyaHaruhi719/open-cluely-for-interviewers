@@ -77,6 +77,31 @@ describe('ASR runtime status messages', () => {
   });
 });
 
+describe('auto monitor state messages', () => {
+  it('parses the credential-free Flash sentinel lifecycle', () => {
+    for (const status of ['idle', 'evaluating', 'waiting', 'delegating'] as const) {
+      expect(
+        parseServerMessage(
+          JSON.stringify({
+            type: 'auto-monitor',
+            status,
+            model: 'deepseek-v4-flash',
+            elapsedMs: 321
+          })
+        )
+      ).toEqual({ type: 'auto-monitor', status, model: 'deepseek-v4-flash', elapsedMs: 321 });
+    }
+  });
+
+  it('rejects unknown monitor states', () => {
+    expect(
+      parseServerMessage(
+        JSON.stringify({ type: 'auto-monitor', status: 'thinking-hard', model: 'deepseek-v4-flash' })
+      )
+    ).toBeNull();
+  });
+});
+
 describe('speaker partition messages', () => {
   it('parses a complete Flash role partition', () => {
     const out = parseServerMessage(

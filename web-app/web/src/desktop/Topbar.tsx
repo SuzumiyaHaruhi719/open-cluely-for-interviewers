@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { InterviewerMode } from '@open-cluely/contract';
+import type { AutoMonitorStatus, InterviewerMode } from '@open-cluely/contract';
 import { MODE_META, recMeta } from './helpers';
 import type { SocketStatus } from '../lib/useCopilotSocket';
 import { useTheme } from '../lib/useTheme';
@@ -83,6 +83,8 @@ interface TopbarProps {
   assistantBusy: boolean;
   /** Autonomous question generation on/off (the Auto pill state). */
   autoGenerate: boolean;
+  /** Live state of the continuous Flash sentinel. */
+  autoMonitorStatus?: AutoMonitorStatus;
   /** Toggle autonomous question generation. */
   onToggleAuto: () => void;
 }
@@ -115,6 +117,7 @@ export function Topbar({
   onInsights,
   assistantBusy,
   autoGenerate,
+  autoMonitorStatus = 'idle',
   onToggleAuto
 }: TopbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -123,6 +126,14 @@ export function Topbar({
   const modeMeta = MODE_META[mode];
   const rec = recMeta(status, capturing);
   const asrMeta = ASR_META[asrProvider] ?? ASR_META.paraformer;
+  const autoLabel =
+    autoGenerate && autoMonitorStatus === 'evaluating'
+      ? '监控中'
+      : autoGenerate && autoMonitorStatus === 'waiting'
+        ? '待证据'
+        : autoGenerate && autoMonitorStatus === 'delegating'
+          ? '生成中'
+          : '自动';
 
   // Close the more-menu on outside click / Escape, like the desktop.
   useEffect(() => {
@@ -197,6 +208,7 @@ export function Topbar({
           className="mode-indicator auto-indicator"
           type="button"
           data-auto={autoGenerate ? 'on' : 'off'}
+          data-monitor={autoMonitorStatus}
           aria-pressed={autoGenerate}
           onClick={onToggleAuto}
           title={
@@ -206,7 +218,7 @@ export function Topbar({
           }
         >
           <span className="mode-indicator__dot" aria-hidden="true" />
-          <span className="mode-indicator__label">自动</span>
+          <span className="mode-indicator__label">{autoLabel}</span>
         </button>
         <span className="screenshot-count" id="screenshot-count" title="已截屏数量">
           {screenshotCount}

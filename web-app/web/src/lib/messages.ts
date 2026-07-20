@@ -21,6 +21,7 @@ import type {
 const S2C = {
   READY: 'ready',
   PROGRESS: 'progress',
+  AUTO_MONITOR: 'auto-monitor',
   RESULT: 'result',
   TRANSCRIPT: 'transcript',
   ASR_STATUS: 'asr-status',
@@ -87,6 +88,25 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
           status: data.status,
           model: isString(data.model) ? data.model : undefined,
           tokens: parseTokens(data.tokens)
+        };
+      }
+      return null;
+
+    case S2C.AUTO_MONITOR:
+      if (
+        (data.status === 'idle' ||
+          data.status === 'evaluating' ||
+          data.status === 'waiting' ||
+          data.status === 'delegating') &&
+        isString(data.model)
+      ) {
+        return {
+          type: 'auto-monitor',
+          status: data.status,
+          model: data.model,
+          ...(isNumber(data.elapsedMs) && data.elapsedMs >= 0
+            ? { elapsedMs: data.elapsedMs }
+            : {})
         };
       }
       return null;
