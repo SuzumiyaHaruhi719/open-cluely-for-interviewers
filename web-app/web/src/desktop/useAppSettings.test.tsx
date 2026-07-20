@@ -47,6 +47,34 @@ describe('useAppSettings persisted controls', () => {
     expect(result.current.settings.summaryModel).toBe('deepseek-v4-flash');
   });
 
+  test('persists every retained setting through its single normalized setter', () => {
+    const { result } = renderHook(() => useAppSettings());
+
+    act(() => {
+      result.current.setAsrProvider('paraformer');
+      result.current.setMicDeviceId('room-mic');
+      result.current.setAutoGenerate(false);
+      result.current.setAutoMode('interval');
+      result.current.setAutoIntervalSec(60);
+      result.current.setSummaryModel('deepseek-v4-flash');
+    });
+
+    expect(result.current.settings).toMatchObject({
+      asrProvider: 'paraformer',
+      micDeviceId: 'room-mic',
+      autoGenerate: false,
+      autoMode: 'interval',
+      autoIntervalSec: 60,
+      summaryModel: 'deepseek-v4-flash'
+    });
+    expect(localStorage.getItem('open-cluely.asrProvider')).toBe('paraformer');
+    expect(localStorage.getItem('mic.inputDeviceId')).toBe('room-mic');
+    expect(localStorage.getItem('open-cluely.autoGenerate')).toBe('false');
+    expect(localStorage.getItem('open-cluely.autoMode')).toBe('interval');
+    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBe('60');
+    expect(localStorage.getItem('open-cluely.summaryModel')).toBe('deepseek-v4-flash');
+  });
+
   test('does not expose language, secrets, prompts, mode, or appearance state', () => {
     localStorage.setItem('open-cluely.volcAppId', 'legacy-app-id');
     localStorage.setItem('open-cluely.volcAccessToken', 'legacy-token');

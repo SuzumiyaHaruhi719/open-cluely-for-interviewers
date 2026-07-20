@@ -67,4 +67,40 @@ describe('SettingsModal essentials', () => {
     expect(callbacks.onAsrProviderChange).toHaveBeenCalledWith('volc');
     expect(callbacks.onSummaryModelChange).toHaveBeenCalledWith('deepseek-v4-flash');
   });
+
+  test('wires every retained expert control to its owning callback', () => {
+    const callbacks = renderSettings({ ...ESSENTIAL_SETTINGS, autoMode: 'interval' });
+
+    fireEvent.change(screen.getByLabelText('语音识别'), { target: { value: 'paraformer' } });
+    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
+    fireEvent.change(screen.getByLabelText('触发方式'), { target: { value: 'agent' } });
+    fireEvent.change(screen.getByLabelText('自动追问间隔'), { target: { value: '60' } });
+    fireEvent.change(screen.getByLabelText('评估报告模型'), {
+      target: { value: 'deepseek-v4-flash' }
+    });
+
+    expect(callbacks.onAsrProviderChange).toHaveBeenCalledWith('paraformer');
+    expect(callbacks.onAutoGenerateChange).toHaveBeenCalledWith(false);
+    expect(callbacks.onAutoModeChange).toHaveBeenCalledWith('agent');
+    expect(callbacks.onAutoIntervalChange).toHaveBeenCalledWith(60);
+    expect(callbacks.onSummaryModelChange).toHaveBeenCalledWith('deepseek-v4-flash');
+  });
+
+  test('locks capture-owned controls while recording without hiding their values', () => {
+    const callbacks = {
+      onClose: vi.fn(),
+      onAsrProviderChange: vi.fn(),
+      onMicDeviceChange: vi.fn(),
+      onAutoGenerateChange: vi.fn(),
+      onAutoModeChange: vi.fn(),
+      onAutoIntervalChange: vi.fn(),
+      onSummaryModelChange: vi.fn()
+    };
+
+    render(<SettingsModal open settings={ESSENTIAL_SETTINGS} micDeviceDisabled {...callbacks} />);
+
+    expect(screen.getByLabelText('麦克风')).toBeDisabled();
+    expect(screen.getByText('停止录音后可切换设备')).toBeInTheDocument();
+    expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
+  });
 });

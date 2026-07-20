@@ -139,6 +139,49 @@ describe('Shell', () => {
     expect(screen.queryByLabelText('实时专家模型')).not.toBeInTheDocument();
   });
 
+  test('every retained setting persists and reaches the live server session', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+
+    fireEvent.change(screen.getByLabelText('语音识别'), {
+      target: { value: 'paraformer' }
+    });
+    expect(lastConfig(ws)).toMatchObject({ asrProvider: 'paraformer' });
+    expect(localStorage.getItem('open-cluely.asrProvider')).toBe('paraformer');
+
+    fireEvent.change(screen.getByLabelText('评估报告模型'), {
+      target: { value: 'deepseek-v4-flash' }
+    });
+    expect(lastConfig(ws)).toMatchObject({ summaryModel: 'deepseek-v4-flash' });
+    expect(localStorage.getItem('open-cluely.summaryModel')).toBe('deepseek-v4-flash');
+
+    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
+    expect(lastConfig(ws)).toMatchObject({ autoGenerate: false });
+    expect(screen.getByLabelText('触发方式')).toBeDisabled();
+
+    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
+    fireEvent.change(screen.getByLabelText('触发方式'), {
+      target: { value: 'interval' }
+    });
+    expect(lastConfig(ws)).toMatchObject({ autoMode: 'interval' });
+
+    fireEvent.change(screen.getByLabelText('自动追问间隔'), {
+      target: { value: '60' }
+    });
+    expect(lastConfig(ws)).toMatchObject({ autoIntervalMs: 60_000 });
+    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBe('60');
+
+    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    expect(screen.getByLabelText('语音识别')).toHaveValue('paraformer');
+    expect(screen.getByLabelText('评估报告模型')).toHaveValue('deepseek-v4-flash');
+    expect(screen.getByLabelText('触发方式')).toHaveValue('interval');
+    expect(screen.getByLabelText('自动追问间隔')).toHaveValue('60');
+  });
+
   test('ignores a legacy language preference and always configures Chinese', async () => {
     localStorage.setItem('open-cluely.outputLanguage', 'en');
     render(<Shell />);
