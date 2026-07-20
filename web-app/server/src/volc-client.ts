@@ -314,6 +314,10 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
   let finalReceived = false;
   let sequence = 1;
   let socket: WsLike | null = null;
+  // Keep one real PCM frame in hand so stop() can mark actual audio—not an
+  // empty synthetic packet—as the protocol's negative-sequence last packet.
+  // This adds at most one browser worklet frame of latency (normally 40 ms).
+  let pendingPcm: Buffer | null = null;
   let stopPromise: Promise<AsrStopResult> | null = null;
   let resolveStop: ((result: AsrStopResult) => void) | null = null;
   let stopTimer: ReturnType<typeof setTimeout> | null = null;
@@ -458,17 +462,20 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
     if (finished || stopRequested || !socket) return;
     if (socket.readyState !== WebSocket.OPEN) return;
     try {
-      sequence += 1;
-      socket.send(
-        buildFrame({
-          messageType: MSG_AUDIO_ONLY,
-          flags: FLAG_POS_SEQ,
-          serialization: SER_RAW,
-          compression: COMP_GZIP,
-          sequence,
-          payload: zlib.gzipSync(pcm)
-        })
-      );
+      if (pendingPcm) {
+        sequence += 1;
+        socket.send(
+          buildFrame({
+            messageType: MSG_AUDIO_ONLY,
+            flags: FLAG_POS_SEQ,
+            serialization: SER_RAW,
+            compression: COMP_GZIP,
+            sequence,
+            payload: zlib.gzipSync(pendingPcm)
+          })
+        );
+      }
+      pendingPcm = Buffer.from(pcm);
     } catch (err) {
       fail(err instanceof Error ? err.message : 'failed to send audio frame');
     }
@@ -493,8 +500,12 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
       return stopPromise;
     }
     try {
-      // Empty audio frame with the last-packet flag tells the server to finalize.
+      // Seed ASR expects the final real audio segment itself to carry the
+      // negative sequence / last-packet flag. An empty follow-up can leave the
+      // nostream endpoint waiting indefinitely.
       sequence += 1;
+      const terminalPcm = pendingPcm ?? Buffer.alloc(0);
+      pendingPcm = null;
       sock.send(
         buildFrame({
           messageType: MSG_AUDIO_ONLY,
@@ -502,7 +513,7 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
           serialization: SER_RAW,
           compression: COMP_GZIP,
           sequence: -Math.abs(sequence),
-          payload: zlib.gzipSync(Buffer.alloc(0))
+          payload: zlib.gzipSync(terminalPcm)
         })
       );
     } catch (error) {

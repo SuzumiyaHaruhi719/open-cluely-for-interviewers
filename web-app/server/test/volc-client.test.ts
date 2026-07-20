@@ -297,16 +297,45 @@ test('audio frames are gzip-compressed binary with an incrementing sequence', ()
   const ws = FakeWs.instances.at(-1)!;
   ws.emit('open');
 
-  const pcm = Buffer.from([10, 20, 30, 40]);
-  session.sendAudio(pcm);
+  const firstPcm = Buffer.from([10, 20, 30, 40]);
+  const secondPcm = Buffer.from([50, 60, 70, 80]);
+  session.sendAudio(firstPcm);
+  session.sendAudio(secondPcm);
 
-  // Two binary frames now: [config, audio]. Parse the audio one back.
+  // One frame is held back so stop() can mark real PCM as the terminal packet.
+  // After a second input: [config, first audio], with the second still buffered.
   const binary = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d));
   assert.equal(binary.length, 2);
   const audio = parseFrame(binary[1]);
   assert.ok(audio);
   assert.equal(audio.messageType, MSG_AUDIO_ONLY);
-  assert.deepEqual(audio.payload, pcm);
+  assert.deepEqual(audio.payload, firstPcm);
+});
+
+test('stop marks the buffered last real PCM frame instead of sending an empty terminal packet', () => {
+  FakeWs.instances = [];
+  const session = createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    stopTimeoutMs: 50,
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+
+  const firstPcm = Buffer.from([1, 2, 3, 4]);
+  const lastPcm = Buffer.from([5, 6, 7, 8]);
+  session.sendAudio(firstPcm);
+  session.sendAudio(lastPcm);
+  void session.stop();
+
+  const binary = ws.sent.filter((data): data is Buffer => Buffer.isBuffer(data));
+  const terminal = parseFrame(binary.at(-1)!);
+  assert.ok(terminal);
+  assert.equal(terminal.flags, FLAG_LAST_SEQ);
+  assert.ok((terminal.sequence ?? 0) < 0);
+  assert.deepEqual(terminal.payload, lastPcm);
 });
 
 test('a full-server-response frame surfaces partials then finals via onTranscript', () => {
