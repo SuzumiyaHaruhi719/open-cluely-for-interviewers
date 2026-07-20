@@ -165,12 +165,14 @@ function reconcileContinuityTurnRoles(
       continue;
     }
     const consensusConfidence = Math.min(first.confidence, last.confidence);
+    // A standalone clause can receive a confidently wrong speech-act label.
+    // Once two high-confidence model edges agree that a 3+ fragment grammatical
+    // group is one turn, continuity is stronger evidence than the isolated
+    // middle-fragment score. Manual corrections are enforced downstream and
+    // therefore remain authoritative.
     for (const turn of group) {
       const existing = roleBySeq.get(turn.seq);
-      if (
-        existing?.role === first.role ||
-        (existing && existing.confidence >= consensusConfidence)
-      ) {
+      if (existing?.role === first.role) {
         continue;
       }
       roleBySeq.set(turn.seq, {

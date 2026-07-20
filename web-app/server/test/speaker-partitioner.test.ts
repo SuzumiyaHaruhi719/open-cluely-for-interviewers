@@ -100,7 +100,10 @@ test('weak correction keeps one split grammatical question on the interviewer ro
       ],
       turnRoles: [
         { seq: 7, role: 'interviewer', confidence: 0.95 },
-        { seq: 8, role: 'candidate', confidence: 0.85 },
+        // Flash can be confidently wrong when it sees this isolated clause.
+        // Matching outer edges plus the explicit continuity group must still
+        // keep the complete ASR-split question on one role.
+        { seq: 8, role: 'candidate', confidence: 0.99 },
         { seq: 9, role: 'interviewer', confidence: 0.95 }
       ]
     }),

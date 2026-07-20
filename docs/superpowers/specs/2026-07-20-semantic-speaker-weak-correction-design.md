@@ -6,7 +6,7 @@ Correct clearly mislabelled interviewer/candidate turns when native ASR acoustic
 
 ## Root cause
 
-The current native-cluster path learns one stable role per `speakerId` and reuses it across the interview. DeepSeek can return a per-turn exception, but the classifier input samples only the first two and last two turns of each cluster. A long candidate answer can therefore be absent from the model's context while the stale cluster role still labels it as interviewer. Xunfei can also split one grammatical question across changing acoustic IDs; in a real replay Flash labelled the two outer fragments as interviewer but gave the connective middle fragment a lower-confidence candidate verdict. The WebSocket path also releases the provisional cluster role to Auto before the semantic partition finishes, allowing one acoustic error to affect question timing.
+The current native-cluster path learns one stable role per `speakerId` and reuses it across the interview. DeepSeek can return a per-turn exception, but the classifier input samples only the first two and last two turns of each cluster. A long candidate answer can therefore be absent from the model's context while the stale cluster role still labels it as interviewer. Xunfei can also split one grammatical question across changing acoustic IDs; in real replays Flash labelled the two outer fragments as interviewer but gave the connective middle fragment a candidate verdict, sometimes with higher isolated confidence. The WebSocket path also releases the provisional cluster role to Auto before the semantic partition finishes, allowing one acoustic error to affect question timing.
 
 ## Decision
 
@@ -14,7 +14,7 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 
 - Native classifier input contains compact per-cluster anchors plus the latest chronological question/answer window.
 - The prompt requires one semantic `turnRoles` verdict (or `unknown`) for every recent seq, including obvious speech-act conflicts such as a substantive answer following an interviewer question even when the acoustic ID baseline says interviewer.
-- Direct same-source fragments that are grammatically continuous and lack a terminal boundary are marked as a continuity group. Matching 0.90+ Flash roles on both outer fragments may correct a lower-confidence conflicting middle fragment; disagreement or ambiguity leaves the group untouched.
+- Direct same-source fragments that are grammatically continuous and lack a terminal boundary are marked as a continuity group. Matching 0.90+ Flash roles on both outer fragments constrain every conflicting middle fragment, because the grouped speech act is stronger evidence than an isolated-clause score; endpoint disagreement or ambiguity leaves the group untouched.
 - A turn exception affects only its `seq`; it never changes the stable `speakerId` role.
 - Manual role corrections remain authoritative over both cluster roles and semantic exceptions.
 - Low-confidence cluster assignments are ignored, and per-turn exceptions retain the stricter existing confidence floor.
