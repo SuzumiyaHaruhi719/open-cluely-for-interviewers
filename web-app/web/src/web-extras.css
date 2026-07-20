@@ -1314,7 +1314,10 @@ button.history-row {
 
 /* ╔══ Spotlight Tour / 新手引导 — premium overlay ══╗ */
 :root {
-  --tour-mask: rgba(15, 23, 42, 0.14);
+  /* Keep the product itself fully legible during onboarding. The spotlight ring
+     provides direction; the mask only captures pointer input and never dims or
+     blurs the workspace. */
+  --tour-mask: transparent;
   --tour-surface: var(--surface-elevated);
   --tour-surface-end: var(--surface-container);
   --tour-border: color-mix(in srgb, var(--brand-500) 28%, var(--border-default));
@@ -1329,7 +1332,6 @@ button.history-row {
 }
 
 html[data-theme="dark"] {
-  --tour-mask: rgba(10, 10, 15, 0.28);
   --tour-ring-inner: rgba(255, 255, 255, 0.08);
 }
 

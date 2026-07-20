@@ -10,3 +10,10 @@ test('tour chrome uses semantic variables that follow the app theme', () => {
   expect(tourCss).toMatch(/\.tour-tooltip\s*\{[^}]*var\(--tour-surface\)/s);
   expect(tourCss).toMatch(/\.tour-title\s*\{[^}]*var\(--tour-title\)/s);
 });
+
+test('tour leaves the workspace fully visible without dimming or blur', () => {
+  expect(tourCss).toContain('--tour-mask: transparent');
+  expect(tourCss).not.toMatch(/--tour-mask:\s*rgba\(/);
+  expect(tourCss).toMatch(/\.tour-mask\s*\{[^}]*background:\s*var\(--tour-mask\)/s);
+  expect(tourCss).not.toMatch(/\.tour-mask\s*\{[^}]*backdrop-filter:/s);
+});
