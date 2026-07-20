@@ -623,6 +623,79 @@ test('repairs a short connective candidate fragment across sentence boundaries',
   assert.deepEqual(interviewers.map((turn) => turn.seq), [0]);
 });
 
+test('repairs an interviewer question stem split into the candidate acoustic cluster', async () => {
+  const partitions: any[] = [];
+  const candidates: SpeakerTurn[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 2,
+    text: '好，考生请听第一题，我们下面考察你的分析理解能力。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 1,
+    text: '速生树材质疏松，是做不了扁担的，做了就会把担子挑翻。'
+  });
+  p.record({ seq: 2, source: 'mic', speakerId: 2, text: '对此，请谈谈你的理解。' });
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'interviewer'],
+      [1, 'interviewer'],
+      [2, 'interviewer']
+    ]
+  );
+  assert.deepEqual(candidates.map((turn) => turn.seq), []);
+  assert.deepEqual(interviewers.map((turn) => turn.seq), [0, 1, 2]);
+});
+
+test('keeps a short first-person answer between two interviewer turns', async () => {
+  const partitions: any[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async () =>
+      classification([
+        { speakerId: 1, role: 'candidate', confidence: 0.98 },
+        { speakerId: 2, role: 'interviewer', confidence: 0.99 }
+      ]),
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 2, text: '请说明你会如何处理设备故障。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 1, text: '我会先隔离现场并组织复验。' });
+  p.record({ seq: 2, source: 'mic', speakerId: 2, text: '那么结果如何量化？' });
+  await p.finalize();
+
+  assert.deepEqual(
+    partitions.at(-1).segments.map((segment: any) => [segment.seq, segment.role]),
+    [
+      [0, 'interviewer'],
+      [1, 'candidate'],
+      [2, 'interviewer']
+    ]
+  );
+});
+
 test('one long post-baseline turn requests an immediate semantic correction refresh', async () => {
   const snapshots: SpeakerTurn[][] = [];
   const p = createSpeakerPartitioner({

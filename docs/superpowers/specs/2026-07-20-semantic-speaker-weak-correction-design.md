@@ -24,6 +24,7 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 - The prompt requires one semantic `turnRoles` verdict (or `unknown`) for every recent seq, including obvious speech-act conflicts such as a substantive answer following an interviewer question even when the acoustic ID baseline says interviewer.
 - Direct same-source fragments that are grammatically continuous and lack a terminal boundary are marked as a continuity group. Matching 0.90+ Flash roles on both outer fragments constrain every conflicting middle fragment, because the grouped speech act is stronger evidence than an isolated-clause score; endpoint disagreement or ambiguity leaves the group untouched.
 - After model confidence filtering, a conservative candidate-answer envelope repairs one remaining candidate/interviewer/candidate sandwich when the middle fragment is a direct same-source neighbour with explicit first-person/action-plan wording or a short connector (80 non-whitespace characters or fewer), and no interviewer hand-off. This covers sentence-boundary ASR fragmentation such as `所以说…` without remapping its acoustic cluster.
+- The symmetric interviewer envelope repairs a bounded interviewer/candidate/interviewer sandwich only when the following interviewer fragment is an explicit prompt tail such as `对此，请谈谈…` and the middle fragment has no strong candidate-answer opening. A live ambiguous question-stem tail is held for one semantic turn so it cannot trigger Auto as candidate evidence before the prompt tail arrives.
 - A turn exception affects only its `seq`; it never changes the stable `speakerId` role.
 - Manual role corrections remain authoritative over both cluster roles and semantic exceptions.
 - Low-confidence cluster assignments are ignored, and per-turn exceptions retain the stricter existing confidence floor.
@@ -52,6 +53,7 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 
 - Length alone never determines a role; it only decides whether a fresh semantic check is worth scheduling.
 - Short acknowledgements and ambiguous fragments inherit the acoustic baseline unless DeepSeek is highly confident. Grammatical continuity propagation requires matching high-confidence model verdicts on both outer fragments. The candidate-answer envelope is the sole text-shape exception and requires candidate roles on both direct neighbours plus explicit answer-plan language or a bounded connector; a directed question such as `所以你当时如何…`, another clear interviewer hand-off/evaluation, or a manual role lock always blocks it.
+- The interviewer envelope requires interviewer roles on both direct neighbours, a middle fragment no longer than 120 non-whitespace characters, and an explicit prompt-tail next turn. A first-person/action-plan opening blocks the correction, so a concise real answer between interviewer turns remains candidate.
 - The recent window is bounded, so classifier latency and output stay inside the existing live budget.
 - Text-only and hybrid provider paths remain supported; hybrid input keeps both recent text-only turns and native context.
 
@@ -62,5 +64,6 @@ Keep acoustic roles as a baseline and add a bounded DeepSeek v4 Flash weak-corre
 - A behavior test proves one corrected candidate turn does not remap a genuine interviewer turn sharing the same acoustic ID.
 - A real-transcript regression proves the sentence-boundary fragment `目前会向双方进行一下询问…` remains inside its surrounding candidate answer, while `好，请考生确认分数并离场` remains interviewer.
 - A second real-replay regression proves `所以说我们的年轻干部都要打到` remains candidate while `所以你当时如何确认根本原因？` remains interviewer.
+- A third replay regression proves `速生树材质疏松，是做不了扁担的…` plus `对此，请谈谈你的理解` stays interviewer, while `我会先隔离现场并组织复验` remains candidate between two interviewer turns.
 - Existing manual-precedence tests remain green.
 - Full server/web tests, typecheck, build, and a silent MP3/BlackHole browser replay validate the integrated behavior.

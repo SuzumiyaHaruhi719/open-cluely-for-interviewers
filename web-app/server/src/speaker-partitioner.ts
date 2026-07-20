@@ -21,7 +21,9 @@ const MIN_SEMANTIC_REFRESH_CHARS = 48;
 const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
 const CONTINUATION_PREFIX = /^(?:[，,、。；;：:\s]*)?(?:但是|但|并且|而且|所以|同时|以及|然后|接着|另外|另一方面|其次|最后|那么|其中|例如|比如|领导|作为|如果|由于|因为|为了|并|也|再|还|或|与|及)/;
 const INTERVIEWER_HANDOFF = /^(?:好[，,。]?|谢谢|请(?:听|问|结合|确认|(?:具体)?(?:介绍|说明|谈|回答))|下面|下一题|接下来请|能否|请考生|(?:(?:所以(?:说)?|那么|然后)[，,]?)?(?:你|考生).{0,24}(?:如何|怎么|为什么|是否|能否|做了什么|会怎么))/;
+const INTERVIEWER_PROMPT_TAIL = /^(?:(?:对此|关于此事|针对上述|基于上述|就此|那么)[，,]?)?(?:请(?:你|考生)?|你|考生).{0,40}(?:谈谈|说明|介绍|回答|如何|怎么|为什么|看法|理解)/;
 const CANDIDATE_PLAN = /(?:^|[，。；：,\s])(?:我(?:会|将|要|先|再|还|可以|需要|负责|认为|觉得|就)|作为[^，。]{0,18}我|首先|其次|然后|随后|那么|目前(?:我)?会|根据[^，。]{0,24}(?:情况|结果))/;
+const CANDIDATE_ANSWER_OPENING = /^(?:各位考官|我|先(?:要|将|把|对|从|进行)|通过|在(?:我|当时|现场|处理)|作为)/;
 const SCORE_ANNOUNCEMENT = /(?:最高分|最低分).{0,100}(?:号)?考生(?:的)?最终成绩/;
 
 export interface SpeakerTurn {
@@ -493,6 +495,10 @@ function hasCandidateEnvelopeSignal(text: string): boolean {
   );
 }
 
+function hasStrongCandidateAnswerSignal(text: string): boolean {
+  return CANDIDATE_PLAN.test(text) || CANDIDATE_ANSWER_OPENING.test(text);
+}
+
 function areDirectNeighbours(left: ResolvedSpeakerTurn, right: ResolvedSpeakerTurn): boolean {
   return right.turn.seq === left.turn.seq + 1 && right.turn.source === left.turn.source;
 }
@@ -535,6 +541,26 @@ function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<numb
     }
   }
 
+  for (let index = 1; index < turns.length - 1; index += 1) {
+    const previous = turns[index - 1];
+    const current = turns[index];
+    const next = turns[index + 1];
+    const text = current.turn.text.trim();
+    if (
+      typeof current.turn.speakerId === 'number' &&
+      areDirectNeighbours(previous, current) &&
+      areDirectNeighbours(current, next) &&
+      roleFor(previous) === 'interviewer' &&
+      roleFor(current) === 'candidate' &&
+      roleFor(next) === 'interviewer' &&
+      text.replace(/\s+/g, '').length <= 120 &&
+      !hasStrongCandidateAnswerSignal(text) &&
+      INTERVIEWER_PROMPT_TAIL.test(next.turn.text.trim())
+    ) {
+      overrides.set(current.turn.seq, 'interviewer');
+    }
+  }
+
   return overrides;
 }
 
@@ -553,6 +579,24 @@ function shouldDeferPossibleAnswerContinuation(
     current.role === 'interviewer' &&
     hasCandidateEnvelopeSignal(text) &&
     !INTERVIEWER_HANDOFF.test(text)
+  );
+}
+
+function shouldDeferPossibleQuestionStem(
+  turns: readonly ResolvedSpeakerTurn[],
+  index: number,
+  status: 'live' | 'final'
+): boolean {
+  if (status !== 'live' || index !== turns.length - 1) return false;
+  const current = turns[index];
+  const previous = turns[index - 1];
+  if (!previous || !areDirectNeighbours(previous, current)) return false;
+  const text = current.turn.text.trim();
+  return (
+    previous.role === 'interviewer' &&
+    current.role === 'candidate' &&
+    text.replace(/\s+/g, '').length <= 120 &&
+    !hasStrongCandidateAnswerSignal(text)
   );
 }
 
@@ -662,7 +706,11 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       });
       for (const [index, entry] of resolved.entries()) {
         const { turn, role } = entry;
-        if (role === 'candidate' && !fedCandidateSeqs.has(turn.seq)) {
+        if (
+          role === 'candidate' &&
+          !fedCandidateSeqs.has(turn.seq) &&
+          !shouldDeferPossibleQuestionStem(resolved, index, status)
+        ) {
           fedCandidateSeqs.add(turn.seq);
           deps.onCandidateTurn(turn);
         }

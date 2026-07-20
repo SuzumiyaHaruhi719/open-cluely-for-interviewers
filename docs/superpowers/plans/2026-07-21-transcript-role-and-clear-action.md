@@ -68,7 +68,7 @@ const CANDIDATE_PLAN = /(?:^|[，。；：,\s])(?:我(?:会|将|要|先|再|还|
 const SCORE_ANNOUNCEMENT = /(?:最高分|最低分).{0,100}(?:号)?考生(?:的)?最终成绩/;
 ```
 
-Build preliminary resolved turns first. Suggest `interviewer` for a score announcement. Suggest `candidate` only when a middle interviewer turn has direct same-source candidate neighbours, matches `CANDIDATE_PLAN` or a bounded (≤80 non-whitespace characters) `CONTINUATION_PREFIX`, and does not match `INTERVIEWER_HANDOFF`. Treat directed connective questions such as `所以你当时如何…` as hand-offs. Apply each native-turn suggestion through `resolveTurnRole()` so a manual lock can reject it. Feed Auto and coalesce only after the repaired roles are final.
+Build preliminary resolved turns first. Suggest `interviewer` for a score announcement. Suggest `candidate` only when a middle interviewer turn has direct same-source candidate neighbours, matches `CANDIDATE_PLAN` or a bounded (≤80 non-whitespace characters) `CONTINUATION_PREFIX`, and does not match `INTERVIEWER_HANDOFF`. Treat directed connective questions such as `所以你当时如何…` as hand-offs. Symmetrically, repair a ≤120-character interviewer question stem only when it is between direct interviewer neighbours, the next turn is an explicit prompt tail (`对此，请谈谈…`), and the middle lacks a strong candidate-answer opening. Defer either ambiguous live tail for one semantic turn so it cannot close or trigger Auto prematurely. Apply each native-turn suggestion through `resolveTurnRole()` so a manual lock can reject it. Feed Auto and coalesce only after the repaired roles are final.
 
 - [ ] **Step 4: Run focused and full speaker tests and verify GREEN**
 
