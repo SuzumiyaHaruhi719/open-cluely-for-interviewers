@@ -82,6 +82,7 @@ const CLASSIFIER_SYSTEM = [
   'Acoustic diarization may over-cluster one person into multiple speakerIds, so multiple ids may share a role.',
   'A native speakerId role is only a baseline: inspect every recent-context turn and return a high-confidence turnRoles exception when its speech act clearly conflicts with that baseline.',
   'A substantive answer to an adjacent question is candidate even if its acoustic id is mapped interviewer; a genuine new question is interviewer even if its id is mapped candidate.',
+  'A short fragment that grammatically continues an adjacent question or answer inherits that same speech act even when its acoustic id changes.',
   'A turnRoles exception applies only to that seq and must never be used to remap the whole acoustic cluster.',
   'When speakerId is absent, classify each turn by seq. Use unknown when evidence is insufficient.',
   'Return STRICT JSON only:',
@@ -256,7 +257,7 @@ export function buildSpeakerClassifierInput(turns: readonly SpeakerTurn[]): stri
       '[cluster-anchors]',
       ...anchors.map(formatClassifierTurn),
       '[recent-context-for-weak-correction]',
-      '逐条检查最近上下文：明显在回答相邻问题的内容应为 candidate；语义角色与 speakerId 的主角色冲突时，为该 seq 返回高置信度 turnRoles；真正提出新问题的内容应为 interviewer。turnRoles 只纠正单条 turn，不能重映射整个 cluster。',
+      '逐条检查最近上下文：明显在回答相邻问题的内容应为 candidate；真正提出新问题的内容应为 interviewer；被 ASR 切开的短片段如果在语法上延续相邻的提问或回答，必须继承同一个语义角色，即使 speakerId 改变。语义角色与 speakerId 的主角色冲突时，为该 seq 返回高置信度 turnRoles。turnRoles 只纠正单条 turn，不能重映射整个 cluster。',
       ...recent.map(formatClassifierTurn)
     ]
       .join('\n')

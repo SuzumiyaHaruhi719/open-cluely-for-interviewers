@@ -60,6 +60,7 @@ test('native classifier preserves recent question-answer adjacency for weak corr
   assert.match(input, /\[seq=12 .*如何组织园区消防演练/);
   assert.match(input, /\[seq=13 .*平均响应时间从八分钟缩短到五分钟/);
   assert.match(input, /明显在回答相邻问题.*turnRoles/);
+  assert.match(input, /短片段.*相邻.*继承同一个语义角色/);
   assert.ok((input.match(/^\[seq=/gm) ?? []).length <= 12);
   assert.ok(input.length <= 6_000);
 });
