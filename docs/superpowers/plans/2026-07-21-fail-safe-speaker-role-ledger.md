@@ -23,12 +23,12 @@
 - Modify: `web-app/server/test/speaker-partitioner.test.ts`
 - Modify: `web-app/server/src/speaker-partitioner.ts`
 
-- [ ] Add a failing input-builder test showing a native `reviewSeqs` request includes every requested target plus adjacent context.
-- [ ] Add a failing long-interview finalization test that collects all final `reviewSeqs` and asserts every transcript `seq` is covered.
-- [ ] Add a failing stale-verdict test where a live `interviewer` exception is later returned as `unknown`; assert the final segment is not interviewer.
-- [ ] Add a failing conflict test where two final observations disagree at comparable confidence; assert the final segment is `unknown`.
-- [ ] Implement bounded review batches, confidence-bearing ledger entries, explicit revocation, and conservative result merge.
-- [ ] Run the focused partitioner tests until green.
+- [x] Add a failing input-builder test showing a native `reviewSeqs` request includes every requested target plus adjacent context.
+- [x] Add a failing long-interview finalization test that collects all final `reviewSeqs` and asserts every transcript `seq` is covered.
+- [x] Add a failing stale-verdict test where a live `interviewer` exception is later returned as `unknown`; assert the final segment is not interviewer.
+- [x] Add a failing conflict test where two final observations disagree at comparable confidence; assert the final segment is `unknown`.
+- [x] Implement bounded review batches, confidence-bearing ledger entries, explicit revocation, and conservative result merge.
+- [x] Run the focused partitioner tests until green.
 
 ### Task 2: Safe automatic delegation
 
@@ -38,11 +38,11 @@
 - Verify: `web-app/server/test/ws-speaker.test.ts`
 - Verify: `web-app/server/test/ws-auto-question.test.ts`
 
-- [ ] Add a failing test proving cluster baseline alone does not call either Auto role callback.
-- [ ] Add a positive test proving a high-confidence per-turn verdict releases exactly once.
-- [ ] Gate candidate/interviewer callbacks on semantic/local confirmation while keeping live provisional transcript labels.
-- [ ] Preserve manual precedence and the existing split-question/answer/score local repairs.
-- [ ] Run speaker and WebSocket Auto tests until green.
+- [x] Add a failing test proving cluster baseline alone does not call either Auto role callback.
+- [x] Add a positive test proving a high-confidence per-turn verdict releases exactly once.
+- [x] Gate candidate/interviewer callbacks on semantic/local confirmation while keeping live provisional transcript labels.
+- [x] Preserve manual precedence and the existing split-question/answer/score local repairs.
+- [x] Run speaker and WebSocket Auto tests until green.
 
 ### Task 3: Explicit ambiguity in the renderer
 
@@ -50,9 +50,9 @@
 - Modify: `web-app/web/src/desktop/TranscriptStream.tsx`
 - Modify: the closest transcript renderer test under `web-app/web/src/desktop/`
 
-- [ ] Add a failing test for the Chinese label `待确认 · 说话人 N` on an `unknown` segment.
-- [ ] Implement the label without adding a setting or changing the GLP layout.
-- [ ] Run the focused and full web test suites.
+- [x] Add a failing test for the Chinese label `待确认 · 说话人 N` on an `unknown` segment.
+- [x] Implement the label without adding a setting or changing the GLP layout.
+- [x] Run the focused and full web test suites.
 
 ### Task 4: Notes, integrated verification, rebuild, and delivery
 
@@ -61,9 +61,9 @@
 - Update: `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/web-offline-speaker-diarization.md`
 - Update if Auto semantics change: `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/interviewer-ai-surfaces.md`
 
-- [ ] Document final full-transcript batching, reversible ledger state, final ambiguity, and the stricter Auto release invariant.
-- [ ] Run server typecheck, all server/web tests, the production build, and `git diff --check`.
-- [ ] Commit and push scoped checkpoints on `main`.
-- [ ] Restart the repository-owned production server on port 8788 and verify `/api/health`.
-- [ ] Replay the supplied MP3 through BlackHole, confirm real transcript roles and inline Auto behavior, then restore MacBook Pro Speakers.
-- [ ] Verify local `HEAD` equals `origin/main` and the worktree is clean.
+- [x] Document final full-transcript batching, reversible ledger state, final ambiguity, and the stricter Auto release invariant.
+- [x] Run server typecheck, all server/web tests, the production build, and `git diff --check`.
+- [x] Commit and push scoped checkpoints on `main`.
+- [x] Restart the repository-owned production server on port 8788 and verify `/api/health`.
+- [x] Replay the supplied MP3 through BlackHole, confirm real transcript roles and inline Auto behavior, then restore MacBook Pro Speakers.
+- [x] Verify local `HEAD` equals `origin/main` and the worktree is clean.
