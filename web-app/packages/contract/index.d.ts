@@ -292,6 +292,8 @@ export type ServerMessage =
       ranked?: RankedQuestion[];
       /** How this result was produced: the autonomous monitor ('auto') or a manual Generate Q ('manual'). */
       trigger?: GenerationTrigger;
+      /** Stable semantic transcript turn that caused this question. */
+      anchorSeq?: number;
     }
   | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
   | {

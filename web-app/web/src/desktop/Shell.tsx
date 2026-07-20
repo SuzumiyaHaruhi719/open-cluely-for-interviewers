@@ -64,8 +64,8 @@ function simScriptFor(provider: AsrProvider): SessionConfig['simScript'] | undef
  * Interviews are EPHEMERAL: nothing persists across reload. On mount the
  * interview-type picker opens for a fresh in-memory interview; "New interview"
  * resets all live state and re-opens the picker. Also wired here: the résumé
- * upload/chat rail, the topbar assistant actions (Ask AI / notes / insights →
- * results panel), and the compact environment-backed audio/model preferences.
+ * upload/chat rail, notes/insights actions, and the compact environment-backed
+ * audio/model preferences.
  */
 export function Shell() {
   const socket = useCopilotSocket();
@@ -74,7 +74,7 @@ export function Shell() {
     sendConfigure,
     analyze,
     addContextNote,
-    lastResult,
+    questionEvents,
     lastAutoFireAt,
     progress,
     progressTokens,
@@ -484,7 +484,8 @@ export function Shell() {
               <TranscriptStream
                 transcripts={transcripts}
                 transcriptMessages={transcriptMessages}
-                lastResult={lastResult}
+                lastResult={null}
+                questionEvents={questionEvents}
                 outputLanguage="zh"
                 progress={progress}
                 progressTokens={progressTokens}

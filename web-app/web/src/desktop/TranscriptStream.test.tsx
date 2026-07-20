@@ -1,7 +1,11 @@
 import { afterEach, describe, expect, it, test, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
-import type { CopilotResult, TranscriptLanes } from '../lib/useCopilotSocket';
+import type {
+  CopilotQuestionEvent,
+  CopilotResult,
+  TranscriptLanes
+} from '../lib/useCopilotSocket';
 
 const EMPTY_LANES: TranscriptLanes = {
   mic: { finalText: '', partial: '' },
@@ -152,7 +156,8 @@ describe('TranscriptStream seeded messages', () => {
       <TranscriptStream
         transcripts={EMPTY_LANES}
         transcriptMessages={[]}
-        lastResult={lastResult}
+        lastResult={null}
+        questionEvents={[{ id: 'req-1', anchorSeq: null, result: lastResult }]}
         progress={null}
         isAnalyzing={false}
         error={null}
@@ -167,6 +172,58 @@ describe('TranscriptStream seeded messages', () => {
 });
 
 describe('TranscriptStream offline speaker bubbles', () => {
+  it('inserts every AI question immediately after its anchored candidate segment', () => {
+    const makeResult = (requestId: string, question: string): CopilotResult => ({
+      type: 'result',
+      requestId,
+      mode: 'expert',
+      output: {
+        primary_question: question,
+        alternative_question: '',
+        rationale_for_interviewer: '验证回答中的证据缺口。',
+        anchor_quotes: [],
+        expected_evidence_yield: '获得可验证结果。',
+        iteration_version: '3'
+      },
+      shouldShowFollowUps: true,
+      tokensUsed: { input: 10, output: 5, total: 15 },
+      elapsedMs: 800,
+      iterationVersion: '3',
+      trigger: 'auto'
+    });
+    const questionEvents: CopilotQuestionEvent[] = [
+      { id: 'auto-1', anchorSeq: 3, result: makeResult('auto-1', '第一个追问？') },
+      { id: 'auto-2', anchorSeq: 3, result: makeResult('auto-2', '第二个追问？') }
+    ];
+
+    const { container } = render(
+      <TranscriptStream
+        offline
+        speakerSegments={[
+          { id: 3, speakerId: 7, role: 'candidate', text: '候选人证据' },
+          { id: 4, speakerId: 9, role: 'interviewer', text: '后续面试官发言' }
+        ]}
+        questionEvents={questionEvents}
+        transcripts={EMPTY_LANES}
+        transcriptMessages={[]}
+        lastResult={makeResult('latest', '不应渲染的底部卡片')}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+
+    const timeline = Array.from(container.querySelectorAll('.chat-message')).map(
+      (node) => node.textContent ?? ''
+    );
+    expect(timeline[0]).toContain('候选人证据');
+    expect(timeline[1]).toContain('第一个追问？');
+    expect(timeline[2]).toContain('第二个追问？');
+    expect(timeline[3]).toContain('后续面试官发言');
+    expect(container).not.toHaveTextContent('不应渲染的底部卡片');
+  });
+
   it('offline: renders speaker bubbles and fires the role toggle', () => {
     const onSetRole = vi.fn();
     render(

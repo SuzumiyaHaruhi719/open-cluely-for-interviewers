@@ -25,6 +25,13 @@ export type SocketStatus = 'connecting' | 'open' | 'closed' | 'reconnecting';
 export type CopilotResult = Extract<ServerMessage, { type: 'result' }>;
 export type CopilotProgress = Extract<ServerMessage, { type: 'progress' }>;
 
+/** A durable AI follow-up placed after the transcript segment that triggered it. */
+export interface CopilotQuestionEvent {
+  id: string;
+  anchorSeq: number | null;
+  result: CopilotResult;
+}
+
 /** Per-source transcript: committed finals + the live (in-flight) partial. */
 export interface LaneTranscript {
   finalText: string;
@@ -100,6 +107,8 @@ export interface CopilotSocket {
   /** Add a manual interviewer note to the server's candidate-answer context (feeds auto + manual generation). */
   addContextNote: (note: string) => boolean;
   lastResult: CopilotResult | null;
+  /** Chronological AI follow-ups interleaved into the transcript timeline. */
+  questionEvents: CopilotQuestionEvent[];
   /**
    * Timestamp (ms) of the last `trigger === 'auto'` result, or of when interval
    * mode last became active. Drives the client-side "next auto follow-up" cooldown
@@ -285,6 +294,7 @@ export function useCopilotSocket(): CopilotSocket {
   const [status, setStatus] = useState<SocketStatus>('connecting');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<CopilotResult | null>(null);
+  const [questionEvents, setQuestionEvents] = useState<CopilotQuestionEvent[]>([]);
   // Timestamp of the last auto fire, for the interval-mode cooldown countdown.
   const [lastAutoFireAt, setLastAutoFireAt] = useState<number | null>(null);
   const [progress, setProgress] = useState<CopilotProgress | null>(null);
@@ -319,6 +329,7 @@ export function useCopilotSocket(): CopilotSocket {
   const reconnectTimerRef = useRef<number | null>(null);
   const attemptsRef = useRef(0);
   const activeRequestRef = useRef<string | null>(null);
+  const requestAnchorRef = useRef<Map<string, number | null>>(new Map());
   const abandonedRequestIdsRef = useRef<Set<string>>(new Set());
   const isMountedRef = useRef(true);
   // Live capture handles + per-source frame sequence counters.
@@ -327,6 +338,12 @@ export function useCopilotSocket(): CopilotSocket {
   // Speaker-segment state for native clusters and Flash semantic partitioning.
   const roleOverrideRef = useRef<Map<number, SpeakerRole>>(new Map());
   const segSeqRef = useRef(0);
+  const speakerSegmentsRef = useRef<SpeakerSegment[]>([]);
+
+  const latestSegmentId = useCallback((): number | null => {
+    const segments = speakerSegmentsRef.current;
+    return segments.length > 0 ? segments[segments.length - 1].id : null;
+  }, []);
 
   const send = useCallback((message: ClientMessage): boolean => {
     const socket = socketRef.current;
@@ -385,6 +402,7 @@ export function useCopilotSocket(): CopilotSocket {
         // for it. The matching 'result'/'error' clears activeRequestRef as usual.
         if (activeRequestRef.current === null) {
           activeRequestRef.current = message.requestId;
+          requestAnchorRef.current.set(message.requestId, latestSegmentId());
           setIsAnalyzing(true);
           setProgressTokens(0);
         }
@@ -411,6 +429,7 @@ export function useCopilotSocket(): CopilotSocket {
         break;
       case 'result':
         if (abandonedRequestIdsRef.current.delete(message.requestId)) {
+          requestAnchorRef.current.delete(message.requestId);
           break;
         }
         // ANY result means the in-flight generation finished — ALWAYS clear the
@@ -423,9 +442,21 @@ export function useCopilotSocket(): CopilotSocket {
         activeRequestRef.current = null;
         setIsAnalyzing(false);
         setProgress(null);
-        // A new result OVERWRITES the previous one — only the latest follow-up
-        // bubble is ever shown (no history accumulation).
+        // Keep lastResult for compatibility while the visible transcript consumes
+        // the durable chronological events below.
         setLastResult(message);
+        {
+          const fallbackAnchor = requestAnchorRef.current.get(message.requestId) ?? latestSegmentId();
+          requestAnchorRef.current.delete(message.requestId);
+          const event: CopilotQuestionEvent = {
+            id: message.requestId,
+            anchorSeq: message.anchorSeq ?? fallbackAnchor,
+            result: message
+          };
+          setQuestionEvents((prev) =>
+            prev.some((existing) => existing.id === event.id) ? prev : [...prev, event]
+          );
+        }
         // An auto-triggered result restarts the cooldown window for the countdown.
         if (message.trigger === 'auto') {
           setLastAutoFireAt(Date.now());
@@ -433,8 +464,10 @@ export function useCopilotSocket(): CopilotSocket {
         break;
       case 'error':
         if (message.requestId && abandonedRequestIdsRef.current.delete(message.requestId)) {
+          requestAnchorRef.current.delete(message.requestId);
           break;
         }
+        if (message.requestId) requestAnchorRef.current.delete(message.requestId);
         if (!message.requestId || message.requestId === activeRequestRef.current) {
           activeRequestRef.current = null;
           setIsAnalyzing(false);
@@ -531,9 +564,16 @@ export function useCopilotSocket(): CopilotSocket {
         if (isFinal && typeof message.speakerId === 'number') {
           const sid = message.speakerId;
           const role = effectiveRole(sid, message.speaker, roleOverrideRef.current);
-          setSpeakerSegments((prev) =>
-            appendSegment(prev, { id: segSeqRef.current++, speakerId: sid, role, text })
-          );
+          setSpeakerSegments((prev) => {
+            const next = appendSegment(prev, {
+              id: segSeqRef.current++,
+              speakerId: sid,
+              role,
+              text
+            });
+            speakerSegmentsRef.current = next;
+            return next;
+          });
         }
         break;
       }
@@ -564,13 +604,14 @@ export function useCopilotSocket(): CopilotSocket {
           role: effectiveRole(segment.speakerId, segment.role, roleOverrideRef.current),
           text: segment.text
         }));
+        speakerSegmentsRef.current = next;
         setSpeakerSegments(next);
         const maxSeq = message.segments.reduce((max, segment) => Math.max(max, segment.seq), -1);
         segSeqRef.current = Math.max(segSeqRef.current, maxSeq + 1);
         break;
       }
     }
-  }, [clearSummaryTimeout]);
+  }, [clearSummaryTimeout, latestSegmentId]);
 
   // Connection management. `connect` is intentionally defined inside the effect
   // so the reconnect loop captures a stable closure over the helpers above.
@@ -702,13 +743,14 @@ export function useCopilotSocket(): CopilotSocket {
       }
       abandonedRequestIdsRef.current.delete(requestId);
       activeRequestRef.current = requestId;
+      requestAnchorRef.current.set(requestId, latestSegmentId());
       setIsAnalyzing(true);
       setProgress(null);
       setProgressTokens(0);
       setError(null);
       return requestId;
     },
-    [send]
+    [latestSegmentId, send]
   );
 
   // Manual interviewer note → server candidate-answer context (auto + manual gen).
@@ -868,7 +910,11 @@ export function useCopilotSocket(): CopilotSocket {
       // Re-label this speaker's past bubbles immediately; the server updates its
       // candidate-gating + future stamping. Manual corrections remain sticky and
       // win over every later automatic classifier refresh.
-      setSpeakerSegments((prev) => relabelSegments(prev, speakerId, role));
+      setSpeakerSegments((prev) => {
+        const next = relabelSegments(prev, speakerId, role);
+        speakerSegmentsRef.current = next;
+        return next;
+      });
       send({ type: 'set-speaker-role', speakerId, role });
     },
     [send]
@@ -878,6 +924,7 @@ export function useCopilotSocket(): CopilotSocket {
   // analyze()/Generate-Q and reset only on a new session (Shell.onClearSession).
   const resetSpeakerSegments = useCallback((): void => {
     setSpeakerSegments([]);
+    speakerSegmentsRef.current = [];
     roleOverrideRef.current.clear();
     segSeqRef.current = 0;
   }, []);
@@ -889,6 +936,7 @@ export function useCopilotSocket(): CopilotSocket {
   const resetTranscripts = useCallback((): void => {
     setTranscripts({ mic: { ...EMPTY_LANE }, display: { ...EMPTY_LANE } });
     setLastResult(null);
+    setQuestionEvents([]);
     setLastAutoFireAt(null);
     setProgress(null);
     setProgressTokens(0);
@@ -898,6 +946,7 @@ export function useCopilotSocket(): CopilotSocket {
       abandonedRequestIdsRef.current.add(activeRequestRef.current);
     }
     activeRequestRef.current = null;
+    requestAnchorRef.current.clear();
     // Drop the live session context too so the panel returns to its empty state
     // for the next interview ("New interview").
     setSessionContext(null);
@@ -926,6 +975,7 @@ export function useCopilotSocket(): CopilotSocket {
     analyze,
     addContextNote,
     lastResult,
+    questionEvents,
     lastAutoFireAt,
     progress,
     progressTokens,

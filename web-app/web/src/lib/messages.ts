@@ -114,6 +114,9 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
         if (trigger) {
           result.trigger = trigger;
         }
+        if (isNumber(data.anchorSeq) && Number.isInteger(data.anchorSeq) && data.anchorSeq >= 0) {
+          result.anchorSeq = data.anchorSeq;
+        }
         return result;
       }
       return null;

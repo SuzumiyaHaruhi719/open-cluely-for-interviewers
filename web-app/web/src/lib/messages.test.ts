@@ -145,6 +145,16 @@ describe('result trigger fields', () => {
     expect(out).toMatchObject({ type: 'result', requestId: 'req-1' });
     expect(out).not.toHaveProperty('trigger');
   });
+
+  it('preserves a non-negative transcript anchor sequence', () => {
+    const out = parseServerMessage(JSON.stringify({ ...baseResult, trigger: 'auto', anchorSeq: 12 }));
+    expect(out).toMatchObject({ type: 'result', requestId: 'req-1', anchorSeq: 12 });
+
+    const malformed = parseServerMessage(
+      JSON.stringify({ ...baseResult, trigger: 'auto', anchorSeq: -1 })
+    ) as Record<string, unknown>;
+    expect(malformed).not.toHaveProperty('anchorSeq');
+  });
 });
 
 describe('session-context messages', () => {

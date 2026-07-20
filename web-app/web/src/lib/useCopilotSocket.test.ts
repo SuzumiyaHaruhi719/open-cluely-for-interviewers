@@ -116,6 +116,45 @@ describe('useCopilotSocket', () => {
     expect(result.current.error).toBeNull();
   });
 
+  test('accumulates anchored question events instead of overwriting prior follow-ups', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    const resultFrame = (requestId: string, question: string, anchorSeq: number) => ({
+      type: 'result',
+      requestId,
+      mode: 'expert',
+      output: {
+        primary_question: question,
+        alternative_question: '',
+        rationale_for_interviewer: '验证证据。',
+        anchor_quotes: [],
+        expected_evidence_yield: '获得具体证据。',
+        iteration_version: '3'
+      },
+      shouldShowFollowUps: true,
+      tokensUsed: { input: 10, output: 5, total: 15 },
+      elapsedMs: 900,
+      iterationVersion: '3',
+      trigger: 'auto',
+      anchorSeq
+    });
+
+    act(() => {
+      socket.emit(resultFrame('auto-1', '第一次追问？', 4));
+      socket.emit(resultFrame('auto-2', '第二次追问？', 9));
+    });
+
+    await waitFor(() => expect(result.current.questionEvents).toHaveLength(2));
+    expect(result.current.questionEvents.map((event) => [event.result.requestId, event.anchorSeq])).toEqual([
+      ['auto-1', 4],
+      ['auto-2', 9]
+    ]);
+    expect(result.current.lastResult?.requestId).toBe('auto-2');
+  });
+
   test('a terminal progress frame clears an adopted Auto attempt when no question is emitted', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {

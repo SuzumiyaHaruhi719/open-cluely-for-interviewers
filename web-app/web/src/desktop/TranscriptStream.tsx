@@ -1,6 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import type { OutputLanguage, SpeakerRole } from '@open-cluely/contract';
-import type { CopilotProgress, CopilotResult, TranscriptLanes } from '../lib/useCopilotSocket';
+import type {
+  CopilotProgress,
+  CopilotQuestionEvent,
+  CopilotResult,
+  TranscriptLanes
+} from '../lib/useCopilotSocket';
 import type { AutoMode } from './useAppSettings';
 import type { SpeakerSegment } from '../lib/speakerSegments';
 import { QuestionCard } from './QuestionCard';
@@ -19,7 +24,10 @@ interface TranscriptStreamProps {
   transcripts: TranscriptLanes;
   /** Seeded (sample) or loaded (session) conversation, shown before live lanes. */
   transcriptMessages: TranscriptMessage[];
+  /** @deprecated Visible questions come from questionEvents. */
   lastResult: CopilotResult | null;
+  /** Durable AI follow-ups anchored inside the live transcript timeline. */
+  questionEvents?: CopilotQuestionEvent[];
   /** Selected output language; also localizes the live question-card labels. */
   outputLanguage?: OutputLanguage;
   progress: CopilotProgress | null;
@@ -170,7 +178,7 @@ function AutoCooldownLine({
 export function TranscriptStream({
   transcripts,
   transcriptMessages,
-  lastResult,
+  questionEvents = [],
   outputLanguage = '',
   progress,
   progressTokens = 0,
@@ -206,7 +214,7 @@ export function TranscriptStream({
     transcripts.mic.finalText,
     transcripts.mic.partial,
     speakerSegments,
-    lastResult,
+    questionEvents,
     progress,
     isAnalyzing
   ]);
@@ -226,6 +234,28 @@ export function TranscriptStream({
   // ("使用讯飞的时候也要能点候选人"). Pure online with a non-diarizing provider
   // (paraformer/volc) has no segments → falls through to the two-lane view.
   const showSpeakers = offline || (speakerSegments?.length ?? 0) > 0;
+  const visibleSegmentIds = new Set((speakerSegments ?? []).map((segment) => segment.id));
+  const tailQuestions = showSpeakers
+    ? questionEvents.filter(
+        (event) => event.anchorSeq === null || !visibleSegmentIds.has(event.anchorSeq)
+      )
+    : questionEvents;
+  const newestQuestionId = questionEvents.at(-1)?.id;
+
+  const renderQuestion = (event: CopilotQuestionEvent) => (
+    <QuestionCard
+      key={event.id}
+      output={event.result.output}
+      mode={event.result.mode}
+      tokensUsed={event.result.tokensUsed}
+      elapsedMs={event.result.elapsedMs}
+      outputLanguage={outputLanguage}
+      ranked={event.result.ranked}
+      trigger={event.result.trigger}
+      pickedHint={event.id === newestQuestionId ? pickedHint : null}
+      onPickCandidate={onPickCandidate}
+    />
+  );
 
   return (
     <div
@@ -266,34 +296,36 @@ export function TranscriptStream({
                   ? '候选人'
                   : `说话人 ${seg.speakerId}`;
             return (
-              <div
-                key={seg.id}
-                className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}
-              >
-                <div className="message-header">
-                  <span className="message-icon" aria-hidden="true">
-                    {icon}
-                  </span>
-                  <span className="message-label">{label}</span>
-                  <span className="speaker-role-actions">
-                    <button
-                      type="button"
-                      className={`speaker-role-toggle${seg.role === 'interviewer' ? ' is-active' : ''}`}
-                      onClick={() => onSetSpeakerRole?.(seg.speakerId, 'interviewer')}
-                    >
-                      面试官
-                    </button>
-                    <button
-                      type="button"
-                      className={`speaker-role-toggle${seg.role === 'candidate' ? ' is-active' : ''}`}
-                      onClick={() => onSetSpeakerRole?.(seg.speakerId, 'candidate')}
-                    >
-                      候选人
-                    </button>
-                  </span>
+              <Fragment key={seg.id}>
+                <div className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}>
+                  <div className="message-header">
+                    <span className="message-icon" aria-hidden="true">
+                      {icon}
+                    </span>
+                    <span className="message-label">{label}</span>
+                    <span className="speaker-role-actions">
+                      <button
+                        type="button"
+                        className={`speaker-role-toggle${seg.role === 'interviewer' ? ' is-active' : ''}`}
+                        onClick={() => onSetSpeakerRole?.(seg.speakerId, 'interviewer')}
+                      >
+                        面试官
+                      </button>
+                      <button
+                        type="button"
+                        className={`speaker-role-toggle${seg.role === 'candidate' ? ' is-active' : ''}`}
+                        onClick={() => onSetSpeakerRole?.(seg.speakerId, 'candidate')}
+                      >
+                        候选人
+                      </button>
+                    </span>
+                  </div>
+                  <div className="message-content">{seg.text}</div>
                 </div>
-                <div className="message-content">{seg.text}</div>
-              </div>
+                {questionEvents
+                  .filter((event) => event.anchorSeq === seg.id)
+                  .map(renderQuestion)}
+              </Fragment>
             );
           })}
           {offline && (speakerSegments ?? []).length === 0 && mic.finalText ? (
@@ -315,22 +347,10 @@ export function TranscriptStream({
         </>
       )}
 
-      {/* Only the LATEST follow-up is ever shown — a new result overwrites the
-          previous bubble (single-card behaviour). While a generation is in
-          flight the progress card replaces it. */}
-      {lastResult && !isAnalyzing ? (
-        <QuestionCard
-          output={lastResult.output}
-          mode={lastResult.mode}
-          tokensUsed={lastResult.tokensUsed}
-          elapsedMs={lastResult.elapsedMs}
-          outputLanguage={outputLanguage}
-          ranked={lastResult.ranked}
-          trigger={lastResult.trigger}
-          pickedHint={pickedHint}
-          onPickCandidate={onPickCandidate}
-        />
-      ) : null}
+      {/* Manual/legacy results without a matching semantic segment land at the
+          current tail. Anchored automatic results were inserted above, directly
+          after the candidate evidence that caused them. */}
+      {tailQuestions.map(renderQuestion)}
 
       {isAnalyzing ? <ProgressCard progress={progress} tokens={progressTokens} /> : null}
 
