@@ -600,20 +600,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
   box-shadow: 0 0 6px color-mix(in srgb, #ec4899 50%, transparent);
 }
 
-/* ASR engine pill — colour per provider so the active speech-to-text model is
-   obvious at a glance (Paraformer = teal, Xunfei = amber, Doubao = violet). */
-.mode-indicator[data-asr="paraformer"] {
-  color: var(--candidate);
-  border-color: color-mix(in srgb, var(--candidate) 35%, var(--border));
-  background: color-mix(in srgb, var(--candidate) 8%, transparent);
-}
-.mode-indicator[data-asr="paraformer"] .mode-indicator__dot { background: var(--candidate); box-shadow: 0 0 6px color-mix(in srgb, var(--candidate) 50%, transparent); }
-.mode-indicator[data-asr="xfyun"] {
-  color: #f5a623;
-  border-color: color-mix(in srgb, #f5a623 35%, var(--border));
-  background: color-mix(in srgb, #f5a623 8%, transparent);
-}
-.mode-indicator[data-asr="xfyun"] .mode-indicator__dot { background: #f5a623; box-shadow: 0 0 6px color-mix(in srgb, #f5a623 50%, transparent); }
+/* Fixed Doubao Seed ASR 2.0 status pill. */
 .mode-indicator[data-asr="volc"] {
   color: var(--interviewer);
   border-color: color-mix(in srgb, var(--interviewer) 40%, var(--border));
@@ -685,18 +672,6 @@ body.stealth-on .app-shell { opacity: 0.92; }
 @keyframes rec-pulse {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.3; }
-}
-
-/* Auto-generate toggle pill (button form of mode-indicator). Inherits pill
-   chrome from .mode-indicator; here we only add interactivity affordance:
-   pointer cursor at rest + an indigo hover border so it reads as clickable. */
-.auto-indicator {
-  cursor: pointer;
-}
-
-.auto-indicator:hover {
-  border-color: rgba(124, 140, 248, 0.5);
-  cursor: pointer;
 }
 
 /* Screenshot counter pill */
@@ -1970,4 +1945,3 @@ body.rail-collapsed .right-rail {
     animation: none !important;
   }
 }
-

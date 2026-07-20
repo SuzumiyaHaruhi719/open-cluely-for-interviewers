@@ -1,8 +1,8 @@
 // ============================================================================
-// Volcengine / Doubao (豆包) streaming ASR service — SAUC v3 "bigmodel".
+// Volcengine / Doubao (豆包) streaming ASR service — Seed ASR 2.0.
 // ----------------------------------------------------------------------------
-// Mirrors the public surface of the Xunfei + Paraformer services so it slots
-// into the asr-router unchanged. Speaks Volcengine's binary WebSocket protocol.
+// Implements the app's standard streaming-ASR surface and speaks Volcengine's
+// binary WebSocket protocol.
 //
 // Endpoint:  wss://openspeech.bytedance.com/api/v3/sauc/bigmodel
 // Auth:      headers X-Api-App-Key (APP ID), X-Api-Access-Key (Access Token),
@@ -36,8 +36,18 @@ const {
   normalizeSttSource
 } = require('../asr-shared/stt-history');
 
-const VOLC_ENDPOINT = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel';
+const VOLC_WS_URL = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel';
+const VOLC_WS_URL_NOSTREAM = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream';
+const VOLC_DEFAULT_RESOURCE_ID = 'volc.seedasr.sauc.duration';
 const VOLC_SAMPLE_RATE = 16000;
+
+function isDoubaoAsr2Resource(resourceId) {
+  return /^volc\.seedasr\./i.test(String(resourceId || '').trim());
+}
+
+function endpointForResource(resourceId) {
+  return isDoubaoAsr2Resource(resourceId) ? VOLC_WS_URL_NOSTREAM : VOLC_WS_URL;
+}
 
 const PROTOCOL_VERSION = 0x1;
 const HEADER_SIZE = 0x1;
@@ -186,14 +196,16 @@ function createVolcengineAsrService({
     const creds = getVolcCredentials() || {};
     const appKey = String(creds.appId || '').trim();
     const accessKey = String(creds.accessToken || '').trim();
-    // Default to the 1.0 hourly model — it is the resource most accounts have
-    // granted. The 2.0 (volc.seedasr.*) model must be explicitly enabled on the
-    // account/endpoint or the handshake returns 400 "resourceId not allowed".
-    const resourceId = String(creds.resourceId || '').trim() || 'volc.bigasr.sauc.duration';
+    const resourceId = String(creds.resourceId || '').trim() || VOLC_DEFAULT_RESOURCE_ID;
 
     if (!appKey || !accessKey) {
-      sendToRenderer('vosk-error', { source: resolved, error: 'Doubao APP ID / Access Token not configured. Add them in Settings.' });
+      sendToRenderer('vosk-error', { source: resolved, error: '豆包 ASR 2.0 未配置：请在 .env 设置 VOLC_APP_ID / VOLC_ACCESS_TOKEN。' });
       return { success: false, error: 'Doubao credentials not configured.' };
+    }
+    if (!isDoubaoAsr2Resource(resourceId)) {
+      const error = '仅支持豆包 Seed ASR 2.0 资源（volc.seedasr.*），不会回退到 ASR 1.0。';
+      sendToRenderer('vosk-error', { source: resolved, error });
+      return { success: false, error };
     }
     if (isSourceStreaming(resolved)) {
       return { success: true, message: `${resolved} already streaming` };
@@ -211,7 +223,7 @@ function createVolcengineAsrService({
         'X-Api-Request-Id': crypto.randomUUID(),
         'X-Api-Connect-Id': crypto.randomUUID()
       };
-      const ws = new WebSocket(VOLC_ENDPOINT, { headers });
+      const ws = new WebSocket(endpointForResource(resourceId), { headers });
       sockets[resolved] = ws;
 
       ws.on('open', () => {
@@ -333,4 +345,13 @@ function createVolcengineAsrService({
   };
 }
 
-module.exports = { createVolcengineAsrService, buildFrame, parseFrame };
+module.exports = {
+  VOLC_DEFAULT_RESOURCE_ID,
+  VOLC_WS_URL,
+  VOLC_WS_URL_NOSTREAM,
+  buildFrame,
+  createVolcengineAsrService,
+  endpointForResource,
+  isDoubaoAsr2Resource,
+  parseFrame
+};

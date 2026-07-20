@@ -10,7 +10,7 @@
 //   1. Send run-task JSON event (task_id = UUID, streaming=duplex)
 //   2. Wait for task-started event -> renderer goes to 'listening'
 //   3. Stream binary PCM frames (8 kHz, 16-bit LE, mono — downsampled from
-//      the renderer's 16 kHz capture so xfyun-rtasr can share the pipeline)
+//      the renderer's native 16 kHz capture)
 //   4. Receive result-generated events; each contains payload.output.sentence
 //      with text and sentence_end flag. We emit partials while sentence_end is
 //      false, and emit a final once sentence_end becomes true. On sentence_end
@@ -29,7 +29,7 @@ const {
 // Chinese-only. It returns emo_tag (positive/neutral/negative) +
 // emo_confidence on sentence_end events, which we forward to the
 // interviewer copilot so the prompt can factor in candidate affect.
-// The renderer's audio pipeline captures at 16 kHz (shared with xfyun);
+// The renderer's audio pipeline captures at 16 kHz;
 // we downsample 16k -> 8k here so each provider owns its own rate.
 const PARAFORMER_SAMPLE_RATE = 8000;
 const PARAFORMER_INPUT_SAMPLE_RATE = 16000;

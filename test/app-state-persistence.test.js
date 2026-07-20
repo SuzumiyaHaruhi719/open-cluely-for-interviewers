@@ -12,15 +12,32 @@ function fakeApp() {
   return { isPackaged: true, getPath: () => dir, _dir: dir };
 }
 
-test('saveAppState merges — a partial save preserves existing API keys', () => {
+test('app state preserves the AI key while purging retired ASR provider credentials', () => {
   const app = fakeApp();
-  saveAppState(app, { dashscopeApiKey: 'sk-test-123456', xfyunAppId: 'xa', xfyunApiKey: 'xk' });
+  saveAppState(app, {
+    dashscopeApiKey: 'sk-test-123456',
+    asrProvider: 'xfyun',
+    xfyunAppId: 'xa',
+    xfyunApiKey: 'xk',
+    volcAppId: 'va',
+    volcAccessToken: 'vt',
+    volcResourceId: 'volc.bigasr.sauc.duration'
+  });
 
-  // A later partial save (e.g. switching mode) must NOT wipe the keys.
+  // A later partial save must keep non-ASR state without resurrecting secrets.
   saveAppState(app, { interviewerMode: 'customize', activePipelineId: 'p1' });
   const s = loadAppState(app);
   assert.strictEqual(s.dashscopeApiKey, 'sk-test-123456', 'dashscope key preserved across partial save');
-  assert.strictEqual(s.xfyunApiKey, 'xk');
+  for (const retired of [
+    'asrProvider',
+    'xfyunAppId',
+    'xfyunApiKey',
+    'volcAppId',
+    'volcAccessToken',
+    'volcResourceId'
+  ]) {
+    assert.strictEqual(Object.hasOwn(s, retired), false, `${retired} is no longer persisted`);
+  }
   assert.strictEqual(s.interviewerMode, 'customize');
   assert.strictEqual(s.activePipelineId, 'p1');
 

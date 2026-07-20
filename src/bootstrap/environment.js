@@ -93,8 +93,10 @@ function loadApplicationEnvironment(app) {
 
 function buildEnvironmentFileContent(environment) {
   return [
-    '# API keys are managed in the in-app Settings UI and stored in app state.',
-    '# Do not place API keys in this file.',
+    '# Deployment-owned credentials. Settings never displays or rewrites them.',
+    'VOLC_APP_ID=',
+    'VOLC_ACCESS_TOKEN=',
+    'VOLC_RESOURCE_ID=volc.seedasr.sauc.duration',
     '',
     '# Optional capture behavior',
     '# true = hide this app from screen sharing/screen capture',
@@ -117,11 +119,49 @@ function buildEnvironmentFileContent(environment) {
   ].join('\n');
 }
 
+/**
+ * Update only product-managed preference keys while preserving every unknown
+ * line verbatim. Deployment credentials live in the same .env file, so a
+ * routine Settings save must never rebuild the file and erase them.
+ */
+function mergeEnvironmentFileContent(existingContent, updates = {}) {
+  const normalizedUpdates = Object.fromEntries(
+    Object.entries(updates).map(([key, value]) => [String(key), String(value ?? '')])
+  );
+  const seen = new Set();
+  const lines = String(existingContent ?? '').split(/\r?\n/).map((line) => {
+    const match = line.match(/^\s*([A-Z][A-Z0-9_]*)\s*=/);
+    const key = match?.[1];
+    if (!key || !Object.prototype.hasOwnProperty.call(normalizedUpdates, key)) return line;
+    seen.add(key);
+    return `${key}=${normalizedUpdates[key]}`;
+  });
+
+  const missing = Object.keys(normalizedUpdates).filter((key) => !seen.has(key));
+  if (missing.length > 0) {
+    while (lines.length > 0 && lines.at(-1) === '') lines.pop();
+    if (lines.length > 0) lines.push('');
+    for (const key of missing) lines.push(`${key}=${normalizedUpdates[key]}`);
+  }
+  return `${lines.join('\n').replace(/\n+$/, '')}\n`;
+}
+
 function saveApplicationEnvironment(app, values = {}) {
   const envPath = getEnvPath(app);
   const environment = normalizeApplicationEnvironment(values);
   syncProcessEnvironment(environment);
-  fs.writeFileSync(envPath, buildEnvironmentFileContent(environment), 'utf8');
+  const managedValues = {
+    HIDE_FROM_SCREEN_CAPTURE: environment.hideFromScreenCapture,
+    START_HIDDEN: environment.startHidden,
+    MAX_SCREENSHOTS: environment.maxScreenshots,
+    SCREENSHOT_DELAY: environment.screenshotDelay,
+    NODE_ENV: environment.nodeEnv,
+    NODE_OPTIONS: environment.nodeOptions
+  };
+  const nextContent = fs.existsSync(envPath)
+    ? mergeEnvironmentFileContent(fs.readFileSync(envPath, 'utf8'), managedValues)
+    : buildEnvironmentFileContent(environment);
+  fs.writeFileSync(envPath, nextContent, 'utf8');
 
   return {
     envPath,
@@ -134,6 +174,7 @@ module.exports = {
   buildEnvironmentFileContent,
   getEnvPath,
   loadApplicationEnvironment,
+  mergeEnvironmentFileContent,
   normalizeApplicationEnvironment,
   saveApplicationEnvironment
 };

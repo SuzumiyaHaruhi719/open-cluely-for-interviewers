@@ -4,7 +4,6 @@ const { execFile } = require('child_process');
 function registerSettingsIpc({
   ipcMain,
   app,
-  asrService,
   getAppEnvironment,
   setAppEnvironment,
   getAppState,
@@ -81,36 +80,26 @@ function registerSettingsIpc({
     const dashscopeAiModel = typeof appState?.dashscopeAiModel === 'string' && appState.dashscopeAiModel
       ? appState.dashscopeAiModel
       : geminiRuntime.getDefaultDashscopeAiModel();
-    const xfyunAppId = typeof appState?.xfyunAppId === 'string' ? appState.xfyunAppId : '';
-    const xfyunApiKey = typeof appState?.xfyunApiKey === 'string' ? appState.xfyunApiKey : '';
-    // Volcengine ASR creds (staged — returned raw so the Settings UI can show
-    // them; nothing consumes them for capture yet).
-    const volcAppId = typeof appState?.volcAppId === 'string' ? appState.volcAppId : '';
-    const volcAccessToken = typeof appState?.volcAccessToken === 'string' ? appState.volcAccessToken : '';
-    const volcResourceId = typeof appState?.volcResourceId === 'string' ? appState.volcResourceId : '';
     const resumeText = typeof appState?.resumeText === 'string' ? appState.resumeText : '';
     const jobDescription = typeof appState?.jobDescription === 'string' ? appState.jobDescription : '';
-    const asrProvider = ['xfyun', 'volc'].includes(appState?.asrProvider) ? appState.asrProvider : 'paraformer';
     const interviewerMode = ['expert', 'expert2', 'customize'].includes(appState?.interviewerMode) ? appState.interviewerMode : 'fast';
     const activePipelineId = typeof appState?.activePipelineId === 'string' ? appState.activePipelineId : null;
 
     return {
-      asrProvider,
+      asrProvider: 'volc',
+      hasAsrConfigured: Boolean(
+        String(process.env.VOLC_APP_ID || '').trim() &&
+        String(process.env.VOLC_ACCESS_TOKEN || '').trim()
+      ),
       dashscopeApiKey,
       dashscopeAiModel,
       resumeChatModel: typeof appState?.resumeChatModel === 'string' ? appState.resumeChatModel : null,
       outputLanguage: typeof appState?.outputLanguage === 'string' ? appState.outputLanguage : null,
-      xfyunAppId,
-      xfyunApiKey,
-      volcAppId,
-      volcAccessToken,
-      volcResourceId,
       resumeText,
       jobDescription,
       interviewerMode,
       activePipelineId,
       hasDashscopeApiKey: dashscopeApiKey.length > 0,
-      hasXfyunCredentials: xfyunAppId.length > 0 && xfyunApiKey.length > 0,
       dashscopeAiModels: geminiRuntime.getDashscopeAiModels(),
       defaultDashscopeAiModel: geminiRuntime.getDefaultDashscopeAiModel(),
       keyboardShortcuts,
@@ -125,10 +114,6 @@ function registerSettingsIpc({
 
     try {
       const appEnvironment = getAppEnvironment();
-      const previousAsrProvider = (() => {
-        const current = getAppState();
-        return ['xfyun', 'volc'].includes(current?.asrProvider) ? current.asrProvider : 'paraformer';
-      })();
       const has = (k) => Object.prototype.hasOwnProperty.call(settings, k);
       const current = getAppState() || {};
 
@@ -138,19 +123,10 @@ function registerSettingsIpc({
       // the fields it omits — doing so wiped the user's API keys repeatedly.
       const patch = {};
       if (has('dashscopeApiKey')) patch.dashscopeApiKey = String(settings.dashscopeApiKey || '').trim();
-      if (has('xfyunAppId')) patch.xfyunAppId = String(settings.xfyunAppId || '').trim();
-      if (has('xfyunApiKey')) patch.xfyunApiKey = String(settings.xfyunApiKey || '').trim();
-      if (has('volcAppId')) patch.volcAppId = String(settings.volcAppId || '').trim();
-      if (has('volcAccessToken')) patch.volcAccessToken = String(settings.volcAccessToken || '').trim();
-      if (has('volcResourceId')) patch.volcResourceId = String(settings.volcResourceId || '').trim();
       if (has('resumeText')) patch.resumeText = String(settings.resumeText || '').trim();
       if (has('jobDescription')) patch.jobDescription = String(settings.jobDescription || '').trim();
       if (has('resumeChatModel')) patch.resumeChatModel = String(settings.resumeChatModel || '').trim() || null;
       if (has('outputLanguage')) { const l = String(settings.outputLanguage || '').trim().toLowerCase(); patch.outputLanguage = (l === 'zh' || l === 'en') ? l : null; }
-      if (has('asrProvider')) {
-        const r = String(settings.asrProvider || '').trim().toLowerCase();
-        patch.asrProvider = ['xfyun', 'volc'].includes(r) ? r : 'paraformer';
-      }
       if (has('interviewerMode')) {
         const r = String(settings.interviewerMode || '').trim().toLowerCase();
         patch.interviewerMode = ['expert', 'expert2', 'customize'].includes(r) ? r : 'fast';
@@ -172,8 +148,6 @@ function registerSettingsIpc({
         patch.windowOpacityLevel = windowController.setWindowOpacityLevel(settings.windowOpacityLevel);
       }
 
-      const nextAsrProvider = patch.asrProvider !== undefined ? patch.asrProvider : previousAsrProvider;
-
       const updatedEnvironment = saveApplicationEnvironment(app, {
         hideFromScreenCapture: appEnvironment.hideFromScreenCapture,
         startHidden: appEnvironment.startHidden,
@@ -187,11 +161,6 @@ function registerSettingsIpc({
 
       setAppEnvironment(updatedEnvironment);
       setAppState(updatedAppState);
-
-      if (previousAsrProvider !== nextAsrProvider && asrService?.stopAllStreams) {
-        console.log(`ASR provider switched ${previousAsrProvider} → ${nextAsrProvider}; stopping previous streams`);
-        try { asrService.stopAllStreams(); } catch (_) {}
-      }
 
       console.log('Saved app state to:', getAppStatePath(app));
       console.log('Settings saved to:', updatedEnvironment.envPath);

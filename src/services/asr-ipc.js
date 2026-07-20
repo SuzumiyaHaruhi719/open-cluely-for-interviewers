@@ -1,6 +1,5 @@
-// Generic ASR IPC bridge. Used to live under services/assembly-ai/ when there
-// was only one provider; now it sits on top of the asr-router which dispatches
-// to Paraformer or Xunfei RTASR based on appState.asrProvider.
+// Generic ASR IPC bridge. The active desktop runtime is fixed to Doubao Seed
+// ASR 2.0; keeping this bridge provider-neutral isolates capture from transport.
 
 // Per-frame audio payload cap. A compromised renderer (XSS) could otherwise
 // flood the main process with arbitrary-sized buffers, OOMing it or pinning

@@ -84,37 +84,21 @@ one-line reason, and promote any of them into the conversation with a click.
 <img src="./.github/assets/ranked-candidates.png" alt="Ranked candidate follow-ups, each with a rubric score and a short reason" width="820" />
 </div>
 
-### Autonomous auto-generation
+### Autonomous expert follow-ups
 
-Flip the **Auto** pill and the copilot fires on its own, watching the live conversation and
-surfacing a follow-up the moment the candidate finishes a substantive answer — no clicking required.
-Turn it off to stay fully manual. Auto-generated suggestions wear a subtle `自动` badge so you
-always know what came from you and what came from the copilot.
-
-<div align="center">
-<img src="./.github/assets/auto-toggle.gif" alt="Toggling the Auto pill in the topbar" width="620" />
-</div>
-
-### Three modes — and a Pipeline Studio to build your own
-
-Pick the depth you want, per interview:
-
-- **Fast** — low-latency two-stage follow-ups for when pace matters.
-- **Expert** — a seven-block deep chain (analyze → gap → state → pool → rank → safety → render)
-  with independent scoring; the most reliable signal.
-- **Customize** — start from a role template (backend, PM, data, sales, manager, new-grad…) or
-  describe your panel in one sentence and let the copilot assemble a pipeline for you.
+The copilot continuously watches the live conversation and surfaces a follow-up after the candidate
+provides enough substantive evidence. This evidence-aware Expert policy is always enabled; there is
+no separate Auto preference to drift out of sync.
 
 <div align="center">
-<img src="./.github/assets/customize-gallery.png" alt="Customize mode: role templates plus a one-sentence AI pipeline generator" width="560" />
+<img src="./.github/assets/auto-toggle.gif" alt="Automatic follow-up appearing in the interview timeline" width="620" />
 </div>
 
-Need full control? Open the **Pipeline Studio** — a visual node editor where every block is a node
-you can wire together, configure, validate, and save as your own interviewing brain.
+### One sub-10-second Expert workflow
 
-<div align="center">
-<img src="./.github/assets/pipeline-studio.png" alt="Pipeline Studio: a node-and-wire editor for building a custom interviewer pipeline" width="860" />
-</div>
+Every interview uses the same DeepSeek v4 Flash Expert workflow. The JD, résumé, scorecard, recent
+interviewer context, and candidate-only evidence are context for that workflow—not separate prompt
+modes or a user-built pipeline.
 
 ### A bank of 792 real questions — and RAG grounding everywhere
 

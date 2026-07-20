@@ -94,9 +94,9 @@
               <span class="rec-indicator__dot" aria-hidden="true"></span>
               <span id="rec-indicator-label" class="rec-indicator__label">待机</span>
             </span>
-            <span id="asr-indicator" class="mode-indicator" data-asr="paraformer" title="语音转文字引擎">
+            <span id="asr-indicator" class="mode-indicator" data-asr="volc" title="语音转文字：豆包 Seed ASR 2.0">
               <span class="mode-indicator__dot" aria-hidden="true"></span>
-              <span id="asr-indicator-label" class="mode-indicator__label">Paraformer</span>
+              <span id="asr-indicator-label" class="mode-indicator__label">豆包 2.0</span>
             </span>
             <span class="screenshot-count is-zero" id="screenshot-count" data-count="0" title="已截取截图">0</span>
           </div>
@@ -354,31 +354,12 @@
             </div>
           </section>
 
-          <!-- Speech recognition -->
+          <!-- Audio capture; ASR is fixed deployment policy. -->
           <section class="settings-section">
-            <h3 class="settings-section__title">语音识别</h3>
+            <h3 class="settings-section__title">音频</h3>
             <div class="settings-field">
-              <label class="settings-field__label" for="setting-asr-provider">服务商</label>
-              <select id="setting-asr-provider" class="settings-select">
-                <option value="paraformer">DashScope Paraformer（推荐）</option>
-                <option value="xfyun">科大讯飞 RTASR</option>
-                <option value="volc">豆包流式（火山引擎）</option>
-              </select>
-              <p class="settings-field__desc" id="paraformer-settings-group">通过 <code>paraformer-realtime-8k-v2</code> 流式识别，使用上方的 DashScope 密钥。</p>
-            </div>
-            <div id="xfyun-settings-group" class="settings-field hidden">
-              <div class="settings-field">
-                <label class="settings-field__label" for="setting-xfyun-appid">讯飞 AppID</label>
-                <input type="text" id="setting-xfyun-appid" class="settings-input" placeholder="来自 console.xfyun.cn" />
-              </div>
-              <div class="settings-field">
-                <label class="settings-field__label" for="setting-xfyun-key">讯飞 API 密钥</label>
-                <div class="settings-key-row">
-                  <input type="password" id="setting-xfyun-key" class="settings-input settings-input--mono" placeholder="实时语音转写服务密钥" />
-                  <button type="button" id="toggle-xfyun-key-visibility" class="settings-key-toggle" aria-label="显示讯飞 API 密钥" aria-pressed="false">显示</button>
-                </div>
-                <p class="settings-field__desc">请在讯飞控制台开通「实时语音转写」服务。</p>
-              </div>
+              <span class="settings-field__label">语音识别</span>
+              <p class="settings-field__desc"><strong>豆包 Seed ASR 2.0</strong> · 固定启用。部署凭据由 <code>.env</code> 管理，不在客户端显示或保存。</p>
             </div>
 
             <div class="settings-field">
@@ -397,38 +378,6 @@
             <div class="settings-actions">
               <button type="button" id="refresh-audio-devices-btn" class="settings-btn" aria-label="刷新音频设备列表">刷新设备</button>
               <button type="button" id="open-sound-settings-btn" class="settings-btn" aria-label="打开 Windows 声音设置">系统声音</button>
-            </div>
-          </section>
-
-          <!-- Doubao / Volcengine streaming ASR credentials (selectable above as Provider). -->
-          <section class="settings-section">
-            <h3 class="settings-section__title">豆包 / 火山引擎 语音转写 (Doubao ASR)</h3>
-            <div class="settings-field">
-              <label class="settings-field__label" for="setting-volc-appid">AppID</label>
-              <input type="text" id="setting-volc-appid" class="settings-input" placeholder="来自 console.volcengine.com" />
-            </div>
-            <div class="settings-field">
-              <label class="settings-field__label" for="setting-volc-access-token">访问令牌</label>
-              <div class="settings-key-row">
-                <input type="password" id="setting-volc-access-token" class="settings-input settings-input--mono" placeholder="火山引擎访问令牌" />
-                <button type="button" id="toggle-volc-access-token-visibility" class="settings-key-toggle" aria-label="显示火山引擎 Access Token" aria-pressed="false">显示</button>
-              </div>
-            </div>
-            <div class="settings-field">
-              <label class="settings-field__label" for="setting-volc-model">豆包模型 / Doubao model</label>
-              <select id="setting-volc-model" class="settings-select">
-                <option value="volc.bigasr.sauc.duration">流式 1.0 · 小时版 (bigasr · duration)</option>
-                <option value="volc.bigasr.sauc.concurrent">流式 1.0 · 并发版 (bigasr · concurrent)</option>
-                <option value="volc.seedasr.sauc.duration">流式 2.0 Seed · 小时版 (seedasr · duration)</option>
-                <option value="volc.seedasr.sauc.concurrent">流式 2.0 Seed · 并发版 (seedasr · concurrent)</option>
-                <option value="__custom">自定义 / Custom…</option>
-              </select>
-              <p class="settings-field__desc">选好即自动保存。2.0 (seedasr) 更准但需在控制台为该 App 开通；1.0 小时版最通用。需要其它 resource id 选「自定义」。</p>
-            </div>
-            <div class="settings-field" id="setting-volc-resource-id-row">
-              <label class="settings-field__label" for="setting-volc-resource-id">资源 ID</label>
-              <input type="text" id="setting-volc-resource-id" class="settings-input" placeholder="例如 volc.bigasr.sauc.duration" />
-              <p class="settings-field__desc">请输入完整的资源 ID（如 volc.bigasr.sauc.duration）。</p>
             </div>
           </section>
 

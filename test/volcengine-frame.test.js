@@ -1,7 +1,21 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const zlib = require('zlib');
-const { buildFrame, parseFrame } = require('../src/services/volcengine-asr/service');
+const {
+  VOLC_DEFAULT_RESOURCE_ID,
+  VOLC_WS_URL_NOSTREAM,
+  buildFrame,
+  endpointForResource,
+  isDoubaoAsr2Resource,
+  parseFrame
+} = require('../src/services/volcengine-asr/service');
+
+test('desktop Doubao policy defaults to Seed ASR 2.0 duration on the nostream endpoint', () => {
+  assert.strictEqual(VOLC_DEFAULT_RESOURCE_ID, 'volc.seedasr.sauc.duration');
+  assert.strictEqual(isDoubaoAsr2Resource(VOLC_DEFAULT_RESOURCE_ID), true);
+  assert.strictEqual(isDoubaoAsr2Resource('volc.bigasr.sauc.duration'), false);
+  assert.strictEqual(endpointForResource(VOLC_DEFAULT_RESOURCE_ID), VOLC_WS_URL_NOSTREAM);
+});
 
 // Volcengine binary framing: a JSON config frame round-trips through build→parse.
 test('config frame round-trips (gzip JSON, full-server-shaped parse)', () => {

@@ -6,20 +6,10 @@ const APP_STATE_FILE_NAME = 'app-state.json';
 
 function getDefaultAppState() {
   return {
-    asrProvider: null,
     dashscopeApiKey: null,
     dashscopeAiModel: null,
     resumeChatModel: null,
     outputLanguage: null,
-    xfyunAppId: null,
-    xfyunApiKey: null,
-    // Volcengine (火山引擎) ASR — STAGED, not yet connected. These are stored so
-    // the offline interview path can later switch its ASR to a 'volcengine'
-    // provider once an access token is available. Empty → null. No client reads
-    // them yet; offline currently runs on the existing mic→Paraformer pipeline.
-    volcAppId: null,
-    volcAccessToken: null,
-    volcResourceId: null,
     windowOpacityLevel: 10,
     resumeText: null,
     jobDescription: null,
@@ -34,11 +24,6 @@ function sanitizeAppState(state) {
   const nextState = getDefaultAppState();
 
   if (state && typeof state === 'object' && !Array.isArray(state)) {
-    const asrProvider = String(state.asrProvider ?? '').trim().toLowerCase();
-    if (['paraformer', 'xfyun', 'volc'].includes(asrProvider)) {
-      nextState.asrProvider = asrProvider;
-    }
-
     if (typeof state.dashscopeApiKey === 'string') {
       const dashscopeApiKey = state.dashscopeApiKey.trim();
       nextState.dashscopeApiKey = dashscopeApiKey || null;
@@ -56,34 +41,6 @@ function sanitizeAppState(state) {
     if (typeof state.outputLanguage === 'string') {
       const outputLanguage = state.outputLanguage.trim().toLowerCase();
       nextState.outputLanguage = (outputLanguage === 'zh' || outputLanguage === 'en') ? outputLanguage : null;
-    }
-
-    if (typeof state.xfyunAppId === 'string') {
-      const xfyunAppId = state.xfyunAppId.trim();
-      nextState.xfyunAppId = xfyunAppId || null;
-    }
-
-    if (typeof state.xfyunApiKey === 'string') {
-      const xfyunApiKey = state.xfyunApiKey.trim();
-      nextState.xfyunApiKey = xfyunApiKey || null;
-    }
-
-    // Volcengine ASR creds (staged). Same trim → empty→null contract as the
-    // other provider keys; no validation beyond string/trim because no client
-    // consumes them yet.
-    if (typeof state.volcAppId === 'string') {
-      const volcAppId = state.volcAppId.trim();
-      nextState.volcAppId = volcAppId || null;
-    }
-
-    if (typeof state.volcAccessToken === 'string') {
-      const volcAccessToken = state.volcAccessToken.trim();
-      nextState.volcAccessToken = volcAccessToken || null;
-    }
-
-    if (typeof state.volcResourceId === 'string') {
-      const volcResourceId = state.volcResourceId.trim();
-      nextState.volcResourceId = volcResourceId || null;
     }
 
     if (typeof state.resumeText === 'string') {

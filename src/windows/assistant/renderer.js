@@ -682,20 +682,8 @@ const settingsStatusIndicator = document.getElementById('settings-status');
 const settingStealthToggle = document.getElementById('setting-stealth-toggle');
 const settingDashscopeAiModel = document.getElementById('setting-dashscope-ai-model');
 const settingOutputLanguage = document.getElementById('setting-output-language');
-const settingAsrProvider = document.getElementById('setting-asr-provider');
-const paraformerSettingsGroup = document.getElementById('paraformer-settings-group');
-const xfyunSettingsGroup = document.getElementById('xfyun-settings-group');
 const settingDashscopeKey = document.getElementById('setting-dashscope-key');
 const toggleDashscopeKeyVisibilityBtn = document.getElementById('toggle-dashscope-key-visibility');
-const settingXfyunAppId = document.getElementById('setting-xfyun-appid');
-const settingXfyunKey = document.getElementById('setting-xfyun-key');
-const toggleXfyunKeyVisibilityBtn = document.getElementById('toggle-xfyun-key-visibility');
-const settingVolcAppId = document.getElementById('setting-volc-appid');
-const settingVolcAccessToken = document.getElementById('setting-volc-access-token');
-const toggleVolcAccessTokenVisibilityBtn = document.getElementById('toggle-volc-access-token-visibility');
-const settingVolcResourceId = document.getElementById('setting-volc-resource-id');
-const settingVolcModel = document.getElementById('setting-volc-model');
-const settingVolcResourceIdRow = document.getElementById('setting-volc-resource-id-row');
 const settingResumeText = document.getElementById('setting-resume-text');
 const settingJobDescription = document.getElementById('setting-job-description');
 const settingInterviewerMode = document.getElementById('setting-interviewer-mode');
@@ -751,7 +739,7 @@ const REC_INDICATOR_POLL_MS = 300;
 let isCloseConfirmationOpen = false;
 // Cached availability flags from get-settings IPC. AI capability is gated on
 // the DashScope key. ASR capability is gated on either the DashScope key
-// (Paraformer) or Xunfei credentials.
+// or deployment-owned Doubao ASR readiness.
 let hasAiConfigured = false;
 let hasAsrConfigured = false;
 const aiActionInFlightState = {
@@ -884,52 +872,12 @@ function setupPipelineStudio() {
     if (customizeAiInput) customizeAiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); generatePipelineFromInput(); } });
 }
 
-// Doubao model picker: a friendly dropdown of the known Volcengine resource IDs
-// that drives the (still-editable) Resource ID field, auto-saving on change.
-const VOLC_KNOWN_RESOURCES = ['volc.bigasr.sauc.duration', 'volc.bigasr.sauc.concurrent', 'volc.seedasr.sauc.duration', 'volc.seedasr.sauc.concurrent'];
-function syncVolcModelFromInput() {
-    if (!settingVolcModel || !settingVolcResourceId) return;
-    const v = String(settingVolcResourceId.value || '').trim();
-    settingVolcModel.value = VOLC_KNOWN_RESOURCES.includes(v) ? v : '__custom';
-    if (settingVolcResourceIdRow) settingVolcResourceIdRow.style.display = settingVolcModel.value === '__custom' ? '' : 'none';
-}
-function setupVolcModelPicker() {
-    if (!settingVolcModel || !settingVolcResourceId) return;
-    settingVolcModel.addEventListener('change', () => {
-        if (settingVolcModel.value === '__custom') {
-            if (settingVolcResourceIdRow) settingVolcResourceIdRow.style.display = '';
-            settingVolcResourceId.focus();
-            return;
-        }
-        settingVolcResourceId.value = settingVolcModel.value;
-        if (settingVolcResourceIdRow) settingVolcResourceIdRow.style.display = 'none';
-        window.electronAPI?.saveSettings?.({ volcResourceId: settingVolcModel.value }).catch(() => {});
-    });
-    settingVolcResourceId.addEventListener('change', () => {
-        window.electronAPI?.saveSettings?.({ volcResourceId: String(settingVolcResourceId.value || '').trim() }).catch(() => {});
-        syncVolcModelFromInput();
-    });
-    // The settings panel populates the Resource ID input asynchronously on open;
-    // sync the dropdown to it shortly after.
-    if (settingsBtn) settingsBtn.addEventListener('click', () => setTimeout(syncVolcModelFromInput, 200));
-    syncVolcModelFromInput();
-}
 const settingsPanelManager = createSettingsPanelManager({
     settingsPanel,
     settingDashscopeAiModel,
     settingOutputLanguage,
-    settingAsrProvider,
-    paraformerSettingsGroup,
-    xfyunSettingsGroup,
     settingDashscopeKey,
     toggleDashscopeKeyVisibilityBtn,
-    settingXfyunAppId,
-    settingXfyunKey,
-    toggleXfyunKeyVisibilityBtn,
-    settingVolcAppId,
-    settingVolcAccessToken,
-    toggleVolcAccessTokenVisibilityBtn,
-    settingVolcResourceId,
     settingResumeText,
     settingJobDescription,
     settingInterviewerMode,
@@ -1756,7 +1704,6 @@ async function init() {
     setupSessionContextPanel();
     setupInterviewerProgressListener();
     setupPipelineStudio();
-    setupVolcModelPicker();
     populateInterviewSampleOptions();
     // Components are mounted now, so reflect any persisted resume/JD from the
     // settings we loaded above (loadShortcutConfig runs before the components
@@ -1891,29 +1838,17 @@ function applyApiKeyAvailabilityFromSettings(settings) {
         hasAiConfigured = String(settings.dashscopeApiKey ?? '').trim().length > 0;
     }
 
-    // Paraformer reuses the DashScope key; Xunfei + Doubao need their own creds.
-    if (settings.asrProvider === 'xfyun') {
-        hasAsrConfigured = settings.hasXfyunCredentials === true
-            || (String(settings.xfyunAppId ?? '').trim().length > 0
-                && String(settings.xfyunApiKey ?? '').trim().length > 0);
-    } else if (settings.asrProvider === 'volc') {
-        hasAsrConfigured = String(settings.volcAppId ?? '').trim().length > 0
-            && String(settings.volcAccessToken ?? '').trim().length > 0;
-    } else {
-        hasAsrConfigured = hasAiConfigured;
-    }
+    hasAsrConfigured = settings.hasAsrConfigured === true;
 
-    paintAsrIndicator(settings.asrProvider);
+    paintAsrIndicator();
 }
 
-// Topbar pill showing which speech-to-text engine is active.
-const ASR_PROVIDER_NAMES = { paraformer: 'Paraformer', xfyun: '讯飞', volc: '豆包' };
-function paintAsrIndicator(provider) {
+// Topbar pill reflects fixed product policy; it is status, not a preference.
+function paintAsrIndicator() {
     const el = document.getElementById('asr-indicator');
     const label = document.getElementById('asr-indicator-label');
-    const key = ['paraformer', 'xfyun', 'volc'].includes(provider) ? provider : 'paraformer';
-    if (el) { el.dataset.asr = key; el.setAttribute('title', `语音转文字：${ASR_PROVIDER_NAMES[key]}`); }
-    if (label) label.textContent = ASR_PROVIDER_NAMES[key];
+    if (el) { el.dataset.asr = 'volc'; el.setAttribute('title', '语音转文字：豆包 Seed ASR 2.0'); }
+    if (label) label.textContent = '豆包 2.0';
 }
 
 // Track the interviewer mode from settings so the topbar pill + new-session
@@ -2884,8 +2819,6 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
-
-
 
 
 

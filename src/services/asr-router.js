@@ -1,15 +1,12 @@
-// Thin router that lets the rest of the app talk to a single ASR object while
-// transparently switching between Paraformer and Xunfei RTASR based on
-// appState.asrProvider. The router exposes the exact same surface as the
-// underlying services, so the IPC bridge / windowController / screenshot
-// manager don't need to know which one is active.
+// Legacy provider-neutral router retained for compatibility tests and older
+// embedders. The current desktop product wires Doubao directly and does not
+// expose provider selection.
 //
-// `dispose()` tears down every underlying service. Provider change handling
-// (stopping the previously-active streams) lives in start-application.js so
-// it can run before saveAppState completes.
+// `dispose()` tears down every underlying service. New product wiring should
+// depend on the fixed Doubao service directly instead of extending this file.
 
 function createAsrRouter({ providers, getAsrProvider }) {
-  // providers: { paraformer: <service>, xfyun: <service> }
+  // providers: { paraformer: <service>, volc: <service>, ... }
   // The 'paraformer' provider is the canonical fallback for shared helpers
   // (emitSttDebug, getDesktopSources) so callers always see a stable
   // reference even when an unknown provider id is set in app-state.

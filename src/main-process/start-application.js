@@ -25,10 +25,7 @@ const { createSafeSender } = require('./shared/safe-send');
 const { createGeminiRuntime } = require('./features/assistant/gemini-runtime');
 const { createScreenshotManager } = require('./features/assistant/screenshot-manager');
 const { registerAssistantIpc } = require('./features/assistant/ipc');
-const { createParaformerService } = require('../services/paraformer/service');
-const { createXfyunRtasrService } = require('../services/xfyun-rtasr/service');
 const { createVolcengineAsrService } = require('../services/volcengine-asr/service');
-const { createAsrRouter } = require('../services/asr-router');
 const { registerAsrIpc } = require('../services/asr-ipc');
 const { registerSettingsIpc } = require('./features/settings/ipc');
 const { createInterviewerRuntime } = require('./features/interviewer/interviewer-runtime');
@@ -108,47 +105,19 @@ async function startApplication() {
     mobileServer.broadcast(channel, data);
   };
 
-  const paraformerService = createParaformerService({
-    WebSocket,
-    desktopCapturer,
-    getDashscopeApiKey: () => appState?.dashscopeApiKey || '',
-    getGeminiService: () => geminiRuntime.getService(),
-    sendToRenderer
-  });
-
-  const xfyunRtasrService = createXfyunRtasrService({
-    WebSocket,
-    desktopCapturer,
-    getXfyunCredentials: () => ({
-      appId: appState?.xfyunAppId || '',
-      apiKey: appState?.xfyunApiKey || ''
-    }),
-    getGeminiService: () => geminiRuntime.getService(),
-    sendToRenderer
-  });
-
-  const volcengineAsrService = createVolcengineAsrService({
+  // Speech recognition is fixed product policy: Doubao Seed ASR 2.0 only.
+  // Credentials are deployment-owned and loaded from .env into process.env;
+  // they never enter app-state or renderer IPC.
+  const asrService = createVolcengineAsrService({
     WebSocket,
     desktopCapturer,
     getVolcCredentials: () => ({
-      appId: appState?.volcAppId || '',
-      accessToken: appState?.volcAccessToken || '',
-      resourceId: appState?.volcResourceId || ''
+      appId: process.env.VOLC_APP_ID || '',
+      accessToken: process.env.VOLC_ACCESS_TOKEN || '',
+      resourceId: process.env.VOLC_RESOURCE_ID || ''
     }),
     getGeminiService: () => geminiRuntime.getService(),
     sendToRenderer
-  });
-
-  const asrService = createAsrRouter({
-    providers: {
-      paraformer: paraformerService,
-      xfyun: xfyunRtasrService,
-      volc: volcengineAsrService
-    },
-    getAsrProvider: () => {
-      const p = appState?.asrProvider;
-      return (p === 'xfyun' || p === 'volc') ? p : 'paraformer';
-    }
   });
 
   windowController = createWindowController({
@@ -201,12 +170,8 @@ async function startApplication() {
       });
     }
 
-    const restoredAsrProvider = (appState?.asrProvider === 'xfyun' || appState?.asrProvider === 'volc')
-      ? appState.asrProvider
-      : 'paraformer';
-
     console.log('Loaded app state from:', getAppStatePath(app));
-    console.log('Restored ASR provider:', restoredAsrProvider);
+    console.log('ASR provider: Doubao Seed ASR 2.0 (fixed policy)');
     console.log('Restored DashScope AI model:', activeDashscopeAiModel);
     console.log('Restored programming language:', activeProgrammingLanguage);
     console.log(`Restored window opacity level: ${activeWindowOpacityLevel}/10`);
@@ -319,7 +284,6 @@ async function startApplication() {
   registerSettingsIpc({
     ipcMain,
     app,
-    asrService,
     getAppEnvironment: () => appEnvironment,
     setAppEnvironment: (nextEnvironment) => {
       appEnvironment = nextEnvironment;

@@ -28,19 +28,24 @@ function harness() {
     saveAppState: appStateLib.saveAppState,
     geminiRuntime: {
       setActiveDashscopeAiModel: (m) => m || 'deepseek-v4-flash',
+      getDefaultDashscopeAiModel: () => 'deepseek-v4-flash',
+      getDashscopeAiModels: () => ['deepseek-v4-flash'],
       getActiveProgrammingLanguage: () => 'javascript',
       setActiveProgrammingLanguage: (l) => l || 'javascript',
       initializeDashscopeService: () => {}
     },
-    windowController: { setWindowOpacityLevel: (n) => n || 10 },
+    windowController: {
+      getWindowOpacityLevel: () => 10,
+      setWindowOpacityLevel: (n) => n || 10
+    },
     keyboardShortcuts: {}
   });
   return { app, handlers, dir, get: () => appStateLib.loadAppState(app) };
 }
 
-test('partial save-settings preserves API keys it does not mention', async () => {
+test('partial save-settings preserves non-ASR state and ignores retired ASR secrets', async () => {
   const h = harness();
-  // Seed real creds.
+  // Seed one retained AI key plus stale ASR fields from an older build.
   appStateLib.saveAppState(h.app, { dashscopeApiKey: 'sk-keepme', xfyunApiKey: 'xk', volcAppId: 'va1' });
 
   // Partial save like "start interview" / "load sample" sends ONLY these.
@@ -48,11 +53,39 @@ test('partial save-settings preserves API keys it does not mention', async () =>
 
   const s = h.get();
   assert.strictEqual(s.dashscopeApiKey, 'sk-keepme', 'dashscope key preserved by partial save');
-  assert.strictEqual(s.xfyunApiKey, 'xk', 'xfyun key preserved');
-  assert.strictEqual(s.volcAppId, 'va1', 'volc app id preserved');
+  assert.strictEqual(Object.hasOwn(s, 'xfyunApiKey'), false);
+  assert.strictEqual(Object.hasOwn(s, 'volcAppId'), false);
   assert.strictEqual(s.resumeText, 'resume here');
   assert.strictEqual(s.jobDescription, 'jd here');
   fs.rmSync(h.dir, { recursive: true, force: true });
+});
+
+test('settings reports fixed Doubao readiness without exposing provider credentials', () => {
+  const h = harness();
+  const oldAppId = process.env.VOLC_APP_ID;
+  const oldToken = process.env.VOLC_ACCESS_TOKEN;
+  process.env.VOLC_APP_ID = 'environment-app';
+  process.env.VOLC_ACCESS_TOKEN = 'environment-token';
+  try {
+    const settings = h.handlers['get-settings']();
+    assert.strictEqual(settings.asrProvider, 'volc');
+    assert.strictEqual(settings.hasAsrConfigured, true);
+    for (const secret of [
+      'xfyunAppId',
+      'xfyunApiKey',
+      'volcAppId',
+      'volcAccessToken',
+      'volcResourceId'
+    ]) {
+      assert.strictEqual(Object.hasOwn(settings, secret), false, `${secret} must not cross IPC`);
+    }
+  } finally {
+    if (oldAppId === undefined) delete process.env.VOLC_APP_ID;
+    else process.env.VOLC_APP_ID = oldAppId;
+    if (oldToken === undefined) delete process.env.VOLC_ACCESS_TOKEN;
+    else process.env.VOLC_ACCESS_TOKEN = oldToken;
+    fs.rmSync(h.dir, { recursive: true, force: true });
+  }
 });
 
 test('full save-settings can still clear a key when explicitly emptied', async () => {

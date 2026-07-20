@@ -10,17 +10,9 @@
 // API-key availability / UI state — the same side-effects the old click-Save
 // flow produced.
 //
-// SEAM — offline ASR provider (Volcengine / 火山引擎):
-//   The offline interview path currently runs on the existing mic→Paraformer
-//   pipeline. Once the Volcengine creds below (volcAppId / volcAccessToken /
-//   volcResourceId) are set, offline ASR should switch to a 'volcengine'
-//   provider (a future ASR-router change). These fields only capture + persist
-//   the creds; no client connects to Volcengine yet.
-//
 // Field groups (each dep is optional; a missing element is skipped):
-//   - API keys:        DashScope key, Xfyun app-id + key (masked, show/hide)
-//   - Volcengine ASR:  volc app-id + access-token (masked, show/hide) + resource-id
-//   - ASR provider:    paraformer | xfyun  (toggles the provider sub-groups)
+//   - API key:         DashScope key (masked, show/hide)
+//   - Audio devices:   microphone + system source (ASR is fixed to Doubao 2.0)
 //   - AI model:        DashScope model select
 //   - Interviewer mode: fast | expert
 //   - Programming lang: select
@@ -142,18 +134,8 @@ export function createSettingsPanelManager({
     settingsPanel,
     settingDashscopeAiModel,
     settingOutputLanguage,
-    settingAsrProvider,
-    paraformerSettingsGroup,
-    xfyunSettingsGroup,
     settingDashscopeKey,
     toggleDashscopeKeyVisibilityBtn,
-    settingXfyunAppId,
-    settingXfyunKey,
-    toggleXfyunKeyVisibilityBtn,
-    settingVolcAppId,
-    settingVolcAccessToken,
-    toggleVolcAccessTokenVisibilityBtn,
-    settingVolcResourceId,
     settingResumeText,
     settingJobDescription,
     settingInterviewerMode,
@@ -232,22 +214,6 @@ export function createSettingsPanelManager({
         setApiKeyFieldVisibility(inputElement, toggleButton, providerName, false);
         toggleButton.addEventListener('click', () => {
             setApiKeyFieldVisibility(inputElement, toggleButton, providerName, inputElement.type !== 'text');
-        });
-    }
-
-    function updateAsrProviderVisibility(provider) {
-        if (paraformerSettingsGroup) {
-            paraformerSettingsGroup.classList.toggle('hidden', provider !== 'paraformer');
-        }
-        if (xfyunSettingsGroup) {
-            xfyunSettingsGroup.classList.toggle('hidden', provider !== 'xfyun');
-        }
-    }
-
-    function bindAsrProviderToggle() {
-        if (!settingAsrProvider) return;
-        settingAsrProvider.addEventListener('change', () => {
-            updateAsrProviderVisibility(settingAsrProvider.value);
         });
     }
 
@@ -581,16 +547,7 @@ export function createSettingsPanelManager({
                     settingOutputLanguage.value = (ol === 'zh' || ol === 'en') ? ol : '';
                 }
 
-                const activeAsrProvider = settings.asrProvider || 'paraformer';
-                if (settingAsrProvider) settingAsrProvider.value = activeAsrProvider;
-                updateAsrProviderVisibility(activeAsrProvider);
-
                 if (settingDashscopeKey) settingDashscopeKey.value = settings.dashscopeApiKey || '';
-                if (settingXfyunAppId) settingXfyunAppId.value = settings.xfyunAppId || '';
-                if (settingXfyunKey) settingXfyunKey.value = settings.xfyunApiKey || '';
-                if (settingVolcAppId) settingVolcAppId.value = settings.volcAppId || '';
-                if (settingVolcAccessToken) settingVolcAccessToken.value = settings.volcAccessToken || '';
-                if (settingVolcResourceId) settingVolcResourceId.value = settings.volcResourceId || '';
                 if (settingResumeText) settingResumeText.value = settings.resumeText || '';
                 if (settingJobDescription) settingJobDescription.value = settings.jobDescription || '';
                 setInterviewerMode(settings.interviewerMode);
@@ -609,8 +566,6 @@ export function createSettingsPanelManager({
         }
 
         setApiKeyFieldVisibility(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope', false);
-        setApiKeyFieldVisibility(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei', false);
-        setApiKeyFieldVisibility(settingVolcAccessToken, toggleVolcAccessTokenVisibilityBtn, 'Volcengine', false);
         setStatusIndicator('idle');
 
         // Show the panel IMMEDIATELY. Audio-device enumeration is deferred and
@@ -634,8 +589,6 @@ export function createSettingsPanelManager({
     let closeTimer = null;
     function closeSettings() {
         setApiKeyFieldVisibility(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope', false);
-        setApiKeyFieldVisibility(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei', false);
-        setApiKeyFieldVisibility(settingVolcAccessToken, toggleVolcAccessTokenVisibilityBtn, 'Volcengine', false);
         if (!settingsPanel || settingsPanel.classList.contains('hidden')) return;
         if (closeTimer) clearTimeout(closeTimer);
         settingsPanel.classList.add('is-closing');
@@ -650,14 +603,8 @@ export function createSettingsPanelManager({
         setStatusIndicator('saving');
         try {
             const settings = {
-                asrProvider: settingAsrProvider ? settingAsrProvider.value : 'paraformer',
                 dashscopeApiKey: settingDashscopeKey ? settingDashscopeKey.value.trim() : '',
                 dashscopeAiModel: settingDashscopeAiModel ? settingDashscopeAiModel.value : '',
-                xfyunAppId: settingXfyunAppId ? settingXfyunAppId.value.trim() : '',
-                xfyunApiKey: settingXfyunKey ? settingXfyunKey.value.trim() : '',
-                volcAppId: settingVolcAppId ? settingVolcAppId.value.trim() : '',
-                volcAccessToken: settingVolcAccessToken ? settingVolcAccessToken.value.trim() : '',
-                volcResourceId: settingVolcResourceId ? settingVolcResourceId.value.trim() : '',
                 interviewerMode: getInterviewerMode(),
                 outputLanguage: settingOutputLanguage ? settingOutputLanguage.value : '',
                 windowOpacityLevel: normalizeWindowOpacityLevel(settingWindowOpacity?.value)
@@ -729,7 +676,6 @@ export function createSettingsPanelManager({
 
     function bindAutoSave() {
         const immediateFields = [
-            settingAsrProvider,
             settingDashscopeAiModel,
             settingOutputLanguage,
             settingWindowOpacity,
@@ -743,11 +689,6 @@ export function createSettingsPanelManager({
 
         const debouncedFields = [
             settingDashscopeKey,
-            settingXfyunAppId,
-            settingXfyunKey,
-            settingVolcAppId,
-            settingVolcAccessToken,
-            settingVolcResourceId,
             settingResumeText,
             settingJobDescription
         ];
@@ -771,9 +712,6 @@ export function createSettingsPanelManager({
     }
 
     bindApiKeyVisibilityToggle(settingDashscopeKey, toggleDashscopeKeyVisibilityBtn, 'DashScope');
-    bindApiKeyVisibilityToggle(settingXfyunKey, toggleXfyunKeyVisibilityBtn, 'Xunfei');
-    bindApiKeyVisibilityToggle(settingVolcAccessToken, toggleVolcAccessTokenVisibilityBtn, 'Volcengine');
-    bindAsrProviderToggle();
     bindInterviewerModeToggle();
     bindRefreshAudioDevices();
     bindOpenSoundSettings();
