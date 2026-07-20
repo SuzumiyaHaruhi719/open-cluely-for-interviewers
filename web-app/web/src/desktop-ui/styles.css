@@ -772,82 +772,6 @@ body.stealth-on .app-shell { opacity: 0.92; }
 html[data-theme="dark"] .glp-theme-toggle .glp-theme-toggle__icon-dark { display: inline-flex; }
 html[data-theme="dark"] .glp-theme-toggle .glp-theme-toggle__icon-light { display: none; }
 
-/* ── More menu dropdown ──────────────────────────────────────────────────── */
-.more-menu {
-  position: relative;
-  display: inline-flex;
-}
-
-/* Dropdown panel: solid GLP container surface, layered shadow, hairline border.
-   Entrance animation uses --ease-spring so it "pops" from the anchor point. */
-.more-menu-panel {
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
-  min-width: 180px;
-  padding: var(--space-1);
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-default);
-  background: var(--surface-container);
-  box-shadow: var(--shadow-lg);
-  z-index: 80;
-  /* Spring entrance: pops open from the top-right anchor with mild overshoot. */
-  transform-origin: top right;
-  animation: more-menu-in var(--dur-2) var(--ease-spring) both;
-}
-
-.more-menu-panel.hidden { display: none; }
-
-@keyframes more-menu-in {
-  from { opacity: 0; transform: translateY(-8px) scale(0.95); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* Menu items: full-width, low-contrast at rest, reveal on hover. */
-.more-menu-item {
-  display: block;
-  width: 100%;
-  padding: var(--space-2) var(--space-3);
-  border: none;
-  border-radius: var(--radius-lg);
-  background: transparent;
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  text-align: left;
-  transition:
-    background var(--dur-1) var(--ease),
-    color var(--dur-1) var(--ease),
-    transform var(--dur-1) var(--ease-spring);
-}
-
-.more-menu-item:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-}
-
-.more-menu-item:active:not(:disabled) { transform: scale(0.98); }
-
-.more-menu-item:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: -2px;
-}
-
-.more-menu-item:disabled {
-  color: var(--text-disabled);
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.more-menu-separator {
-  height: 1px;
-  margin: 3px var(--space-1);
-  background: var(--border-subtle);
-}
-
 /* ── Mobile companion pill (titlebar status area) ────────────────────────── */
 .mobile-server-pill {
   display: inline-flex;
@@ -1681,8 +1605,8 @@ body.rail-collapsed .right-rail {
   .topbar__title { max-width: 16ch; }
 }
 @container main (max-width: 460px) {
-  /* Keep the mode dot (Fast/Expert colour) but drop its text label, and tighten
-     the action buttons so the trio + more-menu still fit. */
+  /* Keep the mode dot (Expert colour) but drop its text label, and tighten the
+     action buttons so the visible action set still fits. */
   #mode-indicator .mode-indicator__label { display: none; }
   .topbar__actions { gap: 4px; }
   .topbar__actions .action-btn { padding-left: 8px; padding-right: 8px; }

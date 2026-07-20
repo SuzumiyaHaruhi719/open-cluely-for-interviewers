@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
 import type { InterviewerMode } from '@open-cluely/contract';
 import { MODE_META, recMeta } from './helpers';
 import type { SocketStatus } from '../lib/useCopilotSocket';
 import { useTheme } from '../lib/useTheme';
-import { CameraIcon, KebabIcon } from './icons';
+import { CameraIcon } from './icons';
 
 /** Sun mark — shown in DARK mode (click switches to light). */
 function SunIcon({ size = 15 }: { size?: number }) {
@@ -88,34 +87,9 @@ export function Topbar({
   onClearSession,
   onSummarize
 }: TopbarProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement | null>(null);
   const { theme, toggle: toggleTheme } = useTheme();
   const modeMeta = MODE_META[mode];
   const rec = recMeta(status, capturing);
-
-  // Close the more-menu on outside click / Escape, like the desktop.
-  useEffect(() => {
-    if (!menuOpen) {
-      return;
-    }
-    const onPointerDown = (event: MouseEvent): void => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
-      }
-    };
-    const onKeyDown = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') {
-        setMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', onPointerDown);
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [menuOpen]);
 
   return (
     <div id="topbar" className={`topbar${isLive ? ' is-live' : ''}`}>
@@ -207,37 +181,9 @@ export function Topbar({
           {isAnalyzing ? '分析中…' : '生成追问'}
         </button>
 
-        <div className="more-menu" id="more-menu" ref={menuRef}>
-          <button
-            id="more-menu-btn"
-            className="action-btn icon-btn"
-            type="button"
-            aria-haspopup="menu"
-            aria-expanded={menuOpen}
-            aria-label="更多操作"
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <KebabIcon size={16} />
-          </button>
-          <div
-            id="more-menu-panel"
-            className={`more-menu-panel${menuOpen ? '' : ' hidden'}`}
-            role="menu"
-          >
-            <button
-              id="clear-btn"
-              className="more-menu-item"
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setMenuOpen(false);
-                onClearSession();
-              }}
-            >
-              清空会话
-            </button>
-          </div>
-        </div>
+        <button id="clear-btn" className="action-btn" type="button" onClick={onClearSession}>
+          清空会话
+        </button>
       </div>
     </div>
   );
