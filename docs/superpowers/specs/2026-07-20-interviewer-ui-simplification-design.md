@@ -58,12 +58,10 @@ Settings becomes a single compact GLP panel with progressive disclosure only whe
 
 #### Essentials
 
-- **Speech recognition:** Xunfei by default. Only providers confirmed available by server capability checks are selectable.
+- **Speech recognition:** Xunfei by default, with Doubao ASR 2.0 and DashScope Paraformer as explicit choices. Unavailable providers remain truthfully identified rather than silently relabelled or downgraded.
 - **Microphone:** the actual input device used for the next capture.
 - **Automatic follow-up:** on/off and trigger strategy. A fixed interval is shown only when that strategy is selected; its label reflects the current value instead of hard-coding 30 seconds.
 - **Evaluation model:** DeepSeek v4 Pro or Flash for the post-interview report. This does not alter realtime Expert generation.
-
-TTS is not exposed as a selector while only one configured model is usable. The server chooses the best verified model and reports its runtime status.
 
 #### Removed controls
 
@@ -145,16 +143,6 @@ The guide gives Expert evaluation dimensions and evidence targets. It does not c
 6. On capture stop, gracefully drain provider final events before closing the socket, run a final role-partition pass, then publish the finalized transcript.
 
 If a provider has no native speaker separation, keep segments unassigned until Flash has enough textual evidence. Do not invent acoustic identity from text alone, and do not add CAM++.
-
-## Qwen Audio 3.0 TTS
-
-- Add a server-only DashScope TTS adapter for `qwen-audio-3.0-tts-plus` and `qwen-audio-3.0-tts-flash` using the supported WebSocket API.
-- Resolve the API key, endpoint, model entitlement, and voice on the server. An empty `voice` is invalid; the adapter must select a verified built-in voice or fail with a configuration error before synthesis.
-- Probe model capability at server startup and expose only a non-secret availability summary to the client.
-- Use Plus as the initial production default because the configured account has been verified to synthesize successfully. Keep Flash unavailable in the UI until its entitlement probe succeeds; do not silently alias Flash to Plus.
-- Cache capability results for a bounded period and recheck after a provider error so a new entitlement can become available without a client release.
-- TTS output is Chinese by default and is tested for non-empty valid audio, bounded latency, and round-trip intelligibility through the selected ASR.
-- TTS failures never block capture, transcript finalization, speaker mapping, or manual interviewing.
 
 ## Configuration and migration
 

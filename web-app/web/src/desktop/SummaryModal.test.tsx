@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import { SummaryModal } from './SummaryModal';
 import type { SummaryState } from '../lib/useCopilotSocket';
@@ -32,12 +32,34 @@ function renderModal(summary: SummaryState) {
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
 describe('SummaryModal states', () => {
   test('loading state shows the generating spinner copy', () => {
     renderModal(state({ status: 'loading' }));
     expect(screen.getByText(/正在生成评估报告/)).toBeInTheDocument();
+  });
+
+  test('a newly started request never flashes a negative elapsed time', () => {
+    const now = vi.spyOn(Date, 'now').mockReturnValue(1_000);
+    const idle = state({ status: 'idle' });
+    const { rerender } = render(
+      <SummaryModal open={false} summary={idle} onRegenerate={noop} onClose={noop} />
+    );
+
+    now.mockReturnValue(61_000);
+    rerender(
+      <SummaryModal
+        open
+        summary={state({ status: 'loading', startedAt: 61_000 })}
+        onRegenerate={noop}
+        onClose={noop}
+      />
+    );
+
+    expect(screen.getByText('⏱ 00:00')).toBeInTheDocument();
+    expect(screen.queryByText(/⏱ -/)).not.toBeInTheDocument();
   });
 
   test('error state shows the failure banner with the message', () => {

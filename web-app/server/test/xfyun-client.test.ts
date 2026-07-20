@@ -262,6 +262,62 @@ function startedSession(onTranscript: (t: XfyunTranscript) => void) {
   return { session, ws };
 }
 
+test('createXfyunSession: stop waits for the last result and preserves its native speaker id', async () => {
+  const got: XfyunTranscript[] = [];
+  FakeWs.instances = [];
+  const session = createXfyunSession({
+    WebSocket: FakeWsCtor,
+    appId: 'app',
+    apiKey: 'key',
+    apiSecret: 'secret',
+    wsUrl: 'wss://example.test/',
+    stopTimeoutMs: 50,
+    onTranscript: (transcript) => got.push(transcript)
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+  ws.emit('message', JSON.stringify({ msg_type: 'action', data: { action: 'started' } }));
+
+  const stopping = session.stop();
+  assert.deepEqual(JSON.parse(String(ws.sent.at(-1))), { end: true });
+  assert.equal(ws.terminated, false, 'the socket must remain open for the final result frame');
+
+  ws.emit(
+    'message',
+    JSON.stringify({
+      msg_type: 'result',
+      res_type: 'asr',
+      data: { ...(frameData([['最后一句', '3']], '0') as object), ls: true }
+    })
+  );
+
+  assert.deepEqual(await stopping, { finalReceived: true, timedOut: false });
+  assert.deepEqual(got, [{ text: '最后一句', isFinal: true, speakerId: 3 }]);
+});
+
+test('createXfyunSession: stop terminates after a bounded timeout without a last result', async () => {
+  FakeWs.instances = [];
+  const session = createXfyunSession({
+    WebSocket: FakeWsCtor,
+    appId: 'app',
+    apiKey: 'key',
+    apiSecret: 'secret',
+    wsUrl: 'wss://example.test/',
+    stopTimeoutMs: 5,
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+  ws.emit('message', JSON.stringify({ msg_type: 'action', data: { action: 'started' } }));
+
+  const result = await session.stop();
+
+  assert.equal(result.finalReceived, false);
+  assert.equal(result.timedOut, true);
+  assert.match(result.reason ?? '', /timeout/i);
+  assert.equal(ws.terminated, true);
+});
+
 test('createXfyunSession: a multi-speaker FINAL frame emits one onTranscript per run', () => {
   const got: XfyunTranscript[] = [];
   const { ws } = startedSession((t) => got.push(t));

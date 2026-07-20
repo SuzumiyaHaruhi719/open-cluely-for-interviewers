@@ -1,4 +1,3 @@
-import path from 'node:path';
 import type { Server as HttpServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { WebSocketServer, type WebSocket } from 'ws';
@@ -17,6 +16,7 @@ import type {
 import { createHeadlessSession } from '@open-cluely/copilot-core';
 import { config } from './config';
 import { createAsrRelay, type AsrRelay, type VolcCredentials } from './asr-relay';
+import { isAudiblePcm16Base64 } from './audio-activity';
 import { getRetriever } from './question-bank';
 import { toRankedQuestions } from './ranked';
 import { createAutoTrigger, type AutoTrigger } from './auto-trigger';
@@ -50,17 +50,6 @@ import {
 const BANK_GROUNDING_TOP_K = 6;
 
 /**
- * Resolve the dir Customize-mode pipelines live in — the SAME dir the pipelines
- * route writes to (`${DATA_DIR}/pipelines`). Passing it to the headless session
- * lets `getActivePipeline` load a saved custom pipeline by `activePipelineId`.
- * Resolved lazily (per connection) so a test can set DATA_DIR first.
- */
-function pipelinesDir(): string {
-  const base = process.env.DATA_DIR || path.join(__dirname, '..', '.data');
-  return path.join(base, 'pipelines');
-}
-
-/**
  * Retrieve high-frequency interview questions semantically similar to the
  * candidate's answer. NEVER throws and NEVER blocks analysis — any failure
  * (no key, embed error, missing vectors) resolves to []. The retriever itself
@@ -83,33 +72,28 @@ const audioSourceSchema = z.enum(['mic', 'display']);
 
 const sessionConfigSchema = z
   .object({
-    mode: z.enum(['fast', 'expert', 'expert2', 'customize']).optional(),
+    mode: z.literal('expert').optional(),
     interviewerModel: z.enum(['deepseek-v4-pro', 'deepseek-v4-flash', 'qwen3-vl-plus']).optional(),
     resumeText: z.string().optional(),
     jobDescription: z.string().optional(),
+    interviewGuide: z.array(z.string().max(1_600)).max(20).optional(),
     outputLanguage: z.enum(['', 'zh', 'en']).optional(),
-    activePipelineId: z.string().nullable().optional(),
     // Opt-in: when true, a FINAL interviewee ('display') transcript auto-runs
     // analyze. Default off so live audio only streams transcripts (no surprise
     // model spend). The interviewer can still press Analyze manually.
     autoAnalyzeDisplay: z.boolean().optional(),
-    // Realtime ASR provider + (for 'volc') Doubao/Volcengine credentials. These
-    // are stored on the relay and used for the NEXT `audio-control start`. The
-    // creds are application secrets for the user's own Volc account; the server
-    // uses them to open the Volc WebSocket and NEVER logs them.
+    // Realtime ASR provider. All credentials and Doubao 2.0 resource selection
+    // are environment-owned and never accepted from the browser.
     asrProvider: z.enum(['paraformer', 'volc', 'xfyun', 'sim']).optional(),
-    volcAppId: z.string().optional(),
-    volcAccessToken: z.string().optional(),
-    volcResourceId: z.string().optional(),
-    volcModel: z.string().optional(),
     // Simulation script for asrProvider 'sim' (mic-less test harness): the relay
     // stores the latest one and replays it on the NEXT audio-control start.
     simScript: z.array(z.object({ speakerId: z.number(), text: z.string() })).optional(),
-    // Single-room-mic interview: collect finalized turns for native-cluster +
-    // DeepSeek Flash role mapping (or end-of-interview semantic partitioning).
+    // Collect finalized turns for native-cluster + DeepSeek Flash role mapping.
+    // The current web client enables this for room-mic and shared-tab audio.
     diarize: z.boolean().optional(),
     // How autonomous generation fires while autoGenerate is on: 'agent' (the Flash
     // monitor decides; default) or 'interval' (fixed ~30s wall-clock cadence, no gate).
+    autoGenerate: z.boolean().optional(),
     autoMode: z.enum(['agent', 'interval']).optional(),
     // Interviewer-adjustable cadence (ms) for 'interval' mode. Clamped server-side
     // to a 5s floor; absent leaves the current cadence (default 30000) untouched.
@@ -127,7 +111,9 @@ const sessionConfigSchema = z
     summaryPromptMode: z.enum(['default', 'custom']).optional(),
     summaryPromptText: z.string().optional()
   })
-  .passthrough();
+  // Strip retired/unknown renderer settings, including historical credential
+  // fields, before config reaches any session or relay service.
+  .strip();
 
 const clientMessageSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('configure'), config: sessionConfigSchema }),
@@ -158,6 +144,23 @@ function send(ws: WebSocket, msg: ServerMessage): void {
   if (ws.readyState === ws.OPEN) {
     ws.send(JSON.stringify(msg));
   }
+}
+
+/**
+ * Preserve arrival order for async WebSocket handlers. A rejected item is
+ * returned to its caller but absorbed by the internal tail so later messages
+ * still run; this prevents a stop/final-drain from being overtaken by configure,
+ * summarize, or another capture control on the same connection.
+ */
+export function createSerialMessageQueue<T>(
+  handle: (value: T) => Promise<void>
+): (value: T) => Promise<void> {
+  let tail = Promise.resolve();
+  return (value: T): Promise<void> => {
+    const current = tail.then(() => handle(value));
+    tail = current.catch(() => undefined);
+    return current;
+  };
 }
 
 function telemetryToDebugEvent(
@@ -427,11 +430,27 @@ export async function runExpertQuestionAndEmit(
     candidateAnswer: args.candidateAnswer,
     focusHint: args.focusHint,
     jobDescription: args.jobDescription,
+    interviewGuide: args.interviewGuide,
     resumeText: args.resumeText,
     questionHistory: args.questionHistory,
     outputLanguage: args.outputLanguage
   });
-  if (args.isStale?.()) return;
+  if (args.isStale?.()) {
+    // A speech/Stop/reset invalidation may leave the browser holding the adopted
+    // server-initiated request. Always provide its terminal progress frame while
+    // still suppressing the stale question result.
+    send(ws, {
+      type: 'progress',
+      requestId: args.requestId,
+      phase: 'expert-question',
+      index: 1,
+      total: 1,
+      status: 'done',
+      model: generated.model,
+      tokens: null
+    });
+    return;
+  }
 
   send(ws, {
     type: 'progress',
@@ -475,30 +494,23 @@ async function handleAnalyze(
 ): Promise<void> {
   trigger.markManualRun(msg.candidateAnswer);
   try {
-    if (session.getMode() === 'customize') {
-      await runAnalysis(ws, session, {
-        candidateAnswer: msg.candidateAnswer,
-        questionHistory: msg.questionHistory,
-        requestId: msg.requestId,
-        trigger: 'manual'
-      });
-    } else {
-      const state = session.getState() as {
-        jobDescription?: string;
-        resumeText?: string;
-        outputLanguage?: OutputLanguage;
-      };
-      await runExpertQuestionAndEmit(ws, {
-        candidateAnswer: msg.candidateAnswer,
-        focusHint: '',
-        jobDescription: state.jobDescription,
-        resumeText: state.resumeText,
-        questionHistory: msg.questionHistory,
-        outputLanguage: state.outputLanguage,
-        requestId: msg.requestId,
-        trigger: 'manual'
-      });
-    }
+    const state = session.getState() as {
+      jobDescription?: string;
+      interviewGuide?: string[];
+      resumeText?: string;
+      outputLanguage?: OutputLanguage;
+    };
+    await runExpertQuestionAndEmit(ws, {
+      candidateAnswer: msg.candidateAnswer,
+      focusHint: '',
+      jobDescription: state.jobDescription,
+      interviewGuide: state.interviewGuide,
+      resumeText: state.resumeText,
+      questionHistory: msg.questionHistory,
+      outputLanguage: state.outputLanguage,
+      requestId: msg.requestId,
+      trigger: 'manual'
+    });
   } finally {
     trigger.markRunDone(msg.candidateAnswer);
   }
@@ -656,41 +668,26 @@ export async function handleSummarize(
 
 type ConfigurePayload = Extract<ClientMessageParsed, { type: 'configure' }>['config'];
 
-/**
- * Resolve per-session Volc creds, falling back to VOLC_* env defaults for any
- * field the configure message omits. configure values ALWAYS win. SECURITY: the
- * returned object is handed to the relay (which opens the Volc socket) and is
- * NEVER logged here or by the relay.
- */
-function resolveVolcCreds(cfg: ConfigurePayload): VolcCredentials {
+/** Resolve environment-owned Doubao ASR 2.0 credentials for the relay. */
+function resolveVolcCreds(): VolcCredentials {
   return {
-    // `||` (not `??`) so a BLANK field from the browser ('' — not undefined) still
-    // falls back to the server's VOLC_* env creds (.env). With `??`, an empty
-    // string would win over the env default and break the fallback.
-    appId: String(cfg.volcAppId || config.volcAppId).trim(),
-    accessToken: String(cfg.volcAccessToken || config.volcAccessToken).trim(),
-    resourceId: String(cfg.volcResourceId || config.volcResourceId).trim() || undefined,
-    model: String(cfg.volcModel || config.volcModel).trim() || undefined
+    appId: config.volcAppId.trim(),
+    accessToken: config.volcAccessToken.trim(),
+    resourceId: config.volcResourceId.trim() || undefined,
+    model: config.volcModel.trim() || undefined
   };
 }
 
 /**
- * Push ASR provider + Volc creds from a configure message onto the relay. Called
- * only when at least one ASR field is present so an unrelated configure (e.g. a
- * mode change) does not reset the provider. The provider defaults to the env
- * default ('volc' only if VOLC creds exist, else 'paraformer') when the message
- * supplies creds but no explicit provider.
+ * Push the selected ASR provider onto the relay. Credentials and the Doubao 2.0
+ * resource stay environment-owned; unrelated configure messages do not restart ASR.
  */
 function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePayload): void {
   const hasAsrField =
     cfg.asrProvider !== undefined ||
-    cfg.volcAppId !== undefined ||
-    cfg.volcAccessToken !== undefined ||
-    cfg.volcResourceId !== undefined ||
-    cfg.volcModel !== undefined ||
     cfg.simScript !== undefined;
   if (!hasAsrField) return;
-  const creds = resolveVolcCreds(cfg);
+  const creds = resolveVolcCreds();
   // Stash the simulation script (mic-less harness) so the relay replays it on the
   // NEXT audio-control start. Stored regardless of provider so the script can be
   // configured before the provider flips to 'sim'.
@@ -698,7 +695,7 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
     relay.setSimScript(cfg.simScript);
   }
   // iFlytek carries native acoustic cluster ids (角色分离 role_type=2). The other
-  // cloud providers emit text only; single-mic semantic partitioning happens in
+  // cloud providers emit text only; semantic partitioning happens in
   // speaker-partitioner after enough evidence or at the final stop.
   const textProvider: 'paraformer' | 'volc' | 'xfyun' | 'sim' = cfg.asrProvider === 'sim'
       ? 'sim'
@@ -714,7 +711,7 @@ function applyAsrConfig(relay: AsrRelay, roles: SpeakerRoleMap, cfg: ConfigurePa
   roles.setGuess(textProvider !== 'xfyun' && textProvider !== 'sim');
 }
 
-type SpeakerLifecycle = Pick<SpeakerPartitioner, 'setSingleMic' | 'finalize' | 'reset'>;
+type SpeakerLifecycle = Pick<SpeakerPartitioner, 'setEnabled' | 'finalize' | 'reset'>;
 
 export async function dispatch(
   ws: WebSocket,
@@ -753,10 +750,10 @@ export async function dispatch(
         resetAccumulated();
       }
       if (typeof msg.config.diarize === 'boolean') {
-        // `diarize` is retained on the wire as the single-room-mic flag. Native
-        // ASR clusters are resolved by Flash after enough evidence; it no longer
-        // implies that role labels are safe to guess from first-speaker order.
-        speakerLifecycle?.setSingleMic(msg.config.diarize);
+        // `diarize` is retained as the semantic-role enable flag. Native ASR
+        // clusters are resolved by Flash after enough evidence; it never implies
+        // roles are safe to guess from source or first-speaker order.
+        speakerLifecycle?.setEnabled(msg.config.diarize);
       }
       session.configure(msg.config);
       // Capture JD/résumé so the session-context analyzer can ground on them. Only
@@ -783,10 +780,9 @@ export async function dispatch(
       if (typeof msg.config.autoGenerate === 'boolean') {
         trigger.setAutoGenerate(msg.config.autoGenerate);
       }
-      // ASR provider + Volc creds are relay state too. A real change ends only the
-      // upstream ASR session; live browser PCM opens the new provider on its next
-      // frame. Volc creds carry forward across configures (a later configure that
-      // only flips the provider keeps earlier-entered creds).
+      // The ASR provider is relay state. A real change ends only the upstream
+      // session; live browser PCM opens the new provider on its next frame.
+      // Doubao 2.0 credentials/resources remain environment-owned throughout.
       applyAsrConfig(relay, roles, msg.config);
       // Per-session summary model override (Feature 2). Only overwrite when the
       // configure explicitly carries the field (partial configures must not clear it).
@@ -819,16 +815,43 @@ export async function dispatch(
       await handleAnalyze(ws, session, trigger, msg);
       return;
     case 'audio':
+      if (isAudiblePcm16Base64(msg.pcm)) trigger.noteSpeechActivity();
       relay.handleAudio({ source: msg.source, pcmBase64: msg.pcm });
       return;
     case 'audio-control':
-      relay.handleAudioControl({ action: msg.action, source: msg.source });
+      if (msg.action === 'stop') {
+        const provider = relay.getProvider(msg.source);
+        send(ws, {
+          type: 'asr-status',
+          source: msg.source,
+          provider,
+          state: 'finalizing'
+        });
+        const stopPromise = relay.handleAudioControl({ action: msg.action, source: msg.source });
+        // stopSource marks the lane as draining synchronously. Gate and invalidate
+        // Auto before awaiting the provider's late-final window, otherwise a
+        // pending 3-second timer can surface a question after the user pressed Stop.
+        trigger.setCapturing(relay.isCapturing());
+        const result = await stopPromise;
+        // With Auto already gated, apply the final semantic correction before
+        // publishing the terminal provider status.
+        if (!relay.isCapturing()) {
+          await speakerLifecycle?.finalize();
+        }
+        const partial = Boolean(result && (result.timedOut || !result.finalReceived));
+        send(ws, {
+          type: 'asr-status',
+          source: msg.source,
+          provider,
+          state: partial ? 'partial' : 'stopped',
+          ...(result?.reason ? { message: result.reason } : {})
+        });
+        return;
+      }
+      await relay.handleAudioControl({ action: msg.action, source: msg.source });
       // Gate autonomous follow-ups on capture state: auto (agent AND interval)
       // only fires while at least one audio source is live (the mic is On).
       trigger.setCapturing(relay.isCapturing());
-      if (msg.action === 'stop' && !relay.isCapturing()) {
-        void speakerLifecycle?.finalize();
-      }
       return;
     case 'set-speaker-role':
       roles.setRole(msg.speakerId, msg.role);
@@ -867,7 +890,7 @@ export async function dispatch(
   }
 }
 
-function onMessage(
+async function onMessage(
   ws: WebSocket,
   session: HeadlessSession,
   relay: AsrRelay,
@@ -883,46 +906,44 @@ function onMessage(
   getSummaryPromptOverride: () => string | undefined,
   speakerLifecycle: SpeakerLifecycle,
   raw: unknown
-): void {
+): Promise<void> {
   let requestId: string | undefined;
-  void (async () => {
-    try {
-      const text = typeof raw === 'string' ? raw : String(raw);
-      const json: unknown = JSON.parse(text);
-      const parsed = clientMessageSchema.safeParse(json);
-      if (!parsed.success) {
-        send(ws, { type: 'error', message: parsed.error.issues[0]?.message ?? 'invalid message' });
-        return;
-      }
-      // Correlate errors with the request: analyze + summarize both carry a
-      // requestId, so a thrown handler error can be reported against it.
-      if (parsed.data.type === 'analyze' || parsed.data.type === 'summarize') {
-        requestId = parsed.data.requestId;
-      }
-      await dispatch(
-        ws,
-        session,
-        relay,
-        trigger,
-        roles,
-        injectNote,
-        resetAccumulated,
-        setContextGrounding,
-        buildSummary,
-        parsed.data,
-        setSummaryModel,
-        getSummaryModelOverride,
-        setSummaryPrompt,
-        getSummaryPromptOverride,
-        {},
-        speakerLifecycle
-      );
-    } catch (err) {
-      // A handler error must never close the socket.
-      const message = err instanceof Error ? err.message : 'handler error';
-      send(ws, { type: 'error', requestId, message });
+  try {
+    const text = typeof raw === 'string' ? raw : String(raw);
+    const json: unknown = JSON.parse(text);
+    const parsed = clientMessageSchema.safeParse(json);
+    if (!parsed.success) {
+      send(ws, { type: 'error', message: parsed.error.issues[0]?.message ?? 'invalid message' });
+      return;
     }
-  })();
+    // Correlate errors with the request: analyze + summarize both carry a
+    // requestId, so a thrown handler error can be reported against it.
+    if (parsed.data.type === 'analyze' || parsed.data.type === 'summarize') {
+      requestId = parsed.data.requestId;
+    }
+    await dispatch(
+      ws,
+      session,
+      relay,
+      trigger,
+      roles,
+      injectNote,
+      resetAccumulated,
+      setContextGrounding,
+      buildSummary,
+      parsed.data,
+      setSummaryModel,
+      getSummaryModelOverride,
+      setSummaryPrompt,
+      getSummaryPromptOverride,
+      {},
+      speakerLifecycle
+    );
+  } catch (err) {
+    // A handler error must never close the socket.
+    const message = err instanceof Error ? err.message : 'handler error';
+    send(ws, { type: 'error', requestId, message });
+  }
 }
 
 /**
@@ -977,15 +998,11 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     const session = createHeadlessSession({
       apiKey: config.dashscopeApiKey,
       // Suppress stale auto progress (a reset abandoned the in-flight chat).
-      emit: makeEmit(ws, autoIsStale),
-      // Customize mode RUNS a saved custom pipeline: the brain's
-      // getActivePipeline reads activePipelineId (set via configure) and loads
-      // the pipeline JSON from this dir — the same one the pipelines route saves to.
-      pipelinesDir: pipelinesDir()
+      emit: makeEmit(ws, autoIsStale)
     });
 
     // Per-connection speaker-role map. Native ASR clusters resolve here; providers
-    // without a speaker id stay unknown until the semantic final partition.
+    // without a speaker id stay unknown until semantic partitioning.
     const roles = createSpeakerRoleMap();
 
     // Per-connection summary model override (Feature 2). Set by configure when the
@@ -1043,7 +1060,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     // The SINGLE finalized-interviewee-answer seam: accumulate the new segment and
     // feed the running answer to the autonomous trigger monitor. ONLINE mode hits
-    // this via display finals; single-mic role partitioning hits the SAME function
+    // this via display finals; semantic role partitioning hits the SAME function
     // for candidate finals. Factored so both paths share accumulation + trigger.
     function feedCandidateAnswer(rawSegment: string): void {
       const segment = rawSegment.trim();
@@ -1055,10 +1072,28 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
       trigger.onCandidateFinal(accumulatedDisplayFinal);
     }
 
+    let visibleAutoRequestId: string | null = null;
+    const terminateVisibleAutoAttempt = (): void => {
+      const requestId = visibleAutoRequestId;
+      if (!requestId) return;
+      visibleAutoRequestId = null;
+      send(ws, {
+        type: 'progress',
+        requestId,
+        phase: 'expert-question',
+        index: 1,
+        total: 1,
+        status: 'done',
+        model: EXPERT_QUESTION_MODEL,
+        tokens: null
+      });
+    };
+
     // The autonomous trigger owns a dedicated one-call Flash question path. This
-    // keeps the interviewer under the live SLO regardless of the UI's manual
-    // Expert/Customize selection; manual Generate Q still runs the chosen chain.
+    // keeps the interviewer under the live SLO; manual Generate Q uses the same
+    // one-call Expert path.
     const trigger: AutoTrigger = createAutoTrigger({
+      onAutoInvalidated: terminateVisibleAutoAttempt,
       runAnalyze: async ({ candidateAnswer, focusHint }) => {
         // Capture the epoch at the START so a reset() during this generation marks
         // it stale (suppressing its progress + result). Record the in-flight auto
@@ -1066,9 +1101,11 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         const requestId = randomUUID();
         const startEpoch = trigger.getEpoch();
         autoInflight.set(requestId, startEpoch);
+        visibleAutoRequestId = requestId;
         try {
           const state = session.getState() as {
             jobDescription?: string;
+            interviewGuide?: string[];
             resumeText?: string;
             outputLanguage?: OutputLanguage;
           };
@@ -1076,6 +1113,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             candidateAnswer,
             focusHint,
             jobDescription: state.jobDescription,
+            interviewGuide: state.interviewGuide,
             resumeText: state.resumeText,
             questionHistory: [],
             outputLanguage: state.outputLanguage,
@@ -1084,6 +1122,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             isStale: () => trigger.getEpoch() !== startEpoch
           });
         } finally {
+          if (visibleAutoRequestId === requestId) visibleAutoRequestId = null;
           // Drop our own entry on settle (the Map only holds genuinely in-flight ids).
           autoInflight.delete(requestId);
         }
@@ -1091,40 +1130,51 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     });
 
     let speakerTurnSeq = 0;
-    const fedSingleMicSeqs = new Set<number>();
+    const fedSemanticCandidateSeqs = new Set<number>();
+    const handledSemanticInterviewerSeqs = new Set<number>();
     const speakerPartitioner = createSpeakerPartitioner({
       applySpeakerRole: (speakerId, role) => {
         roles.setAutoRole(speakerId, role);
         return roles.resolve(speakerId);
       },
+      resolveTurnRole: (speakerId, role) => roles.resolveTurnRole(speakerId, role),
       onCandidateTurn: (turn: SpeakerTurn) => {
-        if (fedSingleMicSeqs.has(turn.seq)) return;
-        fedSingleMicSeqs.add(turn.seq);
+        if (fedSemanticCandidateSeqs.has(turn.seq)) return;
+        fedSemanticCandidateSeqs.add(turn.seq);
         feedCandidateAnswer(turn.text);
+      },
+      onInterviewerTurn: (turn: SpeakerTurn) => {
+        if (handledSemanticInterviewerSeqs.has(turn.seq)) return;
+        handledSemanticInterviewerSeqs.add(turn.seq);
+        trigger.onInterviewerFinal();
       },
       onPartition: (partition) => {
         send(ws, { type: 'speaker-partition', ...partition });
       }
     });
     const speakerLifecycle: SpeakerLifecycle = {
-      setSingleMic: (enabled) => speakerPartitioner.setSingleMic(enabled),
+      setEnabled: (enabled) => speakerPartitioner.setEnabled(enabled),
       finalize: () => speakerPartitioner.finalize(),
       reset: () => {
         speakerPartitioner.reset();
         speakerTurnSeq = 0;
-        fedSingleMicSeqs.clear();
+        fedSemanticCandidateSeqs.clear();
+        handledSemanticInterviewerSeqs.clear();
       }
     };
 
     // One ASR relay per connection. Transcripts stream straight back as
-    // `transcript` messages. TWO transcript-driven generation paths hang off the
-    // interviewee ('display') lane: (1) the autonomous trigger monitor, fed the
-    // accumulated final text on EVERY display final (it gates/debounces/asks
-    // Flash internally); (2) the legacy opt-in autoAnalyzeDisplay, which fires
-    // Expert ungated on each display final (via onDisplayFinal). They share the
-    // trigger's in-flight bookkeeping so they never overlap.
+    // `transcript` messages. The autonomous trigger receives only role-confirmed
+    // candidate turns when semantic partitioning is enabled. Legacy opt-in
+    // autoAnalyzeDisplay still fires Expert on display finals; both paths share
+    // in-flight bookkeeping so they never overlap.
     const relay = createAsrRelay({
+      onStatus: (status) => send(ws, { type: 'asr-status', ...status }),
       emit: (t) => {
+        // Any rolling partial/final proves that somebody is still speaking. It
+        // cancels a pending follow-up; a role-confirmed candidate FINAL below may
+        // arm a fresh quiet period after this activity marker.
+        trigger.noteSpeechActivity();
         const finalTurnSeq = t.isFinal ? speakerTurnSeq++ : null;
         if (finalTurnSeq !== null) {
           speakerPartitioner.record({
@@ -1177,25 +1227,26 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             contextAnalyzer.schedule();
           }
         }
-        // ONLINE seam (paraformer/volc): interviewee answers arrive on the
-        // 'display' lane with no speakerId — unchanged byte-for-byte.
-        if (t.source === 'display' && t.isFinal) {
+        if (t.isFinal && speakerPartitioner.isEnabled()) {
+          // The native acoustic role is provisional. The partitioner owns the
+          // role-sensitive Auto seam so a stale cluster map cannot release a
+          // candidate answer as interviewer (or vice versa) before Flash checks
+          // recent question/answer context.
+        } else if (t.source === 'display' && t.isFinal) {
+          // Backward compatibility for clients that have not enabled semantic
+          // partitioning. The current web client always enables it.
           feedCandidateAnswer(t.text);
-        }
-        // SINGLE-MIC seam: a finalized CANDIDATE segment (by speaker role,
-        // not source) feeds the SAME trigger path. Inert online: resolve(null) =
-        // 'unknown' so isCandidateFinal is always false there.
-        else if (isCandidateFinal(roles, t)) {
-          if (finalTurnSeq !== null) fedSingleMicSeqs.add(finalTurnSeq);
+        } else if (isCandidateFinal(roles, t)) {
+          if (finalTurnSeq !== null) fedSemanticCandidateSeqs.add(finalTurnSeq);
           feedCandidateAnswer(t.text);
         }
       },
       onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, trigger, text)
     });
 
-    // Seed the relay from VOLC_* env defaults (if any) so a deployment can ship
-    // default Doubao creds without the browser sending them. A per-session
-    // configure still overrides this. Paraformer stays the default provider.
+    // Seed the relay with environment-owned Doubao 2.0 credentials without
+    // selecting it. The renderer explicitly selects Xunfei (product default) or
+    // Doubao; Paraformer remains an internal compatibility fallback.
     if (config.volcAppId && config.volcAccessToken) {
       relay.setAsrProvider('paraformer', {
         appId: config.volcAppId,
@@ -1207,7 +1258,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
-    ws.on('message', (data) =>
+    const enqueueMessage = createSerialMessageQueue((raw: string) =>
       onMessage(
         ws,
         session,
@@ -1249,9 +1300,12 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         setSummaryPrompt,
         getSummaryPromptOverride,
         speakerLifecycle,
-        data.toString()
+        raw
       )
     );
+    ws.on('message', (data) => {
+      void enqueueMessage(data.toString());
+    });
     ws.on('error', () => {
       /* swallow socket errors — connection cleanup happens on 'close' */
     });

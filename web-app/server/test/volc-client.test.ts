@@ -7,6 +7,7 @@ import {
   buildConfigPayload,
   extractTranscripts,
   createVolcSession,
+  formatDoubaoAsr2Error,
   VOLC_DEFAULT_MODEL,
   VOLC_DEFAULT_RESOURCE_ID,
   type WsConstructor,
@@ -22,6 +23,7 @@ const MSG_FULL_CLIENT = 0x1;
 const MSG_AUDIO_ONLY = 0x2;
 const MSG_FULL_SERVER = 0x9;
 const FLAG_POS_SEQ = 0x1;
+const FLAG_LAST_SEQ = 0x3;
 const SER_JSON = 0x1;
 const SER_RAW = 0x0;
 const COMP_GZIP = 0x1;
@@ -164,6 +166,8 @@ test('session opens with the Volc auth headers and sends a gzip config on open',
   });
 
   const ws = FakeWs.instances.at(-1)!;
+  assert.equal(VOLC_DEFAULT_RESOURCE_ID, 'volc.seedasr.sauc.duration');
+  assert.match(ws.url, /bigmodel_nostream$/);
   assert.equal(ws.headers?.['X-Api-App-Key'], 'app-123');
   assert.equal(ws.headers?.['X-Api-Access-Key'], 'tok-abc');
   assert.equal(ws.headers?.['X-Api-Resource-Id'], VOLC_DEFAULT_RESOURCE_ID);
@@ -172,6 +176,48 @@ test('session opens with the Volc auth headers and sends a gzip config on open',
   const config = decodeConfigFrame(ws);
   assert.equal(config.request.model_name, VOLC_DEFAULT_MODEL);
   assert.equal(config.audio.rate, 16000);
+});
+
+test('legacy Doubao ASR 1.0 resources are rejected instead of silently falling back', () => {
+  FakeWs.instances = [];
+  const errors: string[] = [];
+
+  createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'app-123',
+    accessToken: 'tok-abc',
+    resourceId: 'volc.bigasr.sauc.duration',
+    onTranscript: () => {},
+    onError: (message) => errors.push(message)
+  });
+
+  assert.equal(FakeWs.instances.length, 0);
+  assert.deepEqual(errors, ['Doubao ASR 2.0 requires a volc.seedasr.* resource']);
+});
+
+test('maps an upstream HTTP 403 handshake rejection to an actionable Doubao 2.0 message', () => {
+  assert.equal(
+    formatDoubaoAsr2Error('Unexpected server response: 403'),
+    '豆包 ASR 2.0 权限不足（HTTP 403），请检查当前 App ID / Access Token 是否已开通所选 Seed-ASR 2.0 资源'
+  );
+});
+
+test('surfaces the actionable Doubao 2.0 message through the session error callback', () => {
+  FakeWs.instances = [];
+  const errors: string[] = [];
+  createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    onTranscript: () => {},
+    onError: (message) => errors.push(message)
+  });
+
+  FakeWs.instances.at(-1)!.emit('error', new Error('Unexpected server response: 403'));
+
+  assert.deepEqual(errors, [
+    '豆包 ASR 2.0 权限不足（HTTP 403），请检查当前 App ID / Access Token 是否已开通所选 Seed-ASR 2.0 资源'
+  ]);
 });
 
 test('a custom resourceId + model flow into the headers and config frame', () => {
@@ -252,21 +298,62 @@ test('a full-server-response frame surfaces partials then finals via onTranscrip
   ]);
 });
 
-test('stop sends a last-packet audio frame and terminates the socket', () => {
+test('stop waits for the last server frame and retains its final transcript', async () => {
   FakeWs.instances = [];
+  const got: Array<{ text: string; isFinal: boolean }> = [];
   const session = createVolcSession({
     WebSocket: FakeWsCtor,
     appId: 'a',
     accessToken: 'b',
-    onTranscript: () => {}
+    stopTimeoutMs: 50,
+    onTranscript: (transcript) => got.push(transcript)
   });
   const ws = FakeWs.instances.at(-1)!;
   ws.emit('open');
 
   const before = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d)).length;
-  session.stop();
+  const stopping = session.stop();
   const after = ws.sent.filter((d): d is Buffer => Buffer.isBuffer(d)).length;
   assert.equal(after, before + 1, 'expected a final last-packet frame');
+  assert.equal(ws.terminated, false, 'the socket must remain open for the terminal response');
+
+  ws.emit(
+    'message',
+    buildFrame({
+      messageType: MSG_FULL_SERVER,
+      flags: FLAG_LAST_SEQ,
+      serialization: SER_JSON,
+      compression: COMP_GZIP,
+      sequence: -2,
+      payload: zlib.gzipSync(
+        Buffer.from(
+          JSON.stringify({ result: { utterances: [{ text: '最后一句', definite: true }] } })
+        )
+      )
+    })
+  );
+
+  assert.deepEqual(await stopping, { finalReceived: true, timedOut: false });
+  assert.deepEqual(got, [{ text: '最后一句', isFinal: true }]);
+});
+
+test('stop terminates after a bounded timeout when Doubao never returns a terminal frame', async () => {
+  FakeWs.instances = [];
+  const session = createVolcSession({
+    WebSocket: FakeWsCtor,
+    appId: 'a',
+    accessToken: 'b',
+    stopTimeoutMs: 5,
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+
+  const result = await session.stop();
+
+  assert.equal(result.finalReceived, false);
+  assert.equal(result.timedOut, true);
+  assert.match(result.reason ?? '', /timeout/i);
   assert.equal(ws.terminated, true);
 });
 
@@ -318,8 +405,9 @@ function makeRecordingFactory<TDeps>() {
       sendAudio(pcm: Buffer) {
         session.frames.push(pcm);
       },
-      stop() {
+      async stop() {
         session.stopped = true;
+        return { finalReceived: true, timedOut: false };
       }
     };
     created.push({ deps, session });
@@ -386,7 +474,7 @@ test('volc without creds emits a friendly error and creates no session', () => {
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(volc.length, 0);
   assert.equal(emits.length, 1);
-  assert.match(emits[0].text, /Doubao/i);
+  assert.match(emits[0].text, /豆包 ASR 2\.0/);
   assert.equal(emits[0].isFinal, false);
 });
 
@@ -402,13 +490,14 @@ test('switching back to paraformer after volc routes new sessions to Paraformer'
   assert.equal(para.length, 1);
 });
 
-test('switching provider during active capture reconnects on the next audio frame', () => {
+test('switching provider during active capture reconnects after the old provider drains', async () => {
   const { relay, para, volc } = providerRelay();
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(para.length, 1);
 
   relay.setAsrProvider('volc', { appId: 'a', accessToken: 'b' });
   assert.equal(para[0].session.stopped, true, 'the old upstream session must stop');
+  await Promise.resolve();
 
   const pcm = Buffer.from([4, 3, 2, 1]);
   relay.handleAudio({ source: 'mic', pcmBase64: pcm.toString('base64') });
@@ -416,12 +505,12 @@ test('switching provider during active capture reconnects on the next audio fram
   assert.deepEqual(volc[0].session.frames[0], pcm);
 });
 
-test('editing the active Doubao model reconnects with the new resource immediately', () => {
+test('changing an active server-owned Doubao 2.0 entitlement reconnects after drain', async () => {
   const { relay, volc } = providerRelay();
   relay.setAsrProvider('volc', {
     appId: 'a',
     accessToken: 'b',
-    resourceId: 'volc.bigasr.sauc.duration'
+    resourceId: 'volc.seedasr.sauc.concurrent'
   });
   relay.handleAudioControl({ action: 'start', source: 'mic' });
   assert.equal(volc.length, 1);
@@ -432,6 +521,7 @@ test('editing the active Doubao model reconnects with the new resource immediate
     resourceId: 'volc.seedasr.sauc.duration'
   });
   assert.equal(volc[0].session.stopped, true, 'the old Doubao model must stop');
+  await Promise.resolve();
 
   relay.handleAudio({ source: 'mic', pcmBase64: Buffer.from([7, 7]).toString('base64') });
   assert.equal(volc.length, 2);

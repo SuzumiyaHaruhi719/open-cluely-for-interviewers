@@ -23,7 +23,7 @@ beforeEach(() => {
   restore = installMockWebSocket();
   fetchCalls = [];
   // Interviews are ephemeral — the shell makes NO session HTTP calls. Route the
-  // remaining endpoints (assistant / résumé / pipelines) to in-memory fakes.
+  // remaining endpoints (assistant / résumé) to in-memory fakes.
   const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof input === 'string' ? input : input.toString();
     const method = init?.method ?? 'GET';
@@ -35,26 +35,6 @@ beforeEach(() => {
     }
     if (url.includes('/api/resume/')) {
       return Promise.resolve(jsonResponse({ text: '', reply: '' }));
-    }
-    if (url.endsWith('/api/pipelines/generate') && method === 'POST') {
-      return Promise.resolve(
-        jsonResponse({
-          pipeline: { id: 'gen-be', name: 'AI Backend', builtin: false, nodes: [], edges: [] }
-        })
-      );
-    }
-    if (url.endsWith('/api/pipelines') && method === 'POST') {
-      return Promise.resolve(jsonResponse({ id: 'gen-be' }));
-    }
-    if (url.endsWith('/api/pipelines')) {
-      return Promise.resolve(
-        jsonResponse({
-          pipelines: [
-            { id: 'builtin-role-backend', name: '资深后端', builtin: true },
-            { id: 'builtin-role-pm', name: '产品经理', builtin: true }
-          ]
-        })
-      );
     }
     return Promise.reject(new Error(`unexpected url ${url}`));
   });
@@ -123,7 +103,7 @@ describe('Shell', () => {
     expect(document.getElementById('channel-mic')).toBeInTheDocument();
   });
 
-  test('settings exposes the new Expert mode and Customize, with legacy modes retired', async () => {
+  test('settings exposes only essential controls and the session stays fixed to Expert', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
@@ -132,17 +112,20 @@ describe('Shell', () => {
     const indicator = document.getElementById('mode-indicator');
     expect(indicator).toHaveAttribute('data-mode', 'expert');
 
-    // Open settings: only the production Expert path and Customize remain.
+    expect(lastConfig(ws)).toMatchObject({
+      mode: 'expert',
+      interviewerModel: 'deepseek-v4-flash',
+      outputLanguage: 'zh',
+      asrProvider: 'xfyun'
+    });
+
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    const modes = within(screen.getByRole('radiogroup', { name: '面试模式' }));
-    expect(modes.queryByRole('radio', { name: /快速/ })).not.toBeInTheDocument();
-    expect(modes.queryByRole('radio', { name: /专家 1\.0/ })).not.toBeInTheDocument();
-    expect(modes.queryByRole('radio', { name: /专家 2\.0/ })).not.toBeInTheDocument();
-
-    fireEvent.click(modes.getByRole('radio', { name: /自定义/ }));
-
-    expect(document.getElementById('mode-indicator')).toHaveAttribute('data-mode', 'customize');
-    expect(lastConfig(ws)).toMatchObject({ mode: 'customize' });
+    expect(lastConfig(ws)).toMatchObject({ autoMode: 'agent' });
+    expect(screen.getByLabelText('语音识别')).toHaveValue('xfyun');
+    expect(screen.getByLabelText('评估报告模型')).toBeInTheDocument();
+    expect(screen.queryByText('面试模式')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Customize|Pipeline/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('API 密钥')).not.toBeInTheDocument();
   });
 
   test('realtime Expert model is truthfully fixed to DeepSeek v4 Flash for the SLO', async () => {
@@ -153,23 +136,58 @@ describe('Shell', () => {
     expect(lastConfig(ws)).toMatchObject({ interviewerModel: 'deepseek-v4-flash', outputLanguage: 'zh' });
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    const model = screen.getByLabelText('实时专家模型');
-    expect(model).toHaveAttribute('readonly');
-    expect((model as HTMLInputElement).value).toContain('deepseek-v4-flash');
+    expect(screen.getByText('专家 · 中文')).toBeInTheDocument();
+    expect(screen.queryByLabelText('实时专家模型')).not.toBeInTheDocument();
   });
 
-  test('restores the persisted output language into the live Expert session', async () => {
+  test('every retained setting persists and reaches the live server session', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+
+    fireEvent.change(screen.getByLabelText('语音识别'), {
+      target: { value: 'paraformer' }
+    });
+    expect(lastConfig(ws)).toMatchObject({ asrProvider: 'paraformer' });
+    expect(localStorage.getItem('open-cluely.asrProvider')).toBe('paraformer');
+
+    fireEvent.change(screen.getByLabelText('评估报告模型'), {
+      target: { value: 'deepseek-v4-flash' }
+    });
+    expect(lastConfig(ws)).toMatchObject({ summaryModel: 'deepseek-v4-flash' });
+    expect(localStorage.getItem('open-cluely.summaryModel')).toBe('deepseek-v4-flash');
+
+    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
+    expect(lastConfig(ws)).toMatchObject({ autoGenerate: false });
+    expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('checkbox', { name: '自动追问' }));
+    expect(lastConfig(ws)).toMatchObject({ autoGenerate: true });
+    expect(localStorage.getItem('open-cluely.autoMode')).toBeNull();
+    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBeNull();
+
+    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    expect(screen.getByLabelText('语音识别')).toHaveValue('paraformer');
+    expect(screen.getByLabelText('评估报告模型')).toHaveValue('deepseek-v4-flash');
+    expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
+  });
+
+  test('ignores a legacy language preference and always configures Chinese', async () => {
     localStorage.setItem('open-cluely.outputLanguage', 'en');
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
 
-    expect(lastConfig(ws)).toMatchObject({ outputLanguage: 'en' });
+    expect(lastConfig(ws)).toMatchObject({ outputLanguage: 'zh' });
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    expect(screen.getByRole('combobox', { name: '追问输出语言' })).toHaveValue('en');
+    expect(screen.queryByText('输出语言')).not.toBeInTheDocument();
+    expect(localStorage.getItem('open-cluely.outputLanguage')).toBeNull();
   });
 
-  test('Settings replays the Tour without reloading or discarding the interview', async () => {
+  test('the question-mark shortcut replays the Tour without discarding the interview', async () => {
     sessionStorage.setItem('tour-shown-this-session', '1');
     render(<Shell />);
     await flushMount();
@@ -180,8 +198,7 @@ describe('Shell', () => {
     fireEvent.click(screen.getByRole('button', { name: '添加' }));
     expect(screen.getByText('保留中的面试上下文')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.click(screen.getByRole('button', { name: '重新播放引导 Tour' }));
+    fireEvent.keyDown(document, { key: '?' });
 
     expect(await screen.findByText('欢迎使用面试官 Copilot')).toBeInTheDocument();
     expect(screen.getByText('保留中的面试上下文')).toBeInTheDocument();
@@ -194,11 +211,18 @@ describe('Shell', () => {
     render(<Shell />);
     await flushMount();
     expect(document.body.classList.contains('rail-collapsed')).toBe(false);
+    const toggle = screen.getByRole('button', { name: '收起右侧栏' });
+    expect(toggle).toHaveAttribute('aria-controls', 'right-rail');
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
-    fireEvent.click(screen.getByRole('button', { name: '展开或收起右侧栏' }));
+    fireEvent.click(toggle);
 
     expect(document.body.classList.contains('rail-collapsed')).toBe(true);
     expect(localStorage.getItem('open-cluely.railCollapsed')).toBe('true');
+    expect(screen.getByRole('button', { name: '展开右侧栏' })).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
   });
 
   test('renders main shell chrome in Chinese', async () => {
@@ -397,7 +421,7 @@ describe('Shell', () => {
     expect(analyzeMsg?.candidateAnswer).toBe('What was the eviction policy?');
   });
 
-  test('New interview opens the type picker and a card starts a fresh in-memory interview (no session POST)', async () => {
+  test('New interview reviews JD context and starts only after explicit confirmation', async () => {
     render(<Shell />);
     await flushMount();
 
@@ -408,17 +432,28 @@ describe('Shell', () => {
     expect(modal).toBeInTheDocument();
     expect(modal?.classList.contains('hidden')).toBe(false);
 
-    // Picking the online card closes the picker and starts a fresh interview.
-    fireEvent.click(screen.getByText('线上面试').closest('button')!);
+    // Picking the online radio only changes capture mode; the reviewed context is
+    // committed by the explicit start action.
+    fireEvent.click(screen.getByRole('radio', { name: '线上面试' }));
+    expect(modal?.classList.contains('hidden')).toBe(false);
+    expect(screen.getByLabelText('职位背景')).toHaveValue('property-manager');
+    fireEvent.click(screen.getByRole('button', { name: '开始面试' }));
     await waitFor(() => {
       expect(modal?.classList.contains('hidden')).toBe(true);
     });
 
     // Ephemeral: NO session is persisted. Opening the socket re-pushes the full
-    // config for the online interview (diarize off — dual-lane routing).
+    // config for the online interview. Semantic diarization stays on because a
+    // shared meeting/tab stream can contain both interviewer and candidate.
     const ws = openSocket();
     await waitFor(() => {
-      expect(lastConfig(ws)).toMatchObject({ diarize: false });
+      expect(lastConfig(ws)).toMatchObject({
+        diarize: true,
+        jobDescription: expect.stringContaining('现场的安全及消防'),
+        interviewGuide: expect.arrayContaining([
+          expect.stringContaining('突发事件应对与复盘')
+        ])
+      });
     });
     expect(fetchCalls.some((c) => c.url.includes('/api/sessions'))).toBe(false);
   });
@@ -464,19 +499,19 @@ describe('Shell', () => {
     });
   });
 
-  test('selecting the Doubao ASR provider configures the recognizer (creds in their own section)', async () => {
+  test('selecting Doubao ASR 2.0 sends only the provider while credentials stay server-side', async () => {
     render(<Shell />);
     await flushMount();
     const ws = openSocket();
 
-    // Default ASR provider pill reads Paraformer.
-    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'paraformer');
+    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'xfyun');
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
 
-    // Doubao creds now live in their own always-visible "Doubao API" section,
-    // so the APP ID input is present regardless of the selected provider.
-    expect(document.getElementById('setting-volc-app-id')).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: /豆包流式语音 2\.0/ })).toBeInTheDocument();
+
+    expect(document.getElementById('setting-volc-app-id')).not.toBeInTheDocument();
+    expect(document.getElementById('setting-volc-access-token')).not.toBeInTheDocument();
 
     fireEvent.change(document.getElementById('setting-asr-provider')!, {
       target: { value: 'volc' }
@@ -485,33 +520,10 @@ describe('Shell', () => {
     // The topbar pill flips to Doubao and a configure carries the provider.
     expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'volc');
     expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc' });
-
-    // Editing a cred persists to localStorage and re-sends it with the provider.
-    fireEvent.change(document.getElementById('setting-volc-app-id')!, {
-      target: { value: 'app-123' }
-    });
-    expect(localStorage.getItem('open-cluely.volcAppId')).toBe('app-123');
-    expect(lastConfig(ws)).toMatchObject({ asrProvider: 'volc', volcAppId: 'app-123' });
-  });
-
-  test('editing Doubao credentials does not silently switch the active ASR provider', async () => {
-    render(<Shell />);
-    await flushMount();
-    const ws = openSocket();
-
-    fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'paraformer');
-
-    fireEvent.change(document.getElementById('setting-volc-app-id')!, {
-      target: { value: 'saved-for-later' }
-    });
-
-    expect(localStorage.getItem('open-cluely.volcAppId')).toBe('saved-for-later');
-    expect(document.getElementById('asr-indicator')).toHaveAttribute('data-asr', 'paraformer');
-    expect(lastConfig(ws)).toMatchObject({
-      asrProvider: 'paraformer',
-      volcAppId: 'saved-for-later'
-    });
+    expect(lastConfig(ws)).not.toHaveProperty('volcAppId');
+    expect(lastConfig(ws)).not.toHaveProperty('volcAccessToken');
+    expect(localStorage.getItem('open-cluely.volcAppId')).toBeNull();
+    expect(localStorage.getItem('open-cluely.volcAccessToken')).toBeNull();
   });
 
   test('selecting the Sim ASR provider configures the generated local injection script', async () => {
@@ -531,6 +543,42 @@ describe('Shell', () => {
     });
   });
 
+  test('a failed ASR session clears the optimistic global live state while capture can still be stopped', async () => {
+    render(<Shell />);
+    await flushMount();
+    const ws = openSocket();
+
+    fireEvent.click(screen.getByRole('button', { name: '设置' }));
+    fireEvent.change(document.getElementById('setting-asr-provider')!, {
+      target: { value: 'sim' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: '关闭设置' }));
+
+    const micCard = document.getElementById('channel-mic')!;
+    await act(async () => {
+      fireEvent.click(within(micCard).getByRole('button', { name: '开始' }));
+    });
+    act(() => {
+      ws.emit({ type: 'asr-status', source: 'mic', provider: 'sim', state: 'live' });
+    });
+    expect(document.getElementById('rec-indicator')).toHaveAttribute('data-state', 'live');
+
+    act(() => {
+      ws.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'sim',
+        state: 'failed',
+        message: '模拟识别失败'
+      });
+    });
+
+    expect(document.getElementById('rec-indicator')).toHaveAttribute('data-state', 'idle');
+    expect(document.getElementById('topbar')).not.toHaveClass('is-live');
+    expect(within(micCard).getByText('错误')).toBeInTheDocument();
+    expect(within(micCard).getByRole('button', { name: '停止' })).toBeEnabled();
+  });
+
   test('an offline interview enables single-mic role partitioning without a CAM++ sidecar', async () => {
     render(<Shell />);
     await flushMount();
@@ -542,9 +590,8 @@ describe('Shell', () => {
     // Create an OFFLINE interview via the type picker (offline card). Ephemeral:
     // no session is persisted — the choice only flips the in-memory routing.
     fireEvent.click(screen.getByRole('button', { name: /新建面试/ }));
-    fireEvent.click(
-      document.querySelector<HTMLButtonElement>('[data-interview-type="offline"]')!
-    );
+    fireEvent.click(screen.getByRole('radio', { name: '线下面试' }));
+    fireEvent.click(screen.getByRole('button', { name: '开始面试' }));
     await waitFor(() => {
       expect(
         document.getElementById('interview-type-modal')?.classList.contains('hidden')
@@ -553,12 +600,12 @@ describe('Shell', () => {
     expect(fetchCalls.some((c) => c.url.includes('/api/sessions'))).toBe(false);
 
     // Now open the socket: the new sessionId triggers the FULL-config re-push,
-    // which for an offline interview keeps the text engine (paraformer here) and
+    // which for an offline interview keeps Xunfei and
     // turns on the single-mic speaker-partition lifecycle. No local sidecar
     // address is part of the protocol anymore.
     const ws = openSocket();
     await waitFor(() => {
-      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'paraformer', diarize: true });
+      expect(lastConfig(ws)).toMatchObject({ asrProvider: 'xfyun', diarize: true });
     });
     expect(lastConfig(ws)).not.toHaveProperty('funasrUrl');
 
@@ -674,66 +721,16 @@ describe('Shell', () => {
     });
   });
 
-  test('Customize: picking a template card configures the pipeline + flips to customize mode', async () => {
+  test('the retired Customize and Pipeline Studio surfaces are absent', async () => {
     render(<Shell />);
     await flushMount();
-    const ws = openSocket();
-
-    // Switch to Customize so the template row renders + fetches the gallery.
-    fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.click(
-      document.querySelector<HTMLButtonElement>('#setting-interviewer-mode [data-mode="customize"]')!
-    );
-
-    // The builtin role templates load from /api/pipelines; click the backend card.
-    await waitFor(() => {
-      expect(
-        document.querySelector('.customize-card[data-id="builtin-role-backend"]')
-      ).toBeInTheDocument();
-    });
-    const card = document.querySelector<HTMLButtonElement>(
-      '.customize-card[data-id="builtin-role-backend"]'
-    )!;
-    fireEvent.click(card);
-
-    expect(lastConfig(ws)).toMatchObject({
-      mode: 'customize',
-      activePipelineId: 'builtin-role-backend'
-    });
-    // The picked card is marked active.
-    await waitFor(() => {
-      expect(card.className).toContain('customize-card--active');
-    });
-  });
-
-  test('Customize: AI-generate authors → saves → activates the pipeline and shows a hint', async () => {
-    render(<Shell />);
-    await flushMount();
-    const ws = openSocket();
+    openSocket();
 
     fireEvent.click(screen.getByRole('button', { name: '设置' }));
-    fireEvent.click(
-      document.querySelector<HTMLButtonElement>('#setting-interviewer-mode [data-mode="customize"]')!
-    );
-    await waitFor(() => {
-      expect(document.getElementById('customize-ai-input')).toBeInTheDocument();
-    });
 
-    fireEvent.change(document.getElementById('customize-ai-input')!, {
-      target: { value: '招一个资深后端' }
-    });
-    fireEvent.click(screen.getByRole('button', { name: 'AI 生成' }));
-
-    // generate → save → activate (configure with the saved id).
-    await waitFor(() => {
-      expect(lastConfig(ws)).toMatchObject({ mode: 'customize', activePipelineId: 'gen-be' });
-    });
-    expect(
-      fetchCalls.some((c) => c.url.endsWith('/api/pipelines/generate') && c.method === 'POST')
-    ).toBe(true);
-    expect(
-      fetchCalls.some((c) => c.url.endsWith('/api/pipelines') && c.method === 'POST')
-    ).toBe(true);
-    expect(document.getElementById('customize-ai-hint')?.textContent).toContain('AI Backend');
+    expect(screen.queryByText(/Customize|Pipeline Studio/i)).not.toBeInTheDocument();
+    expect(document.querySelector('.customize-card')).not.toBeInTheDocument();
+    expect(document.getElementById('pipeline-studio')).not.toBeInTheDocument();
+    expect(fetchCalls.some((call) => call.url.includes('/api/pipelines'))).toBe(false);
   });
 });

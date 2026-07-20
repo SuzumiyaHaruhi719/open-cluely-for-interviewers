@@ -99,7 +99,7 @@ test('manual Generate Q uses the same Expert Flash path as automatic generation'
   }
 });
 
-test('a reset during Flash generation suppresses the stale completion and result', async () => {
+test('a reset during Flash generation terminates progress but suppresses the stale result', async () => {
   const messages: ServerMessage[] = [];
   let stale = false;
 
@@ -119,5 +119,10 @@ test('a reset during Flash generation suppresses the stale completion and result
     }
   );
 
-  assert.deepEqual(messages.map((message) => message.type), ['progress']);
+  assert.deepEqual(messages.map((message) => message.type), ['progress', 'progress']);
+  const terminal = messages.at(-1);
+  assert.equal(terminal?.type, 'progress');
+  if (terminal?.type === 'progress') {
+    assert.equal(terminal.status, 'done');
+  }
 });

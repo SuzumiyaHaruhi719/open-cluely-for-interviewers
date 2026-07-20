@@ -57,4 +57,55 @@ describe('ChannelCard microphone selection', () => {
     );
     expect(select).toHaveValue('built-in-mic');
   });
+
+  test('shows provider finalization and failure instead of an optimistic live badge', async () => {
+    const baseProps = {
+      domId: 'channel-runtime',
+      source: 'mic' as const,
+      accent: 'interviewer' as const,
+      title: '房间麦克风',
+      disabled: false,
+      onMicDeviceChange: vi.fn(),
+      onStart: vi.fn(),
+      onStop: vi.fn()
+    };
+    const { rerender } = render(
+      <ChannelCard
+        {...baseProps}
+        state={{ capturing: false, level: 0, error: null, runtimeState: 'finalizing' }}
+      />
+    );
+    await screen.findByRole('option', { name: 'MacBook Pro Microphone' });
+    expect(screen.getByText('收尾中')).toBeInTheDocument();
+
+    rerender(
+      <ChannelCard
+        {...baseProps}
+        state={{
+          capturing: true,
+          level: 0,
+          error: '讯飞鉴权失败',
+          runtimeState: 'failed'
+        }}
+      />
+    );
+    expect(screen.getByText('错误')).toBeInTheDocument();
+    expect(screen.queryByText('实时')).not.toBeInTheDocument();
+
+    rerender(
+      <ChannelCard
+        {...baseProps}
+        state={{
+          capturing: false,
+          level: 0,
+          error: null,
+          notice: '转写已保存；最后一小段可能未确认。',
+          runtimeState: 'partial'
+        }}
+      />
+    );
+    expect(screen.getByText('部分完成')).toBeInTheDocument();
+    expect(screen.queryByText('错误')).not.toBeInTheDocument();
+    expect(screen.getByText('转写已保存；最后一小段可能未确认。')).toBeInTheDocument();
+  });
 });

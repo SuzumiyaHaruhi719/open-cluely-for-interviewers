@@ -24,7 +24,9 @@ export function useMicDevices(enabled: boolean): { devices: MicDevice[]; refresh
       .enumerateDevices()
       .then((list) => {
         const mics = list
-          .filter((d) => d.kind === 'audioinput')
+          // Browsers hide device ids before permission. Rendering those entries
+          // creates duplicate "system default" values that cannot be selected.
+          .filter((d) => d.kind === 'audioinput' && d.deviceId.trim().length > 0)
           .map((d, index) => ({
             deviceId: d.deviceId,
             label: d.label || `Microphone ${index + 1}`

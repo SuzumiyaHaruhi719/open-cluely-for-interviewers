@@ -2,6 +2,8 @@ import type { SpeakerRole } from '@open-cluely/contract';
 
 export interface SpeakerRoleMap {
   resolve(speakerId: number | null): SpeakerRole;
+  /** Resolve one model-inferred turn while preserving a sticky manual speaker correction. */
+  resolveTurnRole(speakerId: number, inferredRole: SpeakerRole): SpeakerRole;
   /** Manual interviewer correction. It is sticky and always wins over later inference. */
   setRole(speakerId: number, role: SpeakerRole): void;
   /** Apply a model-inferred role unless that speaker was manually corrected. */
@@ -34,6 +36,10 @@ export function createSpeakerRoleMap(): SpeakerRoleMap {
     resolve(speakerId) {
       if (speakerId === null || speakerId === undefined) return 'unknown';
       return roles.get(speakerId) ?? defaultFor(speakerId);
+    },
+    resolveTurnRole(speakerId, inferredRole) {
+      if (manual.has(speakerId)) return roles.get(speakerId) ?? defaultFor(speakerId);
+      return inferredRole;
     },
     setRole(speakerId, role) {
       if (!order.includes(speakerId)) order.push(speakerId);

@@ -20,8 +20,6 @@ import './desktop-ui/chat.css';
 import './desktop-ui/session-context.css';
 import './desktop-ui/interview-type.css';
 import './desktop-ui/settings.css';
-// Pipeline Studio (Customize-mode node editor) — copied verbatim from the desktop.
-import './desktop-ui/studio.css';
 // Web-only additions: question-card sub-blocks + the namespaced Question Bank.
 import './web-extras.css';
 

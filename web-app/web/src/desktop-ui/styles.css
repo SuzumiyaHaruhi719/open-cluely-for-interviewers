@@ -318,6 +318,7 @@ body.stealth-on .app-shell { opacity: 0.92; }
 
 /* ── Three-pane layout ───────────────────────────────────────────────────── */
 .layout {
+  position: relative;
   display: grid;
   grid-template-columns: var(--sidebar-w) minmax(0, 1fr) var(--rail-w);
   min-height: 0;
@@ -1323,7 +1324,7 @@ body.rail-collapsed .right-rail {
 }
 
 /* Toggle button reflects the collapsed state (brand green = active accent). */
-#toggle-rail-btn[aria-pressed="true"] {
+#toggle-rail-btn[aria-expanded="true"] {
   color: var(--text-brand);
   border-color: color-mix(in srgb, var(--brand-500) 40%, var(--border-default));
   background: var(--brand-50);
@@ -1710,12 +1711,32 @@ body.rail-collapsed .right-rail {
    driven by the titlebar #toggle-rail-btn). No width-based auto-hide — it fought
    the manual toggle and clipped the control at small sizes. */
 
-/* Narrow window: drop the right rail (résumé / session-context) so the
-   conversation + topbar get the room. Widen the window to bring it back. */
+/* Narrow window: keep the conversation at full width and turn the right rail
+   into an on-demand drawer. `display:none` used to make the titlebar toggle a
+   no-op at exactly the viewport sizes where the drawer was most useful. */
 @media (max-width: 1000px) {
   :root { --rail-w: 0px; }
   .layout { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
-  .right-rail { display: none; }
+  .right-rail {
+    display: flex;
+    position: absolute;
+    inset: 0 0 0 auto;
+    z-index: 20;
+    width: min(360px, calc(100% - var(--sidebar-w)));
+    animation: none;
+    opacity: 1;
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+    transition:
+      opacity var(--dur-2) var(--ease),
+      transform var(--dur-3) var(--ease-out);
+  }
+
+  body.rail-collapsed .right-rail {
+    opacity: 0;
+    transform: translateX(100%);
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 900px) {

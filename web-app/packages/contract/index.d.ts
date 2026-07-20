@@ -7,6 +7,7 @@ export const S2C: {
   PROGRESS: 'progress';
   RESULT: 'result';
   TRANSCRIPT: 'transcript';
+  ASR_STATUS: 'asr-status';
   SPEAKER_PARTITION: 'speaker-partition';
   SESSION_CONTEXT: 'session-context';
   SUMMARY_CHUNK: 'summary-chunk';
@@ -24,8 +25,8 @@ export const C2S: {
   SUMMARIZE: 'summarize';
 };
 
-/** Live-ASR providers the server can stream through. Default: 'paraformer'. */
-export const ASR_PROVIDERS: readonly ['paraformer', 'volc', 'xfyun', 'sim'];
+/** Live-ASR providers the server can stream through. Product default: 'xfyun'. */
+export const ASR_PROVIDERS: readonly ['xfyun', 'volc', 'paraformer', 'sim'];
 
 /** How a `result` was produced: autonomous monitor vs. manual Generate Q. */
 export const GENERATION_TRIGGERS: readonly ['auto', 'manual'];
@@ -47,6 +48,13 @@ export type AudioSource = 'mic' | 'display';
  *                  (like xfyun). Used by scripts/sim/run-chats.mjs.
  */
 export type AsrProvider = 'paraformer' | 'volc' | 'xfyun' | 'sim';
+export type AsrRuntimeState =
+  | 'connecting'
+  | 'live'
+  | 'finalizing'
+  | 'stopped'
+  | 'partial'
+  | 'failed';
 
 /** Per-segment speaker role resolved from a cluster ID. */
 export type SpeakerRole = 'interviewer' | 'candidate' | 'unknown';
@@ -119,6 +127,8 @@ export interface SessionConfig {
   interviewerModel?: InterviewerModel;
   resumeText: string;
   jobDescription: string;
+  /** Structured scorecard lines used as evidence-seeking context by Expert. */
+  interviewGuide?: string[];
   outputLanguage: OutputLanguage;
   /**
    * Customize mode only: the saved pipeline the headless session should run.
@@ -127,22 +137,9 @@ export interface SessionConfig {
   activePipelineId?: string | null;
   /**
    * Realtime ASR provider for subsequent `audio-control start` controls.
-   * Omitted/'paraformer' keeps the default DashScope Paraformer relay.
+   * Omitted values are normalized by the product client to the Xunfei default.
    */
   asrProvider?: AsrProvider;
-  /**
-   * Doubao / Volcengine credentials (only used when `asrProvider === 'volc'`).
-   * SECURITY: these are sent to the SERVER, which opens the Volc WebSocket on the
-   * browser's behalf — the browser never connects to Volc directly. The server
-   * NEVER logs these values. They are application credentials for the user's own
-   * Volc account (distinct from the DashScope key).
-   */
-  volcAppId?: string;
-  volcAccessToken?: string;
-  /** Volc resource id, e.g. `volc.bigasr.sauc.duration`. Optional; server defaults. */
-  volcResourceId?: string;
-  /** Optional Volc model name override (config-frame `model_name`). */
-  volcModel?: string;
   /**
    * Simulation script for `asrProvider === 'sim'` (the mic-less test harness):
    * an ordered two-speaker transcript the server replays instead of listening to
@@ -297,6 +294,14 @@ export type ServerMessage =
       trigger?: GenerationTrigger;
     }
   | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
+  | {
+      type: 'asr-status';
+      source: AudioSource;
+      provider: AsrProvider;
+      state: AsrRuntimeState;
+      /** Public, credential-free reason for failed or partial finalization. */
+      message?: string;
+    }
   | {
       type: 'speaker-partition';
       status: 'live' | 'final';

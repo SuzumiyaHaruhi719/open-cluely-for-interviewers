@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, test, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
 import type { CopilotResult, TranscriptLanes } from '../lib/useCopilotSocket';
 
@@ -27,6 +27,53 @@ function renderStream(
 
 afterEach(() => {
   cleanup();
+  vi.useRealTimers();
+});
+
+test('changing the fixed cadence restarts its visible countdown immediately', () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date('2026-07-20T00:00:00Z'));
+  const props = {
+    transcripts: EMPTY_LANES,
+    transcriptMessages: [],
+    lastResult: null,
+    progress: null,
+    isAnalyzing: false,
+    error: null,
+    autoScroll: false,
+    autoMode: 'interval' as const,
+    autoGenerate: true,
+    capturing: true,
+    lastAutoFireAt: null
+  };
+  const { rerender } = render(<TranscriptStream {...props} autoIntervalMs={30_000} />);
+  expect(screen.getByText('下次自动追问 ~30s')).toBeInTheDocument();
+
+  act(() => vi.advanceTimersByTime(12_000));
+  expect(screen.getByText('下次自动追问 ~18s')).toBeInTheDocument();
+
+  rerender(<TranscriptStream {...props} autoIntervalMs={15_000} />);
+  expect(screen.getByText('下次自动追问 ~15s')).toBeInTheDocument();
+});
+
+test('does not promise an interval follow-up while no ASR session is live', () => {
+  render(
+    <TranscriptStream
+      transcripts={EMPTY_LANES}
+      transcriptMessages={[]}
+      lastResult={null}
+      progress={null}
+      isAnalyzing={false}
+      error={null}
+      autoScroll={false}
+      autoMode="interval"
+      autoIntervalMs={15_000}
+      autoGenerate
+      capturing={false}
+    />
+  );
+
+  expect(screen.queryByText(/下次自动追问/)).not.toBeInTheDocument();
 });
 
 describe('TranscriptStream seeded messages', () => {
@@ -196,6 +243,31 @@ describe('TranscriptStream online iFlytek speaker bubbles', () => {
     // Tapping 候选人 on speaker 2's bubble labels THAT speaker id.
     fireEvent.click(candidateButtons[1]);
     expect(onSetRole).toHaveBeenCalledWith(2, 'candidate');
+  });
+
+  it('keeps the live partial visible while finalized speaker bubbles are already present', () => {
+    render(
+      <TranscriptStream
+        offline={false}
+        speakerSegments={[
+          { id: 1, speakerId: 1, role: 'interviewer', text: '请介绍一下你的项目' }
+        ]}
+        transcripts={{
+          mic: { finalText: '请介绍一下你的项目', partial: '' },
+          display: { finalText: '', partial: '我负责的是推荐系统实时特征' }
+        }}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+
+    expect(screen.getByText('请介绍一下你的项目')).toBeInTheDocument();
+    expect(screen.getByText('我负责的是推荐系统实时特征')).toBeInTheDocument();
+    expect(screen.getByText('输入中…')).toBeInTheDocument();
   });
 
   it('online (offline=false) WITHOUT segments (paraformer/volc): renders the two channel lanes, NO toggles', () => {

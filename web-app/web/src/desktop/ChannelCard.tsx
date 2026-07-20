@@ -69,9 +69,23 @@ function useMicDevices(enabled: boolean) {
 }
 
 /** Status pill text + `data-state` from the capture state. */
-function statusFor(state: AudioState): { label: string; attr: 'off' | 'connecting' | 'listening' | 'error' } {
-  if (state.error) {
+function statusFor(
+  state: AudioState
+): { label: string; attr: 'off' | 'connecting' | 'listening' | 'warning' | 'error' } {
+  if (state.runtimeState === 'failed' || state.error) {
     return { label: '错误', attr: 'error' };
+  }
+  if (state.runtimeState === 'partial') {
+    return { label: '部分完成', attr: 'warning' };
+  }
+  if (state.runtimeState === 'finalizing') {
+    return { label: '收尾中', attr: 'connecting' };
+  }
+  if (state.runtimeState === 'connecting') {
+    return { label: '连接中', attr: 'connecting' };
+  }
+  if (state.runtimeState === 'live') {
+    return { label: '实时', attr: 'listening' };
   }
   if (state.capturing) {
     return { label: '实时', attr: 'listening' };
@@ -215,6 +229,8 @@ export function ChannelCard({
             {state.error}
           </div>
         ) : null}
+
+        {state.notice ? <div className="channel-notice">{state.notice}</div> : null}
 
         <div className="channel-meter">
           <div className="channel-meter-fill" style={fillStyle} />

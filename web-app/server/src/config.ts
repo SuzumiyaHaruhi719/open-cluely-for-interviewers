@@ -20,9 +20,8 @@ export interface ServerConfig {
   /** PCM sample rate the ASR model expects (the relay downsamples 16k->this). */
   readonly paraformerSampleRate: number;
   /**
-   * Optional Doubao / Volcengine (豆包) defaults. Per-session `configure` values
-   * ALWAYS win over these — they only let a deployment ship default creds.
-   * Empty unless VOLC_* env vars are set.
+   * Doubao Seed-ASR 2.0 / Volcengine environment configuration. The renderer
+   * never receives or overrides these values.
    */
   readonly volcAppId: string;
   readonly volcAccessToken: string;
@@ -33,7 +32,7 @@ export interface ServerConfig {
   /**
    * iFlytek (讯飞) 实时语音转写大模型 credentials, read from XFYUN_* env. Used when
    * asrProvider === 'xfyun' — the cloud call returns BOTH text AND speaker id
-   * (角色分离 role_type=2) for the offline single-mic scenario. No per-session
+   * (角色分离 role_type=2) for mixed room-mic or shared-tab audio. No per-session
    * creds: the server reads these from .env. Empty unless XFYUN_* are set.
    */
   readonly xfyunAppId: string;
@@ -68,10 +67,12 @@ const DEFAULT_VOLC_SAMPLE_RATE = 16000;
 const DEFAULT_XFYUN_WS_URL = 'wss://office-api-ast-dx.iflyaisol.com/';
 // Auto-trigger defaults (see ServerConfig + auto-trigger.ts). Tuned for a live
 // interview cadence: ~20s between auto fires, ~120 new chars (a sentence or two)
-// of fresh candidate speech, and a ~1.2s pause before deciding.
+// of fresh candidate speech, and a 3s no-speech window before deciding. Live ASR
+// partials cancel this timer, so Expert never talks over an active turn while the
+// remaining ~7s budget still fits the under-10s question SLO.
 const DEFAULT_AUTO_COOLDOWN_MS = 20000;
 const DEFAULT_AUTO_MIN_NEW_CHARS = 120;
-const DEFAULT_AUTO_DEBOUNCE_MS = 1200;
+const DEFAULT_AUTO_DEBOUNCE_MS = 3000;
 const DEFAULT_AUTO_MONITOR_MODEL = 'deepseek-v4-flash';
 
 export const config: ServerConfig = Object.freeze({
@@ -80,7 +81,7 @@ export const config: ServerConfig = Object.freeze({
   interviewerModel: String(process.env.INTERVIEWER_MODEL ?? '').trim(),
   paraformerModel: String(process.env.PARAFORMER_MODEL ?? '').trim() || DEFAULT_PARAFORMER_MODEL,
   paraformerSampleRate: toInt(process.env.PARAFORMER_SAMPLE_RATE, DEFAULT_PARAFORMER_SAMPLE_RATE),
-  // Optional Volc/Doubao env fallbacks — per-session configure values win.
+  // Volc/Doubao Seed-ASR 2.0 configuration — environment is the sole owner.
   volcAppId: String(process.env.VOLC_APP_ID ?? '').trim(),
   volcAccessToken: String(process.env.VOLC_ACCESS_TOKEN ?? '').trim(),
   volcResourceId: String(process.env.VOLC_RESOURCE_ID ?? '').trim(),

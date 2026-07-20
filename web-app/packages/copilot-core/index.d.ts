@@ -5,6 +5,7 @@ export interface HeadlessSessionConfig {
   interviewerModel?: string;
   resumeText?: string;
   jobDescription?: string;
+  interviewGuide?: string[];
   outputLanguage?: OutputLanguage;
   activePipelineId?: string | null;
 }

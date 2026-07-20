@@ -290,6 +290,110 @@ test('debounce coalesces rapid onCandidateFinal calls into ONE evaluation', asyn
   assert.equal(h.analyzeCalls[0].candidateAnswer, latest, 'fires with the LATEST accumulated text');
 });
 
+test('ongoing speech cancels a pending question until a later candidate final closes the turn', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes() });
+
+  trigger.onCandidateFinal(LONG_ANSWER);
+  assert.equal(h.setTimerCalls, 1, 'candidate final arms the quiet-period timer');
+
+  // A provider partial means somebody is still speaking. Auto must not surface a
+  // question over that speech even if the prior final was already substantive.
+  trigger.noteSpeechActivity();
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'no question while speech continues');
+  assert.ok(h.clearTimerCalls >= 1, 'speech postpones the armed quiet-period timer');
+  assert.equal(h.setTimerCalls, 2, 'speech re-arms the same candidate evidence after a new quiet period');
+
+  // Some providers do not emit another final after the last rolling chunk. Once
+  // the real audio has stayed quiet for the full debounce, the postponed evidence
+  // must still fire without requiring another transcript boundary.
+  h.advance(DEBOUNCE_MS);
+  h.fireTimer();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(h.analyzeCalls.length, 1, 'the postponed answer fires only after real quiet');
+  assert.equal(h.analyzeCalls[0].candidateAnswer, LONG_ANSWER);
+});
+
+test('stopping capture cancels pending Auto work and invalidates an in-flight result', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes() });
+  const epochBeforeStop = trigger.getEpoch();
+
+  trigger.onCandidateFinal(LONG_ANSWER);
+  assert.equal(h.setTimerCalls, 1);
+
+  trigger.setCapturing(false);
+
+  assert.ok(h.clearTimerCalls >= 1, 'mic stop cancels the pending quiet-period timer');
+  assert.equal(trigger.getEpoch(), epochBeforeStop + 1, 'an Auto result started before stop becomes stale');
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'nothing fires after the interview capture stops');
+});
+
+test('speech resuming during Auto generation invalidates the result before it can surface', async () => {
+  let releaseAnalyze!: () => void;
+  let invalidationCalls = 0;
+  const analyzeGate = new Promise<void>((resolve) => {
+    releaseAnalyze = resolve;
+  });
+  let pendingFn: (() => void) | null = null;
+  const trigger = createAutoTrigger({
+    shouldGenerate: async () => yes(),
+    runAnalyze: async () => analyzeGate,
+    onAutoInvalidated: () => {
+      invalidationCalls += 1;
+    },
+    setTimer: (fn) => {
+      pendingFn = fn;
+      return 1;
+    },
+    clearTimer: () => {
+      pendingFn = null;
+    },
+    config: {
+      cooldownMs: COOLDOWN_MS,
+      minNewChars: MIN_NEW_CHARS,
+      debounceMs: DEBOUNCE_MS,
+      monitorModel: 'stub'
+    }
+  });
+  trigger.setCapturing(true);
+  trigger.onCandidateFinal(LONG_ANSWER);
+  assert.ok(pendingFn);
+
+  const epochAtStart = trigger.getEpoch();
+  const run = trigger.flush();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(trigger.getIsGenerating(), true);
+
+  trigger.noteSpeechActivity();
+  assert.equal(trigger.getEpoch(), epochAtStart + 1, 'the caller can suppress the stale Auto frame');
+  assert.equal(invalidationCalls, 1, 'the visible Auto attempt is terminated as soon as speech resumes');
+
+  releaseAnalyze();
+  await run;
+});
+
+test('an interviewer turn cancels the old answer instead of blending it into the next candidate answer', async () => {
+  const { trigger, h } = makeTrigger({ decision: yes() });
+
+  trigger.onCandidateFinal(LONG_ANSWER);
+  trigger.onInterviewerFinal();
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 0, 'the interviewer moving on cancels the pending follow-up');
+
+  trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX);
+  h.advance(DEBOUNCE_MS);
+  await trigger.flush();
+  assert.equal(h.analyzeCalls.length, 1);
+  assert.equal(
+    h.analyzeCalls[0].candidateAnswer,
+    LONG_SUFFIX.trim(),
+    'the next follow-up sees only the new answer window'
+  );
+});
+
 test('markManualRun blocks an immediate auto fire (shared bookkeeping)', async () => {
   const { trigger, h } = makeTrigger({ decision: yes() });
 

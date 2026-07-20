@@ -3,12 +3,19 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { useCopilotSocket } from './useCopilotSocket';
 import { installMockWebSocket, MockWebSocket } from '../test/mockWebSocket';
 
+const { startCaptureMock } = vi.hoisted(() => ({ startCaptureMock: vi.fn() }));
+vi.mock('./audioCapture', async () => {
+  const actual = await vi.importActual<typeof import('./audioCapture')>('./audioCapture');
+  return { ...actual, startCapture: startCaptureMock };
+});
+
 describe('useCopilotSocket', () => {
   let restore: () => void;
 
   beforeEach(() => {
     restore = installMockWebSocket();
     vi.spyOn(crypto, 'randomUUID').mockReturnValue('11111111-1111-4111-8111-111111111111');
+    startCaptureMock.mockResolvedValue({ stop: vi.fn() });
   });
 
   afterEach(() => {
@@ -106,6 +113,43 @@ describe('useCopilotSocket', () => {
     });
     expect(result.current.isAnalyzing).toBe(false);
     expect(result.current.progress).toBeNull();
+    expect(result.current.error).toBeNull();
+  });
+
+  test('a terminal progress frame clears an adopted Auto attempt when no question is emitted', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId: 'auto-no-question',
+        phase: 'expert-question',
+        index: 1,
+        total: 1,
+        status: 'start'
+      });
+    });
+    await waitFor(() => expect(result.current.isAnalyzing).toBe(true));
+
+    act(() => {
+      socket.emit({
+        type: 'progress',
+        requestId: 'auto-no-question',
+        phase: 'expert-question',
+        index: 1,
+        total: 1,
+        status: 'done'
+      });
+    });
+
+    await waitFor(() => expect(result.current.isAnalyzing).toBe(false));
+    expect(result.current.progress).toBeNull();
+    expect(result.current.lastResult).toBeNull();
     expect(result.current.error).toBeNull();
   });
 
@@ -232,6 +276,75 @@ describe('useCopilotSocket', () => {
     const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
     expect(frame).toEqual({ type: 'audio-control', action: 'stop', source: 'mic' });
     expect(result.current.audio.mic.capturing).toBe(false);
+    expect(result.current.audio.mic.runtimeState).toBe('finalizing');
+  });
+
+  test('ASR runtime status overrides optimistic local capture health without dropping late finals', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'xfyun',
+        state: 'failed',
+        message: '讯飞鉴权失败'
+      });
+    });
+    await waitFor(() => expect(result.current.audio.mic.runtimeState).toBe('failed'));
+    expect(result.current.audio.mic.provider).toBe('xfyun');
+    expect(result.current.audio.mic.error).toBe('讯飞鉴权失败');
+
+    act(() => {
+      result.current.stopAudio('mic');
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '停止后到达的最后一句',
+        isFinal: true,
+        speakerId: 2,
+        speaker: 'candidate'
+      });
+      socket.emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'xfyun',
+        state: 'stopped'
+      });
+    });
+
+    await waitFor(() =>
+      expect(result.current.transcripts.mic.finalText).toContain('停止后到达的最后一句')
+    );
+    expect(result.current.audio.mic.runtimeState).toBe('stopped');
+    expect(result.current.speakerSegments.at(-1)?.role).toBe('candidate');
+  });
+
+  test('partial ASR finalization is a non-fatal Chinese notice, not a capture error', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    act(() => {
+      MockWebSocket.last().emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'xfyun',
+        state: 'partial',
+        message: 'iFlytek finalization timeout'
+      });
+    });
+
+    await waitFor(() => expect(result.current.audio.mic.runtimeState).toBe('partial'));
+    expect(result.current.audio.mic.error).toBeNull();
+    expect(result.current.audio.mic.notice).toBe('转写已保存；最后一小段可能未确认。');
   });
 
   test('startAudio with skipLocalCapture opens the server ASR session without browser media capture', async () => {
@@ -248,6 +361,39 @@ describe('useCopilotSocket', () => {
     const frame = JSON.parse(MockWebSocket.last().sent.at(-1) as string);
     expect(frame).toEqual({ type: 'audio-control', action: 'start', source: 'mic' });
     expect(result.current.audio.mic).toMatchObject({ capturing: true, error: null });
+  });
+
+  test('normal microphone capture waits for browser media before opening the upstream ASR session', async () => {
+    let resolveCapture!: (handle: { stop: () => void }) => void;
+    startCaptureMock.mockReturnValue(
+      new Promise((resolve) => {
+        resolveCapture = resolve;
+      })
+    );
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    let starting!: Promise<void>;
+    act(() => {
+      starting = result.current.startAudio('mic');
+    });
+    expect(socket.sent).toHaveLength(0);
+
+    resolveCapture({ stop: vi.fn() });
+    await act(async () => {
+      await starting;
+    });
+
+    expect(JSON.parse(socket.sent.at(-1) as string)).toEqual({
+      type: 'audio-control',
+      action: 'start',
+      source: 'mic'
+    });
+    expect(result.current.audio.mic.capturing).toBe(true);
   });
 
   test('speakerSegments: online finals (no speakerId) add nothing; offline finals (numeric speakerId) append one labelled segment', async () => {

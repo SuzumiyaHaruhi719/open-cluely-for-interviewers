@@ -57,6 +57,8 @@ export interface AutoTriggerDeps {
    * path unless Customize mode is explicitly selected.
    */
   runAnalyze: (opts: { candidateAnswer: string; focusHint: string }) => Promise<void>;
+  /** Immediately terminate the visible autonomous attempt when speech/Stop/reset invalidates it. */
+  onAutoInvalidated?: () => void;
   /** Clock. Defaults to Date.now; injected in tests for a deterministic cooldown. */
   now?: () => number;
   /** Schedule the debounce. Defaults to setTimeout; injected to control timing in tests. */
@@ -70,6 +72,10 @@ export interface AutoTriggerDeps {
 export interface AutoTrigger {
   /** A new interviewee FINAL segment arrived; `fullCandidateText` is the accumulated final text. */
   onCandidateFinal: (fullCandidateText: string) => void;
+  /** Any live ASR activity (partial or final) postpones a pending question. */
+  noteSpeechActivity: () => void;
+  /** The interviewer started/finished a new turn, so the prior answer window is stale. */
+  onInterviewerFinal: () => void;
   /** Enable/disable autonomous generation. When off, no LLM call is ever made. */
   setAutoGenerate: (enabled: boolean) => void;
   /**
@@ -135,19 +141,44 @@ export interface AutoTrigger {
 // consume the entire SLO before generation even started. This local gate only
 // rejects obvious filler; the Expert call makes the semantic should_ask decision.
 const FILLER_ONLY = /^(?:好(?:的)?|谢谢(?:老师)?|嗯+|啊+|这个|怎么说|没有了|ok|okay)[，,。.啊嗯呢吧\s]*$/i;
+const INCOMPLETE_ENDING = /(?:因为|由于|所以|然后|但是|不过|如果|只要|比如|例如|包括|以及|并且|而且|同时|接下来|首先|其次|最后|让|把|被|对|和|与|或|because|then|but|if|for example|and|or)[，,、。.!！?？:：;；\s]*$/i;
+const TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
+const CLOSED_ASR_ENDING = /(?:完成|结束|解决|改善|降低|提升|缩短|减少|增加|达成|落地|闭环|复盘|验证|确认|成功|失败|稳定|安全|质量|效率|成本|结果|反馈|分钟|小时|天|月|年|completed|finished|resolved|improved|reduced|increased|minutes?|seconds?|hours?|days?)$/i;
+const CONCRETE_ACTIONS = /(?:负责|主导|亲自|核对|检查|组织|协调|决定|选择|分析|制定|实施|调整|验证|复检|提交|跟进|统计|巡查|维修|培训|沟通|解决|处理|复盘|排查|推动|安排|发现|built|implemented|designed|led|owned|migrated|measured|validated|launched|resolved|debugged|tested|decided|coordinated)/gi;
+const OUTCOME_SIGNAL = /(?:结果|最终|从[^，。；]{1,24}到|提升|降低|缩短|减少|增加|完成|达成|改善|避免|成功|失败|\d+(?:\.\d+)?\s*(?:[%％]|分钟|小时|天|月|年|秒|万元|元)?|result|outcome|reduced|increased|improved|completed|failed|\d+(?:\.\d+)?\s*(?:%|minutes?|seconds?|hours?|days?))/i;
+const SPECIFIC_DETAIL = /(?:记录|时间|金额|比例|人员|客户|租户|设备|系统|流程|预算|成本|风险|质量|指标|数据|故障|消防|巡检|工单|投诉|项目|团队|方案|响应|现场|排班|材料|水管|演练|latency|revenue|customer|system|incident|metric|budget|risk|project|team)/i;
+
+function hasEnoughEvidence(text: string): boolean {
+  const clauses = text
+    .split(/[，,。！？!?；;：:]/)
+    .map((part) => part.trim())
+    .filter((part) => part.length >= 6);
+  if (clauses.length < 2) return false;
+
+  const distinctActions = new Set(
+    (text.match(CONCRETE_ACTIONS) ?? []).map((match) => match.toLowerCase())
+  );
+  if (distinctActions.size >= 2) return true;
+  return distinctActions.size >= 1 && OUTCOME_SIGNAL.test(text) && SPECIFIC_DETAIL.test(text);
+}
 
 export function decideLocalTrigger(recentTranscript: string): TriggerDecision {
   const text = String(recentTranscript ?? '').replace(/\s+/g, ' ').trim();
   if (text.length < 24 || FILLER_ONLY.test(text)) {
     return { shouldGenerate: false, reason: '内容过短或仅为语气词', focusHint: '', urgency: 'low' };
   }
-  const selfContained = /[。！？!?]$/.test(text) || text.length >= 64;
-  if (!selfContained) {
-    return { shouldGenerate: false, reason: '可能仍在句中', focusHint: '', urgency: 'low' };
+  if (
+    INCOMPLETE_ENDING.test(text) ||
+    (!TERMINAL_PUNCTUATION.test(text) && !CLOSED_ASR_ENDING.test(text))
+  ) {
+    return { shouldGenerate: false, reason: '回答疑似未结束，等待更多信息', focusHint: '', urgency: 'low' };
+  }
+  if (!hasEnoughEvidence(text)) {
+    return { shouldGenerate: false, reason: '尚未形成足够的具体行动或结果证据', focusHint: '', urgency: 'low' };
   }
   return {
     shouldGenerate: true,
-    reason: '已形成完整、可追问的候选人回答',
+    reason: '已形成完整且有具体证据的候选人回答',
     focusHint: '优先找出责任边界、关键决策或可验证结果中信息增益最高的证据缺口',
     urgency: 'med'
   };
@@ -179,6 +210,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   const clearTimer = deps.clearTimer ?? ((h) => clearTimeout(h as ReturnType<typeof setTimeout>));
   const shouldGenerate = deps.shouldGenerate ?? makeDefaultShouldGenerate();
   const runAnalyze = deps.runAnalyze;
+  const onAutoInvalidated = deps.onAutoInvalidated ?? (() => undefined);
 
   // Per-instance state.
   let autoGenerate = true;
@@ -201,6 +233,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   // interviewer's question as if it were the candidate's answer.
   let sinceFire = '';
   let intervalHandle: ReturnType<typeof setInterval> | null = null;
+  let lastSpeechAt = Number.NEGATIVE_INFINITY;
   // Auto NEVER fires unless an audio source is actively capturing (the mic is On).
   // Set from ws.ts on every audio-control start/stop. Default false = nothing fires
   // until capture begins, and firing stops the moment the mic is turned off.
@@ -222,6 +255,29 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       timer = null;
     }
     pendingText = null;
+  }
+
+  function quietPeriodElapsed(): boolean {
+    return now() - lastSpeechAt >= cfg.debounceMs;
+  }
+
+  function runPendingWhenQuiet(): void {
+    timer = null;
+    if (pendingText === null) return;
+    const quietFor = now() - lastSpeechAt;
+    if (quietFor < cfg.debounceMs) {
+      timer = setTimer(runPendingWhenQuiet, Math.max(1, cfg.debounceMs - quietFor));
+      return;
+    }
+    const pending = pendingText;
+    pendingText = null;
+    void evaluate(pending);
+  }
+
+  function armPendingAfterQuiet(): void {
+    if (pendingText === null) return;
+    if (timer !== null) clearTimer(timer);
+    timer = setTimer(runPendingWhenQuiet, cfg.debounceMs);
   }
 
   /** True iff the cheap local gates currently allow a fire for `text`. */
@@ -254,7 +310,16 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   /** Mic on/off gate — auto only fires while an audio source is capturing. */
   function setCapturing(on: boolean): void {
-    capturing = !!on;
+    const next = !!on;
+    const ended = capturing && !next;
+    capturing = next;
+    if (!ended) return;
+    // Stop is a hard product boundary: no pending or already-running autonomous
+    // suggestion may surface after the interviewer ends capture. Bumping the
+    // epoch lets ws.ts suppress a Flash result that was already in flight.
+    clearPending();
+    if (isGenerating) onAutoInvalidated();
+    epoch += 1;
   }
 
   // --- Interval mode ---------------------------------------------------------
@@ -272,6 +337,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   async function intervalTick(): Promise<void> {
     if (!autoGenerate || mode !== 'interval' || isGenerating || !capturing) return;
+    if (now() - lastSpeechAt < cfg.debounceMs) return;
     // Fire from ONLY the transcript since the last follow-up. If nothing new was
     // said by the candidate since then, skip this tick — generating from the
     // interviewer's prompt would produce generic/meta follow-ups.
@@ -308,6 +374,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
    * error in the monitor/analyze is swallowed so the relay is never disrupted.
    */
   async function evaluate(text: string): Promise<void> {
+    if (!quietPeriodElapsed()) return;
     if (!localGatesPass(text)) return;
     let decision: TriggerDecision;
     try {
@@ -318,7 +385,9 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     }
     if (!decision.shouldGenerate) return;
     // Re-check gates AFTER the await — a manual run (or another auto) may have
-    // claimed the slot while the monitor was thinking.
+    // claimed the slot while the monitor was thinking. Real audio may also have
+    // resumed while the decision was being made.
+    if (!quietPeriodElapsed()) return;
     if (!localGatesPass(text)) return;
 
     const startEpoch = epoch;
@@ -352,6 +421,30 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     if (latestText.length > 4000) latestText = latestText.slice(-4000);
   }
 
+  function noteSpeechActivity(): void {
+    lastSpeechAt = now();
+    // If speech resumes while Flash is already working, invalidate that autonomous
+    // request so ws.ts drops its completion instead of surfacing over the speaker.
+    if (isGenerating) {
+      epoch += 1;
+      onAutoInvalidated();
+    }
+    // Preserve the latest candidate evidence while continuously postponing its
+    // timer. Some providers split audio without emitting another final, so dropping
+    // the pending text here would force the interviewer back to manual mode.
+    armPendingAfterQuiet();
+  }
+
+  function onInterviewerFinal(): void {
+    noteSpeechActivity();
+    clearPending();
+    // Once the interviewer has moved on, a follow-up for the previous answer is
+    // stale. Preserve the accumulated full-text baseline so the next candidate
+    // delta contains only the new answer rather than blending two questions.
+    sinceFire = '';
+    charsAtLastGen = latestCandidateText.length;
+  }
+
   function rememberCandidateFinal(fullCandidateText: string): void {
     const text = String(fullCandidateText ?? '').trim();
     if (!text) return;
@@ -381,13 +474,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // an optimization — it also keeps a disabled monitor completely silent.)
     if (!localGatesPass(text)) return;
     pendingText = text;
-    if (timer !== null) clearTimer(timer);
-    timer = setTimer(() => {
-      const pending = pendingText;
-      timer = null;
-      pendingText = null;
-      if (pending !== null) void evaluate(pending);
-    }, cfg.debounceMs);
+    armPendingAfterQuiet();
   }
 
   function setAutoGenerate(enabled: boolean): void {
@@ -438,6 +525,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     // A manual Generate Q covers the recent transcript — drop the since-fire window
     // so the next AUTO follow-up doesn't re-ask what the manual one just covered.
     sinceFire = '';
+    lastSpeechAt = Number.NEGATIVE_INFINITY;
     clearPending();
   }
 
@@ -455,6 +543,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   function reset(): void {
     // Bump the epoch FIRST so any in-flight generation (whose finally compares the
     // captured epoch) neither records a fire nor lets the caller emit its result.
+    if (isGenerating) onAutoInvalidated();
     epoch += 1;
     // Drop the interval-mode accumulated transcript + the since-last-fire window
     // so the new chat starts blank.
@@ -462,6 +551,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     latestCandidateText = '';
     lastCandidateFullText = '';
     sinceFire = '';
+    lastSpeechAt = Number.NEGATIVE_INFINITY;
     // Cancel any armed agent debounce/pending so no late fire from the old chat.
     clearPending();
     // Free the in-flight slot (the abandoned generation is suppressed) and reset
@@ -473,10 +563,11 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   }
 
   async function flush(): Promise<void> {
-    if (timer !== null) {
-      clearTimer(timer);
-      timer = null;
-    }
+    // The test seat bypasses the wall-clock timer only after a real quiet period.
+    // While speech is active, preserve the pending evidence and its re-armed timer.
+    if (!quietPeriodElapsed()) return;
+    if (timer !== null) clearTimer(timer);
+    timer = null;
     const pending = pendingText;
     pendingText = null;
     if (pending !== null) await evaluate(pending);
@@ -484,6 +575,8 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
 
   return {
     onCandidateFinal,
+    noteSpeechActivity,
+    onInterviewerFinal,
     setAutoGenerate,
     setMode,
     setIntervalMs,

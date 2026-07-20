@@ -1,6 +1,10 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { DEFAULT_VOLC_RESOURCE_ID, useAppSettings } from './useAppSettings';
+import {
+  DEFAULT_ASR_PROVIDER,
+  DEFAULT_SUMMARY_MODEL,
+  useAppSettings
+} from './useAppSettings';
 
 describe('useAppSettings persisted controls', () => {
   beforeEach(() => localStorage.clear());
@@ -17,20 +21,77 @@ describe('useAppSettings persisted controls', () => {
     expect(localStorage.getItem('mic.inputDeviceId')).toBe('built-in-mic');
   });
 
-  test('defaults Doubao to the broadly available 1.0 hourly resource', () => {
+  test('defaults to Xunfei and validates persisted model/provider values', () => {
+    localStorage.setItem('open-cluely.asrProvider', 'retired-provider');
+    localStorage.setItem('open-cluely.summaryModel', 'retired-model');
+    localStorage.setItem('open-cluely.ttsModel', 'retired-tts');
+    localStorage.setItem('open-cluely.autoMode', 'interval');
+    localStorage.setItem('open-cluely.autoIntervalSec', '2');
     const { result } = renderHook(() => useAppSettings());
 
-    expect(DEFAULT_VOLC_RESOURCE_ID).toBe('volc.bigasr.sauc.duration');
-    expect(result.current.settings.volcResourceId).toBe('volc.bigasr.sauc.duration');
+    expect(DEFAULT_ASR_PROVIDER).toBe('xfyun');
+    expect(result.current.settings.asrProvider).toBe('xfyun');
+    expect(result.current.settings.summaryModel).toBe(DEFAULT_SUMMARY_MODEL);
+    expect(localStorage.getItem('open-cluely.ttsModel')).toBeNull();
+    expect(localStorage.getItem('open-cluely.autoMode')).toBeNull();
+    expect(localStorage.getItem('open-cluely.autoIntervalSec')).toBeNull();
+    expect(result.current.settings).not.toHaveProperty('autoMode');
+    expect(result.current.settings).not.toHaveProperty('autoIntervalSec');
+    expect(result.current.settings).not.toHaveProperty('ttsModel');
+    expect(result.current).not.toHaveProperty('setTtsModel');
   });
 
-  test('persists the selected follow-up output language', () => {
+  test('keeps valid ASR and evaluation model selections', () => {
+    localStorage.setItem('open-cluely.asrProvider', 'paraformer');
+    localStorage.setItem('open-cluely.summaryModel', 'deepseek-v4-flash');
     const { result } = renderHook(() => useAppSettings());
-    expect(result.current.settings.outputLanguage).toBe('zh');
 
-    act(() => result.current.setOutputLanguage('en'));
+    expect(result.current.settings.asrProvider).toBe('paraformer');
+    expect(result.current.settings.summaryModel).toBe('deepseek-v4-flash');
+  });
 
-    expect(result.current.settings.outputLanguage).toBe('en');
-    expect(localStorage.getItem('open-cluely.outputLanguage')).toBe('en');
+  test('persists every retained setting through its single normalized setter', () => {
+    const { result } = renderHook(() => useAppSettings());
+
+    act(() => {
+      result.current.setAsrProvider('paraformer');
+      result.current.setMicDeviceId('room-mic');
+      result.current.setAutoGenerate(false);
+      result.current.setSummaryModel('deepseek-v4-flash');
+    });
+
+    expect(result.current.settings).toMatchObject({
+      asrProvider: 'paraformer',
+      micDeviceId: 'room-mic',
+      autoGenerate: false,
+      summaryModel: 'deepseek-v4-flash'
+    });
+    expect(localStorage.getItem('open-cluely.asrProvider')).toBe('paraformer');
+    expect(localStorage.getItem('mic.inputDeviceId')).toBe('room-mic');
+    expect(localStorage.getItem('open-cluely.autoGenerate')).toBe('false');
+    expect(localStorage.getItem('open-cluely.summaryModel')).toBe('deepseek-v4-flash');
+  });
+
+  test('does not expose language, secrets, prompts, mode, or appearance state', () => {
+    localStorage.setItem('open-cluely.volcAppId', 'legacy-app-id');
+    localStorage.setItem('open-cluely.volcAccessToken', 'legacy-token');
+    localStorage.setItem('open-cluely.summaryPromptText', 'legacy prompt');
+    const { result } = renderHook(() => useAppSettings());
+
+    expect(localStorage.getItem('open-cluely.volcAppId')).toBeNull();
+    expect(localStorage.getItem('open-cluely.volcAccessToken')).toBeNull();
+    expect(localStorage.getItem('open-cluely.summaryPromptText')).toBeNull();
+    expect(result.current.settings).not.toHaveProperty('aiModel');
+    expect(result.current.settings).not.toHaveProperty('outputLanguage');
+    expect(result.current.settings).not.toHaveProperty('summaryPromptMode');
+    expect(result.current.settings).not.toHaveProperty('summaryPromptText');
+    expect(result.current.settings).not.toHaveProperty('volcAppId');
+    expect(result.current.settings).not.toHaveProperty('volcAccessToken');
+    expect(result.current.settings).not.toHaveProperty('ttsModel');
+    expect(result.current.settings).not.toHaveProperty('opacityStep');
+    expect(result.current).not.toHaveProperty('setOutputLanguage');
+    expect(result.current).not.toHaveProperty('setVolcSettings');
+    expect(result.current).not.toHaveProperty('setTtsModel');
+    expect(result.current).not.toHaveProperty('setOpacityStep');
   });
 });

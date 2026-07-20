@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
+  AsrProvider,
+  AsrRuntimeState,
   AudioSource,
   ClientMessage,
   ServerMessage,
@@ -61,6 +63,12 @@ export interface AudioState {
   level: number;
   /** Friendly capture error (denied / cancelled / unsupported), else null. */
   error: string | null;
+  /** Non-fatal ASR completion notice; never used to mark the capture as failed. */
+  notice?: string | null;
+  /** Server-confirmed ASR lifecycle; independent from the browser capture graph. */
+  runtimeState?: AsrRuntimeState;
+  /** Provider that owns the current or most recently finalized server session. */
+  provider?: AsrProvider;
 }
 
 export type AudioLanes = Record<AudioSource, AudioState>;
@@ -70,16 +78,21 @@ export interface StartAudioOptions {
 }
 
 const EMPTY_LANE: LaneTranscript = { finalText: '', partial: '' };
-const IDLE_AUDIO: AudioState = { capturing: false, level: 0, error: null };
+const IDLE_AUDIO: AudioState = {
+  capturing: false,
+  level: 0,
+  error: null,
+  notice: null,
+  runtimeState: 'stopped'
+};
 
 export interface CopilotSocket {
   status: SocketStatus;
   sessionId: string | null;
   /**
    * Send a partial session config to the server. No-op if not connected.
-   * `Partial<SessionConfig>` includes the ASR fields (asrProvider, volcAppId,
-   * volcAccessToken, volcResourceId, volcModel) so the settings modal can switch
-   * the live recognizer and pass Doubao/Volc creds in the same configure message.
+   * `Partial<SessionConfig>` includes the provider name; credentials and model
+   * entitlements remain environment-owned on the server.
    */
   sendConfigure: (config: Partial<SessionConfig>) => void;
   /** Request an analysis. Returns the generated requestId, or null if not connected. */
@@ -381,6 +394,19 @@ export function useCopilotSocket(): CopilotSocket {
             const delta = message.tokens.input + message.tokens.output;
             setProgressTokens((prev) => prev + delta);
           }
+          // A server-initiated Auto request may validly end without a question
+          // (should_ask:false) or be cancelled when speech resumes. Its final
+          // progress frame is therefore a terminal protocol event, not merely
+          // decoration while waiting for a result that will never arrive.
+          const terminal =
+            message.status === 'done' &&
+            message.total > 0 &&
+            message.index >= message.total - 1;
+          if (terminal) {
+            activeRequestRef.current = null;
+            setIsAnalyzing(false);
+            setProgress(null);
+          }
         }
         break;
       case 'result':
@@ -509,6 +535,22 @@ export function useCopilotSocket(): CopilotSocket {
             appendSegment(prev, { id: segSeqRef.current++, speakerId: sid, role, text })
           );
         }
+        break;
+      }
+      case 'asr-status': {
+        setAudio((prev) => ({
+          ...prev,
+          [message.source]: {
+            ...prev[message.source],
+            provider: message.provider,
+            runtimeState: message.state,
+            error: message.state === 'failed' ? message.message ?? '语音识别失败。' : null,
+            notice:
+              message.state === 'partial'
+                ? '转写已保存；最后一小段可能未确认。'
+                : null
+          }
+        }));
         break;
       }
       case 'speaker-partition': {
@@ -754,7 +796,13 @@ export function useCopilotSocket(): CopilotSocket {
       }
       // Tell the server to finish this source's ASR session. Safe if not open.
       send({ type: 'audio-control', action: 'stop', source });
-      setAudioState(source, { capturing: false, level: 0 });
+      setAudioState(source, {
+        capturing: false,
+        level: 0,
+        error: null,
+        notice: null,
+        runtimeState: 'finalizing'
+      });
     },
     [send, setAudioState]
   );
@@ -764,12 +812,13 @@ export function useCopilotSocket(): CopilotSocket {
       // Already capturing — no-op (idempotent toggle).
       if (captureRef.current[source]) return;
 
-      setAudioState(source, { error: null });
-      // Tell the server to open the ASR session before frames arrive.
-      send({ type: 'audio-control', action: 'start', source });
+      setAudioState(source, { error: null, notice: null, runtimeState: 'connecting' });
       seqRef.current[source] = 0;
 
       if (options?.skipLocalCapture) {
+        // Simulation has no permission/media setup, so its server session can
+        // start immediately.
+        send({ type: 'audio-control', action: 'start', source });
         captureRef.current[source] = { stop: () => {} };
         setAudioState(source, { capturing: true, level: 0 });
         return;
@@ -791,13 +840,23 @@ export function useCopilotSocket(): CopilotSocket {
           return;
         }
         captureRef.current[source] = handle;
+        // Browser permission prompts can remain open longer than an upstream
+        // recognizer's idle timeout. Open ASR only after local media is ready;
+        // an early worklet frame is still safe because the relay starts lazily.
+        send({ type: 'audio-control', action: 'start', source });
         setAudioState(source, { capturing: true });
       } catch (err) {
         // User cancelled/denied or unsupported — surface friendly, don't crash.
         const message =
           err instanceof AudioCaptureError ? err.message : '无法启动音频采集。';
         send({ type: 'audio-control', action: 'stop', source });
-        setAudioState(source, { capturing: false, level: 0, error: message });
+        setAudioState(source, {
+          capturing: false,
+          level: 0,
+          error: message,
+          notice: null,
+          runtimeState: 'failed'
+        });
       }
     },
     [send, setAudioState]

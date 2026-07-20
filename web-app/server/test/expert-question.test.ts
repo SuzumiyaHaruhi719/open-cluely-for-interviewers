@@ -12,6 +12,9 @@ const INPUT = {
     '我负责三万平方米园区，先重排巡检路线，再用消防盲演验证响应时间，最后将平均到场时间从八分钟降到五分钟。',
   focusHint: '追问盲演如何发现真实风险',
   jobDescription: '物业经理：负责园区安全、消防、巡检和突发事件处理。',
+  interviewGuide: [
+    '15%｜突发事件应对与复盘｜可验证证据：指挥链路与事后整改｜警示信号：只背预案'
+  ],
   resumeText: '候选人有五年园区物业管理经验。',
   questionHistory: ['请介绍你管理过的园区规模。'],
   outputLanguage: 'zh'
@@ -45,6 +48,8 @@ test('one Flash call performs expert gap analysis and emits one evidence-anchore
   assert.match(calls[0].system, /责任边界/);
   assert.match(calls[0].messages[0].content, /平均到场时间/);
   assert.match(calls[0].messages[0].content, /物业经理/);
+  assert.match(calls[0].messages[0].content, /结构化面试评分表/);
+  assert.match(calls[0].messages[0].content, /突发事件应对与复盘/);
   assert.match(calls[0].messages[0].content, /已问问题/);
   assert.equal(result.output.primary_question.includes('？'), true);
   assert.equal((result.output.primary_question.match(/[？?]/g) ?? []).length, 1);
@@ -68,6 +73,28 @@ test('rejects generic low-signal model output and falls back to a concrete Chine
   assert.equal(result.fellBack, true);
   assert.match(result.output.primary_question, /具体|量化|决策|证据/);
   assert.equal((result.output.primary_question.match(/[？?]/g) ?? []).length, 1);
+});
+
+test('fallback ignores cut-off closing boilerplate and anchors concrete candidate evidence', async () => {
+  const candidateAnswer = [
+    '我先检查维修记录和现场施工质量，再核对采购单据确认材料是否达标。',
+    '如果资金不足，我会提交预算调整并安排复检，确保水管不再反复破裂。',
+    '以上就是我对这个事情的处理，以及这件事情对我的意。'
+  ].join('');
+
+  const result = await generateExpertQuestion(
+    { ...INPUT, candidateAnswer },
+    {
+      chat: async () => {
+        throw new Error('transient provider failure');
+      }
+    }
+  );
+
+  assert.equal(result.fellBack, true);
+  assert.doesNotMatch(result.output.primary_question, /以上就是/);
+  assert.match(result.output.primary_question, /预算调整|复检|水管/);
+  assert.equal(candidateAnswer.includes(result.output.anchor_quotes[0]), true);
 });
 
 test('rejects accidental English clauses in Chinese mode while allowing source acronyms', async () => {

@@ -33,10 +33,6 @@ function TourHarness({ onToggleRail, replayToken = 0 }: { onToggleRail: () => vo
     <>
       <button id="toggle-rail-btn" onClick={onToggleRail}>Toggle rail</button>
       <button id="btn-new-interview">New interview</button>
-      <aside className="right-rail">
-        <textarea id="jd-input" />
-        <div id="resume-dropzone">Resume</div>
-      </aside>
       <div id="channel-computer">Computer</div>
       <div id="channel-mic">Mic</div>
       <button id="analyze-btn">Analyze</button>
@@ -51,12 +47,12 @@ async function advance(ms: number): Promise<void> {
   });
 }
 
-async function openTourAndAdvanceToJd(): Promise<void> {
+async function openTourAndAdvanceToComputerAudio(): Promise<void> {
   await advance(900);
   fireEvent.click(screen.getByRole('button', { name: '开始导览 →' }));
   await advance(800);
   fireEvent.click(screen.getByRole('button', { name: '下一步 →' }));
-  await advance(1200);
+  await advance(800);
 }
 
 beforeEach(() => {
@@ -78,36 +74,26 @@ afterEach(() => {
   delete (Element.prototype as { scrollIntoView?: Element['scrollIntoView'] }).scrollIntoView;
 });
 
-test('reopens the right rail before positioning the JD and resume steps', async () => {
+test('keeps JD selection in New Interview and advances directly to visible interview controls', async () => {
   document.body.classList.add('rail-collapsed');
   const onToggleRail = vi.fn(() => document.body.classList.remove('rail-collapsed'));
   render(<TourHarness onToggleRail={onToggleRail} />);
 
   setRect('btn-new-interview', () => ({ left: 100, top: 80, width: 140, height: 40 }));
-  setRect('jd-input', () =>
-    document.body.classList.contains('rail-collapsed')
-      ? EMPTY_BOX
-      : { left: 500, top: 120, width: 260, height: 120 }
-  );
-  setRect('resume-dropzone', () =>
-    document.body.classList.contains('rail-collapsed')
-      ? EMPTY_BOX
-      : { left: 520, top: 300, width: 240, height: 90 }
-  );
+  setRect('channel-computer', () => ({ left: 320, top: 620, width: 180, height: 42 }));
 
-  await openTourAndAdvanceToJd();
+  await advance(900);
+  expect(screen.getByText(/职位背景和简历/)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: '开始导览 →' }));
+  await advance(800);
+  expect(screen.getByText(/职位背景/)).toBeInTheDocument();
 
-  expect(onToggleRail).toHaveBeenCalledTimes(1);
-  expect(screen.getByText(/② 粘贴岗位描述/)).toBeInTheDocument();
-  expect(document.querySelector<HTMLElement>('.tour-spotlight-ring')?.style.left).toBe('494px');
-
-  document.body.classList.add('rail-collapsed');
   fireEvent.click(screen.getByRole('button', { name: '下一步 →' }));
-  await advance(1200);
+  await advance(800);
 
-  expect(onToggleRail).toHaveBeenCalledTimes(2);
-  expect(screen.getByText(/③ 上传简历/)).toBeInTheDocument();
-  expect(document.querySelector<HTMLElement>('.tour-spotlight-ring')?.style.left).toBe('514px');
+  expect(onToggleRail).not.toHaveBeenCalled();
+  expect(screen.getByText(/② 采集候选人音频/)).toBeInTheDocument();
+  expect(document.querySelector<HTMLElement>('.tour-spotlight-ring')?.style.left).toBe('314px');
 });
 
 test('centers the current step when its target remains unavailable', async () => {
@@ -115,11 +101,11 @@ test('centers the current step when its target remains unavailable', async () =>
   render(<TourHarness onToggleRail={onToggleRail} />);
 
   setRect('btn-new-interview', () => ({ left: 100, top: 80, width: 140, height: 40 }));
-  setRect('jd-input', () => EMPTY_BOX);
+  setRect('channel-computer', () => EMPTY_BOX);
 
-  await openTourAndAdvanceToJd();
+  await openTourAndAdvanceToComputerAudio();
 
-  expect(screen.getByText(/② 粘贴岗位描述/)).toBeInTheDocument();
+  expect(screen.getByText(/② 采集候选人音频/)).toBeInTheDocument();
   expect(document.querySelector('.tour-spotlight-ring')).toHaveClass('is-hidden');
   expect(document.querySelector('.tour-spotlight-ring')).toHaveAttribute('aria-hidden', 'true');
   expect(document.querySelector<HTMLElement>('.tour-tooltip')?.style.left).toBe('50%');
@@ -130,7 +116,7 @@ test('keeps the previous spotlight mounted until the next target is ready', asyn
   render(<TourHarness onToggleRail={onToggleRail} />);
 
   setRect('btn-new-interview', () => ({ left: 100, top: 80, width: 140, height: 40 }));
-  setRect('jd-input', () => ({ left: 500, top: 120, width: 260, height: 120 }));
+  setRect('channel-computer', () => ({ left: 500, top: 120, width: 260, height: 50 }));
 
   await advance(900);
   fireEvent.click(screen.getByRole('button', { name: '开始导览 →' }));
@@ -149,9 +135,26 @@ test('keeps the previous spotlight mounted until the next target is ready', asyn
   expect(document.querySelector('.tour-mask')).not.toBeNull();
   expect(document.querySelector('.tour-tooltip')).not.toBeNull();
 
-  await advance(1200);
+  await advance(800);
   expect(document.querySelector<HTMLElement>('.tour-spotlight-ring')?.style.left).toBe('494px');
-  expect(screen.getByText(/② 粘贴岗位描述/)).toBeInTheDocument();
+  expect(screen.getByText(/② 采集候选人音频/)).toBeInTheDocument();
+});
+
+test('does not horizontally center targets inside the clipped workspace', async () => {
+  const onToggleRail = vi.fn();
+  render(<TourHarness onToggleRail={onToggleRail} />);
+
+  setRect('btn-new-interview', () => ({ left: 100, top: 80, width: 140, height: 40 }));
+
+  await advance(900);
+  fireEvent.click(screen.getByRole('button', { name: '开始导览 →' }));
+  await advance(1);
+
+  expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({
+    behavior: 'smooth',
+    block: 'center',
+    inline: 'nearest'
+  });
 });
 
 test('replays immediately when the parent changes replayToken without reloading the page', async () => {

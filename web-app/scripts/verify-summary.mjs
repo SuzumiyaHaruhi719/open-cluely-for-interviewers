@@ -1,11 +1,10 @@
 /**
- * verify-summary.mjs — Live E2E verification of streaming summary + model selection
- *                      + custom prompt (Features 1+2+3).
+ * verify-summary.mjs — Live E2E verification of the two retained report models.
  *
- * For each of the 4 supported summary models + one custom-prompt run:
+ * For each report model exposed in the compact Settings screen:
  *   1. Connect to ws://localhost:8787/ws
  *   2. Wait for `ready`
- *   3. Send configure with asrProvider:'sim', simScript, summaryModel (+ prompt if custom)
+ *   3. Send configure with asrProvider:'sim', simScript, and summaryModel
  *   4. Send audio-control start → sim provider replays the script as finals
  *   5. Once all sim finals arrive, send summarize
  *   6. Listen for summary-chunk (proves streaming), summary-done, or summary-error
@@ -14,7 +13,7 @@
 
 import { WebSocket } from 'ws';
 
-const WS_URL = 'ws://localhost:8787/ws';
+const WS_URL = process.env.INTERVIEW_COPILOT_WS_URL || 'ws://localhost:8787/ws';
 
 // Short two-speaker transcript — enough for a real summary but fast to process.
 const SIM_SCRIPT = [
@@ -32,9 +31,7 @@ const SIM_SCRIPT = [
 
 const MODELS = [
   { id: 'deepseek-v4-pro',   label: 'deepseek-v4-pro (深度·慢·默认)' },
-  { id: 'deepseek-v4-flash', label: 'deepseek-v4-flash (快)' },
-  { id: 'qwen3-7b-max',      label: 'qwen3.7-max' },
-  { id: 'glm-4-5',           label: 'glm-5.2' }
+  { id: 'deepseek-v4-flash', label: 'deepseek-v4-flash (快)' }
 ];
 
 /**
@@ -42,9 +39,8 @@ const MODELS = [
  * @param {object} opts
  * @param {string} opts.modelId     — summaryModel value
  * @param {string} opts.label       — display label for the results table
- * @param {string} [opts.customPrompt] — when set, sends summaryPromptMode:'custom'
  */
-function tryRun({ modelId, label, customPrompt }) {
+function tryRun({ modelId, label }) {
   return new Promise((resolve) => {
     const startedAt = Date.now();
     const ws = new WebSocket(WS_URL);
@@ -96,10 +92,6 @@ function tryRun({ modelId, label, customPrompt }) {
           simScript: SIM_SCRIPT,
           summaryModel: modelId
         };
-        if (customPrompt) {
-          cfg.summaryPromptMode = 'custom';
-          cfg.summaryPromptText = customPrompt;
-        }
         ws.send(JSON.stringify({ type: 'configure', config: cfg }));
         ws.send(JSON.stringify({ type: 'audio-control', action: 'start', source: 'display' }));
         return;
@@ -153,11 +145,11 @@ function tryRun({ modelId, label, customPrompt }) {
   });
 }
 
-console.log('=== Streaming Summary E2E Verification (Features 1+2+3) ===\n');
+console.log('=== Retained Report Model E2E Verification ===\n');
 
 const results = [];
 
-// ── Features 1+2: all 4 models ────────────────────────────────────────────────
+// ── Every model retained in Settings ─────────────────────────────────────────
 for (const { id, label } of MODELS) {
   console.log(`\n--- Model: ${label} ---`);
   process.stdout.write('Chunks: ');
@@ -169,37 +161,6 @@ for (const { id, label } of MODELS) {
   if (r.error) console.log(`  ERROR:      ${r.error}`);
   else         console.log(`  First 300:  ${r.first300.replace(/\n/g, ' \\n ')}`);
 }
-
-// ── Feature 3: custom prompt run ─────────────────────────────────────────────
-const CUSTOM_PROMPT = '你是一位极度简洁的面试评估助手。仅用三句话总结候选人的整体表现和录用建议，不要输出任何标题或结构。';
-console.log(`\n--- Feature 3: custom prompt (deepseek-v4-flash) ---`);
-process.stdout.write('Chunks: ');
-const customResult = await tryRun({
-  modelId: 'deepseek-v4-flash',
-  label: 'deepseek-v4-flash + custom prompt',
-  customPrompt: CUSTOM_PROMPT
-});
-results.push(customResult);
-console.log(`  Streamed:   ${customResult.streamed} (${customResult.chunkCount} chunks)`);
-console.log(`  Elapsed:    ${customResult.elapsedS}s`);
-console.log(`  Report len: ${customResult.reportLen} chars`);
-if (customResult.error) console.log(`  ERROR:      ${customResult.error}`);
-else                    console.log(`  First 300:  ${customResult.first300.replace(/\n/g, ' \\n ')}`);
-
-// ── Feature 3: empty custom prompt (should fall back to default) ──────────────
-console.log(`\n--- Feature 3: empty custom prompt → falls back to default (deepseek-v4-flash) ---`);
-process.stdout.write('Chunks: ');
-const emptyPromptResult = await tryRun({
-  modelId: 'deepseek-v4-flash',
-  label: 'deepseek-v4-flash + empty custom (fallback)',
-  customPrompt: ''   // empty → server falls back to SUMMARY_SYSTEM
-});
-results.push(emptyPromptResult);
-console.log(`  Streamed:   ${emptyPromptResult.streamed} (${emptyPromptResult.chunkCount} chunks)`);
-console.log(`  Elapsed:    ${emptyPromptResult.elapsedS}s`);
-console.log(`  Report len: ${emptyPromptResult.reportLen} chars`);
-if (emptyPromptResult.error) console.log(`  ERROR:      ${emptyPromptResult.error}`);
-else                         console.log(`  First 300:  ${emptyPromptResult.first300.replace(/\n/g, ' \\n ')}`);
 
 // ── Results table ─────────────────────────────────────────────────────────────
 console.log('\n\n=== Per-run Results Table ===');

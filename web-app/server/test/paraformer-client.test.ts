@@ -180,16 +180,55 @@ test('result-generated events surface as onTranscript calls', () => {
   ]);
 });
 
-test('stop sends a finish-task and terminates the socket', () => {
+test('stop waits for task-finished and retains a late final transcript', async () => {
   FakeWs.instances = [];
-  const session = createParaformerSession({ WebSocket: FakeWsCtor, apiKey: 'k', onTranscript: () => {} });
+  const got: Array<{ text: string; isFinal: boolean }> = [];
+  const session = createParaformerSession({
+    WebSocket: FakeWsCtor,
+    apiKey: 'k',
+    stopTimeoutMs: 50,
+    onTranscript: (transcript) => got.push(transcript)
+  });
   const ws = FakeWs.instances.at(-1)!;
   ws.emit('open');
   ws.emit('message', JSON.stringify({ header: { event: 'task-started' } }), false);
 
-  session.stop();
+  const stopping = session.stop();
   const finish = jsonFrames(ws).find((f) => f.header?.action === 'finish-task');
   assert.ok(finish, 'expected a finish-task frame');
+  assert.equal(ws.terminated, false, 'the socket must remain open for late provider finals');
+
+  ws.emit(
+    'message',
+    JSON.stringify({
+      header: { event: 'result-generated' },
+      payload: { output: { sentence: { text: '最后一句', sentence_end: true } } }
+    }),
+    false
+  );
+  ws.emit('message', JSON.stringify({ header: { event: 'task-finished' } }), false);
+
+  assert.deepEqual(await stopping, { finalReceived: true, timedOut: false });
+  assert.deepEqual(got, [{ text: '最后一句', isFinal: true }]);
+});
+
+test('stop terminates after a bounded timeout when Paraformer never finishes', async () => {
+  FakeWs.instances = [];
+  const session = createParaformerSession({
+    WebSocket: FakeWsCtor,
+    apiKey: 'k',
+    stopTimeoutMs: 5,
+    onTranscript: () => {}
+  });
+  const ws = FakeWs.instances.at(-1)!;
+  ws.emit('open');
+  ws.emit('message', JSON.stringify({ header: { event: 'task-started' } }), false);
+
+  const result = await session.stop();
+
+  assert.equal(result.finalReceived, false);
+  assert.equal(result.timedOut, true);
+  assert.match(result.reason ?? '', /timeout/i);
   assert.equal(ws.terminated, true);
 });
 

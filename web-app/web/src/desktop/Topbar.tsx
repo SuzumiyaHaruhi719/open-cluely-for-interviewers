@@ -54,7 +54,7 @@ function MoonIcon({ size = 15 }: { size?: number }) {
 /** ASR engine pill label + `data-asr` attribute (CSS colours each provider). */
 const ASR_META: Record<string, { label: string; attr: string }> = {
   paraformer: { label: 'Paraformer', attr: 'paraformer' },
-  volc: { label: '豆包', attr: 'volc' },
+  volc: { label: '豆包 2.0', attr: 'volc' },
   xfyun: { label: '讯飞', attr: 'xfyun' },
   sim: { label: '模拟', attr: 'sim' }
 };

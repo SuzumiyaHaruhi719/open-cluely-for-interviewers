@@ -67,7 +67,7 @@ test('sim session emits partials without speakerId and finals with the scripted 
   });
 });
 
-test('sim session stop cancels the pending replay timer', () => {
+test('sim session stop cancels the pending replay timer and finalizes immediately', async () => {
   const timer = makeTimers();
   const transcripts: SimTranscript[] = [];
 
@@ -79,7 +79,7 @@ test('sim session stop cancels the pending replay timer', () => {
     turnSpacingMs: 10
   });
 
-  session.stop();
+  assert.deepEqual(await session.stop(), { finalReceived: true, timedOut: false });
   assert.equal(session.isReady, false);
   assert.equal(timer.runNext(), false);
   assert.equal(transcripts.length, 0);

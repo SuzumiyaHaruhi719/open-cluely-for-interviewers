@@ -1,29 +1,5 @@
-/*
- * Settings panel — "Interviewer Copilot" (settings-panel-manager.js).
- *
- * Auto-saving modal surface — no manual Save button. Centered over a
- * dimmed scrim; the panel scrolls internally. Every field persists on
- * change; a "Saved ✓" pip in the header confirms each write.
- *
- * Token source: theme.css GLP design system (SINGLE SOURCE — never redefine
- * here). Light + dark resolve automatically from html[data-theme].
- *
- * JS class hooks (no CSS-only selectors were added; these are toggled by JS):
- *   .settings-panel.hidden      — display:none when closed (JS adds/removes)
- *   [data-state="saving"]       — pip goes muted
- *   [data-state="saved"]        — pip goes green
- *   [data-state="error"]        — pip goes red
- *   .settings-field.hidden      — hide provider sub-groups
- *   .settings-section .hidden   — hide provider sub-groups
- *
- * Shortcut list classes (all created dynamically by shortcut-manager.js):
- *   .settings-shortcuts-list, .settings-shortcuts-empty,
- *   .settings-shortcut-row, .settings-shortcut-meta, .settings-shortcut-icon,
- *   .settings-shortcut-button, .settings-shortcut-text,
- *   .settings-shortcut-description, .settings-shortcut-key
- */
-
-/* ── Scrim + centering ───────────────────────────────────────────────────── */
+/* Compact interviewer settings. All colors, radii, spacing and motion resolve
+ * from the existing GLP token layer in theme.css. */
 
 .settings-panel {
     position: fixed;
@@ -32,128 +8,77 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-6);
-    /* MUST be rounded to the shell radius: this is a fixed element, so it is
-       NOT clipped by .app-shell's overflow/border-radius (overflow never clips
-       fixed descendants). Without this the scrim covers the full rectangle and
-       squares off the window's rounded corners. */
+    padding: var(--space-5);
     border-radius: var(--radius-lg);
-    /* GLP overlay: neutral black scrim — no colored tint, no heavy blur. */
-    background: rgba(0, 0, 0, .5);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, .44);
     font-family: var(--font-sans);
     color: var(--text-primary);
-    animation: settings-scrim-in var(--transition-moderate);
+    animation: settings-scrim-in var(--transition-moderate) ease-out both;
 }
-
-.settings-panel.hidden {
-    display: none;
-}
-
-/* ── Dialog card ─────────────────────────────────────────────────────────── */
 
 .settings-dialog {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: 560px;
-    max-height: min(88vh, 780px);
-    /* GLP modal surface: elevated + 1px border + large radius + lg shadow. */
+    width: min(100%, 600px);
+    max-height: min(88vh, 720px);
+    overflow: hidden;
     background: var(--surface-elevated);
     border: 1px solid var(--border-default);
     border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    /* Spring entrance: scale up from 96 % with a gentle overshoot. */
-    animation: settings-dialog-in var(--transition-moderate) cubic-bezier(.34, 1.56, .64, 1) both;
+    animation: settings-dialog-in var(--transition-moderate) cubic-bezier(.34, 1.2, .64, 1) both;
 }
-
-/* ── Header ──────────────────────────────────────────────────────────────── */
 
 .settings-header {
     display: flex;
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-4) var(--space-5);
-    /* Solid sub-header — sits on a subtle surface tint to separate from body. */
     background: var(--surface-subtle);
     border-bottom: 1px solid var(--border-subtle);
-    flex: 0 0 auto;
+}
+
+.settings-header__copy {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .settings-title {
-    flex: 1 1 auto;
-    min-width: 0;
     margin: 0;
-    font-family: var(--font-sans);
     font-size: var(--text-lg);
     font-weight: 700;
-    letter-spacing: 0.01em;
     line-height: 1.2;
     color: var(--text-primary);
 }
 
-/* ── Auto-save "Saved ✓" status pip ─────────────────────────────────────────
- * Driven by setStatusIndicator() in settings-panel-manager.js via
- * [data-state="saving"|"saved"|"error"|"idle"] on #settings-status.
- * Idle collapses to zero visual footprint so it never nudges the layout. */
-.settings-status {
-    flex: 0 0 auto;
+.settings-subtitle {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-xs);
+    line-height: 1.4;
+    color: var(--text-tertiary);
+}
+
+.settings-policy-badge,
+.settings-section__state {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
     min-height: 24px;
     padding: 0 var(--space-2-5, 10px);
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-full);
+    background: var(--surface-elevated);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.02em;
-    line-height: 1;
-    border: 1px solid transparent;
-    background: transparent;
-    color: var(--text-secondary);
-    /* Idle: invisible, slightly lifted — slides down + fades in. */
-    opacity: 0;
-    transform: translateY(-2px);
-    transition:
-        opacity var(--transition-base),
-        transform var(--transition-base),
-        color var(--transition-base),
-        background var(--transition-base),
-        border-color var(--transition-base);
-    pointer-events: none;
+    white-space: nowrap;
 }
 
-.settings-status[data-state="saving"] {
-    opacity: 1;
-    transform: none;
-    color: var(--text-secondary);
-    border-color: var(--border-default);
-    background: var(--surface-subtle);
-    pointer-events: auto;
+.settings-policy-badge {
+    border-color: var(--brand-300);
+    background: var(--brand-50);
+    color: var(--text-brand);
 }
-
-.settings-status[data-state="saved"] {
-    opacity: 1;
-    transform: none;
-    color: var(--success);
-    border-color: var(--success);
-    background: var(--success-bg);
-    pointer-events: auto;
-}
-
-.settings-status[data-state="error"] {
-    opacity: 1;
-    transform: none;
-    color: var(--error);
-    border-color: var(--error);
-    background: var(--error-bg);
-    pointer-events: auto;
-}
-
-/* ── Close button ────────────────────────────────────────────────────────── */
 
 .settings-close {
     flex: 0 0 auto;
@@ -168,507 +93,144 @@
     background: var(--surface-elevated);
     color: var(--text-secondary);
     cursor: pointer;
-    transition:
-        color var(--transition-fast),
-        border-color var(--transition-fast),
-        background var(--transition-fast),
-        transform var(--transition-fast);
+    transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
 }
 
 .settings-close:hover {
     color: var(--text-primary);
-    background: var(--surface-hover);
     border-color: var(--border-strong);
+    background: var(--surface-hover);
 }
 
 .settings-close:active {
-    transform: scale(0.96);
+    transform: scale(.96);
 }
 
-.settings-close:focus-visible {
+.settings-close:focus-visible,
+.settings-select:focus-visible,
+.settings-switch input:focus-visible + .settings-switch__track {
     outline: none;
     border-color: var(--border-focus);
     box-shadow: var(--focus-ring);
 }
 
-/* ── Scrollable body ─────────────────────────────────────────────────────── */
-
 .settings-body {
-    flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
-    padding: var(--space-1) var(--space-5) var(--space-6);
 }
 
-/* ── Sections ────────────────────────────────────────────────────────────── */
-
-.settings-section {
-    padding: var(--space-5) 0 var(--space-4);
-    /* Hairline divider — a single pixel that separates without shouting. */
-    border-bottom: 1px solid var(--border-subtle);
+.settings-body--compact {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
 }
 
-.settings-section:last-child {
-    border-bottom: none;
-    padding-bottom: var(--space-1);
+.settings-section--card {
+    padding: var(--space-4);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--surface-subtle);
 }
 
-/* Uppercase display-font label — the typographic anchor of each section. */
+.settings-section__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
 .settings-section__title {
-    margin: 0 0 var(--space-3);
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
+    margin: 0;
+    font-size: var(--text-sm);
     font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-tertiary);
+    line-height: 1.35;
+    color: var(--text-primary);
 }
 
-/* Optional hint line beneath the title. */
 .settings-section__hint {
-    margin: calc(-1 * var(--space-2)) 0 var(--space-3);
-    font-size: var(--text-sm);
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-xs);
     line-height: 1.45;
     color: var(--text-tertiary);
 }
 
-/* ── Interviewer-mode segmented toggle (Fast / Expert) ────────────────────────
- * Two prominent buttons. The active one gets a brand border + tint + shadow so
- * the selection is unmistakable. */
-.settings-section--mode { padding-top: var(--space-1); }
-
-.mode-segmented {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2-5, 10px);
+.settings-section__state {
+    min-height: 22px;
+    background: transparent;
 }
-
-.mode-segmented__btn {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1-5, 6px);
-    padding: var(--space-3-5, 14px) var(--space-3-5, 14px) var(--space-3, 13px);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-lg);
-    background: var(--surface-elevated);
-    color: var(--text-secondary);
-    cursor: pointer;
-    text-align: left;
-    box-shadow: var(--shadow-sm);
-    transition:
-        border-color var(--transition-base),
-        background var(--transition-base),
-        color var(--transition-base),
-        transform var(--transition-base),
-        box-shadow var(--transition-base);
-}
-
-.mode-segmented__btn[data-mode="fast"]      { --mode-accent: var(--info); }
-.mode-segmented__btn[data-mode="expert"]    { --mode-accent: var(--brand-500); }
-.mode-segmented__btn[data-mode="expert2"]   { --mode-accent: var(--accent-emerald); }
-.mode-segmented__btn[data-mode="customize"] { --mode-accent: var(--warning); }
-
-/* ── Customize front door: template gallery + AI generate (HR-friendly) ─────── */
-.customize-row { display: flex; flex-direction: column; gap: var(--space-3-5, 14px); margin-top: var(--space-3); }
-.customize-block { display: flex; flex-direction: column; gap: var(--space-2); }
-.customize-block--advanced { align-items: flex-start; }
-.customize-block__label { font-size: var(--text-sm); font-weight: 600; color: var(--text-tertiary); }
-.customize-templates {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: var(--space-2);
-}
-.customize-card {
-    text-align: left;
-    padding: var(--space-2-5, 10px) var(--space-3);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-default);
-    background: var(--surface-elevated);
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: border-color var(--transition-base), background var(--transition-base), transform var(--transition-base);
-}
-.customize-card:hover { border-color: var(--border-strong); }
-.customize-card:active { transform: scale(0.98); }
-.customize-card:focus-visible { outline: none; border-color: var(--border-focus); box-shadow: var(--focus-ring); }
-.customize-card--active {
-    border-color: var(--brand-500);
-    background: var(--brand-50);
-    box-shadow: var(--shadow-sm);
-}
-.customize-card__top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-1-5, 6px); font-weight: 700; font-size: var(--text-sm); }
-.customize-card__badge {
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    font-size: var(--text-xs); font-weight: 600; padding: 1px var(--space-1-5, 6px); border-radius: var(--radius-md);
-    background: var(--brand-100); color: var(--text-brand);
-}
-.customize-card__badge--user { background: var(--info-bg); color: var(--info); }
-.customize-card__desc { margin-top: var(--space-1); font-size: var(--text-xs); line-height: 1.4; color: var(--text-tertiary); }
-.customize-ai { display: flex; gap: var(--space-2); }
-.customize-ai .settings-input { flex: 1; }
-.customize-ai__hint { font-size: var(--text-xs); color: var(--text-tertiary); min-height: 14px; }
-.action-btn--ghost { background: transparent; border-color: var(--border-default); color: var(--text-tertiary); }
-.action-btn--ghost:hover { color: var(--text-primary); border-color: var(--border-strong); }
-
-.mode-segmented__btn:hover {
-    border-color: var(--border-strong);
-    color: var(--text-primary);
-}
-
-.mode-segmented__btn:active { transform: scale(0.98); }
-
-.mode-segmented__btn:focus-visible { outline: none; border-color: var(--border-focus); box-shadow: var(--focus-ring); }
-
-/* Soft accent bloom behind the button — fades in when active. */
-.mode-segmented__glow {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--mode-accent) 14%, transparent), transparent 70%);
-    opacity: 0;
-    transition: opacity var(--transition-moderate);
-    pointer-events: none;
-}
-
-.mode-segmented__top {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-.mode-segmented__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: var(--radius-full);
-    background: var(--text-tertiary);
-    transition: background var(--transition-base), box-shadow var(--transition-base);
-}
-
-.mode-segmented__label {
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.mode-segmented__desc {
-    position: relative;
-    font-size: var(--text-xs);
-    line-height: 1.4;
-    color: var(--text-tertiary);
-}
-
-/* Active: accent border + tint + lifted dot + accent label. */
-.mode-segmented__btn.is-active {
-    border-color: var(--brand-500);
-    background: var(--brand-50);
-    box-shadow: var(--shadow-md);
-    color: var(--text-primary);
-}
-
-.mode-segmented__btn.is-active .mode-segmented__glow { opacity: 1; }
-
-.mode-segmented__btn.is-active .mode-segmented__dot {
-    background: var(--brand-500);
-}
-
-.mode-segmented__btn.is-active .mode-segmented__label { color: var(--text-brand); }
-
-/* Hidden provider sub-groups toggled by ASR provider select. */
-.settings-section .hidden,
-.settings-field.hidden {
-    display: none;
-}
-
-/* ── Field row ───────────────────────────────────────────────────────────── */
 
 .settings-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1-5, 6px);
-    margin-top: var(--space-4);
-}
-
-.settings-field:first-of-type {
-    margin-top: 0;
+    display: grid;
+    grid-template-columns: minmax(118px, 148px) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-3);
 }
 
 .settings-field__label {
     font-size: var(--text-sm);
     font-weight: 600;
+    line-height: 1.4;
     color: var(--text-primary);
 }
 
 .settings-field__desc {
-    font-size: var(--text-sm);
-    line-height: 1.45;
-    color: var(--text-secondary);
-}
-
-.settings-field__desc code {
-    font-family: var(--font-mono);
+    grid-column: 2;
+    margin-top: calc(-1 * var(--space-1));
     font-size: var(--text-xs);
-    padding: 1px 5px;
-    border-radius: var(--radius-sm);
-    background: var(--surface-subtle);
-    border: 1px solid var(--border-default);
-    color: var(--text-primary);
+    line-height: 1.4;
+    color: var(--text-tertiary);
 }
-
-/* ── Inputs / selects / textareas ────────────────────────────────────────── */
-
-.settings-input,
-.settings-select,
-.settings-textarea {
-    width: 100%;
-    min-height: 44px;
-    padding: var(--space-2-5, 10px) var(--space-3);
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    color: var(--text-primary);
-    /* GLP input surface: solid elevated fill. */
-    background-color: var(--surface-elevated);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-lg);
-    box-sizing: border-box;
-    /* Let the native OS popup follow the active theme. */
-    color-scheme: light dark;
-    transition:
-        border-color var(--transition-base),
-        box-shadow var(--transition-base),
-        background-color var(--transition-fast);
-}
-
-.settings-input::placeholder,
-.settings-textarea::placeholder {
-    color: var(--text-placeholder);
-    opacity: 1;
-}
-
-/* Hover — border strengthens, no background jump. */
-.settings-input:hover,
-.settings-select:hover,
-.settings-textarea:hover {
-    border-color: var(--border-strong);
-}
-
-/* Focus — brand ring. Never moves other elements. */
-.settings-input:focus-visible,
-.settings-select:focus-visible,
-.settings-textarea:focus-visible {
-    outline: none;
-    border-color: var(--border-focus);
-    box-shadow: var(--focus-ring);
-}
-
-/* ── Select: custom chevron caret ────────────────────────────────────────── */
 
 .settings-select {
-    cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: var(--space-2) 36px var(--space-2) var(--space-3);
     appearance: none;
-    padding-right: 36px;
-    /* Chevron drawn with two gradient triangles — muted by default. */
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-elevated);
     background-image:
         linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%),
         linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%);
     background-position:
         calc(100% - 18px) calc(50% - 2px),
         calc(100% - 13px) calc(50% - 2px);
-    background-size: 5px 5px, 5px 5px;
     background-repeat: no-repeat;
+    background-size: 5px 5px, 5px 5px;
+    color: var(--text-primary);
+    color-scheme: light dark;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-/* Caret strengthens with the border on hover. */
 .settings-select:hover {
-    background-image:
-        linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
-        linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
-    background-position:
-        calc(100% - 18px) calc(50% - 2px),
-        calc(100% - 13px) calc(50% - 2px);
-    background-size: 5px 5px, 5px 5px;
-    background-repeat: no-repeat;
-}
-
-/* Focus: caret turns to focus color so it coheres with the focus ring. */
-.settings-select:focus-visible {
-    background-image:
-        linear-gradient(45deg, transparent 50%, var(--border-focus) 50%),
-        linear-gradient(135deg, var(--border-focus) 50%, transparent 50%);
-    background-position:
-        calc(100% - 18px) calc(50% - 2px),
-        calc(100% - 13px) calc(50% - 2px);
-    background-size: 5px 5px, 5px 5px;
-    background-repeat: no-repeat;
-}
-
-/* Option + optgroup: container surface + primary text.
-   Without these the OS renders system colors (often unreadable). */
-.settings-select option,
-.settings-select optgroup {
-    background-color: var(--surface-container);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-}
-
-.settings-select option:disabled {
-    color: var(--text-disabled);
-}
-
-/* ── Textarea ────────────────────────────────────────────────────────────── */
-
-.settings-textarea {
-    min-height: 96px;
-    resize: vertical;
-    line-height: 1.55;
-}
-
-/* ── Mono treatment for API keys / secrets ───────────────────────────────── */
-
-.settings-input--mono {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: 0.02em;
-}
-
-/* ── Masked key row: input + show/hide button ────────────────────────────── */
-
-.settings-key-row {
-    display: flex;
-    align-items: stretch;
-    gap: var(--space-2);
-}
-
-.settings-key-row .settings-input {
-    flex: 1 1 auto;
-    min-width: 0;
-}
-
-.settings-key-toggle {
-    flex: 0 0 auto;
-    min-width: 52px;
-    min-height: 44px;
-    padding: 0 var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: var(--text-secondary);
-    background: var(--surface-elevated);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition:
-        color var(--transition-fast),
-        border-color var(--transition-fast),
-        background var(--transition-fast),
-        transform var(--transition-fast);
-}
-
-.settings-key-toggle:hover {
-    color: var(--text-primary);
-    background: var(--surface-hover);
     border-color: var(--border-strong);
+    background-color: var(--surface-hover);
 }
 
-.settings-key-toggle:active {
-    transform: scale(0.97);
+.settings-select:disabled {
+    opacity: .5;
+    cursor: not-allowed;
 }
 
-.settings-key-toggle[aria-pressed="true"] {
-    color: var(--text-brand);
-    border-color: var(--brand-500);
-    background: var(--brand-50);
-}
-
-.settings-key-toggle:focus-visible {
-    outline: none;
-    border-color: var(--border-focus);
-    box-shadow: var(--focus-ring);
-}
-
-/* ── Inline secondary buttons (Refresh / OS sound) ───────────────────────── */
-
-.settings-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-top: var(--space-4);
-}
-
-.settings-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-1-5, 6px);
-    min-height: 36px;
-    padding: 0 var(--space-3-5, 14px);
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);            /* match .action-btn / .close-confirmation-btn */
-    font-weight: 600;
-    letter-spacing: 0.01em;
+.settings-select option {
+    background: var(--surface-container);
     color: var(--text-primary);
-    background: var(--surface-elevated);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition:
-        background var(--transition-fast),
-        color var(--transition-fast),
-        border-color var(--transition-fast),
-        transform var(--transition-fast);
 }
-
-.settings-btn:hover {
-    color: var(--text-primary);
-    background: var(--surface-hover);
-    border-color: var(--border-strong);
-}
-
-.settings-btn:active {
-    transform: scale(0.97);
-}
-
-.settings-btn:focus-visible {
-    outline: none;
-    border-color: var(--border-focus);
-    box-shadow: var(--focus-ring);
-}
-
-.settings-btn:disabled {
-    opacity: 0.45;
-    cursor: default;
-    pointer-events: none;
-}
-
-/* ── Toggle row (label left, switch right) ───────────────────────────────── */
 
 .settings-toggle-row {
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    margin-top: var(--space-4);
-    padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-lg);
+    padding: var(--space-3);
     border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
     background: var(--surface-elevated);
-    /* Subtle hover lift without moving other rows. */
-    transition:
-        background var(--transition-fast),
-        border-color var(--transition-fast);
-}
-
-.settings-toggle-row:hover {
-    background: var(--surface-hover);
-    border-color: var(--border-strong);
 }
 
 .settings-toggle-row__text {
@@ -676,257 +238,113 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: var(--space-1);
 }
 
-/* ── Switch (checkbox-backed) ────────────────────────────────────────────────
- * Markup:
- *   <label class="settings-switch">
- *     <input type="checkbox" ...>
- *     <span class="settings-switch__track"></span>
- *   </label>
- * Native input is hidden but focusable/accessible.
- * Thumb uses translateX (transform only) for a tactile snap.
- */
+.settings-toggle-row .settings-field__desc {
+    margin: 0;
+}
+
 .settings-switch {
     position: relative;
     flex: 0 0 auto;
     display: inline-flex;
-    align-items: center;
     cursor: pointer;
 }
 
 .settings-switch input {
     position: absolute;
-    opacity: 0;
+    inset: 0;
+    z-index: 1;
     width: 100%;
     height: 100%;
     margin: 0;
+    opacity: 0;
     cursor: pointer;
-    z-index: 1;
 }
 
-/* Track */
 .settings-switch__track {
     position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 26px;
+    display: block;
+    width: 42px;
+    height: 24px;
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-full);
     background: var(--surface-subtle);
-    border: 1px solid var(--border-default);
-    transition:
-        background var(--transition-base),
-        border-color var(--transition-base),
-        box-shadow var(--transition-base);
+    transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
-/* Thumb — pure translateX + opacity. */
 .settings-switch__track::after {
     content: "";
     position: absolute;
     top: 3px;
     left: 3px;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: var(--radius-full);
     background: var(--text-inverse);
     box-shadow: var(--shadow-sm);
-    transition:
-        transform var(--transition-base),
-        background var(--transition-base);
+    transition: transform var(--transition-base);
 }
 
-/* Checked state: track turns brand, thumb slides right. */
 .settings-switch input:checked + .settings-switch__track {
-    background: var(--brand-500);
     border-color: var(--brand-500);
+    background: var(--brand-500);
 }
 
 .settings-switch input:checked + .settings-switch__track::after {
     transform: translateX(18px);
-    background: var(--text-inverse);
 }
 
-/* Focus ring on the track (native input focus-visible propagates via CSS). */
-.settings-switch input:focus-visible + .settings-switch__track {
-    outline: none;
-    border-color: var(--border-focus);
-    box-shadow: var(--focus-ring);
-}
-
-/* ── Range (window opacity) ──────────────────────────────────────────────── */
-
-.settings-range-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-3);
-}
-
-.settings-range {
-    flex: 1 1 auto;
-    min-width: 0;
-    height: 44px;
-    accent-color: var(--brand-500);
-    cursor: pointer;
-}
-
-.settings-range:focus-visible {
-    outline: none;
-    box-shadow: var(--focus-ring);
-    border-radius: var(--radius-xs);
-}
-
-.settings-range-value {
-    flex: 0 0 auto;
-    min-width: 40px;
-    text-align: right;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-variant-numeric: tabular-nums;
-    color: var(--text-secondary);
-}
-
-/* ── Keyboard shortcut list (rendered by shortcut-manager.js) ────────────── */
-
-.settings-shortcuts-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-0-5, 2px);
-    margin-top: var(--space-2);
-}
-
-.settings-shortcuts-empty {
-    font-size: var(--text-sm);
-    color: var(--text-tertiary);
-    padding: var(--space-2) 0;
-}
-
-.settings-shortcut-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-2) var(--space-2-5, 10px);
-    border-radius: var(--radius-lg);
-    border: 1px solid transparent;
-    transition:
-        background var(--transition-fast),
-        border-color var(--transition-fast);
-}
-
-.settings-shortcut-row:hover {
-    background: var(--surface-hover);
-    border-color: var(--border-default);
-}
-
-.settings-shortcut-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2-5, 10px);
-    min-width: 0;
-}
-
-.settings-shortcut-icon {
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: var(--radius-md);
-    background: var(--surface-subtle);
-    border: 1px solid var(--border-default);
-    color: var(--text-secondary);
-}
-
-.settings-shortcut-icon svg {
-    width: 14px;
-    height: 14px;
-}
-
-.settings-shortcut-text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-0-5, 2px);
-    min-width: 0;
-}
-
-.settings-shortcut-button {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.settings-shortcut-description {
-    font-size: var(--text-xs);
-    color: var(--text-tertiary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Keyboard badge — mono pill, border, elevated surface. */
-.settings-shortcut-key {
-    flex: 0 0 auto;
-    padding: 3px var(--space-2);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-strong);
-    background: var(--surface-elevated);
-    box-shadow: var(--shadow-sm);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-/* ── Animations ──────────────────────────────────────────────────────────── */
-
-/* Scrim: simple opacity fade — short so the modal feels decisive, not sluggish. */
-@keyframes settings-scrim-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Dialog: spring entrance from scale(0.96) + slight Y lift. */
-@keyframes settings-dialog-in {
-    from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.96);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Exit animation — fast + ease-in so the panel leaves decisively.
-   .is-closing is added by closeSettings(); the panel is display:none'd only
-   AFTER these finish (SETTINGS_CLOSE_MS in settings-panel-manager.js). `forwards`
-   holds the faded-out end state through the brief gap before .hidden lands. */
 .settings-panel.is-closing {
-    animation: settings-scrim-out var(--transition-base) cubic-bezier(.4, 0, 1, 1) forwards;
+    animation: settings-scrim-out var(--transition-base) ease-in forwards;
 }
 
 .settings-panel.is-closing .settings-dialog {
-    animation: settings-dialog-out var(--transition-base) cubic-bezier(.4, 0, 1, 1) forwards;
+    animation: settings-dialog-out var(--transition-base) ease-in forwards;
+}
+
+@keyframes settings-scrim-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes settings-scrim-out {
     from { opacity: 1; }
-    to   { opacity: 0; }
+    to { opacity: 0; }
+}
+
+@keyframes settings-dialog-in {
+    from { opacity: 0; transform: translateY(8px) scale(.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes settings-dialog-out {
     from { opacity: 1; transform: translateY(0) scale(1); }
-    to   { opacity: 0; transform: translateY(6px) scale(0.97); }
+    to { opacity: 0; transform: translateY(5px) scale(.98); }
 }
 
-/* NOTE: @media (prefers-reduced-motion) guards were removed by explicit owner
-   choice — motion must play regardless of the OS reduced-motion setting. */
+@media (max-width: 620px) {
+    .settings-panel {
+        align-items: flex-end;
+        padding: var(--space-3);
+    }
+
+    .settings-dialog {
+        max-height: calc(100vh - var(--space-6));
+    }
+
+    .settings-policy-badge,
+    .settings-section__state {
+        display: none;
+    }
+
+    .settings-field {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-field__desc {
+        grid-column: 1;
+        margin-top: 0;
+    }
+}
