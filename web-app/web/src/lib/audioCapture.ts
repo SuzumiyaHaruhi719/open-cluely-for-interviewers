@@ -83,6 +83,33 @@ export function supportsMic(): boolean {
   );
 }
 
+/** Virtual cable inputs are already clean digital audio. Browser voice
+ * enhancement can smear timbre and interruption boundaries, which damages
+ * Seed ASR's native voiceprint clustering. */
+export function isVirtualLoopbackLabel(label: string): boolean {
+  return /blackhole|virtualaudio|\(virtual\)|\(aggregate\)|screen record with audio/i.test(
+    label.trim()
+  );
+}
+
+/** Build the selected mic constraint without changing physical-mic defaults. */
+export function buildMicAudioConstraints(
+  deviceId: string,
+  deviceLabel: string
+): MediaTrackConstraints | true {
+  if (!deviceId) return true;
+  return {
+    deviceId: { exact: deviceId },
+    ...(isVirtualLoopbackLabel(deviceLabel)
+      ? {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      : {})
+  };
+}
+
 function classifyGetMediaError(err: unknown): AudioCaptureError {
   const name = err instanceof Error ? err.name : '';
   const message = err instanceof Error ? err.message : String(err);
@@ -139,9 +166,21 @@ async function acquireStream(source: AudioSource): Promise<MediaStream> {
   } catch {
     /* localStorage unavailable — use default */
   }
-  const audioConstraints: MediaStreamConstraints['audio'] = micDeviceId
-    ? { deviceId: { exact: micDeviceId } }
-    : true;
+  let micDeviceLabel = '';
+  if (micDeviceId && navigator.mediaDevices.enumerateDevices) {
+    try {
+      const selected = (await navigator.mediaDevices.enumerateDevices()).find(
+        (device) => device.kind === 'audioinput' && device.deviceId === micDeviceId
+      );
+      micDeviceLabel = selected?.label ?? '';
+    } catch {
+      // Enumeration is optional; retain the browser's physical-mic defaults.
+    }
+  }
+  const audioConstraints: MediaStreamConstraints['audio'] = buildMicAudioConstraints(
+    micDeviceId,
+    micDeviceLabel
+  );
   try {
     return await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
   } catch (err) {
