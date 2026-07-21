@@ -15,5 +15,9 @@ describe('one-shot interview layout contracts', () => {
 
   test('uses the same source field geometry for both audio lanes', () => {
     expect(css).toMatch(/\.interview-dock\s+\[data-source-field='true'\]/);
+    const sourceRule = css.match(
+      /\.interview-dock\s+\[data-source-field='true'\]\s*\{(?<body>[\s\S]*?)\}/
+    )?.groups?.body ?? '';
+    expect(sourceRule).toMatch(/height:\s*29px/);
   });
 });
