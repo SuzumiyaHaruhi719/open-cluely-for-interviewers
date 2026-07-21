@@ -8,6 +8,8 @@
 
 **Tech Stack:** React 18, TypeScript, Vitest, Testing Library, Vite, existing GLP CSS tokens, Phosphor React icons.
 
+**Plan state:** Tasks 1–6 describe the implemented baseline. Tasks 7–8 are the approved product correction and supersede earlier snippets that show an always-visible JD textarea or summary generation inside `onEndInterview`.
+
 ## Global Constraints
 
 - Work directly on `main`, as explicitly requested by the user.
@@ -43,6 +45,38 @@
 - Modify `web-app/web/src/desktop/QuestionCard.tsx` — simplify to the inline selected visual while preserving metadata and ranked details.
 - Update `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/` notes for the new shell and transcript timestamp invariant.
 - Create project-root `design-qa.md` after browser comparison.
+
+### Task 7: Restore JD profiles and split End from Summary
+
+**Files:**
+- Modify: `web-app/web/src/desktop/jobProfiles.ts` and tests
+- Modify: `web-app/web/src/desktop/InterviewSetup.tsx` and tests
+- Modify: `web-app/web/src/desktop/InterviewHeader.tsx` and tests
+- Modify: `web-app/web/src/desktop/Shell.tsx` and tests
+
+**Interfaces:**
+- `searchJobProfiles(query)` fuzzy-filters built-ins without changing their stored JD.
+- `InterviewSetupSubmit` includes `jobProfileId`, selected `jobDescription`, and derived `interviewGuide`.
+- `InterviewHeader` separates `onSummary` from `onEnd` and receives truthful `ended` state.
+- `Shell.onEndInterview()` stops capture only; `Shell.onSummarize()` owns modal/report generation.
+
+- [ ] Write failing profile-picker, custom-JD, header action, and Shell separation tests.
+- [ ] Run focused tests and verify RED.
+- [ ] Implement the searchable picker, selected profile preview, ended state, and independent summary action.
+- [ ] Run focused tests/build, commit, and push.
+
+### Task 8: Unify audio controls and make context independently scrollable
+
+**Files:**
+- Modify: `web-app/web/src/desktop/ChannelCard.tsx` and tests
+- Modify: `web-app/web/src/desktop/SessionContextDrawer.tsx` and tests
+- Modify: `web-app/web/src/desktop-ui/one-shot-interview.css`
+- Add/modify: CSS contract tests
+
+- [ ] Write failing DOM/CSS contract tests for common source-field geometry and drawer-body scrolling/focus.
+- [ ] Run focused tests and verify RED.
+- [ ] Normalize both channel rows and add the dedicated context scroll viewport.
+- [ ] Run focused tests/build, browser-check long content at 1280×720, commit, and push.
 
 ### Task 1: Lock the one-shot preparation contract
 

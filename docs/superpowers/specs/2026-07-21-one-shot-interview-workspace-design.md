@@ -11,7 +11,7 @@ Turn the web client into a single-purpose interviewer workspace: provide a resum
 ## Product decisions
 
 - The app opens on a compact preparation screen rather than an already-running dashboard.
-- Preparation asks only for a resume and JD. Resume is optional; a non-empty JD is required.
+- Preparation asks only for a resume and JD profile. Resume is optional. JD selection is a searchable profile combobox backed by `JOB_PROFILES`; the preserved `物业经理` / `区域运营服务` profile is the default. A free-text JD input appears only after choosing `自定义职位`.
 - The JD and extracted resume are sent as context fields to the fixed Expert model. They never create a second prompt system.
 - The live screen has one primary reading surface: the role-separated transcript timeline.
 - Keep the automatic session context because it is a core model signal. It becomes a single-purpose, collapsible drawer and is the only retained sidebar-like surface.
@@ -29,7 +29,7 @@ The initial state is a centered, calm preparation surface with:
 
 1. GLP wordmark and one-line product description.
 2. Resume dropzone with parsed-file confirmation and removal.
-3. JD textarea with a clear label, character count, and factual-context helper copy.
+3. Searchable JD profile picker with keyboard-accessible filtered results and a compact selected-profile preview. Search covers title, department, reporting line, summary, and JD text. `自定义职位` is always available; only that choice reveals the factual-context textarea and character count.
 4. One primary `开始面试` action. It is disabled only while the socket is unavailable, resume parsing is in flight, or the JD is blank.
 
 There is no interview-format selector, model selector, settings link, history, sample interview, question bank, or prompt builder.
@@ -38,12 +38,12 @@ There is no interview-format selector, model selector, settings link, history, s
 
 The live workspace follows the selected visual target:
 
-- A 64px header with the GLP wordmark, inferred interview title, live indicator, elapsed timer, context-loaded status, a visible `清空转写` action, the session-context toggle, and outlined `结束面试`.
+- A 64px header with the GLP wordmark, inferred interview title, live indicator, elapsed timer, context-loaded status, a visible `清空转写` action, the session-context toggle, a manual `面试总结` action, and outlined `结束面试`.
 - A centered transcript timeline with a timestamp gutter and a faint vertical guide.
 - Interviewer turns use amber; candidate turns use blue; unresolved turns are explicitly labelled `待确认`.
 - Provider partials appear immediately and reveal one grapheme at a time.
 - Automatic AI follow-ups are inserted directly beneath the transcript evidence that triggered them. They do not remain in a detached permanent panel.
-- A thin bottom dock keeps the two audio lanes, capture state, meters, microphone device selection, elapsed recording state, and one compact note input.
+- A thin bottom dock keeps the two audio lanes, capture state, meters, microphone device selection, elapsed recording state, and one compact note input. Computer and microphone lanes use the same field/action/meter geometry; the computer field explains that Start opens the browser source picker while the microphone field is the actual device select.
 
 ### Automatic session-context drawer
 
@@ -59,7 +59,7 @@ The drawer is non-modal on wide screens and overlayed on smaller screens. It can
 
 ### Start
 
-1. User enters JD and optionally uploads a resume.
+1. User fuzzy-searches and chooses a built-in JD, or chooses `自定义职位` and enters a JD; resume remains optional.
 2. `开始面试` resets stale local/server generation state.
 3. The full fixed config is pushed with `jobDescription`, `resumeText`, `diarize:true`, `autoGenerate:true`, `autoMode:'agent'`, `mode:'expert'`, `interviewerModel:'deepseek-v4-flash'`, `outputLanguage:'zh'`, and `asrProvider:'volc'`.
 4. The app enters the live workspace. Audio controls remain explicit because browser display/microphone permission and source choice cannot be truthfully hidden.
@@ -72,9 +72,15 @@ The drawer is non-modal on wide screens and overlayed on smaller screens. It can
 - A final server speaker partition preserves timestamps for existing segment sequence IDs and assigns current time only to genuinely new segments.
 - Seeded/manual notes and AI question events also carry an arrival timestamp so the timeline remains stable.
 
-### End
+### End and summary
 
-`结束面试` stops both capture lanes, requests the existing summary from the accumulated transcript plus JD/resume context, and opens the summary modal. It does not delete the visible transcript.
+- `结束面试` only ends the live session: stop both capture lanes, mark the workspace ended, and prevent new capture. It preserves the transcript and does not open or request a summary.
+- `面试总结` is a separate manual action beside End. It opens the existing summary modal and requests the report from accumulated transcript plus JD/resume context; it can be used before or after End.
+- After End, clear, context, transcript role correction, and manual summary remain available.
+
+### Long automatic context
+
+The drawer header remains fixed while its body owns vertical scrolling. The scroll viewport has `min-height:0`, `overflow-y:auto`, contained overscroll, a stable scrollbar gutter, and keyboard focusability so long competency/topic/gap collections remain reachable by wheel, trackpad, Page Up/Down, or arrow keys.
 
 ## Responsive behavior
 
@@ -101,12 +107,13 @@ The drawer is non-modal on wide screens and overlayed on smaller screens. It can
 
 ## Acceptance criteria
 
-1. Initial render contains resume upload, JD input, and one start action; it contains no sidebar, history, Question Bank, Settings, mobile action, model/language choice, pipeline editor, or manual AI-generation button.
-2. Starting sends the supplied JD/resume through the existing session config and shows the live workspace.
+1. Initial render contains resume upload, a searchable JD profile picker with the preserved 物业经理 profile, and one start action; it contains no sidebar, history, Question Bank, Settings, mobile action, model/language choice, pipeline editor, or manual AI-generation button.
+2. Selecting a built-in profile sends its JD and interview guide through the existing session config. Selecting `自定义职位` reveals the only free-text JD input and sends no separate prompt system.
 3. Live workspace shows header, elapsed timer, transcript, visible role labels, timestamps, bottom audio dock, note input, context toggle, clear action, and end action.
 4. Session-context drawer renders server-provided competency/topic/gap state and can be opened/closed without altering the transcript.
 5. Provider partials still reveal progressively; final transcript segments remain editable by role.
 6. Automatic questions remain evidence-anchored inside the timeline and keep non-zero token/latency metadata when supplied.
-7. Ending stops both capture lanes and opens the existing summary flow.
-8. Focused tests, full web tests, full repository tests, production build, and in-app-browser interaction checks pass.
-9. `design-qa.md` compares the selected reference and implementation, resolves all P0/P1/P2 findings, and ends with `final result: passed`.
+7. Ending stops both capture lanes without opening summary; the adjacent manual Summary action opens the existing summary flow independently.
+8. Computer and microphone controls use the same visual geometry, and a long automatic-context collection is fully scrollable.
+9. Focused tests, full web tests, full repository tests, production build, and in-app-browser interaction checks pass.
+10. `design-qa.md` compares the selected reference and implementation, resolves all P0/P1/P2 findings, and ends with `final result: passed`.
