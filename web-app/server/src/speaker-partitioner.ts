@@ -9,6 +9,7 @@ import { chat } from './dashscope';
 import { config } from './config';
 import {
   createSpeakerCohortHarness,
+  type ClusterCohortState,
   type ConfirmedTurnRole,
   type SpeakerCohortHarness
 } from './speaker-cohort';
@@ -105,7 +106,7 @@ export interface SpeakerPartitionerDeps {
     turns: readonly SpeakerTurn[],
     request?: SpeakerClassificationRequest
   ) => Promise<SpeakerClassification>;
-  /** Display-only cohort assimilation; never grants authority to Auto callbacks. */
+  /** Authoritative native-voiceprint cohort ledger; unresolved ids never feed Auto. */
   cohortHarness?: SpeakerCohortHarness;
   /** Applies an automatic cluster role and returns the effective role (manual corrections may win). */
   applySpeakerRole: (speakerId: number, role: SpeakerRole) => SpeakerRole;
@@ -114,6 +115,8 @@ export interface SpeakerPartitionerDeps {
   onCandidateTurn: (turn: SpeakerTurn) => void;
   onInterviewerTurn?: (turn: SpeakerTurn) => void;
   onPartition: (partition: SpeakerPartition) => void;
+  /** Monotonic test seam used for assignment timestamps relative to reset. */
+  now?: () => number;
 }
 
 const CLASSIFIER_SYSTEM = [
@@ -570,6 +573,32 @@ function coalesce(segments: SpeakerPartitionSegment[]): SpeakerPartitionSegment[
   return out;
 }
 
+/**
+ * Enforce the server-side wire invariant before a partition reaches the UI:
+ * one assignment per provider-native voiceprint and one role for every segment
+ * carrying that assigned id. Text-only synthetic segment ids have no ledger row.
+ */
+export function validateSpeakerPartition(partition: SpeakerPartition): boolean {
+  const assignmentById = new Map<number, SpeakerAssignment>();
+  for (const assignment of partition.speakerAssignments) {
+    if (assignmentById.has(assignment.speakerId)) return false;
+    assignmentById.set(assignment.speakerId, assignment);
+  }
+  for (const segment of partition.segments) {
+    const assignment = assignmentById.get(segment.speakerId);
+    if (!assignment) continue;
+    if (segment.role !== assignment.role) return false;
+    if (
+      (assignment.roleSource === 'manual' && segment.roleSource !== 'manual') ||
+      (assignment.roleSource === 'cohort' && segment.roleSource !== 'cohort') ||
+      (assignment.roleSource === 'unknown' && segment.roleSource !== 'unknown')
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
 interface ResolvedSpeakerTurn {
   turn: SpeakerTurn;
   speakerId: number;
@@ -601,7 +630,6 @@ function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<numb
 
   for (const entry of turns) {
     if (
-      typeof entry.turn.speakerId === 'number' &&
       entry.role !== 'interviewer' &&
       SCORE_ANNOUNCEMENT.test(entry.turn.text)
     ) {
@@ -616,7 +644,6 @@ function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<numb
     const current = turns[index];
     const text = current.turn.text.trim();
     if (
-      typeof current.turn.speakerId === 'number' &&
       areDirectNeighbours(previous, current) &&
       roleFor(previous) === 'interviewer' &&
       roleFor(current) === 'candidate' &&
@@ -634,7 +661,6 @@ function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<numb
     const next = turns[index + 1];
     const text = current.turn.text.trim();
     if (
-      typeof current.turn.speakerId === 'number' &&
       areDirectNeighbours(previous, current) &&
       areDirectNeighbours(current, next) &&
       roleFor(previous) === 'candidate' &&
@@ -653,7 +679,6 @@ function findLocalRoleOverrides(turns: readonly ResolvedSpeakerTurn[]): Map<numb
     const next = turns[index + 1];
     const text = current.turn.text.trim();
     if (
-      typeof current.turn.speakerId === 'number' &&
       areDirectNeighbours(previous, current) &&
       areDirectNeighbours(current, next) &&
       roleFor(previous) === 'interviewer' &&
@@ -706,26 +731,92 @@ function shouldDeferPossibleQuestionStem(
   );
 }
 
+/**
+ * Dependency-injected classifier tests need a deterministic replacement for the
+ * production second model call. Two-pass semantic consensus is already enforced
+ * before this harness receives evidence; production always uses the stricter
+ * sample-count and dual-audit cohort harness from speaker-cohort.ts.
+ */
+function createInjectedClassifierCohortHarness(): SpeakerCohortHarness {
+  let states = new Map<number, ClusterCohortState>();
+  const empty = (reasonCodes: string[] = []): ClusterCohortState => ({
+    state: 'observing',
+    role: 'unknown',
+    confidence: 0,
+    evidenceSeqs: [],
+    contradictionSeqs: [],
+    evaluatedRevision: -1,
+    reasonCodes
+  });
+  return {
+    async evaluate(input) {
+      const bySeq = new Map(input.confirmed.map((entry) => [entry.seq, entry]));
+      const ids = [...new Set(input.turns.flatMap((turn) =>
+        typeof turn.speakerId === 'number' ? [turn.speakerId] : []
+      ))];
+      for (const speakerId of ids) {
+        if (input.manualSpeakerIds?.has(speakerId)) {
+          states.delete(speakerId);
+          continue;
+        }
+        const evidence = input.turns.flatMap((turn) => {
+          if (turn.speakerId !== speakerId) return [];
+          const confirmed = bySeq.get(turn.seq);
+          return confirmed && confirmed.role !== 'unknown' ? [confirmed] : [];
+        });
+        if (evidence.length === 0) {
+          states.set(speakerId, empty(['insufficient_evidence']));
+          continue;
+        }
+        const roles = new Set(evidence.map((entry) => entry.role));
+        const revision = Math.max(...input.turns
+          .filter((turn) => turn.speakerId === speakerId)
+          .map((turn) => turn.seq));
+        if (roles.size !== 1) {
+          states.set(speakerId, {
+            ...empty(['opposite_role_contradictions']),
+            state: 'contested',
+            contradictionSeqs: evidence.map((entry) => entry.seq),
+            evaluatedRevision: revision
+          });
+          continue;
+        }
+        const role = evidence[0].role;
+        states.set(speakerId, {
+          state: 'delegated',
+          role,
+          confidence: Math.min(...evidence.map((entry) => entry.confidence)),
+          evidenceSeqs: evidence.map((entry) => entry.seq),
+          contradictionSeqs: [],
+          evaluatedRevision: revision,
+          reasonCodes: ['two_pass_consensus']
+        });
+      }
+    },
+    getRole(speakerId) {
+      const state = states.get(speakerId) ?? empty();
+      return {
+        ...state,
+        evidenceSeqs: [...state.evidenceSeqs],
+        contradictionSeqs: [...state.contradictionSeqs],
+        reasonCodes: [...state.reasonCodes]
+      };
+    },
+    reset() {
+      states = new Map<number, ClusterCohortState>();
+    }
+  };
+}
+
 export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerPartitioner {
   const classify = deps.classify ?? classifySpeakerTurns;
   // Supplying a test/custom turn classifier must not unexpectedly open a real
   // second model path. Production omits `classify` and receives the real cohort
   // harness; dependency-injected callers opt in with their own cohort harness.
   const cohortHarness: SpeakerCohortHarness = deps.cohortHarness ?? (deps.classify
-    ? {
-        async evaluate() {},
-        getRole: () => ({
-          state: 'observing',
-          role: 'unknown',
-          confidence: 0,
-          evidenceSeqs: [],
-          contradictionSeqs: [],
-          evaluatedRevision: -1,
-          reasonCodes: []
-        }),
-        reset() {}
-      }
+    ? createInjectedClassifierCohortHarness()
     : createSpeakerCohortHarness());
+  const now = deps.now ?? (() => Date.now());
   let enabled = false;
   let turns: SpeakerTurn[] = [];
   let fedCandidateSeqs = new Set<number>();
@@ -734,6 +825,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
   let scheduledAt = 0;
   let epoch = 0;
   let queue: Promise<void> = Promise.resolve();
+  let sessionStartedAtMs = now();
+  let assignmentClocks = new Map<number, { signature: string; updatedAtMs: number }>();
 
   interface ClassificationRun {
     request: SpeakerClassificationRequest;
@@ -847,7 +940,6 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       }
       semanticLedger = new Map(roleByTurn);
 
-      const confirmedSeqs = new Set(roleByTurn.keys());
       const manualSpeakerIds = new Set<number>();
       const confirmedForCohort: ConfirmedTurnRole[] = [];
       for (const turn of snapshot) {
@@ -864,67 +956,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           confirmedForCohort.push({ ...semantic });
         }
       }
-      const authorityPreliminary = snapshot.map((turn): ResolvedSpeakerTurn => {
-        const semanticRole = roleByTurn.get(turn.seq)?.role ?? 'unknown';
-        let role = semanticRole;
-        let roleSource: SpeakerRoleSource = semanticRole === 'unknown' ? 'unknown' : 'semantic-turn';
-        if (typeof turn.speakerId === 'number') {
-          const manualRole = deps.resolveTurnRole?.(turn.speakerId, 'unknown') ?? 'unknown';
-          if (manualRole !== 'unknown') {
-            role = manualRole;
-            roleSource = 'manual';
-            confirmedSeqs.add(turn.seq);
-          } else {
-            role = semanticRole;
-          }
-        }
-        const speakerId =
-          typeof turn.speakerId === 'number'
-            ? turn.speakerId
-            : role === 'interviewer'
-              ? 0
-              : role === 'candidate'
-                ? 1
-                : 100_000 + turn.seq;
-        return { turn, speakerId, role, roleSource };
-      });
-      // Local repairs must inspect authority-only roles. A display cohort prior
-      // must never manufacture the evidence that then grants itself Auto access.
-      const localOverrides = findLocalRoleOverrides(authorityPreliminary);
-      const authorityResolved = authorityPreliminary.map((entry): ResolvedSpeakerTurn => {
-        const suggested = localOverrides.get(entry.turn.seq);
-        if (!suggested) return entry;
-        confirmedSeqs.add(entry.turn.seq);
-        if (entry.roleSource === 'manual') return entry;
-        const role = typeof entry.turn.speakerId === 'number'
-          ? deps.resolveTurnRole?.(entry.turn.speakerId, suggested) ?? suggested
-          : suggested;
-        const roleSource: SpeakerRoleSource = role === suggested ? 'local' : 'manual';
-        return { ...entry, role, roleSource };
-      });
-      for (const [index, entry] of authorityResolved.entries()) {
-        const { turn, role } = entry;
-        if (
-          confirmedSeqs.has(turn.seq) &&
-          role === 'candidate' &&
-          !fedCandidateSeqs.has(turn.seq) &&
-          !shouldDeferPossibleQuestionStem(authorityResolved, index, status)
-        ) {
-          fedCandidateSeqs.add(turn.seq);
-          deps.onCandidateTurn(turn);
-        }
-        if (
-          confirmedSeqs.has(turn.seq) &&
-          role === 'interviewer' &&
-          !fedInterviewerSeqs.has(turn.seq) &&
-          !shouldDeferPossibleAnswerContinuation(authorityResolved, index, status)
-        ) {
-          fedInterviewerSeqs.add(turn.seq);
-          deps.onInterviewerTurn?.(turn);
-        }
-      }
-      // Cohort assimilation is display refinement. Release role-confirmed Auto
-      // evidence first so an 8s cohort timeout can never delay Expert cadence.
+      // Native speech-act verdicts are evidence for the whole-voiceprint audit,
+      // never independent display/Auto authority for a single provider id.
       await cohortHarness.evaluate({
         turns: snapshot,
         confirmed: confirmedForCohort,
@@ -932,13 +965,133 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
         final: status === 'final'
       });
       if (scheduledEpoch !== epoch) return;
-      const displayResolved = authorityResolved.map((entry): ResolvedSpeakerTurn => {
-        if (entry.role !== 'unknown' || typeof entry.turn.speakerId !== 'number') return entry;
-        const cohort = cohortHarness.getRole(entry.turn.speakerId);
-        return cohort.state === 'delegated' && cohort.role !== 'unknown'
-          ? { ...entry, role: cohort.role, roleSource: 'cohort' }
+
+      const nativeSpeakerIds = [...new Set(
+        snapshot.flatMap((turn) => typeof turn.speakerId === 'number' ? [turn.speakerId] : [])
+      )].sort((left, right) => left - right);
+      const speakerAssignments = nativeSpeakerIds.map((speakerId): SpeakerAssignment => {
+        const manualRole = deps.resolveTurnRole?.(speakerId, 'unknown') ?? 'unknown';
+        const cohort = cohortHarness.getRole(speakerId);
+        let assignment: SpeakerAssignment = manualRole !== 'unknown'
+          ? {
+              speakerId,
+              role: manualRole,
+              state: 'manual',
+              roleSource: 'manual',
+              confidence: 1,
+              evidenceVersion: Math.max(0, cohort.evaluatedRevision),
+              updatedAtMs: 0,
+              reasonCodes: []
+            }
+          : cohort.state === 'delegated' && cohort.role !== 'unknown'
+            ? {
+                speakerId,
+                role: cohort.role,
+                state: 'delegated',
+                roleSource: 'cohort',
+                confidence: cohort.confidence,
+                evidenceVersion: Math.max(0, cohort.evaluatedRevision),
+                updatedAtMs: 0,
+                reasonCodes: [...cohort.reasonCodes]
+              }
+            : {
+                speakerId,
+                role: 'unknown',
+                state: cohort.state,
+                roleSource: 'unknown',
+                confidence: cohort.confidence,
+                evidenceVersion: Math.max(0, cohort.evaluatedRevision),
+                updatedAtMs: 0,
+                reasonCodes: [...cohort.reasonCodes]
+              };
+        const effectiveRole = deps.applySpeakerRole(speakerId, assignment.role);
+        if (effectiveRole !== assignment.role && effectiveRole !== 'unknown') {
+          assignment = {
+            ...assignment,
+            role: effectiveRole,
+            state: 'manual',
+            roleSource: 'manual',
+            confidence: 1,
+            reasonCodes: []
+          };
+        }
+        const signature = JSON.stringify([
+          assignment.role,
+          assignment.state,
+          assignment.roleSource,
+          assignment.reasonCodes
+        ]);
+        const previousClock = assignmentClocks.get(speakerId);
+        const updatedAtMs = previousClock?.signature === signature
+          ? previousClock.updatedAtMs
+          : Math.max(0, now() - sessionStartedAtMs);
+        assignmentClocks.set(speakerId, { signature, updatedAtMs });
+        return { ...assignment, updatedAtMs };
+      });
+      const assignmentById = new Map(
+        speakerAssignments.map((assignment) => [assignment.speakerId, assignment])
+      );
+
+      // Text-only providers retain per-turn semantic authority. Local repairs
+      // remain limited to those synthetic turns and can never split one native id.
+      const textOnlyPreliminary = snapshot.map((turn): ResolvedSpeakerTurn => {
+        const semanticRole = roleByTurn.get(turn.seq)?.role ?? 'unknown';
+        if (typeof turn.speakerId === 'number') {
+          const assignment = assignmentById.get(turn.speakerId)!;
+          return {
+            turn,
+            speakerId: turn.speakerId,
+            role: assignment.role,
+            roleSource: assignment.roleSource
+          };
+        }
+        return {
+          turn,
+          speakerId: semanticRole === 'interviewer'
+            ? 0
+            : semanticRole === 'candidate'
+              ? 1
+              : 100_000 + turn.seq,
+          role: semanticRole,
+          roleSource: semanticRole === 'unknown' ? 'unknown' : 'semantic-turn'
+        };
+      });
+      const localOverrides = findLocalRoleOverrides(textOnlyPreliminary);
+      const displayResolved = textOnlyPreliminary.map((entry): ResolvedSpeakerTurn => {
+        if (typeof entry.turn.speakerId === 'number') return entry;
+        const suggested = localOverrides.get(entry.turn.seq);
+        return suggested
+          ? { ...entry, role: suggested, roleSource: 'local' }
           : entry;
       });
+
+      for (const [index, entry] of displayResolved.entries()) {
+        const { turn, role } = entry;
+        const nativeAssignment = typeof turn.speakerId === 'number'
+          ? assignmentById.get(turn.speakerId)
+          : undefined;
+        const isConfirmed = nativeAssignment
+          ? nativeAssignment.state === 'delegated' || nativeAssignment.state === 'manual'
+          : roleByTurn.has(turn.seq) || localOverrides.has(turn.seq);
+        if (
+          isConfirmed &&
+          role === 'candidate' &&
+          !fedCandidateSeqs.has(turn.seq) &&
+          !shouldDeferPossibleQuestionStem(displayResolved, index, status)
+        ) {
+          fedCandidateSeqs.add(turn.seq);
+          deps.onCandidateTurn(turn);
+        }
+        if (
+          isConfirmed &&
+          role === 'interviewer' &&
+          !fedInterviewerSeqs.has(turn.seq) &&
+          !shouldDeferPossibleAnswerContinuation(displayResolved, index, status)
+        ) {
+          fedInterviewerSeqs.add(turn.seq);
+          deps.onInterviewerTurn?.(turn);
+        }
+      }
       const segments = coalesce(
         displayResolved.map(({ turn, speakerId, role, roleSource }) => ({
           seq: turn.seq,
@@ -949,7 +1102,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
         }))
       );
       const model = runs.find((run) => run.result?.model)?.result?.model ?? SPEAKER_PARTITION_MODEL;
-      deps.onPartition({ status, model, segments, speakerAssignments: [] });
+      const partition = { status, model, segments, speakerAssignments } satisfies SpeakerPartition;
+      if (validateSpeakerPartition(partition)) deps.onPartition(partition);
     });
     return queue;
   }
@@ -994,6 +1148,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       fedCandidateSeqs = new Set<number>();
       fedInterviewerSeqs = new Set<number>();
       semanticLedger = new Map<number, InferredTurnRole>();
+      assignmentClocks = new Map<number, { signature: string; updatedAtMs: number }>();
+      sessionStartedAtMs = now();
       scheduledAt = 0;
       queue = Promise.resolve();
     }

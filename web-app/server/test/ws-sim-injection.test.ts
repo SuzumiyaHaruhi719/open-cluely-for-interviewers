@@ -57,9 +57,30 @@ function blockReply(prompt: string): string {
       ],
       turnRoles: requiredSeqs.map((seq) => ({
         seq,
-        role: seq === 0 ? 'interviewer' : 'candidate',
+        role: seq % 2 === 0 ? 'interviewer' : 'candidate',
         confidence: 0.99
       }))
+    });
+  }
+
+  if (prompt.includes('[cohort-audit-pass=')) {
+    const requiredSeqs = (prompt.match(/\[required-target-seqs=([^\]]*)\]/)?.[1] ?? '')
+      .split(',')
+      .map((value) => Number(value.trim()))
+      .filter(Number.isInteger);
+    const confirmedRoles = [...prompt.matchAll(/\[seq=\d+ role=(interviewer|candidate) confidence=/g)]
+      .map((match) => match[1]);
+    const role = confirmedRoles.length > 0 && confirmedRoles.every((entry) => entry === confirmedRoles[0])
+      ? confirmedRoles[0]
+      : 'unknown';
+    return JSON.stringify({
+      role,
+      confidence: role === 'unknown' ? 0 : 0.99,
+      interviewerFit: role === 'interviewer' ? 0.99 : 0,
+      candidateFit: role === 'candidate' ? 0.99 : 0,
+      targetRoles: requiredSeqs.map((seq) => ({ seq, role, confidence: 0.99 })),
+      evidenceSeqs: requiredSeqs,
+      contradictionSeqs: []
     });
   }
 
@@ -278,7 +299,10 @@ async function runInjectedAutoScript(port: number): Promise<{
         return;
       }
       resolve({ results, partitions });
-    }, 10000);
+    // Four realtime-ish turns need ~13s before both voiceprints have two
+    // independent samples. The Expert latency SLO starts after that delegation;
+    // the dedicated WS Auto test measures the <10s generation budget itself.
+    }, 25000);
     ws.on('error', (err) => {
       clearTimeout(timer);
       reject(err);
@@ -301,7 +325,15 @@ async function runInjectedAutoScript(port: number): Promise<{
               },
               {
                 speakerId: 2,
-                text: '订单状态同步延迟很高，我把五分钟轮询改成消息队列，并加了幂等写入。我先用链路追踪确认延迟发生在轮询等待，而不是下游消费，再用影子流量对比新旧链路的端到端耗时和重复写入率。上线前我补齐了失败重试、死信告警和回滚开关，上线后连续观察一周，确认九十九分位延迟下降且没有新增重复订单。'
+                text: '订单状态同步延迟很高，我把五分钟轮询改成消息队列，并加了幂等写入。我先用链路追踪确认延迟发生在轮询等待，而不是下游消费。'
+              },
+              {
+                speakerId: 1,
+                text: '你如何用对照数据排除下游消费变慢，并确认这项改造上线后没有制造新的重复订单？'
+              },
+              {
+                speakerId: 2,
+                text: '我用影子流量对比新旧链路的端到端耗时和重复写入率，同时按订单类型、峰谷时段和下游消费组拆分指标，确认旧链路的等待时间才是主要差异。上线前补齐失败重试、死信告警和回滚开关，并预设重复率超过万分之一就回滚；上线后连续观察一周，核对消息积压、死信数量、重复订单和人工客诉，确认九十九分位延迟下降且没有新增重复订单。'
               }
             ]
           }
@@ -371,13 +403,20 @@ test('mixed shared audio partitions roles and continuous speech still delegates 
       latest.segments.map((segment) => [segment.speakerId, segment.role]),
       [
         [1, 'interviewer'],
+        [2, 'candidate'],
+        [1, 'interviewer'],
         [2, 'candidate']
       ]
     );
     assert.equal(run.results.length, 1, 'semantic candidate evidence delegates despite continuous audio');
     assert.equal(run.results[0].trigger, 'auto');
-    assert.equal(run.results[0].anchorSeq, 1);
-    assert.equal(run.results[0].output.primary_question, ORDER_QUESTION);
+    assert.equal(run.results[0].anchorSeq, 3);
+    assert.match(
+      run.results[0].output.primary_question,
+      /影子流量|下游消费|重复订单|根因/,
+      'Auto must ask one evidence-anchored question from the latest candidate answer'
+    );
+    assert.match(run.results[0].output.primary_question, /？$/);
   } finally {
     await close();
     restoreFetch();
