@@ -8,6 +8,7 @@ import type {
   SessionConfig,
   SessionContextState,
   SummaryDebugEvent,
+  SpeakerAssignment,
   SpeakerRole
 } from '@open-cluely/contract';
 import { WS_PATH } from '@open-cluely/contract';
@@ -352,6 +353,7 @@ export function useCopilotSocket(): CopilotSocket {
   const suppressSpeakerPartitionsRef = useRef(false);
   // Speaker-segment state for native clusters and Flash semantic partitioning.
   const roleOverrideRef = useRef<Map<number, SpeakerRole>>(new Map());
+  const speakerAssignmentsRef = useRef<Map<number, SpeakerAssignment>>(new Map());
   const segSeqRef = useRef(0);
   // Preserve the arrival time of EVERY raw final by its server-aligned sequence.
   // Visible provisional bubbles may coalesce consecutive finals and discard a
@@ -593,13 +595,21 @@ export function useCopilotSocket(): CopilotSocket {
         // providers are populated later by a `speaker-partition` message.
         if (finalSeq !== null && typeof message.speakerId === 'number') {
           const sid = message.speakerId;
-          const role = effectiveRole(sid, message.speaker, roleOverrideRef.current);
+          const assignment = speakerAssignmentsRef.current.get(sid);
+          const hasManualOverride = roleOverrideRef.current.has(sid);
+          const role = effectiveRole(
+            sid,
+            assignment?.role ?? message.speaker,
+            roleOverrideRef.current
+          );
           setSpeakerSegments((prev) => {
             const next = appendSegment(prev, {
               id: finalSeq,
               speakerId: sid,
               role,
-              roleSource: roleOverrideRef.current.has(sid) ? 'manual' : 'unknown',
+              roleSource: hasManualOverride
+                ? 'manual'
+                : assignment?.roleSource ?? 'unknown',
               text,
               createdAtMs: finalAt ?? undefined
             });
@@ -640,23 +650,37 @@ export function useCopilotSocket(): CopilotSocket {
         // without clusters, finalized semantic turns) after enough evidence.
         // Replace the provisional unknown-role list atomically so past bubbles,
         // the candidate buffer, and future manual corrections share one view.
+        const nextAssignments = new Map(
+          message.speakerAssignments.map((assignment) => [assignment.speakerId, assignment])
+        );
+        // Replace, never merge: observing/contested revocation must remove a
+        // formerly delegated role before any later raw final is appended.
+        speakerAssignmentsRef.current = nextAssignments;
         const previousTimes = new Map(
           speakerSegmentsRef.current.map((segment) => [segment.id, segment.createdAtMs])
         );
         const partitionedAt = Date.now();
-        const next = message.segments.map((segment) => ({
-          id: segment.seq,
-          speakerId: segment.speakerId,
-          role: effectiveRole(segment.speakerId, segment.role, roleOverrideRef.current),
-          roleSource: roleOverrideRef.current.has(segment.speakerId)
-            ? 'manual' as const
-            : segment.roleSource,
-          text: segment.text,
-          createdAtMs:
-            finalTurnTimesRef.current.get(segment.seq) ??
-            previousTimes.get(segment.seq) ??
-            partitionedAt
-        }));
+        const next = message.segments.map((segment) => {
+          const assignment = nextAssignments.get(segment.speakerId);
+          const hasManualOverride = roleOverrideRef.current.has(segment.speakerId);
+          return {
+            id: segment.seq,
+            speakerId: segment.speakerId,
+            role: effectiveRole(
+              segment.speakerId,
+              assignment?.role ?? segment.role,
+              roleOverrideRef.current
+            ),
+            roleSource: hasManualOverride
+              ? 'manual' as const
+              : assignment?.roleSource ?? segment.roleSource,
+            text: segment.text,
+            createdAtMs:
+              finalTurnTimesRef.current.get(segment.seq) ??
+              previousTimes.get(segment.seq) ??
+              partitionedAt
+          };
+        });
         speakerSegmentsRef.current = next;
         setSpeakerSegments(next);
         const maxSeq = message.segments.reduce((max, segment) => Math.max(max, segment.seq), -1);
@@ -995,6 +1019,7 @@ export function useCopilotSocket(): CopilotSocket {
     setSpeakerSegments([]);
     speakerSegmentsRef.current = [];
     roleOverrideRef.current.clear();
+    speakerAssignmentsRef.current.clear();
     segSeqRef.current = 0;
     finalTurnTimesRef.current.clear();
   }, []);

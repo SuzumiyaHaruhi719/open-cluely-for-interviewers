@@ -621,8 +621,30 @@ describe('useCopilotSocket', () => {
         type: 'speaker-partition',
         status: 'live',
         model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 9,
+            role: 'interviewer',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.96,
+            evidenceVersion: 3,
+            updatedAtMs: 2000,
+            reasonCodes: ['two_pass_consensus']
+          },
+          {
+            speakerId: 7,
+            role: 'candidate',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.95,
+            evidenceVersion: 3,
+            updatedAtMs: 2000,
+            reasonCodes: ['two_pass_consensus']
+          }
+        ],
         segments: [
-          { seq: 0, speakerId: 9, role: 'interviewer', roleSource: 'semantic-turn', text: '请坐' },
+          { seq: 0, speakerId: 9, role: 'interviewer', roleSource: 'cohort', text: '请坐' },
           { seq: 1, speakerId: 7, role: 'candidate', roleSource: 'cohort', text: '谢谢' }
         ]
       });
@@ -635,9 +657,205 @@ describe('useCopilotSocket', () => {
       ])
     );
     expect(result.current.speakerSegments.map((s) => s.roleSource)).toEqual([
-      'semantic-turn',
+      'cohort',
       'cohort'
     ]);
+  });
+
+  test('whole-voiceprint assignment snapshots govern past and future raw finals atomically', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '我负责用户增长项目。',
+        isFinal: true,
+        speakerId: 7,
+        speaker: 'unknown'
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments[0]?.role).toBe('unknown'));
+
+    const delegated = {
+      speakerId: 7,
+      role: 'candidate' as const,
+      state: 'delegated' as const,
+      roleSource: 'cohort' as const,
+      confidence: 0.95,
+      evidenceVersion: 2,
+      updatedAtMs: 1500,
+      reasonCodes: ['two_pass_consensus']
+    };
+    act(() => {
+      socket.emit({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [delegated],
+        segments: [
+          {
+            seq: 0,
+            speakerId: 7,
+            role: 'candidate',
+            roleSource: 'cohort',
+            text: '我负责用户增长项目。'
+          }
+        ]
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments[0]?.role).toBe('candidate'));
+
+    // A stale/raw role stamp cannot split the already delegated native id.
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '我还负责跨部门复盘。',
+        isFinal: true,
+        speakerId: 7,
+        speaker: 'interviewer'
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments[0]?.text).toContain('跨部门复盘'));
+    expect(result.current.speakerSegments.every((segment) => segment.role === 'candidate')).toBe(true);
+    expect(result.current.speakerSegments.every((segment) => segment.roleSource === 'cohort')).toBe(true);
+
+    act(() => {
+      socket.emit({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            ...delegated,
+            role: 'unknown',
+            state: 'contested',
+            roleSource: 'unknown',
+            confidence: 0,
+            evidenceVersion: 4,
+            updatedAtMs: 5000,
+            reasonCodes: ['opposite_role_contradictions']
+          }
+        ],
+        segments: [
+          {
+            seq: 0,
+            speakerId: 7,
+            role: 'unknown',
+            roleSource: 'unknown',
+            text: '我负责用户增长项目。 我还负责跨部门复盘。'
+          }
+        ]
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments[0]?.role).toBe('unknown'));
+
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '新的待确认样本。',
+        isFinal: true,
+        speakerId: 7,
+        speaker: 'candidate'
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments[0]?.text).toContain('新的待确认样本'));
+    expect(result.current.speakerSegments.every((segment) => segment.role === 'unknown')).toBe(true);
+  });
+
+  test('manual whole-voiceprint correction outranks later automatic snapshots', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '人工确认的候选人回答。',
+        isFinal: true,
+        speakerId: 5,
+        speaker: 'unknown'
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(1));
+    act(() => result.current.setSpeakerRole(5, 'candidate'));
+
+    act(() => {
+      socket.emit({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 5,
+            role: 'interviewer',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.94,
+            evidenceVersion: 3,
+            updatedAtMs: 3000,
+            reasonCodes: ['two_pass_consensus']
+          }
+        ],
+        segments: [
+          {
+            seq: 0,
+            speakerId: 5,
+            role: 'interviewer',
+            roleSource: 'cohort',
+            text: '人工确认的候选人回答。'
+          }
+        ]
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments[0]?.role).toBe('candidate'));
+    expect(result.current.speakerSegments[0]?.roleSource).toBe('manual');
+  });
+
+  test('new interview reset clears the automatic voiceprint assignment map', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 3,
+            role: 'candidate',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.96,
+            evidenceVersion: 2,
+            updatedAtMs: 1000,
+            reasonCodes: ['two_pass_consensus']
+          }
+        ],
+        segments: []
+      });
+      result.current.resetSpeakerSegments();
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '新面试尚未分类。',
+        isFinal: true,
+        speakerId: 3,
+        speaker: 'unknown'
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(1));
+    expect(result.current.speakerSegments[0]?.role).toBe('unknown');
   });
 
   test('semantic repartition restores every raw final timestamp after a provisional bubble splits', async () => {
