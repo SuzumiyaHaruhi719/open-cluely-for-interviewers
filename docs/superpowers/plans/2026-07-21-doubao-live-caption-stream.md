@@ -167,7 +167,7 @@ git rev-parse origin/main
 
 Expected: no whitespace errors; only intentional documentation changes remain before their commit; after push, the worktree is clean and `HEAD` equals `origin/main`.
 
-- [ ] **Step 4: Commit and push documentation/release evidence**
+- [x] **Step 4: Commit and push documentation/release evidence**
 
 ```bash
 git add docs/plans/2026-07-21-doubao-live-caption-stream-design.md \
