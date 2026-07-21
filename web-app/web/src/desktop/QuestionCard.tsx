@@ -26,6 +26,8 @@ interface QuestionCardProps {
   pickedHint?: string | null;
   /** Promote a candidate into the analyze buffer (no server round-trip). */
   onPickCandidate?: (question: string) => void;
+  /** Elapsed transcript time for the evidence-anchored timeline gutter. */
+  timelineTime?: string;
 }
 
 function totalTokens(tokens: TokenUsage): number {
@@ -81,7 +83,8 @@ export function QuestionCard({
   ranked = [],
   trigger,
   pickedHint = null,
-  onPickCandidate
+  onPickCandidate,
+  timelineTime
 }: QuestionCardProps) {
   const topPick = ranked.length > 0 ? ranked[0] : null;
   const others = ranked.slice(1);
@@ -98,6 +101,11 @@ export function QuestionCard({
 
   return (
     <article className="chat-message lane-ai is-question-card" aria-label={copy.ariaFollowUp}>
+      {timelineTime ? (
+        <time className="transcript-time" dateTime={`PT${timelineTime.split(':').map(Number).reduce((seconds, part) => seconds * 60 + part, 0)}S`}>
+          {timelineTime}
+        </time>
+      ) : null}
       <div className="message-header question-card__header">
         <span className="message-icon" aria-hidden="true">
           ✦

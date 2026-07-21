@@ -34,6 +34,30 @@ describe('speakerSegments', () => {
     ]);
   });
 
+  it('keeps the first arrival timestamp when same-speaker finals coalesce', () => {
+    let segments = appendSegment([], {
+      id: 1,
+      speakerId: 7,
+      role: 'candidate',
+      text: '第一句',
+      createdAtMs: 1_200
+    });
+    segments = appendSegment(segments, {
+      id: 2,
+      speakerId: 7,
+      role: 'candidate',
+      text: '第二句',
+      createdAtMs: 2_400
+    });
+
+    expect(segments).toHaveLength(1);
+    expect(segments[0]).toMatchObject({
+      id: 1,
+      text: '第一句 第二句',
+      createdAtMs: 1_200
+    });
+  });
+
   it('relabelSegments flips all segments of a speaker id', () => {
     const s = appendSegment([], { id: 1, speakerId: 0, role: 'interviewer', text: 'a' });
     expect(relabelSegments(s, 0, 'candidate')[0].role).toBe('candidate');

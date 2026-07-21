@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it, test, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
+import {
+  TranscriptStream,
+  formatTranscriptTime,
+  type TranscriptMessage
+} from './TranscriptStream';
 import type {
   CopilotQuestionEvent,
   CopilotResult,
@@ -32,6 +36,38 @@ function renderStream(
 afterEach(() => {
   cleanup();
   vi.useRealTimers();
+});
+
+test('formats transcript arrival time relative to capture start', () => {
+  expect(formatTranscriptTime(4_500, 1_000)).toBe('00:00:03');
+  expect(formatTranscriptTime(500, 1_000)).toBe('00:00:00');
+});
+
+test('renders a stable elapsed timestamp beside a finalized speaker turn', () => {
+  render(
+    <TranscriptStream
+      startedAtMs={1_000}
+      speakerSegments={[
+        {
+          id: 1,
+          speakerId: 7,
+          role: 'candidate',
+          text: '候选人回答',
+          createdAtMs: 4_500
+        }
+      ]}
+      transcripts={EMPTY_LANES}
+      transcriptMessages={[]}
+      lastResult={null}
+      progress={null}
+      isAnalyzing={false}
+      error={null}
+      autoScroll={false}
+    />
+  );
+
+  expect(screen.getByText('00:00:03')).toBeInTheDocument();
+  expect(screen.getByText('00:00:03').tagName).toBe('TIME');
 });
 
 test('changing the fixed cadence restarts its visible countdown immediately', () => {

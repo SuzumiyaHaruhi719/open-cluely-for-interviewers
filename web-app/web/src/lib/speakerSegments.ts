@@ -5,6 +5,8 @@ export interface SpeakerSegment {
   speakerId: number;
   role: SpeakerRole;
   text: string;
+  /** Client arrival time for the first FINAL folded into this visible turn. */
+  createdAtMs?: number;
 }
 
 /** Effective role = client override (from a one-tap toggle) if present, else the server's label. */
@@ -21,7 +23,13 @@ export function effectiveRole(
  *  have none and must NOT create segments). */
 export function appendSegment(
   segments: SpeakerSegment[],
-  args: { id: number; speakerId: number; role: SpeakerRole; text: string }
+  args: {
+    id: number;
+    speakerId: number;
+    role: SpeakerRole;
+    text: string;
+    createdAtMs?: number;
+  }
 ): SpeakerSegment[] {
   // Coalesce consecutive finals from the SAME speaker into one growing bubble,
   // so a multi-sentence turn renders as one segment (not "一段一段"). A different
@@ -31,7 +39,16 @@ export function appendSegment(
     const text = last.text ? `${last.text} ${args.text}` : args.text;
     return [...segments.slice(0, -1), { ...last, role: args.role, text }];
   }
-  return [...segments, { id: args.id, speakerId: args.speakerId, role: args.role, text: args.text }];
+  return [
+    ...segments,
+    {
+      id: args.id,
+      speakerId: args.speakerId,
+      role: args.role,
+      text: args.text,
+      createdAtMs: args.createdAtMs ?? Date.now()
+    }
+  ];
 }
 
 /** Re-label every segment belonging to a speaker id (after a one-tap toggle). */

@@ -31,6 +31,8 @@ export interface CopilotQuestionEvent {
   id: string;
   anchorSeq: number | null;
   result: CopilotResult;
+  /** Client arrival time used by the transcript's elapsed-time gutter. */
+  createdAtMs?: number;
 }
 
 /** Per-source transcript: committed finals + the live (in-flight) partial. */
@@ -467,7 +469,8 @@ export function useCopilotSocket(): CopilotSocket {
           const event: CopilotQuestionEvent = {
             id: message.requestId,
             anchorSeq: message.anchorSeq ?? fallbackAnchor,
-            result: message
+            result: message,
+            createdAtMs: Date.now()
           };
           setQuestionEvents((prev) =>
             prev.some((existing) => existing.id === event.id) ? prev : [...prev, event]
@@ -586,7 +589,8 @@ export function useCopilotSocket(): CopilotSocket {
               id: segSeqRef.current++,
               speakerId: sid,
               role,
-              text
+              text,
+              createdAtMs: Date.now()
             });
             speakerSegmentsRef.current = next;
             return next;
@@ -625,11 +629,16 @@ export function useCopilotSocket(): CopilotSocket {
         // without clusters, finalized semantic turns) after enough evidence.
         // Replace the provisional unknown-role list atomically so past bubbles,
         // the candidate buffer, and future manual corrections share one view.
+        const previousTimes = new Map(
+          speakerSegmentsRef.current.map((segment) => [segment.id, segment.createdAtMs])
+        );
+        const partitionedAt = Date.now();
         const next = message.segments.map((segment) => ({
           id: segment.seq,
           speakerId: segment.speakerId,
           role: effectiveRole(segment.speakerId, segment.role, roleOverrideRef.current),
-          text: segment.text
+          text: segment.text,
+          createdAtMs: previousTimes.get(segment.seq) ?? partitionedAt
         }));
         speakerSegmentsRef.current = next;
         setSpeakerSegments(next);

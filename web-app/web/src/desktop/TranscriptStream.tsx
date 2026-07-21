@@ -18,6 +18,7 @@ export type TranscriptRole = 'candidate' | 'interviewer' | 'ai' | 'note';
 export interface TranscriptMessage {
   role: TranscriptRole;
   text: string;
+  createdAtMs?: number;
 }
 
 interface TranscriptStreamProps {
@@ -63,6 +64,8 @@ interface TranscriptStreamProps {
   speakerSegments?: SpeakerSegment[];
   /** One-tap role override for a speaker id (offline only). */
   onSetSpeakerRole?: (speakerId: number, role: SpeakerRole) => void;
+  /** First capture start; arrival timestamps render as elapsed interview time. */
+  startedAtMs?: number | null;
 }
 
 interface LaneLineProps {
@@ -70,9 +73,24 @@ interface LaneLineProps {
   text: string;
   live?: boolean;
   onLiveReveal?: () => void;
+  createdAtMs?: number;
+  startedAtMs?: number | null;
 }
 
 const LIVE_CAPTION_INTERVAL_MS = 20;
+
+export function formatTranscriptTime(
+  createdAtMs: number | undefined,
+  startedAtMs: number | null | undefined
+): string {
+  const arrival = Number.isFinite(createdAtMs) ? (createdAtMs as number) : (startedAtMs ?? 0);
+  const base = Number.isFinite(startedAtMs) ? (startedAtMs as number) : arrival;
+  const totalSeconds = Math.max(0, Math.floor((arrival - base) / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return [hours, minutes, seconds].map((value) => String(value).padStart(2, '0')).join(':');
+}
 
 type GraphemeSegmenter = {
   segment: (input: string) => Iterable<{ segment: string }>;
@@ -147,9 +165,20 @@ function ProgressiveLiveText({ text, onReveal }: { text: string; onReveal?: () =
 }
 
 /** One transcript line — desktop `.chat-message.lane-candidate|interviewer`. */
-function LaneLine({ lane, text, live = false, onLiveReveal }: LaneLineProps) {
+function LaneLine({
+  lane,
+  text,
+  live = false,
+  onLiveReveal,
+  createdAtMs,
+  startedAtMs
+}: LaneLineProps) {
+  const timestamp = formatTranscriptTime(createdAtMs, startedAtMs);
   return (
     <div className={`chat-message lane-${lane}${live ? ' is-live' : ''}`}>
+      <time className="transcript-time" dateTime={`PT${Math.max(0, Math.floor(((createdAtMs ?? startedAtMs ?? 0) - (startedAtMs ?? createdAtMs ?? 0)) / 1000))}S`}>
+        {timestamp}
+      </time>
       <div className="message-header">
         <span className="message-icon" aria-hidden="true">
           {lane === 'candidate' ? '◐' : lane === 'interviewer' ? '●' : '○'}
@@ -170,9 +199,20 @@ function LaneLine({ lane, text, live = false, onLiveReveal }: LaneLineProps) {
  * Deliberately NOT the full question card: replayed history shows the question
  * text only, while LIVE results still render the rich `QuestionCard` below.
  */
-function AiLine({ text }: { text: string }) {
+function AiLine({
+  text,
+  createdAtMs,
+  startedAtMs
+}: {
+  text: string;
+  createdAtMs?: number;
+  startedAtMs?: number | null;
+}) {
   return (
     <div className="chat-message lane-ai">
+      <time className="transcript-time">
+        {formatTranscriptTime(createdAtMs, startedAtMs)}
+      </time>
       <div className="message-header">
         <span className="message-icon" aria-hidden="true">
           ✦
@@ -185,9 +225,20 @@ function AiLine({ text }: { text: string }) {
 }
 
 /** A manual interviewer note added to the context — `.chat-message.lane-note`. */
-function NoteLine({ text }: { text: string }) {
+function NoteLine({
+  text,
+  createdAtMs,
+  startedAtMs
+}: {
+  text: string;
+  createdAtMs?: number;
+  startedAtMs?: number | null;
+}) {
   return (
     <div className="chat-message lane-note">
+      <time className="transcript-time">
+        {formatTranscriptTime(createdAtMs, startedAtMs)}
+      </time>
       <div className="message-header">
         <span className="message-icon" aria-hidden="true">
           📝
@@ -291,7 +342,8 @@ export function TranscriptStream({
   autoIntervalMs = 30000,
   autoGenerate = false,
   capturing = false,
-  lastAutoFireAt = null
+  lastAutoFireAt = null,
+  startedAtMs = null
 }: TranscriptStreamProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -355,6 +407,7 @@ export function TranscriptStream({
       trigger={event.result.trigger}
       pickedHint={event.id === newestQuestionId ? pickedHint : null}
       onPickCandidate={onPickCandidate}
+      timelineTime={formatTranscriptTime(event.createdAtMs, startedAtMs)}
     />
   );
 
@@ -370,12 +423,34 @@ export function TranscriptStream({
       {/* Seeded (sample) or loaded (session) conversation, before the live lanes. */}
       {transcriptMessages.map((message, index) => {
         if (message.role === 'ai') {
-          return <AiLine key={`seed-${index}`} text={message.text} />;
+          return (
+            <AiLine
+              key={`seed-${index}`}
+              text={message.text}
+              createdAtMs={message.createdAtMs}
+              startedAtMs={startedAtMs}
+            />
+          );
         }
         if (message.role === 'note') {
-          return <NoteLine key={`seed-${index}`} text={message.text} />;
+          return (
+            <NoteLine
+              key={`seed-${index}`}
+              text={message.text}
+              createdAtMs={message.createdAtMs}
+              startedAtMs={startedAtMs}
+            />
+          );
         }
-        return <LaneLine key={`seed-${index}`} lane={message.role} text={message.text} />;
+        return (
+          <LaneLine
+            key={`seed-${index}`}
+            lane={message.role}
+            text={message.text}
+            createdAtMs={message.createdAtMs}
+            startedAtMs={startedAtMs}
+          />
+        );
       })}
 
       {showSpeakers ? (
@@ -399,6 +474,9 @@ export function TranscriptStream({
             return (
               <Fragment key={seg.id}>
                 <div className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}>
+                  <time className="transcript-time">
+                    {formatTranscriptTime(seg.createdAtMs, startedAtMs)}
+                  </time>
                   <div className="message-header">
                     <span className="message-icon" aria-hidden="true">
                       {icon}
@@ -430,21 +508,21 @@ export function TranscriptStream({
             );
           })}
           {offline && (speakerSegments ?? []).length === 0 && mic.finalText ? (
-            <LaneLine lane="candidate" text={mic.finalText} />
+            <LaneLine lane="candidate" text={mic.finalText} startedAtMs={startedAtMs} />
           ) : null}
           {/* Native speaker IDs are attached only to finalized ASR runs.
               Keep the provider's rolling partial visible as a neutral live line
               until that run finalizes and semantic role assignment can label it. */}
-          {display.partial ? <LaneLine lane="unknown" text={display.partial} live onLiveReveal={scrollToLatest} /> : null}
-          {mic.partial ? <LaneLine lane="unknown" text={mic.partial} live onLiveReveal={scrollToLatest} /> : null}
+          {display.partial ? <LaneLine lane="unknown" text={display.partial} live onLiveReveal={scrollToLatest} startedAtMs={startedAtMs} /> : null}
+          {mic.partial ? <LaneLine lane="unknown" text={mic.partial} live onLiveReveal={scrollToLatest} startedAtMs={startedAtMs} /> : null}
         </>
       ) : (
         <>
-          {display.finalText ? <LaneLine lane="candidate" text={display.finalText} /> : null}
-          {display.partial ? <LaneLine lane="candidate" text={display.partial} live onLiveReveal={scrollToLatest} /> : null}
+          {display.finalText ? <LaneLine lane="candidate" text={display.finalText} startedAtMs={startedAtMs} /> : null}
+          {display.partial ? <LaneLine lane="candidate" text={display.partial} live onLiveReveal={scrollToLatest} startedAtMs={startedAtMs} /> : null}
 
-          {mic.finalText ? <LaneLine lane="interviewer" text={mic.finalText} /> : null}
-          {mic.partial ? <LaneLine lane="interviewer" text={mic.partial} live onLiveReveal={scrollToLatest} /> : null}
+          {mic.finalText ? <LaneLine lane="interviewer" text={mic.finalText} startedAtMs={startedAtMs} /> : null}
+          {mic.partial ? <LaneLine lane="interviewer" text={mic.partial} live onLiveReveal={scrollToLatest} startedAtMs={startedAtMs} /> : null}
         </>
       )}
 
