@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { AudioSource } from '@open-cluely/contract';
-import { Desktop, LockOpen, Microphone } from '@phosphor-icons/react';
+import { Desktop } from '@phosphor-icons/react/Desktop';
+import { LockOpen } from '@phosphor-icons/react/LockOpen';
+import { Microphone } from '@phosphor-icons/react/Microphone';
 import type { AudioState } from '../lib/useCopilotSocket';
 import { supportsDisplayAudio } from '../lib/audioCapture';
 

@@ -22,6 +22,8 @@ import './desktop-ui/interview-type.css';
 import './desktop-ui/settings.css';
 // Web-only additions: question-card sub-blocks + the namespaced Question Bank.
 import './web-extras.css';
+// Final GLP simplification layer for the one-shot interviewer experience.
+import './desktop-ui/one-shot-interview.css';
 
 const container = document.getElementById('root');
 if (!container) {

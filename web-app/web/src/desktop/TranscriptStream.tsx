@@ -1,5 +1,10 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import type { OutputLanguage, SpeakerRole } from '@open-cluely/contract';
+import { NotePencil } from '@phosphor-icons/react/NotePencil';
+import { Question } from '@phosphor-icons/react/Question';
+import { Sparkle } from '@phosphor-icons/react/Sparkle';
+import { User } from '@phosphor-icons/react/User';
+import { UsersThree } from '@phosphor-icons/react/UsersThree';
 import type {
   CopilotProgress,
   CopilotQuestionEvent,
@@ -115,6 +120,18 @@ function commonPrefixLength(left: string[], right: string[]): number {
   return index;
 }
 
+function TranscriptRoleIcon({ lane }: { lane: 'candidate' | 'interviewer' | 'unknown' }) {
+  const iconProps = {
+    size: 15,
+    weight: 'fill' as const,
+    'data-icon-library': 'phosphor',
+    'aria-hidden': true
+  };
+  if (lane === 'candidate') return <User {...iconProps} />;
+  if (lane === 'interviewer') return <UsersThree {...iconProps} />;
+  return <Question {...iconProps} />;
+}
+
 /** Smooth provider-sized rolling hypotheses into a legible character stream.
  * Durable finals never pass through this component and therefore land at once. */
 function ProgressiveLiveText({ text, onReveal }: { text: string; onReveal?: () => void }) {
@@ -181,7 +198,7 @@ function LaneLine({
       </time>
       <div className="message-header">
         <span className="message-icon" aria-hidden="true">
-          {lane === 'candidate' ? '◐' : lane === 'interviewer' ? '●' : '○'}
+          <TranscriptRoleIcon lane={lane} />
         </span>
         <span className="message-label">
           {live ? '输入中…' : lane === 'candidate' ? '候选人' : lane === 'interviewer' ? '你' : '说话人'}
@@ -215,7 +232,7 @@ function AiLine({
       </time>
       <div className="message-header">
         <span className="message-icon" aria-hidden="true">
-          ✦
+          <Sparkle size={15} weight="fill" data-icon-library="phosphor" />
         </span>
         <span className="message-label">AI</span>
       </div>
@@ -241,7 +258,7 @@ function NoteLine({
       </time>
       <div className="message-header">
         <span className="message-icon" aria-hidden="true">
-          📝
+          <NotePencil size={15} weight="fill" data-icon-library="phosphor" />
         </span>
         <span className="message-label">备注</span>
       </div>
@@ -464,7 +481,7 @@ export function TranscriptStream({
             // Never present unresolved semantic evidence as a confident identity.
             // The explicit pending label remains actionable through the manual role
             // controls while the server's final audit is still inconclusive.
-            const icon = seg.role === 'interviewer' ? '●' : seg.role === 'candidate' ? '◐' : '○';
+            const lane = roleToLane(seg.role);
             const label =
               seg.role === 'interviewer'
                 ? '面试官'
@@ -473,13 +490,13 @@ export function TranscriptStream({
                   : `待确认 · 说话人 ${seg.speakerId}`;
             return (
               <Fragment key={seg.id}>
-                <div className={`chat-message lane-${roleToLane(seg.role)} has-role-toggle`}>
+                <div className={`chat-message lane-${lane} has-role-toggle`}>
                   <time className="transcript-time">
                     {formatTranscriptTime(seg.createdAtMs, startedAtMs)}
                   </time>
                   <div className="message-header">
                     <span className="message-icon" aria-hidden="true">
-                      {icon}
+                      <TranscriptRoleIcon lane={lane} />
                     </span>
                     <span className="message-label">{label}</span>
                     <span className="speaker-role-actions">

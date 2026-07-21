@@ -51,6 +51,15 @@ afterEach(() => {
 });
 
 describe('QuestionCard ranked candidates', () => {
+  test('uses the product icon library instead of a decorative text glyph', () => {
+    const { container } = render(
+      <QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} />
+    );
+
+    expect(container.querySelector('[data-icon-library="phosphor"]')).not.toBeNull();
+    expect(container.textContent).not.toContain('✦');
+  });
+
   test('renders the primary question with the top-pick score badge', () => {
     render(<QuestionCard output={OUTPUT} mode="expert" tokensUsed={TOKENS} elapsedMs={1200} ranked={RANKED} />);
 

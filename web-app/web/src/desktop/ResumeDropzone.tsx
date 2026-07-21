@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { UploadSimple, X } from '@phosphor-icons/react';
+import { UploadSimple } from '@phosphor-icons/react/UploadSimple';
+import { X } from '@phosphor-icons/react/X';
 import { extractResume, ApiError } from '../lib/api';
 import {
   RESUME_ACCEPT_ATTR,

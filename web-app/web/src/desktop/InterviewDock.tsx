@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { AudioSource } from '@open-cluely/contract';
-import { PaperPlaneRight, Record } from '@phosphor-icons/react';
+import { PaperPlaneRight } from '@phosphor-icons/react/PaperPlaneRight';
+import { Record } from '@phosphor-icons/react/Record';
 import type { AudioLanes } from '../lib/useCopilotSocket';
 import { ChannelCard } from './ChannelCard';
 

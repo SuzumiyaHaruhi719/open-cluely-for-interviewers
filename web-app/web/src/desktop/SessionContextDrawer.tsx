@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import type { SessionContextState } from '@open-cluely/contract';
-import { Brain, X } from '@phosphor-icons/react';
+import { Brain } from '@phosphor-icons/react/Brain';
+import { X } from '@phosphor-icons/react/X';
 import { SessionContextPanel } from './SessionContextPanel';
 
 interface SessionContextDrawerProps {

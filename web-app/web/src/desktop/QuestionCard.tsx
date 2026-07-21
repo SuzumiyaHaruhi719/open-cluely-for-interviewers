@@ -5,6 +5,7 @@ import type {
   RankedQuestion,
   TokenUsage
 } from '@open-cluely/contract';
+import { Sparkle } from '@phosphor-icons/react/Sparkle';
 import { followUpCopyFor } from '../lib/followUpCopy';
 
 interface QuestionCardProps {
@@ -108,7 +109,7 @@ export function QuestionCard({
       ) : null}
       <div className="message-header question-card__header">
         <span className="message-icon" aria-hidden="true">
-          ✦
+          <Sparkle size={15} weight="fill" data-icon-library="phosphor" />
         </span>
         <span className="message-label">{copy.cardLabel}</span>
         {triggerLabel ? (

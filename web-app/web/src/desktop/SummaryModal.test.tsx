@@ -58,8 +58,10 @@ describe('SummaryModal states', () => {
       />
     );
 
-    expect(screen.getByText('⏱ 00:00')).toBeInTheDocument();
-    expect(screen.queryByText(/⏱ -/)).not.toBeInTheDocument();
+    expect(screen.getByText('00:00')).toBeInTheDocument();
+    expect(screen.queryByText(/-/)).not.toBeInTheDocument();
+    expect(document.querySelector('[data-icon-library="phosphor"]')).not.toBeNull();
+    expect(document.body.textContent).not.toContain('⏱');
   });
 
   test('error state shows the failure banner with the message', () => {

@@ -1,10 +1,8 @@
 import type { Ref } from 'react';
-import {
-  Brain,
-  CheckCircle,
-  StopCircle,
-  Trash
-} from '@phosphor-icons/react';
+import { Brain } from '@phosphor-icons/react/Brain';
+import { CheckCircle } from '@phosphor-icons/react/CheckCircle';
+import { StopCircle } from '@phosphor-icons/react/StopCircle';
+import { Trash } from '@phosphor-icons/react/Trash';
 
 interface InterviewHeaderProps {
   title: string;

@@ -1,4 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { Timer } from '@phosphor-icons/react/Timer';
+import { X } from '@phosphor-icons/react/X';
 import type { SummaryState } from '../lib/useCopilotSocket';
 
 /** Format elapsed seconds as mm:ss. */
@@ -143,9 +145,7 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
             aria-label="关闭"
             onClick={onClose}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z" />
-            </svg>
+            <X size={14} weight="bold" data-icon-library="phosphor" aria-hidden="true" />
           </button>
         </header>
 
@@ -160,7 +160,10 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
                 />
               </div>
               <div className="summary-modal__progress-meta">
-                <span className="summary-modal__progress-elapsed">⏱ {elapsedStr}</span>
+                <span className="summary-modal__progress-elapsed">
+                  <Timer size={14} data-icon-library="phosphor" aria-hidden="true" />
+                  {elapsedStr}
+                </span>
                 {summary.tokens > 0 ? (
                   <span className="summary-modal__progress-tokens">
                     {summary.tokens.toLocaleString()} 令牌

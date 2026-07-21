@@ -70,6 +70,18 @@ test('renders a stable elapsed timestamp beside a finalized speaker turn', () =>
   expect(screen.getByText('00:00:03').tagName).toBe('TIME');
 });
 
+test('uses the product icon library for transcript roles instead of text glyphs', () => {
+  const { container } = renderStream([
+    { role: 'candidate', text: '候选人回答' },
+    { role: 'interviewer', text: '面试官追问' },
+    { role: 'ai', text: '专家建议' },
+    { role: 'note', text: '面试备注' }
+  ]);
+
+  expect(container.querySelectorAll('[data-icon-library="phosphor"]')).toHaveLength(4);
+  expect(container.textContent).not.toMatch(/[✦◐●○📝]/u);
+});
+
 test('changing the fixed cadence restarts its visible countdown immediately', () => {
   vi.useFakeTimers();
   vi.setSystemTime(new Date('2026-07-20T00:00:00Z'));
