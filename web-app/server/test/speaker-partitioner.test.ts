@@ -776,6 +776,51 @@ test('per-turn semantic authority outranks an opposite delegated cohort', async 
   assert.deepEqual(interviewers.map((turn) => turn.seq), [0, 2]);
 });
 
+test('display cohort evaluation never delays role-confirmed Auto callbacks', async () => {
+  const candidates: SpeakerTurn[] = [];
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const p = createSpeakerPartitioner({
+    classify: async (turns) =>
+      classificationForTurns(turns, [
+        { speakerId: 10, role: 'interviewer', confidence: 0.98 },
+        { speakerId: 20, role: 'candidate', confidence: 0.98 }
+      ]),
+    cohortHarness: {
+      async evaluate() {
+        await gate;
+      },
+      getRole() {
+        return {
+          state: 'observing' as const,
+          role: 'unknown' as const,
+          confidence: 0,
+          evidenceSeqs: [],
+          contradictionSeqs: [],
+          evaluatedRevision: -1
+        };
+      },
+      reset() {}
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onPartition: () => {}
+  });
+  p.setEnabled(true);
+  p.record({ seq: 0, source: 'mic', speakerId: 10, text: '请说明你在项目中的具体职责。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 20, text: '我负责制定计划、协调人员并跟进最终验收结果。' });
+
+  const finalizing = p.finalize();
+  await new Promise<void>((resolve) => setImmediate(resolve));
+
+  assert.deepEqual(candidates.map((turn) => turn.seq), [1]);
+  release();
+  await finalizing;
+});
+
 test('native clusters weak-correct one clear answer without remapping the shared acoustic id', async () => {
   const partitions: any[] = [];
   const candidates: SpeakerTurn[] = [];

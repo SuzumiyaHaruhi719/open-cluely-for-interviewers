@@ -865,14 +865,6 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           confirmedForCohort.push({ ...semantic });
         }
       }
-      await cohortHarness.evaluate({
-        turns: snapshot,
-        confirmed: confirmedForCohort,
-        manualSpeakerIds,
-        final: status === 'final'
-      });
-      if (scheduledEpoch !== epoch) return;
-
       const authorityPreliminary = snapshot.map((turn): ResolvedSpeakerTurn => {
         const semanticRole = roleByTurn.get(turn.seq)?.role ?? 'unknown';
         let role = semanticRole;
@@ -932,6 +924,15 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           deps.onInterviewerTurn?.(turn);
         }
       }
+      // Cohort assimilation is display refinement. Release role-confirmed Auto
+      // evidence first so an 8s cohort timeout can never delay Expert cadence.
+      await cohortHarness.evaluate({
+        turns: snapshot,
+        confirmed: confirmedForCohort,
+        manualSpeakerIds,
+        final: status === 'final'
+      });
+      if (scheduledEpoch !== epoch) return;
       const displayResolved = authorityResolved.map((entry): ResolvedSpeakerTurn => {
         if (entry.role !== 'unknown' || typeof entry.turn.speakerId !== 'number') return entry;
         const cohort = cohortHarness.getRole(entry.turn.speakerId);
