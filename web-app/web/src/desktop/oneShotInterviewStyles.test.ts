@@ -20,4 +20,24 @@ describe('one-shot interview layout contracts', () => {
     )?.groups?.body ?? '';
     expect(sourceRule).toMatch(/height:\s*29px/);
   });
+
+  test('constrains the transcript to a visible independently scrollable viewport', () => {
+    const workspaceRule = css.match(
+      /\.interview-workspace\s*\{(?<body>[\s\S]*?)\}/
+    )?.groups?.body ?? '';
+    const stageRules = Array.from(css.matchAll(/\.interview-stage\s*\{(?<body>[\s\S]*?)\}/g));
+    const stageRule = stageRules.at(-1)?.groups?.body ?? '';
+    const messagesRule = css.match(
+      /\.one-shot-app \.chat-messages\s*\{(?<body>[\s\S]*?)\}/
+    )?.groups?.body ?? '';
+
+    expect(workspaceRule).toMatch(/display:\s*grid/);
+    expect(workspaceRule).toMatch(/grid-template-rows:\s*minmax\(0,\s*1fr\)/);
+    expect(stageRule).toMatch(/height:\s*100%/);
+    expect(messagesRule).toMatch(/overflow-y:\s*auto/);
+    expect(messagesRule).toMatch(/overscroll-behavior-y:\s*contain/);
+    expect(messagesRule).toMatch(/scrollbar-gutter:\s*stable/);
+    expect(messagesRule).toMatch(/scrollbar-width:\s*thin/);
+    expect(messagesRule).toMatch(/touch-action:\s*pan-y/);
+  });
 });

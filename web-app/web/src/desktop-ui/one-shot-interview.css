@@ -757,7 +757,13 @@ select {
 }
 
 .interview-workspace {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
   background: var(--surface-elevated);
+}
+
+.interview-stage {
+  height: 100%;
 }
 
 .one-shot-app .chat-messages {
@@ -771,6 +777,10 @@ select {
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  touch-action: pan-y;
   background: var(--surface-elevated);
   scroll-padding-bottom: 64px;
 }

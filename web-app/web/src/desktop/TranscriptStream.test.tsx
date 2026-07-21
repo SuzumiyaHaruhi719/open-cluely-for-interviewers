@@ -174,6 +174,53 @@ test('reveals provider partials one grapheme at a time while finals land immedia
   expect(screen.getByText(`${partial}。`)).toBeInTheDocument();
 });
 
+test('pauses auto-follow while the interviewer scrolls upward and resumes near the bottom', () => {
+  const baseProps = {
+    transcripts: EMPTY_LANES,
+    lastResult: null,
+    progress: null,
+    isAnalyzing: false,
+    error: null,
+    autoScroll: true
+  };
+  const { rerender } = render(
+    <TranscriptStream
+      {...baseProps}
+      transcriptMessages={[{ role: 'candidate', text: '第一段' }]}
+    />
+  );
+  const log = screen.getByRole('log', { name: '实时转写' });
+  Object.defineProperty(log, 'scrollHeight', { configurable: true, value: 1_000 });
+  Object.defineProperty(log, 'clientHeight', { configurable: true, value: 200 });
+
+  log.scrollTop = 400;
+  fireEvent.scroll(log);
+  rerender(
+    <TranscriptStream
+      {...baseProps}
+      transcriptMessages={[
+        { role: 'candidate', text: '第一段' },
+        { role: 'candidate', text: '第二段' }
+      ]}
+    />
+  );
+  expect(log.scrollTop).toBe(400);
+
+  log.scrollTop = 770;
+  fireEvent.scroll(log);
+  rerender(
+    <TranscriptStream
+      {...baseProps}
+      transcriptMessages={[
+        { role: 'candidate', text: '第一段' },
+        { role: 'candidate', text: '第二段' },
+        { role: 'candidate', text: '第三段' }
+      ]}
+    />
+  );
+  expect(log.scrollTop).toBe(1_000);
+});
+
 describe('TranscriptStream seeded messages', () => {
   test('renders candidate + interviewer messages as colour-coded lanes', () => {
     const messages: TranscriptMessage[] = [

@@ -363,11 +363,19 @@ export function TranscriptStream({
   startedAtMs = null
 }: TranscriptStreamProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const followLatestRef = useRef(true);
 
   const scrollToLatest = useCallback((): void => {
     const el = containerRef.current;
-    if (autoScroll && el) el.scrollTop = el.scrollHeight;
+    if (autoScroll && followLatestRef.current && el) el.scrollTop = el.scrollHeight;
   }, [autoScroll]);
+
+  const onTranscriptScroll = useCallback((): void => {
+    const el = containerRef.current;
+    if (!el) return;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    followLatestRef.current = distanceFromBottom <= 48;
+  }, []);
 
   // Keep the newest content in view as lines / cards arrive (desktop autoscroll).
   // Scroll the CONTAINER (not a trailing sentinel) so `.chat-messages` can be
@@ -434,6 +442,8 @@ export function TranscriptStream({
       className="chat-messages"
       ref={containerRef}
       role="log"
+      tabIndex={0}
+      onScroll={onTranscriptScroll}
       aria-live="polite"
       aria-label="实时转写"
     >
