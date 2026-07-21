@@ -91,10 +91,10 @@
 - `Shell.onSummarize()` remains the only summary-generation entry point.
 - `Shell.onStartInterview()` retains the existing `clearSession()` boundary before the next live workspace begins.
 
-- [ ] Change the Shell lifecycle test to expect the preparation heading immediately after End, no summary dialog, and no summarize frame.
-- [ ] Run the focused Shell test and verify RED because the current handler leaves the ended live workspace mounted.
-- [ ] Implement the minimal lifecycle transition in `onEndInterview()`.
-- [ ] Run focused tests, full tests, build, in-app-browser End-flow QA, commit, and push.
+- [x] Change the Shell lifecycle test to expect the preparation heading immediately after End, no summary dialog, and no summarize frame.
+- [x] Run the focused Shell test and verify RED because the current handler leaves the ended live workspace mounted.
+- [x] Implement the minimal lifecycle transition in `onEndInterview()`.
+- [x] Run focused tests, full tests, build, in-app-browser End-flow QA, commit, and push.
 
 ### Task 1: Lock the one-shot preparation contract
 

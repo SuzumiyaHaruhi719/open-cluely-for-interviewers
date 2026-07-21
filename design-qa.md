@@ -30,7 +30,7 @@
 - P2: transcript, follow-up, summary, and empty-context surfaces used text glyphs or handcrafted SVGs. Replaced with direct Phosphor icon imports.
 - P2: the automatic-context empty card was visually heavier than the drawer. Flattened it to the GLP page surface with a subtle border and no nested shadow.
 - P1: long automatic context had no reliable contained scroll viewport. The drawer body now has `min-height: 0`, vertical scrolling, contained overscroll, stable scrollbar gutter, touch panning, and keyboard focus.
-- P1: End implicitly opened the summary. End now only stops both capture lanes and enters a truthful ended state; the adjacent Summary action independently opens/generates the report.
+- P1: End implicitly opened the summary and later left the interviewer in a dead ended workspace. End now stops both capture lanes and returns directly to preparation; the adjacent Summary action independently opens/generates the report before End.
 - P2: computer and microphone source controls used different geometry and action order. Both now use the same field-first row with equal measured `282.32 × 29 px` source fields at 1280 × 720.
 - P2: the supplied Property Manager JD had disappeared behind a blank textarea. It is restored as the default searchable profile, with custom input disclosed only on explicit selection.
 - Performance: barrel icon imports transformed more than 4,600 modules. Direct icon imports reduce the production build to roughly 100 transformed modules.
@@ -40,7 +40,7 @@
 - Focused JD/header/dock/context/Shell suite: 28 tests passed.
 - Full repository suite: 471 tests passed (6 core, 18 question bank, 232 server, 215 web).
 - Production TypeScript/Vite and server bundle builds passed; Vite transformed 108 modules.
-- In-app-browser QA verified fuzzy search, custom-only textarea, default Property Manager start, independent End/Summary behavior, exact audio-field geometry, and the context scroll contract.
+- In-app-browser QA verified fuzzy search, custom-only textarea, default Property Manager start, independent Summary behavior, End-to-preparation navigation, exact audio-field geometry, and the context scroll contract.
 - Browser runtime log contained only expected summary telemetry; no warnings or errors.
 
 final result: passed
