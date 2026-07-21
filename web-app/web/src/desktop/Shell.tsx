@@ -184,6 +184,11 @@ export function Shell() {
     stopAudio('display');
     stopAudio('mic');
     setInterviewEnded(true);
+    setContextOpen(false);
+    setSummaryOpen(false);
+    setStartedAt(null);
+    setNow(Date.now());
+    setPhase('setup');
   }, [stopAudio]);
 
   const onSummarize = useCallback((): void => {

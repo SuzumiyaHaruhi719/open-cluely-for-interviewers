@@ -286,7 +286,7 @@ describe('Shell one-shot interview workflow', () => {
     expect(screen.getByText('保留的候选人证据')).toBeInTheDocument();
   });
 
-  test('ending only stops capture; manual Summary independently opens the report', async () => {
+  test('returns to preparation when the interview ends', async () => {
     const ws = await enterLiveWorkspace();
     act(() => {
       ws.emit({
@@ -301,8 +301,9 @@ describe('Shell one-shot interview workflow', () => {
 
     fireEvent.click(screen.getByRole('button', { name: '结束面试' }));
 
+    expect(screen.getByRole('heading', { name: '准备本次面试' })).toBeInTheDocument();
     expect(screen.queryByRole('dialog', { name: '面试总结' })).not.toBeInTheDocument();
-    expect(screen.getByText('已结束')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '结束面试' })).not.toBeInTheDocument();
     expect(sentMessages(ws)).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ type: 'audio-control', source: 'display', action: 'stop' }),
@@ -310,9 +311,5 @@ describe('Shell one-shot interview workflow', () => {
       ])
     );
     expect(sentMessages(ws)).not.toContainEqual(expect.objectContaining({ type: 'summarize' }));
-
-    fireEvent.click(screen.getByRole('button', { name: '面试总结' }));
-    expect(screen.getByRole('dialog', { name: '面试总结' })).toBeInTheDocument();
-    expect(sentMessages(ws)).toContainEqual(expect.objectContaining({ type: 'summarize' }));
   });
 });
