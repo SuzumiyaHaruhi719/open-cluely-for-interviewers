@@ -58,6 +58,7 @@ export function summarizeAsrRun(events) {
   const finals = safeEvents.filter(
     (event) => event.message?.type === 'transcript' && event.message.isFinal === true
   );
+  const finalsWithSeq = finals.map((event, seq) => ({ ...event, seq }));
   const speakerIds = Array.from(
     new Set(
       finals
@@ -65,8 +66,11 @@ export function summarizeAsrRun(events) {
         .filter((speakerId) => Number.isInteger(speakerId))
     )
   ).sort((a, b) => a - b);
-  const finalPartitionEvent = safeEvents
-    .filter((event) => event.message?.type === 'speaker-partition' && event.message.status === 'final')
+  const partitionEvents = safeEvents.filter(
+    (event) => event.message?.type === 'speaker-partition'
+  );
+  const finalPartitionEvent = partitionEvents
+    .filter((event) => event.message.status === 'final')
     .at(-1);
   const finalPartitionMessage = finalPartitionEvent?.message;
   const finalPartition = finalPartitionMessage
@@ -85,6 +89,84 @@ export function summarizeAsrRun(events) {
         )
       }
     : null;
+  const assignmentHistories = {};
+  const assignedRolesBySpeaker = new Map();
+  let invalidPartitionCount = 0;
+  for (const event of partitionEvents) {
+    const assignments = Array.isArray(event.message.speakerAssignments)
+      ? event.message.speakerAssignments
+      : [];
+    const byId = new Map();
+    let valid = true;
+    for (const assignment of assignments) {
+      if (!Number.isInteger(assignment?.speakerId) || byId.has(assignment.speakerId)) {
+        valid = false;
+        continue;
+      }
+      byId.set(assignment.speakerId, assignment);
+      const key = String(assignment.speakerId);
+      const history = assignmentHistories[key] ?? [];
+      history.push({
+        atMs: event.at - startedAt,
+        status: event.message.status,
+        role: assignment.role,
+        state: assignment.state,
+        roleSource: assignment.roleSource,
+        confidence: Number(assignment.confidence ?? 0),
+        evidenceVersion: Number(assignment.evidenceVersion ?? 0),
+        updatedAtMs: Number(assignment.updatedAtMs ?? 0),
+        reasonCodes: Array.isArray(assignment.reasonCodes) ? [...assignment.reasonCodes] : []
+      });
+      assignmentHistories[key] = history;
+      if (assignment.role === 'candidate' || assignment.role === 'interviewer') {
+        const roles = assignedRolesBySpeaker.get(assignment.speakerId) ?? new Set();
+        roles.add(assignment.role);
+        assignedRolesBySpeaker.set(assignment.speakerId, roles);
+      }
+    }
+    for (const segment of Array.isArray(event.message.segments) ? event.message.segments : []) {
+      const assignment = byId.get(segment.speakerId);
+      if (!assignment) continue;
+      if (segment.role !== assignment.role || segment.roleSource !== assignment.roleSource) {
+        valid = false;
+      }
+    }
+    if (!valid) invalidPartitionCount += 1;
+  }
+  const mixedRoleSpeakerIds = [...assignedRolesBySpeaker.entries()]
+    .filter(([, roles]) => roles.size > 1)
+    .map(([speakerId]) => speakerId)
+    .sort((a, b) => a - b);
+  const finalAssignments = Array.isArray(finalPartitionMessage?.speakerAssignments)
+    ? finalPartitionMessage.speakerAssignments
+    : [];
+  const finalAssignmentById = new Map(
+    finalAssignments
+      .filter((assignment) => Number.isInteger(assignment?.speakerId))
+      .map((assignment) => [assignment.speakerId, assignment])
+  );
+  const speakerEvidence = new Map();
+  for (const event of finals) {
+    const speakerId = event.message.speakerId;
+    if (!Number.isInteger(speakerId)) continue;
+    const evidence = speakerEvidence.get(speakerId) ?? { utterances: 0, chars: 0 };
+    evidence.utterances += 1;
+    evidence.chars += String(event.message.text ?? '').replace(/\s+/g, '').length;
+    speakerEvidence.set(speakerId, evidence);
+  }
+  const substantiveSpeakerIds = [...speakerEvidence.entries()]
+    .filter(([, evidence]) => evidence.utterances >= 2 && evidence.chars >= 48)
+    .map(([speakerId]) => speakerId)
+    .sort((a, b) => a - b);
+  const pendingSpeakerIds = speakerIds.filter((speakerId) => {
+    const assignment = finalAssignmentById.get(speakerId);
+    return !assignment ||
+      assignment.role === 'unknown' ||
+      (assignment.state !== 'delegated' && assignment.state !== 'manual');
+  });
+  const pendingSubstantiveSpeakerIds = substantiveSpeakerIds.filter((speakerId) =>
+    pendingSpeakerIds.includes(speakerId)
+  );
   const errors = messages.flatMap((message) => {
     if (message.type === 'error') return [String(message.message ?? 'unknown error')];
     if (message.type === 'asr-status' && (message.state === 'failed' || message.state === 'partial')) {
@@ -113,6 +195,36 @@ export function summarizeAsrRun(events) {
       elapsedMs: Number.isFinite(event.message.elapsedMs) ? event.message.elapsedMs : 0,
       atMs: event.at - startedAt
     }));
+  const invalidAutoQuestionIds = safeEvents
+    .filter((event) => event.message?.type === 'result' && event.message.trigger === 'auto')
+    .flatMap((event) => {
+      const requestId = String(event.message.requestId ?? '');
+      const anchorSeq = event.message.anchorSeq;
+      if (!Number.isInteger(anchorSeq)) return [requestId];
+      const anchorFinal = finalsWithSeq.find((candidate) => candidate.seq === anchorSeq);
+      const speakerId = anchorFinal?.message?.speakerId;
+      if (!Number.isInteger(speakerId)) return [requestId];
+      const latestPartition = partitionEvents
+        .filter((partitionEvent) => partitionEvent.at <= event.at)
+        .at(-1);
+      const assignment = Array.isArray(latestPartition?.message?.speakerAssignments)
+        ? latestPartition.message.speakerAssignments.find((entry) => entry.speakerId === speakerId)
+        : undefined;
+      const valid = assignment?.role === 'candidate' &&
+        (assignment.state === 'delegated' || assignment.state === 'manual');
+      return valid ? [] : [requestId];
+    });
+  const qaChecks = {
+    providerLifecycleClean: errors.length === 0,
+    finalPartitionBeforeStopped:
+      finalPartitionEvent !== undefined &&
+      stoppedEvent !== undefined &&
+      safeEvents.indexOf(finalPartitionEvent) < safeEvents.indexOf(stoppedEvent),
+    oneRolePerNativeSpeaker: mixedRoleSpeakerIds.length === 0,
+    validPartitions: invalidPartitionCount === 0,
+    allSubstantiveSpeakersDelegated: pendingSubstantiveSpeakerIds.length === 0,
+    autoQuestionsAnchorDelegatedCandidates: invalidAutoQuestionIds.length === 0
+  };
 
   return {
     statuses,
@@ -122,6 +234,7 @@ export function summarizeAsrRun(events) {
       (message) => message.type === 'transcript' && message.isFinal === false
     ).length,
     speakerIds,
+    substantiveSpeakerIds,
     finalPartition,
     finalPartitionBeforeStopped:
       finalPartitionEvent !== undefined &&
@@ -133,6 +246,14 @@ export function summarizeAsrRun(events) {
     finalTexts: finals.map((event) => String(event.message.text ?? '')),
     autoMonitorStates,
     autoQuestions,
-    autoQuestionCount: autoQuestions.length
+    autoQuestionCount: autoQuestions.length,
+    assignmentHistories,
+    mixedRoleSpeakerIds,
+    pendingSpeakerIds,
+    pendingSubstantiveSpeakerIds,
+    invalidPartitionCount,
+    invalidAutoQuestionIds,
+    qaChecks,
+    qaPassed: Object.values(qaChecks).every(Boolean)
   };
 }

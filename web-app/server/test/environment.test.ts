@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { loadServerEnvironment } from '../src/environment';
-import { resolveServerConfig } from '../src/config';
+import { BALANCED_AUTO_GATE, resolveServerConfig } from '../src/config';
 
 function fixture(): {
   directory: string;
@@ -101,6 +101,21 @@ test('all active model bindings have explicit portable defaults and overrides', 
   assert.equal(overridden.interviewerContextModel, 'context-model');
   assert.equal(overridden.interviewerSummaryModel, 'summary-model');
   assert.equal(overridden.dashscopeBaseUrl, 'https://example.invalid/anthropic');
+});
+
+test('Balanced is the single production Auto gate preset', () => {
+  assert.deepEqual(BALANCED_AUTO_GATE, {
+    profile: 'balanced',
+    cooldownMs: 20_000,
+    minNewChars: 120,
+    debounceMs: 3_000,
+    livenessWaits: 3,
+    livenessChars: 280
+  });
+  const defaults = resolveServerConfig({});
+  assert.equal(defaults.autoCooldownMs, BALANCED_AUTO_GATE.cooldownMs);
+  assert.equal(defaults.autoMinNewChars, BALANCED_AUTO_GATE.minNewChars);
+  assert.equal(defaults.autoDebounceMs, BALANCED_AUTO_GATE.debounceMs);
 });
 
 test('active model callsites source their bindings from centralized server config', () => {

@@ -64,13 +64,17 @@ const DEFAULT_VOLC_RESOURCE_ID = 'volc.seedasr.sauc.duration';
 const DEFAULT_VOLC_MODEL = 'bigmodel';
 // Doubao streams the browser's native 16 kHz mono PCM directly (no downsample).
 const DEFAULT_VOLC_SAMPLE_RATE = 16000;
-// Auto-trigger defaults (see ServerConfig + auto-trigger.ts). Tuned for a live
-// interview cadence: ~20s between auto fires, ~120 new chars (a sentence or two)
-// of fresh candidate speech, and a 3s semantic-final coalescing window. Live ASR
-// partials do not cancel confirmed evidence; confirmed interviewer turns do.
-const DEFAULT_AUTO_COOLDOWN_MS = 20000;
-const DEFAULT_AUTO_MIN_NEW_CHARS = 120;
-const DEFAULT_AUTO_DEBOUNCE_MS = 3000;
+// The product exposes one Auto behavior: Balanced. Keep admission, cadence, and
+// liveness in one named preset so a UI/settings refactor cannot silently combine
+// unrelated heuristics. Environment overrides remain deployment-only controls.
+export const BALANCED_AUTO_GATE = Object.freeze({
+  profile: 'balanced' as const,
+  cooldownMs: 20_000,
+  minNewChars: 120,
+  debounceMs: 3_000,
+  livenessWaits: 3,
+  livenessChars: 280
+});
 const DEFAULT_AUTO_MONITOR_MODEL = 'deepseek-v4-flash';
 
 export function resolveServerConfig(
@@ -104,9 +108,9 @@ export function resolveServerConfig(
     volcModel: String(source.VOLC_MODEL ?? '').trim() || DEFAULT_VOLC_MODEL,
     volcSampleRate: toInt(source.VOLC_SAMPLE_RATE, DEFAULT_VOLC_SAMPLE_RATE),
     // Auto-trigger tuning — all env-overridable.
-    autoCooldownMs: toInt(source.AUTO_COOLDOWN_MS, DEFAULT_AUTO_COOLDOWN_MS),
-    autoMinNewChars: toInt(source.AUTO_MIN_NEW_CHARS, DEFAULT_AUTO_MIN_NEW_CHARS),
-    autoDebounceMs: toInt(source.AUTO_DEBOUNCE_MS, DEFAULT_AUTO_DEBOUNCE_MS),
+    autoCooldownMs: toInt(source.AUTO_COOLDOWN_MS, BALANCED_AUTO_GATE.cooldownMs),
+    autoMinNewChars: toInt(source.AUTO_MIN_NEW_CHARS, BALANCED_AUTO_GATE.minNewChars),
+    autoDebounceMs: toInt(source.AUTO_DEBOUNCE_MS, BALANCED_AUTO_GATE.debounceMs),
     autoMonitorModel:
       String(source.AUTO_MONITOR_MODEL ?? '').trim() || DEFAULT_AUTO_MONITOR_MODEL,
     envPath: ENV_PATH,

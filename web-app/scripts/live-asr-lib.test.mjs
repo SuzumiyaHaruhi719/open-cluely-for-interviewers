@@ -70,6 +70,22 @@ test('summarizeAsrRun separates provider lifecycle, finals, speakers, and final 
       }
     },
     {
+      at: 780,
+      message: {
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          { speakerId: 1, role: 'interviewer', state: 'delegated', roleSource: 'cohort', confidence: 0.96, evidenceVersion: 1, updatedAtMs: 500, reasonCodes: ['two_pass_consensus'] },
+          { speakerId: 2, role: 'candidate', state: 'delegated', roleSource: 'cohort', confidence: 0.95, evidenceVersion: 1, updatedAtMs: 500, reasonCodes: ['two_pass_consensus'] }
+        ],
+        segments: [
+          { seq: 0, speakerId: 1, role: 'interviewer', roleSource: 'cohort', text: '面试官提问' },
+          { seq: 1, speakerId: 2, role: 'candidate', roleSource: 'cohort', text: '候选人回答' }
+        ]
+      }
+    },
+    {
       at: 880,
       message: {
         type: 'result',
@@ -87,9 +103,31 @@ test('summarizeAsrRun separates provider lifecycle, finals, speakers, and final 
         type: 'speaker-partition',
         status: 'final',
         model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 1,
+            role: 'interviewer',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.96,
+            evidenceVersion: 1,
+            updatedAtMs: 500,
+            reasonCodes: ['two_pass_consensus']
+          },
+          {
+            speakerId: 2,
+            role: 'candidate',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.95,
+            evidenceVersion: 1,
+            updatedAtMs: 500,
+            reasonCodes: ['two_pass_consensus']
+          }
+        ],
         segments: [
-          { seq: 0, speakerId: 1, role: 'interviewer', text: '面试官提问' },
-          { seq: 1, speakerId: 2, role: 'candidate', text: '候选人回答' }
+          { seq: 0, speakerId: 1, role: 'interviewer', roleSource: 'cohort', text: '面试官提问' },
+          { seq: 1, speakerId: 2, role: 'candidate', roleSource: 'cohort', text: '候选人回答' }
         ]
       }
     },
@@ -123,4 +161,72 @@ test('summarizeAsrRun separates provider lifecycle, finals, speakers, and final 
     }
   ]);
   assert.equal(report.autoQuestionCount, 1);
+  assert.deepEqual(report.mixedRoleSpeakerIds, []);
+  assert.deepEqual(report.pendingSubstantiveSpeakerIds, []);
+  assert.deepEqual(report.invalidAutoQuestionIds, []);
+  assert.equal(report.invalidPartitionCount, 0);
+  assert.equal(report.qaPassed, true);
+  assert.deepEqual(report.assignmentHistories['2'].map((entry) => entry.role), [
+    'candidate',
+    'candidate'
+  ]);
+});
+
+test('summarizeAsrRun fails QA for mixed assignments, substantive pending ids, and invalid Auto anchors', () => {
+  const report = summarizeAsrRun([
+    { at: 0, message: { type: 'transcript', text: '我负责制定项目计划和跨部门执行。', isFinal: true, speakerId: 7 } },
+    { at: 10, message: { type: 'transcript', text: '我还验证了关键指标并完成复盘闭环。', isFinal: true, speakerId: 7 } },
+    { at: 20, message: { type: 'transcript', text: '另一位说话人的第一段完整证据样本，包含具体项目背景、个人行动和判断依据。', isFinal: true, speakerId: 9 } },
+    { at: 30, message: { type: 'transcript', text: '另一位说话人的第二段完整证据样本，包含量化结果、复盘方法和后续改进。', isFinal: true, speakerId: 9 } },
+    {
+      at: 40,
+      message: {
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          { speakerId: 7, role: 'candidate', state: 'delegated', roleSource: 'cohort', confidence: 0.95, evidenceVersion: 1, updatedAtMs: 40, reasonCodes: [] },
+          { speakerId: 9, role: 'unknown', state: 'observing', roleSource: 'unknown', confidence: 0, evidenceVersion: 1, updatedAtMs: 40, reasonCodes: ['insufficient_evidence'] }
+        ],
+        segments: [
+          { seq: 0, speakerId: 7, role: 'candidate', roleSource: 'cohort', text: '候选人证据' },
+          { seq: 2, speakerId: 9, role: 'unknown', roleSource: 'unknown', text: '待确认证据' }
+        ]
+      }
+    },
+    {
+      at: 50,
+      message: {
+        type: 'result',
+        requestId: 'bad-auto',
+        trigger: 'auto',
+        anchorSeq: 2,
+        elapsedMs: 100,
+        output: { primary_question: '错误锚点问题？' }
+      }
+    },
+    {
+      at: 60,
+      message: {
+        type: 'speaker-partition',
+        status: 'final',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          { speakerId: 7, role: 'interviewer', state: 'delegated', roleSource: 'cohort', confidence: 0.95, evidenceVersion: 3, updatedAtMs: 60, reasonCodes: [] },
+          { speakerId: 9, role: 'unknown', state: 'contested', roleSource: 'unknown', confidence: 0, evidenceVersion: 3, updatedAtMs: 60, reasonCodes: ['opposite_role_contradictions'] }
+        ],
+        segments: [
+          { seq: 0, speakerId: 7, role: 'interviewer', roleSource: 'cohort', text: '角色翻转' },
+          { seq: 2, speakerId: 9, role: 'candidate', roleSource: 'unknown', text: '无效冲突' }
+        ]
+      }
+    },
+    { at: 70, message: { type: 'asr-status', state: 'stopped' } }
+  ]);
+
+  assert.deepEqual(report.mixedRoleSpeakerIds, [7]);
+  assert.deepEqual(report.pendingSubstantiveSpeakerIds, [9]);
+  assert.deepEqual(report.invalidAutoQuestionIds, ['bad-auto']);
+  assert.equal(report.invalidPartitionCount, 1);
+  assert.equal(report.qaPassed, false);
 });

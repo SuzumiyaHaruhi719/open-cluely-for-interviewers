@@ -24,6 +24,8 @@ Options:
   --out report.json               Save the JSON evidence report
   --auto-generate                 Enable continuous Flash delegation + Expert question generation
   --no-diarize                    Disable final DeepSeek role partition
+  --job-description-file FILE     UTF-8 JD context supplied to Expert
+  --interview-guide-file FILE     JSON string[] or one scorecard item per line
 `);
   process.exit(0);
 }
@@ -36,6 +38,8 @@ const frameMs = Number(valueOf('--frame-ms', '40'));
 const speed = Number(valueOf('--speed', '1'));
 const limitSeconds = Number(valueOf('--limit-seconds', '0'));
 const outPath = valueOf('--out');
+const jobDescriptionFile = valueOf('--job-description-file');
+const interviewGuideFile = valueOf('--interview-guide-file');
 const { autoGenerate, diarize } = parseLiveAsrOptions(argv);
 
 if (!['volc', 'paraformer'].includes(provider)) {
@@ -47,6 +51,29 @@ if (!Number.isFinite(frameMs) || frameMs < 20 || frameMs > 200) {
   throw new Error('--frame-ms must be between 20 and 200');
 }
 if (!Number.isFinite(speed) || speed <= 0 || speed > 8) throw new Error('--speed must be in (0, 8]');
+if (jobDescriptionFile && !fs.existsSync(path.resolve(jobDescriptionFile))) {
+  throw new Error(`JD file not found: ${path.resolve(jobDescriptionFile)}`);
+}
+if (interviewGuideFile && !fs.existsSync(path.resolve(interviewGuideFile))) {
+  throw new Error(`Interview guide file not found: ${path.resolve(interviewGuideFile)}`);
+}
+
+const jobDescription = jobDescriptionFile
+  ? fs.readFileSync(path.resolve(jobDescriptionFile), 'utf8').trim()
+  : '物业经理：负责园区现场运营、安全消防、人员管理、设备维护与租户服务。';
+let interviewGuide;
+if (interviewGuideFile) {
+  const rawGuide = fs.readFileSync(path.resolve(interviewGuideFile), 'utf8').trim();
+  try {
+    const parsedGuide = JSON.parse(rawGuide);
+    if (!Array.isArray(parsedGuide) || parsedGuide.some((entry) => typeof entry !== 'string')) {
+      throw new Error('not a string array');
+    }
+    interviewGuide = parsedGuide.map((entry) => entry.trim()).filter(Boolean);
+  } catch {
+    interviewGuide = rawGuide.split(/\r?\n/).map((entry) => entry.trim()).filter(Boolean);
+  }
+}
 
 const parsed = parsePcm16Wav(fs.readFileSync(audioPath));
 const bytesPerFrame = Math.round((parsed.sampleRate * parsed.channels * (parsed.bitsPerSample / 8) * frameMs) / 1000);
@@ -121,7 +148,8 @@ send({
     autoGenerate,
     diarize,
     resetGeneration: true,
-    jobDescription: '物业经理：负责园区现场运营、安全消防、人员管理、设备维护与租户服务。'
+    jobDescription,
+    ...(interviewGuide?.length ? { interviewGuide } : {})
   }
 });
 send({ type: 'audio-control', action: 'start', source });
@@ -141,6 +169,7 @@ try {
 }
 
 const playbackStartedAt = Date.now();
+let playbackFinishedAt = playbackStartedAt;
 if (startState?.state === 'live') {
   let seq = 0;
   let nextAt = performance.now();
@@ -158,6 +187,7 @@ if (startState?.state === 'live') {
     const delay = nextAt - performance.now();
     if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
   }
+  playbackFinishedAt = Date.now();
 }
 
 send({ type: 'audio-control', action: 'stop', source });
@@ -176,6 +206,21 @@ try {
 
 await new Promise((resolve) => setTimeout(resolve, 100));
 socket.close();
+const summary = summarizeAsrRun(events);
+const streamPlaybackMs = playbackFinishedAt - playbackStartedAt;
+const expectedPlaybackMs = audioDurationMs / speed;
+const playbackToleranceMs = Math.max(1_500, expectedPlaybackMs * 0.02);
+const runQaChecks = {
+  ...summary.qaChecks,
+  realtimePlayback:
+    startState?.state === 'live' &&
+    Math.abs(streamPlaybackMs - expectedPlaybackMs) <= playbackToleranceMs,
+  autoQuestionObserved: !autoGenerate || summary.autoQuestionCount > 0,
+  expertLatencyUnder10s:
+    !autoGenerate ||
+    (summary.autoQuestions.length > 0 &&
+      summary.autoQuestions.every((question) => question.elapsedMs > 0 && question.elapsedMs < 10_000))
+};
 const report = {
   provider,
   source,
@@ -183,10 +228,16 @@ const report = {
   audioPath,
   audioDurationMs,
   wallPlaybackMs: Date.now() - playbackStartedAt,
+  streamPlaybackMs,
   frameMs,
   speed,
   autoGenerate,
-  ...summarizeAsrRun(events),
+  autoGateProfile: 'balanced',
+  jobDescriptionFile: jobDescriptionFile ? path.resolve(jobDescriptionFile) : null,
+  interviewGuideFile: interviewGuideFile ? path.resolve(interviewGuideFile) : null,
+  ...summary,
+  qaChecks: runQaChecks,
+  qaPassed: Object.values(runQaChecks).every(Boolean),
   transcripts: events
     .filter((event) => event.message.type === 'transcript')
     .map((event) => ({
