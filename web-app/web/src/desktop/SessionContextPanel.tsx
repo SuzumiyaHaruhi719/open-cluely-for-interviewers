@@ -1,9 +1,19 @@
 import type { CompetencyStatus, SessionContextState } from '@open-cluely/contract';
 import { FileText } from '@phosphor-icons/react/FileText';
+import { formatTranscriptTime } from './TranscriptStream';
+
+export interface SessionContextNote {
+  text: string;
+  createdAtMs?: number;
+}
 
 interface SessionContextPanelProps {
   /** Latest live session-context from the server, or null before the first analysis. */
   state: SessionContextState | null;
+  /** Interviewer notes, shown even before the first model-generated context arrives. */
+  notes?: readonly SessionContextNote[];
+  /** First capture start, used to render note times on the interview clock. */
+  startedAtMs?: number | null;
 }
 
 /** Bilingual status label for a competency chip. */
@@ -22,13 +32,30 @@ const STATUS_LABEL: Record<CompetencyStatus, string> = {
  * Until the first analysis arrives (state === null) it shows a bilingual empty
  * state. Empty individual sections are omitted so the panel only shows signal.
  */
-export function SessionContextPanel({ state }: SessionContextPanelProps) {
+export function SessionContextPanel({
+  state,
+  notes = [],
+  startedAtMs = null
+}: SessionContextPanelProps) {
   const competencies = Array.isArray(state?.competencies) ? state.competencies : [];
   const topics = Array.isArray(state?.topics) ? state.topics : [];
   const gaps = Array.isArray(state?.gaps) ? state.gaps : [];
+  const orderedNotes = notes
+    .map((note, sourceIndex) => ({ note, sourceIndex }))
+    .sort((left, right) => {
+      const leftTime = left.note.createdAtMs;
+      const rightTime = right.note.createdAtMs;
+      const leftTimed = Number.isFinite(leftTime);
+      const rightTimed = Number.isFinite(rightTime);
+      if (leftTimed && rightTimed && leftTime !== rightTime) {
+        return (leftTime as number) - (rightTime as number);
+      }
+      if (leftTimed !== rightTimed) return leftTimed ? -1 : 1;
+      return left.sourceIndex - right.sourceIndex;
+    })
+    .map(({ note }) => note);
   const hasContent =
-    !!state &&
-    (competencies.length > 0 || topics.length > 0 || gaps.length > 0);
+    competencies.length > 0 || topics.length > 0 || gaps.length > 0 || orderedNotes.length > 0;
 
   if (!hasContent) {
     return (
@@ -48,6 +75,22 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
 
   return (
     <div id="session-context" className="session-context">
+      {orderedNotes.length > 0 && (
+        <section className="ctx-block ctx-block--notes">
+          <h3 className="ctx-block__title">面试备注</h3>
+          <ol className="ctx-notes">
+            {orderedNotes.map((note, index) => (
+              <li className="ctx-note" key={`${note.createdAtMs ?? 'untimed'}-${index}`}>
+                <time className="ctx-note__time">
+                  {formatTranscriptTime(note.createdAtMs, startedAtMs)}
+                </time>
+                <span className="ctx-note__text">{note.text}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
       {competencies.length > 0 && (
         <section className="ctx-block">
           <h3 className="ctx-block__title">能力维度</h3>

@@ -2,16 +2,24 @@ import { useEffect } from 'react';
 import type { SessionContextState } from '@open-cluely/contract';
 import { Brain } from '@phosphor-icons/react/Brain';
 import { X } from '@phosphor-icons/react/X';
-import { SessionContextPanel } from './SessionContextPanel';
+import { SessionContextPanel, type SessionContextNote } from './SessionContextPanel';
 
 interface SessionContextDrawerProps {
   open: boolean;
   state: SessionContextState | null;
+  notes?: readonly SessionContextNote[];
+  startedAtMs?: number | null;
   onClose: () => void;
 }
 
 /** Single-purpose drawer for the server's continuously consolidated context. */
-export function SessionContextDrawer({ open, state, onClose }: SessionContextDrawerProps) {
+export function SessionContextDrawer({
+  open,
+  state,
+  notes = [],
+  startedAtMs = null,
+  onClose
+}: SessionContextDrawerProps) {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent): void => {
@@ -52,7 +60,7 @@ export function SessionContextDrawer({ open, state, onClose }: SessionContextDra
         aria-label="自动会话上下文内容"
         tabIndex={open ? 0 : -1}
       >
-        <SessionContextPanel state={state} />
+        <SessionContextPanel state={state} notes={notes} startedAtMs={startedAtMs} />
       </div>
     </aside>
   );

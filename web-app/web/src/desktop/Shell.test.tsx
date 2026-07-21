@@ -245,11 +245,18 @@ describe('Shell one-shot interview workflow', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: '添加备注' }));
 
-    expect(screen.getByText('追问消防演练频率')).toBeInTheDocument();
+    expect(
+      within(screen.getByRole('log', { name: '实时转写' })).getByText('追问消防演练频率')
+    ).toBeInTheDocument();
     expect(sentMessages(ws)).toContainEqual(
       expect.objectContaining({ type: 'context-note', note: '追问消防演练频率' })
     );
     expect(screen.getByRole('button', { name: '手动追问' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: '打开会话上下文' }));
+    const context = screen.getByRole('complementary', { name: '会话上下文' });
+    expect(within(context).getByRole('heading', { name: '面试备注' })).toBeInTheDocument();
+    expect(within(context).getByText('追问消防演练频率')).toBeInTheDocument();
   });
 
   test('manual Expert question sends confirmed candidate evidence through the existing analyze path', async () => {

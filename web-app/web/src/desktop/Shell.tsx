@@ -201,6 +201,14 @@ export function Shell() {
     [addContextNote]
   );
 
+  const contextNotes = useMemo(
+    () =>
+      transcriptMessages
+        .filter((message) => message.role === 'note')
+        .map(({ text, createdAtMs }) => ({ text, createdAtMs })),
+    [transcriptMessages]
+  );
+
   const closeContext = useCallback((): void => {
     setContextOpen(false);
     window.requestAnimationFrame(() => contextButtonRef.current?.focus());
@@ -289,7 +297,13 @@ export function Shell() {
           />
         </main>
 
-        <SessionContextDrawer open={contextOpen} state={sessionContext} onClose={closeContext} />
+        <SessionContextDrawer
+          open={contextOpen}
+          state={sessionContext}
+          notes={contextNotes}
+          startedAtMs={startedAt}
+          onClose={closeContext}
+        />
       </div>
 
       <InterviewDock

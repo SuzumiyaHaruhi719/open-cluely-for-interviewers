@@ -272,6 +272,73 @@ function roleToLane(role: SpeakerRole): 'candidate' | 'interviewer' | 'unknown' 
   return role === 'interviewer' ? 'interviewer' : role === 'candidate' ? 'candidate' : 'unknown';
 }
 
+type SpeakerTimelineItem =
+  | {
+      kind: 'message';
+      key: string;
+      createdAtMs?: number;
+      sourceIndex: number;
+      message: TranscriptMessage;
+    }
+  | {
+      kind: 'segment';
+      key: string;
+      createdAtMs?: number;
+      sourceIndex: number;
+      segment: SpeakerSegment;
+    };
+
+function hasTimelineTime(item: SpeakerTimelineItem): item is SpeakerTimelineItem & { createdAtMs: number } {
+  return Number.isFinite(item.createdAtMs);
+}
+
+/**
+ * Merge manually-added notes/history with diarized ASR turns by arrival time.
+ * Imported history without timestamps stays before the live interview. Native
+ * segments always receive an arrival time, but an untimed defensive fallback is
+ * kept at the tail. If speech and a note share the same millisecond, speech is
+ * rendered first so the annotation reads as a response to that evidence.
+ */
+function mergeSpeakerTimeline(
+  messages: readonly TranscriptMessage[],
+  segments: readonly SpeakerSegment[]
+): SpeakerTimelineItem[] {
+  const items: SpeakerTimelineItem[] = [
+    ...messages.map((message, sourceIndex) => ({
+      kind: 'message' as const,
+      key: `message-${sourceIndex}`,
+      createdAtMs: message.createdAtMs,
+      sourceIndex,
+      message
+    })),
+    ...segments.map((segment, sourceIndex) => ({
+      kind: 'segment' as const,
+      key: `segment-${segment.id}`,
+      createdAtMs: segment.createdAtMs,
+      sourceIndex,
+      segment
+    }))
+  ];
+
+  return items.sort((left, right) => {
+    const leftTimed = hasTimelineTime(left);
+    const rightTimed = hasTimelineTime(right);
+
+    if (!leftTimed || !rightTimed) {
+      if (!leftTimed && !rightTimed) {
+        if (left.kind !== right.kind) return left.kind === 'message' ? -1 : 1;
+        return left.sourceIndex - right.sourceIndex;
+      }
+      if (!leftTimed) return left.kind === 'message' ? -1 : 1;
+      return right.kind === 'message' ? 1 : -1;
+    }
+
+    if (left.createdAtMs !== right.createdAtMs) return left.createdAtMs - right.createdAtMs;
+    if (left.kind !== right.kind) return left.kind === 'segment' ? -1 : 1;
+    return left.sourceIndex - right.sourceIndex;
+  });
+}
+
 /**
  * Server partitions coalesce consecutive same-role ASR turns and retain the
  * first turn's seq as the visible bubble id. Auto can anchor to a later seq
@@ -419,6 +486,7 @@ export function TranscriptStream({
     ? questionEvents.filter((event) => questionAnchorIds.get(event.id) === null)
     : questionEvents;
   const newestQuestionId = questionEvents.at(-1)?.id;
+  const speakerTimeline = mergeSpeakerTimeline(transcriptMessages, visibleSegments);
 
   const renderQuestion = (event: CopilotQuestionEvent) => (
     <QuestionCard
@@ -436,6 +504,85 @@ export function TranscriptStream({
     />
   );
 
+  const renderTranscriptMessage = (message: TranscriptMessage, key: string) => {
+    if (message.role === 'ai') {
+      return (
+        <AiLine
+          key={key}
+          text={message.text}
+          createdAtMs={message.createdAtMs}
+          startedAtMs={startedAtMs}
+        />
+      );
+    }
+    if (message.role === 'note') {
+      return (
+        <NoteLine
+          key={key}
+          text={message.text}
+          createdAtMs={message.createdAtMs}
+          startedAtMs={startedAtMs}
+        />
+      );
+    }
+    return (
+      <LaneLine
+        key={key}
+        lane={message.role}
+        text={message.text}
+        createdAtMs={message.createdAtMs}
+        startedAtMs={startedAtMs}
+      />
+    );
+  };
+
+  const renderSpeakerSegment = (seg: SpeakerSegment, key: string) => {
+    // Never present unresolved semantic evidence as a confident identity. The
+    // pending label remains actionable while the server audit is inconclusive.
+    const lane = roleToLane(seg.role);
+    const label =
+      seg.role === 'interviewer'
+        ? '面试官'
+        : seg.role === 'candidate'
+          ? '候选人'
+          : `待确认 · 说话人 ${seg.speakerId}`;
+    return (
+      <Fragment key={key}>
+        <div className={`chat-message lane-${lane} has-role-toggle`}>
+          <time className="transcript-time">
+            {formatTranscriptTime(seg.createdAtMs, startedAtMs)}
+          </time>
+          <div className="message-header">
+            <span className="message-icon" aria-hidden="true">
+              <TranscriptRoleIcon lane={lane} />
+            </span>
+            <span className="message-label">{label}</span>
+            <span className="speaker-role-actions">
+              <button
+                type="button"
+                className={`speaker-role-toggle${seg.role === 'interviewer' ? ' is-active' : ''}`}
+                onClick={() => onSetSpeakerRole?.(seg.speakerId, 'interviewer')}
+              >
+                面试官
+              </button>
+              <button
+                type="button"
+                className={`speaker-role-toggle${seg.role === 'candidate' ? ' is-active' : ''}`}
+                onClick={() => onSetSpeakerRole?.(seg.speakerId, 'candidate')}
+              >
+                候选人
+              </button>
+            </span>
+          </div>
+          <div className="message-content">{seg.text}</div>
+        </div>
+        {questionEvents
+          .filter((event) => questionAnchorIds.get(event.id) === seg.id)
+          .map(renderQuestion)}
+      </Fragment>
+    );
+  };
+
   return (
     <div
       id="chat-messages"
@@ -447,39 +594,6 @@ export function TranscriptStream({
       aria-live="polite"
       aria-label="实时转写"
     >
-      {/* Seeded (sample) or loaded (session) conversation, before the live lanes. */}
-      {transcriptMessages.map((message, index) => {
-        if (message.role === 'ai') {
-          return (
-            <AiLine
-              key={`seed-${index}`}
-              text={message.text}
-              createdAtMs={message.createdAtMs}
-              startedAtMs={startedAtMs}
-            />
-          );
-        }
-        if (message.role === 'note') {
-          return (
-            <NoteLine
-              key={`seed-${index}`}
-              text={message.text}
-              createdAtMs={message.createdAtMs}
-              startedAtMs={startedAtMs}
-            />
-          );
-        }
-        return (
-          <LaneLine
-            key={`seed-${index}`}
-            lane={message.role}
-            text={message.text}
-            createdAtMs={message.createdAtMs}
-            startedAtMs={startedAtMs}
-          />
-        );
-      })}
-
       {showSpeakers ? (
         // Diarized speaker bubbles (offline single-mic OR online Doubao, which
         // carries its own speaker id). Each bubble offers the 面试官/候选人 toggle.
@@ -487,53 +601,11 @@ export function TranscriptStream({
         // diarization tags a speaker (sidecar resolving/unavailable), plus the
         // live partial for real-time feedback.
         <>
-          {visibleSegments.map((seg) => {
-            // Never present unresolved semantic evidence as a confident identity.
-            // The explicit pending label remains actionable through the manual role
-            // controls while the server's final audit is still inconclusive.
-            const lane = roleToLane(seg.role);
-            const label =
-              seg.role === 'interviewer'
-                ? '面试官'
-                : seg.role === 'candidate'
-                  ? '候选人'
-                  : `待确认 · 说话人 ${seg.speakerId}`;
-            return (
-              <Fragment key={seg.id}>
-                <div className={`chat-message lane-${lane} has-role-toggle`}>
-                  <time className="transcript-time">
-                    {formatTranscriptTime(seg.createdAtMs, startedAtMs)}
-                  </time>
-                  <div className="message-header">
-                    <span className="message-icon" aria-hidden="true">
-                      <TranscriptRoleIcon lane={lane} />
-                    </span>
-                    <span className="message-label">{label}</span>
-                    <span className="speaker-role-actions">
-                      <button
-                        type="button"
-                        className={`speaker-role-toggle${seg.role === 'interviewer' ? ' is-active' : ''}`}
-                        onClick={() => onSetSpeakerRole?.(seg.speakerId, 'interviewer')}
-                      >
-                        面试官
-                      </button>
-                      <button
-                        type="button"
-                        className={`speaker-role-toggle${seg.role === 'candidate' ? ' is-active' : ''}`}
-                        onClick={() => onSetSpeakerRole?.(seg.speakerId, 'candidate')}
-                      >
-                        候选人
-                      </button>
-                    </span>
-                  </div>
-                  <div className="message-content">{seg.text}</div>
-                </div>
-                {questionEvents
-                  .filter((event) => questionAnchorIds.get(event.id) === seg.id)
-                  .map(renderQuestion)}
-              </Fragment>
-            );
-          })}
+          {speakerTimeline.map((item) =>
+            item.kind === 'message'
+              ? renderTranscriptMessage(item.message, item.key)
+              : renderSpeakerSegment(item.segment, item.key)
+          )}
           {offline && (speakerSegments ?? []).length === 0 && mic.finalText ? (
             <LaneLine lane="candidate" text={mic.finalText} startedAtMs={startedAtMs} />
           ) : null}
@@ -545,6 +617,10 @@ export function TranscriptStream({
         </>
       ) : (
         <>
+          {/* Imported/session history has no native speaker timeline to merge into. */}
+          {transcriptMessages.map((message, index) =>
+            renderTranscriptMessage(message, `message-${index}`)
+          )}
           {display.finalText ? <LaneLine lane="candidate" text={display.finalText} startedAtMs={startedAtMs} /> : null}
           {display.partial ? <LaneLine lane="candidate" text={display.partial} live onLiveReveal={scrollToLatest} startedAtMs={startedAtMs} /> : null}
 

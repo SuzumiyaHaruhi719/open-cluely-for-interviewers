@@ -434,6 +434,49 @@ describe('TranscriptStream offline speaker bubbles', () => {
 });
 
 describe('TranscriptStream online native-speaker bubbles', () => {
+  it('merges timestamped notes between speaker turns instead of prepending them', () => {
+    const { container } = render(
+      <TranscriptStream
+        offline={false}
+        startedAtMs={1_000}
+        speakerSegments={[
+          {
+            id: 1,
+            speakerId: 1,
+            role: 'interviewer',
+            roleSource: 'semantic-turn',
+            text: '第一段转写',
+            createdAtMs: 2_000
+          },
+          {
+            id: 2,
+            speakerId: 2,
+            role: 'candidate',
+            roleSource: 'semantic-turn',
+            text: '第二段转写',
+            createdAtMs: 5_000
+          }
+        ]}
+        transcripts={EMPTY_LANES}
+        transcriptMessages={[
+          { role: 'note', text: '按时间插入的备注', createdAtMs: 3_500 }
+        ]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+
+    const timeline = Array.from(container.querySelectorAll('.chat-message')).map(
+      (node) => node.textContent ?? ''
+    );
+    expect(timeline[0]).toContain('第一段转写');
+    expect(timeline[1]).toContain('按时间插入的备注');
+    expect(timeline[2]).toContain('第二段转写');
+  });
+
   it('online (offline=false) WITH speaker segments: renders the labelable bubbles + toggles', () => {
     const onSetRole = vi.fn();
     render(
