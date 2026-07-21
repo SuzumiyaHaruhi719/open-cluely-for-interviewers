@@ -434,6 +434,46 @@ describe('TranscriptStream offline speaker bubbles', () => {
 });
 
 describe('TranscriptStream online native-speaker bubbles', () => {
+  it('preserves canonical speaker order when an earlier ASR turn finalized later', () => {
+    const { container } = render(
+      <TranscriptStream
+        offline={false}
+        startedAtMs={1_000}
+        speakerSegments={[
+          {
+            id: 8,
+            speakerId: 1,
+            role: 'candidate',
+            roleSource: 'semantic-turn',
+            text: '嗯，准备好了。',
+            createdAtMs: 5_000
+          },
+          {
+            id: 3,
+            speakerId: 0,
+            role: 'interviewer',
+            roleSource: 'semantic-turn',
+            text: '好，请坐。谢谢。',
+            createdAtMs: 2_000
+          }
+        ]}
+        transcripts={EMPTY_LANES}
+        transcriptMessages={[]}
+        lastResult={null}
+        progress={null}
+        isAnalyzing={false}
+        error={null}
+        autoScroll={false}
+      />
+    );
+
+    const timeline = Array.from(container.querySelectorAll('.chat-message')).map(
+      (node) => node.textContent ?? ''
+    );
+    expect(timeline[0]).toContain('嗯，准备好了。');
+    expect(timeline[1]).toContain('好，请坐。谢谢。');
+  });
+
   it('merges timestamped notes between speaker turns instead of prepending them', () => {
     const { container } = render(
       <TranscriptStream

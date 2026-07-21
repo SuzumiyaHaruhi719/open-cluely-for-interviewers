@@ -353,6 +353,11 @@ export function useCopilotSocket(): CopilotSocket {
   // Speaker-segment state for native clusters and Flash semantic partitioning.
   const roleOverrideRef = useRef<Map<number, SpeakerRole>>(new Map());
   const segSeqRef = useRef(0);
+  // Preserve the arrival time of EVERY raw final by its server-aligned sequence.
+  // Visible provisional bubbles may coalesce consecutive finals and discard a
+  // bubble id; a later semantic partition can split them again and needs each
+  // original timestamp rather than the much later partition arrival time.
+  const finalTurnTimesRef = useRef<Map<number, number>>(new Map());
   const speakerSegmentsRef = useRef<SpeakerSegment[]>([]);
 
   const latestSegmentId = useCallback((): number | null => {
@@ -579,19 +584,24 @@ export function useCopilotSocket(): CopilotSocket {
             : { finalText: lane.finalText, partial: text };
           return { ...prev, [source]: next };
         });
+        const finalSeq = isFinal ? segSeqRef.current++ : null;
+        const finalAt = finalSeq === null ? null : Date.now();
+        if (finalSeq !== null && finalAt !== null) {
+          finalTurnTimesRef.current.set(finalSeq, finalAt);
+        }
         // Native-cluster ASR: append finals that carry a real speakerId. Text-only
         // providers are populated later by a `speaker-partition` message.
-        if (isFinal && typeof message.speakerId === 'number') {
+        if (finalSeq !== null && typeof message.speakerId === 'number') {
           const sid = message.speakerId;
           const role = effectiveRole(sid, message.speaker, roleOverrideRef.current);
           setSpeakerSegments((prev) => {
             const next = appendSegment(prev, {
-              id: segSeqRef.current++,
+              id: finalSeq,
               speakerId: sid,
               role,
               roleSource: roleOverrideRef.current.has(sid) ? 'manual' : 'unknown',
               text,
-              createdAtMs: Date.now()
+              createdAtMs: finalAt ?? undefined
             });
             speakerSegmentsRef.current = next;
             return next;
@@ -642,7 +652,10 @@ export function useCopilotSocket(): CopilotSocket {
             ? 'manual' as const
             : segment.roleSource,
           text: segment.text,
-          createdAtMs: previousTimes.get(segment.seq) ?? partitionedAt
+          createdAtMs:
+            finalTurnTimesRef.current.get(segment.seq) ??
+            previousTimes.get(segment.seq) ??
+            partitionedAt
         }));
         speakerSegmentsRef.current = next;
         setSpeakerSegments(next);
@@ -983,6 +996,7 @@ export function useCopilotSocket(): CopilotSocket {
     speakerSegmentsRef.current = [];
     roleOverrideRef.current.clear();
     segSeqRef.current = 0;
+    finalTurnTimesRef.current.clear();
   }, []);
 
   // Reset the live conversation to a clean slate for a NEW interview so the

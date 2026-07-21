@@ -288,55 +288,67 @@ type SpeakerTimelineItem =
       segment: SpeakerSegment;
     };
 
-function hasTimelineTime(item: SpeakerTimelineItem): item is SpeakerTimelineItem & { createdAtMs: number } {
-  return Number.isFinite(item.createdAtMs);
-}
-
 /**
- * Merge manually-added notes/history with diarized ASR turns by arrival time.
- * Imported history without timestamps stays before the live interview. Native
- * segments always receive an arrival time, but an untimed defensive fallback is
- * kept at the tail. If speech and a note share the same millisecond, speech is
- * rendered first so the annotation reads as a response to that evidence.
+ * Insert manually-added notes/history around the server's canonical diarized
+ * turn order. Doubao's accurate second pass can finalize an earlier utterance
+ * after later audio, so arrival timestamps may position annotations but must
+ * NEVER sort speaker turns against one another. Imported history without
+ * timestamps stays before the live interview. Exact-time ties put speech first.
  */
 function mergeSpeakerTimeline(
   messages: readonly TranscriptMessage[],
   segments: readonly SpeakerSegment[]
 ): SpeakerTimelineItem[] {
-  const items: SpeakerTimelineItem[] = [
-    ...messages.map((message, sourceIndex) => ({
+  const messageItems: SpeakerTimelineItem[] = messages.map((message, sourceIndex) => ({
       kind: 'message' as const,
       key: `message-${sourceIndex}`,
       createdAtMs: message.createdAtMs,
       sourceIndex,
       message
-    })),
-    ...segments.map((segment, sourceIndex) => ({
+    }));
+  const segmentItems: SpeakerTimelineItem[] = segments.map((segment, sourceIndex) => ({
       kind: 'segment' as const,
       key: `segment-${segment.id}`,
       createdAtMs: segment.createdAtMs,
       sourceIndex,
       segment
-    }))
-  ];
+    }));
 
-  return items.sort((left, right) => {
-    const leftTimed = hasTimelineTime(left);
-    const rightTimed = hasTimelineTime(right);
+  const untimedMessages = messageItems.filter((item) => !Number.isFinite(item.createdAtMs));
+  const timedMessages = messageItems
+    .filter((item): item is SpeakerTimelineItem & { createdAtMs: number } =>
+      Number.isFinite(item.createdAtMs)
+    )
+    .sort((left, right) =>
+      left.createdAtMs === right.createdAtMs
+        ? left.sourceIndex - right.sourceIndex
+        : left.createdAtMs - right.createdAtMs
+    );
+  const messageSlots = Array.from(
+    { length: segmentItems.length + 1 },
+    (): SpeakerTimelineItem[] => []
+  );
 
-    if (!leftTimed || !rightTimed) {
-      if (!leftTimed && !rightTimed) {
-        if (left.kind !== right.kind) return left.kind === 'message' ? -1 : 1;
-        return left.sourceIndex - right.sourceIndex;
-      }
-      if (!leftTimed) return left.kind === 'message' ? -1 : 1;
-      return right.kind === 'message' ? 1 : -1;
+  for (const message of timedMessages) {
+    let slot = 0;
+    let sawTimedSegment = false;
+    for (const [index, segment] of segmentItems.entries()) {
+      if (!Number.isFinite(segment.createdAtMs)) continue;
+      sawTimedSegment = true;
+      if ((segment.createdAtMs as number) <= message.createdAtMs) slot = index + 1;
     }
+    // If no segment carries a usable timestamp, preserve every canonical turn
+    // first and put the timestamped annotation at the current live tail.
+    if (!sawTimedSegment) slot = segmentItems.length;
+    messageSlots[slot].push(message);
+  }
 
-    if (left.createdAtMs !== right.createdAtMs) return left.createdAtMs - right.createdAtMs;
-    if (left.kind !== right.kind) return left.kind === 'segment' ? -1 : 1;
-    return left.sourceIndex - right.sourceIndex;
-  });
+  const timeline: SpeakerTimelineItem[] = [...untimedMessages];
+  for (let index = 0; index <= segmentItems.length; index += 1) {
+    timeline.push(...messageSlots[index]);
+    if (index < segmentItems.length) timeline.push(segmentItems[index]);
+  }
+  return timeline;
 }
 
 /**

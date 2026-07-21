@@ -640,6 +640,73 @@ describe('useCopilotSocket', () => {
     ]);
   });
 
+  test('semantic repartition restores every raw final timestamp after a provisional bubble splits', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => {
+      MockWebSocket.last().open();
+    });
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+    const now = vi.spyOn(Date, 'now');
+
+    now.mockReturnValue(1_000);
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '准备好了吗？',
+        isFinal: true,
+        speakerId: 0,
+        speaker: 'unknown'
+      });
+    });
+    now.mockReturnValue(2_000);
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '嗯，准备好了。',
+        isFinal: true,
+        speakerId: 0,
+        speaker: 'unknown'
+      });
+    });
+
+    // The provisional acoustic view coalesces consecutive finals with one raw
+    // speaker id, but the semantic pass may later split them into distinct roles.
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(1));
+    now.mockReturnValue(10_000);
+    act(() => {
+      socket.emit({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        segments: [
+          {
+            seq: 0,
+            speakerId: 0,
+            role: 'interviewer',
+            roleSource: 'semantic-turn',
+            text: '准备好了吗？'
+          },
+          {
+            seq: 1,
+            speakerId: 0,
+            role: 'candidate',
+            roleSource: 'semantic-turn',
+            text: '嗯，准备好了。'
+          }
+        ]
+      });
+    });
+
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(2));
+    expect(result.current.speakerSegments.map((segment) => segment.createdAtMs)).toEqual([
+      1_000,
+      2_000
+    ]);
+  });
+
   test('surfaces server error messages', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
