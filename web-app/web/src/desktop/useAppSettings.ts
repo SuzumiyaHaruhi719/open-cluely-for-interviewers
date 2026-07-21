@@ -35,7 +35,7 @@ const SUMMARY_MODELS: ReadonlySet<string> = new Set([
 ]);
 
 export interface AppSettings {
-  /** Shared room-microphone device used by Settings, Composer, and audio capture. */
+  /** Room-microphone device selected on the main page and used by audio capture. */
   micDeviceId: string;
   /** Post-interview evaluation model; realtime Expert remains fixed separately. */
   summaryModel: SummaryModel;

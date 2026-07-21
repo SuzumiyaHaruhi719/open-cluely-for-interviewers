@@ -11,11 +11,10 @@ const ESSENTIAL_SETTINGS = {
 function renderSettings(settings: AppSettings = ESSENTIAL_SETTINGS) {
   const callbacks = {
     onClose: vi.fn(),
-    onMicDeviceChange: vi.fn(),
     onSummaryModelChange: vi.fn()
   };
 
-  render(<SettingsModal open settings={settings} micDeviceDisabled={false} {...callbacks} />);
+  render(<SettingsModal open settings={settings} {...callbacks} />);
   return callbacks;
 }
 
@@ -28,7 +27,8 @@ describe('SettingsModal essentials', () => {
     expect(screen.queryByText(/讯飞|Paraformer/)).not.toBeInTheDocument();
     expect(screen.queryByLabelText('语音合成')).not.toBeInTheDocument();
     expect(screen.queryByText(/Qwen Audio 3\.0/)).not.toBeInTheDocument();
-    expect(screen.getByLabelText('麦克风')).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: '音频' })).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('麦克风')).not.toBeInTheDocument();
     expect(screen.queryByRole('checkbox', { name: '自动追问' })).not.toBeInTheDocument();
     expect(screen.queryByText('专家追问')).not.toBeInTheDocument();
     expect(screen.queryByLabelText('触发方式')).not.toBeInTheDocument();
@@ -64,17 +64,4 @@ describe('SettingsModal essentials', () => {
     expect(callbacks.onSummaryModelChange).toHaveBeenCalledWith('deepseek-v4-flash');
   });
 
-  test('locks capture-owned controls while recording without hiding their values', () => {
-    const callbacks = {
-      onClose: vi.fn(),
-      onMicDeviceChange: vi.fn(),
-      onSummaryModelChange: vi.fn()
-    };
-
-    render(<SettingsModal open settings={ESSENTIAL_SETTINGS} micDeviceDisabled {...callbacks} />);
-
-    expect(screen.getByLabelText('麦克风')).toBeDisabled();
-    expect(screen.getByText('停止录音后可切换设备')).toBeInTheDocument();
-    expect(screen.queryByLabelText('语音识别')).not.toBeInTheDocument();
-  });
 });

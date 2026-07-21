@@ -480,8 +480,6 @@ export function Shell() {
           appSettings.setSummaryModel(value);
           pushConfig({ summaryModel: value });
         }}
-        onMicDeviceChange={appSettings.setMicDeviceId}
-        micDeviceDisabled={capturing}
       />
 
       <SpotlightTour replayToken={tourReplayToken} />

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { CloseIcon } from './icons';
-import { useMicDevices } from './useMicDevices';
 import type {
   AppSettings,
   SummaryModel
@@ -10,8 +9,6 @@ interface SettingsModalProps {
   open: boolean;
   settings: AppSettings;
   onClose: () => void;
-  onMicDeviceChange: (deviceId: string) => void;
-  micDeviceDisabled: boolean;
   onSummaryModelChange: (value: SummaryModel) => void;
 }
 
@@ -27,13 +24,10 @@ export function SettingsModal({
   open,
   settings,
   onClose,
-  onMicDeviceChange,
-  micDeviceDisabled,
   onSummaryModelChange
 }: SettingsModalProps) {
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
-  const { devices } = useMicDevices(open);
 
   useEffect(() => {
     if (open) {
@@ -93,40 +87,6 @@ export function SettingsModal({
         </div>
 
         <div className="settings-body settings-body--compact">
-          <section className="settings-section settings-section--card" aria-labelledby="audio-settings-title">
-            <div className="settings-section__head">
-              <div>
-                <h3 id="audio-settings-title" className="settings-section__title">
-                  音频
-                </h3>
-                <p className="settings-section__hint">选择本次面试使用的麦克风</p>
-              </div>
-            </div>
-
-            <div className="settings-field">
-              <label className="settings-field__label" htmlFor="setting-mic-device">
-                麦克风
-              </label>
-              <select
-                id="setting-mic-device"
-                className="settings-select"
-                value={settings.micDeviceId}
-                disabled={micDeviceDisabled}
-                onChange={(event) => onMicDeviceChange(event.target.value)}
-              >
-                <option value="">系统默认麦克风</option>
-                {devices.map((device) => (
-                  <option key={device.deviceId} value={device.deviceId}>
-                    {device.label}
-                  </option>
-                ))}
-              </select>
-              {micDeviceDisabled ? (
-                <span className="settings-field__desc">停止录音后可切换设备</span>
-              ) : null}
-            </div>
-          </section>
-
           <section className="settings-section settings-section--card" aria-labelledby="report-settings-title">
             <div className="settings-section__head">
               <div>
