@@ -19,6 +19,7 @@
 
 import type { SessionContextState, CompetencyStatus, SessionCompetency } from '@open-cluely/contract';
 import { chat, chatStream, getDefaultModel, type ChatOptions, type ChatStreamEvent } from './dashscope';
+import { config } from './config';
 import type { SummaryTelemetry } from './summary-telemetry';
 
 /** The light model used for the incremental session-context call. */
@@ -29,12 +30,20 @@ const DEFAULT_SUMMARY_MODEL = 'deepseek-v4-pro';
 
 /** Resolve the session-context model: env override, else the light default. */
 export function getContextModel(): string {
-  return String(process.env.INTERVIEWER_CONTEXT_MODEL ?? '').trim() || DEFAULT_CONTEXT_MODEL;
+  return (
+    String(process.env.INTERVIEWER_CONTEXT_MODEL ?? '').trim() ||
+    config.interviewerContextModel ||
+    DEFAULT_CONTEXT_MODEL
+  );
 }
 
 /** Resolve the summary model: env override (INTERVIEWER_SUMMARY_MODEL), else v4-pro. */
 export function getSummaryModel(): string {
-  return String(process.env.INTERVIEWER_SUMMARY_MODEL ?? '').trim() || DEFAULT_SUMMARY_MODEL;
+  return (
+    String(process.env.INTERVIEWER_SUMMARY_MODEL ?? '').trim() ||
+    config.interviewerSummaryModel ||
+    DEFAULT_SUMMARY_MODEL
+  );
 }
 
 // Keep the transcript window we hand the model bounded — the live panel only

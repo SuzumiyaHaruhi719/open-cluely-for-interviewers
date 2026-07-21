@@ -1,5 +1,6 @@
 import type { AudioSource, SpeakerRole } from '@open-cluely/contract';
 import { chat, type ChatOptions } from './dashscope';
+import { config } from './config';
 
 export const MIN_COHORT_UTTERANCES = 2;
 export const MIN_COHORT_TOTAL_CHARS = 48;
@@ -87,7 +88,6 @@ export interface SpeakerCohortHarnessDeps {
   audit?: (packet: CohortEvidencePacket, pass: CohortAuditPass) => Promise<CohortAudit | null>;
 }
 
-const DEFAULT_COHORT_MODEL = 'deepseek-v4-flash';
 const COHORT_TIMEOUT_MS = 8_000;
 const MAX_COHORT_INPUT_CHARS = 7_000;
 const COHORT_SYSTEM = [
@@ -414,7 +414,7 @@ export async function classifySpeakerCohort(
   pass: CohortAuditPass,
   deps: ClassifySpeakerCohortDeps = {}
 ): Promise<CohortAudit | null> {
-  const model = String(deps.model || DEFAULT_COHORT_MODEL).trim() || DEFAULT_COHORT_MODEL;
+  const model = String(deps.model || config.speakerPartitionModel).trim() || config.speakerPartitionModel;
   const response = await (deps.chat ?? chat)({
     system: COHORT_SYSTEM,
     messages: [{ role: 'user', content: buildCohortAuditInput(packet, pass) }],

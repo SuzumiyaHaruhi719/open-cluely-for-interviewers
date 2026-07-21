@@ -1,12 +1,13 @@
 import type { AudioSource, SpeakerRole } from '@open-cluely/contract';
 import { chat } from './dashscope';
+import { config } from './config';
 import {
   createSpeakerCohortHarness,
   type ConfirmedTurnRole,
   type SpeakerCohortHarness
 } from './speaker-cohort';
 
-export const SPEAKER_PARTITION_MODEL = 'deepseek-v4-flash';
+export const SPEAKER_PARTITION_MODEL = config.speakerPartitionModel;
 const CLASSIFY_TIMEOUT_MS = 8_000;
 const MAX_INPUT_CHARS = 6_000;
 const MIN_CONTENT_CHARS = 4;

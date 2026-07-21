@@ -66,7 +66,7 @@ export interface ChatOptions {
 
 /** The Anthropic-shape base URL (`.../apps/anthropic`) from the desktop config. */
 export function getDashscopeBaseUrl(): string {
-  return String(coreConfig.getDashscopeBaseUrl());
+  return config.dashscopeBaseUrl || String(coreConfig.getDashscopeBaseUrl());
 }
 
 /**

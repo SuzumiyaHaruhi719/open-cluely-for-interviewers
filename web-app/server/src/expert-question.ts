@@ -1,7 +1,8 @@
 import type { FollowUpOutput, OutputLanguage, TokenUsage } from '@open-cluely/contract';
 import { chat, type ChatOptions } from './dashscope';
+import { config } from './config';
 
-export const EXPERT_QUESTION_MODEL = 'deepseek-v4-flash';
+export const EXPERT_QUESTION_MODEL = config.expertQuestionModel;
 export const EXPERT_QUESTION_TIMEOUT_MS = 6_500;
 export const EXPERT_QUESTION_VERSION = 'expert_flash_v2';
 
