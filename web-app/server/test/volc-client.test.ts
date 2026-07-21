@@ -9,6 +9,7 @@ import {
   extractTranscripts,
   createVolcSession,
   formatDoubaoAsr2Error,
+  parseVolcServerError,
   VOLC_DEFAULT_MODEL,
   VOLC_DEFAULT_RESOURCE_ID,
   VOLC_DEFAULT_STOP_TIMEOUT_MS,
@@ -271,6 +272,17 @@ test('maps an upstream HTTP 403 handshake rejection to an actionable Doubao 2.0 
   assert.equal(
     formatDoubaoAsr2Error('Unexpected server response: 403'),
     '豆包 ASR 2.0 权限不足（HTTP 403），请检查当前 App ID / Access Token 是否已开通所选 Seed-ASR 2.0 资源'
+  );
+});
+
+test('extracts the documented code + message shape instead of masking it as Volcengine error', () => {
+  assert.equal(
+    parseVolcServerError(Buffer.from(JSON.stringify({ code: 55000031, message: 'server busy' }))),
+    'server busy（错误码 55000031）'
+  );
+  assert.equal(
+    parseVolcServerError(Buffer.from(JSON.stringify({ error: 'resourceId not allowed' }))),
+    'resourceId not allowed'
   );
 });
 

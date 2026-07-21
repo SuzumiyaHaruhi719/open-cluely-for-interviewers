@@ -115,6 +115,37 @@ export function formatDoubaoAsr2Error(message: string): string {
   return normalized || '豆包 ASR 2.0 连接失败';
 }
 
+/** Preserve Volcengine's documented `{code,message}` error instead of hiding it. */
+export function parseVolcServerError(payload: Buffer): string {
+  const raw = payload.toString('utf8').trim();
+  if (!raw) return '豆包 ASR 2.0 返回了空错误响应';
+  try {
+    const value = JSON.parse(raw) as Record<string, unknown>;
+    const nestedError =
+      typeof value.error === 'object' && value.error !== null
+        ? (value.error as Record<string, unknown>)
+        : null;
+    const message = [
+      typeof value.error === 'string' ? value.error : '',
+      typeof value.message === 'string' ? value.message : '',
+      typeof value.msg === 'string' ? value.msg : '',
+      typeof nestedError?.message === 'string' ? nestedError.message : '',
+      typeof nestedError?.Message === 'string' ? nestedError.Message : ''
+    ].find((candidate) => candidate.trim().length > 0)?.trim();
+    const code = [value.code, value.status_code, nestedError?.code, nestedError?.Code].find(
+      (candidate) =>
+        (typeof candidate === 'number' && Number.isFinite(candidate)) ||
+        (typeof candidate === 'string' && candidate.trim().length > 0)
+    );
+    if (message && code !== undefined) return `${message}（错误码 ${String(code)}）`;
+    if (message) return message;
+    if (code !== undefined) return `豆包 ASR 2.0 请求失败（错误码 ${String(code)}）`;
+  } catch {
+    // Some upstream/proxy failures are plain text; preserve that text verbatim.
+  }
+  return raw;
+}
+
 // --- Frame protocol constants (PORTED VERBATIM from the desktop service) -----
 const PROTOCOL_VERSION = 0x1;
 const HEADER_SIZE = 0x1;
@@ -388,13 +419,7 @@ export function createVolcSession(deps: VolcSessionDeps): VolcSession {
     const frame = parseFrame(buf);
     if (!frame) return;
     if (frame.messageType === MSG_SERVER_ERROR) {
-      let reason = 'Volcengine error';
-      try {
-        reason = JSON.parse(frame.payload.toString('utf8')).error || reason;
-      } catch {
-        /* keep default */
-      }
-      fail(reason);
+      fail(parseVolcServerError(frame.payload));
       return;
     }
     if (frame.messageType !== MSG_FULL_SERVER) return;
