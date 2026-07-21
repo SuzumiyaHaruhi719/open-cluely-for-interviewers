@@ -1,8 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  buildCohortAuditInput,
   buildCohortEvidence,
   consensusCohortAudits,
+  createSpeakerCohortHarness,
   parseCohortAudit,
   type CohortAudit,
   type CohortEvidencePacket,
@@ -192,4 +194,132 @@ test('consensus accepts complete independent agreement with shared evidence', ()
     evidenceSeqs: [4, 6],
     contradictionSeqs: []
   });
+});
+
+test('audit passes reverse balanced evidence order to reduce prompt anchoring', () => {
+  const packet = eligiblePacket();
+  const primary = buildCohortAuditInput(packet, 'primary');
+  const verification = buildCohortAuditInput(packet, 'verification');
+
+  assert.ok(primary.indexOf('[interviewer-evidence]') < primary.indexOf('[candidate-evidence]'));
+  assert.ok(verification.indexOf('[candidate-evidence]') < verification.indexOf('[interviewer-evidence]'));
+  assert.match(primary, /required-target-seqs=4,6/);
+  assert.match(verification, /target-speaker=30/);
+});
+
+test('harness delegates only after two independent audits agree', async () => {
+  const packet = eligiblePacket();
+  const passes: string[] = [];
+  const harness = createSpeakerCohortHarness({
+    audit: async (received, pass) => {
+      passes.push(pass);
+      return audit(received, 'candidate');
+    }
+  });
+
+  await harness.evaluate({
+    turns: [...packet.interviewerAnchors, ...packet.candidateAnchors, ...packet.neighbours, ...packet.targets]
+      .filter((entry, index, all) => all.findIndex((candidate) => candidate.seq === entry.seq) === index)
+      .sort((left, right) => left.seq - right.seq),
+    confirmed: baseConfirmed
+  });
+
+  assert.deepEqual(passes.sort(), ['primary', 'verification']);
+  assert.deepEqual(harness.getRole(30), {
+    state: 'delegated',
+    role: 'candidate',
+    confidence: 0.94,
+    evidenceSeqs: [4, 6],
+    contradictionSeqs: [],
+    evaluatedRevision: 6
+  });
+});
+
+test('harness never re-evaluates an unchanged evidence revision', async () => {
+  const turns = [
+    ...baseTurns,
+    turn(4, 30, '我先把每个隐患分配到具体负责人，并约定当天反馈整改照片和复验记录。'),
+    turn(5, 10, '如果整改负责人没有按时完成，你会如何处理？'),
+    turn(6, 30, '我会先确认阻塞原因，再调整资源和时限，仍未完成就升级到园区负责人并记录问责。')
+  ];
+  let calls = 0;
+  const harness = createSpeakerCohortHarness({
+    audit: async (packet) => {
+      calls += 1;
+      return audit(packet, 'candidate');
+    }
+  });
+
+  await harness.evaluate({ turns, confirmed: baseConfirmed });
+  await harness.evaluate({ turns, confirmed: baseConfirmed });
+
+  assert.equal(calls, 2);
+});
+
+test('two confirmed opposite target turns revoke delegation without an immediate flip', async () => {
+  const initialTurns = [
+    ...baseTurns,
+    turn(4, 30, '我先把每个隐患分配到具体负责人，并约定当天反馈整改照片和复验记录。'),
+    turn(5, 10, '如果整改负责人没有按时完成，你会如何处理？'),
+    turn(6, 30, '我会先确认阻塞原因，再调整资源和时限，仍未完成就升级到园区负责人并记录问责。')
+  ];
+  let calls = 0;
+  const harness = createSpeakerCohortHarness({
+    audit: async (packet) => {
+      calls += 1;
+      return audit(packet, 'candidate');
+    }
+  });
+  await harness.evaluate({ turns: initialTurns, confirmed: baseConfirmed });
+
+  const contradictedTurns = [
+    ...initialTurns,
+    turn(7, 30, '请具体说明这项整改中你本人做出的关键取舍是什么？'),
+    turn(8, 20, '我选择先处理高风险区域，并暂缓不会影响消防联动的普通工单。'),
+    turn(9, 30, '如果资源只能支持一个方案，你为什么优先选择高风险区域？')
+  ];
+  await harness.evaluate({
+    turns: contradictedTurns,
+    confirmed: [
+      ...baseConfirmed,
+      { seq: 7, role: 'interviewer', confidence: 0.96 },
+      { seq: 9, role: 'interviewer', confidence: 0.95 }
+    ]
+  });
+
+  assert.equal(calls, 2, 'revocation must wait for fresh evidence before evaluating an opposite role');
+  assert.deepEqual(harness.getRole(30), {
+    state: 'contested',
+    role: 'unknown',
+    confidence: 0,
+    evidenceSeqs: [],
+    contradictionSeqs: [7, 9],
+    evaluatedRevision: 9
+  });
+});
+
+test('reset invalidates an in-flight cohort decision', async () => {
+  const turns = [
+    ...baseTurns,
+    turn(4, 30, '我先把每个隐患分配到具体负责人，并约定当天反馈整改照片和复验记录。'),
+    turn(5, 10, '如果整改负责人没有按时完成，你会如何处理？'),
+    turn(6, 30, '我会先确认阻塞原因，再调整资源和时限，仍未完成就升级到园区负责人并记录问责。')
+  ];
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const harness = createSpeakerCohortHarness({
+    audit: async (packet) => {
+      await gate;
+      return audit(packet, 'candidate');
+    }
+  });
+
+  const evaluating = harness.evaluate({ turns, confirmed: baseConfirmed });
+  harness.reset();
+  release();
+  await evaluating;
+
+  assert.equal(harness.getRole(30).state, 'observing');
 });

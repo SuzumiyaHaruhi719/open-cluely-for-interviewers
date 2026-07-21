@@ -1,4 +1,5 @@
 import type { AudioSource, SpeakerRole } from '@open-cluely/contract';
+import { chat, type ChatOptions } from './dashscope';
 
 export const MIN_COHORT_UTTERANCES = 2;
 export const MIN_COHORT_TOTAL_CHARS = 48;
@@ -56,6 +57,49 @@ export interface CohortDecision {
   evidenceSeqs: number[];
   contradictionSeqs: number[];
 }
+
+export type CohortAuditPass = 'primary' | 'verification';
+export type ClusterCohortStatus = 'observing' | 'delegated' | 'contested';
+
+export interface ClusterCohortState {
+  state: ClusterCohortStatus;
+  role: SpeakerRole;
+  confidence: number;
+  evidenceSeqs: number[];
+  contradictionSeqs: number[];
+  evaluatedRevision: number;
+}
+
+export interface CohortEvaluationInput {
+  turns: readonly CohortTurn[];
+  confirmed: readonly ConfirmedTurnRole[];
+  manualSpeakerIds?: ReadonlySet<number>;
+  final?: boolean;
+}
+
+export interface SpeakerCohortHarness {
+  evaluate(input: CohortEvaluationInput): Promise<void>;
+  getRole(speakerId: number): ClusterCohortState;
+  reset(): void;
+}
+
+export interface SpeakerCohortHarnessDeps {
+  audit?: (packet: CohortEvidencePacket, pass: CohortAuditPass) => Promise<CohortAudit | null>;
+}
+
+const DEFAULT_COHORT_MODEL = 'deepseek-v4-flash';
+const COHORT_TIMEOUT_MS = 8_000;
+const MAX_COHORT_INPUT_CHARS = 7_000;
+const COHORT_SYSTEM = [
+  'You audit whether one acoustic speaker cluster belongs to the interviewer or candidate cohort in a job interview.',
+  'Acoustic ids are not identities. Use the target utterances, direct neighbours, and balanced established-role evidence.',
+  'Classify every required target seq independently. A question can be candidate rhetoric and an answer can quote a question, so use full adjacency.',
+  'Return unknown whenever evidence does not clearly separate the two roles.',
+  'Cite only supplied seq values and return strict JSON only:',
+  '{"role":"interviewer|candidate|unknown","confidence":0.0,"interviewerFit":0.0,"candidateFit":0.0,',
+  '"targetRoles":[{"seq":0,"role":"interviewer|candidate|unknown","confidence":0.0}],',
+  '"evidenceSeqs":[0],"contradictionSeqs":[]}'
+].join(' ');
 
 function contentChars(text: string): number {
   return String(text || '').replace(/\s+/g, '').length;
@@ -318,5 +362,211 @@ export function consensusCohortAudits(
     confidence: Math.min(primary.confidence, verification.confidence),
     evidenceSeqs: sharedEvidence,
     contradictionSeqs: []
+  };
+}
+
+function formatPromptTurn(turn: CohortTurn): string {
+  return `[seq=${turn.seq} speaker=${
+    typeof turn.speakerId === 'number' ? turn.speakerId : 'none'
+  } source=${turn.source}] ${String(turn.text || '').replace(/\s+/g, ' ').trim().slice(0, 420)}`;
+}
+
+function formatEvidenceSection(label: string, turns: readonly CohortTurn[]): string[] {
+  return [`[${label}]`, ...turns.map(formatPromptTurn)];
+}
+
+export function buildCohortAuditInput(
+  packet: CohortEvidencePacket,
+  pass: CohortAuditPass
+): string {
+  const roleSections = pass === 'primary'
+    ? [
+        ...formatEvidenceSection('interviewer-evidence', packet.interviewerAnchors),
+        ...formatEvidenceSection('candidate-evidence', packet.candidateAnchors)
+      ]
+    : [
+        ...formatEvidenceSection('candidate-evidence', packet.candidateAnchors),
+        ...formatEvidenceSection('interviewer-evidence', packet.interviewerAnchors)
+      ];
+  return [
+    `[cohort-audit-pass=${pass}]`,
+    `[target-speaker=${packet.targetSpeakerId}]`,
+    `[required-target-seqs=${packet.requiredSeqs.join(',')}]`,
+    pass === 'verification'
+      ? 'Adversarially test the strongest opposite-role explanation before choosing. Do not preserve a convenient initial label.'
+      : 'Compare interviewer fit and candidate fit symmetrically. Do not infer from numeric speaker order.',
+    ...roleSections,
+    ...formatEvidenceSection('target-utterances', packet.targets),
+    ...formatEvidenceSection('direct-neighbours', packet.neighbours),
+    'Return one targetRoles item for every required target seq. Evidence insufficient or materially contradictory means unknown.'
+  ]
+    .join('\n')
+    .slice(0, MAX_COHORT_INPUT_CHARS);
+}
+
+export interface ClassifySpeakerCohortDeps {
+  chat?: (options: ChatOptions) => Promise<string>;
+  model?: string;
+}
+
+export async function classifySpeakerCohort(
+  packet: CohortEvidencePacket,
+  pass: CohortAuditPass,
+  deps: ClassifySpeakerCohortDeps = {}
+): Promise<CohortAudit | null> {
+  const model = String(deps.model || DEFAULT_COHORT_MODEL).trim() || DEFAULT_COHORT_MODEL;
+  const response = await (deps.chat ?? chat)({
+    system: COHORT_SYSTEM,
+    messages: [{ role: 'user', content: buildCohortAuditInput(packet, pass) }],
+    model,
+    maxTokens: 700,
+    temperature: 0,
+    thinking: false,
+    timeoutMs: COHORT_TIMEOUT_MS,
+    maxRetries: 0
+  });
+  return parseCohortAudit(response, packet, model);
+}
+
+function emptyCohortState(
+  state: Extract<ClusterCohortStatus, 'observing' | 'contested'> = 'observing',
+  evaluatedRevision = -1,
+  contradictionSeqs: number[] = []
+): ClusterCohortState {
+  return {
+    state,
+    role: 'unknown',
+    confidence: 0,
+    evidenceSeqs: [],
+    contradictionSeqs: [...contradictionSeqs],
+    evaluatedRevision
+  };
+}
+
+function targetRevision(turns: readonly CohortTurn[], speakerId: number): number {
+  const seqs = turns
+    .filter((turn) => turn.speakerId === speakerId && isSubstantive(turn))
+    .map((turn) => turn.seq);
+  return seqs.length > 0 ? Math.max(...seqs) : -1;
+}
+
+function oppositeContradictions(
+  turns: readonly CohortTurn[],
+  confirmed: readonly ConfirmedTurnRole[],
+  speakerId: number,
+  delegatedRole: CohortRole
+): number[] {
+  const opposite: CohortRole = delegatedRole === 'candidate' ? 'interviewer' : 'candidate';
+  const targetSeqs = new Set(
+    turns
+      .filter((turn) => turn.speakerId === speakerId && isSubstantive(turn))
+      .map((turn) => turn.seq)
+  );
+  return [...new Set(
+    confirmed
+      .filter(
+        (entry) =>
+          targetSeqs.has(entry.seq) &&
+          entry.role === opposite &&
+          entry.confidence >= 0.8
+      )
+      .map((entry) => entry.seq)
+  )].sort((left, right) => left - right);
+}
+
+export function createSpeakerCohortHarness(
+  deps: SpeakerCohortHarnessDeps = {}
+): SpeakerCohortHarness {
+  const audit = deps.audit ?? classifySpeakerCohort;
+  let states = new Map<number, ClusterCohortState>();
+  let latestRevisions = new Map<number, number>();
+  let epoch = 0;
+
+  async function evaluateSpeaker(
+    input: CohortEvaluationInput,
+    speakerId: number,
+    scheduledEpoch: number
+  ): Promise<void> {
+    if (input.manualSpeakerIds?.has(speakerId)) {
+      states.delete(speakerId);
+      latestRevisions.delete(speakerId);
+      return;
+    }
+
+    const current = states.get(speakerId) ?? emptyCohortState();
+    const revision = targetRevision(input.turns, speakerId);
+    if (current.state === 'delegated') {
+      const contradictions = oppositeContradictions(
+        input.turns,
+        input.confirmed,
+        speakerId,
+        current.role as CohortRole
+      );
+      if (contradictions.length >= 2) {
+        states.set(speakerId, emptyCohortState('contested', revision, contradictions));
+        latestRevisions.set(speakerId, revision);
+      }
+      return;
+    }
+
+    const packet = buildCohortEvidence(input.turns, input.confirmed, speakerId);
+    if (!packet || packet.revision <= current.evaluatedRevision) return;
+    latestRevisions.set(speakerId, packet.revision);
+    states.set(speakerId, { ...current, evaluatedRevision: packet.revision });
+
+    const [primary, verification] = await Promise.all([
+      audit(packet, 'primary').catch(() => null),
+      audit(packet, 'verification').catch(() => null)
+    ]);
+    if (
+      scheduledEpoch !== epoch ||
+      latestRevisions.get(speakerId) !== packet.revision
+    ) {
+      return;
+    }
+    const decision = consensusCohortAudits(packet, primary, verification);
+    if (!decision) {
+      states.set(speakerId, { ...current, evaluatedRevision: packet.revision });
+      return;
+    }
+    states.set(speakerId, {
+      state: 'delegated',
+      role: decision.role,
+      confidence: decision.confidence,
+      evidenceSeqs: decision.evidenceSeqs,
+      contradictionSeqs: decision.contradictionSeqs,
+      evaluatedRevision: packet.revision
+    });
+  }
+
+  return {
+    async evaluate(input) {
+      if (input.final) {
+        states = new Map<number, ClusterCohortState>();
+        latestRevisions = new Map<number, number>();
+      }
+      const scheduledEpoch = epoch;
+      const speakerIds = [...new Set(
+        input.turns.flatMap((turn) =>
+          typeof turn.speakerId === 'number' ? [turn.speakerId] : []
+        )
+      )];
+      await Promise.all(
+        speakerIds.map((speakerId) => evaluateSpeaker(input, speakerId, scheduledEpoch))
+      );
+    },
+    getRole(speakerId) {
+      const state = states.get(speakerId) ?? emptyCohortState();
+      return {
+        ...state,
+        evidenceSeqs: [...state.evidenceSeqs],
+        contradictionSeqs: [...state.contradictionSeqs]
+      };
+    },
+    reset() {
+      epoch += 1;
+      states = new Map<number, ClusterCohortState>();
+      latestRevisions = new Map<number, number>();
+    }
   };
 }
