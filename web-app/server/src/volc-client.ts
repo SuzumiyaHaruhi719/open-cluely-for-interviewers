@@ -117,7 +117,14 @@ export function formatDoubaoAsr2Error(message: string): string {
 
 /** Preserve Volcengine's documented `{code,message}` error instead of hiding it. */
 export function parseVolcServerError(payload: Buffer): string {
-  const raw = payload.toString('utf8').trim();
+  // Seed ASR 2.0 error frames can carry an additional uint32 payload length
+  // inside the already-decoded protocol payload. Strip only an exact prefix so
+  // plain JSON/text errors remain byte-for-byte intact.
+  const body =
+    payload.length >= 4 && payload.readUInt32BE(0) === payload.length - 4
+      ? payload.subarray(4)
+      : payload;
+  const raw = body.toString('utf8').trim();
   if (!raw) return '豆包 ASR 2.0 返回了空错误响应';
   try {
     const value = JSON.parse(raw) as Record<string, unknown>;

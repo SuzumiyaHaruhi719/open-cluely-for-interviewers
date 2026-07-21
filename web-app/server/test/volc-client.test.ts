@@ -286,6 +286,20 @@ test('extracts the documented code + message shape instead of masking it as Volc
   );
 });
 
+test('decodes the length-prefixed JSON body used by Seed ASR 2.0 server-error frames', () => {
+  const body = Buffer.from(JSON.stringify({
+    error: '[Timeout waiting next packet] waiting next packet timeout: 8.000000 seconds, session has ended'
+  }));
+  const payload = Buffer.allocUnsafe(4 + body.length);
+  payload.writeUInt32BE(body.length, 0);
+  body.copy(payload, 4);
+
+  assert.equal(
+    parseVolcServerError(payload),
+    '[Timeout waiting next packet] waiting next packet timeout: 8.000000 seconds, session has ended'
+  );
+});
+
 test('surfaces the actionable Doubao 2.0 message through the session error callback', () => {
   FakeWs.instances = [];
   const errors: string[] = [];

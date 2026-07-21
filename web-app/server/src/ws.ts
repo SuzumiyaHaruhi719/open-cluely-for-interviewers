@@ -166,15 +166,47 @@ function send(ws: WebSocket, msg: ServerMessage): void {
  * still run; this prevents a stop/final-drain from being overtaken by configure,
  * summarize, or another capture control on the same connection.
  */
+export interface SerialMessageQueueOptions<T> {
+  /**
+   * Start the selected work after all earlier messages, then release the queue
+   * while that work continues. This is reserved for model calls: audio and
+   * capture-control messages must keep flowing while a report/question streams.
+   */
+  readonly runInBackground?: (value: T) => boolean;
+}
+
 export function createSerialMessageQueue<T>(
-  handle: (value: T) => Promise<void>
+  handle: (value: T) => Promise<void>,
+  options: SerialMessageQueueOptions<T> = {}
 ): (value: T) => Promise<void> {
   let tail = Promise.resolve();
+  let backgroundTail = Promise.resolve();
   return (value: T): Promise<void> => {
-    const current = tail.then(() => handle(value));
+    const current = tail.then(async () => {
+      if (options.runInBackground?.(value)) {
+        // Model work has its own serial lane: release live transport immediately,
+        // but do not allow repeated manual/summary requests to overlap each other.
+        const backgroundWork = backgroundTail.then(() => handle(value));
+        // `onMessage` already converts handler failures into wire errors. Absorb
+        // the rejection on the internal tail so the next model request can run.
+        backgroundTail = backgroundWork.catch(() => undefined);
+        return;
+      }
+      await handle(value);
+    });
     tail = current.catch(() => undefined);
     return current;
   };
+}
+
+/** Model-bound requests may run for seconds and must never block live ASR PCM. */
+export function isBackgroundModelRequest(raw: string): boolean {
+  try {
+    const value = JSON.parse(raw) as { type?: unknown };
+    return value?.type === 'summarize' || value?.type === 'analyze';
+  } catch {
+    return false;
+  }
 }
 
 function telemetryToDebugEvent(
@@ -1296,48 +1328,50 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
 
     send(ws, { type: 'ready', sessionId: randomUUID() });
 
-    const enqueueMessage = createSerialMessageQueue((raw: string) =>
-      onMessage(
-        ws,
-        session,
-        relay,
-        trigger,
-        roles,
-        feedCandidateAnswer,
-        // resetGeneration → drop the per-connection accumulated candidate answer so
-        // the new chat's trigger starts from a blank transcript, AND drop the full
-        // transcript + cancel any pending context analysis so "New interview" starts
-        // the live panel blank too.
-        () => {
-          accumulatedDisplayFinal = '';
-          accumulatedTranscript = '';
-          contextAnalyzer.cancel();
-        },
-        // configure → capture JD/résumé for the context analyzer's grounding. Only
-        // overwrite a field the configure carries (a partial configure keeps prior).
-        (jd, resume) => {
-          if (typeof jd === 'string') contextJobDescription = jd;
-          if (typeof resume === 'string') contextResumeText = resume;
-        },
-        // summarize → build the summary input from the SAME per-connection
-        // accumulated transcript (both lanes) + captured JD/résumé the live panel
-        // reads. Returns '' when there is nothing to summarize (handleSummarize
-        // then replies with the friendly empty-state message).
-        (clientTranscript?: string) => {
-          const transcript = selectSummaryTranscript(clientTranscript, accumulatedTranscript);
-          return buildSummaryInput({
-            transcript,
-            jobDescription: contextJobDescription,
-            resumeText: contextResumeText
-          });
-        },
-        setSummaryModel,
-        getSummaryModelOverride,
-        setSummaryPrompt,
-        getSummaryPromptOverride,
-        speakerLifecycle,
-        raw
-      )
+    const enqueueMessage = createSerialMessageQueue(
+      (raw: string) =>
+        onMessage(
+          ws,
+          session,
+          relay,
+          trigger,
+          roles,
+          feedCandidateAnswer,
+          // resetGeneration → drop the per-connection accumulated candidate answer so
+          // the new chat's trigger starts from a blank transcript, AND drop the full
+          // transcript + cancel any pending context analysis so "New interview" starts
+          // the live panel blank too.
+          () => {
+            accumulatedDisplayFinal = '';
+            accumulatedTranscript = '';
+            contextAnalyzer.cancel();
+          },
+          // configure → capture JD/résumé for the context analyzer's grounding. Only
+          // overwrite a field the configure carries (a partial configure keeps prior).
+          (jd, resume) => {
+            if (typeof jd === 'string') contextJobDescription = jd;
+            if (typeof resume === 'string') contextResumeText = resume;
+          },
+          // summarize → build the summary input from the SAME per-connection
+          // accumulated transcript (both lanes) + captured JD/résumé the live panel
+          // reads. Returns '' when there is nothing to summarize (handleSummarize
+          // then replies with the friendly empty-state message).
+          (clientTranscript?: string) => {
+            const transcript = selectSummaryTranscript(clientTranscript, accumulatedTranscript);
+            return buildSummaryInput({
+              transcript,
+              jobDescription: contextJobDescription,
+              resumeText: contextResumeText
+            });
+          },
+          setSummaryModel,
+          getSummaryModelOverride,
+          setSummaryPrompt,
+          getSummaryPromptOverride,
+          speakerLifecycle,
+          raw
+        ),
+      { runInBackground: isBackgroundModelRequest }
     );
     ws.on('message', (data) => {
       void enqueueMessage(data.toString());
