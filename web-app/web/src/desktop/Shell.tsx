@@ -11,7 +11,11 @@ import {
 } from './InterviewSetup';
 import { SessionContextDrawer } from './SessionContextDrawer';
 import { SummaryModal } from './SummaryModal';
-import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
+import {
+  mergeSpeakerTimeline,
+  TranscriptStream,
+  type TranscriptMessage
+} from './TranscriptStream';
 import { useAppSettings } from './useAppSettings';
 
 interface ConfigState {
@@ -52,6 +56,18 @@ function inferInterviewTitle(jobDescription: string): string {
     ?.replace(/^(职位|岗位|职位名称)\s*[:：]\s*/u, '');
   if (!firstLine || firstLine.length > 18) return '面试进行中';
   return firstLine.endsWith('面试') ? firstLine : `${firstLine}面试`;
+}
+
+function transcriptMessageLabel(message: TranscriptMessage): string {
+  if (message.role === 'note') return '备注';
+  if (message.role === 'ai') return 'AI追问';
+  return message.role === 'interviewer' ? '面试官' : '候选人';
+}
+
+function speakerRoleLabel(role: 'interviewer' | 'candidate' | 'unknown', speakerId: number): string {
+  if (role === 'interviewer') return '面试官';
+  if (role === 'candidate') return '候选人';
+  return `待确认（说话人 ${speakerId}）`;
 }
 
 /**
@@ -214,9 +230,35 @@ export function Shell() {
     window.requestAnimationFrame(() => contextButtonRef.current?.focus());
   }, []);
 
-  const clientSummaryTranscript = transcriptMessages
-    .map((message) => `${message.role === 'note' ? '备注' : message.role}: ${message.text}`)
-    .join('\n');
+  const clientSummaryTranscript = useMemo(() => {
+    if (speakerSegments.length > 0) {
+      return mergeSpeakerTimeline(transcriptMessages, speakerSegments)
+        .map((item) => {
+          if (item.kind === 'message') {
+            return `${transcriptMessageLabel(item.message)}: ${item.message.text}`;
+          }
+          return `${speakerRoleLabel(item.segment.role, item.segment.speakerId)}: ${item.segment.text}`;
+        })
+        .join('\n');
+    }
+
+    // Defensive fallback for any non-diarizing provider: summarize the same
+    // finalized two-lane copy that the live panel renders. Doubao normally uses
+    // the canonical speaker-segment branch above.
+    return [
+      transcripts.mic.finalText.trim()
+        ? `面试官: ${transcripts.mic.finalText.trim()}`
+        : '',
+      transcripts.display.finalText.trim()
+        ? `候选人: ${transcripts.display.finalText.trim()}`
+        : '',
+      ...transcriptMessages.map(
+        (message) => `${transcriptMessageLabel(message)}: ${message.text}`
+      )
+    ]
+      .filter(Boolean)
+      .join('\n');
+  }, [speakerSegments, transcriptMessages, transcripts.display.finalText, transcripts.mic.finalText]);
 
   const confirmEndInterview = useCallback((): void => {
     stopAudio('display');

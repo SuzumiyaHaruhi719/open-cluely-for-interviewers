@@ -272,7 +272,7 @@ function roleToLane(role: SpeakerRole): 'candidate' | 'interviewer' | 'unknown' 
   return role === 'interviewer' ? 'interviewer' : role === 'candidate' ? 'candidate' : 'unknown';
 }
 
-type SpeakerTimelineItem =
+export type SpeakerTimelineItem =
   | {
       kind: 'message';
       key: string;
@@ -295,7 +295,7 @@ type SpeakerTimelineItem =
  * NEVER sort speaker turns against one another. Imported history without
  * timestamps stays before the live interview. Exact-time ties put speech first.
  */
-function mergeSpeakerTimeline(
+export function mergeSpeakerTimeline(
   messages: readonly TranscriptMessage[],
   segments: readonly SpeakerSegment[]
 ): SpeakerTimelineItem[] {

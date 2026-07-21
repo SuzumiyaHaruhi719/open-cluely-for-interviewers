@@ -332,6 +332,39 @@ describe('Shell one-shot interview workflow', () => {
     expect(screen.getByText('保留的候选人证据')).toBeInTheDocument();
   });
 
+  test('summarizes the visible role-labelled transcript instead of the notes-only buffer', async () => {
+    const ws = await enterLiveWorkspace();
+    act(() => {
+      ws.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '请介绍一次您独立负责园区运营的经历。',
+        isFinal: true,
+        speakerId: 0,
+        speaker: 'interviewer'
+      });
+      ws.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '我独立负责过三个园区，并把消防整改周期从七天降到两天。',
+        isFinal: true,
+        speakerId: 1,
+        speaker: 'candidate'
+      });
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: '面试总结' }));
+
+    const summaryFrame = [...sentMessages(ws)].reverse().find((frame) => frame.type === 'summarize');
+    expect(summaryFrame).toMatchObject({
+      type: 'summarize',
+      transcript: expect.stringContaining('面试官: 请介绍一次您独立负责园区运营的经历。')
+    });
+    expect(summaryFrame?.transcript).toEqual(
+      expect.stringContaining('候选人: 我独立负责过三个园区，并把消防整改周期从七天降到两天。')
+    );
+  });
+
   test('requires confirmation before ending and returns to preparation only after confirm', async () => {
     const ws = await enterLiveWorkspace();
     act(() => {

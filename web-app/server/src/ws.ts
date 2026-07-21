@@ -51,6 +51,19 @@ import {
 const BANK_GROUNDING_TOP_K = 6;
 
 /**
+ * The renderer's visible canonical timeline is authoritative when supplied.
+ * Falling back to server accumulation keeps older/non-browser clients working,
+ * while avoiding duplicate turns when both sides hold the same transcript.
+ */
+export function selectSummaryTranscript(
+  clientTranscript: string | undefined,
+  accumulatedTranscript: string
+): string {
+  const client = String(clientTranscript ?? '').trim();
+  return client || accumulatedTranscript.trim();
+}
+
+/**
  * Retrieve high-frequency interview questions semantically similar to the
  * candidate's answer. NEVER throws and NEVER blocks analysis — any failure
  * (no key, embed error, missing vectors) resolves to []. The retriever itself
@@ -1311,9 +1324,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         // reads. Returns '' when there is nothing to summarize (handleSummarize
         // then replies with the friendly empty-state message).
         (clientTranscript?: string) => {
-          const client = String(clientTranscript ?? '').trim();
-          const accumulated = accumulatedTranscript.trim();
-          const transcript = [client, accumulated].filter(Boolean).join('\n\n');
+          const transcript = selectSummaryTranscript(clientTranscript, accumulatedTranscript);
           return buildSummaryInput({
             transcript,
             jobDescription: contextJobDescription,

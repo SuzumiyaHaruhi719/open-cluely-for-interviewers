@@ -1,7 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { dispatch, handleSummarize, type SummarizeDeps } from '../src/ws';
+import {
+  dispatch,
+  handleSummarize,
+  selectSummaryTranscript,
+  type SummarizeDeps
+} from '../src/ws';
 import { createSummaryTelemetry } from '../src/summary-telemetry';
 import { resolveSummarySystemPrompt, SUMMARY_SYSTEM } from '../src/interview-analysis';
 import type { ServerMessage } from '@open-cluely/contract';
@@ -37,6 +42,17 @@ function businessFrames(frames: ServerMessage[]): ServerMessage[] {
 function ok(text: string, model = 'deepseek-v4-pro', fellBack = false): SummaryResult {
   return { text, model, fellBack };
 }
+
+test('a client-visible transcript snapshot is authoritative over stale server accumulation', () => {
+  assert.equal(
+    selectSummaryTranscript(
+      '面试官: 请介绍项目。\n候选人: 我负责过三个园区。',
+      '候选人: stale duplicate'
+    ),
+    '面试官: 请介绍项目。\n候选人: 我负责过三个园区。'
+  );
+  assert.equal(selectSummaryTranscript(undefined, '候选人: server fallback'), '候选人: server fallback');
+});
 
 test('#8 empty transcript → a summary-done flagged empty:true (a notice, not a report)', async () => {
   const { ws, frames } = fakeWs();
