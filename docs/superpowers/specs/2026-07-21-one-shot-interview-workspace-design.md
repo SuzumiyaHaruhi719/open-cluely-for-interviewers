@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Turn the web client into a single-purpose interviewer workspace: provide a resume and JD, start the interview, read the live transcript, receive evidence-anchored automatic follow-ups, and end with a summary. The UI must stay recognizably GLP while removing navigation and configuration surfaces that do not help the active interview.
+Turn the web client into a single-purpose interviewer workspace: provide a resume and JD, start the interview, read the live transcript, receive evidence-anchored automatic follow-ups, optionally generate a manual summary, and return to preparation when the interview ends. The UI must stay recognizably GLP while removing navigation and configuration surfaces that do not help the active interview.
 
 ## Product decisions
 
@@ -74,9 +74,9 @@ The drawer is non-modal on wide screens and overlayed on smaller screens. It can
 
 ### End and summary
 
-- `结束面试` only ends the live session: stop both capture lanes, mark the workspace ended, and prevent new capture. It preserves the transcript and does not open or request a summary.
-- `面试总结` is a separate manual action beside End. It opens the existing summary modal and requests the report from accumulated transcript plus JD/resume context; it can be used before or after End.
-- After End, clear, context, transcript role correction, and manual summary remain available.
+- `结束面试` stops both capture lanes and immediately returns the app to the preparation screen. It does not open or request a summary.
+- `面试总结` is a separate manual action beside End while the live workspace is open. It opens the existing summary modal and requests the report from accumulated transcript plus JD/resume context.
+- Starting again from preparation runs the existing session reset before entering a fresh live workspace, so evidence from the ended interview cannot appear in the next interview.
 
 ### Long automatic context
 
@@ -113,7 +113,7 @@ The drawer header remains fixed while its body owns vertical scrolling. The scro
 4. Session-context drawer renders server-provided competency/topic/gap state and can be opened/closed without altering the transcript.
 5. Provider partials still reveal progressively; final transcript segments remain editable by role.
 6. Automatic questions remain evidence-anchored inside the timeline and keep non-zero token/latency metadata when supplied.
-7. Ending stops both capture lanes without opening summary; the adjacent manual Summary action opens the existing summary flow independently.
+7. Ending stops both capture lanes and returns to preparation without opening summary; the manual Summary action opens the existing summary flow independently before End.
 8. Computer and microphone controls use the same visual geometry, and a long automatic-context collection is fully scrollable.
 9. Focused tests, full web tests, full repository tests, production build, and in-app-browser interaction checks pass.
 10. `design-qa.md` compares the selected reference and implementation, resolves all P0/P1/P2 findings, and ends with `final result: passed`.

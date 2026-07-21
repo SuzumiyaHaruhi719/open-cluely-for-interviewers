@@ -8,7 +8,7 @@
 
 **Tech Stack:** React 18, TypeScript, Vitest, Testing Library, Vite, existing GLP CSS tokens, Phosphor React icons.
 
-**Plan state:** Tasks 1–6 describe the implemented baseline. Tasks 7–8 are the approved product correction and supersede earlier snippets that show an always-visible JD textarea or summary generation inside `onEndInterview`.
+**Plan state:** Tasks 1–6 describe the implemented baseline. Tasks 7–9 are approved product corrections and supersede earlier snippets that show an always-visible JD textarea, summary generation inside `onEndInterview`, or an ended live workspace.
 
 ## Global Constraints
 
@@ -77,6 +77,24 @@
 - [ ] Run focused tests and verify RED.
 - [ ] Normalize both channel rows and add the dedicated context scroll viewport.
 - [ ] Run focused tests/build, browser-check long content at 1280×720, commit, and push.
+
+### Task 9: Return to preparation when the interview ends
+
+**Files:**
+- Modify: `web-app/web/src/desktop/Shell.test.tsx`
+- Modify: `web-app/web/src/desktop/Shell.tsx`
+- Update: `docs/superpowers/specs/2026-07-21-one-shot-interview-workspace-design.md`
+- Update: `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/web-one-shot-interview-workspace.md`
+
+**Interfaces:**
+- `Shell.onEndInterview()` sends stop controls for both audio sources, closes live-only overlays, resets the elapsed clock, and changes `phase` from `live` to `setup`.
+- `Shell.onSummarize()` remains the only summary-generation entry point.
+- `Shell.onStartInterview()` retains the existing `clearSession()` boundary before the next live workspace begins.
+
+- [ ] Change the Shell lifecycle test to expect the preparation heading immediately after End, no summary dialog, and no summarize frame.
+- [ ] Run the focused Shell test and verify RED because the current handler leaves the ended live workspace mounted.
+- [ ] Implement the minimal lifecycle transition in `onEndInterview()`.
+- [ ] Run focused tests, full tests, build, in-app-browser End-flow QA, commit, and push.
 
 ### Task 1: Lock the one-shot preparation contract
 
