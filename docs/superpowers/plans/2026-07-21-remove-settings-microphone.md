@@ -144,7 +144,7 @@ Main page: microphone selector visible beside the microphone Start button.
 Settings: no Audio heading and no microphone selector; evaluation model remains visible.
 ```
 
-- [ ] **Step 4: Commit documentation and push `main`**
+- [x] **Step 4: Commit documentation and push `main`**
 
 ```bash
 git add docs/superpowers/plans/2026-07-21-remove-settings-microphone.md
