@@ -2,6 +2,7 @@ import type { Ref } from 'react';
 import { Brain } from '@phosphor-icons/react/Brain';
 import { CheckCircle } from '@phosphor-icons/react/CheckCircle';
 import { FileText } from '@phosphor-icons/react/FileText';
+import { Sparkle } from '@phosphor-icons/react/Sparkle';
 import { StopCircle } from '@phosphor-icons/react/StopCircle';
 import { Trash } from '@phosphor-icons/react/Trash';
 
@@ -13,9 +14,12 @@ interface InterviewHeaderProps {
   contextLoaded: boolean;
   contextOpen: boolean;
   ended: boolean;
+  canAnalyze: boolean;
+  isAnalyzing: boolean;
   contextButtonRef?: Ref<HTMLButtonElement>;
   endButtonRef?: Ref<HTMLButtonElement>;
   onClear: () => void;
+  onAnalyze: () => void;
   onToggleContext: () => void;
   onSummary: () => void;
   onEnd: () => void;
@@ -30,9 +34,12 @@ export function InterviewHeader({
   contextLoaded,
   contextOpen,
   ended,
+  canAnalyze,
+  isAnalyzing,
   contextButtonRef,
   endButtonRef,
   onClear,
+  onAnalyze,
   onToggleContext,
   onSummary,
   onEnd
@@ -66,6 +73,18 @@ export function InterviewHeader({
       </div>
 
       <div className="interview-header__actions">
+        <button
+          className="interview-header__action interview-header__action--primary"
+          type="button"
+          aria-label="手动追问"
+          aria-busy={isAnalyzing}
+          disabled={!canAnalyze || ended}
+          onClick={onAnalyze}
+          title={canAnalyze ? '立即根据候选人证据生成一个专家追问' : '等待候选人回答后可用'}
+        >
+          <Sparkle size={17} weight="fill" aria-hidden="true" />
+          <span>{isAnalyzing ? '生成中…' : '手动追问'}</span>
+        </button>
         <button className="interview-header__action" type="button" onClick={onClear}>
           <Trash size={17} aria-hidden="true" />
           <span>清空转写</span>

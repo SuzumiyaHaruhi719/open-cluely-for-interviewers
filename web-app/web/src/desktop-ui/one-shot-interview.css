@@ -707,6 +707,24 @@ select {
   background: var(--surface-hover);
 }
 
+.interview-header__action--primary {
+  color: var(--brand-700);
+  border-color: var(--brand-100);
+  background: var(--brand-50);
+}
+
+.interview-header__action--primary:hover:not(:disabled) {
+  color: var(--brand-800, var(--brand-700));
+  border-color: color-mix(in srgb, var(--brand-600) 35%, var(--brand-100));
+}
+
+.interview-header__action:disabled {
+  color: var(--text-disabled);
+  border-color: transparent;
+  background: transparent;
+  cursor: not-allowed;
+}
+
 .interview-header__action[aria-expanded='true'] {
   color: var(--brand-700);
   background: var(--brand-50);

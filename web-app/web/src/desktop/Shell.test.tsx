@@ -132,7 +132,7 @@ describe('Shell one-shot interview workflow', () => {
     expect(document.getElementById('channel-computer')).toBeInTheDocument();
     expect(document.getElementById('channel-mic')).toBeInTheDocument();
     expect(screen.getByLabelText('面试备注')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /生成追问|提问 AI/ })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '手动追问' })).toBeDisabled();
   });
 
   test('uses a single room microphone lane when offline mode is selected', async () => {
@@ -238,7 +238,7 @@ describe('Shell one-shot interview workflow', () => {
     expect(screen.getAllByText('2.4 s').length).toBeGreaterThan(0);
   });
 
-  test('adds notes to transcript and autonomous context without manual generation controls', async () => {
+  test('adds notes to transcript while preserving the manual Expert control', async () => {
     const ws = await enterLiveWorkspace();
     fireEvent.change(screen.getByLabelText('面试备注'), {
       target: { value: '追问消防演练频率' }
@@ -249,7 +249,32 @@ describe('Shell one-shot interview workflow', () => {
     expect(sentMessages(ws)).toContainEqual(
       expect.objectContaining({ type: 'context-note', note: '追问消防演练频率' })
     );
-    expect(screen.queryByRole('button', { name: /生成追问|提问 AI/ })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '手动追问' })).toBeInTheDocument();
+  });
+
+  test('manual Expert question sends confirmed candidate evidence through the existing analyze path', async () => {
+    const ws = await enterLiveWorkspace();
+    act(() => {
+      ws.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '我负责三个园区，并把消防隐患整改时长从七天降到两天。',
+        isFinal: true,
+        speakerId: 1,
+        speaker: 'candidate'
+      });
+    });
+
+    const manual = await screen.findByRole('button', { name: '手动追问' });
+    expect(manual).toBeEnabled();
+    fireEvent.click(manual);
+
+    expect(sentMessages(ws)).toContainEqual(
+      expect.objectContaining({
+        type: 'analyze',
+        candidateAnswer: expect.stringContaining('消防隐患整改时长')
+      })
+    );
   });
 
   test('clear is visible and resets transcript plus server generation state', async () => {

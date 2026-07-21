@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SessionConfig } from '@open-cluely/contract';
 import { useCopilotSocket } from '../lib/useCopilotSocket';
 import { EndInterviewDialog } from './EndInterviewDialog';
@@ -64,6 +64,7 @@ export function Shell() {
   const {
     status,
     sendConfigure,
+    analyze,
     addContextNote,
     questionEvents,
     lastAutoFireAt,
@@ -103,6 +104,24 @@ export function Shell() {
     const lane = audio[source];
     return lane.capturing && (lane.runtimeState === 'live' || lane.runtimeState === undefined);
   });
+
+  const manualCandidateAnswer = useMemo(() => {
+    const confirmed = speakerSegments
+      .filter((segment) => segment.role === 'candidate')
+      .map((segment) => segment.text.trim())
+      .filter(Boolean)
+      .join(' ');
+    const candidateText = confirmed || transcripts.display.finalText.trim();
+    return candidateText.slice(-6000);
+  }, [speakerSegments, transcripts.display.finalText]);
+
+  const onManualAnalyze = useCallback((): void => {
+    if (!isReady || isAnalyzing || manualCandidateAnswer.length === 0) return;
+    analyze(
+      manualCandidateAnswer,
+      questionEvents.map((event) => event.result.output.primary_question).filter(Boolean)
+    );
+  }, [analyze, isAnalyzing, isReady, manualCandidateAnswer, questionEvents]);
 
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
@@ -236,9 +255,12 @@ export function Shell() {
         contextLoaded={Boolean(config.jobDescription || config.resumeText)}
         contextOpen={contextOpen}
         ended={interviewEnded}
+        canAnalyze={isReady && manualCandidateAnswer.length > 0}
+        isAnalyzing={isAnalyzing}
         contextButtonRef={contextButtonRef}
         endButtonRef={endButtonRef}
         onClear={clearSession}
+        onAnalyze={onManualAnalyze}
         onToggleContext={() => setContextOpen((open) => !open)}
         onSummary={onSummarize}
         onEnd={() => setEndConfirmOpen(true)}
