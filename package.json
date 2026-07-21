@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node scripts/run-electron.js",
     "start:hidden": "node scripts/run-electron.js --start-hidden",
+    "env:export": "node scripts/export-portable-env.mjs",
     "dev": "node scripts/run-electron.js --enable-logging",
     "build": "node scripts/run-build.js",
     "build:win": "node scripts/run-build.js --win portable",
