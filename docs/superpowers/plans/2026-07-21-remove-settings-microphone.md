@@ -32,7 +32,7 @@
 - Produces: a `SettingsModal` with no microphone props, enumeration, or Audio section.
 - Preserves: `Composer.micDeviceId`, `Composer.onMicDeviceChange`, and `ChannelCard` device selection.
 
-- [ ] **Step 1: Write the failing Settings regression test**
+- [x] **Step 1: Write the failing Settings regression test**
 
 Change the Settings essentials assertion to require the duplicate controls to be absent:
 
@@ -44,17 +44,18 @@ expect(screen.getByLabelText('评估报告模型')).toHaveValue('deepseek-v4-pro
 
 Remove the obsolete Settings recording-lock test because the capture-owned selector remains covered by `ChannelCard.test.tsx`.
 
-- [ ] **Step 2: Run the focused test and verify RED**
+- [x] **Step 2: Run the focused test and verify RED**
 
 Run:
 
 ```bash
+cd web-app
 npm test --workspace @open-cluely/web -- SettingsModal.test.tsx
 ```
 
 Expected: FAIL because Settings still renders the Audio heading and microphone selector.
 
-- [ ] **Step 3: Remove the Settings-only microphone path**
+- [x] **Step 3: Remove the Settings-only microphone path**
 
 In `SettingsModal.tsx`, remove `useMicDevices`, `onMicDeviceChange`, `micDeviceDisabled`, and the Audio section. Keep the report-model section unchanged.
 
@@ -85,17 +86,18 @@ In `Shell.tsx`, render Settings without microphone props:
 
 Delete the now-unreferenced Settings-only `useMicDevices.ts` hook and its test. Do not change the independent main-page device hook inside `ChannelCard.tsx`.
 
-- [ ] **Step 4: Run focused tests and verify GREEN**
+- [x] **Step 4: Run focused tests and verify GREEN**
 
 Run:
 
 ```bash
+cd web-app
 npm test --workspace @open-cluely/web -- SettingsModal.test.tsx ChannelCard.test.tsx useAppSettings.test.tsx
 ```
 
 Expected: all focused tests pass; Settings has no microphone control and the main-page selector remains controlled and persistent.
 
-- [ ] **Step 5: Commit the behavior change**
+- [x] **Step 5: Commit the behavior change**
 
 ```bash
 git add web-app/web/src/desktop/SettingsModal.tsx \
@@ -116,22 +118,24 @@ git commit -m "fix: keep microphone selection on main page"
 - Consumes: Task 1's final Settings and main-page data flow.
 - Produces: contributor documentation, a clean production build, and a deployed `main` checkpoint.
 
-- [ ] **Step 1: Update implementation notes**
+- [x] **Step 1: Update implementation notes**
 
 Document that microphone selection is intentionally main-page-only, while `useAppSettings` continues to persist the selected id for capture.
 
-- [ ] **Step 2: Run full verification**
+- [x] **Step 2: Run full verification**
 
 ```bash
+cd web-app
 npm test
 npm run typecheck --workspace @open-cluely/server
 npm run build
+cd ..
 git diff --check
 ```
 
 Expected: all tests pass, server typecheck and both builds succeed, and no whitespace errors are reported.
 
-- [ ] **Step 3: Rebuild/restart and verify the real UI**
+- [x] **Step 3: Rebuild/restart and verify the real UI**
 
 Restart the production server on port `8788`, reload `http://127.0.0.1:8788/`, and verify:
 
