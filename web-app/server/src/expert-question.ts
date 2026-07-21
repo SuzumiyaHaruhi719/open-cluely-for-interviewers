@@ -96,14 +96,64 @@ function deriveAnchor(answer: string): string {
   return ranked[0]?.fragment.trim().slice(0, 52) || answer.trim().slice(0, 52) || '刚才这项经历';
 }
 
-function fallbackOutput(answer: string): FollowUpOutput {
+interface FallbackProbe {
+  question: (anchor: string) => string;
+  rationale: string;
+  expected: string;
+}
+
+function fallbackOutput(input: ExpertQuestionInput, answer: string): FollowUpOutput {
   const anchor = deriveAnchor(answer);
+  const history = (input.questionHistory ?? []).join('\n');
+  const askedOwnership = /关键决策|亲自|主导|责任边界/.test(history);
+  const askedMeasurement = /量化|指标|基线|归因|增量|验证方法/.test(history);
+  const askedTradeoff = /替代方案|取舍|放弃|止损/.test(history);
+  const hasMeasurableClaim = /\d|万|亿|百分比|增长|降低|提升|转化|留存|复购|roi|gmv|数据|实验|验证/i.test(answer);
+  const hasTradeoffClaim = /风险|取舍|放弃|替代|先期|前期|成本|预算|资源|竞争|嫁衣|阶段/.test(answer);
+
+  const measurement: FallbackProbe = {
+    question: (quote) =>
+      `你提到“${quote}”，你用哪一个量化指标和什么基线判断这项策略带来了可归因增量？`,
+    rationale: '模型超时或输出不合格时，优先核验候选人主张的结果是否有基线和可归因指标。',
+    expected: '一个核心量化指标、比较基线和可归因增量'
+  };
+  const tradeoff: FallbackProbe = {
+    question: (quote) =>
+      `你提到“${quote}”，当时你放弃的最强替代方案是什么，核心取舍依据是哪一条？`,
+    rationale: '模型超时或输出不合格时，用真实替代方案验证候选人的决策质量，避免重复责任边界问题。',
+    expected: '被放弃的替代方案、唯一核心取舍依据和决策责任'
+  };
+  const ownership: FallbackProbe = {
+    question: (quote) =>
+      `你提到“${quote}”，当时哪个关键决策最能证明这是你亲自主导的？`,
+    rationale: '模型超时或输出不合格时，仍围绕候选人原话验证个人决策和责任边界。',
+    expected: '个人决策、取舍依据和责任边界'
+  };
+  const stopLoss: FallbackProbe = {
+    question: (quote) =>
+      `你提到“${quote}”，什么具体信号会触发你停止这项方案？`,
+    rationale: '已有责任、指标和取舍问题时，继续核验候选人是否预先定义失败边界而不是事后解释。',
+    expected: '预先设定的止损信号和停止条件'
+  };
+
+  const probe =
+    hasMeasurableClaim && !askedMeasurement
+      ? measurement
+      : hasTradeoffClaim && !askedTradeoff
+        ? tradeoff
+        : !askedOwnership
+          ? ownership
+          : !askedMeasurement
+            ? measurement
+            : !askedTradeoff
+              ? tradeoff
+              : stopLoss;
   return {
-    primary_question: `你提到“${anchor}”，当时哪个关键决策最能证明这是你亲自主导的？`,
+    primary_question: probe.question(anchor),
     alternative_question: '',
-    rationale_for_interviewer: '当模型超时或输出不合格时，仍围绕候选人原话验证个人决策和责任边界。',
+    rationale_for_interviewer: probe.rationale,
     anchor_quotes: [anchor],
-    expected_evidence_yield: '个人决策、取舍依据和责任边界',
+    expected_evidence_yield: probe.expected,
     iteration_version: EXPERT_QUESTION_VERSION
   };
 }
@@ -238,7 +288,7 @@ export async function generateExpertQuestion(
   const shouldAsk = parsed?.shouldAsk ?? true;
   const output = parsed?.output;
   return {
-    output: output ?? fallbackOutput(answer),
+    output: output ?? fallbackOutput(input, answer),
     model: EXPERT_QUESTION_MODEL,
     elapsedMs: Math.max(0, now() - startedAt),
     fellBack: output === null || output === undefined,

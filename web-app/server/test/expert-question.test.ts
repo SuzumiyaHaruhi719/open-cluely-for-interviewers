@@ -126,6 +126,44 @@ test('fallback ignores cut-off closing boilerplate and anchors concrete candidat
   assert.equal(candidateAnswer.includes(result.output.anchor_quotes[0]), true);
 });
 
+test('fallback rotates away from an ownership question already present in history', async () => {
+  const candidateAnswer =
+    '我们先用银行优惠聚合积累用户数据，再用一周试验验证精准客户转化率和渠道增量，先期承担为银行导流的风险。';
+  const result = await generateExpertQuestion(
+    {
+      ...INPUT,
+      candidateAnswer,
+      questionHistory: ['哪个关键决策最能证明这是你亲自主导的？']
+    },
+    { chat: async () => { throw new Error('timeout'); } }
+  );
+
+  assert.equal(result.fellBack, true);
+  assert.doesNotMatch(result.output.primary_question, /关键决策.*亲自主导/);
+  assert.match(result.output.primary_question, /指标|基线|归因|增量/);
+  assert.ok(result.output.anchor_quotes.every((anchor) => candidateAnswer.includes(anchor)));
+});
+
+test('fallback rotates to trade-off evidence after ownership and measurement were asked', async () => {
+  const candidateAnswer =
+    '我们先用银行优惠聚合积累用户数据，再用一周试验验证精准客户转化率和渠道增量，先期承担为银行导流的风险。';
+  const result = await generateExpertQuestion(
+    {
+      ...INPUT,
+      candidateAnswer,
+      questionHistory: [
+        '哪个关键决策最能证明这是你亲自主导的？',
+        '你用什么指标和基线判断产生了可归因增量？'
+      ]
+    },
+    { chat: async () => { throw new Error('timeout'); } }
+  );
+
+  assert.equal(result.fellBack, true);
+  assert.match(result.output.primary_question, /替代方案|取舍|放弃|止损/);
+  assert.ok(result.output.anchor_quotes.every((anchor) => candidateAnswer.includes(anchor)));
+});
+
 test('rejects accidental English clauses in Chinese mode while allowing source acronyms', async () => {
   const mixed = await generateExpertQuestion(INPUT, {
     chat: async () => JSON.stringify({
