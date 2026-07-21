@@ -88,7 +88,7 @@ test('new cluster becomes eligible only after a second substantive adjacency win
   assert.equal(packet.revision, 6);
 });
 
-test('target cluster cannot use its own confirmed turns to seed either role bank', () => {
+test('stable target semantics bootstrap safely without seeding external role banks', () => {
   const packet = buildCohortEvidence(
     [
       turn(0, 10, '请说明你承担的具体职责和最终结果。'),
@@ -107,7 +107,10 @@ test('target cluster cannot use its own confirmed turns to seed either role bank
     30
   );
 
-  assert.equal(packet, null, 'only one non-target candidate anchor exists');
+  assert.ok(packet);
+  assert.deepEqual(packet.confirmedTargetRoles.map((entry) => entry.seq), [2, 4]);
+  assert.deepEqual(packet.candidateAnchors.map((entry) => entry.seq), [1]);
+  assert.ok(packet.candidateAnchors.every((entry) => entry.speakerId !== 30));
 });
 
 test('parser rejects citations outside the bounded evidence packet', () => {
@@ -243,7 +246,7 @@ test('harness delegates only after two independent audits agree', async () => {
   const passes: string[] = [];
   const harness = createSpeakerCohortHarness({
     audit: async (received, pass) => {
-      passes.push(pass);
+      if (received.targetSpeakerId === 30) passes.push(pass);
       return audit(received, 'candidate');
     }
   });
@@ -262,7 +265,8 @@ test('harness delegates only after two independent audits agree', async () => {
     confidence: 0.94,
     evidenceSeqs: [4, 6],
     contradictionSeqs: [],
-    evaluatedRevision: 6
+    evaluatedRevision: 6,
+    reasonCodes: ['two_pass_consensus']
   });
 });
 
@@ -276,7 +280,7 @@ test('harness never re-evaluates an unchanged evidence revision', async () => {
   let calls = 0;
   const harness = createSpeakerCohortHarness({
     audit: async (packet) => {
-      calls += 1;
+      if (packet.targetSpeakerId === 30) calls += 1;
       return audit(packet, 'candidate');
     }
   });
@@ -297,7 +301,7 @@ test('two confirmed opposite target turns revoke delegation without an immediate
   let calls = 0;
   const harness = createSpeakerCohortHarness({
     audit: async (packet) => {
-      calls += 1;
+      if (packet.targetSpeakerId === 30) calls += 1;
       return audit(packet, 'candidate');
     }
   });
@@ -325,8 +329,34 @@ test('two confirmed opposite target turns revoke delegation without an immediate
     confidence: 0,
     evidenceSeqs: [],
     contradictionSeqs: [7, 9],
-    evaluatedRevision: 9
+    evaluatedRevision: 9,
+    reasonCodes: ['opposite_role_contradictions']
   });
+});
+
+test('final audit preserves a delegated voiceprint instead of rebuilding and flipping it', async () => {
+  const turns = [
+    ...baseTurns,
+    turn(4, 30, '我先把每个隐患分配到具体负责人，并约定当天反馈整改照片和复验记录。'),
+    turn(5, 10, '如果整改负责人没有按时完成，你会如何处理？'),
+    turn(6, 30, '我会先确认阻塞原因，再调整资源和时限，仍未完成就升级并记录问责。')
+  ];
+  let proposedRole: 'candidate' | 'interviewer' = 'candidate';
+  let calls = 0;
+  const harness = createSpeakerCohortHarness({
+    audit: async (packet) => {
+      if (packet.targetSpeakerId === 30) calls += 1;
+      return audit(packet, proposedRole);
+    }
+  });
+
+  await harness.evaluate({ turns, confirmed: baseConfirmed });
+  assert.equal(harness.getRole(30).role, 'candidate');
+  proposedRole = 'interviewer';
+  await harness.evaluate({ turns, confirmed: baseConfirmed, final: true });
+
+  assert.equal(calls, 2, 'finalization must not re-audit and directly flip a stable delegation');
+  assert.equal(harness.getRole(30).role, 'candidate');
 });
 
 test('reset invalidates an in-flight cohort decision', async () => {
@@ -355,11 +385,11 @@ test('reset invalidates an in-flight cohort decision', async () => {
   assert.equal(harness.getRole(30).state, 'observing');
 });
 
-test('harness audits only voiceprints that appear after the two established clusters', async () => {
+test('harness audits every native voiceprint including the first two clusters', async () => {
   const turns = [
-    turn(0, 10, '第一位面试官请候选人说明园区整改项目和个人职责。'),
+    turn(0, 10, '第一位面试官请候选人结合完整项目说明园区整改背景、个人职责和最终结果。'),
     turn(1, 20, '我负责制定整改计划、协调工程人员并跟进最终验收。'),
-    turn(2, 10, '请说明你如何识别最高风险的消防隐患。'),
+    turn(2, 10, '请具体说明你如何识别最高风险的消防隐患，以及为什么优先处理这一类问题。'),
     turn(3, 20, '我先检查联动设备和疏散通道，再按影响范围划分风险等级。'),
     turn(4, 30, '我还会把每个隐患分配到具体负责人，并约定整改时限和复验标准。'),
     turn(5, 10, '如果负责人延期，你会如何处理和记录？'),
@@ -384,11 +414,49 @@ test('harness audits only voiceprints that appear after the two established clus
   const harness = createSpeakerCohortHarness({
     audit: async (packet) => {
       auditedIds.push(packet.targetSpeakerId);
-      return audit(packet, packet.targetSpeakerId === 40 ? 'interviewer' : 'candidate');
+      return audit(
+        packet,
+        packet.targetSpeakerId === 10 || packet.targetSpeakerId === 40
+          ? 'interviewer'
+          : 'candidate'
+      );
     }
   });
 
   await harness.evaluate({ turns, confirmed });
 
-  assert.deepEqual([...new Set(auditedIds)].sort((left, right) => left - right), [30, 40]);
+  assert.deepEqual(
+    [...new Set(auditedIds)].sort((left, right) => left - right),
+    [10, 20, 30, 40]
+  );
+  assert.equal(harness.getRole(10).role, 'interviewer');
+  assert.equal(harness.getRole(20).role, 'candidate');
+});
+
+test('two-speaker interviews bootstrap each voiceprint from stable target semantics and adjacency', async () => {
+  const turns = [
+    turn(0, 0, '请结合一个完整项目说明你负责的用户增长目标、关键约束、个人职责和最终结果。'),
+    turn(1, 1, '我负责用户分层、召回策略和实验复盘，通过对照组验证四周留存提升十二个百分点。'),
+    turn(2, 0, '这个提升如何排除同期渠道活动和自然波动，并确认增量确实来自你的策略？'),
+    turn(3, 1, '我按渠道和人群分别设置对照，连续观察四周并扣除自然流量后才扩大到全部用户。')
+  ];
+  const confirmed: ConfirmedTurnRole[] = [
+    { seq: 0, role: 'interviewer', confidence: 0.98 },
+    { seq: 1, role: 'candidate', confidence: 0.97 },
+    { seq: 2, role: 'interviewer', confidence: 0.98 },
+    { seq: 3, role: 'candidate', confidence: 0.97 }
+  ];
+  const auditedIds: number[] = [];
+  const harness = createSpeakerCohortHarness({
+    audit: async (packet) => {
+      auditedIds.push(packet.targetSpeakerId);
+      return audit(packet, packet.targetSpeakerId === 0 ? 'interviewer' : 'candidate');
+    }
+  });
+
+  await harness.evaluate({ turns, confirmed });
+
+  assert.deepEqual([...new Set(auditedIds)].sort(), [0, 1]);
+  assert.equal(harness.getRole(0).role, 'interviewer');
+  assert.equal(harness.getRole(1).role, 'candidate');
 });

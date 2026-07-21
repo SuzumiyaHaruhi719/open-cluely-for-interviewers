@@ -69,6 +69,8 @@ export interface ClusterCohortState {
   evidenceSeqs: number[];
   contradictionSeqs: number[];
   evaluatedRevision: number;
+  /** Bounded machine-readable audit outcomes; never provider reasoning. */
+  reasonCodes: string[];
 }
 
 export interface CohortEvaluationInput {
@@ -180,15 +182,6 @@ export function buildCohortEvidence(
     return null;
   }
 
-  const interviewerAnchors = chooseRoleAnchors(turns, confirmed, targetSpeakerId, 'interviewer');
-  const candidateAnchors = chooseRoleAnchors(turns, confirmed, targetSpeakerId, 'candidate');
-  if (
-    interviewerAnchors.length < MIN_ROLE_ANCHORS ||
-    candidateAnchors.length < MIN_ROLE_ANCHORS
-  ) {
-    return null;
-  }
-
   const targetSeqs = new Set(targets.map((entry) => entry.seq));
   const neighbours = ordered.filter(
     (entry) =>
@@ -196,16 +189,28 @@ export function buildCohortEvidence(
       targets.some((target) => Math.abs(target.seq - entry.seq) === 1)
   );
   const confirmedTargetRoles = confirmed
-    .filter((entry) => targetSeqs.has(entry.seq))
+    .filter((entry) => targetSeqs.has(entry.seq) && entry.confidence >= 0.8)
     .sort((left, right) => left.seq - right.seq);
+  const interviewerAnchors = chooseRoleAnchors(turns, confirmed, targetSpeakerId, 'interviewer');
+  const candidateAnchors = chooseRoleAnchors(turns, confirmed, targetSpeakerId, 'candidate');
+  const seededRole = confirmedTargetRoles[0]?.role ?? 'unknown';
+  const hasStableTargetSeed =
+    seededRole !== 'unknown' &&
+    confirmedTargetRoles.length >= MIN_COHORT_UTTERANCES &&
+    confirmedTargetRoles.every((entry) => entry.role === seededRole) &&
+    neighbours.length >= MIN_COHORT_UTTERANCES;
+  const hasBalancedExternalAnchors =
+    interviewerAnchors.length >= MIN_ROLE_ANCHORS &&
+    candidateAnchors.length >= MIN_ROLE_ANCHORS;
+  if (!hasStableTargetSeed && !hasBalancedExternalAnchors) return null;
 
   return {
     targetSpeakerId,
     revision: Math.max(...targets.map((entry) => entry.seq)),
     targets,
     neighbours,
-    interviewerAnchors: interviewerAnchors.slice(0, MIN_ROLE_ANCHORS),
-    candidateAnchors: candidateAnchors.slice(0, MIN_ROLE_ANCHORS),
+    interviewerAnchors: interviewerAnchors.slice(0, MAX_ROLE_ANCHORS),
+    candidateAnchors: candidateAnchors.slice(0, MAX_ROLE_ANCHORS),
     requiredSeqs: targets.map((entry) => entry.seq),
     confirmedTargetRoles
   };
@@ -381,6 +386,16 @@ function formatEvidenceSection(label: string, turns: readonly CohortTurn[]): str
   return [`[${label}]`, ...turns.map(formatPromptTurn)];
 }
 
+function formatConfirmedTargetRoles(roles: readonly ConfirmedTurnRole[]): string[] {
+  return [
+    '[independently-confirmed-target-semantics]',
+    ...roles.map(
+      (entry) =>
+        `[seq=${entry.seq} role=${entry.role} confidence=${entry.confidence.toFixed(2)}]`
+    )
+  ];
+}
+
 export function buildCohortAuditInput(
   packet: CohortEvidencePacket,
   pass: CohortAuditPass
@@ -403,6 +418,7 @@ export function buildCohortAuditInput(
       : 'Compare interviewer fit and candidate fit symmetrically. Do not infer from numeric speaker order.',
     ...roleSections,
     ...formatEvidenceSection('target-utterances', packet.targets),
+    ...formatConfirmedTargetRoles(packet.confirmedTargetRoles),
     ...formatEvidenceSection('direct-neighbours', packet.neighbours),
     'Return one targetRoles item for every required target seq. Evidence insufficient or materially contradictory means unknown.'
   ]
@@ -437,7 +453,8 @@ export async function classifySpeakerCohort(
 function emptyCohortState(
   state: Extract<ClusterCohortStatus, 'observing' | 'contested'> = 'observing',
   evaluatedRevision = -1,
-  contradictionSeqs: number[] = []
+  contradictionSeqs: number[] = [],
+  reasonCodes: string[] = []
 ): ClusterCohortState {
   return {
     state,
@@ -445,7 +462,8 @@ function emptyCohortState(
     confidence: 0,
     evidenceSeqs: [],
     contradictionSeqs: [...contradictionSeqs],
-    evaluatedRevision
+    evaluatedRevision,
+    reasonCodes: [...reasonCodes]
   };
 }
 
@@ -486,6 +504,7 @@ export function createSpeakerCohortHarness(
   const audit = deps.audit ?? classifySpeakerCohort;
   let states = new Map<number, ClusterCohortState>();
   let latestRevisions = new Map<number, number>();
+  let finalAuditedRevisions = new Map<number, number>();
   let epoch = 0;
 
   async function evaluateSpeaker(
@@ -496,6 +515,7 @@ export function createSpeakerCohortHarness(
     if (input.manualSpeakerIds?.has(speakerId)) {
       states.delete(speakerId);
       latestRevisions.delete(speakerId);
+      finalAuditedRevisions.delete(speakerId);
       return;
     }
 
@@ -509,16 +529,41 @@ export function createSpeakerCohortHarness(
         current.role as CohortRole
       );
       if (contradictions.length >= 2) {
-        states.set(speakerId, emptyCohortState('contested', revision, contradictions));
+        states.set(
+          speakerId,
+          emptyCohortState(
+            'contested',
+            revision,
+            contradictions,
+            ['opposite_role_contradictions']
+          )
+        );
         latestRevisions.set(speakerId, revision);
       }
       return;
     }
 
     const packet = buildCohortEvidence(input.turns, input.confirmed, speakerId);
-    if (!packet || packet.revision <= current.evaluatedRevision) return;
+    if (!packet) {
+      if (current.state !== 'contested') {
+        states.set(speakerId, {
+          ...current,
+          reasonCodes: ['insufficient_evidence']
+        });
+      }
+      return;
+    }
+    const finalRetry =
+      input.final === true &&
+      finalAuditedRevisions.get(speakerId) !== packet.revision;
+    if (packet.revision <= current.evaluatedRevision && !finalRetry) return;
+    if (input.final) finalAuditedRevisions.set(speakerId, packet.revision);
     latestRevisions.set(speakerId, packet.revision);
-    states.set(speakerId, { ...current, evaluatedRevision: packet.revision });
+    states.set(speakerId, {
+      ...current,
+      evaluatedRevision: packet.revision,
+      reasonCodes: []
+    });
 
     const [primary, verification] = await Promise.all([
       audit(packet, 'primary').catch(() => null),
@@ -532,7 +577,11 @@ export function createSpeakerCohortHarness(
     }
     const decision = consensusCohortAudits(packet, primary, verification);
     if (!decision) {
-      states.set(speakerId, { ...current, evaluatedRevision: packet.revision });
+      states.set(speakerId, {
+        ...current,
+        evaluatedRevision: packet.revision,
+        reasonCodes: ['audit_no_consensus']
+      });
       return;
     }
     states.set(speakerId, {
@@ -541,22 +590,19 @@ export function createSpeakerCohortHarness(
       confidence: decision.confidence,
       evidenceSeqs: decision.evidenceSeqs,
       contradictionSeqs: decision.contradictionSeqs,
-      evaluatedRevision: packet.revision
+      evaluatedRevision: packet.revision,
+      reasonCodes: ['two_pass_consensus']
     });
   }
 
   return {
     async evaluate(input) {
-      if (input.final) {
-        states = new Map<number, ClusterCohortState>();
-        latestRevisions = new Map<number, number>();
-      }
       const scheduledEpoch = epoch;
       const speakerIds = [...new Set(
         input.turns.flatMap((turn) =>
           typeof turn.speakerId === 'number' ? [turn.speakerId] : []
         )
-      )].slice(2);
+      )];
       await Promise.all(
         speakerIds.map((speakerId) => evaluateSpeaker(input, speakerId, scheduledEpoch))
       );
@@ -566,13 +612,15 @@ export function createSpeakerCohortHarness(
       return {
         ...state,
         evidenceSeqs: [...state.evidenceSeqs],
-        contradictionSeqs: [...state.contradictionSeqs]
+        contradictionSeqs: [...state.contradictionSeqs],
+        reasonCodes: [...state.reasonCodes]
       };
     },
     reset() {
       epoch += 1;
       states = new Map<number, ClusterCohortState>();
       latestRevisions = new Map<number, number>();
+      finalAuditedRevisions = new Map<number, number>();
     }
   };
 }

@@ -678,7 +678,8 @@ test('delegated cohort labels unresolved transcript turns without releasing Auto
               confidence: 0.95,
               evidenceSeqs: [2, 4],
               contradictionSeqs: [],
-              evaluatedRevision: 4
+              evaluatedRevision: 4,
+              reasonCodes: ['two_pass_consensus']
             }
           : {
               state: 'observing' as const,
@@ -686,7 +687,8 @@ test('delegated cohort labels unresolved transcript turns without releasing Auto
               confidence: 0,
               evidenceSeqs: [],
               contradictionSeqs: [],
-              evaluatedRevision: -1
+              evaluatedRevision: -1,
+              reasonCodes: []
             };
       },
       reset() {}
@@ -744,7 +746,8 @@ test('per-turn semantic authority outranks an opposite delegated cohort', async 
               confidence: 0.95,
               evidenceSeqs: [2, 4],
               contradictionSeqs: [],
-              evaluatedRevision: 4
+              evaluatedRevision: 4,
+              reasonCodes: ['two_pass_consensus']
             }
           : {
               state: 'observing' as const,
@@ -752,7 +755,8 @@ test('per-turn semantic authority outranks an opposite delegated cohort', async 
               confidence: 0,
               evidenceSeqs: [],
               contradictionSeqs: [],
-              evaluatedRevision: -1
+              evaluatedRevision: -1,
+              reasonCodes: []
             };
       },
       reset() {}
@@ -799,7 +803,8 @@ test('display cohort evaluation never delays role-confirmed Auto callbacks', asy
           confidence: 0,
           evidenceSeqs: [],
           contradictionSeqs: [],
-          evaluatedRevision: -1
+          evaluatedRevision: -1,
+          reasonCodes: []
         };
       },
       reset() {}

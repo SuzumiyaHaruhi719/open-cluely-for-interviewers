@@ -720,7 +720,8 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           confidence: 0,
           evidenceSeqs: [],
           contradictionSeqs: [],
-          evaluatedRevision: -1
+          evaluatedRevision: -1,
+          reasonCodes: []
         }),
         reset() {}
       }
