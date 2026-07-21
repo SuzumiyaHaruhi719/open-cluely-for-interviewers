@@ -1,12 +1,12 @@
-# P7–P8 User Operations Interview and Voiceprint Role Harness
+# P7 and P8 User Operations Interviews and Voiceprint Role Harness
 
 ## Purpose
 
-Add a complete built-in `用户运营专家（P7–P8）` interview profile and make native ASR speaker identity the unit of interviewer/candidate delegation. The system must remain useful under repeated interruptions without ever displaying the same native voiceprint as both roles.
+Add two complete, separately selectable built-in interview profiles—`用户运营专家（P7）` and `用户运营专家（P8）`—and make native ASR speaker identity the unit of interviewer/candidate delegation. The system must remain useful under repeated interruptions without ever displaying the same native voiceprint as both roles. Automatic questioning uses one internal Balanced gate preset.
 
 ## Product outcome
 
-An interviewer can select the P7–P8 user-operations JD, start the interview, and play the supplied 8-minute interview recording through the existing audio path. Doubao Seed ASR 2.0 may emit two or more native speaker IDs. The role harness gathers evidence across the whole session, then delegates each speaker ID to `面试官`, `候选人`, or `待确认` as one atomic identity decision.
+An interviewer can independently select either the P7 or P8 user-operations JD, start the interview, and play the supplied 8-minute interview recording through the existing audio path. Doubao Seed ASR 2.0 may emit two or more native speaker IDs. The role harness gathers evidence across the whole session, then delegates each speaker ID to `面试官`, `候选人`, or `待确认` as one atomic identity decision.
 
 This design guarantees identity consistency, not infallible human identification:
 
@@ -20,13 +20,14 @@ This design guarantees identity consistency, not infallible human identification
 
 ### In scope
 
-- A built-in P7–P8 user-operations-expert JD, interviewer preparation, and 100-point evidence scorecard.
-- Fuzzy JD search using `P7`, `P8`, `用户运营`, `增长`, and role-related terms.
+- Two built-in, independently selectable user-operations-expert JDs for P7 and P8, each with level-specific interviewer preparation and a 100-point evidence scorecard.
+- Fuzzy JD search using `P7`, `P8`, `用户运营`, `增长`, and role-related terms without merging the two results.
 - Whole-voiceprint role state and an explicit speaker-assignment wire contract.
 - Atomic historical relabeling and immediate inheritance for future turns from a delegated speaker ID.
 - DeepSeek V4 Flash evidence audits that promote, revoke, or retain an assignment only after sufficient evidence.
 - Panel-interview support: multiple interviewer IDs interviewing one candidate, plus safe handling of extra candidate IDs.
 - Candidate-only Auto-question eligibility based on delegated/manual whole-voiceprint roles.
+- One non-user-facing Balanced Auto gate preset: 120 new candidate characters, 3-second semantic quiet period, 20-second cooldown, and bounded monitor liveness.
 - Full-length, real-time acceptance testing with the supplied interruption-heavy recording.
 
 ### Out of scope
@@ -64,83 +65,115 @@ Per-turn semantic analysis becomes internal evidence only. Two independent Flash
 9. **No sentence-level native override.** A semantic turn verdict cannot directly change the visible or Auto role of a native-ID turn.
 10. **Text-only compatibility.** Turns without a native `speakerId` may continue using the existing per-turn semantic role path because there is no stable voiceprint to delegate.
 
-## Built-in job profile
+## Built-in job profiles
 
-### Identity
+The two profiles are separate picker entries and separate Expert-context records. Neither is implemented as a prompt mode, and selecting one never silently broadens it into the other level.
 
-- **职位：** 用户运营专家（P7–P8）
+### 用户运营专家（P7）
+
 - **部门：** 用户运营 / 增长与体验
-- **汇报对象：** 用户运营负责人或业务负责人
-- **工作概述：** 面向大规模互联网用户与复杂业务目标，负责用户运营策略、生命周期增长、用户洞察、机制与平台建设，并通过跨团队协作持续交付可验证的用户价值和经营结果。
+- **汇报对象：** 用户运营负责人
+- **工作概述：** 独立负责一个复杂用户运营域或大型项目，把业务目标转化为用户分层、生命周期策略、实验和可复用机制，并持续交付可验证结果。
 
-### Complete JD context
+#### P7 工作职责
 
-The following content is stored as job context for the existing Expert workflow. It is not a second prompt system.
-
-#### 工作职责
-
-1. 根据公司战略、业务阶段和用户价值目标，制定用户运营中长期策略、年度规划、关键指标及资源方案，并对核心结果负责；
-2. 建立用户分层、画像与生命周期运营体系，覆盖获客、激活、留存、转化、复购、召回与忠诚度经营；
-3. 结合定量数据、用户研究、行为路径和一线反馈识别关键机会，形成可验证的运营假设与优先级；
-4. 设计并推动增长实验，建立实验口径、对照方法、归因框架和复盘机制，平衡规模、质量、成本与长期价值；
-5. 负责会员、内容、社区、私域、CRM、活动或渠道等运营机制中的一项或多项，并推动高价值策略产品化、自动化和平台化；
-6. 建立用户运营指标体系和经营看板，持续跟踪用户规模、活跃、留存、转化、LTV、ROI、满意度及风险指标；
+1. 承接业务战略和年度目标，制定所负责运营域的用户策略、季度规划、关键指标与执行节奏，并对结果负责；
+2. 建立用户分层、画像与生命周期运营方案，覆盖获客、激活、留存、转化、复购、召回或忠诚度中的关键环节；
+3. 结合行为数据、用户研究、一线反馈与竞争环境识别问题，形成有优先级且可验证的运营假设；
+4. 设计并推动增长实验，明确基线、样本、对照、增量口径、归因和复盘，平衡规模、质量、成本与长期价值；
+5. 负责会员、内容、社区、私域、CRM、活动或渠道运营中的一项或多项，并将有效策略沉淀为流程、工具或产品能力；
+6. 建立所负责领域的指标体系和经营看板，持续跟踪用户规模、活跃、留存、转化、LTV、ROI、满意度与风险指标；
 7. 联动产品、研发、数据、市场、销售、客服、商业化和风控团队，推动复杂项目从目标对齐、方案设计到落地复盘；
-8. 识别业务增长中的体验、内容、隐私、合规和品牌风险，建立边界、监控及处置机制；
-9. 沉淀可复用的方法论、流程和人才能力，提升团队决策质量、执行效率与组织影响力；
-10. P8 候选人还需证明能够定义跨业务或跨区域方向，影响高层资源配置，并通过组织、平台或生态建设获得持续的组合结果。
+8. 管理项目预算、资源和关键依赖，在目标冲突或信息不完整时作出取舍并及时升级风险；
+9. 识别用户体验、内容、隐私、合规和品牌风险，建立执行边界、监控与处置机制；
+10. 沉淀方法论并辅导团队成员，提高运营决策质量、执行效率和跨团队协作能力。
 
-#### 任职要求
+#### P7 任职要求
 
 1. 本科及以上学历，综合能力和业绩特别突出者可适当放宽；
-2. 七年以上互联网用户运营、增长、产品运营或相关经验，具有复杂业务或大规模用户运营的完整负责人经历；
-3. 能将公司目标拆解为用户策略、指标体系和执行机制，并用前后基线、实验或经营数据证明结果；
-4. 具有扎实的用户洞察、数据分析和实验能力，能够识别相关性、因果性、归因偏差与指标副作用；
-5. 具有较强的跨部门协作、项目治理和利益相关方管理能力，能在目标冲突和信息不完整时作出判断；
-6. 能够建设运营机制、平台或团队能力，而不是只依赖单次活动和个人推动；
-7. 对用户体验、隐私合规、内容安全和长期品牌价值有明确边界意识；
-8. P7 候选人应能独立负责复杂运营域并持续交付可验证结果；P8 候选人应能制定多域策略、影响组织资源并建立规模化能力。
+2. 七年以上互联网用户运营、增长、产品运营或相关经验，具有复杂运营域或大规模用户项目的独立负责人经历；
+3. 能把模糊业务问题拆解为用户策略、指标、实验和执行机制，并用前后基线或经营数据证明结果；
+4. 具有扎实的用户洞察、数据分析和实验能力，能够识别归因偏差和指标副作用；
+5. 具有较强的跨部门协作、项目治理和利益相关方管理能力；
+6. 至少建设过一项可复用的流程、工具、产品能力或运营机制，而非只有单次活动案例；
+7. 对用户体验、隐私合规、内容安全和长期品牌价值有明确边界意识。
 
-### Level calibration
+#### P7 interviewer preparation
 
-#### P7 evidence anchors
+1. 标记候选人声称独立负责的项目，核验其决策权、团队边界、预算、周期和可归因结果。
+2. 选择一个增长案例，核对基线、实验设计、增量口径、成本、LTV 与副作用。
+3. 选择一个失败或停做案例，判断候选人能否识别错误假设、沉没成本与纠偏信号。
+4. 核验候选人是否真正沉淀过可复用机制，而不是依赖一次活动或上级资源。
+5. 优先追问事实、个人动作、判断依据和证据，不把方法论术语本身视为能力证明。
 
-- 独立拥有一个复杂运营域或大型项目的目标、方案与结果；
-- 能把模糊业务问题转化为用户分层、指标、实验和可执行机制；
-- 在多个团队之间推动关键决策，能说明本人判断、阻力处理和量化结果；
-- 至少建设过一项可复用的流程、产品能力或运营机制，而非只有活动案例。
-
-#### P8 evidence anchors
-
-- 定义跨业务、跨产品或跨区域的用户运营方向与资源优先级；
-- 影响高层决策，并能解释组合投入、机会成本和长期结果；
-- 通过组织、平台、生态或方法体系扩大他人产出，而非仅靠个人推进；
-- 对多个周期或多个业务单元的结果负责，并能证明策略在环境变化后仍然有效。
-
-### Interviewer preparation
-
-1. 标记简历中候选人声称“负责”或“主导”的项目，准备核验其决策权、团队边界、预算、周期和可归因结果。
-2. 选择至少一个增长案例，核对基线、样本、实验设计、增量口径、成本、LTV 与副作用。
-3. 选择至少一个失败或停做案例，判断候选人是否能识别错误假设、沉没成本和纠偏信号。
-4. 对 P8 候选人额外准备组织影响问题：资源重配、平台建设、人才机制及跨业务组合结果。
-5. 面试中优先追问事实、个人动作、判断依据和证据，不把方法论术语本身视为能力证明。
-
-### 100-point evidence scorecard
+#### P7 100-point scorecard
 
 | Competency | Weight | Primary evidence target |
 |---|---:|---|
-| 战略与业务诊断 | 15 | 从业务目标、用户问题和约束形成取舍明确的策略 |
+| 战略理解与问题诊断 | 12 | 把业务目标和用户问题转化为取舍明确的领域策略 |
 | 生命周期增长与留存 | 15 | 分层运营、关键路径和长期留存的可验证结果 |
 | 数据、指标与实验 | 15 | 基线、实验、归因、增量、成本及指标副作用 |
-| 用户洞察与分群 | 10 | 定量和定性证据如何改变优先级或产品方案 |
-| 机制建设与产品化 | 10 | 将一次性动作沉淀为可复用流程、工具或平台 |
-| 复杂项目与跨团队推动 | 10 | 决策权、冲突处理、治理节奏和落地结果 |
-| 领导力与组织影响 | 10 | 人才、组织、资源与高层影响；P8 深度重点 |
-| 商业化、LTV 与 ROI | 8 | 用户价值与经营价值之间的量化取舍 |
-| 风险、合规与长期体验 | 7 | 隐私、内容、品牌和增长边界的实际处理 |
+| 用户洞察与分群 | 10 | 定量和定性证据如何改变优先级或方案 |
+| 机制建设与产品化 | 12 | 将一次性动作沉淀为可复用流程、工具或产品能力 |
+| 复杂项目与跨团队推动 | 12 | 决策权、冲突处理、治理节奏和落地结果 |
+| 独立担当与结果所有权 | 12 | 明确个人判断、动作、责任边界与前后结果 |
+| 商业化、LTV 与 ROI | 7 | 用户价值与经营价值之间的量化取舍 |
+| 风险、合规与长期体验 | 5 | 隐私、内容、品牌和增长边界的实际处理 |
 | **合计** | **100** | |
 
-Every scorecard item supplies a primary question, focused follow-ups, evidence signals, and red flags through the existing `InterviewGuideItem` schema. The implementation must test that weights equal 100 and that guide lines serialize into Expert context.
+### 用户运营专家（P8）
+
+- **部门：** 用户运营 / 增长与体验
+- **汇报对象：** 业务负责人或用户运营负责人
+- **工作概述：** 定义跨业务、跨产品或跨区域的用户运营方向与资源优先级，通过组织、平台和机制建设持续获得规模化用户价值与经营结果。
+
+#### P8 工作职责
+
+1. 根据公司战略、业务阶段和竞争环境制定用户运营中长期方向、年度组合目标和关键战略取舍，并对跨域结果负责；
+2. 建立跨产品或跨业务的用户分层与生命周期经营框架，统一核心口径并明确各业务的差异化策略；
+3. 通过用户研究、行为数据、经营数据和外部趋势识别结构性机会，推动高层形成优先级与资源共识；
+4. 建立增长实验和决策治理体系，规范基线、样本、对照、归因、增量、停止条件与跨周期复盘；
+5. 推动会员、内容、社区、私域、CRM、渠道或用户数据能力的平台化建设，使策略能够被多个团队规模化复用；
+6. 建立面向用户价值和经营价值的组合指标体系，平衡增长、留存、LTV、ROI、体验、品牌与风险；
+7. 联动产品、研发、数据、市场、销售、客服、商业化和风控负责人，解决跨团队目标冲突并推动关键决策落地；
+8. 参与或主导预算与人才资源配置，建立组织分工、管理节奏、人才梯队和关键能力标准；
+9. 建立用户体验、内容、隐私、合规和品牌风险的治理边界、预警机制与重大事件处置原则；
+10. 对多个周期或业务单元的组合结果负责，并通过组织、平台、生态或方法体系扩大团队整体产出。
+
+#### P8 任职要求
+
+1. 本科及以上学历，综合能力和业绩特别突出者可适当放宽；
+2. 十年以上互联网用户运营、增长、产品运营或相关经验，具有多业务、大规模用户或复杂组织的负责人经历；
+3. 能定义跨业务用户战略和资源优先级，并证明策略在多个周期、区域或业务单元中的结果；
+4. 具有深入的用户洞察、经营分析和实验治理能力，能够识别因果、机会成本、组合风险与长期副作用；
+5. 具有影响高层决策、协调多团队负责人和处理复杂利益冲突的实际经历；
+6. 建设过可规模化复用的平台、组织机制、人才体系或生态能力，并能量化其杠杆效果；
+7. 对用户体验、隐私合规、内容安全、品牌和长期经营质量有系统治理能力。
+
+#### P8 interviewer preparation
+
+1. 标记候选人声称定义战略或影响资源的案例，核验决策范围、参与层级、资源规模、机会成本和最终归因。
+2. 选择一个跨业务增长案例，核对组合基线、治理机制、资源取舍及多个周期的持续结果。
+3. 选择一个战略失败或主动停做案例，判断其是否能反证自身判断并推动组织纠偏。
+4. 核验组织、平台或人才建设的杠杆效果，区分个人救火与可复制的组织能力。
+5. 追问高层分歧、风险边界和长期副作用，避免把宏观表述误判为 P8 能力。
+
+#### P8 100-point scorecard
+
+| Competency | Weight | Primary evidence target |
+|---|---:|---|
+| 跨域战略与组合取舍 | 18 | 多业务方向、优先级、机会成本和持续结果 |
+| 组织领导与资源配置 | 15 | 高层影响、人才、预算和组织能力建设 |
+| 生命周期增长与留存 | 12 | 跨域用户经营框架和长期价值结果 |
+| 数据治理与战略实验 | 12 | 决策口径、因果、组合实验和停止条件 |
+| 平台、机制与规模化 | 12 | 平台或机制如何扩大多个团队的产出 |
+| 跨业务影响与复杂治理 | 12 | 负责人协同、冲突处理和关键决策落地 |
+| 用户洞察与结构性机会 | 7 | 洞察如何改变战略方向或资源优先级 |
+| 商业化、LTV 与 ROI | 7 | 用户价值与经营组合回报的量化取舍 |
+| 风险、合规与长期体验 | 5 | 系统治理边界、预警和重大风险处理 |
+| **合计** | **100** | |
+
+Every scorecard item supplies a primary question, focused follow-ups, evidence signals, and red flags through the existing `InterviewGuideItem` schema. The implementation must test that each profile independently totals 100 and that only the selected profile's JD and guide lines serialize into Expert context.
 
 ## Voiceprint role state model
 
@@ -264,6 +297,22 @@ Auto-question monitoring consumes a filtered canonical transcript:
 - do not release while the candidate is still speaking or while only interviewer speech has arrived;
 - preserve the existing continuous monitor → expert generation architecture once enough candidate evidence exposes a meaningful evidence gap.
 
+### Balanced gate preset
+
+Balanced is the single production default and is not exposed as another Settings choice:
+
+- require at least 120 new non-whitespace candidate characters since the last completed manual or automatic question;
+- wait for a 3-second semantic-final quiet period after the latest eligible candidate final;
+- enforce a 20-second cooldown after any completed manual or automatic question;
+- allow only one monitor/expert run in flight;
+- require a complete, substantive answer with concrete action, detail, or outcome evidence rather than filler or an unfinished clause;
+- ask `deepseek-v4-flash` to release generation only when it detects a meaningful evidence gap;
+- after three consecutive cautious monitor waits on one sustained answer, allow one liveness release only after at least 280 candidate characters, still subject to identity, silence, completeness, cooldown, and in-flight gates;
+- when an interviewer interruption arrives, cancel the armed release; retain the candidate evidence, then re-evaluate only after the candidate resumes and reaches a new quiet period;
+- never use raw PCM activity or ASR partials as evidence, but use them to prevent firing while someone is actively speaking.
+
+This is intentionally between an aggressive per-final trigger and the legacy conservative Expert behavior: it gives the candidate enough room to establish evidence while preventing permanent silence when the Flash monitor repeatedly waits.
+
 Manual question generation remains available regardless of automatic role confidence and uses the visible transcript plus JD context.
 
 ## Failure handling
@@ -281,11 +330,12 @@ Manual question generation remains available regardless of automatic role confid
 
 ### Automated profile tests
 
-- profile ID, title, department, reports-to, summary, and full JD are preserved;
-- `P7`, `P8`, `用户运营`, `增长`, and ordered-character fuzzy terms find the profile;
-- scorecard weights equal 100;
+- two distinct profile IDs, titles, departments, reports-to values, summaries, and complete JDs are preserved;
+- `P7` returns the P7 profile without the P8 profile, and `P8` returns the P8 profile without the P7 profile;
+- `用户运营`, `增长`, and appropriate ordered-character fuzzy terms return both profiles;
+- each scorecard independently totals 100;
 - every competency has questions, evidence signals, and red flags;
-- serialized guide lines enter the existing Expert context without introducing another prompt system.
+- only the selected profile's JD and serialized guide lines enter the existing Expert context, without introducing another prompt system.
 
 ### Automated voiceprint tests
 
@@ -301,6 +351,19 @@ Manual question generation remains available regardless of automatic role confid
 - manual whole-ID assignment survives later automated audits;
 - text-only turns retain compatible per-turn behavior;
 - session reset clears all assignments.
+
+### Automated Balanced-gate tests
+
+- 119 new candidate characters cannot arm the monitor; 120 can;
+- the 3-second quiet period coalesces rapid candidate finals into one evaluation;
+- candidate speech or an interviewer interruption cancels an armed release;
+- the 20-second cooldown is shared by manual and Auto questions;
+- pending, contested, and interviewer IDs cannot contribute release evidence;
+- one monitor/expert run blocks overlapping runs;
+- filler, incomplete speech, or evidence-free generalities do not release;
+- three monitor waits plus at least 280 candidate characters allow exactly one evidence-safe liveness release;
+- a fourth question cannot appear from the same unchanged evidence window;
+- reset clears pending debounce, cooldown baseline, accumulated evidence, and liveness counters.
 
 ### Full-length MP3 acceptance test
 
@@ -325,7 +388,7 @@ Acceptance does not require forcing every ASR ID into a role. A pending ambiguou
 
 ## Entry points expected to change
 
-- `web-app/web/src/desktop/jobProfiles.ts` — add the built-in P7–P8 job profile and guide.
+- `web-app/web/src/desktop/jobProfiles.ts` — add the separate built-in P7 and P8 job profiles and guides.
 - `web-app/web/src/desktop/jobProfiles.test.ts` — profile, fuzzy-search, and scorecard coverage.
 - `web-app/server/*speaker*` and related tests — whole-voiceprint ledger, audits, partition validation, and assignment wire data.
 - `web-app/web/src/*` transcript/session state and tests — atomic `roleBySpeakerId` application and future inheritance.
@@ -339,7 +402,7 @@ Exact file/symbol names for speaker and Auto integration will be resolved during
 
 1. Commit and push this approved design specification.
 2. Write the implementation plan with exact symbols and test-first slices.
-3. Add the P7–P8 profile and its tests; commit and push.
+3. Add the separate P7 and P8 profiles and their tests; commit and push.
 4. Add whole-voiceprint contracts/ledger tests and implementation; commit and push.
 5. Wire renderer inheritance and Auto filtering; commit and push.
 6. Run automated verification, rebuild, and replay the complete MP3 at 1×.
