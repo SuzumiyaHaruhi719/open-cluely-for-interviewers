@@ -453,6 +453,21 @@ interface RunExpertQuestionDeps {
   generate?: (input: ExpertQuestionInput) => Promise<ExpertQuestionResult>;
 }
 
+const SESSION_QUESTION_HISTORY_LIMIT = 8;
+
+function mergeQuestionHistory(target: string[], incoming: readonly string[]): void {
+  for (const rawQuestion of incoming) {
+    const question = rawQuestion.trim();
+    if (!question) continue;
+    const duplicate = target.indexOf(question);
+    if (duplicate >= 0) target.splice(duplicate, 1);
+    target.push(question);
+  }
+  if (target.length > SESSION_QUESTION_HISTORY_LIMIT) {
+    target.splice(0, target.length - SESSION_QUESTION_HISTORY_LIMIT);
+  }
+}
+
 /**
  * The production realtime Expert renderer shared by automatic and manual runs.
  * Automatic runs arrive only after the separate thinking-disabled Flash sentinel
@@ -462,8 +477,8 @@ export async function runExpertQuestionAndEmit(
   ws: WebSocket,
   args: RunExpertQuestionArgs,
   deps: RunExpertQuestionDeps = {}
-): Promise<void> {
-  if (args.isStale?.()) return;
+): Promise<string | null> {
+  if (args.isStale?.()) return null;
   const generate = deps.generate ?? generateExpertQuestion;
   send(ws, {
     type: 'progress',
@@ -500,7 +515,7 @@ export async function runExpertQuestionAndEmit(
       model: generated.model,
       tokens: null
     });
-    return;
+    return null;
   }
 
   send(ws, {
@@ -538,6 +553,7 @@ export async function runExpertQuestionAndEmit(
     trigger: args.trigger,
     ...(typeof args.anchorSeq === 'number' ? { anchorSeq: args.anchorSeq } : {})
   });
+  return generated.output.primary_question;
 }
 
 /**
@@ -549,27 +565,30 @@ async function handleAnalyze(
   ws: WebSocket,
   session: HeadlessSession,
   trigger: AutoTrigger,
-  msg: Extract<ClientMessageParsed, { type: 'analyze' }>
+  msg: Extract<ClientMessageParsed, { type: 'analyze' }>,
+  sessionQuestionHistory: string[] = []
 ): Promise<void> {
   trigger.markManualRun(msg.candidateAnswer);
   try {
+    mergeQuestionHistory(sessionQuestionHistory, msg.questionHistory ?? []);
     const state = session.getState() as {
       jobDescription?: string;
       interviewGuide?: string[];
       resumeText?: string;
       outputLanguage?: OutputLanguage;
     };
-    await runExpertQuestionAndEmit(ws, {
+    const emittedQuestion = await runExpertQuestionAndEmit(ws, {
       candidateAnswer: msg.candidateAnswer,
       focusHint: '',
       jobDescription: state.jobDescription,
       interviewGuide: state.interviewGuide,
       resumeText: state.resumeText,
-      questionHistory: msg.questionHistory,
+      questionHistory: [...sessionQuestionHistory],
       outputLanguage: state.outputLanguage,
       requestId: msg.requestId,
       trigger: 'manual'
     });
+    if (emittedQuestion) mergeQuestionHistory(sessionQuestionHistory, [emittedQuestion]);
   } finally {
     trigger.markRunDone(msg.candidateAnswer);
   }
@@ -789,7 +808,8 @@ export async function dispatch(
   /** Getter for the per-session custom system prompt (Feature 3). */
   getSummaryPromptOverride?: () => string | undefined,
   summarizeDeps: SummarizeDeps = {},
-  speakerLifecycle?: SpeakerLifecycle
+  speakerLifecycle?: SpeakerLifecycle,
+  sessionQuestionHistory: string[] = []
 ): Promise<void> {
   switch (msg.type) {
     case 'configure':
@@ -804,6 +824,7 @@ export async function dispatch(
         roles.reset();
         speakerLifecycle?.reset();
         resetAccumulated();
+        sessionQuestionHistory.length = 0;
       }
       if (typeof msg.config.diarize === 'boolean') {
         // `diarize` is retained as the semantic-role enable flag. Native ASR
@@ -868,7 +889,7 @@ export async function dispatch(
       }
       return;
     case 'analyze':
-      await handleAnalyze(ws, session, trigger, msg);
+      await handleAnalyze(ws, session, trigger, msg, sessionQuestionHistory);
       return;
     case 'audio':
       if (isAudiblePcm16Base64(msg.pcm)) trigger.noteSpeechActivity();
@@ -961,6 +982,7 @@ async function onMessage(
   setSummaryPrompt: (prompt: string | undefined) => void,
   getSummaryPromptOverride: () => string | undefined,
   speakerLifecycle: SpeakerLifecycle,
+  sessionQuestionHistory: string[],
   raw: unknown
 ): Promise<void> {
   let requestId: string | undefined;
@@ -993,7 +1015,8 @@ async function onMessage(
       setSummaryPrompt,
       getSummaryPromptOverride,
       {},
-      speakerLifecycle
+      speakerLifecycle,
+      sessionQuestionHistory
     );
   } catch (err) {
     // A handler error must never close the socket.
@@ -1014,7 +1037,8 @@ function autoAnalyzeFromTranscript(
   ws: WebSocket,
   session: HeadlessSession,
   trigger: AutoTrigger,
-  text: string
+  text: string,
+  sessionQuestionHistory: string[]
 ): void {
   const trimmed = text.trim();
   if (!trimmed) return;
@@ -1023,7 +1047,7 @@ function autoAnalyzeFromTranscript(
     requestId: randomUUID(),
     candidateAnswer: trimmed,
     questionHistory: []
-  }).catch((err) => {
+  }, sessionQuestionHistory).catch((err) => {
     const message = err instanceof Error ? err.message : 'auto-analyze error';
     send(ws, { type: 'error', message });
   });
@@ -1079,6 +1103,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
     // The trigger monitor gates on its LENGTH (new chars since the last fire) and
     // generates from its content. Partial transcripts are not accumulated here.
     let accumulatedDisplayFinal = '';
+    const sessionQuestionHistory: string[] = [];
 
     // FULL accumulated transcript (BOTH lanes — candidate + interviewer finals),
     // oldest first, capped, that feeds the live session-context analyzer. Distinct
@@ -1184,14 +1209,14 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             resumeText?: string;
             outputLanguage?: OutputLanguage;
           };
-          await runExpertQuestionAndEmit(ws, {
+          const emittedQuestion = await runExpertQuestionAndEmit(ws, {
             candidateAnswer,
             interviewerContext,
             focusHint,
             jobDescription: state.jobDescription,
             interviewGuide: state.interviewGuide,
             resumeText: state.resumeText,
-            questionHistory: [],
+            questionHistory: [...sessionQuestionHistory],
             outputLanguage: state.outputLanguage,
             requestId,
             trigger: 'auto',
@@ -1199,6 +1224,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             ...(monitorTokensUsed ? { monitorTokensUsed } : {}),
             isStale: () => trigger.getEpoch() !== startEpoch
           });
+          if (emittedQuestion) mergeQuestionHistory(sessionQuestionHistory, [emittedQuestion]);
         } finally {
           if (visibleAutoRequestId === requestId) visibleAutoRequestId = null;
           // Drop our own entry on settle (the Map only holds genuinely in-flight ids).
@@ -1324,7 +1350,13 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
           feedCandidateAnswer(t.text, finalTurnSeq ?? undefined);
         }
       },
-      onDisplayFinal: (text) => autoAnalyzeFromTranscript(ws, session, trigger, text)
+      onDisplayFinal: (text) => autoAnalyzeFromTranscript(
+        ws,
+        session,
+        trigger,
+        text,
+        sessionQuestionHistory
+      )
     });
 
     // Every normal connection starts on the fixed product provider. Credentials
@@ -1375,6 +1407,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
           setSummaryPrompt,
           getSummaryPromptOverride,
           speakerLifecycle,
+          sessionQuestionHistory,
           raw
         ),
       { runInBackground: isBackgroundModelRequest }

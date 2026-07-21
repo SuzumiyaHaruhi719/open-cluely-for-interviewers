@@ -34,7 +34,8 @@ function anthropicResponse(text: string, model = 'stub-model'): Response {
 }
 
 function blockReply(prompt: string): string {
-  const isOrder = prompt.includes('订单状态同步延迟很高');
+  const latestAnswer = prompt.split('[候选人最新回答]\n').at(-1) ?? prompt;
+  const isOrder = latestAnswer.includes('订单状态同步延迟很高');
   const primary = isOrder ? ORDER_QUESTION : EXPERIMENT_QUESTION;
   const anchor = isOrder ? '订单状态同步延迟很高' : '实验组转化率提高';
   const frame = isOrder ? 'diagnostic-debug' : 'evidence-verification';
@@ -214,7 +215,7 @@ function blockReply(prompt: string): string {
   return JSON.stringify({ ok: true });
 }
 
-function installFetchStub(): () => void {
+function installFetchStub(capturedPrompts: string[] = []): () => void {
   const realFetch = globalThis.fetch;
   globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof input === 'string' ? input : input.toString();
@@ -226,11 +227,55 @@ function installFetchStub(): () => void {
       messages?: Array<{ content?: string }>;
     };
     const prompt = String(body.messages?.[0]?.content ?? '');
+    capturedPrompts.push(prompt);
     return anthropicResponse(blockReply(prompt), body.model ?? 'stub-model');
   }) as typeof globalThis.fetch;
   return () => {
     globalThis.fetch = realFetch;
   };
+}
+
+async function runSequentialManualQuestions(
+  port: number
+): Promise<Extract<ServerMessage, { type: 'result' }>[]> {
+  const ws = new WebSocket(`ws://127.0.0.1:${port}/ws`);
+  const results: Extract<ServerMessage, { type: 'result' }>[] = [];
+
+  return await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('timed out waiting for sequential questions')), 12000);
+    ws.on('error', (err) => {
+      clearTimeout(timer);
+      reject(err);
+    });
+    ws.on('open', () => {
+      ws.send(JSON.stringify({ type: 'configure', config: { mode: 'expert' } }));
+      ws.send(
+        JSON.stringify({
+          type: 'analyze',
+          requestId: 'history-first',
+          candidateAnswer: '订单状态同步延迟很高，我把五分钟轮询改成消息队列，并加了幂等写入。'
+        })
+      );
+    });
+    ws.on('message', (data) => {
+      const msg = JSON.parse(data.toString()) as ServerMessage;
+      if (msg.type !== 'result') return;
+      results.push(msg);
+      if (results.length === 1) {
+        ws.send(
+          JSON.stringify({
+            type: 'analyze',
+            requestId: 'history-second',
+            candidateAnswer: '实验组转化率提高后，我先检查分层样本和回访质量，再决定是否扩大实验。'
+          })
+        );
+        return;
+      }
+      clearTimeout(timer);
+      ws.close();
+      resolve(results);
+    });
+  });
 }
 
 async function startServer(): Promise<{ port: number; close: () => Promise<void> }> {
@@ -386,6 +431,25 @@ test('sim injection scripts drive different Expert follow-up frames through the 
       assert.ok(!order.result.output.primary_question.includes('你个人'));
       assert.ok(!experiment.result.output.primary_question.includes('你个人'));
     }
+  } finally {
+    await close();
+    restoreFetch();
+  }
+});
+
+test('the server carries emitted questions into later generation when the client omits history', async () => {
+  const prompts: string[] = [];
+  const restoreFetch = installFetchStub(prompts);
+  const { port, close } = await startServer();
+  try {
+    const results = await runSequentialManualQuestions(port);
+    assert.equal(results.length, 2);
+    assert.equal(results[0].output.primary_question, ORDER_QUESTION);
+    assert.equal(results[1].output.primary_question, EXPERIMENT_QUESTION);
+
+    const expertPrompts = prompts.filter((prompt) => prompt.includes('[已问问题]'));
+    assert.equal(expertPrompts.length, 2);
+    assert.match(expertPrompts[1], new RegExp(ORDER_QUESTION.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   } finally {
     await close();
     restoreFetch();
