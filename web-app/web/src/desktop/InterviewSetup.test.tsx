@@ -35,6 +35,9 @@ describe('InterviewSetup', () => {
     expect(screen.getByText('麦克风 + 电脑音频')).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /线下面试/ })).not.toBeChecked();
     expect(screen.getByText('单麦克风采集双方')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '开始面试' }).closest('footer')).toContainElement(
+      screen.getByRole('group', { name: '面试方式' })
+    );
     expect(screen.queryByLabelText(/模型|输出语言|语音识别/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Pipeline|自定义提示词/)).not.toBeInTheDocument();
   });

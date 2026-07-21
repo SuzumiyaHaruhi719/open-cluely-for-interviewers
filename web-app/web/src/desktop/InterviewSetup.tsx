@@ -260,6 +260,9 @@ export function InterviewSetup({
             <p className="interview-setup__hint">JD 仅作为专家模型的事实背景，不会创建额外提示词。</p>
           </section>
 
+        </div>
+
+        <footer className="interview-setup__footer">
           <fieldset className="interview-setup__mode">
             <legend>面试方式</legend>
             <div className="interview-setup__mode-options">
@@ -303,20 +306,19 @@ export function InterviewSetup({
               </label>
             </div>
           </fieldset>
-        </div>
-
-        <footer className="interview-setup__footer">
-          <p className="interview-setup__connection" role="status">
-            {ready ? '面试服务已就绪' : '正在连接面试服务…'}
-          </p>
-          <button
-            className="interview-setup__start"
-            type="button"
-            disabled={!canStart}
-            onClick={submit}
-          >
-            开始面试
-          </button>
+          <div className="interview-setup__footer-actions">
+            <p className="interview-setup__connection" role="status">
+              {ready ? '面试服务已就绪' : '正在连接面试服务…'}
+            </p>
+            <button
+              className="interview-setup__start"
+              type="button"
+              disabled={!canStart}
+              onClick={submit}
+            >
+              开始面试
+            </button>
+          </div>
         </footer>
       </section>
     </main>

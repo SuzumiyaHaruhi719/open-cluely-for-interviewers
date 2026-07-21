@@ -120,31 +120,31 @@
 - `EndInterviewDialog` receives `open`, `onCancel`, and `onConfirm`; Cancel receives initial focus, Escape and scrim cancel, and the destructive action is visually red.
 - Header End opens the dialog without stopping capture. Only dialog confirmation runs finalization and returns to preparation.
 
-- [ ] **Step 1: Write failing preparation and dock tests**
+- [x] **Step 1: Write failing preparation and dock tests**
 
 Assert that Online is selected by default and submits `interviewType:'online'`; selecting Offline submits `interviewType:'offline'`. Assert Online renders both source lanes and Offline renders only `现场面试 · 麦克风`.
 
-- [ ] **Step 2: Run the focused tests and verify RED**
+- [x] **Step 2: Run the focused tests and verify RED**
 
 Run: `cd web-app && npm test --workspace @open-cluely/web -- --run src/desktop/InterviewSetup.test.tsx src/desktop/InterviewDock.test.tsx`
 
 Expected: FAIL because the setup payload and dock do not accept interview mode.
 
-- [ ] **Step 3: Write failing dialog and Shell lifecycle tests**
+- [x] **Step 3: Write failing dialog and Shell lifecycle tests**
 
 Assert that End opens `结束本次面试？` without emitting audio-stop frames, Cancel restores the live workspace, and only `确认结束` stops capture and returns to preparation. Assert the dialog's initial focus is Cancel and Escape cancels.
 
-- [ ] **Step 4: Run the focused tests and verify RED**
+- [x] **Step 4: Run the focused tests and verify RED**
 
 Run: `cd web-app && npm test --workspace @open-cluely/web -- --run src/desktop/EndInterviewDialog.test.tsx src/desktop/Shell.test.tsx`
 
 Expected: FAIL because End currently finalizes immediately and the dialog does not exist.
 
-- [ ] **Step 5: Implement the mode selector, conditional dock, and confirmation dialog**
+- [x] **Step 5: Implement the mode selector, conditional dock, and confirmation dialog**
 
 Use semantic radios in preparation; retain browser permission honesty in the live dock. Use Phosphor icons, existing GLP tokens, one shared audio-card structure, and no gradients. Default dialog focus must be the neutral Cancel action.
 
-- [ ] **Step 6: Verify, document, commit, push, rebuild, and browser-QA both modes**
+- [x] **Step 6: Verify, document, commit, push, rebuild, and browser-QA both modes**
 
 Run focused tests, the full repository suite, and the production build. In the in-app browser verify Online two-lane routing, Offline single-mic routing, End → Cancel continuity, End → Confirm return to preparation, equal lane geometry, keyboard Escape, and zero console errors. Update Implementation notes and `design-qa.md`, then commit and push `main`.
 
