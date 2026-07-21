@@ -589,6 +589,7 @@ export function useCopilotSocket(): CopilotSocket {
               id: segSeqRef.current++,
               speakerId: sid,
               role,
+              roleSource: roleOverrideRef.current.has(sid) ? 'manual' : 'unknown',
               text,
               createdAtMs: Date.now()
             });
@@ -637,6 +638,9 @@ export function useCopilotSocket(): CopilotSocket {
           id: segment.seq,
           speakerId: segment.speakerId,
           role: effectiveRole(segment.speakerId, segment.role, roleOverrideRef.current),
+          roleSource: roleOverrideRef.current.has(segment.speakerId)
+            ? 'manual' as const
+            : segment.roleSource,
           text: segment.text,
           createdAtMs: previousTimes.get(segment.seq) ?? partitionedAt
         }));

@@ -1,9 +1,10 @@
-import type { SpeakerRole } from '@open-cluely/contract';
+import type { SpeakerRole, SpeakerRoleSource } from '@open-cluely/contract';
 
 export interface SpeakerSegment {
   id: number;
   speakerId: number;
   role: SpeakerRole;
+  roleSource: SpeakerRoleSource;
   text: string;
   /** Client arrival time for the first FINAL folded into this visible turn. */
   createdAtMs?: number;
@@ -27,6 +28,7 @@ export function appendSegment(
     id: number;
     speakerId: number;
     role: SpeakerRole;
+    roleSource?: SpeakerRoleSource;
     text: string;
     createdAtMs?: number;
   }
@@ -37,7 +39,15 @@ export function appendSegment(
   const last = segments[segments.length - 1];
   if (last && last.speakerId === args.speakerId) {
     const text = last.text ? `${last.text} ${args.text}` : args.text;
-    return [...segments.slice(0, -1), { ...last, role: args.role, text }];
+    return [
+      ...segments.slice(0, -1),
+      {
+        ...last,
+        role: args.role,
+        roleSource: args.roleSource ?? last.roleSource,
+        text
+      }
+    ];
   }
   return [
     ...segments,
@@ -45,6 +55,7 @@ export function appendSegment(
       id: args.id,
       speakerId: args.speakerId,
       role: args.role,
+      roleSource: args.roleSource ?? 'unknown',
       text: args.text,
       createdAtMs: args.createdAtMs ?? Date.now()
     }
@@ -57,5 +68,7 @@ export function relabelSegments(
   speakerId: number,
   role: SpeakerRole
 ): SpeakerSegment[] {
-  return segments.map((s) => (s.speakerId === speakerId ? { ...s, role } : s));
+  return segments.map((s) =>
+    s.speakerId === speakerId ? { ...s, role, roleSource: 'manual' } : s
+  );
 }

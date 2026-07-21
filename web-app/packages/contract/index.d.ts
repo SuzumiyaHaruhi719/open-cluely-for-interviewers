@@ -59,12 +59,19 @@ export type AsrRuntimeState =
 
 /** Per-segment speaker role resolved from a cluster ID. */
 export type SpeakerRole = 'interviewer' | 'candidate' | 'unknown';
+export type SpeakerRoleSource =
+  | 'manual'
+  | 'local'
+  | 'semantic-turn'
+  | 'cohort'
+  | 'unknown';
 
 /** One finalized single-mic turn after native-cluster + Flash role resolution. */
 export interface SpeakerPartitionSegment {
   seq: number;
   speakerId: number;
   role: SpeakerRole;
+  roleSource: SpeakerRoleSource;
   text: string;
 }
 

@@ -323,3 +323,41 @@ test('reset invalidates an in-flight cohort decision', async () => {
 
   assert.equal(harness.getRole(30).state, 'observing');
 });
+
+test('harness audits only voiceprints that appear after the two established clusters', async () => {
+  const turns = [
+    turn(0, 10, '第一位面试官请候选人说明园区整改项目和个人职责。'),
+    turn(1, 20, '我负责制定整改计划、协调工程人员并跟进最终验收。'),
+    turn(2, 10, '请说明你如何识别最高风险的消防隐患。'),
+    turn(3, 20, '我先检查联动设备和疏散通道，再按影响范围划分风险等级。'),
+    turn(4, 30, '我还会把每个隐患分配到具体负责人，并约定整改时限和复验标准。'),
+    turn(5, 10, '如果负责人延期，你会如何处理和记录？'),
+    turn(6, 30, '我会确认阻塞原因、调整资源，仍未完成就升级并保留问责记录。'),
+    turn(7, 40, '第二位面试官想进一步确认，在资源受限时你本人做出的关键取舍是什么？'),
+    turn(8, 20, '我决定先处理影响消防联动的高风险区域，再处理普通工单。'),
+    turn(9, 40, '你具体使用哪些连续数据证明这个优先级最终降低了现场风险并且没有反弹？')
+  ];
+  const confirmed: ConfirmedTurnRole[] = [
+    { seq: 0, role: 'interviewer', confidence: 0.98 },
+    { seq: 1, role: 'candidate', confidence: 0.98 },
+    { seq: 2, role: 'interviewer', confidence: 0.97 },
+    { seq: 3, role: 'candidate', confidence: 0.97 },
+    { seq: 4, role: 'candidate', confidence: 0.96 },
+    { seq: 5, role: 'interviewer', confidence: 0.97 },
+    { seq: 6, role: 'candidate', confidence: 0.96 },
+    { seq: 7, role: 'interviewer', confidence: 0.96 },
+    { seq: 8, role: 'candidate', confidence: 0.97 },
+    { seq: 9, role: 'interviewer', confidence: 0.96 }
+  ];
+  const auditedIds: number[] = [];
+  const harness = createSpeakerCohortHarness({
+    audit: async (packet) => {
+      auditedIds.push(packet.targetSpeakerId);
+      return audit(packet, packet.targetSpeakerId === 40 ? 'interviewer' : 'candidate');
+    }
+  });
+
+  await harness.evaluate({ turns, confirmed });
+
+  assert.deepEqual([...new Set(auditedIds)].sort((left, right) => left - right), [30, 40]);
+});

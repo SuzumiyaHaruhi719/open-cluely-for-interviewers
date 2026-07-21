@@ -651,6 +651,131 @@ test('multiple native interviewer clusters map to one interviewer role around on
   );
 });
 
+test('delegated cohort labels unresolved transcript turns without releasing Auto callbacks', async () => {
+  const partitions: any[] = [];
+  const candidates: SpeakerTurn[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const cohortCalls: Array<{ final?: boolean }> = [];
+  const p = createSpeakerPartitioner({
+    classify: async (turns, request) =>
+      classification(
+        [],
+        (request?.reviewSeqs ?? turns.map((turn) => turn.seq)).map((seq) => ({
+          seq,
+          role: 'unknown',
+          confidence: 0.99
+        }))
+      ),
+    cohortHarness: {
+      async evaluate(input) {
+        cohortCalls.push({ final: input.final });
+      },
+      getRole(speakerId) {
+        return speakerId === 30
+          ? {
+              state: 'delegated' as const,
+              role: 'candidate' as const,
+              confidence: 0.95,
+              evidenceSeqs: [2, 4],
+              contradictionSeqs: [],
+              evaluatedRevision: 4
+            }
+          : {
+              state: 'observing' as const,
+              role: 'unknown' as const,
+              confidence: 0,
+              evidenceSeqs: [],
+              contradictionSeqs: [],
+              evaluatedRevision: -1
+            };
+      },
+      reset() {}
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn),
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+
+  p.record({ seq: 0, source: 'mic', speakerId: 10, text: '请说明你负责的项目和个人职责。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 20, text: '我负责现场计划和人员协调，并跟进最终验收。' });
+  p.record({ seq: 2, source: 'mic', speakerId: 30, text: '我先确认风险和负责人，再建立每天更新的整改清单。' });
+  p.record({ seq: 3, source: 'mic', speakerId: 10, text: '如果整改延期，你会如何处理？' });
+  p.record({ seq: 4, source: 'mic', speakerId: 30, text: '我会确认阻塞原因，调整资源和时限，必要时升级并保留问责记录。' });
+  p.record({ seq: 5, source: 'mic', speakerId: 20, text: '最终用连续三周的告警和工单数据完成验证。' });
+  await p.finalize();
+
+  assert.deepEqual(candidates, [], 'cohort display prior must never feed candidate Auto evidence');
+  assert.deepEqual(interviewers, [], 'cohort display prior must never feed interviewer monitor evidence');
+  assert.equal(cohortCalls.at(-1)?.final, true);
+  assert.deepEqual(
+    partitions.at(-1).segments
+      .filter((segment: any) => segment.speakerId === 30)
+      .map((segment: any) => [segment.seq, segment.role, segment.roleSource]),
+    [
+      [2, 'candidate', 'cohort'],
+      [4, 'candidate', 'cohort']
+    ]
+  );
+});
+
+test('per-turn semantic authority outranks an opposite delegated cohort', async () => {
+  const partitions: any[] = [];
+  const interviewers: SpeakerTurn[] = [];
+  const p = createSpeakerPartitioner({
+    classify: async (turns) =>
+      classificationForTurns(
+        turns,
+        [
+          { speakerId: 10, role: 'interviewer', confidence: 0.98 },
+          { speakerId: 20, role: 'candidate', confidence: 0.98 },
+          { speakerId: 30, role: 'interviewer', confidence: 0.97 }
+        ]
+      ),
+    cohortHarness: {
+      async evaluate() {},
+      getRole(speakerId) {
+        return speakerId === 30
+          ? {
+              state: 'delegated' as const,
+              role: 'candidate' as const,
+              confidence: 0.95,
+              evidenceSeqs: [2, 4],
+              contradictionSeqs: [],
+              evaluatedRevision: 4
+            }
+          : {
+              state: 'observing' as const,
+              role: 'unknown' as const,
+              confidence: 0,
+              evidenceSeqs: [],
+              contradictionSeqs: [],
+              evaluatedRevision: -1
+            };
+      },
+      reset() {}
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    resolveTurnRole: (_speakerId, role) => role,
+    onCandidateTurn: () => {},
+    onInterviewerTurn: (turn) => interviewers.push(turn),
+    onPartition: (partition) => partitions.push(partition)
+  });
+  p.setEnabled(true);
+
+  p.record({ seq: 0, source: 'mic', speakerId: 10, text: '请说明项目背景和你的具体职责。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 20, text: '我负责制定计划、协调人员并跟进现场验收。' });
+  p.record({ seq: 2, source: 'mic', speakerId: 30, text: '第二位面试官想确认，你本人做出的关键决策是什么？' });
+  p.record({ seq: 3, source: 'mic', speakerId: 20, text: '我决定先处理影响消防联动的高风险区域。' });
+  await p.finalize();
+
+  const target = partitions.at(-1).segments.find((segment: any) => segment.seq === 2);
+  assert.deepEqual([target.role, target.roleSource], ['interviewer', 'semantic-turn']);
+  assert.deepEqual(interviewers.map((turn) => turn.seq), [0, 2]);
+});
+
 test('native clusters weak-correct one clear answer without remapping the shared acoustic id', async () => {
   const partitions: any[] = [];
   const candidates: SpeakerTurn[] = [];

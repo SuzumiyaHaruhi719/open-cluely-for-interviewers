@@ -550,7 +550,7 @@ export function createSpeakerCohortHarness(
         input.turns.flatMap((turn) =>
           typeof turn.speakerId === 'number' ? [turn.speakerId] : []
         )
-      )];
+      )].slice(2);
       await Promise.all(
         speakerIds.map((speakerId) => evaluateSpeaker(input, speakerId, scheduledEpoch))
       );

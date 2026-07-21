@@ -9,7 +9,8 @@ import type {
   SessionCompetency,
   SessionContextState,
   SummaryDebugEvent,
-  SpeakerRole
+  SpeakerRole,
+  SpeakerRoleSource
 } from '@open-cluely/contract';
 
 /**
@@ -249,17 +250,30 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
           entry.role === 'interviewer' || entry.role === 'candidate' || entry.role === 'unknown'
             ? entry.role
             : null;
+        const roleSource: SpeakerRoleSource | null =
+          entry.roleSource === 'manual' ||
+          entry.roleSource === 'local' ||
+          entry.roleSource === 'semantic-turn' ||
+          entry.roleSource === 'cohort' ||
+          entry.roleSource === 'unknown'
+            ? entry.roleSource
+            : entry.roleSource === undefined
+              ? role === 'unknown'
+                ? 'unknown'
+                : 'semantic-turn'
+              : null;
         if (
           !isNumber(entry.seq) ||
           !Number.isInteger(entry.seq) ||
           !isNumber(entry.speakerId) ||
           !Number.isInteger(entry.speakerId) ||
           !role ||
+          !roleSource ||
           !isString(entry.text)
         ) {
           return [];
         }
-        return [{ seq: entry.seq, speakerId: entry.speakerId, role, text: entry.text }];
+        return [{ seq: entry.seq, speakerId: entry.speakerId, role, roleSource, text: entry.text }];
       });
       if (segments.length !== data.segments.length) return null;
       return {

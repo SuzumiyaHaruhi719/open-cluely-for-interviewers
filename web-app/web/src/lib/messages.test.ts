@@ -142,6 +142,48 @@ describe('speaker partition messages', () => {
     );
     expect(out).toBeNull();
   });
+
+  it('preserves a valid speaker role decision source', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        segments: [
+          {
+            seq: 4,
+            speakerId: 30,
+            role: 'candidate',
+            roleSource: 'cohort',
+            text: '我会持续复验整改结果。'
+          }
+        ]
+      })
+    );
+
+    expect(out?.type === 'speaker-partition' ? out.segments[0].roleSource : null).toBe('cohort');
+  });
+
+  it('rejects an unknown speaker role decision source', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        segments: [
+          {
+            seq: 4,
+            speakerId: 30,
+            role: 'candidate',
+            roleSource: 'voice-guess',
+            text: '不可信来源。'
+          }
+        ]
+      })
+    );
+
+    expect(out).toBeNull();
+  });
 });
 
 describe('result trigger fields', () => {

@@ -622,8 +622,8 @@ describe('useCopilotSocket', () => {
         status: 'live',
         model: 'deepseek-v4-flash',
         segments: [
-          { seq: 0, speakerId: 9, role: 'interviewer', text: '请坐' },
-          { seq: 1, speakerId: 7, role: 'candidate', text: '谢谢' }
+          { seq: 0, speakerId: 9, role: 'interviewer', roleSource: 'semantic-turn', text: '请坐' },
+          { seq: 1, speakerId: 7, role: 'candidate', roleSource: 'cohort', text: '谢谢' }
         ]
       });
     });
@@ -634,6 +634,10 @@ describe('useCopilotSocket', () => {
         [7, 'candidate']
       ])
     );
+    expect(result.current.speakerSegments.map((s) => s.roleSource)).toEqual([
+      'semantic-turn',
+      'cohort'
+    ]);
   });
 
   test('surfaces server error messages', async () => {

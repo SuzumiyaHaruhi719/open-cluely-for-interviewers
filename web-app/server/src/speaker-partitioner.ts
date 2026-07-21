@@ -1,5 +1,10 @@
 import type { AudioSource, SpeakerRole } from '@open-cluely/contract';
 import { chat } from './dashscope';
+import {
+  createSpeakerCohortHarness,
+  type ConfirmedTurnRole,
+  type SpeakerCohortHarness
+} from './speaker-cohort';
 
 export const SPEAKER_PARTITION_MODEL = 'deepseek-v4-flash';
 const CLASSIFY_TIMEOUT_MS = 8_000;
@@ -70,8 +75,16 @@ export interface SpeakerPartitionSegment {
   seq: number;
   speakerId: number;
   role: SpeakerRole;
+  roleSource: SpeakerRoleSource;
   text: string;
 }
+
+export type SpeakerRoleSource =
+  | 'manual'
+  | 'local'
+  | 'semantic-turn'
+  | 'cohort'
+  | 'unknown';
 
 export interface SpeakerPartition {
   status: 'live' | 'final';
@@ -93,6 +106,8 @@ export interface SpeakerPartitionerDeps {
     turns: readonly SpeakerTurn[],
     request?: SpeakerClassificationRequest
   ) => Promise<SpeakerClassification>;
+  /** Display-only cohort assimilation; never grants authority to Auto callbacks. */
+  cohortHarness?: SpeakerCohortHarness;
   /** Applies an automatic cluster role and returns the effective role (manual corrections may win). */
   applySpeakerRole: (speakerId: number, role: SpeakerRole) => SpeakerRole;
   /** Applies one semantic turn exception without changing the acoustic cluster's stable role. */
@@ -542,7 +557,12 @@ function coalesce(segments: SpeakerPartitionSegment[]): SpeakerPartitionSegment[
   const out: SpeakerPartitionSegment[] = [];
   for (const segment of segments) {
     const last = out[out.length - 1];
-    if (last && last.speakerId === segment.speakerId && last.role === segment.role) {
+    if (
+      last &&
+      last.speakerId === segment.speakerId &&
+      last.role === segment.role &&
+      last.roleSource === segment.roleSource
+    ) {
       last.text = `${last.text} ${segment.text}`.trim();
     } else {
       out.push({ ...segment });
@@ -555,6 +575,7 @@ interface ResolvedSpeakerTurn {
   turn: SpeakerTurn;
   speakerId: number;
   role: SpeakerRole;
+  roleSource: SpeakerRoleSource;
 }
 
 function hasCandidateEnvelopeSignal(text: string): boolean {
@@ -688,6 +709,23 @@ function shouldDeferPossibleQuestionStem(
 
 export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerPartitioner {
   const classify = deps.classify ?? classifySpeakerTurns;
+  // Supplying a test/custom turn classifier must not unexpectedly open a real
+  // second model path. Production omits `classify` and receives the real cohort
+  // harness; dependency-injected callers opt in with their own cohort harness.
+  const cohortHarness: SpeakerCohortHarness = deps.cohortHarness ?? (deps.classify
+    ? {
+        async evaluate() {},
+        getRole: () => ({
+          state: 'observing',
+          role: 'unknown',
+          confidence: 0,
+          evidenceSeqs: [],
+          contradictionSeqs: [],
+          evaluatedRevision: -1
+        }),
+        reset() {}
+      }
+    : createSpeakerCohortHarness());
   let enabled = false;
   let turns: SpeakerTurn[] = [];
   let fedCandidateSeqs = new Set<number>();
@@ -810,15 +848,42 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       semanticLedger = new Map(roleByTurn);
 
       const confirmedSeqs = new Set(roleByTurn.keys());
-      const preliminary = snapshot.map((turn): ResolvedSpeakerTurn => {
+      const manualSpeakerIds = new Set<number>();
+      const confirmedForCohort: ConfirmedTurnRole[] = [];
+      for (const turn of snapshot) {
+        const semantic = roleByTurn.get(turn.seq);
+        if (typeof turn.speakerId === 'number') {
+          const manualRole = deps.resolveTurnRole?.(turn.speakerId, 'unknown') ?? 'unknown';
+          if (manualRole !== 'unknown') {
+            manualSpeakerIds.add(turn.speakerId);
+            confirmedForCohort.push({ seq: turn.seq, role: manualRole, confidence: 1 });
+            continue;
+          }
+        }
+        if (semantic && semantic.role !== 'unknown') {
+          confirmedForCohort.push({ ...semantic });
+        }
+      }
+      await cohortHarness.evaluate({
+        turns: snapshot,
+        confirmed: confirmedForCohort,
+        manualSpeakerIds,
+        final: status === 'final'
+      });
+      if (scheduledEpoch !== epoch) return;
+
+      const authorityPreliminary = snapshot.map((turn): ResolvedSpeakerTurn => {
         const semanticRole = roleByTurn.get(turn.seq)?.role ?? 'unknown';
         let role = semanticRole;
+        let roleSource: SpeakerRoleSource = semanticRole === 'unknown' ? 'unknown' : 'semantic-turn';
         if (typeof turn.speakerId === 'number') {
-          role = deps.resolveTurnRole?.(turn.speakerId, semanticRole) ?? semanticRole;
-          // A non-unknown result in the absence of semantic evidence can only be
-          // a sticky manual correction supplied by resolveTurnRole().
-          if (semanticRole === 'unknown' && role !== 'unknown') {
+          const manualRole = deps.resolveTurnRole?.(turn.speakerId, 'unknown') ?? 'unknown';
+          if (manualRole !== 'unknown') {
+            role = manualRole;
+            roleSource = 'manual';
             confirmedSeqs.add(turn.seq);
+          } else {
+            role = semanticRole;
           }
         }
         const speakerId =
@@ -829,26 +894,29 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
               : role === 'candidate'
                 ? 1
                 : 100_000 + turn.seq;
-        return { turn, speakerId, role };
+        return { turn, speakerId, role, roleSource };
       });
-      const localOverrides = findLocalRoleOverrides(preliminary);
-      const resolved = preliminary.map((entry): ResolvedSpeakerTurn => {
+      // Local repairs must inspect authority-only roles. A display cohort prior
+      // must never manufacture the evidence that then grants itself Auto access.
+      const localOverrides = findLocalRoleOverrides(authorityPreliminary);
+      const authorityResolved = authorityPreliminary.map((entry): ResolvedSpeakerTurn => {
         const suggested = localOverrides.get(entry.turn.seq);
         if (!suggested) return entry;
         confirmedSeqs.add(entry.turn.seq);
-        const role =
-          typeof entry.turn.speakerId === 'number'
-            ? deps.resolveTurnRole?.(entry.turn.speakerId, suggested) ?? suggested
-            : suggested;
-        return { ...entry, role };
+        if (entry.roleSource === 'manual') return entry;
+        const role = typeof entry.turn.speakerId === 'number'
+          ? deps.resolveTurnRole?.(entry.turn.speakerId, suggested) ?? suggested
+          : suggested;
+        const roleSource: SpeakerRoleSource = role === suggested ? 'local' : 'manual';
+        return { ...entry, role, roleSource };
       });
-      for (const [index, entry] of resolved.entries()) {
+      for (const [index, entry] of authorityResolved.entries()) {
         const { turn, role } = entry;
         if (
           confirmedSeqs.has(turn.seq) &&
           role === 'candidate' &&
           !fedCandidateSeqs.has(turn.seq) &&
-          !shouldDeferPossibleQuestionStem(resolved, index, status)
+          !shouldDeferPossibleQuestionStem(authorityResolved, index, status)
         ) {
           fedCandidateSeqs.add(turn.seq);
           deps.onCandidateTurn(turn);
@@ -857,17 +925,25 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           confirmedSeqs.has(turn.seq) &&
           role === 'interviewer' &&
           !fedInterviewerSeqs.has(turn.seq) &&
-          !shouldDeferPossibleAnswerContinuation(resolved, index, status)
+          !shouldDeferPossibleAnswerContinuation(authorityResolved, index, status)
         ) {
           fedInterviewerSeqs.add(turn.seq);
           deps.onInterviewerTurn?.(turn);
         }
       }
+      const displayResolved = authorityResolved.map((entry): ResolvedSpeakerTurn => {
+        if (entry.role !== 'unknown' || typeof entry.turn.speakerId !== 'number') return entry;
+        const cohort = cohortHarness.getRole(entry.turn.speakerId);
+        return cohort.state === 'delegated' && cohort.role !== 'unknown'
+          ? { ...entry, role: cohort.role, roleSource: 'cohort' }
+          : entry;
+      });
       const segments = coalesce(
-        resolved.map(({ turn, speakerId, role }) => ({
+        displayResolved.map(({ turn, speakerId, role, roleSource }) => ({
           seq: turn.seq,
           speakerId,
           role,
+          roleSource,
           text: turn.text
         }))
       );
@@ -912,6 +988,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
     },
     reset() {
       epoch += 1;
+      cohortHarness.reset();
       turns = [];
       fedCandidateSeqs = new Set<number>();
       fedInterviewerSeqs = new Set<number>();
