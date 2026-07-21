@@ -16,7 +16,7 @@ function renderSetup(patch: { ready?: boolean; resumeText?: string; onStart?: Re
 }
 
 describe('InterviewSetup', () => {
-  test('keeps the one-shot surface to resume, searchable JD, and start', () => {
+  test('keeps the one-shot surface to resume, searchable JD, interview mode, and start', () => {
     renderSetup();
 
     expect(screen.getByRole('heading', { name: '准备本次面试' })).toBeInTheDocument();
@@ -30,7 +30,11 @@ describe('InterviewSetup', () => {
 
     expect(screen.queryByText('题库')).not.toBeInTheDocument();
     expect(screen.queryByText('设置')).not.toBeInTheDocument();
-    expect(screen.queryByText('面试形式')).not.toBeInTheDocument();
+    expect(screen.getByRole('group', { name: '面试方式' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /线上面试/ })).toBeChecked();
+    expect(screen.getByText('麦克风 + 电脑音频')).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /线下面试/ })).not.toBeChecked();
+    expect(screen.getByText('单麦克风采集双方')).toBeInTheDocument();
     expect(screen.queryByLabelText(/模型|输出语言|语音识别/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Pipeline|自定义提示词/)).not.toBeInTheDocument();
   });
@@ -45,7 +49,22 @@ describe('InterviewSetup', () => {
         jobProfileId: 'property-manager',
         jobDescription: expect.stringContaining('现场的安全及消防'),
         interviewGuide: expect.arrayContaining([expect.stringContaining('突发事件应对与复盘')]),
-        resumeText: '候选人拥有八年园区管理经验。'
+        resumeText: '候选人拥有八年园区管理经验。',
+        interviewType: 'online'
+      })
+    );
+  });
+
+  test('submits offline mode after the interviewer selects one-room microphone capture', () => {
+    const { onStart } = renderSetup();
+
+    fireEvent.click(screen.getByRole('radio', { name: /线下面试/ }));
+    fireEvent.click(screen.getByRole('button', { name: '开始面试' }));
+
+    expect(onStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        jobProfileId: 'property-manager',
+        interviewType: 'offline'
       })
     );
   });
@@ -69,7 +88,8 @@ describe('InterviewSetup', () => {
       jobProfileId: 'custom',
       jobDescription: '负责一线门店运营。',
       interviewGuide: [],
-      resumeText: ''
+      resumeText: '',
+      interviewType: 'online'
     });
   });
 

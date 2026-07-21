@@ -192,19 +192,9 @@ export function ChannelCard({
               {mic.needsPermission && (
                 <button
                   type="button"
+                  className="channel-device-permission"
                   onClick={mic.grant}
                   title="授权一次以显示麦克风名称（仅用于列出设备）"
-                  style={{
-                    flex: '0 0 auto',
-                    cursor: 'pointer',
-                    background: 'transparent',
-                    border: '1px solid var(--border)',
-                    borderRadius: 6,
-                    color: 'var(--fg-muted)',
-                    padding: '2px 7px',
-                    fontSize: 12,
-                    lineHeight: 1
-                  }}
                 >
                   <LockOpen size={13} data-icon-library="phosphor" aria-hidden="true" />
                   设备名
@@ -213,15 +203,17 @@ export function ChannelCard({
             </div>
           ) : (
             <span
-              className="channel-source-field channel-device-select channel-device-select--static"
+              className="channel-source-field"
               data-source-field="true"
               title="启动后选择要采集的标签页或窗口"
             >
-              {unsupported
-                ? '标签页音频需要 Chrome 或 Edge'
-                : state.error
-                  ? state.error
-                  : '启动后选择标签页或窗口'}
+              <span className="channel-device-select channel-device-select--static">
+                {unsupported
+                  ? '标签页音频需要 Chrome 或 Edge'
+                  : state.error
+                    ? state.error
+                    : '启动后选择标签页或窗口'}
+              </span>
             </span>
           )}
           <button

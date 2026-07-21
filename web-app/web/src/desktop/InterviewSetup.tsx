@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CaretDown } from '@phosphor-icons/react/CaretDown';
 import { Check } from '@phosphor-icons/react/Check';
+import { Desktop } from '@phosphor-icons/react/Desktop';
 import { MagnifyingGlass } from '@phosphor-icons/react/MagnifyingGlass';
+import { Microphone } from '@phosphor-icons/react/Microphone';
 import { ResumeDropzone } from './ResumeDropzone';
 import {
   PROPERTY_MANAGER_PROFILE,
@@ -15,7 +17,10 @@ export interface InterviewSetupSubmit {
   jobDescription: string;
   interviewGuide: string[];
   resumeText: string;
+  interviewType: InterviewType;
 }
+
+export type InterviewType = 'online' | 'offline';
 
 interface InterviewSetupProps {
   ready: boolean;
@@ -26,8 +31,8 @@ interface InterviewSetupProps {
 
 /**
  * The app's single preparation step. It deliberately owns only factual Expert
- * context (résumé + JD); capture, models, prompts, providers, and interview
- * formats are fixed product policy and therefore do not appear here.
+ * context (résumé + JD) plus the one capture-topology choice that affects the
+ * interviewer's physical workflow. Models, prompts, and providers stay fixed.
  */
 export function InterviewSetup({
   ready,
@@ -45,6 +50,7 @@ export function InterviewSetup({
   const [customJobDescription, setCustomJobDescription] = useState('');
   const [pickerOpen, setPickerOpen] = useState(false);
   const [activeOption, setActiveOption] = useState(0);
+  const [interviewType, setInterviewType] = useState<InterviewType>('online');
 
   const profiles = useMemo(() => searchJobProfiles(query), [query]);
   const options: Array<JobProfile | 'custom'> = [...profiles, 'custom'];
@@ -76,7 +82,8 @@ export function InterviewSetup({
       jobProfileId: isBuiltIn ? selectedProfile.id : 'custom',
       jobDescription: isBuiltIn ? selectedProfile.jobDescription : trimmedCustomDescription,
       interviewGuide: isBuiltIn ? buildInterviewGuideLines(selectedProfile) : [],
-      resumeText: resumeText.trim()
+      resumeText: resumeText.trim(),
+      interviewType
     });
   };
 
@@ -252,6 +259,50 @@ export function InterviewSetup({
             ) : null}
             <p className="interview-setup__hint">JD 仅作为专家模型的事实背景，不会创建额外提示词。</p>
           </section>
+
+          <fieldset className="interview-setup__mode">
+            <legend>面试方式</legend>
+            <div className="interview-setup__mode-options">
+              <label data-selected={interviewType === 'online' ? 'true' : 'false'}>
+                <input
+                  type="radio"
+                  name="interview-type"
+                  value="online"
+                  checked={interviewType === 'online'}
+                  onChange={() => setInterviewType('online')}
+                />
+                <span className="interview-setup__mode-icon" aria-hidden="true">
+                  <Desktop size={18} data-icon-library="phosphor" />
+                </span>
+                <span className="interview-setup__mode-copy">
+                  <strong>线上面试</strong>
+                  <small>麦克风 + 电脑音频</small>
+                </span>
+                <span className="interview-setup__mode-check" aria-hidden="true">
+                  <Check size={13} data-icon-library="phosphor" />
+                </span>
+              </label>
+              <label data-selected={interviewType === 'offline' ? 'true' : 'false'}>
+                <input
+                  type="radio"
+                  name="interview-type"
+                  value="offline"
+                  checked={interviewType === 'offline'}
+                  onChange={() => setInterviewType('offline')}
+                />
+                <span className="interview-setup__mode-icon" aria-hidden="true">
+                  <Microphone size={18} data-icon-library="phosphor" />
+                </span>
+                <span className="interview-setup__mode-copy">
+                  <strong>线下面试</strong>
+                  <small>单麦克风采集双方</small>
+                </span>
+                <span className="interview-setup__mode-check" aria-hidden="true">
+                  <Check size={13} data-icon-library="phosphor" />
+                </span>
+              </label>
+            </div>
+          </fieldset>
         </div>
 
         <footer className="interview-setup__footer">

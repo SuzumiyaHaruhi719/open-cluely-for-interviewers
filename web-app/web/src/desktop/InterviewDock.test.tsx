@@ -13,6 +13,7 @@ describe('InterviewDock', () => {
     const onAddNote = vi.fn();
     render(
       <InterviewDock
+        interviewType="online"
         audio={AUDIO}
         disabled={false}
         timer="00:00:00"
@@ -37,10 +38,30 @@ describe('InterviewDock', () => {
     expect(screen.getByLabelText('面试备注')).toHaveValue('');
   });
 
+  test('uses one room microphone lane for an offline interview', () => {
+    render(
+      <InterviewDock
+        interviewType="offline"
+        audio={AUDIO}
+        disabled={false}
+        timer="00:00:00"
+        onStartAudio={vi.fn()}
+        onStopAudio={vi.fn()}
+        onAddNote={vi.fn()}
+      />
+    );
+
+    expect(document.getElementById('channel-computer')).not.toBeInTheDocument();
+    expect(document.getElementById('channel-mic')).toBeInTheDocument();
+    expect(screen.getByText('现场面试 · 麦克风')).toBeInTheDocument();
+    expect(document.querySelector('.interview-dock')).toHaveAttribute('data-interview-type', 'offline');
+  });
+
   test('submits a note with Enter but preserves Shift+Enter', () => {
     const onAddNote = vi.fn();
     render(
       <InterviewDock
+        interviewType="online"
         audio={AUDIO}
         disabled={false}
         timer="00:00:00"
@@ -61,6 +82,7 @@ describe('InterviewDock', () => {
   test('uses one source-field geometry for both lanes and locks the dock after ending', () => {
     const { container } = render(
       <InterviewDock
+        interviewType="online"
         audio={AUDIO}
         disabled
         timer="00:10:00"

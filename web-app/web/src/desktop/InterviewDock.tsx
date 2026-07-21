@@ -4,8 +4,10 @@ import { PaperPlaneRight } from '@phosphor-icons/react/PaperPlaneRight';
 import { Record } from '@phosphor-icons/react/Record';
 import type { AudioLanes } from '../lib/useCopilotSocket';
 import { ChannelCard } from './ChannelCard';
+import type { InterviewType } from './InterviewSetup';
 
 interface InterviewDockProps {
+  interviewType: InterviewType;
   audio: AudioLanes;
   disabled: boolean;
   timer: string;
@@ -18,6 +20,7 @@ interface InterviewDockProps {
 
 /** Compact always-visible audio + note dock for the active interview. */
 export function InterviewDock({
+  interviewType,
   audio,
   disabled,
   timer,
@@ -37,23 +40,25 @@ export function InterviewDock({
   };
 
   return (
-    <footer className="interview-dock">
+    <footer className="interview-dock" data-interview-type={interviewType}>
       <div className="interview-dock__channels">
-        <ChannelCard
-          domId="channel-computer"
-          source="display"
-          accent="candidate"
-          title="候选人 · 电脑音频"
-          state={audio.display}
-          disabled={disabled}
-          onStart={onStartAudio}
-          onStop={onStopAudio}
-        />
+        {interviewType === 'online' ? (
+          <ChannelCard
+            domId="channel-computer"
+            source="display"
+            accent="candidate"
+            title="候选人 · 电脑音频"
+            state={audio.display}
+            disabled={disabled}
+            onStart={onStartAudio}
+            onStop={onStopAudio}
+          />
+        ) : null}
         <ChannelCard
           domId="channel-mic"
           source="mic"
           accent="interviewer"
-          title="面试官 · 麦克风"
+          title={interviewType === 'offline' ? '现场面试 · 麦克风' : '面试官 · 麦克风'}
           state={audio.mic}
           disabled={disabled}
           micDeviceId={micDeviceId}

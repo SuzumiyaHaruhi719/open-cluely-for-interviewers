@@ -86,6 +86,8 @@ describe('Shell one-shot interview workflow', () => {
     expect(screen.getByLabelText(/上传简历/)).toBeInTheDocument();
     expect(screen.getByRole('combobox', { name: '选择职位 JD' })).toBeInTheDocument();
     expect(screen.getByText('物业经理')).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /线上面试/ })).toBeChecked();
+    expect(screen.getByRole('radio', { name: /线下面试/ })).not.toBeChecked();
     expect(screen.queryByLabelText('自定义职位描述')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '开始面试' })).toBeInTheDocument();
 
@@ -131,6 +133,18 @@ describe('Shell one-shot interview workflow', () => {
     expect(document.getElementById('channel-mic')).toBeInTheDocument();
     expect(screen.getByLabelText('面试备注')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /生成追问|提问 AI/ })).not.toBeInTheDocument();
+  });
+
+  test('uses a single room microphone lane when offline mode is selected', async () => {
+    render(<Shell />);
+    openSocket();
+    fireEvent.click(screen.getByRole('radio', { name: /线下面试/ }));
+    fireEvent.click(screen.getByRole('button', { name: '开始面试' }));
+    await screen.findByRole('button', { name: '结束面试' });
+
+    expect(document.getElementById('channel-computer')).not.toBeInTheDocument();
+    expect(document.getElementById('channel-mic')).toBeInTheDocument();
+    expect(screen.getByText('现场面试 · 麦克风')).toBeInTheDocument();
   });
 
   test('keeps automatic session context in the dedicated collapsible drawer', async () => {
@@ -286,7 +300,7 @@ describe('Shell one-shot interview workflow', () => {
     expect(screen.getByText('保留的候选人证据')).toBeInTheDocument();
   });
 
-  test('returns to preparation when the interview ends', async () => {
+  test('requires confirmation before ending and returns to preparation only after confirm', async () => {
     const ws = await enterLiveWorkspace();
     act(() => {
       ws.emit({
@@ -299,7 +313,26 @@ describe('Shell one-shot interview workflow', () => {
       });
     });
 
+    const stopFrameCountBefore = sentMessages(ws).filter(
+      (frame) => frame.type === 'audio-control' && frame.action === 'stop'
+    ).length;
+
     fireEvent.click(screen.getByRole('button', { name: '结束面试' }));
+
+    expect(screen.getByRole('dialog', { name: '结束本次面试？' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '结束本次面试？' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '取消' })).toHaveFocus();
+    expect(sentMessages(ws).filter(
+      (frame) => frame.type === 'audio-control' && frame.action === 'stop'
+    )).toHaveLength(stopFrameCountBefore);
+    expect(screen.getByRole('button', { name: '结束面试' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: '取消' }));
+    expect(screen.queryByRole('dialog', { name: '结束本次面试？' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '结束面试' })).toHaveFocus();
+
+    fireEvent.click(screen.getByRole('button', { name: '结束面试' }));
+    fireEvent.click(screen.getByRole('button', { name: '确认结束' }));
 
     expect(screen.getByRole('heading', { name: '准备本次面试' })).toBeInTheDocument();
     expect(screen.queryByRole('dialog', { name: '面试总结' })).not.toBeInTheDocument();

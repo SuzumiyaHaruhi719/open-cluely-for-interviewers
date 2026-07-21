@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SessionConfig } from '@open-cluely/contract';
 import { useCopilotSocket } from '../lib/useCopilotSocket';
+import { EndInterviewDialog } from './EndInterviewDialog';
 import { InterviewDock } from './InterviewDock';
 import { InterviewHeader } from './InterviewHeader';
-import { InterviewSetup, type InterviewSetupSubmit } from './InterviewSetup';
+import {
+  InterviewSetup,
+  type InterviewSetupSubmit,
+  type InterviewType
+} from './InterviewSetup';
 import { SessionContextDrawer } from './SessionContextDrawer';
 import { SummaryModal } from './SummaryModal';
 import { TranscriptStream, type TranscriptMessage } from './TranscriptStream';
@@ -13,12 +18,14 @@ interface ConfigState {
   jobDescription: string;
   resumeText: string;
   interviewGuide: string[];
+  interviewType: InterviewType;
 }
 
 const INITIAL_CONFIG: ConfigState = {
   jobDescription: '',
   resumeText: '',
-  interviewGuide: []
+  interviewGuide: [],
+  interviewType: 'online'
 };
 
 const EXPERT_CONFIG = {
@@ -85,8 +92,10 @@ export function Shell() {
   const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [contextOpen, setContextOpen] = useState(false);
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
   const [interviewEnded, setInterviewEnded] = useState(false);
   const contextButtonRef = useRef<HTMLButtonElement | null>(null);
+  const endButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const isReady = status === 'open';
   const capturing = audio.display.capturing || audio.mic.capturing;
@@ -141,12 +150,13 @@ export function Shell() {
   }, [pushConfig, resetSpeakerSegments, resetTranscripts]);
 
   const onStartInterview = useCallback(
-    ({ jobDescription, interviewGuide, resumeText }: InterviewSetupSubmit): void => {
+    ({ jobDescription, interviewGuide, resumeText, interviewType }: InterviewSetupSubmit): void => {
       clearSession();
       const nextConfig: ConfigState = {
         jobDescription,
         resumeText,
-        interviewGuide
+        interviewGuide,
+        interviewType
       };
       setConfig(nextConfig);
       pushConfig(fullConfig(nextConfig));
@@ -154,6 +164,7 @@ export function Shell() {
       setStartedAt(null);
       setNow(Date.now());
       setContextOpen(false);
+      setEndConfirmOpen(false);
       setInterviewEnded(false);
       setPhase('live');
     },
@@ -180,16 +191,22 @@ export function Shell() {
     .map((message) => `${message.role === 'note' ? '备注' : message.role}: ${message.text}`)
     .join('\n');
 
-  const onEndInterview = useCallback((): void => {
+  const confirmEndInterview = useCallback((): void => {
     stopAudio('display');
     stopAudio('mic');
     setInterviewEnded(true);
+    setEndConfirmOpen(false);
     setContextOpen(false);
     setSummaryOpen(false);
     setStartedAt(null);
     setNow(Date.now());
     setPhase('setup');
   }, [stopAudio]);
+
+  const cancelEndInterview = useCallback((): void => {
+    setEndConfirmOpen(false);
+    endButtonRef.current?.focus();
+  }, []);
 
   const onSummarize = useCallback((): void => {
     setSummaryOpen(true);
@@ -220,10 +237,11 @@ export function Shell() {
         contextOpen={contextOpen}
         ended={interviewEnded}
         contextButtonRef={contextButtonRef}
+        endButtonRef={endButtonRef}
         onClear={clearSession}
         onToggleContext={() => setContextOpen((open) => !open)}
         onSummary={onSummarize}
-        onEnd={onEndInterview}
+        onEnd={() => setEndConfirmOpen(true)}
       />
 
       <div className="interview-workspace">
@@ -245,6 +263,7 @@ export function Shell() {
             capturing={recognitionLive}
             lastAutoFireAt={lastAutoFireAt}
             startedAtMs={startedAt}
+            offline={config.interviewType === 'offline'}
           />
         </main>
 
@@ -252,6 +271,7 @@ export function Shell() {
       </div>
 
       <InterviewDock
+        interviewType={config.interviewType}
         audio={audio}
         disabled={!isReady || interviewEnded}
         timer={timer}
@@ -267,6 +287,12 @@ export function Shell() {
         summary={summary}
         onRegenerate={() => startSummary(clientSummaryTranscript)}
         onClose={() => setSummaryOpen(false)}
+      />
+
+      <EndInterviewDialog
+        open={endConfirmOpen}
+        onCancel={cancelEndInterview}
+        onConfirm={confirmEndInterview}
       />
     </div>
   );

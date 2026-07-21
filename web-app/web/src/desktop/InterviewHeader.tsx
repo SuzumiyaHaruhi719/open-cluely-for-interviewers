@@ -14,6 +14,7 @@ interface InterviewHeaderProps {
   contextOpen: boolean;
   ended: boolean;
   contextButtonRef?: Ref<HTMLButtonElement>;
+  endButtonRef?: Ref<HTMLButtonElement>;
   onClear: () => void;
   onToggleContext: () => void;
   onSummary: () => void;
@@ -30,6 +31,7 @@ export function InterviewHeader({
   contextOpen,
   ended,
   contextButtonRef,
+  endButtonRef,
   onClear,
   onToggleContext,
   onSummary,
@@ -84,7 +86,13 @@ export function InterviewHeader({
           <FileText size={18} aria-hidden="true" />
           <span>面试总结</span>
         </button>
-        <button className="interview-header__end" type="button" disabled={ended} onClick={onEnd}>
+        <button
+          ref={endButtonRef}
+          className="interview-header__end"
+          type="button"
+          disabled={ended}
+          onClick={onEnd}
+        >
           <StopCircle size={18} aria-hidden="true" />
           <span>结束面试</span>
         </button>
