@@ -2,7 +2,8 @@ import { describe, expect, test } from 'vitest';
 import {
   JOB_PROFILES,
   PROPERTY_MANAGER_PROFILE,
-  buildInterviewGuideLines
+  buildInterviewGuideLines,
+  searchJobProfiles
 } from './jobProfiles';
 
 describe('Property Manager job profile', () => {
@@ -41,5 +42,12 @@ describe('Property Manager job profile', () => {
     expect(lines.join('\n')).toContain('可验证证据');
     expect(lines.join('\n')).toContain('警示信号');
     expect(JOB_PROFILES.map((profile) => profile.id)).toContain('property-manager');
+  });
+
+  test('fuzzy-searches built-in JDs across role, organization, and responsibilities', () => {
+    expect(searchJobProfiles('园区 管理').map((profile) => profile.id)).toContain('property-manager');
+    expect(searchJobProfiles('城市负责人').map((profile) => profile.id)).toContain('property-manager');
+    expect(searchJobProfiles('物经').map((profile) => profile.id)).toContain('property-manager');
+    expect(searchJobProfiles('量子芯片设计')).toEqual([]);
   });
 });

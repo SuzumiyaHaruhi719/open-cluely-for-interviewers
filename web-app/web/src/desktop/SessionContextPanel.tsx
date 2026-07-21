@@ -1,5 +1,5 @@
 import type { CompetencyStatus, SessionContextState } from '@open-cluely/contract';
-import { ContextEmptyIcon } from './icons';
+import { FileText } from '@phosphor-icons/react/FileText';
 
 interface SessionContextPanelProps {
   /** Latest live session-context from the server, or null before the first analysis. */
@@ -35,7 +35,7 @@ export function SessionContextPanel({ state }: SessionContextPanelProps) {
       <div id="session-context" className="session-context">
         <div className="session-empty">
           <span className="session-empty__icon" aria-hidden="true">
-            <ContextEmptyIcon size={28} />
+            <FileText size={28} data-icon-library="phosphor" />
           </span>
           <p className="session-empty__text">还没有上下文</p>
           <p className="session-empty__hint">

@@ -173,19 +173,10 @@ export function ChannelCard({
         </div>
 
         <div className="channel-device-row">
-          <button
-            type="button"
-            className={`channel-toggle${state.capturing ? ' on' : ''}${connecting ? ' connecting' : ''}`}
-            disabled={blocked || connecting}
-            onClick={handleToggle}
-          >
-            {connecting ? '…' : state.capturing ? '停止' : '开始'}
-          </button>
           {isMic ? (
-            <div style={{ display: 'flex', flex: '1 1 auto', alignItems: 'center', gap: 6, minWidth: 0 }}>
+            <div className="channel-source-field" data-source-field="true">
               <select
                 className="channel-device-select"
-                style={{ flex: '1 1 auto', minWidth: 0 }}
                 value={micDeviceId}
                 disabled={micSelectDisabled}
                 title={state.capturing ? '停止后才能切换麦克风' : '选择麦克风输入设备'}
@@ -221,14 +212,26 @@ export function ChannelCard({
               )}
             </div>
           ) : (
-            <span className="channel-device-select channel-device-select--static" aria-hidden="true">
+            <span
+              className="channel-source-field channel-device-select channel-device-select--static"
+              data-source-field="true"
+              title="启动后选择要采集的标签页或窗口"
+            >
               {unsupported
                 ? '标签页音频需要 Chrome 或 Edge'
                 : state.error
                   ? state.error
-                  : '共享带音频的标签页或窗口'}
+                  : '启动后选择标签页或窗口'}
             </span>
           )}
+          <button
+            type="button"
+            className={`channel-toggle${state.capturing ? ' on' : ''}${connecting ? ' connecting' : ''}`}
+            disabled={blocked || connecting}
+            onClick={handleToggle}
+          >
+            {connecting ? '…' : state.capturing ? '停止' : '开始'}
+          </button>
         </div>
 
         {isMic && state.error ? (

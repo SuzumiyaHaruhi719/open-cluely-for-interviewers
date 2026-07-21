@@ -57,4 +57,21 @@ describe('InterviewDock', () => {
     fireEvent.keyDown(input, { key: 'Enter' });
     expect(onAddNote).toHaveBeenCalledWith('追问消防演练频率');
   });
+
+  test('uses one source-field geometry for both lanes and locks the dock after ending', () => {
+    const { container } = render(
+      <InterviewDock
+        audio={AUDIO}
+        disabled
+        timer="00:10:00"
+        onStartAudio={vi.fn()}
+        onStopAudio={vi.fn()}
+        onAddNote={vi.fn()}
+      />
+    );
+
+    expect(container.querySelectorAll('[data-source-field="true"]')).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: '开始' })).toHaveLength(2);
+    expect(screen.getByLabelText('面试备注')).toBeDisabled();
+  });
 });

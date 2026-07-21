@@ -64,10 +64,15 @@ function lastConfig(ws: MockWebSocket): Record<string, unknown> | null {
   return null;
 }
 
-async function enterLiveWorkspace(jd = '物业经理\n负责园区运营落地。') {
+async function enterLiveWorkspace(customJd?: string) {
   render(<Shell />);
   const ws = openSocket();
-  fireEvent.change(screen.getByLabelText('职位描述'), { target: { value: jd } });
+  if (customJd) {
+    const picker = screen.getByRole('combobox', { name: '选择职位 JD' });
+    fireEvent.change(picker, { target: { value: '自定义' } });
+    fireEvent.click(screen.getByRole('option', { name: '自定义职位' }));
+    fireEvent.change(screen.getByLabelText('自定义职位描述'), { target: { value: customJd } });
+  }
   fireEvent.click(screen.getByRole('button', { name: '开始面试' }));
   await screen.findByRole('button', { name: '结束面试' });
   return ws;
@@ -79,7 +84,9 @@ describe('Shell one-shot interview workflow', () => {
 
     expect(screen.getByRole('heading', { name: '准备本次面试' })).toBeInTheDocument();
     expect(screen.getByLabelText(/上传简历/)).toBeInTheDocument();
-    expect(screen.getByLabelText('职位描述')).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: '选择职位 JD' })).toBeInTheDocument();
+    expect(screen.getByText('物业经理')).toBeInTheDocument();
+    expect(screen.queryByLabelText('自定义职位描述')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '开始面试' })).toBeInTheDocument();
 
     expect(document.querySelector('.sidebar')).not.toBeInTheDocument();
@@ -91,7 +98,7 @@ describe('Shell one-shot interview workflow', () => {
   });
 
   test('starts with supplied JD as fixed Expert context and no user-facing policy settings', async () => {
-    const ws = await enterLiveWorkspace('物业经理\n负责消防、设备和租户服务。');
+    const ws = await enterLiveWorkspace();
 
     await waitFor(() => {
       expect(lastConfig(ws)).toMatchObject({
@@ -102,7 +109,8 @@ describe('Shell one-shot interview workflow', () => {
         diarize: true,
         autoGenerate: true,
         autoMode: 'agent',
-        jobDescription: '物业经理\n负责消防、设备和租户服务。'
+        jobDescription: expect.stringContaining('现场的安全及消防'),
+        interviewGuide: expect.arrayContaining([expect.stringContaining('突发事件应对与复盘')])
       });
     });
     expect(lastConfig(ws)).not.toHaveProperty('volcAppId');
@@ -118,6 +126,7 @@ describe('Shell one-shot interview workflow', () => {
     expect(screen.getByRole('log', { name: '实时转写' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '清空转写' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '打开会话上下文' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '面试总结' })).toBeInTheDocument();
     expect(document.getElementById('channel-computer')).toBeInTheDocument();
     expect(document.getElementById('channel-mic')).toBeInTheDocument();
     expect(screen.getByLabelText('面试备注')).toBeInTheDocument();
@@ -277,7 +286,7 @@ describe('Shell one-shot interview workflow', () => {
     expect(screen.getByText('保留的候选人证据')).toBeInTheDocument();
   });
 
-  test('ending stops both audio lanes and opens the existing summary flow', async () => {
+  test('ending only stops capture; manual Summary independently opens the report', async () => {
     const ws = await enterLiveWorkspace();
     act(() => {
       ws.emit({
@@ -292,13 +301,18 @@ describe('Shell one-shot interview workflow', () => {
 
     fireEvent.click(screen.getByRole('button', { name: '结束面试' }));
 
-    expect(screen.getByRole('dialog', { name: '面试总结' })).toBeInTheDocument();
+    expect(screen.queryByRole('dialog', { name: '面试总结' })).not.toBeInTheDocument();
+    expect(screen.getByText('已结束')).toBeInTheDocument();
     expect(sentMessages(ws)).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ type: 'audio-control', source: 'display', action: 'stop' }),
-        expect.objectContaining({ type: 'audio-control', source: 'mic', action: 'stop' }),
-        expect.objectContaining({ type: 'summarize' })
+        expect.objectContaining({ type: 'audio-control', source: 'mic', action: 'stop' })
       ])
     );
+    expect(sentMessages(ws)).not.toContainEqual(expect.objectContaining({ type: 'summarize' }));
+
+    fireEvent.click(screen.getByRole('button', { name: '面试总结' }));
+    expect(screen.getByRole('dialog', { name: '面试总结' })).toBeInTheDocument();
+    expect(sentMessages(ws)).toContainEqual(expect.objectContaining({ type: 'summarize' }));
   });
 });

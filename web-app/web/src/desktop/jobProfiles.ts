@@ -155,6 +155,47 @@ export const PROPERTY_MANAGER_PROFILE: JobProfile = {
 
 export const JOB_PROFILES: readonly JobProfile[] = [PROPERTY_MANAGER_PROFILE];
 
+function normalizeSearchText(value: string): string {
+  return value.toLocaleLowerCase('zh-CN').replace(/[\s\p{P}\p{S}]+/gu, '');
+}
+
+function isSubsequence(needle: string, haystack: string): boolean {
+  if (!needle) return true;
+  let cursor = 0;
+  for (const character of haystack) {
+    if (character === needle[cursor]) cursor += 1;
+    if (cursor === needle.length) return true;
+  }
+  return false;
+}
+
+/**
+ * Small-catalog fuzzy search used by the one-shot JD picker. Whitespace means
+ * “all terms”, while compact Chinese abbreviations such as “物经” still match
+ * “物业经理” through ordered-character matching.
+ */
+export function searchJobProfiles(query: string): JobProfile[] {
+  const terms = query
+    .trim()
+    .split(/\s+/u)
+    .map(normalizeSearchText)
+    .filter(Boolean);
+  if (terms.length === 0) return [...JOB_PROFILES];
+
+  return JOB_PROFILES.filter((profile) => {
+    const haystack = normalizeSearchText(
+      [
+        profile.title,
+        profile.department,
+        profile.reportsTo,
+        profile.summary,
+        profile.jobDescription
+      ].join(' ')
+    );
+    return terms.every((term) => haystack.includes(term) || isSubsequence(term, haystack));
+  });
+}
+
 export function buildInterviewGuideLines(profile: JobProfile): string[] {
   return profile.interviewGuide.map(
     (item) =>

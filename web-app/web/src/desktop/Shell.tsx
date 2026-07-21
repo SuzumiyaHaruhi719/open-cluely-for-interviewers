@@ -85,6 +85,7 @@ export function Shell() {
   const [transcriptMessages, setTranscriptMessages] = useState<TranscriptMessage[]>([]);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [contextOpen, setContextOpen] = useState(false);
+  const [interviewEnded, setInterviewEnded] = useState(false);
   const contextButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const isReady = status === 'open';
@@ -140,12 +141,12 @@ export function Shell() {
   }, [pushConfig, resetSpeakerSegments, resetTranscripts]);
 
   const onStartInterview = useCallback(
-    ({ jobDescription, resumeText }: InterviewSetupSubmit): void => {
+    ({ jobDescription, interviewGuide, resumeText }: InterviewSetupSubmit): void => {
       clearSession();
       const nextConfig: ConfigState = {
         jobDescription,
         resumeText,
-        interviewGuide: []
+        interviewGuide
       };
       setConfig(nextConfig);
       pushConfig(fullConfig(nextConfig));
@@ -153,6 +154,7 @@ export function Shell() {
       setStartedAt(null);
       setNow(Date.now());
       setContextOpen(false);
+      setInterviewEnded(false);
       setPhase('live');
     },
     [clearSession, fullConfig, pushConfig]
@@ -181,9 +183,13 @@ export function Shell() {
   const onEndInterview = useCallback((): void => {
     stopAudio('display');
     stopAudio('mic');
+    setInterviewEnded(true);
+  }, [stopAudio]);
+
+  const onSummarize = useCallback((): void => {
     setSummaryOpen(true);
     startSummary(clientSummaryTranscript);
-  }, [clientSummaryTranscript, startSummary, stopAudio]);
+  }, [clientSummaryTranscript, startSummary]);
 
   if (phase === 'setup') {
     return (
@@ -207,9 +213,11 @@ export function Shell() {
         timer={timer}
         contextLoaded={Boolean(config.jobDescription || config.resumeText)}
         contextOpen={contextOpen}
+        ended={interviewEnded}
         contextButtonRef={contextButtonRef}
         onClear={clearSession}
         onToggleContext={() => setContextOpen((open) => !open)}
+        onSummary={onSummarize}
         onEnd={onEndInterview}
       />
 
@@ -240,7 +248,7 @@ export function Shell() {
 
       <InterviewDock
         audio={audio}
-        disabled={!isReady}
+        disabled={!isReady || interviewEnded}
         timer={timer}
         onStartAudio={startAudio}
         onStopAudio={stopAudio}

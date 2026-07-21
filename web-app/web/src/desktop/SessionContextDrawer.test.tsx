@@ -25,6 +25,10 @@ describe('SessionContextDrawer', () => {
     );
     expect(screen.getByText('租户冲突处理')).toBeInTheDocument();
     expect(screen.getByText('预算控制的量化结果')).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: '自动会话上下文内容' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
   });
 
   test('closes from its button and Escape without touching context data', () => {

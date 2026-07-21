@@ -31,7 +31,7 @@ export function InterviewDock({
 
   const submit = (): void => {
     const trimmed = note.trim();
-    if (!trimmed) return;
+    if (disabled || !trimmed) return;
     onAddNote(trimmed);
     setNote('');
   };
@@ -74,6 +74,7 @@ export function InterviewDock({
           aria-label="面试备注"
           placeholder="输入面试备注…"
           value={note}
+          disabled={disabled}
           onChange={(event) => setNote(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === 'Enter' && !event.shiftKey) {
@@ -82,7 +83,7 @@ export function InterviewDock({
             }
           }}
         />
-        <button type="button" aria-label="添加备注" disabled={!note.trim()} onClick={submit}>
+        <button type="button" aria-label="添加备注" disabled={disabled || !note.trim()} onClick={submit}>
           <PaperPlaneRight size={18} aria-hidden="true" />
         </button>
       </div>

@@ -46,7 +46,12 @@ export function SessionContextDrawer({ open, state, onClose }: SessionContextDra
           <X size={18} aria-hidden="true" />
         </button>
       </header>
-      <div className="context-drawer__body">
+      <div
+        className="context-drawer__body"
+        role="region"
+        aria-label="自动会话上下文内容"
+        tabIndex={open ? 0 : -1}
+      >
         <SessionContextPanel state={state} />
       </div>
     </aside>

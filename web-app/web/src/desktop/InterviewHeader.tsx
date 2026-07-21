@@ -1,6 +1,7 @@
 import type { Ref } from 'react';
 import { Brain } from '@phosphor-icons/react/Brain';
 import { CheckCircle } from '@phosphor-icons/react/CheckCircle';
+import { FileText } from '@phosphor-icons/react/FileText';
 import { StopCircle } from '@phosphor-icons/react/StopCircle';
 import { Trash } from '@phosphor-icons/react/Trash';
 
@@ -11,9 +12,11 @@ interface InterviewHeaderProps {
   timer: string;
   contextLoaded: boolean;
   contextOpen: boolean;
+  ended: boolean;
   contextButtonRef?: Ref<HTMLButtonElement>;
   onClear: () => void;
   onToggleContext: () => void;
+  onSummary: () => void;
   onEnd: () => void;
 }
 
@@ -25,12 +28,15 @@ export function InterviewHeader({
   timer,
   contextLoaded,
   contextOpen,
+  ended,
   contextButtonRef,
   onClear,
   onToggleContext,
+  onSummary,
   onEnd
 }: InterviewHeaderProps) {
-  const runtimeLabel = !connected ? '连接中' : capturing ? '直播中' : '待录音';
+  const runtimeLabel = !connected ? '连接中' : ended ? '已结束' : capturing ? '直播中' : '待录音';
+  const runtimeState = !connected ? 'connecting' : ended ? 'ended' : capturing ? 'live' : 'idle';
 
   return (
     <header className="interview-header">
@@ -45,7 +51,7 @@ export function InterviewHeader({
       <div className="interview-header__status" aria-label="面试状态">
         <span
           className="interview-header__live"
-          data-state={!connected ? 'connecting' : capturing ? 'live' : 'idle'}
+          data-state={runtimeState}
         >
           <span className="interview-header__live-dot" aria-hidden="true" />
           {runtimeLabel}
@@ -74,7 +80,11 @@ export function InterviewHeader({
           <Brain size={18} aria-hidden="true" />
           <span>会话上下文</span>
         </button>
-        <button className="interview-header__end" type="button" onClick={onEnd}>
+        <button className="interview-header__action" type="button" onClick={onSummary}>
+          <FileText size={18} aria-hidden="true" />
+          <span>面试总结</span>
+        </button>
+        <button className="interview-header__end" type="button" disabled={ended} onClick={onEnd}>
           <StopCircle size={18} aria-hidden="true" />
           <span>结束面试</span>
         </button>

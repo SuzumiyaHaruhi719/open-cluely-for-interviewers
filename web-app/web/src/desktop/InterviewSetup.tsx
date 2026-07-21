@@ -1,8 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { CaretDown } from '@phosphor-icons/react/CaretDown';
+import { Check } from '@phosphor-icons/react/Check';
+import { MagnifyingGlass } from '@phosphor-icons/react/MagnifyingGlass';
 import { ResumeDropzone } from './ResumeDropzone';
+import {
+  PROPERTY_MANAGER_PROFILE,
+  buildInterviewGuideLines,
+  searchJobProfiles,
+  type JobProfile
+} from './jobProfiles';
 
 export interface InterviewSetupSubmit {
+  jobProfileId: string;
   jobDescription: string;
+  interviewGuide: string[];
   resumeText: string;
 }
 
@@ -24,14 +35,47 @@ export function InterviewSetup({
   onResumeTextChange,
   onStart
 }: InterviewSetupProps) {
-  const [jobDescription, setJobDescription] = useState('');
-  const trimmedJobDescription = jobDescription.trim();
-  const canStart = ready && trimmedJobDescription.length > 0;
+  const pickerRef = useRef<HTMLDivElement | null>(null);
+  const [selectedProfile, setSelectedProfile] = useState<JobProfile | 'custom' | null>(
+    PROPERTY_MANAGER_PROFILE
+  );
+  const [query, setQuery] = useState(
+    `${PROPERTY_MANAGER_PROFILE.title} · ${PROPERTY_MANAGER_PROFILE.department}`
+  );
+  const [customJobDescription, setCustomJobDescription] = useState('');
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [activeOption, setActiveOption] = useState(0);
+
+  const profiles = useMemo(() => searchJobProfiles(query), [query]);
+  const options: Array<JobProfile | 'custom'> = [...profiles, 'custom'];
+  const isCustom = selectedProfile === 'custom';
+  const trimmedCustomDescription = customJobDescription.trim();
+  const canStart =
+    ready &&
+    (selectedProfile !== null) &&
+    (!isCustom || trimmedCustomDescription.length > 0);
+
+  useEffect(() => {
+    const closeOnOutsidePointer = (event: MouseEvent): void => {
+      if (!pickerRef.current?.contains(event.target as Node)) setPickerOpen(false);
+    };
+    document.addEventListener('mousedown', closeOnOutsidePointer);
+    return () => document.removeEventListener('mousedown', closeOnOutsidePointer);
+  }, []);
+
+  const chooseProfile = (option: JobProfile | 'custom'): void => {
+    setSelectedProfile(option);
+    setQuery(option === 'custom' ? '自定义职位' : `${option.title} · ${option.department}`);
+    setPickerOpen(false);
+  };
 
   const submit = (): void => {
-    if (!canStart) return;
+    if (!canStart || selectedProfile === null) return;
+    const isBuiltIn = selectedProfile !== 'custom';
     onStart({
-      jobDescription: trimmedJobDescription,
+      jobProfileId: isBuiltIn ? selectedProfile.id : 'custom',
+      jobDescription: isBuiltIn ? selectedProfile.jobDescription : trimmedCustomDescription,
+      interviewGuide: isBuiltIn ? buildInterviewGuideLines(selectedProfile) : [],
       resumeText: resumeText.trim()
     });
   };
@@ -65,20 +109,148 @@ export function InterviewSetup({
             />
           </section>
 
-          <section className="interview-setup__field">
+          <section className="interview-setup__field interview-setup__job-field">
             <div className="interview-setup__field-heading">
-              <label htmlFor="interview-setup-jd">职位描述</label>
-              <span>{jobDescription.length.toLocaleString('zh-CN')} 字</span>
+              <label htmlFor="interview-setup-job-picker">职位 JD</label>
+              <span>{isCustom ? '自定义' : '内置专家模板'}</span>
             </div>
-            <textarea
-              id="interview-setup-jd"
-              className="interview-setup__jd"
-              rows={9}
-              placeholder="粘贴职位职责、任职要求和重点考察内容"
-              value={jobDescription}
-              onChange={(event) => setJobDescription(event.target.value)}
-            />
-            <p className="interview-setup__hint">职位描述仅作为专家模型的事实背景。</p>
+
+            <div ref={pickerRef} className="interview-setup__picker">
+              <MagnifyingGlass
+                className="interview-setup__picker-search"
+                size={17}
+                data-icon-library="phosphor"
+                aria-hidden="true"
+              />
+              <input
+                id="interview-setup-job-picker"
+                className="interview-setup__picker-input"
+                role="combobox"
+                aria-label="选择职位 JD"
+                aria-autocomplete="list"
+                aria-controls="interview-job-options"
+                aria-expanded={pickerOpen}
+                aria-activedescendant={pickerOpen ? `interview-job-option-${activeOption}` : undefined}
+                autoComplete="off"
+                placeholder="搜索职位、部门或职责"
+                value={query}
+                onFocus={() => {
+                  setPickerOpen(true);
+                  setActiveOption(0);
+                }}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setSelectedProfile(null);
+                  setPickerOpen(true);
+                  setActiveOption(0);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') {
+                    setPickerOpen(false);
+                    return;
+                  }
+                  if (event.key === 'ArrowDown') {
+                    event.preventDefault();
+                    setPickerOpen(true);
+                    setActiveOption((index) => Math.min(index + 1, options.length - 1));
+                  }
+                  if (event.key === 'ArrowUp') {
+                    event.preventDefault();
+                    setActiveOption((index) => Math.max(index - 1, 0));
+                  }
+                  if (event.key === 'Enter' && pickerOpen) {
+                    event.preventDefault();
+                    chooseProfile(options[activeOption] ?? 'custom');
+                  }
+                }}
+              />
+              <CaretDown
+                className="interview-setup__picker-caret"
+                size={16}
+                data-icon-library="phosphor"
+                aria-hidden="true"
+              />
+
+              {pickerOpen ? (
+                <div id="interview-job-options" className="interview-setup__picker-list" role="listbox">
+                  {profiles.map((profile, index) => (
+                    <button
+                      id={`interview-job-option-${index}`}
+                      key={profile.id}
+                      className="interview-setup__picker-option"
+                      type="button"
+                      role="option"
+                      aria-selected={selectedProfile !== 'custom' && selectedProfile?.id === profile.id}
+                      aria-label={`${profile.title} · ${profile.department}`}
+                      data-active={activeOption === index ? 'true' : 'false'}
+                      onMouseEnter={() => setActiveOption(index)}
+                      onClick={() => chooseProfile(profile)}
+                    >
+                      <span>
+                        <strong>{profile.title}</strong>
+                        <small>{profile.department} · 汇报 {profile.reportsTo}</small>
+                      </span>
+                      {selectedProfile !== 'custom' && selectedProfile?.id === profile.id ? (
+                        <Check size={16} data-icon-library="phosphor" aria-hidden="true" />
+                      ) : null}
+                    </button>
+                  ))}
+                  <button
+                    id={`interview-job-option-${profiles.length}`}
+                    className="interview-setup__picker-option interview-setup__picker-option--custom"
+                    type="button"
+                    role="option"
+                    aria-selected={isCustom}
+                    aria-label="自定义职位"
+                    data-active={activeOption === profiles.length ? 'true' : 'false'}
+                    onMouseEnter={() => setActiveOption(profiles.length)}
+                    onClick={() => chooseProfile('custom')}
+                  >
+                    <span>
+                      <strong>自定义职位</strong>
+                      <small>没有匹配职位时手动输入 JD</small>
+                    </span>
+                    {isCustom ? <Check size={16} data-icon-library="phosphor" aria-hidden="true" /> : null}
+                  </button>
+                </div>
+              ) : null}
+            </div>
+
+            {selectedProfile && selectedProfile !== 'custom' ? (
+              <article className="interview-setup__profile" aria-label="已选择职位">
+                <div className="interview-setup__profile-heading">
+                  <div>
+                    <h3>{selectedProfile.title}</h3>
+                    <p>{selectedProfile.department} · 汇报 {selectedProfile.reportsTo}</p>
+                  </div>
+                  <span>已匹配</span>
+                </div>
+                <p>{selectedProfile.summary}</p>
+                <div className="interview-setup__profile-tags" aria-label="重点考察能力">
+                  {selectedProfile.interviewGuide.slice(0, 3).map((item) => (
+                    <span key={item.id}>{item.competency}</span>
+                  ))}
+                </div>
+              </article>
+            ) : null}
+
+            {isCustom ? (
+              <div className="interview-setup__custom">
+                <div className="interview-setup__field-heading">
+                  <label htmlFor="interview-setup-custom-jd">自定义职位描述</label>
+                  <span>{customJobDescription.length.toLocaleString('zh-CN')} 字</span>
+                </div>
+                <textarea
+                  id="interview-setup-custom-jd"
+                  className="interview-setup__jd"
+                  rows={5}
+                  placeholder="粘贴职位职责、任职要求和重点考察内容"
+                  value={customJobDescription}
+                  onChange={(event) => setCustomJobDescription(event.target.value)}
+                />
+              </div>
+            ) : null}
+            <p className="interview-setup__hint">JD 仅作为专家模型的事实背景，不会创建额外提示词。</p>
           </section>
         </div>
 
