@@ -80,14 +80,17 @@ export interface VolcSessionDeps {
 }
 
 export const VOLC_WS_URL = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel';
-// The seedasr (2.0) models are rejected on /bigmodel (handshake HTTP 400
-// "resourceId not allowed") and must use /bigmodel_nostream; the bigasr (1.0)
-// models work on /bigmodel. Verified live against the account.
+// Seed ASR 2.0 needs the optimized bidirectional endpoint for real rolling
+// captions. With enable_nonstream=true it also performs the accurate second
+// pass that supplies definite utterances + native speaker clusters. The plain
+// /bigmodel endpoint rejects this account's Seed resource, while _nostream
+// waits for >15 s / the terminal packet and therefore only looks sentence-live.
+export const VOLC_WS_URL_ASYNC = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_async';
 export const VOLC_WS_URL_NOSTREAM = 'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream';
 
-/** Pick the v3 endpoint a resource id is served on: seedasr (2.0) → nostream, else /bigmodel. */
+/** Pick the v3 endpoint: Seed ASR 2.0 → optimized bidirectional, legacy → /bigmodel. */
 export function endpointForResource(resourceId: string): string {
-  return /seedasr/i.test(resourceId) ? VOLC_WS_URL_NOSTREAM : VOLC_WS_URL;
+  return /seedasr/i.test(resourceId) ? VOLC_WS_URL_ASYNC : VOLC_WS_URL;
 }
 export const VOLC_DEFAULT_SAMPLE_RATE = 16000;
 // Long Seed 2.0 utterances can need several seconds to finish speaker
@@ -211,6 +214,13 @@ export function buildConfigPayload(model: string, sampleRate: number): Buffer {
       enable_punc: true,
       result_type: 'single',
       show_utterances: true,
+      // Optimized bidirectional mode: expose fast rolling text, then replace it
+      // with the accurate nostream second pass that carries definite/speaker.
+      enable_nonstream: true,
+      enable_accelerate_text: true,
+      // Mid-range acceleration keeps first text responsive without maximizing
+      // provisional-hypothesis churn; the second pass remains final truth.
+      accelerate_score: 10,
       enable_speaker_info: true,
       ssd_version: '200'
     }

@@ -5,6 +5,7 @@ import {
   buildFrame,
   parseFrame,
   buildConfigPayload,
+  endpointForResource,
   extractTranscripts,
   createVolcSession,
   formatDoubaoAsr2Error,
@@ -75,10 +76,23 @@ test('buildConfigPayload encodes a gzip JSON config carrying the model + rate', 
   assert.equal(config.request.model_name, 'bigmodel');
   assert.equal(config.request.enable_speaker_info, true);
   assert.equal(config.request.ssd_version, '200');
-  assert.equal(config.request.enable_nonstream, undefined);
+  assert.equal(config.request.enable_nonstream, true);
+  assert.equal(config.request.enable_accelerate_text, true);
+  assert.equal(config.request.accelerate_score, 10);
   assert.equal(config.audio.rate, 16000);
   assert.equal(config.audio.format, 'pcm');
   assert.equal(config.audio.language, undefined);
+});
+
+test('Seed ASR 2.0 uses the optimized bidirectional endpoint for rolling captions plus second-pass finals', () => {
+  assert.equal(
+    endpointForResource('volc.seedasr.sauc.duration'),
+    'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_async'
+  );
+  assert.equal(
+    endpointForResource('volc.seedasr.sauc.concurrent'),
+    'wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_async'
+  );
 });
 
 test('Seed ASR finalization budget covers long utterance clustering without hanging forever', () => {
@@ -223,7 +237,7 @@ test('session opens with the Volc auth headers and sends a gzip config on open',
 
   const ws = FakeWs.instances.at(-1)!;
   assert.equal(VOLC_DEFAULT_RESOURCE_ID, 'volc.seedasr.sauc.duration');
-  assert.match(ws.url, /bigmodel_nostream$/);
+  assert.match(ws.url, /bigmodel_async$/);
   assert.equal(ws.headers?.['X-Api-App-Key'], 'app-123');
   assert.equal(ws.headers?.['X-Api-Access-Key'], 'tok-abc');
   assert.equal(ws.headers?.['X-Api-Resource-Id'], VOLC_DEFAULT_RESOURCE_ID);
@@ -231,6 +245,8 @@ test('session opens with the Volc auth headers and sends a gzip config on open',
   ws.emit('open');
   const config = decodeConfigFrame(ws);
   assert.equal(config.request.model_name, VOLC_DEFAULT_MODEL);
+  assert.equal(config.request.enable_nonstream, true);
+  assert.equal(config.request.enable_accelerate_text, true);
   assert.equal(config.audio.rate, 16000);
 });
 
