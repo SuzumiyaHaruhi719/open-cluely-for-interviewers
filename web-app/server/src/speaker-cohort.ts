@@ -349,10 +349,13 @@ export function consensusCohortAudits(
   const sharedSupport = [...primarySupport]
     .filter((seq) => verificationSupport.has(seq))
     .sort((left, right) => left - right);
-  const sharedEvidence = primary.evidenceSeqs
-    .filter((seq) => verification.evidenceSeqs.includes(seq) && packet.requiredSeqs.includes(seq))
+  const sharedAuditEvidence = primary.evidenceSeqs
+    .filter((seq) => verification.evidenceSeqs.includes(seq))
     .sort((left, right) => left - right);
-  if (sharedSupport.length < MIN_COHORT_UTTERANCES || sharedEvidence.length < MIN_COHORT_UTTERANCES) {
+  if (
+    sharedSupport.length < MIN_COHORT_UTTERANCES ||
+    sharedAuditEvidence.length < MIN_COHORT_UTTERANCES
+  ) {
     return null;
   }
 
@@ -360,7 +363,10 @@ export function consensusCohortAudits(
     speakerId: packet.targetSpeakerId,
     role,
     confidence: Math.min(primary.confidence, verification.confidence),
-    evidenceSeqs: sharedEvidence,
+    // targetRoles already provides the direct, per-target citations. Keep those
+    // as the durable delegation evidence while allowing the model's separate
+    // evidenceSeqs field to cite shared neighbouring/anchor context.
+    evidenceSeqs: sharedSupport,
     contradictionSeqs: []
   };
 }

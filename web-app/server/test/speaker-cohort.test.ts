@@ -177,6 +177,14 @@ test('consensus rejects pass disagreement, missing coverage, and contradictions'
     ),
     null
   );
+  assert.equal(
+    consensusCohortAudits(
+      packet,
+      audit(packet, 'candidate', { evidenceSeqs: [4] }),
+      audit(packet, 'candidate', { evidenceSeqs: [4] })
+    ),
+    null
+  );
 });
 
 test('consensus accepts complete independent agreement with shared evidence', () => {
@@ -185,6 +193,29 @@ test('consensus accepts complete independent agreement with shared evidence', ()
     packet,
     audit(packet, 'candidate', { confidence: 0.94 }),
     audit(packet, 'candidate', { confidence: 0.91, candidateFit: 0.89, interviewerFit: 0.35 })
+  );
+
+  assert.deepEqual(result, {
+    speakerId: 30,
+    role: 'candidate',
+    confidence: 0.91,
+    evidenceSeqs: [4, 6],
+    contradictionSeqs: []
+  });
+});
+
+test('consensus accepts provider-shaped contextual citations when every target is independently covered', () => {
+  const packet = eligiblePacket();
+  const providerEvidence = [1, 3, 5];
+  const result = consensusCohortAudits(
+    packet,
+    audit(packet, 'candidate', { evidenceSeqs: providerEvidence }),
+    audit(packet, 'candidate', {
+      confidence: 0.91,
+      candidateFit: 0.89,
+      interviewerFit: 0.35,
+      evidenceSeqs: providerEvidence
+    })
   );
 
   assert.deepEqual(result, {
