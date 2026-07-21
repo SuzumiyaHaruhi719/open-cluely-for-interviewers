@@ -87,7 +87,7 @@ export function FollowUpCard({ output, mode, tokensUsed, elapsedMs, outputLangua
             <span className="dot" aria-hidden="true" />
           </>
         ) : null}
-        <span>{totalTokens(tokensUsed).toLocaleString()} 令牌</span>
+        <span>{totalTokens(tokensUsed).toLocaleString()} 词元</span>
         <span className="dot" aria-hidden="true" />
         <span>{formatElapsed(elapsedMs)}</span>
         {output.iteration_version ? (

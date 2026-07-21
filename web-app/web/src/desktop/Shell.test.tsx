@@ -234,7 +234,7 @@ describe('Shell one-shot interview workflow', () => {
     );
     expect(timeline[0]).toContain('我通过培训提升了团队执行力。');
     expect(timeline[1]).toContain('培训前后的执行指标分别是多少？');
-    expect(screen.getByText('150 令牌')).toBeInTheDocument();
+    expect(screen.getByText('150 词元')).toBeInTheDocument();
     expect(screen.getAllByText('2.4 s').length).toBeGreaterThan(0);
   });
 

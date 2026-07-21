@@ -195,7 +195,7 @@ export function QuestionCard({
 
       <footer className="question-card__footer">
         <span className="tag-mode">{modeLabel}</span>
-        {tokenCount > 0 ? <span>{tokenCount.toLocaleString()} 令牌</span> : null}
+        {tokenCount > 0 ? <span>{tokenCount.toLocaleString()} 词元</span> : null}
         <span>{formatElapsed(elapsedMs)}</span>
         {output.iteration_version ? <span>v{output.iteration_version}</span> : null}
       </footer>

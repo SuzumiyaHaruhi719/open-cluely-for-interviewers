@@ -27,6 +27,7 @@ describe('InterviewSetup', () => {
     expect(screen.getByText('驻扎在园区现场，负责物业运营落地的园区负责人')).toBeInTheDocument();
     expect(screen.queryByLabelText('自定义职位描述')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '开始面试' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: '切换到浅色主题' })).toBeInTheDocument();
 
     expect(screen.queryByText('题库')).not.toBeInTheDocument();
     expect(screen.queryByText('设置')).not.toBeInTheDocument();

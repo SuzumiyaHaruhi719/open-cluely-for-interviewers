@@ -40,7 +40,7 @@ describe('FollowUpCard', () => {
 
     // Footer summary: mode + total tokens + elapsed.
     expect(screen.getByText('专家')).toBeInTheDocument();
-    expect(screen.getByText(/1,500 令牌/)).toBeInTheDocument();
+    expect(screen.getByText(/1,500 词元/)).toBeInTheDocument();
     expect(screen.getByText(/2\.4 s/)).toBeInTheDocument();
   });
 
@@ -53,7 +53,7 @@ describe('FollowUpCard', () => {
         elapsedMs={500}
       />
     );
-    expect(screen.getByText(/140 令牌/)).toBeInTheDocument();
+    expect(screen.getByText(/140 词元/)).toBeInTheDocument();
     expect(screen.getByText(/500 ms/)).toBeInTheDocument();
   });
 

@@ -5,6 +5,7 @@ import { Desktop } from '@phosphor-icons/react/Desktop';
 import { MagnifyingGlass } from '@phosphor-icons/react/MagnifyingGlass';
 import { Microphone } from '@phosphor-icons/react/Microphone';
 import { ResumeDropzone } from './ResumeDropzone';
+import { ThemeToggle } from './ThemeToggle';
 import {
   PROPERTY_MANAGER_PROFILE,
   buildInterviewGuideLines,
@@ -95,6 +96,7 @@ export function InterviewSetup({
             GLP
           </span>
           <span className="interview-setup__product">面试官 Copilot</span>
+          <ThemeToggle className="interview-setup__theme" />
         </header>
 
         <div className="interview-setup__intro">

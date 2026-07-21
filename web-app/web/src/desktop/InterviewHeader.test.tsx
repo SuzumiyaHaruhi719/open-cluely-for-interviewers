@@ -35,6 +35,7 @@ describe('InterviewHeader', () => {
     expect(screen.getByRole('button', { name: '结束面试' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '面试总结' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '手动追问' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: '切换到浅色主题' })).toBeInTheDocument();
 
     expect(screen.queryByText('题库')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '设置' })).not.toBeInTheDocument();

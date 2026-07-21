@@ -5,6 +5,7 @@ import { FileText } from '@phosphor-icons/react/FileText';
 import { Sparkle } from '@phosphor-icons/react/Sparkle';
 import { StopCircle } from '@phosphor-icons/react/StopCircle';
 import { Trash } from '@phosphor-icons/react/Trash';
+import { ThemeToggle } from './ThemeToggle';
 
 interface InterviewHeaderProps {
   title: string;
@@ -105,6 +106,7 @@ export function InterviewHeader({
           <FileText size={18} aria-hidden="true" />
           <span>面试总结</span>
         </button>
+        <ThemeToggle className="interview-header__theme" />
         <button
           ref={endButtonRef}
           className="interview-header__end"

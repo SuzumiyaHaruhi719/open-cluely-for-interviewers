@@ -65,7 +65,7 @@ describe('ProgressCard', () => {
 
     rerender(<ProgressCard progress={progress()} tokens={1234} />);
     const tokens = container.querySelector('.chat-progress__tokens');
-    expect(tokens?.textContent).toBe('1,234 令牌');
+    expect(tokens?.textContent).toBe('1,234 词元');
   });
 
   test('uses the indeterminate variant + fallback label before any phase total is known', () => {

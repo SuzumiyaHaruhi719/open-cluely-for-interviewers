@@ -201,6 +201,6 @@ describe('QuestionCard ranked candidates', () => {
       />
     );
 
-    expect(screen.queryByText('0 令牌')).toBeNull();
+    expect(screen.queryByText('0 词元')).toBeNull();
   });
 });

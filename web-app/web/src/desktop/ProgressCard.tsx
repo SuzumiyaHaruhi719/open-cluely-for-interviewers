@@ -85,7 +85,7 @@ export function ProgressCard({
         <div className="chat-progress__meta">
           <span className="chat-progress__timer">{formatElapsed(elapsedMs)}</span>
           {tokens > 0 ? (
-            <span className="chat-progress__tokens">{tokens.toLocaleString()} 令牌</span>
+            <span className="chat-progress__tokens">{tokens.toLocaleString()} 词元</span>
           ) : null}
         </div>
       </div>

@@ -166,7 +166,7 @@ export function SummaryModal({ open, summary, onRegenerate, onClose }: SummaryMo
                 </span>
                 {summary.tokens > 0 ? (
                   <span className="summary-modal__progress-tokens">
-                    {summary.tokens.toLocaleString()} 令牌
+                    {summary.tokens.toLocaleString()} 词元
                   </span>
                 ) : null}
                 <span className="summary-modal__progress-label">

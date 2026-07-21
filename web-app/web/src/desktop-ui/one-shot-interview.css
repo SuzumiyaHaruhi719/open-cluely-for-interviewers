@@ -90,6 +90,15 @@ select {
   font-weight: 650;
 }
 
+.interview-setup__theme {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.interview-header__theme {
+  flex: 0 0 auto;
+}
+
 .interview-setup__intro {
   padding: 16px 0 12px;
 }
