@@ -71,6 +71,59 @@ test('renders a stable elapsed timestamp beside a finalized speaker turn', () =>
   expect(screen.getByText('00:00:03').tagName).toBe('TIME');
 });
 
+test('prefers the provider utterance offset over delayed final arrival time', () => {
+  render(
+    <TranscriptStream
+      startedAtMs={1_000}
+      speakerSegments={[
+        {
+          id: 1,
+          speakerId: 7,
+          role: 'candidate',
+          roleSource: 'cohort',
+          text: '延迟返回的候选人回答',
+          createdAtMs: 71_000,
+          audioStartMs: 12_340
+        }
+      ]}
+      transcripts={EMPTY_LANES}
+      transcriptMessages={[]}
+      lastResult={null}
+      progress={null}
+      isAnalyzing={false}
+      error={null}
+      autoScroll={false}
+    />
+  );
+
+  expect(screen.getByText('00:00:12')).toBeInTheDocument();
+});
+
+test('shows the current elapsed time for the active partial caption', () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(4_500));
+  render(
+    <TranscriptStream
+      startedAtMs={1_000}
+      offline
+      speakerSegments={[]}
+      transcripts={{
+        display: { finalText: '', partial: '' },
+        mic: { finalText: '', partial: '正在逐字返回' }
+      }}
+      transcriptMessages={[]}
+      lastResult={null}
+      progress={null}
+      isAnalyzing={false}
+      error={null}
+      autoScroll={false}
+    />
+  );
+
+  expect(screen.getByText('00:00:03')).toBeInTheDocument();
+  vi.useRealTimers();
+});
+
 test('uses the product icon library for transcript roles instead of text glyphs', () => {
   const { container } = renderStream([
     { role: 'candidate', text: '候选人回答' },

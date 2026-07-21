@@ -925,6 +925,59 @@ describe('useCopilotSocket', () => {
     ]);
   });
 
+  test('preserves provider-relative start times across a later speaker partition', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+    const socket = MockWebSocket.last();
+
+    act(() => {
+      socket.emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '候选人回答。',
+        isFinal: true,
+        speakerId: 4,
+        speaker: 'unknown',
+        startTimeMs: 12_340
+      });
+    });
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(1));
+    expect(result.current.speakerSegments[0]?.audioStartMs).toBe(12_340);
+
+    act(() => {
+      socket.emit({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 4,
+            role: 'candidate',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.95,
+            evidenceVersion: 2,
+            updatedAtMs: 12_500,
+            reasonCodes: ['two_pass_consensus']
+          }
+        ],
+        segments: [
+          {
+            seq: 0,
+            speakerId: 4,
+            role: 'candidate',
+            roleSource: 'cohort',
+            text: '候选人回答。'
+          }
+        ]
+      });
+    });
+
+    await waitFor(() => expect(result.current.speakerSegments[0]?.role).toBe('candidate'));
+    expect(result.current.speakerSegments[0]?.audioStartMs).toBe(12_340);
+  });
+
   test('surfaces server error messages', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {

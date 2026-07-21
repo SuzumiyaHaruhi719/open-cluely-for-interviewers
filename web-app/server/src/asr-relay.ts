@@ -33,6 +33,8 @@ export interface TranscriptEmit {
   isFinal: boolean;
   /** Native provider speaker cluster id. Omitted when the provider has none. */
   speakerId?: number | null;
+  /** Provider utterance start relative to this source's audio session. */
+  startTimeMs?: number;
 }
 
 /** Credential-free lifecycle signal for one provider-backed source session. */
@@ -87,7 +89,12 @@ export type SimSessionFactory = (deps: SimSessionDeps) => AsrSession;
  * only; providers with native clustering ALSO carry their own per-utterance
  * speakerId (null on partials), which startSource forwards unchanged.
  */
-type OnText = (t: { text: string; isFinal: boolean; speakerId?: number | null }) => void;
+type OnText = (t: {
+  text: string;
+  isFinal: boolean;
+  speakerId?: number | null;
+  startTimeMs?: number;
+}) => void;
 
 export interface AsrRelayDeps {
   /** Send a `transcript` message back to this connection's browser. */
@@ -177,13 +184,14 @@ export function createAsrRelay(deps: AsrRelayDeps): AsrRelay {
   // Shared emit: carries `speakerId` only when a provider supplied a native id.
   function emitTranscript(
     source: AudioSource,
-    t: { text: string; isFinal: boolean; speakerId?: number | null }
+    t: { text: string; isFinal: boolean; speakerId?: number | null; startTimeMs?: number }
   ): void {
     deps.emit({
       source,
       text: t.text,
       isFinal: t.isFinal,
-      ...(t.speakerId == null ? {} : { speakerId: t.speakerId })
+      ...(t.speakerId == null ? {} : { speakerId: t.speakerId }),
+      ...(typeof t.startTimeMs === 'number' ? { startTimeMs: t.startTimeMs } : {})
     });
     if (t.isFinal && source === 'display' && autoAnalyzeDisplay) {
       try {

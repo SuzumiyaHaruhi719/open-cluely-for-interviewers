@@ -326,7 +326,7 @@ export type ServerMessage =
       /** Stable semantic transcript turn that caused this question. */
       anchorSeq?: number;
     }
-  | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole }
+  | { type: 'transcript'; source: AudioSource; text: string; isFinal: boolean; speakerId?: number | null; speaker?: SpeakerRole; startTimeMs?: number }
   | {
       type: 'asr-status';
       source: AudioSource;

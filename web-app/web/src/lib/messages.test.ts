@@ -4,9 +4,19 @@ import { parseServerMessage } from './messages';
 describe('transcript speaker fields', () => {
   it('carries speaker + speakerId through', () => {
     const out = parseServerMessage(
-      JSON.stringify({ type: 'transcript', source: 'mic', text: 'hi', isFinal: true, speakerId: 1, speaker: 'candidate' })
+      JSON.stringify({ type: 'transcript', source: 'mic', text: 'hi', isFinal: true, speakerId: 1, speaker: 'candidate', startTimeMs: 1_240 })
     );
-    expect(out).toMatchObject({ type: 'transcript', source: 'mic', text: 'hi', isFinal: true, speakerId: 1, speaker: 'candidate' });
+    expect(out).toMatchObject({ type: 'transcript', source: 'mic', text: 'hi', isFinal: true, speakerId: 1, speaker: 'candidate', startTimeMs: 1_240 });
+  });
+
+  it('omits malformed provider-relative transcript timestamps', () => {
+    for (const startTimeMs of [-1, Number.NaN, 'soon']) {
+      const out = parseServerMessage(
+        JSON.stringify({ type: 'transcript', source: 'mic', text: 'hi', isFinal: true, startTimeMs })
+      ) as Record<string, unknown> | null;
+      expect(out).not.toBeNull();
+      expect(out).not.toHaveProperty('startTimeMs');
+    }
   });
 
   it('parses transcripts with no speaker (online)', () => {

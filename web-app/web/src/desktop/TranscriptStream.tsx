@@ -190,10 +190,12 @@ function LaneLine({
   createdAtMs,
   startedAtMs
 }: LaneLineProps) {
-  const timestamp = formatTranscriptTime(createdAtMs, startedAtMs);
+  const effectiveCreatedAtMs =
+    live && Number.isFinite(startedAtMs) ? Date.now() : createdAtMs;
+  const timestamp = formatTranscriptTime(effectiveCreatedAtMs, startedAtMs);
   return (
     <div className={`chat-message lane-${lane}${live ? ' is-live' : ''}`}>
-      <time className="transcript-time" dateTime={`PT${Math.max(0, Math.floor(((createdAtMs ?? startedAtMs ?? 0) - (startedAtMs ?? createdAtMs ?? 0)) / 1000))}S`}>
+      <time className="transcript-time" dateTime={`PT${Math.max(0, Math.floor(((effectiveCreatedAtMs ?? startedAtMs ?? 0) - (startedAtMs ?? effectiveCreatedAtMs ?? 0)) / 1000))}S`}>
         {timestamp}
       </time>
       <div className="message-header">
@@ -490,7 +492,14 @@ export function TranscriptStream({
   // (native cluster labels must remain editable). Pure online with a non-diarizing provider
   // (paraformer/volc) has no segments → falls through to the two-lane view.
   const showSpeakers = offline || (speakerSegments?.length ?? 0) > 0;
-  const visibleSegments = speakerSegments ?? [];
+  const visibleSegments = (speakerSegments ?? []).map((segment) =>
+    Number.isFinite(segment.audioStartMs) && Number.isFinite(startedAtMs)
+      ? {
+          ...segment,
+          createdAtMs: (startedAtMs as number) + (segment.audioStartMs as number)
+        }
+      : segment
+  );
   const questionAnchorIds = new Map(
     questionEvents.map((event) => [event.id, containingSegmentId(event.anchorSeq, visibleSegments)])
   );

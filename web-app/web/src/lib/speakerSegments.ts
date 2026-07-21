@@ -8,6 +8,8 @@ export interface SpeakerSegment {
   text: string;
   /** Client arrival time for the first FINAL folded into this visible turn. */
   createdAtMs?: number;
+  /** ASR utterance start relative to capture, immune to delayed final delivery. */
+  audioStartMs?: number;
 }
 
 /** Effective role = client override (from a one-tap toggle) if present, else the server's label. */
@@ -31,6 +33,7 @@ export function appendSegment(
     roleSource?: SpeakerRoleSource;
     text: string;
     createdAtMs?: number;
+    audioStartMs?: number;
   }
 ): SpeakerSegment[] {
   // Coalesce consecutive finals from the SAME speaker into one growing bubble,
@@ -57,7 +60,8 @@ export function appendSegment(
       role: args.role,
       roleSource: args.roleSource ?? 'unknown',
       text: args.text,
-      createdAtMs: args.createdAtMs ?? Date.now()
+      createdAtMs: args.createdAtMs ?? Date.now(),
+      audioStartMs: args.audioStartMs
     }
   ];
 }

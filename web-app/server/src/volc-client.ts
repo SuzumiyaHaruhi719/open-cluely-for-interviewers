@@ -54,6 +54,8 @@ export interface VolcTranscript {
   isFinal: boolean;
   /** Native Seed ASR 2.0 acoustic speaker cluster, when supplied. */
   speakerId?: number;
+  /** Provider utterance start, relative to the beginning of this audio session. */
+  startTimeMs?: number;
 }
 
 export interface VolcSessionDeps {
@@ -273,6 +275,11 @@ function asSpeakerId(value: unknown): number | undefined {
   return Number.isInteger(speakerId) && speakerId >= 0 ? speakerId : undefined;
 }
 
+function asNonNegativeMs(value: unknown): number | undefined {
+  const milliseconds = typeof value === 'number' ? value : Number.NaN;
+  return Number.isFinite(milliseconds) && milliseconds >= 0 ? milliseconds : undefined;
+}
+
 function speakerIdFromRecord(value: unknown): number | undefined {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
   const record = value as Record<string, unknown>;
@@ -324,7 +331,13 @@ export function extractTranscripts(payload: Buffer): VolcTranscript[] {
     const text = record.text.trim();
     if (!text) return [];
     const speakerId = speakerIdFromUtterance(record);
-    return [{ text, isFinal: true, ...(speakerId === undefined ? {} : { speakerId }) }];
+    const startTimeMs = asNonNegativeMs(record.start_time);
+    return [{
+      text,
+      isFinal: true,
+      ...(speakerId === undefined ? {} : { speakerId }),
+      ...(startTimeMs === undefined ? {} : { startTimeMs })
+    }];
   });
   if (definite.length) {
     return definite;

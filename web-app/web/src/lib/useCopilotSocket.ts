@@ -360,6 +360,9 @@ export function useCopilotSocket(): CopilotSocket {
   // bubble id; a later semantic partition can split them again and needs each
   // original timestamp rather than the much later partition arrival time.
   const finalTurnTimesRef = useRef<Map<number, number>>(new Map());
+  // Seed ASR 2.0 also supplies the utterance's true audio offset. Keep it by
+  // server-aligned seq because finals may arrive in a delayed second-pass batch.
+  const finalTurnAudioStartsRef = useRef<Map<number, number>>(new Map());
   const speakerSegmentsRef = useRef<SpeakerSegment[]>([]);
 
   const latestSegmentId = useCallback((): number | null => {
@@ -590,6 +593,9 @@ export function useCopilotSocket(): CopilotSocket {
         const finalAt = finalSeq === null ? null : Date.now();
         if (finalSeq !== null && finalAt !== null) {
           finalTurnTimesRef.current.set(finalSeq, finalAt);
+          if (typeof message.startTimeMs === 'number') {
+            finalTurnAudioStartsRef.current.set(finalSeq, message.startTimeMs);
+          }
         }
         // Native-cluster ASR: append finals that carry a real speakerId. Text-only
         // providers are populated later by a `speaker-partition` message.
@@ -611,7 +617,9 @@ export function useCopilotSocket(): CopilotSocket {
                 ? 'manual'
                 : assignment?.roleSource ?? 'unknown',
               text,
-              createdAtMs: finalAt ?? undefined
+              createdAtMs: finalAt ?? undefined,
+              audioStartMs:
+                typeof message.startTimeMs === 'number' ? message.startTimeMs : undefined
             });
             speakerSegmentsRef.current = next;
             return next;
@@ -659,6 +667,9 @@ export function useCopilotSocket(): CopilotSocket {
         const previousTimes = new Map(
           speakerSegmentsRef.current.map((segment) => [segment.id, segment.createdAtMs])
         );
+        const previousAudioStarts = new Map(
+          speakerSegmentsRef.current.map((segment) => [segment.id, segment.audioStartMs])
+        );
         const partitionedAt = Date.now();
         const next = message.segments.map((segment) => {
           const assignment = nextAssignments.get(segment.speakerId);
@@ -678,7 +689,10 @@ export function useCopilotSocket(): CopilotSocket {
             createdAtMs:
               finalTurnTimesRef.current.get(segment.seq) ??
               previousTimes.get(segment.seq) ??
-              partitionedAt
+              partitionedAt,
+            audioStartMs:
+              finalTurnAudioStartsRef.current.get(segment.seq) ??
+              previousAudioStarts.get(segment.seq)
           };
         });
         speakerSegmentsRef.current = next;
@@ -1022,6 +1036,7 @@ export function useCopilotSocket(): CopilotSocket {
     speakerAssignmentsRef.current.clear();
     segSeqRef.current = 0;
     finalTurnTimesRef.current.clear();
+    finalTurnAudioStartsRef.current.clear();
   }, []);
 
   // Reset the live conversation to a clean slate for a NEW interview so the

@@ -267,7 +267,10 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
           text: data.text,
           isFinal: data.isFinal,
           ...(typeof data.speakerId === 'number' ? { speakerId: data.speakerId } : {}),
-          ...(speakerRole !== undefined ? { speaker: speakerRole } : {})
+          ...(speakerRole !== undefined ? { speaker: speakerRole } : {}),
+          ...(isNumber(data.startTimeMs) && data.startTimeMs >= 0
+            ? { startTimeMs: data.startTimeMs }
+            : {})
         };
       }
       return null;

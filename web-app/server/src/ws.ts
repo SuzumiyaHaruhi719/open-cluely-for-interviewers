@@ -1274,7 +1274,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
                 type: 'transcript',
                 source: stamped.source,
                 text: stamped.text,
-                isFinal: stamped.isFinal
+                isFinal: stamped.isFinal,
+                ...(typeof stamped.startTimeMs === 'number'
+                  ? { startTimeMs: stamped.startTimeMs }
+                  : {})
               }
             : {
                 type: 'transcript',
@@ -1282,7 +1285,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
                 text: stamped.text,
                 isFinal: stamped.isFinal,
                 speakerId: stamped.speakerId,
-                speaker: stamped.speaker
+                speaker: stamped.speaker,
+                ...(typeof stamped.startTimeMs === 'number'
+                  ? { startTimeMs: stamped.startTimeMs }
+                  : {})
               }
         );
         // Record EVERY finalized segment for trigger bookkeeping. Generation

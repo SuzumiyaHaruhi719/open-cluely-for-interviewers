@@ -114,13 +114,33 @@ test('extractTranscripts returns finals from definite utterances', () => {
       result: {
         text: 'ignored rolling',
         utterances: [
-          { text: ' hello world. ', definite: true },
+          { text: ' hello world. ', definite: true, start_time: 1_240 },
           { text: 'partial', definite: false }
         ]
       }
     })
   );
-  assert.deepEqual(extractTranscripts(payload), [{ text: 'hello world.', isFinal: true }]);
+  assert.deepEqual(extractTranscripts(payload), [
+    { text: 'hello world.', isFinal: true, startTimeMs: 1_240 }
+  ]);
+});
+
+test('extractTranscripts omits malformed utterance start times', () => {
+  const payload = Buffer.from(
+    JSON.stringify({
+      result: {
+        utterances: [
+          { text: 'negative', definite: true, start_time: -1 },
+          { text: 'nonnumeric', definite: true, start_time: 'later' }
+        ]
+      }
+    })
+  );
+
+  assert.deepEqual(extractTranscripts(payload), [
+    { text: 'negative', isFinal: true },
+    { text: 'nonnumeric', isFinal: true }
+  ]);
 });
 
 test('extractTranscripts normalizes native speaker clusters from Seed ASR 2.0 utterances', () => {
