@@ -1,4 +1,10 @@
-import type { AudioSource, SpeakerRole } from '@open-cluely/contract';
+import type {
+  AudioSource,
+  SpeakerAssignment,
+  SpeakerPartitionSegment,
+  SpeakerRole,
+  SpeakerRoleSource
+} from '@open-cluely/contract';
 import { chat } from './dashscope';
 import { config } from './config';
 import {
@@ -72,25 +78,17 @@ export interface SpeakerClassificationRequest {
   auditPass?: 'primary' | 'verification';
 }
 
-export interface SpeakerPartitionSegment {
-  seq: number;
-  speakerId: number;
-  role: SpeakerRole;
-  roleSource: SpeakerRoleSource;
-  text: string;
-}
-
-export type SpeakerRoleSource =
-  | 'manual'
-  | 'local'
-  | 'semantic-turn'
-  | 'cohort'
-  | 'unknown';
+export type {
+  SpeakerAssignment,
+  SpeakerPartitionSegment,
+  SpeakerRoleSource
+} from '@open-cluely/contract';
 
 export interface SpeakerPartition {
   status: 'live' | 'final';
   model: string;
   segments: SpeakerPartitionSegment[];
+  speakerAssignments: SpeakerAssignment[];
 }
 
 export interface SpeakerPartitioner {
@@ -950,7 +948,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
         }))
       );
       const model = runs.find((run) => run.result?.model)?.result?.model ?? SPEAKER_PARTITION_MODEL;
-      deps.onPartition({ status, model, segments });
+      deps.onPartition({ status, model, segments, speakerAssignments: [] });
     });
     return queue;
   }

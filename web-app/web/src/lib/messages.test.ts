@@ -124,11 +124,126 @@ describe('speaker partition messages', () => {
       type: 'speaker-partition',
       status: 'live',
       model: 'deepseek-v4-flash',
+      speakerAssignments: [],
       segments: [
         { seq: 0, speakerId: 9, role: 'interviewer', text: '请坐' },
         { seq: 1, speakerId: 7, role: 'candidate', text: '谢谢' }
       ]
     });
+  });
+
+  it('parses authoritative whole-voiceprint assignments', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 7,
+            role: 'candidate',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.93,
+            evidenceVersion: 11,
+            updatedAtMs: 4200,
+            reasonCodes: ['two_pass_consensus']
+          }
+        ],
+        segments: [
+          {
+            seq: 11,
+            speakerId: 7,
+            role: 'candidate',
+            roleSource: 'cohort',
+            text: '我负责了这个项目。'
+          }
+        ]
+      })
+    );
+
+    expect(out?.type === 'speaker-partition' ? out.speakerAssignments : null).toEqual([
+      {
+        speakerId: 7,
+        role: 'candidate',
+        state: 'delegated',
+        roleSource: 'cohort',
+        confidence: 0.93,
+        evidenceVersion: 11,
+        updatedAtMs: 4200,
+        reasonCodes: ['two_pass_consensus']
+      }
+    ]);
+  });
+
+  it('rejects duplicate or role-conflicting whole-voiceprint assignments', () => {
+    const baseAssignment = {
+      speakerId: 7,
+      role: 'candidate',
+      state: 'delegated',
+      roleSource: 'cohort',
+      confidence: 0.93,
+      evidenceVersion: 11,
+      updatedAtMs: 4200,
+      reasonCodes: ['two_pass_consensus']
+    };
+    const duplicate = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          baseAssignment,
+          { ...baseAssignment, role: 'interviewer' }
+        ],
+        segments: []
+      })
+    );
+    const conflict = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [baseAssignment],
+        segments: [
+          {
+            seq: 11,
+            speakerId: 7,
+            role: 'interviewer',
+            roleSource: 'cohort',
+            text: '冲突角色。'
+          }
+        ]
+      })
+    );
+
+    expect(duplicate).toBeNull();
+    expect(conflict).toBeNull();
+  });
+
+  it('rejects malformed assignment state and numeric evidence fields', () => {
+    const out = parseServerMessage(
+      JSON.stringify({
+        type: 'speaker-partition',
+        status: 'live',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 7,
+            role: 'candidate',
+            state: 'guessing',
+            roleSource: 'cohort',
+            confidence: 1.2,
+            evidenceVersion: -1,
+            updatedAtMs: -20,
+            reasonCodes: ['bad']
+          }
+        ],
+        segments: []
+      })
+    );
+
+    expect(out).toBeNull();
   });
 
   it('rejects a partially malformed partition instead of silently dropping turns', () => {

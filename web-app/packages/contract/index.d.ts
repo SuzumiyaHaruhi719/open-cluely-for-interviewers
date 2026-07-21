@@ -75,6 +75,23 @@ export interface SpeakerPartitionSegment {
   text: string;
 }
 
+/** Session-scoped role state for one provider-native acoustic speaker id. */
+export type SpeakerAssignmentState = 'observing' | 'delegated' | 'contested' | 'manual';
+export type SpeakerAssignmentRoleSource = 'manual' | 'cohort' | 'unknown';
+
+export interface SpeakerAssignment {
+  speakerId: number;
+  role: SpeakerRole;
+  state: SpeakerAssignmentState;
+  roleSource: SpeakerAssignmentRoleSource;
+  confidence: number;
+  evidenceVersion: number;
+  /** Milliseconds since this interview's speaker ledger was reset. */
+  updatedAtMs: number;
+  /** Bounded machine-readable outcomes; never model reasoning. */
+  reasonCodes: string[];
+}
+
 /** Block G final output — the follow-up shown to the interviewer. */
 export interface FollowUpOutput {
   primary_question: string;
@@ -323,6 +340,7 @@ export type ServerMessage =
       status: 'live' | 'final';
       model: string;
       segments: SpeakerPartitionSegment[];
+      speakerAssignments: SpeakerAssignment[];
     }
   | { type: 'session-context'; state: SessionContextState }
   /**

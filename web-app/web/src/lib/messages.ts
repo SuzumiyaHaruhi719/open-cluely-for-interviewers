@@ -9,6 +9,9 @@ import type {
   SessionCompetency,
   SessionContextState,
   SummaryDebugEvent,
+  SpeakerAssignment,
+  SpeakerAssignmentRoleSource,
+  SpeakerAssignmentState,
   SpeakerRole,
   SpeakerRoleSource
 } from '@open-cluely/contract';
@@ -48,6 +51,67 @@ function isString(value: unknown): value is string {
 
 function isNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
+}
+
+function isNonNegativeInteger(value: unknown): value is number {
+  return isNumber(value) && Number.isInteger(value) && value >= 0;
+}
+
+function parseSpeakerRole(value: unknown): SpeakerRole | null {
+  return value === 'interviewer' || value === 'candidate' || value === 'unknown'
+    ? value
+    : null;
+}
+
+function parseSpeakerAssignment(value: unknown): SpeakerAssignment | null {
+  if (!isRecord(value)) return null;
+  const role = parseSpeakerRole(value.role);
+  const state: SpeakerAssignmentState | null =
+    value.state === 'observing' ||
+    value.state === 'delegated' ||
+    value.state === 'contested' ||
+    value.state === 'manual'
+      ? value.state
+      : null;
+  const roleSource: SpeakerAssignmentRoleSource | null =
+    value.roleSource === 'manual' ||
+    value.roleSource === 'cohort' ||
+    value.roleSource === 'unknown'
+      ? value.roleSource
+      : null;
+  if (
+    !isNonNegativeInteger(value.speakerId) ||
+    !role ||
+    !state ||
+    !roleSource ||
+    !isNumber(value.confidence) ||
+    value.confidence < 0 ||
+    value.confidence > 1 ||
+    !isNonNegativeInteger(value.evidenceVersion) ||
+    !isNumber(value.updatedAtMs) ||
+    value.updatedAtMs < 0 ||
+    !Array.isArray(value.reasonCodes) ||
+    !value.reasonCodes.every(isString)
+  ) {
+    return null;
+  }
+  const isCoherent =
+    (state === 'delegated' && role !== 'unknown' && roleSource === 'cohort') ||
+    (state === 'manual' && role !== 'unknown' && roleSource === 'manual') ||
+    ((state === 'observing' || state === 'contested') &&
+      role === 'unknown' &&
+      roleSource === 'unknown');
+  if (!isCoherent) return null;
+  return {
+    speakerId: value.speakerId,
+    role,
+    state,
+    roleSource,
+    confidence: value.confidence,
+    evidenceVersion: value.evidenceVersion,
+    updatedAtMs: value.updatedAtMs,
+    reasonCodes: [...value.reasonCodes]
+  };
 }
 
 export function parseServerMessage(raw: unknown): ServerMessage | null {
@@ -246,10 +310,7 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
       }
       const segments = data.segments.flatMap((entry) => {
         if (!isRecord(entry)) return [];
-        const role: SpeakerRole | null =
-          entry.role === 'interviewer' || entry.role === 'candidate' || entry.role === 'unknown'
-            ? entry.role
-            : null;
+        const role = parseSpeakerRole(entry.role);
         const roleSource: SpeakerRoleSource | null =
           entry.roleSource === 'manual' ||
           entry.roleSource === 'local' ||
@@ -276,11 +337,32 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
         return [{ seq: entry.seq, speakerId: entry.speakerId, role, roleSource, text: entry.text }];
       });
       if (segments.length !== data.segments.length) return null;
+      const rawAssignments = data.speakerAssignments === undefined
+        ? []
+        : data.speakerAssignments;
+      if (!Array.isArray(rawAssignments)) return null;
+      const speakerAssignments = rawAssignments.map(parseSpeakerAssignment);
+      if (speakerAssignments.some((assignment) => assignment === null)) return null;
+      const assignments = speakerAssignments as SpeakerAssignment[];
+      const assignmentIds = assignments.map((assignment) => assignment.speakerId);
+      if (new Set(assignmentIds).size !== assignmentIds.length) return null;
+      const assignmentBySpeaker = new Map(
+        assignments.map((assignment) => [assignment.speakerId, assignment])
+      );
+      if (
+        segments.some((segment) => {
+          const assignment = assignmentBySpeaker.get(segment.speakerId);
+          return assignment !== undefined && assignment.role !== segment.role;
+        })
+      ) {
+        return null;
+      }
       return {
         type: 'speaker-partition',
         status: data.status,
         model: data.model,
-        segments
+        segments,
+        speakerAssignments: assignments
       };
     }
 
