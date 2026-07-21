@@ -108,4 +108,22 @@ describe('ChannelCard microphone selection', () => {
     expect(screen.queryByText('错误')).not.toBeInTheDocument();
     expect(screen.getByText('转写已保存；最后一小段可能未确认。')).toBeInTheDocument();
   });
+
+  test('uses the shared icon library instead of a glyph substitute', () => {
+    const { container } = render(
+      <ChannelCard
+        domId="channel-icon"
+        source="display"
+        accent="candidate"
+        title="候选人音频"
+        state={{ capturing: false, level: 0, error: null }}
+        disabled={false}
+        onStart={vi.fn()}
+        onStop={vi.fn()}
+      />
+    );
+
+    expect(container.querySelector('[data-icon-library="phosphor"]')).toBeInTheDocument();
+    expect(container).not.toHaveTextContent('🔓');
+  });
 });

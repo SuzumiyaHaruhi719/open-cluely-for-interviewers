@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@open-cluely/contract": "file:../packages/contract",
+    "@phosphor-icons/react": "^2.1.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

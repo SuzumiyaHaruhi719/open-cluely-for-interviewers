@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { UploadSimple, X } from '@phosphor-icons/react';
 import { extractResume, ApiError } from '../lib/api';
 import {
   RESUME_ACCEPT_ATTR,
@@ -6,7 +7,6 @@ import {
   formatCharCount,
   readFileAsBase64
 } from '../lib/resumeFile';
-import { UploadIcon } from './icons';
 
 type DropzoneState = 'idle' | 'parsing' | 'parsed' | 'error';
 const PREVIEW_LINES = 2;
@@ -176,7 +176,7 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
         onClick={() => inputRef.current?.click()}
       >
         <span className="resume-dropzone__icon" aria-hidden="true">
-          <UploadIcon size={22} />
+          <UploadSimple size={22} data-icon-library="phosphor" />
         </span>
         <span className="resume-dropzone__primary">拖入简历或点击选择文件</span>
         <span className="resume-dropzone__hint">{RESUME_ACCEPT_HINT}</span>
@@ -193,20 +193,7 @@ export function ResumeDropzone({ resumeText, onExtracted, onCleared }: ResumeDro
             title="移除简历"
             onClick={handleRemove}
           >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
+            <X size={14} weight="bold" aria-hidden="true" data-icon-library="phosphor" />
           </button>
         </div>
         <p className="resume-dropzone__preview">{preview}</p>

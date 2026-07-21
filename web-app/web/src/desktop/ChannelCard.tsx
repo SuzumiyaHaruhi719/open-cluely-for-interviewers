@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { AudioSource } from '@open-cluely/contract';
+import { Desktop, LockOpen, Microphone } from '@phosphor-icons/react';
 import type { AudioState } from '../lib/useCopilotSocket';
 import { supportsDisplayAudio } from '../lib/audioCapture';
-import { MicIcon } from './icons';
 
 interface ChannelCardProps {
   /** DOM id matching the desktop: channel-computer (display) / channel-mic. */
@@ -158,7 +158,11 @@ export function ChannelCard({
       >
         <div className="channel-header">
           <div className="channel-heading">
-            <MicIcon size={14} />
+            {source === 'mic' ? (
+              <Microphone size={15} data-icon-library="phosphor" aria-hidden="true" />
+            ) : (
+              <Desktop size={15} data-icon-library="phosphor" aria-hidden="true" />
+            )}
             <span className="channel-title">{title}</span>
           </div>
           <span className="channel-status" data-state={status.attr}>
@@ -209,7 +213,8 @@ export function ChannelCard({
                     lineHeight: 1
                   }}
                 >
-                  🔓 设备名
+                  <LockOpen size={13} data-icon-library="phosphor" aria-hidden="true" />
+                  设备名
                 </button>
               )}
             </div>

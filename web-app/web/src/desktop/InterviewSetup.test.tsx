@@ -47,6 +47,20 @@ describe('InterviewSetup', () => {
     });
   });
 
+  test('uses the shared icon library for resume controls', () => {
+    const { container } = render(
+      <InterviewSetup
+        ready
+        resumeText="候选人简历"
+        onResumeTextChange={vi.fn()}
+        onStart={vi.fn()}
+      />
+    );
+
+    expect(container.querySelectorAll('[data-icon-library="phosphor"]')).toHaveLength(2);
+    expect(container).not.toHaveTextContent('🔓');
+  });
+
   test('keeps start disabled while the live session is unavailable', () => {
     render(
       <InterviewSetup
