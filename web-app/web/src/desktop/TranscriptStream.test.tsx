@@ -52,6 +52,7 @@ test('renders a stable elapsed timestamp beside a finalized speaker turn', () =>
           id: 1,
           speakerId: 7,
           role: 'candidate',
+          roleSource: 'semantic-turn',
           text: '候选人回答',
           createdAtMs: 4_500
         }
@@ -295,8 +296,20 @@ describe('TranscriptStream offline speaker bubbles', () => {
         speakerSegments={[
           // Server coalescing keeps the first seq as the bubble id, while Auto
           // may anchor to any later seq folded into that same bubble.
-          { id: 1, speakerId: 7, role: 'candidate', text: '候选人证据' },
-          { id: 4, speakerId: 9, role: 'interviewer', text: '后续面试官发言' }
+          {
+            id: 1,
+            speakerId: 7,
+            role: 'candidate',
+            roleSource: 'semantic-turn',
+            text: '候选人证据'
+          },
+          {
+            id: 4,
+            speakerId: 9,
+            role: 'interviewer',
+            roleSource: 'semantic-turn',
+            text: '后续面试官发言'
+          }
         ]}
         questionEvents={questionEvents}
         transcripts={EMPTY_LANES}
@@ -324,7 +337,15 @@ describe('TranscriptStream offline speaker bubbles', () => {
     render(
       <TranscriptStream
         offline
-        speakerSegments={[{ id: 1, speakerId: 0, role: 'interviewer', text: '你好' }]}
+        speakerSegments={[
+          {
+            id: 1,
+            speakerId: 0,
+            role: 'interviewer',
+            roleSource: 'semantic-turn',
+            text: '你好'
+          }
+        ]}
         onSetSpeakerRole={onSetRole}
         transcripts={EMPTY_LANES}
         transcriptMessages={[]}
@@ -372,8 +393,20 @@ describe('TranscriptStream online native-speaker bubbles', () => {
       <TranscriptStream
         offline={false}
         speakerSegments={[
-          { id: 1, speakerId: 1, role: 'unknown', text: '请介绍一下你的项目' },
-          { id: 2, speakerId: 2, role: 'unknown', text: '我做了一个推荐系统' }
+          {
+            id: 1,
+            speakerId: 1,
+            role: 'unknown',
+            roleSource: 'unknown',
+            text: '请介绍一下你的项目'
+          },
+          {
+            id: 2,
+            speakerId: 2,
+            role: 'unknown',
+            roleSource: 'unknown',
+            text: '我做了一个推荐系统'
+          }
         ]}
         onSetSpeakerRole={onSetRole}
         transcripts={EMPTY_LANES}
@@ -402,7 +435,13 @@ describe('TranscriptStream online native-speaker bubbles', () => {
       <TranscriptStream
         offline={false}
         speakerSegments={[
-          { id: 7, speakerId: 42, role: 'unknown', text: '这段发言没有足够证据确认角色。' }
+          {
+            id: 7,
+            speakerId: 42,
+            role: 'unknown',
+            roleSource: 'unknown',
+            text: '这段发言没有足够证据确认角色。'
+          }
         ]}
         transcripts={EMPTY_LANES}
         transcriptMessages={[]}
@@ -422,7 +461,13 @@ describe('TranscriptStream online native-speaker bubbles', () => {
       <TranscriptStream
         offline={false}
         speakerSegments={[
-          { id: 1, speakerId: 1, role: 'interviewer', text: '请介绍一下你的项目' }
+          {
+            id: 1,
+            speakerId: 1,
+            role: 'interviewer',
+            roleSource: 'semantic-turn',
+            text: '请介绍一下你的项目'
+          }
         ]}
         transcripts={{
           mic: { finalText: '请介绍一下你的项目', partial: '' },
