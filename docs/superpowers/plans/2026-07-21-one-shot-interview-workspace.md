@@ -8,7 +8,7 @@
 
 **Tech Stack:** React 18, TypeScript, Vitest, Testing Library, Vite, existing GLP CSS tokens, Phosphor React icons.
 
-**Plan state:** Tasks 1–6 describe the implemented baseline. Tasks 7–9 are approved product corrections and supersede earlier snippets that show an always-visible JD textarea, summary generation inside `onEndInterview`, or an ended live workspace.
+**Plan state:** Tasks 1–6 describe the implemented baseline. Tasks 7–10 are approved product corrections and supersede earlier snippets that show an always-visible JD textarea, summary generation inside `onEndInterview`, an ended live workspace, or a fixed two-lane interview format.
 
 ## Global Constraints
 
@@ -43,6 +43,8 @@
 - Modify `web-app/web/src/lib/useCopilotSocket.ts` and tests — timestamp question events and speaker finals.
 - Modify `web-app/web/src/desktop/ResumeDropzone.tsx` — replace its inline remove SVG with the shared icon library.
 - Modify `web-app/web/src/desktop/QuestionCard.tsx` — simplify to the inline selected visual while preserving metadata and ranked details.
+- Create `web-app/web/src/desktop/EndInterviewDialog.tsx` — safe destructive confirmation with Cancel-first focus behavior.
+- Create `web-app/web/src/desktop/EndInterviewDialog.test.tsx` — dialog interaction and accessibility contract.
 - Update `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/` notes for the new shell and transcript timestamp invariant.
 - Create project-root `design-qa.md` after browser comparison.
 
@@ -95,6 +97,56 @@
 - [x] Run the focused Shell test and verify RED because the current handler leaves the ended live workspace mounted.
 - [x] Implement the minimal lifecycle transition in `onEndInterview()`.
 - [x] Run focused tests, full tests, build, in-app-browser End-flow QA, commit, and push.
+
+### Task 10: Restore interview mode and confirm destructive End
+
+**Files:**
+- Modify: `web-app/web/src/desktop/InterviewSetup.tsx`
+- Modify: `web-app/web/src/desktop/InterviewSetup.test.tsx`
+- Modify: `web-app/web/src/desktop/InterviewDock.tsx`
+- Modify: `web-app/web/src/desktop/InterviewDock.test.tsx`
+- Create: `web-app/web/src/desktop/EndInterviewDialog.tsx`
+- Create: `web-app/web/src/desktop/EndInterviewDialog.test.tsx`
+- Modify: `web-app/web/src/desktop/Shell.tsx`
+- Modify: `web-app/web/src/desktop/Shell.test.tsx`
+- Modify: `web-app/web/src/desktop/ChannelCard.tsx`
+- Modify: `web-app/web/src/desktop-ui/one-shot-interview.css`
+- Update: `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/web-one-shot-interview-workspace.md`
+- Update: `/Users/thomasli/Documents/github/Obsidian/Interview Copilot/Implementation/web-audio-capture.md`
+
+**Interfaces:**
+- `InterviewType = 'online' | 'offline'` and `InterviewSetupSubmit.interviewType` carry the chosen capture topology into the live shell.
+- `InterviewDock.interviewType` renders computer audio plus microphone for Online and only one room microphone for Offline.
+- `EndInterviewDialog` receives `open`, `onCancel`, and `onConfirm`; Cancel receives initial focus, Escape and scrim cancel, and the destructive action is visually red.
+- Header End opens the dialog without stopping capture. Only dialog confirmation runs finalization and returns to preparation.
+
+- [ ] **Step 1: Write failing preparation and dock tests**
+
+Assert that Online is selected by default and submits `interviewType:'online'`; selecting Offline submits `interviewType:'offline'`. Assert Online renders both source lanes and Offline renders only `现场面试 · 麦克风`.
+
+- [ ] **Step 2: Run the focused tests and verify RED**
+
+Run: `cd web-app && npm test --workspace @open-cluely/web -- --run src/desktop/InterviewSetup.test.tsx src/desktop/InterviewDock.test.tsx`
+
+Expected: FAIL because the setup payload and dock do not accept interview mode.
+
+- [ ] **Step 3: Write failing dialog and Shell lifecycle tests**
+
+Assert that End opens `结束本次面试？` without emitting audio-stop frames, Cancel restores the live workspace, and only `确认结束` stops capture and returns to preparation. Assert the dialog's initial focus is Cancel and Escape cancels.
+
+- [ ] **Step 4: Run the focused tests and verify RED**
+
+Run: `cd web-app && npm test --workspace @open-cluely/web -- --run src/desktop/EndInterviewDialog.test.tsx src/desktop/Shell.test.tsx`
+
+Expected: FAIL because End currently finalizes immediately and the dialog does not exist.
+
+- [ ] **Step 5: Implement the mode selector, conditional dock, and confirmation dialog**
+
+Use semantic radios in preparation; retain browser permission honesty in the live dock. Use Phosphor icons, existing GLP tokens, one shared audio-card structure, and no gradients. Default dialog focus must be the neutral Cancel action.
+
+- [ ] **Step 6: Verify, document, commit, push, rebuild, and browser-QA both modes**
+
+Run focused tests, the full repository suite, and the production build. In the in-app browser verify Online two-lane routing, Offline single-mic routing, End → Cancel continuity, End → Confirm return to preparation, equal lane geometry, keyboard Escape, and zero console errors. Update Implementation notes and `design-qa.md`, then commit and push `main`.
 
 ### Task 1: Lock the one-shot preparation contract
 

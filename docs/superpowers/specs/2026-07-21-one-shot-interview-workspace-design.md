@@ -30,9 +30,10 @@ The initial state is a centered, calm preparation surface with:
 1. GLP wordmark and one-line product description.
 2. Resume dropzone with parsed-file confirmation and removal.
 3. Searchable JD profile picker with keyboard-accessible filtered results and a compact selected-profile preview. Search covers title, department, reporting line, summary, and JD text. `自定义职位` is always available; only that choice reveals the factual-context textarea and character count.
-4. One primary `开始面试` action. It is disabled only while the socket is unavailable, resume parsing is in flight, or the JD is blank.
+4. A compact `面试方式` selector with two choices: `线上面试` (microphone + computer audio, the default) and `线下面试` (one room microphone for both sides).
+5. One primary `开始面试` action. It is disabled only while the socket is unavailable, resume parsing is in flight, or the JD is blank.
 
-There is no interview-format selector, model selector, settings link, history, sample interview, question bank, or prompt builder.
+There is no model selector, settings link, history, sample interview, question bank, or prompt builder.
 
 ### Live state
 
@@ -43,7 +44,7 @@ The live workspace follows the selected visual target:
 - Interviewer turns use amber; candidate turns use blue; unresolved turns are explicitly labelled `待确认`.
 - Provider partials appear immediately and reveal one grapheme at a time.
 - Automatic AI follow-ups are inserted directly beneath the transcript evidence that triggered them. They do not remain in a detached permanent panel.
-- A thin bottom dock keeps the two audio lanes, capture state, meters, microphone device selection, elapsed recording state, and one compact note input. Computer and microphone lanes use the same field/action/meter geometry; the computer field explains that Start opens the browser source picker while the microphone field is the actual device select.
+- A thin bottom dock keeps capture state, meters, microphone device selection, elapsed recording state, and one compact note input. Online mode shows both computer-audio and microphone lanes. Offline mode shows only a room-microphone lane. All visible audio lanes use the same field/action/meter geometry; the computer field explains that Start opens the browser source picker while the microphone field is the actual device select.
 
 ### Automatic session-context drawer
 
@@ -59,7 +60,7 @@ The drawer is non-modal on wide screens and overlayed on smaller screens. It can
 
 ### Start
 
-1. User fuzzy-searches and chooses a built-in JD, or chooses `自定义职位` and enters a JD; resume remains optional.
+1. User fuzzy-searches and chooses a built-in JD, or chooses `自定义职位` and enters a JD; resume remains optional. The user also chooses Online or Offline interview mode, with Online selected by default.
 2. `开始面试` resets stale local/server generation state.
 3. The full fixed config is pushed with `jobDescription`, `resumeText`, `diarize:true`, `autoGenerate:true`, `autoMode:'agent'`, `mode:'expert'`, `interviewerModel:'deepseek-v4-flash'`, `outputLanguage:'zh'`, and `asrProvider:'volc'`.
 4. The app enters the live workspace. Audio controls remain explicit because browser display/microphone permission and source choice cannot be truthfully hidden.
@@ -74,7 +75,7 @@ The drawer is non-modal on wide screens and overlayed on smaller screens. It can
 
 ### End and summary
 
-- `结束面试` stops both capture lanes and immediately returns the app to the preparation screen. It does not open or request a summary.
+- `结束面试` first opens a focused confirmation dialog while capture continues. The dialog defaults focus to the neutral-gray `取消` action; Escape and the scrim also cancel. The destructive red `确认结束` action stops active capture lanes and returns the app to the preparation screen. It does not open or request a summary.
 - `面试总结` is a separate manual action beside End while the live workspace is open. It opens the existing summary modal and requests the report from accumulated transcript plus JD/resume context.
 - Starting again from preparation runs the existing session reset before entering a fresh live workspace, so evidence from the ended interview cannot appear in the next interview.
 
@@ -107,13 +108,13 @@ The drawer header remains fixed while its body owns vertical scrolling. The scro
 
 ## Acceptance criteria
 
-1. Initial render contains resume upload, a searchable JD profile picker with the preserved 物业经理 profile, and one start action; it contains no sidebar, history, Question Bank, Settings, mobile action, model/language choice, pipeline editor, or manual AI-generation button.
+1. Initial render contains resume upload, a searchable JD profile picker with the preserved 物业经理 profile, an Online/Offline mode selector, and one start action; it contains no sidebar, history, Question Bank, Settings, mobile action, model/language choice, pipeline editor, or manual AI-generation button.
 2. Selecting a built-in profile sends its JD and interview guide through the existing session config. Selecting `自定义职位` reveals the only free-text JD input and sends no separate prompt system.
 3. Live workspace shows header, elapsed timer, transcript, visible role labels, timestamps, bottom audio dock, note input, context toggle, clear action, and end action.
 4. Session-context drawer renders server-provided competency/topic/gap state and can be opened/closed without altering the transcript.
 5. Provider partials still reveal progressively; final transcript segments remain editable by role.
 6. Automatic questions remain evidence-anchored inside the timeline and keep non-zero token/latency metadata when supplied.
-7. Ending stops both capture lanes and returns to preparation without opening summary; the manual Summary action opens the existing summary flow independently before End.
-8. Computer and microphone controls use the same visual geometry, and a long automatic-context collection is fully scrollable.
+7. End first opens a confirmation dialog; Cancel keeps the live interview and capture untouched, while red Confirm stops active capture lanes and returns to preparation without opening summary. The manual Summary action opens the existing summary flow independently before End.
+8. Online mode renders microphone plus computer audio; Offline mode renders one microphone only. Computer and microphone controls use the same visual geometry, and a long automatic-context collection is fully scrollable.
 9. Focused tests, full web tests, full repository tests, production build, and in-app-browser interaction checks pass.
 10. `design-qa.md` compares the selected reference and implementation, resolves all P0/P1/P2 findings, and ends with `final result: passed`.
