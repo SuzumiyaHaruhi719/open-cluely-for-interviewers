@@ -105,6 +105,11 @@ test('native final audit input includes every requested turn with adjacent conte
   assert.match(input, /classification-mode=final-turn-audit/);
   assert.match(input, /required-turn-verdicts seqs=7,8/);
   assert.match(input, /review-pass=verification/);
+  assert.match(
+    input,
+    /旁白.*片外评论.*unknown/,
+    'voice-over narration must not be forced into either interview participant role'
+  );
   assert.match(input, /\[seq=6 /, 'left context must be included');
   assert.match(input, /\[seq=7 /);
   assert.match(input, /\[seq=8 /);

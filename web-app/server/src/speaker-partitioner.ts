@@ -44,6 +44,8 @@ const SCORE_ANNOUNCEMENT = new RegExp(
   `(?:(?:最高分|最低分).{0,100}(?:号)?(?:考生|选手)(?:的)?最终成绩|` +
     `(?:号)?(?:考生|选手)(?:的)?最终成绩|(?:${SCORE_VALUE}[，,、\\s]*){3,})`
 );
+const NON_PARTICIPANT_ROLE_RULE =
+  '旁白、片头片尾解说或片外评论不是面试参与者：必须返回 unknown，不能因为内容提到面试、候选人或结果就猜成面试官/候选人。';
 
 export interface SpeakerTurn {
   seq: number;
@@ -431,6 +433,7 @@ export function buildSpeakerClassifierInput(
       `[review-pass=${request.auditPass ?? 'primary'}]`,
       `[required-turn-verdicts seqs=${reviewSeqs.join(',')}]`,
       '必须为 required-turn-verdicts 中的每个 seq 返回且只返回一条 turnRoles。逐条根据提问、回答、评价、追问等语义行为判断角色，不得用 speakerId 直接复制角色；证据不足必须返回 unknown。',
+      NON_PARTICIPANT_ROLE_RULE,
       '相邻上下文只用于理解 required seq；speakerRoles 可以提供声学先验，但不能替代任何 required seq 的 turnRoles。',
       ...findContinuityGroups(evidence).map(
         (group) => `[continuity-group seqs=${group.map((turn) => turn.seq).join(',')}]`
@@ -466,6 +469,7 @@ export function buildSpeakerClassifierInput(
     return [
       '[classification-mode=hybrid]',
       '请为每个出现的 speakerId 返回一条 speakerRoles；请对每条 speaker=none 的 seq 返回 turnRoles；有 speakerId 的 turn 只在语义角色与该 cluster 主角色冲突时返回高置信度 turnRoles 例外。明显在回答相邻问题的内容应为 candidate；turnRoles 只纠正该 seq，不能重映射整个 cluster。',
+      NON_PARTICIPANT_ROLE_RULE,
       '连续 ASR 可能把同一个人的一句话切成多个 turn；短片段必须结合相邻句继承语义角色，不要仅因片段不完整返回 unknown。',
       ...representatives.map(formatClassifierTurn)
     ]
@@ -477,6 +481,7 @@ export function buildSpeakerClassifierInput(
     return [
       '[classification-mode=native-clusters]',
       '请为每个出现的 speakerId 返回一条 speakerRoles；confidence 低于 0.75 时返回 unknown。',
+      NON_PARTICIPANT_ROLE_RULE,
       '[cluster-anchors]',
       ...anchors.map(formatClassifierTurn),
       '[recent-context-for-weak-correction]',
@@ -495,6 +500,7 @@ export function buildSpeakerClassifierInput(
   return [
     '[classification-mode=turns-without-clusters]',
     '请为每个列出的 seq 返回一条 turnRoles；speakerRoles 必须返回空数组。',
+    NON_PARTICIPANT_ROLE_RULE,
     ...(prioritySeqs.length > 0
       ? [
           `[priority-unresolved seqs=${prioritySeqs.join(',')}]`,

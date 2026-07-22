@@ -239,6 +239,11 @@ test('audit passes reverse balanced evidence order to reduce prompt anchoring', 
   assert.ok(verification.indexOf('[candidate-evidence]') < verification.indexOf('[interviewer-evidence]'));
   assert.match(primary, /required-target-seqs=4,6/);
   assert.match(verification, /target-speaker=30/);
+  assert.match(
+    primary,
+    /旁白.*片外评论.*unknown/,
+    'cohort audit must preserve a non-participant voiceprint as unresolved'
+  );
 });
 
 test('harness delegates only after two independent audits agree', async () => {

@@ -13,6 +13,8 @@ const MAX_ROLE_ANCHORS = 4;
 const MAX_TARGET_TURNS = 8;
 const TURN_TERMINAL_PUNCTUATION = /[。！？!?][”’"'）)\]]*$/;
 const CONTINUATION_PREFIX = /^(?:[，,、。；;：:\s]*)?(?:但是|但|并且|而且|所以|同时|以及|然后|接着|另外|另一方面|其次|最后|那么|其中|例如|比如|由于|因为|为了|并|也|再|还|或|与|及)/;
+const NON_PARTICIPANT_ROLE_RULE =
+  '旁白、片头片尾解说或片外评论不是面试参与者：必须返回 unknown，不能因为内容提到面试、候选人或结果就猜成面试官/候选人。';
 
 export type CohortRole = Exclude<SpeakerRole, 'unknown'>;
 
@@ -416,6 +418,7 @@ export function buildCohortAuditInput(
     pass === 'verification'
       ? 'Adversarially test the strongest opposite-role explanation before choosing. Do not preserve a convenient initial label.'
       : 'Compare interviewer fit and candidate fit symmetrically. Do not infer from numeric speaker order.',
+    NON_PARTICIPANT_ROLE_RULE,
     ...roleSections,
     ...formatEvidenceSection('target-utterances', packet.targets),
     ...formatConfirmedTargetRoles(packet.confirmedTargetRoles),
