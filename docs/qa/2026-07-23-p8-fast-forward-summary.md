@@ -72,6 +72,6 @@
 | Five production report sections | Passed — all rendered and browser-located |
 | Summary generation effect | Passed — four visible phases and progressive report |
 | Single portable HTML | Passed — no server/model/device required at runtime |
-| Repository/Downloads identity | Must be recomputed after the final documentation build; the final handoff records the matching SHA-256 |
+| Repository/Downloads identity | Passed — both are `7,573,120` bytes with SHA-256 `7c316538eef9712b9410e152e44b69cca851c282abab2a1362eee8097f116091` |
 
 final result: passed
