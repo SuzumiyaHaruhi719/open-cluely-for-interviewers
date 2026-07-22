@@ -135,8 +135,8 @@
 
         <div class="interview-dock__recording demo-replay-timeline" aria-label="回放进度">
           __ICON_RECORD_14_FILL__
-          <time id="dock-clock">00:00 / 01:24</time>
-          <input id="replay-progress" class="demo-replay-scrubber" type="range" min="0" max="84000" value="0" aria-label="演示回放进度">
+          <time id="dock-clock">00:00 / 08:13</time>
+          <input id="replay-progress" class="demo-replay-scrubber" type="range" min="0" max="493517" value="0" aria-label="演示回放进度">
           <button id="replay-reset" class="demo-replay-reset" type="button">重播</button>
         </div>
 
@@ -195,7 +195,7 @@
 
   <template id="question-card-template">
     <article class="chat-message lane-ai is-question-card" aria-label="AI 专家追问">
-      <time class="transcript-time" datetime="PT33S">00:00:33</time>
+      <time class="transcript-time" datetime="PT399S">00:06:39</time>
       <div class="message-header question-card__header">
         <span class="message-icon" aria-hidden="true">__ICON_SPARKLE_15_FILL__</span>
         <span class="message-label">AI 追问</span>
@@ -204,19 +204,19 @@
         <span class="message-time">3.7 s</span>
       </div>
       <div class="question-card__primary">
-        <div class="message-content question-card__body">你提到为了拿到全网最低价，会停止与其他竞品合作。这个排他策略如何验证带来的是增量，而不是平台对单一品牌的依赖？</div>
+        <div class="message-content question-card__body">你提到平台期靠“全”吸引有惯性的用户，那么当用户因为你的平台更全而开始使用时，你如何判断哪些利益点需要从“全”升级为“优”？</div>
       </div>
       <div class="question-card__anchors">
         <span class="message-label">候选人原话</span>
-        <div class="question-card__anchor">“为了拿到全网最低价，会停止与其他竞品合作”</div>
+        <div class="question-card__anchor">“平台期靠‘全’吸引有惯性的用户”</div>
       </div>
       <div class="question-card__rationale">
         <span class="message-label">为什么这样问</span>
-        <div class="message-content">候选人给出了“排他合作换取全网最低价”的策略，但没有说明如何识别真实增量、控制单一品牌依赖或设置退出条件；这决定方案是否具备 P8 级风险意识和可复制性。</div>
+        <div class="message-content">候选人解释了平台从“全”到“优”的方向，但还没有给出升级优先级、可归因增量和停止条件；这些证据决定策略是否达到 P8 的组合治理要求。</div>
       </div>
       <div class="question-card__yield">
         <span class="message-label">预期证据</span>
-        <div class="message-content">量化基线与增量指标、对照或分层验证方式、品牌依赖阈值、谈判与退出机制，以及候选人本人推动决策的证据。</div>
+        <div class="message-content">用户分层与基线、升级阈值、对照或增量口径、资源取舍、跨周期结果，以及未达标时的停止条件。</div>
       </div>
       <footer class="question-card__footer">
         <span class="tag-mode">专家</span>
@@ -227,7 +227,7 @@
     </article>
   </template>
 
-  <audio id="demo-audio" preload="auto" src="data:audio/mp4;base64,__DEMO_AUDIO_BASE64__"></audio>
+  <audio id="demo-audio" preload="auto" src="data:audio/mpeg;base64,__DEMO_AUDIO_BASE64__"></audio>
   <script>/*__PRODUCT_SCRIPT__*/</script>
 </body>
 </html>

@@ -10,8 +10,9 @@ test('built artifact is a complete offline P8 introduction', async () => {
   assert.ok(frameMatch, 'literal product iframe is embedded');
   const productFrame = Buffer.from(frameMatch[1], 'base64').toString('utf8');
   assert.equal((html.match(/data-slide-id=/g) ?? []).length, 9);
-  assert.match(productFrame, /data:audio\/mp4;base64,[A-Za-z0-9+/=]+/);
-  assert.match(productFrame, /00:00 \/ 01:24/);
+  assert.match(productFrame, /data:audio\/mpeg;base64,[A-Za-z0-9+/=]+/);
+  assert.match(productFrame, /00:00 \/ 08:13/);
+  assert.match(productFrame, /max="493517"/);
   assert.doesNotMatch(html, /播放 1 分 40 秒真实演示/);
   assert.match(productFrame, /用户运营专家（P8）/);
   assert.match(html, /为什么这句追问值得问/);

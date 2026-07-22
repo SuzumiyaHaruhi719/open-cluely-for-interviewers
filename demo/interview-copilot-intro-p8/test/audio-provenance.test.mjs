@@ -3,12 +3,13 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const audioUrl = new URL('../assets/p8-real-interview-84s.m4a', import.meta.url);
+const audioUrl = new URL('../assets/p8-full-interview-493s.mp3', import.meta.url);
 
-test('the packaged replay uses the Seed-ASR-verified 84-second source export', async () => {
+test('the packaged replay uses the complete Seed-ASR-verified source MP3', async () => {
   const audio = await readFile(audioUrl);
+  assert.equal(audio.length, 3_800_290);
   assert.equal(
     createHash('sha256').update(audio).digest('hex'),
-    '56beb4525fa62e6056e83b951efa062d98e39a1422177f72ee26b1dfb15a43e5'
+    '6b770cdc29082de0ba5318be5c1130a6da7dca6fcdedab7fb3f7994e1e2f6dd2'
   );
 });

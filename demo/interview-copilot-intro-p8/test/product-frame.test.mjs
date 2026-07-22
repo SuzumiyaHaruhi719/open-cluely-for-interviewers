@@ -60,3 +60,11 @@ test('replay progress remains visible and informative inside the embedded produc
   assert.match(runtime, /progress\.style\.setProperty\('--replay-percent'/);
   assert.match(runtime, /progress\.setAttribute\('aria-valuetext'/);
 });
+
+test('product frame replays the complete P8 source instead of the old excerpt', () => {
+  assert.match(runtime, /from '\.\/full-timeline\.mjs'/);
+  assert.match(html, /max="493517"/);
+  assert.match(html, /00:00 \/ 08:13/);
+  assert.match(html, /data:audio\/mpeg;base64,__DEMO_AUDIO_BASE64__/);
+  assert.doesNotMatch(html, /01:24|audio\/mp4/);
+});

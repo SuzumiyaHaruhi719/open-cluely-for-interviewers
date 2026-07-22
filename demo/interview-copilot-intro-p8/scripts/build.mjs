@@ -40,7 +40,7 @@ const [
   readFile(path.join(demoRoot, 'src/styles.css'), 'utf8'),
   readFile(path.join(demoRoot, 'src/product-frame.template.html'), 'utf8'),
   readFile(path.join(demoRoot, 'src/product-frame.css'), 'utf8'),
-  readFile(path.join(demoRoot, 'assets/p8-real-interview-84s.m4a')),
+  readFile(path.join(demoRoot, 'assets/p8-full-interview-493s.mp3')),
   readFile(path.join(demoRoot, 'assets/p8-product-replay-cover.png')),
   ...productionCssPaths.map((cssPath) => readFile(cssPath, 'utf8'))
 ]);

@@ -1,11 +1,11 @@
 import { deriveReplayState } from './replay-state.mjs';
 import {
   contextWindow,
-  cues,
-  DEMO_DURATION_MS,
+  completeCues as cues,
+  COMPLETE_DURATION_MS as DEMO_DURATION_MS,
   questionEvent,
   roleConfirmedMs
-} from './timeline.mjs';
+} from './full-timeline.mjs';
 
 const root = document;
 const app = root.querySelector('#product-app');
@@ -80,7 +80,8 @@ function rolePresentation(cue, state) {
     return { lane: 'unknown', label: `待确认 · 说话人 ${cue.speakerId}`, iconId: 'icon-unknown' };
   }
   if (cue.role === 'candidate') return { lane: 'candidate', label: '候选人', iconId: 'icon-candidate' };
-  return { lane: 'interviewer', label: '面试官', iconId: 'icon-interviewer' };
+  if (cue.role === 'interviewer') return { lane: 'interviewer', label: '面试官', iconId: 'icon-interviewer' };
+  return { lane: 'unknown', label: `非参与者 · 说话人 ${cue.speakerId}`, iconId: 'icon-unknown' };
 }
 
 function roleActions(role) {
