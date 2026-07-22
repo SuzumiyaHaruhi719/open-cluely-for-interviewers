@@ -64,7 +64,7 @@ test('P8 proof gives the reconstructed workspace full slide width', () => {
 
 test('P8 proof embeds the literal product page instead of a schematic replay', () => {
   assert.match(html, /<div class="live-demo-shell[^>]*>\s*<iframe class="live-demo-frame"/s);
-  assert.match(html, /src="data:text\/html;base64,__PRODUCT_FRAME_BASE64__"/);
+  assert.match(html, /id="product-frame-payload"[^>]*>__PRODUCT_FRAME_BASE64__<\/script>/);
   assert.match(html, /title="面试官 Copilot · P8 真实产品回放"/);
   assert.doesNotMatch(html, /id="product-replay"|class="replay-app"|class="copilot-shell"/);
 });

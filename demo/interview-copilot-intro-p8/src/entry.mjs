@@ -3,6 +3,22 @@ import { createDeck } from './deck.mjs';
 const root = document;
 const hint = root.querySelector('#key-hint');
 const productFrame = root.querySelector('.live-demo-frame');
+const productFramePayload = root.querySelector('#product-frame-payload');
+
+function decodeBase64(base64) {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return bytes;
+}
+
+if (productFrame && productFramePayload) {
+  productFrame.srcdoc = new TextDecoder().decode(
+    decodeBase64(productFramePayload.textContent.trim())
+  );
+}
 
 const sendToProduct = (message) => {
   productFrame?.contentWindow?.postMessage(message, '*');

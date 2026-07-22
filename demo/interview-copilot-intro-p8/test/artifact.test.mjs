@@ -6,9 +6,11 @@ const artifactUrl = new URL('../dist/Interview Copilot P8 Complete Introduction.
 
 test('built artifact is a complete offline P8 introduction', async () => {
   const html = await readFile(artifactUrl, 'utf8');
-  const frameMatch = html.match(/<iframe[^>]+class="live-demo-frame"[^>]+src="data:text\/html;base64,([A-Za-z0-9+/=]+)"/i);
-  assert.ok(frameMatch, 'literal product iframe is embedded');
+  const frameMatch = html.match(/<script[^>]+id="product-frame-payload"[^>]*>([A-Za-z0-9+/=]+)<\/script>/i);
+  assert.ok(frameMatch, 'literal product frame payload is embedded outside the iframe URL');
   const productFrame = Buffer.from(frameMatch[1], 'base64').toString('utf8');
+  assert.doesNotMatch(html, /<iframe[^>]+src="data:text\/html;base64/i);
+  assert.match(html, /productFrame\.srcdoc\s*=/);
   assert.equal((html.match(/data-slide-id=/g) ?? []).length, 9);
   assert.match(productFrame, /data:audio\/mpeg;base64,[A-Za-z0-9+/=]+/);
   assert.match(productFrame, /00:00 \/ 08:13/);

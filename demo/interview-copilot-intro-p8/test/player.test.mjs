@@ -18,3 +18,9 @@ test('leaving the demo pauses the embedded product while deck keys remain availa
   assert.match(entrySource, /const targetIsTextEntry\s*=/);
   assert.doesNotMatch(entrySource, /const targetIsControl\s*=/);
 });
+
+test('large complete replay uses srcdoc instead of an oversized iframe data URL', () => {
+  assert.match(entrySource, /product-frame-payload/);
+  assert.match(entrySource, /productFrame\.srcdoc\s*=/);
+  assert.doesNotMatch(entrySource, /URL\.createObjectURL/);
+});
