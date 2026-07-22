@@ -149,7 +149,7 @@ test('fires once when all local gates pass and the monitor says yes', async () =
   assert.equal(trigger.getIsGenerating(), false, 'in-flight slot released after settle');
 });
 
-test('emits at most one automatic suggestion until the interviewer opens a new answer window', async () => {
+test('new candidate evidence can trigger again without interviewer role confirmation', async () => {
   const { trigger, h } = makeTrigger({ decision: yes() });
 
   // First fire establishes lastGenAt = now.
@@ -165,19 +165,16 @@ test('emits at most one automatic suggestion until the interviewer opens a new a
   assert.equal(h.analyzeCalls.length, 1, 'no second fire inside cooldown');
   assert.equal(h.monitorCalls.length, 1, 'monitor not consulted when local gates fail');
 
-  // Even after the cooldown, more chunks from the same uninterrupted answer
-  // must not stack a second competing question card.
+  // Once cooldown has elapsed, the already-confirmed candidate's new evidence
+  // can open another question window without waiting for interviewer delegation.
   h.advance(COOLDOWN_MS);
   trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX);
   await trigger.flush();
-  assert.equal(h.analyzeCalls.length, 1, 'one answer window yields one automatic suggestion');
-
-  // A real interviewer turn opens the next answer window. New candidate evidence
-  // can then produce one new suggestion without losing the global transcript.
-  trigger.onInterviewerFinal('请继续说明下一阶段的验证方法。');
-  trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX + LONG_SUFFIX);
-  await trigger.flush();
-  assert.equal(h.analyzeCalls.length, 2, 'the next interviewer/candidate cycle is eligible');
+  assert.equal(
+    h.analyzeCalls.length,
+    2,
+    'candidate evidence reopens Auto without interviewer confirmation'
+  );
 });
 
 test('does NOT fire while a generation is already in flight', async () => {
@@ -555,7 +552,7 @@ test('reset clears both candidate evidence and panel interviewer context', async
   assert.equal(h.analyzeCalls[0].interviewerContext, '');
 });
 
-test('a manual suggestion suppresses Auto for the same answer until the interviewer moves on', async () => {
+test('a manual suggestion resets cooldown but later candidate evidence can resume Auto', async () => {
   const { trigger, h } = makeTrigger({ decision: yes() });
 
   // A manual Generate Q starts: claims the in-flight slot + resets the cooldown.
@@ -579,17 +576,16 @@ test('a manual suggestion suppresses Auto for the same answer until the intervie
   await trigger.flush();
   assert.equal(h.analyzeCalls.length, 0, 'cooldown from the manual run prevents an immediate auto re-fire');
 
-  // Once the cooldown elapses, the same answer still must not receive a second
-  // competing automatic suggestion.
+  // Once the cooldown elapses, the confirmed candidate's later evidence may
+  // resume Auto without waiting for an interviewer role/boundary confirmation.
   h.advance(COOLDOWN_MS);
   trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX);
   await trigger.flush();
-  assert.equal(h.analyzeCalls.length, 0, 'manual already supplied this answer window');
-
-  trigger.onInterviewerFinal('请继续说明下一阶段的验证方法。');
-  trigger.onCandidateFinal(LONG_ANSWER + LONG_SUFFIX + LONG_SUFFIX);
-  await trigger.flush();
-  assert.equal(h.analyzeCalls.length, 1, 'Auto resumes for the next answer window');
+  assert.equal(
+    h.analyzeCalls.length,
+    1,
+    'new candidate evidence resumes Auto without interviewer confirmation'
+  );
 });
 
 test('does NOT fire when too few new chars have accumulated since the last gen', async () => {

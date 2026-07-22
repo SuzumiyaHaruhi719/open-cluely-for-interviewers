@@ -252,10 +252,6 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let isGenerating = false;
   let activeAuto = false;
   let consecutiveMonitorWaits = 0;
-  // An interviewer needs one best suggestion for the answer in front of them,
-  // not a new card every cooldown while the candidate keeps talking. Only a
-  // semantic interviewer boundary opens another automatic-suggestion window.
-  let suggestionDeliveredForAnswer = false;
 
   // Firing mode + recent transcript bookkeeping. `latestText` is the full recent
   // transcript across all speakers; generation content is candidate-only and
@@ -322,7 +318,6 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     if (!autoGenerate) return false;
     if (!capturing) return false;
     if (isGenerating) return false;
-    if (suggestionDeliveredForAnswer) return false;
     if (now() - lastGenAt < cfg.cooldownMs) return false;
     if (text.length - charsAtLastGen < cfg.minNewChars) return false;
     return true;
@@ -381,8 +376,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       !autoGenerate ||
       mode !== 'interval' ||
       isGenerating ||
-      !capturing ||
-      suggestionDeliveredForAnswer
+      !capturing
     ) return;
     if (now() - lastSpeechAt < cfg.debounceMs) return;
     // Fire from ONLY the transcript since the last follow-up. If nothing new was
@@ -412,7 +406,6 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       if (epoch === startEpoch) {
         recordFire(latestCandidateText || latestText);
         if (delivered) {
-          suggestionDeliveredForAnswer = true;
           consumeSinceFire(firedRaw);
         }
       }
@@ -498,7 +491,6 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       if (delegated && epoch === startEpoch) {
         recordFire(text);
         if (delivered) {
-          suggestionDeliveredForAnswer = true;
           consumeSinceFire(firedRaw);
         }
       }
@@ -548,7 +540,6 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     lastSpeechAt = now();
     clearPending();
     consecutiveMonitorWaits = 0;
-    suggestionDeliveredForAnswer = false;
     // A confirmed interviewer turn is the semantic cancellation boundary. It
     // invalidates the old autonomous chain while raw audio never does.
     if (activeAuto) onAutoInvalidated();
@@ -654,7 +645,6 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     isGenerating = true;
     activeAuto = false;
     consecutiveMonitorWaits = 0;
-    suggestionDeliveredForAnswer = true;
     lastGenAt = now();
     if (typeof fullCandidateText === 'string') {
       const text = fullCandidateText.trim();
@@ -694,7 +684,6 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     latestCandidateAnchor = undefined;
     candidateRevision = 0;
     consecutiveMonitorWaits = 0;
-    suggestionDeliveredForAnswer = false;
     interviewerContext = '';
     candidateStartedSinceInterviewer = false;
     sinceFire = '';
