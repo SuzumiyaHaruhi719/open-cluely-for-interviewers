@@ -526,6 +526,150 @@ test('two agreeing semantic passes release each confirmed turn exactly once', as
   assert.deepEqual(candidates, [1]);
 });
 
+test('a voiceprint delegated late cannot reopen an answer that a confirmed interviewer already closed', async () => {
+  const candidates: number[] = [];
+  const interviewers: number[] = [];
+  let classifyCalls = 0;
+  const p = createSpeakerPartitioner({
+    classify: async (turns) => {
+      classifyCalls += 1;
+      const speakerRoles: SpeakerClassification['speakerRoles'] = [
+        { speakerId: 1, role: 'interviewer', confidence: 0.98 }
+      ];
+      // The candidate cohort gets enough independent evidence only on the next
+      // refresh, after seq=2 has already closed the earlier answer at seq=1.
+      if (classifyCalls > 2) {
+        speakerRoles.push({ speakerId: 2, role: 'candidate', confidence: 0.98 });
+      }
+      return classificationForTurns(turns, speakerRoles);
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn.seq),
+    onInterviewerTurn: (turn) => interviewers.push(turn.seq),
+    onPartition: () => {}
+  });
+  p.setEnabled(true);
+
+  p.record({
+    seq: 0,
+    source: 'mic',
+    speakerId: 1,
+    text: '请介绍一个你独立负责的运营项目和结果。'
+  });
+  p.record({
+    seq: 1,
+    source: 'mic',
+    speakerId: 2,
+    text: '我负责运营项目并推动团队取得增长。'
+  });
+  p.record({
+    seq: 2,
+    source: 'mic',
+    speakerId: 1,
+    text: '现在进入下一题，请说明频道心智建设。'
+  });
+  await p.flush();
+  assert.deepEqual(interviewers, [0, 2]);
+  assert.deepEqual(candidates, []);
+
+  p.record({
+    seq: 3,
+    source: 'mic',
+    speakerId: 2,
+    text: '针对新的问题，我会先区分功能诉求和利益诉求，再建立用户分层基线。'
+  });
+  p.record({
+    seq: 4,
+    source: 'mic',
+    speakerId: 2,
+    text: '随后用留存、访问频率和转化率验证频道心智是否真正形成。'
+  });
+  p.record({
+    seq: 5,
+    source: 'mic',
+    speakerId: 2,
+    text: '如果指标没有产生增量，我会停止无效权益并调整核心入口和触达策略。'
+  });
+  await p.flush();
+
+  assert.deepEqual(
+    candidates,
+    [3, 4, 5],
+    'late role evidence may release only the still-open answer after the latest interviewer boundary'
+  );
+});
+
+test('semantic interviewer consensus closes stale candidate evidence even while that interviewer voiceprint stays pending', async () => {
+  const candidates: number[] = [];
+  const interviewers: number[] = [];
+  let classifyCalls = 0;
+  let candidateDelegated = false;
+  const observing = () => ({
+    state: 'observing' as const,
+    role: 'unknown' as const,
+    confidence: 0,
+    evidenceSeqs: [],
+    contradictionSeqs: [],
+    evaluatedRevision: 0,
+    reasonCodes: ['insufficient_evidence']
+  });
+  const p = createSpeakerPartitioner({
+    classify: async (turns) => {
+      classifyCalls += 1;
+      const roles: SpeakerClassification['speakerRoles'] = [
+        { speakerId: 7, role: 'interviewer', confidence: 0.98 }
+      ];
+      if (classifyCalls > 2) {
+        roles.push({ speakerId: 9, role: 'candidate', confidence: 0.98 });
+      }
+      return classificationForTurns(turns, roles);
+    },
+    cohortHarness: {
+      async evaluate(input) {
+        candidateDelegated = input.confirmed.some(
+          (entry) => entry.role === 'candidate' && entry.seq >= 3
+        );
+      },
+      getRole(speakerId) {
+        if (speakerId === 9 && candidateDelegated) {
+          return {
+            state: 'delegated',
+            role: 'candidate',
+            confidence: 0.96,
+            evidenceSeqs: [3, 4],
+            contradictionSeqs: [],
+            evaluatedRevision: 5,
+            reasonCodes: ['two_pass_consensus']
+          };
+        }
+        return observing();
+      },
+      reset() {
+        candidateDelegated = false;
+      }
+    },
+    applySpeakerRole: (_speakerId, role) => role,
+    onCandidateTurn: (turn) => candidates.push(turn.seq),
+    onInterviewerTurn: (turn) => interviewers.push(turn.seq),
+    onPartition: () => {}
+  });
+  p.setEnabled(true);
+
+  p.record({ seq: 0, source: 'mic', speakerId: 7, text: '请介绍一个你负责的运营项目和结果。' });
+  p.record({ seq: 1, source: 'mic', speakerId: 9, text: '我负责运营项目并推动团队取得增长。' });
+  p.record({ seq: 2, source: 'mic', speakerId: 7, text: '现在进入下一题，请说明频道心智建设。' });
+  await p.flush();
+  assert.deepEqual(interviewers, [], 'pending native identity must not enter role-sensitive callbacks');
+  assert.deepEqual(candidates, []);
+
+  p.record({ seq: 3, source: 'mic', speakerId: 9, text: '针对新题，我先区分功能诉求和利益诉求并建立基线。' });
+  p.record({ seq: 4, source: 'mic', speakerId: 9, text: '随后用留存、访问频率和转化率验证频道心智是否形成。' });
+  p.record({ seq: 5, source: 'mic', speakerId: 9, text: '指标没有增量时，我会停止无效权益并调整入口和触达。' });
+  await p.flush();
+
+  assert.deepEqual(candidates, [3, 4, 5]);
+});
+
 test('final weak-correction threshold actively keeps a native voiceprint unknown', async () => {
   const applied: Array<{ speakerId: number; role: string }> = [];
   const partitions: any[] = [];

@@ -827,6 +827,10 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
   let turns: SpeakerTurn[] = [];
   let fedCandidateSeqs = new Set<number>();
   let fedInterviewerSeqs = new Set<number>();
+  // Highest interviewer boundary already delivered to Auto. Native voiceprints
+  // can become delegated at different refreshes; an older candidate turn that
+  // is confirmed later must not reopen an answer the interviewer already closed.
+  let latestClosedAnswerSeq = -1;
   let semanticLedger = new Map<number, InferredTurnRole>();
   let scheduledAt = 0;
   let epoch = 0;
@@ -1071,6 +1075,27 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           : entry;
       });
 
+      // A two-pass semantic interviewer verdict is safe to use as a one-way
+      // cancellation boundary even while its native voiceprint remains pending:
+      // it can only suppress an old Auto question, never release evidence or
+      // label the speaker. This prevents late candidate cohort delegation from
+      // replaying answers that a newer interviewer question already superseded.
+      if (deps.onInterviewerTurn) {
+        for (const [seq, semantic] of roleByTurn) {
+          if (semantic.role !== 'interviewer') continue;
+          const turn = snapshot.find((candidate) => candidate.seq === seq);
+          const nativeAssignment = typeof turn?.speakerId === 'number'
+            ? assignmentById.get(turn.speakerId)
+            : undefined;
+          // A delegated/manual candidate voiceprint remains authoritative over an
+          // isolated opposite speech-act verdict (for example a rhetorical
+          // question inside an answer). Pending/unknown or interviewer cohorts may
+          // still provide the conservative closure boundary.
+          if (nativeAssignment?.role === 'candidate') continue;
+          latestClosedAnswerSeq = Math.max(latestClosedAnswerSeq, seq);
+        }
+      }
+
       for (const [index, entry] of displayResolved.entries()) {
         const { turn, role } = entry;
         const nativeAssignment = typeof turn.speakerId === 'number'
@@ -1086,7 +1111,9 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           !shouldDeferPossibleQuestionStem(displayResolved, index, status)
         ) {
           fedCandidateSeqs.add(turn.seq);
-          deps.onCandidateTurn(turn);
+          if (turn.seq > latestClosedAnswerSeq) {
+            deps.onCandidateTurn(turn);
+          }
         }
         if (
           isConfirmed &&
@@ -1095,6 +1122,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           !shouldDeferPossibleAnswerContinuation(displayResolved, index, status)
         ) {
           fedInterviewerSeqs.add(turn.seq);
+          latestClosedAnswerSeq = Math.max(latestClosedAnswerSeq, turn.seq);
           deps.onInterviewerTurn?.(turn);
         }
       }
@@ -1153,6 +1181,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       turns = [];
       fedCandidateSeqs = new Set<number>();
       fedInterviewerSeqs = new Set<number>();
+      latestClosedAnswerSeq = -1;
       semanticLedger = new Map<number, InferredTurnRole>();
       assignmentClocks = new Map<number, { signature: string; updatedAtMs: number }>();
       sessionStartedAtMs = now();
