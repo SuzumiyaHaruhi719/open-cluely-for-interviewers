@@ -4,7 +4,8 @@
 
 - Source fixture: `/Users/thomasli/Downloads/Bilibili Immersive Interview P7 P8 (1).mp3`
 - Source SHA-256: `6b770cdc29082de0ba5318be5c1130a6da7dca6fcdedab7fb3f7994e1e2f6dd2`
-- Replay excerpt: `348.011s–448.420s` (`100.409s` contract; decoded MP3 `100.44s`)
+- Active replay excerpt: `392.200s–476.200s` (`84.000s` contract; browser-decoded AAC `84.242s`)
+- Active clip SHA-256: `56beb4525fa62e6056e83b951efa062d98e39a1422177f72ee26b1dfb15a43e5`
 - Artifact: `demo/interview-copilot-intro-p8/dist/Interview Copilot P8 Complete Introduction.html`
 - Initial artifact SHA-256: `f695d4557812b81a3733c2bc5debfeeec88f0a2aaec7ac91432f708225514c97`
 - Initial build commit: `def8da0`
@@ -82,22 +83,53 @@
 | Preserve the legacy slide style | Full-viewport slides, persistent GLP status bar, title, `01 / 09` counter, bottom progress, staged reveal motion, arrow/space navigation, and fullscreen key remain in the standalone deck. |
 | Reconstruct the current interface | Slide 4 uses the current GLP header/timeline/role pills/question/footer hierarchy, scrollbar, light/dark icon, and reaches `95.3%` viewport width at the acceptance viewport. |
 | P8 only | Profile is `用户运营专家（P8）`; timeline/artifact tests reject `物业`, `消防`, and `园区运营`. |
-| 1–2 minute audio | Embedded browser duration is exactly `100.409s`; original SHA-256 and non-destructive source range are recorded. |
-| Progressive captions | Grapheme-level state advances from `audio.currentTime`; zero-length rows are suppressed; real 1× playback and seven time checkpoints were observed. |
-| Candidate-first monitoring | Candidate remains pending through `8.499s`, confirms at `8.500s`, and immediately unlocks monitoring without interviewer confirmation. |
-| One meaningful inline question | Generation starts `47.889s`; exactly one question appears `51.620s`, directly after candidate cue `p8-5`; backward seek removes it. |
+| 1–2 minute audio | The active source range is `392.200s–476.200s`; timeline contract is `84.000s` and browser-decoded AAC duration is `84.242s`. The clip begins and ends on complete thoughts. |
+| Progressive captions | Caption growth uses 231 observed Seed ASR 2.0 partial-update timings compacted into monotonic grapheme checkpoints; it is not linearly interpolated. |
+| Candidate-first monitoring | Candidate confirms at `4.200s` and immediately unlocks monitoring without waiting for interviewer confirmation. |
+| One meaningful inline question | Generation starts `30.000s`; exactly one question appears at `33.731s` after `p8-candidate-2`; backward seek removes it. |
 | Real telemetry | Question card and artifact contain `3,026 词元` and `3.7 s` from the verified report. |
 | Explain value | Separate slides explain the evidence-grounding model, interviewer value, GLP organizational value, and current implemented capabilities. |
-| One offline file | CSS, JavaScript, replay data, and MP3 are inline; artifact tests reject iframes and external runtime resources. Repository and Downloads SHA-256 are both `3b70b77ac374454333c6ee612396bf6be1e1556a35683cbf145695ccfa64e39b`. |
+| One offline file | CSS, JavaScript, replay data, and M4A are inline; artifact tests reject iframes and external runtime resources. Repository and Downloads copies are compared by SHA-256 after every build. |
 | Presentation controls/accessibility | Visible named buttons, range label, theme label, reduced-motion CSS, pause-on-exit, mute, replay, seek, keyboard ownership, and end-of-demo handoff were exercised. |
 | Five real iterations | Rounds 1–5 each record a reproduced defect, first divergent boundary, red gate, causal fix, and browser/test evidence. |
 | Frequent main commits and pushes | Fixture, deck, replay, packaging, and all five acceptance rounds were committed independently and pushed directly to `origin/main`. |
 | Downloads handoff | `/Users/thomasli/Downloads/Interview Copilot P8 Complete Introduction.html` is rebuilt from source and byte-identical to the repository artifact. |
 
+## Synchronization correction — exact audio-derived transcript
+
+- Reproduction: the packaged replay was sent through Seed ASR 2.0 in real time. Its first audible words were `银行已经谈好的利益点…`, but the rendered timeline began with `嗯。/一开始的时候怎么去做呢？`; its ending also continued beyond the seven hand-written rows.
+- Root cause: the original seven transcript blocks and the MP3 trim were produced independently. The renderer then spread each block's characters uniformly over spans as long as 20 seconds, so even coincidentally correct sentences could not follow the spoken word boundaries.
+- Correct source selection: scanned the source through its natural answer boundary, then used the `392.200s–476.200s` exchange. It begins with the candidate's complete second-stage strategy, contains the real interviewer interruption `那为什么银行愿意跟我们玩呢？`, and ends at `最终我是获益的。` before unrelated post-interview commentary.
+- Provider evidence: exact 16 kHz mono export, real-time lifecycle `connecting → live → finalizing → stopped`, zero provider errors, 231 partial transcript updates, seven final utterance payloads, and two native speaker IDs.
+- Red gates: tests rejected the old source range/duration, missing M4A hash, linear caption interpolation, fabricated opening, absent Seed timing arrays, and the stale `1 分 40 秒` label.
+- Fix: packaged the verified M4A, locked its SHA-256, replaced the transcript with final-pass-corrected copy from that audio, assigned its real candidate/interviewer turn, and made every caption prefix advance only on observed Seed timestamps.
+- Browser evidence: decoded duration `84.242s`; at `1.975s` the audible opening rendered `第二个阶段` with role `待确认 · 说话人 0`. Exact interruption and completion boundaries are covered by seek-based browser acceptance below.
+- Supersession: the audio/timing assertions recorded in Rounds 3–5 describe the removed first fixture. Layout, navigation, offline, theme, and control findings from those rounds remain valid; this section is the active source of truth for replay content and synchronization.
+
 ## Final verification
 
-- Demo: `11/11` tests passed; no failures, skips, or cancellations.
+- Demo: `13/13` tests passed after the synchronized rebuild; no failures, skips, or cancellations.
 - Production regression suite: core `6`, question bank `18`, server `272`, web `249` — `545` tests total, all passed.
 - Production builds: React/Vite/TypeScript and bundled Node server both exited successfully.
 - `git diff --check`: clean.
 - Artifact and Downloads hashes: identical (`3b70b77ac374454333c6ee612396bf6be1e1556a35683cbf145695ccfa64e39b`).
+
+## Legacy-design restoration
+
+- Reproduction: compared the current cover against `/Users/thomasli/Downloads/interviewer-copilot-intro.html` at the same `1280×720` viewport. The current artifact had drifted into a light marketing-deck shell with a 52 px glass header, an abstract orbit, oversized headline typography, and floating circular navigation.
+- User-visible defect: the presentation no longer looked like the selected GLP value-report deck even though the introduction content and synchronized replay were correct.
+- Red gate: source and artifact tests required the original `statusbar`, `deck`, `wrap`, `cols c55`, `shot`, `progress`, `navctl`, and `nbtn` structure plus the GLP-dark token signature. They failed against the light shell before implementation.
+- Fix: directly transplanted the legacy GLP-dark system, full-viewport slide composition, screenshot frame, badges, cards, feature rows, reveal timing, progress line, and square navigation. The demo player remains the verified 84-second implementation and defaults to its dark product theme.
+- Product-truth correction: the cover frame preserves the legacy composition but replaces the obsolete property-oriented screenshot with a measured screenshot of the real P8 replay at `00:33`, where the candidate is confirmed and exactly one Expert question is inline.
+- Visual QA: matched full-view and focused reference/implementation pairs were reviewed together. The replay slide occupies `1244×568` CSS pixels at `1280×720`; document geometry is exactly `1280×720`, with no overflow.
+- Interaction evidence: all nine slides, Previous/Next, ArrowRight, Home, Play, Pause, seek, mute, theme toggle, question insertion, replay, and return-to-cover passed in the Codex in-app browser. Page console logs were empty.
+- Design gate: `design-qa.md` records the before/after P1/P2 findings and ends with `final result: passed`.
+
+## Post-restoration final verification
+
+- Standalone P8 artifact: `14/14` tests passed after the legacy-design transplant; no failures, skips, or cancellations.
+- Production regression suite: core `6`, question bank `18`, server `272`, web `249` — `545` tests total, all passed.
+- Production builds: React/Vite/TypeScript and the bundled Node server both exited successfully.
+- Audio package: macOS Core Audio reports an estimated duration of exactly `84.000000 s`.
+- `git diff --check`: clean.
+- Repository artifact and Downloads handoff are byte-identical: `a465ab5788c849ed692a04e1f313da7700448d97a7d37fe8de18475f7d6ec5fb`.

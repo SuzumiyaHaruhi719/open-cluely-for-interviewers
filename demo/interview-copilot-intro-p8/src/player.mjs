@@ -43,7 +43,7 @@ function questionCard(questionEvent) {
       <div class="question-body">
         <div class="question-label"><strong>AI 追问</strong><span>自动</span><span>专家</span><em>${(questionEvent.latencyMs / 1000).toFixed(1)} s</em></div>
         <p>${escapeHtml(questionEvent.text)}</p>
-        <div class="question-evidence"><b>候选人证据</b><span>平台从“全”建立使用惯性，但何时、如何升级到“优”仍缺少判断标准。</span></div>
+        <div class="question-evidence"><b>候选人证据</b><span>候选人提出用排他合作换取全网最低价，但尚未证明增量收益足以覆盖单一品牌依赖风险。</span></div>
         <footer><span>专家</span><span>${questionEvent.tokens.toLocaleString('zh-CN')} 词元</span><span>${(questionEvent.latencyMs / 1000).toFixed(1)} s</span></footer>
       </div>
     </article>`;
@@ -238,7 +238,7 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
     startOverlay.classList.remove('is-hidden');
     startOverlay.classList.add('audio-fallback');
     startOverlay.querySelector('strong').textContent = '音频未能加载';
-    startButton.textContent = '静音查看 1 分 40 秒演示';
+    startButton.textContent = '静音查看 1 分 24 秒演示';
     startOverlay.querySelector('small').textContent = '点击后从头播放字幕与追问';
     render();
   }

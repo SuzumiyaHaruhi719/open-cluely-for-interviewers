@@ -12,10 +12,11 @@ const require = createRequire(import.meta.url);
 const esbuild = require(path.join(repoRoot, 'web-app/node_modules/esbuild'));
 const copyToDownloads = process.argv.includes('--copy');
 
-const [template, styles, audio] = await Promise.all([
+const [template, styles, audio, productShot] = await Promise.all([
   readFile(path.join(demoRoot, 'src/index.template.html'), 'utf8'),
   readFile(path.join(demoRoot, 'src/styles.css'), 'utf8'),
-  readFile(path.join(demoRoot, 'assets/p8-card-channel-100s.mp3'))
+  readFile(path.join(demoRoot, 'assets/p8-real-interview-84s.m4a')),
+  readFile(path.join(demoRoot, 'assets/p8-product-replay-cover.png'))
 ]);
 const bundle = await esbuild.build({
   entryPoints: [path.join(demoRoot, 'src/entry.mjs')],
@@ -32,6 +33,7 @@ const html = template
   .replace('/*__DEMO_SCRIPT__*/', bundle.outputFiles[0].text)
   .replace('__DEMO_DATA__', data)
   .replace('__DEMO_AUDIO_BASE64__', audio.toString('base64'))
+  .replace('__PRODUCT_SHOT_BASE64__', productShot.toString('base64'))
   .replace('__BUILD_COMMIT__', commit);
 const distDir = path.join(demoRoot, 'dist');
 const artifact = path.join(distDir, 'Interview Copilot P8 Complete Introduction.html');

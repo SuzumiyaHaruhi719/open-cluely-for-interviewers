@@ -7,10 +7,10 @@ export function createDeck({ root = document, onSlideChange = () => {} } = {}) {
 
   function show(next) {
     const bounded = Math.max(0, Math.min(slides.length - 1, next));
-    if (bounded === index && slides[index]?.classList.contains('is-active')) return;
+    if (bounded === index && slides[index]?.classList.contains('active')) return;
     const previous = index >= 0 ? slides[index] : null;
     index = bounded;
-    slides.forEach((slide, slideIndex) => slide.classList.toggle('is-active', slideIndex === index));
+    slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === index));
     counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
     progress.style.transform = `scaleX(${(index + 1) / slides.length})`;
     title.textContent = slides[index].dataset.slideTitle;

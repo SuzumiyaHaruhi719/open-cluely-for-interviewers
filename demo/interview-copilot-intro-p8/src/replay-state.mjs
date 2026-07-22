@@ -7,8 +7,16 @@ export function splitGraphemes(text) {
 
 function visibleText(cue, timeMs) {
   if (timeMs >= cue.endMs) return cue.text;
-  if (timeMs <= cue.startMs) return '';
+  if (timeMs < cue.startMs) return '';
   const graphemes = splitGraphemes(cue.text);
+  if (Array.isArray(cue.reveal) && cue.reveal.length) {
+    let visibleCount = 0;
+    for (const [atMs, count] of cue.reveal) {
+      if (atMs > timeMs) break;
+      visibleCount = count;
+    }
+    return graphemes.slice(0, Math.min(graphemes.length, visibleCount)).join('');
+  }
   const ratio = (timeMs - cue.startMs) / Math.max(1, cue.endMs - cue.startMs);
   return graphemes.slice(0, Math.max(1, Math.floor(graphemes.length * ratio))).join('');
 }

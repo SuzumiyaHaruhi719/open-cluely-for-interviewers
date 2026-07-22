@@ -24,16 +24,40 @@ test('complete introduction preserves nine-slide presentation structure', () => 
   assert.match(html, /id="deck-progress"/);
   assert.match(html, /id="deck-counter"/);
   assert.match(css, /\.slide\s*\{[^}]*position:\s*absolute/s);
-  assert.match(css, /\.slide\.is-active/);
+  assert.match(css, /\.slide\.active/);
   assert.doesNotMatch(html, /物业|消防|园区运营/);
+});
+
+test('presentation directly reuses the legacy GLP value-deck visual system', () => {
+  for (const legacyStructure of [
+    'class="statusbar"',
+    'class="deck"',
+    'class="slide hero-slide active"',
+    'class="wrap"',
+    'class="cols c55"',
+    'class="shot',
+    'class="progress"',
+    'class="navctl"',
+    'class="nbtn"'
+  ]) assert.match(html, new RegExp(legacyStructure.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+
+  assert.match(css, /--surface-page:\s*#0F1115/);
+  assert.match(css, /--surface-elevated:\s*#1C2028/);
+  assert.match(css, /--brand-500:\s*#2FD47A/);
+  assert.match(css, /\.statusbar\s*\{[^}]*height:\s*36px/s);
+  assert.match(css, /\.wrap\s*\{[^}]*max-width:\s*1240px/s);
+  assert.match(css, /h1\s*\{[^}]*clamp\(38px,\s*4\.6vw,\s*56px\)/s);
+  assert.match(css, /\.slide\.active/);
+  assert.doesNotMatch(html, /hero-orbit/);
+  assert.doesNotMatch(css, /--canvas:\s*#f5f6f7/i);
 });
 
 test('P8 proof keeps deck navigation clear of replay controls', () => {
   assert.match(deckScript, /body\.dataset\.activeSlide\s*=/);
-  assert.match(css, /body\[data-active-slide="p8-demo"\]\s+\.deck-nav\s*\{[^}]*top:\s*62px[^}]*right:\s*26px[^}]*bottom:\s*auto/s);
+  assert.match(css, /body\[data-active-slide="p8-demo"\]\s+\.navctl\s*\{[^}]*top:\s*48px[^}]*right:\s*20px[^}]*bottom:\s*auto/s);
 });
 
 test('P8 proof gives the reconstructed workspace full slide width', () => {
-  assert.match(css, /\.demo-layout\s*\{[^}]*grid-template-columns:\s*1fr;/s);
-  assert.match(css, /\.demo-copy\s*\{[^}]*grid-template-columns:\s*auto\s+minmax\(0,\s*1fr\)\s+auto;/s);
+  assert.match(css, /\.live-demo-slide\s+\.wrap\s*\{[^}]*max-width:\s*1540px[^}]*padding:\s*0\s+18px/s);
+  assert.match(css, /\.live-demo-shell\s*\{[^}]*height:\s*min\(735px,\s*calc\(100vh\s*-\s*152px\)\)/s);
 });

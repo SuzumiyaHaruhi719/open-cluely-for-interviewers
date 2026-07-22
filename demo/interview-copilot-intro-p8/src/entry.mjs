@@ -32,7 +32,7 @@ const markDeckUsed = () => hint.classList.add('is-used');
 root.querySelectorAll('#deck-prev, #deck-next').forEach((button) => button.addEventListener('click', markDeckUsed));
 
 root.addEventListener('keydown', (event) => {
-  const activeSlide = root.querySelector('.slide.is-active')?.dataset.slideId;
+  const activeSlide = root.querySelector('.slide.active')?.dataset.slideId;
   const targetIsTextEntry = /^(INPUT|TEXTAREA|SELECT)$/.test(event.target?.tagName ?? '');
   const targetIsButtonActivation = event.target?.tagName === 'BUTTON' && (event.key === ' ' || event.key === 'Enter');
   if ((targetIsTextEntry || targetIsButtonActivation) && event.key !== 'Escape') return;
