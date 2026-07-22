@@ -230,3 +230,44 @@ test('summarizeAsrRun fails QA for mixed assignments, substantive pending ids, a
   assert.equal(report.invalidPartitionCount, 1);
   assert.equal(report.qaPassed, false);
 });
+
+test('summarizeAsrRun accepts an explicit unresolved voiceprint that is excluded from Auto', () => {
+  const report = summarizeAsrRun([
+    { at: 0, message: { type: 'transcript', text: '片头旁白介绍本期互联网用户运营专家面试的完整内容和岗位背景。', isFinal: true, speakerId: 9 } },
+    { at: 10, message: { type: 'transcript', text: '片尾评论复盘候选人的面试结果并提醒观看者注意后续求职风险。', isFinal: true, speakerId: 9 } },
+    {
+      at: 20,
+      message: {
+        type: 'speaker-partition',
+        status: 'final',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          { speakerId: 9, role: 'unknown', state: 'observing', roleSource: 'unknown', confidence: 0, evidenceVersion: 1, updatedAtMs: 20, reasonCodes: ['audit_no_consensus'] }
+        ],
+        segments: [
+          { seq: 0, speakerId: 9, role: 'unknown', roleSource: 'unknown', text: '片头旁白介绍本期互联网用户运营专家面试的完整内容和岗位背景。 片尾评论复盘候选人的面试结果并提醒观看者注意后续求职风险。' }
+        ]
+      }
+    },
+    { at: 30, message: { type: 'asr-status', state: 'stopped' } }
+  ]);
+
+  assert.deepEqual(report.pendingSubstantiveSpeakerIds, [9]);
+  assert.deepEqual(report.unsafePendingSubstantiveSpeakerIds, []);
+  assert.equal(report.qaChecks.ambiguousSpeakersFailSafe, true);
+  assert.equal(report.qaPassed, true);
+});
+
+test('summarizeAsrRun rejects a substantive voiceprint with no final fail-safe assignment', () => {
+  const report = summarizeAsrRun([
+    { at: 0, message: { type: 'transcript', text: '第一段完整参与者发言包含项目背景个人行动判断依据和最终结果。', isFinal: true, speakerId: 8 } },
+    { at: 10, message: { type: 'transcript', text: '第二段完整参与者发言继续说明量化指标复盘方法和后续改进。', isFinal: true, speakerId: 8 } },
+    { at: 20, message: { type: 'speaker-partition', status: 'final', model: 'deepseek-v4-flash', speakerAssignments: [], segments: [] } },
+    { at: 30, message: { type: 'asr-status', state: 'stopped' } }
+  ]);
+
+  assert.deepEqual(report.pendingSubstantiveSpeakerIds, [8]);
+  assert.deepEqual(report.unsafePendingSubstantiveSpeakerIds, [8]);
+  assert.equal(report.qaChecks.ambiguousSpeakersFailSafe, false);
+  assert.equal(report.qaPassed, false);
+});

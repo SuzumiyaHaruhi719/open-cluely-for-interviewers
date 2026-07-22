@@ -167,6 +167,21 @@ export function summarizeAsrRun(events) {
   const pendingSubstantiveSpeakerIds = substantiveSpeakerIds.filter((speakerId) =>
     pendingSpeakerIds.includes(speakerId)
   );
+  // A voiceprint may remain unresolved after a complete interview when it is a
+  // narrator, off-camera comment, or genuinely ambiguous acoustic cluster. That
+  // is the product's intentional fail-safe state: it must be represented by an
+  // explicit unknown observing/contested assignment and must never feed Auto.
+  // Missing or structurally inconsistent assignments are still unsafe failures.
+  const unsafePendingSpeakerIds = pendingSpeakerIds.filter((speakerId) => {
+    const assignment = finalAssignmentById.get(speakerId);
+    return !assignment ||
+      assignment.role !== 'unknown' ||
+      assignment.roleSource !== 'unknown' ||
+      (assignment.state !== 'observing' && assignment.state !== 'contested');
+  });
+  const unsafePendingSubstantiveSpeakerIds = substantiveSpeakerIds.filter((speakerId) =>
+    unsafePendingSpeakerIds.includes(speakerId)
+  );
   const errors = messages.flatMap((message) => {
     if (message.type === 'error') return [String(message.message ?? 'unknown error')];
     if (message.type === 'asr-status' && (message.state === 'failed' || message.state === 'partial')) {
@@ -222,7 +237,7 @@ export function summarizeAsrRun(events) {
       safeEvents.indexOf(finalPartitionEvent) < safeEvents.indexOf(stoppedEvent),
     oneRolePerNativeSpeaker: mixedRoleSpeakerIds.length === 0,
     validPartitions: invalidPartitionCount === 0,
-    allSubstantiveSpeakersDelegated: pendingSubstantiveSpeakerIds.length === 0,
+    ambiguousSpeakersFailSafe: unsafePendingSubstantiveSpeakerIds.length === 0,
     autoQuestionsAnchorDelegatedCandidates: invalidAutoQuestionIds.length === 0
   };
 
@@ -251,6 +266,8 @@ export function summarizeAsrRun(events) {
     mixedRoleSpeakerIds,
     pendingSpeakerIds,
     pendingSubstantiveSpeakerIds,
+    unsafePendingSpeakerIds,
+    unsafePendingSubstantiveSpeakerIds,
     invalidPartitionCount,
     invalidAutoQuestionIds,
     qaChecks,

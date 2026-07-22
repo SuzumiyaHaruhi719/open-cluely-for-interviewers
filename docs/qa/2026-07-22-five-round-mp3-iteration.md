@@ -104,7 +104,76 @@ During visible playback, an Expert generation remained in flight after the candi
 
 ## Round 2 — B / 用户运营专家（P8）
 
-Status: pending Round 1 checkpoint.
+Status: fixed, replayed, committed, and pushed.
+
+### Run
+
+- Baseline build: `bd86c0b` (Round 1 product behavior plus its journal checkpoint).
+- Fixed product build: `c5bb7ac`.
+- Before report: `/tmp/open-cluely-five-round-20260722/round-2-before.json`.
+- After report: `/tmp/open-cluely-five-round-20260722/round-2-after.json`.
+- Exact command, with the output filename changed between runs:
+
+```bash
+node scripts/verify-live-asr.mjs --provider volc \
+  --audio /tmp/open-cluely-five-round-20260722/p7p8-16k.wav \
+  --speed 1 --auto-generate \
+  --job-description-file /tmp/open-cluely-five-round-20260722/context/p8-jd.txt \
+  --interview-guide-file /tmp/open-cluely-five-round-20260722/context/p8-guide.json \
+  --out /tmp/open-cluely-five-round-20260722/round-2-after.json
+```
+
+Both before and after runs were also replayed at 1× through `BlackHole 2ch` into the visible rebuilt app with the built-in `用户运营专家（P8）` context. The direct WebSocket run and browser capture were independent Seed ASR sessions so provider clustering differences were observable instead of hidden.
+
+### Problem encountered from the interviewer’s perspective
+
+The aggregate baseline report passed, but the visible app rendered the closing exchange as:
+
+1. 面试官：`现在在北京是吧？`
+2. **面试官：`啊对。`**
+3. 面试官：`考虑来杭州吗？`
+4. **面试官：post-interview commentary**
+
+The user would see a candidate's direct answer confidently assigned to the interviewer. The direct CLI replay happened to cluster `啊对` with the candidate, showing that the failure depended on Seed's acoustic clustering and could not be dismissed as a renderer-only typo.
+
+Using the visible role toggle as a diagnostic changed exactly three bubbles together: the opening narrator, `啊对`, and the closing commentary. This proved that Seed had placed all three in one native voiceprint and that the UI was correctly honoring the atomic voiceprint rule; the automatic cohort decision itself was wrong.
+
+### Root cause
+
+The two semantic audits and the two cohort audits allowed `unknown`, but neither prompt explicitly defined voice-over narration, intros/outros, or post-interview commentary as non-participant speech. With only interviewer/candidate examples in the prompt, both Flash layers forced a narrator-heavy native cluster into the interviewer cohort. The short `啊对` fragment was not enough to safely overturn the whole already-delegated voiceprint.
+
+The acceptance harness had a related policy mismatch: `allSubstantiveSpeakersDelegated` failed every substantive pending ID, even when the final assignment was the approved explicit `unknown/observing` fail-safe and that ID never entered Auto.
+
+### Fix
+
+- Added one shared non-participant rule to every required-turn classifier mode: narration, intro/outro voice-over, and off-interview commentary must return `unknown`, even when the words mention an interview, candidate, or outcome.
+- Added the same rule to both reversed-order whole-voiceprint cohort audits, so an atomic narrator-contaminated ID remains unresolved instead of being forced into either participant cohort.
+- Preserved the core invariant: the client still assigns one role to the complete native ID; it does not relabel `啊对` independently.
+- Replaced the harness's “every substantive ID must be delegated” gate with `ambiguousSpeakersFailSafe`. A pending substantive ID passes only when the final partition explicitly represents it as `unknown` with `observing|contested` state and `unknown` source. Missing or structurally inconsistent pending assignments still fail, and any Auto result anchored outside a delegated candidate still fails independently.
+- Added `unsafePendingSpeakerIds` and `unsafePendingSubstantiveSpeakerIds` to the machine report so safe ambiguity and an actual missing assignment are distinguishable.
+
+### Red/green evidence
+
+- Focused prompt-contract test before the product fix: `npx tsx --test test/speaker-partitioner.test.ts test/speaker-cohort.test.ts` → `55 passed, 2 failed`; neither audit input contained the non-participant rule.
+- Focused product test after the fix: the same command → `57 passed, 0 failed`.
+- Full server suite after the product fix: `269 passed, 0 failed`.
+- Harness regression before its fix: `node --test scripts/live-asr-lib.test.mjs` → the safe explicit pending fixture failed because `unsafePendingSubstantiveSpeakerIds` did not exist.
+- Harness regression after its fix: `6 passed, 0 failed`, including a counter-test where a substantive ID has no final fail-safe assignment and must still fail QA.
+- Production web/server build completed with exit code 0.
+
+### Full replay evidence
+
+- Direct after-run: lifecycle `connecting → live → finalizing → stopped`; 48 finals; 1,304 partials; 493.550 s of source streaming for 493.517 s of audio; no errors.
+- Final native IDs: `0` interviewer, `1` candidate, `2` explicit `unknown/observing` with `audit_no_consensus`; no mixed role and no invalid partition.
+- Final partition: 12 interviewer segments, 12 candidate segments, 3 unknown segments. The opening narration, one narrator-contaminated interview prompt, and the closing commentary stayed unresolved.
+- The exact direct-run boundary was `interviewer 0: 你现在在北京是吗？` → `candidate 1: 啊对。` → `interviewer 0: 考虑来杭州吗？` → `unknown 2: closing commentary`.
+- The visible BlackHole replay independently ended as `面试官` → `候选人（啊，对。）` → `面试官` → `待确认 · 说话人 2`, and capture reached the closed state after finalization.
+- Seven direct-run Auto questions were observed; every anchor belonged to the delegated candidate, all completed in 2.973–5.324 s, and none used narrator/pending evidence. The visible replay displayed four inline Auto cards with real token counts and 3.4–5.2 s latency.
+- The saved after report was re-evaluated with the corrected harness against the same immutable replay evidence: `qaPassed=true`, `pendingSubstantiveSpeakerIds=[2]`, `unsafePendingSubstantiveSpeakerIds=[]`.
+
+### Remaining evidence carried forward
+
+The replay confirmed the Round 1 observation that generated fallback dimensions can be contextually awkward, and one visible Expert generation remained in progress while later speech arrived. Those are separate candidate defects for subsequent rounds. The safe pending narrator also leaves one acoustically contaminated interviewer prompt unresolved, which is intentionally preferable to a confident wrong identity and remains manually correctable.
 
 ## Round 3 — A / 物业经理
 
