@@ -410,7 +410,7 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
   }
   function deriveReplayState({ timeMs, cues: cues2, questionEvent: questionEvent2, roleConfirmedMs: roleConfirmedMs2 }) {
     const boundedTime = Math.max(0, timeMs);
-    const visibleCues = cues2.filter((cue) => cue.startMs <= boundedTime).map((cue) => ({ ...cue, visibleText: visibleText(cue, boundedTime), isLive: boundedTime < cue.endMs }));
+    const visibleCues = cues2.filter((cue) => cue.startMs <= boundedTime).map((cue) => ({ ...cue, visibleText: visibleText(cue, boundedTime), isLive: boundedTime < cue.endMs })).filter((cue) => cue.visibleText.length > 0);
     const candidateRole = boundedTime >= roleConfirmedMs2 ? "candidate" : "pending";
     const questionVisible = boundedTime >= questionEvent2.revealMs;
     const monitorState = questionVisible ? "question-ready" : boundedTime >= questionEvent2.generatingMs ? "generating" : candidateRole === "candidate" ? "monitoring" : "waiting-candidate";

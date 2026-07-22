@@ -17,7 +17,8 @@ export function deriveReplayState({ timeMs, cues, questionEvent, roleConfirmedMs
   const boundedTime = Math.max(0, timeMs);
   const visibleCues = cues
     .filter((cue) => cue.startMs <= boundedTime)
-    .map((cue) => ({ ...cue, visibleText: visibleText(cue, boundedTime), isLive: boundedTime < cue.endMs }));
+    .map((cue) => ({ ...cue, visibleText: visibleText(cue, boundedTime), isLive: boundedTime < cue.endMs }))
+    .filter((cue) => cue.visibleText.length > 0);
   const candidateRole = boundedTime >= roleConfirmedMs ? 'candidate' : 'pending';
   const questionVisible = boundedTime >= questionEvent.revealMs;
   const monitorState = questionVisible

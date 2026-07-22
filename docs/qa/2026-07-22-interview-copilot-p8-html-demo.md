@@ -35,3 +35,17 @@
 - Green evidence: product width is now `1220px` (`95.3%` of the viewport, within `4.7%` of the live full-width surface). Browser geometry also reports no overlap between deck controls and replay footer.
 - Screenshot evidence: equal `1280×720` captures show the reconstructed workspace now occupying the same dominant visual role as the live app.
 - Remaining risk: audio timing, state reconstruction, semantics, and offline behavior remain for Rounds 3–5.
+
+## Round 3 — audio, progressive captions, pause, and seek
+
+- Reproduction: played the embedded MP3 continuously from start to end at 1×, then sampled the UI at `0`, `10`, `25`, `47.889`, `51.620`, `75`, and `100` seconds; paused for five real seconds at `48.981s`; sought `35s → 70s → 35s`.
+- Full-run evidence: browser media duration and terminal time both equal `100.409s`; the audio ended naturally with seven transcript rows, cue `p8-7`, and exactly one question.
+- Checkpoint evidence: `10s=p8-3/13 chars`, `25s=p8-4/31`, `47.889s=p8-5/generating/no question`, `51.620s=p8-5/question-ready/one question`, `75s=p8-6`, `100s=p8-7`. Every slider target matched `audio.currentTime` exactly to the millisecond.
+- Pause/seek evidence: five-second pause drift was `0ms`. At `35s` the live cue was `p8-4` with no question; at `70s` it was `p8-6` with one question; seeking back to `35s` removed the future question and restored `monitoring`.
+- First viewer-facing defect: at exactly `0.000s`, the timeline rendered a pending transcript article with an empty paragraph before the first grapheme existed.
+- Viewer impact: the first visible subtitle state looked like a failed/blank ASR result and visually led the audio instead of following it.
+- First divergent boundary: `deriveReplayState(0)` returned one empty `visibleCue`.
+- Red gate: a replay-state regression required zero rows at `0ms` and the first non-empty grapheme at `1ms`; it failed `1 !== 0` before the fix.
+- Fix: remove zero-length caption cues from visible replay state. A cue becomes a row only after its first grapheme is available.
+- Green evidence: regression passes; browser at `0ms` reports `rowCount=0`, then progressive content starts on the first audible cue. All seven time checkpoints, pause, forward seek, and backward reconstruction still pass.
+- Remaining risk: Round 4 isolates candidate-first question semantics; Round 5 covers presentation navigation and portable delivery.

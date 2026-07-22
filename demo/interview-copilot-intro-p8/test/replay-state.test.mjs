@@ -25,3 +25,9 @@ test('seeking backward reconstructs state without sticky question data', () => {
   assert.equal(stateAt(80000).questionVisible, true);
   assert.equal(stateAt(30000).questionVisible, false);
 });
+
+test('a caption row appears only after its first grapheme is audible', () => {
+  assert.equal(stateAt(0).visibleCues.length, 0);
+  assert.equal(stateAt(1).visibleCues[0].id, 'p8-1');
+  assert.ok(stateAt(1).visibleCues[0].visibleText.length > 0);
+});
