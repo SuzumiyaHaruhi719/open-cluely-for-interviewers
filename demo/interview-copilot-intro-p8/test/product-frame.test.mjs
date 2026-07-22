@@ -69,6 +69,16 @@ test('product frame replays the complete P8 source instead of the old excerpt', 
   assert.doesNotMatch(html, /01:24|audio\/mp4/);
 });
 
+test('live captions preserve the Copilot row while patching progressive text', () => {
+  assert.match(runtime, /data-live-caption="visual" aria-hidden="true"/);
+  assert.match(runtime, /class="live-caption__sr" role="status" aria-live="polite" aria-atomic="true"/);
+  assert.match(runtime, /LIVE_CAPTION_INTERVAL_MS/);
+  assert.match(runtime, /setInterval\(advanceLiveCaptions, LIVE_CAPTION_INTERVAL_MS\)/);
+  assert.match(runtime, /function patchTimelineText\(state\)/);
+  assert.match(runtime, /timelineStructureSignature\(/);
+  assert.doesNotMatch(runtime, /visibleText\.length/);
+});
+
 test('complete replay exposes a transparent and interruptible 60× fast-forward', () => {
   assert.match(html, /id="fast-forward"/);
   assert.match(html, /快进至总结/);
