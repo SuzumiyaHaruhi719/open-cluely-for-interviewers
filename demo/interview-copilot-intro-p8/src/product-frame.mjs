@@ -1,4 +1,5 @@
 import { deriveReplayState } from './replay-state.mjs';
+import { advanceFastForward } from './fast-forward.mjs';
 import {
   contextWindow,
   completeCues as cues,
@@ -12,6 +13,8 @@ const app = root.querySelector('#product-app');
 const audio = root.querySelector('#demo-audio');
 const chat = root.querySelector('#chat-messages');
 const progress = root.querySelector('#replay-progress');
+const fastForwardButton = root.querySelector('#fast-forward');
+const fastForwardLabel = root.querySelector('#fast-forward-label');
 const headerClock = root.querySelector('#header-clock');
 const dockClock = root.querySelector('#dock-clock');
 const runtimeState = root.querySelector('#runtime-state');
@@ -29,6 +32,8 @@ const noteSubmit = root.querySelector('#note-submit');
 const questionMarkup = root.querySelector('#question-card-template').innerHTML.trim();
 
 let animationFrame = 0;
+let fastForwardFrame = 0;
+let fastForwardRun = null;
 let lastTimelineSignature = '';
 let questionWasVisible = false;
 let manualQuestionVisible = false;
@@ -62,6 +67,57 @@ const icon = (id) => root.querySelector(`#${id}`)?.innerHTML.trim() ?? '';
 
 function currentTimeMs() {
   return Math.min(DEMO_DURATION_MS, Math.max(0, Math.round(audio.currentTime * 1000)));
+}
+
+function cancelFastForward() {
+  if (!fastForwardRun) return false;
+  cancelAnimationFrame(fastForwardFrame);
+  audio.muted = fastForwardRun.wasMuted;
+  fastForwardRun = null;
+  fastForwardButton.dataset.state = 'idle';
+  fastForwardLabel.textContent = '快进至总结';
+  return true;
+}
+
+function fastForwardStep(nowMs) {
+  if (!fastForwardRun) return;
+  const next = advanceFastForward({
+    fromTimeMs: fastForwardRun.fromTimeMs,
+    startedAtMs: fastForwardRun.startedAtMs,
+    nowMs,
+    durationMs: DEMO_DURATION_MS
+  });
+  audio.currentTime = next.timeMs / 1000;
+  lastTimelineSignature = '';
+  render();
+  if (next.complete) {
+    cancelFastForward();
+    render();
+    return;
+  }
+  fastForwardFrame = requestAnimationFrame(fastForwardStep);
+}
+
+function startFastForward() {
+  if (currentTimeMs() >= DEMO_DURATION_MS) {
+    manualSummaryOpen = true;
+    summaryDismissedAtCompletion = false;
+    render();
+    return;
+  }
+  cancelFastForward();
+  audio.pause();
+  cancelAnimationFrame(animationFrame);
+  fastForwardRun = {
+    fromTimeMs: currentTimeMs(),
+    startedAtMs: performance.now(),
+    wasMuted: audio.muted
+  };
+  audio.muted = true;
+  fastForwardButton.dataset.state = 'active';
+  fastForwardLabel.textContent = '60× 快进中';
+  fastForwardFrame = requestAnimationFrame(fastForwardStep);
+  render();
 }
 
 function stateAtCurrentTime() {
@@ -175,9 +231,10 @@ function applySummary(state) {
 
 function updateRuntime(state) {
   const playing = !audio.paused && !audio.ended;
+  const fastForwarding = Boolean(fastForwardRun);
   const ended = endedByUser || state.summaryVisible;
-  runtimeState.dataset.state = ended ? 'ended' : playing ? 'live' : 'idle';
-  runtimeLabel.textContent = ended ? '已结束' : playing ? '直播中' : '待录音';
+  runtimeState.dataset.state = ended ? 'ended' : fastForwarding ? 'connecting' : playing ? 'live' : 'idle';
+  runtimeLabel.textContent = ended ? '已结束' : fastForwarding ? '60× 快进中' : playing ? '直播中' : '待录音';
   headerClock.textContent = formatClock(state.timeMs);
   headerClock.dateTime = `PT${Math.floor(state.timeMs / 1000)}S`;
   const elapsedLabel = formatClock(state.timeMs, false);
@@ -186,6 +243,8 @@ function updateRuntime(state) {
   progress.value = String(state.timeMs);
   progress.style.setProperty('--replay-percent', `${(state.timeMs / DEMO_DURATION_MS) * 100}%`);
   progress.setAttribute('aria-valuetext', `${elapsedLabel} / ${durationLabel}`);
+  fastForwardButton.disabled = ended;
+  fastForwardButton.setAttribute('aria-pressed', fastForwarding ? 'true' : 'false');
   manualQuestionButton.disabled = state.candidateRole !== 'candidate' || ended;
   manualQuestionButton.title = manualQuestionButton.disabled ? '等待候选人回答后可用' : '立即根据候选人证据生成一个专家追问';
   setChannelState(candidateChannel, candidateToggle, playing);
@@ -217,6 +276,7 @@ function render() {
 }
 
 async function play() {
+  cancelFastForward();
   if (currentTimeMs() >= DEMO_DURATION_MS) {
     audio.currentTime = 0;
     endedByUser = false;
@@ -233,6 +293,7 @@ async function play() {
 }
 
 function pause() {
+  cancelFastForward();
   audio.pause();
   cancelAnimationFrame(animationFrame);
   render();
@@ -244,6 +305,7 @@ function togglePlayback() {
 }
 
 function seekTo(timeMs) {
+  cancelFastForward();
   const target = Math.min(DEMO_DURATION_MS, Math.max(0, Number(timeMs) || 0));
   audio.currentTime = target / 1000;
   endedByUser = false;
@@ -282,6 +344,7 @@ interviewerToggle.addEventListener('click', () => {
   render();
 });
 progress.addEventListener('input', () => seekTo(progress.value));
+fastForwardButton.addEventListener('click', startFastForward);
 root.querySelector('#replay-reset').addEventListener('click', () => reset({ autoplay: true }));
 
 manualQuestionButton.addEventListener('click', () => {
@@ -386,6 +449,12 @@ window.addEventListener('message', (event) => {
 });
 
 root.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && fastForwardRun) {
+    event.preventDefault();
+    cancelFastForward();
+    render();
+    return;
+  }
   if (event.key === 'Escape' && !summaryModal.hidden) {
     event.preventDefault();
     closeSummary();

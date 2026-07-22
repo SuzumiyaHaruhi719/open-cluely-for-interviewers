@@ -68,3 +68,13 @@ test('product frame replays the complete P8 source instead of the old excerpt', 
   assert.match(html, /data:audio\/mpeg;base64,__DEMO_AUDIO_BASE64__/);
   assert.doesNotMatch(html, /01:24|audio\/mp4/);
 });
+
+test('complete replay exposes a transparent and interruptible 60× fast-forward', () => {
+  assert.match(html, /id="fast-forward"/);
+  assert.match(html, /快进至总结/);
+  assert.match(runtime, /from '\.\/fast-forward\.mjs'/);
+  assert.match(runtime, /audio\.muted\s*=\s*true/);
+  assert.match(runtime, /cancelFastForward/);
+  assert.match(runtime, /60× 快进中/);
+  assert.match(css, /\.demo-fast-forward/);
+});

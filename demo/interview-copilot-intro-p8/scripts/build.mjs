@@ -83,6 +83,7 @@ const iconDefinitions = {
   '__ICON_MICROPHONE_18__': ['Microphone', { size: 18 }],
   '__ICON_LOCK_OPEN_12__': ['LockOpen', { size: 12 }],
   '__ICON_RECORD_14_FILL__': ['Record', { size: 14, weight: 'fill' }],
+  '__ICON_FAST_FORWARD_14_FILL__': ['FastForward', { size: 14, weight: 'fill' }],
   '__ICON_PAPER_PLANE_18_FILL__': ['PaperPlane', { size: 18, weight: 'fill' }],
   '__ICON_USER_15_FILL__': ['User', { size: 15, weight: 'fill', 'data-icon-library': 'phosphor' }],
   '__ICON_USERS_THREE_15_FILL__': ['UsersThree', { size: 15, weight: 'fill', 'data-icon-library': 'phosphor' }],
