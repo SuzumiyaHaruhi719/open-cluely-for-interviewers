@@ -81,7 +81,7 @@ export function resolveServerConfig(
   source: NodeJS.ProcessEnv | Record<string, string | undefined>
 ): ServerConfig {
   return {
-    port: toInt(source.PORT, 8787),
+    port: toInt(source.PORT, 8004),
     dashscopeApiKey: String(source.DASHSCOPE_API_KEY ?? '').trim(),
     dashscopeBaseUrl:
       String(source.DASHSCOPE_BASE_URL ?? '').trim() || DEFAULT_DASHSCOPE_BASE_URL,
