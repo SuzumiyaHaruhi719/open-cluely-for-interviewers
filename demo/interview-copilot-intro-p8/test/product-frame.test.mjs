@@ -30,7 +30,7 @@ test('Expert question exposes the full decision logic', () => {
 });
 
 test('context and completion summary are full product surfaces', () => {
-  for (const label of ['能力维度', '已追问主题', '仍待验证', '综合判断', '已展示信号', '风险与未验证项', '建议补充证据']) {
+  for (const label of ['能力维度', '已追问主题', '仍待验证', '完整记录 48 条', 'P8 评分模板', 'DeepSeek 专家评分']) {
     assert.match(html, new RegExp(label));
   }
   assert.match(runtime, /contextAutoOpen/);
@@ -77,4 +77,17 @@ test('complete replay exposes a transparent and interruptible 60× fast-forward'
   assert.match(runtime, /cancelFastForward/);
   assert.match(runtime, /60× 快进中/);
   assert.match(css, /\.demo-fast-forward/);
+});
+
+test('summary modal replays the real production pipeline and complete scored report', () => {
+  assert.match(html, /id="summary-pipeline"/);
+  assert.match(html, /id="summary-progress-fill"/);
+  assert.match(html, /完整记录 48 条/);
+  assert.match(html, /P8 评分模板/);
+  assert.match(html, /DeepSeek/);
+  assert.match(runtime, /from '\.\/summary-replay\.mjs'/);
+  assert.match(runtime, /startSummaryReplay/);
+  assert.match(runtime, /renderSummaryMarkdown/);
+  assert.doesNotMatch(html, /1 分 24 秒|证据不足，暂不建议下最终结论/);
+  assert.match(css, /\.summary-pipeline/);
 });

@@ -1,6 +1,11 @@
 import { deriveReplayState } from './replay-state.mjs';
 import { advanceFastForward } from './fast-forward.mjs';
 import {
+  deriveSummaryReplayState,
+  renderSummaryMarkdown,
+  summaryFixture
+} from './summary-replay.mjs';
+import {
   contextWindow,
   completeCues as cues,
   COMPLETE_DURATION_MS as DEMO_DURATION_MS,
@@ -27,6 +32,14 @@ const manualQuestionButton = root.querySelector('#manual-question');
 const contextToggle = root.querySelector('#context-toggle');
 const contextDrawer = root.querySelector('#session-context-drawer');
 const summaryModal = root.querySelector('#summary-modal');
+const summaryPipeline = root.querySelector('#summary-pipeline');
+const summaryPhaseLabel = root.querySelector('#summary-phase-label');
+const summaryProgressLabel = root.querySelector('#summary-progress-label');
+const summaryProgressFill = root.querySelector('#summary-progress-fill');
+const summaryReport = root.querySelector('#summary-report');
+const summaryStageNodes = [...root.querySelectorAll('[data-summary-stage]')];
+const summaryCopyButton = root.querySelector('#summary-copy');
+const summaryRegenerateButton = root.querySelector('#summary-regenerate');
 const noteInput = root.querySelector('#note-input');
 const noteSubmit = root.querySelector('#note-submit');
 const questionMarkup = root.querySelector('#question-card-template').innerHTML.trim();
@@ -34,6 +47,9 @@ const questionMarkup = root.querySelector('#question-card-template').innerHTML.t
 let animationFrame = 0;
 let fastForwardFrame = 0;
 let fastForwardRun = null;
+let summaryReplayFrame = 0;
+let summaryReplayStartedAt = null;
+let summaryReplayComplete = false;
 let lastTimelineSignature = '';
 let questionWasVisible = false;
 let manualQuestionVisible = false;
@@ -129,6 +145,51 @@ function stateAtCurrentTime() {
     contextWindow,
     demoDurationMs: DEMO_DURATION_MS
   });
+}
+
+function applySummaryReplayFrame(nowMs) {
+  if (summaryReplayStartedAt === null) return;
+  const state = deriveSummaryReplayState({ elapsedMs: nowMs - summaryReplayStartedAt });
+  summaryPipeline.dataset.phase = state.phase;
+  summaryPhaseLabel.textContent = state.phaseLabel;
+  summaryProgressLabel.textContent = `${Math.round(state.progress * 100)}%`;
+  summaryProgressFill.style.width = `${state.progress * 100}%`;
+  for (const node of summaryStageNodes) {
+    const index = Number(node.dataset.summaryStage);
+    node.dataset.state = index < state.stageIndex ? 'done' : index === state.stageIndex ? 'active' : 'pending';
+  }
+  summaryReport.hidden = state.visibleMarkdown.length === 0;
+  if (state.visibleMarkdown) summaryReport.innerHTML = renderSummaryMarkdown(state.visibleMarkdown);
+  summaryReplayComplete = state.phase === 'complete';
+  summaryCopyButton.disabled = !summaryReplayComplete;
+  summaryRegenerateButton.disabled = !summaryReplayComplete;
+  cancelAnimationFrame(summaryReplayFrame);
+  if (!summaryReplayComplete) summaryReplayFrame = requestAnimationFrame(applySummaryReplayFrame);
+}
+
+function startSummaryReplay({ restart = false } = {}) {
+  if (summaryReplayStartedAt !== null && !restart) return;
+  cancelAnimationFrame(summaryReplayFrame);
+  summaryReplayStartedAt = performance.now();
+  summaryReplayComplete = false;
+  summaryReport.innerHTML = '';
+  summaryReport.hidden = true;
+  applySummaryReplayFrame(summaryReplayStartedAt);
+}
+
+function resetSummaryReplay() {
+  cancelAnimationFrame(summaryReplayFrame);
+  summaryReplayStartedAt = null;
+  summaryReplayComplete = false;
+  summaryPipeline.dataset.phase = 'evidence';
+  summaryPhaseLabel.textContent = '校验完整证据';
+  summaryProgressLabel.textContent = '0%';
+  summaryProgressFill.style.width = '0%';
+  summaryReport.innerHTML = '';
+  summaryReport.hidden = true;
+  summaryCopyButton.disabled = true;
+  summaryRegenerateButton.disabled = true;
+  for (const node of summaryStageNodes) node.dataset.state = 'pending';
 }
 
 function rolePresentation(cue, state) {
@@ -227,6 +288,7 @@ function applyContext(state) {
 function applySummary(state) {
   const open = manualSummaryOpen || (state.summaryVisible && !summaryDismissedAtCompletion);
   summaryModal.hidden = !open;
+  if (open) startSummaryReplay();
 }
 
 function updateRuntime(state) {
@@ -282,6 +344,7 @@ async function play() {
     endedByUser = false;
     manualSummaryOpen = false;
     summaryDismissedAtCompletion = false;
+    resetSummaryReplay();
   }
   try {
     await audio.play();
@@ -311,6 +374,7 @@ function seekTo(timeMs) {
   endedByUser = false;
   manualSummaryOpen = false;
   summaryDismissedAtCompletion = false;
+  resetSummaryReplay();
   lastTimelineSignature = '';
   render();
 }
@@ -323,6 +387,7 @@ function reset({ autoplay = true } = {}) {
   manualContextOpen = null;
   manualSummaryOpen = false;
   summaryDismissedAtCompletion = false;
+  resetSummaryReplay();
   interviewerChannelOn = false;
   endedByUser = false;
   clearedBeforeMs = -1;
@@ -334,6 +399,7 @@ function reset({ autoplay = true } = {}) {
 
 function closeSummary() {
   manualSummaryOpen = false;
+  if (!summaryReplayComplete) resetSummaryReplay();
   if (stateAtCurrentTime().summaryVisible) summaryDismissedAtCompletion = true;
   render();
 }
@@ -375,13 +441,19 @@ root.querySelector('#context-close').addEventListener('click', () => {
 });
 
 root.querySelector('#summary-toggle').addEventListener('click', () => {
+  if (currentTimeMs() < DEMO_DURATION_MS) {
+    startFastForward();
+    return;
+  }
   manualSummaryOpen = true;
   summaryDismissedAtCompletion = false;
   render();
 });
 root.querySelector('#end-interview').addEventListener('click', () => {
-  pause();
-  endedByUser = true;
+  if (currentTimeMs() < DEMO_DURATION_MS) {
+    startFastForward();
+    return;
+  }
   manualSummaryOpen = true;
   render();
 });
@@ -391,21 +463,18 @@ summaryModal.addEventListener('mousedown', (event) => {
   if (event.target === summaryModal) closeSummary();
 });
 
-root.querySelector('#summary-copy').addEventListener('click', async (event) => {
+summaryCopyButton.addEventListener('click', async (event) => {
   const button = event.currentTarget;
-  const text = root.querySelector('#summary-report').innerText;
   try {
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(summaryFixture.reportMarkdown);
     button.textContent = '已复制';
   } catch {
     button.textContent = '请手动复制';
   }
   window.setTimeout(() => { button.textContent = '复制'; }, 1600);
 });
-root.querySelector('#summary-regenerate').addEventListener('click', (event) => {
-  const button = event.currentTarget;
-  button.textContent = '已根据当前证据更新';
-  window.setTimeout(() => { button.textContent = '重新生成'; }, 1600);
+summaryRegenerateButton.addEventListener('click', () => {
+  startSummaryReplay({ restart: true });
 });
 
 root.querySelector('#theme-toggle').addEventListener('click', () => {

@@ -12,6 +12,13 @@ const webNodeModules = path.join(repoRoot, 'web-app', 'node_modules');
 const require = createRequire(import.meta.url);
 const esbuild = require(path.join(webNodeModules, 'esbuild'));
 const copyToDownloads = process.argv.includes('--copy');
+const summaryFixture = JSON.parse(
+  await readFile(path.join(demoRoot, 'fixtures/p8-full-summary.json'), 'utf8')
+);
+const { renderSummaryMarkdown } = await import(
+  pathToFileURL(path.join(demoRoot, 'src/summary-replay.mjs'))
+);
+const summaryReportHtml = renderSummaryMarkdown(summaryFixture.reportMarkdown);
 
 const productionCssPaths = [
   'desktop-ui/theme.css',
@@ -104,7 +111,14 @@ const productionStyles = productionCssParts
 let productHtml = productFrameTemplate
   .replace('/*__PRODUCT_STYLES__*/', `${productionStyles}\n${productFrameAdditions}`)
   .replace('/*__PRODUCT_SCRIPT__*/', productBundle)
-  .replace('__DEMO_AUDIO_BASE64__', audio.toString('base64'));
+  .replace('__DEMO_AUDIO_BASE64__', audio.toString('base64'))
+  .replace('__SUMMARY_ELAPSED_SECONDS__', (summaryFixture.elapsedMs / 1000).toFixed(1))
+  .replace('__SUMMARY_MODEL__', summaryFixture.model)
+  .replace('__SUMMARY_INPUT_TOKENS__', Number(summaryFixture.usage.input).toLocaleString('en-US'))
+  .replace('__SUMMARY_OUTPUT_TOKENS__', Number(summaryFixture.usage.output).toLocaleString('en-US'))
+  .replace('__SUMMARY_TRANSCRIPT_CHARS__', Number(summaryFixture.transcriptCharacters).toLocaleString('en-US'))
+  .replace('__SUMMARY_PROMPT_HASH_SHORT__', summaryFixture.promptSha256.slice(0, 8))
+  .replace('__SUMMARY_REPORT_HTML__', summaryReportHtml);
 
 for (const [token, [componentName, props]] of Object.entries(iconDefinitions)) {
   productHtml = productHtml.replaceAll(token, renderIcon(componentName, props));

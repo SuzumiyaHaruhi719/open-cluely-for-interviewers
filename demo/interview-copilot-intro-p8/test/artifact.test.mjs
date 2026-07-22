@@ -22,6 +22,13 @@ test('built artifact is a complete offline P8 introduction', async () => {
   assert.match(productFrame, /预期证据/);
   assert.match(productFrame, /class="one-shot-app one-shot-app--live"/);
   assert.match(productFrame, /class="summary-modal"/);
+  assert.match(productFrame, /deepseek-v4-pro/);
+  assert.match(productFrame, /2,600 词元输入/);
+  assert.match(productFrame, /1,119 词元输出/);
+  assert.match(productFrame, /综合结论与录用建议/);
+  assert.match(productFrame, /能力维度评分/);
+  assert.match(productFrame, /不推荐录用/);
+  assert.doesNotMatch(productFrame, /1 分 24 秒|证据不足，暂不建议下最终结论/);
   assert.match(productFrame, /真实产品数据回放/);
   assert.match(html, /data:image\/png;base64,[A-Za-z0-9+/=]+/);
   assert.match(html, /GLP-dark 设计令牌 \(v2\.0\)/);
