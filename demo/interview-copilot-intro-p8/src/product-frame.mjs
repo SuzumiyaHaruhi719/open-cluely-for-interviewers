@@ -179,8 +179,12 @@ function updateRuntime(state) {
   runtimeLabel.textContent = ended ? '已结束' : playing ? '直播中' : '待录音';
   headerClock.textContent = formatClock(state.timeMs);
   headerClock.dateTime = `PT${Math.floor(state.timeMs / 1000)}S`;
-  dockClock.textContent = `${formatClock(state.timeMs, false)} / ${formatClock(DEMO_DURATION_MS, false)}`;
+  const elapsedLabel = formatClock(state.timeMs, false);
+  const durationLabel = formatClock(DEMO_DURATION_MS, false);
+  dockClock.textContent = `${elapsedLabel} / ${durationLabel}`;
   progress.value = String(state.timeMs);
+  progress.style.setProperty('--replay-percent', `${(state.timeMs / DEMO_DURATION_MS) * 100}%`);
+  progress.setAttribute('aria-valuetext', `${elapsedLabel} / ${durationLabel}`);
   manualQuestionButton.disabled = state.candidateRole !== 'candidate' || ended;
   manualQuestionButton.title = manualQuestionButton.disabled ? '等待候选人回答后可用' : '立即根据候选人证据生成一个专家追问';
   setChannelState(candidateChannel, candidateToggle, playing);

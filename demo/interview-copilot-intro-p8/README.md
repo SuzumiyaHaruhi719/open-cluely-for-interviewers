@@ -12,7 +12,7 @@ This folder builds a portable, offline HTML slide deck around one verified produ
 
 The P8 content and player are maintained separately from the visual shell. A design change cannot silently alter the audio source, transcript checkpoints, speaker roles, or Expert-question timing.
 
-Slide 4 embeds the complete product workspace as an offline `data:text/html;base64` iframe. It is not a screenshot or a presentation drawing: the real MP3 controls character-level transcript growth, the full question card is interactive, the session-context drawer opens automatically from `42.000s` through `46.999s`, and the evidence-limited summary opens at logical replay completion.
+Slide 4 embeds the complete product workspace as an offline `data:text/html;base64` iframe. It is not a screenshot or a presentation drawing: the real MP3 controls character-level transcript growth, the full-width replay timeline stays visible at every embedded width and supports drag-to-seek, the full question card is interactive, the session-context drawer opens automatically from `42.000s` through `46.999s`, and the evidence-limited summary opens at logical replay completion.
 
 ## Replay provenance
 
@@ -32,6 +32,7 @@ Slide 4 embeds the complete product workspace as an offline `data:text/html;base
 - Verified question: `你提到为了拿到全网最低价，会停止与其他竞品合作。这个排他策略如何验证带来的是增量，而不是平台对单一品牌的依赖？`
 - Why the question: the answer proposes an exclusion-for-lowest-price strategy without proving incremental value, controlling single-brand dependence, or defining an exit condition
 - Expected evidence: increment baselines, comparison design, dependency thresholds, negotiation/exit mechanics, and proof of the candidate's own decision ownership
+- Replay progress: persistent GLP timeline with elapsed/total time, played-state fill, drag-to-seek, and replay reset
 - Automatic context: `[42.000s, 47.000s)` (exactly five seconds)
 - Automatic summary: demonstrated signals, unverified risks, and next evidence; it explicitly avoids a final hiring conclusion from this excerpt
 

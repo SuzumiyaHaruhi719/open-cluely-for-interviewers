@@ -52,3 +52,11 @@ test('backward seeking after completion resumes from the selected time', () => {
   assert.match(runtime, /if\s*\(currentTimeMs\(\)\s*>=\s*DEMO_DURATION_MS\)/);
   assert.doesNotMatch(runtime, /if\s*\(audio\.ended\s*\|\|/);
 });
+
+test('replay progress remains visible and informative inside the embedded product', () => {
+  assert.match(html, /class="interview-dock__recording demo-replay-timeline"/);
+  assert.match(css, /\.demo-replay-timeline\s*\{[^}]*display:\s*grid[^}]*position:\s*absolute[^}]*left:\s*24px[^}]*right:\s*24px/s);
+  assert.match(css, /\.demo-replay-scrubber\s*\{[^}]*--replay-percent:/s);
+  assert.match(runtime, /progress\.style\.setProperty\('--replay-percent'/);
+  assert.match(runtime, /progress\.setAttribute\('aria-valuetext'/);
+});
