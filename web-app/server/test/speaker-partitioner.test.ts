@@ -602,6 +602,7 @@ test('a voiceprint delegated late cannot reopen an answer that a confirmed inter
 test('semantic interviewer consensus closes stale candidate evidence even while that interviewer voiceprint stays pending', async () => {
   const candidates: number[] = [];
   const interviewers: number[] = [];
+  const answerBoundaries: number[] = [];
   let classifyCalls = 0;
   let candidateDelegated = false;
   const observing = () => ({
@@ -651,6 +652,7 @@ test('semantic interviewer consensus closes stale candidate evidence even while 
     applySpeakerRole: (_speakerId, role) => role,
     onCandidateTurn: (turn) => candidates.push(turn.seq),
     onInterviewerTurn: (turn) => interviewers.push(turn.seq),
+    onAnswerBoundary: () => answerBoundaries.push(answerBoundaries.length),
     onPartition: () => {}
   });
   p.setEnabled(true);
@@ -661,6 +663,7 @@ test('semantic interviewer consensus closes stale candidate evidence even while 
   await p.flush();
   assert.deepEqual(interviewers, [], 'pending native identity must not enter role-sensitive callbacks');
   assert.deepEqual(candidates, []);
+  assert.equal(answerBoundaries.length, 2, 'each newly proven pending interviewer turn closes one answer window');
 
   p.record({ seq: 3, source: 'mic', speakerId: 9, text: '针对新题，我先区分功能诉求和利益诉求并建立基线。' });
   p.record({ seq: 4, source: 'mic', speakerId: 9, text: '随后用留存、访问频率和转化率验证频道心智是否形成。' });
@@ -668,6 +671,7 @@ test('semantic interviewer consensus closes stale candidate evidence even while 
   await p.flush();
 
   assert.deepEqual(candidates, [3, 4, 5]);
+  assert.equal(answerBoundaries.length, 2, 'a repeated partition refresh must not close the same boundary twice');
 });
 
 test('final weak-correction threshold actively keeps a native voiceprint unknown', async () => {

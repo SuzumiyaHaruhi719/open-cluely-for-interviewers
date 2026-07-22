@@ -116,6 +116,8 @@ export interface SpeakerPartitionerDeps {
   resolveTurnRole?: (speakerId: number, role: SpeakerRole) => SpeakerRole;
   onCandidateTurn: (turn: SpeakerTurn) => void;
   onInterviewerTurn?: (turn: SpeakerTurn) => void;
+  /** Suppression-only semantic boundary for a still-pending native interviewer voiceprint. */
+  onAnswerBoundary?: () => void;
   onPartition: (partition: SpeakerPartition) => void;
   /** Monotonic test seam used for assignment timestamps relative to reset. */
   now?: () => number;
@@ -1080,7 +1082,7 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
       // it can only suppress an old Auto question, never release evidence or
       // label the speaker. This prevents late candidate cohort delegation from
       // replaying answers that a newer interviewer question already superseded.
-      if (deps.onInterviewerTurn) {
+      if (deps.onInterviewerTurn || deps.onAnswerBoundary) {
         for (const [seq, semantic] of roleByTurn) {
           if (semantic.role !== 'interviewer') continue;
           const turn = snapshot.find((candidate) => candidate.seq === seq);
@@ -1092,6 +1094,12 @@ export function createSpeakerPartitioner(deps: SpeakerPartitionerDeps): SpeakerP
           // question inside an answer). Pending/unknown or interviewer cohorts may
           // still provide the conservative closure boundary.
           if (nativeAssignment?.role === 'candidate') continue;
+          if (
+            seq > latestClosedAnswerSeq &&
+            nativeAssignment?.role !== 'interviewer'
+          ) {
+            deps.onAnswerBoundary?.();
+          }
           latestClosedAnswerSeq = Math.max(latestClosedAnswerSeq, seq);
         }
       }

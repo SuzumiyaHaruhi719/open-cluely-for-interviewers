@@ -345,6 +345,13 @@ export function useCopilotSocket(): CopilotSocket {
   // Live capture handles + per-source frame sequence counters.
   const captureRef = useRef<Record<AudioSource, CaptureHandle | null>>({ mic: null, display: null });
   const seqRef = useRef<Record<AudioSource, number>>({ mic: 0, display: 0 });
+  // Wall-clock origin for the provider's per-capture startTimeMs. A Stop/Start
+  // creates a new provider timeline, so each source must be rebased independently
+  // instead of treating its raw offset as relative to the whole interview.
+  const audioTimelineBaseRef = useRef<Record<AudioSource, number | null>>({
+    mic: null,
+    display: null
+  });
   // A new interview can reset the UI before the old provider's bounded drain
   // finishes. Quarantine those late transcript/status frames until a locally
   // requested fresh Start is acknowledged by connecting/live.
@@ -355,7 +362,7 @@ export function useCopilotSocket(): CopilotSocket {
   const roleOverrideRef = useRef<Map<number, SpeakerRole>>(new Map());
   const speakerAssignmentsRef = useRef<Map<number, SpeakerAssignment>>(new Map());
   const segSeqRef = useRef(0);
-  // Preserve the arrival time of EVERY raw final by its server-aligned sequence.
+  // Preserve the audio-aligned wall time of EVERY raw final by its server sequence.
   // Visible provisional bubbles may coalesce consecutive finals and discard a
   // bubble id; a later semantic partition can split them again and needs each
   // original timestamp rather than the much later partition arrival time.
@@ -597,7 +604,15 @@ export function useCopilotSocket(): CopilotSocket {
           return { ...prev, [source]: next };
         });
         const finalSeq = isFinal ? segSeqRef.current++ : null;
-        const finalAt = finalSeq === null ? null : Date.now();
+        const providerStartMs =
+          typeof message.startTimeMs === 'number' ? message.startTimeMs : null;
+        const audioTimelineBase = audioTimelineBaseRef.current[source];
+        const finalAt =
+          finalSeq === null
+            ? null
+            : providerStartMs !== null && audioTimelineBase !== null
+              ? audioTimelineBase + providerStartMs
+              : Date.now();
         if (finalSeq !== null && finalAt !== null) {
           finalTurnTimesRef.current.set(finalSeq, finalAt);
           finalTurnEvidenceRef.current.set(finalSeq, {
@@ -649,6 +664,19 @@ export function useCopilotSocket(): CopilotSocket {
           suppressAudioEventsRef.current[message.source] = false;
           freshAudioStartPendingRef.current[message.source] = false;
           suppressSpeakerPartitionsRef.current = false;
+        }
+        // A provider terminal state cannot extend its rolling hypothesis any
+        // further. Keep committed finals, but remove the transient caption so
+        // `输入中…` never survives after the capture card has closed or failed.
+        if (
+          message.state === 'stopped' ||
+          message.state === 'partial' ||
+          message.state === 'failed'
+        ) {
+          setTranscripts((prev) => ({
+            ...prev,
+            [message.source]: { ...prev[message.source], partial: '' }
+          }));
         }
         setAudio((prev) => ({
           ...prev,
@@ -975,6 +1003,7 @@ export function useCopilotSocket(): CopilotSocket {
       captureRef.current[source] = null;
       if (handle) handle.stop();
       seqRef.current[source] = 0;
+      audioTimelineBaseRef.current[source] = null;
       send({ type: 'audio-control', action: 'stop', source });
     }
     suppressSpeakerPartitionsRef.current = true;
@@ -993,15 +1022,30 @@ export function useCopilotSocket(): CopilotSocket {
       if (options?.skipLocalCapture) {
         // Simulation has no permission/media setup, so its server session can
         // start immediately.
+        audioTimelineBaseRef.current[source] = Date.now();
         send({ type: 'audio-control', action: 'start', source });
         captureRef.current[source] = { stop: () => {} };
         setAudioState(source, { capturing: true, level: 0 });
         return;
       }
 
+      // A virtual loopback can be locally ready while producing no PCM at all
+      // (for example, the interviewer starts capture before the meeting speaks).
+      // Seed ASR closes a socket that receives no packet for roughly eight
+      // seconds, so a real provider session must begin with the first actual
+      // worklet frame rather than merely with successful media permission.
+      let upstreamStarted = false;
       try {
         const handle = await startCapture(source, {
           onFrame: (pcm) => {
+            if (!upstreamStarted) {
+              audioTimelineBaseRef.current[source] = Date.now();
+              upstreamStarted = send({ type: 'audio-control', action: 'start', source });
+              if (!upstreamStarted) {
+                audioTimelineBaseRef.current[source] = null;
+                return;
+              }
+            }
             const seq = seqRef.current[source]++;
             send({ type: 'audio', seq, source, pcm });
           },
@@ -1015,10 +1059,8 @@ export function useCopilotSocket(): CopilotSocket {
           return;
         }
         captureRef.current[source] = handle;
-        // Browser permission prompts can remain open longer than an upstream
-        // recognizer's idle timeout. Open ASR only after local media is ready;
-        // an early worklet frame is still safe because the relay starts lazily.
-        send({ type: 'audio-control', action: 'start', source });
+        // `capturing` describes the local graph. The server stays unopened until
+        // onFrame above, avoiding an upstream idle-timeout during a silent start.
         setAudioState(source, { capturing: true });
       } catch (err) {
         // User cancelled/denied or unsupported — surface friendly, don't crash.
@@ -1065,6 +1107,7 @@ export function useCopilotSocket(): CopilotSocket {
     finalTurnTimesRef.current.clear();
     finalTurnEvidenceRef.current.clear();
     finalTurnAudioStartsRef.current.clear();
+    audioTimelineBaseRef.current = { mic: null, display: null };
   }, []);
 
   // Reset the live conversation to a clean slate for a NEW interview so the

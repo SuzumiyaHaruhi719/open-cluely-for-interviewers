@@ -66,7 +66,7 @@ export interface AutoTriggerDeps {
     focusHint: string;
     anchorSeq?: number;
     monitorTokensUsed?: TokenUsage;
-  }) => Promise<void>;
+  }) => Promise<boolean | void>;
   /** Immediately terminate the visible autonomous attempt when speech/Stop/reset invalidates it. */
   onAutoInvalidated?: () => void;
   /** Credential-free lifecycle for the existing GLP Auto pill. */
@@ -252,6 +252,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   let isGenerating = false;
   let activeAuto = false;
   let consecutiveMonitorWaits = 0;
+  // An interviewer needs one best suggestion for the answer in front of them,
+  // not a new card every cooldown while the candidate keeps talking. Only a
+  // semantic interviewer boundary opens another automatic-suggestion window.
+  let suggestionDeliveredForAnswer = false;
 
   // Firing mode + recent transcript bookkeeping. `latestText` is the full recent
   // transcript across all speakers; generation content is candidate-only and
@@ -318,6 +322,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     if (!autoGenerate) return false;
     if (!capturing) return false;
     if (isGenerating) return false;
+    if (suggestionDeliveredForAnswer) return false;
     if (now() - lastGenAt < cfg.cooldownMs) return false;
     if (text.length - charsAtLastGen < cfg.minNewChars) return false;
     return true;
@@ -372,7 +377,13 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
   }
 
   async function intervalTick(): Promise<void> {
-    if (!autoGenerate || mode !== 'interval' || isGenerating || !capturing) return;
+    if (
+      !autoGenerate ||
+      mode !== 'interval' ||
+      isGenerating ||
+      !capturing ||
+      suggestionDeliveredForAnswer
+    ) return;
     if (now() - lastSpeechAt < cfg.debounceMs) return;
     // Fire from ONLY the transcript since the last follow-up. If nothing new was
     // said by the candidate since then, skip this tick — generating from the
@@ -381,9 +392,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     const text = firedRaw.trim();
     if (!text) return;
     const startEpoch = epoch;
+    let delivered = false;
     isGenerating = true;
     try {
-      await runAnalyze({
+      const analyzeResult = await runAnalyze({
         candidateAnswer: text,
         interviewerContext,
         focusHint: '',
@@ -391,6 +403,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
           ? { anchorSeq: latestCandidateAnchor }
           : {})
       });
+      delivered = analyzeResult !== false;
     } catch {
       /* analyze failures are handled by the caller's path; never disrupt the relay */
     } finally {
@@ -398,7 +411,10 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       // abandoned chat — do NOT advance the cooldown for the new chat.
       if (epoch === startEpoch) {
         recordFire(latestCandidateText || latestText);
-        consumeSinceFire(firedRaw);
+        if (delivered) {
+          suggestionDeliveredForAnswer = true;
+          consumeSinceFire(firedRaw);
+        }
       }
       isGenerating = false;
     }
@@ -425,6 +441,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     const candidateWindow = firedRaw.trim() || text.trim();
     const interviewerWindow = interviewerContext;
     let delegated = false;
+    let delivered = false;
     isGenerating = true;
     activeAuto = true;
     const monitorStartedAt = now();
@@ -467,19 +484,23 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
       consecutiveMonitorWaits = 0;
       delegated = true;
       emitMonitorState('delegating', monitorStartedAt);
-      await runAnalyze({
+      const analyzeResult = await runAnalyze({
         candidateAnswer: candidateWindow,
         interviewerContext: interviewerWindow,
         focusHint: decision.focusHint,
         ...(typeof anchorSeq === 'number' ? { anchorSeq } : {}),
         ...(decision.tokensUsed ? { monitorTokensUsed: decision.tokensUsed } : {})
       });
+      delivered = analyzeResult !== false;
     } catch {
       /* monitor/analyze failures are fail-closed and never disrupt the relay */
     } finally {
       if (delegated && epoch === startEpoch) {
         recordFire(text);
-        consumeSinceFire(firedRaw);
+        if (delivered) {
+          suggestionDeliveredForAnswer = true;
+          consumeSinceFire(firedRaw);
+        }
       }
       activeAuto = false;
       isGenerating = false;
@@ -527,6 +548,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     lastSpeechAt = now();
     clearPending();
     consecutiveMonitorWaits = 0;
+    suggestionDeliveredForAnswer = false;
     // A confirmed interviewer turn is the semantic cancellation boundary. It
     // invalidates the old autonomous chain while raw audio never does.
     if (activeAuto) onAutoInvalidated();
@@ -632,6 +654,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     isGenerating = true;
     activeAuto = false;
     consecutiveMonitorWaits = 0;
+    suggestionDeliveredForAnswer = true;
     lastGenAt = now();
     if (typeof fullCandidateText === 'string') {
       const text = fullCandidateText.trim();
@@ -671,6 +694,7 @@ export function createAutoTrigger(deps: AutoTriggerDeps): AutoTrigger {
     latestCandidateAnchor = undefined;
     candidateRevision = 0;
     consecutiveMonitorWaits = 0;
+    suggestionDeliveredForAnswer = false;
     interviewerContext = '';
     candidateStartedSinceInterviewer = false;
     sinceFire = '';

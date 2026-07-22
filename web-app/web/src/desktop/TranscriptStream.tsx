@@ -492,14 +492,11 @@ export function TranscriptStream({
   // (native cluster labels must remain editable). Pure online with a non-diarizing provider
   // (paraformer/volc) has no segments → falls through to the two-lane view.
   const showSpeakers = offline || (speakerSegments?.length ?? 0) > 0;
-  const visibleSegments = (speakerSegments ?? []).map((segment) =>
-    Number.isFinite(segment.audioStartMs) && Number.isFinite(startedAtMs)
-      ? {
-          ...segment,
-          createdAtMs: (startedAtMs as number) + (segment.audioStartMs as number)
-        }
-      : segment
-  );
+  // The socket layer already rebases provider-relative utterance offsets onto
+  // the wall-clock origin of each capture cycle. Use that absolute timestamp as
+  // the single ordering/display source; reapplying raw `audioStartMs` here would
+  // rewind a Stop/Start capture back to the beginning of the interview.
+  const visibleSegments = speakerSegments ?? [];
   const questionAnchorIds = new Map(
     questionEvents.map((event) => [event.id, containingSegmentId(event.anchorSeq, visibleSegments)])
   );

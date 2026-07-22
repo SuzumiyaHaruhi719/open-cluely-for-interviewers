@@ -1225,6 +1225,7 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
             isStale: () => trigger.getEpoch() !== startEpoch
           });
           if (emittedQuestion) mergeQuestionHistory(sessionQuestionHistory, [emittedQuestion]);
+          return emittedQuestion !== null;
         } finally {
           if (visibleAutoRequestId === requestId) visibleAutoRequestId = null;
           // Drop our own entry on settle (the Map only holds genuinely in-flight ids).
@@ -1252,6 +1253,10 @@ export function attachWebSocket(httpServer: HttpServer): WebSocketServer {
         handledSemanticInterviewerSeqs.add(turn.seq);
         trigger.onInterviewerFinal(turn.text);
       },
+      // Two semantic passes can safely prove that an old answer is closed even
+      // while a new panelist's native voiceprint remains pending. Cancel/reset
+      // Auto without using that unconfirmed speech as interviewer prompt text.
+      onAnswerBoundary: () => trigger.onInterviewerFinal(''),
       onPartition: (partition) => {
         send(ws, { type: 'speaker-partition', ...partition });
       }

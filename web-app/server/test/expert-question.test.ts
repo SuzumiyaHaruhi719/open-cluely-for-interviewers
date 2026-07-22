@@ -164,6 +164,24 @@ test('fallback rotates to trade-off evidence after ownership and measurement wer
   assert.ok(result.output.anchor_quotes.every((anchor) => candidateAnswer.includes(anchor)));
 });
 
+test('fallback asks for a comparable real case when a situational answer is entirely hypothetical', async () => {
+  const candidateAnswer =
+    '如果群众和维修人员发生冲突，我会先亮明身份并拉开双方，然后会询问水管反复破裂的原因；如果资金不足，我会协调物业申请资金并加强后续巡检。';
+  const result = await generateExpertQuestion(
+    {
+      ...INPUT,
+      candidateAnswer,
+      questionHistory: ['当时哪个关键决策最能证明这是你亲自主导的？']
+    },
+    { chat: async () => { throw new Error('timeout'); } }
+  );
+
+  assert.equal(result.fellBack, true);
+  assert.match(result.output.primary_question, /亲自处理过.*相似/);
+  assert.doesNotMatch(result.output.primary_question, /量化指标|可归因增量/);
+  assert.ok(result.output.anchor_quotes.every((anchor) => candidateAnswer.includes(anchor)));
+});
+
 test('rejects accidental English clauses in Chinese mode while allowing source acronyms', async () => {
   const mixed = await generateExpertQuestion(INPUT, {
     chat: async () => JSON.stringify({

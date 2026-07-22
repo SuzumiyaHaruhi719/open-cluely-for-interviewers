@@ -110,6 +110,16 @@ function fallbackOutput(input: ExpertQuestionInput, answer: string): FollowUpOut
   const askedTradeoff = /替代方案|取舍|放弃|止损/.test(history);
   const hasMeasurableClaim = /\d|万|亿|百分比|增长|降低|提升|转化|留存|复购|roi|gmv|数据|实验|验证/i.test(answer);
   const hasTradeoffClaim = /风险|取舍|放弃|替代|先期|前期|成本|预算|资源|竞争|嫁衣|阶段/.test(answer);
+  const hypotheticalSignals = answer.match(/(?:如果|假如|我会|我将|将会|会先|会立即|应该)/g)?.length ?? 0;
+  const hasActualCaseSignal = /(?:我曾经|我曾|我实际|当时我|我亲自处理过|我负责过|最终(?:将|把|使)|结果(?:是|为)|已经)/.test(answer);
+  const isHypotheticalScenario = hypotheticalSignals >= 2 && !hasActualCaseSignal;
+
+  const realCase: FallbackProbe = {
+    question: (quote) =>
+      `你提到“${quote}”，请讲一次你亲自处理过的相似事件，其中最关键的决定是什么？`,
+    rationale: '候选人当前只给出假设性处理流程，先验证其是否有可迁移的真实经历和个人决策。',
+    expected: '一项真实相似事件、候选人的关键决定和个人责任边界'
+  };
 
   const measurement: FallbackProbe = {
     question: (quote) =>
@@ -137,7 +147,9 @@ function fallbackOutput(input: ExpertQuestionInput, answer: string): FollowUpOut
   };
 
   const probe =
-    hasMeasurableClaim && !askedMeasurement
+    isHypotheticalScenario
+      ? realCase
+      : hasMeasurableClaim && !askedMeasurement
       ? measurement
       : hasTradeoffClaim && !askedTradeoff
         ? tradeoff

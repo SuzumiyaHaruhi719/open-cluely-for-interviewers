@@ -71,7 +71,7 @@ test('renders a stable elapsed timestamp beside a finalized speaker turn', () =>
   expect(screen.getByText('00:00:03').tagName).toBe('TIME');
 });
 
-test('prefers the provider utterance offset over delayed final arrival time', () => {
+test('uses the socket-rebased absolute timestamp instead of recalculating the raw provider offset', () => {
   render(
     <TranscriptStream
       startedAtMs={1_000}
@@ -96,7 +96,35 @@ test('prefers the provider utterance offset over delayed final arrival time', ()
     />
   );
 
-  expect(screen.getByText('00:00:12')).toBeInTheDocument();
+  expect(screen.getByText('00:01:10')).toBeInTheDocument();
+});
+
+test('keeps a rebased absolute timestamp after capture restarts instead of rewinding to the raw provider offset', () => {
+  render(
+    <TranscriptStream
+      startedAtMs={1_000}
+      speakerSegments={[
+        {
+          id: 1,
+          speakerId: 7,
+          role: 'candidate',
+          roleSource: 'cohort',
+          text: '重新连接后的候选人回答',
+          createdAtMs: 241_000,
+          audioStartMs: 12_340
+        }
+      ]}
+      transcripts={EMPTY_LANES}
+      transcriptMessages={[]}
+      lastResult={null}
+      progress={null}
+      isAnalyzing={false}
+      error={null}
+      autoScroll={false}
+    />
+  );
+
+  expect(screen.getByText('00:04:00')).toBeInTheDocument();
 });
 
 test('shows the current elapsed time for the active partial caption', () => {

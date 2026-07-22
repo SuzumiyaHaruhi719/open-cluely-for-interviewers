@@ -407,6 +407,33 @@ describe('useCopilotSocket', () => {
     expect(result.current.audio.mic.notice).toBe('转写已保存；最后一小段可能未确认。');
   });
 
+  test('terminal ASR status clears an unconfirmed live partial after capture closes', async () => {
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    act(() => {
+      MockWebSocket.last().emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '停止时未成为最终句的尾音',
+        isFinal: false
+      });
+    });
+    expect(result.current.transcripts.mic.partial).toBe('停止时未成为最终句的尾音');
+
+    act(() => {
+      MockWebSocket.last().emit({
+        type: 'asr-status',
+        source: 'mic',
+        provider: 'volc',
+        state: 'stopped'
+      });
+    });
+
+    expect(result.current.transcripts.mic.partial).toBe('');
+  });
+
   test('a new audio session drops stale provider state and ignores late events until the fresh ASR connects', async () => {
     const { result } = renderHook(() => useCopilotSocket());
     act(() => MockWebSocket.last().open());
@@ -524,13 +551,15 @@ describe('useCopilotSocket', () => {
     expect(result.current.audio.mic).toMatchObject({ capturing: true, error: null });
   });
 
-  test('normal microphone capture waits for browser media before opening the upstream ASR session', async () => {
+  test('normal microphone capture waits for its first PCM frame before opening the upstream ASR session', async () => {
     let resolveCapture!: (handle: { stop: () => void }) => void;
-    startCaptureMock.mockReturnValue(
-      new Promise((resolve) => {
+    let emitFrame!: (pcm: string) => void;
+    startCaptureMock.mockImplementation((_source, callbacks) => {
+      emitFrame = callbacks.onFrame;
+      return new Promise((resolve) => {
         resolveCapture = resolve;
-      })
-    );
+      });
+    });
     const { result } = renderHook(() => useCopilotSocket());
     act(() => {
       MockWebSocket.last().open();
@@ -549,12 +578,57 @@ describe('useCopilotSocket', () => {
       await starting;
     });
 
-    expect(JSON.parse(socket.sent.at(-1) as string)).toEqual({
+    expect(socket.sent).toHaveLength(0);
+    expect(result.current.audio.mic).toMatchObject({ capturing: true, error: null });
+
+    act(() => emitFrame('AA=='));
+
+    expect(socket.sent.map((frame) => JSON.parse(frame as string))).toEqual([{
       type: 'audio-control',
       action: 'start',
       source: 'mic'
+    }, {
+      type: 'audio',
+      seq: 0,
+      source: 'mic',
+      pcm: 'AA=='
+    }]);
+  });
+
+  test('rebases provider-relative transcript time onto every local capture cycle', async () => {
+    let emitFrame!: (pcm: string) => void;
+    startCaptureMock.mockImplementation((_source, callbacks) => {
+      emitFrame = callbacks.onFrame;
+      return Promise.resolve({ stop: vi.fn() });
     });
-    expect(result.current.audio.mic.capturing).toBe(true);
+    const now = vi.spyOn(Date, 'now').mockReturnValue(100_000);
+    const { result } = renderHook(() => useCopilotSocket());
+    act(() => MockWebSocket.last().open());
+    await waitFor(() => expect(result.current.status).toBe('open'));
+
+    await act(async () => {
+      await result.current.startAudio('mic');
+    });
+    act(() => emitFrame('AA=='));
+
+    now.mockReturnValue(200_000);
+    act(() => {
+      MockWebSocket.last().emit({
+        type: 'transcript',
+        source: 'mic',
+        text: '重连后返回的句子',
+        isFinal: true,
+        speakerId: 4,
+        speaker: 'unknown',
+        startTimeMs: 12_340
+      });
+    });
+
+    await waitFor(() => expect(result.current.speakerSegments).toHaveLength(1));
+    expect(result.current.speakerSegments[0]).toMatchObject({
+      createdAtMs: 112_340,
+      audioStartMs: 12_340
+    });
   });
 
   test('speakerSegments: online finals (no speakerId) add nothing; offline finals (numeric speakerId) append one labelled segment', async () => {

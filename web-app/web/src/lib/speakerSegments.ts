@@ -8,7 +8,7 @@ export interface SpeakerSegment {
   text: string;
   /** Client arrival time for the first FINAL folded into this visible turn. */
   createdAtMs?: number;
-  /** ASR utterance start relative to capture, immune to delayed final delivery. */
+  /** Raw ASR utterance start relative to its capture cycle (diagnostic only). */
   audioStartMs?: number;
 }
 
