@@ -10,7 +10,7 @@ import {
   questionEvent
 } from '../src/timeline.mjs';
 
-test('P8 replay is one ordered 84-second candidate-first proof from the exact demo audio', () => {
+test('legacy 84-second pure-state fixture remains deterministic for replay-state regression coverage', () => {
   assert.equal(SOURCE_PROFILE_ID, 'user-operations-p8');
   assert.equal(SOURCE_START_SECONDS, 392.2);
   assert.equal(SOURCE_END_SECONDS, 476.2);
