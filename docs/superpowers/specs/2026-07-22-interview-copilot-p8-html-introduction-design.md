@@ -291,9 +291,13 @@ demo/interview-copilot-intro-p8/
   src/index.template.html
   src/styles.css
   src/timeline.mjs
+  src/replay-state.mjs
+  src/deck.mjs
   src/player.mjs
+  src/entry.mjs
   scripts/build.mjs
   test/timeline.test.mjs
+  test/replay-state.test.mjs
   test/artifact.test.mjs
   dist/Interview Copilot P8 Complete Introduction.html
 ```
