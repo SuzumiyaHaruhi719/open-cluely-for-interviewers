@@ -306,8 +306,73 @@ The visible replay produced two related questions only 40 seconds apart against 
 
 ## Round 5 — A / 物业经理
 
-Status: pending Round 4 checkpoint.
+Status: fixed, replayed, verified, committed, and pushed.
+
+### Run
+
+- Baseline build: `5e50d4a`.
+- Fixed product build: `516da90`.
+- Before report: `/tmp/open-cluely-five-round-20260722/round-5-before.json`.
+- Rejected intermediate report: `/tmp/open-cluely-five-round-20260722/round-5-intermediate.json`.
+- Final after report: `/tmp/open-cluely-five-round-20260722/round-5-after.json`.
+- The direct after-run and the visible BlackHole replay both used the complete 00:07:24 property fixture at 1× with the built-in `物业经理` context.
+
+### Problems encountered from the interviewer’s perspective
+
+This round exposed five connected lifecycle and usefulness defects rather than accepting the baseline aggregate pass:
+
+1. Starting the microphone against a silent BlackHole cable opened Seed ASR immediately. Eight seconds later the product displayed `[Timeout waiting next packet]`, and beginning the MP3 afterward did not recover without a manual Stop/Start.
+2. After that manual restart, transcript time visibly rewound: an existing row at `00:04:43` was followed by new speech at `00:00:11`. The interview script was no longer chronological.
+3. The long third answer received two Auto cards before the interviewer moved on. Both questions could be defensible alone, but an interviewer had to choose between competing suggestions while still listening.
+4. The first implementation prevented duplicate cards but its deterministic fallback asked which attribution baseline proved incremental impact for a hypothetical conflict-mediation plan. It sounded analytical without matching the evidence the candidate could reasonably provide, so that intermediate replay was rejected.
+5. At the end of the final visible MP3 replay, the capture card reached `关闭` while a leftover `输入中…考官` fragment remained on the transcript. A terminal provider state could leave the UI looking as though transcription was still active.
+
+### Root causes
+
+- Browser media permission and a locally ready audio graph were treated as proof that PCM was flowing. A silent virtual cable therefore started Seed's upstream idle timer too early.
+- Seed's `start_time` is relative to one upstream capture cycle, not the full interview. `TranscriptStream` added every raw offset to the original interview start, so Stop/Start reset the visible clock.
+- Cooldown limited frequency but did not represent the conversational invariant “one useful suggestion for this answer.” Expiry reopened generation even though no interviewer boundary had occurred.
+- The generic fallback prioritized measurable attribution when it saw words such as “监督/确保”, even if the entire response used hypothetical `如果/我会/我将` language and contained no real event.
+- Final ASR status updated the capture card but never cleared the lane's rolling partial when no last definite utterance replaced it.
+
+### Fix
+
+- Real capture now opens upstream ASR only from the first actual PCM worklet frame. Simulation remains immediate. A focused visible check held BlackHole silent for 15 seconds, then began playback without any provider error.
+- Every source records a new first-PCM wall-clock base for every capture cycle. The socket converts Seed's provider-relative offset into an absolute `createdAtMs`; the transcript renders that value directly and keeps raw `audioStartMs` diagnostic-only.
+- A successfully emitted automatic or manual suggestion claims the current answer window. Cooldown cannot produce another card until a confirmed interviewer turn—or a two-pass suppression-only interviewer boundary for a still-pending native voiceprint—opens the next window. Failed generation does not claim it and may retry.
+- Hypothetical situational answers now use a real-case fallback: ask for one personally handled comparable incident and the key decision. Actual, measurable claims still use the metric/trade-off/ownership rotation.
+- `stopped`, `partial`, and `failed` ASR states now clear only the transient partial while preserving every committed final and the partial-finalization notice.
+
+### Red/green and rejected-intermediate evidence
+
+- First-PCM regression failed because successful `getUserMedia` sent `audio-control:start`; after the fix it proved no server start before the first frame and then ordered `start → first audio`.
+- Capture-cycle timestamp regressions failed because the renderer recomputed the raw offset; after the fix they prove a restarted final keeps its absolute `00:04:00` position rather than rewinding to `00:00:12`.
+- Auto-trigger regressions initially emitted twice after cooldown. They now prove one successful Auto per answer, manual coverage of the same answer, reopening at the next interviewer boundary, and retry after unsuccessful generation.
+- The pending-panelist regression proves a suppression-only boundary opens exactly one new window without labeling the voiceprint or adding its text to interviewer context.
+- The hypothetical-fallback regression first returned an attribution-baseline question; after the fix it asks for a comparable real event and key decision.
+- The terminal-partial test was explicitly red at `44 passed, 1 failed` with `停止时未成为最终句的尾音` still present, then green at `45 passed, 0 failed`.
+- The first after-style replay was rejected and retained as `round-5-intermediate.json` because its second question still used the awkward metric fallback. It was not promoted to final evidence.
+
+### Final full replay evidence
+
+- Direct report: `qaPassed=true`; lifecycle `connecting → live → finalizing → stopped`; 28 finals; 938 character-progressive partials; first final at 15.699 s; 444.183 s streamed for 444.151 s of source audio; no errors.
+- Final partition arrived before `stopped` and contained 6 interviewer, 6 candidate, and 1 safe unknown segment. Native IDs `0` and `1` were delegated atomically; the short score-announcement ID `2` remained `unknown/observing`; no unsafe pending ID or invalid Auto anchor existed.
+- Exactly two direct Auto questions were emitted, one for the second answer (`anchorSeq=14`) and one for the third (`anchorSeq=20`). They used 917 and 1,840 real tokens and completed in 3.570 s and 3.903 s.
+- The independently visible replay also displayed exactly two cards, never two for one answer. The first asked for the candidate's actual decision when a fire-drill mobilization still failed; the second used the new real-case fallback for the hypothetical water-pipe conflict plan. They completed in 3.4 s and 3.5 s with 895 and 1,816 displayed tokens.
+- Visible final speech timestamps stayed monotonic through the complete interview, the capture closed without a provider error, and committed roles remained whole by native voiceprint.
+- The manual `面试总结` action consumed the completed client transcript and returned a non-empty Chinese report with conclusion, four scored dimensions, strengths, risks, and further-assessment advice. It no longer produced the earlier false empty-state notice.
+- Final automated verification: 6 copilot-core tests, 18 question-bank tests, 272 server tests, and 249 web tests passed (`545/545` total). The production web and server build completed with exit code 0.
 
 ## Completion audit
 
-Status: pending all five verified rounds.
+Status: five alternating full-length rounds completed with a real defect, focused red/green proof, product fix, and full replay acceptance in every round.
+
+| Round | Fixture/context | User-facing defect fixed | Final acceptance |
+| --- | --- | --- | --- |
+| 1 | A / 物业经理 | Auto forgot prior questions and repeated one template | 28 finals, 2 distinct Auto, 3.630–4.514 s |
+| 2 | B / P8 | Narrator-contaminated voiceprint forced into interviewer | 48 finals, narrator fail-safe unknown, 7 safe Auto |
+| 3 | A / 物业经理 | Prior candidate transcript resurrected in next interview | clean consecutive session, scroll/notes verified |
+| 4 | B / P7 | Late cohort delegation asked about a closed answer | 48 finals, 5 current-answer Auto, 3.727–4.826 s |
+| 5 | A / 物业经理 | Silent-start timeout, timestamp rewind, duplicate cards, weak fallback, stale partial | 28 finals, exactly 2 current-answer Auto, 3.570–3.903 s |
+
+All final reports passed provider lifecycle, final-partition timing, one-role-per-native-speaker, fail-safe ambiguity, candidate-only Auto anchoring, real-time playback, observed Auto output, and under-ten-second Expert latency gates.
