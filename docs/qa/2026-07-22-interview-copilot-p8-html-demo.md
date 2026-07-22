@@ -73,3 +73,31 @@
 - Green evidence: after completion, browser focus is `BODY`; Right Arrow advances to `grounding`, counter `05 / 09`, with audio paused. Dark theme resolves to `rgb(21, 26, 29)` and exposes `切换浅色主题`; mute shows `已静音`; replay resets to the beginning with no stale question; leaving Slide 4 pauses at the same time and returning preserves that paused time.
 - Portability evidence: the artifact is one HTML containing a `data:audio/mpeg;base64,...` source, inline CSS/JS/data, nine slides, and no iframe/CDN/external runtime resource. Automated `file://` navigation is blocked by the in-app browser's own policy, so interaction QA used the exact byte-identical file through a temporary localhost static server; offline structure and copy identity are independently enforced by tests and hashes.
 - Remaining risk: OS/browser audio policies can still require the explicit Play click, which the start surface provides; audio decode failure exposes a user-initiated silent replay rather than inventing progress.
+
+## Final requirement audit
+
+| Requirement | Acceptance evidence |
+|---|---|
+| Preserve the complete introduction | Nine ordered sections: Cover, Problem, Product answer, P8 proof, Grounding, Interviewer value, GLP value, Current capabilities, Close. Keyboard audit reached all nine with no `1280×720` overflow. |
+| Preserve the legacy slide style | Full-viewport slides, persistent GLP status bar, title, `01 / 09` counter, bottom progress, staged reveal motion, arrow/space navigation, and fullscreen key remain in the standalone deck. |
+| Reconstruct the current interface | Slide 4 uses the current GLP header/timeline/role pills/question/footer hierarchy, scrollbar, light/dark icon, and reaches `95.3%` viewport width at the acceptance viewport. |
+| P8 only | Profile is `用户运营专家（P8）`; timeline/artifact tests reject `物业`, `消防`, and `园区运营`. |
+| 1–2 minute audio | Embedded browser duration is exactly `100.409s`; original SHA-256 and non-destructive source range are recorded. |
+| Progressive captions | Grapheme-level state advances from `audio.currentTime`; zero-length rows are suppressed; real 1× playback and seven time checkpoints were observed. |
+| Candidate-first monitoring | Candidate remains pending through `8.499s`, confirms at `8.500s`, and immediately unlocks monitoring without interviewer confirmation. |
+| One meaningful inline question | Generation starts `47.889s`; exactly one question appears `51.620s`, directly after candidate cue `p8-5`; backward seek removes it. |
+| Real telemetry | Question card and artifact contain `3,026 词元` and `3.7 s` from the verified report. |
+| Explain value | Separate slides explain the evidence-grounding model, interviewer value, GLP organizational value, and current implemented capabilities. |
+| One offline file | CSS, JavaScript, replay data, and MP3 are inline; artifact tests reject iframes and external runtime resources. Repository and Downloads SHA-256 are both `3b70b77ac374454333c6ee612396bf6be1e1556a35683cbf145695ccfa64e39b`. |
+| Presentation controls/accessibility | Visible named buttons, range label, theme label, reduced-motion CSS, pause-on-exit, mute, replay, seek, keyboard ownership, and end-of-demo handoff were exercised. |
+| Five real iterations | Rounds 1–5 each record a reproduced defect, first divergent boundary, red gate, causal fix, and browser/test evidence. |
+| Frequent main commits and pushes | Fixture, deck, replay, packaging, and all five acceptance rounds were committed independently and pushed directly to `origin/main`. |
+| Downloads handoff | `/Users/thomasli/Downloads/Interview Copilot P8 Complete Introduction.html` is rebuilt from source and byte-identical to the repository artifact. |
+
+## Final verification
+
+- Demo: `11/11` tests passed; no failures, skips, or cancellations.
+- Production regression suite: core `6`, question bank `18`, server `272`, web `249` — `545` tests total, all passed.
+- Production builds: React/Vite/TypeScript and bundled Node server both exited successfully.
+- `git diff --check`: clean.
+- Artifact and Downloads hashes: identical (`3b70b77ac374454333c6ee612396bf6be1e1556a35683cbf145695ccfa64e39b`).
