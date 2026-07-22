@@ -61,3 +61,15 @@
 - Fix: treat an intentional slider movement as starting the replay view. It dismisses the transparent start surface, preserves paused audio, reconstructs state from `audio.currentTime`, and leaves the question fully inspectable.
 - Green evidence: after rebuild, seeking directly to `51.620s` reports `overlayHidden=true`, `questionCount=1`, `anchor=p8-5`, correct latency/tokens, and a clear visible question card. Backward seeking continues to remove it.
 - Remaining risk: final presentation controls, portability, theme/reduced-motion behavior, and handoff copy remain for Round 5.
+
+## Round 5 — offline portability and presentation readiness
+
+- Reproduction: exercised all nine slides, play/pause, mute, seek, replay, dark theme, leave/return, and the complete audio in the exact built artifact. Static acceptance rejected iframes, remote scripts/styles/fonts/media, and every non-data runtime resource. The Downloads file and repository artifact are compared by SHA-256.
+- First viewer-facing defect: after the 100.409-second replay completed, Right Arrow still belonged to the replay, so it remained on Slide 4 at `100409ms` instead of advancing to Slide 5. Focus on the hidden start button or range input could also swallow presentation keys.
+- Viewer impact: the presenter finished the strongest proof, pressed the expected slide key, and appeared stuck in front of the audience.
+- First divergent boundary: media `ended` / direct seek to `100409ms`, followed by Right Arrow. Browser baseline remained `p8-demo`, counter `04 / 09`.
+- Red gate: `player.test.mjs` required an explicit `onEnded` handoff, an `ended` notification, focus release, and a keyboard guard that lets Arrow keys work when a button—not a text/range input—has focus. It failed before implementation.
+- Fix: the player now emits a single completion callback for real audio, fallback playback, and direct end seeking; the entry layer releases replay keyboard ownership and blurs the completed control. Arrow keys are no longer suppressed merely because a button has focus.
+- Green evidence: after completion, browser focus is `BODY`; Right Arrow advances to `grounding`, counter `05 / 09`, with audio paused. Dark theme resolves to `rgb(21, 26, 29)` and exposes `切换浅色主题`; mute shows `已静音`; replay resets to the beginning with no stale question; leaving Slide 4 pauses at the same time and returning preserves that paused time.
+- Portability evidence: the artifact is one HTML containing a `data:audio/mpeg;base64,...` source, inline CSS/JS/data, nine slides, and no iframe/CDN/external runtime resource. Automated `file://` navigation is blocked by the in-app browser's own policy, so interaction QA used the exact byte-identical file through a temporary localhost static server; offline structure and copy identity are independently enforced by tests and hashes.
+- Remaining risk: OS/browser audio policies can still require the explicit Play click, which the start surface provides; audio decode failure exposes a user-initiated silent replay rather than inventing progress.

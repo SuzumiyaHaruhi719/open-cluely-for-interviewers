@@ -13,7 +13,11 @@ const player = createReplayPlayer({
   root: replayRoot,
   audio,
   timeline: { DEMO_DURATION_MS, cues, questionEvent, roleConfirmedMs },
-  onStarted: () => { replayOwnsKeys = true; }
+  onStarted: () => { replayOwnsKeys = true; },
+  onEnded: () => {
+    replayOwnsKeys = false;
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+  }
 });
 
 deck = createDeck({
@@ -29,8 +33,9 @@ root.querySelectorAll('#deck-prev, #deck-next').forEach((button) => button.addEv
 
 root.addEventListener('keydown', (event) => {
   const activeSlide = root.querySelector('.slide.is-active')?.dataset.slideId;
-  const targetIsControl = /^(INPUT|BUTTON|TEXTAREA|SELECT)$/.test(event.target?.tagName ?? '');
-  if (targetIsControl && event.key !== 'Escape') return;
+  const targetIsTextEntry = /^(INPUT|TEXTAREA|SELECT)$/.test(event.target?.tagName ?? '');
+  const targetIsButtonActivation = event.target?.tagName === 'BUTTON' && (event.key === ' ' || event.key === 'Enter');
+  if ((targetIsTextEntry || targetIsButtonActivation) && event.key !== 'Escape') return;
 
   if (event.key.toLowerCase() === 'f') {
     event.preventDefault();

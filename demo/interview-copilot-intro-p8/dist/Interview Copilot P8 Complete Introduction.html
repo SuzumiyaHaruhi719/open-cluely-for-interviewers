@@ -483,6 +483,7 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
     return ["\u771F\u5B9E\u4EA7\u54C1\u6570\u636E\u56DE\u653E", "\u5019\u9009\u4EBA\u58F0\u7EB9\u91C7\u6837\u4E2D"];
   }
   function createReplayPlayer({ root: root2, audio: audio2, timeline, onStarted = () => {
+  }, onEnded = () => {
   } }) {
     const startOverlay = root2.querySelector("#replay-start");
     const startButton = root2.querySelector("#replay-start-button");
@@ -501,6 +502,7 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
     let fallbackElapsedMs = 0;
     let fallbackStartedAt = 0;
     let lastSignature = "";
+    let endNotified = false;
     const fallbackTime = () => fallbackElapsedMs + (fallbackActive ? performance.now() - fallbackStartedAt : 0);
     const masterTime = () => Math.min(
       timeline.DEMO_DURATION_MS,
@@ -526,14 +528,23 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
       progress.value = String(Math.min(timeline.DEMO_DURATION_MS, state.timeMs));
       playButton.textContent = !audio2.paused && !audioBroken || fallbackActive ? "\u2161" : "\u25B6";
       playButton.setAttribute("aria-label", !audio2.paused && !audioBroken || fallbackActive ? "\u6682\u505C" : "\u64AD\u653E");
-      if (fallbackActive && state.timeMs >= timeline.DEMO_DURATION_MS) pause();
+      if (fallbackActive && state.timeMs >= timeline.DEMO_DURATION_MS) {
+        pause();
+        notifyEnded();
+        return;
+      }
       schedule();
+    }
+    function notifyEnded() {
+      if (endNotified) return;
+      endNotified = true;
+      onEnded();
     }
     function markStarted() {
       if (!started) {
         started = true;
-        onStarted();
       }
+      onStarted();
       startOverlay.classList.add("is-hidden");
     }
     function pauseFallback() {
@@ -553,6 +564,8 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
         return;
       }
       pauseFallback();
+      if (audio2.ended) audio2.currentTime = 0;
+      endNotified = false;
       try {
         await audio2.play();
         markStarted();
@@ -584,6 +597,8 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
       } else {
         audio2.currentTime = target / 1e3;
       }
+      if (target >= timeline.DEMO_DURATION_MS) notifyEnded();
+      else endNotified = false;
       lastSignature = "";
       render();
     }
@@ -593,6 +608,8 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
         fallbackElapsedMs = target;
         fallbackStartedAt = performance.now();
       } else audio2.currentTime = target / 1e3;
+      if (target >= timeline.DEMO_DURATION_MS) notifyEnded();
+      else endNotified = false;
       lastSignature = "";
       render();
     }
@@ -605,6 +622,7 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
       pause();
       audio2.currentTime = 0;
       fallbackElapsedMs = 0;
+      endNotified = false;
       lastSignature = "";
       startOverlay.classList.toggle("is-hidden", autoplay);
       render();
@@ -637,7 +655,10 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
       lastSignature = "";
       render();
     });
-    audio2.addEventListener("ended", render);
+    audio2.addEventListener("ended", () => {
+      render();
+      notifyEnded();
+    });
     audio2.addEventListener("error", handleAudioError);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) pause();
@@ -691,6 +712,10 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
     timeline: { DEMO_DURATION_MS, cues, questionEvent, roleConfirmedMs },
     onStarted: () => {
       replayOwnsKeys = true;
+    },
+    onEnded: () => {
+      replayOwnsKeys = false;
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
     }
   });
   deck = createDeck({
@@ -704,8 +729,9 @@ body[data-active-slide="p8-demo"] .key-hint { display: none; }
   root.querySelectorAll("#deck-prev, #deck-next").forEach((button) => button.addEventListener("click", markDeckUsed));
   root.addEventListener("keydown", (event) => {
     const activeSlide = root.querySelector(".slide.is-active")?.dataset.slideId;
-    const targetIsControl = /^(INPUT|BUTTON|TEXTAREA|SELECT)$/.test(event.target?.tagName ?? "");
-    if (targetIsControl && event.key !== "Escape") return;
+    const targetIsTextEntry = /^(INPUT|TEXTAREA|SELECT)$/.test(event.target?.tagName ?? "");
+    const targetIsButtonActivation = event.target?.tagName === "BUTTON" && (event.key === " " || event.key === "Enter");
+    if ((targetIsTextEntry || targetIsButtonActivation) && event.key !== "Escape") return;
     if (event.key.toLowerCase() === "f") {
       event.preventDefault();
       if (document.fullscreenElement) void document.exitFullscreen();

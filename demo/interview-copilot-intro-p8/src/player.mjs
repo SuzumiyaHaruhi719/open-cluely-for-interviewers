@@ -71,7 +71,7 @@ function statusCopy(state) {
   return ['真实产品数据回放', '候选人声纹采样中'];
 }
 
-export function createReplayPlayer({ root, audio, timeline, onStarted = () => {} }) {
+export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}, onEnded = () => {} }) {
   const startOverlay = root.querySelector('#replay-start');
   const startButton = root.querySelector('#replay-start-button');
   const playButton = root.querySelector('#replay-play');
@@ -89,6 +89,7 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
   let fallbackElapsedMs = 0;
   let fallbackStartedAt = 0;
   let lastSignature = '';
+  let endNotified = false;
 
   const fallbackTime = () => fallbackElapsedMs + (fallbackActive ? performance.now() - fallbackStartedAt : 0);
   const masterTime = () => Math.min(
@@ -117,15 +118,25 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
     progress.value = String(Math.min(timeline.DEMO_DURATION_MS, state.timeMs));
     playButton.textContent = ((!audio.paused && !audioBroken) || fallbackActive) ? 'Ⅱ' : '▶';
     playButton.setAttribute('aria-label', ((!audio.paused && !audioBroken) || fallbackActive) ? '暂停' : '播放');
-    if (fallbackActive && state.timeMs >= timeline.DEMO_DURATION_MS) pause();
+    if (fallbackActive && state.timeMs >= timeline.DEMO_DURATION_MS) {
+      pause();
+      notifyEnded();
+      return;
+    }
     schedule();
+  }
+
+  function notifyEnded() {
+    if (endNotified) return;
+    endNotified = true;
+    onEnded();
   }
 
   function markStarted() {
     if (!started) {
       started = true;
-      onStarted();
     }
+    onStarted();
     startOverlay.classList.add('is-hidden');
   }
 
@@ -148,6 +159,8 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
       return;
     }
     pauseFallback();
+    if (audio.ended) audio.currentTime = 0;
+    endNotified = false;
     try {
       await audio.play();
       markStarted();
@@ -182,6 +195,8 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
     } else {
       audio.currentTime = target / 1000;
     }
+    if (target >= timeline.DEMO_DURATION_MS) notifyEnded();
+    else endNotified = false;
     lastSignature = '';
     render();
   }
@@ -192,6 +207,8 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
       fallbackElapsedMs = target;
       fallbackStartedAt = performance.now();
     } else audio.currentTime = target / 1000;
+    if (target >= timeline.DEMO_DURATION_MS) notifyEnded();
+    else endNotified = false;
     lastSignature = '';
     render();
   }
@@ -206,6 +223,7 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
     pause();
     audio.currentTime = 0;
     fallbackElapsedMs = 0;
+    endNotified = false;
     lastSignature = '';
     startOverlay.classList.toggle('is-hidden', autoplay);
     render();
@@ -237,7 +255,7 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
   audio.addEventListener('pause', render);
   audio.addEventListener('timeupdate', render);
   audio.addEventListener('seeked', () => { lastSignature = ''; render(); });
-  audio.addEventListener('ended', render);
+  audio.addEventListener('ended', () => { render(); notifyEnded(); });
   audio.addEventListener('error', handleAudioError);
   document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
   render();
