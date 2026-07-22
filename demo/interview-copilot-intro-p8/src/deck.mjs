@@ -14,6 +14,7 @@ export function createDeck({ root = document, onSlideChange = () => {} } = {}) {
     counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
     progress.style.transform = `scaleX(${(index + 1) / slides.length})`;
     title.textContent = slides[index].dataset.slideTitle;
+    if (root.body) root.body.dataset.activeSlide = slides[index].dataset.slideId;
     history.replaceState(null, '', `#${index + 1}`);
     onSlideChange({ index, id: slides[index].dataset.slideId, previousId: previous?.dataset.slideId });
   }

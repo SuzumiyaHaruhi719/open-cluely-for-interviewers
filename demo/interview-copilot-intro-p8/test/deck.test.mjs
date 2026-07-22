@@ -4,6 +4,7 @@ import test from 'node:test';
 
 const html = await readFile(new URL('../src/index.template.html', import.meta.url), 'utf8');
 const css = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8');
+const deckScript = await readFile(new URL('../src/deck.mjs', import.meta.url), 'utf8');
 
 test('complete introduction preserves nine-slide presentation structure', () => {
   const slides = [...html.matchAll(/<section[^>]+data-slide-id="([^"]+)"/g)].map((match) => match[1]);
@@ -25,4 +26,9 @@ test('complete introduction preserves nine-slide presentation structure', () => 
   assert.match(css, /\.slide\s*\{[^}]*position:\s*absolute/s);
   assert.match(css, /\.slide\.is-active/);
   assert.doesNotMatch(html, /物业|消防|园区运营/);
+});
+
+test('P8 proof keeps deck navigation clear of replay controls', () => {
+  assert.match(deckScript, /body\.dataset\.activeSlide\s*=/);
+  assert.match(css, /body\[data-active-slide="p8-demo"\]\s+\.deck-nav\s*\{[^}]*left:\s*26px[^}]*right:\s*auto/s);
 });
