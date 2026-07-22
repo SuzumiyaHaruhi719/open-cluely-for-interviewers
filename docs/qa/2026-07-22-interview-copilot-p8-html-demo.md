@@ -23,3 +23,15 @@
 - Green evidence: focused deck tests pass. Browser geometry after rebuild: deck navigation `left=26, right=246`; replay footer `left=371, right=1249`; `overlapsFooter=false` at `1280×720`.
 - Screenshot evidence: browser capture at Slide 4 before playback showed the two deck circles overlapping the product footer's right edge.
 - Remaining risk: later rounds still need visual comparison, full audio/seek calibration, candidate-first semantics, and offline readiness.
+
+## Round 2 — current-product visual fidelity
+
+- Reproduction: aligned the live app and Slide 4 to `1280×720`, then compared workspace width, header hierarchy, role colors, question placement, footer metrics, scroll affordance, and theme control.
+- First viewer-facing defect: the reconstructed workspace was only `880px` wide (`68.8%` of the slide), while the current product's transcript surface used the full `1280px`. The side headline made the proof look like a small mockup instead of the product the interviewer actually uses.
+- Viewer impact: transcript density, progressive captions, role labels, and the inline question would all appear materially smaller than in the current app during a boss demo.
+- First divergent boundary: Slide 4 base layout at `1280×720`.
+- Red gate: `deck.test.mjs` required a one-column demo layout and a compact three-part introduction row; the focused test failed against the old two-column grid.
+- Fix: converted Slide 4 into a compact slide-introduction row above a full-width product viewport. The deck controls move to the header row and the redundant disclosure copy is removed there; the product header still visibly states `真实产品数据回放`.
+- Green evidence: product width is now `1220px` (`95.3%` of the viewport, within `4.7%` of the live full-width surface). Browser geometry also reports no overlap between deck controls and replay footer.
+- Screenshot evidence: equal `1280×720` captures show the reconstructed workspace now occupying the same dominant visual role as the live app.
+- Remaining risk: audio timing, state reconstruction, semantics, and offline behavior remain for Rounds 3–5.

@@ -83,10 +83,10 @@ h3 { font-size: clamp(18px, 1.55vw, 26px); line-height: 1.28; letter-spacing: -.
 .flow i { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--glp-soft); color: var(--glp); font-style: normal; font-size: 12px; }
 .flow b { color: var(--glp); font-size: 28px; font-weight: 450; }
 
-.demo-layout { width: min(1540px, calc(100vw - 60px)); display: grid; grid-template-columns: minmax(250px, .54fr) minmax(680px, 1.46fr); align-items: center; gap: 28px; }
-.demo-copy { display: flex; flex-direction: column; gap: 20px; }
-.demo-copy h2 { font-size: clamp(32px, 3.2vw, 56px); }
-.demo-disclosure { color: var(--muted); line-height: 1.5; }
+.demo-layout { width: min(1540px, calc(100vw - 60px)); display: grid; grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); align-items: center; gap: 12px; }
+.demo-copy { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; gap: 22px; }
+.demo-copy h2 { font-size: clamp(22px, 2vw, 31px); white-space: nowrap; }
+.demo-disclosure { display: none; }
 .product-replay { height: min(74vh, 720px); min-height: 520px; border: 1px solid var(--line); border-radius: 22px; background: var(--paper); box-shadow: var(--shadow); overflow: hidden; }
 
 .copilot-shell {
@@ -178,7 +178,8 @@ h3 { font-size: clamp(18px, 1.55vw, 26px); line-height: 1.28; letter-spacing: -.
 .deck-progress-track { position: fixed; z-index: 31; left: 0; right: 0; bottom: 0; height: 4px; background: #e8ecef; overflow: hidden; }
 .deck-progress-track i { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, var(--glp), var(--expert)); transform: scaleX(.1111); transform-origin: left; transition: transform .3s ease; }
 .deck-nav { position: fixed; z-index: 32; right: 26px; bottom: 20px; display: flex; align-items: center; gap: 8px; }
-body[data-active-slide="p8-demo"] .deck-nav { left: 26px; right: auto; }
+body[data-active-slide="p8-demo"] .deck-nav { top: 62px; right: 26px; bottom: auto; left: auto; }
+body[data-active-slide="p8-demo"] .key-hint { display: none; }
 .deck-nav button { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: rgba(255,255,255,.92); box-shadow: 0 8px 24px rgba(32,43,50,.09); cursor: pointer; font-size: 19px; }
 .deck-nav button:hover { border-color: var(--glp); color: var(--glp); transform: translateY(-1px); }
 .key-hint { margin-right: 4px; padding: 7px 10px; border-radius: 999px; background: rgba(255,255,255,.86); color: var(--muted); font-size: 11px; transition: opacity .4s ease; }
@@ -257,7 +258,7 @@ body[data-active-slide="p8-demo"] .deck-nav { left: 26px; right: auto; }
       <div class="slide-inner demo-layout">
         <div class="demo-copy">
           <div class="eyebrow rv">真实 P8 面试录音</div>
-          <h2 class="rv">候选人一说到关键处，<br>追问就在原话下面出现</h2>
+          <h2 class="rv">候选人一说到关键处，追问就在原话下面出现</h2>
           <p class="demo-disclosure rv">真实产品数据回放 · 声音、字幕与追问按原始时间同步</p>
         </div>
         <div id="product-replay" class="product-replay rv" aria-label="P8 面试产品回放">

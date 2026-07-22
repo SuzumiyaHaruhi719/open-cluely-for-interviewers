@@ -30,5 +30,10 @@ test('complete introduction preserves nine-slide presentation structure', () => 
 
 test('P8 proof keeps deck navigation clear of replay controls', () => {
   assert.match(deckScript, /body\.dataset\.activeSlide\s*=/);
-  assert.match(css, /body\[data-active-slide="p8-demo"\]\s+\.deck-nav\s*\{[^}]*left:\s*26px[^}]*right:\s*auto/s);
+  assert.match(css, /body\[data-active-slide="p8-demo"\]\s+\.deck-nav\s*\{[^}]*top:\s*62px[^}]*right:\s*26px[^}]*bottom:\s*auto/s);
+});
+
+test('P8 proof gives the reconstructed workspace full slide width', () => {
+  assert.match(css, /\.demo-layout\s*\{[^}]*grid-template-columns:\s*1fr;/s);
+  assert.match(css, /\.demo-copy\s*\{[^}]*grid-template-columns:\s*auto\s+minmax\(0,\s*1fr\)\s+auto;/s);
 });
