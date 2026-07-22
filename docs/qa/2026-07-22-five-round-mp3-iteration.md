@@ -241,7 +241,68 @@ The property replay again produced acceptable but ownership-heavy follow-ups. Ro
 
 ## Round 4 — B / 用户运营专家（P7）
 
-Status: pending Round 3 checkpoint.
+Status: fixed, replayed, committed, and pushed.
+
+### Run
+
+- Baseline build: `f3011e3`.
+- Fixed product build: `e6d7707`.
+- Before report: `/tmp/open-cluely-five-round-20260722/round-4-before.json`.
+- After report: `/tmp/open-cluely-five-round-20260722/round-4-after.json`.
+- Exact command, with the output filename changed between runs:
+
+```bash
+node scripts/verify-live-asr.mjs --provider volc \
+  --audio /tmp/open-cluely-five-round-20260722/p7p8-16k.wav \
+  --speed 1 --auto-generate \
+  --job-description-file /tmp/open-cluely-five-round-20260722/context/p7-jd.txt \
+  --interview-guide-file /tmp/open-cluely-five-round-20260722/context/p7-guide.json \
+  --out /tmp/open-cluely-five-round-20260722/round-4-after.json
+```
+
+Both runs were also played completely at 1× through `BlackHole 2ch` into a visible rebuilt app using the built-in `用户运营专家（P7）` profile. This round deliberately preserved the source's frequent interviewer interruptions and short interjections.
+
+### Problem encountered from the interviewer’s perspective
+
+The baseline visible replay generated an Auto question at about `00:01:29` about the candidate's self-introduction even though the interviewer had already changed the subject at `00:01:15` to redesigning the bank-card channel and the candidate was actively answering that new case. The question was individually plausible but belonged to a closed answer. In a live interview it would distract the interviewer, reopen a discarded topic, and make Auto appear unaware of the ongoing conversation.
+
+The direct baseline happened to pass its aggregate gates and generated eight questions, demonstrating why role correctness and sub-10-second latency alone were insufficient acceptance criteria. The visible session exposed the temporal defect.
+
+### Root cause
+
+Whole-voiceprint cohorts become eligible at different refreshes. A candidate cohort can therefore be delegated after a newer interviewer turn has already closed its older answer. When that happened, `speaker-partitioner` replayed every previously buffered candidate turn into Auto, including the stale self-introduction.
+
+The first attempted repair used only confirmed native interviewer callbacks as a closure boundary. A full replay disproved it: the bank-channel prompt belonged to the narrator-contaminated native ID and correctly remained `待确认`, although both independent semantic passes recognized that individual turn as an interviewer speech act. The candidate's old evidence could still leak through before the native interviewer cohort delegated.
+
+### Fix
+
+- Added a monotonic `latestClosedAnswerSeq` boundary to the partitioner. Candidate evidence released after late whole-voiceprint delegation is admitted only when it belongs after the latest closed answer.
+- A confirmed native interviewer callback advances the boundary and continues to cancel Auto's current answer normally.
+- Two-pass semantic interviewer consensus may advance the boundary conservatively while its native voiceprint is still pending. This operation can only suppress stale evidence; it cannot label the voiceprint, populate interviewer context, or release any question-generation evidence.
+- An already delegated/manual candidate voiceprint remains authoritative. A rhetorical question inside a candidate answer therefore cannot advance the boundary from one contrary per-turn verdict.
+- Resetting an interview clears the temporal boundary with all other speaker/Auto evidence.
+
+### Red/green evidence
+
+- Regression 1 reproduces a late candidate delegation after a confirmed newer interviewer turn. Before the fix it released candidate seqs `[1,3,4,5]`; after the fix it releases only the still-open answer `[3,4,5]`.
+- The first full after-replay then exposed the pending-native-interviewer variant, so it was rejected rather than counted as completion.
+- Regression 2 keeps the newer interviewer voiceprint pending while two semantic passes agree on its speech act. Before the enhanced fix, stale seq `1` was again released; after the fix only `[3,4,5]` enters Auto and the pending voiceprint still never enters a role-sensitive callback.
+- Focused speaker-partitioner suite: `42 passed, 0 failed`.
+- Full server suite: `271 passed, 0 failed`.
+- Production web/server build completed with exit code 0.
+
+### Full replay evidence
+
+- Direct after-run: `qaPassed=true`; lifecycle `connecting → live → finalizing → stopped`; 48 finals; 1,303 rolling partials; 493.527 s streamed for 493.517 s of audio; no errors.
+- Native voiceprints remained atomic: ID `0` interviewer, ID `1` candidate, and narrator-contaminated ID `2` explicit `unknown/observing`; no mixed-role ID, unsafe pending ID, invalid partition, or invalid Auto anchor.
+- Final partition contained 12 interviewer, 12 candidate, and 3 unknown segments and arrived before `stopped`.
+- Five direct Auto questions were anchored only to current delegated-candidate evidence, used 2,752–3,125 total tokens, and completed in 3.727–4.826 s.
+- In the visible replay, no question appeared against the closed self-introduction. The first card appeared at `00:04:58` below the current answer about accumulating user-behaviour data to persuade merchants: `你提到沉伏几个月期间，你具体用哪些用户行为数据（比如卡券偏好、品类频次）去说服合作商？`
+- Later visible questions stayed with the current bank-channel discussion, including measuring the channel's own user assets, the trade-off behind breadth of benefits, and evidence for obtaining an exclusive lowest price. Capture finalized to `待录音` with the transcript and assignments intact.
+
+### Remaining evidence carried forward
+
+The visible replay produced two related questions only 40 seconds apart against one exceptionally long uninterrupted answer. Round 5 will alternate back to the property interview and test whether Auto question cards remain a useful single suggestion per answer rather than accumulating multiple competing suggestions before the interviewer moves on.
 
 ## Round 5 — A / 物业经理
 
