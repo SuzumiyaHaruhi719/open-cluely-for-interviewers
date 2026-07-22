@@ -72,6 +72,16 @@
 | Five production report sections | Passed — all rendered and browser-located |
 | Summary generation effect | Passed — four visible phases and progressive report |
 | Single portable HTML | Passed — no server/model/device required at runtime |
-| Repository/Downloads identity | Passed — both are `7,573,120` bytes with SHA-256 `7c316538eef9712b9410e152e44b69cca851c282abab2a1362eee8097f116091` |
+| Repository/Downloads identity | Passed after the live-caption rebuild — both are `7,575,172` bytes with SHA-256 `5dc3527e61bcc964b2e2db0dbe49c2a3e6baa7bd38e6a360c23db9f2a7e23f4d` |
+
+## Live-caption regression correction
+
+**Reproduction:** seek the complete replay to `00:25`. The active candidate row showed `输入中…` but remained at the single character `家`; the previous 83-grapheme block had already appeared in full.
+
+**Root cause:** `allocateCueWindows()` supplied only `[start, 1]` and `[end, full]`. `deriveReplayState()` correctly treated checkpoints as stepwise provider evidence, so it could only show one grapheme until the end. A candidate final delivered 1 ms after the prior batch also inherited an unusable 1 ms caption window.
+
+**Fix:** consecutive finals with the same provider voiceprint are reconstructed as one turn and redistributed across the already allocated turn window by grapheme weight. Each cue now carries one monotonic reveal checkpoint per grapheme.
+
+**Browser evidence:** at the exact repaired candidate row, visible text grew `4 → 16 → 26` graphemes across two measured seconds. A second candidate segment independently grew `16 → 28` over one second. Both remained labelled `输入中…` during growth. The automated suite now passes `41/41` tests.
 
 final result: passed

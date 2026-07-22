@@ -14,7 +14,7 @@
 | --- | --- | --- |
 | Product geometry | Passed | The full production-shaped header, transcript workspace, context rail, summary, and dock render inside Slide 4. |
 | Complete recording | Passed | Exact `08:13.517` MP3, 48 Seed ASR finals, three voiceprints, and byte-identity tests. |
-| Progressive transcript | Passed | Captions reveal from provider-derived checkpoints and preserve the 48-final chronological order. |
+| Progressive transcript | Passed | Every final exposes one monotonic checkpoint per grapheme; same-voiceprint fragments share a usable spoken-turn window and preserve the 48-final chronological order. |
 | 60× transport | Passed | Visible `快进至总结` changes to `60× 快进中`, mutes playback, advances the progress clock, and reaches `08:13` in `8.226s`. |
 | Complete summary | Passed | End state opens the production modal and renders all five production scoring sections. |
 | Production provenance | Passed | `deepseek-v4-pro`, `2,600 词元输入`, `1,119 词元输出`, transcript length, prompt hash, and captured `29.4s` runtime are visible. |
@@ -34,5 +34,9 @@
 The active product view uses the selected GLP-dark system and the same production component hierarchy. Fast-forward is a compact dock action rather than an overlay; the summary uses the existing production modal; its backdrop remains transparent rather than blurred. The completed report is scrollable within the modal and the underlying transcript stays in context.
 
 No actionable P0, P1, or P2 visual defect remains.
+
+## Live-caption regression correction
+
+At `00:25`, the candidate lane displayed `输入中…` but stayed on `家`; the preceding candidate segment appeared all at once. The complete timeline had only start/end reveal checkpoints, and one final arriving 1 ms after the preceding batch received a 1 ms window. The allocator now first reconstructs contiguous same-voiceprint turns, redistributes their existing provider-final window by grapheme weight, then emits every grapheme checkpoint. Browser verification sampled the same candidate row at `00:23`, `+1s`, and `+2s`: its visible length grew `4 → 16 → 26`; a second candidate segment grew `16 → 28` over the next measured second. The regression is locked in `full-timeline.test.mjs`.
 
 final result: passed
