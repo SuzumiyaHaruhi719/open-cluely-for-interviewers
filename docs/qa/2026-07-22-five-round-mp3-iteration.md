@@ -177,7 +177,67 @@ The replay confirmed the Round 1 observation that generated fallback dimensions 
 
 ## Round 3 — A / 物业经理
 
-Status: pending Round 2 checkpoint.
+Status: fixed, replayed, committed, and pushed.
+
+### Run
+
+- Baseline build: `116a855`.
+- Fixed product build: `4623ff1`.
+- Baseline evidence: visible consecutive-session replay in the rebuilt app.
+- After report: `/tmp/open-cluely-five-round-20260722/round-3-after.json`.
+- Exact direct replay command:
+
+```bash
+node scripts/verify-live-asr.mjs --provider volc \
+  --audio /tmp/open-cluely-five-round-20260722/property-16k.wav \
+  --speed 1 --auto-generate \
+  --job-description-file /tmp/open-cluely-five-round-20260722/context/property-jd.txt \
+  --interview-guide-file /tmp/open-cluely-five-round-20260722/context/property-guide.json \
+  --out /tmp/open-cluely-five-round-20260722/round-3-after.json
+```
+
+The full after-run was played at 1× through `BlackHole 2ch` into a visible `线下面试` session while the direct harness ran independently. Two timestamped notes and both transcript scroll modes were exercised during playback.
+
+### Problem encountered from the interviewer’s perspective
+
+Ending the Round 2 P8 interview returned to a visually clean preparation screen. Starting the next `物业经理` microphone capture, however, immediately resurrected the complete previous P8 transcript before any new audio played. Every old row was stamped `00:00:00`; recognizable stale markers included the opening narration, `银行卡频道`, and the closing `白嫖方案` commentary.
+
+This is a severe privacy and decision-integrity failure: the interviewer can mistake another candidate's evidence and AI questions for the current interview even though the setup page looked reset.
+
+### Root cause
+
+`useCopilotSocket()` already exposed `resetAudioSession()`, which suppresses audio and partition events while the old provider drains, but `Shell` never called it when an interview ended. `clearSession()` erased visible rows and reset the server model state only.
+
+The browser's partition suppression was released when a new ASR `connecting/live` status arrived. A delayed full `speaker-partition` from the prior interview could then pass through after that release. Because the current-session timestamp maps had already been cleared, the stale partition rebuilt every old row with the current partition arrival time, which rendered as zero elapsed time.
+
+### Fix
+
+- Ending an interview now calls `resetAudioSession()` before clearing UI/model state. This stops both audio lanes and quarantines their drain before returning to preparation.
+- End confirmation also sends a fresh `resetGeneration`, so transcript context, question history, cooldowns, speaker evidence, and in-flight generation are invalidated at the same boundary.
+- The renderer now keeps an immutable raw-final evidence ledger for the current interview, keyed by final sequence.
+- A `speaker-partition` is accepted only when every visible run starts from a raw final that exists in this interview and its native speaker ID (when present) and normalized text agree. A late prior-session snapshot is discarded even if a fresh ASR status has reopened normal event handling.
+- The raw-final ledger is cleared together with timestamps and speaker identity state on every new interview.
+
+### Red/green evidence
+
+- Focused regression before the partition guard: `useCopilotSocket` accepted a prior-session final partition after the fresh ASR `connecting` event; targeted result was `55 passed, 1 failed`.
+- Focused regression after the fix: `useCopilotSocket` plus `Shell` → `56 passed, 0 failed`.
+- The Shell end-flow test now proves that confirmation adds a new `resetGeneration` frame rather than matching the reset already sent on initial setup.
+- Full web suite: `36 files, 246 passed, 0 failed`.
+- Production web/server build completed with exit code 0.
+
+### Full replay and interaction evidence
+
+- Direct after-run: `qaPassed=true`; lifecycle `connecting → live → finalizing → stopped`; 28 finals; 938 partials; 444.113 s of source streaming for 444.151 s of audio; no errors.
+- Final partition arrived before stopped and contained 6 interviewer, 6 candidate, and 1 safe unknown segment. Native IDs `0` and `1` delegated; score-announcement ID `2` remained `unknown/observing`; both unsafe-pending lists were empty.
+- Two Auto Expert questions were anchored to candidate seqs `14` and `20`, used real token counts, and completed in 3.529 s and 3.884 s.
+- The visible replay contained no P8 markers, displayed two inline Auto questions, and preserved the two notes in creation order.
+- Manual scroll was held at the beginning while transcript height grew from 901 px to 1,881 px without moving `scrollTop` from zero. Returning to the bottom restored follow-latest; after further speech the measured bottom distance remained exactly zero.
+- After ending the completed property replay, a new microphone capture was started in the same tab with no audio. It remained empty and contained none of the prior speech, notes, or AI question text.
+
+### Remaining evidence carried forward
+
+The property replay again produced acceptable but ownership-heavy follow-ups. Round 4 will alternate back to the interruption-heavy P7/P8 fixture and inspect whether question generation is invalidated at real interviewer hand-offs instead of surviving on stale candidate evidence.
 
 ## Round 4 — B / 用户运营专家（P7）
 
