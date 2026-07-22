@@ -1,9 +1,16 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { deriveReplayState } from '../src/replay-state.mjs';
-import { cues, questionEvent, roleConfirmedMs } from '../src/timeline.mjs';
+import { contextWindow, cues, DEMO_DURATION_MS, questionEvent, roleConfirmedMs } from '../src/timeline.mjs';
 
-const stateAt = (timeMs) => deriveReplayState({ timeMs, cues, questionEvent, roleConfirmedMs });
+const stateAt = (timeMs) => deriveReplayState({
+  timeMs,
+  cues,
+  questionEvent,
+  roleConfirmedMs,
+  contextWindow,
+  demoDurationMs: DEMO_DURATION_MS
+});
 
 test('candidate confirmation alone unlocks monitoring', () => {
   assert.equal(stateAt(roleConfirmedMs - 1).candidateRole, 'pending');
@@ -24,6 +31,19 @@ test('generation and one question occur in evidence order', () => {
 test('seeking backward reconstructs state without sticky question data', () => {
   assert.equal(stateAt(80000).questionVisible, true);
   assert.equal(stateAt(30000).questionVisible, false);
+});
+
+test('session context is automatic for exactly five seconds', () => {
+  assert.equal(stateAt(41999).contextAutoOpen, false);
+  assert.equal(stateAt(42000).contextAutoOpen, true);
+  assert.equal(stateAt(46999).contextAutoOpen, true);
+  assert.equal(stateAt(47000).contextAutoOpen, false);
+});
+
+test('summary appears only at replay completion and seeking backward dismisses it', () => {
+  assert.equal(stateAt(DEMO_DURATION_MS - 1).summaryVisible, false);
+  assert.equal(stateAt(DEMO_DURATION_MS).summaryVisible, true);
+  assert.equal(stateAt(70000).summaryVisible, false);
 });
 
 test('a caption row appears only after its first grapheme is audible', () => {

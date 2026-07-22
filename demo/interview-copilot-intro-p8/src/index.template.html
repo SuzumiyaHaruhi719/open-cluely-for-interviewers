@@ -88,32 +88,7 @@
           <p class="lead rv" style="--d:120ms">点击播放后可暂停、拖动、静音或重播。</p>
         </div>
         <div class="live-demo-shell rv" style="--d:180ms">
-          <div id="product-replay" class="product-replay" data-product-theme="dark" aria-label="P8 面试产品回放">
-            <span class="sr-only">专家追问指标：3,026 词元，3.7 s</span>
-            <div class="copilot-shell">
-              <header class="copilot-header">
-                <div class="copilot-brand"><strong>GLP</strong><i></i><span>用户运营专家（P8）</span></div>
-                <div class="copilot-live"><i></i><span id="replay-status">真实产品数据回放</span></div>
-                <button id="theme-toggle" type="button" aria-label="切换浅色主题" title="切换浅色主题">◐</button>
-              </header>
-              <div class="copilot-meta"><span>P8 · 组织级策略与业务影响</span><span id="role-monitor">等待候选人证据</span><time id="replay-clock">00:00</time></div>
-              <div id="replay-timeline" class="replay-timeline" aria-live="polite"></div>
-              <div class="replay-start" id="replay-start">
-                <span class="replay-seal" aria-hidden="true">▶</span>
-                <strong>听一段真实 P8 面试</strong>
-                <button id="replay-start-button" type="button">播放 1 分 24 秒真实演示</button>
-                <small>真实录音 · 字幕与声音逐字同步</small>
-              </div>
-              <footer class="replay-controls">
-                <button id="replay-play" type="button" aria-label="播放或暂停">▶</button>
-                <button id="replay-mute" type="button" aria-label="静音或恢复声音">声音</button>
-                <input id="replay-progress" type="range" min="0" max="84000" value="0" aria-label="演示进度">
-                <span id="replay-time">00:00 / 01:24</span>
-                <button id="replay-reset" type="button">重新播放</button>
-                <button type="button" data-real-product-url="http://127.0.0.1:8004/">打开真实产品</button>
-              </footer>
-            </div>
-          </div>
+          <iframe class="live-demo-frame" src="data:text/html;base64,__PRODUCT_FRAME_BASE64__" title="面试官 Copilot · P8 真实产品回放" loading="eager" allow="autoplay; clipboard-write"></iframe>
         </div>
       </div>
     </section>
@@ -196,8 +171,6 @@
   <div class="progress" aria-hidden="true"><i id="deck-progress"></i></div>
   <div class="keyhint" id="key-hint"><b>←</b> <b>→</b> 翻页 · <b>F</b> 全屏 · 空格继续</div>
   <nav class="navctl" aria-label="幻灯片导航"><button class="nbtn" id="deck-prev" type="button" aria-label="上一页">←</button><button class="nbtn" id="deck-next" type="button" aria-label="下一页">→</button></nav>
-  <audio id="demo-audio" preload="auto" src="data:audio/mp4;base64,__DEMO_AUDIO_BASE64__"></audio>
-  <script id="demo-data" type="application/json">__DEMO_DATA__</script>
   <script>/*__DEMO_SCRIPT__*/</script>
 </body>
 </html>

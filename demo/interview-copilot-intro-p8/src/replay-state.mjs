@@ -21,7 +21,14 @@ function visibleText(cue, timeMs) {
   return graphemes.slice(0, Math.max(1, Math.floor(graphemes.length * ratio))).join('');
 }
 
-export function deriveReplayState({ timeMs, cues, questionEvent, roleConfirmedMs }) {
+export function deriveReplayState({
+  timeMs,
+  cues,
+  questionEvent,
+  roleConfirmedMs,
+  contextWindow = { startMs: 42000, endMs: 47000 },
+  demoDurationMs = Number.POSITIVE_INFINITY
+}) {
   const boundedTime = Math.max(0, timeMs);
   const visibleCues = cues
     .filter((cue) => cue.startMs <= boundedTime)
@@ -29,6 +36,8 @@ export function deriveReplayState({ timeMs, cues, questionEvent, roleConfirmedMs
     .filter((cue) => cue.visibleText.length > 0);
   const candidateRole = boundedTime >= roleConfirmedMs ? 'candidate' : 'pending';
   const questionVisible = boundedTime >= questionEvent.revealMs;
+  const contextAutoOpen = boundedTime >= contextWindow.startMs && boundedTime < contextWindow.endMs;
+  const summaryVisible = boundedTime >= demoDurationMs;
   const monitorState = questionVisible
     ? 'question-ready'
     : boundedTime >= questionEvent.generatingMs
@@ -42,6 +51,8 @@ export function deriveReplayState({ timeMs, cues, questionEvent, roleConfirmedMs
     monitorState,
     visibleCues,
     questionVisible,
+    contextAutoOpen,
+    summaryVisible,
     visibleQuestions: questionVisible ? [questionEvent] : []
   };
 }

@@ -25,6 +25,13 @@ test('P8 replay is one ordered 84-second candidate-first proof from the exact de
     questionEvent.text,
     '你提到为了拿到全网最低价，会停止与其他竞品合作。这个排他策略如何验证带来的是增量，而不是平台对单一品牌的依赖？'
   );
+  assert.deepEqual(questionEvent.anchorQuotes, [
+    '为了拿到全网最低价，会停止与其他竞品合作'
+  ]);
+  assert.match(questionEvent.rationale, /没有说明如何识别真实增量/);
+  assert.match(questionEvent.rationale, /P8 级风险意识/);
+  assert.match(questionEvent.expectedEvidence, /量化基线与增量指标/);
+  assert.match(questionEvent.expectedEvidence, /退出机制/);
   assert.ok(cues.length >= 5);
   assert.ok(cues.every((cue, index) => cue.startMs <= cue.endMs && (index === 0 || cues[index - 1].startMs <= cue.startMs)));
   assert.ok(cues.every((cue) => Array.isArray(cue.reveal) && cue.reveal.length >= 2));

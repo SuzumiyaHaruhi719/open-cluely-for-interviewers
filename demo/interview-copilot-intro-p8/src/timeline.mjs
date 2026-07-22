@@ -5,6 +5,7 @@ export const DEMO_DURATION_MS = 84000;
 export const AUDIO_SHA256 = '56beb4525fa62e6056e83b951efa062d98e39a1422177f72ee26b1dfb15a43e5';
 export const TRANSCRIPT_PROVIDER = 'doubao-seed-asr-2.0';
 export const roleConfirmedMs = 4200;
+export const contextWindow = Object.freeze({ startMs: 42000, endMs: 47000 });
 
 // `reveal` contains [audioTimeMs, visibleGraphemeCount] checkpoints derived
 // from a real-time Seed ASR 2.0 pass over the exact packaged M4A. The copy is
@@ -50,5 +51,47 @@ export const questionEvent = {
   latencyMs: 3731,
   tokens: 3026,
   trigger: 'auto',
-  text: '你提到为了拿到全网最低价，会停止与其他竞品合作。这个排他策略如何验证带来的是增量，而不是平台对单一品牌的依赖？'
+  text: '你提到为了拿到全网最低价，会停止与其他竞品合作。这个排他策略如何验证带来的是增量，而不是平台对单一品牌的依赖？',
+  anchorQuotes: ['为了拿到全网最低价，会停止与其他竞品合作'],
+  rationale: '候选人给出了“排他合作换取全网最低价”的策略，但没有说明如何识别真实增量、控制单一品牌依赖或设置退出条件；这决定方案是否具备 P8 级风险意识和可复制性。',
+  expectedEvidence: '量化基线与增量指标、对照或分层验证方式、品牌依赖阈值、谈判与退出机制，以及候选人本人推动决策的证据。',
+  iterationVersion: 'expert_flash_v2'
 };
+
+export const sessionContext = Object.freeze({
+  competencies: [
+    { name: '平台策略与阶段判断', status: 'partial', label: '部分覆盖' },
+    { name: '商业合作机制', status: 'partial', label: '部分覆盖' },
+    { name: '用户价值设计', status: 'partial', label: '部分覆盖' },
+    { name: '组织级影响', status: 'gap', label: '缺口' }
+  ],
+  topics: [
+    '平台期从“全”到“优”的演进',
+    '与银行合作的利益点',
+    '排他合作换取全网最低价'
+  ],
+  gaps: [
+    '增量效果如何量化',
+    '品牌依赖阈值与退出机制',
+    '候选人本人推动跨团队决策的证据'
+  ]
+});
+
+export const summaryReport = Object.freeze({
+  verdict: '证据不足，暂不建议下最终结论',
+  demonstrated: [
+    '能按平台发展阶段拆解用户价值，从“利益点覆盖”逐步走向“核心利益点竞争力”。',
+    '能解释银行、平台与品牌之间的合作动机，并提出以用户规模换取合作条件。',
+    '表达中体现了平台生态与竞争机制的结构化思考。'
+  ],
+  risks: [
+    '尚未提供真实业务结果、量级、转化或增量指标，无法验证策略有效性。',
+    '尚未说明候选人本人承担的决策范围、跨团队推动动作与最终责任。',
+    '排他合作带来的品牌依赖、退出条件与替代方案仍未验证。'
+  ],
+  nextEvidence: [
+    '补充一个本人主导的完整案例：目标、基线、关键动作、结果与复盘。',
+    '说明如何用对照、分层或长期指标区分自然增长与策略增量。',
+    '说明品牌依赖阈值、治理机制，以及合作不达预期时的退出路径。'
+  ]
+});
