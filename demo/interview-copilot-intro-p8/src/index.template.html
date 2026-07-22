@@ -54,7 +54,35 @@
           <h2 class="rv">候选人一说到关键处，<br>追问就在原话下面出现</h2>
           <p class="demo-disclosure rv">真实产品数据回放 · 声音、字幕与追问按原始时间同步</p>
         </div>
-        <div id="product-replay" class="product-replay rv" aria-label="P8 面试产品回放"></div>
+        <div id="product-replay" class="product-replay rv" aria-label="P8 面试产品回放">
+          <div class="copilot-shell">
+            <header class="copilot-header">
+              <div class="copilot-brand"><strong>GLP</strong><i></i><span>用户运营专家（P8）</span></div>
+              <div class="copilot-live"><i></i><span id="replay-status">真实产品数据回放</span></div>
+              <button id="theme-toggle" type="button" aria-label="切换深色主题" title="切换深色主题">◐</button>
+            </header>
+            <div class="copilot-meta">
+              <span>P8 · 组织级策略与业务影响</span>
+              <span id="role-monitor">等待候选人证据</span>
+              <time id="replay-clock">00:00</time>
+            </div>
+            <div id="replay-timeline" class="replay-timeline" aria-live="polite"></div>
+            <div class="replay-start" id="replay-start">
+              <span class="replay-seal" aria-hidden="true">▶</span>
+              <strong>听一段真实 P8 面试</strong>
+              <button id="replay-start-button" type="button">播放 1 分 40 秒真实演示</button>
+              <small>真实 P8 面试录音 · 点击后播放声音</small>
+            </div>
+            <footer class="replay-controls">
+              <button id="replay-play" type="button" aria-label="播放或暂停">▶</button>
+              <button id="replay-mute" type="button" aria-label="静音或恢复声音">声音</button>
+              <input id="replay-progress" type="range" min="0" max="100409" value="0" aria-label="演示进度">
+              <span id="replay-time">00:00 / 01:40</span>
+              <button id="replay-reset" type="button">重新播放</button>
+              <button type="button" data-real-product-url="http://127.0.0.1:8004/">打开真实产品</button>
+            </footer>
+          </div>
+        </div>
       </div>
     </section>
 
