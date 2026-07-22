@@ -42,3 +42,13 @@ test('demo-only CSS does not redraw the production system', () => {
   assert.doesNotMatch(css, /\.one-shot-app\s*\{|\.interview-header\s*\{|\.summary-modal\s*\{/);
   assert.match(css, /\.demo-replay-scrubber/);
 });
+
+test('accessibility copy stays out of the product grid and full questions align from the top', () => {
+  assert.match(css, /\.sr-only\s*\{[^}]*position:\s*absolute\s*!important/s);
+  assert.match(runtime, /chat\.scrollTop\s*=\s*Math\.max\(0,\s*card\.offsetTop\s*-\s*8\)/);
+});
+
+test('backward seeking after completion resumes from the selected time', () => {
+  assert.match(runtime, /if\s*\(currentTimeMs\(\)\s*>=\s*DEMO_DURATION_MS\)/);
+  assert.doesNotMatch(runtime, /if\s*\(audio\.ended\s*\|\|/);
+});

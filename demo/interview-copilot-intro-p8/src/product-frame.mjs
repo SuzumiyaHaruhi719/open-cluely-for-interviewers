@@ -30,6 +30,7 @@ const questionMarkup = root.querySelector('#question-card-template').innerHTML.t
 
 let animationFrame = 0;
 let lastTimelineSignature = '';
+let questionWasVisible = false;
 let manualQuestionVisible = false;
 let manualContextOpen = null;
 let manualSummaryOpen = false;
@@ -115,7 +116,7 @@ function noteRow(note) {
   </div>`;
 }
 
-function renderTimeline(state) {
+function renderTimeline(state, questionJustAppeared = false) {
   const wasNearBottom = chat.scrollHeight - chat.clientHeight - chat.scrollTop <= 64;
   const previousScrollTop = chat.scrollTop;
   const questionVisible = state.questionVisible || manualQuestionVisible;
@@ -140,7 +141,11 @@ function renderTimeline(state) {
   }
   if (questionVisible && !questionInserted && rows.length > 0) rows.push(questionMarkup);
   chat.innerHTML = rows.join('');
-  if (wasNearBottom) chat.scrollTop = chat.scrollHeight;
+  if (questionJustAppeared) {
+    const card = chat.querySelector('.is-question-card');
+    if (card) chat.scrollTop = Math.max(0, card.offsetTop - 8);
+  }
+  else if (wasNearBottom) chat.scrollTop = chat.scrollHeight;
   else chat.scrollTop = previousScrollTop;
 }
 
@@ -185,6 +190,8 @@ function updateRuntime(state) {
 
 function render() {
   const state = stateAtCurrentTime();
+  const questionNowVisible = state.questionVisible || manualQuestionVisible;
+  const questionJustAppeared = questionNowVisible && !questionWasVisible;
   const signature = [
     state.candidateRole,
     state.questionVisible || manualQuestionVisible,
@@ -193,9 +200,10 @@ function render() {
     ...state.visibleCues.map((cue) => `${cue.id}:${cue.visibleText.length}:${cue.isLive}`)
   ].join('|');
   if (signature !== lastTimelineSignature) {
-    renderTimeline(state);
+    renderTimeline(state, questionJustAppeared);
     lastTimelineSignature = signature;
   }
+  questionWasVisible = questionNowVisible;
   updateRuntime(state);
   applyContext(state);
   applySummary(state);
@@ -204,7 +212,7 @@ function render() {
 }
 
 async function play() {
-  if (audio.ended || currentTimeMs() >= DEMO_DURATION_MS) {
+  if (currentTimeMs() >= DEMO_DURATION_MS) {
     audio.currentTime = 0;
     endedByUser = false;
     manualSummaryOpen = false;
@@ -244,6 +252,7 @@ function reset({ autoplay = true } = {}) {
   pause();
   audio.currentTime = 0;
   manualQuestionVisible = false;
+  questionWasVisible = false;
   manualContextOpen = null;
   manualSummaryOpen = false;
   summaryDismissedAtCompletion = false;
@@ -272,6 +281,7 @@ root.querySelector('#replay-reset').addEventListener('click', () => reset({ auto
 
 manualQuestionButton.addEventListener('click', () => {
   manualQuestionVisible = true;
+  questionWasVisible = false;
   lastTimelineSignature = '';
   render();
   const card = chat.querySelector('.is-question-card');
