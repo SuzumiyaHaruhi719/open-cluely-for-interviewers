@@ -475,6 +475,30 @@ describe('useCopilotSocket', () => {
     act(() => {
       socket.emit({ type: 'asr-status', source: 'mic', provider: 'paraformer', state: 'connecting' });
       socket.emit({
+        type: 'speaker-partition',
+        status: 'final',
+        model: 'deepseek-v4-flash',
+        speakerAssignments: [
+          {
+            speakerId: 1,
+            role: 'candidate',
+            state: 'delegated',
+            roleSource: 'cohort',
+            confidence: 0.95,
+            evidenceVersion: 99,
+            updatedAtMs: 99_000,
+            reasonCodes: ['two_pass_consensus']
+          }
+        ],
+        segments: [
+          { seq: 99, speakerId: 1, role: 'candidate', roleSource: 'cohort', text: '上一场完整面试' }
+        ]
+      });
+    });
+    expect(result.current.speakerSegments).toEqual([]);
+
+    act(() => {
+      socket.emit({
         type: 'transcript',
         source: 'mic',
         text: '新面试第一句',

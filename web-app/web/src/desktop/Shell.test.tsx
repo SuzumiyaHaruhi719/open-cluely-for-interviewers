@@ -381,6 +381,10 @@ describe('Shell one-shot interview workflow', () => {
     const stopFrameCountBefore = sentMessages(ws).filter(
       (frame) => frame.type === 'audio-control' && frame.action === 'stop'
     ).length;
+    const resetFrameCountBefore = sentMessages(ws).filter(
+      (frame) => frame.type === 'configure' &&
+        (frame.config as Record<string, unknown> | undefined)?.resetGeneration === true
+    ).length;
 
     fireEvent.click(screen.getByRole('button', { name: '结束面试' }));
 
@@ -405,9 +409,17 @@ describe('Shell one-shot interview workflow', () => {
     expect(sentMessages(ws)).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ type: 'audio-control', source: 'display', action: 'stop' }),
-        expect.objectContaining({ type: 'audio-control', source: 'mic', action: 'stop' })
+        expect.objectContaining({ type: 'audio-control', source: 'mic', action: 'stop' }),
+        expect.objectContaining({
+          type: 'configure',
+          config: expect.objectContaining({ resetGeneration: true })
+        })
       ])
     );
     expect(sentMessages(ws)).not.toContainEqual(expect.objectContaining({ type: 'summarize' }));
+    expect(sentMessages(ws).filter(
+      (frame) => frame.type === 'configure' &&
+        (frame.config as Record<string, unknown> | undefined)?.resetGeneration === true
+    )).toHaveLength(resetFrameCountBefore + 1);
   });
 });

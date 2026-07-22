@@ -360,6 +360,13 @@ export function useCopilotSocket(): CopilotSocket {
   // bubble id; a later semantic partition can split them again and needs each
   // original timestamp rather than the much later partition arrival time.
   const finalTurnTimesRef = useRef<Map<number, number>>(new Map());
+  // Immutable raw-final identity for the current interview. A semantic
+  // partition is accepted only when every visible run starts from a FINAL that
+  // actually arrived in this session. This prevents a late partition from the
+  // previous interview being resurrected after the fresh ASR connects.
+  const finalTurnEvidenceRef = useRef<
+    Map<number, { text: string; speakerId?: number }>
+  >(new Map());
   // Seed ASR 2.0 also supplies the utterance's true audio offset. Keep it by
   // server-aligned seq because finals may arrive in a delayed second-pass batch.
   const finalTurnAudioStartsRef = useRef<Map<number, number>>(new Map());
@@ -593,6 +600,12 @@ export function useCopilotSocket(): CopilotSocket {
         const finalAt = finalSeq === null ? null : Date.now();
         if (finalSeq !== null && finalAt !== null) {
           finalTurnTimesRef.current.set(finalSeq, finalAt);
+          finalTurnEvidenceRef.current.set(finalSeq, {
+            text,
+            ...(typeof message.speakerId === 'number'
+              ? { speakerId: message.speakerId }
+              : {})
+          });
           if (typeof message.startTimeMs === 'number') {
             finalTurnAudioStartsRef.current.set(finalSeq, message.startTimeMs);
           }
@@ -654,6 +667,20 @@ export function useCopilotSocket(): CopilotSocket {
       }
       case 'speaker-partition': {
         if (suppressSpeakerPartitionsRef.current) break;
+        const belongsToCurrentInterview = message.segments.every((segment) => {
+          const evidence = finalTurnEvidenceRef.current.get(segment.seq);
+          if (!evidence) return false;
+          if (
+            typeof evidence.speakerId === 'number' &&
+            evidence.speakerId !== segment.speakerId
+          ) {
+            return false;
+          }
+          const firstFinal = evidence.text.replace(/\s+/g, ' ').trim();
+          const partitionText = segment.text.replace(/\s+/g, ' ').trim();
+          return firstFinal.length > 0 && partitionText.startsWith(firstFinal);
+        });
+        if (!belongsToCurrentInterview) break;
         // DeepSeek Flash resolves native acoustic clusters (or, for ASR models
         // without clusters, finalized semantic turns) after enough evidence.
         // Replace the provisional unknown-role list atomically so past bubbles,
@@ -1036,6 +1063,7 @@ export function useCopilotSocket(): CopilotSocket {
     speakerAssignmentsRef.current.clear();
     segSeqRef.current = 0;
     finalTurnTimesRef.current.clear();
+    finalTurnEvidenceRef.current.clear();
     finalTurnAudioStartsRef.current.clear();
   }, []);
 

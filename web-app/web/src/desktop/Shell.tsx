@@ -92,6 +92,7 @@ export function Shell() {
     audio,
     startAudio,
     stopAudio,
+    resetAudioSession,
     speakerSegments,
     setSpeakerRole,
     resetSpeakerSegments,
@@ -261,8 +262,11 @@ export function Shell() {
   }, [speakerSegments, transcriptMessages, transcripts.display.finalText, transcripts.mic.finalText]);
 
   const confirmEndInterview = useCallback((): void => {
-    stopAudio('display');
-    stopAudio('mic');
+    // Quarantine provider drain + late semantic partitions before clearing the
+    // visible interview. Otherwise a previous interview can reappear when the
+    // next ASR connection opens and releases the event gate.
+    resetAudioSession();
+    clearSession();
     setInterviewEnded(true);
     setEndConfirmOpen(false);
     setContextOpen(false);
@@ -270,7 +274,7 @@ export function Shell() {
     setStartedAt(null);
     setNow(Date.now());
     setPhase('setup');
-  }, [stopAudio]);
+  }, [clearSession, resetAudioSession]);
 
   const cancelEndInterview = useCallback((): void => {
     setEndConfirmOpen(false);
