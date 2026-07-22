@@ -1,4 +1,5 @@
 import evidence from '../fixtures/p8-full-seed-asr.json' with { type: 'json' };
+import { buildProviderLikeReveal } from './caption-rhythm.mjs';
 
 export const SOURCE_PROFILE_ID = 'user-operations-p8';
 export const COMPLETE_DURATION_MS = evidence.audioDurationMs;
@@ -11,17 +12,6 @@ const graphemeCount = (text) => {
     return [...new Intl.Segmenter('zh-CN', { granularity: 'grapheme' }).segment(text)].length;
   }
   return Array.from(text).length;
-};
-
-const buildGraphemeReveal = (text, startMs, endMs) => {
-  const count = graphemeCount(text);
-  if (count === 0) return Object.freeze([]);
-  const durationMs = Math.max(0, endMs - startMs);
-  const denominator = Math.max(1, count - 1);
-  return Object.freeze(Array.from({ length: count }, (_, index) => Object.freeze([
-    index === count - 1 ? endMs : startMs + Math.floor((durationMs * index) / denominator),
-    index + 1
-  ])));
 };
 
 const redistributeSpeakerTurnWindows = (cues) => {
@@ -96,7 +86,7 @@ export function allocateCueWindows(finals) {
   }
   return Object.freeze(redistributeSpeakerTurnWindows(roughCues).map((cue) => Object.freeze({
     ...cue,
-    reveal: buildGraphemeReveal(cue.text, cue.startMs, cue.endMs)
+    reveal: buildProviderLikeReveal(cue.text, cue.startMs, cue.endMs)
   })));
 }
 

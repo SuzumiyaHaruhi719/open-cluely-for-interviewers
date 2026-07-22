@@ -116,6 +116,16 @@ h2{font-size:clamp(26px,2.7vw,32px);font-weight:800;line-height:1.22;letter-spac
 .c46{grid-template-columns:1fr 1.5fr}
 .c55{grid-template-columns:1fr 1fr}
 
+/* ============ GLP 价值矩阵 ============ */
+.value-slide .wrap{max-width:1120px}
+.value-slide .eyebrow{margin-bottom:10px}
+.value-slide h2{max-width:860px}
+.value-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.value-card{display:grid;min-height:132px;align-content:start;padding:18px 20px}
+.value-card .tag{margin-bottom:8px}
+.value-card h3{font-size:15.5px;margin-bottom:5px}
+.value-card p{font-size:12.5px;line-height:1.55}
+
 /* ============ 封面 / 结尾 ============ */
 .hero-slide,.end-slide{background:var(--surface-elevated)}
 .hero-slide::before,.end-slide::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:420px;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(47,212,122,.08),transparent 55%)}
@@ -194,4 +204,6 @@ body[data-active-slide="p8-demo"] .keyhint{display:none}
 @media print{html,body{overflow:visible;height:auto}.statusbar,.navctl,.progress,.keyhint{display:none}.deck{position:static}.slide{position:static;visibility:visible;opacity:1;transform:none;height:100vh;page-break-after:always}}
 @media (max-width:900px){.statusbar{padding:0 12px}.statusbar .left .sep,.statusbar .left>span:last-child,#deck-title{display:none}.wrap{padding:0 20px}.cols,.g3{grid-template-columns:1fr}.hero-slide .shot{display:none}.slide{overflow:auto}.live-demo-slide .wrap{padding:0 10px}.demo-slide-head .lead{display:none}.live-demo-shell{min-height:520px}.keyhint{display:none}}
 @media (max-height:760px) and (min-width:901px){.wrap{padding-top:8px;padding-bottom:8px}.card{padding:16px 18px}.g3{gap:12px}.hero-meta{margin-top:24px}.live-demo-shell{min-height:0}.demo-slide-head{margin-bottom:6px}}
+@media (max-width:900px){.value-slide{overflow:hidden}.value-slide .wrap{padding:24px 20px 68px}.value-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.value-card{min-height:0;padding:14px 16px}.value-card .tag{margin-bottom:5px}.value-card h3{font-size:15px;margin-bottom:3px}.value-card p{font-size:12px;line-height:1.45}}
+@media (max-width:620px){.value-slide{align-items:flex-start;overflow:auto}.value-slide .wrap{padding-top:24px}.value-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}

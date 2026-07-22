@@ -20,6 +20,11 @@ test('product frame uses the production interview-workspace hierarchy', () => {
   assert.doesNotMatch(html, /copilot-shell|replay-app|replay-seal/);
 });
 
+test('theme control uses the production GLP ghost-icon button', () => {
+  assert.match(html, /id="theme-toggle" class="glp-theme-toggle interview-header__theme"/);
+  assert.doesNotMatch(html, /id="theme-toggle" class="theme-toggle/);
+});
+
 test('Expert question exposes the full decision logic', () => {
   assert.match(html, /候选人原话/);
   assert.match(html, /为什么这样问/);

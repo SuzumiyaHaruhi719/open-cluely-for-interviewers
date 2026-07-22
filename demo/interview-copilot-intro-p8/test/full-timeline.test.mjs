@@ -12,6 +12,10 @@ import {
   roleConfirmedMs,
   speakerAssignments
 } from '../src/full-timeline.mjs';
+import {
+  LIVE_CAPTION_INTERVAL_MS,
+  advanceLiveCaptionText
+} from '../src/live-caption.mjs';
 import { deriveReplayState, splitGraphemes } from '../src/replay-state.mjs';
 
 const fixtureUrl = new URL('../fixtures/p8-full-seed-asr.json', import.meta.url);
@@ -44,15 +48,18 @@ test('complete timeline exposes every final in chronological order with voicepri
   assert.match(completeCues.find((cue) => cue.role === 'candidate')?.text ?? '', /面试官你好/);
 });
 
-test('an in-flight candidate answer reveals every grapheme instead of freezing on its first character', () => {
+test('an in-flight candidate answer advances through bounded targets instead of freezing or dumping', () => {
   const cue = completeCues.find((item) => item.seq === 4);
   assert.ok(cue, 'candidate self-introduction cue exists');
   const graphemes = splitGraphemes(cue.text);
 
   assert.ok(cue.endMs - cue.startMs >= 5_000, 'the spoken turn has a usable live-caption window');
-  assert.equal(cue.reveal.length, graphemes.length);
-  assert.deepEqual(cue.reveal.map(([, count]) => count), graphemes.map((_, index) => index + 1));
-  assert.ok(cue.reveal.every(([atMs], index) => index === 0 || atMs >= cue.reveal[index - 1][0]));
+  assert.ok(cue.reveal.length >= Math.ceil(graphemes.length / 5));
+  assert.ok(cue.reveal.every(([atMs, count], index) => (
+    index === 0 || (atMs >= cue.reveal[index - 1][0] && count > cue.reveal[index - 1][1])
+  )));
+  assert.ok(cue.reveal.every(([, count], index) => index === 0 || count - cue.reveal[index - 1][1] <= 5));
+  assert.equal(cue.reveal.at(-1)[1], graphemes.length);
 
   const sample = cue.reveal[Math.floor(cue.reveal.length / 3)];
   const state = deriveReplayState({
@@ -67,6 +74,71 @@ test('an in-flight candidate answer reveals every grapheme instead of freezing o
   assert.equal(splitGraphemes(visibleCue.visibleText).length, sample[1]);
   assert.ok(sample[1] > 1 && sample[1] < graphemes.length);
   assert.equal(visibleCue.isLive, true);
+});
+
+test('every multi-grapheme provider target advances in 2–5-character batches', () => {
+  for (const cue of completeCues) {
+    const graphemeCount = splitGraphemes(cue.text).length;
+    const counts = cue.reveal.map(([, count]) => count);
+    const bursts = counts.map((count, index) => count - (index === 0 ? 0 : counts[index - 1]));
+    if (graphemeCount === 1) {
+      assert.deepEqual(bursts, [1], `cue ${cue.seq} is the one-grapheme exception`);
+      continue;
+    }
+    assert.ok(
+      bursts.every((size) => size >= 2 && size <= 5),
+      `cue ${cue.seq} batches ${bursts.join(', ')} stay within the provider contract`
+    );
+  }
+});
+
+test('the final provider target drains through the 20ms smoother before cue finalization', () => {
+  for (const cue of completeCues) {
+    const graphemes = splitGraphemes(cue.text);
+    if (graphemes.length === 1) continue;
+    const finalIndex = cue.reveal.length - 1;
+    const [finalTargetMs, finalCount] = cue.reveal[finalIndex];
+    const previousCount = finalIndex === 0 ? 0 : cue.reveal[finalIndex - 1][1];
+    const finalBurst = finalCount - previousCount;
+    const requiredDrainMs = (finalBurst + 1) * LIVE_CAPTION_INTERVAL_MS;
+
+    assert.ok(
+      finalTargetMs <= cue.endMs - requiredDrainMs,
+      `cue ${cue.seq} exposes its final target before the finalization boundary`
+    );
+
+    const target = graphemes.slice(0, finalCount).join('');
+    let displayed = graphemes.slice(0, previousCount).join('');
+    for (let step = 0; step < finalBurst; step += 1) {
+      displayed = advanceLiveCaptionText(displayed, target);
+    }
+    assert.equal(displayed, cue.text, `cue ${cue.seq} can finish smoothing before finalization`);
+  }
+});
+
+test('caption targets follow provider-like bursts and punctuation pauses instead of a metronome', () => {
+  const cue = completeCues.find((item) => item.seq === 4);
+  assert.ok(cue, 'candidate self-introduction cue exists');
+  const graphemes = splitGraphemes(cue.text);
+  const gaps = cue.reveal.slice(1).map(([atMs], index) => atMs - cue.reveal[index][0]);
+  const bursts = cue.reveal.slice(1).map(([, count], index) => count - cue.reveal[index][1]);
+  const meanGap = gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length;
+  const deviation = Math.sqrt(
+    gaps.reduce((sum, gap) => sum + ((gap - meanGap) ** 2), 0) / gaps.length
+  );
+
+  assert.ok(cue.reveal.length < graphemes.length * 0.65, 'provider targets arrive in chunks');
+  assert.ok(bursts.some((size) => size >= 3), 'at least one target contains a short speech burst');
+  assert.ok(deviation / meanGap > 0.2, 'target gaps have human-like cadence variation');
+
+  const commaCount = graphemes.indexOf('，') + 1;
+  const commaCheckpoint = cue.reveal.findIndex(([, count]) => count === commaCount);
+  assert.ok(commaCheckpoint >= 0 && commaCheckpoint < cue.reveal.length - 1);
+  const punctuationPause = cue.reveal[commaCheckpoint + 1][0] - cue.reveal[commaCheckpoint][0];
+  const medianGap = [...gaps].sort((left, right) => left - right)[Math.floor(gaps.length / 2)];
+  assert.ok(punctuationPause >= medianGap * 1.3, 'comma creates a visible listening pause');
+  assert.equal(cue.reveal.at(-1)[1], graphemes.length);
+  assert.ok(cue.reveal.at(-1)[0] < cue.endMs);
 });
 
 test('complete replay audio is byte-identical to the supplied MP3', async () => {

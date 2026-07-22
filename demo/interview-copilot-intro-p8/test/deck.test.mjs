@@ -17,7 +17,7 @@ test('complete introduction preserves nine-slide presentation structure', () => 
     '对面试官的价值',
     '对 GLP 的价值',
     '当前已经实现',
-    '让“会面试”，不再只依赖个人手感'
+    '带上一个岗位，我们现场试一场'
   ]) assert.match(html, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(html, /id="deck-prev"/);
   assert.match(html, /id="deck-next"/);
@@ -26,6 +26,28 @@ test('complete introduction preserves nine-slide presentation structure', () => 
   assert.match(css, /\.slide\s*\{[^}]*position:\s*absolute/s);
   assert.match(css, /\.slide\.active/);
   assert.doesNotMatch(html, /物业|消防|园区运营/);
+});
+
+test('GLP value slide stays compact at the narrow presentation breakpoint', () => {
+  assert.match(html, /class="slide value-slide"[^>]*data-slide-id="glp-value"/);
+  assert.match(html, /class="grid g3 value-grid"/);
+  assert.match(css, /\.value-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(css, /@media\s*\(max-width:900px\)[\s\S]*?\.value-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
+});
+
+test('closing copy is direct Chinese rather than abstract product slogans', () => {
+  for (const copy of [
+    '不同面试官，也能围绕同一套岗位标准提问',
+    '选好岗位和简历，就可以直接开始面试',
+    '带上一个岗位，我们现场试一场',
+    '上传 JD 和简历后就能开始；转写、追问和总结都在同一条时间线上。'
+  ]) assert.match(html, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+
+  for (const rejected of [
+    '不是概念图：这套流程现在就能完整跑通',
+    '让“会面试”，不再只依赖个人手感',
+    '把好问题、好标准和真实证据，交到每一位面试官手边'
+  ]) assert.doesNotMatch(html, new RegExp(rejected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
 test('presentation directly reuses the legacy GLP value-deck visual system', () => {

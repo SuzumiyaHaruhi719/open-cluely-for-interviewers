@@ -45,7 +45,7 @@ The report preserves the five production scoring sections: conclusion, capabilit
 
 `scripts/build.mjs` imports the production desktop CSS in application order, bundles the deck and product-frame runtimes, embeds the exact MP3 and fixtures, and emits one HTML. The product document is stored as a base64 payload and assigned through `iframe.srcdoc`; this avoids browser URL-size limits while preserving a server-free single file.
 
-The media clock is the only replay clock. Normal playback, 60× fast-forward, captions, role labels, questions, context, progress, and completion all derive from it. Consecutive finals from the same voiceprint are treated as one spoken turn, divided by grapheme weight, and exposed through one monotonic checkpoint per grapheme so `输入中…` grows continuously instead of freezing on one character. Seeking backwards reconstructs state and dismisses future summary/question state.
+The media clock is the only replay clock. Normal playback, 60× fast-forward, captions, role labels, questions, context, progress, and completion all derive from it. Consecutive finals from the same voiceprint are treated as one spoken turn and divided by grapheme weight. Each window then exposes deterministic 2–5-character provider targets with varied gaps and punctuation pauses; the production-matched 20ms visual smoother consumes each target before cue finalization so `输入中…` grows naturally without dumping the final characters. Seeking backwards reconstructs state and dismisses future summary/question state.
 
 ## Build and test
 
