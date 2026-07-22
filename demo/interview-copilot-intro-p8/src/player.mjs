@@ -229,7 +229,10 @@ export function createReplayPlayer({ root, audio, timeline, onStarted = () => {}
   playButton.addEventListener('click', toggle);
   muteButton.addEventListener('click', toggleMute);
   root.querySelector('#replay-reset').addEventListener('click', () => reset({ autoplay: true }));
-  progress.addEventListener('input', () => seekTo(progress.value));
+  progress.addEventListener('input', () => {
+    markStarted();
+    seekTo(progress.value);
+  });
   audio.addEventListener('play', render);
   audio.addEventListener('pause', render);
   audio.addEventListener('timeupdate', render);

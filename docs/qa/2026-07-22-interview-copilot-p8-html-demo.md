@@ -49,3 +49,15 @@
 - Fix: remove zero-length caption cues from visible replay state. A cue becomes a row only after its first grapheme is available.
 - Green evidence: regression passes; browser at `0ms` reports `rowCount=0`, then progressive content starts on the first audible cue. All seven time checkpoints, pause, forward seek, and backward reconstruction still pass.
 - Remaining risk: Round 4 isolates candidate-first question semantics; Round 5 covers presentation navigation and portable delivery.
+
+## Round 4 — candidate-first Auto question behavior
+
+- Reproduction: inspected the exact frames at `8.499s`, `8.500s`, `47.888s`, `47.889s`, `51.619s`, and `51.620s`, then jumped directly to the reveal frame with the replay slider.
+- Semantic evidence: at `8.499s` there were two pending candidate voiceprint rows and no candidate assignment; at `8.500s` both candidate rows became `候选人` and monitoring started without interviewer confirmation. At `47.889s` the state changed to `generating`; at `51.620s` exactly one question appeared immediately after `p8-5`, with `3,026 词元` and `3.7 s`.
+- First viewer-facing defect: moving the replay slider before the first Play gesture correctly reconstructed candidate/question state, but left the start overlay on top of the evidence.
+- Viewer impact: a presenter could not jump straight to the verified candidate-first moment for explanation; the exact question and its anchor were visually obscured even though the DOM state was correct.
+- First divergent boundary: first slider `input` while `started=false`.
+- Red gate: `player.test.mjs` required slider interaction to call `markStarted()` before `seekTo(...)`; it failed against the old one-line seek handler.
+- Fix: treat an intentional slider movement as starting the replay view. It dismisses the transparent start surface, preserves paused audio, reconstructs state from `audio.currentTime`, and leaves the question fully inspectable.
+- Green evidence: after rebuild, seeking directly to `51.620s` reports `overlayHidden=true`, `questionCount=1`, `anchor=p8-5`, correct latency/tokens, and a clear visible question card. Backward seeking continues to remove it.
+- Remaining risk: final presentation controls, portability, theme/reduced-motion behavior, and handoff copy remain for Round 5.
