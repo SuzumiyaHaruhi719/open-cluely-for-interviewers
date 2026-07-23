@@ -17,7 +17,7 @@ test('complete introduction preserves nine-slide presentation structure', () => 
     '对面试官的价值',
     '对 GLP 的价值',
     '当前已经实现',
-    '带上一个岗位，我们现场试一场'
+    '面试流程演示：从岗位准备到面试总结'
   ]) assert.match(html, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(html, /id="deck-prev"/);
   assert.match(html, /id="deck-next"/);
@@ -35,18 +35,20 @@ test('GLP value slide stays compact at the narrow presentation breakpoint', () =
   assert.match(css, /@media\s*\(max-width:900px\)[\s\S]*?\.value-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
 });
 
-test('closing copy is direct Chinese rather than abstract product slogans', () => {
+test('closing copy is neutral descriptive Chinese rather than a promotional CTA', () => {
   for (const copy of [
     '不同面试官，也能围绕同一套岗位标准提问',
     '选好岗位和简历，就可以直接开始面试',
-    '带上一个岗位，我们现场试一场',
-    '上传 JD 和简历后就能开始；转写、追问和总结都在同一条时间线上。'
+    '面试流程演示：从岗位准备到面试总结',
+    '流程包括岗位与简历准备、实时转写、追问和面试总结。'
   ]) assert.match(html, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
   for (const rejected of [
     '不是概念图：这套流程现在就能完整跑通',
     '让“会面试”，不再只依赖个人手感',
-    '把好问题、好标准和真实证据，交到每一位面试官手边'
+    '把好问题、好标准和真实证据，交到每一位面试官手边',
+    '带上一个岗位，我们现场试一场',
+    '上传 JD 和简历后就能开始；转写、追问和总结都在同一条时间线上。'
   ]) assert.doesNotMatch(html, new RegExp(rejected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
