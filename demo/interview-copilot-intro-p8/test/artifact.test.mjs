@@ -17,7 +17,7 @@ test('built artifact is a complete offline P8 introduction', async () => {
   assert.match(productFrame, /max="493517"/);
   assert.doesNotMatch(html, /播放 1 分 40 秒真实演示/);
   assert.match(productFrame, /用户运营专家（P8）/);
-  assert.match(html, /为什么这句追问值得问/);
+  assert.match(html, /问题生成参考三类上下文/);
   assert.match(productFrame, /3,026 词元/);
   assert.match(productFrame, /3\.7 s/);
   assert.match(productFrame, /为什么这样问/);

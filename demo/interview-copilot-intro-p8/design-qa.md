@@ -38,6 +38,10 @@ At the reported `884 × 863` browser viewport, Slide 7 renders as a `2 × 3` mat
 
 No actionable P0, P1, or P2 visual defect remains.
 
+## Copy acceptance
+
+All nine outer slides use descriptive, evidence-backed language. The cover states what the artifact demonstrates; the problem slide names three interview information gaps; the mechanism, grounding, usage, and standards slides describe observable inputs, outputs, state, and operator boundaries; the implementation slide lists only shipped capabilities; and the closing slide summarizes the demonstrated flow. Promotional slogans, unqualified superlatives, emotional benefit claims, and assertions about candidate perception are excluded by `deck.test.mjs`. The embedded transcript, generated follow-up, and captured interview summary remain untouched because they are replay evidence rather than presentation copy.
+
 ## Live-caption regression correction
 
 At `00:25`, the candidate lane displayed `输入中…` but stayed on `家`; the preceding candidate segment appeared all at once. The complete timeline had only start/end reveal checkpoints, and one final arriving 1 ms after the preceding batch received a 1 ms window. The allocator now first reconstructs contiguous same-voiceprint turns, redistributes their existing provider-final window by grapheme weight, then emits punctuation-aware provider targets. Browser verification sampled the same candidate row at `00:23`, `+1s`, and `+2s`: its visible length grew `4 → 16 → 26`; a second candidate segment grew `16 → 28` over the next measured second. The regression is locked in `full-timeline.test.mjs`.
